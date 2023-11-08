@@ -15,10 +15,9 @@ import com.azure.resourcemanager.imagebuilder.fluent.models.RunOutputInner;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplate;
 import com.azure.resourcemanager.imagebuilder.models.RunOutput;
 import com.azure.resourcemanager.imagebuilder.models.VirtualMachineImageTemplates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachineImageTemplatesImpl implements VirtualMachineImageTemplates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineImageTemplatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineImageTemplatesImpl.class);
 
     private final VirtualMachineImageTemplatesClient innerClient;
 
@@ -51,15 +50,6 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
         return Utils.mapPage(inner, inner1 -> new ImageTemplateImpl(inner1, this.manager()));
     }
 
-    public ImageTemplate getByResourceGroup(String resourceGroupName, String imageTemplateName) {
-        ImageTemplateInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, imageTemplateName);
-        if (inner != null) {
-            return new ImageTemplateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ImageTemplate> getByResourceGroupWithResponse(
         String resourceGroupName, String imageTemplateName, Context context) {
         Response<ImageTemplateInner> inner =
@@ -70,6 +60,15 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ImageTemplateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ImageTemplate getByResourceGroup(String resourceGroupName, String imageTemplateName) {
+        ImageTemplateInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, imageTemplateName);
+        if (inner != null) {
+            return new ImageTemplateImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -111,15 +110,6 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
         return Utils.mapPage(inner, inner1 -> new RunOutputImpl(inner1, this.manager()));
     }
 
-    public RunOutput getRunOutput(String resourceGroupName, String imageTemplateName, String runOutputName) {
-        RunOutputInner inner = this.serviceClient().getRunOutput(resourceGroupName, imageTemplateName, runOutputName);
-        if (inner != null) {
-            return new RunOutputImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RunOutput> getRunOutputWithResponse(
         String resourceGroupName, String imageTemplateName, String runOutputName, Context context) {
         Response<RunOutputInner> inner =
@@ -135,10 +125,19 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
         }
     }
 
+    public RunOutput getRunOutput(String resourceGroupName, String imageTemplateName, String runOutputName) {
+        RunOutputInner inner = this.serviceClient().getRunOutput(resourceGroupName, imageTemplateName, runOutputName);
+        if (inner != null) {
+            return new RunOutputImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public ImageTemplate getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,7 +145,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
         }
         String imageTemplateName = Utils.getValueFromIdByName(id, "imageTemplates");
         if (imageTemplateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,7 +157,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
     public Response<ImageTemplate> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +165,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
         }
         String imageTemplateName = Utils.getValueFromIdByName(id, "imageTemplates");
         if (imageTemplateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,7 +177,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -186,7 +185,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
         }
         String imageTemplateName = Utils.getValueFromIdByName(id, "imageTemplates");
         if (imageTemplateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -198,7 +197,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -206,7 +205,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
         }
         String imageTemplateName = Utils.getValueFromIdByName(id, "imageTemplates");
         if (imageTemplateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -7,32 +7,34 @@ package com.azure.ai.anomalydetector.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AlignPolicy model. */
+/** An optional field, indicating the manner to align multiple variables. */
 @Fluent
 public final class AlignPolicy {
     /*
-     * An optional field, indicating how we align different variables to the
-     * same time-range. Either Inner or Outer.
+     * An optional field, indicating how to align different variables to the same
+     * time-range. Either Inner or Outer.
      */
     @JsonProperty(value = "alignMode")
     private AlignMode alignMode;
 
     /*
      * An optional field, indicating how missing values will be filled. One of
-     * Previous, Subsequent, Linear, Zero, Fixed, and NotFill. Cannot be set to
-     * NotFill, when the alignMode is Outer.
+     * Previous, Subsequent, Linear, Zero, Fixed.
      */
     @JsonProperty(value = "fillNAMethod")
-    private FillNaMethod fillNaMethod;
+    private FillNAMethod fillNAMethod;
 
     /*
      * An optional field. Required when fillNAMethod is Fixed.
      */
     @JsonProperty(value = "paddingValue")
-    private Float paddingValue;
+    private Double paddingValue;
+
+    /** Creates an instance of AlignPolicy class. */
+    public AlignPolicy() {}
 
     /**
-     * Get the alignMode property: An optional field, indicating how we align different variables to the same
+     * Get the alignMode property: An optional field, indicating how to align different variables to the same
      * time-range. Either Inner or Outer.
      *
      * @return the alignMode value.
@@ -42,7 +44,7 @@ public final class AlignPolicy {
     }
 
     /**
-     * Set the alignMode property: An optional field, indicating how we align different variables to the same
+     * Set the alignMode property: An optional field, indicating how to align different variables to the same
      * time-range. Either Inner or Outer.
      *
      * @param alignMode the alignMode value to set.
@@ -54,24 +56,24 @@ public final class AlignPolicy {
     }
 
     /**
-     * Get the fillNaMethod property: An optional field, indicating how missing values will be filled. One of Previous,
-     * Subsequent, Linear, Zero, Fixed, and NotFill. Cannot be set to NotFill, when the alignMode is Outer.
+     * Get the fillNAMethod property: An optional field, indicating how missing values will be filled. One of Previous,
+     * Subsequent, Linear, Zero, Fixed.
      *
-     * @return the fillNaMethod value.
+     * @return the fillNAMethod value.
      */
-    public FillNaMethod getFillNaMethod() {
-        return this.fillNaMethod;
+    public FillNAMethod getFillNAMethod() {
+        return this.fillNAMethod;
     }
 
     /**
-     * Set the fillNaMethod property: An optional field, indicating how missing values will be filled. One of Previous,
-     * Subsequent, Linear, Zero, Fixed, and NotFill. Cannot be set to NotFill, when the alignMode is Outer.
+     * Set the fillNAMethod property: An optional field, indicating how missing values will be filled. One of Previous,
+     * Subsequent, Linear, Zero, Fixed.
      *
-     * @param fillNaMethod the fillNaMethod value to set.
+     * @param fillNAMethod the fillNAMethod value to set.
      * @return the AlignPolicy object itself.
      */
-    public AlignPolicy setFillNaMethod(FillNaMethod fillNaMethod) {
-        this.fillNaMethod = fillNaMethod;
+    public AlignPolicy setFillNAMethod(FillNAMethod fillNAMethod) {
+        this.fillNAMethod = fillNAMethod;
         return this;
     }
 
@@ -80,7 +82,7 @@ public final class AlignPolicy {
      *
      * @return the paddingValue value.
      */
-    public Float getPaddingValue() {
+    public Double getPaddingValue() {
         return this.paddingValue;
     }
 
@@ -90,7 +92,7 @@ public final class AlignPolicy {
      * @param paddingValue the paddingValue value to set.
      * @return the AlignPolicy object itself.
      */
-    public AlignPolicy setPaddingValue(Float paddingValue) {
+    public AlignPolicy setPaddingValue(Double paddingValue) {
         this.paddingValue = paddingValue;
         return this;
     }

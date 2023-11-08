@@ -19,6 +19,9 @@ public class StorageBlobSample {
     private static final String AZURE_STORAGE_CONNECTION_STRING = System.getenv("AZURE_STORAGE_CONNECTION_STRING");
     private static final Random RANDOM = new Random();
 
+    /**
+     * The method to run the storage blob sample.
+     */
     public static void runSample() {
 
         System.out.println("\n================================================================");

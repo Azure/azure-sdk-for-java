@@ -7,11 +7,11 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SecurityAlertPolicyState. */
+/**
+ * Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the
+ * specific database.
+ */
 public enum SecurityAlertPolicyState {
-    /** Enum value New. */
-    NEW("New"),
-
     /** Enum value Enabled. */
     ENABLED("Enabled"),
 
@@ -33,6 +33,9 @@ public enum SecurityAlertPolicyState {
      */
     @JsonCreator
     public static SecurityAlertPolicyState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SecurityAlertPolicyState[] items = SecurityAlertPolicyState.values();
         for (SecurityAlertPolicyState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum SecurityAlertPolicyState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

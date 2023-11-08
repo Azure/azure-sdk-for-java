@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.RestorableDroppedSqlPoolsClient;
 import com.azure.resourcemanager.synapse.fluent.models.RestorableDroppedSqlPoolInner;
 import com.azure.resourcemanager.synapse.models.RestorableDroppedSqlPool;
 import com.azure.resourcemanager.synapse.models.RestorableDroppedSqlPools;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RestorableDroppedSqlPoolsImpl implements RestorableDroppedSqlPools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDroppedSqlPoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RestorableDroppedSqlPoolsImpl.class);
 
     private final RestorableDroppedSqlPoolsClient innerClient;
 
@@ -26,17 +25,6 @@ public final class RestorableDroppedSqlPoolsImpl implements RestorableDroppedSql
         RestorableDroppedSqlPoolsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public RestorableDroppedSqlPool get(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId) {
-        RestorableDroppedSqlPoolInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, restorableDroppedSqlPoolId);
-        if (inner != null) {
-            return new RestorableDroppedSqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<RestorableDroppedSqlPool> getWithResponse(
@@ -49,6 +37,17 @@ public final class RestorableDroppedSqlPoolsImpl implements RestorableDroppedSql
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RestorableDroppedSqlPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RestorableDroppedSqlPool get(
+        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId) {
+        RestorableDroppedSqlPoolInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, restorableDroppedSqlPoolId);
+        if (inner != null) {
+            return new RestorableDroppedSqlPoolImpl(inner, this.manager());
         } else {
             return null;
         }

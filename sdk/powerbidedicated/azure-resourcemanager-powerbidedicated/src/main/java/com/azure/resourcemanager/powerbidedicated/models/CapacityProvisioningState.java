@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CapacityProvisioningState. */
+/**
+ * The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for resource
+ * provisioning.
+ */
 public final class CapacityProvisioningState extends ExpandableStringEnum<CapacityProvisioningState> {
     /** Static value Deleting for CapacityProvisioningState. */
     public static final CapacityProvisioningState DELETING = fromString("Deleting");
@@ -47,6 +50,15 @@ public final class CapacityProvisioningState extends ExpandableStringEnum<Capaci
     public static final CapacityProvisioningState SCALING = fromString("Scaling");
 
     /**
+     * Creates a new instance of CapacityProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CapacityProvisioningState() {
+    }
+
+    /**
      * Creates or finds a CapacityProvisioningState from its string representation.
      *
      * @param name a name to look for.
@@ -57,7 +69,11 @@ public final class CapacityProvisioningState extends ExpandableStringEnum<Capaci
         return fromString(name, CapacityProvisioningState.class);
     }
 
-    /** @return known CapacityProvisioningState values. */
+    /**
+     * Gets known CapacityProvisioningState values.
+     *
+     * @return known CapacityProvisioningState values.
+     */
     public static Collection<CapacityProvisioningState> values() {
         return values(CapacityProvisioningState.class);
     }

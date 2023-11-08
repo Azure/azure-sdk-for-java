@@ -24,25 +24,28 @@ public final class LeaseShareRequest {
     private String leaseId;
 
     /*
-     * Optional. For a break action, proposed duration the lease should
-     * continue before it is broken, in seconds, between 0 and 60.
+     * Optional. For a break action, proposed duration the lease should continue before it is broken, in seconds,
+     * between 0 and 60.
      */
     @JsonProperty(value = "breakPeriod")
     private Integer breakPeriod;
 
     /*
-     * Required for acquire. Specifies the duration of the lease, in seconds,
-     * or negative one (-1) for a lease that never expires.
+     * Required for acquire. Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that
+     * never expires.
      */
     @JsonProperty(value = "leaseDuration")
     private Integer leaseDuration;
 
     /*
-     * Optional for acquire, required for change. Proposed lease ID, in a GUID
-     * string format.
+     * Optional for acquire, required for change. Proposed lease ID, in a GUID string format.
      */
     @JsonProperty(value = "proposedLeaseId")
     private String proposedLeaseId;
+
+    /** Creates an instance of LeaseShareRequest class. */
+    public LeaseShareRequest() {
+    }
 
     /**
      * Get the action property: Specifies the lease action. Can be one of the available actions.

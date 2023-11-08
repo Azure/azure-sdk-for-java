@@ -27,8 +27,7 @@ public final class PrivateLinkServiceProperties {
     private List<PrivateLinkServiceIpConfigurationInner> ipConfigurations;
 
     /*
-     * An array of references to the network interfaces created for this
-     * private link service.
+     * An array of references to the network interfaces created for this private link service.
      */
     @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceInner> networkInterfaces;
@@ -74,6 +73,10 @@ public final class PrivateLinkServiceProperties {
      */
     @JsonProperty(value = "enableProxyProtocol")
     private Boolean enableProxyProtocol;
+
+    /** Creates an instance of PrivateLinkServiceProperties class. */
+    public PrivateLinkServiceProperties() {
+    }
 
     /**
      * Get the loadBalancerFrontendIpConfigurations property: An array of references to the load balancer IP

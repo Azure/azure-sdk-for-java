@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EndpointType. */
+/** Type of the endpoint for the event subscription destination. */
 public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     /** Static value WebHook for EndpointType. */
     public static final EndpointType WEB_HOOK = fromString("WebHook");
@@ -35,6 +35,15 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     public static final EndpointType PARTNER_DESTINATION = fromString("PartnerDestination");
 
     /**
+     * Creates a new instance of EndpointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointType() {
+    }
+
+    /**
      * Creates or finds a EndpointType from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
         return fromString(name, EndpointType.class);
     }
 
-    /** @return known EndpointType values. */
+    /**
+     * Gets known EndpointType values.
+     *
+     * @return known EndpointType values.
+     */
     public static Collection<EndpointType> values() {
         return values(EndpointType.class);
     }

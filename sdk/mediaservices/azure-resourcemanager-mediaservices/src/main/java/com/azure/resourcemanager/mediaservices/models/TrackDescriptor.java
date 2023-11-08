@@ -25,6 +25,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class TrackDescriptor {
+    /** Creates an instance of TrackDescriptor class. */
+    public TrackDescriptor() {
+    }
+
     /**
      * Validates the instance.
      *

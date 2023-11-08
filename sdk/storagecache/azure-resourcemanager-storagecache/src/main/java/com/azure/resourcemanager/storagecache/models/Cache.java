@@ -63,7 +63,7 @@ public interface Cache {
     SystemData systemData();
 
     /**
-     * Gets the sku property: SKU for the Cache.
+     * Gets the sku property: SKU for the cache.
      *
      * @return the sku value.
      */
@@ -77,14 +77,14 @@ public interface Cache {
     Integer cacheSizeGB();
 
     /**
-     * Gets the health property: Health of the Cache.
+     * Gets the health property: Health of the cache.
      *
      * @return the health value.
      */
     CacheHealth health();
 
     /**
-     * Gets the mountAddresses property: Array of IP addresses that can be used by clients mounting this Cache.
+     * Gets the mountAddresses property: Array of IPv4 addresses that can be used by clients mounting this cache.
      *
      * @return the mountAddresses value.
      */
@@ -99,18 +99,25 @@ public interface Cache {
     ProvisioningStateType provisioningState();
 
     /**
-     * Gets the subnet property: Subnet used for the Cache.
+     * Gets the subnet property: Subnet used for the cache.
      *
      * @return the subnet value.
      */
     String subnet();
 
     /**
-     * Gets the upgradeStatus property: Upgrade status of the Cache.
+     * Gets the upgradeStatus property: Upgrade status of the cache.
      *
      * @return the upgradeStatus value.
      */
     CacheUpgradeStatus upgradeStatus();
+
+    /**
+     * Gets the upgradeSettings property: Upgrade settings of the cache.
+     *
+     * @return the upgradeSettings value.
+     */
+    CacheUpgradeSettings upgradeSettings();
 
     /**
      * Gets the networkSettings property: Specifies network settings of the cache.
@@ -149,6 +156,21 @@ public interface Cache {
     List<String> zones();
 
     /**
+     * Gets the primingJobs property: Specifies the priming jobs defined in the cache.
+     *
+     * @return the primingJobs value.
+     */
+    List<PrimingJob> primingJobs();
+
+    /**
+     * Gets the spaceAllocation property: Specifies the space allocation percentage for each storage target in the
+     * cache.
+     *
+     * @return the spaceAllocation value.
+     */
+    List<StorageTargetSpaceAllocation> spaceAllocation();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -161,6 +183,13 @@ public interface Cache {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.storagecache.fluent.models.CacheInner object.
@@ -204,7 +233,7 @@ public interface Cache {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName Target resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
@@ -219,6 +248,7 @@ public interface Cache {
                 DefinitionStages.WithSku,
                 DefinitionStages.WithCacheSizeGB,
                 DefinitionStages.WithSubnet,
+                DefinitionStages.WithUpgradeSettings,
                 DefinitionStages.WithNetworkSettings,
                 DefinitionStages.WithEncryptionSettings,
                 DefinitionStages.WithSecuritySettings,
@@ -262,9 +292,9 @@ public interface Cache {
         /** The stage of the Cache definition allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: SKU for the Cache..
+             * Specifies the sku property: SKU for the cache..
              *
-             * @param sku SKU for the Cache.
+             * @param sku SKU for the cache.
              * @return the next definition stage.
              */
             WithCreate withSku(CacheSku sku);
@@ -282,12 +312,22 @@ public interface Cache {
         /** The stage of the Cache definition allowing to specify subnet. */
         interface WithSubnet {
             /**
-             * Specifies the subnet property: Subnet used for the Cache..
+             * Specifies the subnet property: Subnet used for the cache..
              *
-             * @param subnet Subnet used for the Cache.
+             * @param subnet Subnet used for the cache.
              * @return the next definition stage.
              */
             WithCreate withSubnet(String subnet);
+        }
+        /** The stage of the Cache definition allowing to specify upgradeSettings. */
+        interface WithUpgradeSettings {
+            /**
+             * Specifies the upgradeSettings property: Upgrade settings of the cache..
+             *
+             * @param upgradeSettings Upgrade settings of the cache.
+             * @return the next definition stage.
+             */
+            WithCreate withUpgradeSettings(CacheUpgradeSettings upgradeSettings);
         }
         /** The stage of the Cache definition allowing to specify networkSettings. */
         interface WithNetworkSettings {
@@ -353,6 +393,7 @@ public interface Cache {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
+            UpdateStages.WithUpgradeSettings,
             UpdateStages.WithNetworkSettings,
             UpdateStages.WithEncryptionSettings,
             UpdateStages.WithSecuritySettings,
@@ -393,6 +434,16 @@ public interface Cache {
              * @return the next definition stage.
              */
             Update withIdentity(CacheIdentity identity);
+        }
+        /** The stage of the Cache update allowing to specify upgradeSettings. */
+        interface WithUpgradeSettings {
+            /**
+             * Specifies the upgradeSettings property: Upgrade settings of the cache..
+             *
+             * @param upgradeSettings Upgrade settings of the cache.
+             * @return the next definition stage.
+             */
+            Update withUpgradeSettings(CacheUpgradeSettings upgradeSettings);
         }
         /** The stage of the Cache update allowing to specify networkSettings. */
         interface WithNetworkSettings {
@@ -451,7 +502,7 @@ public interface Cache {
     Cache refresh(Context context);
 
     /**
-     * Tells a Cache to write generate debug info for support to process.
+     * Tells a cache to write generate debug info for support to process.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -459,7 +510,7 @@ public interface Cache {
     void debugInfo();
 
     /**
-     * Tells a Cache to write generate debug info for support to process.
+     * Tells a cache to write generate debug info for support to process.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -469,7 +520,7 @@ public interface Cache {
     void debugInfo(Context context);
 
     /**
-     * Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
+     * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
      * returned until the flush is complete.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -478,7 +529,7 @@ public interface Cache {
     void flush();
 
     /**
-     * Tells a Cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
+     * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
      * returned until the flush is complete.
      *
      * @param context The context to associate with this operation.
@@ -489,7 +540,7 @@ public interface Cache {
     void flush(Context context);
 
     /**
-     * Tells a Stopped state Cache to transition to Active state.
+     * Tells a Stopped state cache to transition to Active state.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -497,7 +548,7 @@ public interface Cache {
     void start();
 
     /**
-     * Tells a Stopped state Cache to transition to Active state.
+     * Tells a Stopped state cache to transition to Active state.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -507,7 +558,7 @@ public interface Cache {
     void start(Context context);
 
     /**
-     * Tells an Active Cache to transition to Stopped state.
+     * Tells an Active cache to transition to Stopped state.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -515,7 +566,7 @@ public interface Cache {
     void stop();
 
     /**
-     * Tells an Active Cache to transition to Stopped state.
+     * Tells an Active cache to transition to Stopped state.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,7 +576,83 @@ public interface Cache {
     void stop(Context context);
 
     /**
-     * Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
+     * Create a priming job. This operation is only allowed when the cache is healthy.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startPrimingJob();
+
+    /**
+     * Create a priming job. This operation is only allowed when the cache is healthy.
+     *
+     * @param primingjob Object containing the definition of a priming job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startPrimingJob(PrimingJob primingjob, Context context);
+
+    /**
+     * Schedule a priming job for deletion.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopPrimingJob();
+
+    /**
+     * Schedule a priming job for deletion.
+     *
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopPrimingJob(PrimingJobIdParameter primingJobId, Context context);
+
+    /**
+     * Schedule a priming job to be paused.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void pausePrimingJob();
+
+    /**
+     * Schedule a priming job to be paused.
+     *
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void pausePrimingJob(PrimingJobIdParameter primingJobId, Context context);
+
+    /**
+     * Resumes a paused priming job.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumePrimingJob();
+
+    /**
+     * Resumes a paused priming job.
+     *
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumePrimingJob(PrimingJobIdParameter primingJobId, Context context);
+
+    /**
+     * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -533,7 +660,7 @@ public interface Cache {
     void upgradeFirmware();
 
     /**
-     * Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
+     * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

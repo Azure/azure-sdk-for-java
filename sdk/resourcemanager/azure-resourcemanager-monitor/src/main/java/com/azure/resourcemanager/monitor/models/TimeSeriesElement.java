@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.MetadataValueInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A time series result type. The discriminator value is always TimeSeries in this case. */
 @Fluent
 public final class TimeSeriesElement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesElement.class);
-
     /*
      * the metadata values returned if $filter was specified in the call.
      */
@@ -23,11 +19,15 @@ public final class TimeSeriesElement {
     private List<MetadataValueInner> metadatavalues;
 
     /*
-     * An array of data points representing the metric values.  This is only
-     * returned if a result type of data is specified.
+     * An array of data points representing the metric values.  This is only returned if a result type of data is
+     * specified.
      */
     @JsonProperty(value = "data")
     private List<MetricValue> data;
+
+    /** Creates an instance of TimeSeriesElement class. */
+    public TimeSeriesElement() {
+    }
 
     /**
      * Get the metadatavalues property: the metadata values returned if $filter was specified in the call.

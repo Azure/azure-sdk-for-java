@@ -7,7 +7,7 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AutomaticTuningOptionModeActual. */
+/** Automatic tuning option actual state. */
 public enum AutomaticTuningOptionModeActual {
     /** Enum value Off. */
     OFF("Off"),
@@ -30,6 +30,9 @@ public enum AutomaticTuningOptionModeActual {
      */
     @JsonCreator
     public static AutomaticTuningOptionModeActual fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AutomaticTuningOptionModeActual[] items = AutomaticTuningOptionModeActual.values();
         for (AutomaticTuningOptionModeActual item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum AutomaticTuningOptionModeActual {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

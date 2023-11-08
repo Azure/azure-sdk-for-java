@@ -3,15 +3,17 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
@@ -19,7 +21,7 @@ import java.util.function.BiConsumer;
  */
 public class ResponseValidationPolicyBuilder {
 
-    private final Collection<BiConsumer<HttpResponse, ClientLogger>> assertions = new ArrayList<>();
+    private final List<BiConsumer<HttpResponse, ClientLogger>> assertions = new ArrayList<>();
 
     /**
      * Builds the policy described by this builder.
@@ -39,8 +41,9 @@ public class ResponseValidationPolicyBuilder {
      */
     public ResponseValidationPolicyBuilder addOptionalEcho(String headerName) {
         assertions.add((httpResponse, logger) -> {
-            String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(headerName);
-            String responseHeaderValue = httpResponse.getHeaderValue(headerName);
+            HttpHeaderName httpHeaderName = HttpHeaderName.fromString(headerName);
+            String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(httpHeaderName);
+            String responseHeaderValue = httpResponse.getHeaders().getValue(httpHeaderName);
             if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
                 throw logger.logExceptionAsError(new RuntimeException(String.format(
                     "Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
@@ -59,31 +62,33 @@ public class ResponseValidationPolicyBuilder {
 
         private static final ClientLogger LOGGER = new ClientLogger(ResponseValidationPolicy.class);
 
-        private final Iterable<BiConsumer<HttpResponse, ClientLogger>> assertions;
+        private final List<BiConsumer<HttpResponse, ClientLogger>> assertions;
 
         /**
          * Creates a policy that executes each provided assertion on responses.
          *
          * @param assertions The assertions to apply.
          */
-        ResponseValidationPolicy(Iterable<BiConsumer<HttpResponse, ClientLogger>> assertions) {
-            Collection<BiConsumer<HttpResponse, ClientLogger>> assertionsCopy = new ArrayList<>();
-            assertions.forEach(assertionsCopy::add);
-            this.assertions = assertionsCopy;
+        ResponseValidationPolicy(List<BiConsumer<HttpResponse, ClientLogger>> assertions) {
+            this.assertions = new ArrayList<>(assertions);
         }
 
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            Mono<HttpResponse> httpResponse = next.process();
+            return next.process().map(response -> {
+                assertions.forEach(assertion -> assertion.accept(response, LOGGER));
 
-            for (BiConsumer<HttpResponse, ClientLogger> assertion : assertions) {
-                httpResponse = httpResponse.map(response -> {
-                    assertion.accept(response, LOGGER);
-                    return response;
-                });
-            }
+                return response;
+            });
+        }
 
-            return httpResponse;
+        @Override
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+            HttpResponse response = next.processSync();
+
+            assertions.forEach(assertion -> assertion.accept(response, LOGGER));
+
+            return response;
         }
     }
 }

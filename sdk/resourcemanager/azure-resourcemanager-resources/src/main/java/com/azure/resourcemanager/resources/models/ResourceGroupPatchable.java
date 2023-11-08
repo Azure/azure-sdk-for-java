@@ -37,6 +37,10 @@ public final class ResourceGroupPatchable {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ResourceGroupPatchable class. */
+    public ResourceGroupPatchable() {
+    }
+
     /**
      * Get the name property: The name of the resource group.
      *

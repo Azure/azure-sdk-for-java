@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,15 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Device categories provides a way to organize your devices. Using device categories, company administrators can define
- * their own categories that make sense to their company. These categories can then be applied to a device in the Intune
- * Azure console or selected by a user during device enrollment. You can filter reports and create dynamic Azure Active
- * Directory device groups based on device categories.
+ * deviceCategory
+ *
+ * <p>Device categories provides a way to organize your devices. Using device categories, company administrators can
+ * define their own categories that make sense to their company. These categories can then be applied to a device in the
+ * Intune Azure console or selected by a user during device enrollment. You can filter reports and create dynamic Azure
+ * Active Directory device groups based on device categories.
  */
 @Fluent
 public final class MicrosoftGraphDeviceCategory extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDeviceCategory.class);
-
     /*
      * Optional description for the device category.
      */
@@ -36,14 +35,16 @@ public final class MicrosoftGraphDeviceCategory extends MicrosoftGraphEntity {
     private String displayName;
 
     /*
-     * Device categories provides a way to organize your devices. Using device
-     * categories, company administrators can define their own categories that
-     * make sense to their company. These categories can then be applied to a
-     * device in the Intune Azure console or selected by a user during device
-     * enrollment. You can filter reports and create dynamic Azure Active
-     * Directory device groups based on device categories.
+     * Device categories provides a way to organize your devices. Using device categories, company administrators can
+     * define their own categories that make sense to their company. These categories can then be applied to a device
+     * in the Intune Azure console or selected by a user during device enrollment. You can filter reports and create
+     * dynamic Azure Active Directory device groups based on device categories.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDeviceCategory class. */
+    public MicrosoftGraphDeviceCategory() {
+    }
 
     /**
      * Get the description property: Optional description for the device category.

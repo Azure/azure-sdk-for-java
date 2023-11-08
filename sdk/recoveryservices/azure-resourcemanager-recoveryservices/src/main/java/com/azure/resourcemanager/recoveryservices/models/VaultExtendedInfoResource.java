@@ -30,6 +30,13 @@ public interface VaultExtendedInfoResource {
     String type();
 
     /**
+     * Gets the etag property: Optional ETag.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the integrityKey property: Integrity key.
      *
      * @return the integrityKey value.
@@ -56,13 +63,6 @@ public interface VaultExtendedInfoResource {
      * @return the algorithm value.
      */
     String algorithm();
-
-    /**
-     * Gets the etag property: Optional ETag.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservices.fluent.models.VaultExtendedInfoResourceInner object.

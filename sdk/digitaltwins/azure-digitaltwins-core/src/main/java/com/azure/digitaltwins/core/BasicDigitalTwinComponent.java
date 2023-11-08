@@ -4,14 +4,19 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Properties on a component that adhere to a specific model.
@@ -23,9 +28,15 @@ public final class BasicDigitalTwinComponent {
     /**
      * Information about the model a component conforms to. This field is present on every digital twin.
      */
-    @JsonProperty(value = "$metadata", required = true)
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, required = true)
     private Map<String, DigitalTwinPropertyMetadata> metadata = new HashMap<>();
 
+    /**
+     * The time and date the component was last updated.
+     */
+    @JsonIgnore
+    private OffsetDateTime lastUpdatedOn;
+   
     /**
      * The additional contents of the model. This field will contain any contents of the digital twin that are not already defined by the other strong types of this class.
      */
@@ -34,21 +45,29 @@ public final class BasicDigitalTwinComponent {
 
     /**
      * Gets the metadata about the model.
-     * @return The model metadata.
+     * @return The component metadata.
      */
     public Map<String, DigitalTwinPropertyMetadata> getMetadata() {
         return metadata;
     }
 
     /**
-     * Sets the model metadata.
-     * @param key The key that maps to the metadata
-     * @param metadata Model metadata.
+     * Adds property metadata.
+     * @param key The key that maps to the property metadata
+     * @param metadata Property metadata.
      * @return The BasicDigitalTwinComponent object itself.
      */
     public BasicDigitalTwinComponent addMetadata(String key, DigitalTwinPropertyMetadata metadata) {
         this.metadata.put(key, metadata);
         return this;
+    }
+    
+    /**
+     * Gets the date and time when the twin was last updated.
+     * @return The date and time the twin was last updated.
+     */
+    public OffsetDateTime getLastUpdatedOn() {
+        return lastUpdatedOn;
     }
 
     /**
@@ -70,5 +89,22 @@ public final class BasicDigitalTwinComponent {
     public BasicDigitalTwinComponent addToContents(String key, Object value) {
         this.contents.put(key, value);
         return this;
+    }
+
+    // Unwraps the raw metadata received from the service and extracts the "$lastUpdateTime" property.
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA)
+    private void unwrapMetadata(Map<String, Object> metadata) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        
+        String lastUpdatedOnString = (String) metadata.get(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
+        if (lastUpdatedOnString != null) {
+            this.lastUpdatedOn = OffsetDateTime.parse(lastUpdatedOnString);
+            metadata.remove(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
+        }
+        
+        for (Entry<String, Object> metadataEntry : metadata.entrySet()) {
+            this.metadata.put(metadataEntry.getKey(), mapper.convertValue(metadataEntry.getValue(), DigitalTwinPropertyMetadata.class));
+        }
     }
 }

@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.NotebookWorkspacesClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NotebookWorkspacesClient. */
 public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesClient {
-    private final ClientLogger logger = new ClientLogger(NotebookWorkspacesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final NotebookWorkspacesService service;
 
@@ -70,11 +67,10 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface NotebookWorkspacesService {
+    public interface NotebookWorkspacesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotebookWorkspaceListResult>> listByDatabaseAccount(
@@ -88,8 +84,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotebookWorkspaceInner>> get(
@@ -104,8 +99,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -121,8 +115,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -137,8 +130,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/listConnectionInfo")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/listConnectionInfo")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotebookWorkspaceConnectionInfoResultInner>> listConnectionInfo(
@@ -153,8 +145,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/regenerateAuthToken")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/regenerateAuthToken")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> regenerateAuthToken(
@@ -169,8 +160,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/start")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/start")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
@@ -192,7 +182,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace resources of an existing Cosmos DB account.
+     * @return the notebook workspace resources of an existing Cosmos DB account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NotebookWorkspaceInner>> listByDatabaseAccountSinglePageAsync(
@@ -245,7 +236,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace resources of an existing Cosmos DB account.
+     * @return the notebook workspace resources of an existing Cosmos DB account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NotebookWorkspaceInner>> listByDatabaseAccountSinglePageAsync(
@@ -294,7 +286,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace resources of an existing Cosmos DB account.
+     * @return the notebook workspace resources of an existing Cosmos DB account as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NotebookWorkspaceInner> listByDatabaseAccountAsync(String resourceGroupName, String accountName) {
@@ -310,7 +303,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace resources of an existing Cosmos DB account.
+     * @return the notebook workspace resources of an existing Cosmos DB account as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NotebookWorkspaceInner> listByDatabaseAccountAsync(
@@ -326,7 +320,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace resources of an existing Cosmos DB account.
+     * @return the notebook workspace resources of an existing Cosmos DB account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookWorkspaceInner> listByDatabaseAccount(String resourceGroupName, String accountName) {
@@ -342,7 +337,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace resources of an existing Cosmos DB account.
+     * @return the notebook workspace resources of an existing Cosmos DB account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookWorkspaceInner> listByDatabaseAccount(
@@ -359,7 +355,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace for a Cosmos DB account.
+     * @return the notebook workspace for a Cosmos DB account along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookWorkspaceInner>> getWithResponseAsync(
@@ -414,7 +411,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace for a Cosmos DB account.
+     * @return the notebook workspace for a Cosmos DB account along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NotebookWorkspaceInner>> getWithResponseAsync(
@@ -465,20 +463,31 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace for a Cosmos DB account.
+     * @return the notebook workspace for a Cosmos DB account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookWorkspaceInner> getAsync(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
         return getWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName)
-            .flatMap(
-                (Response<NotebookWorkspaceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the notebook workspace for a Cosmos DB account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param notebookWorkspaceName The name of the notebook workspace resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the notebook workspace for a Cosmos DB account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NotebookWorkspaceInner> getWithResponse(
+        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName, context).block();
     }
 
     /**
@@ -495,25 +504,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookWorkspaceInner get(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
-        return getAsync(resourceGroupName, accountName, notebookWorkspaceName).block();
-    }
-
-    /**
-     * Gets the notebook workspace for a Cosmos DB account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace for a Cosmos DB account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NotebookWorkspaceInner> getWithResponse(
-        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName, context).block();
+        return getWithResponse(resourceGroupName, accountName, notebookWorkspaceName, Context.NONE).getValue();
     }
 
     /**
@@ -526,7 +517,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource.
+     * @return a notebook workspace resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -594,7 +585,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource.
+     * @return a notebook workspace resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -659,7 +650,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource.
+     * @return the {@link PollerFlux} for polling of a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdateAsync(
@@ -691,7 +682,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource.
+     * @return the {@link PollerFlux} for polling of a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdateAsync(
@@ -724,7 +715,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource.
+     * @return the {@link SyncPoller} for polling of a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
@@ -732,7 +723,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
         NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters)
             .getSyncPoller();
     }
@@ -748,7 +740,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource.
+     * @return the {@link SyncPoller} for polling of a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
@@ -757,7 +749,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         NotebookWorkspaceName notebookWorkspaceName,
         NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters, context)
             .getSyncPoller();
     }
@@ -772,7 +765,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource.
+     * @return a notebook workspace resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookWorkspaceInner> createOrUpdateAsync(
@@ -797,7 +790,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notebook workspace resource.
+     * @return a notebook workspace resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NotebookWorkspaceInner> createOrUpdateAsync(
@@ -869,7 +862,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -924,7 +917,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -975,7 +968,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -998,7 +991,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1020,12 +1013,12 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
-        return beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
     }
 
     /**
@@ -1038,12 +1031,12 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
     }
 
     /**
@@ -1055,7 +1048,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1075,7 +1068,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1126,7 +1119,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection info for the given notebook workspace.
+     * @return the connection info for the given notebook workspace along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookWorkspaceConnectionInfoResultInner>> listConnectionInfoWithResponseAsync(
@@ -1181,7 +1175,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection info for the given notebook workspace.
+     * @return the connection info for the given notebook workspace along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NotebookWorkspaceConnectionInfoResultInner>> listConnectionInfoWithResponseAsync(
@@ -1232,20 +1227,32 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection info for the given notebook workspace.
+     * @return the connection info for the given notebook workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookWorkspaceConnectionInfoResultInner> listConnectionInfoAsync(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
         return listConnectionInfoWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName)
-            .flatMap(
-                (Response<NotebookWorkspaceConnectionInfoResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves the connection info for the notebook workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param notebookWorkspaceName The name of the notebook workspace resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the connection info for the given notebook workspace along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NotebookWorkspaceConnectionInfoResultInner> listConnectionInfoWithResponse(
+        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
+        return listConnectionInfoWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName, context)
+            .block();
     }
 
     /**
@@ -1262,26 +1269,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookWorkspaceConnectionInfoResultInner listConnectionInfo(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
-        return listConnectionInfoAsync(resourceGroupName, accountName, notebookWorkspaceName).block();
-    }
-
-    /**
-     * Retrieves the connection info for the notebook workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection info for the given notebook workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NotebookWorkspaceConnectionInfoResultInner> listConnectionInfoWithResponse(
-        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
-        return listConnectionInfoWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName, context)
-            .block();
+        return listConnectionInfoWithResponse(resourceGroupName, accountName, notebookWorkspaceName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1293,7 +1282,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> regenerateAuthTokenWithResponseAsync(
@@ -1348,7 +1337,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> regenerateAuthTokenWithResponseAsync(
@@ -1399,7 +1388,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRegenerateAuthTokenAsync(
@@ -1422,7 +1411,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRegenerateAuthTokenAsync(
@@ -1444,12 +1433,14 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateAuthToken(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
-        return beginRegenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
+        return this
+            .beginRegenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName)
+            .getSyncPoller();
     }
 
     /**
@@ -1462,12 +1453,13 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateAuthToken(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
-        return beginRegenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName, context)
+        return this
+            .beginRegenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName, context)
             .getSyncPoller();
     }
 
@@ -1480,7 +1472,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> regenerateAuthTokenAsync(
@@ -1500,7 +1492,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> regenerateAuthTokenAsync(
@@ -1552,7 +1544,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1607,7 +1599,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1658,7 +1650,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
@@ -1681,7 +1673,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
@@ -1703,12 +1695,12 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
-        return beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
     }
 
     /**
@@ -1721,12 +1713,12 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
-        return beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
     }
 
     /**
@@ -1738,7 +1730,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(
@@ -1758,7 +1750,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(

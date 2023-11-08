@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Collection administrator update. */
 @Fluent
 public final class CollectionAdminUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CollectionAdminUpdate.class);
-
     /*
      * Gets or sets the object identifier of the admin.
      */
     @JsonProperty(value = "objectId")
     private String objectId;
+
+    /** Creates an instance of CollectionAdminUpdate class. */
+    public CollectionAdminUpdate() {
+    }
 
     /**
      * Get the objectId property: Gets or sets the object identifier of the admin.

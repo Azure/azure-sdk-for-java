@@ -31,11 +31,11 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appplatform.fluent.AppsClient;
 import com.azure.resourcemanager.appplatform.fluent.models.AppResourceInner;
+import com.azure.resourcemanager.appplatform.models.ActiveDeploymentCollection;
 import com.azure.resourcemanager.appplatform.models.AppResourceCollection;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidatePayload;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
@@ -46,8 +46,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AppsClient. */
 public final class AppsClientImpl implements AppsClient {
-    private final ClientLogger logger = new ClientLogger(AppsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AppsService service;
 
@@ -172,6 +170,23 @@ public final class AppsClientImpl implements AppsClient {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
+                + "/{serviceName}/apps/{appName}/setActiveDeployments")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> setActiveDeployments(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @PathParam("appName") String appName,
+            @BodyParam("application/json") ActiveDeploymentCollection activeDeploymentCollection,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/validateDomain")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -208,7 +223,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties.
+     * @return an App and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppResourceInner>> getWithResponseAsync(
@@ -250,7 +265,7 @@ public final class AppsClientImpl implements AppsClient {
                             syncStatus,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -265,7 +280,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties.
+     * @return an App and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppResourceInner>> getWithResponseAsync(
@@ -318,20 +333,13 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties.
+     * @return an App and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppResourceInner> getAsync(
         String resourceGroupName, String serviceName, String appName, String syncStatus) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, syncStatus)
-            .flatMap(
-                (Response<AppResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -344,20 +352,13 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties.
+     * @return an App and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppResourceInner> getAsync(String resourceGroupName, String serviceName, String appName) {
         final String syncStatus = null;
         return getWithResponseAsync(resourceGroupName, serviceName, appName, syncStatus)
-            .flatMap(
-                (Response<AppResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -390,7 +391,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties.
+     * @return an App and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppResourceInner> getWithResponse(
@@ -409,7 +410,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return app resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -456,7 +457,7 @@ public final class AppsClientImpl implements AppsClient {
                             appResource,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -471,7 +472,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return app resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -529,9 +530,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return the {@link PollerFlux} for polling of app resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -558,9 +559,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return the {@link PollerFlux} for polling of app resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
         context = this.client.mergeContext(context);
@@ -583,9 +584,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return the {@link SyncPoller} for polling of app resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, appResource).getSyncPoller();
@@ -603,9 +604,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return the {@link SyncPoller} for polling of app resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, appResource, context).getSyncPoller();
@@ -622,7 +623,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return app resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppResourceInner> createOrUpdateAsync(
@@ -644,7 +645,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return app resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AppResourceInner> createOrUpdateAsync(
@@ -703,7 +704,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -744,7 +745,7 @@ public final class AppsClientImpl implements AppsClient {
                             appName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -758,7 +759,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -809,9 +810,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, String appName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName, appName);
@@ -832,9 +833,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, String appName, Context context) {
         context = this.client.mergeContext(context);
@@ -855,9 +856,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName) {
         return beginDeleteAsync(resourceGroupName, serviceName, appName).getSyncPoller();
@@ -874,9 +875,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, Context context) {
         return beginDeleteAsync(resourceGroupName, serviceName, appName, context).getSyncPoller();
@@ -892,7 +893,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName) {
@@ -912,7 +913,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, Context context) {
@@ -965,7 +966,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return app resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1012,7 +1013,7 @@ public final class AppsClientImpl implements AppsClient {
                             appResource,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1027,7 +1028,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return app resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1085,9 +1086,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return the {@link PollerFlux} for polling of app resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1114,9 +1115,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return the {@link PollerFlux} for polling of app resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginUpdateAsync(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
         context = this.client.mergeContext(context);
@@ -1139,9 +1140,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return the {@link SyncPoller} for polling of app resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
         return beginUpdateAsync(resourceGroupName, serviceName, appName, appResource).getSyncPoller();
@@ -1159,9 +1160,9 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return the {@link SyncPoller} for polling of app resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
         return beginUpdateAsync(resourceGroupName, serviceName, appName, appResource, context).getSyncPoller();
@@ -1178,7 +1179,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return app resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppResourceInner> updateAsync(
@@ -1200,7 +1201,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app resource payload.
+     * @return app resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AppResourceInner> updateAsync(
@@ -1258,7 +1259,8 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppResourceInner>> listSinglePageAsync(String resourceGroupName, String serviceName) {
@@ -1303,7 +1305,7 @@ public final class AppsClientImpl implements AppsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1316,7 +1318,8 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppResourceInner>> listSinglePageAsync(
@@ -1371,7 +1374,8 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppResourceInner> listAsync(String resourceGroupName, String serviceName) {
@@ -1389,7 +1393,8 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AppResourceInner> listAsync(String resourceGroupName, String serviceName, Context context) {
@@ -1407,7 +1412,8 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppResourceInner> list(String resourceGroupName, String serviceName) {
@@ -1424,7 +1430,8 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppResourceInner> list(String resourceGroupName, String serviceName, Context context) {
@@ -1441,7 +1448,8 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an resource upload URL for an App, which may be artifacts or source archive.
+     * @return an resource upload URL for an App, which may be artifacts or source archive along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResourceUploadDefinition>> getResourceUploadUrlWithResponseAsync(
@@ -1482,7 +1490,7 @@ public final class AppsClientImpl implements AppsClient {
                             appName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1496,7 +1504,8 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an resource upload URL for an App, which may be artifacts or source archive.
+     * @return an resource upload URL for an App, which may be artifacts or source archive along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceUploadDefinition>> getResourceUploadUrlWithResponseAsync(
@@ -1547,20 +1556,14 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an resource upload URL for an App, which may be artifacts or source archive.
+     * @return an resource upload URL for an App, which may be artifacts or source archive on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceUploadDefinition> getResourceUploadUrlAsync(
         String resourceGroupName, String serviceName, String appName) {
         return getResourceUploadUrlWithResponseAsync(resourceGroupName, serviceName, appName)
-            .flatMap(
-                (Response<ResourceUploadDefinition> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1591,7 +1594,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an resource upload URL for an App, which may be artifacts or source archive.
+     * @return an resource upload URL for an App, which may be artifacts or source archive along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceUploadDefinition> getResourceUploadUrlWithResponse(
@@ -1600,21 +1603,24 @@ public final class AppsClientImpl implements AppsClient {
     }
 
     /**
-     * Check the resource name is valid as well as not in use.
+     * Set existing Deployment under the app as active.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param name Name to be validated.
+     * @param activeDeploymentCollection A list of Deployment name to be active.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
+     * @return app resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainValidateResult>> validateDomainWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String name) {
+    public Mono<Response<Flux<ByteBuffer>>> setActiveDeploymentsWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        ActiveDeploymentCollection activeDeploymentCollection) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1637,12 +1643,352 @@ public final class AppsClientImpl implements AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (activeDeploymentCollection == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter activeDeploymentCollection is required and cannot be null."));
+        } else {
+            activeDeploymentCollection.validate();
         }
         final String accept = "application/json";
-        CustomDomainValidatePayload validatePayload = new CustomDomainValidatePayload();
-        validatePayload.withName(name);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .setActiveDeployments(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            appName,
+                            activeDeploymentCollection,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Set existing Deployment under the app as active.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param activeDeploymentCollection A list of Deployment name to be active.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app resource payload along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> setActiveDeploymentsWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        ActiveDeploymentCollection activeDeploymentCollection,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (activeDeploymentCollection == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter activeDeploymentCollection is required and cannot be null."));
+        } else {
+            activeDeploymentCollection.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .setActiveDeployments(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                appName,
+                activeDeploymentCollection,
+                accept,
+                context);
+    }
+
+    /**
+     * Set existing Deployment under the app as active.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param activeDeploymentCollection A list of Deployment name to be active.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of app resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeploymentsAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        ActiveDeploymentCollection activeDeploymentCollection) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            setActiveDeploymentsWithResponseAsync(resourceGroupName, serviceName, appName, activeDeploymentCollection);
+        return this
+            .client
+            .<AppResourceInner, AppResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AppResourceInner.class,
+                AppResourceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Set existing Deployment under the app as active.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param activeDeploymentCollection A list of Deployment name to be active.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of app resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeploymentsAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        ActiveDeploymentCollection activeDeploymentCollection,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            setActiveDeploymentsWithResponseAsync(
+                resourceGroupName, serviceName, appName, activeDeploymentCollection, context);
+        return this
+            .client
+            .<AppResourceInner, AppResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AppResourceInner.class, AppResourceInner.class, context);
+    }
+
+    /**
+     * Set existing Deployment under the app as active.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param activeDeploymentCollection A list of Deployment name to be active.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of app resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeployments(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        ActiveDeploymentCollection activeDeploymentCollection) {
+        return beginSetActiveDeploymentsAsync(resourceGroupName, serviceName, appName, activeDeploymentCollection)
+            .getSyncPoller();
+    }
+
+    /**
+     * Set existing Deployment under the app as active.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param activeDeploymentCollection A list of Deployment name to be active.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of app resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeployments(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        ActiveDeploymentCollection activeDeploymentCollection,
+        Context context) {
+        return beginSetActiveDeploymentsAsync(
+                resourceGroupName, serviceName, appName, activeDeploymentCollection, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Set existing Deployment under the app as active.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param activeDeploymentCollection A list of Deployment name to be active.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app resource payload on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AppResourceInner> setActiveDeploymentsAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        ActiveDeploymentCollection activeDeploymentCollection) {
+        return beginSetActiveDeploymentsAsync(resourceGroupName, serviceName, appName, activeDeploymentCollection)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Set existing Deployment under the app as active.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param activeDeploymentCollection A list of Deployment name to be active.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app resource payload on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AppResourceInner> setActiveDeploymentsAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        ActiveDeploymentCollection activeDeploymentCollection,
+        Context context) {
+        return beginSetActiveDeploymentsAsync(
+                resourceGroupName, serviceName, appName, activeDeploymentCollection, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Set existing Deployment under the app as active.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param activeDeploymentCollection A list of Deployment name to be active.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppResourceInner setActiveDeployments(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        ActiveDeploymentCollection activeDeploymentCollection) {
+        return setActiveDeploymentsAsync(resourceGroupName, serviceName, appName, activeDeploymentCollection).block();
+    }
+
+    /**
+     * Set existing Deployment under the app as active.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param activeDeploymentCollection A list of Deployment name to be active.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppResourceInner setActiveDeployments(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        ActiveDeploymentCollection activeDeploymentCollection,
+        Context context) {
+        return setActiveDeploymentsAsync(resourceGroupName, serviceName, appName, activeDeploymentCollection, context)
+            .block();
+    }
+
+    /**
+     * Check the resource name is valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param validatePayload Custom domain payload to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CustomDomainValidateResult>> validateDomainWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (validatePayload == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter validatePayload is required and cannot be null."));
+        } else {
+            validatePayload.validate();
+        }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1657,7 +2003,7 @@ public final class AppsClientImpl implements AppsClient {
                             validatePayload,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1667,16 +2013,20 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param name Name to be validated.
+     * @param validatePayload Custom domain payload to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
+     * @return validation result for custom domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomDomainValidateResult>> validateDomainWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String name, Context context) {
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        CustomDomainValidatePayload validatePayload,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1699,12 +2049,13 @@ public final class AppsClientImpl implements AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (validatePayload == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter validatePayload is required and cannot be null."));
+        } else {
+            validatePayload.validate();
         }
         final String accept = "application/json";
-        CustomDomainValidatePayload validatePayload = new CustomDomainValidatePayload();
-        validatePayload.withName(name);
         context = this.client.mergeContext(context);
         return service
             .validateDomain(
@@ -1726,24 +2077,17 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param name Name to be validated.
+     * @param validatePayload Custom domain payload to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
+     * @return validation result for custom domain on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainValidateResult> validateDomainAsync(
-        String resourceGroupName, String serviceName, String appName, String name) {
-        return validateDomainWithResponseAsync(resourceGroupName, serviceName, appName, name)
-            .flatMap(
-                (Response<CustomDomainValidateResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload) {
+        return validateDomainWithResponseAsync(resourceGroupName, serviceName, appName, validatePayload)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1753,7 +2097,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param name Name to be validated.
+     * @param validatePayload Custom domain payload to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1761,8 +2105,8 @@ public final class AppsClientImpl implements AppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainValidateResult validateDomain(
-        String resourceGroupName, String serviceName, String appName, String name) {
-        return validateDomainAsync(resourceGroupName, serviceName, appName, name).block();
+        String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload) {
+        return validateDomainAsync(resourceGroupName, serviceName, appName, validatePayload).block();
     }
 
     /**
@@ -1772,17 +2116,22 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param name Name to be validated.
+     * @param validatePayload Custom domain payload to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
+     * @return validation result for custom domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomDomainValidateResult> validateDomainWithResponse(
-        String resourceGroupName, String serviceName, String appName, String name, Context context) {
-        return validateDomainWithResponseAsync(resourceGroupName, serviceName, appName, name, context).block();
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        CustomDomainValidatePayload validatePayload,
+        Context context) {
+        return validateDomainWithResponseAsync(resourceGroupName, serviceName, appName, validatePayload, context)
+            .block();
     }
 
     /**
@@ -1792,7 +2141,8 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1817,7 +2167,7 @@ public final class AppsClientImpl implements AppsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1828,7 +2178,8 @@ public final class AppsClientImpl implements AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {

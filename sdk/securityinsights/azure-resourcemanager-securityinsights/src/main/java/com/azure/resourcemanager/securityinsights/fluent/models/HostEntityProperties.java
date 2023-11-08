@@ -19,8 +19,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
     private String azureId;
 
     /*
-     * The DNS domain that this host belongs to. Should contain the compete DNS
-     * suffix for the domain
+     * The DNS domain that this host belongs to. Should contain the compete DNS suffix for the domain
      */
     @JsonProperty(value = "dnsDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String dnsDomain;
@@ -62,9 +61,8 @@ public final class HostEntityProperties extends EntityCommonProperties {
     private OSFamily osFamily;
 
     /*
-     * A free text representation of the operating system. This field is meant
-     * to hold specific versions the are more fine grained than OSFamily or
-     * future values not supported by OSFamily enumeration
+     * A free text representation of the operating system. This field is meant to hold specific versions the are more
+     * fine grained than OSFamily or future values not supported by OSFamily enumeration
      */
     @JsonProperty(value = "osVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String osVersion;

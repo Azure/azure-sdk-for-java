@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.models.Job;
 import com.azure.resourcemanager.mediaservices.models.JobInputAsset;
 import com.azure.resourcemanager.mediaservices.models.JobOutputAsset;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for Jobs Update. */
 public final class JobsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/jobs-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/jobs-update.json
      */
     /**
      * Sample code: Update a Job.
@@ -25,7 +24,8 @@ public final class JobsUpdateSamples {
         Job resource =
             manager
                 .jobs()
-                .getWithResponse("contosoresources", "contosomedia", "exampleTransform", "job1", Context.NONE)
+                .getWithResponse(
+                    "contosoresources", "contosomedia", "exampleTransform", "job1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

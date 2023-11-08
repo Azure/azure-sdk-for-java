@@ -15,11 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
     /*
-     * Indicates the block size(MB) when writing data to blob. Type: integer
-     * (or Expression with resultType integer).
+     * Indicates the block size(MB) when writing data to blob. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "blockSizeInMB")
     private Object blockSizeInMB;
+
+    /** Creates an instance of AzureBlobFSWriteSettings class. */
+    public AzureBlobFSWriteSettings() {}
 
     /**
      * Get the blockSizeInMB property: Indicates the block size(MB) when writing data to blob. Type: integer (or
@@ -40,6 +42,20 @@ public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
      */
     public AzureBlobFSWriteSettings setBlockSizeInMB(Object blockSizeInMB) {
         this.blockSizeInMB = blockSizeInMB;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSWriteSettings setCopyBehavior(Object copyBehavior) {
+        super.setCopyBehavior(copyBehavior);
         return this;
     }
 }

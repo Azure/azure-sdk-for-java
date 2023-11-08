@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for NestedResourceProvisioningState. */
+/** The current state of the NestedResourceProvisioning for this account. */
 public enum NestedResourceProvisioningState {
     /** Enum value Succeeded. */
     SUCCEEDED("Succeeded"),
@@ -33,6 +33,9 @@ public enum NestedResourceProvisioningState {
      */
     @JsonCreator
     public static NestedResourceProvisioningState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         NestedResourceProvisioningState[] items = NestedResourceProvisioningState.values();
         for (NestedResourceProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum NestedResourceProvisioningState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

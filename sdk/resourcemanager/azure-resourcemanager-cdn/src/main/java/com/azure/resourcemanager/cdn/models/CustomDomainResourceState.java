@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomDomainResourceState. */
+/** Resource status of the custom domain. */
 public final class CustomDomainResourceState extends ExpandableStringEnum<CustomDomainResourceState> {
     /** Static value Creating for CustomDomainResourceState. */
     public static final CustomDomainResourceState CREATING = fromString("Creating");
@@ -18,6 +18,15 @@ public final class CustomDomainResourceState extends ExpandableStringEnum<Custom
 
     /** Static value Deleting for CustomDomainResourceState. */
     public static final CustomDomainResourceState DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of CustomDomainResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomDomainResourceState() {
+    }
 
     /**
      * Creates or finds a CustomDomainResourceState from its string representation.
@@ -30,7 +39,11 @@ public final class CustomDomainResourceState extends ExpandableStringEnum<Custom
         return fromString(name, CustomDomainResourceState.class);
     }
 
-    /** @return known CustomDomainResourceState values. */
+    /**
+     * Gets known CustomDomainResourceState values.
+     *
+     * @return known CustomDomainResourceState values.
+     */
     public static Collection<CustomDomainResourceState> values() {
         return values(CustomDomainResourceState.class);
     }

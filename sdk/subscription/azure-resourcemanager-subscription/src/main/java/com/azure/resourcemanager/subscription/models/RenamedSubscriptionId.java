@@ -9,11 +9,11 @@ import com.azure.resourcemanager.subscription.fluent.models.RenamedSubscriptionI
 /** An immutable client-side representation of RenamedSubscriptionId. */
 public interface RenamedSubscriptionId {
     /**
-     * Gets the value property: The ID of the subscriptions that is being renamed.
+     * Gets the subscriptionId property: The ID of the subscriptions that is being renamed.
      *
-     * @return the value value.
+     * @return the subscriptionId value.
      */
-    String value();
+    String subscriptionId();
 
     /**
      * Gets the inner com.azure.resourcemanager.subscription.fluent.models.RenamedSubscriptionIdInner object.

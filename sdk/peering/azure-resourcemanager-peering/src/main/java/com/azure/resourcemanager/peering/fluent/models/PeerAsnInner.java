@@ -5,50 +5,33 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.models.ContactDetail;
 import com.azure.resourcemanager.peering.models.ValidationState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The essential information related to the peer's ASN. */
-@JsonFlatten
 @Fluent
-public class PeerAsnInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerAsnInner.class);
-
+public final class PeerAsnInner extends ProxyResource {
     /*
-     * The Autonomous System Number (ASN) of the peer.
+     * The properties that define a peer's ASN.
      */
-    @JsonProperty(value = "properties.peerAsn")
-    private Integer peerAsn;
+    @JsonProperty(value = "properties")
+    private PeerAsnProperties innerProperties;
 
-    /*
-     * The contact details of the peer.
-     */
-    @JsonProperty(value = "properties.peerContactDetail")
-    private List<ContactDetail> peerContactDetail;
+    /** Creates an instance of PeerAsnInner class. */
+    public PeerAsnInner() {
+    }
 
-    /*
-     * The name of the peer.
+    /**
+     * Get the innerProperties property: The properties that define a peer's ASN.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.peerName")
-    private String peerName;
-
-    /*
-     * The validation state of the ASN associated with the peer.
-     */
-    @JsonProperty(value = "properties.validationState")
-    private ValidationState validationState;
-
-    /*
-     * The error message for the validation state
-     */
-    @JsonProperty(value = "properties.errorMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorMessage;
+    private PeerAsnProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the peerAsn property: The Autonomous System Number (ASN) of the peer.
@@ -56,7 +39,7 @@ public class PeerAsnInner extends ProxyResource {
      * @return the peerAsn value.
      */
     public Integer peerAsn() {
-        return this.peerAsn;
+        return this.innerProperties() == null ? null : this.innerProperties().peerAsn();
     }
 
     /**
@@ -66,7 +49,10 @@ public class PeerAsnInner extends ProxyResource {
      * @return the PeerAsnInner object itself.
      */
     public PeerAsnInner withPeerAsn(Integer peerAsn) {
-        this.peerAsn = peerAsn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerAsnProperties();
+        }
+        this.innerProperties().withPeerAsn(peerAsn);
         return this;
     }
 
@@ -76,7 +62,7 @@ public class PeerAsnInner extends ProxyResource {
      * @return the peerContactDetail value.
      */
     public List<ContactDetail> peerContactDetail() {
-        return this.peerContactDetail;
+        return this.innerProperties() == null ? null : this.innerProperties().peerContactDetail();
     }
 
     /**
@@ -86,7 +72,10 @@ public class PeerAsnInner extends ProxyResource {
      * @return the PeerAsnInner object itself.
      */
     public PeerAsnInner withPeerContactDetail(List<ContactDetail> peerContactDetail) {
-        this.peerContactDetail = peerContactDetail;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerAsnProperties();
+        }
+        this.innerProperties().withPeerContactDetail(peerContactDetail);
         return this;
     }
 
@@ -96,7 +85,7 @@ public class PeerAsnInner extends ProxyResource {
      * @return the peerName value.
      */
     public String peerName() {
-        return this.peerName;
+        return this.innerProperties() == null ? null : this.innerProperties().peerName();
     }
 
     /**
@@ -106,7 +95,10 @@ public class PeerAsnInner extends ProxyResource {
      * @return the PeerAsnInner object itself.
      */
     public PeerAsnInner withPeerName(String peerName) {
-        this.peerName = peerName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerAsnProperties();
+        }
+        this.innerProperties().withPeerName(peerName);
         return this;
     }
 
@@ -116,7 +108,7 @@ public class PeerAsnInner extends ProxyResource {
      * @return the validationState value.
      */
     public ValidationState validationState() {
-        return this.validationState;
+        return this.innerProperties() == null ? null : this.innerProperties().validationState();
     }
 
     /**
@@ -126,7 +118,10 @@ public class PeerAsnInner extends ProxyResource {
      * @return the PeerAsnInner object itself.
      */
     public PeerAsnInner withValidationState(ValidationState validationState) {
-        this.validationState = validationState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerAsnProperties();
+        }
+        this.innerProperties().withValidationState(validationState);
         return this;
     }
 
@@ -136,7 +131,7 @@ public class PeerAsnInner extends ProxyResource {
      * @return the errorMessage value.
      */
     public String errorMessage() {
-        return this.errorMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().errorMessage();
     }
 
     /**
@@ -145,8 +140,8 @@ public class PeerAsnInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (peerContactDetail() != null) {
-            peerContactDetail().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

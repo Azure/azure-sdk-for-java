@@ -24,7 +24,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
+     * @return role definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RoleDefinitionInner>> deleteWithResponseAsync(String scope, String roleDefinitionId);
@@ -37,10 +37,24 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
+     * @return role definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RoleDefinitionInner> deleteAsync(String scope, String roleDefinitionId);
+
+    /**
+     * Deletes a role definition.
+     *
+     * @param scope The scope of the role definition.
+     * @param roleDefinitionId The ID of the role definition to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RoleDefinitionInner> deleteWithResponse(String scope, String roleDefinitionId, Context context);
 
     /**
      * Deletes a role definition.
@@ -56,20 +70,6 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     RoleDefinitionInner delete(String scope, String roleDefinitionId);
 
     /**
-     * Deletes a role definition.
-     *
-     * @param scope The scope of the role definition.
-     * @param roleDefinitionId The ID of the role definition to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleDefinitionInner> deleteWithResponse(String scope, String roleDefinitionId, Context context);
-
-    /**
      * Get role definition by name (GUID).
      *
      * @param scope The scope of the role definition.
@@ -77,7 +77,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID).
+     * @return role definition by name (GUID) along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RoleDefinitionInner>> getWithResponseAsync(String scope, String roleDefinitionId);
@@ -90,10 +90,24 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID).
+     * @return role definition by name (GUID) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RoleDefinitionInner> getAsync(String scope, String roleDefinitionId);
+
+    /**
+     * Get role definition by name (GUID).
+     *
+     * @param scope The scope of the role definition.
+     * @param roleDefinitionId The ID of the role definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition by name (GUID) along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RoleDefinitionInner> getWithResponse(String scope, String roleDefinitionId, Context context);
 
     /**
      * Get role definition by name (GUID).
@@ -109,20 +123,6 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     RoleDefinitionInner get(String scope, String roleDefinitionId);
 
     /**
-     * Get role definition by name (GUID).
-     *
-     * @param scope The scope of the role definition.
-     * @param roleDefinitionId The ID of the role definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by name (GUID).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleDefinitionInner> getWithResponse(String scope, String roleDefinitionId, Context context);
-
-    /**
      * Creates or updates a role definition.
      *
      * @param scope The scope of the role definition.
@@ -131,7 +131,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
+     * @return role definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RoleDefinitionInner>> createOrUpdateWithResponseAsync(
@@ -146,11 +146,27 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
+     * @return role definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RoleDefinitionInner> createOrUpdateAsync(
         String scope, String roleDefinitionId, RoleDefinitionInner roleDefinition);
+
+    /**
+     * Creates or updates a role definition.
+     *
+     * @param scope The scope of the role definition.
+     * @param roleDefinitionId The ID of the role definition.
+     * @param roleDefinition The values for the role definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RoleDefinitionInner> createOrUpdateWithResponse(
+        String scope, String roleDefinitionId, RoleDefinitionInner roleDefinition, Context context);
 
     /**
      * Creates or updates a role definition.
@@ -167,22 +183,6 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     RoleDefinitionInner createOrUpdate(String scope, String roleDefinitionId, RoleDefinitionInner roleDefinition);
 
     /**
-     * Creates or updates a role definition.
-     *
-     * @param scope The scope of the role definition.
-     * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition The values for the role definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleDefinitionInner> createOrUpdateWithResponse(
-        String scope, String roleDefinitionId, RoleDefinitionInner roleDefinition, Context context);
-
-    /**
      * Get all role definitions that are applicable at scope and above.
      *
      * @param scope The scope of the role definition.
@@ -191,7 +191,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above.
+     * @return all role definitions that are applicable at scope and above as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleDefinitionInner> listAsync(String scope, String filter);
@@ -203,7 +203,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above.
+     * @return all role definitions that are applicable at scope and above as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoleDefinitionInner> listAsync(String scope);
@@ -215,7 +215,8 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above.
+     * @return all role definitions that are applicable at scope and above as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleDefinitionInner> list(String scope);
@@ -230,7 +231,8 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above.
+     * @return all role definitions that are applicable at scope and above as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleDefinitionInner> list(String scope, String filter, Context context);
@@ -245,7 +247,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role definition by ID.
+     * @return a role definition by ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RoleDefinitionInner>> getByIdWithResponseAsync(String roleId);
@@ -260,10 +262,26 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role definition by ID.
+     * @return a role definition by ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RoleDefinitionInner> getByIdAsync(String roleId);
+
+    /**
+     * Gets a role definition by ID.
+     *
+     * @param roleId The fully qualified role definition ID. Use the format,
+     *     /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription
+     *     level role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant
+     *     level role definitions.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role definition by ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RoleDefinitionInner> getByIdWithResponse(String roleId, Context context);
 
     /**
      * Gets a role definition by ID.
@@ -279,20 +297,4 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RoleDefinitionInner getById(String roleId);
-
-    /**
-     * Gets a role definition by ID.
-     *
-     * @param roleId The fully qualified role definition ID. Use the format,
-     *     /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription
-     *     level role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant
-     *     level role definitions.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role definition by ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleDefinitionInner> getByIdWithResponse(String roleId, Context context);
 }

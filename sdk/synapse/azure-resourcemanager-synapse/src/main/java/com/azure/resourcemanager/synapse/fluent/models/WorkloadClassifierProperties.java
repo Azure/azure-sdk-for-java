@@ -6,14 +6,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Workload classifier definition. For more information look at sys.workload_management_workload_classifiers (DMV). */
 @Fluent
 public final class WorkloadClassifierProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadClassifierProperties.class);
-
     /*
      * The workload classifier member name.
      */
@@ -49,6 +46,10 @@ public final class WorkloadClassifierProperties {
      */
     @JsonProperty(value = "importance")
     private String importance;
+
+    /** Creates an instance of WorkloadClassifierProperties class. */
+    public WorkloadClassifierProperties() {
+    }
 
     /**
      * Get the memberName property: The workload classifier member name.
@@ -177,10 +178,12 @@ public final class WorkloadClassifierProperties {
      */
     public void validate() {
         if (memberName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property memberName in model WorkloadClassifierProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkloadClassifierProperties.class);
 }

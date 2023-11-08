@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.core.util.CoreUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -9,27 +11,35 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 })
 public class HotelRoom {
     @JsonProperty(value = "Description")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
     @JsonProperty(value = "Description_fr")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionFr;
 
     @JsonProperty(value = "Type")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String type;
 
     @JsonProperty(value = "BaseRate")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Double baseRate;
 
     @JsonProperty(value = "BedOptions")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String bedOptions;
 
     @JsonProperty(value = "SleepsCount")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer sleepsCount;
 
     @JsonProperty(value = "SmokingAllowed")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean smokingAllowed;
 
     @JsonProperty(value = "Tags")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String[] tags;
 
 
@@ -97,11 +107,11 @@ public class HotelRoom {
     }
 
     public String[] tags() {
-        return this.tags;
+        return CoreUtils.clone(this.tags);
     }
 
     public HotelRoom tags(String[] tags) {
-        this.tags = tags;
+        this.tags = CoreUtils.clone(tags);
         return this;
     }
 }

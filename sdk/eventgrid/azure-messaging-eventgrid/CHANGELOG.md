@@ -1,6 +1,6 @@
 # Release History
 
-## 4.11.0-beta.1 (Unreleased)
+## 4.20.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,226 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.19.0 (2023-10-23)
+
+### Features Added
+- new ACS Router system events.
+- New Resource Notification system events.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 4.18.0 (2023-09-13)
+
+### Features Added
+- New events for EventGrid and AppConfig
+
+### Other Changes
+
+#### Dependency Updates
+ 
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+
+## 4.17.2 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+## 4.17.1 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+
+## 4.17.0 (2023-06-16)
+
+### Features Added
+- New Container Service events
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-core` from `1.39.0` to version `1.41.0`.
+
+## 4.16.0 (2023-05-22)
+
+### Features Added
+- Added new events for Healthcare, Acs, and Storage.
+
+### Other Changes
+- Moved customization to its own project.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.3`.
+- Upgraded `azure-core` from `1.37.0` to version `1.39.0`.
+
+## 4.15.1 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
+## 4.15.0 (2023-03-31)
+
+### Features Added
+
+- Added new ACS Email events
+
+## 4.14.2 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 4.14.1 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
+## 4.14.0 (2023-01-19)
+
+### Features Added
+
+- Added new System Events:
+
+    - `Microsoft.ApiManagement.GatewayAPIAdded`
+    - `Microsoft.ApiManagement.GatewayAPIRemoved`
+    - `Microsoft.ApiManagement.GatewayCertificateAuthorityCreated`
+    - `Microsoft.ApiManagement.GatewayCertificateAuthorityDeleted`
+    - `Microsoft.ApiManagement.GatewayCertificateAuthorityUpdated`
+    - `Microsoft.ApiManagement.GatewayCreated`
+    - `Microsoft.ApiManagement.GatewayDeleted`
+    - `Microsoft.ApiManagement.GatewayHostnameConfigurationCreated`
+    - `Microsoft.ApiManagement.GatewayHostnameConfigurationDeleted`
+    - `Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated`
+    - `Microsoft.ApiManagement.GatewayUpdated`
+    - `Microsoft.DataBox.CopyCompleted`
+    - `Microsoft.DataBox.CopyStarted`
+    - `Microsoft.DataBox.OrderCompleted`
+
+## 4.13.1 (2023-01-13)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.35.0`.
+- Updated `azure-core-http-netty` to `1.12.8`.
+
+## 4.13.0 (2022-11-16)
+
+### Features Added
+
+- Added new System Events:
+
+    - `Microsoft.HealthcareApis.DicomImageCreated`
+    - `Microsoft.HealthcareApis.DicomImageDeleted`
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.34.0`.
+- Updated `azure-core-http-netty` to `1.12.7`.
+
+## 4.12.3 (2022-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.33.0`.
+- Updated `azure-core-http-netty` to `1.12.6`.
+
+## 4.12.2 (2022-09-14)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.32.0`.
+- Updated `azure-core-http-netty` to `1.12.5`.
+
+## 4.12.1 (2022-08-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-core-http-netty` to `1.12.4`.
+
+## 4.12.0 (2022-07-08)
+
+### Features Added
+- Added support to publish CloudEvents to partner topics by setting the channel name.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.30.0`.
+- Updated `azure-core-http-netty` to `1.12.3`.
+
+## 4.11.2 (2022-06-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-core-http-netty` to `1.12.2`.
+
+## 4.12.0-beta.2 (2022-05-17)
+
+### Breaking Changes
+- Removed class `SendEventsOptions` and replaced it by the String `channelName`.
+
+## 4.11.1 (2022-05-16)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.28.0`.
+- Updated `azure-core-http-netty` to `1.12.0`.
+
+## 4.12.0-beta.1 (2022-04-13)
+
+### Features Added
+- Added support to publish CloudEvents to partner topics by setting the channel name in `SendEventsOptions`.
+
+## 4.11.0 (2022-04-12)
+
+### Features Added
+- Added system event classes for Azure Healthcare FHIR Services under package `com.azure.messaging.eventgrid.systemevents`,
+  `HealthcareFhirResourceCreatedEventData`, `HealthcareFhirResourceDeletedEventData` and `HealthcareFhirResourceUpdatedEventData`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.27.0`.
+- Updated `azure-core-http-netty` to `1.11.9`.
 
 ## 4.10.0 (2022-03-10)
 
@@ -210,3 +430,5 @@ set of libraries that are consistent across multiple services as well as differe
     Event Grid, Cloud Event, or a custom schema.
 + Parsing and deserialization of system and user-defined events from JSON payload
     at an event destination in EventGrid or Cloud Event schema.
+
+

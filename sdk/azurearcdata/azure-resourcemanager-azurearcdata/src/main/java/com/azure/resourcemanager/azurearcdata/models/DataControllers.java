@@ -15,7 +15,7 @@ public interface DataControllers {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataControllerResource> list();
 
@@ -26,7 +26,7 @@ public interface DataControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataControllerResource> list(Context context);
 
@@ -37,7 +37,7 @@ public interface DataControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataControllerResource> listByResourceGroup(String resourceGroupName);
 
@@ -49,7 +49,7 @@ public interface DataControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataControllerResource> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -81,6 +81,20 @@ public interface DataControllers {
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data controller resource along with {@link Response}.
+     */
+    Response<DataControllerResource> getByResourceGroupWithResponse(
+        String resourceGroupName, String dataControllerName, Context context);
+
+    /**
+     * Retrieves a dataController resource.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The dataControllerName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -91,25 +105,11 @@ public interface DataControllers {
     /**
      * Retrieves a dataController resource.
      *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource.
-     */
-    Response<DataControllerResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String dataControllerName, Context context);
-
-    /**
-     * Retrieves a dataController resource.
-     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource.
+     * @return data controller resource along with {@link Response}.
      */
     DataControllerResource getById(String id);
 
@@ -121,7 +121,7 @@ public interface DataControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource.
+     * @return data controller resource along with {@link Response}.
      */
     Response<DataControllerResource> getByIdWithResponse(String id, Context context);
 

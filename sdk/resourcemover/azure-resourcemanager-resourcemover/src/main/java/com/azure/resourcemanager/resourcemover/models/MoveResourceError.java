@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An error response from the azure resource mover service. */
 @Fluent
 public class MoveResourceError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveResourceError.class);
-
     /*
      * The move resource error body.
      */
     @JsonProperty(value = "properties")
     private MoveResourceErrorBody properties;
+
+    /** Creates an instance of MoveResourceError class. */
+    public MoveResourceError() {
+    }
 
     /**
      * Get the properties property: The move resource error body.

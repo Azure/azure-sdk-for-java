@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IoTSecurityAggregatedAlertPropertiesTopDevicesListItem model. */
 @Immutable
 public final class IoTSecurityAggregatedAlertPropertiesTopDevicesListItem {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IoTSecurityAggregatedAlertPropertiesTopDevicesListItem.class);
-
     /*
      * Name of the device.
      */
@@ -32,6 +27,10 @@ public final class IoTSecurityAggregatedAlertPropertiesTopDevicesListItem {
      */
     @JsonProperty(value = "lastOccurrence", access = JsonProperty.Access.WRITE_ONLY)
     private String lastOccurrence;
+
+    /** Creates an instance of IoTSecurityAggregatedAlertPropertiesTopDevicesListItem class. */
+    public IoTSecurityAggregatedAlertPropertiesTopDevicesListItem() {
+    }
 
     /**
      * Get the deviceId property: Name of the device.

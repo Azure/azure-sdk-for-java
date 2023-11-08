@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,11 +16,8 @@ import java.util.Map;
 /** teamsAsyncOperation. */
 @Fluent
 public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTeamsAsyncOperation.class);
-
     /*
-     * Number of times the operation was attempted before being marked
-     * successful or failed.
+     * Number of times the operation was attempted before being marked successful or failed.
      */
     @JsonProperty(value = "attemptsCount")
     private Integer attemptsCount;
@@ -45,28 +41,26 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     private OffsetDateTime lastActionDateTime;
 
     /*
-     * The operationType property.
+     * teamsAsyncOperationType
      */
     @JsonProperty(value = "operationType")
     private MicrosoftGraphTeamsAsyncOperationType operationType;
 
     /*
-     * The status property.
+     * teamsAsyncOperationStatus
      */
     @JsonProperty(value = "status")
     private MicrosoftGraphTeamsAsyncOperationStatus status;
 
     /*
-     * The ID of the object that's created or modified as result of this async
-     * operation, typically a team.
+     * The ID of the object that's created or modified as result of this async operation, typically a team.
      */
     @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
 
     /*
-     * The location of the object that's created or modified as result of this
-     * async operation. This URL should be treated as an opaque value and not
-     * parsed into its component paths.
+     * The location of the object that's created or modified as result of this async operation. This URL should be
+     * treated as an opaque value and not parsed into its component paths.
      */
     @JsonProperty(value = "targetResourceLocation")
     private String targetResourceLocation;
@@ -75,6 +69,10 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
      * teamsAsyncOperation
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTeamsAsyncOperation class. */
+    public MicrosoftGraphTeamsAsyncOperation() {
+    }
 
     /**
      * Get the attemptsCount property: Number of times the operation was attempted before being marked successful or
@@ -159,7 +157,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     }
 
     /**
-     * Get the operationType property: The operationType property.
+     * Get the operationType property: teamsAsyncOperationType.
      *
      * @return the operationType value.
      */
@@ -168,7 +166,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     }
 
     /**
-     * Set the operationType property: The operationType property.
+     * Set the operationType property: teamsAsyncOperationType.
      *
      * @param operationType the operationType value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.
@@ -179,7 +177,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     }
 
     /**
-     * Get the status property: The status property.
+     * Get the status property: teamsAsyncOperationStatus.
      *
      * @return the status value.
      */
@@ -188,7 +186,7 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     }
 
     /**
-     * Set the status property: The status property.
+     * Set the status property: teamsAsyncOperationStatus.
      *
      * @param status the status value to set.
      * @return the MicrosoftGraphTeamsAsyncOperation object itself.

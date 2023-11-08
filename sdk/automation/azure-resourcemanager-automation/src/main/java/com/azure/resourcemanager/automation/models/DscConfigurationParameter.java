@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the configuration parameter type. */
 @Fluent
 public final class DscConfigurationParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscConfigurationParameter.class);
-
     /*
      * Gets or sets the type of the parameter.
      */
@@ -21,8 +17,7 @@ public final class DscConfigurationParameter {
     private String type;
 
     /*
-     * Gets or sets a Boolean value to indicate whether the parameter is
-     * mandatory or not.
+     * Gets or sets a Boolean value to indicate whether the parameter is mandatory or not.
      */
     @JsonProperty(value = "isMandatory")
     private Boolean isMandatory;

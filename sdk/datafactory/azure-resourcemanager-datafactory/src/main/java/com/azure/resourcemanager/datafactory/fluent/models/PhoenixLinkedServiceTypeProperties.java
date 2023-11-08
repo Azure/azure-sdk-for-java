@@ -14,23 +14,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PhoenixLinkedServiceTypeProperties {
     /*
-     * The IP address or host name of the Phoenix server. (i.e.
-     * 192.168.222.160)
+     * The IP address or host name of the Phoenix server. (i.e. 192.168.222.160)
      */
     @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
-     * The TCP port that the Phoenix server uses to listen for client
-     * connections. The default value is 8765.
+     * The TCP port that the Phoenix server uses to listen for client connections. The default value is 8765.
      */
     @JsonProperty(value = "port")
     private Object port;
 
     /*
-     * The partial URL corresponding to the Phoenix server. (i.e.
-     * /gateway/sandbox/phoenix/version). The default value is hbasephoenix if
-     * using WindowsAzureHDInsightService.
+     * The partial URL corresponding to the Phoenix server. (i.e. /gateway/sandbox/phoenix/version). The default value
+     * is hbasephoenix if using WindowsAzureHDInsightService.
      */
     @JsonProperty(value = "httpPath")
     private Object httpPath;
@@ -54,50 +51,49 @@ public final class PhoenixLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * Specifies whether the connections to the server are encrypted using SSL.
-     * The default value is false.
+     * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
     @JsonProperty(value = "enableSsl")
     private Object enableSsl;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be
-     * set when using SSL on self-hosted IR. The default value is the
-     * cacerts.pem file installed with the IR.
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
+     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
+     * installed with the IR.
      */
     @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
+     * value is false.
      */
     @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
-     * Specifies whether to require a CA-issued SSL certificate name to match
-     * the host name of the server when connecting over SSL. The default value
-     * is false.
+     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
+     * connecting over SSL. The default value is false.
      */
     @JsonProperty(value = "allowHostNameCNMismatch")
     private Object allowHostnameCNMismatch;
 
     /*
-     * Specifies whether to allow self-signed certificates from the server. The
-     * default value is false.
+     * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
     @JsonProperty(value = "allowSelfSignedServerCert")
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of PhoenixLinkedServiceTypeProperties class. */
+    public PhoenixLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the host property: The IP address or host name of the Phoenix server. (i.e. 192.168.222.160).
@@ -337,22 +333,22 @@ public final class PhoenixLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
-    public PhoenixLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public PhoenixLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

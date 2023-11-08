@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for Cassandra data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,29 +19,25 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class CassandraLinkedService extends LinkedService {
     /*
-     * Host name for connection. Type: string (or Expression with resultType
-     * string).
+     * Host name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.host", required = true)
     private Object host;
 
     /*
-     * AuthenticationType to be used for connection. Type: string (or
-     * Expression with resultType string).
+     * AuthenticationType to be used for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authenticationType")
     private Object authenticationType;
 
     /*
-     * The port for the connection. Type: integer (or Expression with
-     * resultType integer).
+     * The port for the connection. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "typeProperties.port")
     private Object port;
 
     /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private Object username;
@@ -51,12 +49,14 @@ public class CassandraLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of CassandraLinkedService class. */
+    public CassandraLinkedService() {}
 
     /**
      * Get the host property: Host name for connection. Type: string (or Expression with resultType string).
@@ -179,6 +179,34 @@ public class CassandraLinkedService extends LinkedService {
      */
     public CassandraLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

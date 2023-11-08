@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.SyncMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -40,8 +41,7 @@ public final class BackendAddressPoolPropertiesFormat {
     private List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations;
 
     /*
-     * An array of references to load balancing rules that use this backend
-     * address pool.
+     * An array of references to load balancing rules that use this backend address pool.
      */
     @JsonProperty(value = "loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
@@ -53,15 +53,13 @@ public final class BackendAddressPoolPropertiesFormat {
     private SubResource outboundRule;
 
     /*
-     * An array of references to outbound rules that use this backend address
-     * pool.
+     * An array of references to outbound rules that use this backend address pool.
      */
     @JsonProperty(value = "outboundRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> outboundRules;
 
     /*
-     * An array of references to inbound NAT rules that use this backend
-     * address pool.
+     * An array of references to inbound NAT rules that use this backend address pool.
      */
     @JsonProperty(value = "inboundNatRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> inboundNatRules;
@@ -71,6 +69,28 @@ public final class BackendAddressPoolPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Amount of seconds Load Balancer waits for before sending RESET to client and backend address.
+     */
+    @JsonProperty(value = "drainPeriodInSeconds")
+    private Integer drainPeriodInSeconds;
+
+    /*
+     * A reference to a virtual network.
+     */
+    @JsonProperty(value = "virtualNetwork")
+    private SubResource virtualNetwork;
+
+    /*
+     * Backend address synchronous mode for the backend pool
+     */
+    @JsonProperty(value = "syncMode")
+    private SyncMode syncMode;
+
+    /** Creates an instance of BackendAddressPoolPropertiesFormat class. */
+    public BackendAddressPoolPropertiesFormat() {
+    }
 
     /**
      * Get the location property: The location of the backend address pool.
@@ -187,6 +207,68 @@ public final class BackendAddressPoolPropertiesFormat {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
+     * and backend address.
+     *
+     * @return the drainPeriodInSeconds value.
+     */
+    public Integer drainPeriodInSeconds() {
+        return this.drainPeriodInSeconds;
+    }
+
+    /**
+     * Set the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
+     * and backend address.
+     *
+     * @param drainPeriodInSeconds the drainPeriodInSeconds value to set.
+     * @return the BackendAddressPoolPropertiesFormat object itself.
+     */
+    public BackendAddressPoolPropertiesFormat withDrainPeriodInSeconds(Integer drainPeriodInSeconds) {
+        this.drainPeriodInSeconds = drainPeriodInSeconds;
+        return this;
+    }
+
+    /**
+     * Get the virtualNetwork property: A reference to a virtual network.
+     *
+     * @return the virtualNetwork value.
+     */
+    public SubResource virtualNetwork() {
+        return this.virtualNetwork;
+    }
+
+    /**
+     * Set the virtualNetwork property: A reference to a virtual network.
+     *
+     * @param virtualNetwork the virtualNetwork value to set.
+     * @return the BackendAddressPoolPropertiesFormat object itself.
+     */
+    public BackendAddressPoolPropertiesFormat withVirtualNetwork(SubResource virtualNetwork) {
+        this.virtualNetwork = virtualNetwork;
+        return this;
+    }
+
+    /**
+     * Get the syncMode property: Backend address synchronous mode for the backend pool.
+     *
+     * @return the syncMode value.
+     */
+    public SyncMode syncMode() {
+        return this.syncMode;
+    }
+
+    /**
+     * Set the syncMode property: Backend address synchronous mode for the backend pool.
+     *
+     * @param syncMode the syncMode value to set.
+     * @return the BackendAddressPoolPropertiesFormat object itself.
+     */
+    public BackendAddressPoolPropertiesFormat withSyncMode(SyncMode syncMode) {
+        this.syncMode = syncMode;
+        return this;
     }
 
     /**

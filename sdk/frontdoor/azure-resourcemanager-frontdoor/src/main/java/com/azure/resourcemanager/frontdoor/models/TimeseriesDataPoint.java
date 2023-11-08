@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines a timeseries datapoint used in a timeseries. */
 @Fluent
 public final class TimeseriesDataPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeseriesDataPoint.class);
-
     /*
      * The DateTime of the Timeseries data point in UTC
      */
@@ -25,6 +21,10 @@ public final class TimeseriesDataPoint {
      */
     @JsonProperty(value = "value")
     private Float value;
+
+    /** Creates an instance of TimeseriesDataPoint class. */
+    public TimeseriesDataPoint() {
+    }
 
     /**
      * Get the dateTimeUtc property: The DateTime of the Timeseries data point in UTC.

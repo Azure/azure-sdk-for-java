@@ -4,20 +4,22 @@
 
 package com.azure.analytics.purview.administration.generated;
 
-import com.azure.analytics.purview.administration.PurviewAccountClientBuilder;
 import com.azure.analytics.purview.administration.ResourceSetRulesClient;
+import com.azure.analytics.purview.administration.ResourceSetRulesClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ResourceSetRulesDeleteResourceSetRule {
     public static void main(String[] args) {
-        ResourceSetRulesClient client =
-                new PurviewAccountClientBuilder()
+        ResourceSetRulesClient resourceSetRulesClient =
+                new ResourceSetRulesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{endpoint}")
-                        .buildResourceSetRulesClient();
+                        .buildClient();
+        // BEGIN:com.azure.analytics.purview.administration.generated.resourcesetrulesdeleteresourcesetrule.resourcesetrulesdeleteresourcesetrule
         RequestOptions requestOptions = new RequestOptions();
-        Response<Void> response = client.deleteResourceSetRuleWithResponse(requestOptions);
+        Response<Void> response = resourceSetRulesClient.deleteResourceSetRuleWithResponse(requestOptions);
+        // END:com.azure.analytics.purview.administration.generated.resourcesetrulesdeleteresourcesetrule.resourcesetrulesdeleteresourcesetrule
     }
 }

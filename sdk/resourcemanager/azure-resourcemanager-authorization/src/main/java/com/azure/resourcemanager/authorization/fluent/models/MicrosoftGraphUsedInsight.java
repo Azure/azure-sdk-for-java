@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** usedInsight. */
 @Fluent
 public final class MicrosoftGraphUsedInsight extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphUsedInsight.class);
-
     /*
      * usageDetails
      */
@@ -46,6 +43,10 @@ public final class MicrosoftGraphUsedInsight extends MicrosoftGraphEntity {
      * usedInsight
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphUsedInsight class. */
+    public MicrosoftGraphUsedInsight() {
+    }
 
     /**
      * Get the lastUsed property: usageDetails.

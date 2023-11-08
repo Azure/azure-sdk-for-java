@@ -5,21 +5,23 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Azure container registry configuration information. */
 @Fluent
 public final class ServiceAcrConfigurationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceAcrConfigurationInfo.class);
-
     /*
      * The list of the ACR login servers.
      */
     @JsonProperty(value = "loginServers")
     private List<String> loginServers;
+
+    /*
+     * The list of Open Container Initiative (OCI) artifacts.
+     */
+    @JsonProperty(value = "ociArtifacts")
+    private List<ServiceOciArtifactEntry> ociArtifacts;
 
     /**
      * Get the loginServers property: The list of the ACR login servers.
@@ -42,10 +44,33 @@ public final class ServiceAcrConfigurationInfo {
     }
 
     /**
+     * Get the ociArtifacts property: The list of Open Container Initiative (OCI) artifacts.
+     *
+     * @return the ociArtifacts value.
+     */
+    public List<ServiceOciArtifactEntry> ociArtifacts() {
+        return this.ociArtifacts;
+    }
+
+    /**
+     * Set the ociArtifacts property: The list of Open Container Initiative (OCI) artifacts.
+     *
+     * @param ociArtifacts the ociArtifacts value to set.
+     * @return the ServiceAcrConfigurationInfo object itself.
+     */
+    public ServiceAcrConfigurationInfo withOciArtifacts(List<ServiceOciArtifactEntry> ociArtifacts) {
+        this.ociArtifacts = ociArtifacts;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (ociArtifacts() != null) {
+            ociArtifacts().forEach(e -> e.validate());
+        }
     }
 }

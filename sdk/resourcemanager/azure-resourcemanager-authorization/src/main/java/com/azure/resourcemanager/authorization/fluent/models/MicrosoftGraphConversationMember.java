@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** conversationMember. */
 @Fluent
 public final class MicrosoftGraphConversationMember extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphConversationMember.class);
-
     /*
      * The display name of the user.
      */
@@ -35,6 +32,10 @@ public final class MicrosoftGraphConversationMember extends MicrosoftGraphEntity
      * conversationMember
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphConversationMember class. */
+    public MicrosoftGraphConversationMember() {
+    }
 
     /**
      * Get the displayName property: The display name of the user.

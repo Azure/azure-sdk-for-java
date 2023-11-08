@@ -68,7 +68,7 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
             CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata2).block();
 
         //Create collection with clientEncryptionPolicy
-        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths(1), 1);
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("TestCollForEncryptionCacheTest"
             , "/mypk");
         containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);

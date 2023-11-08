@@ -34,6 +34,10 @@ public final class VirtualWanInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of VirtualWanInner class. */
+    public VirtualWanInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the virtual WAN.
      *

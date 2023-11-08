@@ -20,6 +20,10 @@ public final class AacAudio extends Audio {
     @JsonProperty(value = "profile")
     private AacAudioProfile profile;
 
+    /** Creates an instance of AacAudio class. */
+    public AacAudio() {
+    }
+
     /**
      * Get the profile property: The encoding profile to be used when encoding audio with AAC.
      *

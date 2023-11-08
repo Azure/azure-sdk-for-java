@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,19 +15,16 @@ import java.util.Map;
 /** dateTimeColumn. */
 @Fluent
 public final class MicrosoftGraphDateTimeColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDateTimeColumn.class);
-
     /*
-     * How the value should be presented in the UX. Must be one of default,
-     * friendly, or standard. See below for more details. If unspecified,
-     * treated as default.
+     * How the value should be presented in the UX. Must be one of default, friendly, or standard. See below for more
+     * details. If unspecified, treated as default.
      */
     @JsonProperty(value = "displayAs")
     private String displayAs;
 
     /*
-     * Indicates whether the value should be presented as a date only or a date
-     * and time. Must be one of dateOnly or dateTime
+     * Indicates whether the value should be presented as a date only or a date and time. Must be one of dateOnly or
+     * dateTime
      */
     @JsonProperty(value = "format")
     private String format;
@@ -37,6 +33,10 @@ public final class MicrosoftGraphDateTimeColumn {
      * dateTimeColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDateTimeColumn class. */
+    public MicrosoftGraphDateTimeColumn() {
+    }
 
     /**
      * Get the displayAs property: How the value should be presented in the UX. Must be one of default, friendly, or

@@ -168,6 +168,15 @@ public final class ServicePrincipalsServicePrincipalSelect
     public static final ServicePrincipalsServicePrincipalSelect TRANSITIVE_MEMBER_OF = fromString("transitiveMemberOf");
 
     /**
+     * Creates a new instance of ServicePrincipalsServicePrincipalSelect value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServicePrincipalsServicePrincipalSelect() {
+    }
+
+    /**
      * Creates or finds a ServicePrincipalsServicePrincipalSelect from its string representation.
      *
      * @param name a name to look for.
@@ -178,7 +187,11 @@ public final class ServicePrincipalsServicePrincipalSelect
         return fromString(name, ServicePrincipalsServicePrincipalSelect.class);
     }
 
-    /** @return known ServicePrincipalsServicePrincipalSelect values. */
+    /**
+     * Gets known ServicePrincipalsServicePrincipalSelect values.
+     *
+     * @return known ServicePrincipalsServicePrincipalSelect values.
+     */
     public static Collection<ServicePrincipalsServicePrincipalSelect> values() {
         return values(ServicePrincipalsServicePrincipalSelect.class);
     }

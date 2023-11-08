@@ -4,34 +4,19 @@ package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
 
-import java.util.Iterator;
-import java.util.ServiceLoader;
-
 /**
  * This class provides a means for all client libraries to augment the context information they have received from an
  * end user with additional distributed tracing information, that may then be passed on to a backend for analysis.
  *
  * @see Tracer
+ * @deprecated use {@link TracerProvider}
  */
+@Deprecated
 public final class TracerProxy {
-    /*
-     * AutoCloseable implementation which performs a no-op when close() is called.
-     */
-    static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> { };
-
     private static Tracer tracer;
 
     static {
-        // Use as classloader to load provider-configuration files and provider classes the classloader
-        // that loaded this class. In most cases this will be the System classloader.
-        // But this choice here provides additional flexibility in managed environments that control
-        // classloading differently (OSGi, Spring and others) and don't/ depend on the
-        // System classloader to load Tracer classes.
-        ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class, TracerProxy.class.getClassLoader());
-        Iterator<?> iterator = serviceLoader.iterator();
-        if (iterator.hasNext()) {
-            tracer = serviceLoader.iterator().next();
-        }
+        tracer = TracerProvider.getDefaultProvider().createTracer("azure-core", null, null, null);
     }
 
     private TracerProxy() {
@@ -69,9 +54,6 @@ public final class TracerProxy {
      * @return An updated {@link Context} object.
      */
     public static Context start(String methodName, StartSpanOptions spanOptions, Context context) {
-        if (tracer == null) {
-            return context;
-        }
         return tracer.start(methodName, spanOptions, context);
     }
 
@@ -84,9 +66,6 @@ public final class TracerProxy {
      * @param context Additional metadata that is passed through the call stack.
      */
     public static void setAttribute(String key, String value, Context context) {
-        if (tracer == null) {
-            return;
-        }
         tracer.setAttribute(key, value, context);
     }
 
@@ -98,9 +77,6 @@ public final class TracerProxy {
      * @param context Additional metadata that is passed through the call stack.
      */
     public static void end(int responseCode, Throwable error, Context context) {
-        if (tracer == null) {
-            return;
-        }
         tracer.end(responseCode, error, context);
     }
 
@@ -112,9 +88,6 @@ public final class TracerProxy {
      * @return An updated {@link Context} object.
      */
     public static Context setSpanName(String spanName, Context context) {
-        if (tracer == null) {
-            return context;
-        }
         return tracer.setSpanName(spanName, context);
     }
 
@@ -124,6 +97,6 @@ public final class TracerProxy {
      * @return true if tracing is enabled.
      */
     public static boolean isTracingEnabled() {
-        return tracer != null;
+        return tracer.isEnabled();
     }
 }

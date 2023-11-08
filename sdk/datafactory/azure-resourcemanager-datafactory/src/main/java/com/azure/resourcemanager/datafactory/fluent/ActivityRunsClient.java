@@ -20,22 +20,6 @@ public interface ActivityRunsClient {
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
      * @param filterParameters Parameters to filter the activity runs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ActivityRunsQueryResponseInner queryByPipelineRun(
-        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters);
-
-    /**
-     * Query activity runs based on input filter conditions.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param runId The pipeline run identifier.
-     * @param filterParameters Parameters to filter the activity runs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -49,4 +33,20 @@ public interface ActivityRunsClient {
         String runId,
         RunFilterParameters filterParameters,
         Context context);
+
+    /**
+     * Query activity runs based on input filter conditions.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param runId The pipeline run identifier.
+     * @param filterParameters Parameters to filter the activity runs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list activity runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ActivityRunsQueryResponseInner queryByPipelineRun(
+        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters);
 }

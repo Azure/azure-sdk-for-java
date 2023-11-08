@@ -22,6 +22,10 @@ public final class RntbdConstants {
     private RntbdConstants() {
     }
 
+    public static class RntbdHealthCheckResults {
+        public static final String SuccessValue = "Success";
+    }
+
     public enum RntbdConsistencyLevel {
 
         Strong((byte) 0x00),
@@ -585,7 +589,10 @@ public final class RntbdConstants {
         PopulateIndexMetrics((short) 0x00A9, RntbdTokenType.Byte, false),
         IsClientEncrypted((short) 0x0087, RntbdTokenType.Byte, false),
         IntendedCollectionRid((short) 0x009D, RntbdTokenType.String, false),
-        CorrelatedActivityId((short) 0x00B0, RntbdTokenType.Guid, false);
+        CorrelatedActivityId((short) 0x00B0, RntbdTokenType.Guid, false),
+        SDKSupportedCapabilities((short) 0x00A2, RntbdTokenType.ULong, false),
+        ChangeFeedWireFormatVersion((short) 0x00B2, RntbdTokenType.String, false),
+        PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false);
 
         public static final ImmutableMap<Short, RntbdRequestHeader> map;
         public static final ImmutableSet<RntbdRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdRequestHeader.class));

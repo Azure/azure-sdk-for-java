@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Sap Business Warehouse Open Hub Destination Table properties. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,27 +19,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class SapOpenHubTableDataset extends Dataset {
     /*
-     * The name of the Open Hub Destination with destination type as Database
-     * Table. Type: string (or Expression with resultType string).
+     * The name of the Open Hub Destination with destination type as Database Table. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.openHubDestinationName", required = true)
     private Object openHubDestinationName;
 
     /*
-     * Whether to exclude the records of the last request. The default value is
-     * true. Type: boolean (or Expression with resultType boolean).
+     * Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "typeProperties.excludeLastRequest")
     private Object excludeLastRequest;
 
     /*
-     * The ID of request for delta loading. Once it is set, only data with
-     * requestId larger than the value of this property will be retrieved. The
-     * default value is 0. Type: integer (or Expression with resultType integer
-     * ).
+     * The ID of request for delta loading. Once it is set, only data with requestId larger than the value of this
+     * property will be retrieved. The default value is 0. Type: integer (or Expression with resultType integer ).
      */
     @JsonProperty(value = "typeProperties.baseRequestId")
     private Object baseRequestId;
+
+    /** Creates an instance of SapOpenHubTableDataset class. */
+    public SapOpenHubTableDataset() {}
 
     /**
      * Get the openHubDestinationName property: The name of the Open Hub Destination with destination type as Database
@@ -104,6 +107,55 @@ public class SapOpenHubTableDataset extends Dataset {
      */
     public SapOpenHubTableDataset setBaseRequestId(Object baseRequestId) {
         this.baseRequestId = baseRequestId;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapOpenHubTableDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapOpenHubTableDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapOpenHubTableDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapOpenHubTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapOpenHubTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapOpenHubTableDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapOpenHubTableDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

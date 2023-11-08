@@ -5,9 +5,13 @@
 package com.azure.resourcemanager.security.implementation;
 
 import com.azure.resourcemanager.security.fluent.models.PricingInner;
+import com.azure.resourcemanager.security.models.Extension;
 import com.azure.resourcemanager.security.models.Pricing;
 import com.azure.resourcemanager.security.models.PricingTier;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public final class PricingImpl implements Pricing {
     private PricingInner innerObject;
@@ -35,8 +39,38 @@ public final class PricingImpl implements Pricing {
         return this.innerModel().pricingTier();
     }
 
+    public String subPlan() {
+        return this.innerModel().subPlan();
+    }
+
     public Duration freeTrialRemainingTime() {
         return this.innerModel().freeTrialRemainingTime();
+    }
+
+    public OffsetDateTime enablementTime() {
+        return this.innerModel().enablementTime();
+    }
+
+    public Boolean deprecated() {
+        return this.innerModel().deprecated();
+    }
+
+    public List<String> replacedBy() {
+        List<String> inner = this.innerModel().replacedBy();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<Extension> extensions() {
+        List<Extension> inner = this.innerModel().extensions();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public PricingInner innerModel() {

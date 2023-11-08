@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cdn.models.WafMetricsResponseGranularity;
+import com.azure.resourcemanager.cdn.models.WafMetricsGranularity;
 import com.azure.resourcemanager.cdn.models.WafMetricsResponseSeriesItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** Waf Metrics Response. */
 @Fluent
 public final class WafMetricsResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WafMetricsResponseInner.class);
-
     /*
      * The dateTimeBegin property.
      */
@@ -34,13 +30,17 @@ public final class WafMetricsResponseInner {
      * The granularity property.
      */
     @JsonProperty(value = "granularity")
-    private WafMetricsResponseGranularity granularity;
+    private WafMetricsGranularity granularity;
 
     /*
      * The series property.
      */
     @JsonProperty(value = "series")
     private List<WafMetricsResponseSeriesItem> series;
+
+    /** Creates an instance of WafMetricsResponseInner class. */
+    public WafMetricsResponseInner() {
+    }
 
     /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
@@ -87,7 +87,7 @@ public final class WafMetricsResponseInner {
      *
      * @return the granularity value.
      */
-    public WafMetricsResponseGranularity granularity() {
+    public WafMetricsGranularity granularity() {
         return this.granularity;
     }
 
@@ -97,7 +97,7 @@ public final class WafMetricsResponseInner {
      * @param granularity the granularity value to set.
      * @return the WafMetricsResponseInner object itself.
      */
-    public WafMetricsResponseInner withGranularity(WafMetricsResponseGranularity granularity) {
+    public WafMetricsResponseInner withGranularity(WafMetricsGranularity granularity) {
         this.granularity = granularity;
         return this;
     }

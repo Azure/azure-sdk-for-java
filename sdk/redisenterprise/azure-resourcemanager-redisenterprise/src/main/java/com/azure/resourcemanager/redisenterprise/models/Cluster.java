@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
 import java.util.List;
@@ -62,11 +63,32 @@ public interface Cluster {
     List<String> zones();
 
     /**
+     * Gets the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
      *
      * @return the minimumTlsVersion value.
      */
     TlsVersion minimumTlsVersion();
+
+    /**
+     * Gets the encryption property: Encryption-at-rest configuration for the cluster.
+     *
+     * @return the encryption value.
+     */
+    ClusterPropertiesEncryption encryption();
 
     /**
      * Gets the hostname property: DNS name of the cluster endpoint.
@@ -117,6 +139,13 @@ public interface Cluster {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner object.
@@ -181,7 +210,11 @@ public interface Cluster {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithZones, DefinitionStages.WithMinimumTlsVersion {
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithZones,
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithMinimumTlsVersion,
+                DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
              *
@@ -217,6 +250,16 @@ public interface Cluster {
              */
             WithCreate withZones(List<String> zones);
         }
+        /** The stage of the Cluster definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the resource..
+             *
+             * @param identity The identity of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
         /** The stage of the Cluster definition allowing to specify minimumTlsVersion. */
         interface WithMinimumTlsVersion {
             /**
@@ -227,6 +270,16 @@ public interface Cluster {
              */
             WithCreate withMinimumTlsVersion(TlsVersion minimumTlsVersion);
         }
+        /** The stage of the Cluster definition allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: Encryption-at-rest configuration for the cluster..
+             *
+             * @param encryption Encryption-at-rest configuration for the cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withEncryption(ClusterPropertiesEncryption encryption);
+        }
     }
     /**
      * Begins update for the Cluster resource.
@@ -236,7 +289,12 @@ public interface Cluster {
     Cluster.Update update();
 
     /** The template for Cluster update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithMinimumTlsVersion {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithSku,
+            UpdateStages.WithIdentity,
+            UpdateStages.WithMinimumTlsVersion,
+            UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          *
@@ -274,6 +332,16 @@ public interface Cluster {
              */
             Update withSku(Sku sku);
         }
+        /** The stage of the Cluster update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the resource..
+             *
+             * @param identity The identity of the resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
         /** The stage of the Cluster update allowing to specify minimumTlsVersion. */
         interface WithMinimumTlsVersion {
             /**
@@ -283,6 +351,16 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withMinimumTlsVersion(TlsVersion minimumTlsVersion);
+        }
+        /** The stage of the Cluster update allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: Encryption-at-rest configuration for the cluster..
+             *
+             * @param encryption Encryption-at-rest configuration for the cluster.
+             * @return the next definition stage.
+             */
+            Update withEncryption(ClusterPropertiesEncryption encryption);
         }
     }
     /**

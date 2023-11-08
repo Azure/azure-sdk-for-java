@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationPolicyGroupInner;
 import com.azure.resourcemanager.network.models.DhGroup;
 import com.azure.resourcemanager.network.models.IkeEncryption;
 import com.azure.resourcemanager.network.models.IkeIntegrity;
@@ -15,10 +15,12 @@ import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.PfsGroup;
 import com.azure.resourcemanager.network.models.RadiusServer;
 import com.azure.resourcemanager.network.models.VpnGatewayTunnelingProtocol;
+import com.azure.resourcemanager.network.models.VpnPolicyMemberAttributeType;
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusClientRootCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusServerRootCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRevokedCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRootCertificate;
+import com.azure.resourcemanager.network.models.VpnServerConfigurationPolicyGroupMember;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +28,7 @@ import java.util.Map;
 /** Samples for VpnServerConfigurations CreateOrUpdate. */
 public final class VpnServerConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/VpnServerConfigurationPut.json
      */
     /**
      * Sample code: VpnServerConfigurationCreate.
@@ -44,7 +46,7 @@ public final class VpnServerConfigurationsCreateOrUpdateSamples {
                 "vpnServerConfiguration1",
                 new VpnServerConfigurationInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withVpnProtocols(Arrays.asList(VpnGatewayTunnelingProtocol.IKE_V2))
                     .withVpnClientRootCertificates(
                         Arrays
@@ -90,10 +92,42 @@ public final class VpnServerConfigurationsCreateOrUpdateSamples {
                                 new RadiusServer()
                                     .withRadiusServerAddress("10.0.0.0")
                                     .withRadiusServerScore(25L)
-                                    .withRadiusServerSecret("radiusServerSecret"))),
-                Context.NONE);
+                                    .withRadiusServerSecret("fakeTokenPlaceholder")))
+                    .withConfigurationPolicyGroups(
+                        Arrays
+                            .asList(
+                                new VpnServerConfigurationPolicyGroupInner()
+                                    .withId(
+                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1/vpnServerConfigurationPolicyGroups/policyGroup1")
+                                    .withName("policyGroup1")
+                                    .withIsDefault(true)
+                                    .withPriority(0)
+                                    .withPolicyMembers(
+                                        Arrays
+                                            .asList(
+                                                new VpnServerConfigurationPolicyGroupMember()
+                                                    .withName("policy1")
+                                                    .withAttributeType(
+                                                        VpnPolicyMemberAttributeType.RADIUS_AZURE_GROUP_ID)
+                                                    .withAttributeValue("6ad1bd08"))),
+                                new VpnServerConfigurationPolicyGroupInner()
+                                    .withId(
+                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1/vpnServerConfigurationPolicyGroups/policyGroup2")
+                                    .withName("policyGroup2")
+                                    .withIsDefault(true)
+                                    .withPriority(0)
+                                    .withPolicyMembers(
+                                        Arrays
+                                            .asList(
+                                                new VpnServerConfigurationPolicyGroupMember()
+                                                    .withName("policy2")
+                                                    .withAttributeType(
+                                                        VpnPolicyMemberAttributeType.CERTIFICATE_GROUP_ID)
+                                                    .withAttributeValue("red.com"))))),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

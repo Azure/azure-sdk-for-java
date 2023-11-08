@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.storageimportexport.fluent.models.ExportBlobList;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,30 +13,33 @@ import java.util.List;
  * A property containing information about the blobs to be exported for an export job. This property is required for
  * export jobs, but must not be specified for import jobs.
  */
-@JsonFlatten
 @Fluent
-public class Export {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Export.class);
+public final class Export {
+    /*
+     * A list of the blobs to be exported.
+     */
+    @JsonProperty(value = "blobList")
+    private ExportBlobList innerBlobList;
 
     /*
-     * The relative URI to the block blob that contains the list of blob paths
-     * or blob path prefixes as defined above, beginning with the container
-     * name. If the blob is in root container, the URI must begin with $root.
+     * The relative URI to the block blob that contains the list of blob paths or blob path prefixes as defined above,
+     * beginning with the container name. If the blob is in root container, the URI must begin with $root.
      */
     @JsonProperty(value = "blobListBlobPath")
     private String blobListBlobPath;
 
-    /*
-     * A collection of blob-path strings.
-     */
-    @JsonProperty(value = "blobList.blobPath")
-    private List<String> blobPath;
+    /** Creates an instance of Export class. */
+    public Export() {
+    }
 
-    /*
-     * A collection of blob-prefix strings.
+    /**
+     * Get the innerBlobList property: A list of the blobs to be exported.
+     *
+     * @return the innerBlobList value.
      */
-    @JsonProperty(value = "blobList.blobPathPrefix")
-    private List<String> blobPathPrefix;
+    private ExportBlobList innerBlobList() {
+        return this.innerBlobList;
+    }
 
     /**
      * Get the blobListBlobPath property: The relative URI to the block blob that contains the list of blob paths or
@@ -70,7 +71,7 @@ public class Export {
      * @return the blobPath value.
      */
     public List<String> blobPath() {
-        return this.blobPath;
+        return this.innerBlobList() == null ? null : this.innerBlobList().blobPath();
     }
 
     /**
@@ -80,7 +81,10 @@ public class Export {
      * @return the Export object itself.
      */
     public Export withBlobPath(List<String> blobPath) {
-        this.blobPath = blobPath;
+        if (this.innerBlobList() == null) {
+            this.innerBlobList = new ExportBlobList();
+        }
+        this.innerBlobList().withBlobPath(blobPath);
         return this;
     }
 
@@ -90,7 +94,7 @@ public class Export {
      * @return the blobPathPrefix value.
      */
     public List<String> blobPathPrefix() {
-        return this.blobPathPrefix;
+        return this.innerBlobList() == null ? null : this.innerBlobList().blobPathPrefix();
     }
 
     /**
@@ -100,7 +104,10 @@ public class Export {
      * @return the Export object itself.
      */
     public Export withBlobPathPrefix(List<String> blobPathPrefix) {
-        this.blobPathPrefix = blobPathPrefix;
+        if (this.innerBlobList() == null) {
+            this.innerBlobList = new ExportBlobList();
+        }
+        this.innerBlobList().withBlobPathPrefix(blobPathPrefix);
         return this;
     }
 
@@ -110,5 +117,8 @@ public class Export {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerBlobList() != null) {
+            innerBlobList().validate();
+        }
     }
 }

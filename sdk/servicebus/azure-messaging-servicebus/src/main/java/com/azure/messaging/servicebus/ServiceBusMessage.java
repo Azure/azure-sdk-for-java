@@ -14,6 +14,7 @@ import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ContextAccessor;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -50,11 +51,15 @@ public class ServiceBusMessage {
     private static final int MAX_MESSAGE_ID_LENGTH = 128;
     private static final int MAX_PARTITION_KEY_LENGTH = 128;
     private static final int MAX_SESSION_ID_LENGTH = 128;
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusMessage.class);
 
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
-    private final ClientLogger logger = new ClientLogger(ServiceBusMessage.class);
 
     private Context context;
+
+    static {
+        ContextAccessor.setSendMessageContextAccessor(message -> message.getContext());
+    }
 
     /**
      * Creates a {@link ServiceBusMessage} with given byte array body.
@@ -138,8 +143,8 @@ public class ServiceBusMessage {
                     .getValue());
                 break;
             default:
-                throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
-                    + bodyType.toString()));
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Body type not valid "
+                    + bodyType));
         }
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(amqpMessageBody);
 
@@ -250,11 +255,11 @@ public class ServiceBusMessage {
                 return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getFirstData());
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new IllegalStateException("Message  body type is not DATA, instead "
-                    + "it is: " + type.toString()));
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Message  body type is not DATA, instead "
+                    + "it is: " + type));
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
-                    + type.toString()));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
+                    + type));
         }
     }
 
@@ -679,7 +684,7 @@ public class ServiceBusMessage {
     private void checkIdLength(String fieldName, String value, int maxLength) {
         if (value != null && value.length() > maxLength) {
             final String message = String.format("%s cannot be longer than %d characters.", fieldName, maxLength);
-            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(message));
         }
     }
 
@@ -697,7 +702,7 @@ public class ServiceBusMessage {
                 "sessionId:%s cannot be set to a different value than partitionKey:%s.",
                 proposedSessionId,
                 this.getPartitionKey());
-            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(message));
         }
     }
 
@@ -716,7 +721,7 @@ public class ServiceBusMessage {
                 proposedPartitionKey,
                 this.getSessionId());
 
-            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(message));
         }
     }
 

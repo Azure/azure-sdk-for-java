@@ -10,10 +10,10 @@ import com.azure.cosmos.implementation.patch.PatchOperationCore;
 import com.azure.cosmos.implementation.patch.PatchOperationType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Grammar is a super set of this RFC: https://tools.ietf.org/html/rfc6902#section-4.1
@@ -49,7 +49,7 @@ public final class CosmosPatchOperations {
     private final List<PatchOperation> patchOperations;
 
     private CosmosPatchOperations() {
-        this.patchOperations = new ArrayList<>();
+        this.patchOperations = Collections.synchronizedList(new ArrayList<>());
     }
 
     /**
@@ -159,6 +159,42 @@ public final class CosmosPatchOperations {
     }
 
     /**
+     * This moves the value of an object from the source to a destination.
+     *
+     * This performs the following based on different cases:
+     * 1. Source location points to an object as value, moves the entire object to the target location.
+     * 2. Target location specifies an object member that does not already exist, a new member is added to the object.
+     *    Its value is set to the value of the source location.
+     *
+     * For the above JSON, we can have something like this:
+     * <code>
+     *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
+     *     cosmosPatch.move("/a", "/c/d"); // will move the value of "/a" to "/c/d"
+     *     cosmosPatch.move("/b/e/1", "/d"); // will move the object at the 2nd element of the array and set it as the
+     *                                          value of "/d".
+     *     cosmosPatch.move("/b", "/c"); //It can also be used as a rename operation since now all values of "/b" will
+     *                                     set as values of "/c".
+     * </code>
+     *
+     * @param fromPath the source path for the operation.
+     * @param toPath the destination path for the operation.
+     *
+     * @return same instance of {@link CosmosPatchOperations}
+     */
+    public CosmosPatchOperations move(String fromPath, String toPath) {
+
+        checkArgument(StringUtils.isNotEmpty(fromPath), "Source path empty %s", fromPath);
+        checkArgument(StringUtils.isNotEmpty(toPath), "Destination path empty %s", toPath);
+
+        this.patchOperations.add(
+            new PatchOperationCore<>(
+                PatchOperationType.MOVE,
+                toPath,
+                fromPath));
+
+        return this;
+    }
+    /**
      * This sets the value at the target location with a new value.
      *
      * For the above JSON, we can have something like this:
@@ -255,22 +291,22 @@ public final class CosmosPatchOperations {
         return this;
     }
 
+    // NOTE returning this patchOperations means any
+    // modifications - like adding new entries is still
+    // thread-safe - but enumerating over the collection is not
+    // unless synchronized
     List<PatchOperation> getPatchOperations() {
-        return patchOperations;
+        return this.patchOperations;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosPatchOperationsHelper.setCosmosPatchOperationsAccessor(
-            new ImplementationBridgeHelpers.CosmosPatchOperationsHelper.CosmosPatchOperationsAccessor() {
-                @Override
-                public List<PatchOperation> getPatchOperations(CosmosPatchOperations cosmosPatchOperations) {
-                    return cosmosPatchOperations.getPatchOperations();
-                }
-            }
+            cosmosPatchOperations -> cosmosPatchOperations.getPatchOperations()
         );
     }
+
+    static { initialize(); }
 }

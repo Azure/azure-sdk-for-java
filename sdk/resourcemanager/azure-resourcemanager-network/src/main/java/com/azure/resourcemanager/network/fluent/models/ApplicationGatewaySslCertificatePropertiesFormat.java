@@ -18,22 +18,19 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     private String data;
 
     /*
-     * Password for the pfx file specified in data. Only applicable in PUT
-     * request.
+     * Password for the pfx file specified in data. Only applicable in PUT request.
      */
     @JsonProperty(value = "password")
     private String password;
 
     /*
-     * Base-64 encoded Public cert data corresponding to pfx specified in data.
-     * Only applicable in GET request.
+     * Base-64 encoded Public cert data corresponding to pfx specified in data. Only applicable in GET request.
      */
     @JsonProperty(value = "publicCertData", access = JsonProperty.Access.WRITE_ONLY)
     private String publicCertData;
 
     /*
-     * Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
-     * object stored in KeyVault.
+     * Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
      */
     @JsonProperty(value = "keyVaultSecretId")
     private String keyVaultSecretId;
@@ -43,6 +40,10 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewaySslCertificatePropertiesFormat class. */
+    public ApplicationGatewaySslCertificatePropertiesFormat() {
+    }
 
     /**
      * Get the data property: Base-64 encoded pfx certificate. Only applicable in PUT Request.

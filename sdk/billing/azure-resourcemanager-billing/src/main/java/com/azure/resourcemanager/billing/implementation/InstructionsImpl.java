@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.InstructionsClient;
 import com.azure.resourcemanager.billing.fluent.models.InstructionInner;
 import com.azure.resourcemanager.billing.models.Instruction;
 import com.azure.resourcemanager.billing.models.Instructions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class InstructionsImpl implements Instructions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstructionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InstructionsImpl.class);
 
     private final InstructionsClient innerClient;
 
@@ -41,15 +40,6 @@ public final class InstructionsImpl implements Instructions {
         return Utils.mapPage(inner, inner1 -> new InstructionImpl(inner1, this.manager()));
     }
 
-    public Instruction get(String billingAccountName, String billingProfileName, String instructionName) {
-        InstructionInner inner = this.serviceClient().get(billingAccountName, billingProfileName, instructionName);
-        if (inner != null) {
-            return new InstructionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Instruction> getWithResponse(
         String billingAccountName, String billingProfileName, String instructionName, Context context) {
         Response<InstructionInner> inner =
@@ -65,10 +55,8 @@ public final class InstructionsImpl implements Instructions {
         }
     }
 
-    public Instruction put(
-        String billingAccountName, String billingProfileName, String instructionName, InstructionInner parameters) {
-        InstructionInner inner =
-            this.serviceClient().put(billingAccountName, billingProfileName, instructionName, parameters);
+    public Instruction get(String billingAccountName, String billingProfileName, String instructionName) {
+        InstructionInner inner = this.serviceClient().get(billingAccountName, billingProfileName, instructionName);
         if (inner != null) {
             return new InstructionImpl(inner, this.manager());
         } else {
@@ -92,6 +80,17 @@ public final class InstructionsImpl implements Instructions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new InstructionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Instruction put(
+        String billingAccountName, String billingProfileName, String instructionName, InstructionInner parameters) {
+        InstructionInner inner =
+            this.serviceClient().put(billingAccountName, billingProfileName, instructionName, parameters);
+        if (inner != null) {
+            return new InstructionImpl(inner, this.manager());
         } else {
             return null;
         }

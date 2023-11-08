@@ -66,11 +66,10 @@ public final class ChannelsClientImpl implements ChannelsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface ChannelsService {
+    public interface ChannelsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ChannelInner>> get(
@@ -85,8 +84,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ChannelInner>> createOrUpdate(
@@ -102,8 +100,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -117,8 +114,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> update(
@@ -133,8 +129,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerNamespaces/{partnerNamespaceName}/channels")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/channels")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ChannelsListResult>> listByPartnerNamespace(
@@ -150,8 +145,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}/getFullUrl")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/channels/{channelName}/getFullUrl")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionFullUrlInner>> getFullUrl(
@@ -176,7 +170,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Get properties of a channel.
+     * Get a channel.
+     *
+     * <p>Get properties of a channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -230,7 +226,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Get properties of a channel.
+     * Get a channel.
+     *
+     * <p>Get properties of a channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -282,7 +280,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Get properties of a channel.
+     * Get a channel.
+     *
+     * <p>Get properties of a channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -295,34 +295,13 @@ public final class ChannelsClientImpl implements ChannelsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ChannelInner> getAsync(String resourceGroupName, String partnerNamespaceName, String channelName) {
         return getWithResponseAsync(resourceGroupName, partnerNamespaceName, channelName)
-            .flatMap(
-                (Response<ChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get properties of a channel.
+     * Get a channel.
      *
-     * @param resourceGroupName The name of the resource group within the partners subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a channel.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChannelInner get(String resourceGroupName, String partnerNamespaceName, String channelName) {
-        return getAsync(resourceGroupName, partnerNamespaceName, channelName).block();
-    }
-
-    /**
-     * Get properties of a channel.
+     * <p>Get properties of a channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -340,7 +319,27 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Synchronously creates or updates a new channel with the specified parameters.
+     * Get a channel.
+     *
+     * <p>Get properties of a channel.
+     *
+     * @param resourceGroupName The name of the resource group within the partners subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param channelName Name of the channel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a channel.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChannelInner get(String resourceGroupName, String partnerNamespaceName, String channelName) {
+        return getWithResponse(resourceGroupName, partnerNamespaceName, channelName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a channel.
+     *
+     * <p>Synchronously creates or updates a new channel with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -401,7 +400,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Synchronously creates or updates a new channel with the specified parameters.
+     * Create or update a channel.
+     *
+     * <p>Synchronously creates or updates a new channel with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -464,7 +465,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Synchronously creates or updates a new channel with the specified parameters.
+     * Create or update a channel.
+     *
+     * <p>Synchronously creates or updates a new channel with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -479,36 +482,13 @@ public final class ChannelsClientImpl implements ChannelsClient {
     private Mono<ChannelInner> createOrUpdateAsync(
         String resourceGroupName, String partnerNamespaceName, String channelName, ChannelInner channelInfo) {
         return createOrUpdateWithResponseAsync(resourceGroupName, partnerNamespaceName, channelName, channelInfo)
-            .flatMap(
-                (Response<ChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Synchronously creates or updates a new channel with the specified parameters.
+     * Create or update a channel.
      *
-     * @param resourceGroupName The name of the resource group within the partners subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param channelInfo Channel information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return channel info.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChannelInner createOrUpdate(
-        String resourceGroupName, String partnerNamespaceName, String channelName, ChannelInner channelInfo) {
-        return createOrUpdateAsync(resourceGroupName, partnerNamespaceName, channelName, channelInfo).block();
-    }
-
-    /**
-     * Synchronously creates or updates a new channel with the specified parameters.
+     * <p>Synchronously creates or updates a new channel with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -533,7 +513,31 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Delete an existing channel.
+     * Create or update a channel.
+     *
+     * <p>Synchronously creates or updates a new channel with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the partners subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param channelName Name of the channel.
+     * @param channelInfo Channel information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return channel info.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChannelInner createOrUpdate(
+        String resourceGroupName, String partnerNamespaceName, String channelName, ChannelInner channelInfo) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, partnerNamespaceName, channelName, channelInfo, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -585,7 +589,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -635,7 +641,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -657,7 +665,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -680,7 +690,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -693,11 +705,13 @@ public final class ChannelsClientImpl implements ChannelsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String partnerNamespaceName, String channelName) {
-        return beginDeleteAsync(resourceGroupName, partnerNamespaceName, channelName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, partnerNamespaceName, channelName).getSyncPoller();
     }
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -711,11 +725,13 @@ public final class ChannelsClientImpl implements ChannelsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String partnerNamespaceName, String channelName, Context context) {
-        return beginDeleteAsync(resourceGroupName, partnerNamespaceName, channelName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, partnerNamespaceName, channelName, context).getSyncPoller();
     }
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -733,7 +749,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -753,7 +771,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -768,7 +788,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Delete an existing channel.
+     * Delete a channel.
+     *
+     * <p>Delete an existing channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -784,7 +806,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Synchronously updates a channel with the specified parameters.
+     * Update a Channel.
+     *
+     * <p>Synchronously updates a channel with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -848,7 +872,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Synchronously updates a channel with the specified parameters.
+     * Update a Channel.
+     *
+     * <p>Synchronously updates a channel with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -911,7 +937,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Synchronously updates a channel with the specified parameters.
+     * Update a Channel.
+     *
+     * <p>Synchronously updates a channel with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -929,31 +957,13 @@ public final class ChannelsClientImpl implements ChannelsClient {
         String channelName,
         ChannelUpdateParameters channelUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, partnerNamespaceName, channelName, channelUpdateParameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Synchronously updates a channel with the specified parameters.
+     * Update a Channel.
      *
-     * @param resourceGroupName The name of the resource group within the partners subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the channel.
-     * @param channelUpdateParameters Channel update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(
-        String resourceGroupName,
-        String partnerNamespaceName,
-        String channelName,
-        ChannelUpdateParameters channelUpdateParameters) {
-        updateAsync(resourceGroupName, partnerNamespaceName, channelName, channelUpdateParameters).block();
-    }
-
-    /**
-     * Synchronously updates a channel with the specified parameters.
+     * <p>Synchronously updates a channel with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -978,7 +988,31 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * List all the channels in a partner namespace.
+     * Update a Channel.
+     *
+     * <p>Synchronously updates a channel with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the partners subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param channelName Name of the channel.
+     * @param channelUpdateParameters Channel update information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(
+        String resourceGroupName,
+        String partnerNamespaceName,
+        String channelName,
+        ChannelUpdateParameters channelUpdateParameters) {
+        updateWithResponse(resourceGroupName, partnerNamespaceName, channelName, channelUpdateParameters, Context.NONE);
+    }
+
+    /**
+     * List channels.
+     *
+     * <p>List all the channels in a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1047,7 +1081,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * List all the channels in a partner namespace.
+     * List channels.
+     *
+     * <p>List all the channels in a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1114,7 +1150,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * List all the channels in a partner namespace.
+     * List channels.
+     *
+     * <p>List all the channels in a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1140,7 +1178,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * List all the channels in a partner namespace.
+     * List channels.
+     *
+     * <p>List all the channels in a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1159,7 +1199,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * List all the channels in a partner namespace.
+     * List channels.
+     *
+     * <p>List all the channels in a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1186,7 +1228,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * List all the channels in a partner namespace.
+     * List channels.
+     *
+     * <p>List all the channels in a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1203,7 +1247,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * List all the channels in a partner namespace.
+     * List channels.
+     *
+     * <p>List all the channels in a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1229,7 +1275,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Get the full endpoint URL of a partner destination channel.
+     * Get full URL of partner destination channel.
+     *
+     * <p>Get the full endpoint URL of a partner destination channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1284,7 +1332,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Get the full endpoint URL of a partner destination channel.
+     * Get full URL of partner destination channel.
+     *
+     * <p>Get the full endpoint URL of a partner destination channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1337,7 +1387,9 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
-     * Get the full endpoint URL of a partner destination channel.
+     * Get full URL of partner destination channel.
+     *
+     * <p>Get the full endpoint URL of a partner destination channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1351,35 +1403,13 @@ public final class ChannelsClientImpl implements ChannelsClient {
     private Mono<EventSubscriptionFullUrlInner> getFullUrlAsync(
         String resourceGroupName, String partnerNamespaceName, String channelName) {
         return getFullUrlWithResponseAsync(resourceGroupName, partnerNamespaceName, channelName)
-            .flatMap(
-                (Response<EventSubscriptionFullUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the full endpoint URL of a partner destination channel.
+     * Get full URL of partner destination channel.
      *
-     * @param resourceGroupName The name of the resource group within the partners subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @param channelName Name of the Channel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL of a partner destination channel.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionFullUrlInner getFullUrl(
-        String resourceGroupName, String partnerNamespaceName, String channelName) {
-        return getFullUrlAsync(resourceGroupName, partnerNamespaceName, channelName).block();
-    }
-
-    /**
-     * Get the full endpoint URL of a partner destination channel.
+     * <p>Get the full endpoint URL of a partner destination channel.
      *
      * @param resourceGroupName The name of the resource group within the partners subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -1397,9 +1427,29 @@ public final class ChannelsClientImpl implements ChannelsClient {
     }
 
     /**
+     * Get full URL of partner destination channel.
+     *
+     * <p>Get the full endpoint URL of a partner destination channel.
+     *
+     * @param resourceGroupName The name of the resource group within the partners subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param channelName Name of the Channel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL of a partner destination channel.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionFullUrlInner getFullUrl(
+        String resourceGroupName, String partnerNamespaceName, String channelName) {
+        return getFullUrlWithResponse(resourceGroupName, partnerNamespaceName, channelName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1436,7 +1486,8 @@ public final class ChannelsClientImpl implements ChannelsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

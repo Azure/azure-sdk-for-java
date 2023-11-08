@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphAttendeeType. */
+/** attendeeType. */
 public final class MicrosoftGraphAttendeeType extends ExpandableStringEnum<MicrosoftGraphAttendeeType> {
     /** Static value required for MicrosoftGraphAttendeeType. */
     public static final MicrosoftGraphAttendeeType REQUIRED = fromString("required");
@@ -18,6 +18,15 @@ public final class MicrosoftGraphAttendeeType extends ExpandableStringEnum<Micro
 
     /** Static value resource for MicrosoftGraphAttendeeType. */
     public static final MicrosoftGraphAttendeeType RESOURCE = fromString("resource");
+
+    /**
+     * Creates a new instance of MicrosoftGraphAttendeeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphAttendeeType() {
+    }
 
     /**
      * Creates or finds a MicrosoftGraphAttendeeType from its string representation.
@@ -30,7 +39,11 @@ public final class MicrosoftGraphAttendeeType extends ExpandableStringEnum<Micro
         return fromString(name, MicrosoftGraphAttendeeType.class);
     }
 
-    /** @return known MicrosoftGraphAttendeeType values. */
+    /**
+     * Gets known MicrosoftGraphAttendeeType values.
+     *
+     * @return known MicrosoftGraphAttendeeType values.
+     */
     public static Collection<MicrosoftGraphAttendeeType> values() {
         return values(MicrosoftGraphAttendeeType.class);
     }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,9 +16,6 @@ import java.util.Map;
 /** multiValueLegacyExtendedProperty. */
 @Fluent
 public final class MicrosoftGraphMultiValueLegacyExtendedProperty extends MicrosoftGraphEntity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphMultiValueLegacyExtendedProperty.class);
-
     /*
      * A collection of property values.
      */
@@ -30,6 +26,10 @@ public final class MicrosoftGraphMultiValueLegacyExtendedProperty extends Micros
      * multiValueLegacyExtendedProperty
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphMultiValueLegacyExtendedProperty class. */
+    public MicrosoftGraphMultiValueLegacyExtendedProperty() {
+    }
 
     /**
      * Get the value property: A collection of property values.

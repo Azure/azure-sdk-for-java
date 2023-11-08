@@ -35,8 +35,7 @@ public final class DetectorResponseProperties {
     private Status status;
 
     /*
-     * Additional configuration for different data providers to be used by the
-     * UI
+     * Additional configuration for different data providers to be used by the UI
      */
     @JsonProperty(value = "dataProvidersMetadata")
     private List<DataProviderMetadata> dataProvidersMetadata;
@@ -46,6 +45,10 @@ public final class DetectorResponseProperties {
      */
     @JsonProperty(value = "suggestedUtterances")
     private QueryUtterancesResults suggestedUtterances;
+
+    /** Creates an instance of DetectorResponseProperties class. */
+    public DetectorResponseProperties() {
+    }
 
     /**
      * Get the metadata property: metadata for the detector.

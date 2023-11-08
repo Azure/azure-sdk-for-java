@@ -42,7 +42,9 @@ import java.util.List;
     @JsonSubTypes.Type(name = "DatabricksSparkPython", value = DatabricksSparkPythonActivity.class),
     @JsonSubTypes.Type(name = "AzureFunctionActivity", value = AzureFunctionActivity.class),
     @JsonSubTypes.Type(name = "ExecuteDataFlow", value = ExecuteDataFlowActivity.class),
-    @JsonSubTypes.Type(name = "Script", value = ScriptActivity.class)
+    @JsonSubTypes.Type(name = "Script", value = ScriptActivity.class),
+    @JsonSubTypes.Type(name = "SynapseNotebook", value = SynapseNotebookActivity.class),
+    @JsonSubTypes.Type(name = "SparkJob", value = SynapseSparkJobDefinitionActivity.class)
 })
 @Fluent
 public class ExecutionActivity extends Activity {
@@ -57,6 +59,10 @@ public class ExecutionActivity extends Activity {
      */
     @JsonProperty(value = "policy")
     private ActivityPolicy policy;
+
+    /** Creates an instance of ExecutionActivity class. */
+    public ExecutionActivity() {
+    }
 
     /**
      * Get the linkedServiceName property: Linked service reference.
@@ -109,6 +115,20 @@ public class ExecutionActivity extends Activity {
     @Override
     public ExecutionActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutionActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutionActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

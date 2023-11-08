@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobName. */
+/** Defines the job name. */
 public final class JobName extends ExpandableStringEnum<JobName> {
     /** Static value InitialSync for JobName. */
     public static final JobName INITIAL_SYNC = fromString("InitialSync");
+
+    /**
+     * Creates a new instance of JobName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobName() {
+    }
 
     /**
      * Creates or finds a JobName from its string representation.
@@ -24,7 +33,11 @@ public final class JobName extends ExpandableStringEnum<JobName> {
         return fromString(name, JobName.class);
     }
 
-    /** @return known JobName values. */
+    /**
+     * Gets known JobName values.
+     *
+     * @return known JobName values.
+     */
     public static Collection<JobName> values() {
         return values(JobName.class);
     }

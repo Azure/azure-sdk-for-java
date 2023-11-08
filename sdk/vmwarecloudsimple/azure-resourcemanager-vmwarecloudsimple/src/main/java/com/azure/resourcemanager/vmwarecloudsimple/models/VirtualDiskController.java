@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual disk controller model. */
 @Immutable
 public final class VirtualDiskController {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualDiskController.class);
-
     /*
      * Controller's id
      */
@@ -27,8 +23,7 @@ public final class VirtualDiskController {
     private String name;
 
     /*
-     * dik controller subtype (VMWARE_PARAVIRTUAL, BUS_PARALLEL, LSI_PARALLEL,
-     * LSI_SAS)
+     * dik controller subtype (VMWARE_PARAVIRTUAL, BUS_PARALLEL, LSI_PARALLEL, LSI_SAS)
      */
     @JsonProperty(value = "subType", access = JsonProperty.Access.WRITE_ONLY)
     private String subType;
@@ -38,6 +33,10 @@ public final class VirtualDiskController {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of VirtualDiskController class. */
+    public VirtualDiskController() {
+    }
 
     /**
      * Get the id property: Controller's id.

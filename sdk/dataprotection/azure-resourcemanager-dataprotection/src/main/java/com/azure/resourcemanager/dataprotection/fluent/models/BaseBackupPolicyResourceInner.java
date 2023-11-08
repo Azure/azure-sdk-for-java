@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.BaseBackupPolicy;
 import com.azure.resourcemanager.dataprotection.models.DppResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** BaseBackupPolicyResource BaseBackupPolicy resource. */
+/**
+ * BaseBackupPolicyResource
+ *
+ * <p>BaseBackupPolicy resource.
+ */
 @Fluent
 public final class BaseBackupPolicyResourceInner extends DppResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaseBackupPolicyResourceInner.class);
-
     /*
-     * BaseBackupPolicy BaseBackupPolicyResource properties
+     * BaseBackupPolicy
+     *
+     * BaseBackupPolicyResource properties
      */
     @JsonProperty(value = "properties")
     private BaseBackupPolicy properties;
 
+    /** Creates an instance of BaseBackupPolicyResourceInner class. */
+    public BaseBackupPolicyResourceInner() {
+    }
+
     /**
-     * Get the properties property: BaseBackupPolicy BaseBackupPolicyResource properties.
+     * Get the properties property: BaseBackupPolicy
+     *
+     * <p>BaseBackupPolicyResource properties.
      *
      * @return the properties value.
      */
@@ -32,7 +40,9 @@ public final class BaseBackupPolicyResourceInner extends DppResource {
     }
 
     /**
-     * Set the properties property: BaseBackupPolicy BaseBackupPolicyResource properties.
+     * Set the properties property: BaseBackupPolicy
+     *
+     * <p>BaseBackupPolicyResource properties.
      *
      * @param properties the properties value to set.
      * @return the BaseBackupPolicyResourceInner object itself.

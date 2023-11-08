@@ -17,11 +17,14 @@ public final class OpenIdConnectClientCredential {
     private ClientCredentialMethod method;
 
     /*
-     * The app setting that contains the client secret for the custom Open ID
-     * Connect provider.
+     * The app setting that contains the client secret for the custom Open ID Connect provider.
      */
     @JsonProperty(value = "clientSecretSettingName")
     private String clientSecretSettingName;
+
+    /** Creates an instance of OpenIdConnectClientCredential class. */
+    public OpenIdConnectClientCredential() {
+    }
 
     /**
      * Get the method property: The method that should be used to authenticate the user.

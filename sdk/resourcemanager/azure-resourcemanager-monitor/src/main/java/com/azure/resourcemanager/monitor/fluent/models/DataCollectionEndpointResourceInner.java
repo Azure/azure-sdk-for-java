@@ -5,24 +5,24 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointConfigurationAccess;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointLogsIngestion;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointNetworkAcls;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionEndpointProvisioningState;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionEndpointResourceKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Definition of ARM tracked top level resource. */
-@JsonFlatten
 @Fluent
-public class DataCollectionEndpointResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCollectionEndpointResourceInner.class);
+public final class DataCollectionEndpointResourceInner extends Resource {
+    /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private DataCollectionEndpointResourceProperties innerProperties;
 
     /*
      * The kind of the resource.
@@ -42,42 +42,18 @@ public class DataCollectionEndpointResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Description of the data collection endpoint.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    /** Creates an instance of DataCollectionEndpointResourceInner class. */
+    public DataCollectionEndpointResourceInner() {
+    }
 
-    /*
-     * The immutable ID of this data collection endpoint resource. This
-     * property is READ-ONLY.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.immutableId")
-    private String immutableId;
-
-    /*
-     * The endpoint used by agents to access their configuration.
-     */
-    @JsonProperty(value = "properties.configurationAccess")
-    private DataCollectionEndpointConfigurationAccess configurationAccess;
-
-    /*
-     * The endpoint used by clients to ingest logs.
-     */
-    @JsonProperty(value = "properties.logsIngestion")
-    private DataCollectionEndpointLogsIngestion logsIngestion;
-
-    /*
-     * Network access control rules for the endpoints.
-     */
-    @JsonProperty(value = "properties.networkAcls")
-    private DataCollectionEndpointNetworkAcls networkAcls;
-
-    /*
-     * The resource provisioning state. This property is READ-ONLY.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private KnownDataCollectionEndpointProvisioningState provisioningState;
+    private DataCollectionEndpointResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the kind property: The kind of the resource.
@@ -117,118 +93,6 @@ public class DataCollectionEndpointResourceInner extends Resource {
         return this.systemData;
     }
 
-    /**
-     * Get the description property: Description of the data collection endpoint.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Description of the data collection endpoint.
-     *
-     * @param description the description value to set.
-     * @return the DataCollectionEndpointResourceInner object itself.
-     */
-    public DataCollectionEndpointResourceInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the immutableId property: The immutable ID of this data collection endpoint resource. This property is
-     * READ-ONLY.
-     *
-     * @return the immutableId value.
-     */
-    public String immutableId() {
-        return this.immutableId;
-    }
-
-    /**
-     * Set the immutableId property: The immutable ID of this data collection endpoint resource. This property is
-     * READ-ONLY.
-     *
-     * @param immutableId the immutableId value to set.
-     * @return the DataCollectionEndpointResourceInner object itself.
-     */
-    public DataCollectionEndpointResourceInner withImmutableId(String immutableId) {
-        this.immutableId = immutableId;
-        return this;
-    }
-
-    /**
-     * Get the configurationAccess property: The endpoint used by agents to access their configuration.
-     *
-     * @return the configurationAccess value.
-     */
-    public DataCollectionEndpointConfigurationAccess configurationAccess() {
-        return this.configurationAccess;
-    }
-
-    /**
-     * Set the configurationAccess property: The endpoint used by agents to access their configuration.
-     *
-     * @param configurationAccess the configurationAccess value to set.
-     * @return the DataCollectionEndpointResourceInner object itself.
-     */
-    public DataCollectionEndpointResourceInner withConfigurationAccess(
-        DataCollectionEndpointConfigurationAccess configurationAccess) {
-        this.configurationAccess = configurationAccess;
-        return this;
-    }
-
-    /**
-     * Get the logsIngestion property: The endpoint used by clients to ingest logs.
-     *
-     * @return the logsIngestion value.
-     */
-    public DataCollectionEndpointLogsIngestion logsIngestion() {
-        return this.logsIngestion;
-    }
-
-    /**
-     * Set the logsIngestion property: The endpoint used by clients to ingest logs.
-     *
-     * @param logsIngestion the logsIngestion value to set.
-     * @return the DataCollectionEndpointResourceInner object itself.
-     */
-    public DataCollectionEndpointResourceInner withLogsIngestion(DataCollectionEndpointLogsIngestion logsIngestion) {
-        this.logsIngestion = logsIngestion;
-        return this;
-    }
-
-    /**
-     * Get the networkAcls property: Network access control rules for the endpoints.
-     *
-     * @return the networkAcls value.
-     */
-    public DataCollectionEndpointNetworkAcls networkAcls() {
-        return this.networkAcls;
-    }
-
-    /**
-     * Set the networkAcls property: Network access control rules for the endpoints.
-     *
-     * @param networkAcls the networkAcls value to set.
-     * @return the DataCollectionEndpointResourceInner object itself.
-     */
-    public DataCollectionEndpointResourceInner withNetworkAcls(DataCollectionEndpointNetworkAcls networkAcls) {
-        this.networkAcls = networkAcls;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The resource provisioning state. This property is READ-ONLY.
-     *
-     * @return the provisioningState value.
-     */
-    public KnownDataCollectionEndpointProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
     /** {@inheritDoc} */
     @Override
     public DataCollectionEndpointResourceInner withLocation(String location) {
@@ -244,19 +108,140 @@ public class DataCollectionEndpointResourceInner extends Resource {
     }
 
     /**
+     * Get the description property: Description of the data collection endpoint.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of the data collection endpoint.
+     *
+     * @param description the description value to set.
+     * @return the DataCollectionEndpointResourceInner object itself.
+     */
+    public DataCollectionEndpointResourceInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionEndpointResourceProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the immutableId property: The immutable ID of this data collection endpoint resource. This property is
+     * READ-ONLY.
+     *
+     * @return the immutableId value.
+     */
+    public String immutableId() {
+        return this.innerProperties() == null ? null : this.innerProperties().immutableId();
+    }
+
+    /**
+     * Set the immutableId property: The immutable ID of this data collection endpoint resource. This property is
+     * READ-ONLY.
+     *
+     * @param immutableId the immutableId value to set.
+     * @return the DataCollectionEndpointResourceInner object itself.
+     */
+    public DataCollectionEndpointResourceInner withImmutableId(String immutableId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionEndpointResourceProperties();
+        }
+        this.innerProperties().withImmutableId(immutableId);
+        return this;
+    }
+
+    /**
+     * Get the configurationAccess property: The endpoint used by clients to access their configuration.
+     *
+     * @return the configurationAccess value.
+     */
+    public DataCollectionEndpointConfigurationAccess configurationAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationAccess();
+    }
+
+    /**
+     * Set the configurationAccess property: The endpoint used by clients to access their configuration.
+     *
+     * @param configurationAccess the configurationAccess value to set.
+     * @return the DataCollectionEndpointResourceInner object itself.
+     */
+    public DataCollectionEndpointResourceInner withConfigurationAccess(
+        DataCollectionEndpointConfigurationAccess configurationAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionEndpointResourceProperties();
+        }
+        this.innerProperties().withConfigurationAccess(configurationAccess);
+        return this;
+    }
+
+    /**
+     * Get the logsIngestion property: The endpoint used by clients to ingest logs.
+     *
+     * @return the logsIngestion value.
+     */
+    public DataCollectionEndpointLogsIngestion logsIngestion() {
+        return this.innerProperties() == null ? null : this.innerProperties().logsIngestion();
+    }
+
+    /**
+     * Set the logsIngestion property: The endpoint used by clients to ingest logs.
+     *
+     * @param logsIngestion the logsIngestion value to set.
+     * @return the DataCollectionEndpointResourceInner object itself.
+     */
+    public DataCollectionEndpointResourceInner withLogsIngestion(DataCollectionEndpointLogsIngestion logsIngestion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionEndpointResourceProperties();
+        }
+        this.innerProperties().withLogsIngestion(logsIngestion);
+        return this;
+    }
+
+    /**
+     * Get the networkAcls property: Network access control rules for the endpoints.
+     *
+     * @return the networkAcls value.
+     */
+    public DataCollectionEndpointNetworkAcls networkAcls() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkAcls();
+    }
+
+    /**
+     * Set the networkAcls property: Network access control rules for the endpoints.
+     *
+     * @param networkAcls the networkAcls value to set.
+     * @return the DataCollectionEndpointResourceInner object itself.
+     */
+    public DataCollectionEndpointResourceInner withNetworkAcls(DataCollectionEndpointNetworkAcls networkAcls) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionEndpointResourceProperties();
+        }
+        this.innerProperties().withNetworkAcls(networkAcls);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The resource provisioning state. This property is READ-ONLY.
+     *
+     * @return the provisioningState value.
+     */
+    public KnownDataCollectionEndpointProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (configurationAccess() != null) {
-            configurationAccess().validate();
-        }
-        if (logsIngestion() != null) {
-            logsIngestion().validate();
-        }
-        if (networkAcls() != null) {
-            networkAcls().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

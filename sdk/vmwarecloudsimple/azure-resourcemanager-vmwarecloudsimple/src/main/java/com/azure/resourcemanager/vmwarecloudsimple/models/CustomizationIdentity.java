@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CustomizationIdentity model. */
 @Fluent
 public class CustomizationIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomizationIdentity.class);
-
     /*
      * Windows Text Identity. Prepared data
      */
@@ -37,6 +33,10 @@ public class CustomizationIdentity {
      */
     @JsonProperty(value = "userData")
     private CustomizationIdentityUserData userData;
+
+    /** Creates an instance of CustomizationIdentity class. */
+    public CustomizationIdentity() {
+    }
 
     /**
      * Get the data property: Windows Text Identity. Prepared data.

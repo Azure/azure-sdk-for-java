@@ -12,10 +12,9 @@ import com.azure.resourcemanager.resourcemover.fluent.OperationsDiscoveriesClien
 import com.azure.resourcemanager.resourcemover.fluent.models.OperationsDiscoveryCollectionInner;
 import com.azure.resourcemanager.resourcemover.models.OperationsDiscoveries;
 import com.azure.resourcemanager.resourcemover.models.OperationsDiscoveryCollection;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsDiscoveriesImpl implements OperationsDiscoveries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsDiscoveriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsDiscoveriesImpl.class);
 
     private final OperationsDiscoveriesClient innerClient;
 
@@ -28,15 +27,6 @@ public final class OperationsDiscoveriesImpl implements OperationsDiscoveries {
         this.serviceManager = serviceManager;
     }
 
-    public OperationsDiscoveryCollection get() {
-        OperationsDiscoveryCollectionInner inner = this.serviceClient().get();
-        if (inner != null) {
-            return new OperationsDiscoveryCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OperationsDiscoveryCollection> getWithResponse(Context context) {
         Response<OperationsDiscoveryCollectionInner> inner = this.serviceClient().getWithResponse(context);
         if (inner != null) {
@@ -45,6 +35,15 @@ public final class OperationsDiscoveriesImpl implements OperationsDiscoveries {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationsDiscoveryCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationsDiscoveryCollection get() {
+        OperationsDiscoveryCollectionInner inner = this.serviceClient().get();
+        if (inner != null) {
+            return new OperationsDiscoveryCollectionImpl(inner, this.manager());
         } else {
             return null;
         }

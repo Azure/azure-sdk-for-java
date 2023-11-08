@@ -23,6 +23,15 @@ public final class WafAction extends ExpandableStringEnum<WafAction> {
     public static final WafAction REDIRECT = fromString("redirect");
 
     /**
+     * Creates a new instance of WafAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WafAction() {
+    }
+
+    /**
      * Creates or finds a WafAction from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class WafAction extends ExpandableStringEnum<WafAction> {
         return fromString(name, WafAction.class);
     }
 
-    /** @return known WafAction values. */
+    /**
+     * Gets known WafAction values.
+     *
+     * @return known WafAction values.
+     */
     public static Collection<WafAction> values() {
         return values(WafAction.class);
     }

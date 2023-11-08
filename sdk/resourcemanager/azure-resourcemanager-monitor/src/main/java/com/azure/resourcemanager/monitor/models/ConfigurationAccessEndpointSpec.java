@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the endpoint used for accessing configuration. */
 @Immutable
 public class ConfigurationAccessEndpointSpec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationAccessEndpointSpec.class);
-
     /*
      * The endpoint. This property is READ-ONLY.
      */
     @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
+
+    /** Creates an instance of ConfigurationAccessEndpointSpec class. */
+    public ConfigurationAccessEndpointSpec() {
+    }
 
     /**
      * Get the endpoint property: The endpoint. This property is READ-ONLY.

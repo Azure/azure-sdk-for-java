@@ -64,11 +64,10 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface VirtualApplianceSitesService {
+    public interface VirtualApplianceSitesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -83,8 +82,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualApplianceSiteInner>> get(
@@ -99,8 +97,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites/{siteName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -116,8 +113,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/virtualApplianceSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkVirtualApplianceSiteListResult>> list(
@@ -179,7 +175,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -237,7 +233,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -311,7 +307,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkVirtualApplianceName, String siteName) {
-        return beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName).getSyncPoller();
     }
 
     /**
@@ -329,7 +325,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).getSyncPoller();
     }
 
     /**
@@ -441,7 +437,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -500,7 +496,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -530,31 +526,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     public Mono<VirtualApplianceSiteInner> getAsync(
         String resourceGroupName, String networkVirtualApplianceName, String siteName) {
         return getWithResponseAsync(resourceGroupName, networkVirtualApplianceName, siteName)
-            .flatMap(
-                (Response<VirtualApplianceSiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified Virtual Appliance Site.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param siteName The name of the site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Appliance Site.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualApplianceSiteInner get(
-        String resourceGroupName, String networkVirtualApplianceName, String siteName) {
-        return getAsync(resourceGroupName, networkVirtualApplianceName, siteName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -573,6 +545,23 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     public Response<VirtualApplianceSiteInner> getWithResponse(
         String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).block();
+    }
+
+    /**
+     * Gets the specified Virtual Appliance Site.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
+     * @param siteName The name of the site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Virtual Appliance Site.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualApplianceSiteInner get(
+        String resourceGroupName, String networkVirtualApplianceName, String siteName) {
+        return getWithResponse(resourceGroupName, networkVirtualApplianceName, siteName, Context.NONE).getValue();
     }
 
     /**
@@ -623,7 +612,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -692,7 +681,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -790,7 +779,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         String networkVirtualApplianceName,
         String siteName,
         VirtualApplianceSiteInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, siteName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, siteName, parameters)
             .getSyncPoller();
     }
 
@@ -814,7 +804,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         String siteName,
         VirtualApplianceSiteInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, siteName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, siteName, parameters, context)
             .getSyncPoller();
     }
 
@@ -947,7 +938,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1010,7 +1001,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1109,7 +1100,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1145,7 +1137,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

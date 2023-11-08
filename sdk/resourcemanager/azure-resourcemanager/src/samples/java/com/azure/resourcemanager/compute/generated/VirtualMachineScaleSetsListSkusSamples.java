@@ -4,43 +4,41 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSets ListSkus. */
 public final class VirtualMachineScaleSetsListSkusSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_ListSkus_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_ListSkus_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_ListSkus_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsListSkusMinimumSetGen(
+    public static void virtualMachineScaleSetListSkusMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .listSkus("rgcompute", "aaaaaaaaaaaaaaaa", Context.NONE);
+            .listSkus("rgcompute", "aaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_ListSkus_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_ListSkus_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_ListSkus_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsListSkusMaximumSetGen(
+    public static void virtualMachineScaleSetListSkusMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .listSkus("rgcompute", "aaaaaa", Context.NONE);
+            .listSkus("rgcompute", "aaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

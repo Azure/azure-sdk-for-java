@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SignedResource. */
+/**
+ * The signed services accessible with the service SAS. Possible values include: Blob (b), Container (c), File (f),
+ * Share (s).
+ */
 public final class SignedResource extends ExpandableStringEnum<SignedResource> {
     /** Static value b for SignedResource. */
     public static final SignedResource B = fromString("b");
@@ -23,6 +26,15 @@ public final class SignedResource extends ExpandableStringEnum<SignedResource> {
     public static final SignedResource S = fromString("s");
 
     /**
+     * Creates a new instance of SignedResource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SignedResource() {
+    }
+
+    /**
      * Creates or finds a SignedResource from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +45,11 @@ public final class SignedResource extends ExpandableStringEnum<SignedResource> {
         return fromString(name, SignedResource.class);
     }
 
-    /** @return known SignedResource values. */
+    /**
+     * Gets known SignedResource values.
+     *
+     * @return known SignedResource values.
+     */
     public static Collection<SignedResource> values() {
         return values(SignedResource.class);
     }

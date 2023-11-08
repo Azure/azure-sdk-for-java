@@ -112,6 +112,10 @@
 - [ListByBillingProfile](#invoices_listbybillingprofile)
 - [ListByBillingSubscription](#invoices_listbybillingsubscription)
 
+## Operations
+
+- [List](#operations_list)
+
 ## Policies
 
 - [GetByBillingProfile](#policies_getbybillingprofile)
@@ -141,7 +145,6 @@
 ### Address_Validate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 
 /** Samples for Address Validate. */
@@ -163,8 +166,8 @@ public final class AddressValidateSamples {
                     .withCity("bellevue")
                     .withRegion("wa")
                     .withCountry("us")
-                    .withPostalCode("12345"),
-                Context.NONE);
+                    .withPostalCode("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -184,8 +187,8 @@ public final class AddressValidateSamples {
                     .withCity("bellevue")
                     .withRegion("wa")
                     .withCountry("us")
-                    .withPostalCode("12345"),
-                Context.NONE);
+                    .withPostalCode("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -193,8 +196,6 @@ public final class AddressValidateSamples {
 ### Agreements_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Agreements Get. */
 public final class AgreementsGetSamples {
     /*
@@ -206,7 +207,9 @@ public final class AgreementsGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void agreementByName(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.agreements().getWithResponse("{billingAccountName}", "{agreementName}", null, Context.NONE);
+        manager
+            .agreements()
+            .getWithResponse("{billingAccountName}", "{agreementName}", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -214,8 +217,6 @@ public final class AgreementsGetSamples {
 ### Agreements_ListByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Agreements ListByBillingAccount. */
 public final class AgreementsListByBillingAccountSamples {
     /*
@@ -227,7 +228,7 @@ public final class AgreementsListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void agreementsListByBillingAccount(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.agreements().listByBillingAccount("{billingAccountName}", null, Context.NONE);
+        manager.agreements().listByBillingAccount("{billingAccountName}", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -235,8 +236,6 @@ public final class AgreementsListByBillingAccountSamples {
 ### AvailableBalances_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AvailableBalances Get. */
 public final class AvailableBalancesGetSamples {
     /*
@@ -248,7 +247,9 @@ public final class AvailableBalancesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void availableBalanceByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.availableBalances().getWithResponse("{billingAccountName}", "{billingProfileName}", Context.NONE);
+        manager
+            .availableBalances()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -256,8 +257,6 @@ public final class AvailableBalancesGetSamples {
 ### BillingAccounts_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingAccounts Get. */
 public final class BillingAccountsGetSamples {
     /*
@@ -272,7 +271,9 @@ public final class BillingAccountsGetSamples {
         manager
             .billingAccounts()
             .getWithResponse(
-                "{billingAccountName}", "soldTo,billingProfiles,billingProfiles/invoiceSections", Context.NONE);
+                "{billingAccountName}",
+                "soldTo,billingProfiles,billingProfiles/invoiceSections",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -284,7 +285,7 @@ public final class BillingAccountsGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccounts(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingAccounts().getWithResponse("{billingAccountName}", null, Context.NONE);
+        manager.billingAccounts().getWithResponse("{billingAccountName}", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -292,8 +293,6 @@ public final class BillingAccountsGetSamples {
 ### BillingAccounts_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingAccounts List. */
 public final class BillingAccountsListSamples {
     /*
@@ -305,7 +304,7 @@ public final class BillingAccountsListSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccountsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingAccounts().list(null, Context.NONE);
+        manager.billingAccounts().list(null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -318,7 +317,9 @@ public final class BillingAccountsListSamples {
      */
     public static void billingAccountsListWithExpandForEnrollmentDetails(
         com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingAccounts().list("enrollmentDetails,departments,enrollmentAccounts", Context.NONE);
+        manager
+            .billingAccounts()
+            .list("enrollmentDetails,departments,enrollmentAccounts", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -330,7 +331,9 @@ public final class BillingAccountsListSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccountsListWithExpand(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingAccounts().list("soldTo,billingProfiles,billingProfiles/invoiceSections", Context.NONE);
+        manager
+            .billingAccounts()
+            .list("soldTo,billingProfiles,billingProfiles/invoiceSections", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -338,8 +341,6 @@ public final class BillingAccountsListSamples {
 ### BillingAccounts_ListInvoiceSectionsByCreateSubscriptionPermission
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingAccounts ListInvoiceSectionsByCreateSubscriptionPermission. */
 public final class BillingAccountsListInvoiceSectionsByCreateSubscriptionPermissionSamples {
     /*
@@ -354,7 +355,8 @@ public final class BillingAccountsListInvoiceSectionsByCreateSubscriptionPermiss
         com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingAccounts()
-            .listInvoiceSectionsByCreateSubscriptionPermission("{billingAccountName}", Context.NONE);
+            .listInvoiceSectionsByCreateSubscriptionPermission(
+                "{billingAccountName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -362,7 +364,6 @@ public final class BillingAccountsListInvoiceSectionsByCreateSubscriptionPermiss
 ### BillingAccounts_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 import com.azure.resourcemanager.billing.models.BillingAccountUpdateRequest;
 
@@ -392,8 +393,8 @@ public final class BillingAccountsUpdateSamples {
                             .withCity("Redmond")
                             .withRegion("WA")
                             .withCountry("US")
-                            .withPostalCode("12345")),
-                Context.NONE);
+                            .withPostalCode("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -401,8 +402,6 @@ public final class BillingAccountsUpdateSamples {
 ### BillingPeriods_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingPeriods Get. */
 public final class BillingPeriodsGetSamples {
     /*
@@ -414,7 +413,7 @@ public final class BillingPeriodsGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingPeriodsGet(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingPeriods().getWithResponse("201702-1", Context.NONE);
+        manager.billingPeriods().getWithResponse("201702-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -422,8 +421,6 @@ public final class BillingPeriodsGetSamples {
 ### BillingPeriods_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingPeriods List. */
 public final class BillingPeriodsListSamples {
     /*
@@ -435,7 +432,7 @@ public final class BillingPeriodsListSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingPeriodsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingPeriods().list(null, null, null, Context.NONE);
+        manager.billingPeriods().list(null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -443,8 +440,6 @@ public final class BillingPeriodsListSamples {
 ### BillingPermissions_ListByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingPermissions ListByBillingAccount. */
 public final class BillingPermissionsListByBillingAccountSamples {
     /*
@@ -456,7 +451,7 @@ public final class BillingPermissionsListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccountPermissionsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingPermissions().listByBillingAccount("{billingAccountName}", Context.NONE);
+        manager.billingPermissions().listByBillingAccount("{billingAccountName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -464,8 +459,6 @@ public final class BillingPermissionsListByBillingAccountSamples {
 ### BillingPermissions_ListByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingPermissions ListByBillingProfile. */
 public final class BillingPermissionsListByBillingProfileSamples {
     /*
@@ -477,7 +470,9 @@ public final class BillingPermissionsListByBillingProfileSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingProfilePermissionsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingPermissions().listByBillingProfile("{billingAccountName}", "{billingProfileName}", Context.NONE);
+        manager
+            .billingPermissions()
+            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -485,8 +480,6 @@ public final class BillingPermissionsListByBillingProfileSamples {
 ### BillingPermissions_ListByCustomer
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingPermissions ListByCustomer. */
 public final class BillingPermissionsListByCustomerSamples {
     /*
@@ -498,7 +491,9 @@ public final class BillingPermissionsListByCustomerSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingProfilePermissionsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingPermissions().listByCustomer("{billingAccountName}", "{customerName}", Context.NONE);
+        manager
+            .billingPermissions()
+            .listByCustomer("{billingAccountName}", "{customerName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -506,8 +501,6 @@ public final class BillingPermissionsListByCustomerSamples {
 ### BillingPermissions_ListByInvoiceSections
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingPermissions ListByInvoiceSections. */
 public final class BillingPermissionsListByInvoiceSectionsSamples {
     /*
@@ -522,7 +515,10 @@ public final class BillingPermissionsListByInvoiceSectionsSamples {
         manager
             .billingPermissions()
             .listByInvoiceSections(
-                "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{invoiceSectionName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -530,7 +526,6 @@ public final class BillingPermissionsListByInvoiceSectionsSamples {
 ### BillingProfiles_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.BillingProfileInner;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 import com.azure.resourcemanager.billing.models.AzurePlan;
@@ -563,11 +558,11 @@ public final class BillingProfilesCreateOrUpdateSamples {
                             .withCity("Redmond")
                             .withRegion("WA")
                             .withCountry("US")
-                            .withPostalCode("12345"))
+                            .withPostalCode("fakeTokenPlaceholder"))
                     .withInvoiceEmailOptIn(true)
                     .withEnabledAzurePlans(
                         Arrays.asList(new AzurePlan().withSkuId("0001"), new AzurePlan().withSkuId("0002"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -575,8 +570,6 @@ public final class BillingProfilesCreateOrUpdateSamples {
 ### BillingProfiles_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingProfiles Get. */
 public final class BillingProfilesGetSamples {
     /*
@@ -590,7 +583,8 @@ public final class BillingProfilesGetSamples {
     public static void billingProfileWithExpand(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingProfiles()
-            .getWithResponse("{billingAccountName}", "{billingProfileName}", "invoiceSections", Context.NONE);
+            .getWithResponse(
+                "{billingAccountName}", "{billingProfileName}", "invoiceSections", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -602,7 +596,9 @@ public final class BillingProfilesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingProfiles().getWithResponse("{billingAccountName}", "{billingProfileName}", null, Context.NONE);
+        manager
+            .billingProfiles()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -610,8 +606,6 @@ public final class BillingProfilesGetSamples {
 ### BillingProfiles_ListByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingProfiles ListByBillingAccount. */
 public final class BillingProfilesListByBillingAccountSamples {
     /*
@@ -623,7 +617,9 @@ public final class BillingProfilesListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingProfilesListWithExpand(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingProfiles().listByBillingAccount("{billingAccountName}", "invoiceSections", Context.NONE);
+        manager
+            .billingProfiles()
+            .listByBillingAccount("{billingAccountName}", "invoiceSections", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -635,7 +631,7 @@ public final class BillingProfilesListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingProfilesListByBillingAccount(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingProfiles().listByBillingAccount("{billingAccountName}", null, Context.NONE);
+        manager.billingProfiles().listByBillingAccount("{billingAccountName}", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -643,8 +639,6 @@ public final class BillingProfilesListByBillingAccountSamples {
 ### BillingProperty_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingProperty Get. */
 public final class BillingPropertyGetSamples {
     /*
@@ -656,7 +650,7 @@ public final class BillingPropertyGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingProperty(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingProperties().getWithResponse(Context.NONE);
+        manager.billingProperties().getWithResponse(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -664,7 +658,6 @@ public final class BillingPropertyGetSamples {
 ### BillingProperty_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.BillingPropertyInner;
 
 /** Samples for BillingProperty Update. */
@@ -678,7 +671,9 @@ public final class BillingPropertyUpdateSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void updateBillingProperty(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingProperties().updateWithResponse(new BillingPropertyInner().withCostCenter("1010"), Context.NONE);
+        manager
+            .billingProperties()
+            .updateWithResponse(new BillingPropertyInner().withCostCenter("1010"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -686,8 +681,6 @@ public final class BillingPropertyUpdateSamples {
 ### BillingRoleAssignments_DeleteByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments DeleteByBillingAccount. */
 public final class BillingRoleAssignmentsDeleteByBillingAccountSamples {
     /*
@@ -701,7 +694,8 @@ public final class BillingRoleAssignmentsDeleteByBillingAccountSamples {
     public static void billingAccountRoleAssignmentDelete(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingRoleAssignments()
-            .deleteByBillingAccountWithResponse("{billingAccountName}", "{billingRoleAssignmentName}", Context.NONE);
+            .deleteByBillingAccountWithResponse(
+                "{billingAccountName}", "{billingRoleAssignmentName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -709,8 +703,6 @@ public final class BillingRoleAssignmentsDeleteByBillingAccountSamples {
 ### BillingRoleAssignments_DeleteByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments DeleteByBillingProfile. */
 public final class BillingRoleAssignmentsDeleteByBillingProfileSamples {
     /*
@@ -725,7 +717,10 @@ public final class BillingRoleAssignmentsDeleteByBillingProfileSamples {
         manager
             .billingRoleAssignments()
             .deleteByBillingProfileWithResponse(
-                "{billingAccountName}", "{billingProfileName}", "{billingRoleAssignmentName}", Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{billingRoleAssignmentName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -733,8 +728,6 @@ public final class BillingRoleAssignmentsDeleteByBillingProfileSamples {
 ### BillingRoleAssignments_DeleteByInvoiceSection
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments DeleteByInvoiceSection. */
 public final class BillingRoleAssignmentsDeleteByInvoiceSectionSamples {
     /*
@@ -753,7 +746,7 @@ public final class BillingRoleAssignmentsDeleteByInvoiceSectionSamples {
                 "{billingProfileName}",
                 "{invoiceSectionName}",
                 "{billingRoleAssignmentName}",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -761,8 +754,6 @@ public final class BillingRoleAssignmentsDeleteByInvoiceSectionSamples {
 ### BillingRoleAssignments_GetByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments GetByBillingAccount. */
 public final class BillingRoleAssignmentsGetByBillingAccountSamples {
     /*
@@ -776,7 +767,8 @@ public final class BillingRoleAssignmentsGetByBillingAccountSamples {
     public static void billingAccountRoleAssignment(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingRoleAssignments()
-            .getByBillingAccountWithResponse("{billingAccountName}", "{billingRoleAssignmentId}", Context.NONE);
+            .getByBillingAccountWithResponse(
+                "{billingAccountName}", "{billingRoleAssignmentId}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -784,8 +776,6 @@ public final class BillingRoleAssignmentsGetByBillingAccountSamples {
 ### BillingRoleAssignments_GetByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments GetByBillingProfile. */
 public final class BillingRoleAssignmentsGetByBillingProfileSamples {
     /*
@@ -800,7 +790,10 @@ public final class BillingRoleAssignmentsGetByBillingProfileSamples {
         manager
             .billingRoleAssignments()
             .getByBillingProfileWithResponse(
-                "{billingAccountName}", "{billingProfileName}", "{billingRoleAssignmentName}", Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{billingRoleAssignmentName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -808,8 +801,6 @@ public final class BillingRoleAssignmentsGetByBillingProfileSamples {
 ### BillingRoleAssignments_GetByInvoiceSection
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments GetByInvoiceSection. */
 public final class BillingRoleAssignmentsGetByInvoiceSectionSamples {
     /*
@@ -828,7 +819,7 @@ public final class BillingRoleAssignmentsGetByInvoiceSectionSamples {
                 "{billingProfileName}",
                 "{invoiceSectionName}",
                 "{billingRoleAssignmentName}",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -836,8 +827,6 @@ public final class BillingRoleAssignmentsGetByInvoiceSectionSamples {
 ### BillingRoleAssignments_ListByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments ListByBillingAccount. */
 public final class BillingRoleAssignmentsListByBillingAccountSamples {
     /*
@@ -849,7 +838,7 @@ public final class BillingRoleAssignmentsListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccountRoleAssignmentList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingRoleAssignments().listByBillingAccount("{billingAccountName}", Context.NONE);
+        manager.billingRoleAssignments().listByBillingAccount("{billingAccountName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -857,8 +846,6 @@ public final class BillingRoleAssignmentsListByBillingAccountSamples {
 ### BillingRoleAssignments_ListByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments ListByBillingProfile. */
 public final class BillingRoleAssignmentsListByBillingProfileSamples {
     /*
@@ -872,7 +859,7 @@ public final class BillingRoleAssignmentsListByBillingProfileSamples {
     public static void billingProfileRoleAssignmentList(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingRoleAssignments()
-            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", Context.NONE);
+            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -880,8 +867,6 @@ public final class BillingRoleAssignmentsListByBillingProfileSamples {
 ### BillingRoleAssignments_ListByInvoiceSection
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleAssignments ListByInvoiceSection. */
 public final class BillingRoleAssignmentsListByInvoiceSectionSamples {
     /*
@@ -895,7 +880,11 @@ public final class BillingRoleAssignmentsListByInvoiceSectionSamples {
     public static void invoiceSectionRoleAssignmentList(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingRoleAssignments()
-            .listByInvoiceSection("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", Context.NONE);
+            .listByInvoiceSection(
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{invoiceSectionName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -903,8 +892,6 @@ public final class BillingRoleAssignmentsListByInvoiceSectionSamples {
 ### BillingRoleDefinitions_GetByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleDefinitions GetByBillingAccount. */
 public final class BillingRoleDefinitionsGetByBillingAccountSamples {
     /*
@@ -918,7 +905,8 @@ public final class BillingRoleDefinitionsGetByBillingAccountSamples {
     public static void billingAccountRoleDefinition(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingRoleDefinitions()
-            .getByBillingAccountWithResponse("{billingAccountName}", "{billingRoleDefinitionName}", Context.NONE);
+            .getByBillingAccountWithResponse(
+                "{billingAccountName}", "{billingRoleDefinitionName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -926,8 +914,6 @@ public final class BillingRoleDefinitionsGetByBillingAccountSamples {
 ### BillingRoleDefinitions_GetByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleDefinitions GetByBillingProfile. */
 public final class BillingRoleDefinitionsGetByBillingProfileSamples {
     /*
@@ -942,7 +928,10 @@ public final class BillingRoleDefinitionsGetByBillingProfileSamples {
         manager
             .billingRoleDefinitions()
             .getByBillingProfileWithResponse(
-                "{billingAccountName}", "{billingProfileName}", "{billingRoleDefinitionName}", Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{billingRoleDefinitionName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -950,8 +939,6 @@ public final class BillingRoleDefinitionsGetByBillingProfileSamples {
 ### BillingRoleDefinitions_GetByInvoiceSection
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleDefinitions GetByInvoiceSection. */
 public final class BillingRoleDefinitionsGetByInvoiceSectionSamples {
     /*
@@ -970,7 +957,7 @@ public final class BillingRoleDefinitionsGetByInvoiceSectionSamples {
                 "{billingProfileName}",
                 "{invoiceSectionName}",
                 "{billingRoleDefinitionName}",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -978,8 +965,6 @@ public final class BillingRoleDefinitionsGetByInvoiceSectionSamples {
 ### BillingRoleDefinitions_ListByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleDefinitions ListByBillingAccount. */
 public final class BillingRoleDefinitionsListByBillingAccountSamples {
     /*
@@ -991,7 +976,7 @@ public final class BillingRoleDefinitionsListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccountRoleDefinitionsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingRoleDefinitions().listByBillingAccount("{billingAccountName}", Context.NONE);
+        manager.billingRoleDefinitions().listByBillingAccount("{billingAccountName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -999,8 +984,6 @@ public final class BillingRoleDefinitionsListByBillingAccountSamples {
 ### BillingRoleDefinitions_ListByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleDefinitions ListByBillingProfile. */
 public final class BillingRoleDefinitionsListByBillingProfileSamples {
     /*
@@ -1014,7 +997,7 @@ public final class BillingRoleDefinitionsListByBillingProfileSamples {
     public static void billingProfileRoleDefinitionsList(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingRoleDefinitions()
-            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", Context.NONE);
+            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1022,8 +1005,6 @@ public final class BillingRoleDefinitionsListByBillingProfileSamples {
 ### BillingRoleDefinitions_ListByInvoiceSection
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingRoleDefinitions ListByInvoiceSection. */
 public final class BillingRoleDefinitionsListByInvoiceSectionSamples {
     /*
@@ -1037,7 +1018,11 @@ public final class BillingRoleDefinitionsListByInvoiceSectionSamples {
     public static void invoiceSectionRoleDefinitionsList(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingRoleDefinitions()
-            .listByInvoiceSection("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", Context.NONE);
+            .listByInvoiceSection(
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{invoiceSectionName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1045,8 +1030,6 @@ public final class BillingRoleDefinitionsListByInvoiceSectionSamples {
 ### BillingSubscriptions_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingSubscriptions Get. */
 public final class BillingSubscriptionsGetSamples {
     /*
@@ -1058,7 +1041,7 @@ public final class BillingSubscriptionsGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingSubscription(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingSubscriptions().getWithResponse("{billingAccountName}", Context.NONE);
+        manager.billingSubscriptions().getWithResponse("{billingAccountName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1066,8 +1049,6 @@ public final class BillingSubscriptionsGetSamples {
 ### BillingSubscriptions_ListByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingSubscriptions ListByBillingAccount. */
 public final class BillingSubscriptionsListByBillingAccountSamples {
     /*
@@ -1080,7 +1061,7 @@ public final class BillingSubscriptionsListByBillingAccountSamples {
      */
     public static void billingSubscriptionsListByBillingAccount(
         com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingSubscriptions().listByBillingAccount("{billingAccountName}", Context.NONE);
+        manager.billingSubscriptions().listByBillingAccount("{billingAccountName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1088,8 +1069,6 @@ public final class BillingSubscriptionsListByBillingAccountSamples {
 ### BillingSubscriptions_ListByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingSubscriptions ListByBillingProfile. */
 public final class BillingSubscriptionsListByBillingProfileSamples {
     /*
@@ -1104,7 +1083,7 @@ public final class BillingSubscriptionsListByBillingProfileSamples {
         com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingSubscriptions()
-            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", Context.NONE);
+            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1112,8 +1091,6 @@ public final class BillingSubscriptionsListByBillingProfileSamples {
 ### BillingSubscriptions_ListByCustomer
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingSubscriptions ListByCustomer. */
 public final class BillingSubscriptionsListByCustomerSamples {
     /*
@@ -1125,7 +1102,9 @@ public final class BillingSubscriptionsListByCustomerSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingSubscriptionsListByCustomer(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingSubscriptions().listByCustomer("{billingAccountName}", "{customerName}", Context.NONE);
+        manager
+            .billingSubscriptions()
+            .listByCustomer("{billingAccountName}", "{customerName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1133,8 +1112,6 @@ public final class BillingSubscriptionsListByCustomerSamples {
 ### BillingSubscriptions_ListByInvoiceSection
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BillingSubscriptions ListByInvoiceSection. */
 public final class BillingSubscriptionsListByInvoiceSectionSamples {
     /*
@@ -1149,7 +1126,11 @@ public final class BillingSubscriptionsListByInvoiceSectionSamples {
         com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .billingSubscriptions()
-            .listByInvoiceSection("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", Context.NONE);
+            .listByInvoiceSection(
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{invoiceSectionName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1157,7 +1138,6 @@ public final class BillingSubscriptionsListByInvoiceSectionSamples {
 ### BillingSubscriptions_Move
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.models.TransferBillingSubscriptionRequestProperties;
 
 /** Samples for BillingSubscriptions Move. */
@@ -1178,7 +1158,7 @@ public final class BillingSubscriptionsMoveSamples {
                 new TransferBillingSubscriptionRequestProperties()
                     .withDestinationInvoiceSectionId(
                         "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1186,7 +1166,6 @@ public final class BillingSubscriptionsMoveSamples {
 ### BillingSubscriptions_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.BillingSubscriptionInner;
 
 /** Samples for BillingSubscriptions Update. */
@@ -1203,7 +1182,9 @@ public final class BillingSubscriptionsUpdateSamples {
         manager
             .billingSubscriptions()
             .updateWithResponse(
-                "{billingAccountName}", new BillingSubscriptionInner().withCostCenter("ABC1234"), Context.NONE);
+                "{billingAccountName}",
+                new BillingSubscriptionInner().withCostCenter("ABC1234"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1211,7 +1192,6 @@ public final class BillingSubscriptionsUpdateSamples {
 ### BillingSubscriptions_ValidateMove
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.models.TransferBillingSubscriptionRequestProperties;
 
 /** Samples for BillingSubscriptions ValidateMove. */
@@ -1232,7 +1212,7 @@ public final class BillingSubscriptionsValidateMoveSamples {
                 new TransferBillingSubscriptionRequestProperties()
                     .withDestinationInvoiceSectionId(
                         "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1251,7 +1231,7 @@ public final class BillingSubscriptionsValidateMoveSamples {
                 new TransferBillingSubscriptionRequestProperties()
                     .withDestinationInvoiceSectionId(
                         "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1259,8 +1239,6 @@ public final class BillingSubscriptionsValidateMoveSamples {
 ### Customers_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Customers Get. */
 public final class CustomersGetSamples {
     /*
@@ -1274,7 +1252,11 @@ public final class CustomersGetSamples {
     public static void customerWithExpand(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .customers()
-            .getWithResponse("{billingAccountName}", "{customerName}", "enabledAzurePlans,resellers", Context.NONE);
+            .getWithResponse(
+                "{billingAccountName}",
+                "{customerName}",
+                "enabledAzurePlans,resellers",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1286,7 +1268,9 @@ public final class CustomersGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void customer(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.customers().getWithResponse("{billingAccountName}", "{customerName}", null, Context.NONE);
+        manager
+            .customers()
+            .getWithResponse("{billingAccountName}", "{customerName}", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1294,8 +1278,6 @@ public final class CustomersGetSamples {
 ### Customers_ListByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Customers ListByBillingAccount. */
 public final class CustomersListByBillingAccountSamples {
     /*
@@ -1307,7 +1289,7 @@ public final class CustomersListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void customersListByBillingAccount(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.customers().listByBillingAccount("{billingAccountName}", null, null, Context.NONE);
+        manager.customers().listByBillingAccount("{billingAccountName}", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1315,8 +1297,6 @@ public final class CustomersListByBillingAccountSamples {
 ### Customers_ListByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Customers ListByBillingProfile. */
 public final class CustomersListByBillingProfileSamples {
     /*
@@ -1330,7 +1310,8 @@ public final class CustomersListByBillingProfileSamples {
     public static void customersListByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .customers()
-            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", null, null, Context.NONE);
+            .listByBillingProfile(
+                "{billingAccountName}", "{billingProfileName}", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1338,8 +1319,6 @@ public final class CustomersListByBillingProfileSamples {
 ### EnrollmentAccounts_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for EnrollmentAccounts Get. */
 public final class EnrollmentAccountsGetSamples {
     /*
@@ -1351,7 +1330,9 @@ public final class EnrollmentAccountsGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void enrollmentAccountsGet(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.enrollmentAccounts().getWithResponse("e1bf1c8c-5ac6-44a0-bdcd-aa7c1cf60556", Context.NONE);
+        manager
+            .enrollmentAccounts()
+            .getWithResponse("e1bf1c8c-5ac6-44a0-bdcd-aa7c1cf60556", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1359,8 +1340,6 @@ public final class EnrollmentAccountsGetSamples {
 ### EnrollmentAccounts_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for EnrollmentAccounts List. */
 public final class EnrollmentAccountsListSamples {
     /*
@@ -1372,7 +1351,7 @@ public final class EnrollmentAccountsListSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void enrollmentAccountsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.enrollmentAccounts().list(Context.NONE);
+        manager.enrollmentAccounts().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1380,8 +1359,6 @@ public final class EnrollmentAccountsListSamples {
 ### Instructions_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Instructions Get. */
 public final class InstructionsGetSamples {
     /*
@@ -1395,7 +1372,8 @@ public final class InstructionsGetSamples {
     public static void instruction(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .instructions()
-            .getWithResponse("{billingAccountName}", "{billingProfileName}", "{instructionName}", Context.NONE);
+            .getWithResponse(
+                "{billingAccountName}", "{billingProfileName}", "{instructionName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1403,8 +1381,6 @@ public final class InstructionsGetSamples {
 ### Instructions_ListByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Instructions ListByBillingProfile. */
 public final class InstructionsListByBillingProfileSamples {
     /*
@@ -1416,7 +1392,9 @@ public final class InstructionsListByBillingProfileSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void instructionsListByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.instructions().listByBillingProfile("{billingAccountName}", "{billingProfileName}", Context.NONE);
+        manager
+            .instructions()
+            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1424,7 +1402,6 @@ public final class InstructionsListByBillingProfileSamples {
 ### Instructions_Put
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.InstructionInner;
 import java.time.OffsetDateTime;
 
@@ -1449,7 +1426,7 @@ public final class InstructionsPutSamples {
                     .withAmount(5000f)
                     .withStartDate(OffsetDateTime.parse("2019-12-30T21:26:47.997Z"))
                     .withEndDate(OffsetDateTime.parse("2020-12-30T21:26:47.997Z")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1457,7 +1434,6 @@ public final class InstructionsPutSamples {
 ### InvoiceSections_CreateOrUpdate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionInner;
 import java.util.HashMap;
 import java.util.Map;
@@ -1482,7 +1458,7 @@ public final class InvoiceSectionsCreateOrUpdateSamples {
                 new InvoiceSectionInner()
                     .withDisplayName("invoiceSection1")
                     .withLabels(mapOf("costCategory", "Support", "pcCode", "A123456")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")
@@ -1501,8 +1477,6 @@ public final class InvoiceSectionsCreateOrUpdateSamples {
 ### InvoiceSections_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for InvoiceSections Get. */
 public final class InvoiceSectionsGetSamples {
     /*
@@ -1516,7 +1490,11 @@ public final class InvoiceSectionsGetSamples {
     public static void invoiceSection(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .invoiceSections()
-            .getWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", Context.NONE);
+            .getWithResponse(
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{invoiceSectionName}",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1524,8 +1502,6 @@ public final class InvoiceSectionsGetSamples {
 ### InvoiceSections_ListByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for InvoiceSections ListByBillingProfile. */
 public final class InvoiceSectionsListByBillingProfileSamples {
     /*
@@ -1537,7 +1513,9 @@ public final class InvoiceSectionsListByBillingProfileSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void invoiceSectionsListByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoiceSections().listByBillingProfile("{billingAccountName}", "{billingProfileName}", Context.NONE);
+        manager
+            .invoiceSections()
+            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1545,8 +1523,6 @@ public final class InvoiceSectionsListByBillingProfileSamples {
 ### Invoices_DownloadBillingSubscriptionInvoice
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Invoices DownloadBillingSubscriptionInvoice. */
 public final class InvoicesDownloadBillingSubscriptionInvoiceSamples {
     /*
@@ -1558,7 +1534,9 @@ public final class InvoicesDownloadBillingSubscriptionInvoiceSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingSubscriptionInvoiceDownload(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().downloadBillingSubscriptionInvoice("{invoiceName}", "DRS_12345", Context.NONE);
+        manager
+            .invoices()
+            .downloadBillingSubscriptionInvoice("{invoiceName}", "DRS_12345", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1566,8 +1544,6 @@ public final class InvoicesDownloadBillingSubscriptionInvoiceSamples {
 ### Invoices_DownloadInvoice
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Invoices DownloadInvoice. */
 public final class InvoicesDownloadInvoiceSamples {
     /*
@@ -1579,7 +1555,9 @@ public final class InvoicesDownloadInvoiceSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void invoiceDownload(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().downloadInvoice("{billingAccountName}", "{invoiceName}", "DRS_12345", Context.NONE);
+        manager
+            .invoices()
+            .downloadInvoice("{billingAccountName}", "{invoiceName}", "DRS_12345", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1587,7 +1565,6 @@ public final class InvoicesDownloadInvoiceSamples {
 ### Invoices_DownloadMultipleBillingProfileInvoices
 
 ```java
-import com.azure.core.util.Context;
 import java.util.Arrays;
 
 /** Samples for Invoices DownloadMultipleBillingProfileInvoices. */
@@ -1610,7 +1587,7 @@ public final class InvoicesDownloadMultipleBillingProfileInvoicesSamples {
                         "https://management.azure.com/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01",
                         "https://management.azure.com/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01",
                         "https://management.azure.com/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1618,7 +1595,6 @@ public final class InvoicesDownloadMultipleBillingProfileInvoicesSamples {
 ### Invoices_DownloadMultipleBillingSubscriptionInvoices
 
 ```java
-import com.azure.core.util.Context;
 import java.util.Arrays;
 
 /** Samples for Invoices DownloadMultipleBillingSubscriptionInvoices. */
@@ -1640,7 +1616,7 @@ public final class InvoicesDownloadMultipleBillingSubscriptionInvoicesSamples {
                         "https://management.azure.com/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01",
                         "https://management.azure.com/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01",
                         "https://management.azure.com/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices/{invoiceName}/download?downloadToken={downloadToken}&useCache=True&api-version=2020-05-01"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1648,8 +1624,6 @@ public final class InvoicesDownloadMultipleBillingSubscriptionInvoicesSamples {
 ### Invoices_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Invoices Get. */
 public final class InvoicesGetSamples {
     /*
@@ -1661,7 +1635,7 @@ public final class InvoicesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void invoice(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", Context.NONE);
+        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1673,7 +1647,7 @@ public final class InvoicesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void creditNote(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", Context.NONE);
+        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1685,7 +1659,7 @@ public final class InvoicesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void voidInvoice(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", Context.NONE);
+        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1697,7 +1671,7 @@ public final class InvoicesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void invoiceWithRebillDetails(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", Context.NONE);
+        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1705,8 +1679,6 @@ public final class InvoicesGetSamples {
 ### Invoices_GetById
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Invoices GetById. */
 public final class InvoicesGetByIdSamples {
     /*
@@ -1718,7 +1690,7 @@ public final class InvoicesGetByIdSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void invoice(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getByIdWithResponse("{invoiceName}", Context.NONE);
+        manager.invoices().getByIdWithResponse("{invoiceName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1726,8 +1698,6 @@ public final class InvoicesGetByIdSamples {
 ### Invoices_GetBySubscriptionAndInvoiceId
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Invoices GetBySubscriptionAndInvoiceId. */
 public final class InvoicesGetBySubscriptionAndInvoiceIdSamples {
     /*
@@ -1740,7 +1710,7 @@ public final class InvoicesGetBySubscriptionAndInvoiceIdSamples {
      */
     public static void billingSubscriptionsListByBillingAccount(
         com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getBySubscriptionAndInvoiceIdWithResponse("{invoiceName}", Context.NONE);
+        manager.invoices().getBySubscriptionAndInvoiceIdWithResponse("{invoiceName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1748,8 +1718,6 @@ public final class InvoicesGetBySubscriptionAndInvoiceIdSamples {
 ### Invoices_ListByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Invoices ListByBillingAccount. */
 public final class InvoicesListByBillingAccountSamples {
     /*
@@ -1761,7 +1729,9 @@ public final class InvoicesListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingAccountInvoicesList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().listByBillingAccount("{billingAccountName}", "2018-01-01", "2018-06-30", Context.NONE);
+        manager
+            .invoices()
+            .listByBillingAccount("{billingAccountName}", "2018-01-01", "2018-06-30", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1774,7 +1744,9 @@ public final class InvoicesListByBillingAccountSamples {
      */
     public static void billingAccountInvoicesListWithRebillDetails(
         com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().listByBillingAccount("{billingAccountName}", "2018-01-01", "2018-06-30", Context.NONE);
+        manager
+            .invoices()
+            .listByBillingAccount("{billingAccountName}", "2018-01-01", "2018-06-30", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1782,8 +1754,6 @@ public final class InvoicesListByBillingAccountSamples {
 ### Invoices_ListByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Invoices ListByBillingProfile. */
 public final class InvoicesListByBillingProfileSamples {
     /*
@@ -1798,7 +1768,11 @@ public final class InvoicesListByBillingProfileSamples {
         manager
             .invoices()
             .listByBillingProfile(
-                "{billingAccountName}", "{billingProfileName}", "2018-01-01", "2018-06-30", Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "2018-01-01",
+                "2018-06-30",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1814,7 +1788,11 @@ public final class InvoicesListByBillingProfileSamples {
         manager
             .invoices()
             .listByBillingProfile(
-                "{billingAccountName}", "{billingProfileName}", "2018-01-01", "2018-06-30", Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "2018-01-01",
+                "2018-06-30",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1822,8 +1800,6 @@ public final class InvoicesListByBillingProfileSamples {
 ### Invoices_ListByBillingSubscription
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Invoices ListByBillingSubscription. */
 public final class InvoicesListByBillingSubscriptionSamples {
     /*
@@ -1836,7 +1812,26 @@ public final class InvoicesListByBillingSubscriptionSamples {
      */
     public static void billingSubscriptionsListByBillingAccount(
         com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().listByBillingSubscription("2018-01-01", "2018-06-30", Context.NONE);
+        manager.invoices().listByBillingSubscription("2022-01-01", "2022-06-30", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Operations_List
+
+```java
+/** Samples for Operations List. */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/GetOperations.json
+     */
+    /**
+     * Sample code: BillingAccountPermissionsList.
+     *
+     * @param manager Entry point to BillingManager.
+     */
+    public static void billingAccountPermissionsList(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1844,8 +1839,6 @@ public final class InvoicesListByBillingSubscriptionSamples {
 ### Policies_GetByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Policies GetByBillingProfile. */
 public final class PoliciesGetByBillingProfileSamples {
     /*
@@ -1859,7 +1852,8 @@ public final class PoliciesGetByBillingProfileSamples {
     public static void policyByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .policies()
-            .getByBillingProfileWithResponse("{billingAccountName}", "{billingProfileName}", Context.NONE);
+            .getByBillingProfileWithResponse(
+                "{billingAccountName}", "{billingProfileName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1867,8 +1861,6 @@ public final class PoliciesGetByBillingProfileSamples {
 ### Policies_GetByCustomer
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Policies GetByCustomer. */
 public final class PoliciesGetByCustomerSamples {
     /*
@@ -1880,7 +1872,9 @@ public final class PoliciesGetByCustomerSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void policyByCustomer(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.policies().getByCustomerWithResponse("{billingAccountName}", "{customerName}", Context.NONE);
+        manager
+            .policies()
+            .getByCustomerWithResponse("{billingAccountName}", "{customerName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1888,7 +1882,6 @@ public final class PoliciesGetByCustomerSamples {
 ### Policies_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.PolicyInner;
 import com.azure.resourcemanager.billing.models.MarketplacePurchasesPolicy;
 import com.azure.resourcemanager.billing.models.ReservationPurchasesPolicy;
@@ -1914,7 +1907,7 @@ public final class PoliciesUpdateSamples {
                     .withMarketplacePurchases(MarketplacePurchasesPolicy.ONLY_FREE_ALLOWED)
                     .withReservationPurchases(ReservationPurchasesPolicy.NOT_ALLOWED)
                     .withViewCharges(ViewChargesPolicy.ALLOWED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1922,7 +1915,6 @@ public final class PoliciesUpdateSamples {
 ### Policies_UpdateCustomer
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.CustomerPolicyInner;
 import com.azure.resourcemanager.billing.models.ViewCharges;
 
@@ -1943,7 +1935,7 @@ public final class PoliciesUpdateCustomerSamples {
                 "{billingAccountName}",
                 "{customerName}",
                 new CustomerPolicyInner().withViewCharges(ViewCharges.NOT_ALLOWED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1951,8 +1943,6 @@ public final class PoliciesUpdateCustomerSamples {
 ### Products_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Products Get. */
 public final class ProductsGetSamples {
     /*
@@ -1964,7 +1954,7 @@ public final class ProductsGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void product(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.products().getWithResponse("{billingAccountName}", "{productName}", Context.NONE);
+        manager.products().getWithResponse("{billingAccountName}", "{productName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1972,8 +1962,6 @@ public final class ProductsGetSamples {
 ### Products_ListByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Products ListByBillingAccount. */
 public final class ProductsListByBillingAccountSamples {
     /*
@@ -1985,7 +1973,7 @@ public final class ProductsListByBillingAccountSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void productsListByBillingAccount(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.products().listByBillingAccount("{billingAccountName}", null, Context.NONE);
+        manager.products().listByBillingAccount("{billingAccountName}", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1993,8 +1981,6 @@ public final class ProductsListByBillingAccountSamples {
 ### Products_ListByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Products ListByBillingProfile. */
 public final class ProductsListByBillingProfileSamples {
     /*
@@ -2006,7 +1992,10 @@ public final class ProductsListByBillingProfileSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void productsListByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.products().listByBillingProfile("{billingAccountName}", "{billingProfileName}", null, Context.NONE);
+        manager
+            .products()
+            .listByBillingProfile(
+                "{billingAccountName}", "{billingProfileName}", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2014,8 +2003,6 @@ public final class ProductsListByBillingProfileSamples {
 ### Products_ListByCustomer
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Products ListByCustomer. */
 public final class ProductsListByCustomerSamples {
     /*
@@ -2027,7 +2014,7 @@ public final class ProductsListByCustomerSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void productsListByInvoiceSection(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.products().listByCustomer("{billingAccountName}", "{customerName}", Context.NONE);
+        manager.products().listByCustomer("{billingAccountName}", "{customerName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2035,8 +2022,6 @@ public final class ProductsListByCustomerSamples {
 ### Products_ListByInvoiceSection
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Products ListByInvoiceSection. */
 public final class ProductsListByInvoiceSectionSamples {
     /*
@@ -2051,7 +2036,11 @@ public final class ProductsListByInvoiceSectionSamples {
         manager
             .products()
             .listByInvoiceSection(
-                "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", null, Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{invoiceSectionName}",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2059,7 +2048,6 @@ public final class ProductsListByInvoiceSectionSamples {
 ### Products_Move
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.models.TransferProductRequestProperties;
 
 /** Samples for Products Move. */
@@ -2081,7 +2069,7 @@ public final class ProductsMoveSamples {
                 new TransferProductRequestProperties()
                     .withDestinationInvoiceSectionId(
                         "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2089,7 +2077,6 @@ public final class ProductsMoveSamples {
 ### Products_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.ProductInner;
 import com.azure.resourcemanager.billing.models.AutoRenew;
 
@@ -2107,7 +2094,10 @@ public final class ProductsUpdateSamples {
         manager
             .products()
             .updateWithResponse(
-                "{billingAccountName}", "{productName}", new ProductInner().withAutoRenew(AutoRenew.OFF), Context.NONE);
+                "{billingAccountName}",
+                "{productName}",
+                new ProductInner().withAutoRenew(AutoRenew.OFF),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2115,7 +2105,6 @@ public final class ProductsUpdateSamples {
 ### Products_ValidateMove
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.models.TransferProductRequestProperties;
 
 /** Samples for Products ValidateMove. */
@@ -2137,7 +2126,7 @@ public final class ProductsValidateMoveSamples {
                 new TransferProductRequestProperties()
                     .withDestinationInvoiceSectionId(
                         "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -2157,7 +2146,7 @@ public final class ProductsValidateMoveSamples {
                 new TransferProductRequestProperties()
                     .withDestinationInvoiceSectionId(
                         "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2165,8 +2154,6 @@ public final class ProductsValidateMoveSamples {
 ### Reservations_ListByBillingAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Reservations ListByBillingAccount. */
 public final class ReservationsListByBillingAccountSamples {
     /*
@@ -2186,7 +2173,7 @@ public final class ReservationsListByBillingAccountSamples {
                 "properties/userFriendlyAppliedScopeType asc",
                 "true",
                 "Succeeded",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2194,8 +2181,6 @@ public final class ReservationsListByBillingAccountSamples {
 ### Reservations_ListByBillingProfile
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Reservations ListByBillingProfile. */
 public final class ReservationsListByBillingProfileSamples {
     /*
@@ -2216,7 +2201,7 @@ public final class ReservationsListByBillingProfileSamples {
                 "properties/userFriendlyAppliedScopeType asc",
                 "true",
                 "Succeeded",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2224,8 +2209,6 @@ public final class ReservationsListByBillingProfileSamples {
 ### Transactions_ListByInvoice
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Transactions ListByInvoice. */
 public final class TransactionsListByInvoiceSamples {
     /*
@@ -2237,7 +2220,7 @@ public final class TransactionsListByInvoiceSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void transactionsListByInvoice(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.transactions().listByInvoice("{billingAccountName}", "{invoiceName}", Context.NONE);
+        manager.transactions().listByInvoice("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
     }
 }
 ```

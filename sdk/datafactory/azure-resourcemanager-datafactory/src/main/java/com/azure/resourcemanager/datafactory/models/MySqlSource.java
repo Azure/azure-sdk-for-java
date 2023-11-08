@@ -20,6 +20,10 @@ public final class MySqlSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of MySqlSource class. */
+    public MySqlSource() {
+    }
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *

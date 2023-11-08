@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SeverityLevel. */
+/**
+ * A value that indicates the urgency of the case, which in turn determines the response time according to the service
+ * level agreement of the technical support plan you have with Azure. Note: 'Highest critical impact', also known as the
+ * 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium customers.
+ */
 public final class SeverityLevel extends ExpandableStringEnum<SeverityLevel> {
     /** Static value minimal for SeverityLevel. */
     public static final SeverityLevel MINIMAL = fromString("minimal");
@@ -23,6 +27,15 @@ public final class SeverityLevel extends ExpandableStringEnum<SeverityLevel> {
     public static final SeverityLevel HIGHESTCRITICALIMPACT = fromString("highestcriticalimpact");
 
     /**
+     * Creates a new instance of SeverityLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SeverityLevel() {
+    }
+
+    /**
      * Creates or finds a SeverityLevel from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +46,11 @@ public final class SeverityLevel extends ExpandableStringEnum<SeverityLevel> {
         return fromString(name, SeverityLevel.class);
     }
 
-    /** @return known SeverityLevel values. */
+    /**
+     * Gets known SeverityLevel values.
+     *
+     * @return known SeverityLevel values.
+     */
     public static Collection<SeverityLevel> values() {
         return values(SeverityLevel.class);
     }

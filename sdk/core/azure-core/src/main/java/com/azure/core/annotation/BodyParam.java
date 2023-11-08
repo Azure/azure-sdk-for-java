@@ -43,7 +43,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(PARAMETER)
 public @interface BodyParam {
     /**
-     * @return the Content-Type that the body should be treated as
+     * Gets the Content-Type for the body.
+     *
+     * @return The Content-Type for the body.
      */
     String value();
 }

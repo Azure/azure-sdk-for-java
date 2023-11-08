@@ -18,18 +18,22 @@ public final class ApplicationGatewayFirewallExclusion {
     private String matchVariable;
 
     /*
-     * When matchVariable is a collection, operate on the selector to specify
-     * which elements in the collection this exclusion applies to.
+     * When matchVariable is a collection, operate on the selector to specify which elements in the collection this
+     * exclusion applies to.
      */
-    @JsonProperty(value = "selectorMatchOperator", required = true)
+    @JsonProperty(value = "selectorMatchOperator")
     private String selectorMatchOperator;
 
     /*
-     * When matchVariable is a collection, operator used to specify which
-     * elements in the collection this exclusion applies to.
+     * When matchVariable is a collection, operator used to specify which elements in the collection this exclusion
+     * applies to.
      */
-    @JsonProperty(value = "selector", required = true)
+    @JsonProperty(value = "selector")
     private String selector;
+
+    /** Creates an instance of ApplicationGatewayFirewallExclusion class. */
+    public ApplicationGatewayFirewallExclusion() {
+    }
 
     /**
      * Get the matchVariable property: The variable to be excluded.
@@ -106,19 +110,6 @@ public final class ApplicationGatewayFirewallExclusion {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property matchVariable in model ApplicationGatewayFirewallExclusion"));
-        }
-        if (selectorMatchOperator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectorMatchOperator in model"
-                            + " ApplicationGatewayFirewallExclusion"));
-        }
-        if (selector() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selector in model ApplicationGatewayFirewallExclusion"));
         }
     }
 

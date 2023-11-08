@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.PrivateCloudInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of private clouds. */
 @Fluent
 public final class PrivateCloudList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateCloudList.class);
-
     /*
      * Link for next list of Private Clouds
      */
@@ -27,6 +23,10 @@ public final class PrivateCloudList {
      */
     @JsonProperty(value = "value")
     private List<PrivateCloudInner> value;
+
+    /** Creates an instance of PrivateCloudList class. */
+    public PrivateCloudList() {
+    }
 
     /**
      * Get the nextLink property: Link for next list of Private Clouds.

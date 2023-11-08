@@ -7,11 +7,30 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
 
 /** An instance of this class provides access to all the operations defined in ProtectionContainersClient. */
 public interface ProtectionContainersClient {
+    /**
+     * Gets details of the specific container registered to your Recovery Services Vault.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Name of the fabric where the container belongs.
+     * @param containerName Name of the container whose details need to be fetched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specific container registered to your Recovery Services Vault along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ProtectionContainerResourceInner> getWithResponse(
+        String vaultName, String resourceGroupName, String fabricName, String containerName, Context context);
+
     /**
      * Gets details of the specific container registered to your Recovery Services Vault.
      *
@@ -29,21 +48,50 @@ public interface ProtectionContainersClient {
         String vaultName, String resourceGroupName, String fabricName, String containerName);
 
     /**
-     * Gets details of the specific container registered to your Recovery Services Vault.
+     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
+     * status, use location header to call get latest status of the operation.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Name of the fabric where the container belongs.
-     * @param containerName Name of the container whose details need to be fetched.
+     * @param fabricName Fabric name associated with the container.
+     * @param containerName Name of the container to be registered.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of base class for container with backup items.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ProtectionContainerResourceInner>, ProtectionContainerResourceInner> beginRegister(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        ProtectionContainerResourceInner parameters);
+
+    /**
+     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
+     * status, use location header to call get latest status of the operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the container.
+     * @param containerName Name of the container to be registered.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specific container registered to your Recovery Services Vault along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of base class for container with backup items.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectionContainerResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ProtectionContainerResourceInner>, ProtectionContainerResourceInner> beginRegister(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        ProtectionContainerResourceInner parameters,
+        Context context);
 
     /**
      * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
@@ -80,32 +128,16 @@ public interface ProtectionContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for container with backup items along with {@link Response}.
+     * @return base class for container with backup items.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectionContainerResourceInner> registerWithResponse(
+    ProtectionContainerResourceInner register(
         String vaultName,
         String resourceGroupName,
         String fabricName,
         String containerName,
         ProtectionContainerResourceInner parameters,
         Context context);
-
-    /**
-     * Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To
-     * determine whether the backend service has finished processing the request, call Get Container Operation Result
-     * API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Name of the fabric where the container belongs.
-     * @param containerName Name of the container which needs to be unregistered from the Recovery Services Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void unregister(String vaultName, String resourceGroupName, String fabricName, String containerName);
 
     /**
      * Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To
@@ -127,21 +159,25 @@ public interface ProtectionContainersClient {
         String vaultName, String resourceGroupName, String fabricName, String containerName, Context context);
 
     /**
-     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To
+     * determine whether the backend service has finished processing the request, call Get Container Operation Result
+     * API.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric Name associated with the container.
-     * @param containerName Name of the container in which inquiry needs to be triggered.
+     * @param fabricName Name of the fabric where the container belongs.
+     * @param containerName Name of the container which needs to be unregistered from the Recovery Services Vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void inquire(String vaultName, String resourceGroupName, String fabricName, String containerName);
+    void unregister(String vaultName, String resourceGroupName, String fabricName, String containerName);
 
     /**
-     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * Inquires all the protectable items under the given container.
+     *
+     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
@@ -164,18 +200,20 @@ public interface ProtectionContainersClient {
         Context context);
 
     /**
-     * Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
-     * asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
+     * Inquires all the protectable items under the given container.
+     *
+     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated the container.
+     * @param fabricName Fabric Name associated with the container.
+     * @param containerName Name of the container in which inquiry needs to be triggered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void refresh(String vaultName, String resourceGroupName, String fabricName);
+    void inquire(String vaultName, String resourceGroupName, String fabricName, String containerName);
 
     /**
      * Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
@@ -194,4 +232,18 @@ public interface ProtectionContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> refreshWithResponse(
         String vaultName, String resourceGroupName, String fabricName, String filter, Context context);
+
+    /**
+     * Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
+     * asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated the container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void refresh(String vaultName, String resourceGroupName, String fabricName);
 }

@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.CassandraTableGetResultsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List operation response, that contains the Cassandra tables and their properties. */
 @Immutable
 public final class CassandraTableListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraTableListResult.class);
-
     /*
      * List of Cassandra tables and their properties.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CassandraTableGetResultsInner> value;
+
+    /** Creates an instance of CassandraTableListResult class. */
+    public CassandraTableListResult() {
+    }
 
     /**
      * Get the value property: List of Cassandra tables and their properties.

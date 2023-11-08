@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,18 +16,16 @@ import java.util.UUID;
 /** resourceAccess. */
 @Fluent
 public final class MicrosoftGraphResourceAccess {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphResourceAccess.class);
-
     /*
-     * The unique identifier for one of the oauth2PermissionScopes or appRole
-     * instances that the resource application exposes.
+     * The unique identifier for one of the oauth2PermissionScopes or appRole instances that the resource application
+     * exposes.
      */
     @JsonProperty(value = "id")
     private UUID id;
 
     /*
-     * Specifies whether the id property references an oauth2PermissionScopes
-     * or an appRole. Possible values are Scope or Role.
+     * Specifies whether the id property references an oauth2PermissionScopes or an appRole. Possible values are Scope
+     * or Role.
      */
     @JsonProperty(value = "type")
     private String type;
@@ -37,6 +34,10 @@ public final class MicrosoftGraphResourceAccess {
      * resourceAccess
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphResourceAccess class. */
+    public MicrosoftGraphResourceAccess() {
+    }
 
     /**
      * Get the id property: The unique identifier for one of the oauth2PermissionScopes or appRole instances that the

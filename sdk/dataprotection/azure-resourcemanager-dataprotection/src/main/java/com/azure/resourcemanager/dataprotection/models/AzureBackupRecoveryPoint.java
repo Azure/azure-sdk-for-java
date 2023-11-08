@@ -5,13 +5,15 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** AzureBackupRecoveryPoint Azure backup recoveryPoint. */
+/**
+ * AzureBackupRecoveryPoint
+ *
+ * <p>Azure backup recoveryPoint.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -23,7 +25,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class AzureBackupRecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRecoveryPoint.class);
+    /** Creates an instance of AzureBackupRecoveryPoint class. */
+    public AzureBackupRecoveryPoint() {
+    }
 
     /**
      * Validates the instance.

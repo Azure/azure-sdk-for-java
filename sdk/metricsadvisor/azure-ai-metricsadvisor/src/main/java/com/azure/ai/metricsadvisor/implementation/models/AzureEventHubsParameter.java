@@ -22,6 +22,9 @@ public final class AzureEventHubsParameter {
     @JsonProperty(value = "consumerGroup", required = true)
     private String consumerGroup;
 
+    /** Creates an instance of AzureEventHubsParameter class. */
+    public AzureEventHubsParameter() {}
+
     /**
      * Get the connectionString property: The connection string of this Azure Event Hubs.
      *

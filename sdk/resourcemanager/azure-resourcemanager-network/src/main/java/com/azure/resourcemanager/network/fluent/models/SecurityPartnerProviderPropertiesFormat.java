@@ -38,6 +38,10 @@ public final class SecurityPartnerProviderPropertiesFormat {
     @JsonProperty(value = "virtualHub")
     private SubResource virtualHub;
 
+    /** Creates an instance of SecurityPartnerProviderPropertiesFormat class. */
+    public SecurityPartnerProviderPropertiesFormat() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the Security Partner Provider resource.
      *

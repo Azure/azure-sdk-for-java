@@ -25,6 +25,10 @@ public final class SupportedSkusResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SupportedSkusResult class. */
+    public SupportedSkusResult() {
+    }
+
     /**
      * Get the value property: The list of SKUs available for the Batch service in the location.
      *

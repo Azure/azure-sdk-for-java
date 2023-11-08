@@ -5,19 +5,13 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Custom setup script properties for a managed dedicated integration runtime. */
 @Fluent
 public final class IntegrationRuntimeCustomSetupScriptProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimeCustomSetupScriptProperties.class);
-
     /*
-     * The URI of the Azure blob container that contains the custom setup
-     * script.
+     * The URI of the Azure blob container that contains the custom setup script.
      */
     @JsonProperty(value = "blobContainerUri")
     private String blobContainerUri;
@@ -27,6 +21,10 @@ public final class IntegrationRuntimeCustomSetupScriptProperties {
      */
     @JsonProperty(value = "sasToken")
     private SecureString sasToken;
+
+    /** Creates an instance of IntegrationRuntimeCustomSetupScriptProperties class. */
+    public IntegrationRuntimeCustomSetupScriptProperties() {
+    }
 
     /**
      * Get the blobContainerUri property: The URI of the Azure blob container that contains the custom setup script.

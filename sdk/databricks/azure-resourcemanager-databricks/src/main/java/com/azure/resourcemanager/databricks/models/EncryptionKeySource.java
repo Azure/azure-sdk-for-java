@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionKeySource. */
+/** The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Keyvault. */
 public final class EncryptionKeySource extends ExpandableStringEnum<EncryptionKeySource> {
     /** Static value Microsoft.Keyvault for EncryptionKeySource. */
     public static final EncryptionKeySource MICROSOFT_KEYVAULT = fromString("Microsoft.Keyvault");
+
+    /**
+     * Creates a new instance of EncryptionKeySource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionKeySource() {
+    }
 
     /**
      * Creates or finds a EncryptionKeySource from its string representation.
@@ -24,7 +33,11 @@ public final class EncryptionKeySource extends ExpandableStringEnum<EncryptionKe
         return fromString(name, EncryptionKeySource.class);
     }
 
-    /** @return known EncryptionKeySource values. */
+    /**
+     * Gets known EncryptionKeySource values.
+     *
+     * @return known EncryptionKeySource values.
+     */
     public static Collection<EncryptionKeySource> values() {
         return values(EncryptionKeySource.class);
     }

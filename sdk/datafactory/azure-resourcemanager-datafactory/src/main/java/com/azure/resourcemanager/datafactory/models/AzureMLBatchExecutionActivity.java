@@ -25,6 +25,10 @@ public final class AzureMLBatchExecutionActivity extends ExecutionActivity {
     private AzureMLBatchExecutionActivityTypeProperties innerTypeProperties =
         new AzureMLBatchExecutionActivityTypeProperties();
 
+    /** Creates an instance of AzureMLBatchExecutionActivity class. */
+    public AzureMLBatchExecutionActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure ML Batch Execution activity properties.
      *
@@ -59,6 +63,20 @@ public final class AzureMLBatchExecutionActivity extends ExecutionActivity {
     @Override
     public AzureMLBatchExecutionActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

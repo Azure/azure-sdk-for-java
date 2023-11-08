@@ -7,7 +7,7 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ManagedIdentityType. */
+/** The type of managed identity for the resource. */
 public enum ManagedIdentityType {
     /** Enum value SystemAssigned. */
     SYSTEM_ASSIGNED("SystemAssigned"),
@@ -36,6 +36,9 @@ public enum ManagedIdentityType {
      */
     @JsonCreator
     public static ManagedIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ManagedIdentityType[] items = ManagedIdentityType.values();
         for (ManagedIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum ManagedIdentityType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

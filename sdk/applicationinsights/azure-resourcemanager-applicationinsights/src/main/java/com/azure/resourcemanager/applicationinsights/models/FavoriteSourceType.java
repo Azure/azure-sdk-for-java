@@ -35,6 +35,15 @@ public final class FavoriteSourceType extends ExpandableStringEnum<FavoriteSourc
     public static final FavoriteSourceType SEGMENTATION = fromString("segmentation");
 
     /**
+     * Creates a new instance of FavoriteSourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FavoriteSourceType() {
+    }
+
+    /**
      * Creates or finds a FavoriteSourceType from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class FavoriteSourceType extends ExpandableStringEnum<FavoriteSourc
         return fromString(name, FavoriteSourceType.class);
     }
 
-    /** @return known FavoriteSourceType values. */
+    /**
+     * Gets known FavoriteSourceType values.
+     *
+     * @return known FavoriteSourceType values.
+     */
     public static Collection<FavoriteSourceType> values() {
         return values(FavoriteSourceType.class);
     }

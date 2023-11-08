@@ -21,25 +21,38 @@ public final class Filters {
     private Deinterlace deinterlace;
 
     /*
-     * The rotation, if any, to be applied to the input video, before it is
-     * encoded. Default is Auto
+     * The rotation, if any, to be applied to the input video, before it is encoded. Default is Auto
      */
     @JsonProperty(value = "rotation")
     private Rotation rotation;
 
     /*
-     * The parameters for the rectangular window with which to crop the input
-     * video.
+     * The parameters for the rectangular window with which to crop the input video.
      */
     @JsonProperty(value = "crop")
     private Rectangle crop;
 
     /*
-     * The properties of overlays to be applied to the input video. These could
-     * be audio, image or video overlays.
+     * Describes the properties of a Fade effect applied to the input media.
+     */
+    @JsonProperty(value = "fadeIn")
+    private Fade fadeIn;
+
+    /*
+     * Describes the properties of a Fade effect applied to the input media.
+     */
+    @JsonProperty(value = "fadeOut")
+    private Fade fadeOut;
+
+    /*
+     * The properties of overlays to be applied to the input video. These could be audio, image or video overlays.
      */
     @JsonProperty(value = "overlays")
     private List<Overlay> overlays;
+
+    /** Creates an instance of Filters class. */
+    public Filters() {
+    }
 
     /**
      * Get the deinterlace property: The de-interlacing settings.
@@ -104,6 +117,46 @@ public final class Filters {
     }
 
     /**
+     * Get the fadeIn property: Describes the properties of a Fade effect applied to the input media.
+     *
+     * @return the fadeIn value.
+     */
+    public Fade fadeIn() {
+        return this.fadeIn;
+    }
+
+    /**
+     * Set the fadeIn property: Describes the properties of a Fade effect applied to the input media.
+     *
+     * @param fadeIn the fadeIn value to set.
+     * @return the Filters object itself.
+     */
+    public Filters withFadeIn(Fade fadeIn) {
+        this.fadeIn = fadeIn;
+        return this;
+    }
+
+    /**
+     * Get the fadeOut property: Describes the properties of a Fade effect applied to the input media.
+     *
+     * @return the fadeOut value.
+     */
+    public Fade fadeOut() {
+        return this.fadeOut;
+    }
+
+    /**
+     * Set the fadeOut property: Describes the properties of a Fade effect applied to the input media.
+     *
+     * @param fadeOut the fadeOut value to set.
+     * @return the Filters object itself.
+     */
+    public Filters withFadeOut(Fade fadeOut) {
+        this.fadeOut = fadeOut;
+        return this;
+    }
+
+    /**
      * Get the overlays property: The properties of overlays to be applied to the input video. These could be audio,
      * image or video overlays.
      *
@@ -136,6 +189,12 @@ public final class Filters {
         }
         if (crop() != null) {
             crop().validate();
+        }
+        if (fadeIn() != null) {
+            fadeIn().validate();
+        }
+        if (fadeOut() != null) {
+            fadeOut().validate();
         }
         if (overlays() != null) {
             overlays().forEach(e -> e.validate());

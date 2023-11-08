@@ -5,14 +5,23 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Properties of Cognitive Services account commitment plan. */
 @Fluent
 public final class CommitmentPlanProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommitmentPlanProperties.class);
+    /*
+     * Gets the status of the resource at the time the operation was called.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private CommitmentPlanProvisioningState provisioningState;
+
+    /*
+     * Commitment plan guid.
+     */
+    @JsonProperty(value = "commitmentPlanGuid")
+    private String commitmentPlanGuid;
 
     /*
      * Account hosting model.
@@ -49,6 +58,45 @@ public final class CommitmentPlanProperties {
      */
     @JsonProperty(value = "last", access = JsonProperty.Access.WRITE_ONLY)
     private CommitmentPeriod last;
+
+    /*
+     * The list of ProvisioningIssue.
+     */
+    @JsonProperty(value = "provisioningIssues", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> provisioningIssues;
+
+    /** Creates an instance of CommitmentPlanProperties class. */
+    public CommitmentPlanProperties() {
+    }
+
+    /**
+     * Get the provisioningState property: Gets the status of the resource at the time the operation was called.
+     *
+     * @return the provisioningState value.
+     */
+    public CommitmentPlanProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the commitmentPlanGuid property: Commitment plan guid.
+     *
+     * @return the commitmentPlanGuid value.
+     */
+    public String commitmentPlanGuid() {
+        return this.commitmentPlanGuid;
+    }
+
+    /**
+     * Set the commitmentPlanGuid property: Commitment plan guid.
+     *
+     * @param commitmentPlanGuid the commitmentPlanGuid value to set.
+     * @return the CommitmentPlanProperties object itself.
+     */
+    public CommitmentPlanProperties withCommitmentPlanGuid(String commitmentPlanGuid) {
+        this.commitmentPlanGuid = commitmentPlanGuid;
+        return this;
+    }
 
     /**
      * Get the hostingModel property: Account hosting model.
@@ -157,6 +205,15 @@ public final class CommitmentPlanProperties {
      */
     public CommitmentPeriod last() {
         return this.last;
+    }
+
+    /**
+     * Get the provisioningIssues property: The list of ProvisioningIssue.
+     *
+     * @return the provisioningIssues value.
+     */
+    public List<String> provisioningIssues() {
+        return this.provisioningIssues;
     }
 
     /**

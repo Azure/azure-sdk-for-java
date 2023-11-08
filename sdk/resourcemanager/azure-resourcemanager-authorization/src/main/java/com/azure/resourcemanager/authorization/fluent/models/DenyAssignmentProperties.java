@@ -5,18 +5,15 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.DenyAssignmentPermission;
 import com.azure.resourcemanager.authorization.models.Principal;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Deny assignment properties. */
 @Fluent
 public final class DenyAssignmentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DenyAssignmentProperties.class);
-
     /*
      * The display name of the deny assignment.
      */
@@ -42,8 +39,7 @@ public final class DenyAssignmentProperties {
     private String scope;
 
     /*
-     * Determines if the deny assignment applies to child scopes. Default value
-     * is false.
+     * Determines if the deny assignment applies to child scopes. Default value is false.
      */
     @JsonProperty(value = "doNotApplyToChildScopes")
     private Boolean doNotApplyToChildScopes;
@@ -61,11 +57,52 @@ public final class DenyAssignmentProperties {
     private List<Principal> excludePrincipals;
 
     /*
-     * Specifies whether this deny assignment was created by Azure and cannot
-     * be edited or deleted.
+     * Specifies whether this deny assignment was created by Azure and cannot be edited or deleted.
      */
     @JsonProperty(value = "isSystemProtected")
     private Boolean isSystemProtected;
+
+    /*
+     * The conditions on the deny assignment. This limits the resources it can be assigned to. e.g.:
+     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
+     * 'foo_storage_container'
+     */
+    @JsonProperty(value = "condition")
+    private String condition;
+
+    /*
+     * Version of the condition.
+     */
+    @JsonProperty(value = "conditionVersion")
+    private String conditionVersion;
+
+    /*
+     * Time it was created
+     */
+    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime createdOn;
+
+    /*
+     * Time it was updated
+     */
+    @JsonProperty(value = "updatedOn", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime updatedOn;
+
+    /*
+     * Id of the user who created the assignment
+     */
+    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
+    private String createdBy;
+
+    /*
+     * Id of the user who updated the assignment
+     */
+    @JsonProperty(value = "updatedBy", access = JsonProperty.Access.WRITE_ONLY)
+    private String updatedBy;
+
+    /** Creates an instance of DenyAssignmentProperties class. */
+    public DenyAssignmentProperties() {
+    }
 
     /**
      * Get the denyAssignmentName property: The display name of the deny assignment.
@@ -229,6 +266,86 @@ public final class DenyAssignmentProperties {
     public DenyAssignmentProperties withIsSystemProtected(Boolean isSystemProtected) {
         this.isSystemProtected = isSystemProtected;
         return this;
+    }
+
+    /**
+     * Get the condition property: The conditions on the deny assignment. This limits the resources it can be assigned
+     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * StringEqualsIgnoreCase 'foo_storage_container'.
+     *
+     * @return the condition value.
+     */
+    public String condition() {
+        return this.condition;
+    }
+
+    /**
+     * Set the condition property: The conditions on the deny assignment. This limits the resources it can be assigned
+     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * StringEqualsIgnoreCase 'foo_storage_container'.
+     *
+     * @param condition the condition value to set.
+     * @return the DenyAssignmentProperties object itself.
+     */
+    public DenyAssignmentProperties withCondition(String condition) {
+        this.condition = condition;
+        return this;
+    }
+
+    /**
+     * Get the conditionVersion property: Version of the condition.
+     *
+     * @return the conditionVersion value.
+     */
+    public String conditionVersion() {
+        return this.conditionVersion;
+    }
+
+    /**
+     * Set the conditionVersion property: Version of the condition.
+     *
+     * @param conditionVersion the conditionVersion value to set.
+     * @return the DenyAssignmentProperties object itself.
+     */
+    public DenyAssignmentProperties withConditionVersion(String conditionVersion) {
+        this.conditionVersion = conditionVersion;
+        return this;
+    }
+
+    /**
+     * Get the createdOn property: Time it was created.
+     *
+     * @return the createdOn value.
+     */
+    public OffsetDateTime createdOn() {
+        return this.createdOn;
+    }
+
+    /**
+     * Get the updatedOn property: Time it was updated.
+     *
+     * @return the updatedOn value.
+     */
+    public OffsetDateTime updatedOn() {
+        return this.updatedOn;
+    }
+
+    /**
+     * Get the createdBy property: Id of the user who created the assignment.
+     *
+     * @return the createdBy value.
+     */
+    public String createdBy() {
+        return this.createdBy;
+    }
+
+    /**
+     * Get the updatedBy property: Id of the user who updated the assignment.
+     *
+     * @return the updatedBy value.
+     */
+    public String updatedBy() {
+        return this.updatedBy;
     }
 
     /**

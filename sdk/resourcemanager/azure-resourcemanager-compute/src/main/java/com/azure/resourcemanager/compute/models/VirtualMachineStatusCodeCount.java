@@ -22,6 +22,10 @@ public final class VirtualMachineStatusCodeCount {
     @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
 
+    /** Creates an instance of VirtualMachineStatusCodeCount class. */
+    public VirtualMachineStatusCodeCount() {
+    }
+
     /**
      * Get the code property: The instance view status code.
      *

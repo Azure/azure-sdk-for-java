@@ -6,9 +6,7 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionForPrivateLinkHubBasic;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +14,15 @@ import java.util.Map;
 /** A privateLinkHub. */
 @Fluent
 public final class PrivateLinkHubInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkHubInner.class);
-
     /*
      * PrivateLinkHub resource properties
      */
     @JsonProperty(value = "properties")
     private PrivateLinkHubProperties innerProperties;
+
+    /** Creates an instance of PrivateLinkHubInner class. */
+    public PrivateLinkHubInner() {
+    }
 
     /**
      * Get the innerProperties property: PrivateLinkHub resource properties.

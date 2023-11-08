@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.ProviderOperation;
 import com.azure.resourcemanager.authorization.models.ResourceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Provider Operations metadata. */
 @Fluent
 public final class ProviderOperationsMetadataInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderOperationsMetadataInner.class);
-
     /*
      * The provider id.
      */
@@ -52,6 +48,10 @@ public final class ProviderOperationsMetadataInner {
      */
     @JsonProperty(value = "operations")
     private List<ProviderOperation> operations;
+
+    /** Creates an instance of ProviderOperationsMetadataInner class. */
+    public ProviderOperationsMetadataInner() {
+    }
 
     /**
      * Get the id property: The provider id.

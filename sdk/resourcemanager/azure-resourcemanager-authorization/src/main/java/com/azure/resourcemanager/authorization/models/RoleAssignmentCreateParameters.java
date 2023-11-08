@@ -7,20 +7,21 @@ package com.azure.resourcemanager.authorization.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Role assignment create parameters. */
 @Fluent
 public final class RoleAssignmentCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentCreateParameters.class);
-
     /*
      * Role assignment properties.
      */
     @JsonProperty(value = "properties", required = true)
     private RoleAssignmentProperties innerProperties = new RoleAssignmentProperties();
+
+    /** Creates an instance of RoleAssignmentCreateParameters class. */
+    public RoleAssignmentCreateParameters() {
+    }
 
     /**
      * Get the innerProperties property: Role assignment properties.
@@ -160,7 +161,7 @@ public final class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Get the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
+     * Get the conditionVersion property: Version of the condition. Currently the only accepted value is '2.0'.
      *
      * @return the conditionVersion value.
      */
@@ -169,7 +170,7 @@ public final class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
+     * Set the conditionVersion property: Version of the condition. Currently the only accepted value is '2.0'.
      *
      * @param conditionVersion the conditionVersion value to set.
      * @return the RoleAssignmentCreateParameters object itself.
@@ -249,7 +250,7 @@ public final class RoleAssignmentCreateParameters {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model RoleAssignmentCreateParameters"));
@@ -257,4 +258,6 @@ public final class RoleAssignmentCreateParameters {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoleAssignmentCreateParameters.class);
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureFirewallNetworkRuleProtocol. */
+/** The protocol of a Network Rule resource. */
 public final class AzureFirewallNetworkRuleProtocol extends ExpandableStringEnum<AzureFirewallNetworkRuleProtocol> {
     /** Static value TCP for AzureFirewallNetworkRuleProtocol. */
     public static final AzureFirewallNetworkRuleProtocol TCP = fromString("TCP");
@@ -23,6 +23,15 @@ public final class AzureFirewallNetworkRuleProtocol extends ExpandableStringEnum
     public static final AzureFirewallNetworkRuleProtocol ICMP = fromString("ICMP");
 
     /**
+     * Creates a new instance of AzureFirewallNetworkRuleProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFirewallNetworkRuleProtocol() {
+    }
+
+    /**
      * Creates or finds a AzureFirewallNetworkRuleProtocol from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class AzureFirewallNetworkRuleProtocol extends ExpandableStringEnum
         return fromString(name, AzureFirewallNetworkRuleProtocol.class);
     }
 
-    /** @return known AzureFirewallNetworkRuleProtocol values. */
+    /**
+     * Gets known AzureFirewallNetworkRuleProtocol values.
+     *
+     * @return known AzureFirewallNetworkRuleProtocol values.
+     */
     public static Collection<AzureFirewallNetworkRuleProtocol> values() {
         return values(AzureFirewallNetworkRuleProtocol.class);
     }

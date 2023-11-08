@@ -13,10 +13,9 @@ import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
 import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
 import com.azure.resourcemanager.netapp.models.SubscriptionQuotaItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaLimits {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetAppResourceQuotaLimitsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetAppResourceQuotaLimitsImpl.class);
 
     private final NetAppResourceQuotaLimitsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaL
         return Utils.mapPage(inner, inner1 -> new SubscriptionQuotaItemImpl(inner1, this.manager()));
     }
 
-    public SubscriptionQuotaItem get(String location, String quotaLimitName) {
-        SubscriptionQuotaItemInner inner = this.serviceClient().get(location, quotaLimitName);
-        if (inner != null) {
-            return new SubscriptionQuotaItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SubscriptionQuotaItem> getWithResponse(String location, String quotaLimitName, Context context) {
         Response<SubscriptionQuotaItemInner> inner =
             this.serviceClient().getWithResponse(location, quotaLimitName, context);
@@ -57,6 +47,15 @@ public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaL
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SubscriptionQuotaItemImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SubscriptionQuotaItem get(String location, String quotaLimitName) {
+        SubscriptionQuotaItemInner inner = this.serviceClient().get(location, quotaLimitName);
+        if (inner != null) {
+            return new SubscriptionQuotaItemImpl(inner, this.manager());
         } else {
             return null;
         }

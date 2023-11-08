@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SwaggerSchemaType. */
+/** The swagger schema type. */
 public final class SwaggerSchemaType extends ExpandableStringEnum<SwaggerSchemaType> {
     /** Static value String for SwaggerSchemaType. */
     public static final SwaggerSchemaType STRING = fromString("String");
@@ -35,6 +35,15 @@ public final class SwaggerSchemaType extends ExpandableStringEnum<SwaggerSchemaT
     public static final SwaggerSchemaType NULL = fromString("Null");
 
     /**
+     * Creates a new instance of SwaggerSchemaType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SwaggerSchemaType() {
+    }
+
+    /**
      * Creates or finds a SwaggerSchemaType from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class SwaggerSchemaType extends ExpandableStringEnum<SwaggerSchemaT
         return fromString(name, SwaggerSchemaType.class);
     }
 
-    /** @return known SwaggerSchemaType values. */
+    /**
+     * Gets known SwaggerSchemaType values.
+     *
+     * @return known SwaggerSchemaType values.
+     */
     public static Collection<SwaggerSchemaType> values() {
         return values(SwaggerSchemaType.class);
     }

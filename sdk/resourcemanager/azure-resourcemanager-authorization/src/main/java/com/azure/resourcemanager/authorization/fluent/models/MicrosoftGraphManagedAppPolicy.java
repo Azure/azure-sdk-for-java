@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,11 +13,13 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The ManagedAppPolicy resource represents a base type for platform specific policies. */
+/**
+ * managedAppPolicy
+ *
+ * <p>The ManagedAppPolicy resource represents a base type for platform specific policies.
+ */
 @Fluent
 public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphManagedAppPolicy.class);
-
     /*
      * The date and time the policy was created.
      */
@@ -50,10 +51,13 @@ public final class MicrosoftGraphManagedAppPolicy extends MicrosoftGraphEntity {
     private String version;
 
     /*
-     * The ManagedAppPolicy resource represents a base type for platform
-     * specific policies.
+     * The ManagedAppPolicy resource represents a base type for platform specific policies.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphManagedAppPolicy class. */
+    public MicrosoftGraphManagedAppPolicy() {
+    }
 
     /**
      * Get the createdDateTime property: The date and time the policy was created.

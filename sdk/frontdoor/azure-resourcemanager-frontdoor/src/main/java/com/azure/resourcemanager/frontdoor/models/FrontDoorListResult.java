@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontDoorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class FrontDoorListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FrontDoorListResult.class);
-
     /*
      * List of Front Doors within a resource group.
      */
@@ -30,6 +26,10 @@ public final class FrontDoorListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of FrontDoorListResult class. */
+    public FrontDoorListResult() {
+    }
 
     /**
      * Get the value property: List of Front Doors within a resource group.

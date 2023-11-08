@@ -29,6 +29,10 @@ public final class EffectiveNetworkSecurityGroupAssociation {
     @JsonProperty(value = "networkInterface")
     private SubResource networkInterface;
 
+    /** Creates an instance of EffectiveNetworkSecurityGroupAssociation class. */
+    public EffectiveNetworkSecurityGroupAssociation() {
+    }
+
     /**
      * Get the networkManager property: The ID of the Azure network manager if assigned.
      *

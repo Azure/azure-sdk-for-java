@@ -37,6 +37,14 @@ public final class ScriptPackageImpl implements ScriptPackage {
         return this.innerModel().version();
     }
 
+    public String company() {
+        return this.innerModel().company();
+    }
+
+    public String uri() {
+        return this.innerModel().uri();
+    }
+
     public ScriptPackageInner innerModel() {
         return this.innerObject;
     }

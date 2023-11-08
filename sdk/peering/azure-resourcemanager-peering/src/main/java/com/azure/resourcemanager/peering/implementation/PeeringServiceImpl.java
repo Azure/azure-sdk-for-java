@@ -76,6 +76,10 @@ public final class PeeringServiceImpl implements PeeringService, PeeringService.
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PeeringServiceInner innerModel() {
         return this.innerObject;
     }

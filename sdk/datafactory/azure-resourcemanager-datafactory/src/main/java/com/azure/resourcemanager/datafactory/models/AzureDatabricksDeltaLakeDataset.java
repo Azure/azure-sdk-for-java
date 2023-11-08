@@ -23,6 +23,10 @@ public final class AzureDatabricksDeltaLakeDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AzureDatabricksDeltaLakeDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AzureDatabricksDeltaLakeDataset class. */
+    public AzureDatabricksDeltaLakeDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

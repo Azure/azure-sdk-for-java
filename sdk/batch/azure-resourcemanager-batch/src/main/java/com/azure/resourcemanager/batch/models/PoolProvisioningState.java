@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PoolProvisioningState. */
+/** The current state of the pool. */
 public enum PoolProvisioningState {
     /** Enum value Succeeded. */
     SUCCEEDED("Succeeded"),
@@ -30,6 +30,9 @@ public enum PoolProvisioningState {
      */
     @JsonCreator
     public static PoolProvisioningState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PoolProvisioningState[] items = PoolProvisioningState.values();
         for (PoolProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum PoolProvisioningState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

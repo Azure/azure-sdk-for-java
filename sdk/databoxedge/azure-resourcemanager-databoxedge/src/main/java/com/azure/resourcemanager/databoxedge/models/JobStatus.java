@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobStatus. */
+/** The current status of the job. */
 public final class JobStatus extends ExpandableStringEnum<JobStatus> {
     /** Static value Invalid for JobStatus. */
     public static final JobStatus INVALID = fromString("Invalid");
@@ -32,6 +32,15 @@ public final class JobStatus extends ExpandableStringEnum<JobStatus> {
     public static final JobStatus SCHEDULED = fromString("Scheduled");
 
     /**
+     * Creates a new instance of JobStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobStatus() {
+    }
+
+    /**
      * Creates or finds a JobStatus from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class JobStatus extends ExpandableStringEnum<JobStatus> {
         return fromString(name, JobStatus.class);
     }
 
-    /** @return known JobStatus values. */
+    /**
+     * Gets known JobStatus values.
+     *
+     * @return known JobStatus values.
+     */
     public static Collection<JobStatus> values() {
         return values(JobStatus.class);
     }

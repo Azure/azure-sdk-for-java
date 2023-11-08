@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Common settings field for backup management. */
 @Fluent
 public final class Settings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Settings.class);
-
     /*
-     * TimeZone optional input as string. For example: TimeZone = "Pacific
-     * Standard Time".
+     * TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
@@ -28,12 +23,15 @@ public final class Settings {
     private Boolean issqlcompression;
 
     /*
-     * Workload compression flag. This has been added so that
-     * 'isSqlCompression'
+     * Workload compression flag. This has been added so that 'isSqlCompression'
      * will be deprecated once clients upgrade to consider this flag.
      */
     @JsonProperty(value = "isCompression")
     private Boolean isCompression;
+
+    /** Creates an instance of Settings class. */
+    public Settings() {
+    }
 
     /**
      * Get the timeZone property: TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".

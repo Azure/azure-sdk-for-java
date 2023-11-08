@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** plannerBucket. */
 @Fluent
 public final class MicrosoftGraphPlannerBucket extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPlannerBucket.class);
-
     /*
      * Name of the bucket.
      */
@@ -26,8 +23,7 @@ public final class MicrosoftGraphPlannerBucket extends MicrosoftGraphEntity {
     private String name;
 
     /*
-     * Hint used to order items of this type in a list view. The format is
-     * defined as outlined here.
+     * Hint used to order items of this type in a list view. The format is defined as outlined here.
      */
     @JsonProperty(value = "orderHint")
     private String orderHint;
@@ -48,6 +44,10 @@ public final class MicrosoftGraphPlannerBucket extends MicrosoftGraphEntity {
      * plannerBucket
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerBucket class. */
+    public MicrosoftGraphPlannerBucket() {
+    }
 
     /**
      * Get the name property: Name of the bucket.

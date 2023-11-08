@@ -6,22 +6,23 @@ package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceSku model. */
 @Fluent
 public final class ResourceSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSku.class);
-
     /*
-     * Name of the SKU.
+     * Name of the SKU in {PlanId} format. For Terraform, the only allowed value is 'linking'.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of ResourceSku class. */
+    public ResourceSku() {
+    }
+
     /**
-     * Get the name property: Name of the SKU.
+     * Get the name property: Name of the SKU in {PlanId} format. For Terraform, the only allowed value is 'linking'.
      *
      * @return the name value.
      */
@@ -30,7 +31,7 @@ public final class ResourceSku {
     }
 
     /**
-     * Set the name property: Name of the SKU.
+     * Set the name property: Name of the SKU in {PlanId} format. For Terraform, the only allowed value is 'linking'.
      *
      * @param name the name value to set.
      * @return the ResourceSku object itself.
@@ -47,9 +48,11 @@ public final class ResourceSku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ResourceSku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceSku.class);
 }

@@ -6,19 +6,20 @@ package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Managed Disk to attach to the Disk Pool. */
 @Fluent
 public final class Disk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Disk.class);
-
     /*
      * Unique Azure Resource ID of the Managed Disk.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
+
+    /** Creates an instance of Disk class. */
+    public Disk() {
+    }
 
     /**
      * Get the id property: Unique Azure Resource ID of the Managed Disk.
@@ -47,8 +48,10 @@ public final class Disk {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property id in model Disk"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Disk.class);
 }

@@ -22,6 +22,10 @@ public final class ResourceUsageName {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
+    /** Creates an instance of ResourceUsageName class. */
+    public ResourceUsageName() {
+    }
+
     /**
      * Get the value property: Canonical name for this resource type.
      *

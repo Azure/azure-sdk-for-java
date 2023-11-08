@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecretType. */
+/** The type of the secret resource. */
 public final class SecretType extends ExpandableStringEnum<SecretType> {
     /** Static value UrlSigningKey for SecretType. */
     public static final SecretType URL_SIGNING_KEY = fromString("UrlSigningKey");
@@ -24,6 +24,15 @@ public final class SecretType extends ExpandableStringEnum<SecretType> {
         fromString("AzureFirstPartyManagedCertificate");
 
     /**
+     * Creates a new instance of SecretType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecretType() {
+    }
+
+    /**
      * Creates or finds a SecretType from its string representation.
      *
      * @param name a name to look for.
@@ -34,7 +43,11 @@ public final class SecretType extends ExpandableStringEnum<SecretType> {
         return fromString(name, SecretType.class);
     }
 
-    /** @return known SecretType values. */
+    /**
+     * Gets known SecretType values.
+     *
+     * @return known SecretType values.
+     */
     public static Collection<SecretType> values() {
         return values(SecretType.class);
     }

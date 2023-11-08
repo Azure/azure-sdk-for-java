@@ -15,29 +15,52 @@ import com.azure.resourcemanager.advisor.models.ConfigurationName;
 /** An instance of this class provides access to all the operations defined in ConfigurationsClient. */
 public interface ConfigurationsClient {
     /**
-     * Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
+     * Retrieve Azure Advisor configurations.
+     *
+     * <p>Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations.
+     * @return the list of Advisor configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigDataInner> list();
 
     /**
-     * Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
+     * Retrieve Azure Advisor configurations.
+     *
+     * <p>Retrieve Azure Advisor configurations and also retrieve configurations of contained resource groups.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations.
+     * @return the list of Advisor configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigDataInner> list(Context context);
 
     /**
-     * Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
+     * Create/Overwrite Azure Advisor configuration.
+     *
+     * <p>Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
+     *
+     * @param configurationName Advisor configuration name. Value must be 'default'.
+     * @param configContract The Azure Advisor configuration data structure.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Advisor configuration data structure along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConfigDataInner> createInSubscriptionWithResponse(
+        ConfigurationName configurationName, ConfigDataInner configContract, Context context);
+
+    /**
+     * Create/Overwrite Azure Advisor configuration.
+     *
+     * <p>Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
      *
      * @param configurationName Advisor configuration name. Value must be 'default'.
      * @param configContract The Azure Advisor configuration data structure.
@@ -50,28 +73,13 @@ public interface ConfigurationsClient {
     ConfigDataInner createInSubscription(ConfigurationName configurationName, ConfigDataInner configContract);
 
     /**
-     * Create/Overwrite Azure Advisor configuration and also delete all configurations of contained resource groups.
-     *
-     * @param configurationName Advisor configuration name. Value must be 'default'.
-     * @param configContract The Azure Advisor configuration data structure.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigDataInner> createInSubscriptionWithResponse(
-        ConfigurationName configurationName, ConfigDataInner configContract, Context context);
-
-    /**
      * Retrieve Azure Advisor configurations.
      *
      * @param resourceGroup The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations.
+     * @return the list of Advisor configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigDataInner> listByResourceGroup(String resourceGroup);
@@ -84,10 +92,26 @@ public interface ConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations.
+     * @return the list of Advisor configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigDataInner> listByResourceGroup(String resourceGroup, Context context);
+
+    /**
+     * Create/Overwrite Azure Advisor configuration.
+     *
+     * @param configurationName Advisor configuration name. Value must be 'default'.
+     * @param resourceGroup The name of the Azure resource group.
+     * @param configContract The Azure Advisor configuration data structure.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Advisor configuration data structure along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConfigDataInner> createInResourceGroupWithResponse(
+        ConfigurationName configurationName, String resourceGroup, ConfigDataInner configContract, Context context);
 
     /**
      * Create/Overwrite Azure Advisor configuration.
@@ -103,20 +127,4 @@ public interface ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConfigDataInner createInResourceGroup(
         ConfigurationName configurationName, String resourceGroup, ConfigDataInner configContract);
-
-    /**
-     * Create/Overwrite Azure Advisor configuration.
-     *
-     * @param configurationName Advisor configuration name. Value must be 'default'.
-     * @param resourceGroup The name of the Azure resource group.
-     * @param configContract The Azure Advisor configuration data structure.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigDataInner> createInResourceGroupWithResponse(
-        ConfigurationName configurationName, String resourceGroup, ConfigDataInner configContract, Context context);
 }

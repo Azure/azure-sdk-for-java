@@ -32,6 +32,15 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
     public static final MetricAggregationType COUNT = fromString("Count");
 
     /**
+     * Creates a new instance of MetricAggregationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricAggregationType() {
+    }
+
+    /**
      * Creates or finds a MetricAggregationType from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
         return fromString(name, MetricAggregationType.class);
     }
 
-    /** @return known MetricAggregationType values. */
+    /**
+     * Gets known MetricAggregationType values.
+     *
+     * @return known MetricAggregationType values.
+     */
     public static Collection<MetricAggregationType> values() {
         return values(MetricAggregationType.class);
     }

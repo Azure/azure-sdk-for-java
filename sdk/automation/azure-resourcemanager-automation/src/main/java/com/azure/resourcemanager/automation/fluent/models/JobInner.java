@@ -5,108 +5,32 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.JobProvisioningState;
 import com.azure.resourcemanager.automation.models.JobStatus;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
 /** Definition of the job. */
-@JsonFlatten
 @Fluent
-public class JobInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobInner.class);
-
+public final class JobInner extends ProxyResource {
     /*
-     * Gets or sets the runbook.
+     * The properties of the job.
      */
-    @JsonProperty(value = "properties.runbook")
-    private RunbookAssociationProperty runbook;
+    @JsonProperty(value = "properties")
+    private JobProperties innerProperties;
 
-    /*
-     * Gets or sets the job started by.
+    /**
+     * Get the innerProperties property: The properties of the job.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.startedBy")
-    private String startedBy;
-
-    /*
-     * Gets or sets the runOn which specifies the group name where the job is
-     * to be executed.
-     */
-    @JsonProperty(value = "properties.runOn")
-    private String runOn;
-
-    /*
-     * Gets or sets the id of the job.
-     */
-    @JsonProperty(value = "properties.jobId")
-    private UUID jobId;
-
-    /*
-     * Gets or sets the creation time of the job.
-     */
-    @JsonProperty(value = "properties.creationTime")
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets or sets the status of the job.
-     */
-    @JsonProperty(value = "properties.status")
-    private JobStatus status;
-
-    /*
-     * Gets or sets the status details of the job.
-     */
-    @JsonProperty(value = "properties.statusDetails")
-    private String statusDetails;
-
-    /*
-     * Gets or sets the start time of the job.
-     */
-    @JsonProperty(value = "properties.startTime")
-    private OffsetDateTime startTime;
-
-    /*
-     * Gets or sets the end time of the job.
-     */
-    @JsonProperty(value = "properties.endTime")
-    private OffsetDateTime endTime;
-
-    /*
-     * Gets or sets the exception of the job.
-     */
-    @JsonProperty(value = "properties.exception")
-    private String exception;
-
-    /*
-     * Gets or sets the last modified time of the job.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime")
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Gets or sets the last status modified time of the job.
-     */
-    @JsonProperty(value = "properties.lastStatusModifiedTime")
-    private OffsetDateTime lastStatusModifiedTime;
-
-    /*
-     * Gets or sets the parameters of the job.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, String> parameters;
-
-    /*
-     * The current provisioning state of the job.
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private JobProvisioningState provisioningState;
+    private JobProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the runbook property: Gets or sets the runbook.
@@ -114,7 +38,7 @@ public class JobInner extends ProxyResource {
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
-        return this.runbook;
+        return this.innerProperties() == null ? null : this.innerProperties().runbook();
     }
 
     /**
@@ -124,7 +48,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withRunbook(RunbookAssociationProperty runbook) {
-        this.runbook = runbook;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withRunbook(runbook);
         return this;
     }
 
@@ -134,7 +61,7 @@ public class JobInner extends ProxyResource {
      * @return the startedBy value.
      */
     public String startedBy() {
-        return this.startedBy;
+        return this.innerProperties() == null ? null : this.innerProperties().startedBy();
     }
 
     /**
@@ -144,7 +71,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withStartedBy(String startedBy) {
-        this.startedBy = startedBy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withStartedBy(startedBy);
         return this;
     }
 
@@ -154,7 +84,7 @@ public class JobInner extends ProxyResource {
      * @return the runOn value.
      */
     public String runOn() {
-        return this.runOn;
+        return this.innerProperties() == null ? null : this.innerProperties().runOn();
     }
 
     /**
@@ -164,7 +94,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withRunOn(String runOn) {
-        this.runOn = runOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withRunOn(runOn);
         return this;
     }
 
@@ -174,7 +107,7 @@ public class JobInner extends ProxyResource {
      * @return the jobId value.
      */
     public UUID jobId() {
-        return this.jobId;
+        return this.innerProperties() == null ? null : this.innerProperties().jobId();
     }
 
     /**
@@ -184,7 +117,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withJobId(UUID jobId) {
-        this.jobId = jobId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withJobId(jobId);
         return this;
     }
 
@@ -194,7 +130,7 @@ public class JobInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -204,7 +140,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withCreationTime(OffsetDateTime creationTime) {
-        this.creationTime = creationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withCreationTime(creationTime);
         return this;
     }
 
@@ -214,7 +153,7 @@ public class JobInner extends ProxyResource {
      * @return the status value.
      */
     public JobStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -224,7 +163,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withStatus(JobStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -234,7 +176,7 @@ public class JobInner extends ProxyResource {
      * @return the statusDetails value.
      */
     public String statusDetails() {
-        return this.statusDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().statusDetails();
     }
 
     /**
@@ -244,7 +186,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withStatusDetails(String statusDetails) {
-        this.statusDetails = statusDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withStatusDetails(statusDetails);
         return this;
     }
 
@@ -254,7 +199,7 @@ public class JobInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -264,7 +209,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -274,7 +222,7 @@ public class JobInner extends ProxyResource {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -284,7 +232,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withEndTime(endTime);
         return this;
     }
 
@@ -294,7 +245,7 @@ public class JobInner extends ProxyResource {
      * @return the exception value.
      */
     public String exception() {
-        return this.exception;
+        return this.innerProperties() == null ? null : this.innerProperties().exception();
     }
 
     /**
@@ -304,7 +255,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withException(String exception) {
-        this.exception = exception;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withException(exception);
         return this;
     }
 
@@ -314,7 +268,7 @@ public class JobInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -324,7 +278,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withLastModifiedTime(OffsetDateTime lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withLastModifiedTime(lastModifiedTime);
         return this;
     }
 
@@ -334,7 +291,7 @@ public class JobInner extends ProxyResource {
      * @return the lastStatusModifiedTime value.
      */
     public OffsetDateTime lastStatusModifiedTime() {
-        return this.lastStatusModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastStatusModifiedTime();
     }
 
     /**
@@ -344,7 +301,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withLastStatusModifiedTime(OffsetDateTime lastStatusModifiedTime) {
-        this.lastStatusModifiedTime = lastStatusModifiedTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withLastStatusModifiedTime(lastStatusModifiedTime);
         return this;
     }
 
@@ -354,7 +314,7 @@ public class JobInner extends ProxyResource {
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -364,7 +324,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -374,7 +337,7 @@ public class JobInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public JobProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -384,7 +347,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withProvisioningState(JobProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -394,8 +360,8 @@ public class JobInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (runbook() != null) {
-            runbook().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

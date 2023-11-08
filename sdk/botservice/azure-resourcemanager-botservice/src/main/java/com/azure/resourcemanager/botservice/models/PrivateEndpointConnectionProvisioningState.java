@@ -34,7 +34,11 @@ public final class PrivateEndpointConnectionProvisioningState
         return fromString(name, PrivateEndpointConnectionProvisioningState.class);
     }
 
-    /** @return known PrivateEndpointConnectionProvisioningState values. */
+    /**
+     * Gets known PrivateEndpointConnectionProvisioningState values.
+     *
+     * @return known PrivateEndpointConnectionProvisioningState values.
+     */
     public static Collection<PrivateEndpointConnectionProvisioningState> values() {
         return values(PrivateEndpointConnectionProvisioningState.class);
     }

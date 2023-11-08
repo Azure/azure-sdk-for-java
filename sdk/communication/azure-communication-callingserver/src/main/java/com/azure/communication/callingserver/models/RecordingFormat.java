@@ -5,7 +5,6 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for RecordingFormat. */
@@ -25,7 +24,6 @@ public final class RecordingFormat extends ExpandableStringEnum<RecordingFormat>
      * @param name a name to look for.
      * @return the corresponding RecordingFormat.
      */
-    @JsonCreator
     public static RecordingFormat fromString(String name) {
         return fromString(name, RecordingFormat.class);
     }

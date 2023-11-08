@@ -16,6 +16,10 @@ public final class OSDiskImageEncryption extends DiskImageEncryption {
     @JsonProperty(value = "securityProfile")
     private OSDiskImageSecurityProfile securityProfile;
 
+    /** Creates an instance of OSDiskImageEncryption class. */
+    public OSDiskImageEncryption() {
+    }
+
     /**
      * Get the securityProfile property: This property specifies the security profile of an OS disk image.
      *

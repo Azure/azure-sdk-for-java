@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphOnlineMeetingRole. */
+/** onlineMeetingRole. */
 public final class MicrosoftGraphOnlineMeetingRole extends ExpandableStringEnum<MicrosoftGraphOnlineMeetingRole> {
     /** Static value attendee for MicrosoftGraphOnlineMeetingRole. */
     public static final MicrosoftGraphOnlineMeetingRole ATTENDEE = fromString("attendee");
@@ -18,6 +18,15 @@ public final class MicrosoftGraphOnlineMeetingRole extends ExpandableStringEnum<
 
     /** Static value unknownFutureValue for MicrosoftGraphOnlineMeetingRole. */
     public static final MicrosoftGraphOnlineMeetingRole UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
+
+    /**
+     * Creates a new instance of MicrosoftGraphOnlineMeetingRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphOnlineMeetingRole() {
+    }
 
     /**
      * Creates or finds a MicrosoftGraphOnlineMeetingRole from its string representation.
@@ -30,7 +39,11 @@ public final class MicrosoftGraphOnlineMeetingRole extends ExpandableStringEnum<
         return fromString(name, MicrosoftGraphOnlineMeetingRole.class);
     }
 
-    /** @return known MicrosoftGraphOnlineMeetingRole values. */
+    /**
+     * Gets known MicrosoftGraphOnlineMeetingRole values.
+     *
+     * @return known MicrosoftGraphOnlineMeetingRole values.
+     */
     public static Collection<MicrosoftGraphOnlineMeetingRole> values() {
         return values(MicrosoftGraphOnlineMeetingRole.class);
     }

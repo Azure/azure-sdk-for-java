@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The ApplicationsAddKeyRequestBody model. */
 @Fluent
 public final class ApplicationsAddKeyRequestBodyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationsAddKeyRequestBodyInner.class);
-
     /*
      * keyCredential
      */
@@ -37,9 +34,13 @@ public final class ApplicationsAddKeyRequestBodyInner {
     private String proof;
 
     /*
-     * Dictionary of <any>
+     * Dictionary of <AnyObject>
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of ApplicationsAddKeyRequestBodyInner class. */
+    public ApplicationsAddKeyRequestBodyInner() {
+    }
 
     /**
      * Get the keyCredential property: keyCredential.
@@ -103,7 +104,7 @@ public final class ApplicationsAddKeyRequestBodyInner {
     }
 
     /**
-     * Get the additionalProperties property: Dictionary of &lt;any&gt;.
+     * Get the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
      *
      * @return the additionalProperties value.
      */
@@ -113,7 +114,7 @@ public final class ApplicationsAddKeyRequestBodyInner {
     }
 
     /**
-     * Set the additionalProperties property: Dictionary of &lt;any&gt;.
+     * Set the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the ApplicationsAddKeyRequestBodyInner object itself.

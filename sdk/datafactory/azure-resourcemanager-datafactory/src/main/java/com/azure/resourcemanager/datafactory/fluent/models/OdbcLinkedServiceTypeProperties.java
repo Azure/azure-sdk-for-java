@@ -13,31 +13,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class OdbcLinkedServiceTypeProperties {
     /*
-     * The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
+     * string, or SecureString, or AzureKeyVaultSecretReference, or Expression with resultType string.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * Type of authentication used to connect to the ODBC data store. Possible
-     * values are: Anonymous and Basic. Type: string (or Expression with
-     * resultType string).
+     * Type of authentication used to connect to the ODBC data store. Possible values are: Anonymous and Basic. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The access credential portion of the connection string specified in
-     * driver-specific property-value format.
+     * The access credential portion of the connection string specified in driver-specific property-value format.
      */
     @JsonProperty(value = "credential")
     private SecretBase credential;
 
     /*
-     * User name for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -49,16 +45,20 @@ public final class OdbcLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of OdbcLinkedServiceTypeProperties class. */
+    public OdbcLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with
+     * resultType string.
      *
      * @return the connectionString value.
      */
@@ -68,7 +68,8 @@ public final class OdbcLinkedServiceTypeProperties {
 
     /**
      * Set the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with
+     * resultType string.
      *
      * @param connectionString the connectionString value to set.
      * @return the OdbcLinkedServiceTypeProperties object itself.
@@ -166,22 +167,22 @@ public final class OdbcLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the OdbcLinkedServiceTypeProperties object itself.
      */
-    public OdbcLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public OdbcLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

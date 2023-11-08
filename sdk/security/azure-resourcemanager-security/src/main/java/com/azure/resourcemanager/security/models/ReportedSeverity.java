@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReportedSeverity. */
+/** Assessed alert severity. */
 public final class ReportedSeverity extends ExpandableStringEnum<ReportedSeverity> {
     /** Static value Informational for ReportedSeverity. */
     public static final ReportedSeverity INFORMATIONAL = fromString("Informational");
@@ -23,6 +23,15 @@ public final class ReportedSeverity extends ExpandableStringEnum<ReportedSeverit
     public static final ReportedSeverity HIGH = fromString("High");
 
     /**
+     * Creates a new instance of ReportedSeverity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReportedSeverity() {
+    }
+
+    /**
      * Creates or finds a ReportedSeverity from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ReportedSeverity extends ExpandableStringEnum<ReportedSeverit
         return fromString(name, ReportedSeverity.class);
     }
 
-    /** @return known ReportedSeverity values. */
+    /**
+     * Gets known ReportedSeverity values.
+     *
+     * @return known ReportedSeverity values.
+     */
     public static Collection<ReportedSeverity> values() {
         return values(ReportedSeverity.class);
     }

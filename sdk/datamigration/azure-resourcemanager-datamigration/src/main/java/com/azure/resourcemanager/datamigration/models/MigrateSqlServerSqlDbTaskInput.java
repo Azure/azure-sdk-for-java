@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for the task that migrates on-prem SQL Server databases to Azure SQL Database. */
 @Fluent
 public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskInput.class);
-
     /*
      * Databases to migrate
      */
@@ -22,20 +19,20 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
     private List<MigrateSqlServerSqlDbDatabaseInput> selectedDatabases;
 
     /*
-     * Options for enabling various post migration validations. Available
-     * options,
-     * 1.) Data Integrity Check: Performs a checksum based comparison on source
-     * and target tables after the migration to ensure the correctness of the
-     * data.
-     * 2.) Schema Validation: Performs a thorough schema comparison between the
-     * source and target tables and provides a list of differences between the
-     * source and target database, 3.) Query Analysis: Executes a set of
-     * queries picked up automatically either from the Query Plan Cache or
-     * Query Store and execute them and compares the execution time between the
-     * source and target database.
+     * Options for enabling various post migration validations. Available options,
+     * 1.) Data Integrity Check: Performs a checksum based comparison on source and target tables after the migration
+     * to ensure the correctness of the data.
+     * 2.) Schema Validation: Performs a thorough schema comparison between the source and target tables and provides a
+     * list of differences between the source and target database, 3.) Query Analysis: Executes a set of queries picked
+     * up automatically either from the Query Plan Cache or Query Store and execute them and compares the execution
+     * time between the source and target database.
      */
     @JsonProperty(value = "validationOptions")
     private MigrationValidationOptions validationOptions;
+
+    /** Creates an instance of MigrateSqlServerSqlDbTaskInput class. */
+    public MigrateSqlServerSqlDbTaskInput() {
+    }
 
     /**
      * Get the selectedDatabases property: Databases to migrate.
@@ -111,7 +108,7 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
     public void validate() {
         super.validate();
         if (selectedDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedDatabases in model MigrateSqlServerSqlDbTaskInput"));
@@ -122,4 +119,6 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
             validationOptions().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MigrateSqlServerSqlDbTaskInput.class);
 }

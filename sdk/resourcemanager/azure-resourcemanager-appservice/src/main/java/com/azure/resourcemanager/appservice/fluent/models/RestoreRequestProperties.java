@@ -27,9 +27,8 @@ public final class RestoreRequestProperties {
     private String blobName;
 
     /*
-     * <code>true</code> if the restore operation can overwrite target app;
-     * otherwise, <code>false</code>. <code>true</code> is needed if trying to
-     * restore over an existing app.
+     * <code>true</code> if the restore operation can overwrite target app; otherwise, <code>false</code>.
+     * <code>true</code> is needed if trying to restore over an existing app.
      */
     @JsonProperty(value = "overwrite", required = true)
     private boolean overwrite;
@@ -41,18 +40,16 @@ public final class RestoreRequestProperties {
     private String siteName;
 
     /*
-     * Collection of databases which should be restored. This list has to match
-     * the list of databases included in the backup.
+     * Collection of databases which should be restored. This list has to match the list of databases included in the
+     * backup.
      */
     @JsonProperty(value = "databases")
     private List<DatabaseBackupSetting> databases;
 
     /*
-     * Changes a logic when restoring an app with custom domains.
-     * <code>true</code> to remove custom domains automatically. If
-     * <code>false</code>, custom domains are added to
-     * the app's object when it is being restored, but that might fail due to
-     * conflicts during the operation.
+     * Changes a logic when restoring an app with custom domains. <code>true</code> to remove custom domains
+     * automatically. If <code>false</code>, custom domains are added to
+     * the app's object when it is being restored, but that might fail due to conflicts during the operation.
      */
     @JsonProperty(value = "ignoreConflictingHostNames")
     private Boolean ignoreConflictingHostNames;
@@ -76,18 +73,20 @@ public final class RestoreRequestProperties {
     private BackupRestoreOperationType operationType;
 
     /*
-     * <code>true</code> if SiteConfig.ConnectionStrings should be set in new
-     * app; otherwise, <code>false</code>.
+     * <code>true</code> if SiteConfig.ConnectionStrings should be set in new app; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "adjustConnectionStrings")
     private Boolean adjustConnectionStrings;
 
     /*
-     * App Service Environment name, if needed (only when restoring an app to
-     * an App Service Environment).
+     * App Service Environment name, if needed (only when restoring an app to an App Service Environment).
      */
     @JsonProperty(value = "hostingEnvironment")
     private String hostingEnvironment;
+
+    /** Creates an instance of RestoreRequestProperties class. */
+    public RestoreRequestProperties() {
+    }
 
     /**
      * Get the storageAccountUrl property: SAS URL to the container.

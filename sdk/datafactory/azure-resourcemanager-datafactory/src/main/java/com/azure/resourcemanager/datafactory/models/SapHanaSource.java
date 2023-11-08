@@ -21,16 +21,14 @@ public final class SapHanaSource extends TabularSource {
     private Object query;
 
     /*
-     * The packet size of data read from SAP HANA. Type: integer(or Expression
-     * with resultType integer).
+     * The packet size of data read from SAP HANA. Type: integer(or Expression with resultType integer).
      */
     @JsonProperty(value = "packetSize")
     private Object packetSize;
 
     /*
-     * The partition mechanism that will be used for SAP HANA read in parallel.
-     * Possible values include: "None", "PhysicalPartitionsOfTable",
-     * "SapHanaDynamicRange".
+     * The partition mechanism that will be used for SAP HANA read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -40,6 +38,10 @@ public final class SapHanaSource extends TabularSource {
      */
     @JsonProperty(value = "partitionSettings")
     private SapHanaPartitionSettings partitionSettings;
+
+    /** Creates an instance of SapHanaSource class. */
+    public SapHanaSource() {
+    }
 
     /**
      * Get the query property: SAP HANA Sql query. Type: string (or Expression with resultType string).

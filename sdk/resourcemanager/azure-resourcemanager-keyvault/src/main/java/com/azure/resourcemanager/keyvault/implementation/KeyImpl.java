@@ -3,13 +3,15 @@
 
 package com.azure.resourcemanager.keyvault.implementation;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.models.Key;
-import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion;
@@ -32,12 +34,12 @@ import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for Vault and its parent interfaces. */
 class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
@@ -45,7 +47,8 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
 
     private final ClientLogger logger = new ClientLogger(this.getClass());
 
-    private final Vault vault;
+    private final KeyAsyncClient keyClient;
+    private final HttpPipeline httpPipeline;
 
     private CreateKeyOptions createKeyRequest;
     private UpdateKeyOptions updateKeyRequest;
@@ -64,15 +67,17 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
         private List<KeyOperation> keyOperations = new ArrayList<>();
     }
 
-    KeyImpl(String name, KeyProperties innerObject, Vault vault) {
+    KeyImpl(String name, KeyProperties innerObject, HttpPipeline httpPipeline, KeyAsyncClient keyClient) {
         super(name, innerObject);
-        this.vault = vault;
+        this.httpPipeline = httpPipeline;
+        this.keyClient = keyClient;
     }
 
-    KeyImpl(String name, KeyVaultKey keyVaultKey, Vault vault) {
+    KeyImpl(String name, KeyVaultKey keyVaultKey, HttpPipeline httpPipeline, KeyAsyncClient keyClient) {
         super(name, keyVaultKey.getProperties());
         this.jsonWebKey = keyVaultKey.getKey();
-        this.vault = vault;
+        this.httpPipeline = httpPipeline;
+        this.keyClient = keyClient;
     }
 
     private void init(boolean createNewCryptographyClient) {
@@ -84,7 +89,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
                 cryptographyClient =
                     new CryptographyClientBuilder()
                         .keyIdentifier(innerModel().getId())
-                        .pipeline(vault.vaultHttpPipeline())
+                        .pipeline(httpPipeline)
                         .serviceVersion(CryptographyServiceVersion.V7_2)
                         .buildAsyncClient();
             }
@@ -92,7 +97,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
     }
 
     private KeyImpl wrapModel(KeyProperties keyProperties) {
-        return new KeyImpl(keyProperties.getName(), keyProperties, vault);
+        return new KeyImpl(keyProperties.getName(), keyProperties, httpPipeline, keyClient);
     }
 
     @Override
@@ -136,8 +141,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
 
     @Override
     public PagedFlux<Key> listVersionsAsync() {
-        return PagedConverter.mapPage(vault
-            .keyClient()
+        return PagedConverter.mapPage(keyClient
             .listPropertiesOfKeyVersions(this.name()),
             this::wrapModel);
     }
@@ -149,7 +153,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
 
     @Override
     public Mono<byte[]> backupAsync() {
-        return vault.keyClient().backupKey(this.name());
+        return keyClient.backupKey(this.name());
     }
 
     @Override
@@ -214,7 +218,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
 
     @Override
     protected Mono<KeyProperties> getInnerAsync() {
-        return vault.keyClient().getKey(this.name()).map(keyVaultKey -> {
+        return keyClient.getKey(this.name()).map(keyVaultKey -> {
             this.jsonWebKey = keyVaultKey.getKey();
             return keyVaultKey.getProperties();
         });
@@ -244,14 +248,14 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
         Mono<KeyVaultKey> mono;
         if (createKeyRequest != null) {
             if (createKeyRequest instanceof CreateEcKeyOptions) {
-                mono = vault.keyClient().createEcKey((CreateEcKeyOptions) createKeyRequest);
+                mono = keyClient.createEcKey((CreateEcKeyOptions) createKeyRequest);
             } else if (createKeyRequest instanceof CreateRsaKeyOptions) {
-                mono = vault.keyClient().createRsaKey((CreateRsaKeyOptions) createKeyRequest);
+                mono = keyClient.createRsaKey((CreateRsaKeyOptions) createKeyRequest);
             } else {
-                mono = vault.keyClient().createKey(createKeyRequest);
+                mono = keyClient.createKey(createKeyRequest);
             }
         } else {
-            mono = vault.keyClient().importKey(importKeyRequest);
+            mono = keyClient.importKey(importKeyRequest);
         }
         return mono
             .map(
@@ -291,8 +295,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
         }
         return mono
             .then(
-                vault
-                    .keyClient()
+                keyClient
                     .updateKeyProperties(
                         updateKeyRequest.keyProperties, updateKeyRequest.keyOperations.toArray(new KeyOperation[0]))
                     .map(

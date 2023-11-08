@@ -340,20 +340,6 @@ public interface GalleryImagesClient {
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery from which the Image Definitions are to be retrieved.
      * @param galleryImageName The name of the gallery image definition to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery image definition that you want to create or update.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GalleryImageInner get(String resourceGroupName, String galleryName, String galleryImageName);
-
-    /**
-     * Retrieves information about a gallery image definition.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Image Gallery from which the Image Definitions are to be retrieved.
-     * @param galleryImageName The name of the gallery image definition to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -364,6 +350,20 @@ public interface GalleryImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GalleryImageInner> getWithResponse(
         String resourceGroupName, String galleryName, String galleryImageName, Context context);
+
+    /**
+     * Retrieves information about a gallery image definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery from which the Image Definitions are to be retrieved.
+     * @param galleryImageName The name of the gallery image definition to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery image definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GalleryImageInner get(String resourceGroupName, String galleryName, String galleryImageName);
 
     /**
      * Delete a gallery image.

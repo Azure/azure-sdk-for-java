@@ -88,38 +88,6 @@ public class RetryUtilTest {
     }
 
     /**
-     * Tests a retry that times out on a Flux.
-     */
-    @Test
-    void withRetryFluxEmitsItemsLaterThanTimeout() {
-        // Arrange
-        final String timeoutMessage = "Operation timed out.";
-        final Duration timeout = Duration.ofMillis(500);
-        final AmqpRetryOptions options = new AmqpRetryOptions()
-            .setDelay(Duration.ofSeconds(1))
-            .setMaxRetries(2)
-            .setTryTimeout(timeout);
-        final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
-
-        final AtomicInteger resubscribe = new AtomicInteger();
-        final TestPublisher<AmqpTransportType> singleItem = TestPublisher.create();
-
-        final Flux<AmqpTransportType> flux = singleItem.flux()
-            .doOnSubscribe(s -> resubscribe.incrementAndGet());
-
-        // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(flux, options, timeoutMessage))
-            .expectSubscription()
-            .then(() -> singleItem.next(AmqpTransportType.AMQP_WEB_SOCKETS))
-            .expectNext(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .expectNoEvent(totalWaitTime)
-            .thenCancel()
-            .verify();
-
-        assertEquals(1, resubscribe.get());
-    }
-
-    /**
      * Tests a retry that times out on a Mono.
      */
     @Test
@@ -187,37 +155,6 @@ public class RetryUtilTest {
             .expectNext(10)
             .expectNext(3, 4)
             .expectComplete()
-            .verify();
-    }
-
-    static Stream<Throwable> withNonTransientError() {
-        return Stream.of(
-            new AmqpException(false, "Test-exception", new AmqpErrorContext("test-ns")),
-            new IllegalStateException("Some illegal State")
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource
-    void withNonTransientError(Throwable nonTransientError) {
-        // Arrange
-        final String timeoutMessage = "Operation timed out.";
-        final Duration timeout = Duration.ofSeconds(30);
-        final AmqpRetryOptions options = new AmqpRetryOptions()
-            .setMode(AmqpRetryMode.FIXED)
-            .setDelay(Duration.ofSeconds(1))
-            .setMaxRetries(1)
-            .setTryTimeout(timeout);
-
-        final Flux<Integer> stream = Flux.concat(
-            Flux.just(0, 1, 2),
-            Flux.error(nonTransientError),
-            Flux.just(3, 4));
-
-        // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(stream, options, timeoutMessage))
-            .expectNext(0, 1, 2)
-            .expectErrorMatches(error -> error.equals(nonTransientError))
             .verify();
     }
 

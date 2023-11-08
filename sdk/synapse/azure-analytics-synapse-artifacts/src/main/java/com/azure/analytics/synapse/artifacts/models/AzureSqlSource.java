@@ -22,19 +22,25 @@ public final class AzureSqlSource extends TabularSource {
     private Object sqlReaderQuery;
 
     /*
-     * Name of the stored procedure for a SQL Database source. This cannot be
-     * used at the same time as SqlReaderQuery. Type: string (or Expression
-     * with resultType string).
+     * Name of the stored procedure for a SQL Database source. This cannot be used at the same time as SqlReaderQuery.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlReaderStoredProcedureName")
     private Object sqlReaderStoredProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}".
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "storedProcedureParameters")
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
+
+    /*
+     * Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "isolationLevel")
+    private Object isolationLevel;
 
     /*
      * Which additional types to produce.
@@ -43,9 +49,8 @@ public final class AzureSqlSource extends TabularSource {
     private Object produceAdditionalTypes;
 
     /*
-     * The partition mechanism that will be used for Sql read in parallel.
-     * Possible values include: "None", "PhysicalPartitionsOfTable",
-     * "DynamicRange".
+     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -55,6 +60,9 @@ public final class AzureSqlSource extends TabularSource {
      */
     @JsonProperty(value = "partitionSettings")
     private SqlPartitionSettings partitionSettings;
+
+    /** Creates an instance of AzureSqlSource class. */
+    public AzureSqlSource() {}
 
     /**
      * Get the sqlReaderQuery property: SQL reader query. Type: string (or Expression with resultType string).
@@ -122,6 +130,30 @@ public final class AzureSqlSource extends TabularSource {
     }
 
     /**
+     * Get the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the isolationLevel value.
+     */
+    public Object getIsolationLevel() {
+        return this.isolationLevel;
+    }
+
+    /**
+     * Set the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param isolationLevel the isolationLevel value to set.
+     * @return the AzureSqlSource object itself.
+     */
+    public AzureSqlSource setIsolationLevel(Object isolationLevel) {
+        this.isolationLevel = isolationLevel;
+        return this;
+    }
+
+    /**
      * Get the produceAdditionalTypes property: Which additional types to produce.
      *
      * @return the produceAdditionalTypes value.
@@ -180,6 +212,41 @@ public final class AzureSqlSource extends TabularSource {
      */
     public AzureSqlSource setPartitionSettings(SqlPartitionSettings partitionSettings) {
         this.partitionSettings = partitionSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

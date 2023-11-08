@@ -23,6 +23,10 @@ public final class ApplicationGatewayLoadDistributionTargetPropertiesFormat {
     @JsonProperty(value = "backendAddressPool")
     private SubResource backendAddressPool;
 
+    /** Creates an instance of ApplicationGatewayLoadDistributionTargetPropertiesFormat class. */
+    public ApplicationGatewayLoadDistributionTargetPropertiesFormat() {
+    }
+
     /**
      * Get the weightPerServer property: Weight per server. Range between 1 and 100.
      *

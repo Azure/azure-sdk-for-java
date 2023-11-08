@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.cpu;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,9 +165,10 @@ public class CpuMemoryMonitor {
         try {
             Instant now = Instant.now();
             float currentCpuUtilization = CPU_MEMORY_READER.getSystemWideCpuUsage() * 100;
-            float currentMemoryUtilization = CPU_MEMORY_READER.getSystemWideMemoryUsage();
+            float freeMemoryAvailableInMB = CPU_MEMORY_READER.getSystemWideMemoryAvailableInMB();
 
             if (!Float.isNaN(currentCpuUtilization) && currentCpuUtilization >= 0) {
+                ClientTelemetryMetrics.recordSystemUsage(currentCpuUtilization, freeMemoryAvailableInMB);
                 List<CpuLoad> cpuLoadHistory = new ArrayList<>(buffer.length);
                 CpuLoadHistory newReading = new CpuLoadHistory(
                     cpuLoadHistory,
@@ -176,7 +178,7 @@ public class CpuMemoryMonitor {
                 clockHand = (clockHand + 1) % buffer.length;
 
                 clientTelemetryCpuLatestList[clientTelemetryIndex] = currentCpuUtilization;
-                clientTelemetryMemoryLatestList[clientTelemetryIndex] = currentMemoryUtilization;
+                clientTelemetryMemoryLatestList[clientTelemetryIndex] = freeMemoryAvailableInMB;
                 clientTelemetryIndex = (clientTelemetryIndex + 1) % clientTelemetryLength;
 
                 for (int i = 0; i < buffer.length; i++) {

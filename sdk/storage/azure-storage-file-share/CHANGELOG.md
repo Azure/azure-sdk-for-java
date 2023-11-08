@@ -1,6 +1,6 @@
 # Release History
 
-## 12.13.0-beta.1 (Unreleased)
+## 12.21.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,241 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.20.1 (2023-10-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.23.0` to version `12.23.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+## 12.21.0-beta.1 (2023-10-19)
+
+### Features Added
+- Added support for service versions 2023-11-03.
+- Added support for ShareAudience.
+
+## 12.20.0 (2023-09-12)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+
+## 12.19.1 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.22.0` to version `12.22.1`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 12.20.0-beta.1 (2023-08-08)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+
+## 12.19.0 (2023-07-11)
+
+### Features Added
+- Added support for the `2023-01-03` service version.
+- Added `ShareFileHandleAccessRights` property on `HandleItem` that specifies access rights for a file handle.
+
+## 12.18.2 (2023-06-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-storage-common` from `12.21.1` to version `12.21.2`.
+
+## 12.19.0-beta.1 (2023-05-30)
+
+### Features Added
+- Added support for 2023-01-03 service version.
+- Added `ShareFileHandleAccessRights` property on `HandleItem` that specifies access rights for a file handle.
+
+## 12.18.1 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-storage-common` from `12.21.0` to version `12.21.1`.
+
+## 12.18.0 (2023-04-13)
+
+### Features Added
+- Added support for 2022-11-02 service version.
+- Added support for `TokenCredential` to be used for authentication. **Note:** When using a `TokenCredential`, the new
+  keyword parameter `ShareTokenIntent` is **required** and must be provided. Additionally, this form of authentication is
+  only supported for certain operations in the Data Plane SDK.
+- Added support for `allowTrailingDot` and `allowSourceTrailingDot` on client construction. When `allowTrailingDot` is
+  provided, the service will not silently remove any trailing `.` character from directory/file names for all operations
+  made from that client. `allowSourceTrailingDot` will apply this same rule to source files when performing a rename or copy operation.
+- Added support for reading and writing a file via SeekableByteChannel.
+
+## 12.18.0-beta.1 (2023-03-28)
+
+### Features Added
+- Added support for 2022-11-02 service version.
+- Added support for `TokenCredential` to be used for authentication. **Note:** When using a `TokenCredential`, the new 
+keyword parameter `ShareTokenIntent` is **required** and must be provided. Additionally, this form of authentication is 
+only supported for certain operations in the Data Plane SDK.
+- Added support for `allowTrailingDot` and `allowSourceTrailingDot` on client construction. When `allowTrailingDot` is 
+provided, the service will not silently remove any trailing `.` character from directory/file names for all operations 
+made from that client. `allowSourceTrailingDot` will apply this same rule to source files when performing a rename or copy operation.
+- Added support for reading and writing a file via SeekableByteChannel.
+
+## 12.17.1 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-storage-common` from `12.20.0` to version `12.20.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 12.17.0 (2023-02-21)
+
+### Features Added
+- Added support for 2021-12-02 service version.
+- Added support for invalid XML characters in file and directory names for `ShareDirectoryClient.listFilesAndDirectories()`, `ShareDirectoryClient.listHandles()`, and `ShareFileClient.listHandles()`.
+
+## 12.16.3 (2023-02-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-storage-common` from `12.19.2` to version `12.19.3`.
+
+## 12.17.0-beta.1 (2023-02-07)
+
+### Features Added
+- Added support for 2021-12-02 service version.
+- Added support for invalid XML characters in file and directory names for `ShareDirectoryClient.listFilesAndDirectories()`, `ShareDirectoryClient.listHandles()`, and `ShareFileClient.listHandles()`.
+
+## 12.16.2 (2023-01-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+- Upgraded `azure-storage-common` from `12.19.1` to version `12.19.2`.
+
+## 12.16.1 (2022-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+- Upgraded `azure-storage-common` from `12.19.0` to version `12.19.1`.
+
+## 12.16.0 (2022-10-11)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+
+### Bugs Fixed
+- Fixed a bug that would cause auth failures when trying to rename a file share/directory share while authenticating with a sas.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-storage-common` from `12.18.1` to version `12.19.0`.
+
+## 12.15.1 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+- Upgraded `azure-storage-common` from `12.18.0` to version `12.18.1`.
+
+## 12.16.0-beta.1 (2022-09-06)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+
+### Bugs Fixed
+- Fixed a bug that would cause auth failures when trying to rename a file share/directory share while authenticating with a sas.
+
+## 12.15.0 (2022-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+- Upgraded `azure-storage-common` from `12.17.0` to version `12.18.0-beta.1`.
+
+## 12.14.0 (2022-07-07)
+
+### Features Added
+- GA release for 2021-08-06 service version.
+
+## 12.14.0-beta.1 (2022-06-15)
+
+### Features Added
+- Added support for the 2021-08-06 service version.
+- Added new overload of ShareFileClient.BeginCopy() and ShareFileAsyncClient.BeginCopy(), added new parameters allowing the copying of the source file's CreatedOn, LastWrittenOn, FileAttributes and ChangedOn properties.
+
+## 12.13.1 (2022-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-storage-common` from `12.16.0` to version `12.16.1`.
+
+## 12.13.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
+
+## 12.12.2 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-common` from `12.15.1` to version `12.15.2`.
+
+## 12.13.0-beta.1 (2022-05-06)
+
+### Features Added
+- Added support for the 2021-06-08 service version.
+- Added support for setting the change time on directory/file create, set properties, and rename
+- Added support for setting content type on file rename.
+- Added support for FileLastWrittenMode.
+
+## 12.12.1 (2022-04-07)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+- Upgraded `azure-storage-common` from `12.15.0` to version `12.15.1`.
 
 ## 12.12.0 (2022-03-09)
 

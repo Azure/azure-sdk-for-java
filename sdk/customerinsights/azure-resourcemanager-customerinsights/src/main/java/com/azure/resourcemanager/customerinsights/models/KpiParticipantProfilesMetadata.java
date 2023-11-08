@@ -6,19 +6,20 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The KPI participant profile metadata. */
 @Fluent
 public final class KpiParticipantProfilesMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpiParticipantProfilesMetadata.class);
-
     /*
      * Name of the type.
      */
     @JsonProperty(value = "typeName", required = true)
     private String typeName;
+
+    /** Creates an instance of KpiParticipantProfilesMetadata class. */
+    public KpiParticipantProfilesMetadata() {
+    }
 
     /**
      * Get the typeName property: Name of the type.
@@ -47,10 +48,12 @@ public final class KpiParticipantProfilesMetadata {
      */
     public void validate() {
         if (typeName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property typeName in model KpiParticipantProfilesMetadata"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KpiParticipantProfilesMetadata.class);
 }

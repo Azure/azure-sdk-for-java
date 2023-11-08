@@ -28,6 +28,10 @@ public final class SiteLimits {
     @JsonProperty(value = "maxDiskSizeInMb")
     private Long maxDiskSizeInMb;
 
+    /** Creates an instance of SiteLimits class. */
+    public SiteLimits() {
+    }
+
     /**
      * Get the maxPercentageCpu property: Maximum allowed CPU usage percentage.
      *

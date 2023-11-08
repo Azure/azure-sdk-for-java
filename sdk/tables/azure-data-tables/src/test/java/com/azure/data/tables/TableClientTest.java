@@ -3,13 +3,19 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableAccessPolicy;
@@ -26,6 +32,9 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
+import com.azure.identity.ClientSecretCredentialBuilder;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
@@ -53,12 +62,22 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class TableClientTest extends TableClientTestBase {
     private TableClient tableClient;
 
+    protected HttpClient buildAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertSync()
+            .build();
+    }
+
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
         tableClient = getClientBuilder(tableName, connectionString).buildClient();
-
         tableClient.createTable();
+    }
+
+    protected void afterTest() {
+        tableClient.deleteTable();
     }
 
     @Test
@@ -70,6 +89,49 @@ public class TableClientTest extends TableClientTestBase {
 
         // Act & Assert
         assertNotNull(tableClient2.createTable());
+    }
+
+    /**
+     * Tests that a table and entity can be created while having a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
+    @Test
+    public void createTableWithMultipleTenants() {
+        // This feature works only in Storage endpoints with service version 2020_12_06.
+        Assumptions.assumeTrue(tableClient.getTableEndpoint().contains("core.windows.net")
+            && tableClient.getServiceVersion() == TableServiceVersion.V2020_12_06);
+
+        // Arrange
+        final String tableName2 = testResourceNamer.randomName("tableName", 20);
+
+        TokenCredential credential = null;
+        if (interceptorManager.isPlaybackMode()) {
+            credential = new MockTokenCredential();
+        } else {
+        // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
+        // contained in the response the server provides to a first "naive" unauthenticated request.
+            credential = new ClientSecretCredentialBuilder()
+                .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+                .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
+                .tenantId(testResourceNamer.randomUuid())
+                .additionallyAllowedTenants("*")
+                .build();
+        }
+
+        final TableClient tableClient2 =
+            getClientBuilder(tableName2, Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
+                "https://tablestests.table.core.windows.com"), credential, true).buildClient();
+        // Act & Assert
+        // This request will use the tenant ID extracted from the previous request.
+
+        assertNotNull(tableClient2.createTable());
+
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
+
+        // All other requests will also use the tenant ID obtained from the auth challenge.
+        assertDoesNotThrow(() -> tableClient2.createEntity(tableEntity));
     }
 
     @Test
@@ -717,7 +779,8 @@ public class TableClientTest extends TableClientTestBase {
 
     @Test
     public void submitTransactionAllActions() {
-        submitTransactionAllActionsImpl("partitionKey", "rowKey");
+        Runnable func = () -> submitTransactionAllActionsImpl("partitionKey", "rowKey");
+        func.run();
     }
 
     @Test
@@ -963,12 +1026,14 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     @Test
+    // Disabling as this currently fails and prevents merging https://github.com/Azure/azure-sdk-for-java/pull/28522.
+    // TODO: Will fix in a separate PR. -vicolina
     public void canUseSasTokenToCreateValidTableClient() {
-        // SAS tokens at the table level have not been working with Cosmos endpoints. Will re-enable once this is fixed.
-        // - vicolina
+        // SAS tokens at the table level have not been working with Cosmos endpoints.
+        // TODO: Will re-enable once the above is fixed. -vicolina
         Assumptions.assumeFalse(IS_COSMOS_TEST, "Skipping Cosmos test.");
 
-        final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        final OffsetDateTime expiryTime = OffsetDateTime.of(2023, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
 
@@ -1088,4 +1153,47 @@ public class TableClientTest extends TableClientTestBase {
             assertEquals(permissions, accessPolicy.getPermissions());
         }
     }
+
+    @Test
+    public void allowsCreationOfEntityWithEmptyStringPrimaryKey() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Empty row or partition keys are not supported on Cosmos endpoints.");
+        Assertions.assertDoesNotThrow(() -> {
+            TableEntity entity = new TableEntity("", "");
+            tableClient.createEntity(entity);
+        });
+    }
+
+    @Test
+    public void allowListEntitiesWithEmptyPrimaryKey() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Empty row or partition keys are not supported on Cosmos endpoints.");
+        TableEntity entity = new TableEntity("", "");
+        String entityName = testResourceNamer.randomName("name", 10);
+        entity.addProperty("Name", entityName);
+        tableClient.createEntity(entity);
+        ListEntitiesOptions options = new ListEntitiesOptions();
+        options.setFilter("PartitionKey eq '' and RowKey eq ''");
+        PagedIterable<TableEntity> response = tableClient.listEntities(options, Duration.ofSeconds(10), null);
+        ArrayList<TableEntity> responseArray = new ArrayList<TableEntity>();
+        for (TableEntity responseEntity : response) {
+            responseArray.add(responseEntity);
+        }
+        assertEquals(1, responseArray.size());
+        assertEquals(entityName, responseArray.get(0).getProperty("Name"));
+    }
+
+    // tests that you can delete a table entity with an empty string partition key and empty string row key
+    @Test
+    public void allowDeleteEntityWithEmptyPrimaryKey() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Empty row or partition keys are not supported on Cosmos endpoints.");
+        TableEntity entity = new TableEntity("", "");
+        String entityName = testResourceNamer.randomName("name", 10);
+        entity.addProperty("Name", entityName);
+        tableClient.createEntity(entity);
+        tableClient.deleteEntity(entity);
+    }
+
+
 }

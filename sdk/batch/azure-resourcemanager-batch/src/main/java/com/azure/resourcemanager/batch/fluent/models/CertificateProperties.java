@@ -46,11 +46,14 @@ public final class CertificateProperties extends CertificateBaseProperties {
     private String publicData;
 
     /*
-     * This is only returned when the certificate provisioningState is
-     * 'Failed'.
+     * This is only returned when the certificate provisioningState is 'Failed'.
      */
     @JsonProperty(value = "deleteCertificateError", access = JsonProperty.Access.WRITE_ONLY)
     private DeleteCertificateError deleteCertificateError;
+
+    /** Creates an instance of CertificateProperties class. */
+    public CertificateProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioningState property.

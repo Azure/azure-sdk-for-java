@@ -16,10 +16,9 @@ import com.azure.resourcemanager.appconfiguration.models.CheckNameAvailabilityPa
 import com.azure.resourcemanager.appconfiguration.models.NameAvailabilityStatus;
 import com.azure.resourcemanager.appconfiguration.models.OperationDefinition;
 import com.azure.resourcemanager.appconfiguration.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
@@ -30,16 +29,6 @@ public final class OperationsImpl implements Operations {
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public NameAvailabilityStatus checkNameAvailability(
-        CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
-        NameAvailabilityStatusInner inner = this.serviceClient().checkNameAvailability(checkNameAvailabilityParameters);
-        if (inner != null) {
-            return new NameAvailabilityStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<NameAvailabilityStatus> checkNameAvailabilityWithResponse(
@@ -57,6 +46,16 @@ public final class OperationsImpl implements Operations {
         }
     }
 
+    public NameAvailabilityStatus checkNameAvailability(
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
+        NameAvailabilityStatusInner inner = this.serviceClient().checkNameAvailability(checkNameAvailabilityParameters);
+        if (inner != null) {
+            return new NameAvailabilityStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<OperationDefinition> list() {
         PagedIterable<OperationDefinitionInner> inner = this.serviceClient().list();
         return Utils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
@@ -65,17 +64,6 @@ public final class OperationsImpl implements Operations {
     public PagedIterable<OperationDefinition> list(String skipToken, Context context) {
         PagedIterable<OperationDefinitionInner> inner = this.serviceClient().list(skipToken, context);
         return Utils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
-    }
-
-    public NameAvailabilityStatus regionalCheckNameAvailability(
-        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
-        NameAvailabilityStatusInner inner =
-            this.serviceClient().regionalCheckNameAvailability(location, checkNameAvailabilityParameters);
-        if (inner != null) {
-            return new NameAvailabilityStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<NameAvailabilityStatus> regionalCheckNameAvailabilityWithResponse(
@@ -90,6 +78,17 @@ public final class OperationsImpl implements Operations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NameAvailabilityStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NameAvailabilityStatus regionalCheckNameAvailability(
+        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
+        NameAvailabilityStatusInner inner =
+            this.serviceClient().regionalCheckNameAvailability(location, checkNameAvailabilityParameters);
+        if (inner != null) {
+            return new NameAvailabilityStatusImpl(inner, this.manager());
         } else {
             return null;
         }

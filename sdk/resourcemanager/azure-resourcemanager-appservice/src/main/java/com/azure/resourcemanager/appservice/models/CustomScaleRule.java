@@ -33,6 +33,10 @@ public final class CustomScaleRule {
     @JsonProperty(value = "auth")
     private List<ScaleRuleAuth> auth;
 
+    /** Creates an instance of CustomScaleRule class. */
+    public CustomScaleRule() {
+    }
+
     /**
      * Get the type property: Type of the custom scale rule eg: azure-servicebus, redis etc.
      *

@@ -15,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class CosmosDbMongoDbApiSink extends CopySink {
     /*
-     * Specifies whether the document with same key to be overwritten (upsert)
-     * rather than throw exception (insert). The default value is "insert".
-     * Type: string (or Expression with resultType string). Type: string (or
-     * Expression with resultType string).
+     * Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert).
+     * The default value is "insert". Type: string (or Expression with resultType string). Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
+
+    /** Creates an instance of CosmosDbMongoDbApiSink class. */
+    public CosmosDbMongoDbApiSink() {}
 
     /**
      * Get the writeBehavior property: Specifies whether the document with same key to be overwritten (upsert) rather
@@ -44,6 +46,41 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
      */
     public CosmosDbMongoDbApiSink setWriteBehavior(Object writeBehavior) {
         this.writeBehavior = writeBehavior;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

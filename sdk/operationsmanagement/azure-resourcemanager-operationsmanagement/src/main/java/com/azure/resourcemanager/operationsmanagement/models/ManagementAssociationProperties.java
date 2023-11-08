@@ -6,19 +6,20 @@ package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ManagementAssociation properties supported by the OperationsManagement resource provider. */
 @Fluent
 public final class ManagementAssociationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementAssociationProperties.class);
-
     /*
      * The applicationId of the appliance for this association.
      */
     @JsonProperty(value = "applicationId", required = true)
     private String applicationId;
+
+    /** Creates an instance of ManagementAssociationProperties class. */
+    public ManagementAssociationProperties() {
+    }
 
     /**
      * Get the applicationId property: The applicationId of the appliance for this association.
@@ -47,10 +48,12 @@ public final class ManagementAssociationProperties {
      */
     public void validate() {
         if (applicationId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property applicationId in model ManagementAssociationProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementAssociationProperties.class);
 }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.digitaltwins.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.digitaltwins.models.Reason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result returned from a check name availability request. */
 @Fluent
 public final class CheckNameResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameResultInner.class);
-
     /*
      * Specifies a Boolean value that indicates if the name is available.
      */
@@ -22,8 +18,8 @@ public final class CheckNameResultInner {
     private Boolean nameAvailable;
 
     /*
-     * Message indicating an unavailable name due to a conflict, or a
-     * description of the naming rules that are violated.
+     * Message indicating an unavailable name due to a conflict, or a description of the naming rules that are
+     * violated.
      */
     @JsonProperty(value = "message")
     private String message;
@@ -33,6 +29,10 @@ public final class CheckNameResultInner {
      */
     @JsonProperty(value = "reason")
     private Reason reason;
+
+    /** Creates an instance of CheckNameResultInner class. */
+    public CheckNameResultInner() {
+    }
 
     /**
      * Get the nameAvailable property: Specifies a Boolean value that indicates if the name is available.

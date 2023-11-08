@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceResource;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties to create and update Azure Cosmos DB Cassandra keyspace. */
 @Fluent
 public final class CassandraKeyspaceCreateUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraKeyspaceCreateUpdateProperties.class);
-
     /*
      * The standard JSON format of a Cassandra keyspace
      */
@@ -23,11 +20,15 @@ public final class CassandraKeyspaceCreateUpdateProperties {
     private CassandraKeyspaceResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This
-     * corresponds to the headers sent with the request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
+     * request.
      */
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
+
+    /** Creates an instance of CassandraKeyspaceCreateUpdateProperties class. */
+    public CassandraKeyspaceCreateUpdateProperties() {
+    }
 
     /**
      * Get the resource property: The standard JSON format of a Cassandra keyspace.
@@ -78,7 +79,7 @@ public final class CassandraKeyspaceCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resource in model CassandraKeyspaceCreateUpdateProperties"));
@@ -89,4 +90,6 @@ public final class CassandraKeyspaceCreateUpdateProperties {
             options().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CassandraKeyspaceCreateUpdateProperties.class);
 }

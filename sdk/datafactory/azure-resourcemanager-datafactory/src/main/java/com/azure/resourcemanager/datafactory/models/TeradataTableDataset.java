@@ -23,6 +23,10 @@ public final class TeradataTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private TeradataTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of TeradataTableDataset class. */
+    public TeradataTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Teradata dataset properties.
      *

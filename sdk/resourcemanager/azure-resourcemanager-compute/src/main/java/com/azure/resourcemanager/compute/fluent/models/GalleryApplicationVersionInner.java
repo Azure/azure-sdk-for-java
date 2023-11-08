@@ -6,8 +6,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPublishingProfile;
+import com.azure.resourcemanager.compute.models.GalleryApplicationVersionSafetyProfile;
+import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -20,6 +21,10 @@ public final class GalleryApplicationVersionInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private GalleryApplicationVersionProperties innerProperties;
+
+    /** Creates an instance of GalleryApplicationVersionInner class. */
+    public GalleryApplicationVersionInner() {
+    }
 
     /**
      * Get the innerProperties property: Describes the properties of a gallery image version.
@@ -69,12 +74,36 @@ public final class GalleryApplicationVersionInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery Application Version. The provisioning state,
-     * which only appears in the response.
+     * Get the safetyProfile property: The safety profile of the Gallery Application Version.
+     *
+     * @return the safetyProfile value.
+     */
+    public GalleryApplicationVersionSafetyProfile safetyProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().safetyProfile();
+    }
+
+    /**
+     * Set the safetyProfile property: The safety profile of the Gallery Application Version.
+     *
+     * @param safetyProfile the safetyProfile value to set.
+     * @return the GalleryApplicationVersionInner object itself.
+     */
+    public GalleryApplicationVersionInner withSafetyProfile(GalleryApplicationVersionSafetyProfile safetyProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationVersionProperties();
+        }
+        this.innerProperties().withSafetyProfile(safetyProfile);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The current state of the gallery or gallery artifact.
+     *
+     * <p>The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryApplicationVersionPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.dnsresolver.fluent.ForwardingRulesClient;
 import com.azure.resourcemanager.dnsresolver.fluent.models.ForwardingRuleInner;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRule;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ForwardingRulesImpl implements ForwardingRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForwardingRulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ForwardingRulesImpl.class);
 
     private final ForwardingRulesClient innerClient;
 
@@ -86,7 +85,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
     public ForwardingRule getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -104,7 +103,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
         }
         String forwardingRuleName = Utils.getValueFromIdByName(id, "forwardingRules");
         if (forwardingRuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,7 +117,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
     public Response<ForwardingRule> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -126,7 +125,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
         }
         String forwardingRuleName = Utils.getValueFromIdByName(id, "forwardingRules");
         if (forwardingRuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +147,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -156,7 +155,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +165,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
         }
         String forwardingRuleName = Utils.getValueFromIdByName(id, "forwardingRules");
         if (forwardingRuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,7 +180,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -189,7 +188,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
         }
         String dnsForwardingRulesetName = Utils.getValueFromIdByName(id, "dnsForwardingRulesets");
         if (dnsForwardingRulesetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -199,7 +198,7 @@ public final class ForwardingRulesImpl implements ForwardingRules {
         }
         String forwardingRuleName = Utils.getValueFromIdByName(id, "forwardingRules");
         if (forwardingRuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

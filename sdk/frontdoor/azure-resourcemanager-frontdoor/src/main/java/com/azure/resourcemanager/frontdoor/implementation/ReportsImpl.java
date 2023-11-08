@@ -17,11 +17,10 @@ import com.azure.resourcemanager.frontdoor.models.Reports;
 import com.azure.resourcemanager.frontdoor.models.Timeseries;
 import com.azure.resourcemanager.frontdoor.models.TimeseriesAggregationInterval;
 import com.azure.resourcemanager.frontdoor.models.TimeseriesType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.OffsetDateTime;
 
 public final class ReportsImpl implements Reports {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReportsImpl.class);
 
     private final ReportsClient innerClient;
 
@@ -30,22 +29,6 @@ public final class ReportsImpl implements Reports {
     public ReportsImpl(ReportsClient innerClient, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public LatencyScorecard getLatencyScorecards(
-        String resourceGroupName,
-        String profileName,
-        String experimentName,
-        LatencyScorecardAggregationInterval aggregationInterval) {
-        LatencyScorecardInner inner =
-            this
-                .serviceClient()
-                .getLatencyScorecards(resourceGroupName, profileName, experimentName, aggregationInterval);
-        if (inner != null) {
-            return new LatencyScorecardImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<LatencyScorecard> getLatencyScorecardsWithResponse(
@@ -78,6 +61,58 @@ public final class ReportsImpl implements Reports {
         }
     }
 
+    public LatencyScorecard getLatencyScorecards(
+        String resourceGroupName,
+        String profileName,
+        String experimentName,
+        LatencyScorecardAggregationInterval aggregationInterval) {
+        LatencyScorecardInner inner =
+            this
+                .serviceClient()
+                .getLatencyScorecards(resourceGroupName, profileName, experimentName, aggregationInterval);
+        if (inner != null) {
+            return new LatencyScorecardImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Timeseries> getTimeseriesWithResponse(
+        String resourceGroupName,
+        String profileName,
+        String experimentName,
+        OffsetDateTime startDateTimeUtc,
+        OffsetDateTime endDateTimeUtc,
+        TimeseriesAggregationInterval aggregationInterval,
+        TimeseriesType timeseriesType,
+        String endpointParam,
+        String country,
+        Context context) {
+        Response<TimeseriesInner> inner =
+            this
+                .serviceClient()
+                .getTimeseriesWithResponse(
+                    resourceGroupName,
+                    profileName,
+                    experimentName,
+                    startDateTimeUtc,
+                    endDateTimeUtc,
+                    aggregationInterval,
+                    timeseriesType,
+                    endpointParam,
+                    country,
+                    context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new TimeseriesImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public Timeseries getTimeseries(
         String resourceGroupName,
         String profileName,
@@ -99,42 +134,6 @@ public final class ReportsImpl implements Reports {
                     timeseriesType);
         if (inner != null) {
             return new TimeseriesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Timeseries> getTimeseriesWithResponse(
-        String resourceGroupName,
-        String profileName,
-        String experimentName,
-        OffsetDateTime startDateTimeUtc,
-        OffsetDateTime endDateTimeUtc,
-        TimeseriesAggregationInterval aggregationInterval,
-        TimeseriesType timeseriesType,
-        String endpoint,
-        String country,
-        Context context) {
-        Response<TimeseriesInner> inner =
-            this
-                .serviceClient()
-                .getTimeseriesWithResponse(
-                    resourceGroupName,
-                    profileName,
-                    experimentName,
-                    startDateTimeUtc,
-                    endDateTimeUtc,
-                    aggregationInterval,
-                    timeseriesType,
-                    endpoint,
-                    country,
-                    context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new TimeseriesImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

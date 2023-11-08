@@ -24,6 +24,10 @@ public final class CassandraLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private CassandraLinkedServiceTypeProperties innerTypeProperties = new CassandraLinkedServiceTypeProperties();
 
+    /** Creates an instance of CassandraLinkedService class. */
+    public CassandraLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Cassandra linked service properties.
      *
@@ -180,22 +184,22 @@ public final class CassandraLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CassandraLinkedService object itself.
      */
-    public CassandraLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public CassandraLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new CassandraLinkedServiceTypeProperties();
         }

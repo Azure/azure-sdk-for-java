@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.QuotaCapability;
 import com.azure.resourcemanager.hdinsight.models.RegionsCapability;
 import com.azure.resourcemanager.hdinsight.models.VersionsCapability;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** The Get Capabilities operation response. */
 @Fluent
 public final class CapabilitiesResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapabilitiesResultInner.class);
-
     /*
      * The version capability.
      */
@@ -45,6 +41,10 @@ public final class CapabilitiesResultInner {
      */
     @JsonProperty(value = "quota", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaCapability quota;
+
+    /** Creates an instance of CapabilitiesResultInner class. */
+    public CapabilitiesResultInner() {
+    }
 
     /**
      * Get the versions property: The version capability.

@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolRestorePointsClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolRestorePointsClient. */
 public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePointsClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolRestorePointsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolRestorePointsService service;
 
@@ -68,7 +65,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolRestorePointsService {
+    public interface SqlPoolRestorePointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -147,7 +144,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     }
 
     /**
-     * Get SQL pool backup information.
+     * Get SQL pool backup
+     *
+     * <p>Get SQL pool backup information.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -210,7 +209,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     }
 
     /**
-     * Get SQL pool backup information.
+     * Get SQL pool backup
+     *
+     * <p>Get SQL pool backup information.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -271,7 +272,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     }
 
     /**
-     * Get SQL pool backup information.
+     * Get SQL pool backup
+     *
+     * <p>Get SQL pool backup information.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -279,7 +282,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorePointInner> listAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
@@ -289,7 +292,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     }
 
     /**
-     * Get SQL pool backup information.
+     * Get SQL pool backup
+     *
+     * <p>Get SQL pool backup information.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -298,7 +303,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorePointInner> listAsync(
@@ -309,7 +314,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     }
 
     /**
-     * Get SQL pool backup information.
+     * Get SQL pool backup
+     *
+     * <p>Get SQL pool backup information.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -317,7 +324,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorePointInner> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
@@ -325,7 +332,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     }
 
     /**
-     * Get SQL pool backup information.
+     * Get SQL pool backup
+     *
+     * <p>Get SQL pool backup information.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -334,7 +343,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorePointInner> list(
@@ -479,7 +488,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
@@ -510,7 +519,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
@@ -538,7 +547,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
@@ -546,7 +555,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         String workspaceName,
         String sqlPoolName,
         CreateSqlPoolRestorePointDefinition parameters) {
-        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters).getSyncPoller();
     }
 
     /**
@@ -560,7 +569,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
@@ -569,7 +578,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         String sqlPoolName,
         CreateSqlPoolRestorePointDefinition parameters,
         Context context) {
-        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -798,32 +809,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     private Mono<RestorePointInner> getAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName)
-            .flatMap(
-                (Response<RestorePointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a restore point.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -843,6 +829,25 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     public Response<RestorePointInner> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName, context).block();
+    }
+
+    /**
+     * Gets a restore point.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a restore point.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RestorePointInner get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, restorePointName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -975,23 +980,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     private Mono<Void> deleteAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a restore point.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
-        deleteAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1015,9 +1004,26 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     }
 
     /**
+     * Deletes a restore point.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+        deleteWithResponse(resourceGroupName, workspaceName, sqlPoolName, restorePointName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1053,7 +1059,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

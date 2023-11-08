@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NotificationCategory. */
+/** The category of notification. */
 public final class NotificationCategory extends ExpandableStringEnum<NotificationCategory> {
     /** Static value WaveProgress for NotificationCategory. */
     public static final NotificationCategory WAVE_PROGRESS = fromString("WaveProgress");
+
+    /**
+     * Creates a new instance of NotificationCategory value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotificationCategory() {
+    }
 
     /**
      * Creates or finds a NotificationCategory from its string representation.
@@ -24,7 +33,11 @@ public final class NotificationCategory extends ExpandableStringEnum<Notificatio
         return fromString(name, NotificationCategory.class);
     }
 
-    /** @return known NotificationCategory values. */
+    /**
+     * Gets known NotificationCategory values.
+     *
+     * @return known NotificationCategory values.
+     */
     public static Collection<NotificationCategory> values() {
         return values(NotificationCategory.class);
     }

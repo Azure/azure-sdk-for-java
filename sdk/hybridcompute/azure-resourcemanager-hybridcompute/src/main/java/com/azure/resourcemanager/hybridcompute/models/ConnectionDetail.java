@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ConnectionDetail model. */
 @Immutable
 public final class ConnectionDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionDetail.class);
-
     /*
      * Azure resource Id
      */
@@ -43,6 +39,10 @@ public final class ConnectionDetail {
      */
     @JsonProperty(value = "memberName", access = JsonProperty.Access.WRITE_ONLY)
     private String memberName;
+
+    /** Creates an instance of ConnectionDetail class. */
+    public ConnectionDetail() {
+    }
 
     /**
      * Get the id property: Azure resource Id.

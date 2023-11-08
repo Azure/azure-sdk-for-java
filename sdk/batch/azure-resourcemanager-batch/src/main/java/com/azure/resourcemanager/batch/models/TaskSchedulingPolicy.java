@@ -17,6 +17,10 @@ public final class TaskSchedulingPolicy {
     @JsonProperty(value = "nodeFillType", required = true)
     private ComputeNodeFillType nodeFillType;
 
+    /** Creates an instance of TaskSchedulingPolicy class. */
+    public TaskSchedulingPolicy() {
+    }
+
     /**
      * Get the nodeFillType property: How tasks should be distributed across compute nodes.
      *

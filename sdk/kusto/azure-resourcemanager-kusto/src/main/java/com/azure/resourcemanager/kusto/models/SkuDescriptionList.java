@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.SkuDescriptionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of the EngagementFabric SKU descriptions. */
 @Immutable
 public final class SkuDescriptionList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuDescriptionList.class);
-
     /*
      * SKU descriptions
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuDescriptionInner> value;
+
+    /** Creates an instance of SkuDescriptionList class. */
+    public SkuDescriptionList() {
+    }
 
     /**
      * Get the value property: SKU descriptions.

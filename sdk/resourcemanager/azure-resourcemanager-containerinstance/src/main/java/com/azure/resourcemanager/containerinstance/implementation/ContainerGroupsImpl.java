@@ -5,6 +5,7 @@ package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
@@ -93,7 +94,9 @@ public class ContainerGroupsImpl
             .manager()
             .serviceClient()
             .getContainers()
-            .listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount, null)
+            .listLogsWithResponseAsync(
+                resourceGroupName, containerGroupName, containerName, tailLineCount, null)
+            .map(Response::getValue)
             .map(LogsInner::content);
     }
 

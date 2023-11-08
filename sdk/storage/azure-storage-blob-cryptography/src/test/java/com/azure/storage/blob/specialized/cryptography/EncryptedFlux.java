@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobServiceVersion;
 import org.reactivestreams.Subscriber;
 import reactor.core.CoreSubscriber;
@@ -16,10 +17,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This type generates Flowables that emit ByteBuffers in specific patterns depending on test case. It is used to
+ * This type generates Fluxes that emit ByteBuffers in specific patterns depending on test case. It is used to
  * exercise the decrypt logic and ensure it always returns only the data requested by appropriately trimming data that
  * was downloaded only for the sake of successful decryption.
- *
+ * <p>
  * There are nine interesting locations for the start/end of a ByteBuffer:
  * 1. Start of the download
  * 2. Middle of offsetAdjustment
@@ -30,25 +31,18 @@ import java.util.List;
  * 7. First byte of end adjustment
  * 8. Middle of end adjustment
  * 9. Last byte of download
- *
+ * <p>
  * The tests below will cover all meaningful pairs, of which there are 36, in as few distinct runs as possible.
  * The notation a/b indicates that the ByteBuffer starts at location a and ends in location b inclusive.
  *
  */
-public class EncryptedFlux extends Flux<ByteBuffer> {
-
-    private ByteBuffer plainText;
-
-    private ByteBuffer cipherText;
-
-    private int testCase;
-
-    private EncryptionData encryptionData;
-
+class EncryptedFlux extends Flux<ByteBuffer> {
+    private final ByteBuffer plainText;
+    private final ByteBuffer cipherText;
+    private final int testCase;
+    private final EncryptionData encryptionData;
     public static final int DATA_OFFSET = 10;
-
     public static final int DATA_COUNT = 40;
-
     private static final int DOWNLOAD_SIZE = 64; // The total size of the "download" after expanding the requested range.
 
     /*
@@ -57,31 +51,18 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
     the case of the last byte of the offsetAdjustment.
     */
     private static final int POSITION_ONE = 0;
-
     private static final int POSITION_TWO = DATA_OFFSET / 2;
-
     private static final int POSITION_THREE_POSITION = DATA_OFFSET - 1;
-
     private static final int POSITION_THREE_LIMIT = POSITION_THREE_POSITION + 1;
-
     private static final int POSITION_FOUR_POSITION  = DATA_OFFSET;
-
     private static final int POSITION_FOUR_LIMIT = POSITION_FOUR_POSITION + 1;
-
     private static final int POSITION_FIVE = DATA_OFFSET + (DATA_COUNT / 2);
-
     private static final int POSITION_SIX_POSITION = DATA_OFFSET + DATA_COUNT - 1;
-
     private static final int POSITION_SIX_LIMIT = POSITION_SIX_POSITION + 1;
-
     private static final int POSITION_SEVEN_POSITION = DATA_OFFSET + DATA_COUNT;
-
     private static final int POSITION_SEVEN_LIMIT = POSITION_SEVEN_POSITION + 1;
-
     private static final int POSITION_EIGHT = DOWNLOAD_SIZE - 10;
-
     private static final int POSITION_NINE_POSITION = DOWNLOAD_SIZE - 1;
-
     private static final int POSITION_NINE_LIMIT = POSITION_NINE_POSITION + 1;
 
     /*
@@ -92,59 +73,39 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
      */
 
     public static final int CASE_ZERO = 0; // 1/2; 2/3; 4/5; 5/6; 7/8; 8/9
-
     public static final int CASE_ONE = 1; // 1/3; 4/6; 7/9
-
     public static final int CASE_TWO = 2; // 1/4; 5/7; 8/9
-
     public static final int CASE_THREE = 3; // 1/5; 6/7; 8/9
-
     public static final int CASE_FOUR = 4; // 1/6; 7/9
-
     public static final int CASE_FIVE = 5; // 1/7; 8/9
-
     public static final int CASE_SIX = 6; // 1/8; 8/9
-
     public static final int CASE_SEVEN = 7; // 1/9;
-
     public static final int CASE_EIGHT = 8; // 1/2; 2/4; 5/8; 8/9
-
     public static final int CASE_NINE = 9; // 1/2; 2/5; 6/8; 8/9
-
     public static final int CASE_TEN = 10; // 1/2; 2/6; 7/9
-
     public static final int CASE_ELEVEN  = 11; // 1/2; 2/7; 8/9
-
     public static final int CASE_TWELVE = 12; // 1/2; 2/8; 8/9
-
     public static final int CASE_THIRTEEN = 13; // 1/2; 2/9
-
     public static final int CASE_FOURTEEN = 14; // 1/2; 3/4; 5/9
-
     public static final int CASE_FIFTEEN = 15; // 1/2; 3/5; 6/9
-
     public static final int CASE_SIXTEEN = 16; // 1/2; 3/6; 7/9
-
     public static final int CASE_SEVENTEEN = 17; // 1/2; 3/7; 8/9
-
     public static final int CASE_EIGHTEEN = 18; // 1/2; 3/8; 8/9
-
     public static final int CASE_NINETEEN = 19; // 1/2; 3/9
-
     public static final int CASE_TWENTY = 20; // 1/3; 4/7; 8/9;
-
     public static final int CASE_TWENTY_ONE = 21; // 1/3; 4/8; 8/9;
-
     public static final int CASE_TWENTY_TWO = 22; // 1/3; 4/9;
 
-    public EncryptedFlux(int testCase, AsyncKeyEncryptionKey key, APISpec spec) throws InvalidKeyException {
+    EncryptedFlux(int testCase, AsyncKeyEncryptionKey key, BlobCryptographyTestBase base) throws InvalidKeyException {
         this.testCase = testCase;
-        this.plainText = spec.getRandomData(DOWNLOAD_SIZE - 2); // This will yield two bytes of padding... for fun.
+        this.plainText = base.getRandomData(DOWNLOAD_SIZE - 2); // This will yield two bytes of padding... for fun.
 
-        EncryptedBlob encryptedBlob = new EncryptedBlobAsyncClient(
-            null, "https://random.blob.core.windows.net", BlobServiceVersion.getLatest(), null, null, null, null, null, null, key, "keyWrapAlgorithm", null)
-            .encryptBlob(Flux.just(this.plainText)).block();
-        this.cipherText = APISpec.collectBytesInBuffer(encryptedBlob.getCiphertextFlux()).block();
+        EncryptedBlob encryptedBlob = new EncryptedBlobAsyncClient(null, "https://random.blob.core.windows.net",
+            BlobServiceVersion.getLatest(), null, null, null, null, null, null, key, "keyWrapAlgorithm", null,
+            EncryptionVersion.V1, false)
+            .encryptBlob(just(this.plainText)).block();
+        this.cipherText = FluxUtil.collectBytesInByteBufferStream(encryptedBlob.getCiphertextFlux())
+            .map(ByteBuffer::wrap).block();
         this.encryptionData = encryptedBlob.getEncryptionData();
     }
 
@@ -265,11 +226,11 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
         s.onComplete();
     }
 
-    public ByteBuffer getPlainText() {
+    ByteBuffer getPlainText() {
         return this.plainText;
     }
 
-    public EncryptionData getEncryptionData() {
+    EncryptionData getEncryptionData() {
         return this.encryptionData;
     }
 }

@@ -23,6 +23,10 @@ public final class ManagedClusterServicePrincipalProfile {
     @JsonProperty(value = "secret")
     private String secret;
 
+    /** Creates an instance of ManagedClusterServicePrincipalProfile class. */
+    public ManagedClusterServicePrincipalProfile() {
+    }
+
     /**
      * Get the clientId property: The ID for the service principal.
      *

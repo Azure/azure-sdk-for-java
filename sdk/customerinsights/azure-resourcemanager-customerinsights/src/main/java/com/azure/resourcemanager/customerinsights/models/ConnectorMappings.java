@@ -17,6 +17,22 @@ public interface ConnectorMappings {
      * @param hubName The name of the hub.
      * @param connectorName The name of the connector.
      * @param mappingName The name of the connector mapping.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a connector mapping in the connector along with {@link Response}.
+     */
+    Response<ConnectorMappingResourceFormat> getWithResponse(
+        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context);
+
+    /**
+     * Gets a connector mapping in the connector.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param connectorName The name of the connector.
+     * @param mappingName The name of the connector mapping.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -26,7 +42,7 @@ public interface ConnectorMappings {
         String resourceGroupName, String hubName, String connectorName, String mappingName);
 
     /**
-     * Gets a connector mapping in the connector.
+     * Deletes a connector mapping in the connector.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
@@ -36,9 +52,9 @@ public interface ConnectorMappings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector mapping in the connector.
+     * @return the {@link Response}.
      */
-    Response<ConnectorMappingResourceFormat> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String hubName, String connectorName, String mappingName, Context context);
 
     /**
@@ -55,22 +71,6 @@ public interface ConnectorMappings {
     void delete(String resourceGroupName, String hubName, String connectorName, String mappingName);
 
     /**
-     * Deletes a connector mapping in the connector.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param connectorName The name of the connector.
-     * @param mappingName The name of the connector mapping.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String connectorName, String mappingName, Context context);
-
-    /**
      * Gets all the connector mappings in the specified connector.
      *
      * @param resourceGroupName The name of the resource group.
@@ -79,7 +79,7 @@ public interface ConnectorMappings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connector mappings in the specified connector.
+     * @return all the connector mappings in the specified connector as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectorMappingResourceFormat> listByConnector(
         String resourceGroupName, String hubName, String connectorName);
@@ -94,7 +94,7 @@ public interface ConnectorMappings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connector mappings in the specified connector.
+     * @return all the connector mappings in the specified connector as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectorMappingResourceFormat> listByConnector(
         String resourceGroupName, String hubName, String connectorName, Context context);
@@ -106,7 +106,7 @@ public interface ConnectorMappings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector mapping in the connector.
+     * @return a connector mapping in the connector along with {@link Response}.
      */
     ConnectorMappingResourceFormat getById(String id);
 
@@ -118,7 +118,7 @@ public interface ConnectorMappings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector mapping in the connector.
+     * @return a connector mapping in the connector along with {@link Response}.
      */
     Response<ConnectorMappingResourceFormat> getByIdWithResponse(String id, Context context);
 
@@ -140,7 +140,7 @@ public interface ConnectorMappings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

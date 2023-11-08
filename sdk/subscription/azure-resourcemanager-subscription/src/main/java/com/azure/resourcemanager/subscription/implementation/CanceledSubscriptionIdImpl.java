@@ -19,8 +19,8 @@ public final class CanceledSubscriptionIdImpl implements CanceledSubscriptionId 
         this.serviceManager = serviceManager;
     }
 
-    public String value() {
-        return this.innerModel().value();
+    public String subscriptionId() {
+        return this.innerModel().subscriptionId();
     }
 
     public CanceledSubscriptionIdInner innerModel() {

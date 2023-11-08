@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.ExtendedSqlPoolBlobAuditingPoliciesClient;
 import com.azure.resourcemanager.synapse.fluent.models.ExtendedSqlPoolBlobAuditingPolicyInner;
 import com.azure.resourcemanager.synapse.models.ExtendedSqlPoolBlobAuditingPolicyListResult;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ExtendedSqlPoolBlobAuditingPoliciesClient.
  */
 public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements ExtendedSqlPoolBlobAuditingPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(ExtendedSqlPoolBlobAuditingPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ExtendedSqlPoolBlobAuditingPoliciesService service;
 
@@ -66,7 +63,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface ExtendedSqlPoolBlobAuditingPoliciesService {
+    public interface ExtendedSqlPoolBlobAuditingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -256,31 +253,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
     private Mono<ExtendedSqlPoolBlobAuditingPolicyInner> getAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName)
-            .flatMap(
-                (Response<ExtendedSqlPoolBlobAuditingPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an extended Sql pool's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended Sql pool's blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtendedSqlPoolBlobAuditingPolicyInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -299,6 +272,23 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
     public Response<ExtendedSqlPoolBlobAuditingPolicyInner> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context).block();
+    }
+
+    /**
+     * Gets an extended Sql pool's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended Sql pool's blob auditing policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExtendedSqlPoolBlobAuditingPolicyInner get(
+        String resourceGroupName, String workspaceName, String sqlPoolName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE).getValue();
     }
 
     /**
@@ -453,35 +443,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
         String sqlPoolName,
         ExtendedSqlPoolBlobAuditingPolicyInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters)
-            .flatMap(
-                (Response<ExtendedSqlPoolBlobAuditingPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates an extended Sql pool's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param parameters The extended Sql pool blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended Sql pool blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtendedSqlPoolBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ExtendedSqlPoolBlobAuditingPolicyInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -506,6 +468,28 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context)
             .block();
+    }
+
+    /**
+     * Creates or updates an extended Sql pool's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param parameters The extended Sql pool blob auditing policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended Sql pool blob auditing policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExtendedSqlPoolBlobAuditingPolicyInner createOrUpdate(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        ExtendedSqlPoolBlobAuditingPolicyInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -643,7 +627,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql pool extended auditing settings.
+     * @return a list of sql pool extended auditing settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExtendedSqlPoolBlobAuditingPolicyInner> listBySqlPoolAsync(
@@ -663,7 +647,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql pool extended auditing settings.
+     * @return a list of sql pool extended auditing settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExtendedSqlPoolBlobAuditingPolicyInner> listBySqlPoolAsync(
@@ -682,7 +666,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql pool extended auditing settings.
+     * @return a list of sql pool extended auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtendedSqlPoolBlobAuditingPolicyInner> listBySqlPool(
@@ -700,7 +684,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql pool extended auditing settings.
+     * @return a list of sql pool extended auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtendedSqlPoolBlobAuditingPolicyInner> listBySqlPool(
@@ -711,7 +695,8 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -748,7 +733,8 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

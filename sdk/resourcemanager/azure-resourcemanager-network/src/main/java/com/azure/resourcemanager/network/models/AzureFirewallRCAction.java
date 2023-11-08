@@ -16,6 +16,10 @@ public final class AzureFirewallRCAction {
     @JsonProperty(value = "type")
     private AzureFirewallRCActionType type;
 
+    /** Creates an instance of AzureFirewallRCAction class. */
+    public AzureFirewallRCAction() {
+    }
+
     /**
      * Get the type property: The type of action.
      *

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ResourceGuardProxyBase model. */
 @Fluent
 public final class ResourceGuardProxyBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardProxyBase.class);
-
     /*
      * The resourceGuardResourceId property.
      */
@@ -38,6 +34,10 @@ public final class ResourceGuardProxyBase {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of ResourceGuardProxyBase class. */
+    public ResourceGuardProxyBase() {
+    }
 
     /**
      * Get the resourceGuardResourceId property: The resourceGuardResourceId property.

@@ -7,7 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link PiiEntityCollection} model.
+ * The {@code PiiEntityCollection} model.
  */
 @Immutable
 public final class PiiEntityCollection extends IterableStream<PiiEntity> {
@@ -15,7 +15,7 @@ public final class PiiEntityCollection extends IterableStream<PiiEntity> {
     private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
-     * Creates a {@link PiiEntityCollection} model that describes a Personally Identifiable Information entities
+     * Creates a {@code PiiEntityCollection} model that describes a Personally Identifiable Information entities
      * collection including warnings.
      *
      * @param entities An {@link IterableStream} of {@link PiiEntity Personally Identifiable Information entities}.
@@ -41,7 +41,7 @@ public final class PiiEntityCollection extends IterableStream<PiiEntity> {
 
     /**
      * Get the property redactedText value. The text of the input document with all of the PII information redacted out.
-     * Only returned for API version v3.1 and up.
+     * Only returned for API version v3.1 and newer.
      *
      * @return The text of the input document with all of the PII information redacted out.
      */

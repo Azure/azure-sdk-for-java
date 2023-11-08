@@ -45,6 +45,10 @@ public final class TransparentDataEncryptionImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public TransparentDataEncryptionInner innerModel() {
         return this.innerObject;
     }

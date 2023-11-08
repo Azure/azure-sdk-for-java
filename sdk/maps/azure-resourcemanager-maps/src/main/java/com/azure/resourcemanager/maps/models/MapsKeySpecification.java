@@ -6,19 +6,20 @@ package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Whether the operation refers to the primary or secondary key. */
 @Fluent
 public final class MapsKeySpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MapsKeySpecification.class);
-
     /*
      * Whether the operation refers to the primary or secondary key.
      */
     @JsonProperty(value = "keyType", required = true)
     private KeyType keyType;
+
+    /** Creates an instance of MapsKeySpecification class. */
+    public MapsKeySpecification() {
+    }
 
     /**
      * Get the keyType property: Whether the operation refers to the primary or secondary key.
@@ -47,9 +48,11 @@ public final class MapsKeySpecification {
      */
     public void validate() {
         if (keyType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyType in model MapsKeySpecification"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MapsKeySpecification.class);
 }

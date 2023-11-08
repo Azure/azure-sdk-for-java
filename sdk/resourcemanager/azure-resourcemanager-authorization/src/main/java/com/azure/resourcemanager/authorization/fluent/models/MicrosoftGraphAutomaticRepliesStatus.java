@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphAutomaticRepliesStatus. */
+/** automaticRepliesStatus. */
 public final class MicrosoftGraphAutomaticRepliesStatus
     extends ExpandableStringEnum<MicrosoftGraphAutomaticRepliesStatus> {
     /** Static value disabled for MicrosoftGraphAutomaticRepliesStatus. */
@@ -21,6 +21,15 @@ public final class MicrosoftGraphAutomaticRepliesStatus
     public static final MicrosoftGraphAutomaticRepliesStatus SCHEDULED = fromString("scheduled");
 
     /**
+     * Creates a new instance of MicrosoftGraphAutomaticRepliesStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphAutomaticRepliesStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphAutomaticRepliesStatus from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class MicrosoftGraphAutomaticRepliesStatus
         return fromString(name, MicrosoftGraphAutomaticRepliesStatus.class);
     }
 
-    /** @return known MicrosoftGraphAutomaticRepliesStatus values. */
+    /**
+     * Gets known MicrosoftGraphAutomaticRepliesStatus values.
+     *
+     * @return known MicrosoftGraphAutomaticRepliesStatus values.
+     */
     public static Collection<MicrosoftGraphAutomaticRepliesStatus> values() {
         return values(MicrosoftGraphAutomaticRepliesStatus.class);
     }

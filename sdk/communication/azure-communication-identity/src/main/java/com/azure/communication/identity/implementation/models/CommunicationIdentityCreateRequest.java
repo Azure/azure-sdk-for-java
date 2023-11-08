@@ -18,6 +18,16 @@ public final class CommunicationIdentityCreateRequest {
     @JsonProperty(value = "createTokenWithScopes")
     private List<CommunicationTokenScope> createTokenWithScopes;
 
+    /*
+     * Optional custom validity period of the token within [60,1440] minutes range. If not provided, the default value
+     * of 1440 minutes (24 hours) will be used.
+     */
+    @JsonProperty(value = "expiresInMinutes")
+    private Integer expiresInMinutes;
+
+    /** Creates an instance of CommunicationIdentityCreateRequest class. */
+    public CommunicationIdentityCreateRequest() {}
+
     /**
      * Get the createTokenWithScopes property: Also create access token for the created identity.
      *
@@ -36,6 +46,28 @@ public final class CommunicationIdentityCreateRequest {
     public CommunicationIdentityCreateRequest setCreateTokenWithScopes(
             List<CommunicationTokenScope> createTokenWithScopes) {
         this.createTokenWithScopes = createTokenWithScopes;
+        return this;
+    }
+
+    /**
+     * Get the expiresInMinutes property: Optional custom validity period of the token within [60,1440] minutes range.
+     * If not provided, the default value of 1440 minutes (24 hours) will be used.
+     *
+     * @return the expiresInMinutes value.
+     */
+    public Integer getExpiresInMinutes() {
+        return this.expiresInMinutes;
+    }
+
+    /**
+     * Set the expiresInMinutes property: Optional custom validity period of the token within [60,1440] minutes range.
+     * If not provided, the default value of 1440 minutes (24 hours) will be used.
+     *
+     * @param expiresInMinutes the expiresInMinutes value to set.
+     * @return the CommunicationIdentityCreateRequest object itself.
+     */
+    public CommunicationIdentityCreateRequest setExpiresInMinutes(Integer expiresInMinutes) {
+        this.expiresInMinutes = expiresInMinutes;
         return this;
     }
 }

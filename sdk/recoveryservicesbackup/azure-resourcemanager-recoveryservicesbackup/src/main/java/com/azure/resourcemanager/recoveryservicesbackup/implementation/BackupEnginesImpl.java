@@ -13,10 +13,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupEnginesClie
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupEngineBaseResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngineBaseResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupEnginesImpl implements BackupEngines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupEnginesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupEnginesImpl.class);
 
     private final BackupEnginesClient innerClient;
 
@@ -41,15 +40,6 @@ public final class BackupEnginesImpl implements BackupEngines {
         return Utils.mapPage(inner, inner1 -> new BackupEngineBaseResourceImpl(inner1, this.manager()));
     }
 
-    public BackupEngineBaseResource get(String vaultName, String resourceGroupName, String backupEngineName) {
-        BackupEngineBaseResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, backupEngineName);
-        if (inner != null) {
-            return new BackupEngineBaseResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BackupEngineBaseResource> getWithResponse(
         String vaultName,
         String resourceGroupName,
@@ -67,6 +57,15 @@ public final class BackupEnginesImpl implements BackupEngines {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BackupEngineBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BackupEngineBaseResource get(String vaultName, String resourceGroupName, String backupEngineName) {
+        BackupEngineBaseResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, backupEngineName);
+        if (inner != null) {
+            return new BackupEngineBaseResourceImpl(inner, this.manager());
         } else {
             return null;
         }

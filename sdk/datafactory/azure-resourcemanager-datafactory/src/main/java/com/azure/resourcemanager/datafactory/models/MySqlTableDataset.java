@@ -23,6 +23,10 @@ public final class MySqlTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private MySqlTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of MySqlTableDataset class. */
+    public MySqlTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: MySQL table dataset properties.
      *

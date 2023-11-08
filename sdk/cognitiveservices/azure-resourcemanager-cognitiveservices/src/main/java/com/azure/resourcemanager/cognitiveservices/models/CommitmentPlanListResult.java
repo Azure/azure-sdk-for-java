@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of cognitive services accounts operation response. */
 @Fluent
 public final class CommitmentPlanListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommitmentPlanListResult.class);
-
     /*
      * The link used to get the next page of CommitmentPlan.
      */
@@ -23,11 +19,14 @@ public final class CommitmentPlanListResult {
     private String nextLink;
 
     /*
-     * Gets the list of Cognitive Services accounts CommitmentPlan and their
-     * properties.
+     * Gets the list of Cognitive Services accounts CommitmentPlan and their properties.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommitmentPlanInner> value;
+
+    /** Creates an instance of CommitmentPlanListResult class. */
+    public CommitmentPlanListResult() {
+    }
 
     /**
      * Get the nextLink property: The link used to get the next page of CommitmentPlan.

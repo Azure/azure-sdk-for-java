@@ -6,17 +6,17 @@ package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.OperationExtendedInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** OperationResource Operation Resource. */
+/**
+ * OperationResource
+ *
+ * <p>Operation Resource.
+ */
 @Fluent
 public final class OperationResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResourceInner.class);
-
     /*
      * End time of the operation
      */
@@ -24,11 +24,9 @@ public final class OperationResourceInner {
     private OffsetDateTime endTime;
 
     /*
-     * Required if status == failed or status == canceled. This is the OData v4
-     * error format, used by the RPC and will go into the v2.2 Azure REST API
-     * guidelines.
-     * The full set of optional properties (e.g. inner errors / details) can be
-     * found in the "Error Response" section.
+     * Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will
+     * go into the v2.2 Azure REST API guidelines.
+     * The full set of optional properties (e.g. inner errors / details) can be found in the "Error Response" section.
      */
     @JsonProperty(value = "error")
     private ManagementError error;
@@ -40,14 +38,15 @@ public final class OperationResourceInner {
     private String id;
 
     /*
-     * It must match the last segment of the "id" field, and will typically be
-     * a GUID / system generated value
+     * It must match the last segment of the "id" field, and will typically be a GUID / system generated value
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * OperationExtendedInfo End time of the operation
+     * OperationExtendedInfo
+     *
+     * End time of the operation
      */
     @JsonProperty(value = "properties")
     private OperationExtendedInfo properties;
@@ -63,6 +62,10 @@ public final class OperationResourceInner {
      */
     @JsonProperty(value = "status")
     private String status;
+
+    /** Creates an instance of OperationResourceInner class. */
+    public OperationResourceInner() {
+    }
 
     /**
      * Get the endTime property: End time of the operation.
@@ -151,7 +154,9 @@ public final class OperationResourceInner {
     }
 
     /**
-     * Get the properties property: OperationExtendedInfo End time of the operation.
+     * Get the properties property: OperationExtendedInfo
+     *
+     * <p>End time of the operation.
      *
      * @return the properties value.
      */
@@ -160,7 +165,9 @@ public final class OperationResourceInner {
     }
 
     /**
-     * Set the properties property: OperationExtendedInfo End time of the operation.
+     * Set the properties property: OperationExtendedInfo
+     *
+     * <p>End time of the operation.
      *
      * @param properties the properties value to set.
      * @return the OperationResourceInner object itself.

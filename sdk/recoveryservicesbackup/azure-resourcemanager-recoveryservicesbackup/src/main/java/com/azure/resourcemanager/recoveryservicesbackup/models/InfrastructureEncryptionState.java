@@ -20,6 +20,15 @@ public final class InfrastructureEncryptionState extends ExpandableStringEnum<In
     public static final InfrastructureEncryptionState ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of InfrastructureEncryptionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InfrastructureEncryptionState() {
+    }
+
+    /**
      * Creates or finds a InfrastructureEncryptionState from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +39,11 @@ public final class InfrastructureEncryptionState extends ExpandableStringEnum<In
         return fromString(name, InfrastructureEncryptionState.class);
     }
 
-    /** @return known InfrastructureEncryptionState values. */
+    /**
+     * Gets known InfrastructureEncryptionState values.
+     *
+     * @return known InfrastructureEncryptionState values.
+     */
     public static Collection<InfrastructureEncryptionState> values() {
         return values(InfrastructureEncryptionState.class);
     }

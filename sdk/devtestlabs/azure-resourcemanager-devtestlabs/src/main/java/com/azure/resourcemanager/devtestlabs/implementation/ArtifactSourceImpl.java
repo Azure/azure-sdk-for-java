@@ -97,6 +97,10 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ArtifactSourceInner innerModel() {
         return this.innerObject;
     }

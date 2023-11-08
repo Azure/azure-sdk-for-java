@@ -10,6 +10,9 @@ class RowSerializerPollSpec extends UnitSpec with BasicLoggingTrait {
   //scalastyle:off multiple.string.literals
 
   "RowSerializer returned to the pool" should "be reused when capacity not exceeded" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val schema = StructType(Seq(StructField("column_A", IntegerType), StructField("column_B", StringType)))
     val sameSchema = StructType(Seq(StructField("column_A", IntegerType), StructField("column_B", StringType)))
 
@@ -24,6 +27,9 @@ class RowSerializerPollSpec extends UnitSpec with BasicLoggingTrait {
   }
 
   "RowSerializer " should "be returned to the pool only a limited number of times" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val schema = StructType(Seq(StructField("column01", IntegerType), StructField("column02", StringType)))
 
     for (_ <- 1 to 256) {

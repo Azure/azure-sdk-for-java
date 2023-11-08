@@ -18,6 +18,10 @@ public final class ConnectionSharedKeyInner extends SubResource {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of ConnectionSharedKeyInner class. */
+    public ConnectionSharedKeyInner() {
+    }
+
     /**
      * Get the value property: The virtual network connection shared key value.
      *

@@ -5,31 +5,31 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** PeeringService provider. */
-@JsonFlatten
 @Fluent
-public class PeeringServiceProviderInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceProviderInner.class);
-
+public final class PeeringServiceProviderInner extends ProxyResource {
     /*
-     * The name of the service provider.
+     * The properties that define a peering service provider.
      */
-    @JsonProperty(value = "properties.serviceProviderName")
-    private String serviceProviderName;
+    @JsonProperty(value = "properties")
+    private PeeringServiceProviderProperties innerProperties;
 
-    /*
-     * The list of locations at which the service provider peers with
-     * Microsoft.
+    /** Creates an instance of PeeringServiceProviderInner class. */
+    public PeeringServiceProviderInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties that define a peering service provider.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.peeringLocations")
-    private List<String> peeringLocations;
+    private PeeringServiceProviderProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the serviceProviderName property: The name of the service provider.
@@ -37,7 +37,7 @@ public class PeeringServiceProviderInner extends ProxyResource {
      * @return the serviceProviderName value.
      */
     public String serviceProviderName() {
-        return this.serviceProviderName;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceProviderName();
     }
 
     /**
@@ -47,7 +47,10 @@ public class PeeringServiceProviderInner extends ProxyResource {
      * @return the PeeringServiceProviderInner object itself.
      */
     public PeeringServiceProviderInner withServiceProviderName(String serviceProviderName) {
-        this.serviceProviderName = serviceProviderName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceProviderProperties();
+        }
+        this.innerProperties().withServiceProviderName(serviceProviderName);
         return this;
     }
 
@@ -57,7 +60,7 @@ public class PeeringServiceProviderInner extends ProxyResource {
      * @return the peeringLocations value.
      */
     public List<String> peeringLocations() {
-        return this.peeringLocations;
+        return this.innerProperties() == null ? null : this.innerProperties().peeringLocations();
     }
 
     /**
@@ -67,7 +70,10 @@ public class PeeringServiceProviderInner extends ProxyResource {
      * @return the PeeringServiceProviderInner object itself.
      */
     public PeeringServiceProviderInner withPeeringLocations(List<String> peeringLocations) {
-        this.peeringLocations = peeringLocations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceProviderProperties();
+        }
+        this.innerProperties().withPeeringLocations(peeringLocations);
         return this;
     }
 
@@ -77,5 +83,8 @@ public class PeeringServiceProviderInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

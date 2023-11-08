@@ -28,10 +28,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageimportexport.fluent.JobsClient;
 import com.azure.resourcemanager.storageimportexport.fluent.models.JobResponseInner;
-import com.azure.resourcemanager.storageimportexport.models.ErrorResponseException;
+import com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException;
 import com.azure.resourcemanager.storageimportexport.models.ListJobsResponse;
 import com.azure.resourcemanager.storageimportexport.models.PutJobParameters;
 import com.azure.resourcemanager.storageimportexport.models.UpdateJobParameters;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobsClient. */
 public final class JobsClientImpl implements JobsClient {
-    private final ClientLogger logger = new ClientLogger(JobsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobsService service;
 
@@ -63,11 +60,11 @@ public final class JobsClientImpl implements JobsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageImportExportJ")
-    private interface JobsService {
+    public interface JobsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ImportExport/jobs")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<ListJobsResponse>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("$top") Long top,
@@ -81,7 +78,7 @@ public final class JobsClientImpl implements JobsClient {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<ListJobsResponse>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("$top") Long top,
@@ -98,7 +95,7 @@ public final class JobsClientImpl implements JobsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs"
                 + "/{jobName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<JobResponseInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -114,7 +111,7 @@ public final class JobsClientImpl implements JobsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs"
                 + "/{jobName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<JobResponseInner>> update(
             @HostParam("$host") String endpoint,
             @PathParam("jobName") String jobName,
@@ -131,7 +128,7 @@ public final class JobsClientImpl implements JobsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs"
                 + "/{jobName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<JobResponseInner>> create(
             @HostParam("$host") String endpoint,
             @PathParam("jobName") String jobName,
@@ -149,7 +146,7 @@ public final class JobsClientImpl implements JobsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs"
                 + "/{jobName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -163,7 +160,7 @@ public final class JobsClientImpl implements JobsClient {
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<ListJobsResponse>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -174,7 +171,7 @@ public final class JobsClientImpl implements JobsClient {
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<ListJobsResponse>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -189,9 +186,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param top An integer value that specifies how many jobs at most should be returned. The value cannot exceed 100.
      * @param filter Can be used to restrict the results to certain conditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listSinglePageAsync(Long top, String filter) {
@@ -240,9 +237,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param filter Can be used to restrict the results to certain conditions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listSinglePageAsync(Long top, String filter, Context context) {
@@ -287,9 +284,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param top An integer value that specifies how many jobs at most should be returned. The value cannot exceed 100.
      * @param filter Can be used to restrict the results to certain conditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobResponseInner> listAsync(Long top, String filter) {
@@ -300,9 +297,9 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns all active and completed jobs in a subscription.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobResponseInner> listAsync() {
@@ -319,9 +316,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param filter Can be used to restrict the results to certain conditions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobResponseInner> listAsync(Long top, String filter, Context context) {
@@ -333,9 +330,9 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns all active and completed jobs in a subscription.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobResponseInner> list() {
@@ -351,9 +348,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param filter Can be used to restrict the results to certain conditions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobResponseInner> list(Long top, String filter, Context context) {
@@ -368,9 +365,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param top An integer value that specifies how many jobs at most should be returned. The value cannot exceed 100.
      * @param filter Can be used to restrict the results to certain conditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listByResourceGroupSinglePageAsync(
@@ -427,9 +424,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param filter Can be used to restrict the results to certain conditions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listByResourceGroupSinglePageAsync(
@@ -482,9 +479,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param top An integer value that specifies how many jobs at most should be returned. The value cannot exceed 100.
      * @param filter Can be used to restrict the results to certain conditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobResponseInner> listByResourceGroupAsync(String resourceGroupName, Long top, String filter) {
@@ -499,9 +496,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobResponseInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -521,9 +518,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param filter Can be used to restrict the results to certain conditions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobResponseInner> listByResourceGroupAsync(
@@ -539,9 +536,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobResponseInner> listByResourceGroup(String resourceGroupName) {
@@ -559,9 +556,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param filter Can be used to restrict the results to certain conditions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobResponseInner> listByResourceGroup(
@@ -576,9 +573,9 @@ public final class JobsClientImpl implements JobsClient {
      *     subscription.
      * @param jobName The name of the import/export job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an existing job.
+     * @return information about an existing job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> getByResourceGroupWithResponseAsync(
@@ -627,9 +624,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param jobName The name of the import/export job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an existing job.
+     * @return information about an existing job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> getByResourceGroupWithResponseAsync(
@@ -674,37 +671,14 @@ public final class JobsClientImpl implements JobsClient {
      *     subscription.
      * @param jobName The name of the import/export job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an existing job.
+     * @return information about an existing job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResponseInner> getByResourceGroupAsync(String resourceGroupName, String jobName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, jobName)
-            .flatMap(
-                (Response<JobResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets information about an existing job.
-     *
-     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
-     * @param jobName The name of the import/export job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an existing job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobResponseInner getByResourceGroup(String resourceGroupName, String jobName) {
-        return getByResourceGroupAsync(resourceGroupName, jobName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -715,14 +689,30 @@ public final class JobsClientImpl implements JobsClient {
      * @param jobName The name of the import/export job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an existing job.
+     * @return information about an existing job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobResponseInner> getByResourceGroupWithResponse(
         String resourceGroupName, String jobName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, jobName, context).block();
+    }
+
+    /**
+     * Gets information about an existing job.
+     *
+     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
+     *     subscription.
+     * @param jobName The name of the import/export job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about an existing job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobResponseInner getByResourceGroup(String resourceGroupName, String jobName) {
+        return getByResourceGroupWithResponse(resourceGroupName, jobName, Context.NONE).getValue();
     }
 
     /**
@@ -735,9 +725,9 @@ public final class JobsClientImpl implements JobsClient {
      *     subscription.
      * @param body The parameters to update in the job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
+     * @return contains the job information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> updateWithResponseAsync(
@@ -795,9 +785,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param body The parameters to update in the job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
+     * @return contains the job information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> updateWithResponseAsync(
@@ -851,40 +841,14 @@ public final class JobsClientImpl implements JobsClient {
      *     subscription.
      * @param body The parameters to update in the job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
+     * @return contains the job information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResponseInner> updateAsync(String jobName, String resourceGroupName, UpdateJobParameters body) {
         return updateWithResponseAsync(jobName, resourceGroupName, body)
-            .flatMap(
-                (Response<JobResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates specific properties of a job. You can call this operation to notify the Import/Export service that the
-     * hard drives comprising the import or export job have been shipped to the Microsoft data center. It can also be
-     * used to cancel an existing job.
-     *
-     * @param jobName The name of the import/export job.
-     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
-     * @param body The parameters to update in the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobResponseInner update(String jobName, String resourceGroupName, UpdateJobParameters body) {
-        return updateAsync(jobName, resourceGroupName, body).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -898,14 +862,33 @@ public final class JobsClientImpl implements JobsClient {
      * @param body The parameters to update in the job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
+     * @return contains the job information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobResponseInner> updateWithResponse(
         String jobName, String resourceGroupName, UpdateJobParameters body, Context context) {
         return updateWithResponseAsync(jobName, resourceGroupName, body, context).block();
+    }
+
+    /**
+     * Updates specific properties of a job. You can call this operation to notify the Import/Export service that the
+     * hard drives comprising the import or export job have been shipped to the Microsoft data center. It can also be
+     * used to cancel an existing job.
+     *
+     * @param jobName The name of the import/export job.
+     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
+     *     subscription.
+     * @param body The parameters to update in the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains the job information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobResponseInner update(String jobName, String resourceGroupName, UpdateJobParameters body) {
+        return updateWithResponse(jobName, resourceGroupName, body, Context.NONE).getValue();
     }
 
     /**
@@ -917,9 +900,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param body The parameters used for creating the job.
      * @param clientTenantId The tenant ID of the client making the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
+     * @return contains the job information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> createWithResponseAsync(
@@ -977,9 +960,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param clientTenantId The tenant ID of the client making the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
+     * @return contains the job information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> createWithResponseAsync(
@@ -1031,68 +1014,16 @@ public final class JobsClientImpl implements JobsClient {
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
      * @param body The parameters used for creating the job.
-     * @param clientTenantId The tenant ID of the client making the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobResponseInner> createAsync(
-        String jobName, String resourceGroupName, PutJobParameters body, String clientTenantId) {
-        return createWithResponseAsync(jobName, resourceGroupName, body, clientTenantId)
-            .flatMap(
-                (Response<JobResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a new job or updates an existing job in the specified subscription.
-     *
-     * @param jobName The name of the import/export job.
-     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
-     * @param body The parameters used for creating the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
+     * @return contains the job information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResponseInner> createAsync(String jobName, String resourceGroupName, PutJobParameters body) {
         final String clientTenantId = null;
         return createWithResponseAsync(jobName, resourceGroupName, body, clientTenantId)
-            .flatMap(
-                (Response<JobResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a new job or updates an existing job in the specified subscription.
-     *
-     * @param jobName The name of the import/export job.
-     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
-     * @param body The parameters used for creating the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobResponseInner create(String jobName, String resourceGroupName, PutJobParameters body) {
-        final String clientTenantId = null;
-        return createAsync(jobName, resourceGroupName, body, clientTenantId).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1105,14 +1036,32 @@ public final class JobsClientImpl implements JobsClient {
      * @param clientTenantId The tenant ID of the client making the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
+     * @return contains the job information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobResponseInner> createWithResponse(
         String jobName, String resourceGroupName, PutJobParameters body, String clientTenantId, Context context) {
         return createWithResponseAsync(jobName, resourceGroupName, body, clientTenantId, context).block();
+    }
+
+    /**
+     * Creates a new job or updates an existing job in the specified subscription.
+     *
+     * @param jobName The name of the import/export job.
+     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
+     *     subscription.
+     * @param body The parameters used for creating the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains the job information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobResponseInner create(String jobName, String resourceGroupName, PutJobParameters body) {
+        final String clientTenantId = null;
+        return createWithResponse(jobName, resourceGroupName, body, clientTenantId, Context.NONE).getValue();
     }
 
     /**
@@ -1122,9 +1071,9 @@ public final class JobsClientImpl implements JobsClient {
      *     subscription.
      * @param jobName The name of the import/export job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String jobName) {
@@ -1172,9 +1121,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param jobName The name of the import/export job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String jobName, Context context) {
@@ -1218,28 +1167,13 @@ public final class JobsClientImpl implements JobsClient {
      *     subscription.
      * @param jobName The name of the import/export job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String jobName) {
-        return deleteWithResponseAsync(resourceGroupName, jobName).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an existing job. Only jobs in the Creating or Completed states can be deleted.
-     *
-     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
-     * @param jobName The name of the import/export job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String jobName) {
-        deleteAsync(resourceGroupName, jobName).block();
+        return deleteWithResponseAsync(resourceGroupName, jobName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1250,9 +1184,9 @@ public final class JobsClientImpl implements JobsClient {
      * @param jobName The name of the import/export job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String jobName, Context context) {
@@ -1260,13 +1194,29 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
+     * Deletes an existing job. Only jobs in the Creating or Completed states can be deleted.
+     *
+     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
+     *     subscription.
+     * @param jobName The name of the import/export job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String jobName) {
+        deleteWithResponse(resourceGroupName, jobName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1301,12 +1251,13 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listBySubscriptionNextSinglePageAsync(
@@ -1339,11 +1290,12 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1378,12 +1330,13 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listByResourceGroupNextSinglePageAsync(

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools Delete. */
 public final class DiskPoolsDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class DiskPoolsDeleteSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void deleteDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().delete("myResourceGroup", "myDiskPool", Context.NONE);
+        manager.diskPools().delete("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }

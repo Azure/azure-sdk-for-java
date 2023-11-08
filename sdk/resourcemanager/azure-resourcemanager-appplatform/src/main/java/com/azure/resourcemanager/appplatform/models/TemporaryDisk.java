@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Temporary disk payload. */
 @Fluent
 public final class TemporaryDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TemporaryDisk.class);
-
     /*
      * Size of the temporary disk in GB
      */

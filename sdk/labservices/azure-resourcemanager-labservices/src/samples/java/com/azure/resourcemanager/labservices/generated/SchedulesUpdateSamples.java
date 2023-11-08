@@ -8,12 +8,12 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.labservices.models.RecurrenceFrequency;
 import com.azure.resourcemanager.labservices.models.RecurrencePattern;
 import com.azure.resourcemanager.labservices.models.Schedule;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 /** Samples for Schedules Update. */
 public final class SchedulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Schedules/patchSchedule.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Schedules/patchSchedule.json
      */
     /**
      * Sample code: patchSchedule.
@@ -29,7 +29,7 @@ public final class SchedulesUpdateSamples {
                 new RecurrencePattern()
                     .withFrequency(RecurrenceFrequency.DAILY)
                     .withInterval(2)
-                    .withExpirationDate(LocalDate.parse("2020-08-14")))
+                    .withExpirationDate(OffsetDateTime.parse("2020-08-14T23:59:59Z")))
             .apply();
     }
 }

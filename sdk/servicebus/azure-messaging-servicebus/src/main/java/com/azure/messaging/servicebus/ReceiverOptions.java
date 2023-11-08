@@ -12,27 +12,39 @@ import java.time.Duration;
  *
  * @see ServiceBusReceiverAsyncClient
  */
-class ReceiverOptions {
+final class ReceiverOptions {
     private final ServiceBusReceiveMode receiveMode;
     private final int prefetchCount;
     private final boolean enableAutoComplete;
     private final String sessionId;
     private final Integer maxConcurrentSessions;
     private final Duration maxLockRenewDuration;
+    private final Duration sessionIdleTimeout;
 
-    ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+    static ReceiverOptions createNonSessionOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
         boolean enableAutoComplete) {
-        this(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, null);
+        return new ReceiverOptions(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, null, null);
     }
 
-    ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
-        boolean enableAutoComplete, String sessionId, Integer maxConcurrentSessions) {
+    static ReceiverOptions createNamedSessionOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+        boolean enableAutoComplete, String sessionId) {
+        return new ReceiverOptions(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, sessionId, null, null);
+    }
+
+    static ReceiverOptions createUnnamedSessionOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+        boolean enableAutoComplete, Integer maxConcurrentSessions, Duration sessionIdleTimeout) {
+        return new ReceiverOptions(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions, sessionIdleTimeout);
+    }
+
+    private ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+        boolean enableAutoComplete, String sessionId, Integer maxConcurrentSessions, Duration sessionIdleTimeout) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
         this.enableAutoComplete = enableAutoComplete;
         this.sessionId = sessionId;
         this.maxConcurrentSessions = maxConcurrentSessions;
         this.maxLockRenewDuration = maxLockRenewDuration;
+        this.sessionIdleTimeout = sessionIdleTimeout;
     }
 
     /**
@@ -43,6 +55,7 @@ class ReceiverOptions {
     Duration getMaxLockRenewDuration() {
         return maxLockRenewDuration;
     }
+
     /**
      * Gets the receive mode for the message.
      *
@@ -80,15 +93,6 @@ class ReceiverOptions {
     }
 
     /**
-     * Gets whether or not the receiver is a session-aware receiver.
-     *
-     * @return true if it is a session-aware receiver; false otherwise.
-     */
-    boolean isSessionReceiver() {
-        return sessionId != null || maxConcurrentSessions != null;
-    }
-
-    /**
      * Gets whether or not this receiver should roll over when a session has completed processing.
      *
      * @return {@code true} if this receiver should roll over to next session when it has completed processing; {@code
@@ -105,6 +109,15 @@ class ReceiverOptions {
      */
     public Integer getMaxConcurrentSessions() {
         return maxConcurrentSessions;
+    }
+
+    /**
+     * Gets the {@code sessionIdleTimeout} to roll to another session if no messages wew be received.
+     *
+     * @return the session idle timeout.
+     */
+    Duration getSessionIdleTimeout() {
+        return sessionIdleTimeout;
     }
 
     public boolean isEnableAutoComplete() {

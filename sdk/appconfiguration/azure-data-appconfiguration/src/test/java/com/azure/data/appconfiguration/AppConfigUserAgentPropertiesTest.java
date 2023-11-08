@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 /**
  * Unit test for reading app config user agent properties.
  */
@@ -16,9 +18,9 @@ public class AppConfigUserAgentPropertiesTest {
 
     @Test
     public void testAzureConfiguration() {
-        assertNotNull(CoreUtils.getProperties("azure-data-appconfiguration.properties").get("version"));
-        assertNotNull(CoreUtils.getProperties("azure-data-appconfiguration.properties").get("name"));
-        assertTrue(CoreUtils.getProperties("azure-data-appconfiguration.properties").get("version")
-            .matches("\\d+\\.\\d+\\.\\d+(-beta\\.\\d+)?"));
+        Map<String, String> properties = CoreUtils.getProperties("azure-data-appconfiguration.properties");
+        assertNotNull(properties.get("version"));
+        assertNotNull(properties.get("name"));
+        assertTrue(properties.get("version").matches("\\d+\\.\\d+\\.\\d+(-beta\\.\\d+)?"));
     }
 }

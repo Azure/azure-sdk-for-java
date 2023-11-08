@@ -34,6 +34,10 @@ public final class ArmStreamingEndpointCapacity {
     @JsonProperty(value = "maximum")
     private Integer maximum;
 
+    /** Creates an instance of ArmStreamingEndpointCapacity class. */
+    public ArmStreamingEndpointCapacity() {
+    }
+
     /**
      * Get the scaleType property: The scaleType property.
      *

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.videoanalyzer.fluent.PipelineJobOperationStatus
 import com.azure.resourcemanager.videoanalyzer.fluent.models.PipelineJobOperationStatusInner;
 import com.azure.resourcemanager.videoanalyzer.models.PipelineJobOperationStatus;
 import com.azure.resourcemanager.videoanalyzer.models.PipelineJobOperationStatuses;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PipelineJobOperationStatusesImpl implements PipelineJobOperationStatuses {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineJobOperationStatusesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PipelineJobOperationStatusesImpl.class);
 
     private final PipelineJobOperationStatusesClient innerClient;
 

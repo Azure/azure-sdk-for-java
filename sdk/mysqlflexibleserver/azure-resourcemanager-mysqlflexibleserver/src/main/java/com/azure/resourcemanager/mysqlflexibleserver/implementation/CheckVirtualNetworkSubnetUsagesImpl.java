@@ -28,15 +28,6 @@ public final class CheckVirtualNetworkSubnetUsagesImpl implements CheckVirtualNe
         this.serviceManager = serviceManager;
     }
 
-    public VirtualNetworkSubnetUsageResult execute(String locationName, VirtualNetworkSubnetUsageParameter parameters) {
-        VirtualNetworkSubnetUsageResultInner inner = this.serviceClient().execute(locationName, parameters);
-        if (inner != null) {
-            return new VirtualNetworkSubnetUsageResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VirtualNetworkSubnetUsageResult> executeWithResponse(
         String locationName, VirtualNetworkSubnetUsageParameter parameters, Context context) {
         Response<VirtualNetworkSubnetUsageResultInner> inner =
@@ -47,6 +38,15 @@ public final class CheckVirtualNetworkSubnetUsagesImpl implements CheckVirtualNe
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VirtualNetworkSubnetUsageResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VirtualNetworkSubnetUsageResult execute(String locationName, VirtualNetworkSubnetUsageParameter parameters) {
+        VirtualNetworkSubnetUsageResultInner inner = this.serviceClient().execute(locationName, parameters);
+        if (inner != null) {
+            return new VirtualNetworkSubnetUsageResultImpl(inner, this.manager());
         } else {
             return null;
         }

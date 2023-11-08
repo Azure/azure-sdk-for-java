@@ -11,10 +11,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolUsagesClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolUsageInner;
 import com.azure.resourcemanager.synapse.models.SqlPoolUsage;
 import com.azure.resourcemanager.synapse.models.SqlPoolUsages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolUsagesImpl implements SqlPoolUsages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolUsagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolUsagesImpl.class);
 
     private final SqlPoolUsagesClient innerClient;
 

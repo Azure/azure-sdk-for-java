@@ -5,22 +5,21 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.SecurityPolicyUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object containing security policy update parameters. */
 @Fluent
 public final class SecurityPolicyUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPolicyUpdateParameters.class);
-
     /*
-     * The json object that contains properties required to update a security
-     * policy
+     * The json object that contains properties required to update a security policy
      */
     @JsonProperty(value = "properties")
     private SecurityPolicyUpdateProperties innerProperties;
+
+    /** Creates an instance of SecurityPolicyUpdateParameters class. */
+    public SecurityPolicyUpdateParameters() {
+    }
 
     /**
      * Get the innerProperties property: The json object that contains properties required to update a security policy.

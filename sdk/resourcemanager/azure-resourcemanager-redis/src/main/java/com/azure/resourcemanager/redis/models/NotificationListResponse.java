@@ -24,6 +24,10 @@ public final class NotificationListResponse {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of NotificationListResponse class. */
+    public NotificationListResponse() {
+    }
+
     /**
      * Get the value property: List of all notifications.
      *

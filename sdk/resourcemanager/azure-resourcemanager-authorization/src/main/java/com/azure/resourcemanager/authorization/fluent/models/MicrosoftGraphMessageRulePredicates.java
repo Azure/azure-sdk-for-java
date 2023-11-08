@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,208 +16,196 @@ import java.util.Map;
 /** messageRulePredicates. */
 @Fluent
 public final class MicrosoftGraphMessageRulePredicates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphMessageRulePredicates.class);
-
     /*
-     * Represents the strings that should appear in the body of an incoming
-     * message in order for the condition or exception to apply.
+     * Represents the strings that should appear in the body of an incoming message in order for the condition or
+     * exception to apply.
      */
     @JsonProperty(value = "bodyContains")
     private List<String> bodyContains;
 
     /*
-     * Represents the strings that should appear in the body or subject of an
-     * incoming message in order for the condition or exception to apply.
+     * Represents the strings that should appear in the body or subject of an incoming message in order for the
+     * condition or exception to apply.
      */
     @JsonProperty(value = "bodyOrSubjectContains")
     private List<String> bodyOrSubjectContains;
 
     /*
-     * Represents the categories that an incoming message should be labeled
-     * with in order for the condition or exception to apply.
+     * Represents the categories that an incoming message should be labeled with in order for the condition or
+     * exception to apply.
      */
     @JsonProperty(value = "categories")
     private List<String> categories;
 
     /*
-     * Represents the specific sender email addresses of an incoming message in
-     * order for the condition or exception to apply.
+     * Represents the specific sender email addresses of an incoming message in order for the condition or exception to
+     * apply.
      */
     @JsonProperty(value = "fromAddresses")
     private List<MicrosoftGraphRecipient> fromAddresses;
 
     /*
-     * Indicates whether an incoming message must have attachments in order for
-     * the condition or exception to apply.
+     * Indicates whether an incoming message must have attachments in order for the condition or exception to apply.
      */
     @JsonProperty(value = "hasAttachments")
     private Boolean hasAttachments;
 
     /*
-     * Represents the strings that appear in the headers of an incoming message
-     * in order for the condition or exception to apply.
+     * Represents the strings that appear in the headers of an incoming message in order for the condition or exception
+     * to apply.
      */
     @JsonProperty(value = "headerContains")
     private List<String> headerContains;
 
     /*
-     * The importance property.
+     * importance
      */
     @JsonProperty(value = "importance")
     private MicrosoftGraphImportance importance;
 
     /*
-     * Indicates whether an incoming message must be an approval request in
-     * order for the condition or exception to apply.
+     * Indicates whether an incoming message must be an approval request in order for the condition or exception to
+     * apply.
      */
     @JsonProperty(value = "isApprovalRequest")
     private Boolean isApprovalRequest;
 
     /*
-     * Indicates whether an incoming message must be automatically forwarded in
-     * order for the condition or exception to apply.
+     * Indicates whether an incoming message must be automatically forwarded in order for the condition or exception to
+     * apply.
      */
     @JsonProperty(value = "isAutomaticForward")
     private Boolean isAutomaticForward;
 
     /*
-     * Indicates whether an incoming message must be an auto reply in order for
-     * the condition or exception to apply.
+     * Indicates whether an incoming message must be an auto reply in order for the condition or exception to apply.
      */
     @JsonProperty(value = "isAutomaticReply")
     private Boolean isAutomaticReply;
 
     /*
-     * Indicates whether an incoming message must be encrypted in order for the
-     * condition or exception to apply.
+     * Indicates whether an incoming message must be encrypted in order for the condition or exception to apply.
      */
     @JsonProperty(value = "isEncrypted")
     private Boolean isEncrypted;
 
     /*
-     * Indicates whether an incoming message must be a meeting request in order
-     * for the condition or exception to apply.
+     * Indicates whether an incoming message must be a meeting request in order for the condition or exception to
+     * apply.
      */
     @JsonProperty(value = "isMeetingRequest")
     private Boolean isMeetingRequest;
 
     /*
-     * Indicates whether an incoming message must be a meeting response in
-     * order for the condition or exception to apply.
+     * Indicates whether an incoming message must be a meeting response in order for the condition or exception to
+     * apply.
      */
     @JsonProperty(value = "isMeetingResponse")
     private Boolean isMeetingResponse;
 
     /*
-     * Indicates whether an incoming message must be a non-delivery report in
-     * order for the condition or exception to apply.
+     * Indicates whether an incoming message must be a non-delivery report in order for the condition or exception to
+     * apply.
      */
     @JsonProperty(value = "isNonDeliveryReport")
     private Boolean isNonDeliveryReport;
 
     /*
-     * Indicates whether an incoming message must be permission controlled
-     * (RMS-protected) in order for the condition or exception to apply.
+     * Indicates whether an incoming message must be permission controlled (RMS-protected) in order for the condition
+     * or exception to apply.
      */
     @JsonProperty(value = "isPermissionControlled")
     private Boolean isPermissionControlled;
 
     /*
-     * Indicates whether an incoming message must be a read receipt in order
-     * for the condition or exception to apply.
+     * Indicates whether an incoming message must be a read receipt in order for the condition or exception to apply.
      */
     @JsonProperty(value = "isReadReceipt")
     private Boolean isReadReceipt;
 
     /*
-     * Indicates whether an incoming message must be S/MIME-signed in order for
-     * the condition or exception to apply.
+     * Indicates whether an incoming message must be S/MIME-signed in order for the condition or exception to apply.
      */
     @JsonProperty(value = "isSigned")
     private Boolean isSigned;
 
     /*
-     * Indicates whether an incoming message must be a voice mail in order for
-     * the condition or exception to apply.
+     * Indicates whether an incoming message must be a voice mail in order for the condition or exception to apply.
      */
     @JsonProperty(value = "isVoicemail")
     private Boolean isVoicemail;
 
     /*
-     * The messageActionFlag property.
+     * messageActionFlag
      */
     @JsonProperty(value = "messageActionFlag")
     private MicrosoftGraphMessageActionFlag messageActionFlag;
 
     /*
-     * Indicates whether the owner of the mailbox must not be a recipient of an
-     * incoming message in order for the condition or exception to apply.
+     * Indicates whether the owner of the mailbox must not be a recipient of an incoming message in order for the
+     * condition or exception to apply.
      */
     @JsonProperty(value = "notSentToMe")
     private Boolean notSentToMe;
 
     /*
-     * Represents the strings that appear in either the toRecipients or
-     * ccRecipients properties of an incoming message in order for the
-     * condition or exception to apply.
+     * Represents the strings that appear in either the toRecipients or ccRecipients properties of an incoming message
+     * in order for the condition or exception to apply.
      */
     @JsonProperty(value = "recipientContains")
     private List<String> recipientContains;
 
     /*
-     * Represents the strings that appear in the from property of an incoming
-     * message in order for the condition or exception to apply.
+     * Represents the strings that appear in the from property of an incoming message in order for the condition or
+     * exception to apply.
      */
     @JsonProperty(value = "senderContains")
     private List<String> senderContains;
 
     /*
-     * The sensitivity property.
+     * sensitivity
      */
     @JsonProperty(value = "sensitivity")
     private MicrosoftGraphSensitivity sensitivity;
 
     /*
-     * Indicates whether the owner of the mailbox must be in the ccRecipients
-     * property of an incoming message in order for the condition or exception
-     * to apply.
+     * Indicates whether the owner of the mailbox must be in the ccRecipients property of an incoming message in order
+     * for the condition or exception to apply.
      */
     @JsonProperty(value = "sentCcMe")
     private Boolean sentCcMe;
 
     /*
-     * Indicates whether the owner of the mailbox must be the only recipient in
-     * an incoming message in order for the condition or exception to apply.
+     * Indicates whether the owner of the mailbox must be the only recipient in an incoming message in order for the
+     * condition or exception to apply.
      */
     @JsonProperty(value = "sentOnlyToMe")
     private Boolean sentOnlyToMe;
 
     /*
-     * Represents the email addresses that an incoming message must have been
-     * sent to in order for the condition or exception to apply.
+     * Represents the email addresses that an incoming message must have been sent to in order for the condition or
+     * exception to apply.
      */
     @JsonProperty(value = "sentToAddresses")
     private List<MicrosoftGraphRecipient> sentToAddresses;
 
     /*
-     * Indicates whether the owner of the mailbox must be in the toRecipients
-     * property of an incoming message in order for the condition or exception
-     * to apply.
+     * Indicates whether the owner of the mailbox must be in the toRecipients property of an incoming message in order
+     * for the condition or exception to apply.
      */
     @JsonProperty(value = "sentToMe")
     private Boolean sentToMe;
 
     /*
-     * Indicates whether the owner of the mailbox must be in either a
-     * toRecipients or ccRecipients property of an incoming message in order
-     * for the condition or exception to apply.
+     * Indicates whether the owner of the mailbox must be in either a toRecipients or ccRecipients property of an
+     * incoming message in order for the condition or exception to apply.
      */
     @JsonProperty(value = "sentToOrCcMe")
     private Boolean sentToOrCcMe;
 
     /*
-     * Represents the strings that appear in the subject of an incoming message
-     * in order for the condition or exception to apply.
+     * Represents the strings that appear in the subject of an incoming message in order for the condition or exception
+     * to apply.
      */
     @JsonProperty(value = "subjectContains")
     private List<String> subjectContains;
@@ -233,6 +220,10 @@ public final class MicrosoftGraphMessageRulePredicates {
      * messageRulePredicates
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphMessageRulePredicates class. */
+    public MicrosoftGraphMessageRulePredicates() {
+    }
 
     /**
      * Get the bodyContains property: Represents the strings that should appear in the body of an incoming message in
@@ -367,7 +358,7 @@ public final class MicrosoftGraphMessageRulePredicates {
     }
 
     /**
-     * Get the importance property: The importance property.
+     * Get the importance property: importance.
      *
      * @return the importance value.
      */
@@ -376,7 +367,7 @@ public final class MicrosoftGraphMessageRulePredicates {
     }
 
     /**
-     * Set the importance property: The importance property.
+     * Set the importance property: importance.
      *
      * @param importance the importance value to set.
      * @return the MicrosoftGraphMessageRulePredicates object itself.
@@ -629,7 +620,7 @@ public final class MicrosoftGraphMessageRulePredicates {
     }
 
     /**
-     * Get the messageActionFlag property: The messageActionFlag property.
+     * Get the messageActionFlag property: messageActionFlag.
      *
      * @return the messageActionFlag value.
      */
@@ -638,7 +629,7 @@ public final class MicrosoftGraphMessageRulePredicates {
     }
 
     /**
-     * Set the messageActionFlag property: The messageActionFlag property.
+     * Set the messageActionFlag property: messageActionFlag.
      *
      * @param messageActionFlag the messageActionFlag value to set.
      * @return the MicrosoftGraphMessageRulePredicates object itself.
@@ -716,7 +707,7 @@ public final class MicrosoftGraphMessageRulePredicates {
     }
 
     /**
-     * Get the sensitivity property: The sensitivity property.
+     * Get the sensitivity property: sensitivity.
      *
      * @return the sensitivity value.
      */
@@ -725,7 +716,7 @@ public final class MicrosoftGraphMessageRulePredicates {
     }
 
     /**
-     * Set the sensitivity property: The sensitivity property.
+     * Set the sensitivity property: sensitivity.
      *
      * @param sensitivity the sensitivity value to set.
      * @return the MicrosoftGraphMessageRulePredicates object itself.

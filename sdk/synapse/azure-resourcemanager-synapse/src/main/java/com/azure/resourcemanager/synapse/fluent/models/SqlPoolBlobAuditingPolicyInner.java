@@ -6,9 +6,7 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -16,8 +14,6 @@ import java.util.UUID;
 /** A Sql pool blob auditing policy. */
 @Fluent
 public final class SqlPoolBlobAuditingPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolBlobAuditingPolicyInner.class);
-
     /*
      * Resource kind.
      */
@@ -29,6 +25,10 @@ public final class SqlPoolBlobAuditingPolicyInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private SqlPoolBlobAuditingPolicyProperties innerProperties;
+
+    /** Creates an instance of SqlPoolBlobAuditingPolicyInner class. */
+    public SqlPoolBlobAuditingPolicyInner() {
+    }
 
     /**
      * Get the kind property: Resource kind.

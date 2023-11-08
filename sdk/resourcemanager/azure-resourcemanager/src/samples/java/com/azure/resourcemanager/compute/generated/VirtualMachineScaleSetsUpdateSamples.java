@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.SubResource;
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
@@ -51,10 +50,10 @@ import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VaultCertificate;
 import com.azure.resourcemanager.compute.models.VaultSecretGroup;
 import com.azure.resourcemanager.compute.models.VirtualHardDisk;
+import com.azure.resourcemanager.compute.models.VirtualMachineIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtensionProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentity;
-import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetManagedDiskParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
@@ -72,6 +71,8 @@ import com.azure.resourcemanager.compute.models.WinRMConfiguration;
 import com.azure.resourcemanager.compute.models.WinRMListener;
 import com.azure.resourcemanager.compute.models.WindowsConfiguration;
 import com.azure.resourcemanager.compute.models.WindowsPatchAssessmentMode;
+import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
+import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchMode;
 import java.io.IOException;
 import java.util.Arrays;
@@ -81,32 +82,32 @@ import java.util.Map;
 /** Samples for VirtualMachineScaleSets Update. */
 public final class VirtualMachineScaleSetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Update_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Update_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsUpdateMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void virtualMachineScaleSetUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .update("rgcompute", "aaaaaaaaaaaaaa", new VirtualMachineScaleSetUpdate(), Context.NONE);
+            .update(
+                "rgcompute", "aaaaaaaaaaaaaa", new VirtualMachineScaleSetUpdate(), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Update_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Update_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure)
+    public static void virtualMachineScaleSetUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure)
         throws IOException {
         azure
             .virtualMachines()
@@ -117,19 +118,19 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                 "rgcompute",
                 "aaaaaaaaaaaaa",
                 new VirtualMachineScaleSetUpdate()
-                    .withTags(mapOf("key246", "aaaaaaaaaaaaaaaaaaaaaaaa"))
+                    .withTags(mapOf("key246", "fakeTokenPlaceholder"))
                     .withSku(new Sku().withName("DSv3-Type1").withTier("aaa").withCapacity(7L))
                     .withPlan(
                         new Plan()
                             .withName("windows2016")
                             .withPublisher("microsoft-ads")
                             .withProduct("windows-data-science-vm")
-                            .withPromotionCode("aaaaaaaaaa"))
+                            .withPromotionCode("fakeTokenPlaceholder"))
                     .withIdentity(
                         new VirtualMachineScaleSetIdentity()
                             .withType(ResourceIdentityType.SYSTEM_ASSIGNED)
                             .withUserAssignedIdentities(
-                                mapOf("key3951", new VirtualMachineScaleSetIdentityUserAssignedIdentities())))
+                                mapOf("key3951", new VirtualMachineIdentityUserAssignedIdentities())))
                     .withUpgradePolicy(
                         new UpgradePolicy()
                             .withMode(UpgradeMode.MANUAL)
@@ -140,7 +141,9 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                     .withMaxUnhealthyUpgradedInstancePercent(98)
                                     .withPauseTimeBetweenBatches("aaaaaaaaaaaaaaa")
                                     .withEnableCrossZoneUpgrade(true)
-                                    .withPrioritizeUnhealthyInstances(true))
+                                    .withPrioritizeUnhealthyInstances(true)
+                                    .withRollbackFailedInstancesOnPolicyBreach(true)
+                                    .withMaxSurge(true))
                             .withAutomaticOSUpgradePolicy(
                                 new AutomaticOSUpgradePolicy()
                                     .withEnableAutomaticOSUpgrade(true)
@@ -167,9 +170,14 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                                             .withContent("aaaaaaaaaaaaaaaaaaaa")))
                                             .withPatchSettings(
                                                 new PatchSettings()
-                                                    .withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_OS)
+                                                    .withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
                                                     .withEnableHotpatching(true)
-                                                    .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT))
+                                                    .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT)
+                                                    .withAutomaticByPlatformSettings(
+                                                        new WindowsVMGuestPatchAutomaticByPlatformSettings()
+                                                            .withRebootSetting(
+                                                                WindowsVMGuestPatchAutomaticByPlatformRebootSetting
+                                                                    .NEVER)))
                                             .withWinRM(
                                                 new WinRMConfiguration()
                                                     .withListeners(
@@ -189,9 +197,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                                                 new SshPublicKey()
                                                                     .withPath(
                                                                         "/home/{your-username}/.ssh/authorized_keys")
-                                                                    .withKeyData(
-                                                                        "ssh-rsa"
-                                                                            + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCeClRAk2ipUs/l5voIsDC5q9RI+YSRd1Bvd/O+axgY4WiBzG+4FwJWZm/mLLe5DoOdHQwmU2FrKXZSW4w2sYE70KeWnrFViCOX5MTVvJgPE8ClugNl8RWth/tU849DvM9sT7vFgfVSHcAS2yDRyDlueii+8nF2ym8XWAPltFVCyLHRsyBp5YPqK8JFYIa1eybKsY3hEAxRCA+/7bq8et+Gj3coOsuRmrehav7rE6N12Pb80I6ofa6SM5XNYq4Xk0iYNx7R3kdz0Jj9XgZYWjAHjJmT0gTRoOnt6upOuxK7xI/ykWrllgpXrCPu3Ymz+c+ujaqcxDopnAl2lmf69/J1"))))
+                                                                    .withKeyData("fakeTokenPlaceholder"))))
                                             .withProvisionVMAgent(true)
                                             .withPatchSettings(
                                                 new LinuxPatchSettings()
@@ -265,7 +271,6 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                         Arrays
                                             .asList(
                                                 new VirtualMachineScaleSetUpdateNetworkConfiguration()
-                                                    .withId("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                                                     .withName("aaaaaaaa")
                                                     .withPrimary(true)
                                                     .withEnableAcceleratedNetworking(true)
@@ -281,7 +286,6 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                                         Arrays
                                                             .asList(
                                                                 new VirtualMachineScaleSetUpdateIpConfiguration()
-                                                                    .withId("aaaaaaaaaaaaaaaa")
                                                                     .withName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                                                                     .withSubnet(
                                                                         new ApiEntityReference()
@@ -363,7 +367,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                                     .withSuppressFailures(true)))
                                     .withExtensionsTimeBudget("PT1H20M"))
                             .withLicenseType("aaaaaaaaaaaa")
-                            .withBillingProfile(new BillingProfile().withMaxPrice(-1.0))
+                            .withBillingProfile(new BillingProfile().withMaxPrice(-1.0D))
                             .withScheduledEventsProfile(
                                 new ScheduledEventsProfile()
                                     .withTerminateNotificationProfile(
@@ -384,7 +388,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                         new SubResource()
                             .withId(
                                 "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

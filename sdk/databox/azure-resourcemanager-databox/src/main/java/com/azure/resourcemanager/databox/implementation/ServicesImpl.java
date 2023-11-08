@@ -23,10 +23,9 @@ import com.azure.resourcemanager.databox.models.SkuInformation;
 import com.azure.resourcemanager.databox.models.ValidateAddress;
 import com.azure.resourcemanager.databox.models.ValidationRequest;
 import com.azure.resourcemanager.databox.models.ValidationResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServicesImpl implements Services {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
 
     private final ServicesClient innerClient;
 
@@ -53,15 +52,6 @@ public final class ServicesImpl implements Services {
         return Utils.mapPage(inner, inner1 -> new SkuInformationImpl(inner1, this.manager()));
     }
 
-    public AddressValidationOutput validateAddress(String location, ValidateAddress validateAddress) {
-        AddressValidationOutputInner inner = this.serviceClient().validateAddress(location, validateAddress);
-        if (inner != null) {
-            return new AddressValidationOutputImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AddressValidationOutput> validateAddressWithResponse(
         String location, ValidateAddress validateAddress, Context context) {
         Response<AddressValidationOutputInner> inner =
@@ -77,12 +67,10 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public ValidationResponse validateInputsByResourceGroup(
-        String resourceGroupName, String location, ValidationRequest validationRequest) {
-        ValidationResponseInner inner =
-            this.serviceClient().validateInputsByResourceGroup(resourceGroupName, location, validationRequest);
+    public AddressValidationOutput validateAddress(String location, ValidateAddress validateAddress) {
+        AddressValidationOutputInner inner = this.serviceClient().validateAddress(location, validateAddress);
         if (inner != null) {
-            return new ValidationResponseImpl(inner, this.manager());
+            return new AddressValidationOutputImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -105,8 +93,10 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public ValidationResponse validateInputs(String location, ValidationRequest validationRequest) {
-        ValidationResponseInner inner = this.serviceClient().validateInputs(location, validationRequest);
+    public ValidationResponse validateInputsByResourceGroup(
+        String resourceGroupName, String location, ValidationRequest validationRequest) {
+        ValidationResponseInner inner =
+            this.serviceClient().validateInputsByResourceGroup(resourceGroupName, location, validationRequest);
         if (inner != null) {
             return new ValidationResponseImpl(inner, this.manager());
         } else {
@@ -129,12 +119,10 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public RegionConfigurationResponse regionConfiguration(
-        String location, RegionConfigurationRequest regionConfigurationRequest) {
-        RegionConfigurationResponseInner inner =
-            this.serviceClient().regionConfiguration(location, regionConfigurationRequest);
+    public ValidationResponse validateInputs(String location, ValidationRequest validationRequest) {
+        ValidationResponseInner inner = this.serviceClient().validateInputs(location, validationRequest);
         if (inner != null) {
-            return new RegionConfigurationResponseImpl(inner, this.manager());
+            return new ValidationResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -155,12 +143,10 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public RegionConfigurationResponse regionConfigurationByResourceGroup(
-        String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest) {
+    public RegionConfigurationResponse regionConfiguration(
+        String location, RegionConfigurationRequest regionConfigurationRequest) {
         RegionConfigurationResponseInner inner =
-            this
-                .serviceClient()
-                .regionConfigurationByResourceGroup(resourceGroupName, location, regionConfigurationRequest);
+            this.serviceClient().regionConfiguration(location, regionConfigurationRequest);
         if (inner != null) {
             return new RegionConfigurationResponseImpl(inner, this.manager());
         } else {
@@ -184,6 +170,19 @@ public final class ServicesImpl implements Services {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RegionConfigurationResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RegionConfigurationResponse regionConfigurationByResourceGroup(
+        String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest) {
+        RegionConfigurationResponseInner inner =
+            this
+                .serviceClient()
+                .regionConfigurationByResourceGroup(resourceGroupName, location, regionConfigurationRequest);
+        if (inner != null) {
+            return new RegionConfigurationResponseImpl(inner, this.manager());
         } else {
             return null;
         }

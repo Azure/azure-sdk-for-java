@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CheckNameAvailabilityRequest CheckNameAvailability Request. */
+/**
+ * CheckNameAvailabilityRequest
+ *
+ * <p>CheckNameAvailability Request.
+ */
 @Fluent
 public final class CheckNameAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityRequest.class);
-
     /*
      * Resource name for which availability needs to be checked
      */
@@ -25,6 +25,10 @@ public final class CheckNameAvailabilityRequest {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of CheckNameAvailabilityRequest class. */
+    public CheckNameAvailabilityRequest() {
+    }
 
     /**
      * Get the name property: Resource name for which availability needs to be checked.

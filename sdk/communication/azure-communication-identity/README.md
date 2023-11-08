@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-identity</artifactId>
-  <version>1.1.4</version>
+  <version>1.4.8</version>
 </dependency>
 ```
 
@@ -136,6 +136,18 @@ System.out.println("User token value: " + userToken.getToken());
 System.out.println("Expires at: " + userToken.getExpiresAt());
 ```
 
+It's also possible to create a Communication Identity access token by customizing the expiration time. The token can be configured to expire in as little as one hour or as long as 24 hours. The default expiration time is 24 hours.
+```java readme-sample-issueTokenWithCustomExpiration
+// Define a list of Communication Identity access token scopes
+List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+// Set custom validity period of the Communication Identity access token within [1,24]
+// hours range. If not provided, the default value of 24 hours will be used.
+Duration tokenExpiresIn = Duration.ofHours(1);
+AccessToken userToken = communicationIdentityClient.getToken(user, scopes, tokenExpiresIn);
+System.out.println("User token value: " + userToken.getToken());
+System.out.println("Expires at: " + userToken.getExpiresAt());
+```
+
 ### Create a new user and token in a single request
 For convenience, use `createUserAndToken` to create a new user and issue a token with one function call. This translates into a single web request as opposed to creating a user first and then issuing a token.
 
@@ -144,6 +156,19 @@ For convenience, use `createUserAndToken` to create a new user and issue a token
 List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
 CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
+System.out.println("User id: " + result.getUser().getId());
+System.out.println("User token value: " + result.getUserToken().getToken());
+```
+
+Here it's also possible to specify the expiration time for the Communication Identity access token. The token can be configured to expire in as little as one hour or as long as 24 hours. The default expiration time is 24 hours.
+
+```java readme-sample-createNewUserAndTokenWithCustomExpiration
+// Define a list of communication token scopes
+List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+// Set custom validity period of the Communication Identity access token within [1,24]
+// hours range. If not provided, the default value of 24 hours will be used.
+Duration tokenExpiresIn = Duration.ofHours(1);
+CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes, tokenExpiresIn);
 System.out.println("User id: " + result.getUser().getId());
 System.out.println("User token value: " + result.getUserToken().getToken());
 ```
@@ -164,11 +189,14 @@ Use the `deleteUser` function to delete a user.
 communicationIdentityClient.deleteUser(user);
 ```
 
-### Exchanging AAD access token of a Teams User for a Communication Identity access token
-Use the `getTokenForTeamsUser` function to exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+### Exchanging Azure AD access token of a Teams User for a Communication Identity access token
+Use the `getTokenForTeamsUser` function to exchange an Azure AD access token of a Teams User for a new Communication Identity access token.
 
 ```java readme-sample-getTokenForTeamsUser
-AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken);
+String clientId = "<Client ID of an Azure AD application>";
+String userObjectId = "<Object ID of an Azure AD user (Teams User)>";
+GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions(teamsUserAadToken, clientId, userObjectId);
+AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(options);
 System.out.println("User token value: " + accessToken.getToken());
 System.out.println("Expires at: " + accessToken.getExpiresAt());
 ```
@@ -203,7 +231,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
-[package]: https://search.maven.org/artifact/com.azure/azure-communication-identity
+[package]: https://central.sonatype.com/artifact/com.azure/azure-communication-identity
 [api_documentation]: https://aka.ms/java-docs
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-identity/src/samples/java/com/azure/communication/identity/ReadmeSamples.java
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-identity/src

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -27,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class IaaSvmProtectableItem extends WorkloadProtectableItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaaSvmProtectableItem.class);
-
     /*
      * Fully qualified ARM ID of the virtual machine.
      */
@@ -36,8 +32,7 @@ public class IaaSvmProtectableItem extends WorkloadProtectableItem {
     private String virtualMachineId;
 
     /*
-     * Specifies whether the container represents a Classic or an Azure
-     * Resource Manager VM.
+     * Specifies whether the container represents a Classic or an Azure Resource Manager VM.
      */
     @JsonProperty(value = "virtualMachineVersion")
     private String virtualMachineVersion;
@@ -47,6 +42,10 @@ public class IaaSvmProtectableItem extends WorkloadProtectableItem {
      */
     @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
+
+    /** Creates an instance of IaaSvmProtectableItem class. */
+    public IaaSvmProtectableItem() {
+    }
 
     /**
      * Get the virtualMachineId property: Fully qualified ARM ID of the virtual machine.

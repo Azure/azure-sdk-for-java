@@ -21,10 +21,9 @@ import com.azure.resourcemanager.signalr.models.SignalRKeys;
 import com.azure.resourcemanager.signalr.models.SignalRResource;
 import com.azure.resourcemanager.signalr.models.SignalRs;
 import com.azure.resourcemanager.signalr.models.SkuList;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SignalRsImpl implements SignalRs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SignalRsImpl.class);
 
     private final SignalRsClient innerClient;
 
@@ -33,15 +32,6 @@ public final class SignalRsImpl implements SignalRs {
     public SignalRsImpl(SignalRsClient innerClient, com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public NameAvailability checkNameAvailability(String location, NameAvailabilityParameters parameters) {
-        NameAvailabilityInner inner = this.serviceClient().checkNameAvailability(location, parameters);
-        if (inner != null) {
-            return new NameAvailabilityImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<NameAvailability> checkNameAvailabilityWithResponse(
@@ -54,6 +44,15 @@ public final class SignalRsImpl implements SignalRs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NameAvailabilityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NameAvailability checkNameAvailability(String location, NameAvailabilityParameters parameters) {
+        NameAvailabilityInner inner = this.serviceClient().checkNameAvailability(location, parameters);
+        if (inner != null) {
+            return new NameAvailabilityImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -80,15 +79,6 @@ public final class SignalRsImpl implements SignalRs {
         return Utils.mapPage(inner, inner1 -> new SignalRResourceImpl(inner1, this.manager()));
     }
 
-    public SignalRResource getByResourceGroup(String resourceGroupName, String resourceName) {
-        SignalRResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new SignalRResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SignalRResource> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<SignalRResourceInner> inner =
@@ -104,21 +94,21 @@ public final class SignalRsImpl implements SignalRs {
         }
     }
 
+    public SignalRResource getByResourceGroup(String resourceGroupName, String resourceName) {
+        SignalRResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new SignalRResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
         this.serviceClient().delete(resourceGroupName, resourceName);
     }
 
     public void delete(String resourceGroupName, String resourceName, Context context) {
         this.serviceClient().delete(resourceGroupName, resourceName, context);
-    }
-
-    public SignalRKeys listKeys(String resourceGroupName, String resourceName) {
-        SignalRKeysInner inner = this.serviceClient().listKeys(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new SignalRKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SignalRKeys> listKeysWithResponse(String resourceGroupName, String resourceName, Context context) {
@@ -130,6 +120,15 @@ public final class SignalRsImpl implements SignalRs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SignalRKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SignalRKeys listKeys(String resourceGroupName, String resourceName) {
+        SignalRKeysInner inner = this.serviceClient().listKeys(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new SignalRKeysImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -156,21 +155,36 @@ public final class SignalRsImpl implements SignalRs {
         }
     }
 
+    public Response<SkuList> listReplicaSkusWithResponse(
+        String resourceGroupName, String resourceName, String replicaName, Context context) {
+        Response<SkuListInner> inner =
+            this.serviceClient().listReplicaSkusWithResponse(resourceGroupName, resourceName, replicaName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new SkuListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SkuList listReplicaSkus(String resourceGroupName, String resourceName, String replicaName) {
+        SkuListInner inner = this.serviceClient().listReplicaSkus(resourceGroupName, resourceName, replicaName);
+        if (inner != null) {
+            return new SkuListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void restart(String resourceGroupName, String resourceName) {
         this.serviceClient().restart(resourceGroupName, resourceName);
     }
 
     public void restart(String resourceGroupName, String resourceName, Context context) {
         this.serviceClient().restart(resourceGroupName, resourceName, context);
-    }
-
-    public SkuList listSkus(String resourceGroupName, String resourceName) {
-        SkuListInner inner = this.serviceClient().listSkus(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new SkuListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SkuList> listSkusWithResponse(String resourceGroupName, String resourceName, Context context) {
@@ -187,10 +201,19 @@ public final class SignalRsImpl implements SignalRs {
         }
     }
 
+    public SkuList listSkus(String resourceGroupName, String resourceName) {
+        SkuListInner inner = this.serviceClient().listSkus(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new SkuListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public SignalRResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -198,7 +221,7 @@ public final class SignalRsImpl implements SignalRs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
@@ -209,7 +232,7 @@ public final class SignalRsImpl implements SignalRs {
     public Response<SignalRResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -217,7 +240,7 @@ public final class SignalRsImpl implements SignalRs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
@@ -228,7 +251,7 @@ public final class SignalRsImpl implements SignalRs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -236,7 +259,7 @@ public final class SignalRsImpl implements SignalRs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
@@ -247,7 +270,7 @@ public final class SignalRsImpl implements SignalRs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -255,7 +278,7 @@ public final class SignalRsImpl implements SignalRs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));

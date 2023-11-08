@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphScheduleChangeRequestActor. */
+/** scheduleChangeRequestActor. */
 public final class MicrosoftGraphScheduleChangeRequestActor
     extends ExpandableStringEnum<MicrosoftGraphScheduleChangeRequestActor> {
     /** Static value sender for MicrosoftGraphScheduleChangeRequestActor. */
@@ -28,6 +28,15 @@ public final class MicrosoftGraphScheduleChangeRequestActor
         fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphScheduleChangeRequestActor value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphScheduleChangeRequestActor() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphScheduleChangeRequestActor from its string representation.
      *
      * @param name a name to look for.
@@ -38,7 +47,11 @@ public final class MicrosoftGraphScheduleChangeRequestActor
         return fromString(name, MicrosoftGraphScheduleChangeRequestActor.class);
     }
 
-    /** @return known MicrosoftGraphScheduleChangeRequestActor values. */
+    /**
+     * Gets known MicrosoftGraphScheduleChangeRequestActor values.
+     *
+     * @return known MicrosoftGraphScheduleChangeRequestActor values.
+     */
     public static Collection<MicrosoftGraphScheduleChangeRequestActor> values() {
         return values(MicrosoftGraphScheduleChangeRequestActor.class);
     }

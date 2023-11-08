@@ -92,20 +92,6 @@ public interface LoadBalancerLoadBalancingRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param loadBalancingRuleName The name of the load balancing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadBalancingRuleInner get(String resourceGroupName, String loadBalancerName, String loadBalancingRuleName);
-
-    /**
-     * Gets the specified load balancer load balancing rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,4 +101,18 @@ public interface LoadBalancerLoadBalancingRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LoadBalancingRuleInner> getWithResponse(
         String resourceGroupName, String loadBalancerName, String loadBalancingRuleName, Context context);
+
+    /**
+     * Gets the specified load balancer load balancing rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param loadBalancingRuleName The name of the load balancing rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified load balancer load balancing rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LoadBalancingRuleInner get(String resourceGroupName, String loadBalancerName, String loadBalancingRuleName);
 }

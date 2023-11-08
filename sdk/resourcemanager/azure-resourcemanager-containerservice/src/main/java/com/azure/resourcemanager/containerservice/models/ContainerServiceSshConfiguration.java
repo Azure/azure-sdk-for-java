@@ -13,11 +13,14 @@ import java.util.List;
 @Fluent
 public final class ContainerServiceSshConfiguration {
     /*
-     * The list of SSH public keys used to authenticate with Linux-based VMs. A
-     * maximum of 1 key may be specified.
+     * The list of SSH public keys used to authenticate with Linux-based VMs. A maximum of 1 key may be specified.
      */
     @JsonProperty(value = "publicKeys", required = true)
     private List<ContainerServiceSshPublicKey> publicKeys;
+
+    /** Creates an instance of ContainerServiceSshConfiguration class. */
+    public ContainerServiceSshConfiguration() {
+    }
 
     /**
      * Get the publicKeys property: The list of SSH public keys used to authenticate with Linux-based VMs. A maximum of

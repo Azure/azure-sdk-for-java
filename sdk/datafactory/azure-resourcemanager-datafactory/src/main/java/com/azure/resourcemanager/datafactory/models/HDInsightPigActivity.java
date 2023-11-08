@@ -24,6 +24,10 @@ public final class HDInsightPigActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightPigActivityTypeProperties innerTypeProperties = new HDInsightPigActivityTypeProperties();
 
+    /** Creates an instance of HDInsightPigActivity class. */
+    public HDInsightPigActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight Pig activity properties.
      *
@@ -58,6 +62,20 @@ public final class HDInsightPigActivity extends ExecutionActivity {
     @Override
     public HDInsightPigActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

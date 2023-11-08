@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for an HTTP source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,8 +19,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class HttpLinkedService extends LinkedService {
     /*
-     * The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type:
-     * string (or Expression with resultType string).
+     * The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
@@ -30,52 +32,49 @@ public class HttpLinkedService extends LinkedService {
     private HttpAuthenticationType authenticationType;
 
     /*
-     * User name for Basic, Digest, or Windows authentication. Type: string (or
-     * Expression with resultType string).
+     * User name for Basic, Digest, or Windows authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
 
     /*
-     * Password for Basic, Digest, Windows, or ClientCertificate with
-     * EmbeddedCertData authentication.
+     * Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData authentication.
      */
     @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
-     * Base64 encoded certificate data for ClientCertificate authentication.
-     * For on-premises copy with ClientCertificate authentication, either
-     * CertThumbprint or EmbeddedCertData/Password should be specified. Type:
+     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with
+     * ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type:
      * string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.embeddedCertData")
     private Object embeddedCertData;
 
     /*
-     * Thumbprint of certificate for ClientCertificate authentication. Only
-     * valid for on-premises copy. For on-premises copy with ClientCertificate
-     * authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType
-     * string).
+     * Thumbprint of certificate for ClientCertificate authentication. Only valid for on-premises copy. For on-premises
+     * copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be
+     * specified. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.certThumbprint")
     private Object certThumbprint;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * If true, validate the HTTPS server SSL certificate. Default value is
-     * true. Type: boolean (or Expression with resultType boolean).
+     * If true, validate the HTTPS server SSL certificate. Default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "typeProperties.enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
+
+    /** Creates an instance of HttpLinkedService class. */
+    public HttpLinkedService() {}
 
     /**
      * Get the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
@@ -252,6 +251,34 @@ public class HttpLinkedService extends LinkedService {
      */
     public HttpLinkedService setEnableServerCertificateValidation(Object enableServerCertificateValidation) {
         this.enableServerCertificateValidation = enableServerCertificateValidation;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

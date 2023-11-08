@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.IotHubSkuDescriptionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON-serialized array of IotHubSkuDescription objects with a next link. */
 @Fluent
 public final class IotHubSkuDescriptionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubSkuDescriptionListResult.class);
-
     /*
      * The array of IotHubSkuDescription.
      */
@@ -27,6 +23,10 @@ public final class IotHubSkuDescriptionListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of IotHubSkuDescriptionListResult class. */
+    public IotHubSkuDescriptionListResult() {
+    }
 
     /**
      * Get the value property: The array of IotHubSkuDescription.

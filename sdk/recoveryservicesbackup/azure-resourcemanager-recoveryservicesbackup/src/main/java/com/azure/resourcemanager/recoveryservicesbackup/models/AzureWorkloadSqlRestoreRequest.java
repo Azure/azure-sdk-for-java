@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -31,18 +29,14 @@ import java.util.Map;
 })
 @Fluent
 public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadSqlRestoreRequest.class);
-
     /*
-     * Default option set to true. If this is set to false, alternate data
-     * directory must be provided
+     * Default option set to true. If this is set to false, alternate data directory must be provided
      */
     @JsonProperty(value = "shouldUseAlternateTargetLocation")
     private Boolean shouldUseAlternateTargetLocation;
 
     /*
-     * SQL specific property where user can chose to set no-recovery when
-     * restore operation is tried
+     * SQL specific property where user can chose to set no-recovery when restore operation is tried
      */
     @JsonProperty(value = "isNonRecoverable")
     private Boolean isNonRecoverable;
@@ -52,6 +46,10 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
      */
     @JsonProperty(value = "alternateDirectoryPaths")
     private List<SqlDataDirectoryMapping> alternateDirectoryPaths;
+
+    /** Creates an instance of AzureWorkloadSqlRestoreRequest class. */
+    public AzureWorkloadSqlRestoreRequest() {
+    }
 
     /**
      * Get the shouldUseAlternateTargetLocation property: Default option set to true. If this is set to false, alternate

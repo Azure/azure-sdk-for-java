@@ -34,7 +34,7 @@ public class BasicOperationTest {
     private CosmosContainer createdTestContainer;
     private CosmosContainer createdResultsContainer;
 
-    @BeforeClass(groups = {"emulator"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = TIMEOUT)
     public void before_BasicOperationTest() {
         assertThat(this.client).isNull();
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
@@ -60,7 +60,7 @@ public class BasicOperationTest {
         this.createdResultsContainer = this.createdDatabase.getContainer("results" + suffix);
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         assertThat(this.createdDatabase).isNotNull();
@@ -68,14 +68,14 @@ public class BasicOperationTest {
         this.client.close();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void Run_InsertWithoutExplicitPKAndId() throws Exception {
         this.runTest(
             "InsertWithoutExplicitPKAndId",
             2, 2000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void Run_Insert() throws Exception {
         this.runTest(
             "Insert",

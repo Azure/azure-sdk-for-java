@@ -49,6 +49,10 @@ public final class LocalNetworkGatewayPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of LocalNetworkGatewayPropertiesFormat class. */
+    public LocalNetworkGatewayPropertiesFormat() {
+    }
+
     /**
      * Get the localNetworkAddressSpace property: Local network site address space.
      *

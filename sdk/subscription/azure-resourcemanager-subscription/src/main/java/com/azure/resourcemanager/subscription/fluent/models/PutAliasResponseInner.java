@@ -6,21 +6,21 @@ package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.subscription.models.PutAliasResponseProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subscription Information with the alias. */
 @Fluent
 public final class PutAliasResponseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PutAliasResponseInner.class);
-
     /*
      * Put Alias response properties.
      */
     @JsonProperty(value = "properties")
     private PutAliasResponseProperties properties;
+
+    /** Creates an instance of PutAliasResponseInner class. */
+    public PutAliasResponseInner() {
+    }
 
     /**
      * Get the properties property: Put Alias response properties.

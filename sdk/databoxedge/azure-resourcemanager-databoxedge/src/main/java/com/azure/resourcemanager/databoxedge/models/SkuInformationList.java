@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.fluent.models.ResourceTypeSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of SKU Information objects. */
 @Immutable
 public final class SkuInformationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuInformationList.class);
-
     /*
      * List of ResourceType Sku
      */
@@ -27,6 +23,10 @@ public final class SkuInformationList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of SkuInformationList class. */
+    public SkuInformationList() {
+    }
 
     /**
      * Get the value property: List of ResourceType Sku.

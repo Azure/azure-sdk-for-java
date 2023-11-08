@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** swapShiftsChangeRequest. */
 @Fluent
 public final class MicrosoftGraphSwapShiftsChangeRequest extends MicrosoftGraphOfferShiftRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphSwapShiftsChangeRequest.class);
-
     /*
      * ShiftId for the recipient user with whom the request is to swap.
      */
@@ -29,6 +26,10 @@ public final class MicrosoftGraphSwapShiftsChangeRequest extends MicrosoftGraphO
      * swapShiftsChangeRequest
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSwapShiftsChangeRequest class. */
+    public MicrosoftGraphSwapShiftsChangeRequest() {
+    }
 
     /**
      * Get the recipientShiftId property: ShiftId for the recipient user with whom the request is to swap.

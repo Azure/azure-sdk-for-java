@@ -26,7 +26,8 @@ public class App {
             JsonSendTest.class,
             XmlReceiveTest.class,
             XmlSendTest.class,
-            PipelineSendTest.class
+            PipelineSendTest.class,
+            TracingTest.class,
         }, args);
     }
 }

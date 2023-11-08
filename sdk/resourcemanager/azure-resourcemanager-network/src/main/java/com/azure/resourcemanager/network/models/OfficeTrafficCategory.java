@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OfficeTrafficCategory. */
+/** The office traffic category. */
 public final class OfficeTrafficCategory extends ExpandableStringEnum<OfficeTrafficCategory> {
     /** Static value Optimize for OfficeTrafficCategory. */
     public static final OfficeTrafficCategory OPTIMIZE = fromString("Optimize");
@@ -23,6 +23,15 @@ public final class OfficeTrafficCategory extends ExpandableStringEnum<OfficeTraf
     public static final OfficeTrafficCategory NONE = fromString("None");
 
     /**
+     * Creates a new instance of OfficeTrafficCategory value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OfficeTrafficCategory() {
+    }
+
+    /**
      * Creates or finds a OfficeTrafficCategory from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class OfficeTrafficCategory extends ExpandableStringEnum<OfficeTraf
         return fromString(name, OfficeTrafficCategory.class);
     }
 
-    /** @return known OfficeTrafficCategory values. */
+    /**
+     * Gets known OfficeTrafficCategory values.
+     *
+     * @return known OfficeTrafficCategory values.
+     */
     public static Collection<OfficeTrafficCategory> values() {
         return values(OfficeTrafficCategory.class);
     }

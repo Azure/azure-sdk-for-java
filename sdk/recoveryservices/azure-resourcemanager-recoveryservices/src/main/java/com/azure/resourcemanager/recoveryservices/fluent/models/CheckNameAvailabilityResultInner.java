@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response for check name availability API. Resource provider will set availability as true | false. */
 @Fluent
 public final class CheckNameAvailabilityResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResultInner.class);
-
     /*
      * The nameAvailable property.
      */
@@ -31,6 +27,10 @@ public final class CheckNameAvailabilityResultInner {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of CheckNameAvailabilityResultInner class. */
+    public CheckNameAvailabilityResultInner() {
+    }
 
     /**
      * Get the nameAvailable property: The nameAvailable property.

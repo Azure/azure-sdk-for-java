@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("StorageAccount")
 @Fluent
 public final class StorageAccountDetails extends DataAccountDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountDetails.class);
-
     /*
      * Storage Account Resource Id.
      */
     @JsonProperty(value = "storageAccountId", required = true)
     private String storageAccountId;
+
+    /** Creates an instance of StorageAccountDetails class. */
+    public StorageAccountDetails() {
+    }
 
     /**
      * Get the storageAccountId property: Storage Account Resource Id.
@@ -60,10 +61,12 @@ public final class StorageAccountDetails extends DataAccountDetails {
     public void validate() {
         super.validate();
         if (storageAccountId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storageAccountId in model StorageAccountDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccountDetails.class);
 }

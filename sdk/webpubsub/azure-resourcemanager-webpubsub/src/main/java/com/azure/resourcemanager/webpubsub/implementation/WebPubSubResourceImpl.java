@@ -18,6 +18,7 @@ import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.RegenerateKeyParameters;
 import com.azure.resourcemanager.webpubsub.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
+import com.azure.resourcemanager.webpubsub.models.ServiceKind;
 import com.azure.resourcemanager.webpubsub.models.SharedPrivateLinkResource;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubKeys;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
@@ -61,6 +62,10 @@ public final class WebPubSubResourceImpl
 
     public ResourceSku sku() {
         return this.innerModel().sku();
+    }
+
+    public ServiceKind kind() {
+        return this.innerModel().kind();
     }
 
     public ManagedIdentity identity() {
@@ -155,12 +160,24 @@ public final class WebPubSubResourceImpl
         return this.innerModel().disableAadAuth();
     }
 
+    public String regionEndpointEnabled() {
+        return this.innerModel().regionEndpointEnabled();
+    }
+
+    public String resourceStopped() {
+        return this.innerModel().resourceStopped();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public WebPubSubResourceInner innerModel() {
@@ -254,12 +271,12 @@ public final class WebPubSubResourceImpl
         return this;
     }
 
-    public WebPubSubKeys listKeys() {
-        return serviceManager.webPubSubs().listKeys(resourceGroupName, resourceName);
-    }
-
     public Response<WebPubSubKeys> listKeysWithResponse(Context context) {
         return serviceManager.webPubSubs().listKeysWithResponse(resourceGroupName, resourceName, context);
+    }
+
+    public WebPubSubKeys listKeys() {
+        return serviceManager.webPubSubs().listKeys(resourceGroupName, resourceName);
     }
 
     public WebPubSubKeys regenerateKey(RegenerateKeyParameters parameters) {
@@ -295,6 +312,11 @@ public final class WebPubSubResourceImpl
 
     public WebPubSubResourceImpl withSku(ResourceSku sku) {
         this.innerModel().withSku(sku);
+        return this;
+    }
+
+    public WebPubSubResourceImpl withKind(ServiceKind kind) {
+        this.innerModel().withKind(kind);
         return this;
     }
 
@@ -335,6 +357,16 @@ public final class WebPubSubResourceImpl
 
     public WebPubSubResourceImpl withDisableAadAuth(Boolean disableAadAuth) {
         this.innerModel().withDisableAadAuth(disableAadAuth);
+        return this;
+    }
+
+    public WebPubSubResourceImpl withRegionEndpointEnabled(String regionEndpointEnabled) {
+        this.innerModel().withRegionEndpointEnabled(regionEndpointEnabled);
+        return this;
+    }
+
+    public WebPubSubResourceImpl withResourceStopped(String resourceStopped) {
+        this.innerModel().withResourceStopped(resourceStopped);
         return this;
     }
 }

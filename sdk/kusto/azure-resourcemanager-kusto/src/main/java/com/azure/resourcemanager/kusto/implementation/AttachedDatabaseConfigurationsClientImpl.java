@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.kusto.fluent.AttachedDatabaseConfigurationsClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AttachedDatabaseConfigurationsClient. */
 public final class AttachedDatabaseConfigurationsClientImpl implements AttachedDatabaseConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(AttachedDatabaseConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AttachedDatabaseConfigurationsService service;
 
@@ -73,11 +70,10 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface AttachedDatabaseConfigurationsService {
+    public interface AttachedDatabaseConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/attachedDatabaseConfigurationCheckNameAvailability")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurationCheckNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(
@@ -92,8 +88,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/attachedDatabaseConfigurations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedDatabaseConfigurationListResult>> listByCluster(
@@ -107,8 +102,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedDatabaseConfigurationInner>> get(
@@ -123,8 +117,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -140,8 +133,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -158,7 +150,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,7 +206,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -271,7 +263,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,37 +275,13 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
         String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName)
-            .flatMap(
-                (Response<CheckNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
-        return checkNameAvailabilityAsync(resourceGroupName, clusterName, resourceName).block();
-    }
-
-    /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -332,9 +300,26 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
+     * Checks that the attached database configuration resource name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameResultInner checkNameAvailability(
+        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+        return checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, Context.NONE).getValue();
+    }
+
+    /**
      * Returns the list of attached database configurations of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -387,7 +372,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -438,7 +423,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,7 +440,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -473,7 +458,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -490,7 +475,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -508,7 +493,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Returns an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -565,7 +550,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Returns an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param context The context to associate with this operation.
@@ -620,7 +605,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Returns an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -632,37 +617,13 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     private Mono<AttachedDatabaseConfigurationInner> getAsync(
         String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
         return getWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName)
-            .flatMap(
-                (Response<AttachedDatabaseConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDatabaseConfigurationInner get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        return getAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).block();
-    }
-
-    /**
-     * Returns an attached database configuration.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param context The context to associate with this operation.
@@ -678,9 +639,27 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
+     * Returns an attached database configuration.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing an attached database configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttachedDatabaseConfigurationInner get(
+        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+        return getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Creates or updates an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -747,7 +726,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Creates or updates an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -813,7 +792,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Creates or updates an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -845,7 +824,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Creates or updates an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -880,7 +859,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Creates or updates an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -896,14 +875,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             String clusterName,
             String attachedDatabaseConfigurationName,
             AttachedDatabaseConfigurationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -921,7 +901,8 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             String attachedDatabaseConfigurationName,
             AttachedDatabaseConfigurationInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, context)
             .getSyncPoller();
     }
@@ -929,7 +910,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Creates or updates an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -952,7 +933,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Creates or updates an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -978,7 +959,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Creates or updates an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -1000,7 +981,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Creates or updates an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -1025,7 +1006,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1081,7 +1062,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param context The context to associate with this operation.
@@ -1135,7 +1116,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1157,7 +1138,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param context The context to associate with this operation.
@@ -1180,7 +1161,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1191,13 +1172,13 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).getSyncPoller();
     }
 
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param context The context to associate with this operation.
@@ -1209,14 +1190,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1235,7 +1217,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param context The context to associate with this operation.
@@ -1255,7 +1237,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1270,7 +1252,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param context The context to associate with this operation.

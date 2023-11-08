@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.AzureResourceSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of available SKUs for a Kusto Cluster. */
 @Fluent
 public final class ListResourceSkusResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListResourceSkusResult.class);
-
     /*
      * The collection of available SKUs for an existing resource.
      */
     @JsonProperty(value = "value")
     private List<AzureResourceSkuInner> value;
+
+    /** Creates an instance of ListResourceSkusResult class. */
+    public ListResourceSkusResult() {
+    }
 
     /**
      * Get the value property: The collection of available SKUs for an existing resource.

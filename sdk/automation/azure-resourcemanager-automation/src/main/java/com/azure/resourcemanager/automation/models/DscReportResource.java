@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** Definition of the DSC Report Resource. */
 @Fluent
 public final class DscReportResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscReportResource.class);
-
     /*
      * Gets or sets the ID of the resource.
      */
@@ -29,8 +25,7 @@ public final class DscReportResource {
     private String sourceInfo;
 
     /*
-     * Gets or sets the Resource Navigation values for resources the resource
-     * depends on.
+     * Gets or sets the Resource Navigation values for resources the resource depends on.
      */
     @JsonProperty(value = "dependsOn")
     private List<DscReportResourceNavigation> dependsOn;

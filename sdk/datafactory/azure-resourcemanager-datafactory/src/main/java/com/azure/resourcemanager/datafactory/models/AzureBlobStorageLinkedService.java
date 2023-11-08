@@ -25,6 +25,10 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
     private AzureBlobStorageLinkedServiceTypeProperties innerTypeProperties =
         new AzureBlobStorageLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureBlobStorageLinkedService class. */
+    public AzureBlobStorageLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Blob Storage linked service properties.
      *
@@ -164,7 +168,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
      *
      * @return the serviceEndpoint value.
      */
-    public String serviceEndpoint() {
+    public Object serviceEndpoint() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().serviceEndpoint();
     }
 
@@ -175,7 +179,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
-    public AzureBlobStorageLinkedService withServiceEndpoint(String serviceEndpoint) {
+    public AzureBlobStorageLinkedService withServiceEndpoint(Object serviceEndpoint) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureBlobStorageLinkedServiceTypeProperties();
         }
@@ -292,7 +296,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
      *
      * @return the accountKind value.
      */
-    public String accountKind() {
+    public Object accountKind() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().accountKind();
     }
 
@@ -304,7 +308,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
      * @param accountKind the accountKind value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
-    public AzureBlobStorageLinkedService withAccountKind(String accountKind) {
+    public AzureBlobStorageLinkedService withAccountKind(Object accountKind) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureBlobStorageLinkedServiceTypeProperties();
         }
@@ -314,7 +318,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
@@ -324,7 +328,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobStorageLinkedService object itself.
@@ -357,6 +361,54 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
             this.innerTypeProperties = new AzureBlobStorageLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The type used for authentication. Type: string.
+     *
+     * @return the authenticationType value.
+     */
+    public AzureStorageAuthenticationType authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: The type used for authentication. Type: string.
+     *
+     * @param authenticationType the authenticationType value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService withAuthenticationType(AzureStorageAuthenticationType authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the containerUri property: Container uri of the Azure Blob Storage resource only support for anonymous
+     * access. Type: string (or Expression with resultType string).
+     *
+     * @return the containerUri value.
+     */
+    public Object containerUri() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().containerUri();
+    }
+
+    /**
+     * Set the containerUri property: Container uri of the Azure Blob Storage resource only support for anonymous
+     * access. Type: string (or Expression with resultType string).
+     *
+     * @param containerUri the containerUri value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService withContainerUri(Object containerUri) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withContainerUri(containerUri);
         return this;
     }
 

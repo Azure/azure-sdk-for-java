@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for PiiCategory. */
@@ -537,17 +536,28 @@ public final class PiiCategory extends ExpandableStringEnum<PiiCategory> {
     public static final PiiCategory DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of PiiCategory value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PiiCategory() {}
+
+    /**
      * Creates or finds a PiiCategory from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding PiiCategory.
      */
-    @JsonCreator
     public static PiiCategory fromString(String name) {
         return fromString(name, PiiCategory.class);
     }
 
-    /** @return known PiiCategory values. */
+    /**
+     * Gets known PiiCategory values.
+     *
+     * @return known PiiCategory values.
+     */
     public static Collection<PiiCategory> values() {
         return values(PiiCategory.class);
     }

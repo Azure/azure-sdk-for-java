@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.UserSubscriptionQuota;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Json-serialized array of User subscription quota response. */
 @Fluent
 public final class UserSubscriptionQuotaListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSubscriptionQuotaListResultInner.class);
-
     /*
      * The value property.
      */
@@ -27,6 +23,10 @@ public final class UserSubscriptionQuotaListResultInner {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of UserSubscriptionQuotaListResultInner class. */
+    public UserSubscriptionQuotaListResultInner() {
+    }
 
     /**
      * Get the value property: The value property.

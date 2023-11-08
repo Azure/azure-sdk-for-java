@@ -20,6 +20,15 @@ public final class StreamOptionsFlag extends ExpandableStringEnum<StreamOptionsF
     public static final StreamOptionsFlag LOW_LATENCY_V2 = fromString("LowLatencyV2");
 
     /**
+     * Creates a new instance of StreamOptionsFlag value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StreamOptionsFlag() {
+    }
+
+    /**
      * Creates or finds a StreamOptionsFlag from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +39,11 @@ public final class StreamOptionsFlag extends ExpandableStringEnum<StreamOptionsF
         return fromString(name, StreamOptionsFlag.class);
     }
 
-    /** @return known StreamOptionsFlag values. */
+    /**
+     * Gets known StreamOptionsFlag values.
+     *
+     * @return known StreamOptionsFlag values.
+     */
     public static Collection<StreamOptionsFlag> values() {
         return values(StreamOptionsFlag.class);
     }

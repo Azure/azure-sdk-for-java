@@ -17,6 +17,15 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
     public static final ConnectionType EXTERNAL = fromString("External");
 
     /**
+     * Creates a new instance of ConnectionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionType() {
+    }
+
+    /**
      * Creates or finds a ConnectionType from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
         return fromString(name, ConnectionType.class);
     }
 
-    /** @return known ConnectionType values. */
+    /**
+     * Gets known ConnectionType values.
+     *
+     * @return known ConnectionType values.
+     */
     public static Collection<ConnectionType> values() {
         return values(ConnectionType.class);
     }

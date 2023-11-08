@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MySqlConnectionInfo")
 @Fluent
 public final class MySqlConnectionInfo extends ConnectionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MySqlConnectionInfo.class);
-
     /*
      * Name of the server
      */
@@ -29,6 +26,10 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
      */
     @JsonProperty(value = "port", required = true)
     private int port;
+
+    /** Creates an instance of MySqlConnectionInfo class. */
+    public MySqlConnectionInfo() {
+    }
 
     /**
      * Get the serverName property: Name of the server.
@@ -93,9 +94,11 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
     public void validate() {
         super.validate();
         if (serverName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property serverName in model MySqlConnectionInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MySqlConnectionInfo.class);
 }

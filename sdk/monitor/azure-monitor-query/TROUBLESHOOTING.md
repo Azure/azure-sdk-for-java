@@ -11,7 +11,7 @@ Monitor Query client library for Java.
     * [Troubleshooting authentication issues with logs and metrics query requests](#authentication-errors)
     * [Troubleshooting NoSuchMethodError or NoClassDefFoundError](#dependency-conflicts)
 * [Troubleshooting Logs Query](#troubleshooting-logs-query)
-    * [Troubleshooting insufficient access error](#troubleshooting-insufficient-access-error-for-logs-query)
+    * [Troubleshooting authorization errors](#troubleshooting-authorization-errors-for-logs-query)
     * [Troubleshooting invalid Kusto query](#troubleshooting-invalid-kusto-query)
     * [Troubleshooting empty log query results](#troubleshooting-empty-log-query-results)
     * [Troubleshooting client timeouts when executing logs query request](#troubleshooting-client-timeouts-when-executing-logs-query-request)
@@ -19,7 +19,7 @@ Monitor Query client library for Java.
     * [Troubleshooting server timeouts on OkHTTP client](#troubleshooting-server-timeouts-on-okhttp-client)
     * [Troubleshooting partially successful logs query requests](#troubleshooting-partially-successful-logs-query-requests)
 * [Troubleshooting Metrics Query](#troubleshooting-metrics-query)
-    * [Troubleshooting insufficient access error](#troubleshooting-insufficient-access-error-for-metrics-query)
+    * [Troubleshooting authorization errors](#troubleshooting-authorization-errors-for-metrics-query)
     * [Troubleshooting unsupported granularity for metrics query](#troubleshooting-unsupported-granularity-for-metrics-query)
 
 ## General Troubleshooting
@@ -44,14 +44,14 @@ MetricsQueryClient can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-        .credential(credential)
-        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-        .buildClient();
+    .credential(credential)
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+    .buildClient();
 // or
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-        .credential(credential)
-        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-        .buildClient();
+    .credential(credential)
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+    .buildClient();
 ```
 
 Alternatively, you can configure logging HTTP requests and responses for your entire application by setting the
@@ -94,7 +94,7 @@ why this happens and [ways to mitigate this issue](https://docs.microsoft.com/az
 
 ## Troubleshooting Logs Query
 
-### Troubleshooting insufficient access error for logs query
+### Troubleshooting authorization errors for logs query
 
 If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have
 sufficient permissions to query the workspace.
@@ -105,11 +105,15 @@ com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"mes
 
 1. Check that the application or user that is making the request has sufficient permissions:
     * You can refer to this document to [manage access to workspaces](https://docs.microsoft.com/azure/azure-monitor/logs/manage-access#manage-access-using-workspace-permissions)
+    * If you're querying for logs of a specific resource, then ensure the service principal is assigned the "Log Analytics Reader" role on the resource.
 2. If the user or application is granted sufficient privileges to query the workspace, make sure you are
    authenticating as that user/application. If you are authenticating using the
    [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticating-with-defaultazurecredential)
    then check the logs to verify that the credential used is the one you expected. To enable logging, see [enable
    client logging](#enable-client-logging) section above.
+
+For more help on troubleshooting authentication errors, please see the Azure Identity client library [troubleshooting 
+guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md).
 
 ### Troubleshooting invalid Kusto query
 
@@ -145,9 +149,9 @@ following.
 
 ```java readme-sample-responsetimeout
 LogsQueryClient client = new LogsQueryClientBuilder()
-        .credential(credential)
-        .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
-        .buildClient();
+    .credential(credential)
+    .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
+    .buildClient();
 ```
 
 The above code will create a LogsQueryClient with a Netty HTTP client that waits for a response for up to 120 seconds.
@@ -166,11 +170,11 @@ previous section.
 
 ```java readme-sample-servertimeout
 LogsQueryClient client = new LogsQueryClientBuilder()
-        .credential(credential)
-        .buildClient();
+    .credential(credential)
+    .buildClient();
 
 client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
-        new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
+    new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
 ```
 
 ### Troubleshooting server timeouts on OkHTTP client
@@ -181,9 +185,9 @@ below. The downside to doing this is that every request from this client will ha
 
 ```java readme-sample-okhttpresponsetimeout
 LogsQueryClient client = new LogsQueryClientBuilder()
-        .credential(credential)
-        .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
-        .buildClient();
+    .credential(credential)
+    .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
+    .buildClient();
 ```
 
 ### Troubleshooting partially successful logs query requests
@@ -195,12 +199,12 @@ in `LogsQueryOptions` as shown below:
 
 ```java readme-sample-allowpartialerrors
 client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
-        new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
+    new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
 ```
 
 ## Troubleshooting Metrics Query
 
-### Troubleshooting insufficient access error for metrics query
+### Troubleshooting authorization errors for metrics query
 
 If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have
 sufficient permissions to query the workspace.
@@ -216,6 +220,9 @@ com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"cod
    [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticating-with-defaultazurecredential)
    then check the logs to verify that the credential used is the one you expected. To enable logging, see [enable
    client logging](#enable-client-logging) section above.
+
+For more help on troubleshooting authentication errors, please see the Azure Identity client library [troubleshooting
+guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md).
 
 ### Troubleshooting unsupported granularity for metrics query
 

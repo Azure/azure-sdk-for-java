@@ -13,7 +13,7 @@ import java.util.UUID;
 /** Samples for Entities GetInsights. */
 public final class EntitiesGetInsightsSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/entities/insights/PostGetInsights.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/entities/insights/PostGetInsights.json
      */
     /**
      * Sample code: Entity Insight.

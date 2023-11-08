@@ -53,6 +53,10 @@ public final class MaintenanceRedeployStatus {
     @JsonProperty(value = "lastOperationMessage")
     private String lastOperationMessage;
 
+    /** Creates an instance of MaintenanceRedeployStatus class. */
+    public MaintenanceRedeployStatus() {
+    }
+
     /**
      * Get the isCustomerInitiatedMaintenanceAllowed property: True, if customer is allowed to perform Maintenance.
      *

@@ -24,6 +24,10 @@ public final class CustomActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private CustomActivityTypeProperties innerTypeProperties = new CustomActivityTypeProperties();
 
+    /** Creates an instance of CustomActivity class. */
+    public CustomActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Custom activity properties.
      *
@@ -58,6 +62,20 @@ public final class CustomActivity extends ExecutionActivity {
     @Override
     public CustomActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

@@ -15,6 +15,19 @@ public interface Steps {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the step along with {@link Response}.
+     */
+    Response<StepResource> getByResourceGroupWithResponse(String resourceGroupName, String stepName, Context context);
+
+    /**
+     * Gets the step.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param stepName The name of the deployment step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,7 +36,7 @@ public interface Steps {
     StepResource getByResourceGroup(String resourceGroupName, String stepName);
 
     /**
-     * Gets the step.
+     * Deletes the step.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param stepName The name of the deployment step.
@@ -31,9 +44,9 @@ public interface Steps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the step.
+     * @return the {@link Response}.
      */
-    Response<StepResource> getByResourceGroupWithResponse(String resourceGroupName, String stepName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String stepName, Context context);
 
     /**
      * Deletes the step.
@@ -47,17 +60,16 @@ public interface Steps {
     void deleteByResourceGroup(String resourceGroupName, String stepName);
 
     /**
-     * Deletes the step.
+     * Lists the steps in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param stepName The name of the deployment step.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the list of steps along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String stepName, Context context);
+    Response<List<StepResource>> listWithResponse(String resourceGroupName, Context context);
 
     /**
      * Lists the steps in a resource group.
@@ -71,25 +83,13 @@ public interface Steps {
     List<StepResource> list(String resourceGroupName);
 
     /**
-     * Lists the steps in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of steps.
-     */
-    Response<List<StepResource>> listWithResponse(String resourceGroupName, Context context);
-
-    /**
      * Gets the step.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the step.
+     * @return the step along with {@link Response}.
      */
     StepResource getById(String id);
 
@@ -101,7 +101,7 @@ public interface Steps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the step.
+     * @return the step along with {@link Response}.
      */
     Response<StepResource> getByIdWithResponse(String id, Context context);
 
@@ -123,7 +123,7 @@ public interface Steps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -3,18 +3,24 @@
 
 package com.azure.cosmos
 
-import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
-import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.rangeToNormalizedRange
+import com.azure.cosmos.implementation.{DocumentCollection, PartitionKeyRange, SparkBridgeImplementationInternal}
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.FeedRange
+import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange, ModelBridgeInternal}
 import com.azure.cosmos.spark.NormalizedRange
+
+import scala.collection.mutable.ArrayBuffer
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 private[cosmos] object SparkBridgeInternal {
+
+  //scalastyle:off null
+  val defaultQueryRequestOptions: CosmosQueryRequestOptions = null
+  //scalastyle:on null
+
   def trySplitFeedRange
   (
     container: CosmosAsyncContainer,
@@ -47,5 +53,36 @@ private[cosmos] object SparkBridgeInternal {
     SparkBridgeImplementationInternal
       .rangeToNormalizedRange(
         container.getNormalizedEffectiveRange(feedRange).block)
+  }
+
+  private[cosmos] def getPartitionKeyRanges
+  (
+    container: CosmosAsyncContainer
+  ): List[PartitionKeyRange] = {
+    val pkRanges = new ArrayBuffer[PartitionKeyRange]()
+
+    container
+      .getDatabase
+      .getDocClientWrapper
+      .readPartitionKeyRanges(container.getLink, defaultQueryRequestOptions)
+      .collectList
+      .block()
+      .forEach(feedResponse => feedResponse.getResults.forEach(pkRange => pkRanges += pkRange))
+
+    pkRanges.toList
+  }
+
+  private[cosmos] def clearCollectionCache(container: CosmosAsyncContainer, obsoleteRid: String): Unit = {
+    val clientWrapper = container.getDatabase.getDocClientWrapper
+
+    val link = container.getLinkWithoutTrailingSlash;
+
+    val obsoleteValue = new DocumentCollection
+    ModelBridgeInternal.setResourceId(obsoleteValue, obsoleteRid)
+
+    clientWrapper
+      .getCollectionCache()
+      .resolveByNameAsync(null, link, null, obsoleteValue)
+      .block()
   }
 }

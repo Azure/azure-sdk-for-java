@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Modified;
@@ -50,8 +51,16 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
 
+    /**
+     * @deprecated use {@link ReceiveLinkHandler#ReceiveLinkHandler(String, String, String, String, AmqpMetricsProvider)} instead.
+     */
+    @Deprecated
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
-        super(connectionId, hostname, entityPath);
+        this(connectionId, hostname, linkName, entityPath, new AmqpMetricsProvider(null, hostname, entityPath));
+    }
+
+    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath, AmqpMetricsProvider metricsProvider) {
+        super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
     }
@@ -65,7 +74,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     }
 
     /**
-     * Closes the handler by completing the completing the queued deliveries and deliveries then publishes {@link
+     * Closes the handler by completing the queued deliveries and deliveries then publishes {@link
      * EndpointState#CLOSED}. {@link #getEndpointStates()} is completely closed when {@link #onLinkRemoteClose(Event)},
      * {@link #onLinkRemoteDetach(Event)}, or {@link #onLinkFinal(Event)} is called.
      */

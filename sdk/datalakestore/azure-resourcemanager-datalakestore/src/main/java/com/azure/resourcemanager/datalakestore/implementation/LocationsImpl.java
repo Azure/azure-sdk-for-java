@@ -15,10 +15,9 @@ import com.azure.resourcemanager.datalakestore.fluent.models.UsageInner;
 import com.azure.resourcemanager.datalakestore.models.CapabilityInformation;
 import com.azure.resourcemanager.datalakestore.models.Locations;
 import com.azure.resourcemanager.datalakestore.models.Usage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 
@@ -30,15 +29,6 @@ public final class LocationsImpl implements Locations {
         this.serviceManager = serviceManager;
     }
 
-    public CapabilityInformation getCapability(String location) {
-        CapabilityInformationInner inner = this.serviceClient().getCapability(location);
-        if (inner != null) {
-            return new CapabilityInformationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CapabilityInformation> getCapabilityWithResponse(String location, Context context) {
         Response<CapabilityInformationInner> inner = this.serviceClient().getCapabilityWithResponse(location, context);
         if (inner != null) {
@@ -47,6 +37,15 @@ public final class LocationsImpl implements Locations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CapabilityInformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CapabilityInformation getCapability(String location) {
+        CapabilityInformationInner inner = this.serviceClient().getCapability(location);
+        if (inner != null) {
+            return new CapabilityInformationImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolSecurityAlertPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of SQL pool security alert policies. */
 @Immutable
 public final class ListSqlPoolSecurityAlertPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListSqlPoolSecurityAlertPolicies.class);
-
     /*
      * Array of results.
      */
@@ -27,6 +23,10 @@ public final class ListSqlPoolSecurityAlertPolicies {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ListSqlPoolSecurityAlertPolicies class. */
+    public ListSqlPoolSecurityAlertPolicies() {
+    }
 
     /**
      * Get the value property: Array of results.

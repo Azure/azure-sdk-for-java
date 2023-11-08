@@ -13,6 +13,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class PatchOperationCore<T> extends PatchOperation {
 
     private final String path;
+    private final String from;
     private final T resource;
 
     /**
@@ -20,18 +21,36 @@ public final class PatchOperationCore<T> extends PatchOperation {
      *
      * @param operationType Specifies the type of Update operation
      * @param path          Specifies the path to target location.
-     * @param value         Specifies the value to be used
+     * @param value         Specifies the value to be used. In case of move operation it will be a string in the format
+     *                      of a path
      */
     public PatchOperationCore(PatchOperationType operationType, String path, T value) {
         super(operationType);
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
-        this.path = path;
-        this.resource = value;
+
+        if(operationType == PatchOperationType.MOVE) {
+            if (!(value instanceof String)) {
+                throw new IllegalArgumentException("Parameter 'value' is not of type 'String'");
+            }
+            checkArgument(StringUtils.isNotEmpty((String) value), "Parameter 'value' cannot be empty %s", (String) value);
+            this.path = path;
+            this.from = (String) value;
+            this.resource = null;
+        }
+        else {
+            this.path = path;
+            this.resource = value;
+            this.from = null;
+        }
     }
 
     public String getPath() {
         return path;
+    }
+
+    public String getFrom() {
+        return from;
     }
 
     public T getResource() {

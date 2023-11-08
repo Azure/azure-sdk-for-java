@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of OperationResults. */
 public interface OperationResults {
     /**
-     * Returns an azure operation result.
+     * Get an azure operation result.
+     *
+     * <p>Returns an azure operation result.
      *
      * @param operationResultId The operation result ID / name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -21,7 +23,9 @@ public interface OperationResults {
     OperationResult get(String operationResultId);
 
     /**
-     * Returns an azure operation result.
+     * Get an azure operation result.
+     *
+     * <p>Returns an azure operation result.
      *
      * @param operationResultId The operation result ID / name.
      * @param context The context to associate with this operation.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,19 +15,15 @@ import java.util.Map;
 /** privacyProfile. */
 @Fluent
 public final class MicrosoftGraphPrivacyProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPrivacyProfile.class);
-
     /*
-     * A valid smtp email address for the privacy statement contact. Not
-     * required.
+     * A valid smtp email address for the privacy statement contact. Not required.
      */
     @JsonProperty(value = "contactEmail")
     private String contactEmail;
 
     /*
-     * A valid URL format that begins with http:// or https://. Maximum length
-     * is 255 characters. The URL that directs to the company's privacy
-     * statement. Not required.
+     * A valid URL format that begins with http:// or https://. Maximum length is 255 characters. The URL that directs
+     * to the company's privacy statement. Not required.
      */
     @JsonProperty(value = "statementUrl")
     private String statementUrl;
@@ -37,6 +32,10 @@ public final class MicrosoftGraphPrivacyProfile {
      * privacyProfile
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPrivacyProfile class. */
+    public MicrosoftGraphPrivacyProfile() {
+    }
 
     /**
      * Get the contactEmail property: A valid smtp email address for the privacy statement contact. Not required.

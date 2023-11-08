@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SsisChildPackage {
     /*
-     * Path for embedded child package. Type: string (or Expression with
-     * resultType string).
+     * Path for embedded child package. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "packagePath", required = true)
     private Object packagePath;
@@ -24,8 +23,7 @@ public final class SsisChildPackage {
     private String packageName;
 
     /*
-     * Content for embedded child package. Type: string (or Expression with
-     * resultType string).
+     * Content for embedded child package. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "packageContent", required = true)
     private Object packageContent;
@@ -35,6 +33,9 @@ public final class SsisChildPackage {
      */
     @JsonProperty(value = "packageLastModifiedDate")
     private String packageLastModifiedDate;
+
+    /** Creates an instance of SsisChildPackage class. */
+    public SsisChildPackage() {}
 
     /**
      * Get the packagePath property: Path for embedded child package. Type: string (or Expression with resultType

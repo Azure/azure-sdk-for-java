@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionMonitorType. */
+/** Type of connection monitor. */
 public final class ConnectionMonitorType extends ExpandableStringEnum<ConnectionMonitorType> {
     /** Static value MultiEndpoint for ConnectionMonitorType. */
     public static final ConnectionMonitorType MULTI_ENDPOINT = fromString("MultiEndpoint");
 
     /** Static value SingleSourceDestination for ConnectionMonitorType. */
     public static final ConnectionMonitorType SINGLE_SOURCE_DESTINATION = fromString("SingleSourceDestination");
+
+    /**
+     * Creates a new instance of ConnectionMonitorType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionMonitorType() {
+    }
 
     /**
      * Creates or finds a ConnectionMonitorType from its string representation.
@@ -27,7 +36,11 @@ public final class ConnectionMonitorType extends ExpandableStringEnum<Connection
         return fromString(name, ConnectionMonitorType.class);
     }
 
-    /** @return known ConnectionMonitorType values. */
+    /**
+     * Gets known ConnectionMonitorType values.
+     *
+     * @return known ConnectionMonitorType values.
+     */
     public static Collection<ConnectionMonitorType> values() {
         return values(ConnectionMonitorType.class);
     }

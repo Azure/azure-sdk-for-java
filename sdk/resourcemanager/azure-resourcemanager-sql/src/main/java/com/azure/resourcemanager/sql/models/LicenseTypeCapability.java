@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The license type capability. */
 @Fluent
 public final class LicenseTypeCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LicenseTypeCapability.class);
-
     /*
      * License type identifier.
      */
@@ -31,6 +27,10 @@ public final class LicenseTypeCapability {
      */
     @JsonProperty(value = "reason")
     private String reason;
+
+    /** Creates an instance of LicenseTypeCapability class. */
+    public LicenseTypeCapability() {
+    }
 
     /**
      * Get the name property: License type identifier.

@@ -14,14 +14,13 @@ import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -60,7 +59,10 @@ class EventHubPartitionAsyncConsumerTest {
     private static final String CONSUMER_GROUP = "consumer-group-test";
     private static final String PARTITION_ID = "a-partition-id";
     private static final Instant TEST_DATE = Instant.ofEpochSecond(1578643343);
-
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
+    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION =
+        new EventHubsConsumerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     @Mock
     private AmqpReceiveLink link1;
     @Mock
@@ -81,22 +83,11 @@ class EventHubPartitionAsyncConsumerTest {
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink();
 
-    private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink();
 
     private AmqpReceiveLinkProcessor linkProcessor;
     private EventHubPartitionAsyncConsumer consumer;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup() {
@@ -127,7 +118,7 @@ class EventHubPartitionAsyncConsumerTest {
     void receivesMessages(boolean trackLastEnqueuedProperties) {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
-            PREFETCH, parentConnection));
+            PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties);
 
@@ -166,7 +157,7 @@ class EventHubPartitionAsyncConsumerTest {
                 Assertions.assertSame(event2, partitionEvent.getData());
             })
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         Assertions.assertTrue(linkProcessor.isTerminated());
         Assertions.assertSame(originalPosition, currentPosition.get().get());
@@ -176,7 +167,7 @@ class EventHubPartitionAsyncConsumerTest {
     void receiveMultipleTimes() {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
-            PREFETCH, parentConnection));
+            PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
@@ -218,7 +209,7 @@ class EventHubPartitionAsyncConsumerTest {
                 Assertions.assertSame(event2, partitionEvent.getData());
             })
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert that we have the current offset.
         final EventPosition firstPosition = currentPosition.get().get();
@@ -228,7 +219,7 @@ class EventHubPartitionAsyncConsumerTest {
 
         StepVerifier.create(consumer.receive())
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         consumer.close();
 
@@ -242,7 +233,7 @@ class EventHubPartitionAsyncConsumerTest {
     @Test
     void listensToShutdownSignals() throws InterruptedException {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, parentConnection));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
@@ -270,10 +261,10 @@ class EventHubPartitionAsyncConsumerTest {
         final CountDownLatch shutdownReceived = new CountDownLatch(1);
         final Disposable subscriptions = consumer.receive()
                 .subscribe(
-                    event -> logger.info("1. Received: {}", event.getData().getSequenceNumber()),
+                    event -> LOGGER.info("1. Received: {}", event.getData().getSequenceNumber()),
                     error -> Assertions.fail(error.toString()),
                     () -> {
-                        logger.info("1. Shutdown received");
+                        LOGGER.info("1. Shutdown received");
                         shutdownReceived.countDown();
                     });
 

@@ -19,6 +19,10 @@ public final class ScheduleEntries {
     @JsonProperty(value = "scheduleEntries", required = true)
     private List<ScheduleEntry> scheduleEntries;
 
+    /** Creates an instance of ScheduleEntries class. */
+    public ScheduleEntries() {
+    }
+
     /**
      * Get the scheduleEntries property: List of patch schedules for a Redis cache.
      *

@@ -9,11 +9,11 @@ import com.azure.resourcemanager.subscription.fluent.models.EnabledSubscriptionI
 /** An immutable client-side representation of EnabledSubscriptionId. */
 public interface EnabledSubscriptionId {
     /**
-     * Gets the value property: The ID of the subscriptions that is being enabled.
+     * Gets the subscriptionId property: The ID of the subscriptions that is being enabled.
      *
-     * @return the value value.
+     * @return the subscriptionId value.
      */
-    String value();
+    String subscriptionId();
 
     /**
      * Gets the inner com.azure.resourcemanager.subscription.fluent.models.EnabledSubscriptionIdInner object.

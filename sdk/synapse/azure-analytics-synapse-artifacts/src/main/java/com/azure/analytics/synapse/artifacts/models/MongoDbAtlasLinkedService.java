@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for MongoDB Atlas data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,19 +19,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class MongoDbAtlasLinkedService extends LinkedService {
     /*
-     * The MongoDB Atlas connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The MongoDB Atlas connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the MongoDB Atlas database that you want to access. Type:
-     * string (or Expression with resultType string).
+     * The name of the MongoDB Atlas database that you want to access. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
+
+    /*
+     * The driver version that you want to choose. Allowed value are v1 and v2. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.driverVersion")
+    private Object driverVersion;
+
+    /** Creates an instance of MongoDbAtlasLinkedService class. */
+    public MongoDbAtlasLinkedService() {}
 
     /**
      * Get the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or
@@ -72,6 +83,56 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      */
     public MongoDbAtlasLinkedService setDatabase(Object database) {
         this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the driverVersion value.
+     */
+    public Object getDriverVersion() {
+        return this.driverVersion;
+    }
+
+    /**
+     * Set the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param driverVersion the driverVersion value to set.
+     * @return the MongoDbAtlasLinkedService object itself.
+     */
+    public MongoDbAtlasLinkedService setDriverVersion(Object driverVersion) {
+        this.driverVersion = driverVersion;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbAtlasLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbAtlasLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbAtlasLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbAtlasLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

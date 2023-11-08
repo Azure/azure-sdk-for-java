@@ -16,6 +16,10 @@ public final class LiveEventPreviewAccessControl {
     @JsonProperty(value = "ip")
     private IpAccessControl ip;
 
+    /** Creates an instance of LiveEventPreviewAccessControl class. */
+    public LiveEventPreviewAccessControl() {
+    }
+
     /**
      * Get the ip property: The IP access control properties.
      *

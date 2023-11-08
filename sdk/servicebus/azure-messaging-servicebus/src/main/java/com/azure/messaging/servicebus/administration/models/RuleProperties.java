@@ -6,17 +6,17 @@ package com.azure.messaging.servicebus.administration.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
-import com.azure.messaging.servicebus.implementation.EntityHelper;
-import com.azure.messaging.servicebus.implementation.models.CorrelationFilterImpl;
-import com.azure.messaging.servicebus.implementation.models.EmptyRuleActionImpl;
-import com.azure.messaging.servicebus.implementation.models.FalseFilterImpl;
-import com.azure.messaging.servicebus.implementation.models.KeyValueImpl;
-import com.azure.messaging.servicebus.implementation.models.RuleActionImpl;
-import com.azure.messaging.servicebus.implementation.models.RuleDescription;
-import com.azure.messaging.servicebus.implementation.models.RuleFilterImpl;
-import com.azure.messaging.servicebus.implementation.models.SqlFilterImpl;
-import com.azure.messaging.servicebus.implementation.models.SqlRuleActionImpl;
-import com.azure.messaging.servicebus.implementation.models.TrueFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+import com.azure.messaging.servicebus.administration.implementation.models.CorrelationFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.EmptyRuleActionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.FalseFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.KeyValueImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleActionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SqlFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SqlRuleActionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TrueFilterImpl;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +41,7 @@ public class RuleProperties {
             private final SqlFilterImpl falseFilter = new FalseFilterImpl().setSqlExpression("1=0");
 
             @Override
-            public RuleProperties toModel(RuleDescription description) {
+            public RuleProperties toModel(RuleDescriptionImpl description) {
                 final RuleFilter filter = description.getFilter() != null
                     ? toModel(description.getFilter())
                     : null;
@@ -114,7 +114,7 @@ public class RuleProperties {
             }
 
             @Override
-            public RuleDescription toImplementation(RuleProperties ruleProperties) {
+            public RuleDescriptionImpl toImplementation(RuleProperties ruleProperties) {
                 final RuleFilterImpl filter = ruleProperties.getFilter() != null
                     ? toImplementation(ruleProperties.getFilter())
                     : null;
@@ -122,7 +122,7 @@ public class RuleProperties {
                     ? toImplementation(ruleProperties.getAction())
                     : null;
 
-                return new RuleDescription()
+                return new RuleDescriptionImpl()
                     .setName(ruleProperties.getName())
                     .setAction(action)
                     .setFilter(filter);

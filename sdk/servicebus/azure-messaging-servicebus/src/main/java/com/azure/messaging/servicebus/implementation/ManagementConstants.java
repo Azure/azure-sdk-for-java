@@ -26,6 +26,24 @@ public class ManagementConstants {
     public static final String SESSION_ID = "session-id";
     public static final String SESSION_STATE = "session-state";
     public static final String VIA_PARTITION_KEY = "via-partition-key";
+    public static final String RULE_NAME = "rule-name";
+    public static final String RULE_DESCRIPTION = "rule-description";
+    public static final String SQL_RULE_FILTER = "sql-filter";
+    public static final String EXPRESSION = "expression";
+    public static final String CORRELATION_ID = "correlation-id";
+    public static final String TO = "to";
+    public static final String REPLY_TO = "reply-to";
+    public static final String LABEL = "label";
+    public static final String REPLY_TO_SESSION_ID = "reply-to-session-id";
+    public static final String CONTENT_TYPE = "content-type";
+    public static final String CORRELATION_FILTER_PROPERTIES = "properties";
+    public static final String CORRELATION_FILTER = "correlation-filter";
+    public static final String SQL_RULE_ACTION = "sql-rule-action";
+    public static final String TOP = "top";
+    public static final String SKIP = "skip";
+    public static final String STATUS_CODE = "statusCode";
+    public static final String LEGACY_STATUS_CODE = "status-code";
+    public static final String RULES = "rules";
 
     // Operation name key.
     static final String MANAGEMENT_OPERATION_KEY = "operation";
@@ -40,6 +58,9 @@ public class ManagementConstants {
     static final String OPERATION_SCHEDULE_MESSAGE = AmqpConstants.VENDOR + ":schedule-message";
     static final String OPERATION_SET_SESSION_STATE = AmqpConstants.VENDOR + ":set-session-state";
     static final String OPERATION_UPDATE_DISPOSITION = AmqpConstants.VENDOR + ":update-disposition";
+    static final String OPERATION_ADD_RULE = AmqpConstants.VENDOR + ":add-rule";
+    static final String OPERATION_REMOVE_RULE = AmqpConstants.VENDOR + ":remove-rule";
+    static final String OPERATION_GET_RULES = AmqpConstants.VENDOR + ":enumerate-rules";
 
     static final String SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 

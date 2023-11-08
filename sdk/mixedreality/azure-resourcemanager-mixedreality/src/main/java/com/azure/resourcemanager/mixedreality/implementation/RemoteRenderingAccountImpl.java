@@ -88,6 +88,10 @@ public final class RemoteRenderingAccountImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public RemoteRenderingAccountInner innerModel() {
         return this.innerObject;
     }
@@ -184,22 +188,22 @@ public final class RemoteRenderingAccountImpl
         return this;
     }
 
-    public AccountKeys listKeys() {
-        return serviceManager.remoteRenderingAccounts().listKeys(resourceGroupName, accountName);
-    }
-
     public Response<AccountKeys> listKeysWithResponse(Context context) {
         return serviceManager.remoteRenderingAccounts().listKeysWithResponse(resourceGroupName, accountName, context);
     }
 
-    public AccountKeys regenerateKeys(AccountKeyRegenerateRequest regenerate) {
-        return serviceManager.remoteRenderingAccounts().regenerateKeys(resourceGroupName, accountName, regenerate);
+    public AccountKeys listKeys() {
+        return serviceManager.remoteRenderingAccounts().listKeys(resourceGroupName, accountName);
     }
 
     public Response<AccountKeys> regenerateKeysWithResponse(AccountKeyRegenerateRequest regenerate, Context context) {
         return serviceManager
             .remoteRenderingAccounts()
             .regenerateKeysWithResponse(resourceGroupName, accountName, regenerate, context);
+    }
+
+    public AccountKeys regenerateKeys(AccountKeyRegenerateRequest regenerate) {
+        return serviceManager.remoteRenderingAccounts().regenerateKeys(resourceGroupName, accountName, regenerate);
     }
 
     public RemoteRenderingAccountImpl withRegion(Region location) {

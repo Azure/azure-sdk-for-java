@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines contents of custom rules. */
 @Fluent
 public final class CustomRuleList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomRuleList.class);
-
     /*
      * List of rules
      */
     @JsonProperty(value = "rules")
     private List<CustomRule> rules;
+
+    /** Creates an instance of CustomRuleList class. */
+    public CustomRuleList() {
+    }
 
     /**
      * Get the rules property: List of rules.

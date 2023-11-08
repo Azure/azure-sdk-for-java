@@ -20,6 +20,17 @@ import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
 
 public class Configs {
     private static final Logger logger = LoggerFactory.getLogger(Configs.class);
+
+    /**
+     * Integer value specifying the speculation type
+     * <pre>
+     * 0 - No speculation
+     * 1 - Threshold based speculation
+     * </pre>
+     */
+    public static final String SPECULATION_TYPE = "COSMOS_SPECULATION_TYPE";
+    public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
+    public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
     private final SslContext sslContext;
 
     // The names we use are consistent with the:
@@ -41,9 +52,19 @@ public class Configs {
     private static final String HTTP_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.HTTP_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
-    private static final String CLIENT_TELEMETRY_ENABLED = "COSMOS.CLIENT_TELEMETRY_ENABLED";
+
+    public static final String NON_IDEMPOTENT_WRITE_RETRY_POLICY = "COSMOS.WRITE_RETRY_POLICY";
+    public static final String NON_IDEMPOTENT_WRITE_RETRY_POLICY_VARIABLE = "COSMOS_WRITE_RETRY_POLICY";
+
+    // Example for customer how to setup the proxy:
+    // System.setProperty(
+    //  "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG","{\"type\":\"HTTP\", \"host\": \"localhost\", \"port\": 8080}")
+    private static final String CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG = "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG";
+    // In the future, the following two client telemetry related configs will be part of the database account info
+    // Before that day comes, use JVM properties
     private static final String CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = "COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS";
     private static final String CLIENT_TELEMETRY_ENDPOINT = "COSMOS.CLIENT_TELEMETRY_ENDPOINT";
+
     private static final String ENVIRONMENT_NAME = "COSMOS.ENVIRONMENT_NAME";
     private static final String QUERYPLAN_CACHING_ENABLED = "COSMOS.QUERYPLAN_CACHING_ENABLED";
 
@@ -79,29 +100,62 @@ public class Configs {
     private static final int DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = 5;
 
     // SessionTokenMismatchRetryPolicy Constants
-    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS_NAME =
+    public static final String DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS_NAME =
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS";
     private static final int DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS = 5000;
 
-    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS_NAME =
+    public static final String DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS_NAME =
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS";
     private static final int DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS = 5;
 
-    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME =
+    public static final String DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME =
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS";
-    private static final int DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS = 50;
+    private static final int DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS = 500;
+
+    public static final int MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS = 100;
+
+    private static final String DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS_NAME =
+        "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_IN_REGION-RETRY_TIME_IN_MILLISECONDS";
+    private static final int DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS = 500;
 
     // Whether to process the response on a different thread
     private static final String SWITCH_OFF_IO_THREAD_FOR_RESPONSE_NAME = "COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE";
     private static final boolean DEFAULT_SWITCH_OFF_IO_THREAD_FOR_RESPONSE = false;
 
-    // OpenConnectionsAndInitCaches Constants
-    private static final String OPEN_CONNECTIONS_RETRIES_COUNT_NAME = "COSMOS.OPEN_CONNECTIONS_RETRIES_COUNT";
-    private static final int DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT = 1;
-
     // whether to allow query empty page diagnostics logging
     private static final String QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED = "COSMOS.QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED";
     private static final boolean DEFAULT_QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED = false;
+
+    // whether to use old tracing format instead of semantic profile
+    private static final String USE_LEGACY_TRACING = "COSMOS.USE_LEGACY_TRACING";
+    private static final boolean DEFAULT_USE_LEGACY_TRACING = false;
+
+    // whether to enable replica addresses validation
+    private static final String REPLICA_ADDRESS_VALIDATION_ENABLED = "COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED";
+    private static final boolean DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED = true;
+
+    // Rntbd health check related config
+    private static final String TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED = "COSMOS.TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED";
+    private static final boolean DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED = true;
+
+    private static final String MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = "COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT";
+    private static final int DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = 1;
+
+    private static final String MAX_TRACE_MESSAGE_LENGTH = "COSMOS.MAX_TRACE_MESSAGE_LENGTH";
+    private static final int DEFAULT_MAX_TRACE_MESSAGE_LENGTH = 32 * 1024;
+
+    private static final int MIN_MAX_TRACE_MESSAGE_LENGTH = 8 * 1024;
+
+    private static final String AGGRESSIVE_WARMUP_CONCURRENCY = "COSMOS.AGGRESSIVE_WARMUP_CONCURRENCY";
+    private static final int DEFAULT_AGGRESSIVE_WARMUP_CONCURRENCY = Configs.getCPUCnt();
+
+    private static final String OPEN_CONNECTIONS_CONCURRENCY = "COSMOS.OPEN_CONNECTIONS_CONCURRENCY";
+    private static final int DEFAULT_OPEN_CONNECTIONS_CONCURRENCY = 1;
+
+    public static final String MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = "COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED";
+    private static final int DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
+
+    public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -225,12 +279,21 @@ public class Configs {
         return getJVMConfigAsInt(QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS);
     }
 
-    public static boolean isClientTelemetryEnabled(boolean defaultValue) {
-        return getJVMConfigAsBoolean(CLIENT_TELEMETRY_ENABLED, defaultValue);
-    }
-
     public static String getClientTelemetryEndpoint() {
         return System.getProperty(CLIENT_TELEMETRY_ENDPOINT);
+    }
+
+    public static String getClientTelemetryProxyOptionsConfig() {
+        return System.getProperty(CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG);
+    }
+
+    public static String getNonIdempotentWriteRetryPolicy() {
+        String valueFromSystemProperty = System.getProperty(NON_IDEMPOTENT_WRITE_RETRY_POLICY);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return valueFromSystemProperty;
+        }
+
+        return System.getenv(NON_IDEMPOTENT_WRITE_RETRY_POLICY_VARIABLE);
     }
 
     public static String getEnvironmentName() {
@@ -238,7 +301,7 @@ public class Configs {
     }
 
     public static boolean isQueryPlanCachingEnabled() {
-        // Queryplan caching will be disabled by default
+        // Queryplan caching is enabled by default
         return getJVMConfigAsBoolean(QUERYPLAN_CACHING_ENABLED, true);
     }
 
@@ -264,22 +327,34 @@ public class Configs {
             DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS);
     }
 
+    public static int getSpeculationType() {
+        return getJVMConfigAsInt(SPECULATION_TYPE, 0);
+    }
+
+    public static int speculationThreshold() {
+        return getJVMConfigAsInt(SPECULATION_THRESHOLD, 500);
+    }
+
+    public static int speculationThresholdStep() {
+        return getJVMConfigAsInt(SPECULATION_THRESHOLD_STEP, 100);
+    }
+
     public static boolean shouldSwitchOffIOThreadForResponse() {
         return getJVMConfigAsBoolean(
             SWITCH_OFF_IO_THREAD_FOR_RESPONSE_NAME,
             DEFAULT_SWITCH_OFF_IO_THREAD_FOR_RESPONSE);
     }
 
-    public static int getOpenConnectionsRetriesCount() {
-        return getJVMConfigAsInt(
-            OPEN_CONNECTIONS_RETRIES_COUNT_NAME,
-            DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT);
-    }
-
     public static boolean isEmptyPageDiagnosticsEnabled() {
         return getJVMConfigAsBoolean(
             QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED,
             DEFAULT_QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED);
+    }
+
+    public static boolean useLegacyTracing() {
+        return getJVMConfigAsBoolean(
+            USE_LEGACY_TRACING,
+            DEFAULT_USE_LEGACY_TRACING);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {
@@ -306,5 +381,56 @@ public class Configs {
         } else {
             return Boolean.valueOf(val);
         }
+    }
+
+    public static boolean isReplicaAddressValidationEnabled() {
+        return getJVMConfigAsBoolean(
+                REPLICA_ADDRESS_VALIDATION_ENABLED,
+                DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED);
+    }
+
+    public static boolean isTcpHealthCheckTimeoutDetectionEnabled() {
+        return getJVMConfigAsBoolean(
+            TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED,
+            DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED);
+    }
+
+    public static int getMinConnectionPoolSizePerEndpoint() {
+        return getIntValue(System.getProperty(MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT), DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT);
+    }
+
+    public static int getOpenConnectionsConcurrency() {
+        return getIntValue(System.getProperty(OPEN_CONNECTIONS_CONCURRENCY), DEFAULT_OPEN_CONNECTIONS_CONCURRENCY);
+    }
+
+    public static int getAggressiveWarmupConcurrency() {
+        return getIntValue(System.getProperty(AGGRESSIVE_WARMUP_CONCURRENCY), DEFAULT_AGGRESSIVE_WARMUP_CONCURRENCY);
+    }
+
+    public static int getMaxRetriesInLocalRegionWhenRemoteRegionPreferred() {
+        return
+            Math.max(
+                getIntValue(
+                    System.getProperty(MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED),
+                    DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED),
+                MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED);
+    }
+
+    public static Duration getMinRetryTimeInLocalRegionWhenRemoteRegionPreferred() {
+        return
+            Duration.ofMillis(Math.max(
+                getIntValue(
+                    System.getProperty(DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS_NAME),
+                    DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS),
+                MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS));
+    }
+
+    public static int getMaxTraceMessageLength() {
+        return
+            Math.max(
+                getIntValue(
+                    System.getProperty(MAX_TRACE_MESSAGE_LENGTH),
+                    DEFAULT_MAX_TRACE_MESSAGE_LENGTH),
+                MIN_MAX_TRACE_MESSAGE_LENGTH);
     }
 }

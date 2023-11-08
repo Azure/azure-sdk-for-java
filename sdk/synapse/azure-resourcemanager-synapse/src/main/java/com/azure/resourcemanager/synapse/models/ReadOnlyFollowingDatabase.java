@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.synapse.fluent.models.ReadOnlyFollowingDatabaseProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.time.Duration;
 @JsonTypeName("ReadOnlyFollowing")
 @Fluent
 public final class ReadOnlyFollowingDatabase extends DatabaseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadOnlyFollowingDatabase.class);
-
     /*
      * The database properties.
      */
     @JsonProperty(value = "properties")
     private ReadOnlyFollowingDatabaseProperties innerProperties;
+
+    /** Creates an instance of ReadOnlyFollowingDatabase class. */
+    public ReadOnlyFollowingDatabase() {
+    }
 
     /**
      * Get the innerProperties property: The database properties.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a Sql pool connection policy. */
 @Fluent
 public final class SqlPoolConnectionPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolConnectionPolicyProperties.class);
-
     /*
      * The state of security access.
      */
@@ -55,6 +51,10 @@ public final class SqlPoolConnectionPolicyProperties {
      */
     @JsonProperty(value = "state")
     private String state;
+
+    /** Creates an instance of SqlPoolConnectionPolicyProperties class. */
+    public SqlPoolConnectionPolicyProperties() {
+    }
 
     /**
      * Get the securityEnabledAccess property: The state of security access.

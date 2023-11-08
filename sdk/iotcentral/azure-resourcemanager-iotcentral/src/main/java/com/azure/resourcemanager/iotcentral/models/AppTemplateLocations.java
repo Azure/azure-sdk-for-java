@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IoT Central Application Template Locations. */
 @Immutable
 public final class AppTemplateLocations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppTemplateLocations.class);
-
     /*
      * The ID of the location.
      */

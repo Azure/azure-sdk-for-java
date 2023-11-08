@@ -26,6 +26,10 @@ public final class StorageTargetInner extends StorageTargetResource {
     @JsonProperty(value = "properties")
     private StorageTargetProperties innerProperties;
 
+    /** Creates an instance of StorageTargetInner class. */
+    public StorageTargetInner() {
+    }
+
     /**
      * Get the innerProperties property: StorageTarget properties.
      *
@@ -36,7 +40,7 @@ public final class StorageTargetInner extends StorageTargetResource {
     }
 
     /**
-     * Get the junctions property: List of Cache namespace junctions to target for namespace associations.
+     * Get the junctions property: List of cache namespace junctions to target for namespace associations.
      *
      * @return the junctions value.
      */
@@ -45,7 +49,7 @@ public final class StorageTargetInner extends StorageTargetResource {
     }
 
     /**
-     * Set the junctions property: List of Cache namespace junctions to target for namespace associations.
+     * Set the junctions property: List of cache namespace junctions to target for namespace associations.
      *
      * @param junctions the junctions value to set.
      * @return the StorageTargetInner object itself.
@@ -204,6 +208,15 @@ public final class StorageTargetInner extends StorageTargetResource {
         }
         this.innerProperties().withBlobNfs(blobNfs);
         return this;
+    }
+
+    /**
+     * Get the allocationPercentage property: The percentage of cache space allocated for this storage target.
+     *
+     * @return the allocationPercentage value.
+     */
+    public Integer allocationPercentage() {
+        return this.innerProperties() == null ? null : this.innerProperties().allocationPercentage();
     }
 
     /**

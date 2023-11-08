@@ -24,6 +24,56 @@ public interface TenantIdDescription {
     String tenantId();
 
     /**
+     * Gets the tenantCategory property: The category of the tenant. Possible values are
+     * TenantCategoryHome,TenantCategoryProjectedBy,TenantCategoryManagedBy.
+     *
+     * @return the tenantCategory value.
+     */
+    String tenantCategory();
+
+    /**
+     * Gets the country property: The country/region name of the address for the tenant.
+     *
+     * @return the country value.
+     */
+    String country();
+
+    /**
+     * Gets the countryCode property: The Country/region abbreviation for the tenant.
+     *
+     * @return the countryCode value.
+     */
+    String countryCode();
+
+    /**
+     * Gets the displayName property: The display name of the tenant.
+     *
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
+     * Gets the domains property: The list of domains for the tenant.
+     *
+     * @return the domains value.
+     */
+    String domains();
+
+    /**
+     * Gets the defaultDomain property: The default domain for the tenant.
+     *
+     * @return the defaultDomain value.
+     */
+    String defaultDomain();
+
+    /**
+     * Gets the tenantType property: The tenant type. Only available for Home tenant category.
+     *
+     * @return the tenantType value.
+     */
+    String tenantType();
+
+    /**
      * Gets the inner com.azure.resourcemanager.subscription.fluent.models.TenantIdDescriptionInner object.
      *
      * @return the inner object.

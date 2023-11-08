@@ -37,10 +37,10 @@ public class RecognizeEntitiesBatchDocuments {
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("A", "Satya Nadella is the CEO of Microsoft.").setLanguage("en"),
-            new TextDocumentInput("B", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en")
+            new TextDocumentInput("B", "The cat is 1 year old and weighs 10 pounds.").setLanguage("en")
         );
 
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         // Recognizing entities for each document in a batch of documents
         Response<RecognizeEntitiesResultCollection> entitiesBatchResultResponse =
@@ -51,11 +51,11 @@ public class RecognizeEntitiesBatchDocuments {
         RecognizeEntitiesResultCollection recognizeEntitiesResultCollection = entitiesBatchResultResponse.getValue();
 
         // Model version
-        System.out.printf("Results of Azure Text Analytics \"Entities Recognition\" Model, version: %s%n", recognizeEntitiesResultCollection.getModelVersion());
+        System.out.printf("Results of \"Entities Recognition\" Model, version: %s%n", recognizeEntitiesResultCollection.getModelVersion());
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResultCollection.getStatistics();
-        System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+        System.out.printf("Documents statistics: document count = %d, erroneous document count = %d, transaction count = %d, valid document count = %d.%n",
             batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Recognized entities for each document in a batch of documents
@@ -68,10 +68,11 @@ public class RecognizeEntitiesBatchDocuments {
                 System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
             } else {
                 // Valid document
-                entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                    "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
-                    entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())
-                );
+                entitiesResult.getEntities().forEach(entity -> {
+                    System.out.printf(
+                            "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore());
+                });
             }
         }
     }

@@ -53,7 +53,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public int count() {
-        return this.innerModel().count();
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().count());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public int osDiskSizeInGB() {
-        return this.innerModel().osDiskSizeGB();
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().osDiskSizeGB());
     }
 
     @Override
@@ -174,6 +174,55 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
+    public boolean isFipsEnabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enableFips());
+    }
+
+//    @Override
+//    public void start() {
+//        startAsync().block();
+//    }
+//
+//    @Override
+//    public Mono<Void> startAsync() {
+//        AgentPoolInner innerModel = this.getAgentPoolInner();
+//        PowerState powerState = innerModel.powerState();
+//        if (powerState == null) {
+//            powerState = new PowerState();
+//            innerModel.withPowerState(powerState);
+//        }
+//        powerState.withCode(Code.RUNNING);
+//        return parent().manager().serviceClient().getAgentPools()
+//            .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), this.name(), innerModel)
+//            .map(inner -> {
+//                this.innerModel().withPowerState(inner.powerState());
+//                return inner;
+//            }).then();
+//    }
+//
+//    @Override
+//    public void stop() {
+//        stopAsync().block();
+//    }
+//
+//    @Override
+//    public Mono<Void> stopAsync() {
+//        AgentPoolInner innerModel = this.getAgentPoolInner();
+//        PowerState powerState = innerModel.powerState();
+//        if (powerState == null) {
+//            powerState = new PowerState();
+//            innerModel.withPowerState(powerState);
+//        }
+//        powerState.withCode(Code.STOPPED);
+//        return parent().manager().serviceClient().getAgentPools()
+//            .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), this.name(), innerModel)
+//            .map(inner -> {
+//                this.innerModel().withPowerState(inner.powerState());
+//                return inner;
+//            }).then();
+//    }
+
+    @Override
     public KubernetesClusterAgentPoolImpl withVirtualMachineSize(ContainerServiceVMSizeTypes vmSize) {
         this.innerModel().withVmSize(vmSize.toString());
         return this;
@@ -267,6 +316,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withEnableUltraSsd(innerModel().enableUltraSsd());
         agentPoolInner.withEnableFips(innerModel().enableFips());
         agentPoolInner.withGpuInstanceProfile(innerModel().gpuInstanceProfile());
+        agentPoolInner.withHostGroupId(innerModel().hostGroupId());
         return agentPoolInner;
     }
 
@@ -367,6 +417,12 @@ public class KubernetesClusterAgentPoolImpl
         if (innerModel().tags() != null) {
             innerModel().tags().remove(key);
         }
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withFipsEnabled() {
+        innerModel().withEnableFips(true);
         return this;
     }
 }

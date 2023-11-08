@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** deleted. */
 @Fluent
 public final class MicrosoftGraphDeleted {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDeleted.class);
-
     /*
      * Represents the state of the deleted item.
      */
@@ -28,6 +25,10 @@ public final class MicrosoftGraphDeleted {
      * deleted
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDeleted class. */
+    public MicrosoftGraphDeleted() {
+    }
 
     /**
      * Get the state property: Represents the state of the deleted item.

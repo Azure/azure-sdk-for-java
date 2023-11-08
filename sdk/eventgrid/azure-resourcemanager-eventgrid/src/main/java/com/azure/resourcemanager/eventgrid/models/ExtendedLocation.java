@@ -22,6 +22,10 @@ public final class ExtendedLocation {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of ExtendedLocation class. */
+    public ExtendedLocation() {
+    }
+
     /**
      * Get the name property: Fully qualified name of the extended location.
      *

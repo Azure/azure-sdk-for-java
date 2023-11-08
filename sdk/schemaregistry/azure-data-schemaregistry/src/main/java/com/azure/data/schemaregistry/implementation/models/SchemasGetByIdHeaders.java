@@ -5,6 +5,8 @@
 package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SchemasGetByIdHeaders model. */
@@ -50,7 +52,39 @@ public final class SchemasGetByIdHeaders {
      * The Content-Type property.
      */
     @JsonProperty(value = "Content-Type")
-    private String contentType;
+    private SchemaFormat contentType;
+
+    private static final HttpHeaderName SCHEMA_VERSION = HttpHeaderName.fromString("Schema-Version");
+
+    private static final HttpHeaderName SCHEMA_ID = HttpHeaderName.fromString("Schema-Id");
+
+    private static final HttpHeaderName SCHEMA_GROUP_NAME = HttpHeaderName.fromString("Schema-Group-Name");
+
+    private static final HttpHeaderName SCHEMA_NAME = HttpHeaderName.fromString("Schema-Name");
+
+    private static final HttpHeaderName SCHEMA_ID_LOCATION = HttpHeaderName.fromString("Schema-Id-Location");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of SchemasGetByIdHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public SchemasGetByIdHeaders(HttpHeaders rawHeaders) {
+        String schemaVersion = rawHeaders.getValue(SCHEMA_VERSION);
+        if (schemaVersion != null) {
+            this.schemaVersion = Integer.parseInt(schemaVersion);
+        }
+        this.schemaId = rawHeaders.getValue(SCHEMA_ID);
+        this.schemaGroupName = rawHeaders.getValue(SCHEMA_GROUP_NAME);
+        this.schemaName = rawHeaders.getValue(SCHEMA_NAME);
+        this.schemaIdLocation = rawHeaders.getValue(SCHEMA_ID_LOCATION);
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+        String contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+        if (contentType != null) {
+            this.contentType = SchemaFormat.fromString(contentType);
+        }
+    }
 
     /**
      * Get the schemaVersion property: The Schema-Version property.
@@ -177,7 +211,7 @@ public final class SchemasGetByIdHeaders {
      *
      * @return the contentType value.
      */
-    public String getContentType() {
+    public SchemaFormat getContentType() {
         return this.contentType;
     }
 
@@ -187,7 +221,7 @@ public final class SchemasGetByIdHeaders {
      * @param contentType the contentType value to set.
      * @return the SchemasGetByIdHeaders object itself.
      */
-    public SchemasGetByIdHeaders setContentType(String contentType) {
+    public SchemasGetByIdHeaders setContentType(SchemaFormat contentType) {
         this.contentType = contentType;
         return this;
     }

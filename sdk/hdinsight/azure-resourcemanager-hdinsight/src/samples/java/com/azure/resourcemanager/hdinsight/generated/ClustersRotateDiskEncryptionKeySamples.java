@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.models.ClusterDiskEncryptionParameters;
 
 /** Samples for Clusters RotateDiskEncryptionKey. */
 public final class ClustersRotateDiskEncryptionKeySamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/RotateLinuxHadoopClusterDiskEncryptionKey.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/RotateLinuxHadoopClusterDiskEncryptionKey.json
      */
     /**
      * Sample code: Rotate disk encryption key of the specified HDInsight cluster.
@@ -26,8 +25,8 @@ public final class ClustersRotateDiskEncryptionKeySamples {
                 "cluster1",
                 new ClusterDiskEncryptionParameters()
                     .withVaultUri("https://newkeyvault.vault.azure.net/")
-                    .withKeyName("newkeyname")
-                    .withKeyVersion("newkeyversion"),
-                Context.NONE);
+                    .withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

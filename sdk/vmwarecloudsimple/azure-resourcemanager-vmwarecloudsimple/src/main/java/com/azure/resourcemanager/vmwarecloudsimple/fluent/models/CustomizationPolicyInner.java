@@ -5,19 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.models.CustomizationPolicyPropertiesType;
 import com.azure.resourcemanager.vmwarecloudsimple.models.CustomizationSpecification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The virtual machine customization policy. */
-@JsonFlatten
 @Fluent
-public class CustomizationPolicyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomizationPolicyInner.class);
-
+public final class CustomizationPolicyInner {
     /*
      * Customization policy azure id
      */
@@ -37,40 +31,20 @@ public class CustomizationPolicyInner {
     private String name;
 
     /*
+     * Customization Policy properties
+     */
+    @JsonProperty(value = "properties")
+    private CustomizationPolicyProperties innerProperties;
+
+    /*
      * The type property.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Policy description
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The Private cloud id
-     */
-    @JsonProperty(value = "properties.privateCloudId")
-    private String privateCloudId;
-
-    /*
-     * Detailed customization policy specification
-     */
-    @JsonProperty(value = "properties.specification")
-    private CustomizationSpecification specification;
-
-    /*
-     * The type of customization (Linux or Windows)
-     */
-    @JsonProperty(value = "properties.type")
-    private CustomizationPolicyPropertiesType typePropertiesType;
-
-    /*
-     * Policy version
-     */
-    @JsonProperty(value = "properties.version")
-    private String version;
+    /** Creates an instance of CustomizationPolicyInner class. */
+    public CustomizationPolicyInner() {
+    }
 
     /**
      * Get the id property: Customization policy azure id.
@@ -122,6 +96,15 @@ public class CustomizationPolicyInner {
     }
 
     /**
+     * Get the innerProperties property: Customization Policy properties.
+     *
+     * @return the innerProperties value.
+     */
+    private CustomizationPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -136,7 +119,7 @@ public class CustomizationPolicyInner {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -146,7 +129,10 @@ public class CustomizationPolicyInner {
      * @return the CustomizationPolicyInner object itself.
      */
     public CustomizationPolicyInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomizationPolicyProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -156,7 +142,7 @@ public class CustomizationPolicyInner {
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
-        return this.privateCloudId;
+        return this.innerProperties() == null ? null : this.innerProperties().privateCloudId();
     }
 
     /**
@@ -166,7 +152,10 @@ public class CustomizationPolicyInner {
      * @return the CustomizationPolicyInner object itself.
      */
     public CustomizationPolicyInner withPrivateCloudId(String privateCloudId) {
-        this.privateCloudId = privateCloudId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomizationPolicyProperties();
+        }
+        this.innerProperties().withPrivateCloudId(privateCloudId);
         return this;
     }
 
@@ -176,7 +165,7 @@ public class CustomizationPolicyInner {
      * @return the specification value.
      */
     public CustomizationSpecification specification() {
-        return this.specification;
+        return this.innerProperties() == null ? null : this.innerProperties().specification();
     }
 
     /**
@@ -186,27 +175,33 @@ public class CustomizationPolicyInner {
      * @return the CustomizationPolicyInner object itself.
      */
     public CustomizationPolicyInner withSpecification(CustomizationSpecification specification) {
-        this.specification = specification;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomizationPolicyProperties();
+        }
+        this.innerProperties().withSpecification(specification);
         return this;
     }
 
     /**
-     * Get the typePropertiesType property: The type of customization (Linux or Windows).
+     * Get the type property: The type of customization (Linux or Windows).
      *
-     * @return the typePropertiesType value.
+     * @return the type value.
      */
     public CustomizationPolicyPropertiesType typePropertiesType() {
-        return this.typePropertiesType;
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
-     * Set the typePropertiesType property: The type of customization (Linux or Windows).
+     * Set the type property: The type of customization (Linux or Windows).
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param type the type value to set.
      * @return the CustomizationPolicyInner object itself.
      */
-    public CustomizationPolicyInner withTypePropertiesType(CustomizationPolicyPropertiesType typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+    public CustomizationPolicyInner withTypePropertiesType(CustomizationPolicyPropertiesType type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomizationPolicyProperties();
+        }
+        this.innerProperties().withType(type);
         return this;
     }
 
@@ -216,7 +211,7 @@ public class CustomizationPolicyInner {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -226,7 +221,10 @@ public class CustomizationPolicyInner {
      * @return the CustomizationPolicyInner object itself.
      */
     public CustomizationPolicyInner withVersion(String version) {
-        this.version = version;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomizationPolicyProperties();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -236,8 +234,8 @@ public class CustomizationPolicyInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (specification() != null) {
-            specification().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

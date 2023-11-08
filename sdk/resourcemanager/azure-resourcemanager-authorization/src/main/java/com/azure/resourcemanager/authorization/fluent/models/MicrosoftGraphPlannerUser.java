@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** plannerUser. */
 @Fluent
 public final class MicrosoftGraphPlannerUser extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPlannerUser.class);
-
     /*
      * Read-only. Nullable. Returns the plannerTasks assigned to the user.
      */
@@ -35,6 +32,10 @@ public final class MicrosoftGraphPlannerUser extends MicrosoftGraphEntity {
      * plannerUser
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerUser class. */
+    public MicrosoftGraphPlannerUser() {
+    }
 
     /**
      * Get the plans property: Read-only. Nullable. Returns the plannerTasks assigned to the user.

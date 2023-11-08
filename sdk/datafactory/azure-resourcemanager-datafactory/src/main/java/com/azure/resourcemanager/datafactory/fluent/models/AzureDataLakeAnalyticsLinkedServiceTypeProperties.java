@@ -13,62 +13,61 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
     /*
-     * The Azure Data Lake Analytics account name. Type: string (or Expression
-     * with resultType string).
+     * The Azure Data Lake Analytics account name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "accountName", required = true)
     private Object accountName;
 
     /*
-     * The ID of the application used to authenticate against the Azure Data
-     * Lake Analytics account. Type: string (or Expression with resultType
-     * string).
+     * The ID of the application used to authenticate against the Azure Data Lake Analytics account. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The Key of the application used to authenticate against the Azure Data
-     * Lake Analytics account.
+     * The Key of the application used to authenticate against the Azure Data Lake Analytics account.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant", required = true)
     private Object tenant;
 
     /*
-     * Data Lake Analytics account subscription ID (if different from Data
-     * Factory account). Type: string (or Expression with resultType string).
+     * Data Lake Analytics account subscription ID (if different from Data Factory account). Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "subscriptionId")
     private Object subscriptionId;
 
     /*
-     * Data Lake Analytics account resource group name (if different from Data
-     * Factory account). Type: string (or Expression with resultType string).
+     * Data Lake Analytics account resource group name (if different from Data Factory account). Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "resourceGroupName")
     private Object resourceGroupName;
 
     /*
-     * Azure Data Lake Analytics URI Type: string (or Expression with
-     * resultType string).
+     * Azure Data Lake Analytics URI Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "dataLakeAnalyticsUri")
     private Object dataLakeAnalyticsUri;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of AzureDataLakeAnalyticsLinkedServiceTypeProperties class. */
+    public AzureDataLakeAnalyticsLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the accountName property: The Azure Data Lake Analytics account name. Type: string (or Expression with
@@ -226,22 +225,22 @@ public final class AzureDataLakeAnalyticsLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDataLakeAnalyticsLinkedServiceTypeProperties object itself.
      */
-    public AzureDataLakeAnalyticsLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureDataLakeAnalyticsLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

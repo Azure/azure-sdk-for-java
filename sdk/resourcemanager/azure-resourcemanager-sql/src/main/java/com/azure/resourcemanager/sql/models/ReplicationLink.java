@@ -10,8 +10,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGrou
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL Replication link. */
 @Fluent
@@ -47,9 +48,6 @@ public interface ReplicationLink
 
     /** @return the replication state for the replication link */
     ReplicationState replicationState();
-
-    /** @return the location of the server that contains this replication link */
-    String location();
 
     /** @return the legacy value indicating whether termination is allowed (currently always returns true) */
     boolean isTerminationAllowed();

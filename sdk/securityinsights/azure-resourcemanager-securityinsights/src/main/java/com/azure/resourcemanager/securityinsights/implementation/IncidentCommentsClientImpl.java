@@ -574,14 +574,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
     private Mono<IncidentCommentInner> getAsync(
         String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, incidentId, incidentCommentId)
-            .flatMap(
-                (Response<IncidentCommentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -784,14 +777,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
         IncidentCommentInner incidentComment) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, incidentId, incidentCommentId, incidentComment)
-            .flatMap(
-                (Response<IncidentCommentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -977,7 +963,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
     private Mono<Void> deleteAsync(
         String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, incidentId, incidentCommentId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1019,7 +1005,8 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1054,7 +1041,8 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

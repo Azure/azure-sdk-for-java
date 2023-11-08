@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphTaskStatus. */
+/** taskStatus. */
 public final class MicrosoftGraphTaskStatus extends ExpandableStringEnum<MicrosoftGraphTaskStatus> {
     /** Static value notStarted for MicrosoftGraphTaskStatus. */
     public static final MicrosoftGraphTaskStatus NOT_STARTED = fromString("notStarted");
@@ -26,6 +26,15 @@ public final class MicrosoftGraphTaskStatus extends ExpandableStringEnum<Microso
     public static final MicrosoftGraphTaskStatus DEFERRED = fromString("deferred");
 
     /**
+     * Creates a new instance of MicrosoftGraphTaskStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphTaskStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphTaskStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class MicrosoftGraphTaskStatus extends ExpandableStringEnum<Microso
         return fromString(name, MicrosoftGraphTaskStatus.class);
     }
 
-    /** @return known MicrosoftGraphTaskStatus values. */
+    /**
+     * Gets known MicrosoftGraphTaskStatus values.
+     *
+     * @return known MicrosoftGraphTaskStatus values.
+     */
     public static Collection<MicrosoftGraphTaskStatus> values() {
         return values(MicrosoftGraphTaskStatus.class);
     }

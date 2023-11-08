@@ -23,6 +23,10 @@ public final class OdbcTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private OdbcTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of OdbcTableDataset class. */
+    public OdbcTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: ODBC table dataset properties.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapCloudForCustomerSinkWriteBehavior. */
+/** The write behavior for the operation. Default is 'Insert'. */
 public final class SapCloudForCustomerSinkWriteBehavior
     extends ExpandableStringEnum<SapCloudForCustomerSinkWriteBehavior> {
     /** Static value Insert for SapCloudForCustomerSinkWriteBehavior. */
@@ -16,6 +16,15 @@ public final class SapCloudForCustomerSinkWriteBehavior
 
     /** Static value Update for SapCloudForCustomerSinkWriteBehavior. */
     public static final SapCloudForCustomerSinkWriteBehavior UPDATE = fromString("Update");
+
+    /**
+     * Creates a new instance of SapCloudForCustomerSinkWriteBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapCloudForCustomerSinkWriteBehavior() {
+    }
 
     /**
      * Creates or finds a SapCloudForCustomerSinkWriteBehavior from its string representation.
@@ -28,7 +37,11 @@ public final class SapCloudForCustomerSinkWriteBehavior
         return fromString(name, SapCloudForCustomerSinkWriteBehavior.class);
     }
 
-    /** @return known SapCloudForCustomerSinkWriteBehavior values. */
+    /**
+     * Gets known SapCloudForCustomerSinkWriteBehavior values.
+     *
+     * @return known SapCloudForCustomerSinkWriteBehavior values.
+     */
     public static Collection<SapCloudForCustomerSinkWriteBehavior> values() {
         return values(SapCloudForCustomerSinkWriteBehavior.class);
     }

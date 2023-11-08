@@ -32,6 +32,9 @@ public class MultiplePipelineTrigger extends Trigger {
     @JsonProperty(value = "pipelines")
     private List<TriggerPipelineReference> pipelines;
 
+    /** Creates an instance of MultiplePipelineTrigger class. */
+    public MultiplePipelineTrigger() {}
+
     /**
      * Get the pipelines property: Pipelines that need to be started.
      *
@@ -49,6 +52,20 @@ public class MultiplePipelineTrigger extends Trigger {
      */
     public MultiplePipelineTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         this.pipelines = pipelines;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MultiplePipelineTrigger setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MultiplePipelineTrigger setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

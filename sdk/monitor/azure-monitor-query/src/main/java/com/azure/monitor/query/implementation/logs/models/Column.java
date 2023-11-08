@@ -5,10 +5,13 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.monitor.query.models.LogsColumnType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A column in a table. */
+/**
+ * A table column.
+ *
+ * <p>A column in a table.
+ */
 @Fluent
 public final class Column {
     /*
@@ -22,6 +25,9 @@ public final class Column {
      */
     @JsonProperty(value = "type")
     private LogsColumnType type;
+
+    /** Creates an instance of Column class. */
+    public Column() {}
 
     /**
      * Get the name property: The name of this column.

@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.models.Disk;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
 import com.azure.resourcemanager.storagepool.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Disk Pool response properties. */
 @Fluent
 public final class DiskPoolProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolProperties.class);
-
     /*
      * State of the operation on the resource.
      */
@@ -53,6 +50,10 @@ public final class DiskPoolProperties {
      */
     @JsonProperty(value = "additionalCapabilities")
     private List<String> additionalCapabilities;
+
+    /** Creates an instance of DiskPoolProperties class. */
+    public DiskPoolProperties() {
+    }
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
@@ -170,13 +171,13 @@ public final class DiskPoolProperties {
      */
     public void validate() {
         if (availabilityZones() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property availabilityZones in model DiskPoolProperties"));
         }
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property status in model DiskPoolProperties"));
         }
@@ -184,9 +185,11 @@ public final class DiskPoolProperties {
             disks().forEach(e -> e.validate());
         }
         if (subnetId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property subnetId in model DiskPoolProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiskPoolProperties.class);
 }

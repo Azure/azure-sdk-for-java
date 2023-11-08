@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Tasks. */
 public interface Tasks {
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get tasks in a service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of tasks owned by a service resource. Some tasks may have a status of Unknown, which indicates
      * that an error occurred while querying the status of that task.
      *
@@ -21,12 +23,14 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of tasks.
+     * @return oData page of tasks as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProjectTask> list(String groupName, String serviceName, String projectName);
 
     /**
-     * The services resource is the top-level resource that represents the Database Migration Service. This method
+     * Get tasks in a service
+     *
+     * <p>The services resource is the top-level resource that represents the Database Migration Service. This method
      * returns a list of tasks owned by a service resource. Some tasks may have a status of Unknown, which indicates
      * that an error occurred while querying the status of that task.
      *
@@ -38,14 +42,36 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of tasks.
+     * @return oData page of tasks as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProjectTask> list(
         String groupName, String serviceName, String projectName, String taskType, Context context);
 
     /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method
-     * retrieves information about a task.
+     * Get task information
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET
+     * method retrieves information about a task.
+     *
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @param projectName Name of the project.
+     * @param taskName Name of the Task.
+     * @param expand Expand the response.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a task resource along with {@link Response}.
+     */
+    Response<ProjectTask> getWithResponse(
+        String groupName, String serviceName, String projectName, String taskName, String expand, Context context);
+
+    /**
+     * Get task information
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET
+     * method retrieves information about a task.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
@@ -59,25 +85,34 @@ public interface Tasks {
     ProjectTask get(String groupName, String serviceName, String projectName, String taskName);
 
     /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method
-     * retrieves information about a task.
+     * Delete task
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE
+     * method deletes a task, canceling it first if it's running.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
      * @param taskName Name of the Task.
-     * @param expand Expand the response.
+     * @param deleteRunningTasks Delete the resource even if it contains running tasks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a task resource.
+     * @return the {@link Response}.
      */
-    Response<ProjectTask> getWithResponse(
-        String groupName, String serviceName, String projectName, String taskName, String expand, Context context);
+    Response<Void> deleteWithResponse(
+        String groupName,
+        String serviceName,
+        String projectName,
+        String taskName,
+        Boolean deleteRunningTasks,
+        Context context);
 
     /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE
+     * Delete task
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE
      * method deletes a task, canceling it first if it's running.
      *
      * @param groupName Name of the resource group.
@@ -91,30 +126,28 @@ public interface Tasks {
     void delete(String groupName, String serviceName, String projectName, String taskName);
 
     /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE
-     * method deletes a task, canceling it first if it's running.
+     * Cancel a task
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method
+     * cancels a task if it's currently queued or running.
      *
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
      * @param taskName Name of the Task.
-     * @param deleteRunningTasks Delete the resource even if it contains running tasks.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a task resource along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String groupName,
-        String serviceName,
-        String projectName,
-        String taskName,
-        Boolean deleteRunningTasks,
-        Context context);
+    Response<ProjectTask> cancelWithResponse(
+        String groupName, String serviceName, String projectName, String taskName, Context context);
 
     /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method
+     * Cancel a task
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method
      * cancels a task if it's currently queued or running.
      *
      * @param groupName Name of the resource group.
@@ -129,37 +162,24 @@ public interface Tasks {
     ProjectTask cancel(String groupName, String serviceName, String projectName, String taskName);
 
     /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This method
-     * cancels a task if it's currently queued or running.
+     * Get task information
      *
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param projectName Name of the project.
-     * @param taskName Name of the Task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a task resource.
-     */
-    Response<ProjectTask> cancelWithResponse(
-        String groupName, String serviceName, String projectName, String taskName, Context context);
-
-    /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method
-     * retrieves information about a task.
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET
+     * method retrieves information about a task.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a task resource.
+     * @return a task resource along with {@link Response}.
      */
     ProjectTask getById(String id);
 
     /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET method
-     * retrieves information about a task.
+     * Get task information
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET
+     * method retrieves information about a task.
      *
      * @param id the resource ID.
      * @param expand Expand the response.
@@ -167,12 +187,14 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a task resource.
+     * @return a task resource along with {@link Response}.
      */
     Response<ProjectTask> getByIdWithResponse(String id, String expand, Context context);
 
     /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE
+     * Delete task
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE
      * method deletes a task, canceling it first if it's running.
      *
      * @param id the resource ID.
@@ -183,7 +205,9 @@ public interface Tasks {
     void deleteById(String id);
 
     /**
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE
+     * Delete task
+     *
+     * <p>The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE
      * method deletes a task, canceling it first if it's running.
      *
      * @param id the resource ID.
@@ -192,7 +216,7 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Boolean deleteRunningTasks, Context context);
 

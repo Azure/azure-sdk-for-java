@@ -28,6 +28,10 @@ public final class ApplicationLogsConfig {
     @JsonProperty(value = "azureBlobStorage")
     private AzureBlobStorageApplicationLogsConfig azureBlobStorage;
 
+    /** Creates an instance of ApplicationLogsConfig class. */
+    public ApplicationLogsConfig() {
+    }
+
     /**
      * Get the fileSystem property: Application logs to file system configuration.
      *

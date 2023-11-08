@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to the monitor resource. */
 @Fluent
 public final class MonitorProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorProperties.class);
-
     /*
+     * ProvisioningState
+     *
      * Provisioning state of the monitor resource.
      */
     @JsonProperty(value = "provisioningState")
@@ -39,6 +37,12 @@ public final class MonitorProperties {
     private UserInfo userInfo;
 
     /*
+     * Version of elastic of the monitor resource
+     */
+    @JsonProperty(value = "version")
+    private String version;
+
+    /*
      * The liftrResourceCategory property.
      */
     @JsonProperty(value = "liftrResourceCategory", access = JsonProperty.Access.WRITE_ONLY)
@@ -50,8 +54,20 @@ public final class MonitorProperties {
     @JsonProperty(value = "liftrResourcePreference", access = JsonProperty.Access.WRITE_ONLY)
     private Integer liftrResourcePreference;
 
+    /*
+     * Flag to determine if User API Key has to be generated and shared.
+     */
+    @JsonProperty(value = "generateApiKey")
+    private Boolean generateApiKey;
+
+    /** Creates an instance of MonitorProperties class. */
+    public MonitorProperties() {
+    }
+
     /**
-     * Get the provisioningState property: Provisioning state of the monitor resource.
+     * Get the provisioningState property: ProvisioningState
+     *
+     * <p>Provisioning state of the monitor resource.
      *
      * @return the provisioningState value.
      */
@@ -60,7 +76,9 @@ public final class MonitorProperties {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the monitor resource.
+     * Set the provisioningState property: ProvisioningState
+     *
+     * <p>Provisioning state of the monitor resource.
      *
      * @param provisioningState the provisioningState value to set.
      * @return the MonitorProperties object itself.
@@ -131,6 +149,26 @@ public final class MonitorProperties {
     }
 
     /**
+     * Get the version property: Version of elastic of the monitor resource.
+     *
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: Version of elastic of the monitor resource.
+     *
+     * @param version the version value to set.
+     * @return the MonitorProperties object itself.
+     */
+    public MonitorProperties withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
      * Get the liftrResourceCategory property: The liftrResourceCategory property.
      *
      * @return the liftrResourceCategory value.
@@ -146,6 +184,26 @@ public final class MonitorProperties {
      */
     public Integer liftrResourcePreference() {
         return this.liftrResourcePreference;
+    }
+
+    /**
+     * Get the generateApiKey property: Flag to determine if User API Key has to be generated and shared.
+     *
+     * @return the generateApiKey value.
+     */
+    public Boolean generateApiKey() {
+        return this.generateApiKey;
+    }
+
+    /**
+     * Set the generateApiKey property: Flag to determine if User API Key has to be generated and shared.
+     *
+     * @param generateApiKey the generateApiKey value to set.
+     * @return the MonitorProperties object itself.
+     */
+    public MonitorProperties withGenerateApiKey(Boolean generateApiKey) {
+        this.generateApiKey = generateApiKey;
+        return this;
     }
 
     /**

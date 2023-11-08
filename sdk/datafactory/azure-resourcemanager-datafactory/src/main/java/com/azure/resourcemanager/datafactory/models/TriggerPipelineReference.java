@@ -25,6 +25,10 @@ public final class TriggerPipelineReference {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> parameters;
 
+    /** Creates an instance of TriggerPipelineReference class. */
+    public TriggerPipelineReference() {
+    }
+
     /**
      * Get the pipelineReference property: Pipeline reference.
      *

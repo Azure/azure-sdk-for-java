@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the disk to detach. */
 @Fluent
 public final class DetachDiskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DetachDiskProperties.class);
-
     /*
      * The resource ID of the Lab VM to which the disk is attached.
      */
     @JsonProperty(value = "leasedByLabVmId")
     private String leasedByLabVmId;
+
+    /** Creates an instance of DetachDiskProperties class. */
+    public DetachDiskProperties() {
+    }
 
     /**
      * Get the leasedByLabVmId property: The resource ID of the Lab VM to which the disk is attached.

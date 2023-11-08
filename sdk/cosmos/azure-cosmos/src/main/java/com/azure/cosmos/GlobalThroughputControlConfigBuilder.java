@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 
@@ -14,7 +13,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Throughput global control config builder.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class GlobalThroughputControlConfigBuilder {
     private final CosmosAsyncContainer controlContainer;
 
@@ -41,7 +39,6 @@ public class GlobalThroughputControlConfigBuilder {
      * @param controlItemRenewInterval The control item renewal interval.
      * @return The {@link GlobalThroughputControlConfigBuilder}
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GlobalThroughputControlConfigBuilder setControlItemRenewInterval(Duration controlItemRenewInterval) {
         checkArgument(controlItemRenewInterval.getSeconds() >= 5, "Renew interval should be no less than 5s");
         this.controlItemRenewInterval = controlItemRenewInterval;
@@ -57,7 +54,6 @@ public class GlobalThroughputControlConfigBuilder {
      * @param controlItemExpireInterval The control item expire interval.
      * @return The {@link GlobalThroughputControlConfigBuilder}
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GlobalThroughputControlConfigBuilder setControlItemExpireInterval(Duration controlItemExpireInterval) {
         this.controlItemExpireInterval = controlItemExpireInterval;
         return this;
@@ -68,7 +64,6 @@ public class GlobalThroughputControlConfigBuilder {
      *
      * @return A new {@link GlobalThroughputControlConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GlobalThroughputControlConfig build() {
         if (this.controlItemExpireInterval != null && this.controlItemRenewInterval != null) {
             // expireInterval will be used as the ttl of ThroughputGlobalControlClientItem, it should be a reasonable value

@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** HDInsight linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,15 +19,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class HDInsightLinkedService extends LinkedService {
     /*
-     * HDInsight cluster URI. Type: string (or Expression with resultType
-     * string).
+     * HDInsight cluster URI. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.clusterUri", required = true)
     private Object clusterUri;
 
     /*
-     * HDInsight cluster user name. Type: string (or Expression with resultType
-     * string).
+     * HDInsight cluster user name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -43,33 +43,33 @@ public class HDInsightLinkedService extends LinkedService {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * A reference to the Azure SQL linked service that points to the HCatalog
-     * database.
+     * A reference to the Azure SQL linked service that points to the HCatalog database.
      */
     @JsonProperty(value = "typeProperties.hcatalogLinkedServiceName")
     private LinkedServiceReference hcatalogLinkedServiceName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * Specify if the HDInsight is created with ESP (Enterprise Security
-     * Package). Type: Boolean.
+     * Specify if the HDInsight is created with ESP (Enterprise Security Package). Type: Boolean.
      */
     @JsonProperty(value = "typeProperties.isEspEnabled")
     private Object isEspEnabled;
 
     /*
-     * Specify the FileSystem if the main storage for the HDInsight is ADLS
-     * Gen2. Type: string (or Expression with resultType string).
+     * Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.fileSystem")
     private Object fileSystem;
+
+    /** Creates an instance of HDInsightLinkedService class. */
+    public HDInsightLinkedService() {}
 
     /**
      * Get the clusterUri property: HDInsight cluster URI. Type: string (or Expression with resultType string).
@@ -236,6 +236,34 @@ public class HDInsightLinkedService extends LinkedService {
      */
     public HDInsightLinkedService setFileSystem(Object fileSystem) {
         this.fileSystem = fileSystem;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

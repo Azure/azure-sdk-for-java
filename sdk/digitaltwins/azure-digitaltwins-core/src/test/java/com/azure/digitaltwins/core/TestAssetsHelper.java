@@ -58,6 +58,7 @@ public class TestAssetsHelper {
     public static JsonPatchDocument getRoomTwinSecondUpdatePayload() {
         JsonPatchDocument jsonPatch = new JsonPatchDocument();
         jsonPatch.appendReplace("/Temperature", 80);
+        jsonPatch.appendReplace("/$metadata/Temperature/sourceTime", "2022-01-20T02:03:00.0943478Z");
         return jsonPatch;
     }
 

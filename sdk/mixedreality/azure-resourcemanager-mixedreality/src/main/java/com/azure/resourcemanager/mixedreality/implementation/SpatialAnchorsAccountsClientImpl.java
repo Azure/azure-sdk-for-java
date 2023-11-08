@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mixedreality.fluent.SpatialAnchorsAccountsClient;
 import com.azure.resourcemanager.mixedreality.fluent.models.AccountKeysInner;
 import com.azure.resourcemanager.mixedreality.fluent.models.SpatialAnchorsAccountInner;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SpatialAnchorsAccountsClient. */
 public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAccountsClient {
-    private final ClientLogger logger = new ClientLogger(SpatialAnchorsAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SpatialAnchorsAccountsService service;
 
@@ -66,7 +63,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      */
     @Host("{$host}")
     @ServiceInterface(name = "MixedRealityClientSp")
-    private interface SpatialAnchorsAccountsService {
+    public interface SpatialAnchorsAccountsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.MixedReality/spatialAnchorsAccounts")
         @ExpectedResponses({200})
@@ -211,7 +208,8 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpatialAnchorsAccountInner>> listSinglePageAsync() {
@@ -257,7 +255,8 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpatialAnchorsAccountInner>> listSinglePageAsync(Context context) {
@@ -298,7 +297,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SpatialAnchorsAccountInner> listAsync() {
@@ -313,7 +312,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SpatialAnchorsAccountInner> listAsync(Context context) {
@@ -326,7 +325,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SpatialAnchorsAccountInner> list() {
@@ -340,7 +339,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SpatialAnchorsAccountInner> list(Context context) {
@@ -354,7 +353,8 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpatialAnchorsAccountInner>> listByResourceGroupSinglePageAsync(
@@ -407,7 +407,8 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpatialAnchorsAccountInner>> listByResourceGroupSinglePageAsync(
@@ -456,7 +457,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SpatialAnchorsAccountInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -473,7 +474,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SpatialAnchorsAccountInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -489,7 +490,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SpatialAnchorsAccountInner> listByResourceGroup(String resourceGroupName) {
@@ -504,7 +505,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SpatialAnchorsAccountInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -519,7 +520,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
@@ -567,7 +568,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -612,11 +613,27 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a Spatial Anchors Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -630,23 +647,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName) {
-        deleteAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Delete a Spatial Anchors Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, context).block();
+        deleteWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -657,7 +658,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SpatialAnchorsAccountInner>> getByResourceGroupWithResponseAsync(
@@ -706,7 +707,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SpatialAnchorsAccountInner>> getByResourceGroupWithResponseAsync(
@@ -751,19 +752,29 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SpatialAnchorsAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<SpatialAnchorsAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieve a Spatial Anchors Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return spatialAnchorsAccount Response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SpatialAnchorsAccountInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String accountName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -778,24 +789,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SpatialAnchorsAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
-        return getByResourceGroupAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Retrieve a Spatial Anchors Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SpatialAnchorsAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -807,7 +801,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SpatialAnchorsAccountInner>> updateWithResponseAsync(
@@ -864,7 +858,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SpatialAnchorsAccountInner>> updateWithResponseAsync(
@@ -920,20 +914,34 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SpatialAnchorsAccountInner> updateAsync(
         String resourceGroupName, String accountName, SpatialAnchorsAccountInner spatialAnchorsAccount) {
         return updateWithResponseAsync(resourceGroupName, accountName, spatialAnchorsAccount)
-            .flatMap(
-                (Response<SpatialAnchorsAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updating a Spatial Anchors Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param spatialAnchorsAccount Spatial Anchors Account parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return spatialAnchorsAccount Response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SpatialAnchorsAccountInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        SpatialAnchorsAccountInner spatialAnchorsAccount,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, accountName, spatialAnchorsAccount, context).block();
     }
 
     /**
@@ -950,28 +958,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SpatialAnchorsAccountInner update(
         String resourceGroupName, String accountName, SpatialAnchorsAccountInner spatialAnchorsAccount) {
-        return updateAsync(resourceGroupName, accountName, spatialAnchorsAccount).block();
-    }
-
-    /**
-     * Updating a Spatial Anchors Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param spatialAnchorsAccount Spatial Anchors Account parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SpatialAnchorsAccountInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        SpatialAnchorsAccountInner spatialAnchorsAccount,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, spatialAnchorsAccount, context).block();
+        return updateWithResponse(resourceGroupName, accountName, spatialAnchorsAccount, Context.NONE).getValue();
     }
 
     /**
@@ -983,7 +970,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SpatialAnchorsAccountInner>> createWithResponseAsync(
@@ -1040,7 +1027,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SpatialAnchorsAccountInner>> createWithResponseAsync(
@@ -1096,20 +1083,34 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
+     * @return spatialAnchorsAccount Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SpatialAnchorsAccountInner> createAsync(
         String resourceGroupName, String accountName, SpatialAnchorsAccountInner spatialAnchorsAccount) {
         return createWithResponseAsync(resourceGroupName, accountName, spatialAnchorsAccount)
-            .flatMap(
-                (Response<SpatialAnchorsAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creating or Updating a Spatial Anchors Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param spatialAnchorsAccount Spatial Anchors Account parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return spatialAnchorsAccount Response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SpatialAnchorsAccountInner> createWithResponse(
+        String resourceGroupName,
+        String accountName,
+        SpatialAnchorsAccountInner spatialAnchorsAccount,
+        Context context) {
+        return createWithResponseAsync(resourceGroupName, accountName, spatialAnchorsAccount, context).block();
     }
 
     /**
@@ -1126,28 +1127,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SpatialAnchorsAccountInner create(
         String resourceGroupName, String accountName, SpatialAnchorsAccountInner spatialAnchorsAccount) {
-        return createAsync(resourceGroupName, accountName, spatialAnchorsAccount).block();
-    }
-
-    /**
-     * Creating or Updating a Spatial Anchors Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param spatialAnchorsAccount Spatial Anchors Account parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spatialAnchorsAccount Response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SpatialAnchorsAccountInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        SpatialAnchorsAccountInner spatialAnchorsAccount,
-        Context context) {
-        return createWithResponseAsync(resourceGroupName, accountName, spatialAnchorsAccount, context).block();
+        return createWithResponse(resourceGroupName, accountName, spatialAnchorsAccount, Context.NONE).getValue();
     }
 
     /**
@@ -1158,7 +1138,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String accountName) {
@@ -1206,7 +1186,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountKeysInner>> listKeysWithResponseAsync(
@@ -1251,19 +1231,29 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountKeysInner> listKeysAsync(String resourceGroupName, String accountName) {
         return listKeysWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<AccountKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List Both of the 2 Keys of a Spatial Anchors Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return developer Keys of account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccountKeysInner> listKeysWithResponse(
+        String resourceGroupName, String accountName, Context context) {
+        return listKeysWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -1278,24 +1268,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccountKeysInner listKeys(String resourceGroupName, String accountName) {
-        return listKeysAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * List Both of the 2 Keys of a Spatial Anchors Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccountKeysInner> listKeysWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        return listKeysWithResponseAsync(resourceGroupName, accountName, context).block();
+        return listKeysWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -1307,7 +1280,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountKeysInner>> regenerateKeysWithResponseAsync(
@@ -1363,7 +1336,7 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountKeysInner>> regenerateKeysWithResponseAsync(
@@ -1415,20 +1388,31 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountKeysInner> regenerateKeysAsync(
         String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate) {
         return regenerateKeysWithResponseAsync(resourceGroupName, accountName, regenerate)
-            .flatMap(
-                (Response<AccountKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Regenerate specified Key of a Spatial Anchors Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param regenerate Required information for key regeneration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return developer Keys of account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccountKeysInner> regenerateKeysWithResponse(
+        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate, Context context) {
+        return regenerateKeysWithResponseAsync(resourceGroupName, accountName, regenerate, context).block();
     }
 
     /**
@@ -1445,35 +1429,19 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccountKeysInner regenerateKeys(
         String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate) {
-        return regenerateKeysAsync(resourceGroupName, accountName, regenerate).block();
-    }
-
-    /**
-     * Regenerate specified Key of a Spatial Anchors Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param regenerate Required information for key regeneration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccountKeysInner> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate, Context context) {
-        return regenerateKeysWithResponseAsync(resourceGroupName, accountName, regenerate, context).block();
+        return regenerateKeysWithResponse(resourceGroupName, accountName, regenerate, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpatialAnchorsAccountInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1505,12 +1473,14 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpatialAnchorsAccountInner>> listBySubscriptionNextSinglePageAsync(
@@ -1542,11 +1512,13 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpatialAnchorsAccountInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1578,12 +1550,14 @@ public final class SpatialAnchorsAccountsClientImpl implements SpatialAnchorsAcc
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpatialAnchorsAccountInner>> listByResourceGroupNextSinglePageAsync(

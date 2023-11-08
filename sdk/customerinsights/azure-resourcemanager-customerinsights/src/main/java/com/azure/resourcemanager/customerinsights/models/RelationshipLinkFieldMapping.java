@@ -6,14 +6,11 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The fields mapping for Relationships. */
 @Fluent
 public final class RelationshipLinkFieldMapping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationshipLinkFieldMapping.class);
-
     /*
      * The field name on the Interaction Type.
      */
@@ -31,6 +28,10 @@ public final class RelationshipLinkFieldMapping {
      */
     @JsonProperty(value = "relationshipFieldName", required = true)
     private String relationshipFieldName;
+
+    /** Creates an instance of RelationshipLinkFieldMapping class. */
+    public RelationshipLinkFieldMapping() {
+    }
 
     /**
      * Get the interactionFieldName property: The field name on the Interaction Type.
@@ -99,16 +100,18 @@ public final class RelationshipLinkFieldMapping {
      */
     public void validate() {
         if (interactionFieldName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property interactionFieldName in model RelationshipLinkFieldMapping"));
         }
         if (relationshipFieldName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property relationshipFieldName in model RelationshipLinkFieldMapping"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RelationshipLinkFieldMapping.class);
 }

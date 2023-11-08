@@ -89,6 +89,10 @@ public final class PartnerDestinationImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PartnerDestinationInner innerModel() {
         return this.innerObject;
     }
@@ -113,8 +117,7 @@ public final class PartnerDestinationImpl
             serviceManager
                 .serviceClient()
                 .getPartnerDestinations()
-                .createOrUpdateWithResponse(resourceGroupName, partnerDestinationName, this.innerModel(), Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, partnerDestinationName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -123,8 +126,7 @@ public final class PartnerDestinationImpl
             serviceManager
                 .serviceClient()
                 .getPartnerDestinations()
-                .createOrUpdateWithResponse(resourceGroupName, partnerDestinationName, this.innerModel(), context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, partnerDestinationName, this.innerModel(), context);
         return this;
     }
 
@@ -144,9 +146,8 @@ public final class PartnerDestinationImpl
             serviceManager
                 .serviceClient()
                 .getPartnerDestinations()
-                .updateWithResponse(
-                    resourceGroupName, partnerDestinationName, updatePartnerDestinationUpdateParameters, Context.NONE)
-                .getValue();
+                .update(
+                    resourceGroupName, partnerDestinationName, updatePartnerDestinationUpdateParameters, Context.NONE);
         return this;
     }
 
@@ -155,9 +156,7 @@ public final class PartnerDestinationImpl
             serviceManager
                 .serviceClient()
                 .getPartnerDestinations()
-                .updateWithResponse(
-                    resourceGroupName, partnerDestinationName, updatePartnerDestinationUpdateParameters, context)
-                .getValue();
+                .update(resourceGroupName, partnerDestinationName, updatePartnerDestinationUpdateParameters, context);
         return this;
     }
 
@@ -189,14 +188,14 @@ public final class PartnerDestinationImpl
         return this;
     }
 
-    public PartnerDestination activate() {
-        return serviceManager.partnerDestinations().activate(resourceGroupName, partnerDestinationName);
-    }
-
     public Response<PartnerDestination> activateWithResponse(Context context) {
         return serviceManager
             .partnerDestinations()
             .activateWithResponse(resourceGroupName, partnerDestinationName, context);
+    }
+
+    public PartnerDestination activate() {
+        return serviceManager.partnerDestinations().activate(resourceGroupName, partnerDestinationName);
     }
 
     public PartnerDestinationImpl withRegion(Region location) {
@@ -231,11 +230,6 @@ public final class PartnerDestinationImpl
 
     public PartnerDestinationImpl withExpirationTimeIfNotActivatedUtc(OffsetDateTime expirationTimeIfNotActivatedUtc) {
         this.innerModel().withExpirationTimeIfNotActivatedUtc(expirationTimeIfNotActivatedUtc);
-        return this;
-    }
-
-    public PartnerDestinationImpl withProvisioningState(PartnerDestinationProvisioningState provisioningState) {
-        this.innerModel().withProvisioningState(provisioningState);
         return this;
     }
 

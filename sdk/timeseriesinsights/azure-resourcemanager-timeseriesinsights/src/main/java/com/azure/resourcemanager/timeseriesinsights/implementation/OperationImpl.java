@@ -7,6 +7,7 @@ package com.azure.resourcemanager.timeseriesinsights.implementation;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.OperationInner;
 import com.azure.resourcemanager.timeseriesinsights.models.Operation;
 import com.azure.resourcemanager.timeseriesinsights.models.OperationDisplay;
+import com.azure.resourcemanager.timeseriesinsights.models.ServiceSpecification;
 
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
@@ -26,6 +27,14 @@ public final class OperationImpl implements Operation {
 
     public OperationDisplay display() {
         return this.innerModel().display();
+    }
+
+    public String origin() {
+        return this.innerModel().origin();
+    }
+
+    public ServiceSpecification serviceSpecification() {
+        return this.innerModel().serviceSpecification();
     }
 
     public OperationInner innerModel() {

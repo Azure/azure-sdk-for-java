@@ -15,11 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class MicrosoftAccessSink extends CopySink {
     /*
-     * A query to execute before starting the copy. Type: string (or Expression
-     * with resultType string).
+     * A query to execute before starting the copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
+
+    /** Creates an instance of MicrosoftAccessSink class. */
+    public MicrosoftAccessSink() {}
 
     /**
      * Get the preCopyScript property: A query to execute before starting the copy. Type: string (or Expression with
@@ -40,6 +42,41 @@ public final class MicrosoftAccessSink extends CopySink {
      */
     public MicrosoftAccessSink setPreCopyScript(Object preCopyScript) {
         this.preCopyScript = preCopyScript;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

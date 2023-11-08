@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionPropertiesProvisioningState. */
+/** The provisioning state. */
 public final class ConnectionPropertiesProvisioningState
     extends ExpandableStringEnum<ConnectionPropertiesProvisioningState> {
     /** Static value Pending for ConnectionPropertiesProvisioningState. */
@@ -24,6 +24,15 @@ public final class ConnectionPropertiesProvisioningState
     public static final ConnectionPropertiesProvisioningState DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of ConnectionPropertiesProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionPropertiesProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ConnectionPropertiesProvisioningState from its string representation.
      *
      * @param name a name to look for.
@@ -34,7 +43,11 @@ public final class ConnectionPropertiesProvisioningState
         return fromString(name, ConnectionPropertiesProvisioningState.class);
     }
 
-    /** @return known ConnectionPropertiesProvisioningState values. */
+    /**
+     * Gets known ConnectionPropertiesProvisioningState values.
+     *
+     * @return known ConnectionPropertiesProvisioningState values.
+     */
     public static Collection<ConnectionPropertiesProvisioningState> values() {
         return values(ConnectionPropertiesProvisioningState.class);
     }

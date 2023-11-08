@@ -13,25 +13,23 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class AccountSasParameters {
     /*
-     * The signed services accessible with the account SAS. Possible values
-     * include: Blob (b), Queue (q), Table (t), File (f).
+     * The signed services accessible with the account SAS. Possible values include: Blob (b), Queue (q), Table (t),
+     * File (f).
      */
     @JsonProperty(value = "signedServices", required = true)
     private Services services;
 
     /*
-     * The signed resource types that are accessible with the account SAS.
-     * Service (s): Access to service-level APIs; Container (c): Access to
-     * container-level APIs; Object (o): Access to object-level APIs for blobs,
-     * queue messages, table entities, and files.
+     * The signed resource types that are accessible with the account SAS. Service (s): Access to service-level APIs;
+     * Container (c): Access to container-level APIs; Object (o): Access to object-level APIs for blobs, queue
+     * messages, table entities, and files.
      */
     @JsonProperty(value = "signedResourceTypes", required = true)
     private SignedResourceTypes resourceTypes;
 
     /*
-     * The signed permissions for the account SAS. Possible values include:
-     * Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update
-     * (u) and Process (p).
+     * The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l),
+     * Add (a), Create (c), Update (u) and Process (p).
      */
     @JsonProperty(value = "signedPermission", required = true)
     private Permissions permissions;
@@ -65,6 +63,10 @@ public final class AccountSasParameters {
      */
     @JsonProperty(value = "keyToSign")
     private String keyToSign;
+
+    /** Creates an instance of AccountSasParameters class. */
+    public AccountSasParameters() {
+    }
 
     /**
      * Get the services property: The signed services accessible with the account SAS. Possible values include: Blob

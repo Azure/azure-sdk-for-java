@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -20,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("AzureFileShareProtectedItem")
 @Fluent
 public final class AzureFileshareProtectedItem extends ProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileshareProtectedItem.class);
-
     /*
      * Friendly name of the fileshare represented by this backup item.
      */
@@ -64,6 +60,10 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
      */
     @JsonProperty(value = "extendedInfo")
     private AzureFileshareProtectedItemExtendedInfo extendedInfo;
+
+    /** Creates an instance of AzureFileshareProtectedItem class. */
+    public AzureFileshareProtectedItem() {
+    }
 
     /**
      * Get the friendlyName property: Friendly name of the fileshare represented by this backup item.
@@ -207,20 +207,6 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /** {@inheritDoc} */
     @Override
-    public AzureFileshareProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureFileshareProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public AzureFileshareProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
@@ -314,6 +300,13 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
     @Override
     public AzureFileshareProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFileshareProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

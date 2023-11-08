@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An ExpressRoute Circuit. */
 @Immutable
 public final class Circuit {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Circuit.class);
-
     /*
      * CIDR of primary subnet
      */
@@ -37,6 +33,10 @@ public final class Circuit {
      */
     @JsonProperty(value = "expressRoutePrivatePeeringID", access = JsonProperty.Access.WRITE_ONLY)
     private String expressRoutePrivatePeeringId;
+
+    /** Creates an instance of Circuit class. */
+    public Circuit() {
+    }
 
     /**
      * Get the primarySubnet property: CIDR of primary subnet.

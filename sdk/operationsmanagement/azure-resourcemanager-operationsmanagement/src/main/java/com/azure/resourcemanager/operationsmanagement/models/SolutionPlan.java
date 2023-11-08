@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Plan for solution object supported by the OperationsManagement resource provider. */
 @Fluent
 public final class SolutionPlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SolutionPlan.class);
-
     /*
-     * name of the solution to be created. For Microsoft published solution it
-     * should be in the format of solutionType(workspaceName). SolutionType
-     * part is case sensitive. For third party solution, it can be anything.
+     * name of the solution to be created. For Microsoft published solution it should be in the format of
+     * solutionType(workspaceName). SolutionType part is case sensitive. For third party solution, it can be anything.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -35,12 +30,15 @@ public final class SolutionPlan {
     private String promotionCode;
 
     /*
-     * name of the solution to enabled/add. For Microsoft published gallery
-     * solution it should be in the format of OMSGallery/<solutionType>. This
-     * is case sensitive
+     * name of the solution to enabled/add. For Microsoft published gallery solution it should be in the format of
+     * OMSGallery/<solutionType>. This is case sensitive
      */
     @JsonProperty(value = "product")
     private String product;
+
+    /** Creates an instance of SolutionPlan class. */
+    public SolutionPlan() {
+    }
 
     /**
      * Get the name property: name of the solution to be created. For Microsoft published solution it should be in the

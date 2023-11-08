@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceLongTermRetentionPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of long term retention policies. */
 @Immutable
 public final class ManagedInstanceLongTermRetentionPolicyListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedInstanceLongTermRetentionPolicyListResult.class);
-
     /*
      * Array of results.
      */
@@ -28,6 +23,10 @@ public final class ManagedInstanceLongTermRetentionPolicyListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ManagedInstanceLongTermRetentionPolicyListResult class. */
+    public ManagedInstanceLongTermRetentionPolicyListResult() {
+    }
 
     /**
      * Get the value property: Array of results.

@@ -7,63 +7,63 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 public class AzurePowerShellCredentialTest {
 
     @Test
-    public void getTokenMockAsync() throws Exception {
+    public void getTokenMockAsync() {
         // setup
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("resourcename");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithAzurePowerShell(request))
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithAzurePowerShell(request))
                 .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+        })) {
 
-        // test
-        AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
-        StepVerifier.create(credential.getToken(request))
-                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                        && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
-                .verifyComplete();
+            // test
+            AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
+            StepVerifier.create(credential.getToken(request))
+                    .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                            && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
+                    .verifyComplete();
+            Assertions.assertNotNull(identityClientMock);
+        }
+
     }
 
     @Test
-    public void azurePowerShellCredentialNotInstalledException() throws Exception {
+    public void azurePowerShellCredentialNotInstalledException() {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzurePSNotInstalled");
 
         // mock
-        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithAzurePowerShell(request))
-            .thenReturn(Mono.error(new Exception("Azure PowerShell not installed")));
-        when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
-        // test
-        AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
-        StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof Exception && e.getMessage()
-                .contains("Azure PowerShell not installed"))
-            .verify();
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithAzurePowerShell(request))
+                .thenReturn(Mono.error(new Exception("Azure PowerShell not installed")));
+            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+        })) {
+            // test
+            AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
+            StepVerifier.create(credential.getToken(request))
+                .expectErrorMatches(e -> e instanceof Exception && e.getMessage()
+                    .contains("Azure PowerShell not installed"))
+                .verify();
+            Assertions.assertNotNull(identityClientMock);
+        }
     }
 }

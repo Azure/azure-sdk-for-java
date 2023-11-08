@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApiProperties model. */
 @Fluent
 public final class ApiProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiProperties.class);
-
     /*
      * Describes the ServerVersion of an a MongoDB account.
      */
     @JsonProperty(value = "serverVersion")
     private ServerVersion serverVersion;
+
+    /** Creates an instance of ApiProperties class. */
+    public ApiProperties() {
+    }
 
     /**
      * Get the serverVersion property: Describes the ServerVersion of an a MongoDB account.

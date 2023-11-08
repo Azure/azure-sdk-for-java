@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -28,8 +26,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class ProtectionIntent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionIntent.class);
-
     /*
      * Type of backup management for the backed up item.
      */
@@ -43,8 +39,7 @@ public class ProtectionIntent {
     private String sourceResourceId;
 
     /*
-     * ID of the item which is getting protected, In case of Azure Vm , it is
-     * ProtectedItemId
+     * ID of the item which is getting protected, In case of Azure Vm , it is ProtectedItemId
      */
     @JsonProperty(value = "itemId")
     private String itemId;
@@ -60,6 +55,10 @@ public class ProtectionIntent {
      */
     @JsonProperty(value = "protectionState")
     private ProtectionStatus protectionState;
+
+    /** Creates an instance of ProtectionIntent class. */
+    public ProtectionIntent() {
+    }
 
     /**
      * Get the backupManagementType property: Type of backup management for the backed up item.

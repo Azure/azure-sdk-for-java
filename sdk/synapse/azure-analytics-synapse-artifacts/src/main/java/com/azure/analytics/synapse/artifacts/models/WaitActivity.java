@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** This activity suspends pipeline execution for the specified interval. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -21,6 +22,9 @@ public class WaitActivity extends ControlActivity {
      */
     @JsonProperty(value = "typeProperties.waitTimeInSeconds", required = true)
     private Object waitTimeInSeconds;
+
+    /** Creates an instance of WaitActivity class. */
+    public WaitActivity() {}
 
     /**
      * Get the waitTimeInSeconds property: Duration in seconds.
@@ -39,6 +43,48 @@ public class WaitActivity extends ControlActivity {
      */
     public WaitActivity setWaitTimeInSeconds(Object waitTimeInSeconds) {
         this.waitTimeInSeconds = waitTimeInSeconds;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WaitActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WaitActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WaitActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WaitActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WaitActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WaitActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

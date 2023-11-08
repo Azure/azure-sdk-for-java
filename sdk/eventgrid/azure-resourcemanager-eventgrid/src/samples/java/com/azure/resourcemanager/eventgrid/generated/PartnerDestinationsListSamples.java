@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PartnerDestinations List. */
 public final class PartnerDestinationsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerDestinations_ListBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerDestinations_ListBySubscription.json
      */
     /**
      * Sample code: PartnerDestinations_ListBySubscription.
@@ -18,6 +16,6 @@ public final class PartnerDestinationsListSamples {
      */
     public static void partnerDestinationsListBySubscription(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerDestinations().list(null, null, Context.NONE);
+        manager.partnerDestinations().list(null, null, com.azure.core.util.Context.NONE);
     }
 }

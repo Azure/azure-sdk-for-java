@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecoveryOption. */
+/** Recovery Option. */
 public final class RecoveryOption extends ExpandableStringEnum<RecoveryOption> {
     /** Static value FailIfExists for RecoveryOption. */
     public static final RecoveryOption FAIL_IF_EXISTS = fromString("FailIfExists");
+
+    /**
+     * Creates a new instance of RecoveryOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecoveryOption() {
+    }
 
     /**
      * Creates or finds a RecoveryOption from its string representation.
@@ -24,7 +33,11 @@ public final class RecoveryOption extends ExpandableStringEnum<RecoveryOption> {
         return fromString(name, RecoveryOption.class);
     }
 
-    /** @return known RecoveryOption values. */
+    /**
+     * Gets known RecoveryOption values.
+     *
+     * @return known RecoveryOption values.
+     */
     public static Collection<RecoveryOption> values() {
         return values(RecoveryOption.class);
     }

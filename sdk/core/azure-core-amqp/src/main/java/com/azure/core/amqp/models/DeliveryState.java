@@ -42,6 +42,18 @@ public final class DeliveryState extends ExpandableStringEnum<DeliveryState> {
     public static final DeliveryState TRANSACTIONAL = fromString("TRANSACTIONAL", DeliveryState.class);
 
     /**
+     * Creates a new instance of {@link DeliveryState} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link DeliveryState} which doesn't have a String
+     * enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String, Class)} factory method.
+     */
+    @Deprecated
+    public DeliveryState() {
+    }
+
+    /**
      * Gets the corresponding delivery state from its string representation.
      *
      * @param name The delivery state to convert.

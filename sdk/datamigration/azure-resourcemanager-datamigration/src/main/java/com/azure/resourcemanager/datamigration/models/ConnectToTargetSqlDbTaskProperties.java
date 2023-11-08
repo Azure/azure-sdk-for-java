@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("ConnectToTarget.SqlDb")
 @Fluent
 public final class ConnectToTargetSqlDbTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToTargetSqlDbTaskProperties.class);
-
     /*
      * Task input
      */
@@ -30,6 +26,10 @@ public final class ConnectToTargetSqlDbTaskProperties extends ProjectTaskPropert
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectToTargetSqlDbTaskOutput> output;
+
+    /** Creates an instance of ConnectToTargetSqlDbTaskProperties class. */
+    public ConnectToTargetSqlDbTaskProperties() {
+    }
 
     /**
      * Get the input property: Task input.

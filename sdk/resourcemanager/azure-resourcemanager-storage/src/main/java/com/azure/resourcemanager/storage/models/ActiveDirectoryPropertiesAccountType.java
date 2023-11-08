@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ActiveDirectoryPropertiesAccountType. */
+/** Specifies the Active Directory account type for Azure Storage. */
 public final class ActiveDirectoryPropertiesAccountType
     extends ExpandableStringEnum<ActiveDirectoryPropertiesAccountType> {
     /** Static value User for ActiveDirectoryPropertiesAccountType. */
@@ -16,6 +16,15 @@ public final class ActiveDirectoryPropertiesAccountType
 
     /** Static value Computer for ActiveDirectoryPropertiesAccountType. */
     public static final ActiveDirectoryPropertiesAccountType COMPUTER = fromString("Computer");
+
+    /**
+     * Creates a new instance of ActiveDirectoryPropertiesAccountType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ActiveDirectoryPropertiesAccountType() {
+    }
 
     /**
      * Creates or finds a ActiveDirectoryPropertiesAccountType from its string representation.
@@ -28,7 +37,11 @@ public final class ActiveDirectoryPropertiesAccountType
         return fromString(name, ActiveDirectoryPropertiesAccountType.class);
     }
 
-    /** @return known ActiveDirectoryPropertiesAccountType values. */
+    /**
+     * Gets known ActiveDirectoryPropertiesAccountType values.
+     *
+     * @return known ActiveDirectoryPropertiesAccountType values.
+     */
     public static Collection<ActiveDirectoryPropertiesAccountType> values() {
         return values(ActiveDirectoryPropertiesAccountType.class);
     }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProactiveDetectionConfigurations List. */
 public final class ProactiveDetectionConfigurationsListSamples {
     /*
@@ -18,6 +16,8 @@ public final class ProactiveDetectionConfigurationsListSamples {
      */
     public static void proactiveDetectionConfigurationsList(
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.proactiveDetectionConfigurations().listWithResponse("my-resource-group", "my-component", Context.NONE);
+        manager
+            .proactiveDetectionConfigurations()
+            .listWithResponse("my-resource-group", "my-component", com.azure.core.util.Context.NONE);
     }
 }

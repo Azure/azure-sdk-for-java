@@ -44,6 +44,10 @@ public final class VirtualNetworkInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of VirtualNetworkInner class. */
+    public VirtualNetworkInner() {
+    }
+
     /**
      * Get the extendedLocation property: The extended location of the virtual network.
      *
@@ -397,6 +401,15 @@ public final class VirtualNetworkInner extends Resource {
         }
         this.innerProperties().withIpAllocations(ipAllocations);
         return this;
+    }
+
+    /**
+     * Get the flowLogs property: A collection of references to flow log resources.
+     *
+     * @return the flowLogs value.
+     */
+    public List<FlowLogInner> flowLogs() {
+        return this.innerProperties() == null ? null : this.innerProperties().flowLogs();
     }
 
     /**

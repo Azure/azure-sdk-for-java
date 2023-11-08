@@ -6,12 +6,14 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -25,11 +27,12 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.DirectoriesCreateResponse;
-import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesResponse;
-import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentResponse;
-import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataResponse;
-import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -45,6 +48,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -67,8 +71,6 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 
 /**
@@ -103,6 +105,7 @@ public class ShareDirectoryAsyncClient {
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareDirectoryAsyncClient that sends requests to the storage directory at {@link
@@ -115,7 +118,7 @@ public class ShareDirectoryAsyncClient {
      * @param snapshot The snapshot of the share
      */
     ShareDirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
-                              String snapshot, String accountName, ShareServiceVersion serviceVersion) {
+        String snapshot, String accountName, ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
@@ -124,12 +127,13 @@ public class ShareDirectoryAsyncClient {
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     ShareDirectoryAsyncClient(ShareDirectoryAsyncClient directoryAsyncClient) {
         this(directoryAsyncClient.azureFileStorageClient, directoryAsyncClient.shareName,
             Utility.urlEncode(directoryAsyncClient.directoryPath), directoryAsyncClient.snapshot,
-            directoryAsyncClient.accountName, directoryAsyncClient.serviceVersion);
+            directoryAsyncClient.accountName, directoryAsyncClient.serviceVersion, directoryAsyncClient.sasToken);
     }
 
     /**
@@ -171,7 +175,7 @@ public class ShareDirectoryAsyncClient {
             filePath = fileName;
         }
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName,
-            serviceVersion);
+            serviceVersion, sasToken);
     }
 
     /**
@@ -191,7 +195,7 @@ public class ShareDirectoryAsyncClient {
         }
         directoryPathBuilder.append(subdirectoryName);
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryPathBuilder.toString(),
-            snapshot, accountName, serviceVersion);
+            snapshot, accountName, serviceVersion, sasToken);
     }
 
     /**
@@ -337,13 +341,100 @@ public class ShareDirectoryAsyncClient {
         String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = properties.getFileChangeTimeString();
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.getDirectories()
-            .createWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
-                null, metadata, filePermission, filePermissionKey,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .createWithResponseAsync(shareName, directoryPath, fileAttributes, null, metadata, filePermission,
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
             .map(ShareDirectoryAsyncClient::createWithRestResponse);
+    }
+
+    /**
+     * Creates this directory in the file share if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the directory</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists -->
+     * <pre>
+     * shareDirectoryAsyncClient.createIfNotExists&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
+     * @return A reactive response signaling completion. {@link ShareDirectoryInfo} contains information about the
+     * created directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareDirectoryInfo> createIfNotExists() {
+        try {
+            return createIfNotExistsWithResponse(new ShareDirectoryCreateOptions(), null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Creates a directory in the file share if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the directory</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions -->
+     * <pre>
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
+     * String filePermission = &quot;filePermission&quot;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;;
+     * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
+     *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
+     *
+     * shareDirectoryAsyncClient.createIfNotExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareDirectoryCreateOptions}
+     * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains a {@link ShareDirectoryInfo} containing information about the directory. If {@link Response}'s status
+     * code is 201, a new directory was successfully created. If status code is 409, a directory already existed at this
+     * location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options) {
+        try {
+            return createIfNotExistsWithResponse(options, null);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options, Context context) {
+        try {
+            options = options == null ? new ShareDirectoryCreateOptions() : options;
+            return createWithResponse(options.getSmbProperties(), options.getFilePermission(), options.getMetadata(),
+                context).onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
+                    .getStatusCode() == 409, t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
+                    });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -408,9 +499,84 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getDirectories().deleteWithResponseAsync(shareName, directoryPath, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return azureFileStorageClient.getDirectories().deleteWithResponseAsync(shareName, directoryPath, null, context)
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Deletes the directory in the file share if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the directory</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExists -->
+     * <pre>
+     * shareDirectoryAsyncClient.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
+     * @return a reactive response signaling completion. {@code true} indicates that the directory was successfully
+     * deleted, {@code false} indicates that the directory did not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteIfExists() {
+        return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the directory in the file share if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the directory</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExistsWithResponse -->
+     * <pre>
+     * shareDirectoryAsyncClient.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteIfExistsWithResponse -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the directory was
+     * successfully deleted. If status code is 404, the directory does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse() {
+        try {
+            return withContext(this::deleteIfExistsWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+        return deleteWithResponse(context)
+            .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**
@@ -472,8 +638,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectoryProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
-            .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null, context)
             .map(ShareDirectoryAsyncClient::getPropertiesResponse);
     }
 
@@ -555,12 +720,12 @@ public class ShareDirectoryAsyncClient {
         String fileAttributes = properties.setNtfsFileAttributes(FileConstants.PRESERVE);
         String fileCreationTime = properties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
+        String fileChangeTime = properties.getFileChangeTimeString();
 
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
-            .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, filePermission, filePermissionKey,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, null, filePermission,
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
             .map(ShareDirectoryAsyncClient::setPropertiesResponse);
     }
 
@@ -650,8 +815,7 @@ public class ShareDirectoryAsyncClient {
         Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
-            .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata, context)
             .map(ShareDirectoryAsyncClient::setMetadataResponse);
     }
 
@@ -832,7 +996,7 @@ public class ShareDirectoryAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    response.getValue().getHandleList(),
+                    ModelHelper.transformHandleItems(response.getValue().getHandleList()),
                     response.getValue().getNextMarker(),
                     response.getDeserializedHeaders()));
 
@@ -1046,10 +1210,12 @@ public class ShareDirectoryAsyncClient {
             String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
             String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
             String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+            String fileChangeTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
             smbInfo = new CopyFileSmbInfo()
                 .setFileAttributes(fileAttributes)
                 .setFileCreationTime(fileCreationTime)
                 .setFileLastWriteTime(fileLastWriteTime)
+                .setFileChangeTime(fileChangeTime)
                 .setIgnoreReadOnly(options.isIgnoreReadOnly());
         }
 
@@ -1057,16 +1223,14 @@ public class ShareDirectoryAsyncClient {
             getDirectoryAsyncClient(options.getDestinationPath());
 
         String renameSource = this.getDirectoryUrl();
-        // TODO (rickle-msft): when support added to core
-//        String sasToken = this.extractSasToken();
-//        renameSource = sasToken == null ? renameSource : renameSource + sasToken;
+
+        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
 
         return destinationDirectoryClient.azureFileStorageClient.getDirectories().renameWithResponseAsync(
             destinationDirectoryClient.getShareName(), destinationDirectoryClient.getDirectoryPath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
             options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
-            destinationConditions, smbInfo,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            destinationConditions, smbInfo, context)
             .map(response -> new SimpleResponse<>(response, destinationDirectoryClient));
     }
 
@@ -1081,7 +1245,7 @@ public class ShareDirectoryAsyncClient {
         }
 
         return new ShareDirectoryAsyncClient(this.azureFileStorageClient, getShareName(), destinationPath, null,
-            this.getAccountName(), this.getServiceVersion());
+            this.getAccountName(), this.getServiceVersion(), sasToken);
     }
 
     /**
@@ -1164,6 +1328,94 @@ public class ShareDirectoryAsyncClient {
     }
 
     /**
+     * Creates a subdirectory under current directory with specific name if it does not exist and returns a response of
+     * ShareDirectoryAsyncClient to interact with it.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the sub directory "subdir" </p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExists#string -->
+     * <pre>
+     * shareDirectoryAsyncClient.createSubdirectoryIfNotExists&#40;&quot;subdir&quot;&#41;
+     *     .switchIfEmpty&#40;Mono.&lt;ShareDirectoryAsyncClient&gt;empty&#40;&#41;
+     *         .doOnSuccess&#40;x -&gt; System.out.println&#40;&quot;Already exists.&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Create completed.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExists#string -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
+     * @param subdirectoryName Name of the subdirectory
+     * @return A {@link Mono} containing a {@link ShareDirectoryAsyncClient} used to interact with the subdirectory created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareDirectoryAsyncClient> createSubdirectoryIfNotExists(String subdirectoryName) {
+        return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions())
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a subdirectory under current directory with specific name and metadata if it does not exist,
+     * and returns a response of ShareDirectoryAsyncClient to interact with it.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the subdirectory named "subdir", with metadata</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions -->
+     * <pre>
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
+     * String filePermission = &quot;filePermission&quot;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;;
+     * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
+     *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;metadata&#41;;
+     *
+     * shareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse&#40;&quot;subdir&quot;, options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
+     * @param subdirectoryName Name of the subdirectory
+     * @param options {@link ShareDirectoryCreateOptions}
+     * @return A reactive response signaling completion. The presence of a {@link Response} item indicates a new
+     * subdirectory was created, and {@link Response#getValue() value} contains a {@link ShareDirectoryAsyncClient}
+     * which can be used to interact with the newly created directory. An empty {@code Mono} indicates the specified
+     * subdirectory already existed at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
+        ShareDirectoryCreateOptions options) {
+        try {
+            return withContext(
+                context -> createSubdirectoryIfNotExistsWithResponse(subdirectoryName, options, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
+        ShareDirectoryCreateOptions options, Context context) {
+        try {
+            options = options == null ? new ShareDirectoryCreateOptions() : options;
+            ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
+            return createSubClient.createIfNotExistsWithResponse(options, context)
+                .map(response -> new SimpleResponse<>(response, createSubClient));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Deletes the subdirectory with specific name in this directory.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1235,6 +1487,81 @@ public class ShareDirectoryAsyncClient {
     }
 
     /**
+     * Deletes the subdirectory with specific name in this directory if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the subdirectory named "subdir"</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExists#string -->
+     * <pre>
+     * shareDirectoryAsyncClient.deleteSubdirectoryIfExists&#40;&quot;mysubdirectory&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExists#string -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
+     * @param subdirectoryName Name of the subdirectory
+     * @return a reactive response signaling completion. {@code true} indicates that the subdirectory was successfully
+     * deleted, {@code false} indicates that the subdirectory did not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteSubdirectoryIfExists(String subdirectoryName) {
+        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the subdirectory with specific name in this directory if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the subdirectory named "subdir"</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#string -->
+     * <pre>
+     * shareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse&#40;&quot;mysubdirectory&quot;&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#string -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
+     * @param subdirectoryName Name of the subdirectory
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the subdirectory was
+     * successfully deleted. If status code is 404, the subdirectory does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName) {
+        try {
+            return withContext(context -> deleteSubdirectoryIfExistsWithResponse(subdirectoryName,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Boolean>> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName, Context context) {
+        try {
+            return getSubdirectoryClient(subdirectoryName).deleteIfExistsWithResponse(context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Creates a file in this directory with specific name, max number of results and returns a response of
      * ShareDirectoryInfo to interact with it.
      *
@@ -1259,8 +1586,7 @@ public class ShareDirectoryAsyncClient {
      * @param fileName Name of the file
      * @param maxSize Size of the file
      * @return The ShareFileAsyncClient.
-     * @throws ShareStorageException If the file has already existed, the parent directory does not exist or file name
-     * is an invalid resource name.
+     * @throws ShareStorageException If the parent directory does not exist or file name is an invalid resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileAsyncClient> createFile(String fileName, long maxSize) {
@@ -1309,8 +1635,7 @@ public class ShareDirectoryAsyncClient {
      * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or file
-     * name is an invalid resource name.
+     * @throws ShareStorageException If the parent directory does not exist or file name is an invalid resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
@@ -1366,8 +1691,7 @@ public class ShareDirectoryAsyncClient {
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @param requestConditions {@link ShareRequestConditions}
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or file
-     * name is an invalid resource name.
+     * @throws ShareStorageException If the parent directory does not exist or file name is an invalid resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
@@ -1492,6 +1816,128 @@ public class ShareDirectoryAsyncClient {
         Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient.deleteWithResponse(requestConditions, context);
+    }
+
+    /**
+     * Deletes the file with specific name in this directory if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "filetest"</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExists#string -->
+     * <pre>
+     * shareDirectoryAsyncClient.deleteFileIfExists&#40;&quot;myfile&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExists#string -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @return a reactive response signaling completion. {@code true} indicates that the file was successfully
+     * deleted, {@code false} indicates that the file did not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteFileIfExists(String fileName) {
+        return deleteFileIfExistsWithResponse(fileName).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the file with specific name in this directory if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "filetest"</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string -->
+     * <pre>
+     * shareDirectoryAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the file was
+     * successfully deleted. If status code is 404, the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName) {
+        try {
+            return this.deleteFileIfExistsWithResponse(fileName, null);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Deletes the file with specific name in this directory if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "filetest"</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions -->
+     * <pre>
+     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * shareDirectoryAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, requestConditions&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @param requestConditions {@link ShareRequestConditions}
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the file was
+     * successfully deleted. If status code is 404, the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions) {
+        try {
+            return withContext(context -> deleteFileIfExistsWithResponse(fileName, requestConditions,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions, Context context) {
+        try {
+            requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+            return deleteFileWithResponse(fileName, requestConditions, context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
+                    .getStatusCode() == 404,
+                    t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1636,7 +2082,8 @@ public class ShareDirectoryAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
-    private static Response<ShareDirectoryInfo> createWithRestResponse(final DirectoriesCreateResponse response) {
+    private static Response<ShareDirectoryInfo> createWithRestResponse(
+        final ResponseBase<DirectoriesCreateHeaders, Void> response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
@@ -1644,7 +2091,8 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    private static Response<ShareDirectoryProperties> getPropertiesResponse(DirectoriesGetPropertiesResponse response) {
+    private static Response<ShareDirectoryProperties> getPropertiesResponse(
+        ResponseBase<DirectoriesGetPropertiesHeaders, Void> response) {
         Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
@@ -1655,7 +2103,8 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryProperties);
     }
 
-    private static Response<ShareDirectoryInfo> setPropertiesResponse(final DirectoriesSetPropertiesResponse response) {
+    private static Response<ShareDirectoryInfo> setPropertiesResponse(
+        final ResponseBase<DirectoriesSetPropertiesHeaders, Void> response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
@@ -1664,7 +2113,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     private static Response<ShareDirectorySetMetadataInfo> setMetadataResponse(
-        final DirectoriesSetMetadataResponse response) {
+        final ResponseBase<DirectoriesSetMetadataHeaders, Void> response) {
         String eTag = response.getDeserializedHeaders().getETag();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
         ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo = new ShareDirectorySetMetadataInfo(eTag,
@@ -1673,19 +2122,29 @@ public class ShareDirectoryAsyncClient {
     }
 
     private static List<ShareFileItem> convertResponseAndGetNumOfResults(
-        DirectoriesListFilesAndDirectoriesSegmentResponse response) {
+        ResponseBase<DirectoriesListFilesAndDirectoriesSegmentHeaders, ListFilesAndDirectoriesSegmentResponse> res) {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
-        if (response.getValue().getSegment() != null) {
-            response.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(directoryItem.getName(), true,
-                    directoryItem.getFileId(), ModelHelper.transformFileProperty(directoryItem.getProperties()),
-                    NtfsFileAttributes.toAttributes(directoryItem.getAttributes()), directoryItem.getPermissionKey(),
-                    null)));
-            response.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(fileItem.getName(), false,
-                    fileItem.getFileId(), ModelHelper.transformFileProperty(fileItem.getProperties()),
-                    NtfsFileAttributes.toAttributes(fileItem.getAttributes()), fileItem.getPermissionKey(),
-                    fileItem.getProperties().getContentLength())));
+        if (res.getValue().getSegment() != null) {
+            res.getValue().getSegment().getDirectoryItems()
+                .forEach(directoryItem -> {
+                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()),
+                        true,
+                        directoryItem.getFileId(),
+                        ModelHelper.transformFileProperty(directoryItem.getProperties()),
+                        NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
+                        directoryItem.getPermissionKey(),
+                        null));
+                });
+            res.getValue().getSegment().getFileItems()
+                .forEach(fileItem -> {
+                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
+                        false,
+                        fileItem.getFileId(),
+                        ModelHelper.transformFileProperty(fileItem.getProperties()),
+                        NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
+                        fileItem.getPermissionKey(),
+                        fileItem.getProperties().getContentLength()));
+                });
         }
 
         return new ArrayList<>(shareFileItems);

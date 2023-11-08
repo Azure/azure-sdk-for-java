@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 envelope override settings. */
 @Fluent
 public final class X12EnvelopeOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12EnvelopeOverride.class);
-
     /*
      * The target namespace on which this envelope settings has to be applied.
      */
@@ -73,6 +70,10 @@ public final class X12EnvelopeOverride {
      */
     @JsonProperty(value = "timeFormat", required = true)
     private X12TimeFormat timeFormat;
+
+    /** Creates an instance of X12EnvelopeOverride class. */
+    public X12EnvelopeOverride() {
+    }
 
     /**
      * Get the targetNamespace property: The target namespace on which this envelope settings has to be applied.
@@ -281,55 +282,57 @@ public final class X12EnvelopeOverride {
      */
     public void validate() {
         if (targetNamespace() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetNamespace in model X12EnvelopeOverride"));
         }
         if (protocolVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocolVersion in model X12EnvelopeOverride"));
         }
         if (messageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property messageId in model X12EnvelopeOverride"));
         }
         if (responsibleAgencyCode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property responsibleAgencyCode in model X12EnvelopeOverride"));
         }
         if (headerVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property headerVersion in model X12EnvelopeOverride"));
         }
         if (senderApplicationId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property senderApplicationId in model X12EnvelopeOverride"));
         }
         if (receiverApplicationId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property receiverApplicationId in model X12EnvelopeOverride"));
         }
         if (dateFormat() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dateFormat in model X12EnvelopeOverride"));
         }
         if (timeFormat() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timeFormat in model X12EnvelopeOverride"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12EnvelopeOverride.class);
 }

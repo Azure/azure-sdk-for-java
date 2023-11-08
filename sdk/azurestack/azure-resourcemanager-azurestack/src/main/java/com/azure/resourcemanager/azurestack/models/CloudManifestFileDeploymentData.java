@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.azurestack.fluent.models.CloudManifestFileEnvironmentEndpoints;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cloud specific manifest data for AzureStack deployment. */
-@JsonFlatten
 @Fluent
-public class CloudManifestFileDeploymentData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudManifestFileDeploymentData.class);
-
+public final class CloudManifestFileDeploymentData {
     /*
      * Dsms external certificates.
      */
@@ -29,16 +24,14 @@ public class CloudManifestFileDeploymentData {
     private String customCloudVerificationKey;
 
     /*
-     * ARM endpoint.
+     * Environment endpoints.
      */
-    @JsonProperty(value = "customEnvironmentEndpoints.customCloudArmEndpoint")
-    private String customCloudArmEndpoint;
+    @JsonProperty(value = "customEnvironmentEndpoints")
+    private CloudManifestFileEnvironmentEndpoints innerCustomEnvironmentEndpoints;
 
-    /*
-     * Dsms endpoint.
-     */
-    @JsonProperty(value = "customEnvironmentEndpoints.externalDsmsEndpoint")
-    private String externalDsmsEndpoint;
+    /** Creates an instance of CloudManifestFileDeploymentData class. */
+    public CloudManifestFileDeploymentData() {
+    }
 
     /**
      * Get the externalDsmsCertificates property: Dsms external certificates.
@@ -81,12 +74,23 @@ public class CloudManifestFileDeploymentData {
     }
 
     /**
+     * Get the innerCustomEnvironmentEndpoints property: Environment endpoints.
+     *
+     * @return the innerCustomEnvironmentEndpoints value.
+     */
+    private CloudManifestFileEnvironmentEndpoints innerCustomEnvironmentEndpoints() {
+        return this.innerCustomEnvironmentEndpoints;
+    }
+
+    /**
      * Get the customCloudArmEndpoint property: ARM endpoint.
      *
      * @return the customCloudArmEndpoint value.
      */
     public String customCloudArmEndpoint() {
-        return this.customCloudArmEndpoint;
+        return this.innerCustomEnvironmentEndpoints() == null
+            ? null
+            : this.innerCustomEnvironmentEndpoints().customCloudArmEndpoint();
     }
 
     /**
@@ -96,7 +100,10 @@ public class CloudManifestFileDeploymentData {
      * @return the CloudManifestFileDeploymentData object itself.
      */
     public CloudManifestFileDeploymentData withCustomCloudArmEndpoint(String customCloudArmEndpoint) {
-        this.customCloudArmEndpoint = customCloudArmEndpoint;
+        if (this.innerCustomEnvironmentEndpoints() == null) {
+            this.innerCustomEnvironmentEndpoints = new CloudManifestFileEnvironmentEndpoints();
+        }
+        this.innerCustomEnvironmentEndpoints().withCustomCloudArmEndpoint(customCloudArmEndpoint);
         return this;
     }
 
@@ -106,7 +113,9 @@ public class CloudManifestFileDeploymentData {
      * @return the externalDsmsEndpoint value.
      */
     public String externalDsmsEndpoint() {
-        return this.externalDsmsEndpoint;
+        return this.innerCustomEnvironmentEndpoints() == null
+            ? null
+            : this.innerCustomEnvironmentEndpoints().externalDsmsEndpoint();
     }
 
     /**
@@ -116,7 +125,10 @@ public class CloudManifestFileDeploymentData {
      * @return the CloudManifestFileDeploymentData object itself.
      */
     public CloudManifestFileDeploymentData withExternalDsmsEndpoint(String externalDsmsEndpoint) {
-        this.externalDsmsEndpoint = externalDsmsEndpoint;
+        if (this.innerCustomEnvironmentEndpoints() == null) {
+            this.innerCustomEnvironmentEndpoints = new CloudManifestFileEnvironmentEndpoints();
+        }
+        this.innerCustomEnvironmentEndpoints().withExternalDsmsEndpoint(externalDsmsEndpoint);
         return this;
     }
 
@@ -126,5 +138,8 @@ public class CloudManifestFileDeploymentData {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerCustomEnvironmentEndpoints() != null) {
+            innerCustomEnvironmentEndpoints().validate();
+        }
     }
 }

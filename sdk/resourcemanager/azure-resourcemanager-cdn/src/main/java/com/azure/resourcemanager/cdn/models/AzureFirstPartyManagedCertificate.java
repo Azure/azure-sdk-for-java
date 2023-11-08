@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Azure FirstParty Managed Certificate provided by other first party resource providers to enable HTTPS. */
 @Fluent
 public final class AzureFirstPartyManagedCertificate extends Certificate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirstPartyManagedCertificate.class);
+    /** Creates an instance of AzureFirstPartyManagedCertificate class. */
+    public AzureFirstPartyManagedCertificate() {
+    }
 
     /** {@inheritDoc} */
     @Override

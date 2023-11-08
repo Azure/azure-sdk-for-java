@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Additional information on backup engine. */
 @Fluent
 public final class BackupEngineExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupEngineExtendedInfo.class);
-
     /*
      * Database name of backup engine.
      */
@@ -62,6 +58,10 @@ public final class BackupEngineExtendedInfo {
      */
     @JsonProperty(value = "azureProtectedInstances")
     private Integer azureProtectedInstances;
+
+    /** Creates an instance of BackupEngineExtendedInfo class. */
+    public BackupEngineExtendedInfo() {
+    }
 
     /**
      * Get the databaseName property: Database name of backup engine.

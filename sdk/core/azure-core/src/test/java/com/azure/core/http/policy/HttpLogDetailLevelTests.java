@@ -4,6 +4,9 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
+import com.azure.core.util.ConfigurationSource;
+import com.azure.core.util.TestConfigurationSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,13 +14,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link HttpLogDetailLevel}.
  */
 public class HttpLogDetailLevelTests {
+    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
+
     @ParameterizedTest
     @MethodSource("fromConfigurationSupplier")
     public void fromConfiguration(Configuration configuration, HttpLogDetailLevel expected) {
@@ -26,12 +29,10 @@ public class HttpLogDetailLevelTests {
 
     private static Stream<Arguments> fromConfigurationSupplier() {
         // Inserting a null value into Configuration throws, so mock it.
-        Configuration returnsNullMock = mock(Configuration.class);
-        when(returnsNullMock.get(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL)).thenReturn(null);
 
         return Stream.of(
             // null turns into NONE
-            Arguments.of(returnsNullMock, HttpLogDetailLevel.NONE),
+            Arguments.of(Configuration.NONE, HttpLogDetailLevel.NONE),
 
             // Empty string turns into NONE
             Arguments.of(makeConfiguration(""), HttpLogDetailLevel.NONE),
@@ -90,6 +91,7 @@ public class HttpLogDetailLevelTests {
     }
 
     private static Configuration makeConfiguration(String detailLevelValue) {
-        return new Configuration().put(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue);
+        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue))
+            .build();
     }
 }

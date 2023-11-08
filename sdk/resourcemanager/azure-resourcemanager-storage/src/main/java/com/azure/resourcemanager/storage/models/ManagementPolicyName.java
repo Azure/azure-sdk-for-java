@@ -14,6 +14,15 @@ public final class ManagementPolicyName extends ExpandableStringEnum<ManagementP
     public static final ManagementPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of ManagementPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagementPolicyName() {
+    }
+
+    /**
      * Creates or finds a ManagementPolicyName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class ManagementPolicyName extends ExpandableStringEnum<ManagementP
         return fromString(name, ManagementPolicyName.class);
     }
 
-    /** @return known ManagementPolicyName values. */
+    /**
+     * Gets known ManagementPolicyName values.
+     *
+     * @return known ManagementPolicyName values.
+     */
     public static Collection<ManagementPolicyName> values() {
         return values(ManagementPolicyName.class);
     }

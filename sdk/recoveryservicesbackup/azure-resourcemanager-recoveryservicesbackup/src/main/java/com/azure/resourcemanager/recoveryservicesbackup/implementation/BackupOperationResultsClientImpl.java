@@ -21,14 +21,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupOperationResultsClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupOperationResultsClient. */
 public final class BackupOperationResultsClientImpl implements BackupOperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(BackupOperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupOperationResultsService service;
 
@@ -53,11 +50,10 @@ public final class BackupOperationResultsClientImpl implements BackupOperationRe
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupOperationResultsService {
+    public interface BackupOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupOperationResults/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupOperationResults/{operationId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> get(
@@ -196,26 +192,7 @@ public final class BackupOperationResultsClientImpl implements BackupOperationRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getAsync(String vaultName, String resourceGroupName, String operationId) {
-        return getWithResponseAsync(vaultName, resourceGroupName, operationId)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Provides the status of the delete operations such as deleting backed up item. Once the operation has started, the
-     * status code in the response would be Accepted. It will continue to be in this state till it reaches completion.
-     * On successful completion, the status code will be OK. This method expects OperationID as an argument. OperationID
-     * is part of the Location header of the operation response.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param operationId OperationID which represents the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void get(String vaultName, String resourceGroupName, String operationId) {
-        getAsync(vaultName, resourceGroupName, operationId).block();
+        return getWithResponseAsync(vaultName, resourceGroupName, operationId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -237,5 +214,23 @@ public final class BackupOperationResultsClientImpl implements BackupOperationRe
     public Response<Void> getWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, operationId, context).block();
+    }
+
+    /**
+     * Provides the status of the delete operations such as deleting backed up item. Once the operation has started, the
+     * status code in the response would be Accepted. It will continue to be in this state till it reaches completion.
+     * On successful completion, the status code will be OK. This method expects OperationID as an argument. OperationID
+     * is part of the Location header of the operation response.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param operationId OperationID which represents the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void get(String vaultName, String resourceGroupName, String operationId) {
+        getWithResponse(vaultName, resourceGroupName, operationId, Context.NONE);
     }
 }

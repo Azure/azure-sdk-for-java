@@ -44,6 +44,10 @@ public final class CredentialImpl implements Credential, Credential.Definition, 
         return this.innerModel().description();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CredentialInner innerModel() {
         return this.innerObject;
     }

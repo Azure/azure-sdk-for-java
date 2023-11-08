@@ -8,9 +8,11 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
@@ -28,19 +30,17 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseSensitivityLabelsClient;
 import com.azure.resourcemanager.sql.fluent.models.SensitivityLabelInner;
 import com.azure.resourcemanager.sql.models.SensitivityLabelListResult;
 import com.azure.resourcemanager.sql.models.SensitivityLabelSource;
+import com.azure.resourcemanager.sql.models.SensitivityLabelUpdateList;
 import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in ManagedDatabaseSensitivityLabelsClient.
  */
 public final class ManagedDatabaseSensitivityLabelsClientImpl implements ManagedDatabaseSensitivityLabelsClient {
-    private final ClientLogger logger = new ClientLogger(ManagedDatabaseSensitivityLabelsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ManagedDatabaseSensitivityLabelsService service;
 
@@ -68,8 +68,62 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedDatabaseSensitivityLabelsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+    public interface ManagedDatabaseSensitivityLabelsService {
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/currentSensitivityLabels")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SensitivityLabelListResult>> listCurrentByDatabase(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("$skipToken") String skipToken,
+            @QueryParam("$count") Boolean count,
+            @QueryParam("$filter") String filter,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/currentSensitivityLabels")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> update(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SensitivityLabelUpdateList parameters,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SensitivityLabelListResult>> listRecommendedByDatabase(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("$skipToken") String skipToken,
+            @QueryParam("includeDisabledRecommendations") Boolean includeDisabledRecommendations,
+            @QueryParam("$filter") String filter,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables"
@@ -87,9 +141,10 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             @PathParam("sensitivityLabelSource") SensitivityLabelSource sensitivityLabelSource,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables"
@@ -108,6 +163,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SensitivityLabelInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -170,13 +226,13 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/currentSensitivityLabels")
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/sensitivityLabels")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SensitivityLabelListResult>> listCurrentByDatabase(
+        Mono<Response<SensitivityLabelListResult>> listByDatabase(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
@@ -184,39 +240,840 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SensitivityLabelListResult>> listRecommendedByDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("includeDisabledRecommendations") Boolean includeDisabledRecommendations,
-            @QueryParam("$skipToken") String skipToken,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SensitivityLabelListResult>> listCurrentByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SensitivityLabelListResult>> listRecommendedByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SensitivityLabelListResult>> listByDatabaseNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param count The count parameter.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SensitivityLabelInner>> listCurrentByDatabaseSinglePageAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String skipToken,
+        Boolean count,
+        String filter) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listCurrentByDatabase(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            skipToken,
+                            count,
+                            filter,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<SensitivityLabelInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param count The count parameter.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SensitivityLabelInner>> listCurrentByDatabaseSinglePageAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String skipToken,
+        Boolean count,
+        String filter,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCurrentByDatabase(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                skipToken,
+                count,
+                filter,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param count The count parameter.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String skipToken,
+        Boolean count,
+        String filter) {
+        return new PagedFlux<>(
+            () ->
+                listCurrentByDatabaseSinglePageAsync(
+                    resourceGroupName, managedInstanceName, databaseName, skipToken, count, filter),
+            nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName) {
+        final String skipToken = null;
+        final Boolean count = null;
+        final String filter = null;
+        return new PagedFlux<>(
+            () ->
+                listCurrentByDatabaseSinglePageAsync(
+                    resourceGroupName, managedInstanceName, databaseName, skipToken, count, filter),
+            nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param count The count parameter.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String skipToken,
+        Boolean count,
+        String filter,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listCurrentByDatabaseSinglePageAsync(
+                    resourceGroupName, managedInstanceName, databaseName, skipToken, count, filter, context),
+            nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SensitivityLabelInner> listCurrentByDatabase(
+        String resourceGroupName, String managedInstanceName, String databaseName) {
+        final String skipToken = null;
+        final Boolean count = null;
+        final String filter = null;
+        return new PagedIterable<>(
+            listCurrentByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, skipToken, count, filter));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param count The count parameter.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SensitivityLabelInner> listCurrentByDatabase(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String skipToken,
+        Boolean count,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listCurrentByDatabaseAsync(
+                resourceGroupName, managedInstanceName, databaseName, skipToken, count, filter, context));
+    }
+
+    /**
+     * Update sensitivity labels of a given database using an operations batch.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters A list of sensitivity label update operations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SensitivityLabelUpdateList parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            parameters,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update sensitivity labels of a given database using an operations batch.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters A list of sensitivity label update operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> updateWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SensitivityLabelUpdateList parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .update(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Update sensitivity labels of a given database using an operations batch.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters A list of sensitivity label update operations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SensitivityLabelUpdateList parameters) {
+        return updateWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Update sensitivity labels of a given database using an operations batch.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters A list of sensitivity label update operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateWithResponse(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SensitivityLabelUpdateList parameters,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+            .block();
+    }
+
+    /**
+     * Update sensitivity labels of a given database using an operations batch.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters A list of sensitivity label update operations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SensitivityLabelUpdateList parameters) {
+        updateWithResponse(resourceGroupName, managedInstanceName, databaseName, parameters, Context.NONE);
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedByDatabaseSinglePageAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String skipToken,
+        Boolean includeDisabledRecommendations,
+        String filter) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listRecommendedByDatabase(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            skipToken,
+                            includeDisabledRecommendations,
+                            filter,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<SensitivityLabelInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedByDatabaseSinglePageAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String skipToken,
+        Boolean includeDisabledRecommendations,
+        String filter,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listRecommendedByDatabase(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                skipToken,
+                includeDisabledRecommendations,
+                filter,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String skipToken,
+        Boolean includeDisabledRecommendations,
+        String filter) {
+        return new PagedFlux<>(
+            () ->
+                listRecommendedByDatabaseSinglePageAsync(
+                    resourceGroupName,
+                    managedInstanceName,
+                    databaseName,
+                    skipToken,
+                    includeDisabledRecommendations,
+                    filter),
+            nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName) {
+        final String skipToken = null;
+        final Boolean includeDisabledRecommendations = null;
+        final String filter = null;
+        return new PagedFlux<>(
+            () ->
+                listRecommendedByDatabaseSinglePageAsync(
+                    resourceGroupName,
+                    managedInstanceName,
+                    databaseName,
+                    skipToken,
+                    includeDisabledRecommendations,
+                    filter),
+            nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String skipToken,
+        Boolean includeDisabledRecommendations,
+        String filter,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listRecommendedByDatabaseSinglePageAsync(
+                    resourceGroupName,
+                    managedInstanceName,
+                    databaseName,
+                    skipToken,
+                    includeDisabledRecommendations,
+                    filter,
+                    context),
+            nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(
+        String resourceGroupName, String managedInstanceName, String databaseName) {
+        final String skipToken = null;
+        final Boolean includeDisabledRecommendations = null;
+        final String filter = null;
+        return new PagedIterable<>(
+            listRecommendedByDatabaseAsync(
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                skipToken,
+                includeDisabledRecommendations,
+                filter));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param skipToken The skipToken parameter.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String skipToken,
+        Boolean includeDisabledRecommendations,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listRecommendedByDatabaseAsync(
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                skipToken,
+                includeDisabledRecommendations,
+                filter,
+                context));
     }
 
     /**
@@ -233,7 +1090,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SensitivityLabelInner>> getWithResponseAsync(
@@ -281,7 +1139,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -296,9 +1154,10 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             columnName,
                             sensitivityLabelSource,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -316,7 +1175,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SensitivityLabelInner>> getWithResponseAsync(
@@ -365,7 +1225,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -378,7 +1238,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 columnName,
                 sensitivityLabelSource,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -396,7 +1257,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SensitivityLabelInner> getAsync(
@@ -415,14 +1276,46 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 tableName,
                 columnName,
                 sensitivityLabelSource)
-            .flatMap(
-                (Response<SensitivityLabelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the sensitivity label of a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @param sensitivityLabelSource The source of the sensitivity label.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity label of a given column along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SensitivityLabelInner> getWithResponse(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName,
+        SensitivityLabelSource sensitivityLabelSource,
+        Context context) {
+        return getWithResponseAsync(
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                schemaName,
+                tableName,
+                columnName,
+                sensitivityLabelSource,
+                context)
+            .block();
     }
 
     /**
@@ -450,45 +1343,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         String tableName,
         String columnName,
         SensitivityLabelSource sensitivityLabelSource) {
-        return getAsync(
-                resourceGroupName,
-                managedInstanceName,
-                databaseName,
-                schemaName,
-                tableName,
-                columnName,
-                sensitivityLabelSource)
-            .block();
-    }
-
-    /**
-     * Gets the sensitivity label of a given column.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SensitivityLabelInner> getWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource,
-        Context context) {
-        return getWithResponseAsync(
+        return getWithResponse(
                 resourceGroupName,
                 managedInstanceName,
                 databaseName,
@@ -496,8 +1351,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 tableName,
                 columnName,
                 sensitivityLabelSource,
-                context)
-            .block();
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -510,11 +1365,11 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @param schemaName The name of the schema.
      * @param tableName The name of the table.
      * @param columnName The name of the column.
-     * @param parameters A sensitivity label.
+     * @param parameters The column sensitivity label resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(
@@ -563,7 +1418,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             parameters.validate();
         }
         final String sensitivityLabelSource = "current";
-        final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -578,10 +1433,11 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             columnName,
                             sensitivityLabelSource,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -594,12 +1450,12 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @param schemaName The name of the schema.
      * @param tableName The name of the table.
      * @param columnName The name of the column.
-     * @param parameters A sensitivity label.
+     * @param parameters The column sensitivity label resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(
@@ -649,7 +1505,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
             parameters.validate();
         }
         final String sensitivityLabelSource = "current";
-        final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -662,8 +1518,9 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 columnName,
                 sensitivityLabelSource,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -677,11 +1534,11 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @param schemaName The name of the schema.
      * @param tableName The name of the table.
      * @param columnName The name of the column.
-     * @param parameters A sensitivity label.
+     * @param parameters The column sensitivity label resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SensitivityLabelInner> createOrUpdateAsync(
@@ -694,14 +1551,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         SensitivityLabelInner parameters) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, parameters)
-            .flatMap(
-                (Response<SensitivityLabelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -714,42 +1564,12 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @param schemaName The name of the schema.
      * @param tableName The name of the table.
      * @param columnName The name of the column.
-     * @param parameters A sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SensitivityLabelInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelInner parameters) {
-        return createOrUpdateAsync(
-                resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, parameters)
-            .block();
-    }
-
-    /**
-     * Creates or updates the sensitivity label of a given column.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param parameters A sensitivity label.
+     * @param parameters The column sensitivity label resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SensitivityLabelInner> createOrUpdateWithResponse(
@@ -774,6 +1594,43 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
     }
 
     /**
+     * Creates or updates the sensitivity label of a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @param parameters The column sensitivity label resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sensitivity label.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SensitivityLabelInner createOrUpdate(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName,
+        SensitivityLabelInner parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                schemaName,
+                tableName,
+                columnName,
+                parameters,
+                Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Deletes the sensitivity label of a given column.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -786,7 +1643,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -829,7 +1686,6 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String sensitivityLabelSource = "current";
-        final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -844,9 +1700,9 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             columnName,
                             sensitivityLabelSource,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -863,7 +1719,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -907,7 +1763,6 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String sensitivityLabelSource = "current";
-        final String apiVersion = "2018-06-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -920,7 +1775,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 columnName,
                 sensitivityLabelSource,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -937,7 +1792,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -949,7 +1804,37 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         String columnName) {
         return deleteWithResponseAsync(
                 resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes the sensitivity label of a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName,
+        Context context) {
+        return deleteWithResponseAsync(
+                resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, context)
+            .block();
     }
 
     /**
@@ -974,37 +1859,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         String schemaName,
         String tableName,
         String columnName) {
-        deleteAsync(resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName).block();
-    }
-
-    /**
-     * Deletes the sensitivity label of a given column.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, context)
-            .block();
+        deleteWithResponse(
+            resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, Context.NONE);
     }
 
     /**
@@ -1020,7 +1876,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableRecommendationWithResponseAsync(
@@ -1063,7 +1919,6 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String sensitivityLabelSource = "recommended";
-        final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -1078,9 +1933,9 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             columnName,
                             sensitivityLabelSource,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1097,7 +1952,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableRecommendationWithResponseAsync(
@@ -1141,7 +1996,6 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String sensitivityLabelSource = "recommended";
-        final String apiVersion = "2018-06-01-preview";
         context = this.client.mergeContext(context);
         return service
             .disableRecommendation(
@@ -1154,7 +2008,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 columnName,
                 sensitivityLabelSource,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -1171,7 +2025,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableRecommendationAsync(
@@ -1183,7 +2037,37 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         String columnName) {
         return disableRecommendationWithResponseAsync(
                 resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Disables sensitivity recommendations on a given column.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> disableRecommendationWithResponse(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName,
+        Context context) {
+        return disableRecommendationWithResponseAsync(
+                resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, context)
+            .block();
     }
 
     /**
@@ -1208,39 +2092,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         String schemaName,
         String tableName,
         String columnName) {
-        disableRecommendationAsync(
-                resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName)
-            .block();
-    }
-
-    /**
-     * Disables sensitivity recommendations on a given column.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableRecommendationWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return disableRecommendationWithResponseAsync(
-                resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, context)
-            .block();
+        disableRecommendationWithResponse(
+            resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, Context.NONE);
     }
 
     /**
@@ -1256,7 +2109,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableRecommendationWithResponseAsync(
@@ -1299,7 +2152,6 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String sensitivityLabelSource = "recommended";
-        final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -1314,9 +2166,9 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                             columnName,
                             sensitivityLabelSource,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1333,7 +2185,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableRecommendationWithResponseAsync(
@@ -1377,7 +2229,6 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String sensitivityLabelSource = "recommended";
-        final String apiVersion = "2018-06-01-preview";
         context = this.client.mergeContext(context);
         return service
             .enableRecommendation(
@@ -1390,7 +2241,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                 columnName,
                 sensitivityLabelSource,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -1407,7 +2258,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enableRecommendationAsync(
@@ -1419,7 +2270,37 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         String columnName) {
         return enableRecommendationWithResponseAsync(
                 resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> enableRecommendationWithResponse(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        String schemaName,
+        String tableName,
+        String columnName,
+        Context context) {
+        return enableRecommendationWithResponseAsync(
+                resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, context)
+            .block();
     }
 
     /**
@@ -1444,39 +2325,8 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         String schemaName,
         String tableName,
         String columnName) {
-        enableRecommendationAsync(
-                resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName)
-            .block();
-    }
-
-    /**
-     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enableRecommendationWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return enableRecommendationWithResponseAsync(
-                resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, context)
-            .block();
+        enableRecommendationWithResponse(
+            resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, columnName, Context.NONE);
     }
 
     /**
@@ -1490,10 +2340,11 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SensitivityLabelInner>> listCurrentByDatabaseSinglePageAsync(
+    private Mono<PagedResponse<SensitivityLabelInner>> listByDatabaseSinglePageAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1518,19 +2369,20 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listCurrentByDatabase(
+                        .listByDatabase(
                             this.client.getEndpoint(),
                             resourceGroupName,
                             managedInstanceName,
                             databaseName,
                             filter,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<SensitivityLabelInner>>map(
                 res ->
@@ -1541,7 +2393,7 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1556,10 +2408,11 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SensitivityLabelInner>> listCurrentByDatabaseSinglePageAsync(
+    private Mono<PagedResponse<SensitivityLabelInner>> listByDatabaseSinglePageAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1584,17 +2437,18 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCurrentByDatabase(
+            .listByDatabase(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 managedInstanceName,
                 databaseName,
                 filter,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1618,14 +2472,14 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(
+    public PagedFlux<SensitivityLabelInner> listByDatabaseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, String filter) {
         return new PagedFlux<>(
-            () -> listCurrentByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, filter),
-            nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink));
+            () -> listByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, filter),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1638,15 +2492,15 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(
+    public PagedFlux<SensitivityLabelInner> listByDatabaseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName) {
         final String filter = null;
         return new PagedFlux<>(
-            () -> listCurrentByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, filter),
-            nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink));
+            () -> listByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, filter),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1661,16 +2515,33 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(
+    private PagedFlux<SensitivityLabelInner> listByDatabaseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, String filter, Context context) {
         return new PagedFlux<>(
-            () ->
-                listCurrentByDatabaseSinglePageAsync(
-                    resourceGroupName, managedInstanceName, databaseName, filter, context),
-            nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink, context));
+            () -> listByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, filter, context),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets the sensitivity labels of a given database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SensitivityLabelInner> listByDatabase(
+        String resourceGroupName, String managedInstanceName, String databaseName) {
+        final String filter = null;
+        return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, filter));
     }
 
     /**
@@ -1685,365 +2556,40 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
+     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SensitivityLabelInner> listCurrentByDatabase(
+    public PagedIterable<SensitivityLabelInner> listByDatabase(
         String resourceGroupName, String managedInstanceName, String databaseName, String filter, Context context) {
         return new PagedIterable<>(
-            listCurrentByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, filter, context));
-    }
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SensitivityLabelInner> listCurrentByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName) {
-        final String filter = null;
-        return new PagedIterable<>(
-            listCurrentByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, filter));
-    }
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param skipToken The skipToken parameter.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedByDatabaseSinglePageAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRecommendedByDatabase(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            databaseName,
-                            includeDisabledRecommendations,
-                            skipToken,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .<PagedResponse<SensitivityLabelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param skipToken The skipToken parameter.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedByDatabaseSinglePageAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2018-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .listRecommendedByDatabase(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                databaseName,
-                includeDisabledRecommendations,
-                skipToken,
-                filter,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param skipToken The skipToken parameter.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter) {
-        return new PagedFlux<>(
-            () ->
-                listRecommendedByDatabaseSinglePageAsync(
-                    resourceGroupName,
-                    managedInstanceName,
-                    databaseName,
-                    includeDisabledRecommendations,
-                    skipToken,
-                    filter),
-            nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName) {
-        final Boolean includeDisabledRecommendations = null;
-        final String skipToken = null;
-        final String filter = null;
-        return new PagedFlux<>(
-            () ->
-                listRecommendedByDatabaseSinglePageAsync(
-                    resourceGroupName,
-                    managedInstanceName,
-                    databaseName,
-                    includeDisabledRecommendations,
-                    skipToken,
-                    filter),
-            nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param skipToken The skipToken parameter.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listRecommendedByDatabaseSinglePageAsync(
-                    resourceGroupName,
-                    managedInstanceName,
-                    databaseName,
-                    includeDisabledRecommendations,
-                    skipToken,
-                    filter,
-                    context),
-            nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param skipToken The skipToken parameter.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter,
-        Context context) {
-        return new PagedIterable<>(
-            listRecommendedByDatabaseAsync(
-                resourceGroupName,
-                managedInstanceName,
-                databaseName,
-                includeDisabledRecommendations,
-                skipToken,
-                filter,
-                context));
-    }
-
-    /**
-     * Gets the sensitivity labels of a given database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName) {
-        final Boolean includeDisabledRecommendations = null;
-        final String skipToken = null;
-        final String filter = null;
-        return new PagedIterable<>(
-            listRecommendedByDatabaseAsync(
-                resourceGroupName,
-                managedInstanceName,
-                databaseName,
-                includeDisabledRecommendations,
-                skipToken,
-                filter));
+            listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName, filter, context));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listCurrentByDatabaseNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCurrentByDatabaseNext(nextLink, context))
+            .withContext(
+                context -> service.listCurrentByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SensitivityLabelInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2053,18 +2599,19 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listCurrentByDatabaseNextSinglePageAsync(
@@ -2072,9 +2619,16 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCurrentByDatabaseNext(nextLink, context)
+            .listCurrentByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2089,19 +2643,28 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedByDatabaseNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRecommendedByDatabaseNext(nextLink, context))
+            .withContext(
+                context -> service.listRecommendedByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SensitivityLabelInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2111,18 +2674,19 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedByDatabaseNextSinglePageAsync(
@@ -2130,9 +2694,90 @@ public final class ManagedDatabaseSensitivityLabelsClientImpl implements Managed
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRecommendedByDatabaseNext(nextLink, context)
+            .listRecommendedByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SensitivityLabelInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SensitivityLabelInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SensitivityLabelInner>> listByDatabaseNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Azure Analytics Logging settings. */
-@Fluent
 @JacksonXmlRootElement(localName = "Logging")
+@Fluent
 public final class QueueAnalyticsLogging {
 
     /*
@@ -41,6 +41,9 @@ public final class QueueAnalyticsLogging {
      */
     @JsonProperty(value = "RetentionPolicy", required = true)
     private QueueRetentionPolicy retentionPolicy;
+
+    /** Creates an instance of QueueAnalyticsLogging class. */
+    public QueueAnalyticsLogging() {}
 
     /**
      * Get the version property: The version of Storage Analytics to configure.

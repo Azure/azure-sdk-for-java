@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos DB container. */
 @Fluent
 public final class SqlContainerGetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlContainerGetProperties.class);
-
     /*
      * The resource property.
      */
@@ -27,6 +23,10 @@ public final class SqlContainerGetProperties {
      */
     @JsonProperty(value = "options")
     private SqlContainerGetPropertiesOptions options;
+
+    /** Creates an instance of SqlContainerGetProperties class. */
+    public SqlContainerGetProperties() {
+    }
 
     /**
      * Get the resource property: The resource property.

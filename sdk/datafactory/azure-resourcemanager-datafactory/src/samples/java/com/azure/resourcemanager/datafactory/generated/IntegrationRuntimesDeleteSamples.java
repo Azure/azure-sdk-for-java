@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes Delete. */
 public final class IntegrationRuntimesDeleteSamples {
     /*
@@ -20,6 +18,9 @@ public final class IntegrationRuntimesDeleteSamples {
         manager
             .integrationRuntimes()
             .deleteWithResponse(
-                "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", Context.NONE);
+                "exampleResourceGroup",
+                "exampleFactoryName",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

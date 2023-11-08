@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** file. */
 @Fluent
 public final class MicrosoftGraphFile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphFile.class);
-
     /*
      * hashes
      */
@@ -25,9 +22,8 @@ public final class MicrosoftGraphFile {
     private MicrosoftGraphHashes hashes;
 
     /*
-     * The MIME type for the file. This is determined by logic on the server
-     * and might not be the value provided when the file was uploaded.
-     * Read-only.
+     * The MIME type for the file. This is determined by logic on the server and might not be the value provided when
+     * the file was uploaded. Read-only.
      */
     @JsonProperty(value = "mimeType")
     private String mimeType;
@@ -42,6 +38,10 @@ public final class MicrosoftGraphFile {
      * file
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphFile class. */
+    public MicrosoftGraphFile() {
+    }
 
     /**
      * Get the hashes property: hashes.

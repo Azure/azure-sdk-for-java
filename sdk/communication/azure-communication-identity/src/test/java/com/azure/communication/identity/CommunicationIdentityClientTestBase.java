@@ -3,77 +3,61 @@
 
 package com.azure.communication.identity;
 
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.microsoft.aad.msal4j.IPublicClientApplication;
-import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.time.OffsetDateTime;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CommunicationIdentityClientTestBase extends TestBase {
-    protected static final TestMode TEST_MODE = initializeTestMode();
+public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
 
+    private static final String REDACTED = "REDACTED";
+    private static final String URI_IDENTITY_REPLACER_REGEX = "/identities/([^/?]+)";
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+            .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
-    private static final String COMMUNICATION_M365_APP_ID = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_M365_APP_ID", "Sanitized");
+    protected HttpClient httpClient;
 
-    private static final String COMMUNICATION_M365_AAD_AUTHORITY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_M365_AAD_AUTHORITY", "Sanitized");
+    @Override
+    public void beforeTest() {
+        getHttpClients().forEach(client -> this.httpClient = client);
+    }
 
-    private static final String COMMUNICATION_M365_AAD_TENANT = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_M365_AAD_TENANT", "Sanitized");
+    protected HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        HttpClient client = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient;
+        return new AssertingHttpClientBuilder(client)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertSync()
+            .build();
+    }
 
-    private static final String COMMUNICATION_M365_REDIRECT_URI = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_M365_REDIRECT_URI", "Sanitized");
-
-    private static final String COMMUNICATION_M365_SCOPE = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_M365_SCOPE", "Sanitized");
-
-    protected static final String COMMUNICATION_EXPIRED_TEAMS_TOKEN = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_EXPIRED_TEAMS_TOKEN", "Sanitized");
-
-    private static final String COMMUNICATION_MSAL_USERNAME = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_MSAL_USERNAME", "Sanitized");
-
-    private static final String COMMUNICATION_MSAL_PASSWORD = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_MSAL_PASSWORD", "Sanitized");
-
-    private static final String COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST = Configuration.getGlobalConfiguration()
-        .get("SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST", "false");
-
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-        = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("token");
-
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
-        Pattern.CASE_INSENSITIVE);
+    protected HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        HttpClient client = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient;
+        return new AssertingHttpClientBuilder(client)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertAsync()
+            .build();
+    }
 
     protected CommunicationIdentityClientBuilder createClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
@@ -82,16 +66,16 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         String communicationEndpoint = communicationConnectionString.getEndpoint();
         String communicationAccessKey = communicationConnectionString.getAccessKey();
 
-        builder.endpoint(communicationEndpoint)
+        builder
+            .endpoint(communicationEndpoint)
             .credential(new AzureKeyCredential(communicationAccessKey))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .httpClient(httpClient);
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return builder;
     }
 
@@ -103,118 +87,91 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
         builder
             .endpoint(communicationEndpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .httpClient(httpClient);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new FakeCredentials());
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
         } else {
             builder.credential(new DefaultAzureCredentialBuilder().build());
+            if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
         }
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
-        }
-
+        addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return builder;
     }
 
     protected CommunicationIdentityClientBuilder createClientBuilderUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
-            .connectionString(CONNECTION_STRING)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+                .connectionString(CONNECTION_STRING)
+                .httpClient(httpClient);
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return builder;
     }
 
-    private static TestMode initializeTestMode() {
-        ClientLogger logger = new ClientLogger(CommunicationIdentityClientTestBase.class);
-        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
-        if (azureTestMode != null) {
-            System.out.println("azureTestMode: " + azureTestMode);
-            try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
-            } catch (IllegalArgumentException var3) {
-                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
-                return TestMode.PLAYBACK;
-            }
-        } else {
-            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
-            return TestMode.PLAYBACK;
+    private void addTestProxyTestSanitizersAndMatchers(InterceptorManager interceptorManager) {
+        if (interceptorManager.isLiveMode()) {
+            return;
+        }
+
+        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+        customSanitizers.add(new TestProxySanitizer("$..id", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..token", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..appId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..userId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer(URI_IDENTITY_REPLACER_REGEX, "/identities/" + REDACTED, TestProxySanitizerType.URL));
+        interceptorManager.addSanitizers(customSanitizers);
+
+        if (interceptorManager.isPlaybackMode()) {
+            /** Skipping matching authentication headers since running in playback mode don't rely on environment variables */
+            interceptorManager.addMatchers(Collections.singletonList(
+                new CustomMatcher().setExcludedHeaders(Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha256"))));
         }
     }
 
-    protected CommunicationIdentityClientBuilder addLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
+    protected CommunicationIdentityClient setupClient(CommunicationIdentityClientBuilder builder, String testName) {
+        return addLoggingPolicy(builder, testName).buildClient();
+    }
+
+    protected CommunicationIdentityAsyncClient setupAsyncClient(CommunicationIdentityClientBuilder builder, String testName) {
+        return addLoggingPolicy(builder, testName).buildAsyncClient();
+    }
+
+    private CommunicationIdentityClientBuilder addLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
         return next.process()
-            .flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
+                .flatMap(httpResponse -> {
+                    final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                // Should sanitize printed reponse url
-                System.out.println("MS-CV header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
-                return Mono.just(bufferedResponse);
-            });
-    }
-
-    static class FakeCredentials implements TokenCredential {
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
-        }
-    }
-
-    private String redact(String content, Matcher matcher, String replacement) {
-        while (matcher.find()) {
-            String captureGroup = matcher.group(1);
-            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                content = content.replace(matcher.group(1), replacement);
-            }
-        }
-
-        return content;
-    }
-
-    protected static String generateTeamsUserAadToken() throws MalformedURLException, ExecutionException, InterruptedException {
-        String teamsUserAadToken = "Sanitized";
-        if (TEST_MODE != TestMode.PLAYBACK) {
-            try {
-                IPublicClientApplication publicClientApplication = PublicClientApplication.builder(COMMUNICATION_M365_APP_ID)
-                    .authority(COMMUNICATION_M365_AAD_AUTHORITY + "/" + COMMUNICATION_M365_AAD_TENANT)
-                    .build();
-                Set<String> scopes = Collections.singleton(COMMUNICATION_M365_SCOPE);
-                char[] password = COMMUNICATION_MSAL_PASSWORD.toCharArray();
-                UserNamePasswordParameters userNamePasswordParameters =  UserNamePasswordParameters.builder(scopes, COMMUNICATION_MSAL_USERNAME, password)
-                        .build();
-                Arrays.fill(password, '0');
-                IAuthenticationResult result = publicClientApplication.acquireToken(userNamePasswordParameters).get();
-                teamsUserAadToken = result.accessToken();
-            } catch (Exception e) {
-                throw e;
-            }
-        }
-        return teamsUserAadToken;
+                    // Should sanitize printed reponse url
+                    System.out.println("MS-CV header for " + testName + " request "
+                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                    return Mono.just(bufferedResponse);
+                });
     }
 
     protected void verifyTokenNotEmpty(AccessToken issuedToken) {
+        assertNotNull(issuedToken);
         assertNotNull(issuedToken.getToken());
         assertFalse(issuedToken.getToken().isEmpty());
         assertNotNull(issuedToken.getExpiresAt());
         assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
     }
 
-    public static boolean skipExchangeAadTeamsTokenTest() {
-        return Boolean.parseBoolean(COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST);
+    protected void verifyUserNotEmpty(CommunicationUserIdentifier userIdentifier) {
+        assertNotNull(userIdentifier);
+        assertNotNull(userIdentifier.getId());
+        assertFalse(userIdentifier.getId().isEmpty());
     }
+
 }

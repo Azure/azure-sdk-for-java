@@ -5,19 +5,25 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
+import com.azure.resourcemanager.compute.models.ResourceWithOptionalLocation;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Describes a Virtual Machine Extension. */
 @Fluent
-public final class VirtualMachineExtensionInner extends Resource {
+public final class VirtualMachineExtensionInner extends ResourceWithOptionalLocation {
     /*
      * Describes the properties of a Virtual Machine Extension.
      */
     @JsonProperty(value = "properties")
     private VirtualMachineExtensionProperties innerProperties;
+
+    /** Creates an instance of VirtualMachineExtensionInner class. */
+    public VirtualMachineExtensionInner() {
+    }
 
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine Extension.
@@ -301,7 +307,7 @@ public final class VirtualMachineExtensionInner extends Resource {
      *
      * @return the protectedSettingsFromKeyVault value.
      */
-    public Object protectedSettingsFromKeyVault() {
+    public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.innerProperties() == null ? null : this.innerProperties().protectedSettingsFromKeyVault();
     }
 
@@ -312,7 +318,8 @@ public final class VirtualMachineExtensionInner extends Resource {
      * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner withProtectedSettingsFromKeyVault(Object protectedSettingsFromKeyVault) {
+    public VirtualMachineExtensionInner withProtectedSettingsFromKeyVault(
+        KeyVaultSecretReference protectedSettingsFromKeyVault) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineExtensionProperties();
         }
@@ -321,11 +328,38 @@ public final class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
+     * Get the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * provisioned.
+     *
+     * @return the provisionAfterExtensions value.
+     */
+    public List<String> provisionAfterExtensions() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisionAfterExtensions();
+    }
+
+    /**
+     * Set the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * provisioned.
+     *
+     * @param provisionAfterExtensions the provisionAfterExtensions value to set.
+     * @return the VirtualMachineExtensionInner object itself.
+     */
+    public VirtualMachineExtensionInner withProvisionAfterExtensions(List<String> provisionAfterExtensions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionProperties();
+        }
+        this.innerProperties().withProvisionAfterExtensions(provisionAfterExtensions);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

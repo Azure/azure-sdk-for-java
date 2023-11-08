@@ -29,6 +29,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ContentKeyPolicyRestrictionTokenKey {
+    /** Creates an instance of ContentKeyPolicyRestrictionTokenKey class. */
+    public ContentKeyPolicyRestrictionTokenKey() {
+    }
+
     /**
      * Validates the instance.
      *

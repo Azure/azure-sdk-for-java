@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Detailed result of testing a route. */
 @Fluent
 public final class TestRouteResultDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TestRouteResultDetails.class);
-
     /*
      * JSON-serialized list of route compilation errors
      */
     @JsonProperty(value = "compilationErrors")
     private List<RouteCompilationError> compilationErrors;
+
+    /** Creates an instance of TestRouteResultDetails class. */
+    public TestRouteResultDetails() {
+    }
 
     /**
      * Get the compilationErrors property: JSON-serialized list of route compilation errors.

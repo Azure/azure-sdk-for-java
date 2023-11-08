@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPools Delete. */
 public final class SqlPoolsDeleteSamples {
     /*
@@ -17,6 +15,8 @@ public final class SqlPoolsDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void deleteASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPools().delete("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", Context.NONE);
+        manager
+            .sqlPools()
+            .delete("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", com.azure.core.util.Context.NONE);
     }
 }

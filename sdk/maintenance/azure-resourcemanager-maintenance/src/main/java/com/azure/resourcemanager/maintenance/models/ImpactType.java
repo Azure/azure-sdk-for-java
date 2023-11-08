@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImpactType. */
+/** The impact type. */
 public final class ImpactType extends ExpandableStringEnum<ImpactType> {
     /** Static value None for ImpactType. */
     public static final ImpactType NONE = fromString("None");
@@ -23,6 +23,15 @@ public final class ImpactType extends ExpandableStringEnum<ImpactType> {
     public static final ImpactType REDEPLOY = fromString("Redeploy");
 
     /**
+     * Creates a new instance of ImpactType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImpactType() {
+    }
+
+    /**
      * Creates or finds a ImpactType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ImpactType extends ExpandableStringEnum<ImpactType> {
         return fromString(name, ImpactType.class);
     }
 
-    /** @return known ImpactType values. */
+    /**
+     * Gets known ImpactType values.
+     *
+     * @return known ImpactType values.
+     */
     public static Collection<ImpactType> values() {
         return values(ImpactType.class);
     }

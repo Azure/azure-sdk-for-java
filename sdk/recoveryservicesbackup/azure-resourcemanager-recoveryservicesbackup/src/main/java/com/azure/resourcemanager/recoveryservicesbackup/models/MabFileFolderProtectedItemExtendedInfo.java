@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Additional information on the backed up item. */
 @Fluent
 public final class MabFileFolderProtectedItemExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MabFileFolderProtectedItemExtendedInfo.class);
-
     /*
      * Last time when the agent data synced to service.
      */
@@ -32,6 +28,10 @@ public final class MabFileFolderProtectedItemExtendedInfo {
      */
     @JsonProperty(value = "recoveryPointCount")
     private Integer recoveryPointCount;
+
+    /** Creates an instance of MabFileFolderProtectedItemExtendedInfo class. */
+    public MabFileFolderProtectedItemExtendedInfo() {
+    }
 
     /**
      * Get the lastRefreshedAt property: Last time when the agent data synced to service.

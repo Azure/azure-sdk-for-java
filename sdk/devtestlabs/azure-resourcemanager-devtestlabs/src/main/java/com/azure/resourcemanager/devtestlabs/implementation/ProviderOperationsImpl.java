@@ -11,10 +11,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.ProviderOperationsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.OperationMetadataInner;
 import com.azure.resourcemanager.devtestlabs.models.OperationMetadata;
 import com.azure.resourcemanager.devtestlabs.models.ProviderOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProviderOperationsImpl implements ProviderOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProviderOperationsImpl.class);
 
     private final ProviderOperationsClient innerClient;
 

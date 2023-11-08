@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KeyType. */
+/**
+ * Encryption key type to be used for the encryption service. 'Account' key type implies that an account-scoped
+ * encryption key will be used. 'Service' key type implies that a default service key is used.
+ */
 public final class KeyType extends ExpandableStringEnum<KeyType> {
     /** Static value Service for KeyType. */
     public static final KeyType SERVICE = fromString("Service");
 
     /** Static value Account for KeyType. */
     public static final KeyType ACCOUNT = fromString("Account");
+
+    /**
+     * Creates a new instance of KeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyType() {
+    }
 
     /**
      * Creates or finds a KeyType from its string representation.
@@ -27,7 +39,11 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
         return fromString(name, KeyType.class);
     }
 
-    /** @return known KeyType values. */
+    /**
+     * Gets known KeyType values.
+     *
+     * @return known KeyType values.
+     */
     public static Collection<KeyType> values() {
         return values(KeyType.class);
     }

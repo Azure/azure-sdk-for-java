@@ -5,18 +5,19 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -27,6 +28,10 @@ import java.util.function.BiFunction;
  */
 public class DCountDocumentQueryExecutionContext
     implements IDocumentQueryExecutionComponent<Document> {
+
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private final IDocumentQueryExecutionComponent<Document> component;
     private final QueryInfo info;
@@ -66,12 +71,11 @@ public class DCountDocumentQueryExecutionContext
                    .map(superList -> {
                        double requestCharge = 0;
                        Map<String, String> headers = new HashMap<>();
-                       List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
+                       Collection<ClientSideRequestStatistics> diagnostics = new DistinctClientSideRequestStatisticsCollection();
 
                        for (FeedResponse<Document> page : superList) {
-                           diagnosticsList.addAll(BridgeInternal
-                                                      .getClientSideRequestStatisticsList(page
-                                                                                              .getCosmosDiagnostics()));
+                           diagnostics.addAll(
+                               diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(page.getCosmosDiagnostics()));
                            count += page.getResults().size();
                            requestCharge += page.getRequestCharge();
                            QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
@@ -95,7 +99,8 @@ public class DCountDocumentQueryExecutionContext
                                                                              queryMetricsMap, null, false,
                                                                              false, null);
 
-                       BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+                       diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                           frp.getCosmosDiagnostics(), diagnostics);
                        return BridgeInternal
                                         .createFeedResponseWithQueryMetrics(Collections
                                                                                 .singletonList(result),

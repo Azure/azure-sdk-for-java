@@ -20,6 +20,9 @@ public final class Db2Source extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of Db2Source class. */
+    public Db2Source() {}
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *
@@ -37,6 +40,41 @@ public final class Db2Source extends TabularSource {
      */
     public Db2Source setQuery(Object query) {
         this.query = query;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2Source setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2Source setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2Source setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2Source setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2Source setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

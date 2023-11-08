@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Network Profile. */
 @Fluent
 public final class VirtualNetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkProfile.class);
-
     /*
      * Subnet ID used for computes in workspace
      */
     @JsonProperty(value = "computeSubnetId")
     private String computeSubnetId;
+
+    /** Creates an instance of VirtualNetworkProfile class. */
+    public VirtualNetworkProfile() {
+    }
 
     /**
      * Get the computeSubnetId property: Subnet ID used for computes in workspace.

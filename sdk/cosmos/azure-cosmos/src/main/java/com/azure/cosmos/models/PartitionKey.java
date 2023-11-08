@@ -20,6 +20,11 @@ public class PartitionKey {
         this.internalPartitionKey = partitionKeyInternal;
     }
 
+    PartitionKey(final Object key, PartitionKeyInternal partitionKeyInternal) {
+        this.keyObject = key;
+        this.internalPartitionKey = partitionKeyInternal;
+    }
+
     /**
      * Constructor. CREATE a new instance of the PartitionKey object.
      *
@@ -98,14 +103,21 @@ public class PartitionKey {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.PartitionKeyHelper.setPartitionKeyAccessor(
             new ImplementationBridgeHelpers.PartitionKeyHelper.PartitionKeyAccessor() {
                 @Override
                 public PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal) {
                     return new PartitionKey(partitionKeyInternal);
                 }
-            });
+
+                @Override
+                public PartitionKey toPartitionKey(Object objectKey, PartitionKeyInternal partitionKeyInternal) {
+                    return new PartitionKey(objectKey, partitionKeyInternal);
+                }
+            }
+        );
     }
+
+    static { initialize(); }
 }

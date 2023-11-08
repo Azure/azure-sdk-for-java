@@ -30,11 +30,14 @@ public final class TopologyResource {
     private String location;
 
     /*
-     * Holds the associations the resource has with other resources in the
-     * resource group.
+     * Holds the associations the resource has with other resources in the resource group.
      */
     @JsonProperty(value = "associations")
     private List<TopologyAssociation> associations;
+
+    /** Creates an instance of TopologyResource class. */
+    public TopologyResource() {
+    }
 
     /**
      * Get the name property: Name of the resource.

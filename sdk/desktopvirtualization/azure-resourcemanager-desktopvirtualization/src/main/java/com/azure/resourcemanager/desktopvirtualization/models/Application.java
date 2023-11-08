@@ -140,6 +140,13 @@ public interface Application {
     byte[] iconContent();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationInner object.
      *
      * @return the inner object.
@@ -153,11 +160,13 @@ public interface Application {
             DefinitionStages.WithCommandLineSetting,
             DefinitionStages.WithCreate {
     }
+
     /** The Application definition stages. */
     interface DefinitionStages {
         /** The first stage of the Application definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Application definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -169,6 +178,7 @@ public interface Application {
              */
             WithCommandLineSetting withExistingApplicationGroup(String resourceGroupName, String applicationGroupName);
         }
+
         /** The stage of the Application definition allowing to specify commandLineSetting. */
         interface WithCommandLineSetting {
             /**
@@ -183,6 +193,7 @@ public interface Application {
              */
             WithCreate withCommandLineSetting(CommandLineSetting commandLineSetting);
         }
+
         /**
          * The stage of the Application definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -213,6 +224,7 @@ public interface Application {
              */
             Application create(Context context);
         }
+
         /** The stage of the Application definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -223,6 +235,7 @@ public interface Application {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the Application definition allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -233,6 +246,7 @@ public interface Application {
              */
             WithCreate withFriendlyName(String friendlyName);
         }
+
         /** The stage of the Application definition allowing to specify filePath. */
         interface WithFilePath {
             /**
@@ -243,6 +257,7 @@ public interface Application {
              */
             WithCreate withFilePath(String filePath);
         }
+
         /** The stage of the Application definition allowing to specify msixPackageFamilyName. */
         interface WithMsixPackageFamilyName {
             /**
@@ -253,6 +268,7 @@ public interface Application {
              */
             WithCreate withMsixPackageFamilyName(String msixPackageFamilyName);
         }
+
         /** The stage of the Application definition allowing to specify msixPackageApplicationId. */
         interface WithMsixPackageApplicationId {
             /**
@@ -264,6 +280,7 @@ public interface Application {
              */
             WithCreate withMsixPackageApplicationId(String msixPackageApplicationId);
         }
+
         /** The stage of the Application definition allowing to specify applicationType. */
         interface WithApplicationType {
             /**
@@ -274,6 +291,7 @@ public interface Application {
              */
             WithCreate withApplicationType(RemoteApplicationType applicationType);
         }
+
         /** The stage of the Application definition allowing to specify commandLineArguments. */
         interface WithCommandLineArguments {
             /**
@@ -284,6 +302,7 @@ public interface Application {
              */
             WithCreate withCommandLineArguments(String commandLineArguments);
         }
+
         /** The stage of the Application definition allowing to specify showInPortal. */
         interface WithShowInPortal {
             /**
@@ -295,6 +314,7 @@ public interface Application {
              */
             WithCreate withShowInPortal(Boolean showInPortal);
         }
+
         /** The stage of the Application definition allowing to specify iconPath. */
         interface WithIconPath {
             /**
@@ -305,6 +325,7 @@ public interface Application {
              */
             WithCreate withIconPath(String iconPath);
         }
+
         /** The stage of the Application definition allowing to specify iconIndex. */
         interface WithIconIndex {
             /**
@@ -316,6 +337,7 @@ public interface Application {
             WithCreate withIconIndex(Integer iconIndex);
         }
     }
+
     /**
      * Begins update for the Application resource.
      *
@@ -352,6 +374,7 @@ public interface Application {
          */
         Application apply(Context context);
     }
+
     /** The Application update stages. */
     interface UpdateStages {
         /** The stage of the Application update allowing to specify tags. */
@@ -364,6 +387,7 @@ public interface Application {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Application update allowing to specify description. */
         interface WithDescription {
             /**
@@ -374,6 +398,7 @@ public interface Application {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the Application update allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -384,6 +409,7 @@ public interface Application {
              */
             Update withFriendlyName(String friendlyName);
         }
+
         /** The stage of the Application update allowing to specify filePath. */
         interface WithFilePath {
             /**
@@ -394,6 +420,7 @@ public interface Application {
              */
             Update withFilePath(String filePath);
         }
+
         /** The stage of the Application update allowing to specify commandLineSetting. */
         interface WithCommandLineSetting {
             /**
@@ -408,6 +435,7 @@ public interface Application {
              */
             Update withCommandLineSetting(CommandLineSetting commandLineSetting);
         }
+
         /** The stage of the Application update allowing to specify commandLineArguments. */
         interface WithCommandLineArguments {
             /**
@@ -418,6 +446,7 @@ public interface Application {
              */
             Update withCommandLineArguments(String commandLineArguments);
         }
+
         /** The stage of the Application update allowing to specify showInPortal. */
         interface WithShowInPortal {
             /**
@@ -429,6 +458,7 @@ public interface Application {
              */
             Update withShowInPortal(Boolean showInPortal);
         }
+
         /** The stage of the Application update allowing to specify iconPath. */
         interface WithIconPath {
             /**
@@ -439,6 +469,7 @@ public interface Application {
              */
             Update withIconPath(String iconPath);
         }
+
         /** The stage of the Application update allowing to specify iconIndex. */
         interface WithIconIndex {
             /**
@@ -449,6 +480,7 @@ public interface Application {
              */
             Update withIconIndex(Integer iconIndex);
         }
+
         /** The stage of the Application update allowing to specify msixPackageFamilyName. */
         interface WithMsixPackageFamilyName {
             /**
@@ -459,6 +491,7 @@ public interface Application {
              */
             Update withMsixPackageFamilyName(String msixPackageFamilyName);
         }
+
         /** The stage of the Application update allowing to specify msixPackageApplicationId. */
         interface WithMsixPackageApplicationId {
             /**
@@ -470,6 +503,7 @@ public interface Application {
              */
             Update withMsixPackageApplicationId(String msixPackageApplicationId);
         }
+
         /** The stage of the Application update allowing to specify applicationType. */
         interface WithApplicationType {
             /**
@@ -481,6 +515,7 @@ public interface Application {
             Update withApplicationType(RemoteApplicationType applicationType);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

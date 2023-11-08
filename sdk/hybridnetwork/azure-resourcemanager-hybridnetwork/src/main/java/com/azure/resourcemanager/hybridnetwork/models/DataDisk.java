@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class DataDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDisk.class);
-
     /*
      * Specifies how the virtual machine should be created.
      */
@@ -31,11 +27,15 @@ public final class DataDisk {
     private String name;
 
     /*
-     * Specifies the size of an empty disk in gigabytes. This element can be
-     * used to overwrite the size of the disk in a virtual machine image.
+     * Specifies the size of an empty disk in gigabytes. This element can be used to overwrite the size of the disk in
+     * a virtual machine image.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
+
+    /** Creates an instance of DataDisk class. */
+    public DataDisk() {
+    }
 
     /**
      * Get the createOption property: Specifies how the virtual machine should be created.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Provides information about the drive's status. */
 @Fluent
 public final class DriveStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DriveStatus.class);
-
     /*
      * The drive's hardware serial number, without spaces.
      */
@@ -51,8 +47,8 @@ public final class DriveStatus {
     private DriveState state;
 
     /*
-     * Detailed status about the data transfer process. This field is not
-     * returned in the response until the drive is in the Transferring state.
+     * Detailed status about the data transfer process. This field is not returned in the response until the drive is
+     * in the Transferring state.
      */
     @JsonProperty(value = "copyStatus")
     private String copyStatus;
@@ -64,15 +60,13 @@ public final class DriveStatus {
     private Long percentComplete;
 
     /*
-     * A URI that points to the blob containing the verbose log for the data
-     * transfer operation.
+     * A URI that points to the blob containing the verbose log for the data transfer operation.
      */
     @JsonProperty(value = "verboseLogUri")
     private String verboseLogUri;
 
     /*
-     * A URI that points to the blob containing the error log for the data
-     * transfer operation.
+     * A URI that points to the blob containing the error log for the data transfer operation.
      */
     @JsonProperty(value = "errorLogUri")
     private String errorLogUri;
@@ -88,6 +82,10 @@ public final class DriveStatus {
      */
     @JsonProperty(value = "bytesSucceeded")
     private Long bytesSucceeded;
+
+    /** Creates an instance of DriveStatus class. */
+    public DriveStatus() {
+    }
 
     /**
      * Get the driveId property: The drive's hardware serial number, without spaces.

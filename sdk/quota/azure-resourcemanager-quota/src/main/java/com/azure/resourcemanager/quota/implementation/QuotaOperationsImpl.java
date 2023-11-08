@@ -11,10 +11,9 @@ import com.azure.resourcemanager.quota.fluent.QuotaOperationsClient;
 import com.azure.resourcemanager.quota.fluent.models.OperationResponseInner;
 import com.azure.resourcemanager.quota.models.OperationResponse;
 import com.azure.resourcemanager.quota.models.QuotaOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class QuotaOperationsImpl implements QuotaOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QuotaOperationsImpl.class);
 
     private final QuotaOperationsClient innerClient;
 

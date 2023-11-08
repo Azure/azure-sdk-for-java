@@ -22,6 +22,10 @@ public class PirResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
+    /** Creates an instance of PirResource class. */
+    public PirResource() {
+    }
+
     /**
      * Get the name property: Resource name.
      *

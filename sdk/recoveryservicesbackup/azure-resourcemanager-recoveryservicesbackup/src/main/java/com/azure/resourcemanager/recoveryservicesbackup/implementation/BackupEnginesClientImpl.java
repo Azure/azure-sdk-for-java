@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupEnginesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupEngineBaseResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngineBaseResourceList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupEnginesClient. */
 public final class BackupEnginesClientImpl implements BackupEnginesClient {
-    private final ClientLogger logger = new ClientLogger(BackupEnginesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupEnginesService service;
 
@@ -58,11 +55,10 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupEnginesService {
+    public interface BackupEnginesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupEngines")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEngines")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupEngineBaseResourceList>> list(
@@ -78,8 +74,7 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupEngines/{backupEngineName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEngines/{backupEngineName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupEngineBaseResourceInner>> get(
@@ -448,33 +443,6 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param backupEngineName Name of the backup management server.
-     * @param filter OData filter options.
-     * @param skipToken skipToken Filter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the base backup engine class on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupEngineBaseResourceInner> getAsync(
-        String vaultName, String resourceGroupName, String backupEngineName, String filter, String skipToken) {
-        return getWithResponseAsync(vaultName, resourceGroupName, backupEngineName, filter, skipToken)
-            .flatMap(
-                (Response<BackupEngineBaseResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns backup management server registered to Recovery Services Vault.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param backupEngineName Name of the backup management server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -486,32 +454,7 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
         final String filter = null;
         final String skipToken = null;
         return getWithResponseAsync(vaultName, resourceGroupName, backupEngineName, filter, skipToken)
-            .flatMap(
-                (Response<BackupEngineBaseResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns backup management server registered to Recovery Services Vault.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param backupEngineName Name of the backup management server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the base backup engine class.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupEngineBaseResourceInner get(String vaultName, String resourceGroupName, String backupEngineName) {
-        final String filter = null;
-        final String skipToken = null;
-        return getAsync(vaultName, resourceGroupName, backupEngineName, filter, skipToken).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -540,9 +483,29 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
     }
 
     /**
+     * Returns backup management server registered to Recovery Services Vault.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param backupEngineName Name of the backup management server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the base backup engine class.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupEngineBaseResourceInner get(String vaultName, String resourceGroupName, String backupEngineName) {
+        final String filter = null;
+        final String skipToken = null;
+        return getWithResponse(vaultName, resourceGroupName, backupEngineName, filter, skipToken, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -578,7 +541,8 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

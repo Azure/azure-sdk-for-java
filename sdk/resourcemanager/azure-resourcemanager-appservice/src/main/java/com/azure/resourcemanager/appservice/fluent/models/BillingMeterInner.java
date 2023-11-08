@@ -20,6 +20,10 @@ public final class BillingMeterInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private BillingMeterProperties innerProperties;
 
+    /** Creates an instance of BillingMeterInner class. */
+    public BillingMeterInner() {
+    }
+
     /**
      * Get the innerProperties property: BillingMeter resource specific properties.
      *

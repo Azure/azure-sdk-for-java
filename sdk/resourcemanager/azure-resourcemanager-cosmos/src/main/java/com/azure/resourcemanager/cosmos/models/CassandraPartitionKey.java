@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB Cassandra table partition key. */
 @Fluent
 public final class CassandraPartitionKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraPartitionKey.class);
-
     /*
      * Name of the Cosmos DB Cassandra table partition key
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of CassandraPartitionKey class. */
+    public CassandraPartitionKey() {
+    }
 
     /**
      * Get the name property: Name of the Cosmos DB Cassandra table partition key.

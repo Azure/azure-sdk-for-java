@@ -7,7 +7,10 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.api.Assumptions;
@@ -16,6 +19,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,12 +46,23 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     private ContainerRegistryAsyncClient registryAsyncClient;
     private ContainerRegistryClient registryClient;
 
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .build();
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .build();
+    }
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient(HttpClient httpClient) {
-        return getContainerRegistryBuilder(httpClient).buildAsyncClient();
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildAsyncClient();
     }
 
     private ContainerRegistryClient getContainerRegistryClient(HttpClient httpClient) {
-        return getContainerRegistryBuilder(httpClient).buildClient();
+        return getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
     }
 
     @BeforeEach
@@ -190,8 +205,10 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
 
         ContainerRegistryClient throwableRegistryClient = getContainerRegistryBuilder(httpClient)
             .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_GOVERNMENT)
+            .retryOptions(new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(1))))
             .buildClient();
-        assertThrows(ClientAuthenticationException.class, () -> throwableRegistryClient.listRepositoryNames().stream().collect(Collectors.toList()));
+        assertThrows(ClientAuthenticationException.class, () -> throwableRegistryClient.listRepositoryNames().stream()
+            .collect(Collectors.toList()));
     }
 }
 

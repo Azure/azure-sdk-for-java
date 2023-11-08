@@ -4,21 +4,17 @@
 
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Vendor resource. */
-@Fluent
+@Immutable
 public final class VendorInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorInner.class);
-
     /*
      * Vendor properties.
      */
@@ -30,6 +26,10 @@ public final class VendorInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of VendorInner class. */
+    public VendorInner() {
+    }
 
     /**
      * Get the innerProperties property: Vendor properties.

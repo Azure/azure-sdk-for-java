@@ -41,8 +41,7 @@ public final class PipelineRun {
     private String pipelineName;
 
     /*
-     * The full or partial list of parameter name, value pair used in the
-     * pipeline run.
+     * The full or partial list of parameter name, value pair used in the pipeline run.
      */
     @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, String> parameters;
@@ -93,6 +92,9 @@ public final class PipelineRun {
      * Information about a pipeline run.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of PipelineRun class. */
+    public PipelineRun() {}
 
     /**
      * Get the runId property: Identifier of a run.

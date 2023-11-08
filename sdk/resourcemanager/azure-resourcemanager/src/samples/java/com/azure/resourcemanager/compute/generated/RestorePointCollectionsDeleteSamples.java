@@ -4,43 +4,39 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RestorePointCollections Delete. */
 public final class RestorePointCollectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/RestorePointCollections_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/restorePointExamples/RestorePointCollection_Delete_MinimumSet_Gen.json
      */
     /**
-     * Sample code: RestorePointCollections_Delete_MaximumSet_Gen.
+     * Sample code: RestorePointCollection_Delete_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void restorePointCollectionsDeleteMaximumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void restorePointCollectionDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getRestorePointCollections()
-            .delete("rgcompute", "aaaaaaaaaaaaaaaaa", Context.NONE);
+            .delete("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/RestorePointCollections_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/restorePointExamples/RestorePointCollection_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: RestorePointCollections_Delete_MinimumSet_Gen.
+     * Sample code: RestorePointCollection_Delete_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void restorePointCollectionsDeleteMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void restorePointCollectionDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getRestorePointCollections()
-            .delete("rgcompute", "aaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .delete("rgcompute", "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

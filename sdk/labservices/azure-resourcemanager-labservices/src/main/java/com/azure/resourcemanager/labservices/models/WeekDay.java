@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for WeekDay. */
+/** Days of the week. */
 public enum WeekDay {
     /** Enum value Sunday. */
     SUNDAY("Sunday"),
@@ -45,6 +45,9 @@ public enum WeekDay {
      */
     @JsonCreator
     public static WeekDay fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         WeekDay[] items = WeekDay.values();
         for (WeekDay item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -54,6 +57,7 @@ public enum WeekDay {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

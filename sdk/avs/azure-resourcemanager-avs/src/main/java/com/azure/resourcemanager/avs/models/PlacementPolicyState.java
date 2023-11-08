@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PlacementPolicyState. */
+/** Whether the placement policy is enabled or disabled. */
 public final class PlacementPolicyState extends ExpandableStringEnum<PlacementPolicyState> {
     /** Static value Enabled for PlacementPolicyState. */
     public static final PlacementPolicyState ENABLED = fromString("Enabled");
 
     /** Static value Disabled for PlacementPolicyState. */
     public static final PlacementPolicyState DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of PlacementPolicyState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PlacementPolicyState() {
+    }
 
     /**
      * Creates or finds a PlacementPolicyState from its string representation.
@@ -27,7 +36,11 @@ public final class PlacementPolicyState extends ExpandableStringEnum<PlacementPo
         return fromString(name, PlacementPolicyState.class);
     }
 
-    /** @return known PlacementPolicyState values. */
+    /**
+     * Gets known PlacementPolicyState values.
+     *
+     * @return known PlacementPolicyState values.
+     */
     public static Collection<PlacementPolicyState> values() {
         return values(PlacementPolicyState.class);
     }

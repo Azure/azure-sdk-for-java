@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedPrivateEndpoints ListByFactory. */
 public final class ManagedPrivateEndpointsListByFactorySamples {
     /*
@@ -21,6 +19,9 @@ public final class ManagedPrivateEndpointsListByFactorySamples {
         manager
             .managedPrivateEndpoints()
             .listByFactory(
-                "exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName", Context.NONE);
+                "exampleResourceGroup",
+                "exampleFactoryName",
+                "exampleManagedVirtualNetworkName",
+                com.azure.core.util.Context.NONE);
     }
 }

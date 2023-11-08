@@ -1,6 +1,6 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.18.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,192 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.17.1 (2023-10-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.16.0` to version `5.16.1`.
+- Upgraded `azure-storage-blob` from `12.24.0` to version `12.24.1`.
+
+## 1.17.0 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.8` to version `5.16.0`.
+
+## 1.16.9 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.7` to version `5.15.8`.
+
+## 1.16.8 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.6` to version `5.15.7`.
+- Upgraded `azure-storage-blob` from `12.22.3` to version `12.23.0`.
+
+
+## 1.16.7 (2023-06-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.5` to version `5.15.6`.
+- Upgraded `azure-storage-blob` from `12.22.1` to version `12.22.3`.
+
+## 1.16.6 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.22.0` to version `12.22.1`.
+- Upgraded `azure-messaging-eventhubs` from `5.15.4` to version `5.16.0-beta.1`.
+
+## 1.16.5 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.21.1` to version `12.22.0`.
+- Upgraded `azure-messaging-eventhubs` from `5.15.3` to version `5.15.4`.
+
+## 1.16.4 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.2` to version `5.15.3`.
+- Upgraded `azure-storage-blob` from `12.20.3` to version `12.21.1`.
+
+## 1.16.3 (2023-02-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.15.2`.
+- Update `azure-storage-blob` dependency to `12.20.3`.
+
+## 1.16.2 (2023-01-18)
+
+### Breaking Changes
+
+- Remove `messaging.eventhubs.checkpoints` counter and replace it with `messaging.eventhubs.checkpoint.duration`
+  histogram that can be used to count checkpoint calls.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.15.1`.
+- Update `azure-storage-blob` dependency to `12.20.2`.
+
+## 1.16.1 (2022-11-16)
+
+### Bugs Fixed
+
+- Reverted behavior changes of `claimOwnership` back to return empty when error occurred, to avoid throw out 412 status code error. ([#31672](https://github.com/Azure/azure-sdk-for-java/issues/31672))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.15.0`.
+- Update `azure-storage-blob` dependency to `12.20.1`.
+
+## 1.16.0 (2022-10-13)
+
+### Breaking Changes
+
+- Remove `com.azure.messaging.eventhubs.checkpointstore.blob.Messages` from public API.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.14.0`.
+- Update `azure-storage-blob` dependency to `12.20.0`.
+
+## 1.15.1 (2022-09-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.13.1`.
+- Update `azure-storage-blob` dependency to `12.19.1`.
+
+## 1.15.0 (2022-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.13.0`.
+- Update `azure-storage-blob` dependency to `12.19.0`.
+
+## 1.15.0-beta.1 (2022-08-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.13.0-beta.1`.
+
+## 1.14.0 (2022-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.12.2`.
+- Update `azure-storage-blob` dependency to `12.18.0`.
+
+## 1.13.0 (2022-06-10)
+
+### Features Added
+
+- Updated return error when claim ownership occurs an error. Changed the behavior of `claimOwnership` method from __return empty when error__ to __return error when error__
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.12.1`.
+- Update `azure-storage-blob` dependency to `12.17.1`.
+
+## 1.12.2 (2022-05-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.12.0`.
+- Update `azure-storage-blob` dependency to `12.16.1`.
+
+## 1.12.1 (2022-04-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.11.2`.
+- Update `azure-storage-blob` dependency to `12.16.0`.
 
 ## 1.12.0 (2022-03-17)
 

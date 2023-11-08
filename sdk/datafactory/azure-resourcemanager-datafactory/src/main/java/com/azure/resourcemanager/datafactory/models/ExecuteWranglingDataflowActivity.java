@@ -30,6 +30,10 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
     @JsonProperty(value = "policy")
     private ActivityPolicy policy;
 
+    /** Creates an instance of ExecuteWranglingDataflowActivity class. */
+    public ExecuteWranglingDataflowActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Execute power query activity properties.
      *
@@ -70,6 +74,20 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
     @Override
     public ExecuteWranglingDataflowActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteWranglingDataflowActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteWranglingDataflowActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
@@ -299,6 +317,31 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
             this.innerTypeProperties = new ExecutePowerQueryActivityTypeProperties();
         }
         this.innerTypeProperties().withRunConcurrently(runConcurrently);
+        return this;
+    }
+
+    /**
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @return the sourceStagingConcurrency value.
+     */
+    public Object sourceStagingConcurrency() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sourceStagingConcurrency();
+    }
+
+    /**
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
+     * @return the ExecuteWranglingDataflowActivity object itself.
+     */
+    public ExecuteWranglingDataflowActivity withSourceStagingConcurrency(Object sourceStagingConcurrency) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecutePowerQueryActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSourceStagingConcurrency(sourceStagingConcurrency);
         return this;
     }
 

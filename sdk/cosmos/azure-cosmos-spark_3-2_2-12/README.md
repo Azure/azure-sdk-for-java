@@ -1,5 +1,6 @@
-## Azure Cosmos DB OLTP Spark 3 connector
+# Azure Cosmos DB OLTP Spark 3 connector
 
+## Azure Cosmos DB OLTP Spark 3 connector for Spark 3.2
 **Azure Cosmos DB OLTP Spark connector** provides Apache Spark support for Azure Cosmos DB using 
 the [SQL API][sql_api_query].
 [Azure Cosmos DB][cosmos_introduction] is a globally-distributed database service which allows 
@@ -25,45 +26,126 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 ### Version Compatibility
 
 #### azure-cosmos-spark_3-2_2-12
-| Connector     | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
-| ------------- | ------------------------ | -------------------- | -----------------------  | ----------------------------- |
-| 4.6.2         | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
-| 4.6.1         | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
-| 4.6.0         | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| Connector | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
+|-----------|--------------------------|----------------------|--------------------------|-------------------------------|
+| 4.23.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.22.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.21.1    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.21.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.20.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.19.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.18.2    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.18.1    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.18.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.17.2    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.17.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.16.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.15.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.14.1    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.14.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.13.1    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.13.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.12.2    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.12.1    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.12.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.11.2    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.11.1    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.11.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.10.1    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.10.0    | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.9.0     | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.8.0     | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.7.0     | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.6.2     | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.6.1     | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+| 4.6.0     | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
+
+#### azure-cosmos-spark_3-3_2-12
+| Connector | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
+|-----------|--------------------------|----------------------|--------------------------|-------------------------------|
+| 4.23.0    | 3.3.0                    | 8                    | 2.12                     | 11.\*, 12.\*                  |
+| 4.22.0    | 3.3.0                    | 8                    | 2.12                     | 11.\*, 12.\*                  |
+| 4.21.1    | 3.3.0                    | 8                    | 2.12                     | 11.\*, 12.\*                  |
+| 4.21.0    | 3.3.0                    | 8                    | 2.12                     | 11.\*, 12.\*                  |
+| 4.20.0    | 3.3.0                    | 8                    | 2.12                     | 11.\*                         |
+| 4.19.0    | 3.3.0                    | 8                    | 2.12                     | 11.\*                         |
+| 4.18.2    | 3.3.0                    | 8                    | 2.12                     | 11.\*                         |
+| 4.18.1    | 3.3.0                    | 8                    | 2.12                     | 11.\*                         |
+| 4.18.0    | 3.3.0                    | 8                    | 2.12                     | 11.\*                         |
+| 4.17.2    | 3.3.0                    | 8                    | 2.12                     | 11.\*                         |
+| 4.17.0    | 3.3.0                    | 8                    | 2.12                     | 11.\*                         |
+| 4.16.0    | 3.3.0                    | 8                    | 2.12                     | 11.\*                         |
+| 4.15.0    | 3.3.0                    | 8                    | 2.12                     | 11.\*                         |
 
 #### azure-cosmos-spark_3-1_2-12
-| Connector     | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
-| ------------- | ------------------------ | -------------------- | -----------------------  | ----------------------------- |
-| 4.6.2         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.6.1         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.6.0         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.5.3         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.5.2         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.5.1         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.5.0         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.4.2         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.4.1         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.4.0         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.3.1         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.3.0         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
-| 4.2.0         | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
-| 4.1.0         | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
-| 4.0.0         | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
-| 4.0.0-beta.3  | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
-| 4.0.0-beta.2  | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
-| 4.0.0-beta.1  | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| Connector    | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
+|--------------|--------------------------|----------------------|--------------------------|-------------------------------|
+| 4.23.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.22.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.21.1       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.21.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.20.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.19.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.18.2       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.18.1       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.18.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.17.2       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.17.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.16.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.15.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.14.1       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.14.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.13.1       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.13.0       | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.12.2       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.12.1       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.12.0       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.11.2       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.11.1       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.11.0       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.10.1       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.10.0       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.9.0        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.8.0        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.7.0        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.6.2        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.6.1        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.6.0        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.5.3        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.5.2        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.5.1        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.5.0        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.4.2        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.4.1        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.4.0        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.3.1        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.3.0        | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
+| 4.2.0        | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| 4.1.0        | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| 4.0.0        | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| 4.0.0-beta.3 | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| 4.0.0-beta.2 | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+| 4.0.0-beta.1 | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+
+#### azure-cosmos-spark_3-4_2-12
+| Connector | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
+|-----------|--------------------------|----------------------|--------------------------|-------------------------------|
+| 4.23.0    | 3.4.0                    | 8                    | 2.12                     | 11.\*, 12.\*                  |
+| 4.22.0    | 3.4.0                    | 8                    | 2.12                     | 11.\*, 12.\*                  |
+| 4.21.1    | 3.4.0                    | 8                    | 2.12                     | 11.\*, 12.\*                  |
+| 4.21.0    | 3.4.0                    | 8                    | 2.12                     | 11.\*, 12.\*                  |
 
 ### Download
 
-You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime 8 from Maven:
-`com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12:4.6.2`
+You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime 10 from Maven:
+`com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12:4.23.0`
 
 You can also integrate against Cosmos DB Spark Connector in your SBT project:
 ```scala
-libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-2_2-12" % "4.6.2"
+libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-2_2-12" % "4.23.0"
 ```
 
-Cosmos DB Spark Connector is available on [Maven Central Repo](https://search.maven.org/search?q=g:com.azure.cosmos.spark).
+Cosmos DB Spark Connector is available on [Maven Central Repo](https://central.sonatype.com/search?namespace=com.azure.cosmos.spark).
 
 #### General
 
@@ -99,7 +181,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
 [local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates

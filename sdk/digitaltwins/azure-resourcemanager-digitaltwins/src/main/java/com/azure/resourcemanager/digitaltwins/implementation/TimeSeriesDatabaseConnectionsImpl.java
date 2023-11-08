@@ -11,12 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.digitaltwins.fluent.TimeSeriesDatabaseConnectionsClient;
 import com.azure.resourcemanager.digitaltwins.fluent.models.TimeSeriesDatabaseConnectionInner;
+import com.azure.resourcemanager.digitaltwins.models.CleanupConnectionArtifacts;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnection;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDatabaseConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesDatabaseConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TimeSeriesDatabaseConnectionsImpl.class);
 
     private final TimeSeriesDatabaseConnectionsClient innerClient;
 
@@ -42,17 +42,6 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         return Utils.mapPage(inner, inner1 -> new TimeSeriesDatabaseConnectionImpl(inner1, this.manager()));
     }
 
-    public TimeSeriesDatabaseConnection get(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
-        TimeSeriesDatabaseConnectionInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName);
-        if (inner != null) {
-            return new TimeSeriesDatabaseConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TimeSeriesDatabaseConnection> getWithResponse(
         String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context) {
         Response<TimeSeriesDatabaseConnectionInner> inner =
@@ -70,6 +59,17 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
     }
 
+    public TimeSeriesDatabaseConnection get(
+        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
+        TimeSeriesDatabaseConnectionInner inner =
+            this.serviceClient().get(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName);
+        if (inner != null) {
+            return new TimeSeriesDatabaseConnectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public TimeSeriesDatabaseConnection delete(
         String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
         TimeSeriesDatabaseConnectionInner inner =
@@ -82,9 +82,20 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
     }
 
     public TimeSeriesDatabaseConnection delete(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context) {
+        String resourceGroupName,
+        String resourceName,
+        String timeSeriesDatabaseConnectionName,
+        CleanupConnectionArtifacts cleanupConnectionArtifacts,
+        Context context) {
         TimeSeriesDatabaseConnectionInner inner =
-            this.serviceClient().delete(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, context);
+            this
+                .serviceClient()
+                .delete(
+                    resourceGroupName,
+                    resourceName,
+                    timeSeriesDatabaseConnectionName,
+                    cleanupConnectionArtifacts,
+                    context);
         if (inner != null) {
             return new TimeSeriesDatabaseConnectionImpl(inner, this.manager());
         } else {
@@ -95,7 +106,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
     public TimeSeriesDatabaseConnection getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -103,7 +114,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,7 +124,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +141,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
     public Response<TimeSeriesDatabaseConnection> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +149,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +159,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,7 +174,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
     public TimeSeriesDatabaseConnection deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,7 +182,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,7 +192,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -190,13 +201,21 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
                                     + " 'timeSeriesDatabaseConnections'.",
                                 id)));
         }
-        return this.delete(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, Context.NONE);
+        CleanupConnectionArtifacts localCleanupConnectionArtifacts = null;
+        return this
+            .delete(
+                resourceGroupName,
+                resourceName,
+                timeSeriesDatabaseConnectionName,
+                localCleanupConnectionArtifacts,
+                Context.NONE);
     }
 
-    public TimeSeriesDatabaseConnection deleteByIdWithResponse(String id, Context context) {
+    public TimeSeriesDatabaseConnection deleteByIdWithResponse(
+        String id, CleanupConnectionArtifacts cleanupConnectionArtifacts, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -204,7 +223,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -214,7 +233,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -223,7 +242,9 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
                                     + " 'timeSeriesDatabaseConnections'.",
                                 id)));
         }
-        return this.delete(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, context);
+        return this
+            .delete(
+                resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, cleanupConnectionArtifacts, context);
     }
 
     private TimeSeriesDatabaseConnectionsClient serviceClient() {

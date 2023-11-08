@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class ServiceUnavailableException extends CosmosException {
     ServiceUnavailableException() {
-        this(RMResources.ServiceUnavailable);
+        this(RMResources.ServiceUnavailable, HttpConstants.SubStatusCodes.UNKNOWN);
     }
 
     /**
@@ -30,18 +30,24 @@ public class ServiceUnavailableException extends CosmosException {
     public ServiceUnavailableException(CosmosError cosmosError,
                                        long lsn,
                                        String partitionKeyRangeId,
-                                       Map<String, String> responseHeaders) {
+                                       Map<String, String> responseHeaders,
+                                       int subStatusCode ) {
         super(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
+        setSubStatus(subStatusCode);
     }
 
-    ServiceUnavailableException(String message) {
-        this(message, null, null, null);
+    ServiceUnavailableException(String message, int subStatusCode) {
+        this(message, null, (String) null, subStatusCode);
+    }
+
+    ServiceUnavailableException(String message, HttpHeaders headers, String requestUriString, int subStatusCode) {
+        this(message, null, headers, requestUriString, subStatusCode);
     }
 
     ServiceUnavailableException(String message, HttpHeaders headers, String requestUriString) {
-        this(message, null, headers, requestUriString);
+        this(message, headers, requestUriString, HttpConstants.SubStatusCodes.UNKNOWN);
     }
 
     /**
@@ -51,12 +57,12 @@ public class ServiceUnavailableException extends CosmosException {
      * @param headers the headers
      * @param requestUri the request uri
      */
-    public ServiceUnavailableException(String message, HttpHeaders headers, URI requestUri) {
-        this(message, headers, requestUri != null ? requestUri.toString() : null);
+    public ServiceUnavailableException(String message, HttpHeaders headers, URI requestUri, int subStatusCode) {
+        this(message, headers, requestUri != null ? requestUri.toString() : null, subStatusCode);
     }
 
-    ServiceUnavailableException(Exception innerException) {
-        this(RMResources.ServiceUnavailable, innerException, null, null);
+    ServiceUnavailableException(Exception innerException, int subStatusCode) {
+        this(RMResources.ServiceUnavailable, innerException, null, null, subStatusCode);
     }
 
     /**
@@ -70,7 +76,8 @@ public class ServiceUnavailableException extends CosmosException {
     public ServiceUnavailableException(String message,
                                        Exception innerException,
                                        HttpHeaders headers,
-                                       String requestUriString) {
+                                       String requestUriString,
+                                       int subStatusCode) {
         super(
             String.format("%s: %s",
                 RMResources.ServiceUnavailable,
@@ -79,5 +86,12 @@ public class ServiceUnavailableException extends CosmosException {
             HttpUtils.asMap(headers),
             HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
             requestUriString);
+        setSubStatus(subStatusCode);
+    }
+
+    private void setSubStatus(int subStatusCode) {
+        this.getResponseHeaders().put(
+            HttpConstants.HttpHeaders.SUB_STATUS,
+            Integer.toString(subStatusCode));
     }
 }

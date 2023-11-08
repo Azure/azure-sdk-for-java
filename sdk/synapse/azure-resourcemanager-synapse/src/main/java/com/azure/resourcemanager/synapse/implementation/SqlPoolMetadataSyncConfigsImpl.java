@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolMetadataSyncConfigsClient
 import com.azure.resourcemanager.synapse.fluent.models.MetadataSyncConfigInner;
 import com.azure.resourcemanager.synapse.models.MetadataSyncConfig;
 import com.azure.resourcemanager.synapse.models.SqlPoolMetadataSyncConfigs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolMetadataSyncConfigsImpl implements SqlPoolMetadataSyncConfigs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolMetadataSyncConfigsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolMetadataSyncConfigsImpl.class);
 
     private final SqlPoolMetadataSyncConfigsClient innerClient;
 
@@ -25,15 +24,6 @@ public final class SqlPoolMetadataSyncConfigsImpl implements SqlPoolMetadataSync
         SqlPoolMetadataSyncConfigsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public MetadataSyncConfig get(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        MetadataSyncConfigInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
-        if (inner != null) {
-            return new MetadataSyncConfigImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<MetadataSyncConfig> getWithResponse(
@@ -51,13 +41,8 @@ public final class SqlPoolMetadataSyncConfigsImpl implements SqlPoolMetadataSync
         }
     }
 
-    public MetadataSyncConfig create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        MetadataSyncConfigInner metadataSyncConfiguration) {
-        MetadataSyncConfigInner inner =
-            this.serviceClient().create(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration);
+    public MetadataSyncConfig get(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        MetadataSyncConfigInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
         if (inner != null) {
             return new MetadataSyncConfigImpl(inner, this.manager());
         } else {
@@ -81,6 +66,20 @@ public final class SqlPoolMetadataSyncConfigsImpl implements SqlPoolMetadataSync
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new MetadataSyncConfigImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MetadataSyncConfig create(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        MetadataSyncConfigInner metadataSyncConfiguration) {
+        MetadataSyncConfigInner inner =
+            this.serviceClient().create(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration);
+        if (inner != null) {
+            return new MetadataSyncConfigImpl(inner, this.manager());
         } else {
             return null;
         }

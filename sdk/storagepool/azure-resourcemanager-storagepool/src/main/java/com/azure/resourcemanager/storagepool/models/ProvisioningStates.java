@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningStates. */
+/** Provisioning state of the iSCSI Target. */
 public final class ProvisioningStates extends ExpandableStringEnum<ProvisioningStates> {
     /** Static value Invalid for ProvisioningStates. */
     public static final ProvisioningStates INVALID = fromString("Invalid");
@@ -35,6 +35,15 @@ public final class ProvisioningStates extends ExpandableStringEnum<ProvisioningS
     public static final ProvisioningStates DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of ProvisioningStates value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningStates() {
+    }
+
+    /**
      * Creates or finds a ProvisioningStates from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class ProvisioningStates extends ExpandableStringEnum<ProvisioningS
         return fromString(name, ProvisioningStates.class);
     }
 
-    /** @return known ProvisioningStates values. */
+    /**
+     * Gets known ProvisioningStates values.
+     *
+     * @return known ProvisioningStates values.
+     */
     public static Collection<ProvisioningStates> values() {
         return values(ProvisioningStates.class);
     }

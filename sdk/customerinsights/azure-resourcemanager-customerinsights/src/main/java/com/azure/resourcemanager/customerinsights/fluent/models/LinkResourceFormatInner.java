@@ -5,105 +5,37 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.EntityType;
 import com.azure.resourcemanager.customerinsights.models.InstanceOperationType;
 import com.azure.resourcemanager.customerinsights.models.ParticipantPropertyReference;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.TypePropertiesMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The link resource format. */
-@JsonFlatten
 @Fluent
-public class LinkResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkResourceFormatInner.class);
-
+public final class LinkResourceFormatInner extends ProxyResource {
     /*
-     * The hub name.
+     * The definition of Link.
      */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    @JsonProperty(value = "properties")
+    private LinkDefinition innerProperties;
 
-    /*
-     * The link name.
-     */
-    @JsonProperty(value = "properties.linkName", access = JsonProperty.Access.WRITE_ONLY)
-    private String linkName;
+    /** Creates an instance of LinkResourceFormatInner class. */
+    public LinkResourceFormatInner() {
+    }
 
-    /*
-     * Type of source entity.
+    /**
+     * Get the innerProperties property: The definition of Link.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sourceEntityType")
-    private EntityType sourceEntityType;
-
-    /*
-     * Type of target entity.
-     */
-    @JsonProperty(value = "properties.targetEntityType")
-    private EntityType targetEntityType;
-
-    /*
-     * Name of the source Entity Type.
-     */
-    @JsonProperty(value = "properties.sourceEntityTypeName")
-    private String sourceEntityTypeName;
-
-    /*
-     * Name of the target Entity Type.
-     */
-    @JsonProperty(value = "properties.targetEntityTypeName")
-    private String targetEntityTypeName;
-
-    /*
-     * Localized display name for the Link.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
-
-    /*
-     * Localized descriptions for the Link.
-     */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
-
-    /*
-     * The set of properties mappings between the source and target Types.
-     */
-    @JsonProperty(value = "properties.mappings")
-    private List<TypePropertiesMapping> mappings;
-
-    /*
-     * The properties that represent the participating profile.
-     */
-    @JsonProperty(value = "properties.participantPropertyReferences")
-    private List<ParticipantPropertyReference> participantPropertyReferences;
-
-    /*
-     * Provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
-
-    /*
-     * Indicating whether the link is reference only link. This flag is ignored
-     * if the Mappings are defined. If the mappings are not defined and it is
-     * set to true, links processing will not create or update profiles.
-     */
-    @JsonProperty(value = "properties.referenceOnly")
-    private Boolean referenceOnly;
-
-    /*
-     * Determines whether this link is supposed to create or delete instances
-     * if Link is NOT Reference Only.
-     */
-    @JsonProperty(value = "properties.operationType")
-    private InstanceOperationType operationType;
+    private LinkDefinition innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tenantId property: The hub name.
@@ -111,7 +43,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -120,7 +52,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the linkName value.
      */
     public String linkName() {
-        return this.linkName;
+        return this.innerProperties() == null ? null : this.innerProperties().linkName();
     }
 
     /**
@@ -129,7 +61,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the sourceEntityType value.
      */
     public EntityType sourceEntityType() {
-        return this.sourceEntityType;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceEntityType();
     }
 
     /**
@@ -139,7 +71,10 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withSourceEntityType(EntityType sourceEntityType) {
-        this.sourceEntityType = sourceEntityType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withSourceEntityType(sourceEntityType);
         return this;
     }
 
@@ -149,7 +84,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the targetEntityType value.
      */
     public EntityType targetEntityType() {
-        return this.targetEntityType;
+        return this.innerProperties() == null ? null : this.innerProperties().targetEntityType();
     }
 
     /**
@@ -159,7 +94,10 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withTargetEntityType(EntityType targetEntityType) {
-        this.targetEntityType = targetEntityType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withTargetEntityType(targetEntityType);
         return this;
     }
 
@@ -169,7 +107,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the sourceEntityTypeName value.
      */
     public String sourceEntityTypeName() {
-        return this.sourceEntityTypeName;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceEntityTypeName();
     }
 
     /**
@@ -179,7 +117,10 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withSourceEntityTypeName(String sourceEntityTypeName) {
-        this.sourceEntityTypeName = sourceEntityTypeName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withSourceEntityTypeName(sourceEntityTypeName);
         return this;
     }
 
@@ -189,7 +130,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the targetEntityTypeName value.
      */
     public String targetEntityTypeName() {
-        return this.targetEntityTypeName;
+        return this.innerProperties() == null ? null : this.innerProperties().targetEntityTypeName();
     }
 
     /**
@@ -199,7 +140,10 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withTargetEntityTypeName(String targetEntityTypeName) {
-        this.targetEntityTypeName = targetEntityTypeName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withTargetEntityTypeName(targetEntityTypeName);
         return this;
     }
 
@@ -209,7 +153,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -219,7 +163,10 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -229,7 +176,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the description value.
      */
     public Map<String, String> description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -239,7 +186,10 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -249,7 +199,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the mappings value.
      */
     public List<TypePropertiesMapping> mappings() {
-        return this.mappings;
+        return this.innerProperties() == null ? null : this.innerProperties().mappings();
     }
 
     /**
@@ -259,7 +209,10 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withMappings(List<TypePropertiesMapping> mappings) {
-        this.mappings = mappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withMappings(mappings);
         return this;
     }
 
@@ -269,7 +222,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the participantPropertyReferences value.
      */
     public List<ParticipantPropertyReference> participantPropertyReferences() {
-        return this.participantPropertyReferences;
+        return this.innerProperties() == null ? null : this.innerProperties().participantPropertyReferences();
     }
 
     /**
@@ -280,7 +233,10 @@ public class LinkResourceFormatInner extends ProxyResource {
      */
     public LinkResourceFormatInner withParticipantPropertyReferences(
         List<ParticipantPropertyReference> participantPropertyReferences) {
-        this.participantPropertyReferences = participantPropertyReferences;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withParticipantPropertyReferences(participantPropertyReferences);
         return this;
     }
 
@@ -290,7 +246,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -301,7 +257,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the referenceOnly value.
      */
     public Boolean referenceOnly() {
-        return this.referenceOnly;
+        return this.innerProperties() == null ? null : this.innerProperties().referenceOnly();
     }
 
     /**
@@ -313,7 +269,10 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withReferenceOnly(Boolean referenceOnly) {
-        this.referenceOnly = referenceOnly;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withReferenceOnly(referenceOnly);
         return this;
     }
 
@@ -324,7 +283,7 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the operationType value.
      */
     public InstanceOperationType operationType() {
-        return this.operationType;
+        return this.innerProperties() == null ? null : this.innerProperties().operationType();
     }
 
     /**
@@ -335,7 +294,10 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withOperationType(InstanceOperationType operationType) {
-        this.operationType = operationType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withOperationType(operationType);
         return this;
     }
 
@@ -345,11 +307,8 @@ public class LinkResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (mappings() != null) {
-            mappings().forEach(e -> e.validate());
-        }
-        if (participantPropertyReferences() != null) {
-            participantPropertyReferences().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

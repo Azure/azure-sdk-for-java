@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Scheduling properties of a job. */
 @Fluent
 public final class JobSchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobSchedule.class);
-
     /*
      * Schedule start time.
      */
@@ -40,11 +36,14 @@ public final class JobSchedule {
     private Boolean enabled;
 
     /*
-     * Value of the schedule's recurring interval, if the schedule type is
-     * recurring. ISO8601 duration format.
+     * Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601 duration format.
      */
     @JsonProperty(value = "interval")
     private String interval;
+
+    /** Creates an instance of JobSchedule class. */
+    public JobSchedule() {
+    }
 
     /**
      * Get the startTime property: Schedule start time.
@@ -127,7 +126,7 @@ public final class JobSchedule {
     }
 
     /**
-     * Get the interval property: Value of the schedule's recurring interval, if the schedule type is recurring. ISO8601
+     * Get the interval property: Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601
      * duration format.
      *
      * @return the interval value.
@@ -137,7 +136,7 @@ public final class JobSchedule {
     }
 
     /**
-     * Set the interval property: Value of the schedule's recurring interval, if the schedule type is recurring. ISO8601
+     * Set the interval property: Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601
      * duration format.
      *
      * @param interval the interval value to set.

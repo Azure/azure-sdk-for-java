@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelSource;
 
 /** Samples for SqlPoolSensitivityLabels Get. */
@@ -28,6 +27,6 @@ public final class SqlPoolSensitivityLabelsGetSamples {
                 "myTable",
                 "myColumn",
                 SensitivityLabelSource.CURRENT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

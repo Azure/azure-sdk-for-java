@@ -21,7 +21,8 @@ public interface SourceControlSyncJobStreams {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source control sync job streams operation.
+     * @return the response model for the list source control sync job streams operation as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<SourceControlSyncJobStream> listBySyncJob(
         String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId);
@@ -38,7 +39,8 @@ public interface SourceControlSyncJobStreams {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source control sync job streams operation.
+     * @return the response model for the list source control sync job streams operation as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<SourceControlSyncJobStream> listBySyncJob(
         String resourceGroupName,
@@ -80,7 +82,7 @@ public interface SourceControlSyncJobStreams {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job stream by id.
+     * @return definition of the source control sync job stream by id along with {@link Response}.
      */
     Response<SourceControlSyncJobStreamById> getWithResponse(
         String resourceGroupName,

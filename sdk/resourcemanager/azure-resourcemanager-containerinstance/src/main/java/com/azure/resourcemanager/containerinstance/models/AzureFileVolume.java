@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the Azure File volume. Azure File shares are mounted as volumes. */
 @Fluent
 public final class AzureFileVolume {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileVolume.class);
-
     /*
      * The name of the Azure File share to be mounted as a volume.
      */
@@ -21,8 +18,7 @@ public final class AzureFileVolume {
     private String shareName;
 
     /*
-     * The flag indicating whether the Azure File shared mounted as a volume is
-     * read-only.
+     * The flag indicating whether the Azure File shared mounted as a volume is read-only.
      */
     @JsonProperty(value = "readOnly")
     private Boolean readOnly;
@@ -38,6 +34,10 @@ public final class AzureFileVolume {
      */
     @JsonProperty(value = "storageAccountKey")
     private String storageAccountKey;
+
+    /** Creates an instance of AzureFileVolume class. */
+    public AzureFileVolume() {
+    }
 
     /**
      * Get the shareName property: The name of the Azure File share to be mounted as a volume.
@@ -126,15 +126,17 @@ public final class AzureFileVolume {
      */
     public void validate() {
         if (shareName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property shareName in model AzureFileVolume"));
         }
         if (storageAccountName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storageAccountName in model AzureFileVolume"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFileVolume.class);
 }

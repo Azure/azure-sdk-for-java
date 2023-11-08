@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
 import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
 import com.azure.resourcemanager.keyvault.models.IpRule;
@@ -26,7 +25,7 @@ import java.util.UUID;
 /** Samples for Vaults CreateOrUpdate. */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2019-09-01/examples/createVaultWithNetworkAcls.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/createVaultWithNetworkAcls.json
      */
     /**
      * Sample code: Create or update a vault with network acls.
@@ -66,11 +65,11 @@ public final class VaultsCreateOrUpdateSamples {
                                                 new VirtualNetworkRule()
                                                     .withId(
                                                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2019-09-01/examples/createVault.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/createVault.json
      */
     /**
      * Sample code: Create a new vault or update an existing vault.
@@ -149,7 +148,8 @@ public final class VaultsCreateOrUpdateSamples {
                                                                 CertificatePermissions.PURGE)))))
                             .withEnabledForDeployment(true)
                             .withEnabledForDiskEncryption(true)
-                            .withEnabledForTemplateDeployment(true)),
-                Context.NONE);
+                            .withEnabledForTemplateDeployment(true)
+                            .withPublicNetworkAccess("Enabled")),
+                com.azure.core.util.Context.NONE);
     }
 }

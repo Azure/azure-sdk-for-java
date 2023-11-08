@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrefixValidationState. */
+/** The prefix validation state. */
 public final class PrefixValidationState extends ExpandableStringEnum<PrefixValidationState> {
     /** Static value None for PrefixValidationState. */
     public static final PrefixValidationState NONE = fromString("None");
@@ -32,6 +32,15 @@ public final class PrefixValidationState extends ExpandableStringEnum<PrefixVali
     public static final PrefixValidationState UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of PrefixValidationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrefixValidationState() {
+    }
+
+    /**
      * Creates or finds a PrefixValidationState from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class PrefixValidationState extends ExpandableStringEnum<PrefixVali
         return fromString(name, PrefixValidationState.class);
     }
 
-    /** @return known PrefixValidationState values. */
+    /**
+     * Gets known PrefixValidationState values.
+     *
+     * @return known PrefixValidationState values.
+     */
     public static Collection<PrefixValidationState> values() {
         return values(PrefixValidationState.class);
     }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.generated;
 /** Samples for SentinelOnboardingStates Create. */
 public final class SentinelOnboardingStatesCreateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/onboardingStates/CreateSentinelOnboardingState.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/onboardingStates/CreateSentinelOnboardingState.json
      */
     /**
      * Sample code: Create Sentinel onboarding state.

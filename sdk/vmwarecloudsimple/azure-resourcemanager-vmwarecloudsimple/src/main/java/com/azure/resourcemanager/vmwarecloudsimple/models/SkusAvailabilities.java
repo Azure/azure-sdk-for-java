@@ -10,18 +10,22 @@ import com.azure.core.util.Context;
 /** Resource collection API of SkusAvailabilities. */
 public interface SkusAvailabilities {
     /**
-     * Returns list of available resources in region.
+     * Implements SkuAvailability List method
+     *
+     * <p>Returns list of available resources in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SkuAvailability> list(String regionId);
 
     /**
-     * Returns list of available resources in region.
+     * Implements SkuAvailability List method
+     *
+     * <p>Returns list of available resources in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param skuId sku id, if no sku is passed availability for all skus will be returned.
@@ -29,7 +33,7 @@ public interface SkusAvailabilities {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SkuAvailability> list(String regionId, String skuId, Context context);
 }

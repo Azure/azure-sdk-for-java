@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,14 +23,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class BackupPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPolicy.class);
-
     /*
-     * The object representing the state of the migration between the backup
-     * policies.
+     * The object representing the state of the migration between the backup policies.
      */
     @JsonProperty(value = "migrationState")
     private BackupPolicyMigrationState migrationState;
+
+    /** Creates an instance of BackupPolicy class. */
+    public BackupPolicy() {
+    }
 
     /**
      * Get the migrationState property: The object representing the state of the migration between the backup policies.

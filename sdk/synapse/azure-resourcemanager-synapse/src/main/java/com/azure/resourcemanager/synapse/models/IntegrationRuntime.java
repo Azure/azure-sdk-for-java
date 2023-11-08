@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,8 +28,6 @@ import java.util.Map;
 })
 @Fluent
 public class IntegrationRuntime {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntime.class);
-
     /*
      * Integration runtime description.
      */
@@ -38,10 +35,13 @@ public class IntegrationRuntime {
     private String description;
 
     /*
-     * Azure Synapse nested object which serves as a compute resource for
-     * activities.
+     * Azure Synapse nested object which serves as a compute resource for activities.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntime class. */
+    public IntegrationRuntime() {
+    }
 
     /**
      * Get the description property: Integration runtime description.

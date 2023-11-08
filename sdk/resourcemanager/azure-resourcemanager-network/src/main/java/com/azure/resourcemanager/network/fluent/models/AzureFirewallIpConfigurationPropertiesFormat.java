@@ -13,22 +13,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureFirewallIpConfigurationPropertiesFormat {
     /*
-     * The Firewall Internal Load Balancer IP to be used as the next hop in
-     * User Defined Routes.
+     * The Firewall Internal Load Balancer IP to be used as the next hop in User Defined Routes.
      */
     @JsonProperty(value = "privateIPAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
     /*
-     * Reference to the subnet resource. This resource must be named
-     * 'AzureFirewallSubnet' or 'AzureFirewallManagementSubnet'.
+     * Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or
+     * 'AzureFirewallManagementSubnet'.
      */
     @JsonProperty(value = "subnet")
     private SubResource subnet;
 
     /*
-     * Reference to the PublicIP resource. This field is a mandatory input if
-     * subnet is not null.
+     * Reference to the PublicIP resource. This field is a mandatory input if subnet is not null.
      */
     @JsonProperty(value = "publicIPAddress")
     private SubResource publicIpAddress;
@@ -38,6 +36,10 @@ public final class AzureFirewallIpConfigurationPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of AzureFirewallIpConfigurationPropertiesFormat class. */
+    public AzureFirewallIpConfigurationPropertiesFormat() {
+    }
 
     /**
      * Get the privateIpAddress property: The Firewall Internal Load Balancer IP to be used as the next hop in User

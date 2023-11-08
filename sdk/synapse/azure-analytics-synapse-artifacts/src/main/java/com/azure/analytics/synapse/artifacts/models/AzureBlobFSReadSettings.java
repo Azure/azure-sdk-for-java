@@ -15,68 +15,65 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureBlobFSReadSettings extends StoreReadSettings {
     /*
-     * If true, files under the folder path will be read recursively. Default
-     * is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;
 
     /*
-     * Azure blobFS wildcardFolderPath. Type: string (or Expression with
-     * resultType string).
+     * Azure blobFS wildcardFolderPath. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "wildcardFolderPath")
     private Object wildcardFolderPath;
 
     /*
-     * Azure blobFS wildcardFileName. Type: string (or Expression with
-     * resultType string).
+     * Azure blobFS wildcardFileName. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "wildcardFileName")
     private Object wildcardFileName;
 
     /*
-     * Point to a text file that lists each file (relative path to the path
-     * configured in the dataset) that you want to copy. Type: string (or
-     * Expression with resultType string).
+     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
+     * copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileListPath")
     private Object fileListPath;
 
     /*
-     * Indicates whether to enable partition discovery.
+     * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enablePartitionDiscovery")
-    private Boolean enablePartitionDiscovery;
+    private Object enablePartitionDiscovery;
 
     /*
-     * Specify the root path where partition discovery starts from. Type:
-     * string (or Expression with resultType string).
+     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
     /*
-     * Indicates whether the source files need to be deleted after copy
-     * completion. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
 
     /*
-     * The start of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
+
+    /** Creates an instance of AzureBlobFSReadSettings class. */
+    public AzureBlobFSReadSettings() {}
 
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
@@ -167,21 +164,23 @@ public final class AzureBlobFSReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @return the enablePartitionDiscovery value.
      */
-    public Boolean isEnablePartitionDiscovery() {
+    public Object getEnablePartitionDiscovery() {
         return this.enablePartitionDiscovery;
     }
 
     /**
-     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the AzureBlobFSReadSettings object itself.
      */
-    public AzureBlobFSReadSettings setEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
+    public AzureBlobFSReadSettings setEnablePartitionDiscovery(Object enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
         return this;
     }
@@ -271,6 +270,13 @@ public final class AzureBlobFSReadSettings extends StoreReadSettings {
      */
     public AzureBlobFSReadSettings setModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

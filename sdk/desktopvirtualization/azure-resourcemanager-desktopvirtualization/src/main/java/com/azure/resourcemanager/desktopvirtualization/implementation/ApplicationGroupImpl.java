@@ -11,7 +11,6 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.Application
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroup;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetIdentity;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetSku;
@@ -101,12 +100,12 @@ public final class ApplicationGroupImpl
         return this.innerModel().applicationGroupType();
     }
 
-    public MigrationRequestProperties migrationRequest() {
-        return this.innerModel().migrationRequest();
-    }
-
     public Boolean cloudPcResource() {
         return this.innerModel().cloudPcResource();
+    }
+
+    public Boolean showInFeed() {
+        return this.innerModel().showInFeed();
     }
 
     public Region region() {
@@ -115,6 +114,10 @@ public final class ApplicationGroupImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ApplicationGroupInner innerModel() {
@@ -292,9 +295,14 @@ public final class ApplicationGroupImpl
         }
     }
 
-    public ApplicationGroupImpl withMigrationRequest(MigrationRequestProperties migrationRequest) {
-        this.innerModel().withMigrationRequest(migrationRequest);
-        return this;
+    public ApplicationGroupImpl withShowInFeed(Boolean showInFeed) {
+        if (isInCreateMode()) {
+            this.innerModel().withShowInFeed(showInFeed);
+            return this;
+        } else {
+            this.updateApplicationGroup.withShowInFeed(showInFeed);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

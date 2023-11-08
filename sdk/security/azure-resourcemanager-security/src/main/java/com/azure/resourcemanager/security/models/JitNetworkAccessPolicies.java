@@ -15,7 +15,7 @@ public interface JitNetworkAccessPolicies {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<JitNetworkAccessPolicy> list();
 
@@ -26,7 +26,7 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<JitNetworkAccessPolicy> list(Context context);
 
@@ -38,7 +38,7 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<JitNetworkAccessPolicy> listByRegion(String ascLocation);
 
@@ -51,7 +51,7 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<JitNetworkAccessPolicy> listByRegion(String ascLocation, Context context);
 
@@ -63,7 +63,7 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<JitNetworkAccessPolicy> listByResourceGroup(String resourceGroupName);
 
@@ -76,7 +76,7 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<JitNetworkAccessPolicy> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -90,7 +90,7 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<JitNetworkAccessPolicy> listByResourceGroupAndRegion(String resourceGroupName, String ascLocation);
 
@@ -105,10 +105,27 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<JitNetworkAccessPolicy> listByResourceGroupAndRegion(
         String resourceGroupName, String ascLocation, Context context);
+
+    /**
+     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    Response<JitNetworkAccessPolicy> getWithResponse(
+        String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName, Context context);
 
     /**
      * Policies for protecting resources using Just-in-Time access control for the subscription, location.
@@ -126,7 +143,7 @@ public interface JitNetworkAccessPolicies {
     JitNetworkAccessPolicy get(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName);
 
     /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
+     * Delete a Just-in-Time access control policy.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -137,9 +154,9 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
-    Response<JitNetworkAccessPolicy> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName, Context context);
 
     /**
@@ -157,21 +174,26 @@ public interface JitNetworkAccessPolicies {
     void delete(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName);
 
     /**
-     * Delete a Just-in-Time access control policy.
+     * Initiate a JIT access from a specific Just-in-Time policy configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName, Context context);
+    Response<JitNetworkAccessRequest> initiateWithResponse(
+        String resourceGroupName,
+        String ascLocation,
+        String jitNetworkAccessPolicyName,
+        JitNetworkAccessPolicyInitiateRequest body,
+        Context context);
 
     /**
      * Initiate a JIT access from a specific Just-in-Time policy configuration.
@@ -194,35 +216,13 @@ public interface JitNetworkAccessPolicies {
         JitNetworkAccessPolicyInitiateRequest body);
 
     /**
-     * Initiate a JIT access from a specific Just-in-Time policy configuration.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<JitNetworkAccessRequest> initiateWithResponse(
-        String resourceGroupName,
-        String ascLocation,
-        String jitNetworkAccessPolicyName,
-        JitNetworkAccessPolicyInitiateRequest body,
-        Context context);
-
-    /**
      * Policies for protecting resources using Just-in-Time access control for the subscription, location.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     JitNetworkAccessPolicy getById(String id);
 
@@ -234,7 +234,7 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<JitNetworkAccessPolicy> getByIdWithResponse(String id, Context context);
 
@@ -256,7 +256,7 @@ public interface JitNetworkAccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

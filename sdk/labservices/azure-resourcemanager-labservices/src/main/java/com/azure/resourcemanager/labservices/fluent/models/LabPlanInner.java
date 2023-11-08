@@ -10,10 +10,10 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
+import com.azure.resourcemanager.labservices.models.Identity;
 import com.azure.resourcemanager.labservices.models.LabPlanNetworkProfile;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.SupportInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +24,6 @@ import java.util.Map;
  */
 @Fluent
 public final class LabPlanInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabPlanInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the lab plan.
      */
@@ -37,6 +35,12 @@ public final class LabPlanInner extends Resource {
      */
     @JsonProperty(value = "properties", required = true)
     private LabPlanProperties innerProperties = new LabPlanProperties();
+
+    /*
+     * Managed Identity Information
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the lab plan.
@@ -54,6 +58,26 @@ public final class LabPlanInner extends Resource {
      */
     private LabPlanProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: Managed Identity Information.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed Identity Information.
+     *
+     * @param identity the identity value to set.
+     * @return the LabPlanInner object itself.
+     */
+    public LabPlanInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -261,11 +285,16 @@ public final class LabPlanInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model LabPlanInner"));
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LabPlanInner.class);
 }

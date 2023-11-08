@@ -17,10 +17,9 @@ import com.azure.resourcemanager.iothub.models.CertificateListDescription;
 import com.azure.resourcemanager.iothub.models.CertificateVerificationDescription;
 import com.azure.resourcemanager.iothub.models.CertificateWithNonceDescription;
 import com.azure.resourcemanager.iothub.models.Certificates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CertificatesImpl implements Certificates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CertificatesImpl.class);
 
     private final CertificatesClient innerClient;
 
@@ -30,15 +29,6 @@ public final class CertificatesImpl implements Certificates {
         CertificatesClient innerClient, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CertificateListDescription listByIotHub(String resourceGroupName, String resourceName) {
-        CertificateListDescriptionInner inner = this.serviceClient().listByIotHub(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new CertificateListDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CertificateListDescription> listByIotHubWithResponse(
@@ -56,10 +46,10 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public CertificateDescription get(String resourceGroupName, String resourceName, String certificateName) {
-        CertificateDescriptionInner inner = this.serviceClient().get(resourceGroupName, resourceName, certificateName);
+    public CertificateListDescription listByIotHub(String resourceGroupName, String resourceName) {
+        CertificateListDescriptionInner inner = this.serviceClient().listByIotHub(resourceGroupName, resourceName);
         if (inner != null) {
-            return new CertificateDescriptionImpl(inner, this.manager());
+            return new CertificateListDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -80,8 +70,13 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, resourceName, certificateName, ifMatch);
+    public CertificateDescription get(String resourceGroupName, String resourceName, String certificateName) {
+        CertificateDescriptionInner inner = this.serviceClient().get(resourceGroupName, resourceName, certificateName);
+        if (inner != null) {
+            return new CertificateDescriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -91,15 +86,8 @@ public final class CertificatesImpl implements Certificates {
             .deleteWithResponse(resourceGroupName, resourceName, certificateName, ifMatch, context);
     }
 
-    public CertificateWithNonceDescription generateVerificationCode(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
-        CertificateWithNonceDescriptionInner inner =
-            this.serviceClient().generateVerificationCode(resourceGroupName, resourceName, certificateName, ifMatch);
-        if (inner != null) {
-            return new CertificateWithNonceDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, resourceName, certificateName, ifMatch);
     }
 
     public Response<CertificateWithNonceDescription> generateVerificationCodeWithResponse(
@@ -120,18 +108,12 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public CertificateDescription verify(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        String ifMatch,
-        CertificateVerificationDescription certificateVerificationBody) {
-        CertificateDescriptionInner inner =
-            this
-                .serviceClient()
-                .verify(resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody);
+    public CertificateWithNonceDescription generateVerificationCode(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+        CertificateWithNonceDescriptionInner inner =
+            this.serviceClient().generateVerificationCode(resourceGroupName, resourceName, certificateName, ifMatch);
         if (inner != null) {
-            return new CertificateDescriptionImpl(inner, this.manager());
+            return new CertificateWithNonceDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -160,10 +142,27 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
+    public CertificateDescription verify(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        String ifMatch,
+        CertificateVerificationDescription certificateVerificationBody) {
+        CertificateDescriptionInner inner =
+            this
+                .serviceClient()
+                .verify(resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody);
+        if (inner != null) {
+            return new CertificateDescriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public CertificateDescription getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,14 +170,14 @@ public final class CertificatesImpl implements Certificates {
         }
         String resourceName = Utils.getValueFromIdByName(id, "IotHubs");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
         }
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -189,7 +188,7 @@ public final class CertificatesImpl implements Certificates {
     public Response<CertificateDescription> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -197,14 +196,14 @@ public final class CertificatesImpl implements Certificates {
         }
         String resourceName = Utils.getValueFromIdByName(id, "IotHubs");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
         }
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -215,7 +214,7 @@ public final class CertificatesImpl implements Certificates {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -223,14 +222,14 @@ public final class CertificatesImpl implements Certificates {
         }
         String resourceName = Utils.getValueFromIdByName(id, "IotHubs");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
         }
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -242,7 +241,7 @@ public final class CertificatesImpl implements Certificates {
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -250,14 +249,14 @@ public final class CertificatesImpl implements Certificates {
         }
         String resourceName = Utils.getValueFromIdByName(id, "IotHubs");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'IotHubs'.", id)));
         }
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));

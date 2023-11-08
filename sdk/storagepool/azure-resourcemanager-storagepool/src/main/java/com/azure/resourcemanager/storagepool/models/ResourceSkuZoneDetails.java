@@ -5,29 +5,27 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes The zonal capabilities of a SKU. */
 @Immutable
 public final class ResourceSkuZoneDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuZoneDetails.class);
-
     /*
-     * The set of zones that the SKU is available in with the specified
-     * capabilities.
+     * The set of zones that the SKU is available in with the specified capabilities.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> name;
 
     /*
-     * A list of capabilities that are available for the SKU in the specified
-     * list of zones.
+     * A list of capabilities that are available for the SKU in the specified list of zones.
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuCapability> capabilities;
+
+    /** Creates an instance of ResourceSkuZoneDetails class. */
+    public ResourceSkuZoneDetails() {
+    }
 
     /**
      * Get the name property: The set of zones that the SKU is available in with the specified capabilities.

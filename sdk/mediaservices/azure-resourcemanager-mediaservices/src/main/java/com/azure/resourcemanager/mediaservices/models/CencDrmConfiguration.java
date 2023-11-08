@@ -22,6 +22,10 @@ public final class CencDrmConfiguration {
     @JsonProperty(value = "widevine")
     private StreamingPolicyWidevineConfiguration widevine;
 
+    /** Creates an instance of CencDrmConfiguration class. */
+    public CencDrmConfiguration() {
+    }
+
     /**
      * Get the playReady property: PlayReady configurations.
      *

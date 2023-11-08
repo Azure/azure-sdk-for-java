@@ -7,25 +7,21 @@ package com.azure.resourcemanager.recoveryservices.implementation;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.RegisteredIdentitiesClient;
 import com.azure.resourcemanager.recoveryservices.models.RegisteredIdentities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RegisteredIdentitiesImpl implements RegisteredIdentities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegisteredIdentitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RegisteredIdentitiesImpl.class);
 
     private final RegisteredIdentitiesClient innerClient;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public RegisteredIdentitiesImpl(RegisteredIdentitiesClient innerClient, RecoveryServicesManager serviceManager) {
+    public RegisteredIdentitiesImpl(
+        RegisteredIdentitiesClient innerClient,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public void delete(String resourceGroupName, String vaultName, String identityName) {
-        this.serviceClient().delete(resourceGroupName, vaultName, identityName);
     }
 
     public Response<Void> deleteWithResponse(
@@ -33,11 +29,15 @@ public final class RegisteredIdentitiesImpl implements RegisteredIdentities {
         return this.serviceClient().deleteWithResponse(resourceGroupName, vaultName, identityName, context);
     }
 
+    public void delete(String resourceGroupName, String vaultName, String identityName) {
+        this.serviceClient().delete(resourceGroupName, vaultName, identityName);
+    }
+
     private RegisteredIdentitiesClient serviceClient() {
         return this.innerClient;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }

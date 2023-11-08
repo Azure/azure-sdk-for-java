@@ -11,9 +11,11 @@ import com.azure.core.util.Context;
 /** Resource collection API of Pools. */
 public interface Pools {
     /**
-     * List all capacity pools in the NetApp Account.
+     * Describe all Capacity Pools
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List all capacity pools in the NetApp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -23,9 +25,11 @@ public interface Pools {
     PagedIterable<CapacityPool> list(String resourceGroupName, String accountName);
 
     /**
-     * List all capacity pools in the NetApp Account.
+     * Describe all Capacity Pools
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List all capacity pools in the NetApp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,22 +40,11 @@ public interface Pools {
     PagedIterable<CapacityPool> list(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get details of the specified capacity pool.
+     * Describe a Capacity Pool
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified capacity pool.
-     */
-    CapacityPool get(String resourceGroupName, String accountName, String poolName);
-
-    /**
-     * Get details of the specified capacity pool.
+     * <p>Get details of the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -64,9 +57,26 @@ public interface Pools {
         String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
-     * Delete the specified capacity pool.
+     * Describe a Capacity Pool
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Get details of the specified capacity pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified capacity pool.
+     */
+    CapacityPool get(String resourceGroupName, String accountName, String poolName);
+
+    /**
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,9 +86,11 @@ public interface Pools {
     void delete(String resourceGroupName, String accountName, String poolName);
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete the specified capacity pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -89,7 +101,9 @@ public interface Pools {
     void delete(String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
-     * Get details of the specified capacity pool.
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,7 +114,9 @@ public interface Pools {
     CapacityPool getById(String id);
 
     /**
-     * Get details of the specified capacity pool.
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -112,7 +128,9 @@ public interface Pools {
     Response<CapacityPool> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +140,9 @@ public interface Pools {
     void deleteById(String id);
 
     /**
-     * Delete the specified capacity pool.
+     * Delete a capacity pool
+     *
+     * <p>Delete the specified capacity pool.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -8,13 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SendingLogs. */
+/**
+ * SendingLogs
+ *
+ * <p>Flag indicating the status of the resource for sending logs operation to Elastic.
+ */
 public final class SendingLogs extends ExpandableStringEnum<SendingLogs> {
     /** Static value True for SendingLogs. */
     public static final SendingLogs TRUE = fromString("True");
 
     /** Static value False for SendingLogs. */
     public static final SendingLogs FALSE = fromString("False");
+
+    /**
+     * Creates a new instance of SendingLogs value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SendingLogs() {
+    }
 
     /**
      * Creates or finds a SendingLogs from its string representation.
@@ -27,7 +40,11 @@ public final class SendingLogs extends ExpandableStringEnum<SendingLogs> {
         return fromString(name, SendingLogs.class);
     }
 
-    /** @return known SendingLogs values. */
+    /**
+     * Gets known SendingLogs values.
+     *
+     * @return known SendingLogs values.
+     */
     public static Collection<SendingLogs> values() {
         return values(SendingLogs.class);
     }

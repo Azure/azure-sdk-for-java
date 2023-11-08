@@ -6,19 +6,27 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Preferences related to the shipment logistics of the sku. */
 @Fluent
 public final class TransportPreferences {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransportPreferences.class);
-
     /*
      * Indicates Shipment Logistics type that the customer preferred.
      */
     @JsonProperty(value = "preferredShipmentType", required = true)
     private TransportShipmentTypes preferredShipmentType;
+
+    /*
+     * Read only property which indicates whether transport preferences has been updated or not after device is
+     * prepared.
+     */
+    @JsonProperty(value = "isUpdated", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isUpdated;
+
+    /** Creates an instance of TransportPreferences class. */
+    public TransportPreferences() {
+    }
 
     /**
      * Get the preferredShipmentType property: Indicates Shipment Logistics type that the customer preferred.
@@ -41,16 +49,28 @@ public final class TransportPreferences {
     }
 
     /**
+     * Get the isUpdated property: Read only property which indicates whether transport preferences has been updated or
+     * not after device is prepared.
+     *
+     * @return the isUpdated value.
+     */
+    public Boolean isUpdated() {
+        return this.isUpdated;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (preferredShipmentType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property preferredShipmentType in model TransportPreferences"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TransportPreferences.class);
 }

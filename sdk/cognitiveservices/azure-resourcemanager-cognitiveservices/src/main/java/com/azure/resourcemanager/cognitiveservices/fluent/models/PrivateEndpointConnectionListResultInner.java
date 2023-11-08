@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of private endpoint connections. */
 @Fluent
 public final class PrivateEndpointConnectionListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResultInner.class);
-
     /*
      * Array of private endpoint connections
      */
     @JsonProperty(value = "value")
     private List<PrivateEndpointConnectionInner> value;
+
+    /** Creates an instance of PrivateEndpointConnectionListResultInner class. */
+    public PrivateEndpointConnectionListResultInner() {
+    }
 
     /**
      * Get the value property: Array of private endpoint connections.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the hardware settings for the AzureBareMetal instance. */
+/** Specifies the hardware settings for the Azure Bare Metal Instance. */
 @Immutable
 public final class HardwareProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HardwareProfile.class);
-
     /*
      * Name of the hardware type (vendor and/or their product name)
      */
@@ -21,10 +17,14 @@ public final class HardwareProfile {
     private AzureBareMetalHardwareTypeNamesEnum hardwareType;
 
     /*
-     * Specifies the AzureBareMetal instance SKU.
+     * Specifies the Azure Bare Metal Instance SKU.
      */
     @JsonProperty(value = "azureBareMetalInstanceSize", access = JsonProperty.Access.WRITE_ONLY)
     private AzureBareMetalInstanceSizeNamesEnum azureBareMetalInstanceSize;
+
+    /** Creates an instance of HardwareProfile class. */
+    public HardwareProfile() {
+    }
 
     /**
      * Get the hardwareType property: Name of the hardware type (vendor and/or their product name).
@@ -36,7 +36,7 @@ public final class HardwareProfile {
     }
 
     /**
-     * Get the azureBareMetalInstanceSize property: Specifies the AzureBareMetal instance SKU.
+     * Get the azureBareMetalInstanceSize property: Specifies the Azure Bare Metal Instance SKU.
      *
      * @return the azureBareMetalInstanceSize value.
      */

@@ -17,6 +17,10 @@ public final class CreateRunResponseInner {
     @JsonProperty(value = "runId", required = true)
     private String runId;
 
+    /** Creates an instance of CreateRunResponseInner class. */
+    public CreateRunResponseInner() {
+    }
+
     /**
      * Get the runId property: Identifier of a run.
      *

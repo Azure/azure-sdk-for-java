@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HDInsightClusterProvisioningState. */
+/** The provisioning state, which only appears in the response. */
 public final class HDInsightClusterProvisioningState extends ExpandableStringEnum<HDInsightClusterProvisioningState> {
     /** Static value InProgress for HDInsightClusterProvisioningState. */
     public static final HDInsightClusterProvisioningState IN_PROGRESS = fromString("InProgress");
@@ -26,6 +26,15 @@ public final class HDInsightClusterProvisioningState extends ExpandableStringEnu
     public static final HDInsightClusterProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of HDInsightClusterProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HDInsightClusterProvisioningState() {
+    }
+
+    /**
      * Creates or finds a HDInsightClusterProvisioningState from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class HDInsightClusterProvisioningState extends ExpandableStringEnu
         return fromString(name, HDInsightClusterProvisioningState.class);
     }
 
-    /** @return known HDInsightClusterProvisioningState values. */
+    /**
+     * Gets known HDInsightClusterProvisioningState values.
+     *
+     * @return known HDInsightClusterProvisioningState values.
+     */
     public static Collection<HDInsightClusterProvisioningState> values() {
         return values(HDInsightClusterProvisioningState.class);
     }

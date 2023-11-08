@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.msi.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for UserAssignedIdentities Delete. */
 public final class UserAssignedIdentitiesDeleteSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/IdentityDelete.json
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityDelete.json
      */
     /**
      * Sample code: IdentityDelete.
@@ -22,6 +20,6 @@ public final class UserAssignedIdentitiesDeleteSamples {
             .manager()
             .serviceClient()
             .getUserAssignedIdentities()
-            .deleteWithResponse("rgName", "resourceName", Context.NONE);
+            .deleteWithResponse("rgName", "resourceName", com.azure.core.util.Context.NONE);
     }
 }

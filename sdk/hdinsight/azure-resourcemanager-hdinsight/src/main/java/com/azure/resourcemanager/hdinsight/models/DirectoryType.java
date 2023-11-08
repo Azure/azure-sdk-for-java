@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DirectoryType. */
+/** The directory type. */
 public final class DirectoryType extends ExpandableStringEnum<DirectoryType> {
     /** Static value ActiveDirectory for DirectoryType. */
     public static final DirectoryType ACTIVE_DIRECTORY = fromString("ActiveDirectory");
+
+    /**
+     * Creates a new instance of DirectoryType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DirectoryType() {
+    }
 
     /**
      * Creates or finds a DirectoryType from its string representation.
@@ -24,7 +33,11 @@ public final class DirectoryType extends ExpandableStringEnum<DirectoryType> {
         return fromString(name, DirectoryType.class);
     }
 
-    /** @return known DirectoryType values. */
+    /**
+     * Gets known DirectoryType values.
+     *
+     * @return known DirectoryType values.
+     */
     public static Collection<DirectoryType> values() {
         return values(DirectoryType.class);
     }

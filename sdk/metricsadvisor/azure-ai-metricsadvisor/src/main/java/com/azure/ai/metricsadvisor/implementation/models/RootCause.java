@@ -35,6 +35,9 @@ public final class RootCause {
     @JsonProperty(value = "description", required = true)
     private String description;
 
+    /** Creates an instance of RootCause class. */
+    public RootCause() {}
+
     /**
      * Get the rootCause property: The rootCause property.
      *

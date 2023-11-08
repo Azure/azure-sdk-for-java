@@ -19,8 +19,7 @@ public final class ApplicationGatewayTrustedClientCertificate extends SubResourc
     private ApplicationGatewayTrustedClientCertificatePropertiesFormat innerProperties;
 
     /*
-     * Name of the trusted client certificate that is unique within an
-     * Application Gateway.
+     * Name of the trusted client certificate that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -36,6 +35,10 @@ public final class ApplicationGatewayTrustedClientCertificate extends SubResourc
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ApplicationGatewayTrustedClientCertificate class. */
+    public ApplicationGatewayTrustedClientCertificate() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the application gateway trusted client certificate.

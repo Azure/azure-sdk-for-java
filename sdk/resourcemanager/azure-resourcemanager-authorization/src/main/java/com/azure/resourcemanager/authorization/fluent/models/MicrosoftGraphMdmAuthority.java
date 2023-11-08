@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphMdmAuthority. */
+/** mdmAuthority. */
 public final class MicrosoftGraphMdmAuthority extends ExpandableStringEnum<MicrosoftGraphMdmAuthority> {
     /** Static value unknown for MicrosoftGraphMdmAuthority. */
     public static final MicrosoftGraphMdmAuthority UNKNOWN = fromString("unknown");
@@ -23,6 +23,15 @@ public final class MicrosoftGraphMdmAuthority extends ExpandableStringEnum<Micro
     public static final MicrosoftGraphMdmAuthority OFFICE365 = fromString("office365");
 
     /**
+     * Creates a new instance of MicrosoftGraphMdmAuthority value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphMdmAuthority() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphMdmAuthority from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class MicrosoftGraphMdmAuthority extends ExpandableStringEnum<Micro
         return fromString(name, MicrosoftGraphMdmAuthority.class);
     }
 
-    /** @return known MicrosoftGraphMdmAuthority values. */
+    /**
+     * Gets known MicrosoftGraphMdmAuthority values.
+     *
+     * @return known MicrosoftGraphMdmAuthority values.
+     */
     public static Collection<MicrosoftGraphMdmAuthority> values() {
         return values(MicrosoftGraphMdmAuthority.class);
     }

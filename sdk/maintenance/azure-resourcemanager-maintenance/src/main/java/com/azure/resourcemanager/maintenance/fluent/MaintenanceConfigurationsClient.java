@@ -18,6 +18,21 @@ public interface MaintenanceConfigurationsClient {
      *
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration record along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MaintenanceConfigurationInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Get Configuration record.
+     *
+     * @param resourceGroupName Resource Group Name.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,19 +42,20 @@ public interface MaintenanceConfigurationsClient {
     MaintenanceConfigurationInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
-     * Get Configuration record.
+     * Create or Update configuration record.
      *
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
+     * @param configuration The configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration record.
+     * @return maintenance configuration record type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MaintenanceConfigurationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(
+        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context);
 
     /**
      * Create or Update configuration record.
@@ -57,20 +73,19 @@ public interface MaintenanceConfigurationsClient {
         String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration);
 
     /**
-     * Create or Update configuration record.
+     * Delete Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
-     * @param configuration The configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context);
+    Response<MaintenanceConfigurationInner> deleteWithResponse(
+        String resourceGroupName, String resourceName, Context context);
 
     /**
      * Delete Configuration record.
@@ -86,19 +101,20 @@ public interface MaintenanceConfigurationsClient {
     MaintenanceConfigurationInner delete(String resourceGroupName, String resourceName);
 
     /**
-     * Delete Configuration record.
+     * Patch configuration record.
      *
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
+     * @param configuration The configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MaintenanceConfigurationInner> deleteWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<MaintenanceConfigurationInner> updateWithResponse(
+        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context);
 
     /**
      * Patch configuration record.
@@ -116,27 +132,11 @@ public interface MaintenanceConfigurationsClient {
         String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration);
 
     /**
-     * Patch configuration record.
-     *
-     * @param resourceGroupName Resource Group Name.
-     * @param resourceName Maintenance Configuration Name.
-     * @param configuration The configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MaintenanceConfigurationInner> updateWithResponse(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context);
-
-    /**
      * Get Configuration records within a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MaintenanceConfigurationInner> list();
@@ -148,7 +148,7 @@ public interface MaintenanceConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MaintenanceConfigurationInner> list(Context context);

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource limits. */
 @Fluent
 public final class ResourceLimits {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceLimits.class);
-
     /*
      * The memory limit in GB of this container instance.
      */
@@ -31,6 +27,10 @@ public final class ResourceLimits {
      */
     @JsonProperty(value = "gpu")
     private GpuResource gpu;
+
+    /** Creates an instance of ResourceLimits class. */
+    public ResourceLimits() {
+    }
 
     /**
      * Get the memoryInGB property: The memory limit in GB of this container instance.

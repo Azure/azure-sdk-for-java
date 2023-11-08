@@ -24,6 +24,10 @@ public final class RouteFilterRuleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RouteFilterRuleListResult class. */
+    public RouteFilterRuleListResult() {
+    }
+
     /**
      * Get the value property: A list of RouteFilterRules in a resource group.
      *

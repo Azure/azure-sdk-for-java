@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("WindowsRestart")
 @Fluent
 public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomizer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateRestartCustomizer.class);
-
     /*
-     * Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer
-     * restart"']
+     * Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer restart"']
      */
     @JsonProperty(value = "restartCommand")
     private String restartCommand;
@@ -32,11 +27,15 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
     private String restartCheckCommand;
 
     /*
-     * Restart timeout specified as a string of magnitude and unit, e.g. '5m'
-     * (5 minutes) or '2h' (2 hours) [Default: '5m']
+     * Restart timeout specified as a string of magnitude and unit, e.g. '5m' (5 minutes) or '2h' (2 hours) [Default:
+     * '5m']
      */
     @JsonProperty(value = "restartTimeout")
     private String restartTimeout;
+
+    /** Creates an instance of ImageTemplateRestartCustomizer class. */
+    public ImageTemplateRestartCustomizer() {
+    }
 
     /**
      * Get the restartCommand property: Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer

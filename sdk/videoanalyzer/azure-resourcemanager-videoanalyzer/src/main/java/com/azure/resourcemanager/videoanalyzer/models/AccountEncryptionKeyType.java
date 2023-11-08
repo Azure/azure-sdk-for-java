@@ -27,7 +27,11 @@ public final class AccountEncryptionKeyType extends ExpandableStringEnum<Account
         return fromString(name, AccountEncryptionKeyType.class);
     }
 
-    /** @return known AccountEncryptionKeyType values. */
+    /**
+     * Gets known AccountEncryptionKeyType values.
+     *
+     * @return known AccountEncryptionKeyType values.
+     */
     public static Collection<AccountEncryptionKeyType> values() {
         return values(AccountEncryptionKeyType.class);
     }

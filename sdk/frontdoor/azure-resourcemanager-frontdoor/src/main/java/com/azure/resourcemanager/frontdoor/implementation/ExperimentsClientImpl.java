@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.frontdoor.fluent.ExperimentsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExperimentsClient. */
 public final class ExperimentsClientImpl implements ExperimentsClient {
-    private final ClientLogger logger = new ClientLogger(ExperimentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ExperimentsService service;
 
@@ -68,11 +65,10 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FrontDoorManagementC")
-    private interface ExperimentsService {
+    public interface ExperimentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/NetworkExperimentProfiles/{profileName}/Experiments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExperimentList>> listByProfile(
@@ -86,8 +82,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExperimentInner>> get(
@@ -102,8 +97,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -119,8 +113,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -136,8 +129,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -169,7 +161,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiments.
+     * @return a list of Experiments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExperimentInner>> listByProfileSinglePageAsync(
@@ -228,7 +220,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiments.
+     * @return a list of Experiments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExperimentInner>> listByProfileSinglePageAsync(
@@ -283,7 +275,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiments.
+     * @return a list of Experiments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExperimentInner> listByProfileAsync(String resourceGroupName, String profileName) {
@@ -301,7 +293,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiments.
+     * @return a list of Experiments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExperimentInner> listByProfileAsync(
@@ -319,7 +311,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiments.
+     * @return a list of Experiments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExperimentInner> listByProfile(String resourceGroupName, String profileName) {
@@ -335,7 +327,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiments.
+     * @return a list of Experiments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExperimentInner> listByProfile(String resourceGroupName, String profileName, Context context) {
@@ -351,7 +343,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Experiment by ExperimentName.
+     * @return an Experiment by ExperimentName along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExperimentInner>> getWithResponseAsync(
@@ -406,7 +398,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Experiment by ExperimentName.
+     * @return an Experiment by ExperimentName along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExperimentInner>> getWithResponseAsync(
@@ -457,19 +449,30 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Experiment by ExperimentName.
+     * @return an Experiment by ExperimentName on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExperimentInner> getAsync(String resourceGroupName, String profileName, String experimentName) {
         return getWithResponseAsync(resourceGroupName, profileName, experimentName)
-            .flatMap(
-                (Response<ExperimentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an Experiment by ExperimentName.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName The Profile identifier associated with the Tenant and Partner.
+     * @param experimentName The Experiment identifier associated with the Experiment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Experiment by ExperimentName along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ExperimentInner> getWithResponse(
+        String resourceGroupName, String profileName, String experimentName, Context context) {
+        return getWithResponseAsync(resourceGroupName, profileName, experimentName, context).block();
     }
 
     /**
@@ -485,25 +488,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExperimentInner get(String resourceGroupName, String profileName, String experimentName) {
-        return getAsync(resourceGroupName, profileName, experimentName).block();
-    }
-
-    /**
-     * Gets an Experiment by ExperimentName.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param experimentName The Experiment identifier associated with the Experiment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Experiment by ExperimentName.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExperimentInner> getWithResponse(
-        String resourceGroupName, String profileName, String experimentName, Context context) {
-        return getWithResponseAsync(resourceGroupName, profileName, experimentName, context).block();
+        return getWithResponse(resourceGroupName, profileName, experimentName, Context.NONE).getValue();
     }
 
     /**
@@ -516,7 +501,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return defines the properties of an Experiment along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -578,7 +564,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return defines the properties of an Experiment along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -640,9 +627,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return the {@link PollerFlux} for polling of defines the properties of an Experiment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String profileName, String experimentName, ExperimentInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -650,7 +637,11 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
         return this
             .client
             .<ExperimentInner, ExperimentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ExperimentInner.class, ExperimentInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                ExperimentInner.class,
+                ExperimentInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -664,9 +655,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return the {@link PollerFlux} for polling of defines the properties of an Experiment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -692,12 +683,14 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return the {@link SyncPoller} for polling of defines the properties of an Experiment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(
         String resourceGroupName, String profileName, String experimentName, ExperimentInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, profileName, experimentName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, profileName, experimentName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -711,16 +704,17 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return the {@link SyncPoller} for polling of defines the properties of an Experiment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String profileName,
         String experimentName,
         ExperimentInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, profileName, experimentName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, profileName, experimentName, parameters, context)
             .getSyncPoller();
     }
 
@@ -734,7 +728,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return defines the properties of an Experiment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExperimentInner> createOrUpdateAsync(
@@ -755,7 +749,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return defines the properties of an Experiment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExperimentInner> createOrUpdateAsync(
@@ -811,7 +805,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Updates an Experiment.
+     * Updates an Experiment by Experiment id
+     *
+     * <p>Updates an Experiment.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -820,7 +816,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return defines the properties of an Experiment along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -872,7 +869,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Updates an Experiment.
+     * Updates an Experiment by Experiment id
+     *
+     * <p>Updates an Experiment.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -882,7 +881,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return defines the properties of an Experiment along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -935,7 +935,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Updates an Experiment.
+     * Updates an Experiment by Experiment id
+     *
+     * <p>Updates an Experiment.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -944,9 +946,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return the {@link PollerFlux} for polling of defines the properties of an Experiment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExperimentInner>, ExperimentInner> beginUpdateAsync(
         String resourceGroupName, String profileName, String experimentName, ExperimentUpdateModel parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -954,11 +956,17 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
         return this
             .client
             .<ExperimentInner, ExperimentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ExperimentInner.class, ExperimentInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                ExperimentInner.class,
+                ExperimentInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Updates an Experiment.
+     * Updates an Experiment by Experiment id
+     *
+     * <p>Updates an Experiment.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -968,9 +976,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return the {@link PollerFlux} for polling of defines the properties of an Experiment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExperimentInner>, ExperimentInner> beginUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -987,7 +995,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Updates an Experiment.
+     * Updates an Experiment by Experiment id
+     *
+     * <p>Updates an Experiment.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -996,16 +1006,18 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return the {@link SyncPoller} for polling of defines the properties of an Experiment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(
         String resourceGroupName, String profileName, String experimentName, ExperimentUpdateModel parameters) {
-        return beginUpdateAsync(resourceGroupName, profileName, experimentName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, profileName, experimentName, parameters).getSyncPoller();
     }
 
     /**
-     * Updates an Experiment.
+     * Updates an Experiment by Experiment id
+     *
+     * <p>Updates an Experiment.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -1015,20 +1027,24 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return the {@link SyncPoller} for polling of defines the properties of an Experiment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(
         String resourceGroupName,
         String profileName,
         String experimentName,
         ExperimentUpdateModel parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, profileName, experimentName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, experimentName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
-     * Updates an Experiment.
+     * Updates an Experiment by Experiment id
+     *
+     * <p>Updates an Experiment.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -1037,7 +1053,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return defines the properties of an Experiment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExperimentInner> updateAsync(
@@ -1048,7 +1064,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Updates an Experiment.
+     * Updates an Experiment by Experiment id
+     *
+     * <p>Updates an Experiment.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -1058,7 +1076,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the properties of an Experiment.
+     * @return defines the properties of an Experiment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExperimentInner> updateAsync(
@@ -1073,7 +1091,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Updates an Experiment.
+     * Updates an Experiment by Experiment id
+     *
+     * <p>Updates an Experiment.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -1091,7 +1111,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     }
 
     /**
-     * Updates an Experiment.
+     * Updates an Experiment by Experiment id
+     *
+     * <p>Updates an Experiment.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
@@ -1122,7 +1144,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1177,7 +1199,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1228,15 +1250,16 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String experimentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName, experimentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1249,9 +1272,9 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String experimentName, Context context) {
         context = this.client.mergeContext(context);
@@ -1271,12 +1294,12 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String experimentName) {
-        return beginDeleteAsync(resourceGroupName, profileName, experimentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, experimentName).getSyncPoller();
     }
 
     /**
@@ -1289,12 +1312,12 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String experimentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, experimentName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, experimentName, context).getSyncPoller();
     }
 
     /**
@@ -1306,7 +1329,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String profileName, String experimentName) {
@@ -1325,7 +1348,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1369,11 +1392,12 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of Experiments.
+     * @return defines a list of Experiments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExperimentInner>> listByProfileNextSinglePageAsync(String nextLink) {
@@ -1404,12 +1428,13 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of Experiments.
+     * @return defines a list of Experiments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExperimentInner>> listByProfileNextSinglePageAsync(String nextLink, Context context) {

@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ClipTime {
+    /** Creates an instance of ClipTime class. */
+    public ClipTime() {
+    }
+
     /**
      * Validates the instance.
      *

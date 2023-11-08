@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RunType. */
+/** The type of run. */
 public final class RunType extends ExpandableStringEnum<RunType> {
     /** Static value QuickBuild for RunType. */
     public static final RunType QUICK_BUILD = fromString("QuickBuild");
@@ -23,6 +23,15 @@ public final class RunType extends ExpandableStringEnum<RunType> {
     public static final RunType AUTO_RUN = fromString("AutoRun");
 
     /**
+     * Creates a new instance of RunType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RunType() {
+    }
+
+    /**
      * Creates or finds a RunType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class RunType extends ExpandableStringEnum<RunType> {
         return fromString(name, RunType.class);
     }
 
-    /** @return known RunType values. */
+    /**
+     * Gets known RunType values.
+     *
+     * @return known RunType values.
+     */
     public static Collection<RunType> values() {
         return values(RunType.class);
     }

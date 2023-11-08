@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Map;
 
 /** Azure ML Batch Execution activity. */
@@ -18,31 +19,31 @@ import java.util.Map;
 @Fluent
 public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /*
-     * Key,Value pairs to be passed to the Azure ML Batch Execution Service
-     * endpoint. Keys must match the names of web service parameters defined in
-     * the published Azure ML web service. Values will be passed in the
-     * GlobalParameters property of the Azure ML batch execution request.
+     * Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint. Keys must match the names of web
+     * service parameters defined in the published Azure ML web service. Values will be passed in the GlobalParameters
+     * property of the Azure ML batch execution request.
      */
     @JsonProperty(value = "typeProperties.globalParameters")
     private Map<String, Object> globalParameters;
 
     /*
-     * Key,Value pairs, mapping the names of Azure ML endpoint's Web Service
-     * Outputs to AzureMLWebServiceFile objects specifying the output Blob
-     * locations. This information will be passed in the WebServiceOutputs
-     * property of the Azure ML batch execution request.
+     * Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs to AzureMLWebServiceFile objects
+     * specifying the output Blob locations. This information will be passed in the WebServiceOutputs property of the
+     * Azure ML batch execution request.
      */
     @JsonProperty(value = "typeProperties.webServiceOutputs")
     private Map<String, AzureMLWebServiceFile> webServiceOutputs;
 
     /*
-     * Key,Value pairs, mapping the names of Azure ML endpoint's Web Service
-     * Inputs to AzureMLWebServiceFile objects specifying the input Blob
-     * locations.. This information will be passed in the WebServiceInputs
-     * property of the Azure ML batch execution request.
+     * Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Inputs to AzureMLWebServiceFile objects
+     * specifying the input Blob locations.. This information will be passed in the WebServiceInputs property of the
+     * Azure ML batch execution request.
      */
     @JsonProperty(value = "typeProperties.webServiceInputs")
     private Map<String, AzureMLWebServiceFile> webServiceInputs;
+
+    /** Creates an instance of AzureMLBatchExecutionActivity class. */
+    public AzureMLBatchExecutionActivity() {}
 
     /**
      * Get the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
@@ -113,6 +114,62 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      */
     public AzureMLBatchExecutionActivity setWebServiceInputs(Map<String, AzureMLWebServiceFile> webServiceInputs) {
         this.webServiceInputs = webServiceInputs;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

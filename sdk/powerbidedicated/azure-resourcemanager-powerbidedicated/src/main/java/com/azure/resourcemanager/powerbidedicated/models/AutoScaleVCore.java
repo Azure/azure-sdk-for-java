@@ -55,11 +55,11 @@ public interface AutoScaleVCore {
     AutoScaleVCoreSku sku();
 
     /**
-     * Gets the capacityLimit property: The maximum capacity of an auto scale v-core resource.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
-     * @return the capacityLimit value.
+     * @return the systemData value.
      */
-    Integer capacityLimit();
+    SystemData systemData();
 
     /**
      * Gets the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
@@ -78,11 +78,11 @@ public interface AutoScaleVCore {
     VCoreProvisioningState provisioningState();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the capacityLimit property: The maximum capacity of an auto scale v-core resource.
      *
-     * @return the systemData value.
+     * @return the capacityLimit value.
      */
-    SystemData systemData();
+    Integer capacityLimit();
 
     /**
      * Gets the region of the resource.
@@ -97,6 +97,13 @@ public interface AutoScaleVCore {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.powerbidedicated.fluent.models.AutoScaleVCoreInner object.
@@ -163,9 +170,9 @@ public interface AutoScaleVCore {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithCapacityLimit,
+                DefinitionStages.WithSystemData,
                 DefinitionStages.WithCapacityObjectId,
-                DefinitionStages.WithSystemData {
+                DefinitionStages.WithCapacityLimit {
             /**
              * Executes the create request.
              *
@@ -191,15 +198,16 @@ public interface AutoScaleVCore {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the AutoScaleVCore definition allowing to specify capacityLimit. */
-        interface WithCapacityLimit {
+        /** The stage of the AutoScaleVCore definition allowing to specify systemData. */
+        interface WithSystemData {
             /**
-             * Specifies the capacityLimit property: The maximum capacity of an auto scale v-core resource..
+             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
+             * resource..
              *
-             * @param capacityLimit The maximum capacity of an auto scale v-core resource.
+             * @param systemData Metadata pertaining to creation and last modification of the resource.
              * @return the next definition stage.
              */
-            WithCreate withCapacityLimit(Integer capacityLimit);
+            WithCreate withSystemData(SystemData systemData);
         }
         /** The stage of the AutoScaleVCore definition allowing to specify capacityObjectId. */
         interface WithCapacityObjectId {
@@ -213,16 +221,15 @@ public interface AutoScaleVCore {
              */
             WithCreate withCapacityObjectId(String capacityObjectId);
         }
-        /** The stage of the AutoScaleVCore definition allowing to specify systemData. */
-        interface WithSystemData {
+        /** The stage of the AutoScaleVCore definition allowing to specify capacityLimit. */
+        interface WithCapacityLimit {
             /**
-             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
-             * resource..
+             * Specifies the capacityLimit property: The maximum capacity of an auto scale v-core resource..
              *
-             * @param systemData Metadata pertaining to creation and last modification of the resource.
+             * @param capacityLimit The maximum capacity of an auto scale v-core resource.
              * @return the next definition stage.
              */
-            WithCreate withSystemData(SystemData systemData);
+            WithCreate withCapacityLimit(Integer capacityLimit);
         }
     }
     /**

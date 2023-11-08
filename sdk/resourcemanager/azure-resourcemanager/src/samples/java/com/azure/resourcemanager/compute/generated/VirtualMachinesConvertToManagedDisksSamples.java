@@ -4,43 +4,41 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines ConvertToManagedDisks. */
 public final class VirtualMachinesConvertToManagedDisksSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_ConvertToManagedDisks_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_ConvertToManagedDisks_MinimumSet_Gen.
+     * Sample code: VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesConvertToManagedDisksMinimumSetGen(
+    public static void virtualMachineConvertToManagedDisksMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .convertToManagedDisks("rgcompute", "aaaaaaaaaaa", Context.NONE);
+            .convertToManagedDisks("rgcompute", "aaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.
+     * Sample code: VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesConvertToManagedDisksMaximumSetGen(
+    public static void virtualMachineConvertToManagedDisksMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .convertToManagedDisks("rgcompute", "aaaaaaa", Context.NONE);
+            .convertToManagedDisks("rgcompute", "aaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

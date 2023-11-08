@@ -58,8 +58,7 @@ public final class VpnGatewayProperties {
     private Boolean enableBgpRouteTranslationForNat;
 
     /*
-     * Enable Routing Preference property for the Public IP Interface of the
-     * VpnGateway.
+     * Enable Routing Preference property for the Public IP Interface of the VpnGateway.
      */
     @JsonProperty(value = "isRoutingPreferenceInternet")
     private Boolean isRoutingPreferenceInternet;
@@ -69,6 +68,10 @@ public final class VpnGatewayProperties {
      */
     @JsonProperty(value = "natRules")
     private List<VpnGatewayNatRuleInner> natRules;
+
+    /** Creates an instance of VpnGatewayProperties class. */
+    public VpnGatewayProperties() {
+    }
 
     /**
      * Get the virtualHub property: The VirtualHub to which the gateway belongs.

@@ -22,10 +22,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * Flux operator that auto-completes or auto-abandons messages when control is returned successfully.
  */
 final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, ServiceBusMessageContext> {
+    private static final ClientLogger LOGGER = new ClientLogger(FluxAutoComplete.class);
+
     private final Semaphore completionLock;
     private final Function<ServiceBusMessageContext, Mono<Void>> onComplete;
     private final Function<ServiceBusMessageContext, Mono<Void>> onAbandon;
-    private final ClientLogger logger = new ClientLogger(FluxAutoComplete.class);
 
     FluxAutoComplete(Flux<? extends ServiceBusMessageContext> upstream, Semaphore completionLock,
                      Function<ServiceBusMessageContext, Mono<Void>> onComplete,
@@ -46,7 +47,7 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
         Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
         final AutoCompleteSubscriber subscriber =
-            new AutoCompleteSubscriber(coreSubscriber, completionLock, onComplete, onAbandon, logger);
+            new AutoCompleteSubscriber(coreSubscriber, completionLock, onComplete, onAbandon, LOGGER);
 
         source.subscribe(subscriber);
     }
@@ -71,7 +72,9 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
 
         @Override
         protected void hookOnSubscribe(Subscription subscription) {
-            logger.info("Subscription received. Subscribing downstream. {}", subscription);
+            logger.atVerbose()
+                .addKeyValue("subscription", subscription)
+                .log("Subscription received. Subscribing downstream.");
             downstream.onSubscribe(this);
         }
 
@@ -148,7 +151,9 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
             try {
                 function.apply(context).block();
             } catch (Exception e) {
-                logger.warning("Unable to '{}' message.", operation, e);
+                logger.atWarning()
+                    .addKeyValue("operation", operation)
+                    .log("Operation on message failed.", e);
 
                 // On an error, we'll stop requesting from upstream and pass the error downstream.
                 upstream().cancel();

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.resourcegraph.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcegraph.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,14 +15,15 @@ import java.util.List;
  */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
-     * List of Resource Graph operations supported by the Resource Graph
-     * resource provider.
+     * List of Resource Graph operations supported by the Resource Graph resource provider.
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
+
+    /** Creates an instance of OperationListResult class. */
+    public OperationListResult() {
+    }
 
     /**
      * Get the value property: List of Resource Graph operations supported by the Resource Graph resource provider.

@@ -17,6 +17,20 @@ public interface OperationStatusesClient {
      *
      * @param location The region name of operation.
      * @param asyncOperationId The operation Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of a long running azure asynchronous operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OperationStatusInner> getWithResponse(String location, String asyncOperationId, Context context);
+
+    /**
+     * Get the status of a long running azure asynchronous operation.
+     *
+     * @param location The region name of operation.
+     * @param asyncOperationId The operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,18 +38,4 @@ public interface OperationStatusesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusInner get(String location, String asyncOperationId);
-
-    /**
-     * Get the status of a long running azure asynchronous operation.
-     *
-     * @param location The region name of operation.
-     * @param asyncOperationId The operation Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running azure asynchronous operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getWithResponse(String location, String asyncOperationId, Context context);
 }

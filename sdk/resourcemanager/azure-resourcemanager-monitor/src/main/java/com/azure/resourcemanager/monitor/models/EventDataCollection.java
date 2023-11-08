@@ -7,15 +7,12 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.EventDataInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents collection of events. */
 @Fluent
 public final class EventDataCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventDataCollection.class);
-
     /*
      * this list that includes the Azure audit logs.
      */
@@ -27,6 +24,10 @@ public final class EventDataCollection {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of EventDataCollection class. */
+    public EventDataCollection() {
+    }
 
     /**
      * Get the value property: this list that includes the Azure audit logs.
@@ -75,11 +76,13 @@ public final class EventDataCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model EventDataCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventDataCollection.class);
 }

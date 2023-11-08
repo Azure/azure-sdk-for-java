@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties that define a peering bandwidth offer. */
 @Fluent
 public final class PeeringBandwidthOffer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringBandwidthOffer.class);
-
     /*
      * The name of the bandwidth offer.
      */
@@ -25,6 +21,10 @@ public final class PeeringBandwidthOffer {
      */
     @JsonProperty(value = "valueInMbps")
     private Integer valueInMbps;
+
+    /** Creates an instance of PeeringBandwidthOffer class. */
+    public PeeringBandwidthOffer() {
+    }
 
     /**
      * Get the offerName property: The name of the bandwidth offer.

@@ -7,7 +7,11 @@ package com.azure.resourcemanager.monitor.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RecurrenceFrequency. */
+/**
+ * the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning each
+ * week will have the same set of profiles. For example, to set a daily schedule, set **schedule** to every day of the
+ * week. The frequency property specifies that the schedule is repeated weekly.
+ */
 public enum RecurrenceFrequency {
     /** Enum value None. */
     NONE("None"),
@@ -48,6 +52,9 @@ public enum RecurrenceFrequency {
      */
     @JsonCreator
     public static RecurrenceFrequency fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RecurrenceFrequency[] items = RecurrenceFrequency.values();
         for (RecurrenceFrequency item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -57,6 +64,7 @@ public enum RecurrenceFrequency {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

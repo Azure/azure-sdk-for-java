@@ -12,15 +12,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class RelationshipDelete {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.relationshipdelete.relationshipdelete
         RelationshipClient relationshipClient =
                 new RelationshipClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.relationshipdelete.relationshipdelete
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 relationshipClient.deleteWithResponse("5cf8a9e5-c9fd-abe0-2e8c-d40024263dcb", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.relationshipdelete.relationshipdelete
+        // END:com.azure.analytics.purview.catalog.generated.relationshipdelete.relationshipdelete
     }
 }

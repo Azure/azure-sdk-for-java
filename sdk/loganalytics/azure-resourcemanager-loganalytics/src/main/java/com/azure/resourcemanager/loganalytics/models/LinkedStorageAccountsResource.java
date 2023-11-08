@@ -46,6 +46,13 @@ public interface LinkedStorageAccountsResource {
     List<String> storageAccountIds();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.loganalytics.fluent.models.LinkedStorageAccountsResourceInner object.
      *
      * @return the inner object.
@@ -56,11 +63,13 @@ public interface LinkedStorageAccountsResource {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The LinkedStorageAccountsResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the LinkedStorageAccountsResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the LinkedStorageAccountsResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -72,6 +81,7 @@ public interface LinkedStorageAccountsResource {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the LinkedStorageAccountsResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -92,6 +102,7 @@ public interface LinkedStorageAccountsResource {
              */
             LinkedStorageAccountsResource create(Context context);
         }
+
         /** The stage of the LinkedStorageAccountsResource definition allowing to specify storageAccountIds. */
         interface WithStorageAccountIds {
             /**
@@ -103,6 +114,7 @@ public interface LinkedStorageAccountsResource {
             WithCreate withStorageAccountIds(List<String> storageAccountIds);
         }
     }
+
     /**
      * Begins update for the LinkedStorageAccountsResource resource.
      *
@@ -127,6 +139,7 @@ public interface LinkedStorageAccountsResource {
          */
         LinkedStorageAccountsResource apply(Context context);
     }
+
     /** The LinkedStorageAccountsResource update stages. */
     interface UpdateStages {
         /** The stage of the LinkedStorageAccountsResource update allowing to specify storageAccountIds. */
@@ -140,6 +153,7 @@ public interface LinkedStorageAccountsResource {
             Update withStorageAccountIds(List<String> storageAccountIds);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

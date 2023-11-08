@@ -18,6 +18,10 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private AppServicePlanPatchResourceProperties innerProperties;
 
+    /** Creates an instance of AppServicePlanPatchResource class. */
+    public AppServicePlanPatchResource() {
+    }
+
     /**
      * Get the innerProperties property: AppServicePlanPatchResource resource specific properties.
      *
@@ -109,6 +113,15 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
      */
     public Integer maximumNumberOfWorkers() {
         return this.innerProperties() == null ? null : this.innerProperties().maximumNumberOfWorkers();
+    }
+
+    /**
+     * Get the numberOfWorkers property: The number of instances that are assigned to this App Service plan.
+     *
+     * @return the numberOfWorkers value.
+     */
+    public Integer numberOfWorkers() {
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfWorkers();
     }
 
     /**

@@ -9,7 +9,11 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ExpressRoute Port List Result Response for ListExpressRoutePorts API service call. */
+/**
+ * ExpressRoute Port List Result
+ *
+ * <p>Response for ListExpressRoutePorts API service call.
+ */
 @Fluent
 public final class ExpressRoutePortListResult {
     /*
@@ -23,6 +27,10 @@ public final class ExpressRoutePortListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ExpressRoutePortListResult class. */
+    public ExpressRoutePortListResult() {
+    }
 
     /**
      * Get the value property: A list of ExpressRoutePort resources.

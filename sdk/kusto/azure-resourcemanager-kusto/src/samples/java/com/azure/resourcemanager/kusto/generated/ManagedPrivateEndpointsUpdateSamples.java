@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpoint;
 
 /** Samples for ManagedPrivateEndpoints Update. */
 public final class ManagedPrivateEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoManagedPrivateEndpointsUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoManagedPrivateEndpointsUpdate.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsUpdate.
@@ -21,7 +20,8 @@ public final class ManagedPrivateEndpointsUpdateSamples {
         ManagedPrivateEndpoint resource =
             manager
                 .managedPrivateEndpoints()
-                .getWithResponse("kustorptest", "kustoCluster", "managedPrivateEndpointTest", Context.NONE)
+                .getWithResponse(
+                    "kustorptest", "kustoCluster", "managedPrivateEndpointTest", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

@@ -9,31 +9,27 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolverState;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the properties of a DNS resolver. */
 @Fluent
 public final class DnsResolverProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsResolverProperties.class);
-
     /*
-     * The reference to the virtual network. This cannot be changed after
-     * creation.
+     * The reference to the virtual network. This cannot be changed after creation.
      */
     @JsonProperty(value = "virtualNetwork", required = true)
     private SubResource virtualNetwork;
 
     /*
-     * The current status of the DNS resolver. This is a read-only property and
-     * any attempt to set this value will be ignored.
+     * The current status of the DNS resolver. This is a read-only property and any attempt to set this value will be
+     * ignored.
      */
     @JsonProperty(value = "dnsResolverState", access = JsonProperty.Access.WRITE_ONLY)
     private DnsResolverState dnsResolverState;
 
     /*
-     * The current provisioning state of the DNS resolver. This is a read-only
-     * property and any attempt to set this value will be ignored.
+     * The current provisioning state of the DNS resolver. This is a read-only property and any attempt to set this
+     * value will be ignored.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -100,10 +96,12 @@ public final class DnsResolverProperties {
      */
     public void validate() {
         if (virtualNetwork() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property virtualNetwork in model DnsResolverProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DnsResolverProperties.class);
 }

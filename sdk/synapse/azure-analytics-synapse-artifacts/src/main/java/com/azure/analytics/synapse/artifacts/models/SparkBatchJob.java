@@ -120,6 +120,9 @@ public final class SparkBatchJob {
     @JsonProperty(value = "log")
     private List<String> logLines;
 
+    /** Creates an instance of SparkBatchJob class. */
+    public SparkBatchJob() {}
+
     /**
      * Get the livyInfo property: The livyInfo property.
      *

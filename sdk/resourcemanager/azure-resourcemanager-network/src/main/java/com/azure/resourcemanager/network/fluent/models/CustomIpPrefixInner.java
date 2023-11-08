@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.CommissionedState;
+import com.azure.resourcemanager.network.models.CustomIpPrefixType;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
+import com.azure.resourcemanager.network.models.Geo;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -36,8 +38,7 @@ public final class CustomIpPrefixInner extends Resource {
     private String etag;
 
     /*
-     * A list of availability zones denoting the IP allocated for the resource
-     * needs to come from.
+     * A list of availability zones denoting the IP allocated for the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -47,6 +48,10 @@ public final class CustomIpPrefixInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of CustomIpPrefixInner class. */
+    public CustomIpPrefixInner() {
+    }
 
     /**
      * Get the extendedLocation property: The extended location of the custom IP prefix.
@@ -139,6 +144,29 @@ public final class CustomIpPrefixInner extends Resource {
     @Override
     public CustomIpPrefixInner withTags(Map<String, String> tags) {
         super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the asn property: The ASN for CIDR advertising. Should be an integer as string.
+     *
+     * @return the asn value.
+     */
+    public String asn() {
+        return this.innerProperties() == null ? null : this.innerProperties().asn();
+    }
+
+    /**
+     * Set the asn property: The ASN for CIDR advertising. Should be an integer as string.
+     *
+     * @param asn the asn value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withAsn(String asn) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withAsn(asn);
         return this;
     }
 
@@ -263,6 +291,98 @@ public final class CustomIpPrefixInner extends Resource {
             this.innerProperties = new CustomIpPrefixPropertiesFormat();
         }
         this.innerProperties().withCommissionedState(commissionedState);
+        return this;
+    }
+
+    /**
+     * Get the expressRouteAdvertise property: Whether to do express route advertise.
+     *
+     * @return the expressRouteAdvertise value.
+     */
+    public Boolean expressRouteAdvertise() {
+        return this.innerProperties() == null ? null : this.innerProperties().expressRouteAdvertise();
+    }
+
+    /**
+     * Set the expressRouteAdvertise property: Whether to do express route advertise.
+     *
+     * @param expressRouteAdvertise the expressRouteAdvertise value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withExpressRouteAdvertise(Boolean expressRouteAdvertise) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withExpressRouteAdvertise(expressRouteAdvertise);
+        return this;
+    }
+
+    /**
+     * Get the geo property: The Geo for CIDR advertising. Should be an Geo code.
+     *
+     * @return the geo value.
+     */
+    public Geo geo() {
+        return this.innerProperties() == null ? null : this.innerProperties().geo();
+    }
+
+    /**
+     * Set the geo property: The Geo for CIDR advertising. Should be an Geo code.
+     *
+     * @param geo the geo value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withGeo(Geo geo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withGeo(geo);
+        return this;
+    }
+
+    /**
+     * Get the noInternetAdvertise property: Whether to Advertise the range to Internet.
+     *
+     * @return the noInternetAdvertise value.
+     */
+    public Boolean noInternetAdvertise() {
+        return this.innerProperties() == null ? null : this.innerProperties().noInternetAdvertise();
+    }
+
+    /**
+     * Set the noInternetAdvertise property: Whether to Advertise the range to Internet.
+     *
+     * @param noInternetAdvertise the noInternetAdvertise value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withNoInternetAdvertise(Boolean noInternetAdvertise) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withNoInternetAdvertise(noInternetAdvertise);
+        return this;
+    }
+
+    /**
+     * Get the prefixType property: Type of custom IP prefix. Should be Singular, Parent, or Child.
+     *
+     * @return the prefixType value.
+     */
+    public CustomIpPrefixType prefixType() {
+        return this.innerProperties() == null ? null : this.innerProperties().prefixType();
+    }
+
+    /**
+     * Set the prefixType property: Type of custom IP prefix. Should be Singular, Parent, or Child.
+     *
+     * @param prefixType the prefixType value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withPrefixType(CustomIpPrefixType prefixType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withPrefixType(prefixType);
         return this;
     }
 

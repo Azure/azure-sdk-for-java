@@ -16,6 +16,10 @@ public final class DeploymentExportResultInner {
     @JsonProperty(value = "template")
     private Object template;
 
+    /** Creates an instance of DeploymentExportResultInner class. */
+    public DeploymentExportResultInner() {
+    }
+
     /**
      * Get the template property: The template content.
      *

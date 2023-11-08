@@ -15,18 +15,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureTableSource extends TabularSource {
     /*
-     * Azure Table source query. Type: string (or Expression with resultType
-     * string).
+     * Azure Table source query. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableSourceQuery")
     private Object azureTableSourceQuery;
 
     /*
-     * Azure Table source ignore table not found. Type: boolean (or Expression
-     * with resultType boolean).
+     * Azure Table source ignore table not found. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "azureTableSourceIgnoreTableNotFound")
     private Object azureTableSourceIgnoreTableNotFound;
+
+    /** Creates an instance of AzureTableSource class. */
+    public AzureTableSource() {}
 
     /**
      * Get the azureTableSourceQuery property: Azure Table source query. Type: string (or Expression with resultType
@@ -69,6 +70,41 @@ public final class AzureTableSource extends TabularSource {
      */
     public AzureTableSource setAzureTableSourceIgnoreTableNotFound(Object azureTableSourceIgnoreTableNotFound) {
         this.azureTableSourceIgnoreTableNotFound = azureTableSourceIgnoreTableNotFound;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureTableSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureTableSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureTableSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureTableSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureTableSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

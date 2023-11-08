@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.resourcemover.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcemover.models.OperationStatusError;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation status REST resource. */
 @Immutable
 public final class OperationStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusInner.class);
-
     /*
      * Resource Id.
      */
@@ -28,9 +24,8 @@ public final class OperationStatusInner {
     private String name;
 
     /*
-     * Status of the operation. ARM expects the terminal status to be one of
-     * Succeeded/ Failed/ Canceled. All other values imply that the operation
-     * is still running.
+     * Status of the operation. ARM expects the terminal status to be one of Succeeded/ Failed/ Canceled. All other
+     * values imply that the operation is still running.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
@@ -58,6 +53,10 @@ public final class OperationStatusInner {
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private Object properties;
+
+    /** Creates an instance of OperationStatusInner class. */
+    public OperationStatusInner() {
+    }
 
     /**
      * Get the id property: Resource Id.

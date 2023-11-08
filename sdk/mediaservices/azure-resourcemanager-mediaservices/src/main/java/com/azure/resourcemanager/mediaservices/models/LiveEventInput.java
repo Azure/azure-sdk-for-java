@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class LiveEventInput {
     /*
-     * The input protocol for the live event. This is specified at creation
-     * time and cannot be updated.
+     * The input protocol for the live event. This is specified at creation time and cannot be updated.
      */
     @JsonProperty(value = "streamingProtocol", required = true)
     private LiveEventInputProtocol streamingProtocol;
@@ -26,18 +25,16 @@ public final class LiveEventInput {
     private LiveEventInputAccessControl accessControl;
 
     /*
-     * ISO 8601 time duration of the key frame interval duration of the input.
-     * This value sets the EXT-X-TARGETDURATION property in the HLS output. For
-     * example, use PT2S to indicate 2 seconds. Leave the value empty for
-     * encoding live events.
+     * ISO 8601 time duration of the key frame interval duration of the input. This value sets the EXT-X-TARGETDURATION
+     * property in the HLS output. For example, use PT2S to indicate 2 seconds. Leave the value empty for encoding live
+     * events.
      */
     @JsonProperty(value = "keyFrameIntervalDuration")
     private String keyFrameIntervalDuration;
 
     /*
-     * A UUID in string form to uniquely identify the stream. This can be
-     * specified at creation time but cannot be updated. If omitted, the
-     * service will generate a unique value.
+     * A UUID in string form to uniquely identify the stream. This can be specified at creation time but cannot be
+     * updated. If omitted, the service will generate a unique value.
      */
     @JsonProperty(value = "accessToken")
     private String accessToken;
@@ -47,6 +44,16 @@ public final class LiveEventInput {
      */
     @JsonProperty(value = "endpoints")
     private List<LiveEventEndpoint> endpoints;
+
+    /*
+     * The metadata endpoints for the live event.
+     */
+    @JsonProperty(value = "timedMetadataEndpoints")
+    private List<LiveEventTimedMetadataEndpoint> timedMetadataEndpoints;
+
+    /** Creates an instance of LiveEventInput class. */
+    public LiveEventInput() {
+    }
 
     /**
      * Get the streamingProtocol property: The input protocol for the live event. This is specified at creation time and
@@ -157,6 +164,26 @@ public final class LiveEventInput {
     }
 
     /**
+     * Get the timedMetadataEndpoints property: The metadata endpoints for the live event.
+     *
+     * @return the timedMetadataEndpoints value.
+     */
+    public List<LiveEventTimedMetadataEndpoint> timedMetadataEndpoints() {
+        return this.timedMetadataEndpoints;
+    }
+
+    /**
+     * Set the timedMetadataEndpoints property: The metadata endpoints for the live event.
+     *
+     * @param timedMetadataEndpoints the timedMetadataEndpoints value to set.
+     * @return the LiveEventInput object itself.
+     */
+    public LiveEventInput withTimedMetadataEndpoints(List<LiveEventTimedMetadataEndpoint> timedMetadataEndpoints) {
+        this.timedMetadataEndpoints = timedMetadataEndpoints;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -173,6 +200,9 @@ public final class LiveEventInput {
         }
         if (endpoints() != null) {
             endpoints().forEach(e -> e.validate());
+        }
+        if (timedMetadataEndpoints() != null) {
+            timedMetadataEndpoints().forEach(e -> e.validate());
         }
     }
 

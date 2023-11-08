@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Source. */
+/** The platform where the assessed resource resides. */
 public final class Source extends ExpandableStringEnum<Source> {
     /** Static value Azure for Source. */
     public static final Source AZURE = fromString("Azure");
@@ -18,6 +18,15 @@ public final class Source extends ExpandableStringEnum<Source> {
 
     /** Static value OnPremiseSql for Source. */
     public static final Source ON_PREMISE_SQL = fromString("OnPremiseSql");
+
+    /**
+     * Creates a new instance of Source value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Source() {
+    }
 
     /**
      * Creates or finds a Source from its string representation.
@@ -30,7 +39,11 @@ public final class Source extends ExpandableStringEnum<Source> {
         return fromString(name, Source.class);
     }
 
-    /** @return known Source values. */
+    /**
+     * Gets known Source values.
+     *
+     * @return known Source values.
+     */
     public static Collection<Source> values() {
         return values(Source.class);
     }

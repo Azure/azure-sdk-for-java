@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.TopologiesClient;
 import com.azure.resourcemanager.security.fluent.models.TopologyResourceInner;
 import com.azure.resourcemanager.security.models.TopologyList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TopologiesClient. */
 public final class TopologiesClientImpl implements TopologiesClient {
-    private final ClientLogger logger = new ClientLogger(TopologiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TopologiesService service;
 
@@ -58,7 +55,7 @@ public final class TopologiesClientImpl implements TopologiesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterTopolo")
-    private interface TopologiesService {
+    public interface TopologiesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/topologies")
         @ExpectedResponses({200})
@@ -84,8 +81,7 @@ public final class TopologiesClientImpl implements TopologiesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
-                + "/{ascLocation}/topologies/{topologyResourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/topologies/{topologyResourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TopologyResourceInner>> get(
@@ -124,7 +120,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription.
+     * @return a list that allows to build a topology view of a subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopologyResourceInner>> listSinglePageAsync() {
@@ -166,7 +163,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription.
+     * @return a list that allows to build a topology view of a subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopologyResourceInner>> listSinglePageAsync(Context context) {
@@ -203,7 +201,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription.
+     * @return a list that allows to build a topology view of a subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopologyResourceInner> listAsync() {
@@ -217,7 +216,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription.
+     * @return a list that allows to build a topology view of a subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopologyResourceInner> listAsync(Context context) {
@@ -230,7 +230,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription.
+     * @return a list that allows to build a topology view of a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopologyResourceInner> list() {
@@ -244,7 +245,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription.
+     * @return a list that allows to build a topology view of a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopologyResourceInner> list(Context context) {
@@ -259,7 +261,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription and location.
+     * @return a list that allows to build a topology view of a subscription and location along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopologyResourceInner>> listByHomeRegionSinglePageAsync(String ascLocation) {
@@ -312,7 +315,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription and location.
+     * @return a list that allows to build a topology view of a subscription and location along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopologyResourceInner>> listByHomeRegionSinglePageAsync(
@@ -357,7 +361,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription and location.
+     * @return a list that allows to build a topology view of a subscription and location as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopologyResourceInner> listByHomeRegionAsync(String ascLocation) {
@@ -375,7 +380,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription and location.
+     * @return a list that allows to build a topology view of a subscription and location as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopologyResourceInner> listByHomeRegionAsync(String ascLocation, Context context) {
@@ -392,7 +398,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription and location.
+     * @return a list that allows to build a topology view of a subscription and location as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopologyResourceInner> listByHomeRegion(String ascLocation) {
@@ -408,7 +415,8 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription and location.
+     * @return a list that allows to build a topology view of a subscription and location as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopologyResourceInner> listByHomeRegion(String ascLocation, Context context) {
@@ -426,7 +434,7 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific topology component.
+     * @return a specific topology component along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopologyResourceInner>> getWithResponseAsync(
@@ -484,7 +492,7 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific topology component.
+     * @return a specific topology component along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopologyResourceInner>> getWithResponseAsync(
@@ -538,20 +546,33 @@ public final class TopologiesClientImpl implements TopologiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific topology component.
+     * @return a specific topology component on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopologyResourceInner> getAsync(
         String resourceGroupName, String ascLocation, String topologyResourceName) {
         return getWithResponseAsync(resourceGroupName, ascLocation, topologyResourceName)
-            .flatMap(
-                (Response<TopologyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a specific topology component.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param topologyResourceName Name of a topology resources collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific topology component along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TopologyResourceInner> getWithResponse(
+        String resourceGroupName, String ascLocation, String topologyResourceName, Context context) {
+        return getWithResponseAsync(resourceGroupName, ascLocation, topologyResourceName, context).block();
     }
 
     /**
@@ -569,37 +590,18 @@ public final class TopologiesClientImpl implements TopologiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopologyResourceInner get(String resourceGroupName, String ascLocation, String topologyResourceName) {
-        return getAsync(resourceGroupName, ascLocation, topologyResourceName).block();
-    }
-
-    /**
-     * Gets a specific topology component.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param topologyResourceName Name of a topology resources collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific topology component.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopologyResourceInner> getWithResponse(
-        String resourceGroupName, String ascLocation, String topologyResourceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, ascLocation, topologyResourceName, context).block();
+        return getWithResponse(resourceGroupName, ascLocation, topologyResourceName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopologyResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -630,12 +632,13 @@ public final class TopologiesClientImpl implements TopologiesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopologyResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -666,11 +669,12 @@ public final class TopologiesClientImpl implements TopologiesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopologyResourceInner>> listByHomeRegionNextSinglePageAsync(String nextLink) {
@@ -701,12 +705,13 @@ public final class TopologiesClientImpl implements TopologiesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopologyResourceInner>> listByHomeRegionNextSinglePageAsync(

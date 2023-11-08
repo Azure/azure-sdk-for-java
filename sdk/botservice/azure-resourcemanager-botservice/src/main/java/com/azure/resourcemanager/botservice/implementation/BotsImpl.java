@@ -16,10 +16,9 @@ import com.azure.resourcemanager.botservice.models.Bot;
 import com.azure.resourcemanager.botservice.models.Bots;
 import com.azure.resourcemanager.botservice.models.CheckNameAvailabilityRequestBody;
 import com.azure.resourcemanager.botservice.models.CheckNameAvailabilityResponseBody;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BotsImpl implements Bots {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BotsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BotsImpl.class);
 
     private final BotsClient innerClient;
 
@@ -109,7 +108,7 @@ public final class BotsImpl implements Bots {
     public Bot getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class BotsImpl implements Bots {
         }
         String resourceName = Utils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
@@ -128,7 +127,7 @@ public final class BotsImpl implements Bots {
     public Response<Bot> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class BotsImpl implements Bots {
         }
         String resourceName = Utils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
@@ -147,7 +146,7 @@ public final class BotsImpl implements Bots {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,7 +154,7 @@ public final class BotsImpl implements Bots {
         }
         String resourceName = Utils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
@@ -166,7 +165,7 @@ public final class BotsImpl implements Bots {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -174,7 +173,7 @@ public final class BotsImpl implements Bots {
         }
         String resourceName = Utils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Localizable String object containing the name and a localized value. */
 @Fluent
 public final class SignalRUsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRUsageName.class);
-
     /*
      * The identifier of the usage.
      */
@@ -25,6 +21,10 @@ public final class SignalRUsageName {
      */
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
+
+    /** Creates an instance of SignalRUsageName class. */
+    public SignalRUsageName() {
+    }
 
     /**
      * Get the value property: The identifier of the usage.

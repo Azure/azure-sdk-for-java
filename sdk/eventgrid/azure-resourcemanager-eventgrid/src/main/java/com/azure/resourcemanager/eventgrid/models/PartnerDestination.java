@@ -123,6 +123,13 @@ public interface PartnerDestination {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.PartnerDestinationInner object.
      *
      * @return the inner object.
@@ -178,7 +185,6 @@ public interface PartnerDestination {
                 DefinitionStages.WithPartnerRegistrationImmutableId,
                 DefinitionStages.WithEndpointServiceContext,
                 DefinitionStages.WithExpirationTimeIfNotActivatedUtc,
-                DefinitionStages.WithProvisioningState,
                 DefinitionStages.WithActivationState,
                 DefinitionStages.WithEndpointBaseUrl,
                 DefinitionStages.WithMessageForActivation {
@@ -242,16 +248,6 @@ public interface PartnerDestination {
              * @return the next definition stage.
              */
             WithCreate withExpirationTimeIfNotActivatedUtc(OffsetDateTime expirationTimeIfNotActivatedUtc);
-        }
-        /** The stage of the PartnerDestination definition allowing to specify provisioningState. */
-        interface WithProvisioningState {
-            /**
-             * Specifies the provisioningState property: Provisioning state of the partner destination..
-             *
-             * @param provisioningState Provisioning state of the partner destination.
-             * @return the next definition stage.
-             */
-            WithCreate withProvisioningState(PartnerDestinationProvisioningState provisioningState);
         }
         /** The stage of the PartnerDestination definition allowing to specify activationState. */
         interface WithActivationState {
@@ -338,16 +334,9 @@ public interface PartnerDestination {
     PartnerDestination refresh(Context context);
 
     /**
-     * Activate a newly created partner destination.
+     * Activate a partner destination.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination.
-     */
-    PartnerDestination activate();
-
-    /**
-     * Activate a newly created partner destination.
+     * <p>Activate a newly created partner destination.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -356,4 +345,15 @@ public interface PartnerDestination {
      * @return event Grid Partner Destination along with {@link Response}.
      */
     Response<PartnerDestination> activateWithResponse(Context context);
+
+    /**
+     * Activate a partner destination.
+     *
+     * <p>Activate a newly created partner destination.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Destination.
+     */
+    PartnerDestination activate();
 }

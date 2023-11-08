@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Azure Data Lake Analytics linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,62 +19,60 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     /*
-     * The Azure Data Lake Analytics account name. Type: string (or Expression
-     * with resultType string).
+     * The Azure Data Lake Analytics account name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.accountName", required = true)
     private Object accountName;
 
     /*
-     * The ID of the application used to authenticate against the Azure Data
-     * Lake Analytics account. Type: string (or Expression with resultType
-     * string).
+     * The ID of the application used to authenticate against the Azure Data Lake Analytics account. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The Key of the application used to authenticate against the Azure Data
-     * Lake Analytics account.
+     * The Key of the application used to authenticate against the Azure Data Lake Analytics account.
      */
     @JsonProperty(value = "typeProperties.servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.tenant", required = true)
     private Object tenant;
 
     /*
-     * Data Lake Analytics account subscription ID (if different from Data
-     * Factory account). Type: string (or Expression with resultType string).
+     * Data Lake Analytics account subscription ID (if different from Data Factory account). Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.subscriptionId")
     private Object subscriptionId;
 
     /*
-     * Data Lake Analytics account resource group name (if different from Data
-     * Factory account). Type: string (or Expression with resultType string).
+     * Data Lake Analytics account resource group name (if different from Data Factory account). Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.resourceGroupName")
     private Object resourceGroupName;
 
     /*
-     * Azure Data Lake Analytics URI Type: string (or Expression with
-     * resultType string).
+     * Azure Data Lake Analytics URI Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.dataLakeAnalyticsUri")
     private Object dataLakeAnalyticsUri;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of AzureDataLakeAnalyticsLinkedService class. */
+    public AzureDataLakeAnalyticsLinkedService() {}
 
     /**
      * Get the accountName property: The Azure Data Lake Analytics account name. Type: string (or Expression with
@@ -247,6 +247,34 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      */
     public AzureDataLakeAnalyticsLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeAnalyticsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeAnalyticsLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeAnalyticsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeAnalyticsLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

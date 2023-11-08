@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Machine Extension. */
 @Fluent
 public final class MachineExtensionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineExtensionProperties.class);
-
     /*
-     * How the extension handler should be forced to update even if the
-     * extension configuration has not changed.
+     * How the extension handler should be forced to update even if the extension configuration has not changed.
      */
     @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
@@ -28,8 +23,7 @@ public final class MachineExtensionProperties {
     private String publisher;
 
     /*
-     * Specifies the type of the extension; an example is
-     * "CustomScriptExtension".
+     * Specifies the type of the extension; an example is "CustomScriptExtension".
      */
     @JsonProperty(value = "type")
     private String type;
@@ -41,10 +35,9 @@ public final class MachineExtensionProperties {
     private String typeHandlerVersion;
 
     /*
-     * Indicates whether the extension should use a newer minor version if one
-     * is available at deployment time. Once deployed, however, the extension
-     * will not upgrade minor versions unless redeployed, even with this
-     * property set to true.
+     * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once
+     * deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set
+     * to true.
      */
     @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
@@ -56,8 +49,8 @@ public final class MachineExtensionProperties {
     private Object settings;
 
     /*
-     * The extension can contain either protectedSettings or
-     * protectedSettingsFromKeyVault or no protected settings at all.
+     * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at
+     * all.
      */
     @JsonProperty(value = "protectedSettings")
     private Object protectedSettings;
@@ -73,6 +66,10 @@ public final class MachineExtensionProperties {
      */
     @JsonProperty(value = "instanceView")
     private MachineExtensionInstanceView instanceView;
+
+    /** Creates an instance of MachineExtensionProperties class. */
+    public MachineExtensionProperties() {
+    }
 
     /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension

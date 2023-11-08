@@ -24,6 +24,9 @@ public final class StorageErrorError {
     @JsonProperty(value = "Message")
     private String message;
 
+    /** Creates an instance of StorageErrorError class. */
+    public StorageErrorError() {}
+
     /**
      * Get the code property: The service error code.
      *

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the credential parameters for accessing the source registry. */
 @Fluent
 public final class SourceRegistryCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceRegistryCredentials.class);
-
     /*
      * The authentication mode which determines the source registry login
      * scope. The credentials for the source registry

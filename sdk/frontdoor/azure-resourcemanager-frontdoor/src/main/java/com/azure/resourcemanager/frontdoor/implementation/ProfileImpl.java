@@ -64,6 +64,10 @@ public final class ProfileImpl implements Profile, Profile.Definition, Profile.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ProfileInner innerModel() {
         return this.innerObject;
     }

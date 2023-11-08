@@ -5,42 +5,30 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing Traffic Manager User Metrics. */
-@JsonFlatten
 @Fluent
-public class UserMetricsModelInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserMetricsModelInner.class);
-
+public final class UserMetricsModelInner extends ProxyResource {
     /*
-     * The key returned by the User Metrics operation.
+     * The properties of the Traffic Manager User Metrics.
      */
-    @JsonProperty(value = "properties.key")
-    private String key;
+    @JsonProperty(value = "properties")
+    private UserMetricsProperties innerProperties;
 
-    /*
-     * Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
-     */
-    @JsonProperty(value = "id")
-    private String id;
+    /** Creates an instance of UserMetricsModelInner class. */
+    public UserMetricsModelInner() {
+    }
 
-    /*
-     * The name of the resource
+    /**
+     * Get the innerProperties property: The properties of the Traffic Manager User Metrics.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /*
-     * The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     */
-    @JsonProperty(value = "type")
-    private String type;
+    private UserMetricsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the key property: The key returned by the User Metrics operation.
@@ -48,7 +36,7 @@ public class UserMetricsModelInner extends ProxyResource {
      * @return the key value.
      */
     public String key() {
-        return this.key;
+        return this.innerProperties() == null ? null : this.innerProperties().key();
     }
 
     /**
@@ -58,69 +46,10 @@ public class UserMetricsModelInner extends ProxyResource {
      * @return the UserMetricsModelInner object itself.
      */
     public UserMetricsModelInner withKey(String key) {
-        this.key = key;
-        return this;
-    }
-
-    /**
-     * Get the id property: Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Set the id property: Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
-     * @param id the id value to set.
-     * @return the UserMetricsModelInner object itself.
-     */
-    public UserMetricsModelInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the resource.
-     *
-     * @param name the name value to set.
-     * @return the UserMetricsModelInner object itself.
-     */
-    public UserMetricsModelInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
-     * @param type the type value to set.
-     * @return the UserMetricsModelInner object itself.
-     */
-    public UserMetricsModelInner withType(String type) {
-        this.type = type;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserMetricsProperties();
+        }
+        this.innerProperties().withKey(key);
         return this;
     }
 
@@ -130,5 +59,8 @@ public class UserMetricsModelInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

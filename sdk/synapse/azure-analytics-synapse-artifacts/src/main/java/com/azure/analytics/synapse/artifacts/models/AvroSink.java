@@ -26,6 +26,9 @@ public final class AvroSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private AvroWriteSettings formatSettings;
 
+    /** Creates an instance of AvroSink class. */
+    public AvroSink() {}
+
     /**
      * Get the storeSettings property: Avro store settings.
      *
@@ -63,6 +66,41 @@ public final class AvroSink extends CopySink {
      */
     public AvroSink setFormatSettings(AvroWriteSettings formatSettings) {
         this.formatSettings = formatSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AvroSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AvroSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AvroSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AvroSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AvroSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

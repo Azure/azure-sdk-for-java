@@ -7,16 +7,12 @@ package com.azure.resourcemanager.automanage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileAssignmentProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configuration profile assignment is an association between a VM and automanage profile configuration. */
 @Fluent
 public final class ConfigurationProfileAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationProfileAssignmentInner.class);
-
     /*
      * Properties of the configuration profile assignment.
      */
@@ -24,8 +20,13 @@ public final class ConfigurationProfileAssignmentInner extends ProxyResource {
     private ConfigurationProfileAssignmentProperties properties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure resource id. Indicates if this resource is managed by another Azure resource.
+     */
+    @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
+    private String managedBy;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -48,6 +49,15 @@ public final class ConfigurationProfileAssignmentInner extends ProxyResource {
     public ConfigurationProfileAssignmentInner withProperties(ConfigurationProfileAssignmentProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
+     *
+     * @return the managedBy value.
+     */
+    public String managedBy() {
+        return this.managedBy;
     }
 
     /**

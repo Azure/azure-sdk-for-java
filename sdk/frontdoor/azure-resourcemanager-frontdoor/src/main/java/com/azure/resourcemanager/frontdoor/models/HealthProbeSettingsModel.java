@@ -5,17 +5,18 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.frontdoor.fluent.models.HealthProbeSettingsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Load balancing settings for a backend pool. */
-@JsonFlatten
 @Fluent
-public class HealthProbeSettingsModel extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthProbeSettingsModel.class);
+public final class HealthProbeSettingsModel extends SubResource {
+    /*
+     * Properties of the health probe settings
+     */
+    @JsonProperty(value = "properties")
+    private HealthProbeSettingsProperties innerProperties;
 
     /*
      * Resource name.
@@ -29,44 +30,18 @@ public class HealthProbeSettingsModel extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The path to use for the health probe. Default is /
-     */
-    @JsonProperty(value = "properties.path")
-    private String path;
+    /** Creates an instance of HealthProbeSettingsModel class. */
+    public HealthProbeSettingsModel() {
+    }
 
-    /*
-     * Protocol scheme to use for this probe
+    /**
+     * Get the innerProperties property: Properties of the health probe settings.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.protocol")
-    private FrontDoorProtocol protocol;
-
-    /*
-     * The number of seconds between health probes.
-     */
-    @JsonProperty(value = "properties.intervalInSeconds")
-    private Integer intervalInSeconds;
-
-    /*
-     * Configures which HTTP method to use to probe the backends defined under
-     * backendPools.
-     */
-    @JsonProperty(value = "properties.healthProbeMethod")
-    private FrontDoorHealthProbeMethod healthProbeMethod;
-
-    /*
-     * Whether to enable health probes to be made against backends defined
-     * under backendPools. Health probes can only be disabled if there is a
-     * single enabled backend in single enabled backend pool.
-     */
-    @JsonProperty(value = "properties.enabledState")
-    private HealthProbeEnabled enabledState;
-
-    /*
-     * Resource status.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private FrontDoorResourceState resourceState;
+    private HealthProbeSettingsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Resource name.
@@ -97,13 +72,31 @@ public class HealthProbeSettingsModel extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public HealthProbeSettingsModel withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /**
+     * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
+     *
+     * <p>Resource status.
+     *
+     * @return the resourceState value.
+     */
+    public FrontDoorResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
     /**
      * Get the path property: The path to use for the health probe. Default is /.
      *
      * @return the path value.
      */
     public String path() {
-        return this.path;
+        return this.innerProperties() == null ? null : this.innerProperties().path();
     }
 
     /**
@@ -113,7 +106,10 @@ public class HealthProbeSettingsModel extends SubResource {
      * @return the HealthProbeSettingsModel object itself.
      */
     public HealthProbeSettingsModel withPath(String path) {
-        this.path = path;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HealthProbeSettingsProperties();
+        }
+        this.innerProperties().withPath(path);
         return this;
     }
 
@@ -123,7 +119,7 @@ public class HealthProbeSettingsModel extends SubResource {
      * @return the protocol value.
      */
     public FrontDoorProtocol protocol() {
-        return this.protocol;
+        return this.innerProperties() == null ? null : this.innerProperties().protocol();
     }
 
     /**
@@ -133,7 +129,10 @@ public class HealthProbeSettingsModel extends SubResource {
      * @return the HealthProbeSettingsModel object itself.
      */
     public HealthProbeSettingsModel withProtocol(FrontDoorProtocol protocol) {
-        this.protocol = protocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HealthProbeSettingsProperties();
+        }
+        this.innerProperties().withProtocol(protocol);
         return this;
     }
 
@@ -143,7 +142,7 @@ public class HealthProbeSettingsModel extends SubResource {
      * @return the intervalInSeconds value.
      */
     public Integer intervalInSeconds() {
-        return this.intervalInSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().intervalInSeconds();
     }
 
     /**
@@ -153,7 +152,10 @@ public class HealthProbeSettingsModel extends SubResource {
      * @return the HealthProbeSettingsModel object itself.
      */
     public HealthProbeSettingsModel withIntervalInSeconds(Integer intervalInSeconds) {
-        this.intervalInSeconds = intervalInSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HealthProbeSettingsProperties();
+        }
+        this.innerProperties().withIntervalInSeconds(intervalInSeconds);
         return this;
     }
 
@@ -164,7 +166,7 @@ public class HealthProbeSettingsModel extends SubResource {
      * @return the healthProbeMethod value.
      */
     public FrontDoorHealthProbeMethod healthProbeMethod() {
-        return this.healthProbeMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().healthProbeMethod();
     }
 
     /**
@@ -175,7 +177,10 @@ public class HealthProbeSettingsModel extends SubResource {
      * @return the HealthProbeSettingsModel object itself.
      */
     public HealthProbeSettingsModel withHealthProbeMethod(FrontDoorHealthProbeMethod healthProbeMethod) {
-        this.healthProbeMethod = healthProbeMethod;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HealthProbeSettingsProperties();
+        }
+        this.innerProperties().withHealthProbeMethod(healthProbeMethod);
         return this;
     }
 
@@ -187,7 +192,7 @@ public class HealthProbeSettingsModel extends SubResource {
      * @return the enabledState value.
      */
     public HealthProbeEnabled enabledState() {
-        return this.enabledState;
+        return this.innerProperties() == null ? null : this.innerProperties().enabledState();
     }
 
     /**
@@ -199,23 +204,10 @@ public class HealthProbeSettingsModel extends SubResource {
      * @return the HealthProbeSettingsModel object itself.
      */
     public HealthProbeSettingsModel withEnabledState(HealthProbeEnabled enabledState) {
-        this.enabledState = enabledState;
-        return this;
-    }
-
-    /**
-     * Get the resourceState property: Resource status.
-     *
-     * @return the resourceState value.
-     */
-    public FrontDoorResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public HealthProbeSettingsModel withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HealthProbeSettingsProperties();
+        }
+        this.innerProperties().withEnabledState(enabledState);
         return this;
     }
 
@@ -225,5 +217,8 @@ public class HealthProbeSettingsModel extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -10,12 +10,13 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -32,11 +33,12 @@ import com.azure.storage.common.implementation.connectionstring.StorageConnectio
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
+import com.azure.storage.file.share.models.ShareAudience;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -149,6 +151,7 @@ import java.util.Objects;
     ShareDirectoryClient.class, ShareDirectoryAsyncClient.class
 })
 public class ShareFileClientBuilder implements
+    TokenCredentialTrait<ShareFileClientBuilder>,
     HttpTrait<ShareFileClientBuilder>,
     ConnectionStringTrait<ShareFileClientBuilder>,
     AzureNamedKeyCredentialTrait<ShareFileClientBuilder>,
@@ -165,6 +168,7 @@ public class ShareFileClientBuilder implements
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private AzureSasCredential azureSasCredential;
+    private TokenCredential tokenCredential;
     private String sasToken;
 
     private HttpClient httpClient;
@@ -178,6 +182,10 @@ public class ShareFileClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private ShareServiceVersion version;
+    private ShareTokenIntent shareTokenIntent;
+    private boolean allowSourceTrailingDot;
+    private boolean allowTrailingDot;
+    private ShareAudience audience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareFileClient FileClients} and {@link
@@ -197,24 +205,18 @@ public class ShareFileClientBuilder implements
         CredentialValidator.validateSingleCredentialIsPresent(
             storageSharedKeyCredential, null, azureSasCredential, sasToken, LOGGER);
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (storageSharedKeyCredential != null) {
-                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (azureSasCredential != null) {
-                return new AzureSasCredentialPolicy(azureSasCredential, false);
-            } else if (sasToken != null) {
-                return new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
-            } else {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Credentials are required for authorization"));
-            }
-        }, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, LOGGER);
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
 
         return new AzureFileStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
+            .fileRequestIntent(shareTokenIntent)
+            .allowSourceTrailingDot(allowSourceTrailingDot)
+            .allowTrailingDot(allowTrailingDot)
             .buildClient();
     }
 
@@ -237,7 +239,7 @@ public class ShareFileClientBuilder implements
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
         return new ShareDirectoryAsyncClient(constructImpl(serviceVersion), shareName, resourcePath,
-            shareSnapshot, accountName, serviceVersion);
+            shareSnapshot, accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
     /**
@@ -279,7 +281,7 @@ public class ShareFileClientBuilder implements
     public ShareFileAsyncClient buildFileAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
         return new ShareFileAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
-            accountName, serviceVersion);
+            accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
     /**
@@ -348,7 +350,7 @@ public class ShareFileClientBuilder implements
             }
         } catch (MalformedURLException ex) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage File endpoint url is malformed."));
+                new IllegalArgumentException("The Azure Storage File endpoint url is malformed.", ex));
         }
 
         return this;
@@ -400,6 +402,7 @@ public class ShareFileClientBuilder implements
      */
     public ShareFileClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.tokenCredential = null;
         this.sasToken = null;
         return this;
     }
@@ -418,6 +421,23 @@ public class ShareFileClientBuilder implements
     }
 
     /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return the updated ShareFileClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
+    public ShareFileClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'credential' cannot be null.");
+        this.storageSharedKeyCredential = null;
+        this.sasToken = null;
+        return this;
+    }
+
+    /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
      * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
@@ -429,6 +449,7 @@ public class ShareFileClientBuilder implements
         this.sasToken = Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -667,6 +688,57 @@ public class ShareFileClientBuilder implements
      */
     public ShareFileClientBuilder serviceVersion(ShareServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the source URI.
+     *
+     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
+     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
+     *
+     * @param allowSourceTrailingDot the allowSourceTrailingDot value.
+     * @return the updated ShareFileClientBuilder object
+     */
+    public ShareFileClientBuilder allowSourceTrailingDot(boolean allowSourceTrailingDot) {
+        this.allowSourceTrailingDot = allowSourceTrailingDot;
+        return this;
+    }
+
+    /**
+     * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the target URI.
+     *
+     * If set to true, trailing dot (.) will be allowed to suffix directory and file names.
+     * If false, the trailing dot will be trimmed. Supported by x-ms-version 2022-11-02 and above.
+     *
+     * @param allowTrailingDot the allowTrailingDot value.
+     * @return the updated ShareFileClientBuilder object
+     */
+    public ShareFileClientBuilder allowTrailingDot(boolean allowTrailingDot) {
+        this.allowTrailingDot = allowTrailingDot;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ShareTokenIntent} that specifies whether there is intent for a file to be backed up.
+     * This is currently required when using {@link TokenCredential}, and ignored for other forms of authentication.
+     *
+     * @param shareTokenIntent the {@link ShareTokenIntent} value.
+     * @return the updated ShareFileClientBuilder object
+     */
+    public ShareFileClientBuilder shareTokenIntent(ShareTokenIntent shareTokenIntent) {
+        this.shareTokenIntent = shareTokenIntent;
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link ShareAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated ShareFileClientBuilder object
+     */
+    public ShareFileClientBuilder audience(ShareAudience audience) {
+        this.audience = audience;
         return this;
     }
 }

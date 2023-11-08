@@ -16,10 +16,9 @@ import com.azure.resourcemanager.mixedreality.models.AccountKeyRegenerateRequest
 import com.azure.resourcemanager.mixedreality.models.AccountKeys;
 import com.azure.resourcemanager.mixedreality.models.RemoteRenderingAccount;
 import com.azure.resourcemanager.mixedreality.models.RemoteRenderingAccounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemoteRenderingAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RemoteRenderingAccountsImpl.class);
 
     private final RemoteRenderingAccountsClient innerClient;
 
@@ -53,21 +52,13 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         return Utils.mapPage(inner, inner1 -> new RemoteRenderingAccountImpl(inner1, this.manager()));
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String accountName) {
-        this.serviceClient().delete(resourceGroupName, accountName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String accountName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, context);
     }
 
-    public RemoteRenderingAccount getByResourceGroup(String resourceGroupName, String accountName) {
-        RemoteRenderingAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
-        if (inner != null) {
-            return new RemoteRenderingAccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void deleteByResourceGroup(String resourceGroupName, String accountName) {
+        this.serviceClient().delete(resourceGroupName, accountName);
     }
 
     public Response<RemoteRenderingAccount> getByResourceGroupWithResponse(
@@ -85,10 +76,10 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         }
     }
 
-    public AccountKeys listKeys(String resourceGroupName, String accountName) {
-        AccountKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
+    public RemoteRenderingAccount getByResourceGroup(String resourceGroupName, String accountName) {
+        RemoteRenderingAccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
         if (inner != null) {
-            return new AccountKeysImpl(inner, this.manager());
+            return new RemoteRenderingAccountImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -108,9 +99,8 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         }
     }
 
-    public AccountKeys regenerateKeys(
-        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate) {
-        AccountKeysInner inner = this.serviceClient().regenerateKeys(resourceGroupName, accountName, regenerate);
+    public AccountKeys listKeys(String resourceGroupName, String accountName) {
+        AccountKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
         if (inner != null) {
             return new AccountKeysImpl(inner, this.manager());
         } else {
@@ -133,10 +123,20 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         }
     }
 
+    public AccountKeys regenerateKeys(
+        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate) {
+        AccountKeysInner inner = this.serviceClient().regenerateKeys(resourceGroupName, accountName, regenerate);
+        if (inner != null) {
+            return new AccountKeysImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public RemoteRenderingAccount getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,7 +144,7 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         }
         String accountName = Utils.getValueFromIdByName(id, "remoteRenderingAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,7 +158,7 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
     public Response<RemoteRenderingAccount> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +166,7 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         }
         String accountName = Utils.getValueFromIdByName(id, "remoteRenderingAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,7 +180,7 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,7 +188,7 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         }
         String accountName = Utils.getValueFromIdByName(id, "remoteRenderingAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,13 +196,13 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
                                 "The resource ID '%s' is not valid. Missing path segment 'remoteRenderingAccounts'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -210,7 +210,7 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         }
         String accountName = Utils.getValueFromIdByName(id, "remoteRenderingAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -218,7 +218,7 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
                                 "The resource ID '%s' is not valid. Missing path segment 'remoteRenderingAccounts'.",
                                 id)));
         }
-        return this.deleteWithResponse(resourceGroupName, accountName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
 
     private RemoteRenderingAccountsClient serviceClient() {

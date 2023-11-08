@@ -206,6 +206,13 @@ public interface Server {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner object.
      *
      * @return the inner object.
@@ -467,12 +474,14 @@ public interface Server {
             UpdateStages.WithIdentity,
             UpdateStages.WithSku,
             UpdateStages.WithAdministratorLoginPassword,
+            UpdateStages.WithVersion,
             UpdateStages.WithStorage,
             UpdateStages.WithBackup,
             UpdateStages.WithHighAvailability,
             UpdateStages.WithMaintenanceWindow,
             UpdateStages.WithReplicationRole,
-            UpdateStages.WithDataEncryption {
+            UpdateStages.WithDataEncryption,
+            UpdateStages.WithNetwork {
         /**
          * Executes the update request.
          *
@@ -529,6 +538,16 @@ public interface Server {
              * @return the next definition stage.
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
+        }
+        /** The stage of the Server update allowing to specify version. */
+        interface WithVersion {
+            /**
+             * Specifies the version property: Server version..
+             *
+             * @param version Server version.
+             * @return the next definition stage.
+             */
+            Update withVersion(ServerVersion version);
         }
         /** The stage of the Server update allowing to specify storage. */
         interface WithStorage {
@@ -589,6 +608,16 @@ public interface Server {
              * @return the next definition stage.
              */
             Update withDataEncryption(DataEncryption dataEncryption);
+        }
+        /** The stage of the Server update allowing to specify network. */
+        interface WithNetwork {
+            /**
+             * Specifies the network property: Network related properties of a server.
+             *
+             * @param network Network related properties of a server.
+             * @return the next definition stage.
+             */
+            Update withNetwork(Network network);
         }
     }
     /**
@@ -680,4 +709,25 @@ public interface Server {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void stop(Context context);
+
+    /**
+     * Resets GTID on a server.
+     *
+     * @param parameters The required parameters for resetting GTID on a server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resetGtid(ServerGtidSetParameter parameters);
+
+    /**
+     * Resets GTID on a server.
+     *
+     * @param parameters The required parameters for resetting GTID on a server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resetGtid(ServerGtidSetParameter parameters, Context context);
 }

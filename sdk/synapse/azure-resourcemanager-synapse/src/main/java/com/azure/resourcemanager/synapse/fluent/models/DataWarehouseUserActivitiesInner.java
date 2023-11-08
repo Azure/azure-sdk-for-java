@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.synapse.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** User activities of a data warehouse. */
-@Fluent
+@Immutable
 public final class DataWarehouseUserActivitiesInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataWarehouseUserActivitiesInner.class);
-
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private DataWarehouseUserActivitiesProperties innerProperties;
+
+    /** Creates an instance of DataWarehouseUserActivitiesInner class. */
+    public DataWarehouseUserActivitiesInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

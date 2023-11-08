@@ -5,77 +5,32 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationTasks;
 import com.azure.resourcemanager.automation.models.SucScheduleProperties;
 import com.azure.resourcemanager.automation.models.UpdateConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Software update configuration properties. */
-@JsonFlatten
 @Fluent
-public class SoftwareUpdateConfigurationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareUpdateConfigurationInner.class);
-
+public final class SoftwareUpdateConfigurationInner extends ProxyResource {
     /*
-     * update specific properties for the Software update configuration
+     * Software update configuration properties.
      */
-    @JsonProperty(value = "properties.updateConfiguration", required = true)
-    private UpdateConfiguration updateConfiguration;
+    @JsonProperty(value = "properties", required = true)
+    private SoftwareUpdateConfigurationProperties innerProperties = new SoftwareUpdateConfigurationProperties();
 
-    /*
-     * Schedule information for the Software update configuration
+    /**
+     * Get the innerProperties property: Software update configuration properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.scheduleInfo", required = true)
-    private SucScheduleProperties scheduleInfo;
-
-    /*
-     * Provisioning state for the software update configuration, which only
-     * appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Details of provisioning error
-     */
-    @JsonProperty(value = "properties.error")
-    private ManagementError error;
-
-    /*
-     * Creation time of the resource, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * CreatedBy property, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.createdBy", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdBy;
-
-    /*
-     * Last time resource was modified, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * LastModifiedBy property, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastModifiedBy;
-
-    /*
-     * Tasks information for the Software update configuration.
-     */
-    @JsonProperty(value = "properties.tasks")
-    private SoftwareUpdateConfigurationTasks tasks;
+    private SoftwareUpdateConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the updateConfiguration property: update specific properties for the Software update configuration.
@@ -83,7 +38,7 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the updateConfiguration value.
      */
     public UpdateConfiguration updateConfiguration() {
-        return this.updateConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().updateConfiguration();
     }
 
     /**
@@ -93,7 +48,10 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the SoftwareUpdateConfigurationInner object itself.
      */
     public SoftwareUpdateConfigurationInner withUpdateConfiguration(UpdateConfiguration updateConfiguration) {
-        this.updateConfiguration = updateConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationProperties();
+        }
+        this.innerProperties().withUpdateConfiguration(updateConfiguration);
         return this;
     }
 
@@ -103,7 +61,7 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the scheduleInfo value.
      */
     public SucScheduleProperties scheduleInfo() {
-        return this.scheduleInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().scheduleInfo();
     }
 
     /**
@@ -113,7 +71,10 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the SoftwareUpdateConfigurationInner object itself.
      */
     public SoftwareUpdateConfigurationInner withScheduleInfo(SucScheduleProperties scheduleInfo) {
-        this.scheduleInfo = scheduleInfo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationProperties();
+        }
+        this.innerProperties().withScheduleInfo(scheduleInfo);
         return this;
     }
 
@@ -124,7 +85,7 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -133,7 +94,7 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the error value.
      */
     public ManagementError error() {
-        return this.error;
+        return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
     /**
@@ -143,7 +104,10 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the SoftwareUpdateConfigurationInner object itself.
      */
     public SoftwareUpdateConfigurationInner withError(ManagementError error) {
-        this.error = error;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationProperties();
+        }
+        this.innerProperties().withError(error);
         return this;
     }
 
@@ -153,7 +117,7 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -162,7 +126,7 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the createdBy value.
      */
     public String createdBy() {
-        return this.createdBy;
+        return this.innerProperties() == null ? null : this.innerProperties().createdBy();
     }
 
     /**
@@ -171,7 +135,7 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -180,7 +144,7 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
-        return this.lastModifiedBy;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedBy();
     }
 
     /**
@@ -189,7 +153,7 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the tasks value.
      */
     public SoftwareUpdateConfigurationTasks tasks() {
-        return this.tasks;
+        return this.innerProperties() == null ? null : this.innerProperties().tasks();
     }
 
     /**
@@ -199,7 +163,10 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @return the SoftwareUpdateConfigurationInner object itself.
      */
     public SoftwareUpdateConfigurationInner withTasks(SoftwareUpdateConfigurationTasks tasks) {
-        this.tasks = tasks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationProperties();
+        }
+        this.innerProperties().withTasks(tasks);
         return this;
     }
 
@@ -209,24 +176,15 @@ public class SoftwareUpdateConfigurationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (updateConfiguration() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property updateConfiguration in model SoftwareUpdateConfigurationInner"));
+                        "Missing required property innerProperties in model SoftwareUpdateConfigurationInner"));
         } else {
-            updateConfiguration().validate();
-        }
-        if (scheduleInfo() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scheduleInfo in model SoftwareUpdateConfigurationInner"));
-        } else {
-            scheduleInfo().validate();
-        }
-        if (tasks() != null) {
-            tasks().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SoftwareUpdateConfigurationInner.class);
 }

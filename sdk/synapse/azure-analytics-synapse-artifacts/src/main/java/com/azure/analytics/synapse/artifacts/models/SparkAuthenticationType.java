@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SparkAuthenticationType. */
+/** The authentication method used to access the Spark server. */
 public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAuthenticationType> {
     /** Static value Anonymous for SparkAuthenticationType. */
     public static final SparkAuthenticationType ANONYMOUS = fromString("Anonymous");
@@ -24,6 +24,14 @@ public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAut
             fromString("WindowsAzureHDInsightService");
 
     /**
+     * Creates a new instance of SparkAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkAuthenticationType() {}
+
+    /**
      * Creates or finds a SparkAuthenticationType from its string representation.
      *
      * @param name a name to look for.
@@ -34,7 +42,11 @@ public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAut
         return fromString(name, SparkAuthenticationType.class);
     }
 
-    /** @return known SparkAuthenticationType values. */
+    /**
+     * Gets known SparkAuthenticationType values.
+     *
+     * @return known SparkAuthenticationType values.
+     */
     public static Collection<SparkAuthenticationType> values() {
         return values(SparkAuthenticationType.class);
     }

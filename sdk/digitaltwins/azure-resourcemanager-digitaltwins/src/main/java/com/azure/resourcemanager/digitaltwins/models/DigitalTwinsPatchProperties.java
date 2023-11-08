@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a DigitalTwinsInstance. */
 @Fluent
 public final class DigitalTwinsPatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DigitalTwinsPatchProperties.class);
-
     /*
      * Public network access for the DigitalTwinsInstance.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
+
+    /** Creates an instance of DigitalTwinsPatchProperties class. */
+    public DigitalTwinsPatchProperties() {
+    }
 
     /**
      * Get the publicNetworkAccess property: Public network access for the DigitalTwinsInstance.

@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** a summary of request statistics grouped by API in hour or minute aggregates for queues. */
-@Fluent
 @JacksonXmlRootElement(localName = "Metrics")
+@Fluent
 public final class QueueMetrics {
 
     /*
@@ -25,8 +25,7 @@ public final class QueueMetrics {
     private boolean enabled;
 
     /*
-     * Indicates whether metrics should generate summary statistics for called
-     * API operations.
+     * Indicates whether metrics should generate summary statistics for called API operations.
      */
     @JsonProperty(value = "IncludeAPIs")
     private Boolean includeApis;
@@ -36,6 +35,9 @@ public final class QueueMetrics {
      */
     @JsonProperty(value = "RetentionPolicy")
     private QueueRetentionPolicy retentionPolicy;
+
+    /** Creates an instance of QueueMetrics class. */
+    public QueueMetrics() {}
 
     /**
      * Get the version property: The version of Storage Analytics to configure.

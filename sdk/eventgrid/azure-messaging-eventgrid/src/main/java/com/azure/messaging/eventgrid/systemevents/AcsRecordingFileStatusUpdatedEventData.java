@@ -6,7 +6,6 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -54,6 +53,9 @@ public final class AcsRecordingFileStatusUpdatedEventData {
      */
     @JsonProperty(value = "sessionEndReason")
     private String sessionEndReason;
+
+    /** Creates an instance of AcsRecordingFileStatusUpdatedEventData class. */
+    public AcsRecordingFileStatusUpdatedEventData() {}
 
     /**
      * Get the recordingStorageInfo property: The details of recording storage information.

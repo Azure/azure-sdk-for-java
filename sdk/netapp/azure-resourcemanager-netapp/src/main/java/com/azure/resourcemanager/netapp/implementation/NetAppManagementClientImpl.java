@@ -15,13 +15,13 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.netapp.fluent.AccountBackupsClient;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
@@ -33,8 +33,8 @@ import com.azure.resourcemanager.netapp.fluent.PoolsClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
 import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
-import com.azure.resourcemanager.netapp.fluent.VaultsClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeGroupsClient;
+import com.azure.resourcemanager.netapp.fluent.VolumeQuotaRulesClient;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -42,24 +42,17 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the NetAppManagementClientImpl type. */
 @ServiceClient(builder = NetAppManagementClientBuilder.class)
 public final class NetAppManagementClientImpl implements NetAppManagementClient {
-    private final ClientLogger logger = new ClientLogger(NetAppManagementClientImpl.class);
-
-    /**
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
-     */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -235,18 +228,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         return this.backups;
     }
 
-    /** The AccountBackupsClient object to access its operations. */
-    private final AccountBackupsClient accountBackups;
-
-    /**
-     * Gets the AccountBackupsClient object to access its operations.
-     *
-     * @return the AccountBackupsClient object.
-     */
-    public AccountBackupsClient getAccountBackups() {
-        return this.accountBackups;
-    }
-
     /** The BackupPoliciesClient object to access its operations. */
     private final BackupPoliciesClient backupPolicies;
 
@@ -259,16 +240,16 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         return this.backupPolicies;
     }
 
-    /** The VaultsClient object to access its operations. */
-    private final VaultsClient vaults;
+    /** The VolumeQuotaRulesClient object to access its operations. */
+    private final VolumeQuotaRulesClient volumeQuotaRules;
 
     /**
-     * Gets the VaultsClient object to access its operations.
+     * Gets the VolumeQuotaRulesClient object to access its operations.
      *
-     * @return the VaultsClient object.
+     * @return the VolumeQuotaRulesClient object.
      */
-    public VaultsClient getVaults() {
-        return this.vaults;
+    public VolumeQuotaRulesClient getVolumeQuotaRules() {
+        return this.volumeQuotaRules;
     }
 
     /** The VolumeGroupsClient object to access its operations. */
@@ -302,8 +283,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     NetAppManagementClientImpl(
@@ -318,7 +298,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-10-01";
+        this.apiVersion = "2023-05-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
@@ -328,9 +308,8 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.snapshots = new SnapshotsClientImpl(this);
         this.snapshotPolicies = new SnapshotPoliciesClientImpl(this);
         this.backups = new BackupsClientImpl(this);
-        this.accountBackups = new AccountBackupsClientImpl(this);
         this.backupPolicies = new BackupPoliciesClientImpl(this);
-        this.vaults = new VaultsClientImpl(this);
+        this.volumeQuotaRules = new VolumeQuotaRulesClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
         this.subvolumes = new SubvolumesClientImpl(this);
     }
@@ -351,10 +330,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -418,7 +394,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -477,4 +453,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetAppManagementClientImpl.class);
 }

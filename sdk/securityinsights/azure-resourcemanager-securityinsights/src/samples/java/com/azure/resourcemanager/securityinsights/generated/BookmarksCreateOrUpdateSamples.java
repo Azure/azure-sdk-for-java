@@ -15,7 +15,7 @@ import java.util.UUID;
 /** Samples for Bookmarks CreateOrUpdate. */
 public final class BookmarksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/bookmarks/CreateBookmark.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/CreateBookmark.json
      */
     /**
      * Sample code: Creates or updates a bookmark.

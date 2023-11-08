@@ -18,61 +18,65 @@ public final class ContainerServiceNetworkProfile {
     private NetworkPlugin networkPlugin;
 
     /*
+     * The mode the network plugin should use.
+     */
+    @JsonProperty(value = "networkPluginMode")
+    private NetworkPluginMode networkPluginMode;
+
+    /*
      * Network policy used for building the Kubernetes network.
      */
     @JsonProperty(value = "networkPolicy")
     private NetworkPolicy networkPolicy;
 
     /*
-     * The network mode Azure CNI is configured with. This cannot be specified
-     * if networkPlugin is anything other than 'azure'.
+     * The network mode Azure CNI is configured with.
+     *
+     * This cannot be specified if networkPlugin is anything other than 'azure'.
      */
     @JsonProperty(value = "networkMode")
     private NetworkMode networkMode;
 
     /*
-     * A CIDR notation IP range from which to assign pod IPs when kubenet is
-     * used.
+     * Network dataplane used in the Kubernetes cluster.
+     */
+    @JsonProperty(value = "networkDataplane")
+    private NetworkDataplane networkDataplane;
+
+    /*
+     * A CIDR notation IP range from which to assign pod IPs when kubenet is used.
      */
     @JsonProperty(value = "podCidr")
     private String podCidr;
 
     /*
-     * A CIDR notation IP range from which to assign service cluster IPs. It
-     * must not overlap with any Subnet IP ranges.
+     * A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP
+     * ranges.
      */
     @JsonProperty(value = "serviceCidr")
     private String serviceCidr;
 
     /*
-     * An IP address assigned to the Kubernetes DNS service. It must be within
-     * the Kubernetes service address range specified in serviceCidr.
+     * An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range
+     * specified in serviceCidr.
      */
     @JsonProperty(value = "dnsServiceIP")
     private String dnsServiceIp;
 
     /*
-     * A CIDR notation IP range assigned to the Docker bridge network. It must
-     * not overlap with any Subnet IP ranges or the Kubernetes service address
-     * range.
-     */
-    @JsonProperty(value = "dockerBridgeCidr")
-    private String dockerBridgeCidr;
-
-    /*
-     * The outbound (egress) routing method. This can only be set at cluster
-     * creation time and cannot be changed later. For more information see
-     * [egress outbound
-     * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+     * The outbound (egress) routing method.
+     *
+     * This can only be set at cluster creation time and cannot be changed later. For more information see [egress
+     * outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
      */
     @JsonProperty(value = "outboundType")
     private OutboundType outboundType;
 
     /*
-     * The load balancer sku for the managed cluster. The default is
-     * 'standard'. See [Azure Load Balancer
-     * SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more
-     * information about the differences between load balancer SKUs.
+     * The load balancer sku for the managed cluster.
+     *
+     * The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus)
+     * for more information about the differences between load balancer SKUs.
      */
     @JsonProperty(value = "loadBalancerSku")
     private LoadBalancerSku loadBalancerSku;
@@ -90,30 +94,35 @@ public final class ContainerServiceNetworkProfile {
     private ManagedClusterNatGatewayProfile natGatewayProfile;
 
     /*
-     * The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR
-     * is expected for single-stack networking. Two CIDRs, one for each IP
-     * family (IPv4/IPv6), is expected for dual-stack networking.
+     * The CIDR notation IP ranges from which to assign pod IPs.
+     *
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
+     * expected for dual-stack networking.
      */
     @JsonProperty(value = "podCidrs")
     private List<String> podCidrs;
 
     /*
      * The CIDR notation IP ranges from which to assign service cluster IPs.
-     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one
-     * for each IP family (IPv4/IPv6), is expected for dual-stack networking.
-     * They must not overlap with any Subnet IP ranges.
+     *
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
+     * expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
      */
     @JsonProperty(value = "serviceCidrs")
     private List<String> serviceCidrs;
 
     /*
-     * The IP families used to specify IP versions available to the cluster. IP
-     * families are used to determine single-stack or dual-stack clusters. For
-     * single-stack, the expected value is IPv4. For dual-stack, the expected
-     * values are IPv4 and IPv6.
+     * The IP families used to specify IP versions available to the cluster.
+     *
+     * IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is
+     * IPv4. For dual-stack, the expected values are IPv4 and IPv6.
      */
     @JsonProperty(value = "ipFamilies")
     private List<IpFamily> ipFamilies;
+
+    /** Creates an instance of ContainerServiceNetworkProfile class. */
+    public ContainerServiceNetworkProfile() {
+    }
 
     /**
      * Get the networkPlugin property: Network plugin used for building the Kubernetes network.
@@ -132,6 +141,26 @@ public final class ContainerServiceNetworkProfile {
      */
     public ContainerServiceNetworkProfile withNetworkPlugin(NetworkPlugin networkPlugin) {
         this.networkPlugin = networkPlugin;
+        return this;
+    }
+
+    /**
+     * Get the networkPluginMode property: The mode the network plugin should use.
+     *
+     * @return the networkPluginMode value.
+     */
+    public NetworkPluginMode networkPluginMode() {
+        return this.networkPluginMode;
+    }
+
+    /**
+     * Set the networkPluginMode property: The mode the network plugin should use.
+     *
+     * @param networkPluginMode the networkPluginMode value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withNetworkPluginMode(NetworkPluginMode networkPluginMode) {
+        this.networkPluginMode = networkPluginMode;
         return this;
     }
 
@@ -156,8 +185,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the networkMode property: The network mode Azure CNI is configured with. This cannot be specified if
-     * networkPlugin is anything other than 'azure'.
+     * Get the networkMode property: The network mode Azure CNI is configured with.
+     *
+     * <p>This cannot be specified if networkPlugin is anything other than 'azure'.
      *
      * @return the networkMode value.
      */
@@ -166,14 +196,35 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the networkMode property: The network mode Azure CNI is configured with. This cannot be specified if
-     * networkPlugin is anything other than 'azure'.
+     * Set the networkMode property: The network mode Azure CNI is configured with.
+     *
+     * <p>This cannot be specified if networkPlugin is anything other than 'azure'.
      *
      * @param networkMode the networkMode value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
     public ContainerServiceNetworkProfile withNetworkMode(NetworkMode networkMode) {
         this.networkMode = networkMode;
+        return this;
+    }
+
+    /**
+     * Get the networkDataplane property: Network dataplane used in the Kubernetes cluster.
+     *
+     * @return the networkDataplane value.
+     */
+    public NetworkDataplane networkDataplane() {
+        return this.networkDataplane;
+    }
+
+    /**
+     * Set the networkDataplane property: Network dataplane used in the Kubernetes cluster.
+     *
+     * @param networkDataplane the networkDataplane value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withNetworkDataplane(NetworkDataplane networkDataplane) {
+        this.networkDataplane = networkDataplane;
         return this;
     }
 
@@ -242,31 +293,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the dockerBridgeCidr property: A CIDR notation IP range assigned to the Docker bridge network. It must not
-     * overlap with any Subnet IP ranges or the Kubernetes service address range.
+     * Get the outboundType property: The outbound (egress) routing method.
      *
-     * @return the dockerBridgeCidr value.
-     */
-    public String dockerBridgeCidr() {
-        return this.dockerBridgeCidr;
-    }
-
-    /**
-     * Set the dockerBridgeCidr property: A CIDR notation IP range assigned to the Docker bridge network. It must not
-     * overlap with any Subnet IP ranges or the Kubernetes service address range.
-     *
-     * @param dockerBridgeCidr the dockerBridgeCidr value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile withDockerBridgeCidr(String dockerBridgeCidr) {
-        this.dockerBridgeCidr = dockerBridgeCidr;
-        return this;
-    }
-
-    /**
-     * Get the outboundType property: The outbound (egress) routing method. This can only be set at cluster creation
-     * time and cannot be changed later. For more information see [egress outbound
-     * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+     * <p>This can only be set at cluster creation time and cannot be changed later. For more information see [egress
+     * outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
      *
      * @return the outboundType value.
      */
@@ -275,9 +305,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the outboundType property: The outbound (egress) routing method. This can only be set at cluster creation
-     * time and cannot be changed later. For more information see [egress outbound
-     * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+     * Set the outboundType property: The outbound (egress) routing method.
+     *
+     * <p>This can only be set at cluster creation time and cannot be changed later. For more information see [egress
+     * outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
      *
      * @param outboundType the outboundType value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -288,9 +319,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the loadBalancerSku property: The load balancer sku for the managed cluster. The default is 'standard'. See
-     * [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the
-     * differences between load balancer SKUs.
+     * Get the loadBalancerSku property: The load balancer sku for the managed cluster.
+     *
+     * <p>The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus)
+     * for more information about the differences between load balancer SKUs.
      *
      * @return the loadBalancerSku value.
      */
@@ -299,9 +331,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the loadBalancerSku property: The load balancer sku for the managed cluster. The default is 'standard'. See
-     * [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the
-     * differences between load balancer SKUs.
+     * Set the loadBalancerSku property: The load balancer sku for the managed cluster.
+     *
+     * <p>The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus)
+     * for more information about the differences between load balancer SKUs.
      *
      * @param loadBalancerSku the loadBalancerSku value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -353,9 +386,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected
-     * for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
-     * networking.
+     * Get the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs.
+     *
+     * <p>One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
+     * expected for dual-stack networking.
      *
      * @return the podCidrs value.
      */
@@ -364,9 +398,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected
-     * for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
-     * networking.
+     * Set the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs.
+     *
+     * <p>One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
+     * expected for dual-stack networking.
      *
      * @param podCidrs the podCidrs value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -377,9 +412,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4
-     * CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for
-     * dual-stack networking. They must not overlap with any Subnet IP ranges.
+     * Get the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs.
+     *
+     * <p>One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
+     * expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
      *
      * @return the serviceCidrs value.
      */
@@ -388,9 +424,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4
-     * CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for
-     * dual-stack networking. They must not overlap with any Subnet IP ranges.
+     * Set the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs.
+     *
+     * <p>One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is
+     * expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
      *
      * @param serviceCidrs the serviceCidrs value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -401,9 +438,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the ipFamilies property: The IP families used to specify IP versions available to the cluster. IP families
-     * are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For
-     * dual-stack, the expected values are IPv4 and IPv6.
+     * Get the ipFamilies property: The IP families used to specify IP versions available to the cluster.
+     *
+     * <p>IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is
+     * IPv4. For dual-stack, the expected values are IPv4 and IPv6.
      *
      * @return the ipFamilies value.
      */
@@ -412,9 +450,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the ipFamilies property: The IP families used to specify IP versions available to the cluster. IP families
-     * are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For
-     * dual-stack, the expected values are IPv4 and IPv6.
+     * Set the ipFamilies property: The IP families used to specify IP versions available to the cluster.
+     *
+     * <p>IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is
+     * IPv4. For dual-stack, the expected values are IPv4 and IPv6.
      *
      * @param ipFamilies the ipFamilies value to set.
      * @return the ContainerServiceNetworkProfile object itself.

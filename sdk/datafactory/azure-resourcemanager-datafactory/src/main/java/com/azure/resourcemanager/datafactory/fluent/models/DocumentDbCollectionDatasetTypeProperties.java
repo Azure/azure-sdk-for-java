@@ -12,11 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DocumentDbCollectionDatasetTypeProperties {
     /*
-     * Document Database collection name. Type: string (or Expression with
-     * resultType string).
+     * Document Database collection name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "collectionName", required = true)
     private Object collectionName;
+
+    /** Creates an instance of DocumentDbCollectionDatasetTypeProperties class. */
+    public DocumentDbCollectionDatasetTypeProperties() {
+    }
 
     /**
      * Get the collectionName property: Document Database collection name. Type: string (or Expression with resultType

@@ -7,7 +7,10 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for NameAvailabilityReason. */
+/**
+ * Gets the reason that a Batch account name could not be used. The Reason element is only returned if NameAvailable is
+ * false.
+ */
 public enum NameAvailabilityReason {
     /** Enum value Invalid. */
     INVALID("Invalid"),
@@ -30,6 +33,9 @@ public enum NameAvailabilityReason {
      */
     @JsonCreator
     public static NameAvailabilityReason fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         NameAvailabilityReason[] items = NameAvailabilityReason.values();
         for (NameAvailabilityReason item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +45,7 @@ public enum NameAvailabilityReason {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

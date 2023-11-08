@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrafficRoutingMethod. */
+/** The traffic routing method of the Traffic Manager profile. */
 public final class TrafficRoutingMethod extends ExpandableStringEnum<TrafficRoutingMethod> {
     /** Static value Performance for TrafficRoutingMethod. */
     public static final TrafficRoutingMethod PERFORMANCE = fromString("Performance");
@@ -29,6 +29,15 @@ public final class TrafficRoutingMethod extends ExpandableStringEnum<TrafficRout
     public static final TrafficRoutingMethod SUBNET = fromString("Subnet");
 
     /**
+     * Creates a new instance of TrafficRoutingMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TrafficRoutingMethod() {
+    }
+
+    /**
      * Creates or finds a TrafficRoutingMethod from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class TrafficRoutingMethod extends ExpandableStringEnum<TrafficRout
         return fromString(name, TrafficRoutingMethod.class);
     }
 
-    /** @return known TrafficRoutingMethod values. */
+    /**
+     * Gets known TrafficRoutingMethod values.
+     *
+     * @return known TrafficRoutingMethod values.
+     */
     public static Collection<TrafficRoutingMethod> values() {
         return values(TrafficRoutingMethod.class);
     }

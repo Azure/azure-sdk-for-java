@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,18 +16,15 @@ import java.util.Map;
 /** responseStatus. */
 @Fluent
 public final class MicrosoftGraphResponseStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphResponseStatus.class);
-
     /*
-     * The response property.
+     * responseType
      */
     @JsonProperty(value = "response")
     private MicrosoftGraphResponseType response;
 
     /*
-     * The date and time that the response was returned. It uses ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The date and time that the response was returned. It uses ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "time")
     private OffsetDateTime time;
@@ -38,8 +34,12 @@ public final class MicrosoftGraphResponseStatus {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphResponseStatus class. */
+    public MicrosoftGraphResponseStatus() {
+    }
+
     /**
-     * Get the response property: The response property.
+     * Get the response property: responseType.
      *
      * @return the response value.
      */
@@ -48,7 +48,7 @@ public final class MicrosoftGraphResponseStatus {
     }
 
     /**
-     * Set the response property: The response property.
+     * Set the response property: responseType.
      *
      * @param response the response value to set.
      * @return the MicrosoftGraphResponseStatus object itself.

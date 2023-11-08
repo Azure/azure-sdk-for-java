@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,13 +15,15 @@ import java.util.List;
 @JsonTypeName("IaasVMRestoreWithRehydrationRequest")
 @Fluent
 public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaasVMRestoreWithRehydrationRequest.class);
-
     /*
      * RP Rehydration Info
      */
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
+
+    /** Creates an instance of IaasVMRestoreWithRehydrationRequest class. */
+    public IaasVMRestoreWithRehydrationRequest() {
+    }
 
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
@@ -184,6 +184,28 @@ public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequ
     public IaasVMRestoreWithRehydrationRequest withIdentityBasedRestoreDetails(
         IdentityBasedRestoreDetails identityBasedRestoreDetails) {
         super.withIdentityBasedRestoreDetails(identityBasedRestoreDetails);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IaasVMRestoreWithRehydrationRequest withExtendedLocation(ExtendedLocation extendedLocation) {
+        super.withExtendedLocation(extendedLocation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IaasVMRestoreWithRehydrationRequest withSecuredVMDetails(SecuredVMDetails securedVMDetails) {
+        super.withSecuredVMDetails(securedVMDetails);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IaasVMRestoreWithRehydrationRequest withTargetDiskNetworkAccessSettings(
+        TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings) {
+        super.withTargetDiskNetworkAccessSettings(targetDiskNetworkAccessSettings);
         return this;
     }
 

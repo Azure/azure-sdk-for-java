@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Supported deployment runtime version descriptor. */
 @Fluent
 public final class SupportedRuntimeVersion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportedRuntimeVersion.class);
-
     /*
      * The raw value which could be passed to deployment CRUD operations.
      */

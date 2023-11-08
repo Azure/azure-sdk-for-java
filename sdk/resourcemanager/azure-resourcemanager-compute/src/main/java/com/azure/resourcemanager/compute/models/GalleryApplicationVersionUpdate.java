@@ -18,6 +18,10 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
     @JsonProperty(value = "properties")
     private GalleryApplicationVersionProperties innerProperties;
 
+    /** Creates an instance of GalleryApplicationVersionUpdate class. */
+    public GalleryApplicationVersionUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a gallery image version.
      *
@@ -59,12 +63,36 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery Application Version. The provisioning state,
-     * which only appears in the response.
+     * Get the safetyProfile property: The safety profile of the Gallery Application Version.
+     *
+     * @return the safetyProfile value.
+     */
+    public GalleryApplicationVersionSafetyProfile safetyProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().safetyProfile();
+    }
+
+    /**
+     * Set the safetyProfile property: The safety profile of the Gallery Application Version.
+     *
+     * @param safetyProfile the safetyProfile value to set.
+     * @return the GalleryApplicationVersionUpdate object itself.
+     */
+    public GalleryApplicationVersionUpdate withSafetyProfile(GalleryApplicationVersionSafetyProfile safetyProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationVersionProperties();
+        }
+        this.innerProperties().withSafetyProfile(safetyProfile);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The current state of the gallery or gallery artifact.
+     *
+     * <p>The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryApplicationVersionPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

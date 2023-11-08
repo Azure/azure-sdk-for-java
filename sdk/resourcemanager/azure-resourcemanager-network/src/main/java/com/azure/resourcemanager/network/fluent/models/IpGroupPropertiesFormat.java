@@ -26,18 +26,20 @@ public final class IpGroupPropertiesFormat {
     private List<String> ipAddresses;
 
     /*
-     * List of references to Firewall resources that this IpGroups is
-     * associated with.
+     * List of references to Firewall resources that this IpGroups is associated with.
      */
     @JsonProperty(value = "firewalls", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewalls;
 
     /*
-     * List of references to Firewall Policies resources that this IpGroups is
-     * associated with.
+     * List of references to Firewall Policies resources that this IpGroups is associated with.
      */
     @JsonProperty(value = "firewallPolicies", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewallPolicies;
+
+    /** Creates an instance of IpGroupPropertiesFormat class. */
+    public IpGroupPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the IpGroups resource.

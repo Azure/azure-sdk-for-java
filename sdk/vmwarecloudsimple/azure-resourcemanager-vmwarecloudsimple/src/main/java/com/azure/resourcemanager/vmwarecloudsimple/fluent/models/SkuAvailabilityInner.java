@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU availability model. */
 @Fluent
 public final class SkuAvailabilityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuAvailabilityInner.class);
-
     /*
      * CloudSimple Availability Zone id
      */
@@ -61,6 +57,10 @@ public final class SkuAvailabilityInner {
      */
     @JsonProperty(value = "skuName")
     private String skuName;
+
+    /** Creates an instance of SkuAvailabilityInner class. */
+    public SkuAvailabilityInner() {
+    }
 
     /**
      * Get the dedicatedAvailabilityZoneId property: CloudSimple Availability Zone id.

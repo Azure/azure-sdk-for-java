@@ -103,6 +103,10 @@ public final class RelationshipLinkResourceFormatImpl
         return this.innerModel().tenantId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public RelationshipLinkResourceFormatInner innerModel() {
         return this.innerObject;
     }

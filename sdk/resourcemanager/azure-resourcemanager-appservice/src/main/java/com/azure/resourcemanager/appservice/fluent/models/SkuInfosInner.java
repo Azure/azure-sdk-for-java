@@ -24,6 +24,10 @@ public final class SkuInfosInner {
     @JsonProperty(value = "skus")
     private List<GlobalCsmSkuDescription> skus;
 
+    /** Creates an instance of SkuInfosInner class. */
+    public SkuInfosInner() {
+    }
+
     /**
      * Get the resourceType property: Resource type that this SKU applies to.
      *

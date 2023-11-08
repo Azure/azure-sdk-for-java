@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpirationAction. */
+/** The SAS expiration action. Can only be Log. */
 public final class ExpirationAction extends ExpandableStringEnum<ExpirationAction> {
     /** Static value Log for ExpirationAction. */
     public static final ExpirationAction LOG = fromString("Log");
+
+    /**
+     * Creates a new instance of ExpirationAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpirationAction() {
+    }
 
     /**
      * Creates or finds a ExpirationAction from its string representation.
@@ -24,7 +33,11 @@ public final class ExpirationAction extends ExpandableStringEnum<ExpirationActio
         return fromString(name, ExpirationAction.class);
     }
 
-    /** @return known ExpirationAction values. */
+    /**
+     * Gets known ExpirationAction values.
+     *
+     * @return known ExpirationAction values.
+     */
     public static Collection<ExpirationAction> values() {
         return values(ExpirationAction.class);
     }

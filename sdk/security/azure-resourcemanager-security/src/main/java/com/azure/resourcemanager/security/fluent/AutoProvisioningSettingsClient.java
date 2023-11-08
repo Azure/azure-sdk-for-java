@@ -18,7 +18,7 @@ public interface AutoProvisioningSettingsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoProvisioningSettingInner> list();
@@ -30,10 +30,23 @@ public interface AutoProvisioningSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoProvisioningSettingInner> list(Context context);
+
+    /**
+     * Details of a specific setting.
+     *
+     * @param settingName Auto provisioning setting key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return auto provisioning setting along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AutoProvisioningSettingInner> getWithResponse(String settingName, Context context);
 
     /**
      * Details of a specific setting.
@@ -51,14 +64,16 @@ public interface AutoProvisioningSettingsClient {
      * Details of a specific setting.
      *
      * @param settingName Auto provisioning setting key.
+     * @param setting Auto provisioning setting key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AutoProvisioningSettingInner> getWithResponse(String settingName, Context context);
+    Response<AutoProvisioningSettingInner> createWithResponse(
+        String settingName, AutoProvisioningSettingInner setting, Context context);
 
     /**
      * Details of a specific setting.
@@ -72,19 +87,4 @@ public interface AutoProvisioningSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutoProvisioningSettingInner create(String settingName, AutoProvisioningSettingInner setting);
-
-    /**
-     * Details of a specific setting.
-     *
-     * @param settingName Auto provisioning setting key.
-     * @param setting Auto provisioning setting key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AutoProvisioningSettingInner> createWithResponse(
-        String settingName, AutoProvisioningSettingInner setting, Context context);
 }

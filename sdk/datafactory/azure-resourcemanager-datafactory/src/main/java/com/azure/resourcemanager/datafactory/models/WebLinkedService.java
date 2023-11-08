@@ -23,6 +23,10 @@ public final class WebLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private WebLinkedServiceTypeProperties typeProperties;
 
+    /** Creates an instance of WebLinkedService class. */
+    public WebLinkedService() {
+    }
+
     /**
      * Get the typeProperties property: Web linked service properties.
      *

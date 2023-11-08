@@ -41,6 +41,10 @@ public final class UserProperties {
     @JsonProperty(value = "scmUri")
     private String scmUri;
 
+    /** Creates an instance of UserProperties class. */
+    public UserProperties() {
+    }
+
     /**
      * Get the publishingUsername property: Username used for publishing.
      *

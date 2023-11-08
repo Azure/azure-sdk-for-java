@@ -29,6 +29,10 @@ public final class PartnerDestinationInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of PartnerDestinationInner class. */
+    public PartnerDestinationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Partner Destination.
      *
@@ -141,20 +145,6 @@ public final class PartnerDestinationInner extends Resource {
      */
     public PartnerDestinationProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Set the provisioningState property: Provisioning state of the partner destination.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the PartnerDestinationInner object itself.
-     */
-    public PartnerDestinationInner withProvisioningState(PartnerDestinationProvisioningState provisioningState) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PartnerDestinationProperties();
-        }
-        this.innerProperties().withProvisioningState(provisioningState);
-        return this;
     }
 
     /**

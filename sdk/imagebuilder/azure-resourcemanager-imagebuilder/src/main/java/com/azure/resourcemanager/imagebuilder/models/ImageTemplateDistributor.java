@@ -6,7 +6,6 @@ package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -28,8 +27,6 @@ import java.util.Map;
 })
 @Fluent
 public class ImageTemplateDistributor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateDistributor.class);
-
     /*
      * The name to be used for the associated RunOutput.
      */
@@ -37,12 +34,15 @@ public class ImageTemplateDistributor {
     private String runOutputName;
 
     /*
-     * Tags that will be applied to the artifact once it has been
-     * created/updated by the distributor.
+     * Tags that will be applied to the artifact once it has been created/updated by the distributor.
      */
     @JsonProperty(value = "artifactTags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> artifactTags;
+
+    /** Creates an instance of ImageTemplateDistributor class. */
+    public ImageTemplateDistributor() {
+    }
 
     /**
      * Get the runOutputName property: The name to be used for the associated RunOutput.
@@ -93,10 +93,12 @@ public class ImageTemplateDistributor {
      */
     public void validate() {
         if (runOutputName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property runOutputName in model ImageTemplateDistributor"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateDistributor.class);
 }

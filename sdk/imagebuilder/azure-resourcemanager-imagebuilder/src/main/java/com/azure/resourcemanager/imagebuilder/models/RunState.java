@@ -7,7 +7,7 @@ package com.azure.resourcemanager.imagebuilder.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RunState. */
+/** State of the last run. */
 public enum RunState {
     /** Enum value Running. */
     RUNNING("Running"),
@@ -42,6 +42,9 @@ public enum RunState {
      */
     @JsonCreator
     public static RunState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RunState[] items = RunState.values();
         for (RunState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum RunState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

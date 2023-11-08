@@ -18,11 +18,14 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
@@ -54,11 +57,22 @@ public final class RoleDefinitionsImpl {
      */
     @Host("{vaultBaseUrl}")
     @ServiceInterface(name = "KeyVaultAccessContro")
-    private interface RoleDefinitionsService {
+    public interface RoleDefinitionsService {
         @Delete("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<RoleDefinition>> delete(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @PathParam("roleDefinitionName") String roleDefinitionName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
+        Response<RoleDefinition> deleteSync(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam(value = "scope", encoded = true) String scope,
                 @PathParam("roleDefinitionName") String roleDefinitionName,
@@ -78,10 +92,33 @@ public final class RoleDefinitionsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Put("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
+        Response<RoleDefinition> createOrUpdateSync(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @PathParam("roleDefinitionName") String roleDefinitionName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") RoleDefinitionCreateParameters parameters,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<RoleDefinition>> get(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @PathParam("roleDefinitionName") String roleDefinitionName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
+        Response<RoleDefinition> getSync(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam(value = "scope", encoded = true) String scope,
                 @PathParam("roleDefinitionName") String roleDefinitionName,
@@ -100,10 +137,30 @@ public final class RoleDefinitionsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/{scope}/providers/Microsoft.Authorization/roleDefinitions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
+        Response<RoleDefinitionListResult> listSync(
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @PathParam(value = "scope", encoded = true) String scope,
+                @QueryParam("$filter") String filter,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<RoleDefinitionListResult>> listNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("vaultBaseUrl") String vaultBaseUrl,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
+        Response<RoleDefinitionListResult> listNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @HeaderParam("Accept") String accept,
@@ -116,17 +173,138 @@ public final class RoleDefinitionsImpl {
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role definition to delete. Managed HSM only supports '/'.
      * @param roleDefinitionName The name (GUID) of the role definition to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RoleDefinition>> deleteWithResponseAsync(
+            String vaultBaseUrl, String scope, String roleDefinitionName) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.delete(
+                                vaultBaseUrl, scope, roleDefinitionName, this.client.getApiVersion(), accept, context));
+    }
+
+    /**
+     * Deletes a custom role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to delete. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name (GUID) of the role definition to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
+     * @return role definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleDefinition>> deleteWithResponseAsync(
             String vaultBaseUrl, String scope, String roleDefinitionName, Context context) {
         final String accept = "application/json";
         return service.delete(vaultBaseUrl, scope, roleDefinitionName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Deletes a custom role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to delete. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name (GUID) of the role definition to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RoleDefinition> deleteAsync(String vaultBaseUrl, String scope, String roleDefinitionName) {
+        return deleteWithResponseAsync(vaultBaseUrl, scope, roleDefinitionName)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Deletes a custom role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to delete. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name (GUID) of the role definition to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RoleDefinition> deleteAsync(
+            String vaultBaseUrl, String scope, String roleDefinitionName, Context context) {
+        return deleteWithResponseAsync(vaultBaseUrl, scope, roleDefinitionName, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Deletes a custom role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to delete. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name (GUID) of the role definition to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RoleDefinition> deleteWithResponse(
+            String vaultBaseUrl, String scope, String roleDefinitionName, Context context) {
+        final String accept = "application/json";
+        return service.deleteSync(
+                vaultBaseUrl, scope, roleDefinitionName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Deletes a custom role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to delete. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name (GUID) of the role definition to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleDefinition delete(String vaultBaseUrl, String scope, String roleDefinitionName) {
+        return deleteWithResponse(vaultBaseUrl, scope, roleDefinitionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a custom role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the role definition to create or update. It can be any valid GUID.
+     * @param parameters Parameters for the role definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RoleDefinition>> createOrUpdateWithResponseAsync(
+            String vaultBaseUrl, String scope, String roleDefinitionName, RoleDefinitionCreateParameters parameters) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.createOrUpdate(
+                                vaultBaseUrl,
+                                scope,
+                                roleDefinitionName,
+                                this.client.getApiVersion(),
+                                parameters,
+                                accept,
+                                context));
     }
 
     /**
@@ -140,7 +318,7 @@ public final class RoleDefinitionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
+     * @return role definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleDefinition>> createOrUpdateWithResponseAsync(
@@ -155,6 +333,113 @@ public final class RoleDefinitionsImpl {
     }
 
     /**
+     * Creates or updates a custom role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the role definition to create or update. It can be any valid GUID.
+     * @param parameters Parameters for the role definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RoleDefinition> createOrUpdateAsync(
+            String vaultBaseUrl, String scope, String roleDefinitionName, RoleDefinitionCreateParameters parameters) {
+        return createOrUpdateWithResponseAsync(vaultBaseUrl, scope, roleDefinitionName, parameters)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a custom role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the role definition to create or update. It can be any valid GUID.
+     * @param parameters Parameters for the role definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RoleDefinition> createOrUpdateAsync(
+            String vaultBaseUrl,
+            String scope,
+            String roleDefinitionName,
+            RoleDefinitionCreateParameters parameters,
+            Context context) {
+        return createOrUpdateWithResponseAsync(vaultBaseUrl, scope, roleDefinitionName, parameters, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a custom role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the role definition to create or update. It can be any valid GUID.
+     * @param parameters Parameters for the role definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RoleDefinition> createOrUpdateWithResponse(
+            String vaultBaseUrl,
+            String scope,
+            String roleDefinitionName,
+            RoleDefinitionCreateParameters parameters,
+            Context context) {
+        final String accept = "application/json";
+        return service.createOrUpdateSync(
+                vaultBaseUrl, scope, roleDefinitionName, this.client.getApiVersion(), parameters, accept, context);
+    }
+
+    /**
+     * Creates or updates a custom role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the role definition to create or update. It can be any valid GUID.
+     * @param parameters Parameters for the role definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleDefinition createOrUpdate(
+            String vaultBaseUrl, String scope, String roleDefinitionName, RoleDefinitionCreateParameters parameters) {
+        return createOrUpdateWithResponse(vaultBaseUrl, scope, roleDefinitionName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the specified role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to get. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the role definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role definition along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RoleDefinition>> getWithResponseAsync(
+            String vaultBaseUrl, String scope, String roleDefinitionName) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.get(
+                                vaultBaseUrl, scope, roleDefinitionName, this.client.getApiVersion(), accept, context));
+    }
+
+    /**
      * Get the specified role definition.
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
@@ -164,13 +449,114 @@ public final class RoleDefinitionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role definition.
+     * @return the specified role definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleDefinition>> getWithResponseAsync(
             String vaultBaseUrl, String scope, String roleDefinitionName, Context context) {
         final String accept = "application/json";
         return service.get(vaultBaseUrl, scope, roleDefinitionName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get the specified role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to get. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the role definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RoleDefinition> getAsync(String vaultBaseUrl, String scope, String roleDefinitionName) {
+        return getWithResponseAsync(vaultBaseUrl, scope, roleDefinitionName)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the specified role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to get. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the role definition to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role definition on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RoleDefinition> getAsync(
+            String vaultBaseUrl, String scope, String roleDefinitionName, Context context) {
+        return getWithResponseAsync(vaultBaseUrl, scope, roleDefinitionName, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the specified role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to get. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the role definition to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RoleDefinition> getWithResponse(
+            String vaultBaseUrl, String scope, String roleDefinitionName, Context context) {
+        final String accept = "application/json";
+        return service.getSync(vaultBaseUrl, scope, roleDefinitionName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get the specified role definition.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition to get. Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the role definition to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleDefinition get(String vaultBaseUrl, String scope, String roleDefinitionName) {
+        return getWithResponse(vaultBaseUrl, scope, roleDefinitionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get all role definitions that are applicable at scope and above.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition.
+     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
+     *     well.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RoleDefinition>> listSinglePageAsync(String vaultBaseUrl, String scope, String filter) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.list(vaultBaseUrl, scope, filter, this.client.getApiVersion(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -184,7 +570,8 @@ public final class RoleDefinitionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above.
+     * @return all role definitions that are applicable at scope and above along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleDefinition>> listSinglePageAsync(
@@ -203,15 +590,178 @@ public final class RoleDefinitionsImpl {
     }
 
     /**
+     * Get all role definitions that are applicable at scope and above.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition.
+     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
+     *     well.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RoleDefinition> listAsync(String vaultBaseUrl, String scope, String filter) {
+        return new PagedFlux<>(
+                () -> listSinglePageAsync(vaultBaseUrl, scope, filter),
+                nextLink -> listNextSinglePageAsync(nextLink, vaultBaseUrl));
+    }
+
+    /**
+     * Get all role definitions that are applicable at scope and above.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition.
+     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
+     *     well.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RoleDefinition> listAsync(String vaultBaseUrl, String scope, String filter, Context context) {
+        return new PagedFlux<>(
+                () -> listSinglePageAsync(vaultBaseUrl, scope, filter, context),
+                nextLink -> listNextSinglePageAsync(nextLink, vaultBaseUrl, context));
+    }
+
+    /**
+     * Get all role definitions that are applicable at scope and above.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition.
+     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
+     *     well.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoleDefinition> listSinglePage(String vaultBaseUrl, String scope, String filter) {
+        final String accept = "application/json";
+        Response<RoleDefinitionListResult> res =
+                service.listSync(vaultBaseUrl, scope, filter, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
+    }
+
+    /**
+     * Get all role definitions that are applicable at scope and above.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition.
+     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
+     *     well.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoleDefinition> listSinglePage(
+            String vaultBaseUrl, String scope, String filter, Context context) {
+        final String accept = "application/json";
+        Response<RoleDefinitionListResult> res =
+                service.listSync(vaultBaseUrl, scope, filter, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
+    }
+
+    /**
+     * Get all role definitions that are applicable at scope and above.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition.
+     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
+     *     well.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RoleDefinition> list(String vaultBaseUrl, String scope, String filter) {
+        return new PagedIterable<>(
+                () -> listSinglePage(vaultBaseUrl, scope, filter, Context.NONE),
+                nextLink -> listNextSinglePage(nextLink, vaultBaseUrl));
+    }
+
+    /**
+     * Get all role definitions that are applicable at scope and above.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param scope The scope of the role definition.
+     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
+     *     well.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RoleDefinition> list(String vaultBaseUrl, String scope, String filter, Context context) {
+        return new PagedIterable<>(
+                () -> listSinglePage(vaultBaseUrl, scope, filter, context),
+                nextLink -> listNextSinglePage(nextLink, vaultBaseUrl, context));
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition list operation result along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RoleDefinition>> listNextSinglePageAsync(String nextLink, String vaultBaseUrl) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listNext(nextLink, vaultBaseUrl, accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition list operation result.
+     * @return role definition list operation result along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleDefinition>> listNextSinglePageAsync(
@@ -227,5 +777,54 @@ public final class RoleDefinitionsImpl {
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition list operation result along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoleDefinition> listNextSinglePage(String nextLink, String vaultBaseUrl) {
+        final String accept = "application/json";
+        Response<RoleDefinitionListResult> res = service.listNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition list operation result along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoleDefinition> listNextSinglePage(String nextLink, String vaultBaseUrl, Context context) {
+        final String accept = "application/json";
+        Response<RoleDefinitionListResult> res = service.listNextSync(nextLink, vaultBaseUrl, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 }

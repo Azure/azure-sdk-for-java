@@ -111,11 +111,14 @@ public final class PublicIpAddressPropertiesFormatInner {
     private PublicIpAddressInner linkedPublicIpAddress;
 
     /*
-     * Specify what happens to the public IP address when the VM using it is
-     * deleted
+     * Specify what happens to the public IP address when the VM using it is deleted
      */
     @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
+
+    /** Creates an instance of PublicIpAddressPropertiesFormatInner class. */
+    public PublicIpAddressPropertiesFormatInner() {
+    }
 
     /**
      * Get the publicIpAllocationMethod property: The public IP address allocation method.

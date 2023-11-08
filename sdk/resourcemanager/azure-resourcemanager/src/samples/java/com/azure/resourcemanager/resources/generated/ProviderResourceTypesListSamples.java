@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProviderResourceTypes List. */
 public final class ProviderResourceTypesListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetProviderResourceTypes.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/GetProviderResourceTypes.json
      */
     /**
      * Sample code: Get provider resource types.
@@ -22,6 +20,6 @@ public final class ProviderResourceTypesListSamples {
             .manager()
             .serviceClient()
             .getProviderResourceTypes()
-            .listWithResponse("Microsoft.TestRP", null, Context.NONE);
+            .listWithResponse("Microsoft.TestRP", null, com.azure.core.util.Context.NONE);
     }
 }

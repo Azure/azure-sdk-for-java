@@ -5,49 +5,29 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Additional error info. */
+/** This class represents additional info which Resource Providers pass when an error occurs. */
 @Fluent
 public final class AdditionalErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalErrorInfo.class);
-
     /*
-     * Additional error type.
-     */
-    @JsonProperty(value = "type")
-    private String type;
-
-    /*
-     * Additional error info.
+     * Additional information of the type of error.
      */
     @JsonProperty(value = "info")
     private Object info;
 
-    /**
-     * Get the type property: Additional error type.
-     *
-     * @return the type value.
+    /*
+     * Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
      */
-    public String type() {
-        return this.type;
+    @JsonProperty(value = "type")
+    private String type;
+
+    /** Creates an instance of AdditionalErrorInfo class. */
+    public AdditionalErrorInfo() {
     }
 
     /**
-     * Set the type property: Additional error type.
-     *
-     * @param type the type value to set.
-     * @return the AdditionalErrorInfo object itself.
-     */
-    public AdditionalErrorInfo withType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
-     * Get the info property: Additional error info.
+     * Get the info property: Additional information of the type of error.
      *
      * @return the info value.
      */
@@ -56,13 +36,33 @@ public final class AdditionalErrorInfo {
     }
 
     /**
-     * Set the info property: Additional error info.
+     * Set the info property: Additional information of the type of error.
      *
      * @param info the info value to set.
      * @return the AdditionalErrorInfo object itself.
      */
     public AdditionalErrorInfo withInfo(Object info) {
         this.info = info;
+        return this;
+    }
+
+    /**
+     * Get the type property: Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
+     *
+     * @param type the type value to set.
+     * @return the AdditionalErrorInfo object itself.
+     */
+    public AdditionalErrorInfo withType(String type) {
+        this.type = type;
         return this;
     }
 

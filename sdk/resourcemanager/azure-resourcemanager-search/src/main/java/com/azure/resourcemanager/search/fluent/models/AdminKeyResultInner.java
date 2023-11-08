@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.search.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response containing the primary and secondary admin API keys for a given Azure Cognitive Search service. */
+/** Response containing the primary and secondary admin API keys for a given search service. */
 @Immutable
 public final class AdminKeyResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdminKeyResultInner.class);
-
     /*
      * The primary admin API key of the search service.
      */
@@ -25,6 +21,10 @@ public final class AdminKeyResultInner {
      */
     @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
+
+    /** Creates an instance of AdminKeyResultInner class. */
+    public AdminKeyResultInner() {
+    }
 
     /**
      * Get the primaryKey property: The primary admin API key of the search service.

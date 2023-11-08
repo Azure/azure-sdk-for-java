@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for OfficeConsents List. */
 public final class OfficeConsentsListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/officeConsents/GetOfficeConsents.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/officeConsents/GetOfficeConsents.json
      */
     /**
      * Sample code: Get all office consents.

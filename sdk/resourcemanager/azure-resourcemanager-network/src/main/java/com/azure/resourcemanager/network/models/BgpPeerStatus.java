@@ -58,6 +58,10 @@ public final class BgpPeerStatus {
     @JsonProperty(value = "messagesReceived", access = JsonProperty.Access.WRITE_ONLY)
     private Long messagesReceived;
 
+    /** Creates an instance of BgpPeerStatus class. */
+    public BgpPeerStatus() {
+    }
+
     /**
      * Get the localAddress property: The virtual network gateway's local address.
      *

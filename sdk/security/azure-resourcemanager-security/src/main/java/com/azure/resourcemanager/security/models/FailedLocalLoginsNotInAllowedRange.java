@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -16,7 +14,9 @@ import java.time.Duration;
 @JsonTypeName("FailedLocalLoginsNotInAllowedRange")
 @Fluent
 public final class FailedLocalLoginsNotInAllowedRange extends TimeWindowCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailedLocalLoginsNotInAllowedRange.class);
+    /** Creates an instance of FailedLocalLoginsNotInAllowedRange class. */
+    public FailedLocalLoginsNotInAllowedRange() {
+    }
 
     /** {@inheritDoc} */
     @Override

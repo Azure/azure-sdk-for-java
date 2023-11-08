@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,18 +15,14 @@ import java.util.Map;
 /** Connection information for encrypting the on-premises data source credentials. */
 @Fluent
 public final class IntegrationRuntimeConnectionInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeConnectionInfoInner.class);
-
     /*
-     * The token generated in service. Callers use this token to authenticate
-     * to integration runtime.
+     * The token generated in service. Callers use this token to authenticate to integration runtime.
      */
     @JsonProperty(value = "serviceToken", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceToken;
 
     /*
-     * The integration runtime SSL certificate thumbprint. Click-Once
-     * application uses it to do server validation.
+     * The integration runtime SSL certificate thumbprint. Click-Once application uses it to do server validation.
      */
     @JsonProperty(value = "identityCertThumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String identityCertThumbprint;
@@ -45,8 +40,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
     private String version;
 
     /*
-     * The public key for encrypting a credential when transferring the
-     * credential to the integration runtime.
+     * The public key for encrypting a credential when transferring the credential to the integration runtime.
      */
     @JsonProperty(value = "publicKey", access = JsonProperty.Access.WRITE_ONLY)
     private String publicKey;
@@ -58,10 +52,13 @@ public final class IntegrationRuntimeConnectionInfoInner {
     private Boolean isIdentityCertExprired;
 
     /*
-     * Connection information for encrypting the on-premises data source
-     * credentials.
+     * Connection information for encrypting the on-premises data source credentials.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntimeConnectionInfoInner class. */
+    public IntegrationRuntimeConnectionInfoInner() {
+    }
 
     /**
      * Get the serviceToken property: The token generated in service. Callers use this token to authenticate to

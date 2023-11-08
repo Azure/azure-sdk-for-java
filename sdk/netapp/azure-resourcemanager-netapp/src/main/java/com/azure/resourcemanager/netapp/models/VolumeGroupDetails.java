@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeGroupDetailsInner;
 import java.util.List;
-import java.util.Map;
 
 /** An immutable client-side representation of VolumeGroupDetails. */
 public interface VolumeGroupDetails {
@@ -39,13 +38,6 @@ public interface VolumeGroupDetails {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the provisioningState property: Azure lifecycle management.
@@ -93,31 +85,31 @@ public interface VolumeGroupDetails {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The VolumeGroupDetails definition stages. */
     interface DefinitionStages {
         /** The first stage of the VolumeGroupDetails definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the VolumeGroupDetails definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, accountName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @return the next definition stage.
              */
             WithCreate withExistingNetAppAccount(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the VolumeGroupDetails definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithLocation,
-                DefinitionStages.WithTags,
-                DefinitionStages.WithGroupMetadata,
-                DefinitionStages.WithVolumes {
+            extends DefinitionStages.WithLocation, DefinitionStages.WithGroupMetadata, DefinitionStages.WithVolumes {
             /**
              * Executes the create request.
              *
@@ -133,6 +125,7 @@ public interface VolumeGroupDetails {
              */
             VolumeGroupDetails create(Context context);
         }
+
         /** The stage of the VolumeGroupDetails definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -151,16 +144,7 @@ public interface VolumeGroupDetails {
              */
             WithCreate withRegion(String location);
         }
-        /** The stage of the VolumeGroupDetails definition allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags.
-             *
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
+
         /** The stage of the VolumeGroupDetails definition allowing to specify groupMetadata. */
         interface WithGroupMetadata {
             /**
@@ -171,6 +155,7 @@ public interface VolumeGroupDetails {
              */
             WithCreate withGroupMetadata(VolumeGroupMetadata groupMetadata);
         }
+
         /** The stage of the VolumeGroupDetails definition allowing to specify volumes. */
         interface WithVolumes {
             /**
@@ -182,6 +167,7 @@ public interface VolumeGroupDetails {
             WithCreate withVolumes(List<VolumeGroupVolumeProperties> volumes);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

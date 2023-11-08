@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.resourcemover.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 
 /** Defines the move resource status. */
-@Immutable
+@Fluent
 public final class MoveResourcePropertiesMoveStatus extends MoveResourceStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveResourcePropertiesMoveStatus.class);
+    /** Creates an instance of MoveResourcePropertiesMoveStatus class. */
+    public MoveResourcePropertiesMoveStatus() {
+    }
 
     /** {@inheritDoc} */
     @Override

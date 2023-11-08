@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.EventLevel;
 import com.azure.resourcemanager.monitor.models.HttpRequestInfo;
 import com.azure.resourcemanager.monitor.models.SenderAuthorization;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** The Azure event log entries are of type EventData. */
 @Immutable
 public final class EventDataInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventDataInner.class);
-
     /*
      * The sender authorization information.
      */
@@ -29,11 +26,11 @@ public final class EventDataInner {
      * key value pairs to identify ARM permissions.
      */
     @JsonProperty(value = "claims", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> claims;
 
     /*
-     * the email address of the user who has performed the operation, the UPN
-     * claim or SPN claim based on availability.
+     * the email address of the user who has performed the operation, the UPN claim or SPN claim based on availability.
      */
     @JsonProperty(value = "caller", access = JsonProperty.Access.WRITE_ONLY)
     private String caller;
@@ -45,8 +42,7 @@ public final class EventDataInner {
     private String description;
 
     /*
-     * the Id of this event as required by ARM for RBAC. It contains the
-     * EventDataID and a timestamp information.
+     * the Id of this event as required by ARM for RBAC. It contains the EventDataID and a timestamp information.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -58,16 +54,15 @@ public final class EventDataInner {
     private String eventDataId;
 
     /*
-     * the correlation Id, usually a GUID in the string format. The correlation
-     * Id is shared among the events that belong to the same uber operation.
+     * the correlation Id, usually a GUID in the string format. The correlation Id is shared among the events that
+     * belong to the same uber operation.
      */
     @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
-     * the event name. This value should not be confused with OperationName.
-     * For practical purposes, OperationName might be more appealing to end
-     * users.
+     * the event name. This value should not be confused with OperationName. For practical purposes, OperationName
+     * might be more appealing to end users.
      */
     @JsonProperty(value = "eventName", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizableStringInner eventName;
@@ -79,9 +74,8 @@ public final class EventDataInner {
     private LocalizableStringInner category;
 
     /*
-     * the HTTP request info. Usually includes the 'clientRequestId',
-     * 'clientIpAddress' (IP address of the user who initiated the event) and
-     * 'method' (HTTP method e.g. PUT).
+     * the HTTP request info. Usually includes the 'clientRequestId', 'clientIpAddress' (IP address of the user who
+     * initiated the event) and 'method' (HTTP method e.g. PUT).
      */
     @JsonProperty(value = "httpRequest", access = JsonProperty.Access.WRITE_ONLY)
     private HttpRequestInfo httpRequest;
@@ -105,8 +99,7 @@ public final class EventDataInner {
     private LocalizableStringInner resourceProviderName;
 
     /*
-     * the resource uri that uniquely identifies the resource that caused this
-     * event.
+     * the resource uri that uniquely identifies the resource that caused this event.
      */
     @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
@@ -118,8 +111,8 @@ public final class EventDataInner {
     private LocalizableStringInner resourceType;
 
     /*
-     * It is usually a GUID shared among the events corresponding to single
-     * operation. This value should not be confused with EventName.
+     * It is usually a GUID shared among the events corresponding to single operation. This value should not be
+     * confused with EventName.
      */
     @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
@@ -131,44 +124,40 @@ public final class EventDataInner {
     private LocalizableStringInner operationName;
 
     /*
-     * the set of <Key, Value> pairs (usually a Dictionary<String, String>)
-     * that includes details about the event.
+     * the set of <Key, Value> pairs (usually a Dictionary<String, String>) that includes details about the event.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /*
-     * a string describing the status of the operation. Some typical values
-     * are: Started, In progress, Succeeded, Failed, Resolved.
+     * a string describing the status of the operation. Some typical values are: Started, In progress, Succeeded,
+     * Failed, Resolved.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizableStringInner status;
 
     /*
-     * the event sub status. Most of the time, when included, this captures the
-     * HTTP status code of the REST call. Common values are: OK (HTTP Status
-     * Code: 200), Created (HTTP Status Code: 201), Accepted (HTTP Status Code:
-     * 202), No Content (HTTP Status Code: 204), Bad Request(HTTP Status Code:
-     * 400), Not Found (HTTP Status Code: 404), Conflict (HTTP Status Code:
-     * 409), Internal Server Error (HTTP Status Code: 500), Service Unavailable
-     * (HTTP Status Code:503), Gateway Timeout (HTTP Status Code: 504)
+     * the event sub status. Most of the time, when included, this captures the HTTP status code of the REST call.
+     * Common values are: OK (HTTP Status Code: 200), Created (HTTP Status Code: 201), Accepted (HTTP Status Code:
+     * 202), No Content (HTTP Status Code: 204), Bad Request(HTTP Status Code: 400), Not Found (HTTP Status Code: 404),
+     * Conflict (HTTP Status Code: 409), Internal Server Error (HTTP Status Code: 500), Service Unavailable (HTTP
+     * Status Code:503), Gateway Timeout (HTTP Status Code: 504)
      */
     @JsonProperty(value = "subStatus", access = JsonProperty.Access.WRITE_ONLY)
     private LocalizableStringInner subStatus;
 
     /*
-     * the timestamp of when the event was generated by the Azure service
-     * processing the request corresponding the event. It in ISO 8601 format.
+     * the timestamp of when the event was generated by the Azure service processing the request corresponding the
+     * event. It in ISO 8601 format.
      */
     @JsonProperty(value = "eventTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime eventTimestamp;
 
     /*
-     * the timestamp of when the event became available for querying via this
-     * API. It is in ISO 8601 format. This value should not be confused
-     * eventTimestamp. As there might be a delay between the occurrence time of
-     * the event, and the time that the event is submitted to the Azure logging
-     * infrastructure.
+     * the timestamp of when the event became available for querying via this API. It is in ISO 8601 format. This value
+     * should not be confused eventTimestamp. As there might be a delay between the occurrence time of the event, and
+     * the time that the event is submitted to the Azure logging infrastructure.
      */
     @JsonProperty(value = "submissionTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime submissionTimestamp;
@@ -184,6 +173,10 @@ public final class EventDataInner {
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
+
+    /** Creates an instance of EventDataInner class. */
+    public EventDataInner() {
+    }
 
     /**
      * Get the authorization property: The sender authorization information.

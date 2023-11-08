@@ -24,11 +24,26 @@ public final class RoutingConfiguration {
     private PropagatedRouteTable propagatedRouteTables;
 
     /*
-     * List of routes that control routing from VirtualHub into a virtual
-     * network connection.
+     * List of routes that control routing from VirtualHub into a virtual network connection.
      */
     @JsonProperty(value = "vnetRoutes")
     private VnetRoute vnetRoutes;
+
+    /*
+     * The resource id of the RouteMap associated with this RoutingConfiguration for inbound learned routes.
+     */
+    @JsonProperty(value = "inboundRouteMap")
+    private SubResource inboundRouteMap;
+
+    /*
+     * The resource id of theRouteMap associated with this RoutingConfiguration for outbound advertised routes.
+     */
+    @JsonProperty(value = "outboundRouteMap")
+    private SubResource outboundRouteMap;
+
+    /** Creates an instance of RoutingConfiguration class. */
+    public RoutingConfiguration() {
+    }
 
     /**
      * Get the associatedRouteTable property: The resource id RouteTable associated with this RoutingConfiguration.
@@ -89,6 +104,50 @@ public final class RoutingConfiguration {
      */
     public RoutingConfiguration withVnetRoutes(VnetRoute vnetRoutes) {
         this.vnetRoutes = vnetRoutes;
+        return this;
+    }
+
+    /**
+     * Get the inboundRouteMap property: The resource id of the RouteMap associated with this RoutingConfiguration for
+     * inbound learned routes.
+     *
+     * @return the inboundRouteMap value.
+     */
+    public SubResource inboundRouteMap() {
+        return this.inboundRouteMap;
+    }
+
+    /**
+     * Set the inboundRouteMap property: The resource id of the RouteMap associated with this RoutingConfiguration for
+     * inbound learned routes.
+     *
+     * @param inboundRouteMap the inboundRouteMap value to set.
+     * @return the RoutingConfiguration object itself.
+     */
+    public RoutingConfiguration withInboundRouteMap(SubResource inboundRouteMap) {
+        this.inboundRouteMap = inboundRouteMap;
+        return this;
+    }
+
+    /**
+     * Get the outboundRouteMap property: The resource id of theRouteMap associated with this RoutingConfiguration for
+     * outbound advertised routes.
+     *
+     * @return the outboundRouteMap value.
+     */
+    public SubResource outboundRouteMap() {
+        return this.outboundRouteMap;
+    }
+
+    /**
+     * Set the outboundRouteMap property: The resource id of theRouteMap associated with this RoutingConfiguration for
+     * outbound advertised routes.
+     *
+     * @param outboundRouteMap the outboundRouteMap value to set.
+     * @return the RoutingConfiguration object itself.
+     */
+    public RoutingConfiguration withOutboundRouteMap(SubResource outboundRouteMap) {
+        this.outboundRouteMap = outboundRouteMap;
         return this;
     }
 

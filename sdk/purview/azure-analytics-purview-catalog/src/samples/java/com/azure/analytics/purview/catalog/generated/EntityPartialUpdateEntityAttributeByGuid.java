@@ -13,20 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityPartialUpdateEntityAttributeByGuid {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.entitypartialupdateentityattributebyguid.entitypartialupdateentityattributebyguid
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitypartialupdateentityattributebyguid.entitypartialupdateentityattributebyguid
         BinaryData body = BinaryData.fromString("\"ExampleNewName\"");
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("name", "ExampleName");
         Response<BinaryData> response =
                 entityClient.partialUpdateEntityAttributeByGuidWithResponse(
-                        "394d9a03-912e-483b-bbd2-bedee1a69798", body, requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.entitypartialupdateentityattributebyguid.entitypartialupdateentityattributebyguid
+                        "394d9a03-912e-483b-bbd2-bedee1a69798", "ExampleName", body, requestOptions);
+        // END:com.azure.analytics.purview.catalog.generated.entitypartialupdateentityattributebyguid.entitypartialupdateentityattributebyguid
     }
 }

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,13 +15,10 @@ import java.util.Map;
 /** Represents the properties of a virtual network link. */
 @Fluent
 public final class VirtualNetworkLinkProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkLinkProperties.class);
-
     /*
-     * The reference to the virtual network. This cannot be changed after
-     * creation.
+     * The reference to the virtual network. This cannot be changed after creation.
      */
-    @JsonProperty(value = "virtualNetwork")
+    @JsonProperty(value = "virtualNetwork", required = true)
     private SubResource virtualNetwork;
 
     /*
@@ -33,8 +29,8 @@ public final class VirtualNetworkLinkProperties {
     private Map<String, String> metadata;
 
     /*
-     * The current provisioning state of the virtual network link. This is a
-     * read-only property and any attempt to set this value will be ignored.
+     * The current provisioning state of the virtual network link. This is a read-only property and any attempt to set
+     * this value will be ignored.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -95,5 +91,13 @@ public final class VirtualNetworkLinkProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (virtualNetwork() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property virtualNetwork in model VirtualNetworkLinkProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkLinkProperties.class);
 }

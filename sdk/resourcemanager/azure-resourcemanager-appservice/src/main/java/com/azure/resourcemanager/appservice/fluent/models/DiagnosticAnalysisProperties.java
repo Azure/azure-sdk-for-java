@@ -44,6 +44,10 @@ public final class DiagnosticAnalysisProperties {
     @JsonProperty(value = "nonCorrelatedDetectors")
     private List<DetectorDefinition> nonCorrelatedDetectors;
 
+    /** Creates an instance of DiagnosticAnalysisProperties class. */
+    public DiagnosticAnalysisProperties() {
+    }
+
     /**
      * Get the startTime property: Start time of the period.
      *

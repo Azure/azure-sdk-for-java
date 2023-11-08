@@ -6,15 +6,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies a metric dimension. */
 @Fluent
 public final class MetricDimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDimension.class);
-
     /*
      * Name of the dimension.
      */
@@ -32,6 +29,10 @@ public final class MetricDimension {
      */
     @JsonProperty(value = "values", required = true)
     private List<String> values;
+
+    /** Creates an instance of MetricDimension class. */
+    public MetricDimension() {
+    }
 
     /**
      * Get the name property: Name of the dimension.
@@ -100,19 +101,21 @@ public final class MetricDimension {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model MetricDimension"));
         }
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model MetricDimension"));
         }
         if (values() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property values in model MetricDimension"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MetricDimension.class);
 }

@@ -12,6 +12,7 @@ import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ContextAccessor;
 import com.azure.messaging.servicebus.models.ServiceBusMessageState;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
@@ -32,6 +33,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATIO
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.MESSAGE_STATE_ANNOTATION_NAME;
 
 /**
  * The data structure encapsulating the message received from Service Bus. The message structure is discussed in detail
@@ -46,14 +48,26 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
  *     </a>
  */
 public final class ServiceBusReceivedMessage {
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceivedMessage.class);
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
 
     private UUID lockToken;
     private boolean isSettled = false;
     private Context context;
 
-    static final String SERVICE_BUS_MESSAGE_STATE_KEY = "x-opt-message-state";
+    static {
+        ContextAccessor.setReceiveMessageContextAccessor(new ContextAccessor.ReceiveMessageContextAccessor() {
+            @Override
+            public ServiceBusReceivedMessage setContext(ServiceBusReceivedMessage message, Context context) {
+                return message.setContext(context);
+            }
+
+            @Override
+            public Context getContext(ServiceBusReceivedMessage message) {
+                return message.getContext();
+            }
+        });
+    }
 
     ServiceBusReceivedMessage(BinaryData body) {
         Objects.requireNonNull(body, "'body' cannot be null.");
@@ -103,10 +117,10 @@ public final class ServiceBusReceivedMessage {
                 return BinaryData.fromBytes(payload);
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException(
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                     "This body type not is supported: " + bodyType));
             default:
-                throw logger.logExceptionAsError(new IllegalStateException("Body type not valid: " + bodyType));
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Body type not valid: " + bodyType));
         }
     }
 
@@ -455,7 +469,7 @@ public final class ServiceBusReceivedMessage {
      * @throws UnsupportedOperationException if the message state is an unknown value.
      */
     public ServiceBusMessageState getState() {
-        final Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SERVICE_BUS_MESSAGE_STATE_KEY);
+        final Object value = amqpAnnotatedMessage.getMessageAnnotations().get(MESSAGE_STATE_ANNOTATION_NAME.getValue());
 
         if (value instanceof Integer) {
             return ServiceBusMessageState.fromValue((Integer) value);
@@ -519,19 +533,27 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Adds a new key value pair to the existing context on Message.
+     * Sets context on the message.
      *
-     * @param key The key for this context object
-     * @param value The value for this context object.
+     * @param context Context to set.
      *
      * @return The updated {@link ServiceBusMessage}.
      * @throws NullPointerException if {@code key} or {@code value} is null.
      */
-    ServiceBusReceivedMessage addContext(String key, Object value) {
-        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
-        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
-        this.context = context.addData(key, value);
+    ServiceBusReceivedMessage setContext(Context context) {
+        Objects.requireNonNull(context, "The 'context' parameter cannot be null.");
+        this.context = context;
         return this;
+    }
+
+    /**
+     * Gets context associated with the message.
+     *
+     * @return The updated {@link ServiceBusMessage}.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
+     */
+    Context getContext() {
+        return this.context;
     }
 
     /**

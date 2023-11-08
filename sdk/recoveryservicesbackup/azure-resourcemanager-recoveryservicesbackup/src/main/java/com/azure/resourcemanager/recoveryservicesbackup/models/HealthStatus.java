@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HealthStatus. */
+/** Health status of protected item. */
 public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
     /** Static value Passed for HealthStatus. */
     public static final HealthStatus PASSED = fromString("Passed");
@@ -23,6 +23,15 @@ public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
     public static final HealthStatus INVALID = fromString("Invalid");
 
     /**
+     * Creates a new instance of HealthStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HealthStatus() {
+    }
+
+    /**
      * Creates or finds a HealthStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
         return fromString(name, HealthStatus.class);
     }
 
-    /** @return known HealthStatus values. */
+    /**
+     * Gets known HealthStatus values.
+     *
+     * @return known HealthStatus values.
+     */
     public static Collection<HealthStatus> values() {
         return values(HealthStatus.class);
     }

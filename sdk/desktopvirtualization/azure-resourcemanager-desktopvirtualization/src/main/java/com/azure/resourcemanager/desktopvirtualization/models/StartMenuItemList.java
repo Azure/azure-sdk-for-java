@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.StartMenuItemInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** StartMenuItemList List of StartMenuItem definitions. */
+/**
+ * StartMenuItemList
+ *
+ * <p>List of StartMenuItem definitions.
+ */
 @Fluent
 public final class StartMenuItemList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StartMenuItemList.class);
-
     /*
      * List of StartMenuItem definitions.
      */
@@ -27,6 +27,10 @@ public final class StartMenuItemList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of StartMenuItemList class. */
+    public StartMenuItemList() {
+    }
 
     /**
      * Get the value property: List of StartMenuItem definitions.

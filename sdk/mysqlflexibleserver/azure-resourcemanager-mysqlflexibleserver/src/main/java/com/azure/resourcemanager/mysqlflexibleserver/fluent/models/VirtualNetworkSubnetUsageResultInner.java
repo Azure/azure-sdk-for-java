@@ -13,10 +13,44 @@ import java.util.List;
 @Immutable
 public final class VirtualNetworkSubnetUsageResultInner {
     /*
+     * The location name.
+     */
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
+
+    /*
+     * The subscription id.
+     */
+    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
+    private String subscriptionId;
+
+    /*
      * A list of delegated subnet usage
      */
     @JsonProperty(value = "delegatedSubnetsUsage", access = JsonProperty.Access.WRITE_ONLY)
     private List<DelegatedSubnetUsage> delegatedSubnetsUsage;
+
+    /** Creates an instance of VirtualNetworkSubnetUsageResultInner class. */
+    public VirtualNetworkSubnetUsageResultInner() {
+    }
+
+    /**
+     * Get the location property: The location name.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the subscriptionId property: The subscription id.
+     *
+     * @return the subscriptionId value.
+     */
+    public String subscriptionId() {
+        return this.subscriptionId;
+    }
 
     /**
      * Get the delegatedSubnetsUsage property: A list of delegated subnet usage.

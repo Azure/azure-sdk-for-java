@@ -16,7 +16,10 @@ public enum SkuName {
     DATA_BOX_DISK("DataBoxDisk"),
 
     /** Enum value DataBoxHeavy. */
-    DATA_BOX_HEAVY("DataBoxHeavy");
+    DATA_BOX_HEAVY("DataBoxHeavy"),
+
+    /** Enum value DataBoxCustomerDisk. */
+    DATA_BOX_CUSTOMER_DISK("DataBoxCustomerDisk");
 
     /** The actual serialized value for a SkuName instance. */
     private final String value;
@@ -33,6 +36,9 @@ public enum SkuName {
      */
     @JsonCreator
     public static SkuName fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SkuName[] items = SkuName.values();
         for (SkuName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +48,7 @@ public enum SkuName {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

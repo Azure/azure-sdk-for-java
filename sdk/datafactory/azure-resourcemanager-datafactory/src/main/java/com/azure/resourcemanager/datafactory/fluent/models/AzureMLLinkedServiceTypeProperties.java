@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureMLLinkedServiceTypeProperties {
     /*
-     * The Batch Execution REST URL for an Azure ML Studio Web Service
-     * endpoint. Type: string (or Expression with resultType string).
+     * The Batch Execution REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "mlEndpoint", required = true)
     private Object mlEndpoint;
@@ -26,48 +26,50 @@ public final class AzureMLLinkedServiceTypeProperties {
     private SecretBase apiKey;
 
     /*
-     * The Update Resource REST URL for an Azure ML Studio Web Service
-     * endpoint. Type: string (or Expression with resultType string).
+     * The Update Resource REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "updateResourceEndpoint")
     private Object updateResourceEndpoint;
 
     /*
-     * The ID of the service principal used to authenticate against the
-     * ARM-based updateResourceEndpoint of an Azure ML Studio web service.
-     * Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML
+     * Studio web service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against the
-     * ARM-based updateResourceEndpoint of an Azure ML Studio web service.
+     * The key of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure
+     * ML Studio web service.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
-     * Type of authentication (Required to specify MSI) used to connect to
-     * AzureML. Type: string (or Expression with resultType string).
+     * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "authentication")
     private Object authentication;
+
+    /** Creates an instance of AzureMLLinkedServiceTypeProperties class. */
+    public AzureMLLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the mlEndpoint property: The Batch Execution REST URL for an Azure ML Studio Web Service endpoint. Type:
@@ -201,22 +203,22 @@ public final class AzureMLLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMLLinkedServiceTypeProperties object itself.
      */
-    public AzureMLLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureMLLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

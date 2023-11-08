@@ -3,23 +3,32 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.util.Beta;
+import com.azure.cosmos.models.PriorityLevel;
 
 /**
  * Throughput control group configuration.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ThroughputControlGroupConfig {
     private final String groupName;
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
+    private final PriorityLevel priorityLevel;
     private final boolean isDefault;
+    private final boolean continueOnInitError;
 
-    ThroughputControlGroupConfig(String groupName, Integer targetThroughput, Double targetThroughputThreshold, boolean isDefault) {
-       this.groupName= groupName;
+    ThroughputControlGroupConfig(
+            String groupName,
+            Integer targetThroughput,
+            Double targetThroughputThreshold,
+            PriorityLevel priorityLevel,
+            boolean isDefault,
+            boolean continueOnInitError) {
+       this.groupName = groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
+       this.priorityLevel = priorityLevel;
        this.isDefault = isDefault;
+       this.continueOnInitError = continueOnInitError;
     }
 
     /**
@@ -27,7 +36,6 @@ public final class ThroughputControlGroupConfig {
      *
      * @return the group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getGroupName() {
         return this.groupName;
     }
@@ -40,7 +48,6 @@ public final class ThroughputControlGroupConfig {
      *
      * @return the target throughput.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getTargetThroughput() {
         return this.targetThroughput;
     }
@@ -51,12 +58,23 @@ public final class ThroughputControlGroupConfig {
      *
      * By default, this value is null.
      *
-     * @return the target throughput threshold.
+     * @return the target throughput threshold null or (0, 1].
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Double getTargetThroughputThreshold() {
         return this.targetThroughputThreshold;
     }
+
+    /**
+     * Get the throughput control group priority level.
+     * Priority level is used to determine which group will be throttled first when the total throughput of all groups exceeds the max throughput.
+     *
+     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
+     *
+     * Refer to https://aka.ms/CosmosDB/PriorityBasedExecution for more details.
+     *
+     * @return the priority level of the throughput control group.
+     */
+    public PriorityLevel getPriorityLevel() { return this.priorityLevel; }
 
     /**
      * Get whether this throughput control group will be used by default.
@@ -66,8 +84,19 @@ public final class ThroughputControlGroupConfig {
      *
      * @return {@code true} this throughput control group will be used by default unless being override. {@code false} otherwise.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isDefault() {
         return this.isDefault;
+    }
+
+    /**
+     * Get whether request is allowed to continue on original request flow if throughput control controller failed on initialization.
+     *
+     * By default, it is false.
+     * If it is true, requests will continue on original request flow if throughput control controller failed on initialization.
+     *
+     * @return {@code true} request will continue on original request flow if throughput control controller failed on initialization. {@code false} otherwise.
+     */
+    public boolean continueOnInitError() {
+        return continueOnInitError;
     }
 }

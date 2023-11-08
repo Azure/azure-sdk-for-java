@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("AzureFileShareRestoreRequest")
 @Fluent
 public final class AzureFileShareRestoreRequest extends RestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileShareRestoreRequest.class);
-
     /*
      * Type of this recovery.
      */
@@ -44,8 +40,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
     private RestoreRequestType restoreRequestType;
 
     /*
-     * List of Source Files/Folders(which need to recover) and TargetFolderPath
-     * details
+     * List of Source Files/Folders(which need to recover) and TargetFolderPath details
      */
     @JsonProperty(value = "restoreFileSpecs")
     private List<RestoreFileSpecs> restoreFileSpecs;
@@ -55,6 +50,10 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
      */
     @JsonProperty(value = "targetDetails")
     private TargetAfsRestoreInfo targetDetails;
+
+    /** Creates an instance of AzureFileShareRestoreRequest class. */
+    public AzureFileShareRestoreRequest() {
+    }
 
     /**
      * Get the recoveryType property: Type of this recovery.

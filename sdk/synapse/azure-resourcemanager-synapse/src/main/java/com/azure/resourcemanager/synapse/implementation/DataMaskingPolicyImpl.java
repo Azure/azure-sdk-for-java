@@ -64,6 +64,10 @@ public final class DataMaskingPolicyImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DataMaskingPolicyInner innerModel() {
         return this.innerObject;
     }

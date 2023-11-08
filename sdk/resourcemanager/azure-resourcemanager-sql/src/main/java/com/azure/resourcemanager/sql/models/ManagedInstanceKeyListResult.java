@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceKeyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of managed instance keys. */
 @Immutable
 public final class ManagedInstanceKeyListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceKeyListResult.class);
-
     /*
      * Array of results.
      */
@@ -27,6 +23,10 @@ public final class ManagedInstanceKeyListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ManagedInstanceKeyListResult class. */
+    public ManagedInstanceKeyListResult() {
+    }
 
     /**
      * Get the value property: Array of results.

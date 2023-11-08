@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,18 +17,15 @@ import java.util.Map;
 /** sectionGroup. */
 @Fluent
 public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntityHierarchyModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphSectionGroup.class);
-
     /*
-     * The URL for the sectionGroups navigation property, which returns all the
-     * section groups in the section group. Read-only.
+     * The URL for the sectionGroups navigation property, which returns all the section groups in the section group.
+     * Read-only.
      */
     @JsonProperty(value = "sectionGroupsUrl")
     private String sectionGroupsUrl;
 
     /*
-     * The URL for the sections navigation property, which returns all the
-     * sections in the section group. Read-only.
+     * The URL for the sections navigation property, which returns all the sections in the section group. Read-only.
      */
     @JsonProperty(value = "sectionsUrl")
     private String sectionsUrl;
@@ -62,6 +58,10 @@ public final class MicrosoftGraphSectionGroup extends MicrosoftGraphOnenoteEntit
      * sectionGroup
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSectionGroup class. */
+    public MicrosoftGraphSectionGroup() {
+    }
 
     /**
      * Get the sectionGroupsUrl property: The URL for the sectionGroups navigation property, which returns all the

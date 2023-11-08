@@ -11,6 +11,7 @@ import com.azure.resourcemanager.compute.models.DataDiskImage;
 import com.azure.resourcemanager.compute.models.DisallowedConfiguration;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
+import com.azure.resourcemanager.compute.models.ImageDeprecationStatus;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.VirtualMachineImageFeature;
@@ -26,6 +27,10 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
      */
     @JsonProperty(value = "properties")
     private VirtualMachineImageProperties innerProperties;
+
+    /** Creates an instance of VirtualMachineImageInner class. */
+    public VirtualMachineImageInner() {
+    }
 
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine Image.
@@ -253,6 +258,29 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
             this.innerProperties = new VirtualMachineImageProperties();
         }
         this.innerProperties().withArchitecture(architecture);
+        return this;
+    }
+
+    /**
+     * Get the imageDeprecationStatus property: Describes image deprecation status properties on the image.
+     *
+     * @return the imageDeprecationStatus value.
+     */
+    public ImageDeprecationStatus imageDeprecationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().imageDeprecationStatus();
+    }
+
+    /**
+     * Set the imageDeprecationStatus property: Describes image deprecation status properties on the image.
+     *
+     * @param imageDeprecationStatus the imageDeprecationStatus value to set.
+     * @return the VirtualMachineImageInner object itself.
+     */
+    public VirtualMachineImageInner withImageDeprecationStatus(ImageDeprecationStatus imageDeprecationStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineImageProperties();
+        }
+        this.innerProperties().withImageDeprecationStatus(imageDeprecationStatus);
         return this;
     }
 

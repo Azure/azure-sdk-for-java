@@ -17,6 +17,10 @@ public class PirSharedGalleryResource extends PirResource {
     @JsonProperty(value = "identifier")
     private SharedGalleryIdentifier innerIdentifier;
 
+    /** Creates an instance of PirSharedGalleryResource class. */
+    public PirSharedGalleryResource() {
+    }
+
     /**
      * Get the innerIdentifier property: The identifier information of shared gallery.
      *

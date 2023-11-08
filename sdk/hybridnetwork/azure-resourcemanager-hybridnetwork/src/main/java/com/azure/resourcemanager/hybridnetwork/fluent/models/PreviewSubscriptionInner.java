@@ -4,19 +4,15 @@
 
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Customer subscription which can use a sku. */
-@Fluent
+@Immutable
 public final class PreviewSubscriptionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreviewSubscriptionInner.class);
-
     /*
      * The Preview Subscription properties.
      */
@@ -28,6 +24,10 @@ public final class PreviewSubscriptionInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of PreviewSubscriptionInner class. */
+    public PreviewSubscriptionInner() {
+    }
 
     /**
      * Get the innerProperties property: The Preview Subscription properties.

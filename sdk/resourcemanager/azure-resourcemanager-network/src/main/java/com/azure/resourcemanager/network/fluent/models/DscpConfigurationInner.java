@@ -36,6 +36,10 @@ public final class DscpConfigurationInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of DscpConfigurationInner class. */
+    public DscpConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the network interface.
      *

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +17,6 @@ import java.util.UUID;
 /** licenseAssignmentState. */
 @Fluent
 public final class MicrosoftGraphLicenseAssignmentState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphLicenseAssignmentState.class);
-
     /*
      * The assignedByGroup property.
      */
@@ -54,6 +51,10 @@ public final class MicrosoftGraphLicenseAssignmentState {
      * licenseAssignmentState
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphLicenseAssignmentState class. */
+    public MicrosoftGraphLicenseAssignmentState() {
+    }
 
     /**
      * Get the assignedByGroup property: The assignedByGroup property.

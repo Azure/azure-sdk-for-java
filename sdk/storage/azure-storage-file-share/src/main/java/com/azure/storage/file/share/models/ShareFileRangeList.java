@@ -28,6 +28,9 @@ public final class ShareFileRangeList {
     @JsonProperty("ClearRange")
     private List<ClearRange> clearRanges = new ArrayList<>();
 
+    /** Creates an instance of ShareFileRangeList class. */
+    public ShareFileRangeList() {}
+
     /**
      * Get the ranges property: The Ranges property.
      *

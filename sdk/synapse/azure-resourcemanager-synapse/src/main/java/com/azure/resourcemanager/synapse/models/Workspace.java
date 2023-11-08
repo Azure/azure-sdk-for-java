@@ -142,7 +142,7 @@ public interface Workspace {
      *
      * @return the extraProperties value.
      */
-    Map<String, Object> extraProperties();
+    Object extraProperties();
 
     /**
      * Gets the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
@@ -223,6 +223,13 @@ public interface Workspace {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.WorkspaceInner object.
      *
      * @return the inner object.
@@ -281,7 +288,6 @@ public interface Workspace {
                 DefinitionStages.WithManagedResourceGroupName,
                 DefinitionStages.WithSqlAdministratorLogin,
                 DefinitionStages.WithVirtualNetworkProfile,
-                DefinitionStages.WithConnectivityEndpoints,
                 DefinitionStages.WithManagedVirtualNetwork,
                 DefinitionStages.WithPrivateEndpointConnections,
                 DefinitionStages.WithEncryption,
@@ -382,16 +388,6 @@ public interface Workspace {
              * @return the next definition stage.
              */
             WithCreate withVirtualNetworkProfile(VirtualNetworkProfile virtualNetworkProfile);
-        }
-        /** The stage of the Workspace definition allowing to specify connectivityEndpoints. */
-        interface WithConnectivityEndpoints {
-            /**
-             * Specifies the connectivityEndpoints property: Connectivity endpoints.
-             *
-             * @param connectivityEndpoints Connectivity endpoints.
-             * @return the next definition stage.
-             */
-            WithCreate withConnectivityEndpoints(Map<String, String> connectivityEndpoints);
         }
         /** The stage of the Workspace definition allowing to specify managedVirtualNetwork. */
         interface WithManagedVirtualNetwork {

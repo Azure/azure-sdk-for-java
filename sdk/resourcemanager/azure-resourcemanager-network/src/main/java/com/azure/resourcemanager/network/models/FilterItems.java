@@ -23,6 +23,10 @@ public final class FilterItems {
     @JsonProperty(value = "values")
     private List<String> values;
 
+    /** Creates an instance of FilterItems class. */
+    public FilterItems() {
+    }
+
     /**
      * Get the field property: The name of the field we would like to filter.
      *

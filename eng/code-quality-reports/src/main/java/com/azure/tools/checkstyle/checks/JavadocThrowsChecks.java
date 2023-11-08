@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+/**
+ * Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown.
+ */
 public class JavadocThrowsChecks extends AbstractCheck {
     static final String MISSING_DESCRIPTION_MESSAGE =
         "@throws tag requires a description explaining when the error is thrown.";

@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Describes the properties of a supported private link resource for the Azure Cognitive Search service. For a given API
- * version, this represents the 'supported' groupIds when creating a shared private link resource.
+ * Describes the properties of a supported private link resource for the search service. For a given API version, this
+ * represents the 'supported' groupIds when creating a shared private link resource.
  */
 @Immutable
 public final class PrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
-
     /*
      * The group ID of the private link resource.
      */
@@ -37,11 +33,14 @@ public final class PrivateLinkResourceProperties {
     private List<String> requiredZoneNames;
 
     /*
-     * The list of resources that are onboarded to private link service, that
-     * are supported by Azure Cognitive Search.
+     * The list of resources that are onboarded to private link service and that are supported by search.
      */
     @JsonProperty(value = "shareablePrivateLinkResourceTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes;
+
+    /** Creates an instance of PrivateLinkResourceProperties class. */
+    public PrivateLinkResourceProperties() {
+    }
 
     /**
      * Get the groupId property: The group ID of the private link resource.
@@ -72,7 +71,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the shareablePrivateLinkResourceTypes property: The list of resources that are onboarded to private link
-     * service, that are supported by Azure Cognitive Search.
+     * service and that are supported by search.
      *
      * @return the shareablePrivateLinkResourceTypes value.
      */

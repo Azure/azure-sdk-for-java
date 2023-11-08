@@ -5,19 +5,13 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.StreamType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Definition of the source control sync job stream. */
-@JsonFlatten
 @Fluent
-public class SourceControlSyncJobStreamInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlSyncJobStreamInner.class);
-
+public final class SourceControlSyncJobStreamInner {
     /*
      * Resource id.
      */
@@ -25,28 +19,10 @@ public class SourceControlSyncJobStreamInner {
     private String id;
 
     /*
-     * The sync job stream id.
+     * The properties of the source control sync job stream.
      */
-    @JsonProperty(value = "properties.sourceControlSyncJobStreamId")
-    private String sourceControlSyncJobStreamId;
-
-    /*
-     * The summary of the sync job stream.
-     */
-    @JsonProperty(value = "properties.summary")
-    private String summary;
-
-    /*
-     * The time of the sync job stream.
-     */
-    @JsonProperty(value = "properties.time", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime time;
-
-    /*
-     * The type of the sync job stream.
-     */
-    @JsonProperty(value = "properties.streamType")
-    private StreamType streamType;
+    @JsonProperty(value = "properties")
+    private SourceControlSyncJobStreamProperties innerProperties;
 
     /**
      * Get the id property: Resource id.
@@ -58,12 +34,21 @@ public class SourceControlSyncJobStreamInner {
     }
 
     /**
+     * Get the innerProperties property: The properties of the source control sync job stream.
+     *
+     * @return the innerProperties value.
+     */
+    private SourceControlSyncJobStreamProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the sourceControlSyncJobStreamId property: The sync job stream id.
      *
      * @return the sourceControlSyncJobStreamId value.
      */
     public String sourceControlSyncJobStreamId() {
-        return this.sourceControlSyncJobStreamId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceControlSyncJobStreamId();
     }
 
     /**
@@ -73,7 +58,10 @@ public class SourceControlSyncJobStreamInner {
      * @return the SourceControlSyncJobStreamInner object itself.
      */
     public SourceControlSyncJobStreamInner withSourceControlSyncJobStreamId(String sourceControlSyncJobStreamId) {
-        this.sourceControlSyncJobStreamId = sourceControlSyncJobStreamId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobStreamProperties();
+        }
+        this.innerProperties().withSourceControlSyncJobStreamId(sourceControlSyncJobStreamId);
         return this;
     }
 
@@ -83,7 +71,7 @@ public class SourceControlSyncJobStreamInner {
      * @return the summary value.
      */
     public String summary() {
-        return this.summary;
+        return this.innerProperties() == null ? null : this.innerProperties().summary();
     }
 
     /**
@@ -93,7 +81,10 @@ public class SourceControlSyncJobStreamInner {
      * @return the SourceControlSyncJobStreamInner object itself.
      */
     public SourceControlSyncJobStreamInner withSummary(String summary) {
-        this.summary = summary;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobStreamProperties();
+        }
+        this.innerProperties().withSummary(summary);
         return this;
     }
 
@@ -103,7 +94,7 @@ public class SourceControlSyncJobStreamInner {
      * @return the time value.
      */
     public OffsetDateTime time() {
-        return this.time;
+        return this.innerProperties() == null ? null : this.innerProperties().time();
     }
 
     /**
@@ -112,7 +103,7 @@ public class SourceControlSyncJobStreamInner {
      * @return the streamType value.
      */
     public StreamType streamType() {
-        return this.streamType;
+        return this.innerProperties() == null ? null : this.innerProperties().streamType();
     }
 
     /**
@@ -122,7 +113,10 @@ public class SourceControlSyncJobStreamInner {
      * @return the SourceControlSyncJobStreamInner object itself.
      */
     public SourceControlSyncJobStreamInner withStreamType(StreamType streamType) {
-        this.streamType = streamType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlSyncJobStreamProperties();
+        }
+        this.innerProperties().withStreamType(streamType);
         return this;
     }
 
@@ -132,5 +126,8 @@ public class SourceControlSyncJobStreamInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -6,22 +6,19 @@ package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity for the resource. */
 @Fluent
-public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
-
+public final class Identity {
     /*
-     * The principal ID of resource identity.
+     * The principal ID of the system-assigned identity of the search service.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant ID of resource.
+     * The tenant ID of the system-assigned identity of the search service.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
@@ -32,8 +29,12 @@ public class Identity {
     @JsonProperty(value = "type", required = true)
     private IdentityType type;
 
+    /** Creates an instance of Identity class. */
+    public Identity() {
+    }
+
     /**
-     * Get the principalId property: The principal ID of resource identity.
+     * Get the principalId property: The principal ID of the system-assigned identity of the search service.
      *
      * @return the principalId value.
      */
@@ -42,7 +43,7 @@ public class Identity {
     }
 
     /**
-     * Get the tenantId property: The tenant ID of resource.
+     * Get the tenantId property: The tenant ID of the system-assigned identity of the search service.
      *
      * @return the tenantId value.
      */
@@ -77,8 +78,10 @@ public class Identity {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property type in model Identity"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Identity.class);
 }

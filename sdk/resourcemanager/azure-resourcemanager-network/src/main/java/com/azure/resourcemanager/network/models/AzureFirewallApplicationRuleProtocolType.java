@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureFirewallApplicationRuleProtocolType. */
+/** The protocol type of a Application Rule resource. */
 public final class AzureFirewallApplicationRuleProtocolType
     extends ExpandableStringEnum<AzureFirewallApplicationRuleProtocolType> {
     /** Static value Http for AzureFirewallApplicationRuleProtocolType. */
@@ -21,6 +21,15 @@ public final class AzureFirewallApplicationRuleProtocolType
     public static final AzureFirewallApplicationRuleProtocolType MSSQL = fromString("Mssql");
 
     /**
+     * Creates a new instance of AzureFirewallApplicationRuleProtocolType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFirewallApplicationRuleProtocolType() {
+    }
+
+    /**
      * Creates or finds a AzureFirewallApplicationRuleProtocolType from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class AzureFirewallApplicationRuleProtocolType
         return fromString(name, AzureFirewallApplicationRuleProtocolType.class);
     }
 
-    /** @return known AzureFirewallApplicationRuleProtocolType values. */
+    /**
+     * Gets known AzureFirewallApplicationRuleProtocolType values.
+     *
+     * @return known AzureFirewallApplicationRuleProtocolType values.
+     */
     public static Collection<AzureFirewallApplicationRuleProtocolType> values() {
         return values(AzureFirewallApplicationRuleProtocolType.class);
     }

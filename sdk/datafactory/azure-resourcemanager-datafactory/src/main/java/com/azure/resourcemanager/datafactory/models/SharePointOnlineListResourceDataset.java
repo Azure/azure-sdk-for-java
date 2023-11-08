@@ -23,6 +23,10 @@ public final class SharePointOnlineListResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private SharePointOnlineListDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of SharePointOnlineListResourceDataset class. */
+    public SharePointOnlineListResourceDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Sharepoint online list dataset properties.
      *

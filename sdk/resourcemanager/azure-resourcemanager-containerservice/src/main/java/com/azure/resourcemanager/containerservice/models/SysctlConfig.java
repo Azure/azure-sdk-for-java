@@ -178,6 +178,10 @@ public final class SysctlConfig {
     @JsonProperty(value = "vmVfsCachePressure")
     private Integer vmVfsCachePressure;
 
+    /** Creates an instance of SysctlConfig class. */
+    public SysctlConfig() {
+    }
+
     /**
      * Get the netCoreSomaxconn property: Sysctl setting net.core.somaxconn.
      *

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** metric specifications for the operation. */
 @Fluent
 public final class OperationMetaMetricSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetaMetricSpecification.class);
-
     /*
      * aggregation type of metric
      */
@@ -88,6 +84,10 @@ public final class OperationMetaMetricSpecification {
      */
     @JsonProperty(value = "unit")
     private String unit;
+
+    /** Creates an instance of OperationMetaMetricSpecification class. */
+    public OperationMetaMetricSpecification() {
+    }
 
     /**
      * Get the aggregationType property: aggregation type of metric.

@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakestore.fluent.TrustedIdProvidersClient;
 import com.azure.resourcemanager.datalakestore.fluent.models.TrustedIdProviderInner;
 import com.azure.resourcemanager.datalakestore.models.CreateOrUpdateTrustedIdProviderParameters;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TrustedIdProvidersClient. */
 public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersClient {
-    private final ClientLogger logger = new ClientLogger(TrustedIdProvidersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TrustedIdProvidersService service;
 
@@ -64,7 +61,7 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataLakeStoreAccount")
-    private interface TrustedIdProvidersService {
+    public interface TrustedIdProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
@@ -164,7 +161,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrustedIdProviderInner>> listByAccountSinglePageAsync(
@@ -222,7 +220,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrustedIdProviderInner>> listByAccountSinglePageAsync(
@@ -276,7 +275,7 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TrustedIdProviderInner> listByAccountAsync(String resourceGroupName, String accountName) {
@@ -294,7 +293,7 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TrustedIdProviderInner> listByAccountAsync(
@@ -312,7 +311,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrustedIdProviderInner> listByAccount(String resourceGroupName, String accountName) {
@@ -328,7 +328,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrustedIdProviderInner> listByAccount(
@@ -348,7 +349,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return data Lake Store trusted identity provider information along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TrustedIdProviderInner>> createOrUpdateWithResponseAsync(
@@ -415,7 +417,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return data Lake Store trusted identity provider information along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TrustedIdProviderInner>> createOrUpdateWithResponseAsync(
@@ -479,7 +482,7 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return data Lake Store trusted identity provider information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TrustedIdProviderInner> createOrUpdateAsync(
@@ -488,14 +491,34 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
         String trustedIdProviderName,
         CreateOrUpdateTrustedIdProviderParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName, parameters)
-            .flatMap(
-                (Response<TrustedIdProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates the specified trusted identity provider. During update, the trusted identity provider with the
+     * specified name will be replaced with this new provider.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of
+     *     providers in the account.
+     * @param parameters Parameters supplied to create or replace the trusted identity provider.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Lake Store trusted identity provider information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TrustedIdProviderInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String trustedIdProviderName,
+        CreateOrUpdateTrustedIdProviderParameters parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, accountName, trustedIdProviderName, parameters, context)
+            .block();
     }
 
     /**
@@ -518,34 +541,9 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
         String accountName,
         String trustedIdProviderName,
         CreateOrUpdateTrustedIdProviderParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, accountName, trustedIdProviderName, parameters).block();
-    }
-
-    /**
-     * Creates or updates the specified trusted identity provider. During update, the trusted identity provider with the
-     * specified name will be replaced with this new provider.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of
-     *     providers in the account.
-     * @param parameters Parameters supplied to create or replace the trusted identity provider.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrustedIdProviderInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String trustedIdProviderName,
-        CreateOrUpdateTrustedIdProviderParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, accountName, trustedIdProviderName, parameters, context)
-            .block();
+        return createOrUpdateWithResponse(
+                resourceGroupName, accountName, trustedIdProviderName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -557,7 +555,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store trusted identity provider.
+     * @return the specified Data Lake Store trusted identity provider along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TrustedIdProviderInner>> getWithResponseAsync(
@@ -612,7 +611,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store trusted identity provider.
+     * @return the specified Data Lake Store trusted identity provider along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TrustedIdProviderInner>> getWithResponseAsync(
@@ -663,20 +663,31 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store trusted identity provider.
+     * @return the specified Data Lake Store trusted identity provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TrustedIdProviderInner> getAsync(
         String resourceGroupName, String accountName, String trustedIdProviderName) {
         return getWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName)
-            .flatMap(
-                (Response<TrustedIdProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the specified Data Lake Store trusted identity provider.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param trustedIdProviderName The name of the trusted identity provider to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Data Lake Store trusted identity provider along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TrustedIdProviderInner> getWithResponse(
+        String resourceGroupName, String accountName, String trustedIdProviderName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName, context).block();
     }
 
     /**
@@ -692,25 +703,7 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrustedIdProviderInner get(String resourceGroupName, String accountName, String trustedIdProviderName) {
-        return getAsync(resourceGroupName, accountName, trustedIdProviderName).block();
-    }
-
-    /**
-     * Gets the specified Data Lake Store trusted identity provider.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param trustedIdProviderName The name of the trusted identity provider to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store trusted identity provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrustedIdProviderInner> getWithResponse(
-        String resourceGroupName, String accountName, String trustedIdProviderName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName, context).block();
+        return getWithResponse(resourceGroupName, accountName, trustedIdProviderName, Context.NONE).getValue();
     }
 
     /**
@@ -724,7 +717,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return data Lake Store trusted identity provider information along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TrustedIdProviderInner>> updateWithResponseAsync(
@@ -788,7 +782,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return data Lake Store trusted identity provider information along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TrustedIdProviderInner>> updateWithResponseAsync(
@@ -845,27 +840,17 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @param accountName The name of the Data Lake Store account.
      * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of
      *     providers in the account.
-     * @param parameters Parameters supplied to update the trusted identity provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return data Lake Store trusted identity provider information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TrustedIdProviderInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String trustedIdProviderName,
-        UpdateTrustedIdProviderParameters parameters) {
+        String resourceGroupName, String accountName, String trustedIdProviderName) {
+        final UpdateTrustedIdProviderParameters parameters = null;
         return updateWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName, parameters)
-            .flatMap(
-                (Response<TrustedIdProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -875,24 +860,22 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @param accountName The name of the Data Lake Store account.
      * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of
      *     providers in the account.
+     * @param parameters Parameters supplied to update the trusted identity provider.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return data Lake Store trusted identity provider information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TrustedIdProviderInner> updateAsync(
-        String resourceGroupName, String accountName, String trustedIdProviderName) {
-        final UpdateTrustedIdProviderParameters parameters = null;
-        return updateWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName, parameters)
-            .flatMap(
-                (Response<TrustedIdProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<TrustedIdProviderInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String trustedIdProviderName,
+        UpdateTrustedIdProviderParameters parameters,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName, parameters, context)
+            .block();
     }
 
     /**
@@ -910,32 +893,8 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrustedIdProviderInner update(String resourceGroupName, String accountName, String trustedIdProviderName) {
         final UpdateTrustedIdProviderParameters parameters = null;
-        return updateAsync(resourceGroupName, accountName, trustedIdProviderName, parameters).block();
-    }
-
-    /**
-     * Updates the specified trusted identity provider.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of
-     *     providers in the account.
-     * @param parameters Parameters supplied to update the trusted identity provider.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrustedIdProviderInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String trustedIdProviderName,
-        UpdateTrustedIdProviderParameters parameters,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName, parameters, context)
-            .block();
+        return updateWithResponse(resourceGroupName, accountName, trustedIdProviderName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -947,7 +906,7 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1000,7 +959,7 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1049,12 +1008,30 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String trustedIdProviderName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes the specified trusted identity provider from the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param trustedIdProviderName The name of the trusted identity provider to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String trustedIdProviderName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName, context).block();
     }
 
     /**
@@ -1069,35 +1046,19 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String trustedIdProviderName) {
-        deleteAsync(resourceGroupName, accountName, trustedIdProviderName).block();
-    }
-
-    /**
-     * Deletes the specified trusted identity provider from the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param trustedIdProviderName The name of the trusted identity provider to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String trustedIdProviderName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, trustedIdProviderName, context).block();
+        deleteWithResponse(resourceGroupName, accountName, trustedIdProviderName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrustedIdProviderInner>> listByAccountNextSinglePageAsync(String nextLink) {
@@ -1128,12 +1089,14 @@ public final class TrustedIdProvidersClientImpl implements TrustedIdProvidersCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrustedIdProviderInner>> listByAccountNextSinglePageAsync(

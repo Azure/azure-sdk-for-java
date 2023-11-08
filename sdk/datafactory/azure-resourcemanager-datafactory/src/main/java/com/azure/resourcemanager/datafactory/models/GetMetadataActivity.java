@@ -23,6 +23,10 @@ public final class GetMetadataActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private GetMetadataActivityTypeProperties innerTypeProperties = new GetMetadataActivityTypeProperties();
 
+    /** Creates an instance of GetMetadataActivity class. */
+    public GetMetadataActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: GetMetadata activity properties.
      *
@@ -57,6 +61,20 @@ public final class GetMetadataActivity extends ExecutionActivity {
     @Override
     public GetMetadataActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GetMetadataActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GetMetadataActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

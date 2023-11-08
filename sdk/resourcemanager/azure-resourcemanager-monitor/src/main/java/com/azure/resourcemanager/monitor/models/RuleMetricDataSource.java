@@ -5,26 +5,24 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** A rule metric data source. The discriminator value is always RuleMetricDataSource in this case. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource")
-@JsonFlatten
 @Fluent
-public class RuleMetricDataSource extends RuleDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleMetricDataSource.class);
-
+public final class RuleMetricDataSource extends RuleDataSource {
     /*
      * the name of the metric that defines what the rule monitors.
      */
     @JsonProperty(value = "metricName")
     private String metricName;
+
+    /** Creates an instance of RuleMetricDataSource class. */
+    public RuleMetricDataSource() {
+    }
 
     /**
      * Get the metricName property: the name of the metric that defines what the rule monitors.

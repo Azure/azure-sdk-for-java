@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,18 +15,14 @@ import java.util.Map;
 /** employeeOrgData. */
 @Fluent
 public final class MicrosoftGraphEmployeeOrgData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphEmployeeOrgData.class);
-
     /*
-     * The cost center associated with the user. Returned only on $select.
-     * Supports $filter.
+     * The cost center associated with the user. Returned only on $select. Supports $filter.
      */
     @JsonProperty(value = "costCenter")
     private String costCenter;
 
     /*
-     * The name of the division in which the user works. Returned only on
-     * $select. Supports $filter.
+     * The name of the division in which the user works. Returned only on $select. Supports $filter.
      */
     @JsonProperty(value = "division")
     private String division;
@@ -36,6 +31,10 @@ public final class MicrosoftGraphEmployeeOrgData {
      * employeeOrgData
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphEmployeeOrgData class. */
+    public MicrosoftGraphEmployeeOrgData() {
+    }
 
     /**
      * Get the costCenter property: The cost center associated with the user. Returned only on $select. Supports

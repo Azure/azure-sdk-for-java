@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,18 +15,15 @@ import java.util.Map;
 /** workbookChartLegend. */
 @Fluent
 public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookChartLegend.class);
-
     /*
-     * Boolean value for whether the chart legend should overlap with the main
-     * body of the chart.
+     * Boolean value for whether the chart legend should overlap with the main body of the chart.
      */
     @JsonProperty(value = "overlay")
     private Boolean overlay;
 
     /*
-     * Represents the position of the legend on the chart. The possible values
-     * are: Top, Bottom, Left, Right, Corner, Custom.
+     * Represents the position of the legend on the chart. The possible values are: Top, Bottom, Left, Right, Corner,
+     * Custom.
      */
     @JsonProperty(value = "position")
     private String position;
@@ -48,6 +44,10 @@ public final class MicrosoftGraphWorkbookChartLegend extends MicrosoftGraphEntit
      * workbookChartLegend
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookChartLegend class. */
+    public MicrosoftGraphWorkbookChartLegend() {
+    }
 
     /**
      * Get the overlay property: Boolean value for whether the chart legend should overlap with the main body of the

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The input parameters to generate registration token for the Azure Video Analyzer IoT edge module. */
 @Fluent
 public final class ListProvisioningTokenInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListProvisioningTokenInput.class);
-
     /*
      * The desired expiration date of the registration token. The Azure Video
      * Analyzer IoT edge module must be initialized and connected to the
@@ -52,10 +49,12 @@ public final class ListProvisioningTokenInput {
      */
     public void validate() {
         if (expirationDate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property expirationDate in model ListProvisioningTokenInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ListProvisioningTokenInput.class);
 }

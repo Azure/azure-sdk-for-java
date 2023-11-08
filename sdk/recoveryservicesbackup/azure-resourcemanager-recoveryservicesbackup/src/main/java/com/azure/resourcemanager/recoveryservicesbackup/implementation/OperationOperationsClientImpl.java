@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.OperationOperationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ValidateOperationsResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequest;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationOperationsClient. */
 public final class OperationOperationsClientImpl implements OperationOperationsClient {
-    private final ClientLogger logger = new ClientLogger(OperationOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationOperationsService service;
 
@@ -55,11 +52,10 @@ public final class OperationOperationsClientImpl implements OperationOperationsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface OperationOperationsService {
+    public interface OperationOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupValidateOperation")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupValidateOperation")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ValidateOperationsResponseInner>> validate(
@@ -196,31 +192,7 @@ public final class OperationOperationsClientImpl implements OperationOperationsC
     private Mono<ValidateOperationsResponseInner> validateAsync(
         String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
         return validateWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<ValidateOperationsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Validate operation for specified backed up item. This is a synchronous operation.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param parameters resource validate operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateOperationsResponseInner validate(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
-        return validateAsync(vaultName, resourceGroupName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -239,5 +211,22 @@ public final class OperationOperationsClientImpl implements OperationOperationsC
     public Response<ValidateOperationsResponseInner> validateWithResponse(
         String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context) {
         return validateWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
+    }
+
+    /**
+     * Validate operation for specified backed up item. This is a synchronous operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters resource validate operation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ValidateOperationsResponseInner validate(
+        String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
+        return validateWithResponse(vaultName, resourceGroupName, parameters, Context.NONE).getValue();
     }
 }

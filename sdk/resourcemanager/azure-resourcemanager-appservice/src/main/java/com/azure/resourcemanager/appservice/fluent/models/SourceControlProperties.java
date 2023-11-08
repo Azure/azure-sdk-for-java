@@ -35,6 +35,10 @@ public final class SourceControlProperties {
     @JsonProperty(value = "expirationTime")
     private OffsetDateTime expirationTime;
 
+    /** Creates an instance of SourceControlProperties class. */
+    public SourceControlProperties() {
+    }
+
     /**
      * Get the token property: OAuth access token.
      *

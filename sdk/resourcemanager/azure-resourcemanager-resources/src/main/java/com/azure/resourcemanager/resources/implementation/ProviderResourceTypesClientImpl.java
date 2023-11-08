@@ -51,7 +51,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
-    private interface ProviderResourceTypesService {
+    public interface ProviderResourceTypesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/resourceTypes")
         @ExpectedResponses({200})
@@ -166,30 +166,6 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
      * List the resource types for a specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProviderResourceTypeListResultInner> listAsync(String resourceProviderNamespace, String expand) {
-        return listWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderResourceTypeListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * List the resource types for a specified resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -199,29 +175,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
     public Mono<ProviderResourceTypeListResultInner> listAsync(String resourceProviderNamespace) {
         final String expand = null;
         return listWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderResourceTypeListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * List the resource types for a specified resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderResourceTypeListResultInner list(String resourceProviderNamespace) {
-        final String expand = null;
-        return listAsync(resourceProviderNamespace, expand).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -240,5 +194,20 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
     public Response<ProviderResourceTypeListResultInner> listWithResponse(
         String resourceProviderNamespace, String expand, Context context) {
         return listWithResponseAsync(resourceProviderNamespace, expand, context).block();
+    }
+
+    /**
+     * List the resource types for a specified resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of resource types of a resource provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProviderResourceTypeListResultInner list(String resourceProviderNamespace) {
+        final String expand = null;
+        return listWithResponse(resourceProviderNamespace, expand, Context.NONE).getValue();
     }
 }

@@ -14,10 +14,9 @@ import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerInner;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzer;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerCollection;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VideoAnalyzersImpl implements VideoAnalyzers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoAnalyzersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VideoAnalyzersImpl.class);
 
     private final VideoAnalyzersClient innerClient;
 
@@ -109,7 +108,7 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
     public VideoAnalyzer getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,7 +128,7 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
     public Response<VideoAnalyzer> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +136,7 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,19 +156,19 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,7 +176,7 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

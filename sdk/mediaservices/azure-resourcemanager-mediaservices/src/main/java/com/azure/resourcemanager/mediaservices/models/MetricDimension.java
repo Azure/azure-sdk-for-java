@@ -28,6 +28,10 @@ public final class MetricDimension {
     @JsonProperty(value = "toBeExportedForShoebox", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean toBeExportedForShoebox;
 
+    /** Creates an instance of MetricDimension class. */
+    public MetricDimension() {
+    }
+
     /**
      * Get the name property: The metric dimension name.
      *

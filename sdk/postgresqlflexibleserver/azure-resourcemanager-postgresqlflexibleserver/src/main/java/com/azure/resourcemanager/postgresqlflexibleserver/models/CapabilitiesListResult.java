@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.CapabilityPropertiesInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** location capability. */
 @Immutable
 public final class CapabilitiesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapabilitiesListResult.class);
-
     /*
      * A list of supported capabilities.
      */
@@ -27,6 +23,10 @@ public final class CapabilitiesListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of CapabilitiesListResult class. */
+    public CapabilitiesListResult() {
+    }
 
     /**
      * Get the value property: A list of supported capabilities.

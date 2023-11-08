@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.Utils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
@@ -15,6 +14,7 @@ import io.netty.channel.CombinedChannelDuplexHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -74,13 +74,15 @@ public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
         logger.debug("{} START CONTEXT REQUEST", context.channel());
 
         final Channel channel = context.channel();
-        final RntbdContextRequest request = new RntbdContextRequest(Utils.randomUUID(), this.userAgent);
+        final RntbdContextRequest request = new RntbdContextRequest(UUID.randomUUID(), this.userAgent);
         final CompletableFuture<RntbdContextRequest> contextRequestFuture = this.manager.rntbdContextRequestFuture();
 
+        this.manager.getTimestamps().channelWriteAttempted();
         super.write(context, request, channel.newPromise().addListener((ChannelFutureListener)future -> {
 
             if (future.isSuccess()) {
                 contextRequestFuture.complete(request);
+                this.manager.getTimestamps().channelWriteCompleted();
                 return;
             }
 

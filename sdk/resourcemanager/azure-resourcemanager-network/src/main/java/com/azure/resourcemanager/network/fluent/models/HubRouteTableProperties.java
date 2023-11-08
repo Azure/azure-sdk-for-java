@@ -43,6 +43,10 @@ public final class HubRouteTableProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of HubRouteTableProperties class. */
+    public HubRouteTableProperties() {
+    }
+
     /**
      * Get the routes property: List of all routes.
      *

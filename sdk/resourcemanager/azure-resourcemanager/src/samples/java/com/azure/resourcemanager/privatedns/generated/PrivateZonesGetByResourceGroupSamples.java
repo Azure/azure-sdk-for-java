@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateZones GetByResourceGroup. */
 public final class PrivateZonesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/PrivateZoneGet.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/PrivateZoneGet.json
      */
     /**
      * Sample code: GET Private DNS Zone.
@@ -22,6 +20,6 @@ public final class PrivateZonesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getPrivateZones()
-            .getByResourceGroupWithResponse("resourceGroup1", "privatezone1.com", Context.NONE);
+            .getByResourceGroupWithResponse("resourceGroup1", "privatezone1.com", com.azure.core.util.Context.NONE);
     }
 }

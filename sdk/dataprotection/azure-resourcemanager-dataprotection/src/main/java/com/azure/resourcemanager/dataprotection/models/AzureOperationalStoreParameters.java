@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureOperationalStoreParameters")
 @Fluent
 public final class AzureOperationalStoreParameters extends DataStoreParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureOperationalStoreParameters.class);
-
     /*
      * Gets or sets the Snapshot Resource Group Uri.
      */
     @JsonProperty(value = "resourceGroupId")
     private String resourceGroupId;
+
+    /** Creates an instance of AzureOperationalStoreParameters class. */
+    public AzureOperationalStoreParameters() {
+    }
 
     /**
      * Get the resourceGroupId property: Gets or sets the Snapshot Resource Group Uri.

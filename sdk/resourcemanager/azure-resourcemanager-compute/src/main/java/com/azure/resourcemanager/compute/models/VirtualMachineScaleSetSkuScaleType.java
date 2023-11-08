@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for VirtualMachineScaleSetSkuScaleType. */
+/** The scale type applicable to the sku. */
 public enum VirtualMachineScaleSetSkuScaleType {
     /** Enum value Automatic. */
     AUTOMATIC("Automatic"),
@@ -30,6 +30,9 @@ public enum VirtualMachineScaleSetSkuScaleType {
      */
     @JsonCreator
     public static VirtualMachineScaleSetSkuScaleType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         VirtualMachineScaleSetSkuScaleType[] items = VirtualMachineScaleSetSkuScaleType.values();
         for (VirtualMachineScaleSetSkuScaleType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum VirtualMachineScaleSetSkuScaleType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

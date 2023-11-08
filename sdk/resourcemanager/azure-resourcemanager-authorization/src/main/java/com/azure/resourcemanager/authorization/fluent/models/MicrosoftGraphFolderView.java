@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** folderView. */
 @Fluent
 public final class MicrosoftGraphFolderView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphFolderView.class);
-
     /*
      * The method by which the folder should be sorted.
      */
@@ -25,8 +22,7 @@ public final class MicrosoftGraphFolderView {
     private String sortBy;
 
     /*
-     * If true, indicates that items should be sorted in descending order.
-     * Otherwise, items should be sorted ascending.
+     * If true, indicates that items should be sorted in descending order. Otherwise, items should be sorted ascending.
      */
     @JsonProperty(value = "sortOrder")
     private String sortOrder;
@@ -41,6 +37,10 @@ public final class MicrosoftGraphFolderView {
      * folderView
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphFolderView class. */
+    public MicrosoftGraphFolderView() {
+    }
 
     /**
      * Get the sortBy property: The method by which the folder should be sorted.

@@ -17,6 +17,15 @@ public final class ApplicationsExpand extends ExpandableStringEnum<ApplicationsE
     public static final ApplicationsExpand APPLIES_TO = fromString("appliesTo");
 
     /**
+     * Creates a new instance of ApplicationsExpand value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationsExpand() {
+    }
+
+    /**
      * Creates or finds a ApplicationsExpand from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class ApplicationsExpand extends ExpandableStringEnum<ApplicationsE
         return fromString(name, ApplicationsExpand.class);
     }
 
-    /** @return known ApplicationsExpand values. */
+    /**
+     * Gets known ApplicationsExpand values.
+     *
+     * @return known ApplicationsExpand values.
+     */
     public static Collection<ApplicationsExpand> values() {
         return values(ApplicationsExpand.class);
     }

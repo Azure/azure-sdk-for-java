@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DnsResolverState. */
+/**
+ * The current status of the DNS resolver. This is a read-only property and any attempt to set this value will be
+ * ignored.
+ */
 public final class DnsResolverState extends ExpandableStringEnum<DnsResolverState> {
     /** Static value Connected for DnsResolverState. */
     public static final DnsResolverState CONNECTED = fromString("Connected");
@@ -27,7 +30,11 @@ public final class DnsResolverState extends ExpandableStringEnum<DnsResolverStat
         return fromString(name, DnsResolverState.class);
     }
 
-    /** @return known DnsResolverState values. */
+    /**
+     * Gets known DnsResolverState values.
+     *
+     * @return known DnsResolverState values.
+     */
     public static Collection<DnsResolverState> values() {
         return values(DnsResolverState.class);
     }

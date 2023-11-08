@@ -30,6 +30,7 @@ public final class OdataErrorMainException extends ManagementException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public OdataErrorMain getValue() {
         return (OdataErrorMain) super.getValue();

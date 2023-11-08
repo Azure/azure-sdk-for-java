@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for DnsResolvers CreateOrUpdate. */
 public final class DnsResolversCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Put.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Put.json
      */
     /**
      * Sample code: Upsert DNS resolver.
@@ -24,11 +24,11 @@ public final class DnsResolversCreateOrUpdateSamples {
             .define("sampleDnsResolver")
             .withRegion("westus2")
             .withExistingResourceGroup("sampleResourceGroup")
-            .withTags(mapOf("key1", "value1"))
             .withVirtualNetwork(
                 new SubResource()
                     .withId(
                         "/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
+            .withTags(mapOf("key1", "value1"))
             .create();
     }
 

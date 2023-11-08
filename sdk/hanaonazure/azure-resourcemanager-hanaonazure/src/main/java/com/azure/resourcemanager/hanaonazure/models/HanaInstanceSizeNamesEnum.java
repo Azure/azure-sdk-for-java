@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HanaInstanceSizeNamesEnum. */
+/** Specifies the HANA instance SKU. */
 public final class HanaInstanceSizeNamesEnum extends ExpandableStringEnum<HanaInstanceSizeNamesEnum> {
     /** Static value S72m for HanaInstanceSizeNamesEnum. */
     public static final HanaInstanceSizeNamesEnum S72M = fromString("S72m");
@@ -140,6 +140,15 @@ public final class HanaInstanceSizeNamesEnum extends ExpandableStringEnum<HanaIn
     public static final HanaInstanceSizeNamesEnum S960M = fromString("S960m");
 
     /**
+     * Creates a new instance of HanaInstanceSizeNamesEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HanaInstanceSizeNamesEnum() {
+    }
+
+    /**
      * Creates or finds a HanaInstanceSizeNamesEnum from its string representation.
      *
      * @param name a name to look for.
@@ -150,7 +159,11 @@ public final class HanaInstanceSizeNamesEnum extends ExpandableStringEnum<HanaIn
         return fromString(name, HanaInstanceSizeNamesEnum.class);
     }
 
-    /** @return known HanaInstanceSizeNamesEnum values. */
+    /**
+     * Gets known HanaInstanceSizeNamesEnum values.
+     *
+     * @return known HanaInstanceSizeNamesEnum values.
+     */
     public static Collection<HanaInstanceSizeNamesEnum> values() {
         return values(HanaInstanceSizeNamesEnum.class);
     }

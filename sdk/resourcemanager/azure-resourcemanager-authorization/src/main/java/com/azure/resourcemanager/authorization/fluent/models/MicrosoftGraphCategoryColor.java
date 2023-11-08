@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphCategoryColor. */
+/** categoryColor. */
 public final class MicrosoftGraphCategoryColor extends ExpandableStringEnum<MicrosoftGraphCategoryColor> {
     /** Static value none for MicrosoftGraphCategoryColor. */
     public static final MicrosoftGraphCategoryColor NONE = fromString("none");
@@ -89,6 +89,15 @@ public final class MicrosoftGraphCategoryColor extends ExpandableStringEnum<Micr
     public static final MicrosoftGraphCategoryColor PRESET24 = fromString("preset24");
 
     /**
+     * Creates a new instance of MicrosoftGraphCategoryColor value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphCategoryColor() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphCategoryColor from its string representation.
      *
      * @param name a name to look for.
@@ -99,7 +108,11 @@ public final class MicrosoftGraphCategoryColor extends ExpandableStringEnum<Micr
         return fromString(name, MicrosoftGraphCategoryColor.class);
     }
 
-    /** @return known MicrosoftGraphCategoryColor values. */
+    /**
+     * Gets known MicrosoftGraphCategoryColor values.
+     *
+     * @return known MicrosoftGraphCategoryColor values.
+     */
     public static Collection<MicrosoftGraphCategoryColor> values() {
         return values(MicrosoftGraphCategoryColor.class);
     }

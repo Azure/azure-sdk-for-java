@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DnsResolvers Update. */
 public final class DnsResolversUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsResolver_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Patch.json
      */
     /**
      * Sample code: Update DNS resolver.

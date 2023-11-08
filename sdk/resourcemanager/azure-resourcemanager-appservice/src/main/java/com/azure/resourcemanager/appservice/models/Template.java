@@ -38,6 +38,10 @@ public final class Template {
     @JsonProperty(value = "dapr")
     private Dapr dapr;
 
+    /** Creates an instance of Template class. */
+    public Template() {
+    }
+
     /**
      * Get the revisionSuffix property: User friendly suffix that is appended to the revision name.
      *

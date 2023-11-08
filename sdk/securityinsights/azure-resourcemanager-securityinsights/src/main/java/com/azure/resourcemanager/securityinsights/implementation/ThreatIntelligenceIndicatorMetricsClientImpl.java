@@ -182,15 +182,7 @@ public final class ThreatIntelligenceIndicatorMetricsClientImpl implements Threa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThreatIntelligenceMetricsListInner> listAsync(String resourceGroupName, String workspaceName) {
-        return listWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<ThreatIntelligenceMetricsListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, workspaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -24,17 +24,15 @@ public final class VirtualMachineExtensionImageProperties {
     private String computeRole;
 
     /*
-     * The schema defined by publisher, where extension consumers should
-     * provide settings in a matching schema.
+     * The schema defined by publisher, where extension consumers should provide settings in a matching schema.
      */
     @JsonProperty(value = "handlerSchema", required = true)
     private String handlerSchema;
 
     /*
-     * Whether the extension can be used on xRP VMScaleSets. By default
-     * existing extensions are usable on scalesets, but there might be cases
-     * where a publisher wants to explicitly indicate the extension is only
-     * enabled for CRP VMs but not VMSS.
+     * Whether the extension can be used on xRP VMScaleSets. By default existing extensions are usable on scalesets,
+     * but there might be cases where a publisher wants to explicitly indicate the extension is only enabled for CRP
+     * VMs but not VMSS.
      */
     @JsonProperty(value = "vmScaleSetEnabled")
     private Boolean vmScaleSetEnabled;
@@ -44,6 +42,10 @@ public final class VirtualMachineExtensionImageProperties {
      */
     @JsonProperty(value = "supportsMultipleExtensions")
     private Boolean supportsMultipleExtensions;
+
+    /** Creates an instance of VirtualMachineExtensionImageProperties class. */
+    public VirtualMachineExtensionImageProperties() {
+    }
 
     /**
      * Get the operatingSystem property: The operating system this extension supports.

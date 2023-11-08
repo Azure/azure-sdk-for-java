@@ -82,7 +82,7 @@ final class StorageEncryptionHelper {
         return statuses;
     }
 
-    boolean infrastructureEncryptionEnabled() {
+    static boolean infrastructureEncryptionEnabled(StorageAccountInner inner) {
         return inner != null && inner.encryption() != null
             && ResourceManagerUtils.toPrimitiveBoolean(inner.encryption().requireInfrastructureEncryption());
     }

@@ -3,6 +3,7 @@
 
 package com.azure.core.management.implementation.polling;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -175,11 +176,8 @@ public final class PollOperation {
             }).next()
             .flatMap((Function<HttpResponse, Mono<PollingState>>) response -> response.getBodyAsString()
                 .map(body -> pollingState.update(response.getStatusCode(), response.getHeaders(), body))
-                .switchIfEmpty(Mono.defer(() -> {
-                    return Mono.just(pollingState.update(response.getStatusCode(),
-                        response.getHeaders(),
-                        null));
-                })));
+                .switchIfEmpty(Mono.fromSupplier(() -> pollingState.update(response.getStatusCode(),
+                    response.getHeaders(), null))));
     }
 
     private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMonoFromPollingState(
@@ -223,7 +221,7 @@ public final class PollOperation {
      * @return the HttpRequest with decoration.
      */
     private static HttpRequest decorateRequest(HttpRequest httpRequest) {
-        return httpRequest.setHeader("Accept", "application/json");
+        return httpRequest.setHeader(HttpHeaderName.ACCEPT, "application/json");
     }
 
     /**

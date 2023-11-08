@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -37,7 +38,8 @@ public abstract class PipelinedQueryExecutionContextBase<T>
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams,
-        Class<T> classOfT) {
+        Class<T> classOfT,
+        DocumentCollection collection) {
 
         QueryInfo queryInfo = initParams.getQueryInfo();
         CosmosQueryRequestOptions cosmosQueryRequestOptions = initParams.getCosmosQueryRequestOptions();
@@ -53,27 +55,28 @@ public abstract class PipelinedQueryExecutionContextBase<T>
         final Function<JsonNode, T> factoryMethod = DefaultDocumentQueryExecutionContext
             .getEffectiveFactoryMethod(cosmosQueryRequestOptions, queryInfo.hasSelectValue(), classOfT);
 
-        if (queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy() || queryInfo.hasDCount()) {
-            return PipelinedDocumentQueryExecutionContext.createAsyncCore(diagnosticsClientContext, client, initParams, pageSize, factoryMethod);
+        if (queryInfo.hasOrderBy()
+            || queryInfo.hasAggregates()
+            || queryInfo.hasGroupBy()
+            || queryInfo.hasDCount()
+            || queryInfo.hasDistinct()) {
+
+            return PipelinedDocumentQueryExecutionContext.createAsyncCore(
+                diagnosticsClientContext,
+                client,
+                initParams,
+                pageSize,
+                factoryMethod,
+                collection);
         }
 
-        return PipelinedQueryExecutionContext.createAsyncCore(diagnosticsClientContext, client, initParams, pageSize, factoryMethod);
-    }
-
-    protected static <T> BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createDistinctPipelineComponentFunction(
-        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createBaseComponent,
-        QueryInfo queryInfo) {
-
-        if (queryInfo.hasDistinct()) {
-            return
-                (continuationToken, documentQueryParams) ->
-                    DistinctDocumentQueryExecutionContext.createAsync(createBaseComponent,
-                        queryInfo.getDistinctQueryType(),
-                        continuationToken,
-                        documentQueryParams);
-        }
-
-        return createBaseComponent;
+        return PipelinedQueryExecutionContext.createAsyncCore(
+            diagnosticsClientContext,
+            client,
+            initParams,
+            pageSize,
+            factoryMethod,
+            collection);
     }
 
     protected static <T> BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createCommonPipelineComponentFunction(

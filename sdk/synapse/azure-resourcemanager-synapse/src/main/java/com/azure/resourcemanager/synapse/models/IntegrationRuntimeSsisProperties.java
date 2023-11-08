@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** SSIS properties for managed integration runtime. */
 @Fluent
 public final class IntegrationRuntimeSsisProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeSsisProperties.class);
-
     /*
      * Catalog information for managed dedicated integration runtime.
      */
@@ -32,8 +29,7 @@ public final class IntegrationRuntimeSsisProperties {
     private IntegrationRuntimeLicenseType licenseType;
 
     /*
-     * Custom setup script properties for a managed dedicated integration
-     * runtime.
+     * Custom setup script properties for a managed dedicated integration runtime.
      */
     @JsonProperty(value = "customSetupScriptProperties")
     private IntegrationRuntimeCustomSetupScriptProperties customSetupScriptProperties;
@@ -60,6 +56,10 @@ public final class IntegrationRuntimeSsisProperties {
      * SSIS properties for managed integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntimeSsisProperties class. */
+    public IntegrationRuntimeSsisProperties() {
+    }
 
     /**
      * Get the catalogInfo property: Catalog information for managed dedicated integration runtime.

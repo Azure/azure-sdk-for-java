@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DatadogSingleSignOnProperties model. */
 @Fluent
 public final class DatadogSingleSignOnProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogSingleSignOnProperties.class);
-
     /*
      * The provisioningState property.
      */
@@ -37,6 +33,10 @@ public final class DatadogSingleSignOnProperties {
      */
     @JsonProperty(value = "singleSignOnUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String singleSignOnUrl;
+
+    /** Creates an instance of DatadogSingleSignOnProperties class. */
+    public DatadogSingleSignOnProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioningState property.

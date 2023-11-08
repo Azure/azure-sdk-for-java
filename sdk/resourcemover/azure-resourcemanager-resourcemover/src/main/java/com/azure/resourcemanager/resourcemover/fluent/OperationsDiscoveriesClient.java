@@ -13,20 +13,24 @@ import com.azure.resourcemanager.resourcemover.fluent.models.OperationsDiscovery
 /** An instance of this class provides access to all the operations defined in OperationsDiscoveriesClient. */
 public interface OperationsDiscoveriesClient {
     /**
+     * The get operation.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of ClientDiscovery details along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OperationsDiscoveryCollectionInner> getWithResponse(Context context);
+
+    /**
+     * The get operation.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of ClientDiscovery details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationsDiscoveryCollectionInner get();
-
-    /**
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ClientDiscovery details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationsDiscoveryCollectionInner> getWithResponse(Context context);
 }

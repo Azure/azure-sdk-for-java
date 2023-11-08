@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.models.PeeringRegisteredPrefixInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The paginated list of peering registered prefixes. */
 @Fluent
 public final class PeeringRegisteredPrefixListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringRegisteredPrefixListResult.class);
-
     /*
      * The list of peering registered prefixes.
      */
@@ -27,6 +23,10 @@ public final class PeeringRegisteredPrefixListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PeeringRegisteredPrefixListResult class. */
+    public PeeringRegisteredPrefixListResult() {
+    }
 
     /**
      * Get the value property: The list of peering registered prefixes.

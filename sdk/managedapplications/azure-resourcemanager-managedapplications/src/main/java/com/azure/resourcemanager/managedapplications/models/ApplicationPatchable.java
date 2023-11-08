@@ -4,228 +4,203 @@
 
 package com.azure.resourcemanager.managedapplications.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationPatchableInner;
+import java.util.List;
 import java.util.Map;
 
-/** Information about managed application. */
-@JsonFlatten
-@Fluent
-public class ApplicationPatchable extends GenericResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationPatchable.class);
-
-    /*
-     * The plan information.
+/** An immutable client-side representation of ApplicationPatchable. */
+public interface ApplicationPatchable {
+    /**
+     * Gets the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
      */
-    @JsonProperty(value = "plan")
-    private PlanPatchable plan;
-
-    /*
-     * The kind of the managed application. Allowed values are MarketPlace and
-     * ServiceCatalog.
-     */
-    @JsonProperty(value = "kind")
-    private String kind;
-
-    /*
-     * The managed resource group Id.
-     */
-    @JsonProperty(value = "properties.managedResourceGroupId")
-    private String managedResourceGroupId;
-
-    /*
-     * The fully qualified path of managed application definition Id.
-     */
-    @JsonProperty(value = "properties.applicationDefinitionId")
-    private String applicationDefinitionId;
-
-    /*
-     * Name and value pairs that define the managed application parameters. It
-     * can be a JObject or a well formed JSON string.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Object parameters;
-
-    /*
-     * Name and value pairs that define the managed application outputs.
-     */
-    @JsonProperty(value = "properties.outputs", access = JsonProperty.Access.WRITE_ONLY)
-    private Object outputs;
-
-    /*
-     * The managed application provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    String id();
 
     /**
-     * Get the plan property: The plan information.
+     * Gets the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * Gets the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    String type();
+
+    /**
+     * Gets the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * Gets the managedBy property: ID of the resource that manages this resource.
+     *
+     * @return the managedBy value.
+     */
+    String managedBy();
+
+    /**
+     * Gets the sku property: The SKU of the resource.
+     *
+     * @return the sku value.
+     */
+    Sku sku();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the plan property: The plan information.
      *
      * @return the plan value.
      */
-    public PlanPatchable plan() {
-        return this.plan;
-    }
+    PlanPatchable plan();
 
     /**
-     * Set the plan property: The plan information.
-     *
-     * @param plan the plan value to set.
-     * @return the ApplicationPatchable object itself.
-     */
-    public ApplicationPatchable withPlan(PlanPatchable plan) {
-        this.plan = plan;
-        return this;
-    }
-
-    /**
-     * Get the kind property: The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
+     * Gets the kind property: The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
      *
      * @return the kind value.
      */
-    public String kind() {
-        return this.kind;
-    }
+    String kind();
 
     /**
-     * Set the kind property: The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
+     * Gets the identity property: The identity of the resource.
      *
-     * @param kind the kind value to set.
-     * @return the ApplicationPatchable object itself.
+     * @return the identity value.
      */
-    public ApplicationPatchable withKind(String kind) {
-        this.kind = kind;
-        return this;
-    }
+    Identity identity();
 
     /**
-     * Get the managedResourceGroupId property: The managed resource group Id.
+     * Gets the managedResourceGroupId property: The managed resource group Id.
      *
      * @return the managedResourceGroupId value.
      */
-    public String managedResourceGroupId() {
-        return this.managedResourceGroupId;
-    }
+    String managedResourceGroupId();
 
     /**
-     * Set the managedResourceGroupId property: The managed resource group Id.
-     *
-     * @param managedResourceGroupId the managedResourceGroupId value to set.
-     * @return the ApplicationPatchable object itself.
-     */
-    public ApplicationPatchable withManagedResourceGroupId(String managedResourceGroupId) {
-        this.managedResourceGroupId = managedResourceGroupId;
-        return this;
-    }
-
-    /**
-     * Get the applicationDefinitionId property: The fully qualified path of managed application definition Id.
+     * Gets the applicationDefinitionId property: The fully qualified path of managed application definition Id.
      *
      * @return the applicationDefinitionId value.
      */
-    public String applicationDefinitionId() {
-        return this.applicationDefinitionId;
-    }
+    String applicationDefinitionId();
 
     /**
-     * Set the applicationDefinitionId property: The fully qualified path of managed application definition Id.
-     *
-     * @param applicationDefinitionId the applicationDefinitionId value to set.
-     * @return the ApplicationPatchable object itself.
-     */
-    public ApplicationPatchable withApplicationDefinitionId(String applicationDefinitionId) {
-        this.applicationDefinitionId = applicationDefinitionId;
-        return this;
-    }
-
-    /**
-     * Get the parameters property: Name and value pairs that define the managed application parameters. It can be a
+     * Gets the parameters property: Name and value pairs that define the managed application parameters. It can be a
      * JObject or a well formed JSON string.
      *
      * @return the parameters value.
      */
-    public Object parameters() {
-        return this.parameters;
-    }
+    Object parameters();
 
     /**
-     * Set the parameters property: Name and value pairs that define the managed application parameters. It can be a
-     * JObject or a well formed JSON string.
-     *
-     * @param parameters the parameters value to set.
-     * @return the ApplicationPatchable object itself.
-     */
-    public ApplicationPatchable withParameters(Object parameters) {
-        this.parameters = parameters;
-        return this;
-    }
-
-    /**
-     * Get the outputs property: Name and value pairs that define the managed application outputs.
+     * Gets the outputs property: Name and value pairs that define the managed application outputs.
      *
      * @return the outputs value.
      */
-    public Object outputs() {
-        return this.outputs;
-    }
+    Object outputs();
 
     /**
-     * Get the provisioningState property: The managed application provisioning state.
+     * Gets the provisioningState property: The managed application provisioning state.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationPatchable withManagedBy(String managedBy) {
-        super.withManagedBy(managedBy);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationPatchable withSku(Sku sku) {
-        super.withSku(sku);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationPatchable withIdentity(Identity identity) {
-        super.withIdentity(identity);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationPatchable withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationPatchable withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
+    ProvisioningState provisioningState();
 
     /**
-     * Validates the instance.
+     * Gets the billingDetails property: The managed application billing details.
      *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the billingDetails value.
      */
-    @Override
-    public void validate() {
-        super.validate();
-        if (plan() != null) {
-            plan().validate();
-        }
-    }
+    ApplicationBillingDetailsDefinition billingDetails();
+
+    /**
+     * Gets the jitAccessPolicy property: The managed application Jit access policy.
+     *
+     * @return the jitAccessPolicy value.
+     */
+    ApplicationJitAccessPolicy jitAccessPolicy();
+
+    /**
+     * Gets the publisherTenantId property: The publisher tenant Id.
+     *
+     * @return the publisherTenantId value.
+     */
+    String publisherTenantId();
+
+    /**
+     * Gets the authorizations property: The read-only authorizations property that is retrieved from the application
+     * package.
+     *
+     * @return the authorizations value.
+     */
+    List<ApplicationAuthorization> authorizations();
+
+    /**
+     * Gets the managementMode property: The managed application management mode.
+     *
+     * @return the managementMode value.
+     */
+    ApplicationManagementMode managementMode();
+
+    /**
+     * Gets the customerSupport property: The read-only customer support property that is retrieved from the application
+     * package.
+     *
+     * @return the customerSupport value.
+     */
+    ApplicationPackageContact customerSupport();
+
+    /**
+     * Gets the supportUrls property: The read-only support URLs property that is retrieved from the application
+     * package.
+     *
+     * @return the supportUrls value.
+     */
+    ApplicationPackageSupportUrls supportUrls();
+
+    /**
+     * Gets the artifacts property: The collection of managed application artifacts.
+     *
+     * @return the artifacts value.
+     */
+    List<ApplicationArtifact> artifacts();
+
+    /**
+     * Gets the createdBy property: The client entity that created the JIT request.
+     *
+     * @return the createdBy value.
+     */
+    ApplicationClientDetails createdBy();
+
+    /**
+     * Gets the updatedBy property: The client entity that last updated the JIT request.
+     *
+     * @return the updatedBy value.
+     */
+    ApplicationClientDetails updatedBy();
+
+    /**
+     * Gets the inner com.azure.resourcemanager.managedapplications.fluent.models.ApplicationPatchableInner object.
+     *
+     * @return the inner object.
+     */
+    ApplicationPatchableInner innerModel();
 }

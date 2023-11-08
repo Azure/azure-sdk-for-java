@@ -9,7 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Queries are stored pieces of KQL, along with a list of relevant metadata items. */
+/**
+ * A stored query.
+ *
+ * <p>Queries are stored pieces of KQL, along with a list of relevant metadata items.
+ */
 @Fluent
 public final class MetadataQuery {
     /*

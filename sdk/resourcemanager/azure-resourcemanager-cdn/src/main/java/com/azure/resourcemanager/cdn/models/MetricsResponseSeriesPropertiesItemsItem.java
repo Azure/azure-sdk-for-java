@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MetricsResponseSeriesPropertiesItemsItem model. */
 @Fluent
 public final class MetricsResponseSeriesPropertiesItemsItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricsResponseSeriesPropertiesItemsItem.class);
-
     /*
      * The name property.
      */
@@ -25,6 +21,10 @@ public final class MetricsResponseSeriesPropertiesItemsItem {
      */
     @JsonProperty(value = "value")
     private String value;
+
+    /** Creates an instance of MetricsResponseSeriesPropertiesItemsItem class. */
+    public MetricsResponseSeriesPropertiesItemsItem() {
+    }
 
     /**
      * Get the name property: The name property.

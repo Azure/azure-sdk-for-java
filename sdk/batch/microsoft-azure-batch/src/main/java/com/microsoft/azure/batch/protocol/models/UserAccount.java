@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class UserAccount {
     /**
-     * The name of the user Account.
+     * The name of the user Account. Names can contain any Unicode characters
+     * up to a maximum length of 20.
      */
     @JsonProperty(value = "name", required = true)
     private String name;

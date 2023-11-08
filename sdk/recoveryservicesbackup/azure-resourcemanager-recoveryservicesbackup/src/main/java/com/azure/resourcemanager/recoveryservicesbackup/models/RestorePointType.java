@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RestorePointType. */
+/** Type of restore point. */
 public final class RestorePointType extends ExpandableStringEnum<RestorePointType> {
     /** Static value Invalid for RestorePointType. */
     public static final RestorePointType INVALID = fromString("Invalid");
@@ -25,6 +25,21 @@ public final class RestorePointType extends ExpandableStringEnum<RestorePointTyp
     /** Static value Incremental for RestorePointType. */
     public static final RestorePointType INCREMENTAL = fromString("Incremental");
 
+    /** Static value SnapshotFull for RestorePointType. */
+    public static final RestorePointType SNAPSHOT_FULL = fromString("SnapshotFull");
+
+    /** Static value SnapshotCopyOnlyFull for RestorePointType. */
+    public static final RestorePointType SNAPSHOT_COPY_ONLY_FULL = fromString("SnapshotCopyOnlyFull");
+
+    /**
+     * Creates a new instance of RestorePointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestorePointType() {
+    }
+
     /**
      * Creates or finds a RestorePointType from its string representation.
      *
@@ -36,7 +51,11 @@ public final class RestorePointType extends ExpandableStringEnum<RestorePointTyp
         return fromString(name, RestorePointType.class);
     }
 
-    /** @return known RestorePointType values. */
+    /**
+     * Gets known RestorePointType values.
+     *
+     * @return known RestorePointType values.
+     */
     public static Collection<RestorePointType> values() {
         return values(RestorePointType.class);
     }

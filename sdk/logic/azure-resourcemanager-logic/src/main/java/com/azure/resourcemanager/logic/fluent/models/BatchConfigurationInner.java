@@ -8,20 +8,21 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.BatchConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The batch configuration resource definition. */
 @Fluent
 public final class BatchConfigurationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchConfigurationInner.class);
-
     /*
      * The batch configuration properties.
      */
     @JsonProperty(value = "properties", required = true)
     private BatchConfigurationProperties properties;
+
+    /** Creates an instance of BatchConfigurationInner class. */
+    public BatchConfigurationInner() {
+    }
 
     /**
      * Get the properties property: The batch configuration properties.
@@ -64,7 +65,7 @@ public final class BatchConfigurationInner extends Resource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model BatchConfigurationInner"));
@@ -72,4 +73,6 @@ public final class BatchConfigurationInner extends Resource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BatchConfigurationInner.class);
 }

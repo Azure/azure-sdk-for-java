@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,13 +25,16 @@ import java.util.Map;
 })
 @Fluent
 public class EnvironmentUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentUpdateParameters.class);
-
     /*
      * Key-value pairs of additional properties for the environment.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of EnvironmentUpdateParameters class. */
+    public EnvironmentUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Key-value pairs of additional properties for the environment.

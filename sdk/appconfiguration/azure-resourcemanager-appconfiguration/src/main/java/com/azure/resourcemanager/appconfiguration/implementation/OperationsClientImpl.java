@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.fluent.OperationsClient;
 import com.azure.resourcemanager.appconfiguration.fluent.models.NameAvailabilityStatusInner;
 import com.azure.resourcemanager.appconfiguration.fluent.models.OperationDefinitionInner;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public final class OperationsClientImpl implements OperationsClient {
-    private final ClientLogger logger = new ClientLogger(OperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationsService service;
 
@@ -62,7 +59,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppConfigurationMana")
-    private interface OperationsService {
+    public interface OperationsService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/checkNameAvailability")
         @ExpectedResponses({200})
@@ -88,8 +85,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}"
-                + "/checkNameAvailability")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NameAvailabilityStatusInner>> regionalCheckNameAvailability(
@@ -220,29 +216,7 @@ public final class OperationsClientImpl implements OperationsClient {
     private Mono<NameAvailabilityStatusInner> checkNameAvailabilityAsync(
         CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityParameters)
-            .flatMap(
-                (Response<NameAvailabilityStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether the configuration store name is available for use.
-     *
-     * @param checkNameAvailabilityParameters The object containing information for the availability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to check the availability of a resource name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityStatusInner checkNameAvailability(
-        CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
-        return checkNameAvailabilityAsync(checkNameAvailabilityParameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -259,6 +233,21 @@ public final class OperationsClientImpl implements OperationsClient {
     public Response<NameAvailabilityStatusInner> checkNameAvailabilityWithResponse(
         CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityParameters, context).block();
+    }
+
+    /**
+     * Checks whether the configuration store name is available for use.
+     *
+     * @param checkNameAvailabilityParameters The object containing information for the availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to check the availability of a resource name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NameAvailabilityStatusInner checkNameAvailability(
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
+        return checkNameAvailabilityWithResponse(checkNameAvailabilityParameters, Context.NONE).getValue();
     }
 
     /**
@@ -535,30 +524,7 @@ public final class OperationsClientImpl implements OperationsClient {
     private Mono<NameAvailabilityStatusInner> regionalCheckNameAvailabilityAsync(
         String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
         return regionalCheckNameAvailabilityWithResponseAsync(location, checkNameAvailabilityParameters)
-            .flatMap(
-                (Response<NameAvailabilityStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether the configuration store name is available for use.
-     *
-     * @param location The location in which uniqueness will be verified.
-     * @param checkNameAvailabilityParameters The object containing information for the availability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to check the availability of a resource name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityStatusInner regionalCheckNameAvailability(
-        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
-        return regionalCheckNameAvailabilityAsync(location, checkNameAvailabilityParameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -580,9 +546,27 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
+     * Checks whether the configuration store name is available for use.
+     *
+     * @param location The location in which uniqueness will be verified.
+     * @param checkNameAvailabilityParameters The object containing information for the availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to check the availability of a resource name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NameAvailabilityStatusInner regionalCheckNameAvailability(
+        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
+        return regionalCheckNameAvailabilityWithResponse(location, checkNameAvailabilityParameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -618,7 +602,8 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

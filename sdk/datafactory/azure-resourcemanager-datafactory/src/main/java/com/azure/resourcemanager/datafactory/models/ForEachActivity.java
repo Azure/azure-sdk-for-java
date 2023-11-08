@@ -23,6 +23,10 @@ public final class ForEachActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ForEachActivityTypeProperties innerTypeProperties = new ForEachActivityTypeProperties();
 
+    /** Creates an instance of ForEachActivity class. */
+    public ForEachActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: ForEach activity properties.
      *
@@ -43,6 +47,20 @@ public final class ForEachActivity extends ControlActivity {
     @Override
     public ForEachActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

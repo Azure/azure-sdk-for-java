@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.models.DatabaseRestoreResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,8 +12,6 @@ import java.util.List;
 /** Parameters to indicate the information about the restore. */
 @Fluent
 public final class RestoreParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreParameters.class);
-
     /*
      * Describes the mode of the restore.
      */
@@ -24,8 +19,7 @@ public final class RestoreParameters {
     private RestoreMode restoreMode;
 
     /*
-     * The id of the restorable database account from which the restore has to
-     * be initiated. For example:
+     * The id of the restorable database account from which the restore has to be initiated. For example:
      * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}
      */
     @JsonProperty(value = "restoreSource")
@@ -41,7 +35,23 @@ public final class RestoreParameters {
      * List of specific databases available for restore.
      */
     @JsonProperty(value = "databasesToRestore")
-    private List<DatabaseRestoreResourceInner> databasesToRestore;
+    private List<DatabaseRestoreResource> databasesToRestore;
+
+    /*
+     * List of specific gremlin databases available for restore.
+     */
+    @JsonProperty(value = "gremlinDatabasesToRestore")
+    private List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore;
+
+    /*
+     * List of specific tables available for restore.
+     */
+    @JsonProperty(value = "tablesToRestore")
+    private List<String> tablesToRestore;
+
+    /** Creates an instance of RestoreParameters class. */
+    public RestoreParameters() {
+    }
 
     /**
      * Get the restoreMode property: Describes the mode of the restore.
@@ -112,7 +122,7 @@ public final class RestoreParameters {
      *
      * @return the databasesToRestore value.
      */
-    public List<DatabaseRestoreResourceInner> databasesToRestore() {
+    public List<DatabaseRestoreResource> databasesToRestore() {
         return this.databasesToRestore;
     }
 
@@ -122,8 +132,49 @@ public final class RestoreParameters {
      * @param databasesToRestore the databasesToRestore value to set.
      * @return the RestoreParameters object itself.
      */
-    public RestoreParameters withDatabasesToRestore(List<DatabaseRestoreResourceInner> databasesToRestore) {
+    public RestoreParameters withDatabasesToRestore(List<DatabaseRestoreResource> databasesToRestore) {
         this.databasesToRestore = databasesToRestore;
+        return this;
+    }
+
+    /**
+     * Get the gremlinDatabasesToRestore property: List of specific gremlin databases available for restore.
+     *
+     * @return the gremlinDatabasesToRestore value.
+     */
+    public List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore() {
+        return this.gremlinDatabasesToRestore;
+    }
+
+    /**
+     * Set the gremlinDatabasesToRestore property: List of specific gremlin databases available for restore.
+     *
+     * @param gremlinDatabasesToRestore the gremlinDatabasesToRestore value to set.
+     * @return the RestoreParameters object itself.
+     */
+    public RestoreParameters withGremlinDatabasesToRestore(
+        List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore) {
+        this.gremlinDatabasesToRestore = gremlinDatabasesToRestore;
+        return this;
+    }
+
+    /**
+     * Get the tablesToRestore property: List of specific tables available for restore.
+     *
+     * @return the tablesToRestore value.
+     */
+    public List<String> tablesToRestore() {
+        return this.tablesToRestore;
+    }
+
+    /**
+     * Set the tablesToRestore property: List of specific tables available for restore.
+     *
+     * @param tablesToRestore the tablesToRestore value to set.
+     * @return the RestoreParameters object itself.
+     */
+    public RestoreParameters withTablesToRestore(List<String> tablesToRestore) {
+        this.tablesToRestore = tablesToRestore;
         return this;
     }
 
@@ -135,6 +186,9 @@ public final class RestoreParameters {
     public void validate() {
         if (databasesToRestore() != null) {
             databasesToRestore().forEach(e -> e.validate());
+        }
+        if (gremlinDatabasesToRestore() != null) {
+            gremlinDatabasesToRestore().forEach(e -> e.validate());
         }
     }
 }

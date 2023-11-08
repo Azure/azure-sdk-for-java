@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of a request to check the availability of a resource name. */
 @Immutable
 public final class NameAvailabilityStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityStatusInner.class);
-
     /*
      * The value indicating whether the resource name is available.
      */
@@ -21,8 +17,7 @@ public final class NameAvailabilityStatusInner {
     private Boolean nameAvailable;
 
     /*
-     * If any, the error message that provides more detail for the reason that
-     * the name is not available.
+     * If any, the error message that provides more detail for the reason that the name is not available.
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
@@ -32,6 +27,10 @@ public final class NameAvailabilityStatusInner {
      */
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
+
+    /** Creates an instance of NameAvailabilityStatusInner class. */
+    public NameAvailabilityStatusInner() {
+    }
 
     /**
      * Get the nameAvailable property: The value indicating whether the resource name is available.

@@ -118,15 +118,13 @@ public final class RuleResultsImpl implements RuleResults, RuleResults.Definitio
             Utils
                 .getValueFromIdByParameterName(
                     innerObject.id(),
-                    "/{resourceId}/providers/Microsoft.Security/sqlVulnerabilityAssessments/default/baselineRules"
-                        + "/{ruleId}",
+                    "/{resourceId}/providers/Microsoft.Security/sqlVulnerabilityAssessments/default/baselineRules/{ruleId}",
                     "ruleId");
         this.resourceId =
             Utils
                 .getValueFromIdByParameterName(
                     innerObject.id(),
-                    "/{resourceId}/providers/Microsoft.Security/sqlVulnerabilityAssessments/default/baselineRules"
-                        + "/{ruleId}",
+                    "/{resourceId}/providers/Microsoft.Security/sqlVulnerabilityAssessments/default/baselineRules/{ruleId}",
                     "resourceId");
     }
 

@@ -20,12 +20,15 @@ public final class GalleryImageList {
     private List<GalleryImageInner> value;
 
     /*
-     * The uri to fetch the next page of Image Definitions in the Shared Image
-     * Gallery. Call ListNext() with this to fetch the next page of gallery
-     * image definitions.
+     * The uri to fetch the next page of Image Definitions in the Shared Image Gallery. Call ListNext() with this to
+     * fetch the next page of gallery image definitions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of GalleryImageList class. */
+    public GalleryImageList() {
+    }
 
     /**
      * Get the value property: A list of Shared Image Gallery images.

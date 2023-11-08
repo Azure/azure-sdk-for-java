@@ -26,6 +26,15 @@ public final class LogMetricsGroupBy extends ExpandableStringEnum<LogMetricsGrou
     public static final LogMetricsGroupBy CUSTOM_DOMAIN = fromString("customDomain");
 
     /**
+     * Creates a new instance of LogMetricsGroupBy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogMetricsGroupBy() {
+    }
+
+    /**
      * Creates or finds a LogMetricsGroupBy from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class LogMetricsGroupBy extends ExpandableStringEnum<LogMetricsGrou
         return fromString(name, LogMetricsGroupBy.class);
     }
 
-    /** @return known LogMetricsGroupBy values. */
+    /**
+     * Gets known LogMetricsGroupBy values.
+     *
+     * @return known LogMetricsGroupBy values.
+     */
     public static Collection<LogMetricsGroupBy> values() {
         return values(LogMetricsGroupBy.class);
     }

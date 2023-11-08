@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Map;
 
 /** Custom activity type. */
@@ -18,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class CustomActivity extends ExecutionActivity {
     /*
-     * Command for custom activity Type: string (or Expression with resultType
-     * string).
+     * Command for custom activity Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.command", required = true)
     private Object command;
@@ -31,8 +31,7 @@ public class CustomActivity extends ExecutionActivity {
     private LinkedServiceReference resourceLinkedService;
 
     /*
-     * Folder path for resource files Type: string (or Expression with
-     * resultType string).
+     * Folder path for resource files Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
@@ -44,26 +43,28 @@ public class CustomActivity extends ExecutionActivity {
     private CustomActivityReferenceObject referenceObjects;
 
     /*
-     * User defined property bag. There is no restriction on the keys or values
-     * that can be used. The user specified custom activity has the full
-     * responsibility to consume and interpret the content defined.
+     * User defined property bag. There is no restriction on the keys or values that can be used. The user specified
+     * custom activity has the full responsibility to consume and interpret the content defined.
      */
     @JsonProperty(value = "typeProperties.extendedProperties")
     private Map<String, Object> extendedProperties;
 
     /*
-     * The retention time for the files submitted for custom activity. Type:
-     * double (or Expression with resultType double).
+     * The retention time for the files submitted for custom activity. Type: double (or Expression with resultType
+     * double).
      */
     @JsonProperty(value = "typeProperties.retentionTimeInDays")
     private Object retentionTimeInDays;
 
     /*
-     * Elevation level and scope for the user, default is nonadmin task. Type:
-     * string (or Expression with resultType double).
+     * Elevation level and scope for the user, default is nonadmin task. Type: string (or Expression with resultType
+     * double).
      */
     @JsonProperty(value = "typeProperties.autoUserSpecification")
     private Object autoUserSpecification;
+
+    /** Creates an instance of CustomActivity class. */
+    public CustomActivity() {}
 
     /**
      * Get the command property: Command for custom activity Type: string (or Expression with resultType string).
@@ -210,6 +211,62 @@ public class CustomActivity extends ExecutionActivity {
      */
     public CustomActivity setAutoUserSpecification(Object autoUserSpecification) {
         this.autoUserSpecification = autoUserSpecification;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

@@ -7,7 +7,15 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DiffDiskPlacement. */
+/**
+ * Specifies the ephemeral disk placement for operating system disk for all VMs in the pool.
+ *
+ * <p>This property can be used by user in the request to choose which location the operating system should be in. e.g.,
+ * cache disk space for Ephemeral OS disk provisioning. For more information on Ephemeral OS disk size requirements,
+ * please refer to Ephemeral OS disk size requirements for Windows VMs at
+ * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VMs at
+ * https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
+ */
 public enum DiffDiskPlacement {
     /** Enum value CacheDisk. */
     CACHE_DISK("CacheDisk");
@@ -27,6 +35,9 @@ public enum DiffDiskPlacement {
      */
     @JsonCreator
     public static DiffDiskPlacement fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DiffDiskPlacement[] items = DiffDiskPlacement.values();
         for (DiffDiskPlacement item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +47,7 @@ public enum DiffDiskPlacement {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

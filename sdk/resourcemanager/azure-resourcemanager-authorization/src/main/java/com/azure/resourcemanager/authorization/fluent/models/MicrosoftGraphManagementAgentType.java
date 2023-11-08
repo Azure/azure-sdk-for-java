@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphManagementAgentType. */
+/** managementAgentType. */
 public final class MicrosoftGraphManagementAgentType extends ExpandableStringEnum<MicrosoftGraphManagementAgentType> {
     /** Static value eas for MicrosoftGraphManagementAgentType. */
     public static final MicrosoftGraphManagementAgentType EAS = fromString("eas");
@@ -48,6 +48,15 @@ public final class MicrosoftGraphManagementAgentType extends ExpandableStringEnu
         fromString("googleCloudDevicePolicyController");
 
     /**
+     * Creates a new instance of MicrosoftGraphManagementAgentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphManagementAgentType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphManagementAgentType from its string representation.
      *
      * @param name a name to look for.
@@ -58,7 +67,11 @@ public final class MicrosoftGraphManagementAgentType extends ExpandableStringEnu
         return fromString(name, MicrosoftGraphManagementAgentType.class);
     }
 
-    /** @return known MicrosoftGraphManagementAgentType values. */
+    /**
+     * Gets known MicrosoftGraphManagementAgentType values.
+     *
+     * @return known MicrosoftGraphManagementAgentType values.
+     */
     public static Collection<MicrosoftGraphManagementAgentType> values() {
         return values(MicrosoftGraphManagementAgentType.class);
     }

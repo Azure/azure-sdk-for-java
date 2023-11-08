@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.IotSecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionModelInner;
 import com.azure.resourcemanager.security.models.IoTSecuritySolutionsList;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IotSecuritySolutionsClient. */
 public final class IotSecuritySolutionsClientImpl implements IotSecuritySolutionsClient {
-    private final ClientLogger logger = new ClientLogger(IotSecuritySolutionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IotSecuritySolutionsService service;
 
@@ -64,7 +61,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterIotSec")
-    private interface IotSecuritySolutionsService {
+    public interface IotSecuritySolutionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/iotSecuritySolutions")
         @ExpectedResponses({200})
@@ -79,8 +76,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/iotSecuritySolutions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IoTSecuritySolutionsList>> listByResourceGroup(
@@ -94,8 +90,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/iotSecuritySolutions/{solutionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IoTSecuritySolutionModelInner>> getByResourceGroup(
@@ -109,8 +104,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/iotSecuritySolutions/{solutionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IoTSecuritySolutionModelInner>> createOrUpdate(
@@ -125,8 +119,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/iotSecuritySolutions/{solutionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IoTSecuritySolutionModelInner>> update(
@@ -141,8 +134,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/iotSecuritySolutions/{solutionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -182,7 +174,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listSinglePageAsync(String filter) {
@@ -231,7 +223,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listSinglePageAsync(String filter, Context context) {
@@ -270,7 +262,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listAsync(String filter) {
@@ -283,7 +275,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listAsync() {
@@ -300,7 +292,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listAsync(String filter, Context context) {
@@ -314,7 +306,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IoTSecuritySolutionModelInner> list() {
@@ -330,7 +322,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IoTSecuritySolutionModelInner> list(String filter, Context context) {
@@ -346,7 +338,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listByResourceGroupSinglePageAsync(
@@ -403,7 +395,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listByResourceGroupSinglePageAsync(
@@ -456,7 +448,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listByResourceGroupAsync(String resourceGroupName, String filter) {
@@ -473,7 +465,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -493,7 +485,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IoTSecuritySolutionModelInner> listByResourceGroupAsync(
@@ -511,7 +503,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IoTSecuritySolutionModelInner> listByResourceGroup(String resourceGroupName) {
@@ -529,7 +521,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IoTSecuritySolutionModelInner> listByResourceGroup(
@@ -546,7 +538,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionModelInner>> getByResourceGroupWithResponseAsync(
@@ -597,7 +590,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionModelInner>> getByResourceGroupWithResponseAsync(
@@ -644,19 +638,30 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IoTSecuritySolutionModelInner> getByResourceGroupAsync(String resourceGroupName, String solutionName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, solutionName)
-            .flatMap(
-                (Response<IoTSecuritySolutionModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * User this method to get details of a specific IoT Security solution based on solution name.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ioT Security solution configuration and resource information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IoTSecuritySolutionModelInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String solutionName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, solutionName, context).block();
     }
 
     /**
@@ -672,25 +677,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IoTSecuritySolutionModelInner getByResourceGroup(String resourceGroupName, String solutionName) {
-        return getByResourceGroupAsync(resourceGroupName, solutionName).block();
-    }
-
-    /**
-     * User this method to get details of a specific IoT Security solution based on solution name.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IoTSecuritySolutionModelInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String solutionName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, solutionName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, solutionName, Context.NONE).getValue();
     }
 
     /**
@@ -703,7 +690,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionModelInner>> createOrUpdateWithResponseAsync(
@@ -763,7 +751,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionModelInner>> createOrUpdateWithResponseAsync(
@@ -822,20 +811,36 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IoTSecuritySolutionModelInner> createOrUpdateAsync(
         String resourceGroupName, String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData) {
         return createOrUpdateWithResponseAsync(resourceGroupName, solutionName, iotSecuritySolutionData)
-            .flatMap(
-                (Response<IoTSecuritySolutionModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use this method to create or update yours IoT Security solution.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param iotSecuritySolutionData The security solution data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ioT Security solution configuration and resource information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IoTSecuritySolutionModelInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String solutionName,
+        IoTSecuritySolutionModelInner iotSecuritySolutionData,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, solutionName, iotSecuritySolutionData, context)
+            .block();
     }
 
     /**
@@ -853,30 +858,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IoTSecuritySolutionModelInner createOrUpdate(
         String resourceGroupName, String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData) {
-        return createOrUpdateAsync(resourceGroupName, solutionName, iotSecuritySolutionData).block();
-    }
-
-    /**
-     * Use this method to create or update yours IoT Security solution.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param iotSecuritySolutionData The security solution data.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IoTSecuritySolutionModelInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String solutionName,
-        IoTSecuritySolutionModelInner iotSecuritySolutionData,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, solutionName, iotSecuritySolutionData, context)
-            .block();
+        return createOrUpdateWithResponse(resourceGroupName, solutionName, iotSecuritySolutionData, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -890,7 +873,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionModelInner>> updateWithResponseAsync(
@@ -952,7 +936,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IoTSecuritySolutionModelInner>> updateWithResponseAsync(
@@ -1013,20 +998,36 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IoTSecuritySolutionModelInner> updateAsync(
         String resourceGroupName, String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
         return updateWithResponseAsync(resourceGroupName, solutionName, updateIotSecuritySolutionData)
-            .flatMap(
-                (Response<IoTSecuritySolutionModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
+     * use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param updateIotSecuritySolutionData The security solution data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ioT Security solution configuration and resource information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IoTSecuritySolutionModelInner> updateWithResponse(
+        String resourceGroupName,
+        String solutionName,
+        UpdateIotSecuritySolutionData updateIotSecuritySolutionData,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, solutionName, updateIotSecuritySolutionData, context).block();
     }
 
     /**
@@ -1045,30 +1046,8 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IoTSecuritySolutionModelInner update(
         String resourceGroupName, String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData) {
-        return updateAsync(resourceGroupName, solutionName, updateIotSecuritySolutionData).block();
-    }
-
-    /**
-     * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
-     * use the CreateOrUpdate method.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param updateIotSecuritySolutionData The security solution data.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IoTSecuritySolutionModelInner> updateWithResponse(
-        String resourceGroupName,
-        String solutionName,
-        UpdateIotSecuritySolutionData updateIotSecuritySolutionData,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, solutionName, updateIotSecuritySolutionData, context).block();
+        return updateWithResponse(resourceGroupName, solutionName, updateIotSecuritySolutionData, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1080,7 +1059,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String solutionName) {
@@ -1130,7 +1109,7 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1177,11 +1156,28 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String solutionName) {
-        return deleteWithResponseAsync(resourceGroupName, solutionName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, solutionName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Use this method to delete yours IoT Security solution.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String solutionName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, solutionName, context).block();
     }
 
     /**
@@ -1196,34 +1192,18 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String solutionName) {
-        deleteAsync(resourceGroupName, solutionName).block();
-    }
-
-    /**
-     * Use this method to delete yours IoT Security solution.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String solutionName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, solutionName, context).block();
+        deleteWithResponse(resourceGroupName, solutionName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1255,12 +1235,13 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listBySubscriptionNextSinglePageAsync(
@@ -1292,11 +1273,12 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1328,12 +1310,13 @@ public final class IotSecuritySolutionsClientImpl implements IotSecuritySolution
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IoTSecuritySolutionModelInner>> listByResourceGroupNextSinglePageAsync(

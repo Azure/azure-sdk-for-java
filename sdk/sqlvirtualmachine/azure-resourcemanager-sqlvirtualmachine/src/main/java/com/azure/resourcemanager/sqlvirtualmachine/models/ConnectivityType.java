@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectivityType. */
+/** SQL Server connectivity option. */
 public final class ConnectivityType extends ExpandableStringEnum<ConnectivityType> {
     /** Static value LOCAL for ConnectivityType. */
     public static final ConnectivityType LOCAL = fromString("LOCAL");
@@ -18,6 +18,15 @@ public final class ConnectivityType extends ExpandableStringEnum<ConnectivityTyp
 
     /** Static value PUBLIC for ConnectivityType. */
     public static final ConnectivityType PUBLIC = fromString("PUBLIC");
+
+    /**
+     * Creates a new instance of ConnectivityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectivityType() {
+    }
 
     /**
      * Creates or finds a ConnectivityType from its string representation.
@@ -30,7 +39,11 @@ public final class ConnectivityType extends ExpandableStringEnum<ConnectivityTyp
         return fromString(name, ConnectivityType.class);
     }
 
-    /** @return known ConnectivityType values. */
+    /**
+     * Gets known ConnectivityType values.
+     *
+     * @return known ConnectivityType values.
+     */
     public static Collection<ConnectivityType> values() {
         return values(ConnectivityType.class);
     }

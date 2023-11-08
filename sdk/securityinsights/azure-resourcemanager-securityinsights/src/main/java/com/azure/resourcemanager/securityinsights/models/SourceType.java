@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SourceType. */
+/** The sourceType of the watchlist. */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
     /** Static value Local file for SourceType. */
     public static final SourceType LOCAL_FILE = fromString("Local file");
@@ -27,7 +27,11 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
         return fromString(name, SourceType.class);
     }
 
-    /** @return known SourceType values. */
+    /**
+     * Gets known SourceType values.
+     *
+     * @return known SourceType values.
+     */
     public static Collection<SourceType> values() {
         return values(SourceType.class);
     }

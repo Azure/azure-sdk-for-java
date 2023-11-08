@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,15 +14,11 @@ import java.util.Map;
 
 /** identity. */
 @Fluent
-public class MicrosoftGraphIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphIdentity.class);
-
+public final class MicrosoftGraphIdentity {
     /*
-     * The identity's display name. Note that this may not always be available
-     * or up to date. For example, if a user changes their display name, the
-     * API may show the new value in a future response, but the items
-     * associated with the user won't show up as having changed when using
-     * delta.
+     * The identity's display name. Note that this may not always be available or up to date. For example, if a user
+     * changes their display name, the API may show the new value in a future response, but the items associated with
+     * the user won't show up as having changed when using delta.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
@@ -38,6 +33,10 @@ public class MicrosoftGraphIdentity {
      * identity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphIdentity class. */
+    public MicrosoftGraphIdentity() {
+    }
 
     /**
      * Get the displayName property: The identity's display name. Note that this may not always be available or up to

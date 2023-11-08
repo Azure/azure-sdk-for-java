@@ -11,10 +11,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.GalleryImagesClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.GalleryImageInner;
 import com.azure.resourcemanager.devtestlabs.models.GalleryImage;
 import com.azure.resourcemanager.devtestlabs.models.GalleryImages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GalleryImagesImpl implements GalleryImages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GalleryImagesImpl.class);
 
     private final GalleryImagesClient innerClient;
 

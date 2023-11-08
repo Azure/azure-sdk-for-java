@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SingleSignOn List. */
 public final class SingleSignOnListSamples {
     /*
@@ -17,6 +15,6 @@ public final class SingleSignOnListSamples {
      * @param manager Entry point to LogzManager.
      */
     public static void singleSignOnConfigurationsList(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager.singleSignOns().list("myResourceGroup", "myMonitor", Context.NONE);
+        manager.singleSignOns().list("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

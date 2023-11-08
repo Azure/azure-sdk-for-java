@@ -23,22 +23,21 @@ and deserialization.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.0.0-beta.10</version>
+  <version>1.1.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-### Create `SchemaRegistryAvroSerializer` instance
+### Create `SchemaRegistryApacheAvroSerializer` instance
 
-The `SchemaRegistryAvroSerializer` instance is the main class that provides APIs for serializing and
+The `SchemaRegistryApacheAvroSerializer` instance is the main class that provides APIs for serializing and
 deserializing avro data format. The avro schema is stored and retrieved from the Schema Registry service
 through the `SchemaRegistryAsyncClient`. So, before we create the serializer, we should create the client.
 
 #### Create `SchemaRegistryAsyncClient` with Azure Active Directory Credential
 
 In order to interact with the Azure Schema Registry service, you'll need to create an instance of the
-`SchemaRegistryAsyncClient` class through the `SchemaRegistryClientBuilder`. You will need an **endpoint** and an
-**API key** to instantiate a client object.
+`SchemaRegistryAsyncClient` class through the `SchemaRegistryClientBuilder`. You will need the Schema Registry **endpoint**.
 
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity]. Note that regional
 endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] for your resource in order to
@@ -52,7 +51,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.4.6</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 
@@ -74,28 +73,19 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 
 ```java readme-sample-createSchemaRegistryAvroSerializer
 SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-    .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
+    .schemaRegistryClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
     .buildSerializer();
 ```
 
 ## Key concepts
 
-### ObjectSerializer
-This library provides a serializer, `SchemaRegistryAvroSerializer`, that implements the `ObjectSerializer` interface.
-This allows a developer to use this serializer in any Java Azure SDKs that utilize `ObjectSerializer`. The
+This library provides a serializer, `SchemaRegistryApacheAvroSerializer`. The
 `SchemaRegistryAvroSerializer` utilizes a `SchemaRegistryAsyncClient` to construct messages using a wire format
 containing schema information such as a schema ID.
 
 This serializer requires the Apache Avro library. The payload types accepted by this serializer include
 [GenericRecord][generic_record] and [SpecificRecord][specific_record].
-
-### Wire Format
-The serializer in this library creates messages in a wire format. The format is the following:
-
-- Bytes [0-3] – record format indicator – currently is \x00\x00\x00\x00
-- Bytes [4-35] – UTF-8 GUID, identifying the schema in a Schema Registry instance
-- Bytes [36-end] – serialized payload bytes
 
 ## Examples
 
@@ -111,8 +101,8 @@ playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 playingCard.setIsFaceCard(false);
 playingCard.setCardValue(5);
 
-MessageWithMetadata message = serializer.serializeMessageData(playingCard,
-    TypeReference.createInstance(MessageWithMetadata.class));
+MessageContent message = serializer.serialize(playingCard,
+    TypeReference.createInstance(MessageContent.class));
 ```
 
 The avro type `PlayingCard` is available in samples package
@@ -123,8 +113,8 @@ Deserialize a Schema Registry-compatible avro payload into a strongly-type objec
 
 ```java readme-sample-deserializeSample
 SchemaRegistryApacheAvroSerializer serializer = createAvroSchemaRegistrySerializer();
-MessageWithMetadata message = getSchemaRegistryAvroMessage();
-PlayingCard playingCard = serializer.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
+MessageContent message = getSchemaRegistryAvroMessage();
+PlayingCard playingCard = serializer.deserialize(message, TypeReference.createInstance(PlayingCard.class));
 ```
 
 ## Troubleshooting
@@ -147,7 +137,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[package_maven]: https://search.maven.org/artifact/com.azure/azure-data-schemaregistry-avro
+[package_maven]: https://central.sonatype.com/artifact/com.azure/azure-data-schemaregistry-avro
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples/java/com/azure/data/schemaregistry/apacheavro
 [generated_types]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples/java/com/azure/data/schemaregistry/apacheavro/generatedtestsources
@@ -155,7 +145,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [apache_avro]: https://avro.apache.org/
-[api_reference_doc]: https://aka.ms/schemaregistry
+[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity

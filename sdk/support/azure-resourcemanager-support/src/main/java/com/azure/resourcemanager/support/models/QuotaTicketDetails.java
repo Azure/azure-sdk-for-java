@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,11 +15,9 @@ import java.util.List;
  */
 @Fluent
 public final class QuotaTicketDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaTicketDetails.class);
-
     /*
-     * Required for certain quota types when there is a sub type, such as
-     * Batch, for which you are requesting a quota increase.
+     * Required for certain quota types when there is a sub type, such as Batch, for which you are requesting a quota
+     * increase.
      */
     @JsonProperty(value = "quotaChangeRequestSubType")
     private String quotaChangeRequestSubType;
@@ -37,6 +33,10 @@ public final class QuotaTicketDetails {
      */
     @JsonProperty(value = "quotaChangeRequests")
     private List<QuotaChangeRequest> quotaChangeRequests;
+
+    /** Creates an instance of QuotaTicketDetails class. */
+    public QuotaTicketDetails() {
+    }
 
     /**
      * Get the quotaChangeRequestSubType property: Required for certain quota types when there is a sub type, such as

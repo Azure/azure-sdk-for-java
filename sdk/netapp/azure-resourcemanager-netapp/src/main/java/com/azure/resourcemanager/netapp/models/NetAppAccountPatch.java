@@ -6,9 +6,7 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.AccountProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +14,21 @@ import java.util.Map;
 /** NetApp account patch resource. */
 @Fluent
 public final class NetAppAccountPatch extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetAppAccountPatch.class);
-
     /*
      * NetApp Account properties
      */
     @JsonProperty(value = "properties")
     private AccountProperties innerProperties;
+
+    /*
+     * The identity used for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /** Creates an instance of NetAppAccountPatch class. */
+    public NetAppAccountPatch() {
+    }
 
     /**
      * Get the innerProperties property: NetApp Account properties.
@@ -31,6 +37,26 @@ public final class NetAppAccountPatch extends Resource {
      */
     private AccountProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The identity used for the resource.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity used for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the NetAppAccountPatch object itself.
+     */
+    public NetAppAccountPatch withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -103,6 +129,16 @@ public final class NetAppAccountPatch extends Resource {
     }
 
     /**
+     * Get the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
+     * null equals false.
+     *
+     * @return the disableShowmount value.
+     */
+    public Boolean disableShowmount() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableShowmount();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -110,6 +146,9 @@ public final class NetAppAccountPatch extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

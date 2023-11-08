@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.powerbidedicated.fluent.models.AutoScaleVCoreMutableProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Update request specification. */
-@JsonFlatten
 @Fluent
-public class AutoScaleVCoreUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaleVCoreUpdateParameters.class);
-
+public final class AutoScaleVCoreUpdateParameters {
     /*
      * The SKU of the auto scale v-core resource.
      */
@@ -27,13 +23,18 @@ public class AutoScaleVCoreUpdateParameters {
      * Key-value pairs of additional provisioning properties.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The maximum capacity of an auto scale v-core resource.
+     * Properties of the update operation request.
      */
-    @JsonProperty(value = "properties.capacityLimit")
-    private Integer capacityLimit;
+    @JsonProperty(value = "properties")
+    private AutoScaleVCoreMutableProperties innerProperties;
+
+    /** Creates an instance of AutoScaleVCoreUpdateParameters class. */
+    public AutoScaleVCoreUpdateParameters() {
+    }
 
     /**
      * Get the sku property: The SKU of the auto scale v-core resource.
@@ -76,12 +77,21 @@ public class AutoScaleVCoreUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Properties of the update operation request.
+     *
+     * @return the innerProperties value.
+     */
+    private AutoScaleVCoreMutableProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the capacityLimit property: The maximum capacity of an auto scale v-core resource.
      *
      * @return the capacityLimit value.
      */
     public Integer capacityLimit() {
-        return this.capacityLimit;
+        return this.innerProperties() == null ? null : this.innerProperties().capacityLimit();
     }
 
     /**
@@ -91,7 +101,10 @@ public class AutoScaleVCoreUpdateParameters {
      * @return the AutoScaleVCoreUpdateParameters object itself.
      */
     public AutoScaleVCoreUpdateParameters withCapacityLimit(Integer capacityLimit) {
-        this.capacityLimit = capacityLimit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutoScaleVCoreMutableProperties();
+        }
+        this.innerProperties().withCapacityLimit(capacityLimit);
         return this;
     }
 
@@ -103,6 +116,9 @@ public class AutoScaleVCoreUpdateParameters {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

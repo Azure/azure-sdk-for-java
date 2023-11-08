@@ -3,35 +3,43 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.SpanKind;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
+import com.azure.core.util.tracing.TracingLink;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer.MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -47,6 +55,11 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link ServiceBusProcessorClient}.
  */
 public class ServiceBusProcessorTest {
+
+    private static final String NAMESPACE = "namespace";
+    private static final String ENTITY_NAME = "entity";
+    private static final ServiceBusReceiverInstrumentation DEFAULT_INSTRUMENTATION =
+        new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_NAME, "subscription", ReceiverKind.PROCESSOR);
 
     /**
      * Tests receiving messages using a {@link ServiceBusProcessorClient}.
@@ -67,11 +80,11 @@ public class ServiceBusProcessorTest {
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, null);
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(5);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
@@ -111,7 +124,7 @@ public class ServiceBusProcessorTest {
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 int expectedMessageId = messageId.getAndIncrement();
@@ -138,14 +151,14 @@ public class ServiceBusProcessorTest {
     public void testStartStopResume() throws InterruptedException {
         AtomicReference<FluxSink<ServiceBusMessageContext>> sink = new AtomicReference<>();
         Flux<ServiceBusMessageContext> messageFlux = Flux.create(sink::set);
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, null);
 
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
         countDownLatch.set(new CountDownLatch(2));
 
         AtomicBoolean assertionFailed = new AtomicBoolean();
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 try {
@@ -222,13 +235,13 @@ public class ServiceBusProcessorTest {
                 return state + 1;
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, null);
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
         countDownLatch.set(new CountDownLatch(4));
         AtomicBoolean assertionFailed = new AtomicBoolean();
         StringBuffer messageIdNotMatched = new StringBuffer();
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 try {
@@ -276,15 +289,18 @@ public class ServiceBusProcessorTest {
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
 
-        when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncClient.getInstrumentation()).thenReturn(DEFAULT_INSTRUMENTATION);
         doNothing().when(asyncClient).close();
 
         final AtomicInteger messageId = new AtomicInteger();
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
@@ -329,14 +345,18 @@ public class ServiceBusProcessorTest {
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncClient.getInstrumentation()).thenReturn(DEFAULT_INSTRUMENTATION);
+
         doNothing().when(asyncClient).close();
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(5);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
@@ -358,27 +378,26 @@ public class ServiceBusProcessorTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testProcessorWithTracingEnabled() throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
-        final List<Tracer> tracers = Collections.singletonList(tracer);
         final int numberOfTimes = 5;
-        final TracerProvider tracerProvider = new TracerProvider(tracers);
 
         String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.extractContext(any())).thenAnswer(invocation -> {
+            Function<String, String> consumer = invocation.getArgument(0, Function.class);
+            assertEquals(diagnosticId, consumer.apply("traceparent"));
+            assertNull(consumer.apply("tracestate"));
+            return new Context(SPAN_CONTEXT_KEY, "value");
+        });
 
-        when(tracer.extractContext(eq(diagnosticId), any())).thenAnswer(
+        when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any())).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT_KEY, "value");
-            }
-        );
-        when(tracer.start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
-            invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
-                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
-                    return;
-                }).addData(PARENT_SPAN_KEY, "value2");
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 0);
+                Context passed = invocation.getArgument(2, Context.class);
+                return passed
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
         Flux<ServiceBusMessageContext> messageFlux =
@@ -395,47 +414,107 @@ public class ServiceBusProcessorTest {
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, tracer);
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
                 countDownLatch.countDown();
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setTracerProvider(tracerProvider));
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(numberOfTimes, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
 
         assertTrue(success, "Failed to receive all expected messages");
-        verify(tracer, times(numberOfTimes)).extractContext(eq(diagnosticId), any());
-        verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer, times(numberOfTimes)).extractContext(any());
+        verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
 
         // This is one less because the processEvent is called before the end span call, so it is possible for
         // to reach this line without calling it the 5th time yet. (Timing issue.)
-        verify(tracer, atLeast(numberOfTimes - 1)).end(eq("success"), isNull(), any());
+        verify(tracer, atLeast(numberOfTimes - 1)).end(isNull(), isNull(), any());
+    }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testProcessorWithTracingEnabledAndNullMessage() throws InterruptedException {
+        final Tracer tracer = mock(Tracer.class);
+        final int numberOfTimes = 1;
+
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.extractContext(any())).thenReturn(Context.NONE);
+
+        when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any())).thenReturn(new Context(PARENT_TRACE_CONTEXT_KEY, "span"));
+
+        Flux<ServiceBusMessageContext> messageFlux = Flux.just(new ServiceBusMessageContext("sessionId", new RuntimeException("foo")));
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, tracer);
+
+        CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
+            null, null,
+            messageContext -> fail("Should not have received a message"),
+            error -> {
+                assertEquals("foo", error.getException().getMessage());
+                countDownLatch.countDown();
+            },
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+
+        serviceBusProcessorClient.start();
+        assertTrue(countDownLatch.await(20, TimeUnit.SECONDS));
+        serviceBusProcessorClient.close();
+
+        verify(tracer, never()).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testProcessorWithTracingDisabled() throws InterruptedException {
+        final Tracer tracer = mock(Tracer.class);
+
+        when(tracer.isEnabled()).thenReturn(false);
+
+        Flux<ServiceBusMessageContext> messageFlux =
+            Flux.create(emitter -> {
+                ServiceBusReceivedMessage serviceBusReceivedMessage =
+                    new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
+                emitter.next(new ServiceBusMessageContext(serviceBusReceivedMessage));
+            });
+
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, tracer);
+
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
+            null, null,
+            messageContext -> countDownLatch.countDown(),
+            error -> Assertions.fail("Error occurred when receiving messages from the processor"),
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+
+        serviceBusProcessorClient.start();
+        boolean success = countDownLatch.await(1, TimeUnit.SECONDS);
+        serviceBusProcessorClient.close();
+
+        assertTrue(success, "Failed to receive message");
+        verify(tracer, never()).extractContext(any());
+        verify(tracer, never()).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer, never()).end(any(), any(), any());
     }
 
     @Test
     public void testProcessorWithTracingEnabledWithoutDiagnosticId() throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
-        final List<Tracer> tracers = Collections.singletonList(tracer);
         final int numberOfTimes = 5;
-        final TracerProvider tracerProvider = new TracerProvider(tracers);
-
-        when(tracer.start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any())).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
-                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
-                    return;
-                }).addData(PARENT_SPAN_KEY, "value2");
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), 0);
+                Context passed = invocation.getArgument(2, Context.class);
+                return passed
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
         Flux<ServiceBusMessageContext> messageFlux =
@@ -451,41 +530,47 @@ public class ServiceBusProcessorTest {
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux);
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, tracer);
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
                 countDownLatch.countDown();
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setTracerProvider(tracerProvider));
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(numberOfTimes, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
 
         assertTrue(success, "Failed to receive all expected messages");
-        verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer, times(numberOfTimes)).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
 
         // This is one less because the processEvent is called before the end span call, so it is possible for
         // to reach this line without calling it the 5th time yet. (Timing issue.)
-        verify(tracer, atLeast(numberOfTimes - 1)).end(eq("success"), isNull(), any());
+        verify(tracer, atLeast(numberOfTimes - 1)).end(isNull(), isNull(), any());
 
     }
 
     private ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getBuilder(
-        Flux<ServiceBusMessageContext> messageFlux) {
+        Flux<ServiceBusMessageContext> messageFlux, Tracer tracer) {
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
+
+        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME, null, ReceiverKind.PROCESSOR);
+        when(asyncClient.receiveMessagesWithContext()).thenReturn(
+            new FluxTrace(messageFlux, instrumentation).publishOn(Schedulers.boundedElastic()));
+        when(asyncClient.getInstrumentation()).thenReturn(instrumentation);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(asyncClient).close();
         return receiverBuilder;
@@ -498,10 +583,29 @@ public class ServiceBusProcessorTest {
             mock(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class);
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
+        when(asyncClient.getInstrumentation()).thenReturn(DEFAULT_INSTRUMENTATION);
         doNothing().when(asyncClient).close();
         return receiverBuilder;
+    }
+
+    private void assertStartOptions(StartSpanOptions startOpts, int linkCount) {
+        assertEquals(SpanKind.CONSUMER, startOpts.getSpanKind());
+        assertEquals(ENTITY_NAME, startOpts.getAttributes().get(ENTITY_PATH_KEY));
+        assertEquals(NAMESPACE, startOpts.getAttributes().get(HOST_NAME_KEY));
+
+        if (linkCount == 0) {
+            assertTrue(startOpts.getAttributes().containsKey(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME));
+            assertNull(startOpts.getLinks());
+        } else {
+            assertEquals(linkCount, startOpts.getLinks().size());
+            for (TracingLink link : startOpts.getLinks()) {
+                assertTrue(link.getAttributes().containsKey(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME));
+            }
+        }
     }
 }

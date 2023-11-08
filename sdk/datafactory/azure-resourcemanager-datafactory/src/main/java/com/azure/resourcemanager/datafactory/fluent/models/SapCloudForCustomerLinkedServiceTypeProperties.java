@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class SapCloudForCustomerLinkedServiceTypeProperties {
     /*
      * The URL of SAP Cloud for Customer OData API. For example,
-     * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string
-     * (or Expression with resultType string).
+     * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * The username for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * The username for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -34,13 +32,15 @@ public final class SapCloudForCustomerLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either
-     * encryptedCredential or username/password must be provided. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Either encryptedCredential or username/password must be provided. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of SapCloudForCustomerLinkedServiceTypeProperties class. */
+    public SapCloudForCustomerLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the url property: The URL of SAP Cloud for Customer OData API. For example,
@@ -109,23 +109,23 @@ public final class SapCloudForCustomerLinkedServiceTypeProperties {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
+     * provided. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
+     * provided. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapCloudForCustomerLinkedServiceTypeProperties object itself.
      */
-    public SapCloudForCustomerLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public SapCloudForCustomerLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

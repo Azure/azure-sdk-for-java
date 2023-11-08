@@ -54,8 +54,7 @@ public final class DeploymentProperties {
     private OffsetDateTime endTime;
 
     /*
-     * True if deployment is currently active, false if completed and null if
-     * not started.
+     * True if deployment is currently active, false if completed and null if not started.
      */
     @JsonProperty(value = "active")
     private Boolean active;
@@ -65,6 +64,10 @@ public final class DeploymentProperties {
      */
     @JsonProperty(value = "details")
     private String details;
+
+    /** Creates an instance of DeploymentProperties class. */
+    public DeploymentProperties() {
+    }
 
     /**
      * Get the status property: Deployment status.

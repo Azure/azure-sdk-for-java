@@ -23,6 +23,10 @@ public final class ScriptActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ScriptActivityTypeProperties innerTypeProperties = new ScriptActivityTypeProperties();
 
+    /** Creates an instance of ScriptActivity class. */
+    public ScriptActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Script activity properties.
      *
@@ -62,6 +66,20 @@ public final class ScriptActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public ScriptActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ScriptActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ScriptActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
@@ -71,6 +89,31 @@ public final class ScriptActivity extends ExecutionActivity {
     @Override
     public ScriptActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
+        return this;
+    }
+
+    /**
+     * Get the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @return the scriptBlockExecutionTimeout value.
+     */
+    public Object scriptBlockExecutionTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scriptBlockExecutionTimeout();
+    }
+
+    /**
+     * Set the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @param scriptBlockExecutionTimeout the scriptBlockExecutionTimeout value to set.
+     * @return the ScriptActivity object itself.
+     */
+    public ScriptActivity withScriptBlockExecutionTimeout(Object scriptBlockExecutionTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ScriptActivityTypeProperties();
+        }
+        this.innerTypeProperties().withScriptBlockExecutionTimeout(scriptBlockExecutionTimeout);
         return this;
     }
 

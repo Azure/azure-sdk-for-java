@@ -49,6 +49,10 @@ public final class VirtualRouterPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of VirtualRouterPropertiesFormat class. */
+    public VirtualRouterPropertiesFormat() {
+    }
+
     /**
      * Get the virtualRouterAsn property: VirtualRouter ASN.
      *

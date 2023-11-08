@@ -17,8 +17,7 @@ public final class IncidentConfiguration {
     private boolean createIncident;
 
     /*
-     * Set how the alerts that are triggered by this analytics rule, are
-     * grouped into incidents
+     * Set how the alerts that are triggered by this analytics rule, are grouped into incidents
      */
     @JsonProperty(value = "groupingConfiguration")
     private GroupingConfiguration groupingConfiguration;

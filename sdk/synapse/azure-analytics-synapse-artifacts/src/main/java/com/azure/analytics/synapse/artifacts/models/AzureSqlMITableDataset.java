@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The Azure SQL Managed Instance dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,25 +19,25 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureSqlMITableDataset extends Dataset {
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The schema name of the Azure SQL Managed Instance. Type: string (or
-     * Expression with resultType string).
+     * The schema name of the Azure SQL Managed Instance. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
     /*
-     * The table name of the Azure SQL Managed Instance dataset. Type: string
-     * (or Expression with resultType string).
+     * The table name of the Azure SQL Managed Instance dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
+
+    /** Creates an instance of AzureSqlMITableDataset class. */
+    public AzureSqlMITableDataset() {}
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
@@ -100,6 +102,55 @@ public class AzureSqlMITableDataset extends Dataset {
      */
     public AzureSqlMITableDataset setTable(Object table) {
         this.table = table;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlMITableDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlMITableDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlMITableDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlMITableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlMITableDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlMITableDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlMITableDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

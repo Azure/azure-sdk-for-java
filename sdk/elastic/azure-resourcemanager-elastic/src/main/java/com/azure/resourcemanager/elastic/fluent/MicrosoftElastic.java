@@ -59,6 +59,13 @@ public interface MicrosoftElastic {
     MonitorsClient getMonitors();
 
     /**
+     * Gets the ElasticVersionsClient object to access its operations.
+     *
+     * @return the ElasticVersionsClient object.
+     */
+    ElasticVersionsClient getElasticVersions();
+
+    /**
      * Gets the MonitoredResourcesClient object to access its operations.
      *
      * @return the MonitoredResourcesClient object.
@@ -71,6 +78,13 @@ public interface MicrosoftElastic {
      * @return the DeploymentInfoesClient object.
      */
     DeploymentInfoesClient getDeploymentInfoes();
+
+    /**
+     * Gets the ExternalUsersClient object to access its operations.
+     *
+     * @return the ExternalUsersClient object.
+     */
+    ExternalUsersClient getExternalUsers();
 
     /**
      * Gets the TagRulesClient object to access its operations.
@@ -99,4 +113,81 @@ public interface MicrosoftElastic {
      * @return the VMCollectionsClient object.
      */
     VMCollectionsClient getVMCollections();
+
+    /**
+     * Gets the UpgradableVersionsClient object to access its operations.
+     *
+     * @return the UpgradableVersionsClient object.
+     */
+    UpgradableVersionsClient getUpgradableVersions();
+
+    /**
+     * Gets the MonitorOperationsClient object to access its operations.
+     *
+     * @return the MonitorOperationsClient object.
+     */
+    MonitorOperationsClient getMonitorOperations();
+
+    /**
+     * Gets the AllTrafficFiltersClient object to access its operations.
+     *
+     * @return the AllTrafficFiltersClient object.
+     */
+    AllTrafficFiltersClient getAllTrafficFilters();
+
+    /**
+     * Gets the ListAssociatedTrafficFiltersClient object to access its operations.
+     *
+     * @return the ListAssociatedTrafficFiltersClient object.
+     */
+    ListAssociatedTrafficFiltersClient getListAssociatedTrafficFilters();
+
+    /**
+     * Gets the CreateAndAssociateIpFiltersClient object to access its operations.
+     *
+     * @return the CreateAndAssociateIpFiltersClient object.
+     */
+    CreateAndAssociateIpFiltersClient getCreateAndAssociateIpFilters();
+
+    /**
+     * Gets the CreateAndAssociatePLFiltersClient object to access its operations.
+     *
+     * @return the CreateAndAssociatePLFiltersClient object.
+     */
+    CreateAndAssociatePLFiltersClient getCreateAndAssociatePLFilters();
+
+    /**
+     * Gets the AssociateTrafficFiltersClient object to access its operations.
+     *
+     * @return the AssociateTrafficFiltersClient object.
+     */
+    AssociateTrafficFiltersClient getAssociateTrafficFilters();
+
+    /**
+     * Gets the DetachAndDeleteTrafficFiltersClient object to access its operations.
+     *
+     * @return the DetachAndDeleteTrafficFiltersClient object.
+     */
+    DetachAndDeleteTrafficFiltersClient getDetachAndDeleteTrafficFilters();
+
+    /**
+     * Gets the DetachTrafficFiltersClient object to access its operations.
+     *
+     * @return the DetachTrafficFiltersClient object.
+     */
+    DetachTrafficFiltersClient getDetachTrafficFilters();
+
+    /**
+     * Gets the TrafficFiltersClient object to access its operations.
+     *
+     * @return the TrafficFiltersClient object.
+     */
+    TrafficFiltersClient getTrafficFilters();
+
+    /**
+     * Gets the OrganizationsClient object to access its operations.
+     *
+     * @return the OrganizationsClient object.
+     */
+    OrganizationsClient getOrganizations();
 }

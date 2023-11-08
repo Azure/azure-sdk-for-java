@@ -29,6 +29,10 @@ public final class PerfMonResponseInner {
     @JsonProperty(value = "data")
     private PerfMonSet data;
 
+    /** Creates an instance of PerfMonResponseInner class. */
+    public PerfMonResponseInner() {
+    }
+
     /**
      * Get the code property: The response code.
      *

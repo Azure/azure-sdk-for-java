@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** phone. */
 @Fluent
 public final class MicrosoftGraphPhone {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPhone.class);
-
     /*
      * The language property.
      */
@@ -46,6 +43,10 @@ public final class MicrosoftGraphPhone {
      * phone
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPhone class. */
+    public MicrosoftGraphPhone() {
+    }
 
     /**
      * Get the language property: The language property.

@@ -231,7 +231,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      *         Flux&lt;PagedResponse&lt;Integer&gt;&gt; flux = &#40;continuationToken == null&#41;
      *             ? pagedFlux.byPage&#40;&#41;
      *             : pagedFlux.byPage&#40;continuationToken&#41;;
-     *         return flux.onErrorMap&#40;PaginationException::new&#41;;
+     *         return flux.onErrorMap&#40;Exception.class, PaginationException::new&#41;;
      *     &#125;;
      * final PagedFlux&lt;Integer&gt; exceptionMappedPagedFlux = PagedFlux.create&#40;eprovider&#41;;
      * </pre>

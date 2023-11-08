@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema for MSIX Package Dependencies properties. */
 @Fluent
 public final class MsixPackageDependencies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MsixPackageDependencies.class);
-
     /*
      * Name of package dependency.
      */
@@ -31,6 +27,10 @@ public final class MsixPackageDependencies {
      */
     @JsonProperty(value = "minVersion")
     private String minVersion;
+
+    /** Creates an instance of MsixPackageDependencies class. */
+    public MsixPackageDependencies() {
+    }
 
     /**
      * Get the dependencyName property: Name of package dependency.

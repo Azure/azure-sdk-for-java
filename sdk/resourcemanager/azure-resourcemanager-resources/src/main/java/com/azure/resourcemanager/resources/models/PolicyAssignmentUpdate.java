@@ -5,14 +5,21 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The PolicyAssignmentUpdate model. */
+/** The policy assignment for Patch request. */
 @Fluent
 public final class PolicyAssignmentUpdate {
     /*
-     * The location of the policy assignment. Only required when utilizing
-     * managed identity.
+     * The policy assignment properties for Patch request.
+     */
+    @JsonProperty(value = "properties")
+    private PolicyAssignmentUpdateProperties innerProperties;
+
+    /*
+     * The location of the policy assignment. Only required when utilizing managed identity.
      */
     @JsonProperty(value = "location")
     private String location;
@@ -22,6 +29,19 @@ public final class PolicyAssignmentUpdate {
      */
     @JsonProperty(value = "identity")
     private Identity identity;
+
+    /** Creates an instance of PolicyAssignmentUpdate class. */
+    public PolicyAssignmentUpdate() {
+    }
+
+    /**
+     * Get the innerProperties property: The policy assignment properties for Patch request.
+     *
+     * @return the innerProperties value.
+     */
+    private PolicyAssignmentUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the location property: The location of the policy assignment. Only required when utilizing managed identity.
@@ -64,11 +84,60 @@ public final class PolicyAssignmentUpdate {
     }
 
     /**
+     * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
+     *
+     * @return the resourceSelectors value.
+     */
+    public List<ResourceSelector> resourceSelectors() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceSelectors();
+    }
+
+    /**
+     * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
+     *
+     * @param resourceSelectors the resourceSelectors value to set.
+     * @return the PolicyAssignmentUpdate object itself.
+     */
+    public PolicyAssignmentUpdate withResourceSelectors(List<ResourceSelector> resourceSelectors) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentUpdateProperties();
+        }
+        this.innerProperties().withResourceSelectors(resourceSelectors);
+        return this;
+    }
+
+    /**
+     * Get the overrides property: The policy property value override.
+     *
+     * @return the overrides value.
+     */
+    public List<OverrideModel> overrides() {
+        return this.innerProperties() == null ? null : this.innerProperties().overrides();
+    }
+
+    /**
+     * Set the overrides property: The policy property value override.
+     *
+     * @param overrides the overrides value to set.
+     * @return the PolicyAssignmentUpdate object itself.
+     */
+    public PolicyAssignmentUpdate withOverrides(List<OverrideModel> overrides) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentUpdateProperties();
+        }
+        this.innerProperties().withOverrides(overrides);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }

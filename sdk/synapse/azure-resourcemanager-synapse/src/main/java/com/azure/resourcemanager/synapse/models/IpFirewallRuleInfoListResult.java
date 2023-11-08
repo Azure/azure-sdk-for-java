@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.IpFirewallRuleInfoInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of IP firewall rules. */
 @Fluent
 public final class IpFirewallRuleInfoListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpFirewallRuleInfoListResult.class);
-
     /*
      * Link to next page of results
      */
@@ -27,6 +23,10 @@ public final class IpFirewallRuleInfoListResult {
      */
     @JsonProperty(value = "value")
     private List<IpFirewallRuleInfoInner> value;
+
+    /** Creates an instance of IpFirewallRuleInfoListResult class. */
+    public IpFirewallRuleInfoListResult() {
+    }
 
     /**
      * Get the nextLink property: Link to next page of results.

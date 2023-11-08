@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ManagedPipelineMode. */
+/** Managed pipeline mode. */
 public enum ManagedPipelineMode {
     /** Enum value Integrated. */
     INTEGRATED("Integrated"),
@@ -30,6 +30,9 @@ public enum ManagedPipelineMode {
      */
     @JsonCreator
     public static ManagedPipelineMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ManagedPipelineMode[] items = ManagedPipelineMode.values();
         for (ManagedPipelineMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ManagedPipelineMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

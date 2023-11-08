@@ -5,15 +5,21 @@
 package com.azure.resourcemanager.iotcentral.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iotcentral.models.AppState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.iotcentral.models.NetworkRuleSets;
+import com.azure.resourcemanager.iotcentral.models.ProvisioningState;
+import com.azure.resourcemanager.iotcentral.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The properties of an IoT Central application. */
 @Fluent
 public final class AppProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppProperties.class);
+    /*
+     * The provisioning state of the application.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /*
      * The ID of the application.
@@ -47,6 +53,33 @@ public final class AppProperties {
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private AppState state;
+
+    /*
+     * Whether requests from the public network are allowed.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Network Rule Set Properties of this IoT Central application.
+     */
+    @JsonProperty(value = "networkRuleSets")
+    private NetworkRuleSets networkRuleSets;
+
+    /*
+     * Private endpoint connections created on this IoT Central application.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /**
+     * Get the provisioningState property: The provisioning state of the application.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
 
     /**
      * Get the applicationId property: The ID of the application.
@@ -131,10 +164,66 @@ public final class AppProperties {
     }
 
     /**
+     * Get the publicNetworkAccess property: Whether requests from the public network are allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether requests from the public network are allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the AppProperties object itself.
+     */
+    public AppProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
+     *
+     * @return the networkRuleSets value.
+     */
+    public NetworkRuleSets networkRuleSets() {
+        return this.networkRuleSets;
+    }
+
+    /**
+     * Set the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
+     *
+     * @param networkRuleSets the networkRuleSets value to set.
+     * @return the AppProperties object itself.
+     */
+    public AppProperties withNetworkRuleSets(NetworkRuleSets networkRuleSets) {
+        this.networkRuleSets = networkRuleSets;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections created on this IoT Central
+     * application.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (networkRuleSets() != null) {
+            networkRuleSets().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
     }
 }

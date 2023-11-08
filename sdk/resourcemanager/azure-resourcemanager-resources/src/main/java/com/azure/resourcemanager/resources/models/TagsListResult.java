@@ -24,6 +24,10 @@ public final class TagsListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of TagsListResult class. */
+    public TagsListResult() {
+    }
+
     /**
      * Get the value property: An array of tags.
      *

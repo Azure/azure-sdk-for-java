@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -170,6 +171,13 @@ public interface LiveEvent {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.LiveEventInner object.
@@ -559,7 +567,9 @@ public interface LiveEvent {
     LiveEvent refresh(Context context);
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -567,7 +577,9 @@ public interface LiveEvent {
     void allocate();
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -577,7 +589,9 @@ public interface LiveEvent {
     void allocate(Context context);
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -585,7 +599,9 @@ public interface LiveEvent {
     void start();
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -595,7 +611,9 @@ public interface LiveEvent {
     void start(Context context);
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param parameters LiveEvent stop parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -605,7 +623,9 @@ public interface LiveEvent {
     void stop(LiveEventActionInput parameters);
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param parameters LiveEvent stop parameters.
      * @param context The context to associate with this operation.
@@ -616,8 +636,10 @@ public interface LiveEvent {
     void stop(LiveEventActionInput parameters, Context context);
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -626,8 +648,10 @@ public interface LiveEvent {
     void reset();
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param context The context to associate with this operation.
@@ -636,4 +660,76 @@ public interface LiveEvent {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void reset(Context context);
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventStatus> listGetStatus();
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventStatus> listGetStatus(Context context);
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventStreamEvent> listGetStreamEvents();
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventStreamEvent> listGetStreamEvents(Context context);
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats();
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats(Context context);
 }

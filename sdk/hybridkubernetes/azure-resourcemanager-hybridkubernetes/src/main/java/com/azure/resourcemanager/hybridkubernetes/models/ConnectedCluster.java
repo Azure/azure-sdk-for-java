@@ -165,6 +165,13 @@ public interface ConnectedCluster {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.hybridkubernetes.fluent.models.ConnectedClusterInner object.
      *
      * @return the inner object.
@@ -367,7 +374,25 @@ public interface ConnectedCluster {
     ConnectedCluster refresh(Context context);
 
     /**
-     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     * Gets cluster user credentials of a connected cluster
+     *
+     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param properties ListClusterUserCredential properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name along with
+     *     {@link Response}.
+     */
+    Response<CredentialResults> listClusterUserCredentialWithResponse(
+        ListClusterUserCredentialProperties properties, Context context);
+
+    /**
+     * Gets cluster user credentials of a connected cluster
+     *
+     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
      *
      * @param properties ListClusterUserCredential properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -376,17 +401,4 @@ public interface ConnectedCluster {
      * @return cluster user credentials of the connected cluster with a specified resource group and name.
      */
     CredentialResults listClusterUserCredential(ListClusterUserCredentialProperties properties);
-
-    /**
-     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
-     *
-     * @param properties ListClusterUserCredential properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
-     */
-    Response<CredentialResults> listClusterUserCredentialWithResponse(
-        ListClusterUserCredentialProperties properties, Context context);
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CheckNameAvailabilityReason. */
+/** The reason code explaining why the name is unavailable. Will be undefined if the name is available. */
 public enum CheckNameAvailabilityReason {
     /** Enum value Invalid. */
     INVALID("Invalid"),
@@ -30,6 +30,9 @@ public enum CheckNameAvailabilityReason {
      */
     @JsonCreator
     public static CheckNameAvailabilityReason fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CheckNameAvailabilityReason[] items = CheckNameAvailabilityReason.values();
         for (CheckNameAvailabilityReason item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum CheckNameAvailabilityReason {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

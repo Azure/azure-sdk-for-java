@@ -329,12 +329,12 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 
         // Set partition identifier properties of the first message on batch message
         batchMessage.setMessageAnnotations(firstMessage.getMessageAnnotations());
-        if (StringUtil.isNullOrWhiteSpace((String)firstMessage.getMessageId())) {
-        	batchMessage.setMessageId(firstMessage.getMessageId());
+        if (!StringUtil.isNullOrWhiteSpace((String)firstMessage.getMessageId())) {
+            batchMessage.setMessageId(firstMessage.getMessageId());
         }
 
-        if (StringUtil.isNullOrWhiteSpace(firstMessage.getGroupId())) {
-        	batchMessage.setGroupId(firstMessage.getGroupId());
+        if (!StringUtil.isNullOrWhiteSpace(firstMessage.getGroupId())) {
+            batchMessage.setGroupId(firstMessage.getGroupId());
         }
 
         byte[] bytes = null;

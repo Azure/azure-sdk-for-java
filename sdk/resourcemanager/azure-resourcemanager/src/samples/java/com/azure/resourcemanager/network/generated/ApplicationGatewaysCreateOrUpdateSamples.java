@@ -5,13 +5,10 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPathRuleInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRequestRoutingRuleInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslCertificateInner;
-import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayUrlPathMapInner;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
@@ -22,9 +19,6 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
 import com.azure.resourcemanager.network.models.ApplicationGatewayGlobalConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayHeaderConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayHttpListener;
-import com.azure.resourcemanager.network.models.ApplicationGatewayLoadDistributionAlgorithm;
-import com.azure.resourcemanager.network.models.ApplicationGatewayLoadDistributionPolicy;
-import com.azure.resourcemanager.network.models.ApplicationGatewayLoadDistributionTarget;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRewriteRule;
@@ -52,7 +46,7 @@ import java.util.Map;
 /** Samples for ApplicationGateways CreateOrUpdate. */
 public final class ApplicationGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/ApplicationGatewayCreate.json
      */
     /**
      * Sample code: Create Application Gateway.
@@ -97,7 +91,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                 new ApplicationGatewayTrustedRootCertificate().withName("rootcert").withData("****"),
                                 new ApplicationGatewayTrustedRootCertificate()
                                     .withName("rootcert1")
-                                    .withKeyVaultSecretId("https://kv/secret")))
+                                    .withKeyVaultSecretId("fakeTokenPlaceholder")))
                     .withTrustedClientCertificates(
                         Arrays
                             .asList(
@@ -110,10 +104,10 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                 new ApplicationGatewaySslCertificateInner()
                                     .withName("sslcert")
                                     .withData("****")
-                                    .withPassword("****"),
+                                    .withPassword("fakeTokenPlaceholder"),
                                 new ApplicationGatewaySslCertificateInner()
                                     .withName("sslcert2")
-                                    .withKeyVaultSecretId("https://kv/secret")))
+                                    .withKeyVaultSecretId("fakeTokenPlaceholder")))
                     .withFrontendIpConfigurations(
                         Arrays
                             .asList(
@@ -145,8 +139,8 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                     .withBackendAddresses(
                                         Arrays
                                             .asList(
-                                                new ApplicationGatewayBackendAddress(),
-                                                new ApplicationGatewayBackendAddress()))))
+                                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.1"),
+                                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.2")))))
                     .withBackendHttpSettingsCollection(
                         Arrays
                             .asList(
@@ -213,49 +207,6 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                     .withClientAuthConfiguration(
                                         new ApplicationGatewayClientAuthConfiguration()
                                             .withVerifyClientCertIssuerDN(true))))
-                    .withUrlPathMaps(
-                        Arrays
-                            .asList(
-                                new ApplicationGatewayUrlPathMapInner()
-                                    .withName("pathMap1")
-                                    .withDefaultBackendAddressPool(
-                                        new SubResource()
-                                            .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"))
-                                    .withDefaultBackendHttpSettings(
-                                        new SubResource()
-                                            .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"))
-                                    .withDefaultRewriteRuleSet(
-                                        new SubResource()
-                                            .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"))
-                                    .withDefaultLoadDistributionPolicy(
-                                        new SubResource()
-                                            .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"))
-                                    .withPathRules(
-                                        Arrays
-                                            .asList(
-                                                new ApplicationGatewayPathRuleInner()
-                                                    .withName("apiPaths")
-                                                    .withPaths(Arrays.asList("/api", "/v1/api"))
-                                                    .withBackendAddressPool(
-                                                        new SubResource()
-                                                            .withId(
-                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"))
-                                                    .withBackendHttpSettings(
-                                                        new SubResource()
-                                                            .withId(
-                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"))
-                                                    .withRewriteRuleSet(
-                                                        new SubResource()
-                                                            .withId(
-                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"))
-                                                    .withLoadDistributionPolicy(
-                                                        new SubResource()
-                                                            .withId(
-                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1"))))))
                     .withRequestRoutingRules(
                         Arrays
                             .asList(
@@ -278,23 +229,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                     .withRewriteRuleSet(
                                         new SubResource()
                                             .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"))
-                                    .withLoadDistributionPolicy(
-                                        new SubResource()
-                                            .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/loadDistributionPolicies/ldp1")),
-                                new ApplicationGatewayRequestRoutingRuleInner()
-                                    .withName("appgwPathBasedRule")
-                                    .withRuleType(ApplicationGatewayRequestRoutingRuleType.PATH_BASED_ROUTING)
-                                    .withPriority(20)
-                                    .withHttpListener(
-                                        new SubResource()
-                                            .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhttplistener"))
-                                    .withUrlPathMap(
-                                        new SubResource()
-                                            .withId(
-                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/urlPathMaps/pathMap1"))))
+                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"))))
                     .withRewriteRuleSets(
                         Arrays
                             .asList(
@@ -332,37 +267,14 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                                             .withUrlConfiguration(
                                                                 new ApplicationGatewayUrlConfiguration()
                                                                     .withModifiedPath("/abc")))))))
-                    .withLoadDistributionPolicies(
-                        Arrays
-                            .asList(
-                                new ApplicationGatewayLoadDistributionPolicy()
-                                    .withName("ldp1")
-                                    .withLoadDistributionTargets(
-                                        Arrays
-                                            .asList(
-                                                new ApplicationGatewayLoadDistributionTarget()
-                                                    .withName("ld11")
-                                                    .withWeightPerServer(40)
-                                                    .withBackendAddressPool(
-                                                        new SubResource()
-                                                            .withId(
-                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool")),
-                                                new ApplicationGatewayLoadDistributionTarget()
-                                                    .withName("ld11")
-                                                    .withWeightPerServer(60)
-                                                    .withBackendAddressPool(
-                                                        new SubResource()
-                                                            .withId(
-                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool1"))))
-                                    .withLoadDistributionAlgorithm(
-                                        ApplicationGatewayLoadDistributionAlgorithm.ROUND_ROBIN)))
                     .withGlobalConfiguration(
                         new ApplicationGatewayGlobalConfiguration()
                             .withEnableRequestBuffering(true)
                             .withEnableResponseBuffering(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

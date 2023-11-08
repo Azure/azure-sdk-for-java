@@ -32,7 +32,7 @@ public interface FirewallRule {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -53,6 +53,13 @@ public interface FirewallRule {
     String endIpAddress();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FirewallRuleInner object.
      *
      * @return the inner object.
@@ -67,11 +74,13 @@ public interface FirewallRule {
             DefinitionStages.WithEndIpAddress,
             DefinitionStages.WithCreate {
     }
+
     /** The FirewallRule definition stages. */
     interface DefinitionStages {
         /** The first stage of the FirewallRule definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the FirewallRule definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -83,6 +92,7 @@ public interface FirewallRule {
              */
             WithStartIpAddress withExistingFlexibleServer(String resourceGroupName, String serverName);
         }
+
         /** The stage of the FirewallRule definition allowing to specify startIpAddress. */
         interface WithStartIpAddress {
             /**
@@ -94,6 +104,7 @@ public interface FirewallRule {
              */
             WithEndIpAddress withStartIpAddress(String startIpAddress);
         }
+
         /** The stage of the FirewallRule definition allowing to specify endIpAddress. */
         interface WithEndIpAddress {
             /**
@@ -105,6 +116,7 @@ public interface FirewallRule {
              */
             WithCreate withEndIpAddress(String endIpAddress);
         }
+
         /**
          * The stage of the FirewallRule definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -126,6 +138,7 @@ public interface FirewallRule {
             FirewallRule create(Context context);
         }
     }
+
     /**
      * Begins update for the FirewallRule resource.
      *
@@ -150,6 +163,7 @@ public interface FirewallRule {
          */
         FirewallRule apply(Context context);
     }
+
     /** The FirewallRule update stages. */
     interface UpdateStages {
         /** The stage of the FirewallRule update allowing to specify startIpAddress. */
@@ -163,6 +177,7 @@ public interface FirewallRule {
              */
             Update withStartIpAddress(String startIpAddress);
         }
+
         /** The stage of the FirewallRule update allowing to specify endIpAddress. */
         interface WithEndIpAddress {
             /**
@@ -175,6 +190,7 @@ public interface FirewallRule {
             Update withEndIpAddress(String endIpAddress);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

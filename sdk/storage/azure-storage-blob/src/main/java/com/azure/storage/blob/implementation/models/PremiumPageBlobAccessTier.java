@@ -44,6 +44,14 @@ public final class PremiumPageBlobAccessTier extends ExpandableStringEnum<Premiu
     public static final PremiumPageBlobAccessTier P80 = fromString("P80");
 
     /**
+     * Creates a new instance of PremiumPageBlobAccessTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PremiumPageBlobAccessTier() {}
+
+    /**
      * Creates or finds a PremiumPageBlobAccessTier from its string representation.
      *
      * @param name a name to look for.
@@ -54,7 +62,11 @@ public final class PremiumPageBlobAccessTier extends ExpandableStringEnum<Premiu
         return fromString(name, PremiumPageBlobAccessTier.class);
     }
 
-    /** @return known PremiumPageBlobAccessTier values. */
+    /**
+     * Gets known PremiumPageBlobAccessTier values.
+     *
+     * @return known PremiumPageBlobAccessTier values.
+     */
     public static Collection<PremiumPageBlobAccessTier> values() {
         return values(PremiumPageBlobAccessTier.class);
     }

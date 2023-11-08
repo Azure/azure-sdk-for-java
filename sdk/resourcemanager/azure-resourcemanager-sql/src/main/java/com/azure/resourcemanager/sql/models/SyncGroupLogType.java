@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SyncGroupLogType. */
+/** Type of the sync group log. */
 public final class SyncGroupLogType extends ExpandableStringEnum<SyncGroupLogType> {
     /** Static value All for SyncGroupLogType. */
     public static final SyncGroupLogType ALL = fromString("All");
@@ -33,7 +33,11 @@ public final class SyncGroupLogType extends ExpandableStringEnum<SyncGroupLogTyp
         return fromString(name, SyncGroupLogType.class);
     }
 
-    /** @return known SyncGroupLogType values. */
+    /**
+     * Gets known SyncGroupLogType values.
+     *
+     * @return known SyncGroupLogType values.
+     */
     public static Collection<SyncGroupLogType> values() {
         return values(SyncGroupLogType.class);
     }

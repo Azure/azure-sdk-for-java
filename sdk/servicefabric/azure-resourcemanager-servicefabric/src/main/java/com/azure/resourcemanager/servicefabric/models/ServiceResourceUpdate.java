@@ -7,9 +7,6 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -17,17 +14,14 @@ import java.util.Map;
 /** The service resource for patch operations. */
 @Fluent
 public final class ServiceResourceUpdate extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourceUpdate.class);
-
     /*
      * The service resource properties for patch operations.
      */
     @JsonProperty(value = "properties")
-    private ServiceResourceUpdateProperties innerProperties;
+    private ServiceResourceUpdateProperties properties;
 
     /*
-     * It will be deprecated in New API, resource location depends on the
-     * parent resource.
+     * It will be deprecated in New API, resource location depends on the parent resource.
      */
     @JsonProperty(value = "location")
     private String location;
@@ -51,13 +45,28 @@ public final class ServiceResourceUpdate extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of ServiceResourceUpdate class. */
+    public ServiceResourceUpdate() {
+    }
+
     /**
-     * Get the innerProperties property: The service resource properties for patch operations.
+     * Get the properties property: The service resource properties for patch operations.
      *
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private ServiceResourceUpdateProperties innerProperties() {
-        return this.innerProperties;
+    public ServiceResourceUpdateProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The service resource properties for patch operations.
+     *
+     * @param properties the properties value to set.
+     * @return the ServiceResourceUpdate object itself.
+     */
+    public ServiceResourceUpdate withProperties(ServiceResourceUpdateProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -124,8 +133,8 @@ public final class ServiceResourceUpdate extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

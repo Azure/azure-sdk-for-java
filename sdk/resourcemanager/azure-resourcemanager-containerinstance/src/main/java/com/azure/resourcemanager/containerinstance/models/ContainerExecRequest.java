@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The container exec request. */
 @Fluent
 public final class ContainerExecRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerExecRequest.class);
-
     /*
      * The command to be executed.
      */
@@ -25,6 +21,10 @@ public final class ContainerExecRequest {
      */
     @JsonProperty(value = "terminalSize")
     private ContainerExecRequestTerminalSize terminalSize;
+
+    /** Creates an instance of ContainerExecRequest class. */
+    public ContainerExecRequest() {
+    }
 
     /**
      * Get the command property: The command to be executed.

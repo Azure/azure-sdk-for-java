@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.models.LinkedStorageAccountsResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list linked storage accounts service operation response. */
 @Fluent
 public final class LinkedStorageAccountsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedStorageAccountsListResult.class);
-
     /*
      * A list of linked storage accounts instances.
      */
     @JsonProperty(value = "value")
     private List<LinkedStorageAccountsResourceInner> value;
+
+    /** Creates an instance of LinkedStorageAccountsListResult class. */
+    public LinkedStorageAccountsListResult() {
+    }
 
     /**
      * Get the value property: A list of linked storage accounts instances.

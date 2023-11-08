@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RequestMethodOperator. */
+/** Describes operator to be matched. */
 public final class RequestMethodOperator extends ExpandableStringEnum<RequestMethodOperator> {
     /** Static value Equal for RequestMethodOperator. */
     public static final RequestMethodOperator EQUAL = fromString("Equal");
+
+    /**
+     * Creates a new instance of RequestMethodOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestMethodOperator() {
+    }
 
     /**
      * Creates or finds a RequestMethodOperator from its string representation.
@@ -24,7 +33,11 @@ public final class RequestMethodOperator extends ExpandableStringEnum<RequestMet
         return fromString(name, RequestMethodOperator.class);
     }
 
-    /** @return known RequestMethodOperator values. */
+    /**
+     * Gets known RequestMethodOperator values.
+     *
+     * @return known RequestMethodOperator values.
+     */
     public static Collection<RequestMethodOperator> values() {
         return values(RequestMethodOperator.class);
     }

@@ -29,6 +29,10 @@ public final class WebhookPartnerDestinationProperties {
     @JsonProperty(value = "clientAuthentication")
     private PartnerClientAuthentication clientAuthentication;
 
+    /** Creates an instance of WebhookPartnerDestinationProperties class. */
+    public WebhookPartnerDestinationProperties() {
+    }
+
     /**
      * Get the endpointUrl property: The URL that represents the endpoint of the partner destination.
      *

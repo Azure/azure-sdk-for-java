@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.changeanalysis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.changeanalysis.models.ResourceProviderOperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource provider operation definition. */
 @Fluent
 public final class ResourceProviderOperationDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProviderOperationDefinitionInner.class);
-
     /*
      * The resource provider operation name.
      */
@@ -26,6 +22,10 @@ public final class ResourceProviderOperationDefinitionInner {
      */
     @JsonProperty(value = "display")
     private ResourceProviderOperationDisplay display;
+
+    /** Creates an instance of ResourceProviderOperationDefinitionInner class. */
+    public ResourceProviderOperationDefinitionInner() {
+    }
 
     /**
      * Get the name property: The resource provider operation name.

@@ -6,21 +6,28 @@ package com.azure.resourcemanager.resourcemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.resourcemover.models.MoveResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the move resource. */
 @Fluent
 public final class MoveResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveResourceInner.class);
-
     /*
      * Defines the move resource properties.
      */
     @JsonProperty(value = "properties")
     private MoveResourceProperties properties;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of MoveResourceInner class. */
+    public MoveResourceInner() {
+    }
 
     /**
      * Get the properties property: Defines the move resource properties.
@@ -40,6 +47,15 @@ public final class MoveResourceInner extends ProxyResource {
     public MoveResourceInner withProperties(MoveResourceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

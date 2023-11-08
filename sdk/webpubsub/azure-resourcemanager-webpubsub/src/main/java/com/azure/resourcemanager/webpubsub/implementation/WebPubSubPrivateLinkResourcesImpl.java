@@ -11,10 +11,9 @@ import com.azure.resourcemanager.webpubsub.fluent.WebPubSubPrivateLinkResourcesC
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkResource;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubPrivateLinkResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WebPubSubPrivateLinkResourcesImpl implements WebPubSubPrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubPrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebPubSubPrivateLinkResourcesImpl.class);
 
     private final WebPubSubPrivateLinkResourcesClient innerClient;
 

@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DiagnoseVirtualNetworkResult model. */
 @Fluent
 public final class DiagnoseVirtualNetworkResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnoseVirtualNetworkResultInner.class);
-
     /*
      * The list of network connectivity diagnostic finding
      */
     @JsonProperty(value = "findings")
     private List<String> findings;
+
+    /** Creates an instance of DiagnoseVirtualNetworkResultInner class. */
+    public DiagnoseVirtualNetworkResultInner() {
+    }
 
     /**
      * Get the findings property: The list of network connectivity diagnostic finding.

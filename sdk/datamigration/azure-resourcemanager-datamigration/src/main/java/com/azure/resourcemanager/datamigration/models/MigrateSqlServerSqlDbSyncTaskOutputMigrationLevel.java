@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,9 +15,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("MigrationLevelOutput")
 @Immutable
 public final class MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel extends MigrateSqlServerSqlDbSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel.class);
-
     /*
      * Migration start time
      */
@@ -61,6 +56,10 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel extends Mig
      */
     @JsonProperty(value = "databaseCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer databaseCount;
+
+    /** Creates an instance of MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel class. */
+    public MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel() {
+    }
 
     /**
      * Get the startedOn property: Migration start time.

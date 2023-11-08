@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for SAP ERP Central Component(SAP ECC). */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,16 +19,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class SapEccLinkedService extends LinkedService {
     /*
-     * The URL of SAP ECC OData API. For example,
-     * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string
-     * (or Expression with resultType string).
+     * The URL of SAP ECC OData API. For example, '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private String url;
 
     /*
-     * The username for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * The username for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private String username;
@@ -38,13 +38,15 @@ public class SapEccLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either
-     * encryptedCredential or username/password must be provided. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Either encryptedCredential or username/password must be provided. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
+
+    /** Creates an instance of SapEccLinkedService class. */
+    public SapEccLinkedService() {}
 
     /**
      * Get the url property: The URL of SAP ECC OData API. For example,
@@ -131,6 +133,34 @@ public class SapEccLinkedService extends LinkedService {
      */
     public SapEccLinkedService setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapEccLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapEccLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapEccLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapEccLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

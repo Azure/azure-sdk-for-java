@@ -24,6 +24,10 @@ public final class MySqlLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MySqlLinkedServiceTypeProperties innerTypeProperties = new MySqlLinkedServiceTypeProperties();
 
+    /** Creates an instance of MySqlLinkedService class. */
+    public MySqlLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: MySQL linked service properties.
      *
@@ -62,7 +66,8 @@ public final class MySqlLinkedService extends LinkedService {
     }
 
     /**
-     * Get the connectionString property: The connection string.
+     * Get the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      *
      * @return the connectionString value.
      */
@@ -71,7 +76,8 @@ public final class MySqlLinkedService extends LinkedService {
     }
 
     /**
-     * Set the connectionString property: The connection string.
+     * Set the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      *
      * @param connectionString the connectionString value to set.
      * @return the MySqlLinkedService object itself.
@@ -109,22 +115,22 @@ public final class MySqlLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MySqlLinkedService object itself.
      */
-    public MySqlLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public MySqlLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
         }

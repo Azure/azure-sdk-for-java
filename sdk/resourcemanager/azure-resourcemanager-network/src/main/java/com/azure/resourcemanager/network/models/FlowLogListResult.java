@@ -24,6 +24,10 @@ public final class FlowLogListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of FlowLogListResult class. */
+    public FlowLogListResult() {
+    }
+
     /**
      * Get the value property: Information about flow log resource.
      *

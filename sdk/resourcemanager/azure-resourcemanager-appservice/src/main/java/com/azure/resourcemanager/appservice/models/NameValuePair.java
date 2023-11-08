@@ -22,6 +22,10 @@ public final class NameValuePair {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of NameValuePair class. */
+    public NameValuePair() {
+    }
+
     /**
      * Get the name property: Pair name.
      *

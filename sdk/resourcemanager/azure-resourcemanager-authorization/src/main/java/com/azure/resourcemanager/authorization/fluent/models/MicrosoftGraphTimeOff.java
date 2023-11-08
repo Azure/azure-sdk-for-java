@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** timeOff. */
 @Fluent
 public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTimeOff.class);
-
     /*
      * timeOffItem
      */
@@ -41,6 +38,10 @@ public final class MicrosoftGraphTimeOff extends MicrosoftGraphChangeTrackedEnti
      * timeOff
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTimeOff class. */
+    public MicrosoftGraphTimeOff() {
+    }
 
     /**
      * Get the draftTimeOff property: timeOffItem.

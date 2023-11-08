@@ -34,6 +34,10 @@ public final class EndpointDetail {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of EndpointDetail class. */
+    public EndpointDetail() {
+    }
+
     /**
      * Get the ipAddress property: An IP Address that Domain Name currently resolves to.
      *

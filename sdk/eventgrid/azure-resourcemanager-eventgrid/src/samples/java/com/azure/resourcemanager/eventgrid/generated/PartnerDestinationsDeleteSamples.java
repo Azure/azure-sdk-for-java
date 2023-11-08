@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PartnerDestinations Delete. */
 public final class PartnerDestinationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerDestinations_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerDestinations_Delete.json
      */
     /**
      * Sample code: PartnerDestinations_Delete.
@@ -17,6 +15,8 @@ public final class PartnerDestinationsDeleteSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerDestinationsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerDestinations().delete("examplerg", "examplePartnerDestinationName1", Context.NONE);
+        manager
+            .partnerDestinations()
+            .delete("examplerg", "examplePartnerDestinationName1", com.azure.core.util.Context.NONE);
     }
 }

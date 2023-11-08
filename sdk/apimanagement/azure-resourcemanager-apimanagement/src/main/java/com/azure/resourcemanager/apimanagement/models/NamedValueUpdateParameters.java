@@ -18,6 +18,10 @@ public final class NamedValueUpdateParameters {
     @JsonProperty(value = "properties")
     private NamedValueUpdateParameterProperties innerProperties;
 
+    /** Creates an instance of NamedValueUpdateParameters class. */
+    public NamedValueUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: NamedValue entity Update contract properties.
      *

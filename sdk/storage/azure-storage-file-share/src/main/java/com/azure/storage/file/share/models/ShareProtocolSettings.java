@@ -18,6 +18,9 @@ public final class ShareProtocolSettings {
     @JsonProperty(value = "SMB")
     private ShareSmbSettings smb;
 
+    /** Creates an instance of ShareProtocolSettings class. */
+    public ShareProtocolSettings() {}
+
     /**
      * Get the smb property: Settings for SMB protocol.
      *

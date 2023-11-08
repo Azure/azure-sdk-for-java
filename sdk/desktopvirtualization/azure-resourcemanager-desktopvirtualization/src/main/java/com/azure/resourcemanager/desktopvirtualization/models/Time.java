@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The time for a scaling action to occur. */
 @Fluent
 public final class Time {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Time.class);
-
     /*
      * The hour.
      */
@@ -25,6 +21,10 @@ public final class Time {
      */
     @JsonProperty(value = "minute", required = true)
     private int minute;
+
+    /** Creates an instance of Time class. */
+    public Time() {
+    }
 
     /**
      * Get the hour property: The hour.

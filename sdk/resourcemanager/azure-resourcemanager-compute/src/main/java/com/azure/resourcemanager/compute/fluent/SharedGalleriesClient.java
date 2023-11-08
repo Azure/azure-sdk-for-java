@@ -99,19 +99,6 @@ public interface SharedGalleriesClient {
      *
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery by subscription id or tenant id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedGalleryInner get(String location, String galleryUniqueName);
-
-    /**
-     * Get a shared gallery by subscription id or tenant id.
-     *
-     * @param location Resource location.
-     * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -120,4 +107,17 @@ public interface SharedGalleriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SharedGalleryInner> getWithResponse(String location, String galleryUniqueName, Context context);
+
+    /**
+     * Get a shared gallery by subscription id or tenant id.
+     *
+     * @param location Resource location.
+     * @param galleryUniqueName The unique name of the Shared Gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a shared gallery by subscription id or tenant id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SharedGalleryInner get(String location, String galleryUniqueName);
 }

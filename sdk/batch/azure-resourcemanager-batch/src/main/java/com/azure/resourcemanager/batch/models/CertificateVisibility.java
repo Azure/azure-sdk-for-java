@@ -33,6 +33,9 @@ public enum CertificateVisibility {
      */
     @JsonCreator
     public static CertificateVisibility fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CertificateVisibility[] items = CertificateVisibility.values();
         for (CertificateVisibility item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum CertificateVisibility {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

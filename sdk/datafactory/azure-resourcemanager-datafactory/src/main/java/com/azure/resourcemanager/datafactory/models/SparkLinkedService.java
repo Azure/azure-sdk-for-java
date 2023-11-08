@@ -24,6 +24,10 @@ public final class SparkLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SparkLinkedServiceTypeProperties innerTypeProperties = new SparkLinkedServiceTypeProperties();
 
+    /** Creates an instance of SparkLinkedService class. */
+    public SparkLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Spark Server linked service properties.
      *
@@ -374,22 +378,22 @@ public final class SparkLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SparkLinkedService object itself.
      */
-    public SparkLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public SparkLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SparkLinkedServiceTypeProperties();
         }

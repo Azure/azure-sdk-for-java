@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphResponseType. */
+/** responseType. */
 public final class MicrosoftGraphResponseType extends ExpandableStringEnum<MicrosoftGraphResponseType> {
     /** Static value none for MicrosoftGraphResponseType. */
     public static final MicrosoftGraphResponseType NONE = fromString("none");
@@ -29,6 +29,15 @@ public final class MicrosoftGraphResponseType extends ExpandableStringEnum<Micro
     public static final MicrosoftGraphResponseType NOT_RESPONDED = fromString("notResponded");
 
     /**
+     * Creates a new instance of MicrosoftGraphResponseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphResponseType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphResponseType from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class MicrosoftGraphResponseType extends ExpandableStringEnum<Micro
         return fromString(name, MicrosoftGraphResponseType.class);
     }
 
-    /** @return known MicrosoftGraphResponseType values. */
+    /**
+     * Gets known MicrosoftGraphResponseType values.
+     *
+     * @return known MicrosoftGraphResponseType values.
+     */
     public static Collection<MicrosoftGraphResponseType> values() {
         return values(MicrosoftGraphResponseType.class);
     }

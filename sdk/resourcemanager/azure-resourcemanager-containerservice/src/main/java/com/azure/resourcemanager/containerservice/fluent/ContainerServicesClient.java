@@ -14,7 +14,9 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in ContainerServicesClient. */
 public interface ContainerServicesClient {
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * Gets a list of supported orchestrators in the specified subscription.
+     *
+     * <p>Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
      *
      * @param location The name of a supported Azure region.
@@ -30,21 +32,9 @@ public interface ContainerServicesClient {
         String location, String resourceType);
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
-     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     * Gets a list of supported orchestrators in the specified subscription.
      *
-     * @param location The name of a supported Azure region.
-     * @param resourceType resource type for which the list of orchestrators needs to be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported orchestrators in the specified subscription on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(String location, String resourceType);
-
-    /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * <p>Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
      *
      * @param location The name of a supported Azure region.
@@ -57,20 +47,9 @@ public interface ContainerServicesClient {
     Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(String location);
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
-     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     * Gets a list of supported orchestrators in the specified subscription.
      *
-     * @param location The name of a supported Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported orchestrators in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OrchestratorVersionProfileListResultInner listOrchestrators(String location);
-
-    /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * <p>Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
      * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
      *
      * @param location The name of a supported Azure region.
@@ -84,4 +63,19 @@ public interface ContainerServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OrchestratorVersionProfileListResultInner> listOrchestratorsWithResponse(
         String location, String resourceType, Context context);
+
+    /**
+     * Gets a list of supported orchestrators in the specified subscription.
+     *
+     * <p>Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
+     * @param location The name of a supported Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of supported orchestrators in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OrchestratorVersionProfileListResultInner listOrchestrators(String location);
 }

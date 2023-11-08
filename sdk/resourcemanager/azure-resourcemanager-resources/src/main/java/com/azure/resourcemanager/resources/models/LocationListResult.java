@@ -18,6 +18,10 @@ public final class LocationListResult {
     @JsonProperty(value = "value")
     private List<LocationInner> value;
 
+    /** Creates an instance of LocationListResult class. */
+    public LocationListResult() {
+    }
+
     /**
      * Get the value property: An array of locations.
      *

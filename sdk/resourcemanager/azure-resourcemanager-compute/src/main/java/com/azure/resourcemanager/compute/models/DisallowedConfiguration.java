@@ -16,6 +16,10 @@ public final class DisallowedConfiguration {
     @JsonProperty(value = "vmDiskType")
     private VmDiskTypes vmDiskType;
 
+    /** Creates an instance of DisallowedConfiguration class. */
+    public DisallowedConfiguration() {
+    }
+
     /**
      * Get the vmDiskType property: VM disk types which are disallowed.
      *

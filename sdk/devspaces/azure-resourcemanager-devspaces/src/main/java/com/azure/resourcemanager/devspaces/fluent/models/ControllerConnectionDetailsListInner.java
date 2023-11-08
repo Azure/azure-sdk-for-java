@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.devspaces.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devspaces.models.ControllerConnectionDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ControllerConnectionDetailsList model. */
 @Fluent
 public final class ControllerConnectionDetailsListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ControllerConnectionDetailsListInner.class);
-
     /*
      * List of Azure Dev Spaces Controller connection details.
      */
     @JsonProperty(value = "connectionDetailsList")
     private List<ControllerConnectionDetails> connectionDetailsList;
+
+    /** Creates an instance of ControllerConnectionDetailsListInner class. */
+    public ControllerConnectionDetailsListInner() {
+    }
 
     /**
      * Get the connectionDetailsList property: List of Azure Dev Spaces Controller connection details.

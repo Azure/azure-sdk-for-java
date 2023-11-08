@@ -5,16 +5,22 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
 /** The PiiTaskResult model. */
 @Fluent
-public class PiiTaskResult {
+public final class PiiTaskResult extends AnalyzeTextTaskResult {
     /*
      * The results property.
      */
-    @JsonProperty(value = "results")
     private PiiResult results;
+
+    /** Creates an instance of PiiTaskResult class. */
+    public PiiTaskResult() {}
 
     /**
      * Get the results property: The results property.
@@ -34,5 +40,51 @@ public class PiiTaskResult {
     public PiiTaskResult setResults(PiiResult results) {
         this.results = results;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField(
+                "kind", Objects.toString(AnalyzeTextTaskResultsKind.PII_ENTITY_RECOGNITION_RESULTS, null));
+        jsonWriter.writeJsonField("results", this.results);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PiiTaskResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PiiTaskResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the PiiTaskResult.
+     */
+    public static PiiTaskResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    PiiTaskResult deserializedPiiTaskResult = new PiiTaskResult();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("kind".equals(fieldName)) {
+                            String kind = reader.getString();
+                            if (!"PiiEntityRecognitionResults".equals(kind)) {
+                                throw new IllegalStateException(
+                                        "'kind' was expected to be non-null and equal to 'PiiEntityRecognitionResults'. The found 'kind' was '"
+                                                + kind
+                                                + "'.");
+                            }
+                        } else if ("results".equals(fieldName)) {
+                            deserializedPiiTaskResult.results = PiiResult.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedPiiTaskResult;
+                });
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.generated;
 /** Samples for IncidentComments CreateOrUpdate. */
 public final class IncidentCommentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/incidents/comments/CreateIncidentComment.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/comments/CreateIncidentComment.json
      */
     /**
      * Sample code: Creates or updates an incident comment.

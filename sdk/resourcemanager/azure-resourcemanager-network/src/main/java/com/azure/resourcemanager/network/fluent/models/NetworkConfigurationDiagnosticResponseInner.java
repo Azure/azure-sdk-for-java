@@ -18,6 +18,10 @@ public final class NetworkConfigurationDiagnosticResponseInner {
     @JsonProperty(value = "results", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkConfigurationDiagnosticResult> results;
 
+    /** Creates an instance of NetworkConfigurationDiagnosticResponseInner class. */
+    public NetworkConfigurationDiagnosticResponseInner() {
+    }
+
     /**
      * Get the results property: List of network configuration diagnostic results.
      *

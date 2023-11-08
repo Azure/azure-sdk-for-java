@@ -178,6 +178,13 @@ public interface DataBoxEdgeDevice {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.databoxedge.fluent.models.DataBoxEdgeDeviceInner object.
      *
      * @return the inner object.
@@ -403,22 +410,23 @@ public interface DataBoxEdgeDevice {
     /**
      * Gets additional information for the specified Data Box Edge/Data Box Gateway device.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return additional information for the specified Data Box Edge/Data Box Gateway device along with {@link
+     *     Response}.
+     */
+    Response<DataBoxEdgeDeviceExtendedInfo> getExtendedInformationWithResponse(Context context);
+
+    /**
+     * Gets additional information for the specified Data Box Edge/Data Box Gateway device.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return additional information for the specified Data Box Edge/Data Box Gateway device.
      */
     DataBoxEdgeDeviceExtendedInfo getExtendedInformation();
-
-    /**
-     * Gets additional information for the specified Data Box Edge/Data Box Gateway device.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return additional information for the specified Data Box Edge/Data Box Gateway device.
-     */
-    Response<DataBoxEdgeDeviceExtendedInfo> getExtendedInformationWithResponse(Context context);
 
     /**
      * Installs the updates on the Data Box Edge/Data Box Gateway device.
@@ -460,23 +468,23 @@ public interface DataBoxEdgeDevice {
      * Uploads registration certificate for the device.
      *
      * @param parameters The upload certificate request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upload registration certificate response along with {@link Response}.
+     */
+    Response<UploadCertificateResponse> uploadCertificateWithResponse(
+        UploadCertificateRequest parameters, Context context);
+
+    /**
+     * Uploads registration certificate for the device.
+     *
+     * @param parameters The upload certificate request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the upload registration certificate response.
      */
     UploadCertificateResponse uploadCertificate(UploadCertificateRequest parameters);
-
-    /**
-     * Uploads registration certificate for the device.
-     *
-     * @param parameters The upload certificate request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upload registration certificate response.
-     */
-    Response<UploadCertificateResponse> uploadCertificateWithResponse(
-        UploadCertificateRequest parameters, Context context);
 }

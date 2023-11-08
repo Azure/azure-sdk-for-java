@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ConnectionMonitorEndpointFilterItem {
     /*
-     * The type of item included in the filter. Currently only 'AgentAddress'
-     * is supported.
+     * The type of item included in the filter. Currently only 'AgentAddress' is supported.
      */
     @JsonProperty(value = "type")
     private ConnectionMonitorEndpointFilterItemType type;
@@ -22,6 +21,10 @@ public final class ConnectionMonitorEndpointFilterItem {
      */
     @JsonProperty(value = "address")
     private String address;
+
+    /** Creates an instance of ConnectionMonitorEndpointFilterItem class. */
+    public ConnectionMonitorEndpointFilterItem() {
+    }
 
     /**
      * Get the type property: The type of item included in the filter. Currently only 'AgentAddress' is supported.

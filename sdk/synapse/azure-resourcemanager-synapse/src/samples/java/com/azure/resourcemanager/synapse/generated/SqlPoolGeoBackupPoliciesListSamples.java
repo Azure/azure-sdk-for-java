@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolGeoBackupPolicies List. */
 public final class SqlPoolGeoBackupPoliciesListSamples {
     /*
@@ -17,6 +15,8 @@ public final class SqlPoolGeoBackupPoliciesListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getSqlPoolGeoBackupPolicy(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolGeoBackupPolicies().list("sqlcrudtest-4799", "sqlcrudtest-5961", "testdw", Context.NONE);
+        manager
+            .sqlPoolGeoBackupPolicies()
+            .list("sqlcrudtest-4799", "sqlcrudtest-5961", "testdw", com.azure.core.util.Context.NONE);
     }
 }

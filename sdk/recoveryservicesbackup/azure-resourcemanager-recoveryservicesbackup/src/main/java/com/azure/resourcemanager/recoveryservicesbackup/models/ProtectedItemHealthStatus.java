@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProtectedItemHealthStatus. */
+/** Health status of the backup item, evaluated based on last heartbeat received. */
 public final class ProtectedItemHealthStatus extends ExpandableStringEnum<ProtectedItemHealthStatus> {
     /** Static value Invalid for ProtectedItemHealthStatus. */
     public static final ProtectedItemHealthStatus INVALID = fromString("Invalid");
@@ -26,6 +26,15 @@ public final class ProtectedItemHealthStatus extends ExpandableStringEnum<Protec
     public static final ProtectedItemHealthStatus IRPENDING = fromString("IRPending");
 
     /**
+     * Creates a new instance of ProtectedItemHealthStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProtectedItemHealthStatus() {
+    }
+
+    /**
      * Creates or finds a ProtectedItemHealthStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class ProtectedItemHealthStatus extends ExpandableStringEnum<Protec
         return fromString(name, ProtectedItemHealthStatus.class);
     }
 
-    /** @return known ProtectedItemHealthStatus values. */
+    /**
+     * Gets known ProtectedItemHealthStatus values.
+     *
+     * @return known ProtectedItemHealthStatus values.
+     */
     public static Collection<ProtectedItemHealthStatus> values() {
         return values(ProtectedItemHealthStatus.class);
     }

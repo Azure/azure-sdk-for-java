@@ -21,27 +21,28 @@ import java.util.List;
 @Fluent
 public class SwitchActivity extends ControlActivity {
     /*
-     * An expression that would evaluate to a string or integer. This is used
-     * to determine the block of activities in cases that will be executed.
+     * An expression that would evaluate to a string or integer. This is used to determine the block of activities in
+     * cases that will be executed.
      */
     @JsonProperty(value = "typeProperties.on", required = true)
     private Expression on;
 
     /*
-     * List of cases that correspond to expected values of the 'on' property.
-     * This is an optional property and if not provided, the activity will
-     * execute activities provided in defaultActivities.
+     * List of cases that correspond to expected values of the 'on' property. This is an optional property and if not
+     * provided, the activity will execute activities provided in defaultActivities.
      */
     @JsonProperty(value = "typeProperties.cases")
     private List<SwitchCase> cases;
 
     /*
-     * List of activities to execute if no case condition is satisfied. This is
-     * an optional property and if not provided, the activity will exit without
-     * any action.
+     * List of activities to execute if no case condition is satisfied. This is an optional property and if not
+     * provided, the activity will exit without any action.
      */
     @JsonProperty(value = "typeProperties.defaultActivities")
     private List<Activity> defaultActivities;
+
+    /** Creates an instance of SwitchActivity class. */
+    public SwitchActivity() {}
 
     /**
      * Get the on property: An expression that would evaluate to a string or integer. This is used to determine the
@@ -106,6 +107,48 @@ public class SwitchActivity extends ControlActivity {
      */
     public SwitchActivity setDefaultActivities(List<Activity> defaultActivities) {
         this.defaultActivities = defaultActivities;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SwitchActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SwitchActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SwitchActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SwitchActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SwitchActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SwitchActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

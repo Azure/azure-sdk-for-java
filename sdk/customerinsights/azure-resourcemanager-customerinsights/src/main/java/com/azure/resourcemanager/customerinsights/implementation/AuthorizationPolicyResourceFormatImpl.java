@@ -54,6 +54,10 @@ public final class AuthorizationPolicyResourceFormatImpl
         return this.innerModel().secondaryKey();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AuthorizationPolicyResourceFormatInner innerModel() {
         return this.innerObject;
     }
@@ -159,28 +163,28 @@ public final class AuthorizationPolicyResourceFormatImpl
         return this;
     }
 
-    public AuthorizationPolicy regeneratePrimaryKey() {
-        return serviceManager
-            .authorizationPolicies()
-            .regeneratePrimaryKey(resourceGroupName, hubName, authorizationPolicyName);
-    }
-
     public Response<AuthorizationPolicy> regeneratePrimaryKeyWithResponse(Context context) {
         return serviceManager
             .authorizationPolicies()
             .regeneratePrimaryKeyWithResponse(resourceGroupName, hubName, authorizationPolicyName, context);
     }
 
-    public AuthorizationPolicy regenerateSecondaryKey() {
+    public AuthorizationPolicy regeneratePrimaryKey() {
         return serviceManager
             .authorizationPolicies()
-            .regenerateSecondaryKey(resourceGroupName, hubName, authorizationPolicyName);
+            .regeneratePrimaryKey(resourceGroupName, hubName, authorizationPolicyName);
     }
 
     public Response<AuthorizationPolicy> regenerateSecondaryKeyWithResponse(Context context) {
         return serviceManager
             .authorizationPolicies()
             .regenerateSecondaryKeyWithResponse(resourceGroupName, hubName, authorizationPolicyName, context);
+    }
+
+    public AuthorizationPolicy regenerateSecondaryKey() {
+        return serviceManager
+            .authorizationPolicies()
+            .regenerateSecondaryKey(resourceGroupName, hubName, authorizationPolicyName);
     }
 
     public AuthorizationPolicyResourceFormatImpl withPermissions(List<PermissionTypes> permissions) {

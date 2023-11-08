@@ -31,7 +31,7 @@ public interface BlobChangefeedEvent {
     OffsetDateTime getEventTime();
 
     /**
-     * @return the identifer.
+     * @return the identifier.
      */
     String getId();
 

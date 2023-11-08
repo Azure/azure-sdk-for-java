@@ -47,6 +47,15 @@ public final class IoTSecuritySolutionModelImpl
         return this.innerModel().systemData();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String workspace() {
         return this.innerModel().workspace();
     }
@@ -121,21 +130,16 @@ public final class IoTSecuritySolutionModelImpl
         }
     }
 
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public IoTSecuritySolutionModelInner innerModel() {

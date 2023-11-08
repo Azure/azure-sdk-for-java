@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Tables are part of the workspace schema, and contain a list of columns and a reference to other relevant metadata
+ * A data table that takes part in a workspace schema.
+ *
+ * <p>Tables are part of the workspace schema, and contain a list of columns and a reference to other relevant metadata
  * items.
  */
 @Fluent

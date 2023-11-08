@@ -6,18 +6,14 @@ package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Solution properties supported by the OperationsManagement resource provider. */
 @Fluent
 public final class SolutionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SolutionProperties.class);
-
     /*
-     * The azure resourceId for the workspace where the solution will be
-     * deployed/enabled.
+     * The azure resourceId for the workspace where the solution will be deployed/enabled.
      */
     @JsonProperty(value = "workspaceResourceId", required = true)
     private String workspaceResourceId;
@@ -29,19 +25,22 @@ public final class SolutionProperties {
     private String provisioningState;
 
     /*
-     * The azure resources that will be contained within the solutions. They
-     * will be locked and gets deleted automatically when the solution is
-     * deleted.
+     * The azure resources that will be contained within the solutions. They will be locked and gets deleted
+     * automatically when the solution is deleted.
      */
     @JsonProperty(value = "containedResources")
     private List<String> containedResources;
 
     /*
-     * The resources that will be referenced from this solution. Deleting any
-     * of those solution out of band will break the solution.
+     * The resources that will be referenced from this solution. Deleting any of those solution out of band will break
+     * the solution.
      */
     @JsonProperty(value = "referencedResources")
     private List<String> referencedResources;
+
+    /** Creates an instance of SolutionProperties class. */
+    public SolutionProperties() {
+    }
 
     /**
      * Get the workspaceResourceId property: The azure resourceId for the workspace where the solution will be
@@ -125,10 +124,12 @@ public final class SolutionProperties {
      */
     public void validate() {
         if (workspaceResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property workspaceResourceId in model SolutionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SolutionProperties.class);
 }

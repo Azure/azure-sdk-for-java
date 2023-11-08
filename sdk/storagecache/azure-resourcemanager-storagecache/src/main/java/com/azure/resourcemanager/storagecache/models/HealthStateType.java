@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HealthStateType. */
+/**
+ * List of cache health states. Down is when the cluster is not responding. Degraded is when its functioning but has
+ * some alerts. Transitioning when it is creating or deleting. Unknown will be returned in old api versions when a new
+ * value is added in future versions. WaitingForKey is when the create is waiting for the system assigned identity to be
+ * given access to the encryption key in the encryption settings.
+ */
 public final class HealthStateType extends ExpandableStringEnum<HealthStateType> {
     /** Static value Unknown for HealthStateType. */
     public static final HealthStateType UNKNOWN = fromString("Unknown");
@@ -37,6 +42,24 @@ public final class HealthStateType extends ExpandableStringEnum<HealthStateType>
     /** Static value Flushing for HealthStateType. */
     public static final HealthStateType FLUSHING = fromString("Flushing");
 
+    /** Static value WaitingForKey for HealthStateType. */
+    public static final HealthStateType WAITING_FOR_KEY = fromString("WaitingForKey");
+
+    /** Static value StartFailed for HealthStateType. */
+    public static final HealthStateType START_FAILED = fromString("StartFailed");
+
+    /** Static value UpgradeFailed for HealthStateType. */
+    public static final HealthStateType UPGRADE_FAILED = fromString("UpgradeFailed");
+
+    /**
+     * Creates a new instance of HealthStateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HealthStateType() {
+    }
+
     /**
      * Creates or finds a HealthStateType from its string representation.
      *
@@ -48,7 +71,11 @@ public final class HealthStateType extends ExpandableStringEnum<HealthStateType>
         return fromString(name, HealthStateType.class);
     }
 
-    /** @return known HealthStateType values. */
+    /**
+     * Gets known HealthStateType values.
+     *
+     * @return known HealthStateType values.
+     */
     public static Collection<HealthStateType> values() {
         return values(HealthStateType.class);
     }

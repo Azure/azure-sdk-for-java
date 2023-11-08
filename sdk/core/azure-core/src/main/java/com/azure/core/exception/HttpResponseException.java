@@ -99,6 +99,8 @@ public class HttpResponseException extends AzureException {
     }
 
     /**
+     * Gets the {@link HttpResponse} received that is associated to the exception.
+     *
      * @return The {@link HttpResponse} received that is associated to the exception.
      */
     public HttpResponse getResponse() {
@@ -106,6 +108,8 @@ public class HttpResponseException extends AzureException {
     }
 
     /**
+     * Gets the deserialized HTTP response value.
+     *
      * @return The deserialized HTTP response value.
      */
     public Object getValue() {

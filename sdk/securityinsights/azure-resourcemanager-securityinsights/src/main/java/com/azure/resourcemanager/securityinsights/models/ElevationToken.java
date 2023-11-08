@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ElevationToken. */
+/** The elevation token associated with the process. */
 public enum ElevationToken {
     /** Enum value Default. */
     DEFAULT("Default"),
@@ -33,6 +33,9 @@ public enum ElevationToken {
      */
     @JsonCreator
     public static ElevationToken fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ElevationToken[] items = ElevationToken.values();
         for (ElevationToken item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ElevationToken {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

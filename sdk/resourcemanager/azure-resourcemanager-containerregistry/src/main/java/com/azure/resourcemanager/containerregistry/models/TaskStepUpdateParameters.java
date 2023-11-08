@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,8 +24,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class TaskStepUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskStepUpdateParameters.class);
-
     /*
      * The URL(absolute or relative) of the source context for the task step.
      */
@@ -35,11 +31,14 @@ public class TaskStepUpdateParameters {
     private String contextPath;
 
     /*
-     * The token (git PAT or SAS token of storage account blob) associated with
-     * the context for a step.
+     * The token (git PAT or SAS token of storage account blob) associated with the context for a step.
      */
     @JsonProperty(value = "contextAccessToken")
     private String contextAccessToken;
+
+    /** Creates an instance of TaskStepUpdateParameters class. */
+    public TaskStepUpdateParameters() {
+    }
 
     /**
      * Get the contextPath property: The URL(absolute or relative) of the source context for the task step.

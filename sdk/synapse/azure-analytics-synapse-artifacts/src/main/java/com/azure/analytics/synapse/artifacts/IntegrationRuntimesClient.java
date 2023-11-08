@@ -21,26 +21,13 @@ public final class IntegrationRuntimesClient {
     @Generated private final IntegrationRuntimesImpl serviceClient;
 
     /**
-     * Initializes an instance of IntegrationRuntimes client.
+     * Initializes an instance of IntegrationRuntimesClient class.
      *
      * @param serviceClient the service client implementation.
      */
     @Generated
     IntegrationRuntimesClient(IntegrationRuntimesImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * List Integration Runtimes.
-     *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeListResponse list() {
-        return this.serviceClient.list();
     }
 
     /**
@@ -59,18 +46,16 @@ public final class IntegrationRuntimesClient {
     }
 
     /**
-     * Get Integration Runtime.
+     * List Integration Runtimes.
      *
-     * @param integrationRuntimeName The Integration Runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
+     * @return a list of integration runtime resources.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeResource get(String integrationRuntimeName) {
-        return this.serviceClient.get(integrationRuntimeName);
+    public IntegrationRuntimeListResponse list() {
+        return this.serviceClient.list();
     }
 
     /**
@@ -87,5 +72,20 @@ public final class IntegrationRuntimesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeResource> getWithResponse(String integrationRuntimeName, Context context) {
         return this.serviceClient.getWithResponse(integrationRuntimeName, context);
+    }
+
+    /**
+     * Get Integration Runtime.
+     *
+     * @param integrationRuntimeName The Integration Runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return integration Runtime.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeResource get(String integrationRuntimeName) {
+        return this.serviceClient.get(integrationRuntimeName);
     }
 }

@@ -6,15 +6,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A Sql pool connection policy. */
 @Fluent
 public final class SqlPoolConnectionPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolConnectionPolicyInner.class);
-
     /*
      * Resource kind.
      */
@@ -32,6 +28,10 @@ public final class SqlPoolConnectionPolicyInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private SqlPoolConnectionPolicyProperties innerProperties;
+
+    /** Creates an instance of SqlPoolConnectionPolicyInner class. */
+    public SqlPoolConnectionPolicyInner() {
+    }
 
     /**
      * Get the kind property: Resource kind.

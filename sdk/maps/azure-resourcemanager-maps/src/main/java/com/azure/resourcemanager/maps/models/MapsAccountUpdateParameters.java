@@ -5,26 +5,22 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.maps.fluent.models.MapsAccountProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Parameters used to update an existing Maps Account. */
-@JsonFlatten
 @Fluent
-public class MapsAccountUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MapsAccountUpdateParameters.class);
-
+public final class MapsAccountUpdateParameters {
     /*
-     * Gets or sets a list of key value pairs that describe the resource. These
-     * tags can be used in viewing and grouping this resource (across resource
-     * groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key no greater than 128 characters and value no greater than
-     * 256 characters.
+     * Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and
+     * grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag
+     * must have a key no greater than 128 characters and value no greater than 256 characters.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -40,24 +36,20 @@ public class MapsAccountUpdateParameters {
     private Sku sku;
 
     /*
-     * A unique identifier for the maps account
+     * Managed service identity (system assigned and/or user assigned identities)
      */
-    @JsonProperty(value = "properties.uniqueId", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueId;
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /*
-     * Allows toggle functionality on Azure Policy to disable Azure Maps local
-     * authentication support. This will disable Shared Keys authentication
-     * from any usage.
+     * The map account properties.
      */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
+    @JsonProperty(value = "properties")
+    private MapsAccountProperties innerProperties;
 
-    /*
-     * the state of the provisioning.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    /** Creates an instance of MapsAccountUpdateParameters class. */
+    public MapsAccountUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
@@ -124,43 +116,161 @@ public class MapsAccountUpdateParameters {
     }
 
     /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the MapsAccountUpdateParameters object itself.
+     */
+    public MapsAccountUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the innerProperties property: The map account properties.
+     *
+     * @return the innerProperties value.
+     */
+    private MapsAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the uniqueId property: A unique identifier for the maps account.
      *
      * @return the uniqueId value.
      */
     public String uniqueId() {
-        return this.uniqueId;
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueId();
     }
 
     /**
      * Get the disableLocalAuth property: Allows toggle functionality on Azure Policy to disable Azure Maps local
-     * authentication support. This will disable Shared Keys authentication from any usage.
+     * authentication support. This will disable Shared Keys and Shared Access Signature Token authentication from any
+     * usage.
      *
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
     }
 
     /**
      * Set the disableLocalAuth property: Allows toggle functionality on Azure Policy to disable Azure Maps local
-     * authentication support. This will disable Shared Keys authentication from any usage.
+     * authentication support. This will disable Shared Keys and Shared Access Signature Token authentication from any
+     * usage.
      *
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the MapsAccountUpdateParameters object itself.
      */
     public MapsAccountUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MapsAccountProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
         return this;
     }
 
     /**
-     * Get the provisioningState property: the state of the provisioning.
+     * Get the provisioningState property: The provisioning state of the Map account resource, Account updates can only
+     * be performed on terminal states. Terminal states: `Succeeded` and `Failed`.
      *
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the linkedResources property: The array of associated resources to the Map account. Linked resource in the
+     * array cannot individually update, you must update all linked resources in the array together. These resources may
+     * be used on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s)
+     * permissions to those resource(s).
+     *
+     * @return the linkedResources value.
+     */
+    public List<LinkedResource> linkedResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkedResources();
+    }
+
+    /**
+     * Set the linkedResources property: The array of associated resources to the Map account. Linked resource in the
+     * array cannot individually update, you must update all linked resources in the array together. These resources may
+     * be used on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s)
+     * permissions to those resource(s).
+     *
+     * @param linkedResources the linkedResources value to set.
+     * @return the MapsAccountUpdateParameters object itself.
+     */
+    public MapsAccountUpdateParameters withLinkedResources(List<LinkedResource> linkedResources) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MapsAccountProperties();
+        }
+        this.innerProperties().withLinkedResources(linkedResources);
+        return this;
+    }
+
+    /**
+     * Get the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the Blob service.
+     *
+     * @return the cors value.
+     */
+    public CorsRules cors() {
+        return this.innerProperties() == null ? null : this.innerProperties().cors();
+    }
+
+    /**
+     * Set the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the Blob service.
+     *
+     * @param cors the cors value to set.
+     * @return the MapsAccountUpdateParameters object itself.
+     */
+    public MapsAccountUpdateParameters withCors(CorsRules cors) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MapsAccountProperties();
+        }
+        this.innerProperties().withCors(cors);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: (Optional) Discouraged to include in resource definition. Only needed where it is
+     * possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are
+     * enabled and disabled.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: (Optional) Discouraged to include in resource definition. Only needed where it is
+     * possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are
+     * enabled and disabled.
+     *
+     * @param encryption the encryption value to set.
+     * @return the MapsAccountUpdateParameters object itself.
+     */
+    public MapsAccountUpdateParameters withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MapsAccountProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
     }
 
     /**
@@ -171,6 +281,12 @@ public class MapsAccountUpdateParameters {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

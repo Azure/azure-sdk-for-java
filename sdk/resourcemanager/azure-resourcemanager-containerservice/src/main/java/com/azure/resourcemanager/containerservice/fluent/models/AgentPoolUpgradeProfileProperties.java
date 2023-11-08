@@ -21,8 +21,7 @@ public final class AgentPoolUpgradeProfileProperties {
     private String kubernetesVersion;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows.
-     * Default to Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     @JsonProperty(value = "osType", required = true)
     private OSType osType;
@@ -38,6 +37,10 @@ public final class AgentPoolUpgradeProfileProperties {
      */
     @JsonProperty(value = "latestNodeImageVersion")
     private String latestNodeImageVersion;
+
+    /** Creates an instance of AgentPoolUpgradeProfileProperties class. */
+    public AgentPoolUpgradeProfileProperties() {
+    }
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).

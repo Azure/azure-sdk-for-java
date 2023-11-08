@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -30,11 +31,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
-import java.nio.ByteBuffer;
 import java.time.Duration;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Glossaries. */
@@ -62,7 +62,7 @@ public final class GlossariesImpl {
      */
     @Host("{Endpoint}/catalog/api")
     @ServiceInterface(name = "PurviewCatalogClient")
-    private interface GlossariesService {
+    public interface GlossariesService {
         @Get("/atlas/v2/glossary")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -76,7 +76,28 @@ public final class GlossariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listGlossaries(
-                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listGlossariesSync(
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/glossary")
         @ExpectedResponses({200})
@@ -93,6 +114,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> createGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData atlasGlossary,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/atlas/v2/glossary")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createGlossarySync(
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") BinaryData atlasGlossary,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -111,6 +152,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> createGlossaryCategories(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryCategory,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/atlas/v2/glossary/categories")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createGlossaryCategoriesSync(
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") BinaryData glossaryCategory,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -129,6 +190,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> createGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryCategory,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/atlas/v2/glossary/category")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createGlossaryCategorySync(
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") BinaryData glossaryCategory,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -147,6 +228,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> getGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/category/{categoryGuid}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getGlossaryCategorySync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -166,6 +267,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
                 @BodyParam("application/json") BinaryData glossaryCategory,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/atlas/v2/glossary/category/{categoryGuid}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> updateGlossaryCategorySync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                @BodyParam("application/json") BinaryData glossaryCategory,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -184,6 +306,26 @@ public final class GlossariesImpl {
         Mono<Response<Void>> deleteGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/atlas/v2/glossary/category/{categoryGuid}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteGlossaryCategorySync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -203,6 +345,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
                 @BodyParam("application/json") BinaryData partialUpdates,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/atlas/v2/glossary/category/{categoryGuid}/partial")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> partialUpdateGlossaryCategorySync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                @BodyParam("application/json") BinaryData partialUpdates,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -221,6 +384,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listRelatedCategories(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/category/{categoryGuid}/related")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listRelatedCategoriesSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -239,6 +422,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listCategoryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/category/{categoryGuid}/terms")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCategoryTermsSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -257,6 +460,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> createGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryTerm,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/atlas/v2/glossary/term")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createGlossaryTermSync(
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") BinaryData glossaryTerm,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -275,6 +498,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> getGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/term/{termGuid}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getGlossaryTermSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -294,6 +537,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @BodyParam("application/json") BinaryData glossaryTerm,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/atlas/v2/glossary/term/{termGuid}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> updateGlossaryTermSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @BodyParam("application/json") BinaryData glossaryTerm,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -312,6 +576,26 @@ public final class GlossariesImpl {
         Mono<Response<Void>> deleteGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/atlas/v2/glossary/term/{termGuid}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteGlossaryTermSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -331,6 +615,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @BodyParam("application/json") BinaryData partialUpdates,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/atlas/v2/glossary/term/{termGuid}/partial")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> partialUpdateGlossaryTermSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @BodyParam("application/json") BinaryData partialUpdates,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -349,6 +654,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> createGlossaryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryTerm,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/atlas/v2/glossary/terms")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createGlossaryTermsSync(
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") BinaryData glossaryTerm,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -367,6 +692,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> getEntitiesAssignedWithTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEntitiesAssignedWithTermSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -386,6 +731,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @BodyParam("application/json") BinaryData relatedObjectIds,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> assignTermToEntitiesSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @BodyParam("application/json") BinaryData relatedObjectIds,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -405,6 +771,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @BodyParam("application/json") BinaryData relatedObjectIds,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> removeTermAssignmentFromEntitiesSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @BodyParam("application/json") BinaryData relatedObjectIds,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -424,6 +811,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @BodyParam("application/json") BinaryData relatedObjectIds,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteTermAssignmentFromEntitiesSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @BodyParam("application/json") BinaryData relatedObjectIds,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -442,6 +850,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listRelatedTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/terms/{termGuid}/related")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listRelatedTermsSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -460,6 +888,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> getGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/{glossaryGuid}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getGlossarySync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -479,6 +927,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @BodyParam("application/json") BinaryData updatedGlossary,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/atlas/v2/glossary/{glossaryGuid}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> updateGlossarySync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @BodyParam("application/json") BinaryData updatedGlossary,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -497,6 +966,26 @@ public final class GlossariesImpl {
         Mono<Response<Void>> deleteGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/atlas/v2/glossary/{glossaryGuid}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteGlossarySync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -515,6 +1004,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listGlossaryCategories(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/{glossaryGuid}/categories")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listGlossaryCategoriesSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -533,6 +1042,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listGlossaryCategoriesHeaders(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/{glossaryGuid}/categories/headers")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listGlossaryCategoriesHeadersSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -551,6 +1080,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> getDetailedGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/{glossaryGuid}/detailed")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getDetailedGlossarySync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -570,6 +1119,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @BodyParam("application/json") BinaryData partialUpdates,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/atlas/v2/glossary/{glossaryGuid}/partial")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> partialUpdateGlossarySync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @BodyParam("application/json") BinaryData partialUpdates,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -588,6 +1158,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listGlossaryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/{glossaryGuid}/terms")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listGlossaryTermsSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -606,6 +1196,26 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listGlossaryTermHeaders(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/glossary/{glossaryGuid}/terms/headers")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listGlossaryTermHeadersSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -627,6 +1237,29 @@ public final class GlossariesImpl {
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("multipart/form-data") BinaryData file,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/glossary/{glossaryGuid}/terms/import")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> importGlossaryTermsViaCsvSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("multipart/form-data") BinaryData file,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -648,6 +1281,29 @@ public final class GlossariesImpl {
                 @PathParam("glossaryName") String glossaryName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("multipart/form-data") BinaryData file,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/glossary/name/{glossaryName}/terms/import")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> importGlossaryTermsViaCsvByGlossaryNameSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryName") String glossaryName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("multipart/form-data") BinaryData file,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -667,6 +1323,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("operationGuid") String operationGuid,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/glossary/terms/import/{operationGuid}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getImportCsvOperationStatusSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("operationGuid") String operationGuid,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -682,11 +1359,33 @@ public final class GlossariesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsv(
+        Mono<Response<BinaryData>> exportGlossaryTermsAsCsv(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData termGuids,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/glossary/{glossaryGuid}/terms/export")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> exportGlossaryTermsAsCsvSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData termGuids,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -706,6 +1405,27 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryName") String glossaryName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/glossary/name/{glossaryName}/terms")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listTermsByGlossaryNameSync(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryName") String glossaryName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -718,69 +1438,71 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     *     <tr><td>ignoreTermsAndCategories</td><td>String</td><td>No</td><td>Whether ignore terms and categories</td></tr>
+     *     <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         language: String
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         language: String (Optional)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         usage: String
+     *         usage: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -795,8 +1517,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossariesWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.listGlossaries(this.client.getEndpoint(), requestOptions, context));
+                context -> service.listGlossaries(this.client.getEndpoint(), accept, requestOptions, context));
     }
 
     /**
@@ -807,158 +1530,71 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     *     <tr><td>ignoreTermsAndCategories</td><td>String</td><td>No</td><td>Whether ignore terms and categories</td></tr>
+     *     <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         language: String
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         language: String (Optional)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         usage: String
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all glossaries registered with Atlas along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listGlossariesWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.listGlossaries(this.client.getEndpoint(), requestOptions, context);
-    }
-
-    /**
-     * Get all glossaries registered with Atlas.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     *     <tr><td>ignoreTermsAndCategories</td><td>String</td><td>No</td><td>Whether ignore terms and categories</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
-     *             }
-     *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
-     *             }
-     *         ]
-     *         language: String
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *         usage: String
+     *         usage: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -972,7 +1608,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossariesWithResponse(RequestOptions requestOptions) {
-        return listGlossariesWithResponseAsync(requestOptions).block();
+        final String accept = "application/json";
+        return service.listGlossariesSync(this.client.getEndpoint(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -982,58 +1619,58 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -1041,63 +1678,63 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
-     * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
-     *     anchor attribute when creating the Term/Category.
+     * @param atlasGlossary Glossary definition, terms &amp; categories can be anchored to a glossary. Using the anchor
+     *     attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1108,8 +1745,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryWithResponseAsync(
             BinaryData atlasGlossary, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.createGlossary(this.client.getEndpoint(), atlasGlossary, requestOptions, context));
+                context ->
+                        service.createGlossary(
+                                this.client.getEndpoint(), atlasGlossary, accept, requestOptions, context));
     }
 
     /**
@@ -1119,58 +1759,58 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -1178,200 +1818,63 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
-     * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
-     *     anchor attribute when creating the Term/Category.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasGlossary along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createGlossaryWithResponseAsync(
-            BinaryData atlasGlossary, RequestOptions requestOptions, Context context) {
-        return service.createGlossary(this.client.getEndpoint(), atlasGlossary, requestOptions, context);
-    }
-
-    /**
-     * Create a glossary.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     usage: String
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     usage: String
-     * }
-     * }</pre>
-     *
-     * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
-     *     anchor attribute when creating the Term/Category.
+     * @param atlasGlossary Glossary definition, terms &amp; categories can be anchored to a glossary. Using the anchor
+     *     attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1381,7 +1884,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryWithResponse(BinaryData atlasGlossary, RequestOptions requestOptions) {
-        return createGlossaryWithResponseAsync(atlasGlossary, requestOptions).block();
+        final String accept = "application/json";
+        return service.createGlossarySync(
+                this.client.getEndpoint(), atlasGlossary, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1391,61 +1896,61 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         childrenCategories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         parentCategory (Optional): (recursive schema, see parentCategory above)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
      *     }
@@ -1456,61 +1961,61 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         childrenCategories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         parentCategory (Optional): (recursive schema, see parentCategory above)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
      *     }
@@ -1529,10 +2034,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponseAsync(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createGlossaryCategories(
-                                this.client.getEndpoint(), glossaryCategory, requestOptions, context));
+                                this.client.getEndpoint(), glossaryCategory, accept, requestOptions, context));
     }
 
     /**
@@ -1542,61 +2048,61 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         childrenCategories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         parentCategory (Optional): (recursive schema, see parentCategory above)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
      *     }
@@ -1607,210 +2113,61 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         childrenCategories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param glossaryCategory An array of glossary category definitions to be created.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an array of glossary category created successfully in bulk along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponseAsync(
-            BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
-        return service.createGlossaryCategories(this.client.getEndpoint(), glossaryCategory, requestOptions, context);
-    }
-
-    /**
-     * Create glossary category in bulk.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
-     *             }
-     *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
-     *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
-     *             }
-     *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
-     *             }
-     *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
-     *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
-     *             }
-     *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         parentCategory (Optional): (recursive schema, see parentCategory above)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
      *     }
@@ -1828,7 +2185,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoriesWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return createGlossaryCategoriesWithResponseAsync(glossaryCategory, requestOptions).block();
+        final String accept = "application/json";
+        return service.createGlossaryCategoriesSync(
+                this.client.getEndpoint(), glossaryCategory, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1838,60 +2197,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -1901,60 +2260,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -1972,10 +2331,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoryWithResponseAsync(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createGlossaryCategory(
-                                this.client.getEndpoint(), glossaryCategory, requestOptions, context));
+                                this.client.getEndpoint(), glossaryCategory, accept, requestOptions, context));
     }
 
     /**
@@ -1985,60 +2345,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -2048,205 +2408,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
-     *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasGlossaryCategory along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createGlossaryCategoryWithResponseAsync(
-            BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
-        return service.createGlossaryCategory(this.client.getEndpoint(), glossaryCategory, requestOptions, context);
-    }
-
-    /**
-     * Create a glossary category.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -2264,7 +2479,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoryWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return createGlossaryCategoryWithResponseAsync(glossaryCategory, requestOptions).block();
+        final String accept = "application/json";
+        return service.createGlossaryCategorySync(
+                this.client.getEndpoint(), glossaryCategory, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2274,60 +2491,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -2345,9 +2562,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryCategoryWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context));
+                        service.getGlossaryCategory(
+                                this.client.getEndpoint(), categoryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -2357,142 +2576,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return specific glossary category by its GUID along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getGlossaryCategoryWithResponseAsync(
-            String categoryGuid, RequestOptions requestOptions, Context context) {
-        return service.getGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context);
-    }
-
-    /**
-     * Get specific glossary category by its GUID.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -2508,7 +2645,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return getGlossaryCategoryWithResponseAsync(categoryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.getGlossaryCategorySync(
+                this.client.getEndpoint(), categoryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2518,60 +2657,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -2581,60 +2720,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -2652,10 +2791,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryCategoryWithResponseAsync(
             String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateGlossaryCategory(
-                                this.client.getEndpoint(), categoryGuid, glossaryCategory, requestOptions, context));
+                                this.client.getEndpoint(),
+                                categoryGuid,
+                                glossaryCategory,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -2665,60 +2810,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -2728,206 +2873,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param glossaryCategory The glossary category to be updated.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasGlossaryCategory along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateGlossaryCategoryWithResponseAsync(
-            String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
-        return service.updateGlossaryCategory(
-                this.client.getEndpoint(), categoryGuid, glossaryCategory, requestOptions, context);
-    }
-
-    /**
-     * Update the given glossary category by its GUID.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -2945,7 +2944,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryCategoryWithResponse(
             String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return updateGlossaryCategoryWithResponseAsync(categoryGuid, glossaryCategory, requestOptions).block();
+        final String accept = "application/json";
+        return service.updateGlossaryCategorySync(
+                this.client.getEndpoint(), categoryGuid, glossaryCategory, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2962,28 +2963,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryCategoryWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteGlossaryCategory(
-                                this.client.getEndpoint(), categoryGuid, requestOptions, context));
-    }
-
-    /**
-     * Delete a glossary category.
-     *
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteGlossaryCategoryWithResponseAsync(
-            String categoryGuid, RequestOptions requestOptions, Context context) {
-        return service.deleteGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context);
+                                this.client.getEndpoint(), categoryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -2999,7 +2983,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return deleteGlossaryCategoryWithResponseAsync(categoryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.deleteGlossaryCategorySync(
+                this.client.getEndpoint(), categoryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3009,7 +2995,7 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     String: String
+     *     String: String (Required)
      * }
      * }</pre>
      *
@@ -3017,60 +3003,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -3089,10 +3075,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryCategoryWithResponseAsync(
             String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateGlossaryCategory(
-                                this.client.getEndpoint(), categoryGuid, partialUpdates, requestOptions, context));
+                                this.client.getEndpoint(),
+                                categoryGuid,
+                                partialUpdates,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -3102,7 +3094,7 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     String: String
+     *     String: String (Required)
      * }
      * }</pre>
      *
@@ -3110,152 +3102,60 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
-     *     partial update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasGlossaryCategory along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> partialUpdateGlossaryCategoryWithResponseAsync(
-            String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
-        return service.partialUpdateGlossaryCategory(
-                this.client.getEndpoint(), categoryGuid, partialUpdates, requestOptions, context);
-    }
-
-    /**
-     * Update the glossary category partially.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     String: String
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -3274,7 +3174,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryCategoryWithResponse(
             String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return partialUpdateGlossaryCategoryWithResponseAsync(categoryGuid, partialUpdates, requestOptions).block();
+        final String accept = "application/json";
+        return service.partialUpdateGlossaryCategorySync(
+                this.client.getEndpoint(), categoryGuid, partialUpdates, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3286,22 +3188,24 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     String (Required): [
+     *          (Required){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -3319,10 +3223,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedCategoriesWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listRelatedCategories(
-                                this.client.getEndpoint(), categoryGuid, requestOptions, context));
+                                this.client.getEndpoint(), categoryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -3334,68 +3239,24 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all related categories (parent and children) along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listRelatedCategoriesWithResponseAsync(
-            String categoryGuid, RequestOptions requestOptions, Context context) {
-        return service.listRelatedCategories(this.client.getEndpoint(), categoryGuid, requestOptions, context);
-    }
-
-    /**
-     * Get all related categories (parent and children). Limit, offset, and sort parameters are currently not being
-     * enabled and won't work even they are passed.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     String: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     String (Required): [
+     *          (Required){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -3411,7 +3272,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRelatedCategoriesWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return listRelatedCategoriesWithResponseAsync(categoryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.listRelatedCategoriesSync(
+                this.client.getEndpoint(), categoryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3422,24 +3285,26 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         description: String
-     *         displayText: String
-     *         expression: String
-     *         relationGuid: String
-     *         source: String
-     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         steward: String
-     *         termGuid: String
+     *      (Required){
+     *         description: String (Optional)
+     *         displayText: String (Optional)
+     *         expression: String (Optional)
+     *         relationGuid: String (Optional)
+     *         source: String (Optional)
+     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *         steward: String (Optional)
+     *         termGuid: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -3456,8 +3321,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listCategoryTermsWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.listCategoryTerms(this.client.getEndpoint(), categoryGuid, requestOptions, context));
+                context ->
+                        service.listCategoryTerms(
+                                this.client.getEndpoint(), categoryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -3468,70 +3336,26 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         description: String
-     *         displayText: String
-     *         expression: String
-     *         relationGuid: String
-     *         source: String
-     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         steward: String
-     *         termGuid: String
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param categoryGuid The globally unique identifier of the category.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all terms associated with the specific category along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listCategoryTermsWithResponseAsync(
-            String categoryGuid, RequestOptions requestOptions, Context context) {
-        return service.listCategoryTerms(this.client.getEndpoint(), categoryGuid, requestOptions, context);
-    }
-
-    /**
-     * Get all terms associated with the specific category.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         description: String
-     *         displayText: String
-     *         expression: String
-     *         relationGuid: String
-     *         source: String
-     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         steward: String
-     *         termGuid: String
+     *      (Required){
+     *         description: String (Optional)
+     *         displayText: String (Optional)
+     *         expression: String (Optional)
+     *         relationGuid: String (Optional)
+     *         source: String (Optional)
+     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *         steward: String (Optional)
+     *         termGuid: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -3546,7 +3370,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listCategoryTermsWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return listCategoryTermsWithResponseAsync(categoryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.listCategoryTermsSync(
+                this.client.getEndpoint(), categoryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3557,155 +3383,157 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -3715,148 +3543,148 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -3874,9 +3702,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermWithResponseAsync(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createGlossaryTerm(this.client.getEndpoint(), glossaryTerm, requestOptions, context));
+                        service.createGlossaryTerm(
+                                this.client.getEndpoint(), glossaryTerm, accept, requestOptions, context));
     }
 
     /**
@@ -3887,155 +3717,157 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -4045,477 +3877,148 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
-     *         (recursive schema, see above)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
-     *     Optionally it can be categorized as well.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasGlossaryTerm along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createGlossaryTermWithResponseAsync(
-            BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
-        return service.createGlossaryTerm(this.client.getEndpoint(), glossaryTerm, requestOptions, context);
-    }
-
-    /**
-     * Create a glossary term.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
-     *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
-     *         }
-     *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
-     *             }
-     *         ]
-     *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
-     *         }
-     *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
-     *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
-     *         }
-     *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         }
-     *     ]
-     *     classifies: [
-     *         (recursive schema, see above)
-     *     ]
-     *     examples: [
-     *         String
-     *     ]
-     *     isA: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredToTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacedBy: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacementTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     seeAlso: [
-     *         (recursive schema, see above)
-     *     ]
-     *     synonyms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translatedTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translationTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     usage: String
-     *     validValues: [
-     *         (recursive schema, see above)
-     *     ]
-     *     validValuesFor: [
-     *         (recursive schema, see above)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
-     *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
-     *         }
-     *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
-     *             }
-     *         ]
-     *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
-     *         }
-     *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
-     *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
-     *         }
-     *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         }
-     *     ]
-     *     classifies: [
-     *         (recursive schema, see above)
-     *     ]
-     *     examples: [
-     *         String
-     *     ]
-     *     isA: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredToTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacedBy: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacementTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     seeAlso: [
-     *         (recursive schema, see above)
-     *     ]
-     *     synonyms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translatedTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translationTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     usage: String
-     *     validValues: [
-     *         (recursive schema, see above)
-     *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -4532,7 +4035,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermWithResponse(BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return createGlossaryTermWithResponseAsync(glossaryTerm, requestOptions).block();
+        final String accept = "application/json";
+        return service.createGlossaryTermSync(
+                this.client.getEndpoint(), glossaryTerm, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -4543,155 +4048,158 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of relationship types which need to be excluded. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -4708,8 +4216,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryTermWithResponseAsync(String termGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context));
+                context ->
+                        service.getGlossaryTerm(this.client.getEndpoint(), termGuid, accept, requestOptions, context));
     }
 
     /**
@@ -4720,333 +4230,158 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of relationship types which need to be excluded. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
-     *         (recursive schema, see above)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific glossary term by its GUID along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getGlossaryTermWithResponseAsync(
-            String termGuid, RequestOptions requestOptions, Context context) {
-        return service.getGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context);
-    }
-
-    /**
-     * Get a specific glossary term by its GUID.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
-     *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
-     *         }
-     *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
-     *             }
-     *         ]
-     *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
-     *         }
-     *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
-     *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
-     *         }
-     *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         }
-     *     ]
-     *     classifies: [
-     *         (recursive schema, see above)
-     *     ]
-     *     examples: [
-     *         String
-     *     ]
-     *     isA: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredToTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacedBy: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacementTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     seeAlso: [
-     *         (recursive schema, see above)
-     *     ]
-     *     synonyms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translatedTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translationTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     usage: String
-     *     validValues: [
-     *         (recursive schema, see above)
-     *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -5062,158 +4397,169 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
-        return getGlossaryTermWithResponseAsync(termGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.getGlossaryTermSync(this.client.getEndpoint(), termGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
      * Update the given glossary term by its GUID.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -5223,148 +4569,148 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -5382,161 +4728,172 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryTermWithResponseAsync(
             String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateGlossaryTerm(
-                                this.client.getEndpoint(), termGuid, glossaryTerm, requestOptions, context));
+                                this.client.getEndpoint(), termGuid, glossaryTerm, accept, requestOptions, context));
     }
 
     /**
      * Update the given glossary term by its GUID.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -5546,469 +4903,148 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
-     *         (recursive schema, see above)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param glossaryTerm The glossary term to be updated.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasGlossaryTerm along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateGlossaryTermWithResponseAsync(
-            String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
-        return service.updateGlossaryTerm(this.client.getEndpoint(), termGuid, glossaryTerm, requestOptions, context);
-    }
-
-    /**
-     * Update the given glossary term by its GUID.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
-     *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
-     *         }
-     *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
-     *             }
-     *         ]
-     *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
-     *         }
-     *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
-     *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
-     *         }
-     *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         }
-     *     ]
-     *     classifies: [
-     *         (recursive schema, see above)
-     *     ]
-     *     examples: [
-     *         String
-     *     ]
-     *     isA: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredToTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacedBy: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacementTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     seeAlso: [
-     *         (recursive schema, see above)
-     *     ]
-     *     synonyms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translatedTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translationTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     usage: String
-     *     validValues: [
-     *         (recursive schema, see above)
-     *     ]
-     *     validValuesFor: [
-     *         (recursive schema, see above)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
-     *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
-     *         }
-     *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
-     *             }
-     *         ]
-     *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
-     *         }
-     *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
-     *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
-     *         }
-     *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         }
-     *     ]
-     *     classifies: [
-     *         (recursive schema, see above)
-     *     ]
-     *     examples: [
-     *         String
-     *     ]
-     *     isA: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredToTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacedBy: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacementTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     seeAlso: [
-     *         (recursive schema, see above)
-     *     ]
-     *     synonyms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translatedTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translationTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     usage: String
-     *     validValues: [
-     *         (recursive schema, see above)
-     *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -6026,7 +5062,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryTermWithResponse(
             String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return updateGlossaryTermWithResponseAsync(termGuid, glossaryTerm, requestOptions).block();
+        final String accept = "application/json";
+        return service.updateGlossaryTermSync(
+                this.client.getEndpoint(), termGuid, glossaryTerm, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6042,26 +5080,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryTermWithResponseAsync(String termGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context));
-    }
-
-    /**
-     * Delete a glossary term.
-     *
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteGlossaryTermWithResponseAsync(
-            String termGuid, RequestOptions requestOptions, Context context) {
-        return service.deleteGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context);
+                context ->
+                        service.deleteGlossaryTerm(
+                                this.client.getEndpoint(), termGuid, accept, requestOptions, context));
     }
 
     /**
@@ -6077,7 +5100,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
-        return deleteGlossaryTermWithResponseAsync(termGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.deleteGlossaryTermSync(
+                this.client.getEndpoint(), termGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6088,14 +5113,16 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: String
+     *     String: String (Required)
      * }
      * }</pre>
      *
@@ -6103,148 +5130,148 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -6263,10 +5290,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryTermWithResponseAsync(
             String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateGlossaryTerm(
-                                this.client.getEndpoint(), termGuid, partialUpdates, requestOptions, context));
+                                this.client.getEndpoint(), termGuid, partialUpdates, accept, requestOptions, context));
     }
 
     /**
@@ -6277,14 +5305,16 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: String
+     *     String: String (Required)
      * }
      * }</pre>
      *
@@ -6292,336 +5322,148 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
-     *         (recursive schema, see above)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
-     *     updated.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasGlossaryTerm along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> partialUpdateGlossaryTermWithResponseAsync(
-            String termGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
-        return service.partialUpdateGlossaryTerm(
-                this.client.getEndpoint(), termGuid, partialUpdates, requestOptions, context);
-    }
-
-    /**
-     * Update the glossary term partially.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     String: String
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
-     *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
-     *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
-     *         }
-     *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
-     *             }
-     *         ]
-     *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
-     *         }
-     *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
-     *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
-     *         }
-     *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         }
-     *     ]
-     *     classifies: [
-     *         (recursive schema, see above)
-     *     ]
-     *     examples: [
-     *         String
-     *     ]
-     *     isA: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     preferredToTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacedBy: [
-     *         (recursive schema, see above)
-     *     ]
-     *     replacementTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     seeAlso: [
-     *         (recursive schema, see above)
-     *     ]
-     *     synonyms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translatedTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     translationTerms: [
-     *         (recursive schema, see above)
-     *     ]
-     *     usage: String
-     *     validValues: [
-     *         (recursive schema, see above)
-     *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -6640,7 +5482,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryTermWithResponse(
             String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return partialUpdateGlossaryTermWithResponseAsync(termGuid, partialUpdates, requestOptions).block();
+        final String accept = "application/json";
+        return service.partialUpdateGlossaryTermSync(
+                this.client.getEndpoint(), termGuid, partialUpdates, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6651,156 +5495,158 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -6811,149 +5657,149 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -6972,9 +5818,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermsWithResponseAsync(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createGlossaryTerms(this.client.getEndpoint(), glossaryTerm, requestOptions, context));
+                        service.createGlossaryTerms(
+                                this.client.getEndpoint(), glossaryTerm, accept, requestOptions, context));
     }
 
     /**
@@ -6985,156 +5833,158 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -7145,482 +5995,149 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
-     *             (recursive schema, see above)
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return if bulk glossary terms creation was successful along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createGlossaryTermsWithResponseAsync(
-            BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
-        return service.createGlossaryTerms(this.client.getEndpoint(), glossaryTerm, requestOptions, context);
-    }
-
-    /**
-     * Create glossary terms in bulk.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
-     *             }
-     *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
-     *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
-     *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
-     *             }
-     *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                 }
-     *             ]
-     *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
-     *             }
-     *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
-     *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
-     *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
-     *             }
-     *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             }
-     *         ]
-     *         classifies: [
-     *             (recursive schema, see above)
-     *         ]
-     *         examples: [
-     *             String
-     *         ]
-     *         isA: [
-     *             (recursive schema, see above)
-     *         ]
-     *         preferredTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         preferredToTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         replacedBy: [
-     *             (recursive schema, see above)
-     *         ]
-     *         replacementTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         seeAlso: [
-     *             (recursive schema, see above)
-     *         ]
-     *         synonyms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         translatedTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         translationTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         usage: String
-     *         validValues: [
-     *             (recursive schema, see above)
-     *         ]
-     *         validValuesFor: [
-     *             (recursive schema, see above)
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
-     *             }
-     *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
-     *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
-     *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
-     *             }
-     *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                 }
-     *             ]
-     *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
-     *             }
-     *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
-     *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
-     *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
-     *             }
-     *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             }
-     *         ]
-     *         classifies: [
-     *             (recursive schema, see above)
-     *         ]
-     *         examples: [
-     *             String
-     *         ]
-     *         isA: [
-     *             (recursive schema, see above)
-     *         ]
-     *         preferredTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         preferredToTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         replacedBy: [
-     *             (recursive schema, see above)
-     *         ]
-     *         replacementTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         seeAlso: [
-     *             (recursive schema, see above)
-     *         ]
-     *         synonyms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         translatedTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         translationTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         usage: String
-     *         validValues: [
-     *             (recursive schema, see above)
-     *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -7638,7 +6155,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermsWithResponse(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return createGlossaryTermsWithResponseAsync(glossaryTerm, requestOptions).block();
+        final String accept = "application/json";
+        return service.createGlossaryTermsSync(
+                this.client.getEndpoint(), glossaryTerm, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -7649,33 +6168,35 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -7692,10 +6213,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponseAsync(
             String termGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getEntitiesAssignedWithTerm(
-                                this.client.getEndpoint(), termGuid, requestOptions, context));
+                                this.client.getEndpoint(), termGuid, accept, requestOptions, context));
     }
 
     /**
@@ -7706,88 +6228,35 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all related objects assigned with the specified term along with {@link Response} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponseAsync(
-            String termGuid, RequestOptions requestOptions, Context context) {
-        return service.getEntitiesAssignedWithTerm(this.client.getEndpoint(), termGuid, requestOptions, context);
-    }
-
-    /**
-     * Get all related objects assigned with the specified term.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
-     *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -7803,7 +6272,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesAssignedWithTermWithResponse(
             String termGuid, RequestOptions requestOptions) {
-        return getEntitiesAssignedWithTermWithResponseAsync(termGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.getEntitiesAssignedWithTermSync(
+                this.client.getEndpoint(), termGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -7813,24 +6284,24 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -7847,10 +6318,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.assignTermToEntities(
-                                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
+                                this.client.getEndpoint(),
+                                termGuid,
+                                relatedObjectIds,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -7860,70 +6337,24 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(
-            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
-        return service.assignTermToEntities(
-                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context);
-    }
-
-    /**
-     * Assign the given term to the provided list of related objects.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
-     *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -7940,7 +6371,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> assignTermToEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return assignTermToEntitiesWithResponseAsync(termGuid, relatedObjectIds, requestOptions).block();
+        final String accept = "application/json";
+        return service.assignTermToEntitiesSync(
+                this.client.getEndpoint(), termGuid, relatedObjectIds, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -7950,24 +6383,24 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -7984,10 +6417,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeTermAssignmentFromEntitiesWithResponseAsync(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.removeTermAssignmentFromEntities(
-                                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
+                                this.client.getEndpoint(),
+                                termGuid,
+                                relatedObjectIds,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -7997,70 +6436,24 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeTermAssignmentFromEntitiesWithResponseAsync(
-            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
-        return service.removeTermAssignmentFromEntities(
-                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context);
-    }
-
-    /**
-     * Delete the term assignment for the given list of related objects.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
-     *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -8077,7 +6470,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeTermAssignmentFromEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return removeTermAssignmentFromEntitiesWithResponseAsync(termGuid, relatedObjectIds, requestOptions).block();
+        final String accept = "application/json";
+        return service.removeTermAssignmentFromEntitiesSync(
+                this.client.getEndpoint(), termGuid, relatedObjectIds, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -8087,24 +6482,24 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -8121,10 +6516,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteTermAssignmentFromEntities(
-                                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
+                                this.client.getEndpoint(),
+                                termGuid,
+                                relatedObjectIds,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -8134,70 +6535,24 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(
-            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
-        return service.deleteTermAssignmentFromEntities(
-                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context);
-    }
-
-    /**
-     * Delete the term assignment for the given list of related objects.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
-     *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -8214,7 +6569,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return deleteTermAssignmentFromEntitiesWithResponseAsync(termGuid, relatedObjectIds, requestOptions).block();
+        final String accept = "application/json";
+        return service.deleteTermAssignmentFromEntitiesSync(
+                this.client.getEndpoint(), termGuid, relatedObjectIds, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -8226,25 +6583,27 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     String (Required): [
+     *          (Required){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -8262,8 +6621,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedTermsWithResponseAsync(
             String termGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.listRelatedTerms(this.client.getEndpoint(), termGuid, requestOptions, context));
+                context ->
+                        service.listRelatedTerms(this.client.getEndpoint(), termGuid, accept, requestOptions, context));
     }
 
     /**
@@ -8275,74 +6636,27 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param termGuid The globally unique identifier for glossary term.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all related terms for a specific term by its GUID along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listRelatedTermsWithResponseAsync(
-            String termGuid, RequestOptions requestOptions, Context context) {
-        return service.listRelatedTerms(this.client.getEndpoint(), termGuid, requestOptions, context);
-    }
-
-    /**
-     * Get all related terms for a specific term by its GUID. Limit, offset, and sort parameters are currently not being
-     * enabled and won't work even they are passed.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     String: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     String (Required): [
+     *          (Required){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -8358,7 +6672,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
-        return listRelatedTermsWithResponseAsync(termGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.listRelatedTermsSync(this.client.getEndpoint(), termGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -8368,58 +6683,58 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -8433,8 +6748,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryWithResponseAsync(String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                context ->
+                        service.getGlossary(this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -8444,135 +6761,58 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
-     * }
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific Glossary by its GUID along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getGlossaryWithResponseAsync(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.getGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
-    }
-
-    /**
-     * Get a specific Glossary by its GUID.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -8586,7 +6826,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return getGlossaryWithResponseAsync(glossaryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.getGlossarySync(this.client.getEndpoint(), glossaryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -8596,58 +6837,58 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -8655,58 +6896,58 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -8722,10 +6963,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryWithResponseAsync(
             String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateGlossary(
-                                this.client.getEndpoint(), glossaryGuid, updatedGlossary, requestOptions, context));
+                                this.client.getEndpoint(),
+                                glossaryGuid,
+                                updatedGlossary,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -8735,58 +6982,58 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -8794,196 +7041,58 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
-     * }
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param updatedGlossary The glossary definition to be updated.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasGlossary along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateGlossaryWithResponseAsync(
-            String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions, Context context) {
-        return service.updateGlossary(
-                this.client.getEndpoint(), glossaryGuid, updatedGlossary, requestOptions, context);
-    }
-
-    /**
-     * Update the given glossary.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     usage: String
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -8999,7 +7108,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryWithResponse(
             String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
-        return updateGlossaryWithResponseAsync(glossaryGuid, updatedGlossary, requestOptions).block();
+        final String accept = "application/json";
+        return service.updateGlossarySync(
+                this.client.getEndpoint(), glossaryGuid, updatedGlossary, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -9015,26 +7126,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryWithResponseAsync(String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
-    }
-
-    /**
-     * Delete a glossary.
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteGlossaryWithResponseAsync(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.deleteGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
+                context ->
+                        service.deleteGlossary(
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -9050,7 +7146,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return deleteGlossaryWithResponseAsync(glossaryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.deleteGlossarySync(
+                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -9061,70 +7159,72 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         childrenCategories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         parentCategory (Optional): (recursive schema, see parentCategory above)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
      *     }
@@ -9143,10 +7243,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listGlossaryCategories(
-                                this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -9157,164 +7258,72 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         childrenCategories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the categories belonging to a specific glossary along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponseAsync(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.listGlossaryCategories(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
-    }
-
-    /**
-     * Get the categories belonging to a specific glossary.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
-     *             }
-     *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
-     *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
-     *             }
-     *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         parentCategory (Optional): (recursive schema, see parentCategory above)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
      *     }
@@ -9331,7 +7340,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return listGlossaryCategoriesWithResponseAsync(glossaryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.listGlossaryCategoriesSync(
+                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -9342,21 +7353,23 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         categoryGuid: String
-     *         description: String
-     *         displayText: String
-     *         parentCategoryGuid: String
-     *         relationGuid: String
+     *      (Required){
+     *         categoryGuid: String (Optional)
+     *         description: String (Optional)
+     *         displayText: String (Optional)
+     *         parentCategoryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -9373,10 +7386,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listGlossaryCategoriesHeaders(
-                                this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -9387,64 +7401,23 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         categoryGuid: String
-     *         description: String
-     *         displayText: String
-     *         parentCategoryGuid: String
-     *         relationGuid: String
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the category headers belonging to a specific glossary along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponseAsync(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.listGlossaryCategoriesHeaders(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
-    }
-
-    /**
-     * Get the category headers belonging to a specific glossary.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         categoryGuid: String
-     *         description: String
-     *         displayText: String
-     *         parentCategoryGuid: String
-     *         relationGuid: String
+     *      (Required){
+     *         categoryGuid: String (Optional)
+     *         description: String (Optional)
+     *         displayText: String (Optional)
+     *         parentCategoryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -9460,7 +7433,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
-        return listGlossaryCategoriesHeadersWithResponseAsync(glossaryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.listGlossaryCategoriesHeadersSync(
+                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -9471,201 +7446,203 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
-     *     categoryInfo: {
-     *         String: {
-     *             guid: String
-     *             classifications: [
+     *     usage: String (Optional)
+     *     categoryInfo (Optional): {
+     *         String (Optional): {
+     *             guid: String (Optional)
+     *             classifications (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             longDescription: String
-     *             name: String
-     *             qualifiedName: String
-     *             shortDescription: String
-     *             lastModifiedTS: String
-     *             anchor: {
-     *                 displayText: String
-     *                 glossaryGuid: String
-     *                 relationGuid: String
+     *             longDescription: String (Optional)
+     *             name: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             shortDescription: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             anchor (Optional): {
+     *                 displayText: String (Optional)
+     *                 glossaryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
-     *             childrenCategories: [
+     *             childrenCategories (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             parentCategory: (recursive schema, see parentCategory above)
-     *             terms: [
+     *             parentCategory (Optional): (recursive schema, see parentCategory above)
+     *             terms (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
      *     }
-     *     termInfo: {
-     *         String: {
-     *             guid: String
-     *             classifications: [
+     *     termInfo (Optional): {
+     *         String (Optional): {
+     *             guid: String (Optional)
+     *             classifications (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             longDescription: String
-     *             name: String
-     *             qualifiedName: String
-     *             shortDescription: String
-     *             lastModifiedTS: String
-     *             abbreviation: String
-     *             templateName: [
-     *                 Object
+     *             longDescription: String (Optional)
+     *             name: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             shortDescription: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             abbreviation: String (Optional)
+     *             templateName (Optional): [
+     *                 Object (Optional)
      *             ]
-     *             anchor: (recursive schema, see anchor above)
-     *             antonyms: [
+     *             anchor (Optional): (recursive schema, see anchor above)
+     *             antonyms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             createTime: Float
-     *             createdBy: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             status: String(Draft/Approved/Alert/Expired)
-     *             resources: [
-     *                 {
-     *                     displayName: String
-     *                     url: String
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             status: String(Draft/Approved/Alert/Expired) (Optional)
+     *             resources (Optional): [
+     *                  (Optional){
+     *                     displayName: String (Optional)
+     *                     url: String (Optional)
      *                 }
      *             ]
-     *             contacts: {
-     *                 String: [
-     *                     {
-     *                         id: String
-     *                         info: String
+     *             contacts (Optional): {
+     *                 String (Optional): [
+     *                      (Optional){
+     *                         id: String (Optional)
+     *                         info: String (Optional)
      *                     }
      *                 ]
      *             }
-     *             attributes: {
-     *                 String: {
-     *                     String: Object
+     *             attributes (Optional): {
+     *                 String (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
-     *             assignedEntities: [
-     *                 {
-     *                     guid: String
-     *                     typeName: String
-     *                     uniqueAttributes: {
-     *                         String: Object
+     *             assignedEntities (Optional): [
+     *                  (Optional){
+     *                     guid: String (Optional)
+     *                     typeName: String (Optional)
+     *                     uniqueAttributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     displayText: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     relationshipType: String
-     *                     relationshipAttributes: {
-     *                         attributes: {
-     *                             String: Object
+     *                     displayText: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     relationshipType: String (Optional)
+     *                     relationshipAttributes (Optional): {
+     *                         attributes (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         typeName: String
-     *                         lastModifiedTS: String
+     *                         typeName: String (Optional)
+     *                         lastModifiedTS: String (Optional)
      *                     }
-     *                     relationshipGuid: String
-     *                     relationshipStatus: String(ACTIVE/DELETED)
+     *                     relationshipGuid: String (Optional)
+     *                     relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *                 }
      *             ]
-     *             categories: [
-     *                 {
-     *                     categoryGuid: String
-     *                     description: String
-     *                     displayText: String
-     *                     relationGuid: String
-     *                     status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             categories (Optional): [
+     *                  (Optional){
+     *                     categoryGuid: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *                 }
      *             ]
-     *             classifies: [
+     *             classifies (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             examples: [
-     *                 String
+     *             examples (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isA: [
+     *             isA (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             preferredTerms: [
+     *             preferredTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             preferredToTerms: [
+     *             preferredToTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             replacedBy: [
+     *             replacedBy (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             replacementTerms: [
+     *             replacementTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             seeAlso: [
+     *             seeAlso (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             synonyms: [
+     *             synonyms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             translatedTerms: [
+     *             translatedTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             translationTerms: [
+     *             translationTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             usage: String
-     *             validValues: [
+     *             usage: String (Optional)
+     *             validValues (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             validValuesFor: [
+     *             validValuesFor (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
@@ -9685,9 +7662,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDetailedGlossaryWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getDetailedGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                        service.getDetailedGlossary(
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -9698,427 +7677,203 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
-     *     categoryInfo: {
-     *         String: {
-     *             guid: String
-     *             classifications: [
+     *     usage: String (Optional)
+     *     categoryInfo (Optional): {
+     *         String (Optional): {
+     *             guid: String (Optional)
+     *             classifications (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             longDescription: String
-     *             name: String
-     *             qualifiedName: String
-     *             shortDescription: String
-     *             lastModifiedTS: String
-     *             anchor: {
-     *                 displayText: String
-     *                 glossaryGuid: String
-     *                 relationGuid: String
+     *             longDescription: String (Optional)
+     *             name: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             shortDescription: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             anchor (Optional): {
+     *                 displayText: String (Optional)
+     *                 glossaryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
-     *             childrenCategories: [
+     *             childrenCategories (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             parentCategory: (recursive schema, see parentCategory above)
-     *             terms: [
+     *             parentCategory (Optional): (recursive schema, see parentCategory above)
+     *             terms (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
      *     }
-     *     termInfo: {
-     *         String: {
-     *             guid: String
-     *             classifications: [
+     *     termInfo (Optional): {
+     *         String (Optional): {
+     *             guid: String (Optional)
+     *             classifications (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             longDescription: String
-     *             name: String
-     *             qualifiedName: String
-     *             shortDescription: String
-     *             lastModifiedTS: String
-     *             abbreviation: String
-     *             templateName: [
-     *                 Object
+     *             longDescription: String (Optional)
+     *             name: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             shortDescription: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             abbreviation: String (Optional)
+     *             templateName (Optional): [
+     *                 Object (Optional)
      *             ]
-     *             anchor: (recursive schema, see anchor above)
-     *             antonyms: [
+     *             anchor (Optional): (recursive schema, see anchor above)
+     *             antonyms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             createTime: Float
-     *             createdBy: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             status: String(Draft/Approved/Alert/Expired)
-     *             resources: [
-     *                 {
-     *                     displayName: String
-     *                     url: String
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             status: String(Draft/Approved/Alert/Expired) (Optional)
+     *             resources (Optional): [
+     *                  (Optional){
+     *                     displayName: String (Optional)
+     *                     url: String (Optional)
      *                 }
      *             ]
-     *             contacts: {
-     *                 String: [
-     *                     {
-     *                         id: String
-     *                         info: String
+     *             contacts (Optional): {
+     *                 String (Optional): [
+     *                      (Optional){
+     *                         id: String (Optional)
+     *                         info: String (Optional)
      *                     }
      *                 ]
      *             }
-     *             attributes: {
-     *                 String: {
-     *                     String: Object
+     *             attributes (Optional): {
+     *                 String (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
-     *             assignedEntities: [
-     *                 {
-     *                     guid: String
-     *                     typeName: String
-     *                     uniqueAttributes: {
-     *                         String: Object
+     *             assignedEntities (Optional): [
+     *                  (Optional){
+     *                     guid: String (Optional)
+     *                     typeName: String (Optional)
+     *                     uniqueAttributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     displayText: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     relationshipType: String
-     *                     relationshipAttributes: {
-     *                         attributes: {
-     *                             String: Object
+     *                     displayText: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     relationshipType: String (Optional)
+     *                     relationshipAttributes (Optional): {
+     *                         attributes (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         typeName: String
-     *                         lastModifiedTS: String
+     *                         typeName: String (Optional)
+     *                         lastModifiedTS: String (Optional)
      *                     }
-     *                     relationshipGuid: String
-     *                     relationshipStatus: String(ACTIVE/DELETED)
+     *                     relationshipGuid: String (Optional)
+     *                     relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *                 }
      *             ]
-     *             categories: [
-     *                 {
-     *                     categoryGuid: String
-     *                     description: String
-     *                     displayText: String
-     *                     relationGuid: String
-     *                     status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             categories (Optional): [
+     *                  (Optional){
+     *                     categoryGuid: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *                 }
      *             ]
-     *             classifies: [
+     *             classifies (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             examples: [
-     *                 String
+     *             examples (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isA: [
+     *             isA (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             preferredTerms: [
+     *             preferredTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             preferredToTerms: [
+     *             preferredToTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             replacedBy: [
+     *             replacedBy (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             replacementTerms: [
+     *             replacementTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             seeAlso: [
+     *             seeAlso (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             synonyms: [
+     *             synonyms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             translatedTerms: [
+     *             translatedTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             translationTerms: [
+     *             translationTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             usage: String
-     *             validValues: [
+     *             usage: String (Optional)
+     *             validValues (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             validValuesFor: [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific glossary with detailed information along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDetailedGlossaryWithResponseAsync(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.getDetailedGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
-    }
-
-    /**
-     * Get a specific glossary with detailed information.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     usage: String
-     *     categoryInfo: {
-     *         String: {
-     *             guid: String
-     *             classifications: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             longDescription: String
-     *             name: String
-     *             qualifiedName: String
-     *             shortDescription: String
-     *             lastModifiedTS: String
-     *             anchor: {
-     *                 displayText: String
-     *                 glossaryGuid: String
-     *                 relationGuid: String
-     *             }
-     *             childrenCategories: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             parentCategory: (recursive schema, see parentCategory above)
-     *             terms: [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
-     *     termInfo: {
-     *         String: {
-     *             guid: String
-     *             classifications: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             longDescription: String
-     *             name: String
-     *             qualifiedName: String
-     *             shortDescription: String
-     *             lastModifiedTS: String
-     *             abbreviation: String
-     *             templateName: [
-     *                 Object
-     *             ]
-     *             anchor: (recursive schema, see anchor above)
-     *             antonyms: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             createTime: Float
-     *             createdBy: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             status: String(Draft/Approved/Alert/Expired)
-     *             resources: [
-     *                 {
-     *                     displayName: String
-     *                     url: String
-     *                 }
-     *             ]
-     *             contacts: {
-     *                 String: [
-     *                     {
-     *                         id: String
-     *                         info: String
-     *                     }
-     *                 ]
-     *             }
-     *             attributes: {
-     *                 String: {
-     *                     String: Object
-     *                 }
-     *             }
-     *             assignedEntities: [
-     *                 {
-     *                     guid: String
-     *                     typeName: String
-     *                     uniqueAttributes: {
-     *                         String: Object
-     *                     }
-     *                     displayText: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     relationshipType: String
-     *                     relationshipAttributes: {
-     *                         attributes: {
-     *                             String: Object
-     *                         }
-     *                         typeName: String
-     *                         lastModifiedTS: String
-     *                     }
-     *                     relationshipGuid: String
-     *                     relationshipStatus: String(ACTIVE/DELETED)
-     *                 }
-     *             ]
-     *             categories: [
-     *                 {
-     *                     categoryGuid: String
-     *                     description: String
-     *                     displayText: String
-     *                     relationGuid: String
-     *                     status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 }
-     *             ]
-     *             classifies: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             examples: [
-     *                 String
-     *             ]
-     *             isA: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             preferredTerms: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             preferredToTerms: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             replacedBy: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             replacementTerms: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             seeAlso: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             synonyms: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             translatedTerms: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             translationTerms: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             usage: String
-     *             validValues: [
-     *                 (recursive schema, see above)
-     *             ]
-     *             validValuesFor: [
+     *             validValuesFor (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
@@ -10136,7 +7891,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDetailedGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return getDetailedGlossaryWithResponseAsync(glossaryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.getDetailedGlossarySync(
+                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -10147,14 +7904,16 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: String
+     *     String: String (Required)
      * }
      * }</pre>
      *
@@ -10162,58 +7921,58 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -10229,10 +7988,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryWithResponseAsync(
             String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateGlossary(
-                                this.client.getEndpoint(), glossaryGuid, partialUpdates, requestOptions, context));
+                                this.client.getEndpoint(),
+                                glossaryGuid,
+                                partialUpdates,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -10243,14 +8008,16 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: String
+     *     String: String (Required)
      * }
      * }</pre>
      *
@@ -10258,153 +8025,58 @@ public final class GlossariesImpl {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
-     * }
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return atlasGlossary along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> partialUpdateGlossaryWithResponseAsync(
-            String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
-        return service.partialUpdateGlossary(
-                this.client.getEndpoint(), glossaryGuid, partialUpdates, requestOptions, context);
-    }
-
-    /**
-     * Update the glossary partially. Some properties such as qualifiedName are not allowed to be updated.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     String: String
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
-     *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
-     *                 }
-     *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
-     *             }
-     *         }
-     *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
-     *         }
-     *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
-     *         }
-     *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -10420,7 +8092,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryWithResponse(
             String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return partialUpdateGlossaryWithResponseAsync(glossaryGuid, partialUpdates, requestOptions).block();
+        final String accept = "application/json";
+        return service.partialUpdateGlossarySync(
+                this.client.getEndpoint(), glossaryGuid, partialUpdates, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -10431,159 +8105,161 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -10602,8 +8278,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermsWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.listGlossaryTerms(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                context ->
+                        service.listGlossaryTerms(
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -10614,342 +8293,161 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
-     *             (recursive schema, see above)
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return terms belonging to a specific glossary along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listGlossaryTermsWithResponseAsync(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.listGlossaryTerms(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
-    }
-
-    /**
-     * Get terms belonging to a specific glossary.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
-     *             }
-     *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
-     *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
-     *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
-     *             }
-     *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                 }
-     *             ]
-     *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
-     *             }
-     *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
-     *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
-     *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
-     *             }
-     *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             }
-     *         ]
-     *         classifies: [
-     *             (recursive schema, see above)
-     *         ]
-     *         examples: [
-     *             String
-     *         ]
-     *         isA: [
-     *             (recursive schema, see above)
-     *         ]
-     *         preferredTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         preferredToTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         replacedBy: [
-     *             (recursive schema, see above)
-     *         ]
-     *         replacementTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         seeAlso: [
-     *             (recursive schema, see above)
-     *         ]
-     *         synonyms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         translatedTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         translationTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         usage: String
-     *         validValues: [
-     *             (recursive schema, see above)
-     *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -10966,7 +8464,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermsWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return listGlossaryTermsWithResponseAsync(glossaryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.listGlossaryTermsSync(
+                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -10977,24 +8477,26 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         description: String
-     *         displayText: String
-     *         expression: String
-     *         relationGuid: String
-     *         source: String
-     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         steward: String
-     *         termGuid: String
+     *      (Required){
+     *         description: String (Optional)
+     *         displayText: String (Optional)
+     *         expression: String (Optional)
+     *         relationGuid: String (Optional)
+     *         source: String (Optional)
+     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *         steward: String (Optional)
+     *         termGuid: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -11011,10 +8513,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listGlossaryTermHeaders(
-                                this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -11025,70 +8528,26 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         description: String
-     *         displayText: String
-     *         expression: String
-     *         relationGuid: String
-     *         source: String
-     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         steward: String
-     *         termGuid: String
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return term headers belonging to a specific glossary along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponseAsync(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.listGlossaryTermHeaders(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
-    }
-
-    /**
-     * Get term headers belonging to a specific glossary.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         description: String
-     *         displayText: String
-     *         expression: String
-     *         relationGuid: String
-     *         source: String
-     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         steward: String
-     *         termGuid: String
+     *      (Required){
+     *         description: String (Optional)
+     *         displayText: String (Optional)
+     *         expression: String (Optional)
+     *         relationGuid: String (Optional)
+     *         source: String (Optional)
+     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *         steward: String (Optional)
+     *         termGuid: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -11104,7 +8563,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
-        return listGlossaryTermHeadersWithResponseAsync(glossaryGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.listGlossaryTermHeadersSync(
+                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -11115,39 +8576,32 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -11162,8 +8616,9 @@ public final class GlossariesImpl {
      * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponseAsync(
+    private Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponseAsync(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.importGlossaryTermsViaCsv(
@@ -11171,6 +8626,7 @@ public final class GlossariesImpl {
                                 glossaryGuid,
                                 this.client.getServiceVersion().getVersion(),
                                 file,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -11183,39 +8639,32 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -11223,23 +8672,24 @@ public final class GlossariesImpl {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return status of import csv operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponseAsync(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
-        return service.importGlossaryTermsViaCsv(
+    private Response<BinaryData> importGlossaryTermsViaCsvWithResponse(
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.importGlossaryTermsViaCsvSync(
                 this.client.getEndpoint(),
                 glossaryGuid,
                 this.client.getServiceVersion().getVersion(),
                 file,
+                accept,
                 requestOptions,
-                context);
+                Context.NONE);
     }
 
     /**
@@ -11250,39 +8700,32 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -11302,9 +8745,15 @@ public final class GlossariesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReferenceBinaryData(),
-                new TypeReferenceBinaryData());
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{Endpoint}/catalog/api".replace("{Endpoint}", this.client.getEndpoint()),
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -11315,105 +8764,32 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param file The csv file to import glossary terms from.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of status of import csv operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvAsync(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReferenceBinaryData(),
-                new TypeReferenceBinaryData());
-    }
-
-    /**
-     * Import Glossary Terms from local csv file.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
-     *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -11430,7 +8806,18 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
-        return this.beginImportGlossaryTermsViaCsvAsync(glossaryGuid, file, requestOptions).getSyncPoller();
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.importGlossaryTermsViaCsvWithResponse(glossaryGuid, file, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{Endpoint}/catalog/api".replace("{Endpoint}", this.client.getEndpoint()),
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -11441,39 +8828,32 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -11488,8 +8868,9 @@ public final class GlossariesImpl {
      * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
+    private Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
             String glossaryName, BinaryData file, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.importGlossaryTermsViaCsvByGlossaryName(
@@ -11497,6 +8878,7 @@ public final class GlossariesImpl {
                                 glossaryName,
                                 this.client.getServiceVersion().getVersion(),
                                 file,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -11509,39 +8891,32 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -11549,23 +8924,24 @@ public final class GlossariesImpl {
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return status of import csv operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-            String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
-        return service.importGlossaryTermsViaCsvByGlossaryName(
+    private Response<BinaryData> importGlossaryTermsViaCsvByGlossaryNameWithResponse(
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.importGlossaryTermsViaCsvByGlossaryNameSync(
                 this.client.getEndpoint(),
                 glossaryName,
                 this.client.getServiceVersion().getVersion(),
                 file,
+                accept,
                 requestOptions,
-                context);
+                Context.NONE);
     }
 
     /**
@@ -11576,39 +8952,32 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -11628,9 +8997,15 @@ public final class GlossariesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(glossaryName, file, requestOptions),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReferenceBinaryData(),
-                new TypeReferenceBinaryData());
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{Endpoint}/catalog/api".replace("{Endpoint}", this.client.getEndpoint()),
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -11641,107 +9016,32 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param glossaryName The name of the glossary.
-     * @param file The csv file to import glossary terms from.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of status of import csv operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
-            String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () ->
-                        this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-                                glossaryName, file, requestOptions, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReferenceBinaryData(),
-                new TypeReferenceBinaryData());
-    }
-
-    /**
-     * Import Glossary Terms from local csv file by glossaryName.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
-     *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -11758,36 +9058,38 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
             String glossaryName, BinaryData file, RequestOptions requestOptions) {
-        return this.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, requestOptions)
-                .getSyncPoller();
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.importGlossaryTermsViaCsvByGlossaryNameWithResponse(glossaryName, file, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{Endpoint}/catalog/api".replace("{Endpoint}", this.client.getEndpoint()),
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Get the status of import csv operation.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -11803,12 +9105,14 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponseAsync(
             String operationGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getImportCsvOperationStatus(
                                 this.client.getEndpoint(),
                                 operationGuid,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -11816,79 +9120,21 @@ public final class GlossariesImpl {
     /**
      * Get the status of import csv operation.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param operationGuid The globally unique identifier for async operation/job.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponseAsync(
-            String operationGuid, RequestOptions requestOptions, Context context) {
-        return service.getImportCsvOperationStatus(
-                this.client.getEndpoint(),
-                operationGuid,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Get the status of import csv operation.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
-     *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -11904,7 +9150,14 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getImportCsvOperationStatusWithResponse(
             String operationGuid, RequestOptions requestOptions) {
-        return getImportCsvOperationStatusWithResponseAsync(operationGuid, requestOptions).block();
+        final String accept = "application/json";
+        return service.getImportCsvOperationStatusSync(
+                this.client.getEndpoint(),
+                operationGuid,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -11915,22 +9168,23 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     String
+     *     String (Required)
      * ]
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
@@ -11943,8 +9197,9 @@ public final class GlossariesImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponseAsync(
+    public Mono<Response<BinaryData>> exportGlossaryTermsAsCsvWithResponseAsync(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
+        final String accept = "text/csv";
         return FluxUtil.withContext(
                 context ->
                         service.exportGlossaryTermsAsCsv(
@@ -11952,6 +9207,7 @@ public final class GlossariesImpl {
                                 glossaryGuid,
                                 this.client.getServiceVersion().getVersion(),
                                 termGuids,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -11964,70 +9220,23 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     String
+     *     String (Required)
      * ]
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param termGuids An array of term guids.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponseAsync(
-            String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions, Context context) {
-        return service.exportGlossaryTermsAsCsv(
-                this.client.getEndpoint(),
-                glossaryGuid,
-                this.client.getServiceVersion().getVersion(),
-                termGuids,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Export Glossary Terms as csv file.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     String
-     * ]
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
@@ -12040,9 +9249,17 @@ public final class GlossariesImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Flux<ByteBuffer>> exportGlossaryTermsAsCsvWithResponse(
+    public Response<BinaryData> exportGlossaryTermsAsCsvWithResponse(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
-        return exportGlossaryTermsAsCsvWithResponseAsync(glossaryGuid, termGuids, requestOptions).block();
+        final String accept = "text/csv";
+        return service.exportGlossaryTermsAsCsvSync(
+                this.client.getEndpoint(),
+                glossaryGuid,
+                this.client.getServiceVersion().getVersion(),
+                termGuids,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -12053,159 +9270,160 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -12223,12 +9441,14 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponseAsync(
             String glossaryName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listTermsByGlossaryName(
                                 this.client.getEndpoint(),
                                 glossaryName,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -12241,346 +9461,160 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
-     *             (recursive schema, see above)
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param glossaryName The name of the glossary.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return terms by glossary name along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponseAsync(
-            String glossaryName, RequestOptions requestOptions, Context context) {
-        return service.listTermsByGlossaryName(
-                this.client.getEndpoint(),
-                glossaryName,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Get terms by glossary name.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
-     *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
-     *                     }
-     *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
-     *                 }
-     *             }
-     *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
-     *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
-     *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
-     *             }
-     *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
-     *             }
-     *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
-     *                 }
-     *             ]
-     *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
-     *             }
-     *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
-     *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
-     *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
-     *             }
-     *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             }
-     *         ]
-     *         classifies: [
-     *             (recursive schema, see above)
-     *         ]
-     *         examples: [
-     *             String
-     *         ]
-     *         isA: [
-     *             (recursive schema, see above)
-     *         ]
-     *         preferredTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         preferredToTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         replacedBy: [
-     *             (recursive schema, see above)
-     *         ]
-     *         replacementTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         seeAlso: [
-     *             (recursive schema, see above)
-     *         ]
-     *         synonyms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         translatedTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         translationTerms: [
-     *             (recursive schema, see above)
-     *         ]
-     *         usage: String
-     *         validValues: [
-     *             (recursive schema, see above)
-     *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -12598,10 +9632,13 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTermsByGlossaryNameWithResponse(
             String glossaryName, RequestOptions requestOptions) {
-        return listTermsByGlossaryNameWithResponseAsync(glossaryName, requestOptions).block();
-    }
-
-    private static final class TypeReferenceBinaryData extends TypeReference<BinaryData> {
-        // empty
+        final String accept = "application/json";
+        return service.listTermsByGlossaryNameSync(
+                this.client.getEndpoint(),
+                glossaryName,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 }

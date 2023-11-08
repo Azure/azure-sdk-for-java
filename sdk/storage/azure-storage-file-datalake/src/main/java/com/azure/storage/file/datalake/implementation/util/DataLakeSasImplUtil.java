@@ -89,6 +89,8 @@ public class DataLakeSasImplUtil {
 
     private String correlationId;
 
+    private String encryptionScope;
+
     /**
      * Creates a new {@link DataLakeSasImplUtil} with the specified parameters
      *
@@ -127,6 +129,7 @@ public class DataLakeSasImplUtil {
         this.unauthorizedAadObjectId = sasValues.getAgentObjectId();
         this.correlationId = sasValues.getCorrelationId();
         this.isDirectory = isDirectory;
+        this.encryptionScope = sasValues.getEncryptionScope();
     }
 
     /**
@@ -228,6 +231,7 @@ public class DataLakeSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, this.contentLanguage);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
 
         return sb.toString();
 
@@ -249,7 +253,7 @@ public class DataLakeSasImplUtil {
      * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
      * https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
      */
-    private void ensureState() {
+    public void ensureState() {
         if (identifier == null) {
             if (expiryTime == null || permissions == null) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
@@ -293,7 +297,7 @@ public class DataLakeSasImplUtil {
     /**
      * Computes the canonical name for a container or blob resource for SAS signing.
      */
-    private String getCanonicalName(String account) {
+    public String getCanonicalName(String account) {
         // Container: "/blob/account/containername"
         // Blob:      "/blob/account/containername/blobname"
         return CoreUtils.isNullOrEmpty(pathName)
@@ -301,7 +305,7 @@ public class DataLakeSasImplUtil {
             : String.format("/blob/%s/%s/%s", account, fileSystemName, pathName.replace("\\", "/"));
     }
 
-    private String stringToSign(String canonicalName) {
+    public String stringToSign(String canonicalName) {
         if (VERSION.compareTo(DataLakeServiceVersion.V2020_10_02.getVersion()) <= 0) {
             return String.join("\n",
                 this.permissions == null ? "" : permissions,
@@ -332,7 +336,7 @@ public class DataLakeSasImplUtil {
                 VERSION,
                 resource,
                 "", /* Version segment. */
-                "", // encryptionScope
+                this.encryptionScope == null ? "" : this.encryptionScope,
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,
@@ -342,7 +346,7 @@ public class DataLakeSasImplUtil {
         }
     }
 
-    private String stringToSign(final UserDelegationKey key, String canonicalName) {
+    public String stringToSign(final UserDelegationKey key, String canonicalName) {
         if (VERSION.compareTo(DataLakeServiceVersion.V2019_12_12.getVersion()) <= 0) {
             return String.join("\n",
                 this.permissions == null ? "" : this.permissions,
@@ -413,7 +417,7 @@ public class DataLakeSasImplUtil {
                 VERSION,
                 resource,
                 "", /* Version segment. */
-                "", /* Encryption scope. */
+                this.encryptionScope == null ? "" : this.encryptionScope,
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,
@@ -421,5 +425,17 @@ public class DataLakeSasImplUtil {
                 this.contentType == null ? "" : this.contentType
             );
         }
+    }
+
+    public String getResource() {
+        return resource;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public Integer getDirectoryDepth() {
+        return directoryDepth;
     }
 }

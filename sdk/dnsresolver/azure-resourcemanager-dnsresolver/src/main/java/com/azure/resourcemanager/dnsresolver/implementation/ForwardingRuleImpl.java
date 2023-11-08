@@ -71,6 +71,10 @@ public final class ForwardingRuleImpl implements ForwardingRule, ForwardingRule.
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ForwardingRuleInner innerModel() {
         return this.innerObject;
     }

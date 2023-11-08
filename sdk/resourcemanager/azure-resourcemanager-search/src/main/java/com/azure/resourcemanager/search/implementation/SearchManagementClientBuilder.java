@@ -7,7 +7,6 @@ package com.azure.resourcemanager.search.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
@@ -19,14 +18,14 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {SearchManagementClientImpl.class})
 public final class SearchManagementClientBuilder {
     /*
-     * The unique identifier for a Microsoft Azure subscription. You can obtain
-     * this value from the Azure Resource Manager API or the portal.
+     * The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
+     * Manager API, command line tools, or the portal.
      */
     private String subscriptionId;
 
     /**
      * Sets The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
-     * Manager API or the portal.
+     * Manager API, command line tools, or the portal.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the SearchManagementClientBuilder.
@@ -69,22 +68,6 @@ public final class SearchManagementClientBuilder {
     }
 
     /*
-     * The default poll interval for long-running operation
-     */
-    private Duration defaultPollInterval;
-
-    /**
-     * Sets The default poll interval for long-running operation.
-     *
-     * @param defaultPollInterval the defaultPollInterval value.
-     * @return the SearchManagementClientBuilder.
-     */
-    public SearchManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
-        this.defaultPollInterval = defaultPollInterval;
-        return this;
-    }
-
-    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -97,6 +80,22 @@ public final class SearchManagementClientBuilder {
      */
     public SearchManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the SearchManagementClientBuilder.
+     */
+    public SearchManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
         return this;
     }
 
@@ -122,27 +121,26 @@ public final class SearchManagementClientBuilder {
      * @return an instance of SearchManagementClientImpl.
      */
     public SearchManagementClientImpl buildClient() {
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                    .build();
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline =
+            (pipeline != null)
+                ? pipeline
+                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval =
+            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter =
+            (serializerAdapter != null)
+                ? serializerAdapter
+                : SerializerFactory.createDefaultManagementSerializerAdapter();
         SearchManagementClientImpl client =
             new SearchManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+                localPipeline,
+                localSerializerAdapter,
+                localDefaultPollInterval,
+                localEnvironment,
+                this.subscriptionId,
+                localEndpoint);
         return client;
     }
 }

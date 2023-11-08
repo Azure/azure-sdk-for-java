@@ -55,7 +55,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
-    private interface DeletedAccountsService {
+    public interface DeletedAccountsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts")
         @ExpectedResponses({200})
@@ -69,8 +69,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/deletedAccounts"
-                + "/{deletedAccountName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/deletedAccounts/{deletedAccountName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeletedAccountInner>> get(
@@ -342,30 +341,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedAccountInner> getAsync(String deletedAccountName, String location) {
-        return getWithResponseAsync(deletedAccountName, location)
-            .flatMap(
-                (Response<DeletedAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get properties of specified deleted account resource.
-     *
-     * @param deletedAccountName Name of the deleted storage account.
-     * @param location The location of the deleted storage account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of specified deleted account resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedAccountInner get(String deletedAccountName, String location) {
-        return getAsync(deletedAccountName, location).block();
+        return getWithResponseAsync(deletedAccountName, location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -385,9 +361,25 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     }
 
     /**
+     * Get properties of specified deleted account resource.
+     *
+     * @param deletedAccountName Name of the deleted storage account.
+     * @param location The location of the deleted storage account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of specified deleted account resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedAccountInner get(String deletedAccountName, String location) {
+        return getWithResponse(deletedAccountName, location, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -423,7 +415,8 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

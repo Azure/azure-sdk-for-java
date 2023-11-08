@@ -20,7 +20,6 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +39,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @BeforeAll
     public static void setup() throws IOException {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-
         proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(null);
 
@@ -69,17 +66,16 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             }
         } finally {
             ProxySelector.setDefault(defaultProxySelector);
-            StepVerifier.resetDefaultTimeout();
         }
     }
 
     @Test
     public void testReceiverStartOfStreamFilters() {
-        final EventHubConsumerAsyncClient consumer = createBuilder()
+        final EventHubConsumerAsyncClient consumer = toClose(createBuilder()
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient();
+            .buildAsyncConsumerClient());
         final String partitionId = "3";
         final IntegrationTestEventData integrationTestEventData = getTestData().get(partitionId);
         final PartitionProperties properties = integrationTestEventData.getPartitionProperties();

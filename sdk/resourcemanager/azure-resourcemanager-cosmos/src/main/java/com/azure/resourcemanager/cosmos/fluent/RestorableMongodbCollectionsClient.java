@@ -21,14 +21,17 @@ public interface RestorableMongodbCollectionsClient {
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
+     * @param startTime Restorable MongoDB collections event feed start time.
+     * @param endTime Restorable MongoDB collections event feed end time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(
-        String location, String instanceId, String restorableMongodbDatabaseRid);
+        String location, String instanceId, String restorableMongodbDatabaseRid, String startTime, String endTime);
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
@@ -40,7 +43,8 @@ public interface RestorableMongodbCollectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(String location, String instanceId);
@@ -55,7 +59,8 @@ public interface RestorableMongodbCollectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableMongodbCollectionGetResultInner> list(String location, String instanceId);
@@ -68,13 +73,21 @@ public interface RestorableMongodbCollectionsClient {
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
+     * @param startTime Restorable MongoDB collections event feed start time.
+     * @param endTime Restorable MongoDB collections event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableMongodbCollectionGetResultInner> list(
-        String location, String instanceId, String restorableMongodbDatabaseRid, Context context);
+        String location,
+        String instanceId,
+        String restorableMongodbDatabaseRid,
+        String startTime,
+        String endTime,
+        Context context);
 }

@@ -5,18 +5,18 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.ServerConnectionType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A server secure connection policy. */
-@JsonFlatten
+/** A server connection policy. */
 @Fluent
-public class ServerConnectionPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerConnectionPolicyInner.class);
+public final class ServerConnectionPolicyInner extends ProxyResource {
+    /*
+     * Resource location.
+     */
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
 
     /*
      * Metadata used for the Azure portal experience.
@@ -25,24 +25,13 @@ public class ServerConnectionPolicyInner extends ProxyResource {
     private String kind;
 
     /*
-     * Resource location.
+     * Resource properties.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
+    @JsonProperty(value = "properties")
+    private ServerConnectionPolicyProperties innerProperties;
 
-    /*
-     * The server connection type.
-     */
-    @JsonProperty(value = "properties.connectionType")
-    private ServerConnectionType connectionType;
-
-    /**
-     * Get the kind property: Metadata used for the Azure portal experience.
-     *
-     * @return the kind value.
-     */
-    public String kind() {
-        return this.kind;
+    /** Creates an instance of ServerConnectionPolicyInner class. */
+    public ServerConnectionPolicyInner() {
     }
 
     /**
@@ -55,12 +44,30 @@ public class ServerConnectionPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the kind property: Metadata used for the Azure portal experience.
+     *
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ServerConnectionPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the connectionType property: The server connection type.
      *
      * @return the connectionType value.
      */
     public ServerConnectionType connectionType() {
-        return this.connectionType;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionType();
     }
 
     /**
@@ -70,7 +77,10 @@ public class ServerConnectionPolicyInner extends ProxyResource {
      * @return the ServerConnectionPolicyInner object itself.
      */
     public ServerConnectionPolicyInner withConnectionType(ServerConnectionType connectionType) {
-        this.connectionType = connectionType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerConnectionPolicyProperties();
+        }
+        this.innerProperties().withConnectionType(connectionType);
         return this;
     }
 
@@ -80,5 +90,8 @@ public class ServerConnectionPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

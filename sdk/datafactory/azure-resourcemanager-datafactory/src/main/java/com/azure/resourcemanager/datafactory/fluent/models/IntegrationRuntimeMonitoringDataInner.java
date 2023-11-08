@@ -24,6 +24,10 @@ public final class IntegrationRuntimeMonitoringDataInner {
     @JsonProperty(value = "nodes")
     private List<IntegrationRuntimeNodeMonitoringData> nodes;
 
+    /** Creates an instance of IntegrationRuntimeMonitoringDataInner class. */
+    public IntegrationRuntimeMonitoringDataInner() {
+    }
+
     /**
      * Get the name property: Integration runtime name.
      *

@@ -11,18 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AdditionalColumns {
     /*
-     * Additional column name. Type: string (or Expression with resultType
-     * string).
+     * Additional column name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "name")
     private Object name;
 
     /*
-     * Additional column value. Type: string (or Expression with resultType
-     * string).
+     * Additional column value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value")
     private Object value;
+
+    /** Creates an instance of AdditionalColumns class. */
+    public AdditionalColumns() {}
 
     /**
      * Get the name property: Additional column name. Type: string (or Expression with resultType string).

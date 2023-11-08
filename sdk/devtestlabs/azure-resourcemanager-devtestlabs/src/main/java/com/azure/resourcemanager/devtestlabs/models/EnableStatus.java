@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnableStatus. */
+/** Indicates if the artifact source is enabled (values: Enabled, Disabled). */
 public final class EnableStatus extends ExpandableStringEnum<EnableStatus> {
     /** Static value Enabled for EnableStatus. */
     public static final EnableStatus ENABLED = fromString("Enabled");
 
     /** Static value Disabled for EnableStatus. */
     public static final EnableStatus DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of EnableStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnableStatus() {
+    }
 
     /**
      * Creates or finds a EnableStatus from its string representation.
@@ -27,7 +36,11 @@ public final class EnableStatus extends ExpandableStringEnum<EnableStatus> {
         return fromString(name, EnableStatus.class);
     }
 
-    /** @return known EnableStatus values. */
+    /**
+     * Gets known EnableStatus values.
+     *
+     * @return known EnableStatus values.
+     */
     public static Collection<EnableStatus> values() {
         return values(EnableStatus.class);
     }

@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Map;
 
 /** Properties of Cognitive Services account deployment. */
 @Fluent
 public final class DeploymentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentProperties.class);
-
     /*
      * Gets the status of the resource at the time the operation was called.
      */
@@ -31,6 +30,41 @@ public final class DeploymentProperties {
      */
     @JsonProperty(value = "scaleSettings")
     private DeploymentScaleSettings scaleSettings;
+
+    /*
+     * The capabilities.
+     */
+    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> capabilities;
+
+    /*
+     * The name of RAI policy.
+     */
+    @JsonProperty(value = "raiPolicyName")
+    private String raiPolicyName;
+
+    /*
+     * The call rate limit Cognitive Services account.
+     */
+    @JsonProperty(value = "callRateLimit", access = JsonProperty.Access.WRITE_ONLY)
+    private CallRateLimit callRateLimit;
+
+    /*
+     * The rateLimits property.
+     */
+    @JsonProperty(value = "rateLimits", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ThrottlingRule> rateLimits;
+
+    /*
+     * Deployment model version upgrade option.
+     */
+    @JsonProperty(value = "versionUpgradeOption")
+    private DeploymentModelVersionUpgradeOption versionUpgradeOption;
+
+    /** Creates an instance of DeploymentProperties class. */
+    public DeploymentProperties() {
+    }
 
     /**
      * Get the provisioningState property: Gets the status of the resource at the time the operation was called.
@@ -82,6 +116,73 @@ public final class DeploymentProperties {
     }
 
     /**
+     * Get the capabilities property: The capabilities.
+     *
+     * @return the capabilities value.
+     */
+    public Map<String, String> capabilities() {
+        return this.capabilities;
+    }
+
+    /**
+     * Get the raiPolicyName property: The name of RAI policy.
+     *
+     * @return the raiPolicyName value.
+     */
+    public String raiPolicyName() {
+        return this.raiPolicyName;
+    }
+
+    /**
+     * Set the raiPolicyName property: The name of RAI policy.
+     *
+     * @param raiPolicyName the raiPolicyName value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withRaiPolicyName(String raiPolicyName) {
+        this.raiPolicyName = raiPolicyName;
+        return this;
+    }
+
+    /**
+     * Get the callRateLimit property: The call rate limit Cognitive Services account.
+     *
+     * @return the callRateLimit value.
+     */
+    public CallRateLimit callRateLimit() {
+        return this.callRateLimit;
+    }
+
+    /**
+     * Get the rateLimits property: The rateLimits property.
+     *
+     * @return the rateLimits value.
+     */
+    public List<ThrottlingRule> rateLimits() {
+        return this.rateLimits;
+    }
+
+    /**
+     * Get the versionUpgradeOption property: Deployment model version upgrade option.
+     *
+     * @return the versionUpgradeOption value.
+     */
+    public DeploymentModelVersionUpgradeOption versionUpgradeOption() {
+        return this.versionUpgradeOption;
+    }
+
+    /**
+     * Set the versionUpgradeOption property: Deployment model version upgrade option.
+     *
+     * @param versionUpgradeOption the versionUpgradeOption value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withVersionUpgradeOption(DeploymentModelVersionUpgradeOption versionUpgradeOption) {
+        this.versionUpgradeOption = versionUpgradeOption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -92,6 +193,12 @@ public final class DeploymentProperties {
         }
         if (scaleSettings() != null) {
             scaleSettings().validate();
+        }
+        if (callRateLimit() != null) {
+            callRateLimit().validate();
+        }
+        if (rateLimits() != null) {
+            rateLimits().forEach(e -> e.validate());
         }
     }
 }

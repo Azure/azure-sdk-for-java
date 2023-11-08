@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventHubEventSourceMutableProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,36 +14,58 @@ import java.util.Map;
 /** Parameters supplied to the Update Event Source operation to update an EventHub event source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("Microsoft.EventHub")
-@JsonFlatten
 @Fluent
-public class EventHubEventSourceUpdateParameters extends EventSourceUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubEventSourceUpdateParameters.class);
-
+public final class EventHubEventSourceUpdateParameters extends EventSourceUpdateParameters {
     /*
-     * The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or
-     * empty-string is specified, the event creation time will be used.
+     * Properties of the EventHub event source.
      */
-    @JsonProperty(value = "properties.timestampPropertyName")
-    private String timestampPropertyName;
+    @JsonProperty(value = "properties")
+    private EventHubEventSourceMutableProperties innerProperties;
 
-    /*
-     * An object that represents the local timestamp property. It contains the
-     * format of local timestamp that needs to be used and the corresponding
-     * timezone offset information. If a value isn't specified for
-     * localTimestamp, or if null, then the local timestamp will not be
-     * ingressed with the events.
-     */
-    @JsonProperty(value = "properties.localTimestamp")
-    private LocalTimestamp localTimestamp;
+    /** Creates an instance of EventHubEventSourceUpdateParameters class. */
+    public EventHubEventSourceUpdateParameters() {
+    }
 
-    /*
-     * The value of the shared access key that grants the Time Series Insights
-     * service read access to the event hub. This property is not shown in
-     * event source responses.
+    /**
+     * Get the innerProperties property: Properties of the EventHub event source.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sharedAccessKey")
-    private String sharedAccessKey;
+    private EventHubEventSourceMutableProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EventHubEventSourceUpdateParameters withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
+     * read access to the event hub. This property is not shown in event source responses.
+     *
+     * @return the sharedAccessKey value.
+     */
+    public String sharedAccessKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().sharedAccessKey();
+    }
+
+    /**
+     * Set the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
+     * read access to the event hub. This property is not shown in event source responses.
+     *
+     * @param sharedAccessKey the sharedAccessKey value to set.
+     * @return the EventHubEventSourceUpdateParameters object itself.
+     */
+    public EventHubEventSourceUpdateParameters withSharedAccessKey(String sharedAccessKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceMutableProperties();
+        }
+        this.innerProperties().withSharedAccessKey(sharedAccessKey);
+        return this;
+    }
 
     /**
      * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
@@ -55,7 +75,7 @@ public class EventHubEventSourceUpdateParameters extends EventSourceUpdateParame
      * @return the timestampPropertyName value.
      */
     public String timestampPropertyName() {
-        return this.timestampPropertyName;
+        return this.innerProperties() == null ? null : this.innerProperties().timestampPropertyName();
     }
 
     /**
@@ -67,60 +87,10 @@ public class EventHubEventSourceUpdateParameters extends EventSourceUpdateParame
      * @return the EventHubEventSourceUpdateParameters object itself.
      */
     public EventHubEventSourceUpdateParameters withTimestampPropertyName(String timestampPropertyName) {
-        this.timestampPropertyName = timestampPropertyName;
-        return this;
-    }
-
-    /**
-     * Get the localTimestamp property: An object that represents the local timestamp property. It contains the format
-     * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
-     * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-     *
-     * @return the localTimestamp value.
-     */
-    public LocalTimestamp localTimestamp() {
-        return this.localTimestamp;
-    }
-
-    /**
-     * Set the localTimestamp property: An object that represents the local timestamp property. It contains the format
-     * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
-     * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-     *
-     * @param localTimestamp the localTimestamp value to set.
-     * @return the EventHubEventSourceUpdateParameters object itself.
-     */
-    public EventHubEventSourceUpdateParameters withLocalTimestamp(LocalTimestamp localTimestamp) {
-        this.localTimestamp = localTimestamp;
-        return this;
-    }
-
-    /**
-     * Get the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
-     * read access to the event hub. This property is not shown in event source responses.
-     *
-     * @return the sharedAccessKey value.
-     */
-    public String sharedAccessKey() {
-        return this.sharedAccessKey;
-    }
-
-    /**
-     * Set the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
-     * read access to the event hub. This property is not shown in event source responses.
-     *
-     * @param sharedAccessKey the sharedAccessKey value to set.
-     * @return the EventHubEventSourceUpdateParameters object itself.
-     */
-    public EventHubEventSourceUpdateParameters withSharedAccessKey(String sharedAccessKey) {
-        this.sharedAccessKey = sharedAccessKey;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public EventHubEventSourceUpdateParameters withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceMutableProperties();
+        }
+        this.innerProperties().withTimestampPropertyName(timestampPropertyName);
         return this;
     }
 
@@ -132,8 +102,8 @@ public class EventHubEventSourceUpdateParameters extends EventSourceUpdateParame
     @Override
     public void validate() {
         super.validate();
-        if (localTimestamp() != null) {
-            localTimestamp().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

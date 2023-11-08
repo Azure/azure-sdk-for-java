@@ -7,17 +7,17 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A phone number. */
+/** The PhoneNumberIdentifierModel model. */
 @Fluent
 public final class PhoneNumberIdentifierModel {
     /*
-     * The phone number in E.164 format.
+     * The value property.
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value")
     private String value;
 
     /**
-     * Get the value property: The phone number in E.164 format.
+     * Get the value property: The value property.
      *
      * @return the value value.
      */
@@ -26,7 +26,7 @@ public final class PhoneNumberIdentifierModel {
     }
 
     /**
-     * Set the value property: The phone number in E.164 format.
+     * Set the value property: The value property.
      *
      * @param value the value value to set.
      * @return the PhoneNumberIdentifierModel object itself.

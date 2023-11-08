@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** A FTP server Linked Service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,16 +19,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class FtpServerLinkedService extends LinkedService {
     /*
-     * Host name of the FTP server. Type: string (or Expression with resultType
-     * string).
+     * Host name of the FTP server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.host", required = true)
     private Object host;
 
     /*
-     * The TCP port number that the FTP server uses to listen for client
-     * connections. Default value is 21. Type: integer (or Expression with
-     * resultType integer), minimum: 0.
+     * The TCP port number that the FTP server uses to listen for client connections. Default value is 21. Type:
+     * integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "typeProperties.port")
     private Object port;
@@ -38,8 +38,7 @@ public class FtpServerLinkedService extends LinkedService {
     private FtpAuthenticationType authenticationType;
 
     /*
-     * Username to logon the FTP server. Type: string (or Expression with
-     * resultType string).
+     * Username to logon the FTP server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -51,27 +50,28 @@ public class FtpServerLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * If true, connect to the FTP server over SSL/TLS channel. Default value
-     * is true. Type: boolean (or Expression with resultType boolean).
+     * If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.enableSsl")
     private Object enableSsl;
 
     /*
-     * If true, validate the FTP server SSL certificate when connect over
-     * SSL/TLS channel. Default value is true. Type: boolean (or Expression
-     * with resultType boolean).
+     * If true, validate the FTP server SSL certificate when connect over SSL/TLS channel. Default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
+
+    /** Creates an instance of FtpServerLinkedService class. */
+    public FtpServerLinkedService() {}
 
     /**
      * Get the host property: Host name of the FTP server. Type: string (or Expression with resultType string).
@@ -238,6 +238,34 @@ public class FtpServerLinkedService extends LinkedService {
      */
     public FtpServerLinkedService setEnableServerCertificateValidation(Object enableServerCertificateValidation) {
         this.enableServerCertificateValidation = enableServerCertificateValidation;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FtpServerLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FtpServerLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FtpServerLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FtpServerLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

@@ -17,7 +17,9 @@ import com.azure.resourcemanager.operationsmanagement.models.SolutionPatch;
 /** An instance of this class provides access to all the operations defined in SolutionsClient. */
 public interface SolutionsClient {
     /**
-     * Creates or updates the Solution.
+     * Create/Update Solution.
+     *
+     * <p>Creates or updates the Solution.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -25,14 +27,16 @@ public interface SolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the {@link SyncPoller} for polling of the container for solution.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdate(
         String resourceGroupName, String solutionName, SolutionInner parameters);
 
     /**
-     * Creates or updates the Solution.
+     * Create/Update Solution.
+     *
+     * <p>Creates or updates the Solution.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -41,14 +45,16 @@ public interface SolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the {@link SyncPoller} for polling of the container for solution.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdate(
         String resourceGroupName, String solutionName, SolutionInner parameters, Context context);
 
     /**
-     * Creates or updates the Solution.
+     * Create/Update Solution.
+     *
+     * <p>Creates or updates the Solution.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -62,7 +68,9 @@ public interface SolutionsClient {
     SolutionInner createOrUpdate(String resourceGroupName, String solutionName, SolutionInner parameters);
 
     /**
-     * Creates or updates the Solution.
+     * Create/Update Solution.
+     *
+     * <p>Creates or updates the Solution.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -78,7 +86,9 @@ public interface SolutionsClient {
         String resourceGroupName, String solutionName, SolutionInner parameters, Context context);
 
     /**
-     * Patch a Solution. Only updating tags supported.
+     * Patch a Solution.
+     *
+     * <p>Patch a Solution. Only updating tags supported.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -86,14 +96,16 @@ public interface SolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the {@link SyncPoller} for polling of the container for solution.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(
         String resourceGroupName, String solutionName, SolutionPatch parameters);
 
     /**
-     * Patch a Solution. Only updating tags supported.
+     * Patch a Solution.
+     *
+     * <p>Patch a Solution. Only updating tags supported.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -102,14 +114,16 @@ public interface SolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the {@link SyncPoller} for polling of the container for solution.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(
         String resourceGroupName, String solutionName, SolutionPatch parameters, Context context);
 
     /**
-     * Patch a Solution. Only updating tags supported.
+     * Patch a Solution.
+     *
+     * <p>Patch a Solution. Only updating tags supported.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -123,7 +137,9 @@ public interface SolutionsClient {
     SolutionInner update(String resourceGroupName, String solutionName, SolutionPatch parameters);
 
     /**
-     * Patch a Solution. Only updating tags supported.
+     * Patch a Solution.
+     *
+     * <p>Patch a Solution. Only updating tags supported.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -138,20 +154,24 @@ public interface SolutionsClient {
     SolutionInner update(String resourceGroupName, String solutionName, SolutionPatch parameters, Context context);
 
     /**
-     * Deletes the solution in the subscription.
+     * Deletes the solution
+     *
+     * <p>Deletes the solution in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String solutionName);
 
     /**
-     * Deletes the solution in the subscription.
+     * Deletes the solution
+     *
+     * <p>Deletes the solution in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -159,13 +179,15 @@ public interface SolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String solutionName, Context context);
 
     /**
-     * Deletes the solution in the subscription.
+     * Deletes the solution
+     *
+     * <p>Deletes the solution in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -177,7 +199,9 @@ public interface SolutionsClient {
     void delete(String resourceGroupName, String solutionName);
 
     /**
-     * Deletes the solution in the subscription.
+     * Deletes the solution
+     *
+     * <p>Deletes the solution in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -190,7 +214,26 @@ public interface SolutionsClient {
     void delete(String resourceGroupName, String solutionName, Context context);
 
     /**
-     * Retrieves the user solution.
+     * Retrieve solution.
+     *
+     * <p>Retrieves the user solution.
+     *
+     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @param solutionName User Solution Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the container for solution along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SolutionInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String solutionName, Context context);
+
+    /**
+     * Retrieve solution.
+     *
+     * <p>Retrieves the user solution.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -203,22 +246,24 @@ public interface SolutionsClient {
     SolutionInner getByResourceGroup(String resourceGroupName, String solutionName);
 
     /**
-     * Retrieves the user solution.
+     * Retrieves the solution list for the subscription
+     *
+     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the list of solution response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SolutionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String solutionName, Context context);
+    Response<SolutionPropertiesListInner> listByResourceGroupWithResponse(String resourceGroupName, Context context);
 
     /**
-     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * Retrieves the solution list for the subscription
+     *
+     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -230,20 +275,23 @@ public interface SolutionsClient {
     SolutionPropertiesListInner listByResourceGroup(String resourceGroupName);
 
     /**
-     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * Retrieves the solution list for the subscription
      *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of solution response.
+     * @return the list of solution response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SolutionPropertiesListInner> listByResourceGroupWithResponse(String resourceGroupName, Context context);
+    Response<SolutionPropertiesListInner> listBySubscriptionWithResponse(Context context);
 
     /**
-     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * Retrieves the solution list for the subscription
+     *
+     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -251,16 +299,4 @@ public interface SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionPropertiesListInner listBySubscription();
-
-    /**
-     * Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of solution response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SolutionPropertiesListInner> listBySubscriptionWithResponse(Context context);
 }

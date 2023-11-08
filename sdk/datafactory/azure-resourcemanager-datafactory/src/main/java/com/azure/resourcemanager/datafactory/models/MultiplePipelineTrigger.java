@@ -32,6 +32,10 @@ public class MultiplePipelineTrigger extends Trigger {
     @JsonProperty(value = "pipelines")
     private List<TriggerPipelineReference> pipelines;
 
+    /** Creates an instance of MultiplePipelineTrigger class. */
+    public MultiplePipelineTrigger() {
+    }
+
     /**
      * Get the pipelines property: Pipelines that need to be started.
      *

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolAttachedDatabaseConfigurations Get. */
 public final class KustoPoolAttachedDatabaseConfigurationsGetSamples {
     /*
@@ -21,6 +19,10 @@ public final class KustoPoolAttachedDatabaseConfigurationsGetSamples {
         manager
             .kustoPoolAttachedDatabaseConfigurations()
             .getWithResponse(
-                "kustorptest", "kustoclusterrptest4", "attachedDatabaseConfigurations1", "kustorptest", Context.NONE);
+                "kustorptest",
+                "kustoclusterrptest4",
+                "attachedDatabaseConfigurations1",
+                "kustorptest",
+                com.azure.core.util.Context.NONE);
     }
 }

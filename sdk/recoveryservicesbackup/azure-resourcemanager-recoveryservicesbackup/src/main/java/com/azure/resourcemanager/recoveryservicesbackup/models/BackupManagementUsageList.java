@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupManagementUsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Backup management usage for vault. */
 @Fluent
 public final class BackupManagementUsageList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupManagementUsageList.class);
-
     /*
      * The list of backup management usages for the given vault.
      */
     @JsonProperty(value = "value")
     private List<BackupManagementUsageInner> value;
+
+    /** Creates an instance of BackupManagementUsageList class. */
+    public BackupManagementUsageList() {
+    }
 
     /**
      * Get the value property: The list of backup management usages for the given vault.

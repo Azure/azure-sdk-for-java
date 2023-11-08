@@ -31,8 +31,7 @@ public final class ExpansionEntityQueriesProperties {
     private EntityType inputEntityType;
 
     /*
-     * List of the fields of the source entity that are required to run the
-     * query
+     * List of the fields of the source entity that are required to run the query
      */
     @JsonProperty(value = "inputFields")
     private List<String> inputFields;

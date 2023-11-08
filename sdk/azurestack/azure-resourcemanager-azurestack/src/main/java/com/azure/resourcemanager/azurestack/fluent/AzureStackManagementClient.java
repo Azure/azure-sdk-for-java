@@ -60,6 +60,13 @@ public interface AzureStackManagementClient {
     CloudManifestFilesClient getCloudManifestFiles();
 
     /**
+     * Gets the DeploymentLicensesClient object to access its operations.
+     *
+     * @return the DeploymentLicensesClient object.
+     */
+    DeploymentLicensesClient getDeploymentLicenses();
+
+    /**
      * Gets the CustomerSubscriptionsClient object to access its operations.
      *
      * @return the CustomerSubscriptionsClient object.
@@ -79,11 +86,4 @@ public interface AzureStackManagementClient {
      * @return the RegistrationsClient object.
      */
     RegistrationsClient getRegistrations();
-
-    /**
-     * Gets the LinkedSubscriptionsClient object to access its operations.
-     *
-     * @return the LinkedSubscriptionsClient object.
-     */
-    LinkedSubscriptionsClient getLinkedSubscriptions();
 }

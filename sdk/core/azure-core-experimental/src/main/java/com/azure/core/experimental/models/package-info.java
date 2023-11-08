@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing experimental model classes.
+ * Package containing core model classes.
  */
 package com.azure.core.experimental.models;

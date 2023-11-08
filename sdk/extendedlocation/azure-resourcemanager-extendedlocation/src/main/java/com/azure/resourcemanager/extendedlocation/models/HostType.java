@@ -24,7 +24,11 @@ public final class HostType extends ExpandableStringEnum<HostType> {
         return fromString(name, HostType.class);
     }
 
-    /** @return known HostType values. */
+    /**
+     * Gets known HostType values.
+     *
+     * @return known HostType values.
+     */
     public static Collection<HostType> values() {
         return values(HostType.class);
     }

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -22,31 +21,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "REST", value = RestHealthCheckStepAttributes.class)})
 @Fluent
 public class HealthCheckStepAttributes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthCheckStepAttributes.class);
-
     /*
-     * The duration in ISO 8601 format for which health check waits idly
-     * without any checks.
+     * The duration in ISO 8601 format for which health check waits idly without any checks.
      */
     @JsonProperty(value = "waitDuration")
     private String waitDuration;
 
     /*
-     * The duration in ISO 8601 format for which the health check waits for the
-     * resource to become healthy. Health check fails if it doesn't. Health
-     * check starts to enforce healthyStateDuration once resource becomes
-     * healthy.
+     * The duration in ISO 8601 format for which the health check waits for the resource to become healthy. Health
+     * check fails if it doesn't. Health check starts to enforce healthyStateDuration once resource becomes healthy.
      */
     @JsonProperty(value = "maxElasticDuration")
     private String maxElasticDuration;
 
     /*
-     * The duration in ISO 8601 format for which the resource is expected to be
-     * continuously healthy. If maxElasticDuration is specified, healthy state
-     * duration is enforced after the detection of first healthy signal.
+     * The duration in ISO 8601 format for which the resource is expected to be continuously healthy. If
+     * maxElasticDuration is specified, healthy state duration is enforced after the detection of first healthy signal.
      */
     @JsonProperty(value = "healthyStateDuration", required = true)
     private String healthyStateDuration;
+
+    /** Creates an instance of HealthCheckStepAttributes class. */
+    public HealthCheckStepAttributes() {
+    }
 
     /**
      * Get the waitDuration property: The duration in ISO 8601 format for which health check waits idly without any
@@ -125,10 +122,12 @@ public class HealthCheckStepAttributes {
      */
     public void validate() {
         if (healthyStateDuration() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property healthyStateDuration in model HealthCheckStepAttributes"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HealthCheckStepAttributes.class);
 }

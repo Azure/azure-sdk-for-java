@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration runtime authentication keys. */
 @Fluent
 public final class IntegrationRuntimeAuthKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeAuthKeysInner.class);
-
     /*
      * The primary integration runtime authentication key.
      */
@@ -25,6 +21,10 @@ public final class IntegrationRuntimeAuthKeysInner {
      */
     @JsonProperty(value = "authKey2")
     private String authKey2;
+
+    /** Creates an instance of IntegrationRuntimeAuthKeysInner class. */
+    public IntegrationRuntimeAuthKeysInner() {
+    }
 
     /**
      * Get the authKey1 property: The primary integration runtime authentication key.

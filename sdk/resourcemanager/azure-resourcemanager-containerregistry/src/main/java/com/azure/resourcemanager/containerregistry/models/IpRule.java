@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP rule with specific IP or IP range in CIDR format. */
 @Fluent
 public final class IpRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpRule.class);
-
     /*
      * The action of IP ACL rule.
      */
@@ -21,11 +18,14 @@ public final class IpRule {
     private Action action;
 
     /*
-     * Specifies the IP or IP range in CIDR format. Only IPV4 address is
-     * allowed.
+     * Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      */
     @JsonProperty(value = "value", required = true)
     private String ipAddressOrRange;
+
+    /** Creates an instance of IpRule class. */
+    public IpRule() {
+    }
 
     /**
      * Get the action property: The action of IP ACL rule.
@@ -74,9 +74,11 @@ public final class IpRule {
      */
     public void validate() {
         if (ipAddressOrRange() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ipAddressOrRange in model IpRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IpRule.class);
 }

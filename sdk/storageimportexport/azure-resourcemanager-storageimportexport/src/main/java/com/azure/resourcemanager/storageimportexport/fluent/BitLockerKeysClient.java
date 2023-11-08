@@ -19,10 +19,10 @@ public interface BitLockerKeysClient {
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return getBitLockerKeys response.
+     * @return getBitLockerKeys response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DriveBitLockerKeyInner> list(String jobName, String resourceGroupName);
@@ -35,10 +35,10 @@ public interface BitLockerKeysClient {
      *     subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return getBitLockerKeys response.
+     * @return getBitLockerKeys response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DriveBitLockerKeyInner> list(String jobName, String resourceGroupName, Context context);

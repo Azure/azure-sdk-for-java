@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,12 +16,9 @@ import java.util.Map;
 /** changeTrackedEntity. */
 @Fluent
 public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphChangeTrackedEntity.class);
-
     /*
-     * The Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
@@ -34,9 +30,8 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
     private MicrosoftGraphIdentitySet lastModifiedBy;
 
     /*
-     * The Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
@@ -45,6 +40,10 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
      * changeTrackedEntity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphChangeTrackedEntity class. */
+    public MicrosoftGraphChangeTrackedEntity() {
+    }
 
     /**
      * Get the createdDateTime property: The Timestamp type represents date and time information using ISO 8601 format

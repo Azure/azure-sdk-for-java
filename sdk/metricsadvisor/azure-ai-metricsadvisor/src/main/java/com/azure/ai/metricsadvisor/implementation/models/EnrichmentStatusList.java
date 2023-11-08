@@ -24,6 +24,9 @@ public final class EnrichmentStatusList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<EnrichmentStatus> value;
 
+    /** Creates an instance of EnrichmentStatusList class. */
+    public EnrichmentStatusList() {}
+
     /**
      * Get the nextLink property: The @nextLink property.
      *

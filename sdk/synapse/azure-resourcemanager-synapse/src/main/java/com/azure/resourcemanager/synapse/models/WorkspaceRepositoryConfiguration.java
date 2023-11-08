@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Git integration settings. */
 @Fluent
 public final class WorkspaceRepositoryConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceRepositoryConfiguration.class);
-
     /*
-     * Type of workspace repositoryID configuration. Example
-     * WorkspaceVSTSConfiguration, WorkspaceGitHubConfiguration
+     * Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration, WorkspaceGitHubConfiguration
      */
     @JsonProperty(value = "type")
     private String type;
@@ -69,6 +64,10 @@ public final class WorkspaceRepositoryConfiguration {
      */
     @JsonProperty(value = "tenantId")
     private UUID tenantId;
+
+    /** Creates an instance of WorkspaceRepositoryConfiguration class. */
+    public WorkspaceRepositoryConfiguration() {
+    }
 
     /**
      * Get the type property: Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration,

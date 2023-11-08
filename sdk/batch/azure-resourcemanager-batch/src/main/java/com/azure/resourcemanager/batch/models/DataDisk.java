@@ -14,22 +14,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DataDisk {
     /*
-     * The logical unit number. The lun is used to uniquely identify each data
-     * disk. If attaching multiple disks, each should have a distinct lun. The
-     * value must be between 0 and 63, inclusive.
+     * The logical unit number.
+     *
+     * The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct
+     * lun. The value must be between 0 and 63, inclusive.
      */
     @JsonProperty(value = "lun", required = true)
     private int lun;
 
     /*
-     * The type of caching to enable for the disk. Values are:
+     * The type of caching to enable for the disk.
+     *
+     * Values are:
      *
      * none - The caching mode for the disk is not enabled.
      * readOnly - The caching mode for the disk is read only.
      * readWrite - The caching mode for the disk is read and write.
      *
-     * The default value for caching is none. For information about the caching
-     * options see:
+     * The default value for caching is none. For information about the caching options see:
      * https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
      */
     @JsonProperty(value = "caching")
@@ -42,20 +44,25 @@ public final class DataDisk {
     private int diskSizeGB;
 
     /*
-     * The storage account type for use in creating data disks. If omitted, the
-     * default is "Standard_LRS". Values are:
+     * The storage account type for use in creating data disks.
      *
-     * Standard_LRS - The data disk should use standard locally redundant
-     * storage.
-     * Premium_LRS - The data disk should use premium locally redundant
-     * storage.
+     * If omitted, the default is "Standard_LRS". Values are:
+     *
+     * Standard_LRS - The data disk should use standard locally redundant storage.
+     * Premium_LRS - The data disk should use premium locally redundant storage.
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
 
+    /** Creates an instance of DataDisk class. */
+    public DataDisk() {
+    }
+
     /**
-     * Get the lun property: The logical unit number. The lun is used to uniquely identify each data disk. If attaching
-     * multiple disks, each should have a distinct lun. The value must be between 0 and 63, inclusive.
+     * Get the lun property: The logical unit number.
+     *
+     * <p>The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct
+     * lun. The value must be between 0 and 63, inclusive.
      *
      * @return the lun value.
      */
@@ -64,8 +71,10 @@ public final class DataDisk {
     }
 
     /**
-     * Set the lun property: The logical unit number. The lun is used to uniquely identify each data disk. If attaching
-     * multiple disks, each should have a distinct lun. The value must be between 0 and 63, inclusive.
+     * Set the lun property: The logical unit number.
+     *
+     * <p>The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct
+     * lun. The value must be between 0 and 63, inclusive.
      *
      * @param lun the lun value to set.
      * @return the DataDisk object itself.
@@ -76,7 +85,9 @@ public final class DataDisk {
     }
 
     /**
-     * Get the caching property: The type of caching to enable for the disk. Values are:
+     * Get the caching property: The type of caching to enable for the disk.
+     *
+     * <p>Values are:
      *
      * <p>none - The caching mode for the disk is not enabled. readOnly - The caching mode for the disk is read only.
      * readWrite - The caching mode for the disk is read and write.
@@ -91,7 +102,9 @@ public final class DataDisk {
     }
 
     /**
-     * Set the caching property: The type of caching to enable for the disk. Values are:
+     * Set the caching property: The type of caching to enable for the disk.
+     *
+     * <p>Values are:
      *
      * <p>none - The caching mode for the disk is not enabled. readOnly - The caching mode for the disk is read only.
      * readWrite - The caching mode for the disk is read and write.
@@ -128,8 +141,9 @@ public final class DataDisk {
     }
 
     /**
-     * Get the storageAccountType property: The storage account type for use in creating data disks. If omitted, the
-     * default is "Standard_LRS". Values are:
+     * Get the storageAccountType property: The storage account type for use in creating data disks.
+     *
+     * <p>If omitted, the default is "Standard_LRS". Values are:
      *
      * <p>Standard_LRS - The data disk should use standard locally redundant storage. Premium_LRS - The data disk should
      * use premium locally redundant storage.
@@ -141,8 +155,9 @@ public final class DataDisk {
     }
 
     /**
-     * Set the storageAccountType property: The storage account type for use in creating data disks. If omitted, the
-     * default is "Standard_LRS". Values are:
+     * Set the storageAccountType property: The storage account type for use in creating data disks.
+     *
+     * <p>If omitted, the default is "Standard_LRS". Values are:
      *
      * <p>Standard_LRS - The data disk should use standard locally redundant storage. Premium_LRS - The data disk should
      * use premium locally redundant storage.

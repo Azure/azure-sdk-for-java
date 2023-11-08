@@ -9,7 +9,9 @@ import com.azure.resourcemanager.kusto.fluent.models.OperationInner;
 /** An immutable client-side representation of Operation. */
 public interface Operation {
     /**
-     * Gets the name property: The operation name. This is of the format {provider}/{resource}/{operation}.
+     * Gets the name property: The operation name.
+     *
+     * <p>This is of the format {provider}/{resource}/{operation}.
      *
      * @return the name value.
      */
@@ -30,7 +32,7 @@ public interface Operation {
     String origin();
 
     /**
-     * Gets the properties property: Any object.
+     * Gets the properties property: Properties of the operation.
      *
      * @return the properties value.
      */

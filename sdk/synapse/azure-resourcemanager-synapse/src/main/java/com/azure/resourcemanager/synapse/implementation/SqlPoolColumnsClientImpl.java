@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolColumnsClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolColumnInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolColumnsClient. */
 public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolColumnsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolColumnsService service;
 
@@ -53,7 +50,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolColumnsService {
+    public interface SqlPoolColumnsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -245,39 +242,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
         String tableName,
         String columnName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName)
-            .flatMap(
-                (Response<SqlPoolColumnInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get Sql pool column.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql pool column.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolColumnInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -307,5 +272,32 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
         return getWithResponseAsync(
                 resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context)
             .block();
+    }
+
+    /**
+     * Get Sql pool column.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @param columnName The name of the column.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql pool column.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlPoolColumnInner get(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String schemaName,
+        String tableName,
+        String columnName) {
+        return getWithResponse(
+                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, Context.NONE)
+            .getValue();
     }
 }

@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The snowflake dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,18 +19,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class SnowflakeDataset extends Dataset {
     /*
-     * The schema name of the Snowflake database. Type: string (or Expression
-     * with resultType string).
+     * The schema name of the Snowflake database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
     /*
-     * The table name of the Snowflake database. Type: string (or Expression
-     * with resultType string).
+     * The table name of the Snowflake database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
+
+    /** Creates an instance of SnowflakeDataset class. */
+    public SnowflakeDataset() {}
 
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of the Snowflake database. Type: string (or
@@ -71,6 +74,55 @@ public class SnowflakeDataset extends Dataset {
      */
     public SnowflakeDataset setTable(Object table) {
         this.table = table;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

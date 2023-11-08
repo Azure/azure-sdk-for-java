@@ -6,13 +6,13 @@ package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.data.SpanData;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,20 +21,19 @@ import java.util.Collections;
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
  * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
- *
+ * <p>
  * Code samples for the README.md
  */
 public class ReadmeSamples {
 
     /**
-     * Sample for creating Azure Monitor Exporter.
+     * Sample for creating Azure Monitor exporter builder.
      */
-    public void createExporter() {
-        // BEGIN: readme-sample-createExporter
-        AzureMonitorTraceExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}")
-            .buildTraceExporter();
-        // END: readme-sample-createExporter
+    public void createExporterBuilder() {
+        // BEGIN: readme-sample-createExporterBuilder
+        AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder()
+            .connectionString("{connection-string}");
+        // END: readme-sample-createExporterBuilder
     }
 
     /**
@@ -42,21 +41,17 @@ public class ReadmeSamples {
      */
     public void setupExporter() {
         // BEGIN: readme-sample-setupExporter
-        // Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
+        // Create Azure Monitor exporter and initialize OpenTelemetry SDK
         // This should be done just once when application starts up
-        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
+        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+        new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .buildTraceExporter();
+            .build(sdkBuilder);
 
-        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
-            .build();
+        OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
-        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal();
-
-        Tracer tracer = openTelemetrySdk.getTracer("Sample");
+        Tracer tracer = openTelemetry.getTracer("Sample");
         // END: readme-sample-setupExporter
 
         // BEGIN: readme-sample-createSpans
@@ -79,6 +74,7 @@ public class ReadmeSamples {
 
     /**
      * Method to make the sample compilable but is not visible in README code snippet.
+     *
      * @return An empty collection.
      */
     private Collection<SpanData> getSpanDataCollection() {

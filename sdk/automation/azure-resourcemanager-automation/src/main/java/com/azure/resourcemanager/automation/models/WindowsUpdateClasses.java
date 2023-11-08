@@ -8,7 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WindowsUpdateClasses. */
+/**
+ * Update classification included in the software update configuration. A comma separated string with required values.
+ */
 public final class WindowsUpdateClasses extends ExpandableStringEnum<WindowsUpdateClasses> {
     /** Static value Unclassified for WindowsUpdateClasses. */
     public static final WindowsUpdateClasses UNCLASSIFIED = fromString("Unclassified");
@@ -48,7 +50,11 @@ public final class WindowsUpdateClasses extends ExpandableStringEnum<WindowsUpda
         return fromString(name, WindowsUpdateClasses.class);
     }
 
-    /** @return known WindowsUpdateClasses values. */
+    /**
+     * Gets known WindowsUpdateClasses values.
+     *
+     * @return known WindowsUpdateClasses values.
+     */
     public static Collection<WindowsUpdateClasses> values() {
         return values(WindowsUpdateClasses.class);
     }

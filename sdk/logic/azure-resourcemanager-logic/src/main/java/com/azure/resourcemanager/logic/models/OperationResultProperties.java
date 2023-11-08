@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The run operation result properties. */
 @Fluent
 public class OperationResultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultProperties.class);
-
     /*
      * The start time of the workflow scope repetition.
      */
@@ -46,10 +42,14 @@ public class OperationResultProperties {
     private String code;
 
     /*
-     * Any object
+     * Anything
      */
     @JsonProperty(value = "error")
     private Object error;
+
+    /** Creates an instance of OperationResultProperties class. */
+    public OperationResultProperties() {
+    }
 
     /**
      * Get the startTime property: The start time of the workflow scope repetition.
@@ -152,7 +152,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Get the error property: Any object.
+     * Get the error property: Anything.
      *
      * @return the error value.
      */
@@ -161,7 +161,7 @@ public class OperationResultProperties {
     }
 
     /**
-     * Set the error property: Any object.
+     * Set the error property: Anything.
      *
      * @param error the error value to set.
      * @return the OperationResultProperties object itself.

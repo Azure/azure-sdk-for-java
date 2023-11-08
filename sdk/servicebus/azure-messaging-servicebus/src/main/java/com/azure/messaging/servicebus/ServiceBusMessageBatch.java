@@ -7,8 +7,8 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.message.Message;
 
 import java.nio.BufferOverflowException;
@@ -17,35 +17,30 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMessageSpan;
 
 /**
  * A class for aggregating {@link ServiceBusMessage messages} into a single, size-limited, batch. It is treated as a
  * single AMQP message when sent to the Azure Service Bus service.
  */
 public final class ServiceBusMessageBatch {
-    private final ClientLogger logger = new ClientLogger(ServiceBusMessageBatch.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusMessageBatch.class);
     private final int maxMessageSize;
     private final ErrorContextProvider contextProvider;
     private final MessageSerializer serializer;
     private final List<ServiceBusMessage> serviceBusMessageList;
     private final byte[] eventBytes;
     private int sizeInBytes;
-    private final TracerProvider tracerProvider;
-    private final String entityPath;
-    private final String hostname;
+    private final ServiceBusTracer tracer;
 
-    ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider, TracerProvider tracerProvider,
-        MessageSerializer serializer, String entityPath, String hostname) {
+    ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider, ServiceBusTracer tracer,
+        MessageSerializer serializer) {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
         this.serviceBusMessageList = new ArrayList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
-        this.tracerProvider = tracerProvider;
-        this.entityPath = entityPath;
-        this.hostname = hostname;
+        this.tracer = tracer;
     }
 
     /**
@@ -92,24 +87,20 @@ public final class ServiceBusMessageBatch {
      */
     public boolean tryAddMessage(final ServiceBusMessage serviceBusMessage) {
         if (serviceBusMessage == null) {
-            throw logger.logExceptionAsWarning(new NullPointerException("'serviceBusMessage' cannot be null"));
+            throw LOGGER.logExceptionAsWarning(new NullPointerException("'serviceBusMessage' cannot be null"));
         }
-        ServiceBusMessage serviceBusMessageUpdated =
-            tracerProvider.isEnabled()
-                ? traceMessageSpan(serviceBusMessage, serviceBusMessage.getContext(), hostname, entityPath,
-                tracerProvider)
-                : serviceBusMessage;
+        tracer.reportMessageSpan(serviceBusMessage);
 
         final int size;
         try {
-            size = getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty());
+            size = getSize(serviceBusMessage, serviceBusMessageList.isEmpty());
         } catch (BufferOverflowException exception) {
             final RuntimeException ex = new ServiceBusException(
                     new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                         String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
                             maxMessageSize / 1024), contextProvider.getErrorContext()), ServiceBusErrorSource.SEND);
 
-            throw logger.logExceptionAsWarning(ex);
+            throw LOGGER.logExceptionAsWarning(ex);
         }
 
         if (this.sizeInBytes + size > this.maxMessageSize) {
@@ -117,7 +108,7 @@ public final class ServiceBusMessageBatch {
         }
 
         this.sizeInBytes += size;
-        this.serviceBusMessageList.add(serviceBusMessageUpdated);
+        this.serviceBusMessageList.add(serviceBusMessage);
         return true;
     }
 

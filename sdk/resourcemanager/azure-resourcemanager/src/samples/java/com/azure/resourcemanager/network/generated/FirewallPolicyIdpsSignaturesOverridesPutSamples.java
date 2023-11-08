@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.SignaturesOverridesInner;
 import com.azure.resourcemanager.network.models.SignaturesOverridesProperties;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for FirewallPolicyIdpsSignaturesOverrides Put. */
 public final class FirewallPolicyIdpsSignaturesOverridesPutSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicySignatureOverridesPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/FirewallPolicySignatureOverridesPut.json
      */
     /**
      * Sample code: put signature overrides.
@@ -36,9 +35,10 @@ public final class FirewallPolicyIdpsSignaturesOverridesPutSamples {
                     .withType("Microsoft.Network/firewallPolicies/signatureOverrides")
                     .withProperties(
                         new SignaturesOverridesProperties().withSignatures(mapOf("2000105", "Off", "2000106", "Deny"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

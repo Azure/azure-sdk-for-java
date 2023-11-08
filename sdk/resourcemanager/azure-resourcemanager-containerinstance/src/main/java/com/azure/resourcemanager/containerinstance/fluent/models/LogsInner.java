@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The logs. */
 @Fluent
 public final class LogsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogsInner.class);
-
     /*
      * The content of the log.
      */
     @JsonProperty(value = "content")
     private String content;
+
+    /** Creates an instance of LogsInner class. */
+    public LogsInner() {
+    }
 
     /**
      * Get the content property: The content of the log.

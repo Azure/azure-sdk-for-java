@@ -29,6 +29,23 @@ public final class ExportRdbParameters {
     @JsonProperty(value = "container", required = true)
     private String container;
 
+    /*
+     * Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity,
+     * default value is SAS
+     */
+    @JsonProperty(value = "preferred-data-archive-auth-method")
+    private String preferredDataArchiveAuthMethod;
+
+    /*
+     * Subscription id of the storage container for data to be exported using ManagedIdentity.
+     */
+    @JsonProperty(value = "storage-subscription-id")
+    private String storageSubscriptionId;
+
+    /** Creates an instance of ExportRdbParameters class. */
+    public ExportRdbParameters() {
+    }
+
     /**
      * Get the format property: File format.
      *
@@ -86,6 +103,50 @@ public final class ExportRdbParameters {
      */
     public ExportRdbParameters withContainer(String container) {
         this.container = container;
+        return this;
+    }
+
+    /**
+     * Get the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
+     * data archive, specify SAS or ManagedIdentity, default value is SAS.
+     *
+     * @return the preferredDataArchiveAuthMethod value.
+     */
+    public String preferredDataArchiveAuthMethod() {
+        return this.preferredDataArchiveAuthMethod;
+    }
+
+    /**
+     * Set the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
+     * data archive, specify SAS or ManagedIdentity, default value is SAS.
+     *
+     * @param preferredDataArchiveAuthMethod the preferredDataArchiveAuthMethod value to set.
+     * @return the ExportRdbParameters object itself.
+     */
+    public ExportRdbParameters withPreferredDataArchiveAuthMethod(String preferredDataArchiveAuthMethod) {
+        this.preferredDataArchiveAuthMethod = preferredDataArchiveAuthMethod;
+        return this;
+    }
+
+    /**
+     * Get the storageSubscriptionId property: Subscription id of the storage container for data to be exported using
+     * ManagedIdentity.
+     *
+     * @return the storageSubscriptionId value.
+     */
+    public String storageSubscriptionId() {
+        return this.storageSubscriptionId;
+    }
+
+    /**
+     * Set the storageSubscriptionId property: Subscription id of the storage container for data to be exported using
+     * ManagedIdentity.
+     *
+     * @param storageSubscriptionId the storageSubscriptionId value to set.
+     * @return the ExportRdbParameters object itself.
+     */
+    public ExportRdbParameters withStorageSubscriptionId(String storageSubscriptionId) {
+        this.storageSubscriptionId = storageSubscriptionId;
         return this;
     }
 

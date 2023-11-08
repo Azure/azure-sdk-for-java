@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HdiNodeTypes. */
+/** All available HdiNodeTypes values. */
 public final class HdiNodeTypes extends ExpandableStringEnum<HdiNodeTypes> {
     /** Static value Headnode for HdiNodeTypes. */
     public static final HdiNodeTypes HEADNODE = fromString("Headnode");
@@ -18,6 +18,14 @@ public final class HdiNodeTypes extends ExpandableStringEnum<HdiNodeTypes> {
 
     /** Static value Zookeeper for HdiNodeTypes. */
     public static final HdiNodeTypes ZOOKEEPER = fromString("Zookeeper");
+
+    /**
+     * Creates a new instance of HdiNodeTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HdiNodeTypes() {}
 
     /**
      * Creates or finds a HdiNodeTypes from its string representation.
@@ -30,7 +38,11 @@ public final class HdiNodeTypes extends ExpandableStringEnum<HdiNodeTypes> {
         return fromString(name, HdiNodeTypes.class);
     }
 
-    /** @return known HdiNodeTypes values. */
+    /**
+     * Gets known HdiNodeTypes values.
+     *
+     * @return known HdiNodeTypes values.
+     */
     public static Collection<HdiNodeTypes> values() {
         return values(HdiNodeTypes.class);
     }

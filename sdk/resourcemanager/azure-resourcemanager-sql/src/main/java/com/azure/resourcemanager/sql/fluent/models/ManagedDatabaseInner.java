@@ -5,128 +5,49 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.CatalogCollationType;
 import com.azure.resourcemanager.sql.models.ManagedDatabaseCreateMode;
 import com.azure.resourcemanager.sql.models.ManagedDatabaseStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** A managed database resource. */
-@JsonFlatten
 @Fluent
-public class ManagedDatabaseInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedDatabaseInner.class);
-
+public final class ManagedDatabaseInner extends Resource {
     /*
-     * Collation of the managed database.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.collation")
-    private String collation;
+    @JsonProperty(value = "properties")
+    private ManagedDatabaseProperties innerProperties;
 
-    /*
-     * Status of the database.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private ManagedDatabaseStatus status;
+    /** Creates an instance of ManagedDatabaseInner class. */
+    public ManagedDatabaseInner() {
+    }
 
-    /*
-     * Creation date of the database.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
+    private ManagedDatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Earliest restore point in time for point in time restore.
-     */
-    @JsonProperty(value = "properties.earliestRestorePoint", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime earliestRestorePoint;
+    /** {@inheritDoc} */
+    @Override
+    public ManagedDatabaseInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
 
-    /*
-     * Conditional. If createMode is PointInTimeRestore, this value is
-     * required. Specifies the point in time (ISO8601 format) of the source
-     * database that will be restored to create the new database.
-     */
-    @JsonProperty(value = "properties.restorePointInTime")
-    private OffsetDateTime restorePointInTime;
-
-    /*
-     * Geo paired region.
-     */
-    @JsonProperty(value = "properties.defaultSecondaryLocation", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultSecondaryLocation;
-
-    /*
-     * Collation of the metadata catalog.
-     */
-    @JsonProperty(value = "properties.catalogCollation")
-    private CatalogCollationType catalogCollation;
-
-    /*
-     * Managed database create mode. PointInTimeRestore: Create a database by
-     * restoring a point in time backup of an existing database.
-     * SourceDatabaseName, SourceManagedInstanceName and PointInTime must be
-     * specified. RestoreExternalBackup: Create a database by restoring from
-     * external backup files. Collation, StorageContainerUri and
-     * StorageContainerSasToken must be specified. Recovery: Creates a database
-     * by restoring a geo-replicated backup. RecoverableDatabaseId must be
-     * specified as the recoverable database resource ID to restore.
-     */
-    @JsonProperty(value = "properties.createMode")
-    private ManagedDatabaseCreateMode createMode;
-
-    /*
-     * Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the uri of the storage container where backups for
-     * this restore are stored.
-     */
-    @JsonProperty(value = "properties.storageContainerUri")
-    private String storageContainerUri;
-
-    /*
-     * The resource identifier of the source database associated with create
-     * operation of this database.
-     */
-    @JsonProperty(value = "properties.sourceDatabaseId")
-    private String sourceDatabaseId;
-
-    /*
-     * The restorable dropped database resource id to restore when creating
-     * this database.
-     */
-    @JsonProperty(value = "properties.restorableDroppedDatabaseId")
-    private String restorableDroppedDatabaseId;
-
-    /*
-     * Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the storage container sas token.
-     */
-    @JsonProperty(value = "properties.storageContainerSasToken")
-    private String storageContainerSasToken;
-
-    /*
-     * Instance Failover Group resource identifier that this managed database
-     * belongs to.
-     */
-    @JsonProperty(value = "properties.failoverGroupId", access = JsonProperty.Access.WRITE_ONLY)
-    private String failoverGroupId;
-
-    /*
-     * The resource identifier of the recoverable database associated with
-     * create operation of this database.
-     */
-    @JsonProperty(value = "properties.recoverableDatabaseId")
-    private String recoverableDatabaseId;
-
-    /*
-     * The name of the Long Term Retention backup to be used for restore of
-     * this managed database.
-     */
-    @JsonProperty(value = "properties.longTermRetentionBackupResourceId")
-    private String longTermRetentionBackupResourceId;
+    /** {@inheritDoc} */
+    @Override
+    public ManagedDatabaseInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the collation property: Collation of the managed database.
@@ -134,7 +55,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the collation value.
      */
     public String collation() {
-        return this.collation;
+        return this.innerProperties() == null ? null : this.innerProperties().collation();
     }
 
     /**
@@ -144,7 +65,10 @@ public class ManagedDatabaseInner extends Resource {
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withCollation(String collation) {
-        this.collation = collation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withCollation(collation);
         return this;
     }
 
@@ -154,7 +78,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the status value.
      */
     public ManagedDatabaseStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -163,7 +87,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -172,7 +96,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the earliestRestorePoint value.
      */
     public OffsetDateTime earliestRestorePoint() {
-        return this.earliestRestorePoint;
+        return this.innerProperties() == null ? null : this.innerProperties().earliestRestorePoint();
     }
 
     /**
@@ -183,7 +107,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
-        return this.restorePointInTime;
+        return this.innerProperties() == null ? null : this.innerProperties().restorePointInTime();
     }
 
     /**
@@ -195,7 +119,10 @@ public class ManagedDatabaseInner extends Resource {
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withRestorePointInTime(OffsetDateTime restorePointInTime) {
-        this.restorePointInTime = restorePointInTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withRestorePointInTime(restorePointInTime);
         return this;
     }
 
@@ -205,7 +132,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the defaultSecondaryLocation value.
      */
     public String defaultSecondaryLocation() {
-        return this.defaultSecondaryLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultSecondaryLocation();
     }
 
     /**
@@ -214,7 +141,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the catalogCollation value.
      */
     public CatalogCollationType catalogCollation() {
-        return this.catalogCollation;
+        return this.innerProperties() == null ? null : this.innerProperties().catalogCollation();
     }
 
     /**
@@ -224,7 +151,10 @@ public class ManagedDatabaseInner extends Resource {
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withCatalogCollation(CatalogCollationType catalogCollation) {
-        this.catalogCollation = catalogCollation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withCatalogCollation(catalogCollation);
         return this;
     }
 
@@ -234,12 +164,13 @@ public class ManagedDatabaseInner extends Resource {
      * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
      * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-     * restore.
+     * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
+     * (longTermRetentionBackupResourceId required).
      *
      * @return the createMode value.
      */
     public ManagedDatabaseCreateMode createMode() {
-        return this.createMode;
+        return this.innerProperties() == null ? null : this.innerProperties().createMode();
     }
 
     /**
@@ -248,13 +179,17 @@ public class ManagedDatabaseInner extends Resource {
      * be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation,
      * StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
-     * restore.
+     * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
+     * (longTermRetentionBackupResourceId required).
      *
      * @param createMode the createMode value to set.
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withCreateMode(ManagedDatabaseCreateMode createMode) {
-        this.createMode = createMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withCreateMode(createMode);
         return this;
     }
 
@@ -265,7 +200,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the storageContainerUri value.
      */
     public String storageContainerUri() {
-        return this.storageContainerUri;
+        return this.innerProperties() == null ? null : this.innerProperties().storageContainerUri();
     }
 
     /**
@@ -276,7 +211,10 @@ public class ManagedDatabaseInner extends Resource {
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withStorageContainerUri(String storageContainerUri) {
-        this.storageContainerUri = storageContainerUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withStorageContainerUri(storageContainerUri);
         return this;
     }
 
@@ -287,7 +225,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
-        return this.sourceDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceDatabaseId();
     }
 
     /**
@@ -298,7 +236,10 @@ public class ManagedDatabaseInner extends Resource {
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withSourceDatabaseId(String sourceDatabaseId) {
-        this.sourceDatabaseId = sourceDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withSourceDatabaseId(sourceDatabaseId);
         return this;
     }
 
@@ -309,7 +250,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the restorableDroppedDatabaseId value.
      */
     public String restorableDroppedDatabaseId() {
-        return this.restorableDroppedDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().restorableDroppedDatabaseId();
     }
 
     /**
@@ -320,7 +261,10 @@ public class ManagedDatabaseInner extends Resource {
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId) {
-        this.restorableDroppedDatabaseId = restorableDroppedDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withRestorableDroppedDatabaseId(restorableDroppedDatabaseId);
         return this;
     }
 
@@ -331,7 +275,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the storageContainerSasToken value.
      */
     public String storageContainerSasToken() {
-        return this.storageContainerSasToken;
+        return this.innerProperties() == null ? null : this.innerProperties().storageContainerSasToken();
     }
 
     /**
@@ -342,7 +286,10 @@ public class ManagedDatabaseInner extends Resource {
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withStorageContainerSasToken(String storageContainerSasToken) {
-        this.storageContainerSasToken = storageContainerSasToken;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withStorageContainerSasToken(storageContainerSasToken);
         return this;
     }
 
@@ -353,7 +300,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the failoverGroupId value.
      */
     public String failoverGroupId() {
-        return this.failoverGroupId;
+        return this.innerProperties() == null ? null : this.innerProperties().failoverGroupId();
     }
 
     /**
@@ -363,7 +310,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
-        return this.recoverableDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().recoverableDatabaseId();
     }
 
     /**
@@ -374,7 +321,10 @@ public class ManagedDatabaseInner extends Resource {
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withRecoverableDatabaseId(String recoverableDatabaseId) {
-        this.recoverableDatabaseId = recoverableDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withRecoverableDatabaseId(recoverableDatabaseId);
         return this;
     }
 
@@ -385,7 +335,7 @@ public class ManagedDatabaseInner extends Resource {
      * @return the longTermRetentionBackupResourceId value.
      */
     public String longTermRetentionBackupResourceId() {
-        return this.longTermRetentionBackupResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().longTermRetentionBackupResourceId();
     }
 
     /**
@@ -396,7 +346,56 @@ public class ManagedDatabaseInner extends Resource {
      * @return the ManagedDatabaseInner object itself.
      */
     public ManagedDatabaseInner withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
-        this.longTermRetentionBackupResourceId = longTermRetentionBackupResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withLongTermRetentionBackupResourceId(longTermRetentionBackupResourceId);
+        return this;
+    }
+
+    /**
+     * Get the autoCompleteRestore property: Whether to auto complete restore of this managed database.
+     *
+     * @return the autoCompleteRestore value.
+     */
+    public Boolean autoCompleteRestore() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoCompleteRestore();
+    }
+
+    /**
+     * Set the autoCompleteRestore property: Whether to auto complete restore of this managed database.
+     *
+     * @param autoCompleteRestore the autoCompleteRestore value to set.
+     * @return the ManagedDatabaseInner object itself.
+     */
+    public ManagedDatabaseInner withAutoCompleteRestore(Boolean autoCompleteRestore) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withAutoCompleteRestore(autoCompleteRestore);
+        return this;
+    }
+
+    /**
+     * Get the lastBackupName property: Last backup file name for restore of this managed database.
+     *
+     * @return the lastBackupName value.
+     */
+    public String lastBackupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastBackupName();
+    }
+
+    /**
+     * Set the lastBackupName property: Last backup file name for restore of this managed database.
+     *
+     * @param lastBackupName the lastBackupName value to set.
+     * @return the ManagedDatabaseInner object itself.
+     */
+    public ManagedDatabaseInner withLastBackupName(String lastBackupName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withLastBackupName(lastBackupName);
         return this;
     }
 
@@ -406,5 +405,8 @@ public class ManagedDatabaseInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerregistry.models.OS;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for AgentPools Create. */
 public final class AgentPoolsCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/AgentPoolsCreate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/AgentPoolsCreate.json
      */
     /**
      * Sample code: AgentPools_Create.
@@ -32,11 +31,11 @@ public final class AgentPoolsCreateSamples {
                 "myAgentPool",
                 new AgentPoolInner()
                     .withLocation("WESTUS")
-                    .withTags(mapOf("key", "value"))
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
                     .withCount(1)
                     .withTier("S1")
                     .withOs(OS.LINUX),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

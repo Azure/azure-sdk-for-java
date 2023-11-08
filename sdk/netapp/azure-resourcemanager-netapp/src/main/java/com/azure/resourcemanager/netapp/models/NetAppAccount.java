@@ -56,7 +56,14 @@ public interface NetAppAccount {
     String etag();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
+     * Gets the identity property: The identity used for the resource.
+     *
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -84,6 +91,14 @@ public interface NetAppAccount {
     AccountEncryption encryption();
 
     /**
+     * Gets the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
+     * null equals false.
+     *
+     * @return the disableShowmount value.
+     */
+    Boolean disableShowmount();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -96,6 +111,13 @@ public interface NetAppAccount {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner object.
@@ -111,11 +133,13 @@ public interface NetAppAccount {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The NetAppAccount definition stages. */
     interface DefinitionStages {
         /** The first stage of the NetAppAccount definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the NetAppAccount definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -134,22 +158,27 @@ public interface NetAppAccount {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the NetAppAccount definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the NetAppAccount definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption {
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithActiveDirectories,
+                DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
              *
@@ -165,6 +194,7 @@ public interface NetAppAccount {
              */
             NetAppAccount create(Context context);
         }
+
         /** The stage of the NetAppAccount definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -175,6 +205,18 @@ public interface NetAppAccount {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
+        /** The stage of the NetAppAccount definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity used for the resource..
+             *
+             * @param identity The identity used for the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
+
         /** The stage of the NetAppAccount definition allowing to specify activeDirectories. */
         interface WithActiveDirectories {
             /**
@@ -185,6 +227,7 @@ public interface NetAppAccount {
              */
             WithCreate withActiveDirectories(List<ActiveDirectory> activeDirectories);
         }
+
         /** The stage of the NetAppAccount definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -196,6 +239,7 @@ public interface NetAppAccount {
             WithCreate withEncryption(AccountEncryption encryption);
         }
     }
+
     /**
      * Begins update for the NetAppAccount resource.
      *
@@ -204,7 +248,11 @@ public interface NetAppAccount {
     NetAppAccount.Update update();
 
     /** The template for NetAppAccount update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithActiveDirectories, UpdateStages.WithEncryption {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
+            UpdateStages.WithActiveDirectories,
+            UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          *
@@ -220,6 +268,7 @@ public interface NetAppAccount {
          */
         NetAppAccount apply(Context context);
     }
+
     /** The NetAppAccount update stages. */
     interface UpdateStages {
         /** The stage of the NetAppAccount update allowing to specify tags. */
@@ -232,6 +281,18 @@ public interface NetAppAccount {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the NetAppAccount update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity used for the resource..
+             *
+             * @param identity The identity used for the resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+
         /** The stage of the NetAppAccount update allowing to specify activeDirectories. */
         interface WithActiveDirectories {
             /**
@@ -242,6 +303,7 @@ public interface NetAppAccount {
              */
             Update withActiveDirectories(List<ActiveDirectory> activeDirectories);
         }
+
         /** The stage of the NetAppAccount update allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -253,6 +315,7 @@ public interface NetAppAccount {
             Update withEncryption(AccountEncryption encryption);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -267,4 +330,28 @@ public interface NetAppAccount {
      * @return the refreshed resource.
      */
     NetAppAccount refresh(Context context);
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void renewCredentials();
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void renewCredentials(Context context);
 }

@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OptimizationType. */
+/**
+ * Specifies what scenario the customer wants this CDN endpoint to optimize, e.g. Download, Media services. With this
+ * information we can apply scenario driven optimization.
+ */
 public final class OptimizationType extends ExpandableStringEnum<OptimizationType> {
     /** Static value GeneralWebDelivery for OptimizationType. */
     public static final OptimizationType GENERAL_WEB_DELIVERY = fromString("GeneralWebDelivery");
@@ -26,6 +29,15 @@ public final class OptimizationType extends ExpandableStringEnum<OptimizationTyp
     public static final OptimizationType DYNAMIC_SITE_ACCELERATION = fromString("DynamicSiteAcceleration");
 
     /**
+     * Creates a new instance of OptimizationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OptimizationType() {
+    }
+
+    /**
      * Creates or finds a OptimizationType from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +48,11 @@ public final class OptimizationType extends ExpandableStringEnum<OptimizationTyp
         return fromString(name, OptimizationType.class);
     }
 
-    /** @return known OptimizationType values. */
+    /**
+     * Gets known OptimizationType values.
+     *
+     * @return known OptimizationType values.
+     */
     public static Collection<OptimizationType> values() {
         return values(OptimizationType.class);
     }

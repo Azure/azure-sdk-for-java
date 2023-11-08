@@ -5,6 +5,7 @@ package com.azure.endtoend.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
@@ -30,7 +31,7 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testMSIEndpointWithSystemAssigned() throws Exception {
-        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_ENDPOINT));
+        org.junit.Assume.assumeNotNull(getMSIEndpoint());
         org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
@@ -47,7 +48,7 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testMSIEndpointWithSystemAssignedAccessKeyVault() throws Exception {
-        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeNotNull(getMSIEndpoint());
         org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
@@ -66,7 +67,7 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testMSIEndpointWithUserAssigned() throws Exception {
-        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_ENDPOINT));
+        org.junit.Assume.assumeNotNull(getMSIEndpoint());
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
@@ -85,7 +86,7 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testMSIEndpointWithUserAssignedAccessKeyVault() throws Exception {
-        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeNotNull(getMSIEndpoint());
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
@@ -200,5 +201,13 @@ public class ManagedIdentityCredentialLiveTest {
                 connection.disconnect();
             }
         }
+    }
+
+    private String getMSIEndpoint() {
+        String endpoint = CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_ENDPOINT);
+        if (CoreUtils.isNullOrEmpty(endpoint)) {
+            return CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT);
+        }
+        return endpoint;
     }
 }

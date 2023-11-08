@@ -24,7 +24,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceProvidersClient;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    private final ClientLogger logger = new ClientLogger(ResourceProvidersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceProvidersService service;
 
@@ -63,11 +60,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/operationStatus/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/operationStatus/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationStatusInner>> getOperationStatus(
@@ -82,8 +78,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/prepareDataMove")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/prepareDataMove")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> bmsPrepareDataMove(
@@ -98,8 +93,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/triggerDataMove")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/triggerDataMove")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> bmsTriggerDataMove(
@@ -114,9 +108,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems"
-                + "/{protectedItemName}/recoveryPoints/{recoveryPointId}/move")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/move")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> moveRecoveryPoint(
@@ -253,30 +245,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<OperationStatusInner> getOperationStatusAsync(
         String vaultName, String resourceGroupName, String operationId) {
         return getOperationStatusWithResponseAsync(vaultName, resourceGroupName, operationId)
-            .flatMap(
-                (Response<OperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Fetches operation status for data move operation on vault.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param operationId The operationId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner getOperationStatus(String vaultName, String resourceGroupName, String operationId) {
-        return getOperationStatusAsync(vaultName, resourceGroupName, operationId).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -295,6 +264,22 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public Response<OperationStatusInner> getOperationStatusWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         return getOperationStatusWithResponseAsync(vaultName, resourceGroupName, operationId, context).block();
+    }
+
+    /**
+     * Fetches operation status for data move operation on vault.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param operationId The operationId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusInner getOperationStatus(String vaultName, String resourceGroupName, String operationId) {
+        return getOperationStatusWithResponse(vaultName, resourceGroupName, operationId, Context.NONE).getValue();
     }
 
     /**
@@ -464,7 +449,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
-        return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
+        return this.beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -482,7 +467,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
         String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
-        return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
+        return this.beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -723,7 +708,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
-        return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
+        return this.beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -741,7 +726,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
         String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
-        return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
+        return this.beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1085,7 +1070,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         String protectedItemName,
         String recoveryPointId,
         MoveRPAcrossTiersRequest parameters) {
-        return beginMoveRecoveryPointAsync(
+        return this
+            .beginMoveRecoveryPointAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
             .getSyncPoller();
     }
@@ -1116,7 +1102,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         String recoveryPointId,
         MoveRPAcrossTiersRequest parameters,
         Context context) {
-        return beginMoveRecoveryPointAsync(
+        return this
+            .beginMoveRecoveryPointAsync(
                 vaultName,
                 resourceGroupName,
                 fabricName,

@@ -4,20 +4,38 @@
 package com.azure.communication.identity.implementation.converters;
 
 import com.azure.communication.identity.implementation.models.CommunicationError;
+import com.azure.communication.identity.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.identity.models.IdentityError;
+import com.azure.communication.identity.models.IdentityErrorResponseException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link CommunicationError} and
- * {@link IdentityError}.
+ * A converter between {@link CommunicationErrorResponseException} and
+ * {@link IdentityErrorResponseException}.
  */
 public final class IdentityErrorConverter {
+
     /**
-     * Maps from {com.azure.communication.identity.implementation.models.CommunicationError} to {@link IdentityError}.
+     * Translate from {@link CommunicationErrorResponseException} to {@link IdentityErrorResponseException}.
+     * @param exception The CommunicationErrorResponseException to translate
+     *
+     * @return the converted IdentityErrorResponseException.
+     */
+    public static IdentityErrorResponseException translateException(CommunicationErrorResponseException exception) {
+        IdentityError error = null;
+        if (exception.getValue() != null) {
+            error = convert(exception.getValue().getError());
+        }
+        return new IdentityErrorResponseException(exception.getMessage(), exception.getResponse(), error);
+    }
+
+    /**
+     * Maps fields from {@link CommunicationError} to {@link IdentityError}.
      * @param communicationError The error to convert
-     * 
+     *
      * @return the converted IdentityError.
      */
     public static IdentityError convert(CommunicationError communicationError) {
@@ -25,12 +43,12 @@ public final class IdentityErrorConverter {
             return null;
         }
 
-        List<IdentityError> details = new ArrayList<IdentityError>();
+        List<IdentityError> details = new ArrayList<>();
 
         if (communicationError.getDetails() != null) {
             details = communicationError.getDetails()
                 .stream()
-                .map(detail -> convert(detail))
+                .map(IdentityErrorConverter::convert)
                 .collect(Collectors.toList());
         }
 

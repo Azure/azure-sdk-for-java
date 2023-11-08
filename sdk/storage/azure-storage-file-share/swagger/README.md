@@ -10,13 +10,13 @@
 > see https://github.com/Azure/autorest.java/releases for the latest version of autorest
 ```ps
 cd <swagger-folder>
-mvn install
-autorest --java --use:@autorest/java@4.0.x
+autorest
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-04-10/file.json
+use: '@autorest/java@4.1.16'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/02ec353ce82c87447bc78e6f662adee089fff504/specification/storage/data-plane/Microsoft.FileStorage/preview/2023-01-03/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -24,14 +24,16 @@ enable-xml: true
 generate-client-as-impl: true
 generate-client-interfaces: false
 service-interface-as-public: true
-sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 default-http-exception-type: com.azure.storage.file.share.models.ShareStorageException
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel
+custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode,ShareTokenIntent,AccessRight
 customization-class: src/main/java/ShareStorageCustomization.java
+generic-response-type: true
+use-input-stream-for-binary: true
+no-custom-headers: true
 ```
 
 ### Query Parameters
@@ -248,7 +250,7 @@ directive:
     $.enum = [ "2019-07-07" ];
 ```
 
-### Convert FileCreationTime and FileLastWriteTime to String to Support 'now'
+### Convert FileCreationTime and FileLastWriteTime and FileChangeTime to String to Support 'now'
 ``` yaml
 directive:
 - from: swagger-document
@@ -257,6 +259,10 @@ directive:
     delete $.format;
 - from: swagger-document
   where: $.parameters.FileLastWriteTime
+  transform: >
+    delete $.format;
+- from: swagger-document
+  where: $.parameters.FileChangeTime
   transform: >
     delete $.format;
 ```
@@ -375,5 +381,25 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
+### Change PutRange response file-last-write-time to ISO8601
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    const op = $["/{shareName}/{fileName}?comp=range"];
+    op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+```
+
+### Change PutRangeFromUrl response file-last-write-time to ISO8601
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    const op = $["/{shareName}/{fileName}?comp=range&fromURL"];
+    op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+```
+        
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)
 

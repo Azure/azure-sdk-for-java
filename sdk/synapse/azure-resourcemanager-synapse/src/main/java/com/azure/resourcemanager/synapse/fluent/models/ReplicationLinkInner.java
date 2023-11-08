@@ -4,20 +4,16 @@
 
 package com.azure.resourcemanager.synapse.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ReplicationRole;
 import com.azure.resourcemanager.synapse.models.ReplicationState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents a Sql pool replication link. */
-@Fluent
+@Immutable
 public final class ReplicationLinkInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationLinkInner.class);
-
     /*
      * Location of the workspace that contains this firewall rule.
      */
@@ -29,6 +25,10 @@ public final class ReplicationLinkInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private ReplicationLinkProperties innerProperties;
+
+    /** Creates an instance of ReplicationLinkInner class. */
+    public ReplicationLinkInner() {
+    }
 
     /**
      * Get the location property: Location of the workspace that contains this firewall rule.

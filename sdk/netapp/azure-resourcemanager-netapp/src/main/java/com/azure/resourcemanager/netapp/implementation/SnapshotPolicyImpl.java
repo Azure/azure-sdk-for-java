@@ -87,6 +87,10 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SnapshotPolicyInner innerModel() {
         return this.innerObject;
     }

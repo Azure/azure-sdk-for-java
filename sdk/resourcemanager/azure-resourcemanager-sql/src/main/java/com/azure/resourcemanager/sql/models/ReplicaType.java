@@ -27,7 +27,11 @@ public final class ReplicaType extends ExpandableStringEnum<ReplicaType> {
         return fromString(name, ReplicaType.class);
     }
 
-    /** @return known ReplicaType values. */
+    /**
+     * Gets known ReplicaType values.
+     *
+     * @return known ReplicaType values.
+     */
     public static Collection<ReplicaType> values() {
         return values(ReplicaType.class);
     }

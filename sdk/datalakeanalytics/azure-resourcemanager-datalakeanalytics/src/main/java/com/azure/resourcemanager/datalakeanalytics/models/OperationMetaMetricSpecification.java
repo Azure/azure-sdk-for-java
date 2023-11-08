@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OperationMetaMetricSpecification model. */
 @Fluent
 public final class OperationMetaMetricSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetaMetricSpecification.class);
-
     /*
      * The name for OperationMetaMetricSpecification.
      */
@@ -50,6 +46,10 @@ public final class OperationMetaMetricSpecification {
      */
     @JsonProperty(value = "availabilities")
     private List<OperationMetaMetricAvailabilitiesSpecification> availabilities;
+
+    /** Creates an instance of OperationMetaMetricSpecification class. */
+    public OperationMetaMetricSpecification() {
+    }
 
     /**
      * Get the name property: The name for OperationMetaMetricSpecification.

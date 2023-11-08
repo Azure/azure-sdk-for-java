@@ -19,6 +19,22 @@ public interface IntelligencePacksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param intelligencePackName The name of the intelligence pack to be disabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> disableWithResponse(
+        String resourceGroupName, String workspaceName, String intelligencePackName, Context context);
+
+    /**
+     * Disables an intelligence pack for a given workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param intelligencePackName The name of the intelligence pack to be disabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,19 +43,19 @@ public interface IntelligencePacksClient {
     void disable(String resourceGroupName, String workspaceName, String intelligencePackName);
 
     /**
-     * Disables an intelligence pack for a given workspace.
+     * Enables an intelligence pack for a given workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param intelligencePackName The name of the intelligence pack to be disabled.
+     * @param intelligencePackName The name of the intelligence pack to be enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> disableWithResponse(
+    Response<Void> enableWithResponse(
         String resourceGroupName, String workspaceName, String intelligencePackName, Context context);
 
     /**
@@ -56,20 +72,19 @@ public interface IntelligencePacksClient {
     void enable(String resourceGroupName, String workspaceName, String intelligencePackName);
 
     /**
-     * Enables an intelligence pack for a given workspace.
+     * Lists all the intelligence packs possible and whether they are enabled or disabled for a given workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param intelligencePackName The name of the intelligence pack to be enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return array of IntelligencePack along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> enableWithResponse(
-        String resourceGroupName, String workspaceName, String intelligencePackName, Context context);
+    Response<List<IntelligencePackInner>> listWithResponse(
+        String resourceGroupName, String workspaceName, Context context);
 
     /**
      * Lists all the intelligence packs possible and whether they are enabled or disabled for a given workspace.
@@ -83,19 +98,4 @@ public interface IntelligencePacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     List<IntelligencePackInner> list(String resourceGroupName, String workspaceName);
-
-    /**
-     * Lists all the intelligence packs possible and whether they are enabled or disabled for a given workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of IntelligencePack.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<IntelligencePackInner>> listWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
 }

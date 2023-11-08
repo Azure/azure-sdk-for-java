@@ -11,27 +11,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DeploymentConfiguration {
     /*
-     * The configuration for nodes in a pool based on the Azure Cloud Services
-     * platform. This property and virtualMachineConfiguration are mutually
-     * exclusive and one of the properties must be specified. This property
-     * cannot be specified if the Batch account was created with its
-     * poolAllocationMode property set to 'UserSubscription'.
+     * The configuration for nodes in a pool based on the Azure Cloud Services platform.
+     *
+     * This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be
+     * specified. This property cannot be specified if the Batch account was created with its poolAllocationMode
+     * property set to 'UserSubscription'.
      */
     @JsonProperty(value = "cloudServiceConfiguration")
     private CloudServiceConfiguration cloudServiceConfiguration;
 
     /*
-     * The configuration for compute nodes in a pool based on the Azure Virtual
-     * Machines infrastructure. This property and cloudServiceConfiguration are
-     * mutually exclusive and one of the properties must be specified.
+     * The configuration for compute nodes in a pool based on the Azure Virtual Machines infrastructure.
+     *
+     * This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
      */
     @JsonProperty(value = "virtualMachineConfiguration")
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
+    /** Creates an instance of DeploymentConfiguration class. */
+    public DeploymentConfiguration() {
+    }
+
     /**
      * Get the cloudServiceConfiguration property: The configuration for nodes in a pool based on the Azure Cloud
-     * Services platform. This property and virtualMachineConfiguration are mutually exclusive and one of the properties
-     * must be specified. This property cannot be specified if the Batch account was created with its poolAllocationMode
+     * Services platform.
+     *
+     * <p>This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be
+     * specified. This property cannot be specified if the Batch account was created with its poolAllocationMode
      * property set to 'UserSubscription'.
      *
      * @return the cloudServiceConfiguration value.
@@ -42,8 +48,10 @@ public final class DeploymentConfiguration {
 
     /**
      * Set the cloudServiceConfiguration property: The configuration for nodes in a pool based on the Azure Cloud
-     * Services platform. This property and virtualMachineConfiguration are mutually exclusive and one of the properties
-     * must be specified. This property cannot be specified if the Batch account was created with its poolAllocationMode
+     * Services platform.
+     *
+     * <p>This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be
+     * specified. This property cannot be specified if the Batch account was created with its poolAllocationMode
      * property set to 'UserSubscription'.
      *
      * @param cloudServiceConfiguration the cloudServiceConfiguration value to set.
@@ -56,8 +64,10 @@ public final class DeploymentConfiguration {
 
     /**
      * Get the virtualMachineConfiguration property: The configuration for compute nodes in a pool based on the Azure
-     * Virtual Machines infrastructure. This property and cloudServiceConfiguration are mutually exclusive and one of
-     * the properties must be specified.
+     * Virtual Machines infrastructure.
+     *
+     * <p>This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be
+     * specified.
      *
      * @return the virtualMachineConfiguration value.
      */
@@ -67,8 +77,10 @@ public final class DeploymentConfiguration {
 
     /**
      * Set the virtualMachineConfiguration property: The configuration for compute nodes in a pool based on the Azure
-     * Virtual Machines infrastructure. This property and cloudServiceConfiguration are mutually exclusive and one of
-     * the properties must be specified.
+     * Virtual Machines infrastructure.
+     *
+     * <p>This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be
+     * specified.
      *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the DeploymentConfiguration object itself.

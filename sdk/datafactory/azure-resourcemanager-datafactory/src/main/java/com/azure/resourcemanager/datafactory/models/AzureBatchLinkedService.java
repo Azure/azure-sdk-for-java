@@ -24,6 +24,10 @@ public final class AzureBatchLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureBatchLinkedServiceTypeProperties innerTypeProperties = new AzureBatchLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureBatchLinkedService class. */
+    public AzureBatchLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Batch linked service properties.
      *
@@ -178,22 +182,22 @@ public final class AzureBatchLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBatchLinkedService object itself.
      */
-    public AzureBatchLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureBatchLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureBatchLinkedServiceTypeProperties();
         }

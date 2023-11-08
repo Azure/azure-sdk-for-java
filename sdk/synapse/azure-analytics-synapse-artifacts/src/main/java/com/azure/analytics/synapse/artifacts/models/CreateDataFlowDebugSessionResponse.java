@@ -16,6 +16,9 @@ public final class CreateDataFlowDebugSessionResponse {
     @JsonProperty(value = "sessionId")
     private String sessionId;
 
+    /** Creates an instance of CreateDataFlowDebugSessionResponse class. */
+    public CreateDataFlowDebugSessionResponse() {}
+
     /**
      * Get the sessionId property: The ID of data flow debug session.
      *

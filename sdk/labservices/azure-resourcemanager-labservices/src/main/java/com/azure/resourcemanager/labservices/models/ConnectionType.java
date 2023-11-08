@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ConnectionType. */
+/** A connection type for access labs and VMs (Public, Private or None). */
 public enum ConnectionType {
     /** Enum value Public. */
     PUBLIC("Public"),
@@ -33,6 +33,9 @@ public enum ConnectionType {
      */
     @JsonCreator
     public static ConnectionType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ConnectionType[] items = ConnectionType.values();
         for (ConnectionType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ConnectionType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

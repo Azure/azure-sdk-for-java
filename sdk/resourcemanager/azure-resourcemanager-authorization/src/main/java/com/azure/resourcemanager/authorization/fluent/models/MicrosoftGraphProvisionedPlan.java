@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** provisionedPlan. */
 @Fluent
 public final class MicrosoftGraphProvisionedPlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphProvisionedPlan.class);
-
     /*
      * For example, 'Enabled'.
      */
@@ -40,6 +37,10 @@ public final class MicrosoftGraphProvisionedPlan {
      * provisionedPlan
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphProvisionedPlan class. */
+    public MicrosoftGraphProvisionedPlan() {
+    }
 
     /**
      * Get the capabilityStatus property: For example, 'Enabled'.

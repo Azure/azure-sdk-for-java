@@ -80,6 +80,14 @@ public interface PartnerNamespace {
     String partnerRegistrationFullyQualifiedId();
 
     /**
+     * Gets the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * partner namespace.
+     *
+     * @return the minimumTlsVersionAllowed value.
+     */
+    TlsVersion minimumTlsVersionAllowed();
+
+    /**
      * Gets the endpoint property: Endpoint for the partner namespace.
      *
      * @return the endpoint value.
@@ -137,6 +145,13 @@ public interface PartnerNamespace {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceInner object.
      *
      * @return the inner object.
@@ -190,6 +205,7 @@ public interface PartnerNamespace {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithPartnerRegistrationFullyQualifiedId,
+                DefinitionStages.WithMinimumTlsVersionAllowed,
                 DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithInboundIpRules,
                 DefinitionStages.WithDisableLocalAuth,
@@ -233,19 +249,29 @@ public interface PartnerNamespace {
              */
             WithCreate withPartnerRegistrationFullyQualifiedId(String partnerRegistrationFullyQualifiedId);
         }
+        /** The stage of the PartnerNamespace definition allowing to specify minimumTlsVersionAllowed. */
+        interface WithMinimumTlsVersionAllowed {
+            /**
+             * Specifies the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish
+             * to this partner namespace.
+             *
+             * @param minimumTlsVersionAllowed Minimum TLS version of the publisher allowed to publish to this partner
+             *     namespace.
+             * @return the next definition stage.
+             */
+            WithCreate withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed);
+        }
         /** The stage of the PartnerNamespace definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
              * Specifies the publicNetworkAccess property: This determines if traffic is allowed over public network. By
              * default it is enabled. You can further restrict to specific IPs by configuring &lt;seealso
-             * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties"
-                 + ".InboundIpRules"
+             * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
              * /&gt;.
              *
              * @param publicNetworkAccess This determines if traffic is allowed over public network. By default it is
              *     enabled. You can further restrict to specific IPs by configuring &lt;seealso
-             *     cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties"
-                 + ".InboundIpRules"
+             *     cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
              *     /&gt;.
              * @return the next definition stage.
              */
@@ -306,6 +332,7 @@ public interface PartnerNamespace {
         extends UpdateStages.WithTags,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithInboundIpRules,
+            UpdateStages.WithMinimumTlsVersionAllowed,
             UpdateStages.WithDisableLocalAuth {
         /**
          * Executes the update request.
@@ -339,14 +366,12 @@ public interface PartnerNamespace {
             /**
              * Specifies the publicNetworkAccess property: This determines if traffic is allowed over public network. By
              * default it is enabled. You can further restrict to specific IPs by configuring &lt;seealso
-             * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts"
-                 + ".PartnerNamespaceUpdateParameterProperties.InboundIpRules"
+             * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties.InboundIpRules"
              * /&gt;.
              *
              * @param publicNetworkAccess This determines if traffic is allowed over public network. By default it is
              *     enabled. You can further restrict to specific IPs by configuring &lt;seealso
-             *     cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts"
-                 + ".PartnerNamespaceUpdateParameterProperties.InboundIpRules"
+             *     cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties.InboundIpRules"
              *     /&gt;.
              * @return the next definition stage.
              */
@@ -363,6 +388,17 @@ public interface PartnerNamespace {
              * @return the next definition stage.
              */
             Update withInboundIpRules(List<InboundIpRule> inboundIpRules);
+        }
+        /** The stage of the PartnerNamespace update allowing to specify minimumTlsVersionAllowed. */
+        interface WithMinimumTlsVersionAllowed {
+            /**
+             * Specifies the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish
+             * to this domain.
+             *
+             * @param minimumTlsVersionAllowed Minimum TLS version of the publisher allowed to publish to this domain.
+             * @return the next definition stage.
+             */
+            Update withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed);
         }
         /** The stage of the PartnerNamespace update allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
@@ -395,16 +431,9 @@ public interface PartnerNamespace {
     PartnerNamespace refresh(Context context);
 
     /**
-     * List the two keys used to publish to a partner namespace.
+     * List keys for a partner namespace.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the partner namespace.
-     */
-    PartnerNamespaceSharedAccessKeys listSharedAccessKeys();
-
-    /**
-     * List the two keys used to publish to a partner namespace.
+     * <p>List the two keys used to publish to a partner namespace.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -415,18 +444,20 @@ public interface PartnerNamespace {
     Response<PartnerNamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(Context context);
 
     /**
-     * Regenerate a shared access key for a partner namespace.
+     * List keys for a partner namespace.
      *
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <p>List the two keys used to publish to a partner namespace.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the partner namespace.
      */
-    PartnerNamespaceSharedAccessKeys regenerateKey(PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest);
+    PartnerNamespaceSharedAccessKeys listSharedAccessKeys();
 
     /**
-     * Regenerate a shared access key for a partner namespace.
+     * Regenerate key for a partner namespace.
+     *
+     * <p>Regenerate a shared access key for a partner namespace.
      *
      * @param regenerateKeyRequest Request body to regenerate key.
      * @param context The context to associate with this operation.
@@ -437,4 +468,17 @@ public interface PartnerNamespace {
      */
     Response<PartnerNamespaceSharedAccessKeys> regenerateKeyWithResponse(
         PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest, Context context);
+
+    /**
+     * Regenerate key for a partner namespace.
+     *
+     * <p>Regenerate a shared access key for a partner namespace.
+     *
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the partner namespace.
+     */
+    PartnerNamespaceSharedAccessKeys regenerateKey(PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest);
 }

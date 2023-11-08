@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LeaseContainerRequestAction. */
+/** Specifies the lease action. Can be one of the available actions. */
 public final class LeaseContainerRequestAction extends ExpandableStringEnum<LeaseContainerRequestAction> {
     /** Static value Acquire for LeaseContainerRequestAction. */
     public static final LeaseContainerRequestAction ACQUIRE = fromString("Acquire");
@@ -26,6 +26,15 @@ public final class LeaseContainerRequestAction extends ExpandableStringEnum<Leas
     public static final LeaseContainerRequestAction BREAK = fromString("Break");
 
     /**
+     * Creates a new instance of LeaseContainerRequestAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LeaseContainerRequestAction() {
+    }
+
+    /**
      * Creates or finds a LeaseContainerRequestAction from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class LeaseContainerRequestAction extends ExpandableStringEnum<Leas
         return fromString(name, LeaseContainerRequestAction.class);
     }
 
-    /** @return known LeaseContainerRequestAction values. */
+    /**
+     * Gets known LeaseContainerRequestAction values.
+     *
+     * @return known LeaseContainerRequestAction values.
+     */
     public static Collection<LeaseContainerRequestAction> values() {
         return values(LeaseContainerRequestAction.class);
     }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** DPM workload-specific error information. */
 @Fluent
 public final class DpmErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DpmErrorInfo.class);
-
     /*
      * Localized error string.
      */
@@ -26,6 +22,10 @@ public final class DpmErrorInfo {
      */
     @JsonProperty(value = "recommendations")
     private List<String> recommendations;
+
+    /** Creates an instance of DpmErrorInfo class. */
+    public DpmErrorInfo() {
+    }
 
     /**
      * Get the errorString property: Localized error string.

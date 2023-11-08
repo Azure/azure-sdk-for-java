@@ -25,6 +25,10 @@ public final class AzureKeyVaultLinkedService extends LinkedService {
     private AzureKeyVaultLinkedServiceTypeProperties innerTypeProperties =
         new AzureKeyVaultLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureKeyVaultLinkedService class. */
+    public AzureKeyVaultLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Key Vault linked service properties.
      *

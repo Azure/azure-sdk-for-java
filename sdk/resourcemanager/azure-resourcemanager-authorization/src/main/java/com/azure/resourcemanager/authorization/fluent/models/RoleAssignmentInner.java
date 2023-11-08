@@ -6,22 +6,22 @@ package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.PrincipalType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Role Assignments. */
 @Fluent
 public final class RoleAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentInner.class);
-
     /*
      * Role assignment properties.
      */
     @JsonProperty(value = "properties")
     private RoleAssignmentProperties innerProperties;
+
+    /** Creates an instance of RoleAssignmentInner class. */
+    public RoleAssignmentInner() {
+    }
 
     /**
      * Get the innerProperties property: Role assignment properties.
@@ -161,7 +161,7 @@ public final class RoleAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
+     * Get the conditionVersion property: Version of the condition. Currently the only accepted value is '2.0'.
      *
      * @return the conditionVersion value.
      */
@@ -170,7 +170,7 @@ public final class RoleAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
+     * Set the conditionVersion property: Version of the condition. Currently the only accepted value is '2.0'.
      *
      * @param conditionVersion the conditionVersion value to set.
      * @return the RoleAssignmentInner object itself.

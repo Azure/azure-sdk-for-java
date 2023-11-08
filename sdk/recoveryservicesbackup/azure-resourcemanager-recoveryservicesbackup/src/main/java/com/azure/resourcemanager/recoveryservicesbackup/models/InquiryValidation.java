@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Validation for inquired protectable items under a given container. */
 @Fluent
 public final class InquiryValidation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InquiryValidation.class);
-
     /*
      * Status for the Inquiry Validation.
      */
@@ -31,6 +27,16 @@ public final class InquiryValidation {
      */
     @JsonProperty(value = "additionalDetail", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalDetail;
+
+    /*
+     * Dictionary to store the count of ProtectableItems with key POType.
+     */
+    @JsonProperty(value = "protectableItemCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Object protectableItemCount;
+
+    /** Creates an instance of InquiryValidation class. */
+    public InquiryValidation() {
+    }
 
     /**
      * Get the status property: Status for the Inquiry Validation.
@@ -79,6 +85,15 @@ public final class InquiryValidation {
      */
     public String additionalDetail() {
         return this.additionalDetail;
+    }
+
+    /**
+     * Get the protectableItemCount property: Dictionary to store the count of ProtectableItems with key POType.
+     *
+     * @return the protectableItemCount value.
+     */
+    public Object protectableItemCount() {
+        return this.protectableItemCount;
     }
 
     /**

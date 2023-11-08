@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** properties for dimension. */
 @Fluent
 public final class DimensionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DimensionProperties.class);
-
     /*
      * localized display name of the dimension to customer
      */
@@ -27,11 +23,14 @@ public final class DimensionProperties {
     private String name;
 
     /*
-     * flag indicating whether this dimension should be included to the
-     * customer in Azure Monitor logs (aka Shoebox)
+     * flag indicating whether this dimension should be included to the customer in Azure Monitor logs (aka Shoebox)
      */
     @JsonProperty(value = "toBeExportedForCustomer")
     private Boolean toBeExportedForCustomer;
+
+    /** Creates an instance of DimensionProperties class. */
+    public DimensionProperties() {
+    }
 
     /**
      * Get the displayName property: localized display name of the dimension to customer.

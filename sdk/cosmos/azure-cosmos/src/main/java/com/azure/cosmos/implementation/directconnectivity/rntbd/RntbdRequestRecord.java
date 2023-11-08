@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import io.micrometer.core.instrument.Timer;
+import io.netty.channel.Channel;
 import io.netty.util.Timeout;
 import io.netty.util.TimerTask;
 import org.slf4j.Logger;
@@ -33,7 +35,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonSerialize(using = RntbdRequestRecord.JsonSerializer.class)
-public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
+public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse> implements IRequestRecord {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestRecord.class);
 
@@ -50,9 +52,8 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             "stage");
 
     private final RntbdRequestArgs args;
-    private volatile int channelTaskQueueLength;
-    private volatile int pendingRequestsQueueSize;
     private volatile RntbdEndpointStatistics serviceEndpointStatistics;
+    private volatile RntbdChannelStatistics channelStatistics;
 
     private volatile int requestLength;
     private volatile int responseLength;
@@ -67,6 +68,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     private volatile Instant timeReceived;
     private volatile boolean sendingRequestHasStarted;
     private volatile RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
+    private volatile RntbdClientChannelHealthChecker.Timestamps timestamps;
 
     protected RntbdRequestRecord(final RntbdRequestArgs args) {
 
@@ -85,6 +87,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         return this.args.activityId();
     }
 
+    @Override
     public RntbdRequestArgs args() {
         return this.args;
     }
@@ -215,32 +218,36 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         this.serviceEndpointStatistics = endpointMetrics;
     }
 
-    public int pendingRequestQueueSize() {
-        return this.pendingRequestsQueueSize;
-    }
+    public void channelStatistics(
+        Channel channel,
+        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
 
-    public void pendingRequestQueueSize(int pendingRequestsQueueSize) {
-        this.pendingRequestsQueueSize = pendingRequestsQueueSize;
-    }
-
-    public int channelTaskQueueLength() {
-        return channelTaskQueueLength;
-    }
-
-    void channelTaskQueueLength(int value) {
-        this.channelTaskQueueLength = value;
+        final RntbdRequestManager requestManager = channel.pipeline().get(RntbdRequestManager.class);
+        if (requestManager != null) {
+            this.channelStatistics = requestManager.getChannelStatistics(channel, channelAcquisitionTimeline);
+        }
     }
 
     public RntbdEndpointStatistics serviceEndpointStatistics() {
         return this.serviceEndpointStatistics;
     }
 
+    public RntbdChannelStatistics channelStatistics() {
+        return this.channelStatistics;
+    }
+
     public long transportRequestId() {
         return this.args.transportRequestId();
     }
 
+    @Override
     public RntbdChannelAcquisitionTimeline getChannelAcquisitionTimeline() {
         return this.channelAcquisitionTimeline;
+    }
+
+    @Override
+    public long getRequestId() {
+        return this.args.transportRequestId();
     }
 
     // endregion
@@ -249,18 +256,28 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     public boolean expire() {
         final CosmosException error;
-        if (this.args.serviceRequest().isReadOnly() || !this.hasSendingRequestStarted()) {
+        if ((this.args.serviceRequest().isReadOnly() || !this.hasSendingRequestStarted()) ||
+            this.args.serviceRequest().getNonIdempotentWriteRetriesEnabled()){
             // Convert from requestTimeoutException to GoneException for the following two scenarios so they can be safely retried:
             // 1. RequestOnly request
             // 2. Write request but not sent yet
-            error = new GoneException(this.toString(), null, this.args.physicalAddress());
+            error = new GoneException(this.toString(), null, this.args.physicalAddressUri().getURI(), HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
         } else {
             // For sent write request, converting to requestTimeout, will not be retried.
-            error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
+            error = new RequestTimeoutException(this.toString(), this.args.physicalAddressUri().getURI());
         }
 
         BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
+
+        if (this.timestamps != null) {
+            this.timestamps.transitTimeout(this.args.serviceRequest().isReadOnly(), this.args.timeCreated());
+        }
+
         return this.completeExceptionally(error);
+    }
+
+    public void setTimestamps(RntbdClientChannelHealthChecker.Timestamps timestamps) {
+        this.timestamps = timestamps;
     }
 
     public abstract Timeout newTimeout(final TimerTask task);
@@ -310,8 +327,12 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
                 timeCompleted, now));
     }
 
-    public long stop(Timer requests, Timer responses) {
-        return this.args.stop(requests, responses);
+    public void stop() {
+        this.args.stop();
+    }
+
+    public void stop(Timer requests, Timer responses) {
+        this.args.stop(requests, responses);
     }
 
     @Override

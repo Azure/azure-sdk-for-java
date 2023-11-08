@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The endpoint for Azure-SSIS integration runtime outbound network dependency. */
 @Fluent
 public final class IntegrationRuntimeOutboundNetworkDependenciesEndpoint {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimeOutboundNetworkDependenciesEndpoint.class);
-
     /*
      * The domain name of endpoint.
      */
@@ -27,6 +22,10 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpoint {
      */
     @JsonProperty(value = "endpointDetails")
     private List<IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails> endpointDetails;
+
+    /** Creates an instance of IntegrationRuntimeOutboundNetworkDependenciesEndpoint class. */
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpoint() {
+    }
 
     /**
      * Get the domainName property: The domain name of endpoint.

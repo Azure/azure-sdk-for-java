@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resourcemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcemover.models.OperationsDiscovery;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of ClientDiscovery details. */
 @Fluent
 public final class OperationsDiscoveryCollectionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsDiscoveryCollectionInner.class);
-
     /*
      * Gets or sets the ClientDiscovery details.
      */
@@ -27,6 +23,10 @@ public final class OperationsDiscoveryCollectionInner {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of OperationsDiscoveryCollectionInner class. */
+    public OperationsDiscoveryCollectionInner() {
+    }
 
     /**
      * Get the value property: Gets or sets the ClientDiscovery details.

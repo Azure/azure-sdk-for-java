@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UsageIndicator. */
+/** The usage indicator. */
 public final class UsageIndicator extends ExpandableStringEnum<UsageIndicator> {
     /** Static value NotSpecified for UsageIndicator. */
     public static final UsageIndicator NOT_SPECIFIED = fromString("NotSpecified");
@@ -23,6 +23,15 @@ public final class UsageIndicator extends ExpandableStringEnum<UsageIndicator> {
     public static final UsageIndicator PRODUCTION = fromString("Production");
 
     /**
+     * Creates a new instance of UsageIndicator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UsageIndicator() {
+    }
+
+    /**
      * Creates or finds a UsageIndicator from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class UsageIndicator extends ExpandableStringEnum<UsageIndicator> {
         return fromString(name, UsageIndicator.class);
     }
 
-    /** @return known UsageIndicator values. */
+    /**
+     * Gets known UsageIndicator values.
+     *
+     * @return known UsageIndicator values.
+     */
     public static Collection<UsageIndicator> values() {
         return values(UsageIndicator.class);
     }

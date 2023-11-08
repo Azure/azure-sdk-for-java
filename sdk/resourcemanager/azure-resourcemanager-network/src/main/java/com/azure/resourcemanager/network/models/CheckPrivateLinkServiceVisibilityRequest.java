@@ -16,6 +16,10 @@ public final class CheckPrivateLinkServiceVisibilityRequest {
     @JsonProperty(value = "privateLinkServiceAlias")
     private String privateLinkServiceAlias;
 
+    /** Creates an instance of CheckPrivateLinkServiceVisibilityRequest class. */
+    public CheckPrivateLinkServiceVisibilityRequest() {
+    }
+
     /**
      * Get the privateLinkServiceAlias property: The alias of the private link service.
      *

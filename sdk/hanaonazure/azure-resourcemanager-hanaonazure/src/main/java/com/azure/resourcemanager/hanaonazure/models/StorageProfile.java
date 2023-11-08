@@ -5,28 +5,33 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies the storage settings for the HANA instance disks. */
 @Fluent
 public final class StorageProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageProfile.class);
-
     /*
      * IP Address to connect to storage.
      */
-    @JsonProperty(value = "nfsIpAddress")
+    @JsonProperty(value = "nfsIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String nfsIpAddress;
 
     /*
-     * Specifies information about the operating system disk used by the hana
-     * instance.
+     * Specifies information about the operating system disk used by the hana instance.
      */
     @JsonProperty(value = "osDisks")
     private List<Disk> osDisks;
+
+    /*
+     * Specifies information related to SAP system IDs for the hana instance.
+     */
+    @JsonProperty(value = "hanaSids")
+    private List<SapSystemId> hanaSids;
+
+    /** Creates an instance of StorageProfile class. */
+    public StorageProfile() {
+    }
 
     /**
      * Get the nfsIpAddress property: IP Address to connect to storage.
@@ -35,17 +40,6 @@ public final class StorageProfile {
      */
     public String nfsIpAddress() {
         return this.nfsIpAddress;
-    }
-
-    /**
-     * Set the nfsIpAddress property: IP Address to connect to storage.
-     *
-     * @param nfsIpAddress the nfsIpAddress value to set.
-     * @return the StorageProfile object itself.
-     */
-    public StorageProfile withNfsIpAddress(String nfsIpAddress) {
-        this.nfsIpAddress = nfsIpAddress;
-        return this;
     }
 
     /**
@@ -69,6 +63,26 @@ public final class StorageProfile {
     }
 
     /**
+     * Get the hanaSids property: Specifies information related to SAP system IDs for the hana instance.
+     *
+     * @return the hanaSids value.
+     */
+    public List<SapSystemId> hanaSids() {
+        return this.hanaSids;
+    }
+
+    /**
+     * Set the hanaSids property: Specifies information related to SAP system IDs for the hana instance.
+     *
+     * @param hanaSids the hanaSids value to set.
+     * @return the StorageProfile object itself.
+     */
+    public StorageProfile withHanaSids(List<SapSystemId> hanaSids) {
+        this.hanaSids = hanaSids;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -76,6 +90,9 @@ public final class StorageProfile {
     public void validate() {
         if (osDisks() != null) {
             osDisks().forEach(e -> e.validate());
+        }
+        if (hanaSids() != null) {
+            hanaSids().forEach(e -> e.validate());
         }
     }
 }

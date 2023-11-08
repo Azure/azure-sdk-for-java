@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The linked integration runtime information. */
 @Immutable
 public final class LinkedIntegrationRuntime {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedIntegrationRuntime.class);
-
     /*
      * The name of the linked integration runtime.
      */
@@ -28,15 +24,13 @@ public final class LinkedIntegrationRuntime {
     private String subscriptionId;
 
     /*
-     * The name of the workspace for which the linked integration runtime
-     * belong to.
+     * The name of the workspace for which the linked integration runtime belong to.
      */
     @JsonProperty(value = "dataFactoryName", access = JsonProperty.Access.WRITE_ONLY)
     private String dataFactoryName;
 
     /*
-     * The location of the workspace for which the linked integration runtime
-     * belong to.
+     * The location of the workspace for which the linked integration runtime belong to.
      */
     @JsonProperty(value = "dataFactoryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String dataFactoryLocation;
@@ -46,6 +40,10 @@ public final class LinkedIntegrationRuntime {
      */
     @JsonProperty(value = "createTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createTime;
+
+    /** Creates an instance of LinkedIntegrationRuntime class. */
+    public LinkedIntegrationRuntime() {
+    }
 
     /**
      * Get the name property: The name of the linked integration runtime.

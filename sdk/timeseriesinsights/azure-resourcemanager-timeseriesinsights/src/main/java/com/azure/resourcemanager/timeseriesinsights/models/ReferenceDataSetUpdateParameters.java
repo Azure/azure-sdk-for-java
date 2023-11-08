@@ -5,21 +5,23 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters supplied to the Update Reference Data Set operation. */
 @Fluent
 public final class ReferenceDataSetUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferenceDataSetUpdateParameters.class);
-
     /*
      * Key-value pairs of additional properties for the reference data set.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of ReferenceDataSetUpdateParameters class. */
+    public ReferenceDataSetUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Key-value pairs of additional properties for the reference data set.

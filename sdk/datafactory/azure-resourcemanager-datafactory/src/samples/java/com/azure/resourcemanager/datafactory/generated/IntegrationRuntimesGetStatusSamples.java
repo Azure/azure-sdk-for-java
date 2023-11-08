@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes GetStatus. */
 public final class IntegrationRuntimesGetStatusSamples {
     /*
@@ -20,6 +18,9 @@ public final class IntegrationRuntimesGetStatusSamples {
         manager
             .integrationRuntimes()
             .getStatusWithResponse(
-                "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", Context.NONE);
+                "exampleResourceGroup",
+                "exampleFactoryName",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -24,6 +24,10 @@ public final class OperationStatusList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of OperationStatusList class. */
+    public OperationStatusList() {
+    }
+
     /**
      * Get the value property: List of async operations in progress, in the cluster.
      *

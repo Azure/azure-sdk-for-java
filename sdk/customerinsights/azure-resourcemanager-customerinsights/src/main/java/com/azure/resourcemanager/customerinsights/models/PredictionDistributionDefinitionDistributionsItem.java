@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of a prediction distribution. */
 @Fluent
 public final class PredictionDistributionDefinitionDistributionsItem {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PredictionDistributionDefinitionDistributionsItem.class);
-
     /*
      * Score threshold.
      */
@@ -44,6 +39,10 @@ public final class PredictionDistributionDefinitionDistributionsItem {
      */
     @JsonProperty(value = "negativesAboveThreshold")
     private Long negativesAboveThreshold;
+
+    /** Creates an instance of PredictionDistributionDefinitionDistributionsItem class. */
+    public PredictionDistributionDefinitionDistributionsItem() {
+    }
 
     /**
      * Get the scoreThreshold property: Score threshold.

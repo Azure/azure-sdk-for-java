@@ -35,6 +35,15 @@ public final class WafRankingType extends ExpandableStringEnum<WafRankingType> {
     public static final WafRankingType RULE_TYPE = fromString("ruleType");
 
     /**
+     * Creates a new instance of WafRankingType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WafRankingType() {
+    }
+
+    /**
      * Creates or finds a WafRankingType from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class WafRankingType extends ExpandableStringEnum<WafRankingType> {
         return fromString(name, WafRankingType.class);
     }
 
-    /** @return known WafRankingType values. */
+    /**
+     * Gets known WafRankingType values.
+     *
+     * @return known WafRankingType values.
+     */
     public static Collection<WafRankingType> values() {
         return values(WafRankingType.class);
     }

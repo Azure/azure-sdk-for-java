@@ -41,8 +41,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @BeforeEach
     public void setup() throws IOException {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-
         proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(error -> logger.error("Exception occurred in proxy.", error));
 
@@ -64,8 +62,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @AfterEach()
     public void cleanup() throws Exception {
-        StepVerifier.resetDefaultTimeout();
-
         if (proxyServer != null) {
             proxyServer.stop();
         }
@@ -92,6 +88,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             .queueName(queueName)
             .buildAsyncClient();
 
+        toClose(sender);
+
         final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
@@ -100,6 +98,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .queueName(queueName)
             .buildAsyncClient();
+
+        toClose(receiver);
 
         // Act & Assert
         try {
@@ -111,7 +111,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
                     return sender.sendMessages(batch);
                 }))
-                .verifyComplete();
+                .expectComplete()
+                .verify(Duration.ofSeconds(30));
 
             StepVerifier.create(receiver.receiveMessages().take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)

@@ -7,8 +7,11 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,8 +28,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
     private NetworkVirtualAppliancePropertiesFormat innerProperties;
 
     /*
-     * The service principal that has read access to cloud-init and config
-     * blob.
+     * The service principal that has read access to cloud-init and config blob.
      */
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
@@ -42,6 +44,10 @@ public final class NetworkVirtualApplianceInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of NetworkVirtualApplianceInner class. */
+    public NetworkVirtualApplianceInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the Network Virtual Appliance.
@@ -240,7 +246,8 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
-     * Get the virtualApplianceAsn property: VirtualAppliance ASN.
+     * Get the virtualApplianceAsn property: VirtualAppliance ASN. Microsoft private, public and IANA reserved ASN are
+     * not supported.
      *
      * @return the virtualApplianceAsn value.
      */
@@ -249,7 +256,8 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
-     * Set the virtualApplianceAsn property: VirtualAppliance ASN.
+     * Set the virtualApplianceAsn property: VirtualAppliance ASN. Microsoft private, public and IANA reserved ASN are
+     * not supported.
      *
      * @param virtualApplianceAsn the virtualApplianceAsn value to set.
      * @return the NetworkVirtualApplianceInner object itself.
@@ -295,12 +303,45 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
+     * Get the additionalNics property: Details required for Additional Network Interface.
+     *
+     * @return the additionalNics value.
+     */
+    public List<VirtualApplianceAdditionalNicProperties> additionalNics() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalNics();
+    }
+
+    /**
+     * Set the additionalNics property: Details required for Additional Network Interface.
+     *
+     * @param additionalNics the additionalNics value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withAdditionalNics(
+        List<VirtualApplianceAdditionalNicProperties> additionalNics) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withAdditionalNics(additionalNics);
+        return this;
+    }
+
+    /**
      * Get the virtualApplianceSites property: List of references to VirtualApplianceSite.
      *
      * @return the virtualApplianceSites value.
      */
     public List<SubResource> virtualApplianceSites() {
         return this.innerProperties() == null ? null : this.innerProperties().virtualApplianceSites();
+    }
+
+    /**
+     * Get the virtualApplianceConnections property: List of references to VirtualApplianceConnections.
+     *
+     * @return the virtualApplianceConnections value.
+     */
+    public List<SubResource> virtualApplianceConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualApplianceConnections();
     }
 
     /**
@@ -319,6 +360,62 @@ public final class NetworkVirtualApplianceInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the deploymentType property: The deployment type. PartnerManaged for the SaaS NVA.
+     *
+     * @return the deploymentType value.
+     */
+    public String deploymentType() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentType();
+    }
+
+    /**
+     * Get the delegation property: The delegation for the Virtual Appliance.
+     *
+     * @return the delegation value.
+     */
+    public DelegationProperties delegation() {
+        return this.innerProperties() == null ? null : this.innerProperties().delegation();
+    }
+
+    /**
+     * Set the delegation property: The delegation for the Virtual Appliance.
+     *
+     * @param delegation the delegation value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withDelegation(DelegationProperties delegation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withDelegation(delegation);
+        return this;
+    }
+
+    /**
+     * Get the partnerManagedResource property: The delegation for the Virtual Appliance.
+     *
+     * @return the partnerManagedResource value.
+     */
+    public PartnerManagedResourceProperties partnerManagedResource() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerManagedResource();
+    }
+
+    /**
+     * Set the partnerManagedResource property: The delegation for the Virtual Appliance.
+     *
+     * @param partnerManagedResource the partnerManagedResource value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withPartnerManagedResource(
+        PartnerManagedResourceProperties partnerManagedResource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withPartnerManagedResource(partnerManagedResource);
+        return this;
     }
 
     /**

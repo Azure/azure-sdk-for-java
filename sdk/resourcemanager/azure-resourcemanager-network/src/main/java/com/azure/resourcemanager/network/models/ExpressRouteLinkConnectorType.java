@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteLinkConnectorType. */
+/** Physical fiber port type. */
 public final class ExpressRouteLinkConnectorType extends ExpandableStringEnum<ExpressRouteLinkConnectorType> {
     /** Static value LC for ExpressRouteLinkConnectorType. */
     public static final ExpressRouteLinkConnectorType LC = fromString("LC");
 
     /** Static value SC for ExpressRouteLinkConnectorType. */
     public static final ExpressRouteLinkConnectorType SC = fromString("SC");
+
+    /**
+     * Creates a new instance of ExpressRouteLinkConnectorType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteLinkConnectorType() {
+    }
 
     /**
      * Creates or finds a ExpressRouteLinkConnectorType from its string representation.
@@ -27,7 +36,11 @@ public final class ExpressRouteLinkConnectorType extends ExpandableStringEnum<Ex
         return fromString(name, ExpressRouteLinkConnectorType.class);
     }
 
-    /** @return known ExpressRouteLinkConnectorType values. */
+    /**
+     * Gets known ExpressRouteLinkConnectorType values.
+     *
+     * @return known ExpressRouteLinkConnectorType values.
+     */
     public static Collection<ExpressRouteLinkConnectorType> values() {
         return values(ExpressRouteLinkConnectorType.class);
     }

@@ -1,0 +1,9 @@
+trigger: none
+
+stages:
+- template: /sdk/communication/communication-tests-template.yml
+  parameters:
+    PackageName: azure-communication-callautomation
+    SafeName: azurecommunicationcallautomation
+    Clouds: 'Public'
+    TestMode: 'LIVE'

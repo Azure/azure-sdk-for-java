@@ -11,7 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateListDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.VerificationCodeResponseInner;
-import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateBodyDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.CertificatePurpose;
 import com.azure.resourcemanager.deviceprovisioningservices.models.VerificationCodeRequest;
 import java.time.OffsetDateTime;
@@ -73,7 +72,7 @@ public interface DpsCertificatesClient {
         String resourceGroupName,
         String provisioningServiceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription);
+        CertificateResponseInner certificateDescription);
 
     /**
      * Add new certificate or update an existing certificate.
@@ -96,7 +95,7 @@ public interface DpsCertificatesClient {
         String resourceGroupName,
         String provisioningServiceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription,
+        CertificateResponseInner certificateDescription,
         String ifMatch,
         Context context);
 

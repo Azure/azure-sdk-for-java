@@ -24,6 +24,10 @@ public final class PacketCoreDataPlaneListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of PacketCoreDataPlaneListResult class. */
+    public PacketCoreDataPlaneListResult() {
+    }
+
     /**
      * Get the value property: A list of packet core data planes in a resource group.
      *

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResult
 import com.azure.resourcemanager.dataprotection.fluent.models.ExportJobsResultInner;
 import com.azure.resourcemanager.dataprotection.models.ExportJobsOperationResults;
 import com.azure.resourcemanager.dataprotection.models.ExportJobsResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExportJobsOperationResultsImpl implements ExportJobsOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportJobsOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExportJobsOperationResultsImpl.class);
 
     private final ExportJobsOperationResultsClient innerClient;
 
@@ -28,15 +27,6 @@ public final class ExportJobsOperationResultsImpl implements ExportJobsOperation
         this.serviceManager = serviceManager;
     }
 
-    public ExportJobsResult get(String resourceGroupName, String vaultName, String operationId) {
-        ExportJobsResultInner inner = this.serviceClient().get(resourceGroupName, vaultName, operationId);
-        if (inner != null) {
-            return new ExportJobsResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ExportJobsResult> getWithResponse(
         String resourceGroupName, String vaultName, String operationId, Context context) {
         Response<ExportJobsResultInner> inner =
@@ -47,6 +37,15 @@ public final class ExportJobsOperationResultsImpl implements ExportJobsOperation
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ExportJobsResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ExportJobsResult get(String resourceGroupName, String vaultName, String operationId) {
+        ExportJobsResultInner inner = this.serviceClient().get(resourceGroupName, vaultName, operationId);
+        if (inner != null) {
+            return new ExportJobsResultImpl(inner, this.manager());
         } else {
             return null;
         }

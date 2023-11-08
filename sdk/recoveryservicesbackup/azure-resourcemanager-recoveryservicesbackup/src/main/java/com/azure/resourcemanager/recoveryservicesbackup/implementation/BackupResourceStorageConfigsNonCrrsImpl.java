@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceSto
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceConfigResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceStorageConfigsNonCrrs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupResourceStorageConfigsNonCrrsImpl implements BackupResourceStorageConfigsNonCrrs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceStorageConfigsNonCrrsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupResourceStorageConfigsNonCrrsImpl.class);
 
     private final BackupResourceStorageConfigsNonCrrsClient innerClient;
 
@@ -26,15 +25,6 @@ public final class BackupResourceStorageConfigsNonCrrsImpl implements BackupReso
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public BackupResourceConfigResource get(String vaultName, String resourceGroupName) {
-        BackupResourceConfigResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName);
-        if (inner != null) {
-            return new BackupResourceConfigResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<BackupResourceConfigResource> getWithResponse(
@@ -52,9 +42,8 @@ public final class BackupResourceStorageConfigsNonCrrsImpl implements BackupReso
         }
     }
 
-    public BackupResourceConfigResource update(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
-        BackupResourceConfigResourceInner inner = this.serviceClient().update(vaultName, resourceGroupName, parameters);
+    public BackupResourceConfigResource get(String vaultName, String resourceGroupName) {
+        BackupResourceConfigResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName);
         if (inner != null) {
             return new BackupResourceConfigResourceImpl(inner, this.manager());
         } else {
@@ -77,13 +66,23 @@ public final class BackupResourceStorageConfigsNonCrrsImpl implements BackupReso
         }
     }
 
-    public void patch(String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
-        this.serviceClient().patch(vaultName, resourceGroupName, parameters);
+    public BackupResourceConfigResource update(
+        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
+        BackupResourceConfigResourceInner inner = this.serviceClient().update(vaultName, resourceGroupName, parameters);
+        if (inner != null) {
+            return new BackupResourceConfigResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> patchWithResponse(
         String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context) {
         return this.serviceClient().patchWithResponse(vaultName, resourceGroupName, parameters, context);
+    }
+
+    public void patch(String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
+        this.serviceClient().patch(vaultName, resourceGroupName, parameters);
     }
 
     private BackupResourceStorageConfigsNonCrrsClient serviceClient() {

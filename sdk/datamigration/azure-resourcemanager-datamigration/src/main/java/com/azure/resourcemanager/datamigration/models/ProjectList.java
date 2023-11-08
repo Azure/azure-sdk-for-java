@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** OData page of project resources. */
 @Fluent
 public final class ProjectList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProjectList.class);
-
     /*
      * List of projects
      */
@@ -27,6 +23,10 @@ public final class ProjectList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ProjectList class. */
+    public ProjectList() {
+    }
 
     /**
      * Get the value property: List of projects.

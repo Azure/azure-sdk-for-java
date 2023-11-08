@@ -32,9 +32,9 @@ import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.implementation.Warning;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -225,28 +225,10 @@ public final class ModelBridgeInternal {
         return cosmosContainerRequestOptions.toRequestOptions();
     }
 
-//    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-//    public static CosmosContainerRequestOptions setOfferThroughput(CosmosContainerRequestOptions cosmosContainerRequestOptions,
-//                                                                   Integer offerThroughput) {
-//        return cosmosContainerRequestOptions.setOfferThroughput(offerThroughput);
-//    }
-//
-//    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-//    public static CosmosContainerRequestOptions setThroughputProperties(CosmosContainerRequestOptions cosmosContainerRequestOptions,
-//                                                                   ThroughputProperties throughputProperties) {
-//        return cosmosContainerRequestOptions.setThroughputProperties(throughputProperties);
-//    }
-
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static RequestOptions toRequestOptions(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions) {
         return cosmosDatabaseRequestOptions.toRequestOptions();
     }
-
-//    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-//    public static CosmosDatabaseRequestOptions setOfferThroughput(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
-//                                                                   Integer offerThroughput) {
-//        return cosmosDatabaseRequestOptions.setOfferThroughput(offerThroughput);
-//    }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDatabaseRequestOptions setThroughputProperties(
@@ -342,7 +324,7 @@ public final class ModelBridgeInternal {
         Function<JsonNode, T> factoryMethod,
         Class<T> cls) {
 
-        return new FeedResponse<T>(response.getQueryResponse(factoryMethod, cls), response);
+        return new FeedResponse<>(response.getQueryResponse(factoryMethod, cls), response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -356,7 +338,7 @@ public final class ModelBridgeInternal {
         Function<JsonNode, T> factoryMethod,
         Class<T> cls) {
 
-        return new FeedResponse<T>(
+        return new FeedResponse<>(
             noChanges(response) ? Collections.emptyList() : response.getQueryResponse(factoryMethod, cls),
             response.getResponseHeaders(), noChanges(response));
     }
@@ -709,18 +691,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static QueryInfo getQueryInfoFromFeedResponse(FeedResponse<?> response) {
-        return response.getQueryInfo();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static boolean getNoCHangesFromFeedResponse(FeedResponse<?> response) {
+    public static boolean getNoChangesFromFeedResponse(FeedResponse<?> response) {
         return response.getNoChanges();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosQueryRequestOptions createQueryRequestOptions(CosmosQueryRequestOptions options) {
-        return new CosmosQueryRequestOptions(options);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -757,16 +729,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static boolean getEmptyPagesAllowedFromQueryRequestOptions(CosmosQueryRequestOptions options) {
-        return options.isEmptyPagesAllowed();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosQueryRequestOptions setQueryRequestOptionsEmptyPagesAllowed(CosmosQueryRequestOptions options, boolean emptyPageAllowed) {
-        return options.setEmptyPagesAllowed(emptyPageAllowed);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static IndexingPolicy createIndexingPolicy(Index[] indexes) {
         return new IndexingPolicy(indexes);
     }
@@ -779,13 +741,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> int getPayloadLength(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForEtagAndFeedRange(
-        String etag, FeedRange feedRange) {
-
-        return CosmosChangeFeedRequestOptions.createForProcessingFromEtagAndFeedRange(etag, feedRange);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -943,12 +898,29 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static int getPayloadLength(CosmosBatchResponse cosmosBatchResponse) {
-        return cosmosBatchResponse.getResponseLength();
+    public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
+        return cosmosPatchOperations.getPatchOperations();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
-        return cosmosPatchOperations.getPatchOperations();
+    public static void  initializeAllAccessors() {
+        CosmosBatch.initialize();
+        CosmosBatchOperationResult.initialize();
+        CosmosBatchRequestOptions.initialize();
+        CosmosBatchResponse.initialize();
+        CosmosBulkExecutionOptions.initialize();
+        CosmosBulkExecutionThresholdsState.initialize();
+        CosmosBulkItemResponse.initialize();
+        CosmosChangeFeedRequestOptions.initialize();
+        CosmosContainerProperties.initialize();
+        CosmosItemRequestOptions.initialize();
+        CosmosItemResponse.initialize();
+        CosmosPatchOperations.initialize();
+        CosmosQueryRequestOptions.initialize();
+        FeedResponse.initialize();
+        PartitionKey.initialize();
+        CosmosClientTelemetryConfig.initialize();
+        CosmosContainerIdentity.initialize();
+        PriorityLevel.initialize();
     }
 }

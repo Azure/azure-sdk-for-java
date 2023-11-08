@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.WorkloadItemResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of WorkloadItem resources. */
 @Fluent
 public final class WorkloadItemResourceList extends ResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadItemResourceList.class);
-
     /*
      * List of resources.
      */
     @JsonProperty(value = "value")
     private List<WorkloadItemResourceInner> value;
+
+    /** Creates an instance of WorkloadItemResourceList class. */
+    public WorkloadItemResourceList() {
+    }
 
     /**
      * Get the value property: List of resources.

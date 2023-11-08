@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The filter expression to be used in the report. */
 @Fluent
 public final class ReportConfigFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportConfigFilter.class);
-
     /*
      * The logical "AND" expression. Must have at least 2 items.
      */
@@ -39,17 +35,9 @@ public final class ReportConfigFilter {
     @JsonProperty(value = "tags")
     private ReportConfigComparisonExpression tags;
 
-    /*
-     * Has comparison expression for a tag key
-     */
-    @JsonProperty(value = "tagKey")
-    private ReportConfigComparisonExpression tagKey;
-
-    /*
-     * Has comparison expression for a tag value
-     */
-    @JsonProperty(value = "tagValue")
-    private ReportConfigComparisonExpression tagValue;
+    /** Creates an instance of ReportConfigFilter class. */
+    public ReportConfigFilter() {
+    }
 
     /**
      * Get the and property: The logical "AND" expression. Must have at least 2 items.
@@ -132,46 +120,6 @@ public final class ReportConfigFilter {
     }
 
     /**
-     * Get the tagKey property: Has comparison expression for a tag key.
-     *
-     * @return the tagKey value.
-     */
-    public ReportConfigComparisonExpression tagKey() {
-        return this.tagKey;
-    }
-
-    /**
-     * Set the tagKey property: Has comparison expression for a tag key.
-     *
-     * @param tagKey the tagKey value to set.
-     * @return the ReportConfigFilter object itself.
-     */
-    public ReportConfigFilter withTagKey(ReportConfigComparisonExpression tagKey) {
-        this.tagKey = tagKey;
-        return this;
-    }
-
-    /**
-     * Get the tagValue property: Has comparison expression for a tag value.
-     *
-     * @return the tagValue value.
-     */
-    public ReportConfigComparisonExpression tagValue() {
-        return this.tagValue;
-    }
-
-    /**
-     * Set the tagValue property: Has comparison expression for a tag value.
-     *
-     * @param tagValue the tagValue value to set.
-     * @return the ReportConfigFilter object itself.
-     */
-    public ReportConfigFilter withTagValue(ReportConfigComparisonExpression tagValue) {
-        this.tagValue = tagValue;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -188,12 +136,6 @@ public final class ReportConfigFilter {
         }
         if (tags() != null) {
             tags().validate();
-        }
-        if (tagKey() != null) {
-            tagKey().validate();
-        }
-        if (tagValue() != null) {
-            tagValue().validate();
         }
     }
 }

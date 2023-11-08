@@ -24,15 +24,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.fluent.VaultExtendedInfoesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultExtendedInfoResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VaultExtendedInfoesClient. */
 public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesClient {
-    private final ClientLogger logger = new ClientLogger(VaultExtendedInfoesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VaultExtendedInfoesService service;
 
@@ -56,11 +53,10 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesMana")
-    private interface VaultExtendedInfoesService {
+    public interface VaultExtendedInfoesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/extendedInformation/vaultExtendedInfo")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/extendedInformation/vaultExtendedInfo")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultExtendedInfoResourceInner>> get(
@@ -74,8 +70,7 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/extendedInformation/vaultExtendedInfo")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/extendedInformation/vaultExtendedInfo")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultExtendedInfoResourceInner>> createOrUpdate(
@@ -90,8 +85,7 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/extendedInformation/vaultExtendedInfo")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/extendedInformation/vaultExtendedInfo")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultExtendedInfoResourceInner>> update(
@@ -108,12 +102,12 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
     /**
      * Get the vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vault extended info.
+     * @return the vault extended info along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultExtendedInfoResourceInner>> getWithResponseAsync(
@@ -150,19 +144,19 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
                             vaultName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vault extended info.
+     * @return the vault extended info along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultExtendedInfoResourceInner>> getWithResponseAsync(
@@ -202,51 +196,28 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
     /**
      * Get the vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vault extended info.
+     * @return the vault extended info on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VaultExtendedInfoResourceInner> getAsync(String resourceGroupName, String vaultName) {
-        return getWithResponseAsync(resourceGroupName, vaultName)
-            .flatMap(
-                (Response<VaultExtendedInfoResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, vaultName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vault extended info.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultExtendedInfoResourceInner get(String resourceGroupName, String vaultName) {
-        return getAsync(resourceGroupName, vaultName).block();
-    }
-
-    /**
-     * Get the vault extended info.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vault extended info.
+     * @return the vault extended info along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VaultExtendedInfoResourceInner> getWithResponse(
@@ -255,15 +226,30 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
     }
 
     /**
+     * Get the vault extended info.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the vault extended info.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultExtendedInfoResourceInner get(String resourceGroupName, String vaultName) {
+        return getWithResponse(resourceGroupName, vaultName, Context.NONE).getValue();
+    }
+
+    /**
      * Create vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault extended information.
+     * @return vault extended information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultExtendedInfoResourceInner>> createOrUpdateWithResponseAsync(
@@ -309,20 +295,20 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
                             resourceExtendedInfoDetails,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault extended information.
+     * @return vault extended information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultExtendedInfoResourceInner>> createOrUpdateWithResponseAsync(
@@ -374,56 +360,32 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
     /**
      * Create vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault extended information.
+     * @return vault extended information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VaultExtendedInfoResourceInner> createOrUpdateAsync(
         String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
         return createOrUpdateWithResponseAsync(resourceGroupName, vaultName, resourceExtendedInfoDetails)
-            .flatMap(
-                (Response<VaultExtendedInfoResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault extended information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultExtendedInfoResourceInner createOrUpdate(
-        String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
-        return createOrUpdateAsync(resourceGroupName, vaultName, resourceExtendedInfoDetails).block();
-    }
-
-    /**
-     * Create vault extended info.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault extended information.
+     * @return vault extended information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VaultExtendedInfoResourceInner> createOrUpdateWithResponse(
@@ -436,15 +398,33 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
     }
 
     /**
-     * Update vault extended info.
+     * Create vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vault extended information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultExtendedInfoResourceInner createOrUpdate(
+        String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
+        return createOrUpdateWithResponse(resourceGroupName, vaultName, resourceExtendedInfoDetails, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Update vault extended info.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vault extended information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultExtendedInfoResourceInner>> updateWithResponseAsync(
@@ -490,20 +470,20 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
                             resourceExtendedInfoDetails,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault extended information.
+     * @return vault extended information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultExtendedInfoResourceInner>> updateWithResponseAsync(
@@ -555,32 +535,46 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
     /**
      * Update vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault extended information.
+     * @return vault extended information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VaultExtendedInfoResourceInner> updateAsync(
         String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
         return updateWithResponseAsync(resourceGroupName, vaultName, resourceExtendedInfoDetails)
-            .flatMap(
-                (Response<VaultExtendedInfoResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vault extended information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<VaultExtendedInfoResourceInner> updateWithResponse(
+        String resourceGroupName,
+        String vaultName,
+        VaultExtendedInfoResourceInner resourceExtendedInfoDetails,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, vaultName, resourceExtendedInfoDetails, context).block();
+    }
+
+    /**
+     * Update vault extended info.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -591,27 +585,6 @@ public final class VaultExtendedInfoesClientImpl implements VaultExtendedInfoesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultExtendedInfoResourceInner update(
         String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
-        return updateAsync(resourceGroupName, vaultName, resourceExtendedInfoDetails).block();
-    }
-
-    /**
-     * Update vault extended info.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault extended information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VaultExtendedInfoResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        VaultExtendedInfoResourceInner resourceExtendedInfoDetails,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, vaultName, resourceExtendedInfoDetails, context).block();
+        return updateWithResponse(resourceGroupName, vaultName, resourceExtendedInfoDetails, Context.NONE).getValue();
     }
 }

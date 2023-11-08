@@ -16,11 +16,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     /*
-     * When this property is not null, means this is a linked integration
-     * runtime. The property is used to access original integration runtime.
+     * When this property is not null, means this is a linked integration runtime. The property is used to access
+     * original integration runtime.
      */
     @JsonProperty(value = "typeProperties")
     private SelfHostedIntegrationRuntimeTypeProperties innerTypeProperties;
+
+    /** Creates an instance of SelfHostedIntegrationRuntime class. */
+    public SelfHostedIntegrationRuntime() {
+    }
 
     /**
      * Get the innerTypeProperties property: When this property is not null, means this is a linked integration runtime.
@@ -59,6 +63,36 @@ public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
             this.innerTypeProperties = new SelfHostedIntegrationRuntimeTypeProperties();
         }
         this.innerTypeProperties().withLinkedInfo(linkedInfo);
+        return this;
+    }
+
+    /**
+     * Get the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     *
+     * @return the selfContainedInteractiveAuthoringEnabled value.
+     */
+    public Boolean selfContainedInteractiveAuthoringEnabled() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().selfContainedInteractiveAuthoringEnabled();
+    }
+
+    /**
+     * Set the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     *
+     * @param selfContainedInteractiveAuthoringEnabled the selfContainedInteractiveAuthoringEnabled value to set.
+     * @return the SelfHostedIntegrationRuntime object itself.
+     */
+    public SelfHostedIntegrationRuntime withSelfContainedInteractiveAuthoringEnabled(
+        Boolean selfContainedInteractiveAuthoringEnabled) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SelfHostedIntegrationRuntimeTypeProperties();
+        }
+        this
+            .innerTypeProperties()
+            .withSelfContainedInteractiveAuthoringEnabled(selfContainedInteractiveAuthoringEnabled);
         return this;
     }
 

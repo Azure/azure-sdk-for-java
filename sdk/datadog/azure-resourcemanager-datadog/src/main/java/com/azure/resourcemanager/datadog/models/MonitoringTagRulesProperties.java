@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the properties for a TagRules resource. */
 @Fluent
 public final class MonitoringTagRulesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoringTagRulesProperties.class);
-
     /*
      * The provisioningState property.
      */
@@ -31,6 +27,16 @@ public final class MonitoringTagRulesProperties {
      */
     @JsonProperty(value = "metricRules")
     private MetricRules metricRules;
+
+    /*
+     * Configuration to enable/disable auto-muting flag
+     */
+    @JsonProperty(value = "automuting")
+    private Boolean automuting;
+
+    /** Creates an instance of MonitoringTagRulesProperties class. */
+    public MonitoringTagRulesProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioningState property.
@@ -78,6 +84,26 @@ public final class MonitoringTagRulesProperties {
      */
     public MonitoringTagRulesProperties withMetricRules(MetricRules metricRules) {
         this.metricRules = metricRules;
+        return this;
+    }
+
+    /**
+     * Get the automuting property: Configuration to enable/disable auto-muting flag.
+     *
+     * @return the automuting value.
+     */
+    public Boolean automuting() {
+        return this.automuting;
+    }
+
+    /**
+     * Set the automuting property: Configuration to enable/disable auto-muting flag.
+     *
+     * @param automuting the automuting value to set.
+     * @return the MonitoringTagRulesProperties object itself.
+     */
+    public MonitoringTagRulesProperties withAutomuting(Boolean automuting) {
+        this.automuting = automuting;
         return this;
     }
 

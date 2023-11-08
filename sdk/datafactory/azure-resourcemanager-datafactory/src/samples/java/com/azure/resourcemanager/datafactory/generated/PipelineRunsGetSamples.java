@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PipelineRuns Get. */
 public final class PipelineRunsGetSamples {
     /*
@@ -20,6 +18,9 @@ public final class PipelineRunsGetSamples {
         manager
             .pipelineRuns()
             .getWithResponse(
-                "exampleResourceGroup", "exampleFactoryName", "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", Context.NONE);
+                "exampleResourceGroup",
+                "exampleFactoryName",
+                "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
+                com.azure.core.util.Context.NONE);
     }
 }

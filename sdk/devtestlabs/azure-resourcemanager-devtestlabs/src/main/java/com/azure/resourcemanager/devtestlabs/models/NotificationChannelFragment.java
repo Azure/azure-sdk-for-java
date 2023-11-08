@@ -4,15 +4,15 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** A notification. */
-@Immutable
+@Fluent
 public final class NotificationChannelFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationChannelFragment.class);
+    /** Creates an instance of NotificationChannelFragment class. */
+    public NotificationChannelFragment() {
+    }
 
     /** {@inheritDoc} */
     @Override

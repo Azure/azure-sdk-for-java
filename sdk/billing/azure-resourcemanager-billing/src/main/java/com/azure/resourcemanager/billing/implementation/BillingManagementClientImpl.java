@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -49,15 +50,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the BillingManagementClientImpl type. */
 @ServiceClient(builder = BillingManagementClientBuilder.class)
 public final class BillingManagementClientImpl implements BillingManagementClient {
-    private final ClientLogger logger = new ClientLogger(BillingManagementClientImpl.class);
-
     /** The ID that uniquely identifies an Azure subscription. */
     private final String subscriptionId;
 
@@ -286,18 +284,6 @@ public final class BillingManagementClientImpl implements BillingManagementClien
         return this.billingProperties;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
     /** The BillingRoleDefinitionsClient object to access its operations. */
     private final BillingRoleDefinitionsClient billingRoleDefinitions;
 
@@ -370,6 +356,18 @@ public final class BillingManagementClientImpl implements BillingManagementClien
         return this.billingPeriods;
     }
 
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
     /**
      * Initializes an instance of BillingManagementClient client.
      *
@@ -406,13 +404,13 @@ public final class BillingManagementClientImpl implements BillingManagementClien
         this.transactions = new TransactionsClientImpl(this);
         this.policies = new PoliciesClientImpl(this);
         this.billingProperties = new BillingPropertiesClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
         this.billingRoleDefinitions = new BillingRoleDefinitionsClientImpl(this);
         this.billingRoleAssignments = new BillingRoleAssignmentsClientImpl(this);
         this.agreements = new AgreementsClientImpl(this);
         this.reservations = new ReservationsClientImpl(this);
         this.enrollmentAccounts = new EnrollmentAccountsClientImpl(this);
         this.billingPeriods = new BillingPeriodsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
     }
 
     /**
@@ -431,10 +429,7 @@ public final class BillingManagementClientImpl implements BillingManagementClien
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -498,7 +493,7 @@ public final class BillingManagementClientImpl implements BillingManagementClien
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -557,4 +552,6 @@ public final class BillingManagementClientImpl implements BillingManagementClien
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BillingManagementClientImpl.class);
 }

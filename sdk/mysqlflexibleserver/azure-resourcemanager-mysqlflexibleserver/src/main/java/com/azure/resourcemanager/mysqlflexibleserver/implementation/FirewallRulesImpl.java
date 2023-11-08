@@ -35,15 +35,6 @@ public final class FirewallRulesImpl implements FirewallRules {
         this.serviceClient().delete(resourceGroupName, serverName, firewallRuleName, context);
     }
 
-    public FirewallRule get(String resourceGroupName, String serverName, String firewallRuleName) {
-        FirewallRuleInner inner = this.serviceClient().get(resourceGroupName, serverName, firewallRuleName);
-        if (inner != null) {
-            return new FirewallRuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<FirewallRule> getWithResponse(
         String resourceGroupName, String serverName, String firewallRuleName, Context context) {
         Response<FirewallRuleInner> inner =
@@ -54,6 +45,15 @@ public final class FirewallRulesImpl implements FirewallRules {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new FirewallRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public FirewallRule get(String resourceGroupName, String serverName, String firewallRuleName) {
+        FirewallRuleInner inner = this.serviceClient().get(resourceGroupName, serverName, firewallRuleName);
+        if (inner != null) {
+            return new FirewallRuleImpl(inner, this.manager());
         } else {
             return null;
         }

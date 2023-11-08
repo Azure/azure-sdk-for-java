@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AgentPools GetQueueStatus. */
 public final class AgentPoolsGetQueueStatusSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/AgentPoolsGetQueueStatus.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/AgentPoolsGetQueueStatus.json
      */
     /**
      * Sample code: AgentPools_GetQueueStatus.
@@ -22,6 +20,7 @@ public final class AgentPoolsGetQueueStatusSamples {
             .manager()
             .serviceClient()
             .getAgentPools()
-            .getQueueStatusWithResponse("myResourceGroup", "myRegistry", "myAgentPool", Context.NONE);
+            .getQueueStatusWithResponse(
+                "myResourceGroup", "myRegistry", "myAgentPool", com.azure.core.util.Context.NONE);
     }
 }

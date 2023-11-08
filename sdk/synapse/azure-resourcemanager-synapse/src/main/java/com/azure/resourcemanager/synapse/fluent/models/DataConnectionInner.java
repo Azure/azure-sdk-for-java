@@ -7,11 +7,9 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.EventGridDataConnection;
 import com.azure.resourcemanager.synapse.models.EventHubDataConnection;
 import com.azure.resourcemanager.synapse.models.IotHubDataConnection;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -31,8 +29,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class DataConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectionInner.class);
-
     /*
      * Resource location.
      */
@@ -40,11 +36,14 @@ public class DataConnectionInner extends ProxyResource {
     private String location;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of DataConnectionInner class. */
+    public DataConnectionInner() {
+    }
 
     /**
      * Get the location property: Resource location.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CustomLocations List. */
 public final class CustomLocationsListSamples {
     /*
-     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsListBySubscription.json
+     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsListBySubscription.json
      */
     /**
      * Sample code: List Custom Locations by subscription.

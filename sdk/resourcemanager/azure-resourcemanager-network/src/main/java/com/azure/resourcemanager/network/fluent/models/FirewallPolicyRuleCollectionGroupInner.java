@@ -21,8 +21,7 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     private FirewallPolicyRuleCollectionGroupProperties innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -38,6 +37,10 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of FirewallPolicyRuleCollectionGroupInner class. */
+    public FirewallPolicyRuleCollectionGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the firewall policy rule collection group.
@@ -93,6 +96,16 @@ public final class FirewallPolicyRuleCollectionGroupInner extends SubResource {
     public FirewallPolicyRuleCollectionGroupInner withId(String id) {
         super.withId(id);
         return this;
+    }
+
+    /**
+     * Get the size property: A read-only string that represents the size of the
+     * FirewallPolicyRuleCollectionGroupProperties in MB. (ex 1.2MB).
+     *
+     * @return the size value.
+     */
+    public String size() {
+        return this.innerProperties() == null ? null : this.innerProperties().size();
     }
 
     /**

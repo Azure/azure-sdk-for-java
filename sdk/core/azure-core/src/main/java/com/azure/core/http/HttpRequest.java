@@ -3,13 +3,16 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 /**
  * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
@@ -22,7 +25,7 @@ public class HttpRequest {
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
-    private Flux<ByteBuffer> body;
+    private BinaryData body;
 
     /**
      * Create a new HttpRequest instance.
@@ -31,7 +34,7 @@ public class HttpRequest {
      * @param url the target address to send the request to
      */
     public HttpRequest(HttpMethod httpMethod, URL url) {
-        this(httpMethod, url, new HttpHeaders(), null);
+        this(httpMethod, url, new HttpHeaders(), (BinaryData) null);
     }
 
     /**
@@ -53,13 +56,41 @@ public class HttpRequest {
      * @param httpMethod the HTTP request method
      * @param url the target address to send the request to
      * @param headers the HTTP headers to use with this request
+     */
+    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers) {
+        this.httpMethod = httpMethod;
+        this.url = url;
+        this.headers = headers;
+    }
+
+    /**
+     * Create a new HttpRequest instance.
+     *
+     * @param httpMethod the HTTP request method
+     * @param url the target address to send the request to
+     * @param headers the HTTP headers to use with this request
      * @param body the request content
      */
     public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuffer> body) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
-        this.body = body;
+        setBody(BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body)));
+    }
+
+    /**
+     * Create a new HttpRequest instance.
+     *
+     * @param httpMethod the HTTP request method
+     * @param url the target address to send the request to
+     * @param headers the HTTP headers to use with this request
+     * @param body the request content
+     */
+    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, BinaryData body) {
+        this.httpMethod = httpMethod;
+        this.url = url;
+        this.headers = headers;
+        setBody(body);
     }
 
     /**
@@ -111,7 +142,7 @@ public class HttpRequest {
      */
     public HttpRequest setUrl(String url) {
         try {
-            this.url = new URL(url);
+            this.url = ImplUtils.createUrl(url);
         } catch (MalformedURLException ex) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }
@@ -145,18 +176,42 @@ public class HttpRequest {
      * @param name the header name
      * @param value the header value
      * @return this HttpRequest
+     * @deprecated Use {@link #setHeader(HttpHeaderName, String)} instead as is offers better performance.
      */
+    @Deprecated
     public HttpRequest setHeader(String name, String value) {
         headers.set(name, value);
         return this;
     }
 
     /**
+     * Set a request header, replacing any existing value. A null for {@code value} will remove the header if one with
+     * matching name exists.
+     *
+     * @param headerName the header name
+     * @param value the header value
+     * @return this HttpRequest
+     */
+    public HttpRequest setHeader(HttpHeaderName headerName, String value) {
+        headers.set(headerName, value);
+        return this;
+    }
+
+    /**
      * Get the request content.
      *
-     * @return the content to be send
+     * @return the content to be sent
      */
     public Flux<ByteBuffer> getBody() {
+        return body == null ? null : body.toFluxByteBuffer();
+    }
+
+    /**
+     * Get the request content.
+     *
+     * @return the content to be sent
+     */
+    public BinaryData getBodyAsBinaryData() {
         return body;
     }
 
@@ -169,8 +224,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(String content) {
-        final byte[] bodyBytes = content.getBytes(StandardCharsets.UTF_8);
-        return setBody(bodyBytes);
+        return setBody(BinaryData.fromString(content));
     }
 
     /**
@@ -182,8 +236,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(byte[] content) {
-        setContentLength(content.length);
-        return setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(content))));
+        return setBody(BinaryData.fromBytes(content));
     }
 
     /**
@@ -196,17 +249,41 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(Flux<ByteBuffer> content) {
+        if (content != null) {
+            this.body = BinaryDataHelper.createBinaryData(new FluxByteBufferContent(content));
+        } else  {
+            this.body = null;
+        }
+        return this;
+    }
+
+    /**
+     * Set request content.
+     * <p>
+     * If provided content has known length, i.e. {@link BinaryData#getLength()} returns non-null then
+     * Content-Length header is updated. Otherwise,
+     * if provided content has unknown length, i.e. {@link BinaryData#getLength()} returns null then
+     * the caller must set the Content-Length header to indicate the length of the content, or use Transfer-Encoding:
+     * chunked.
+     *
+     * @param content the request content
+     * @return this HttpRequest
+     */
+    public HttpRequest setBody(BinaryData content) {
         this.body = content;
+        if (content != null && content.getLength() != null) {
+            setContentLength(content.getLength());
+        }
         return this;
     }
 
     private void setContentLength(long contentLength) {
-        headers.set("Content-Length", String.valueOf(contentLength));
+        headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
     }
 
     /**
      * Creates a copy of the request.
-     *
+     * <p>
      * The main purpose of this is so that this HttpRequest can be changed and the resulting HttpRequest can be a
      * backup. This means that the cloned HttpHeaders and body must not be able to change from side effects of this
      * HttpRequest.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyDefinitions Get. */
 public final class PolicyDefinitionsGetSamples {
     /*
@@ -22,6 +20,6 @@ public final class PolicyDefinitionsGetSamples {
             .manager()
             .policyClient()
             .getPolicyDefinitions()
-            .getWithResponse("ResourceNaming", Context.NONE);
+            .getWithResponse("ResourceNaming", com.azure.core.util.Context.NONE);
     }
 }

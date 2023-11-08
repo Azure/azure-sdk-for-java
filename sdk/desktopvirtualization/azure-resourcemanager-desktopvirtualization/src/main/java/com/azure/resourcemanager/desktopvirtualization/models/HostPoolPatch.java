@@ -6,9 +6,7 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.HostPoolPatchProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** HostPool properties that can be patched. */
 @Fluent
 public final class HostPoolPatch extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostPoolPatch.class);
-
     /*
      * tags to be updated
      */
@@ -30,6 +26,10 @@ public final class HostPoolPatch extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private HostPoolPatchProperties innerProperties;
+
+    /** Creates an instance of HostPoolPatch class. */
+    public HostPoolPatch() {
+    }
 
     /**
      * Get the tags property: tags to be updated.
@@ -438,7 +438,7 @@ public final class HostPoolPatch extends ProxyResource {
      *
      * @return the publicNetworkAccess value.
      */
-    public PublicNetworkAccess publicNetworkAccess() {
+    public HostpoolPublicNetworkAccess publicNetworkAccess() {
         return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
@@ -448,11 +448,36 @@ public final class HostPoolPatch extends ProxyResource {
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the HostPoolPatch object itself.
      */
-    public HostPoolPatch withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+    public HostPoolPatch withPublicNetworkAccess(HostpoolPublicNetworkAccess publicNetworkAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new HostPoolPatchProperties();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
+     *
+     * @return the agentUpdate value.
+     */
+    public AgentUpdatePatchProperties agentUpdate() {
+        return this.innerProperties() == null ? null : this.innerProperties().agentUpdate();
+    }
+
+    /**
+     * Set the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
+     *
+     * @param agentUpdate the agentUpdate value to set.
+     * @return the HostPoolPatch object itself.
+     */
+    public HostPoolPatch withAgentUpdate(AgentUpdatePatchProperties agentUpdate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HostPoolPatchProperties();
+        }
+        this.innerProperties().withAgentUpdate(agentUpdate);
         return this;
     }
 

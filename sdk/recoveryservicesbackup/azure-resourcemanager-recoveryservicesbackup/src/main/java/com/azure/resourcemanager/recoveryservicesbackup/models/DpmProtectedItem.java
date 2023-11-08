@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import java.util.List;
 @JsonTypeName("DPMProtectedItem")
 @Fluent
 public final class DpmProtectedItem extends ProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DpmProtectedItem.class);
-
     /*
      * Friendly name of the managed item
      */
@@ -43,6 +39,10 @@ public final class DpmProtectedItem extends ProtectedItem {
      */
     @JsonProperty(value = "extendedInfo")
     private DpmProtectedItemExtendedInfo extendedInfo;
+
+    /** Creates an instance of DpmProtectedItem class. */
+    public DpmProtectedItem() {
+    }
 
     /**
      * Get the friendlyName property: Friendly name of the managed item.
@@ -121,20 +121,6 @@ public final class DpmProtectedItem extends ProtectedItem {
      */
     public DpmProtectedItem withExtendedInfo(DpmProtectedItemExtendedInfo extendedInfo) {
         this.extendedInfo = extendedInfo;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DpmProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DpmProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
         return this;
     }
 
@@ -233,6 +219,13 @@ public final class DpmProtectedItem extends ProtectedItem {
     @Override
     public DpmProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DpmProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

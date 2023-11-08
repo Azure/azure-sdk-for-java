@@ -19,11 +19,14 @@ public final class ParquetDatasetTypeProperties {
     private DatasetLocation location;
 
     /*
-     * The data compressionCodec. Type: string (or Expression with resultType
-     * string).
+     * The data compressionCodec. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "compressionCodec")
     private Object compressionCodec;
+
+    /** Creates an instance of ParquetDatasetTypeProperties class. */
+    public ParquetDatasetTypeProperties() {
+    }
 
     /**
      * Get the location property: The location of the parquet storage.

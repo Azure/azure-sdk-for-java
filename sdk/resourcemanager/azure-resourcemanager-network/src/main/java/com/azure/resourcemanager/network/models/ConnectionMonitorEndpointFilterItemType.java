@@ -8,11 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionMonitorEndpointFilterItemType. */
+/** The type of item included in the filter. Currently only 'AgentAddress' is supported. */
 public final class ConnectionMonitorEndpointFilterItemType
     extends ExpandableStringEnum<ConnectionMonitorEndpointFilterItemType> {
     /** Static value AgentAddress for ConnectionMonitorEndpointFilterItemType. */
     public static final ConnectionMonitorEndpointFilterItemType AGENT_ADDRESS = fromString("AgentAddress");
+
+    /**
+     * Creates a new instance of ConnectionMonitorEndpointFilterItemType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionMonitorEndpointFilterItemType() {
+    }
 
     /**
      * Creates or finds a ConnectionMonitorEndpointFilterItemType from its string representation.
@@ -25,7 +34,11 @@ public final class ConnectionMonitorEndpointFilterItemType
         return fromString(name, ConnectionMonitorEndpointFilterItemType.class);
     }
 
-    /** @return known ConnectionMonitorEndpointFilterItemType values. */
+    /**
+     * Gets known ConnectionMonitorEndpointFilterItemType values.
+     *
+     * @return known ConnectionMonitorEndpointFilterItemType values.
+     */
     public static Collection<ConnectionMonitorEndpointFilterItemType> values() {
         return values(ConnectionMonitorEndpointFilterItemType.class);
     }

@@ -18,15 +18,14 @@ public final class BlobInventoryPolicyRule {
     private boolean enabled;
 
     /*
-     * A rule name can contain any combination of alpha numeric characters.
-     * Rule name is case-sensitive. It must be unique within a policy.
+     * A rule name can contain any combination of alpha numeric characters. Rule name is case-sensitive. It must be
+     * unique within a policy.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * Container name where blob inventory files are stored. Must be
-     * pre-created.
+     * Container name where blob inventory files are stored. Must be pre-created.
      */
     @JsonProperty(value = "destination", required = true)
     private String destination;
@@ -36,6 +35,10 @@ public final class BlobInventoryPolicyRule {
      */
     @JsonProperty(value = "definition", required = true)
     private BlobInventoryPolicyDefinition definition;
+
+    /** Creates an instance of BlobInventoryPolicyRule class. */
+    public BlobInventoryPolicyRule() {
+    }
 
     /**
      * Get the enabled property: Rule is enabled when set to true.

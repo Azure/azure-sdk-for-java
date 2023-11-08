@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LiveEventOutputTranscriptionTrack {
     /*
-     * The output track name. This property is reserved for future use, any
-     * value set on this property will be ignored.
+     * The output track name. This property is reserved for future use, any value set on this property will be ignored.
      */
     @JsonProperty(value = "trackName", required = true)
     private String trackName;
+
+    /** Creates an instance of LiveEventOutputTranscriptionTrack class. */
+    public LiveEventOutputTranscriptionTrack() {
+    }
 
     /**
      * Get the trackName property: The output track name. This property is reserved for future use, any value set on

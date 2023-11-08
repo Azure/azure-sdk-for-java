@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ApplyUpdate list. */
 @Fluent
 public final class ListApplyUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListApplyUpdate.class);
-
     /*
      * The list of apply updates
      */
     @JsonProperty(value = "value")
     private List<ApplyUpdateInner> value;
+
+    /** Creates an instance of ListApplyUpdate class. */
+    public ListApplyUpdate() {
+    }
 
     /**
      * Get the value property: The list of apply updates.

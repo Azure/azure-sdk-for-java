@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayCookieBasedAffinity. */
+/** Cookie based affinity. */
 public final class ApplicationGatewayCookieBasedAffinity
     extends ExpandableStringEnum<ApplicationGatewayCookieBasedAffinity> {
     /** Static value Enabled for ApplicationGatewayCookieBasedAffinity. */
@@ -16,6 +16,15 @@ public final class ApplicationGatewayCookieBasedAffinity
 
     /** Static value Disabled for ApplicationGatewayCookieBasedAffinity. */
     public static final ApplicationGatewayCookieBasedAffinity DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of ApplicationGatewayCookieBasedAffinity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayCookieBasedAffinity() {
+    }
 
     /**
      * Creates or finds a ApplicationGatewayCookieBasedAffinity from its string representation.
@@ -28,7 +37,11 @@ public final class ApplicationGatewayCookieBasedAffinity
         return fromString(name, ApplicationGatewayCookieBasedAffinity.class);
     }
 
-    /** @return known ApplicationGatewayCookieBasedAffinity values. */
+    /**
+     * Gets known ApplicationGatewayCookieBasedAffinity values.
+     *
+     * @return known ApplicationGatewayCookieBasedAffinity values.
+     */
     public static Collection<ApplicationGatewayCookieBasedAffinity> values() {
         return values(ApplicationGatewayCookieBasedAffinity.class);
     }

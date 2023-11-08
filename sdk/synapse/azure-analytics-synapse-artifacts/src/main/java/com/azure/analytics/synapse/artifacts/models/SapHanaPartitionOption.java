@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapHanaPartitionOption. */
+/** The partition mechanism that will be used for SAP HANA read in parallel. */
 public final class SapHanaPartitionOption extends ExpandableStringEnum<SapHanaPartitionOption> {
     /** Static value None for SapHanaPartitionOption. */
     public static final SapHanaPartitionOption NONE = fromString("None");
@@ -18,6 +18,14 @@ public final class SapHanaPartitionOption extends ExpandableStringEnum<SapHanaPa
 
     /** Static value SapHanaDynamicRange for SapHanaPartitionOption. */
     public static final SapHanaPartitionOption SAP_HANA_DYNAMIC_RANGE = fromString("SapHanaDynamicRange");
+
+    /**
+     * Creates a new instance of SapHanaPartitionOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapHanaPartitionOption() {}
 
     /**
      * Creates or finds a SapHanaPartitionOption from its string representation.
@@ -30,7 +38,11 @@ public final class SapHanaPartitionOption extends ExpandableStringEnum<SapHanaPa
         return fromString(name, SapHanaPartitionOption.class);
     }
 
-    /** @return known SapHanaPartitionOption values. */
+    /**
+     * Gets known SapHanaPartitionOption values.
+     *
+     * @return known SapHanaPartitionOption values.
+     */
     public static Collection<SapHanaPartitionOption> values() {
         return values(SapHanaPartitionOption.class);
     }

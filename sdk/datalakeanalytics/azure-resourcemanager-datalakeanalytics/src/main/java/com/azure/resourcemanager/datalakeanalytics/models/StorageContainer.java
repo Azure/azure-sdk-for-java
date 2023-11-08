@@ -17,13 +17,6 @@ public interface StorageContainer {
     String id();
 
     /**
-     * Gets the lastModifiedTime property: The last modified time of the blob container.
-     *
-     * @return the lastModifiedTime value.
-     */
-    OffsetDateTime lastModifiedTime();
-
-    /**
      * Gets the name property: The resource name.
      *
      * @return the name value.
@@ -36,6 +29,13 @@ public interface StorageContainer {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the lastModifiedTime property: The last modified time of the blob container.
+     *
+     * @return the lastModifiedTime value.
+     */
+    OffsetDateTime lastModifiedTime();
 
     /**
      * Gets the inner com.azure.resourcemanager.datalakeanalytics.fluent.models.StorageContainerInner object.

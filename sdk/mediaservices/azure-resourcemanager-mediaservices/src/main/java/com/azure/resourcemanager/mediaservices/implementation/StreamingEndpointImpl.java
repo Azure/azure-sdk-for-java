@@ -135,6 +135,10 @@ public final class StreamingEndpointImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public StreamingEndpointInner innerModel() {
         return this.innerObject;
     }

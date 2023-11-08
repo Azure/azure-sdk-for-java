@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphChannelMembershipType. */
+/** channelMembershipType. */
 public final class MicrosoftGraphChannelMembershipType
     extends ExpandableStringEnum<MicrosoftGraphChannelMembershipType> {
     /** Static value standard for MicrosoftGraphChannelMembershipType. */
@@ -21,6 +21,15 @@ public final class MicrosoftGraphChannelMembershipType
     public static final MicrosoftGraphChannelMembershipType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphChannelMembershipType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphChannelMembershipType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphChannelMembershipType from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class MicrosoftGraphChannelMembershipType
         return fromString(name, MicrosoftGraphChannelMembershipType.class);
     }
 
-    /** @return known MicrosoftGraphChannelMembershipType values. */
+    /**
+     * Gets known MicrosoftGraphChannelMembershipType values.
+     *
+     * @return known MicrosoftGraphChannelMembershipType values.
+     */
     public static Collection<MicrosoftGraphChannelMembershipType> values() {
         return values(MicrosoftGraphChannelMembershipType.class);
     }

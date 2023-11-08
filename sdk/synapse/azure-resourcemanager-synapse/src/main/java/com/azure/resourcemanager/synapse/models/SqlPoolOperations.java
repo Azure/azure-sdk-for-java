@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of SqlPoolOperations. */
 public interface SqlPoolOperations {
     /**
-     * Gets a list of operations performed on the SQL pool.
+     * Gets a list of operations performed on the SQL pool
+     *
+     * <p>Gets a list of operations performed on the SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -18,12 +20,14 @@ public interface SqlPoolOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the SQL pool.
+     * @return a list of operations performed on the SQL pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlPoolOperation> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
-     * Gets a list of operations performed on the SQL pool.
+     * Gets a list of operations performed on the SQL pool
+     *
+     * <p>Gets a list of operations performed on the SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -32,7 +36,7 @@ public interface SqlPoolOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the SQL pool.
+     * @return a list of operations performed on the SQL pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlPoolOperation> list(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);

@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
+import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -24,6 +26,18 @@ public final class BastionHostPropertiesFormat {
      */
     @JsonProperty(value = "dnsName")
     private String dnsName;
+
+    /*
+     * Reference to an existing virtual network required for Developer Bastion Host only.
+     */
+    @JsonProperty(value = "virtualNetwork")
+    private SubResource virtualNetwork;
+
+    /*
+     * The networkAcls property.
+     */
+    @JsonProperty(value = "networkAcls")
+    private BastionHostPropertiesFormatNetworkAcls networkAcls;
 
     /*
      * The provisioning state of the bastion host resource.
@@ -67,6 +81,16 @@ public final class BastionHostPropertiesFormat {
     @JsonProperty(value = "enableTunneling")
     private Boolean enableTunneling;
 
+    /*
+     * Enable/Disable Kerberos feature of the Bastion Host resource.
+     */
+    @JsonProperty(value = "enableKerberos")
+    private Boolean enableKerberos;
+
+    /** Creates an instance of BastionHostPropertiesFormat class. */
+    public BastionHostPropertiesFormat() {
+    }
+
     /**
      * Get the ipConfigurations property: IP configuration of the Bastion Host resource.
      *
@@ -104,6 +128,48 @@ public final class BastionHostPropertiesFormat {
      */
     public BastionHostPropertiesFormat withDnsName(String dnsName) {
         this.dnsName = dnsName;
+        return this;
+    }
+
+    /**
+     * Get the virtualNetwork property: Reference to an existing virtual network required for Developer Bastion Host
+     * only.
+     *
+     * @return the virtualNetwork value.
+     */
+    public SubResource virtualNetwork() {
+        return this.virtualNetwork;
+    }
+
+    /**
+     * Set the virtualNetwork property: Reference to an existing virtual network required for Developer Bastion Host
+     * only.
+     *
+     * @param virtualNetwork the virtualNetwork value to set.
+     * @return the BastionHostPropertiesFormat object itself.
+     */
+    public BastionHostPropertiesFormat withVirtualNetwork(SubResource virtualNetwork) {
+        this.virtualNetwork = virtualNetwork;
+        return this;
+    }
+
+    /**
+     * Get the networkAcls property: The networkAcls property.
+     *
+     * @return the networkAcls value.
+     */
+    public BastionHostPropertiesFormatNetworkAcls networkAcls() {
+        return this.networkAcls;
+    }
+
+    /**
+     * Set the networkAcls property: The networkAcls property.
+     *
+     * @param networkAcls the networkAcls value to set.
+     * @return the BastionHostPropertiesFormat object itself.
+     */
+    public BastionHostPropertiesFormat withNetworkAcls(BastionHostPropertiesFormatNetworkAcls networkAcls) {
+        this.networkAcls = networkAcls;
         return this;
     }
 
@@ -237,6 +303,26 @@ public final class BastionHostPropertiesFormat {
     }
 
     /**
+     * Get the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
+     *
+     * @return the enableKerberos value.
+     */
+    public Boolean enableKerberos() {
+        return this.enableKerberos;
+    }
+
+    /**
+     * Set the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
+     *
+     * @param enableKerberos the enableKerberos value to set.
+     * @return the BastionHostPropertiesFormat object itself.
+     */
+    public BastionHostPropertiesFormat withEnableKerberos(Boolean enableKerberos) {
+        this.enableKerberos = enableKerberos;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -244,6 +330,9 @@ public final class BastionHostPropertiesFormat {
     public void validate() {
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
+        }
+        if (networkAcls() != null) {
+            networkAcls().validate();
         }
     }
 }

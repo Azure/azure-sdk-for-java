@@ -35,6 +35,10 @@ public final class ProjectTaskImpl implements ProjectTask, ProjectTask.Definitio
         return this.innerModel().properties();
     }
 
+    public String resourceGroupName() {
+        return groupName;
+    }
+
     public ProjectTaskInner innerModel() {
         return this.innerObject;
     }
@@ -141,12 +145,12 @@ public final class ProjectTaskImpl implements ProjectTask, ProjectTask.Definitio
         return this;
     }
 
-    public ProjectTask cancel() {
-        return serviceManager.tasks().cancel(groupName, serviceName, projectName, taskName);
-    }
-
     public Response<ProjectTask> cancelWithResponse(Context context) {
         return serviceManager.tasks().cancelWithResponse(groupName, serviceName, projectName, taskName, context);
+    }
+
+    public ProjectTask cancel() {
+        return serviceManager.tasks().cancel(groupName, serviceName, projectName, taskName);
     }
 
     public ProjectTaskImpl withEtag(String etag) {

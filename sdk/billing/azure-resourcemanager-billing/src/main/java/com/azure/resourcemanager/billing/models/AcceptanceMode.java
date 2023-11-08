@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AcceptanceMode. */
+/** The mode of acceptance for an agreement. */
 public final class AcceptanceMode extends ExpandableStringEnum<AcceptanceMode> {
     /** Static value ClickToAccept for AcceptanceMode. */
     public static final AcceptanceMode CLICK_TO_ACCEPT = fromString("ClickToAccept");
@@ -18,6 +18,15 @@ public final class AcceptanceMode extends ExpandableStringEnum<AcceptanceMode> {
 
     /** Static value ESignOffline for AcceptanceMode. */
     public static final AcceptanceMode ESIGN_OFFLINE = fromString("ESignOffline");
+
+    /**
+     * Creates a new instance of AcceptanceMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AcceptanceMode() {
+    }
 
     /**
      * Creates or finds a AcceptanceMode from its string representation.
@@ -30,7 +39,11 @@ public final class AcceptanceMode extends ExpandableStringEnum<AcceptanceMode> {
         return fromString(name, AcceptanceMode.class);
     }
 
-    /** @return known AcceptanceMode values. */
+    /**
+     * Gets known AcceptanceMode values.
+     *
+     * @return known AcceptanceMode values.
+     */
     public static Collection<AcceptanceMode> values() {
         return values(AcceptanceMode.class);
     }

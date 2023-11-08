@@ -12,12 +12,14 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody;
-import com.azure.data.tables.implementation.models.TransactionalBatchResponse;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.implementation.models.TransactionalBatchSubmitBatchHeaders;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import reactor.core.publisher.Mono;
 
 /**
@@ -56,7 +58,19 @@ public final class TransactionalBatchImpl {
         @Post("/$batch")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<TransactionalBatchResponse> submitTransactionalBatch(
+        Mono<ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>> submitTransactionalBatch(
+            @HostParam("url") String url,
+            @HeaderParam("Content-Type") String multipartContentType,
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @BodyParam("multipart/mixed") TransactionalBatchRequestBody body,
+            Context context);
+
+        @Post("/$batch")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> submitTransactionalBatchSync(
             @HostParam("url") String url,
             @HeaderParam("Content-Type") String multipartContentType,
             @HeaderParam("x-ms-version") String version,
@@ -74,15 +88,36 @@ public final class TransactionalBatchImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      *
-     * @return A reactive result containing a {@link TransactionalBatchResponse}.
+     * @return A reactive result containing a {@code ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>}.
      *
      * @throws IllegalArgumentException If parameters fail validation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransactionalBatchResponse> submitTransactionalBatchWithRestResponseAsync(TransactionalBatchRequestBody body, String requestId, Context context) {
+    public Mono<ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>> submitTransactionalBatchWithRestResponseAsync(TransactionalBatchRequestBody body, String requestId, Context context) {
         final String dataServiceVersion = "3.0";
 
         return service.submitTransactionalBatch(this.client.getUrl(), body.getContentType(), this.client.getVersion(), requestId,
             dataServiceVersion, body, context);
     }
+
+    /**
+     * The submit transactional batch operation allows multiple API calls to be embedded into a single HTTP request.
+     *
+     * @param body Initial data.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     *
+     * @return A {@code ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>}.
+     *
+     * @throws IllegalArgumentException If parameters fail validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> submitTransactionalBatchWithRestResponse(TransactionalBatchRequestBody body, String requestId, Context context) {
+        final String dataServiceVersion = "3.0";
+
+        return service.submitTransactionalBatchSync(this.client.getUrl(), body.getContentType(), this.client.getVersion(), requestId,
+            dataServiceVersion, body, context);
+    }
+
 }

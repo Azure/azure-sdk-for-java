@@ -5,97 +5,34 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.sql.models.ManagedInstanceOperationParametersPair;
+import com.azure.resourcemanager.sql.models.ManagedInstanceOperationSteps;
 import com.azure.resourcemanager.sql.models.ManagementOperationState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A managed instance operation. */
-@JsonFlatten
 @Immutable
-public class ManagedInstanceOperationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceOperationInner.class);
-
+public final class ManagedInstanceOperationInner extends ProxyResource {
     /*
-     * The name of the managed instance the operation is being performed on.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.managedInstanceName", access = JsonProperty.Access.WRITE_ONLY)
-    private String managedInstanceName;
+    @JsonProperty(value = "properties")
+    private ManagedInstanceOperationProperties innerProperties;
 
-    /*
-     * The name of operation.
-     */
-    @JsonProperty(value = "properties.operation", access = JsonProperty.Access.WRITE_ONLY)
-    private String operation;
+    /** Creates an instance of ManagedInstanceOperationInner class. */
+    public ManagedInstanceOperationInner() {
+    }
 
-    /*
-     * The friendly name of operation.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.operationFriendlyName", access = JsonProperty.Access.WRITE_ONLY)
-    private String operationFriendlyName;
-
-    /*
-     * The percentage of the operation completed.
-     */
-    @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer percentComplete;
-
-    /*
-     * The operation start time.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * The operation state.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private ManagementOperationState state;
-
-    /*
-     * The operation error code.
-     */
-    @JsonProperty(value = "properties.errorCode", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer errorCode;
-
-    /*
-     * The operation error description.
-     */
-    @JsonProperty(value = "properties.errorDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorDescription;
-
-    /*
-     * The operation error severity.
-     */
-    @JsonProperty(value = "properties.errorSeverity", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer errorSeverity;
-
-    /*
-     * Whether or not the error is a user error.
-     */
-    @JsonProperty(value = "properties.isUserError", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isUserError;
-
-    /*
-     * The estimated completion time of the operation.
-     */
-    @JsonProperty(value = "properties.estimatedCompletionTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime estimatedCompletionTime;
-
-    /*
-     * The operation description.
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * Whether the operation can be cancelled.
-     */
-    @JsonProperty(value = "properties.isCancellable", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isCancellable;
+    private ManagedInstanceOperationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the managedInstanceName property: The name of the managed instance the operation is being performed on.
@@ -103,7 +40,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the managedInstanceName value.
      */
     public String managedInstanceName() {
-        return this.managedInstanceName;
+        return this.innerProperties() == null ? null : this.innerProperties().managedInstanceName();
     }
 
     /**
@@ -112,7 +49,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the operation value.
      */
     public String operation() {
-        return this.operation;
+        return this.innerProperties() == null ? null : this.innerProperties().operation();
     }
 
     /**
@@ -121,7 +58,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the operationFriendlyName value.
      */
     public String operationFriendlyName() {
-        return this.operationFriendlyName;
+        return this.innerProperties() == null ? null : this.innerProperties().operationFriendlyName();
     }
 
     /**
@@ -130,7 +67,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
-        return this.percentComplete;
+        return this.innerProperties() == null ? null : this.innerProperties().percentComplete();
     }
 
     /**
@@ -139,7 +76,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -148,7 +85,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the state value.
      */
     public ManagementOperationState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -157,7 +94,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the errorCode value.
      */
     public Integer errorCode() {
-        return this.errorCode;
+        return this.innerProperties() == null ? null : this.innerProperties().errorCode();
     }
 
     /**
@@ -166,7 +103,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the errorDescription value.
      */
     public String errorDescription() {
-        return this.errorDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().errorDescription();
     }
 
     /**
@@ -175,7 +112,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
-        return this.errorSeverity;
+        return this.innerProperties() == null ? null : this.innerProperties().errorSeverity();
     }
 
     /**
@@ -184,7 +121,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the isUserError value.
      */
     public Boolean isUserError() {
-        return this.isUserError;
+        return this.innerProperties() == null ? null : this.innerProperties().isUserError();
     }
 
     /**
@@ -193,7 +130,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the estimatedCompletionTime value.
      */
     public OffsetDateTime estimatedCompletionTime() {
-        return this.estimatedCompletionTime;
+        return this.innerProperties() == null ? null : this.innerProperties().estimatedCompletionTime();
     }
 
     /**
@@ -202,7 +139,7 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -211,7 +148,25 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @return the isCancellable value.
      */
     public Boolean isCancellable() {
-        return this.isCancellable;
+        return this.innerProperties() == null ? null : this.innerProperties().isCancellable();
+    }
+
+    /**
+     * Get the operationParameters property: The operation parameters.
+     *
+     * @return the operationParameters value.
+     */
+    public ManagedInstanceOperationParametersPair operationParameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationParameters();
+    }
+
+    /**
+     * Get the operationSteps property: The operation steps.
+     *
+     * @return the operationSteps value.
+     */
+    public ManagedInstanceOperationSteps operationSteps() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationSteps();
     }
 
     /**
@@ -220,5 +175,8 @@ public class ManagedInstanceOperationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

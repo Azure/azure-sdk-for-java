@@ -7,7 +7,6 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,19 +14,16 @@ import java.util.List;
 /** Properties of a security alert policy. */
 @Fluent
 public final class ServerSecurityAlertPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPolicyProperties.class);
-
     /*
-     * Specifies the state of the policy, whether it is enabled or disabled or
-     * a policy has not been applied yet on the specific server
+     * Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the
+     * specific server
      */
     @JsonProperty(value = "state", required = true)
     private SecurityAlertPolicyState state;
 
     /*
-     * Specifies an array of alerts that are disabled. Allowed values are:
-     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly,
-     * Data_Exfiltration, Unsafe_Action
+     * Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability,
+     * Access_Anomaly, Data_Exfiltration, Unsafe_Action
      */
     @JsonProperty(value = "disabledAlerts")
     private List<String> disabledAlerts;
@@ -45,16 +41,14 @@ public final class ServerSecurityAlertPolicyProperties {
     private Boolean emailAccountAdmins;
 
     /*
-     * Specifies the blob storage endpoint (e.g.
-     * https://MyAccount.blob.core.windows.net). This blob storage will hold
+     * Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold
      * all Threat Detection audit logs.
      */
     @JsonProperty(value = "storageEndpoint")
     private String storageEndpoint;
 
     /*
-     * Specifies the identifier key of the Threat Detection audit storage
-     * account.
+     * Specifies the identifier key of the Threat Detection audit storage account.
      */
     @JsonProperty(value = "storageAccountAccessKey")
     private String storageAccountAccessKey;
@@ -70,6 +64,10 @@ public final class ServerSecurityAlertPolicyProperties {
      */
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
+
+    /** Creates an instance of ServerSecurityAlertPolicyProperties class. */
+    public ServerSecurityAlertPolicyProperties() {
+    }
 
     /**
      * Get the state property: Specifies the state of the policy, whether it is enabled or disabled or a policy has not
@@ -235,10 +233,12 @@ public final class ServerSecurityAlertPolicyProperties {
      */
     public void validate() {
         if (state() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property state in model ServerSecurityAlertPolicyProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerSecurityAlertPolicyProperties.class);
 }

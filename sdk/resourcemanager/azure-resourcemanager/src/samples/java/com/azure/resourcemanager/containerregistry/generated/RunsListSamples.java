@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Runs List. */
 public final class RunsListSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsList.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsList.json
      */
     /**
      * Sample code: Runs_List.
@@ -22,6 +20,6 @@ public final class RunsListSamples {
             .manager()
             .serviceClient()
             .getRuns()
-            .list("myResourceGroup", "myRegistry", "", 10, Context.NONE);
+            .list("myResourceGroup", "myRegistry", "", 10, com.azure.core.util.Context.NONE);
     }
 }

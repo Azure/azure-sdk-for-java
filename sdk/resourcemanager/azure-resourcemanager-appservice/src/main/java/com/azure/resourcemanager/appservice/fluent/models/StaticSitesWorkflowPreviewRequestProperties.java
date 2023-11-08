@@ -29,6 +29,10 @@ public final class StaticSitesWorkflowPreviewRequestProperties {
     @JsonProperty(value = "buildProperties")
     private StaticSiteBuildProperties buildProperties;
 
+    /** Creates an instance of StaticSitesWorkflowPreviewRequestProperties class. */
+    public StaticSitesWorkflowPreviewRequestProperties() {
+    }
+
     /**
      * Get the repositoryUrl property: URL for the repository of the static site.
      *

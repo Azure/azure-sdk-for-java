@@ -17,6 +17,15 @@ public final class DependencyLevel extends ExpandableStringEnum<DependencyLevel>
     public static final DependencyLevel DESCENDANT = fromString("Descendant");
 
     /**
+     * Creates a new instance of DependencyLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DependencyLevel() {
+    }
+
+    /**
      * Creates or finds a DependencyLevel from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class DependencyLevel extends ExpandableStringEnum<DependencyLevel>
         return fromString(name, DependencyLevel.class);
     }
 
-    /** @return known DependencyLevel values. */
+    /**
+     * Gets known DependencyLevel values.
+     *
+     * @return known DependencyLevel values.
+     */
     public static Collection<DependencyLevel> values() {
         return values(DependencyLevel.class);
     }

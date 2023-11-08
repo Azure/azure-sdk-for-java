@@ -18,6 +18,10 @@ public final class ListContentKeysResponseInner {
     @JsonProperty(value = "contentKeys")
     private List<StreamingLocatorContentKey> contentKeys;
 
+    /** Creates an instance of ListContentKeysResponseInner class. */
+    public ListContentKeysResponseInner() {
+    }
+
     /**
      * Get the contentKeys property: ContentKeys used by current Streaming Locator.
      *

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.EnrollmentAccountsClient;
 import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountSummaryInner;
 import com.azure.resourcemanager.billing.models.EnrollmentAccountSummary;
 import com.azure.resourcemanager.billing.models.EnrollmentAccounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EnrollmentAccountsImpl implements EnrollmentAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrollmentAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EnrollmentAccountsImpl.class);
 
     private final EnrollmentAccountsClient innerClient;
 
@@ -38,15 +37,6 @@ public final class EnrollmentAccountsImpl implements EnrollmentAccounts {
         return Utils.mapPage(inner, inner1 -> new EnrollmentAccountSummaryImpl(inner1, this.manager()));
     }
 
-    public EnrollmentAccountSummary get(String name) {
-        EnrollmentAccountSummaryInner inner = this.serviceClient().get(name);
-        if (inner != null) {
-            return new EnrollmentAccountSummaryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<EnrollmentAccountSummary> getWithResponse(String name, Context context) {
         Response<EnrollmentAccountSummaryInner> inner = this.serviceClient().getWithResponse(name, context);
         if (inner != null) {
@@ -55,6 +45,15 @@ public final class EnrollmentAccountsImpl implements EnrollmentAccounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EnrollmentAccountSummaryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EnrollmentAccountSummary get(String name) {
+        EnrollmentAccountSummaryInner inner = this.serviceClient().get(name);
+        if (inner != null) {
+            return new EnrollmentAccountSummaryImpl(inner, this.manager());
         } else {
             return null;
         }

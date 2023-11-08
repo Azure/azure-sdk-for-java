@@ -16,26 +16,14 @@ public final class GroupsSelect extends ExpandableStringEnum<GroupsSelect> {
     /** Static value deletedDateTime for GroupsSelect. */
     public static final GroupsSelect DELETED_DATE_TIME = fromString("deletedDateTime");
 
-    /** Static value appRoleId for GroupsSelect. */
-    public static final GroupsSelect APP_ROLE_ID = fromString("appRoleId");
-
-    /** Static value createdDateTime for GroupsSelect. */
-    public static final GroupsSelect CREATED_DATE_TIME = fromString("createdDateTime");
-
-    /** Static value principalDisplayName for GroupsSelect. */
-    public static final GroupsSelect PRINCIPAL_DISPLAY_NAME = fromString("principalDisplayName");
-
-    /** Static value principalId for GroupsSelect. */
-    public static final GroupsSelect PRINCIPAL_ID = fromString("principalId");
-
-    /** Static value principalType for GroupsSelect. */
-    public static final GroupsSelect PRINCIPAL_TYPE = fromString("principalType");
-
-    /** Static value resourceDisplayName for GroupsSelect. */
-    public static final GroupsSelect RESOURCE_DISPLAY_NAME = fromString("resourceDisplayName");
-
-    /** Static value resourceId for GroupsSelect. */
-    public static final GroupsSelect RESOURCE_ID = fromString("resourceId");
+    /**
+     * Creates a new instance of GroupsSelect value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GroupsSelect() {
+    }
 
     /**
      * Creates or finds a GroupsSelect from its string representation.
@@ -48,7 +36,11 @@ public final class GroupsSelect extends ExpandableStringEnum<GroupsSelect> {
         return fromString(name, GroupsSelect.class);
     }
 
-    /** @return known GroupsSelect values. */
+    /**
+     * Gets known GroupsSelect values.
+     *
+     * @return known GroupsSelect values.
+     */
     public static Collection<GroupsSelect> values() {
         return values(GroupsSelect.class);
     }

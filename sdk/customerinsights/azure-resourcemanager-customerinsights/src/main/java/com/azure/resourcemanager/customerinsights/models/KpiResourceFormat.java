@@ -167,6 +167,13 @@ public interface KpiResourceFormat {
     List<KpiExtract> extracts();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.customerinsights.fluent.models.KpiResourceFormatInner object.
      *
      * @return the inner object.
@@ -567,19 +574,19 @@ public interface KpiResourceFormat {
     /**
      * Reprocesses the Kpi values of the specified KPI.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void reprocess();
-
-    /**
-     * Reprocesses the Kpi values of the specified KPI.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> reprocessWithResponse(Context context);
+
+    /**
+     * Reprocesses the Kpi values of the specified KPI.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reprocess();
 }

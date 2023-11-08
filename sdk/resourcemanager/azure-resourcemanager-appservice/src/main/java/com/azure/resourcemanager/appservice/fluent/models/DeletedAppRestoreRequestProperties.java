@@ -18,15 +18,13 @@ public final class DeletedAppRestoreRequestProperties {
     private String deletedSiteId;
 
     /*
-     * If true, deleted site configuration, in addition to content, will be
-     * restored.
+     * If true, deleted site configuration, in addition to content, will be restored.
      */
     @JsonProperty(value = "recoverConfiguration")
     private Boolean recoverConfiguration;
 
     /*
-     * Point in time to restore the deleted app from, formatted as a DateTime
-     * string.
+     * Point in time to restore the deleted app from, formatted as a DateTime string.
      * If unspecified, default value is the time that the app was deleted.
      */
     @JsonProperty(value = "snapshotTime")
@@ -37,6 +35,10 @@ public final class DeletedAppRestoreRequestProperties {
      */
     @JsonProperty(value = "useDRSecondary")
     private Boolean useDRSecondary;
+
+    /** Creates an instance of DeletedAppRestoreRequestProperties class. */
+    public DeletedAppRestoreRequestProperties() {
+    }
 
     /**
      * Get the deletedSiteId property: ARM resource ID of the deleted app. Example:

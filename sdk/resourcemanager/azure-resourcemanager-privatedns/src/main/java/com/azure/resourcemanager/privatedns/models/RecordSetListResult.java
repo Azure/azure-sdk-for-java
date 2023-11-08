@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.privatedns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a record set list operation. */
 @Fluent
 public final class RecordSetListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSetListResult.class);
-
     /*
      * Information about the record sets in the response.
      */
@@ -27,6 +23,10 @@ public final class RecordSetListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of RecordSetListResult class. */
+    public RecordSetListResult() {
+    }
 
     /**
      * Get the value property: Information about the record sets in the response.

@@ -7,11 +7,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import java.util.List;
-import java.util.Locale;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +32,7 @@ public class SampleCheckpointStore implements CheckpointStore {
     private static final String CHECKPOINT = "checkpoint";
     private final Map<String, PartitionOwnership> partitionOwnershipMap = new ConcurrentHashMap<>();
     private final Map<String, Checkpoint> checkpointsMap = new ConcurrentHashMap<>();
-    private final ClientLogger logger = new ClientLogger(SampleCheckpointStore.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SampleCheckpointStore.class);
 
     /**
      * {@inheritDoc}
@@ -40,7 +40,7 @@ public class SampleCheckpointStore implements CheckpointStore {
     @Override
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroup) {
-        logger.info("Listing partition ownership");
+        LOGGER.info("Listing partition ownership");
 
         String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup, OWNERSHIP);
         return Flux.fromIterable(partitionOwnershipMap.keySet())
@@ -80,13 +80,21 @@ public class SampleCheckpointStore implements CheckpointStore {
             firstEntry.getConsumerGroup(), OWNERSHIP);
 
         return Flux.fromIterable(requestedPartitionOwnerships)
-            .filter(partitionOwnership -> {
-                return !partitionOwnershipMap.containsKey(partitionOwnership.getPartitionId())
-                    || partitionOwnershipMap.get(partitionOwnership.getPartitionId()).getETag()
-                    .equals(partitionOwnership.getETag());
+            .filter(ownershipRequest -> {
+                final PartitionOwnership existing = partitionOwnershipMap.get(ownershipRequest.getPartitionId());
+
+                // There are no existing ownership records. Safe to claim.
+                if (existing == null) {
+                    return true;
+                }
+
+                // The eTag for the ownership request matches the one we have in our store.  If they did not match,
+                // it means that between the time the ownership request was being calculated and now, another thread,
+                // process, etc. updated the blob.  Consequently, we will deny this ownership request.
+                return existing.getETag().equals(ownershipRequest.getETag());
             })
             .doOnNext(partitionOwnership ->
-                logger.atInfo()
+                LOGGER.atInfo()
                     .addKeyValue(PARTITION_ID_KEY, partitionOwnership.getPartitionId())
                     .addKeyValue(OWNER_ID_KEY, partitionOwnership.getOwnerId())
                     .log("Ownership claimed."))
@@ -119,13 +127,13 @@ public class SampleCheckpointStore implements CheckpointStore {
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         if (checkpoint == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("checkpoint cannot be null")));
+            return Mono.error(LOGGER.logExceptionAsError(new NullPointerException("checkpoint cannot be null")));
         }
 
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
             checkpoint.getConsumerGroup(), CHECKPOINT);
         checkpointsMap.put(prefix + SEPARATOR + checkpoint.getPartitionId(), checkpoint);
-        logger.atInfo()
+        LOGGER.atInfo()
             .addKeyValue(PARTITION_ID_KEY, checkpoint.getPartitionId())
             .addKeyValue(SEQUENCE_NUMBER_KEY, checkpoint.getSequenceNumber())
             .log("Updated checkpoint.");

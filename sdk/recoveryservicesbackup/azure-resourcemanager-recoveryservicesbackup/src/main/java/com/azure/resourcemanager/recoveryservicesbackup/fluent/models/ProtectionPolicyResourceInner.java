@@ -6,17 +6,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Base class for backup policy. Workload-specific backup policies are derived from this class. */
 @Fluent
 public final class ProtectionPolicyResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionPolicyResourceInner.class);
-
     /*
      * ProtectionPolicyResource properties
      */
@@ -28,6 +24,10 @@ public final class ProtectionPolicyResourceInner extends Resource {
      */
     @JsonProperty(value = "eTag")
     private String etag;
+
+    /** Creates an instance of ProtectionPolicyResourceInner class. */
+    public ProtectionPolicyResourceInner() {
+    }
 
     /**
      * Get the properties property: ProtectionPolicyResource properties.

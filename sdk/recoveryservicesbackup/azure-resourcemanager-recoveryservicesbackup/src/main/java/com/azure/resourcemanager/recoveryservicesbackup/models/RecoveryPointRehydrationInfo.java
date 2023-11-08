@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** RP Rehydration Info. */
 @Fluent
 public final class RecoveryPointRehydrationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointRehydrationInfo.class);
-
     /*
      * How long the rehydrated RP should be kept
      * Should be ISO8601 Duration format e.g. "P7D"
@@ -26,6 +22,10 @@ public final class RecoveryPointRehydrationInfo {
      */
     @JsonProperty(value = "rehydrationPriority")
     private RehydrationPriority rehydrationPriority;
+
+    /** Creates an instance of RecoveryPointRehydrationInfo class. */
+    public RecoveryPointRehydrationInfo() {
+    }
 
     /**
      * Get the rehydrationRetentionDuration property: How long the rehydrated RP should be kept Should be ISO8601

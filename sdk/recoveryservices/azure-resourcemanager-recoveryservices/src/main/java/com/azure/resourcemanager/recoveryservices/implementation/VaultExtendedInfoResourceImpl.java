@@ -4,16 +4,17 @@
 
 package com.azure.resourcemanager.recoveryservices.implementation;
 
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultExtendedInfoResourceInner;
 import com.azure.resourcemanager.recoveryservices.models.VaultExtendedInfoResource;
 
 public final class VaultExtendedInfoResourceImpl implements VaultExtendedInfoResource {
     private VaultExtendedInfoResourceInner innerObject;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    VaultExtendedInfoResourceImpl(VaultExtendedInfoResourceInner innerObject, RecoveryServicesManager serviceManager) {
+    VaultExtendedInfoResourceImpl(
+        VaultExtendedInfoResourceInner innerObject,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -28,6 +29,10 @@ public final class VaultExtendedInfoResourceImpl implements VaultExtendedInfoRes
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public String integrityKey() {
@@ -46,15 +51,11 @@ public final class VaultExtendedInfoResourceImpl implements VaultExtendedInfoRes
         return this.innerModel().algorithm();
     }
 
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
     public VaultExtendedInfoResourceInner innerModel() {
         return this.innerObject;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }

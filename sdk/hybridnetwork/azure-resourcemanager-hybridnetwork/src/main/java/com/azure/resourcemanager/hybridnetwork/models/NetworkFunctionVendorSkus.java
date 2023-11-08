@@ -16,7 +16,7 @@ public interface NetworkFunctionVendorSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of available network function skus.
+     * @return a list of available network function skus as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SkuOverview> listByVendor(String vendorName);
 
@@ -28,7 +28,7 @@ public interface NetworkFunctionVendorSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of available network function skus.
+     * @return a list of available network function skus as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SkuOverview> listByVendor(String vendorName, Context context);
 
@@ -40,7 +40,7 @@ public interface NetworkFunctionVendorSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network function sku details.
+     * @return the network function sku details as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFunctionSkuRoleDetails> listBySku(String vendorName, String vendorSkuName);
 
@@ -53,7 +53,7 @@ public interface NetworkFunctionVendorSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network function sku details.
+     * @return the network function sku details as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFunctionSkuRoleDetails> listBySku(String vendorName, String vendorSkuName, Context context);
 }

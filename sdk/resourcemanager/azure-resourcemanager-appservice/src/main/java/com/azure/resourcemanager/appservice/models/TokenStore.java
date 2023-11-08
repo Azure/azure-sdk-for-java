@@ -11,34 +11,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TokenStore {
     /*
-     * <code>true</code> to durably store platform-specific security tokens
-     * that are obtained during login flows; otherwise, <code>false</code>.
+     * <code>true</code> to durably store platform-specific security tokens that are obtained during login flows;
+     * otherwise, <code>false</code>.
      * The default is <code>false</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * The number of hours after session token expiration that a session token
-     * can be used to
+     * The number of hours after session token expiration that a session token can be used to
      * call the token refresh API. The default is 72 hours.
      */
     @JsonProperty(value = "tokenRefreshExtensionHours")
     private Double tokenRefreshExtensionHours;
 
     /*
-     * The configuration settings of the storage of the tokens if a file system
-     * is used.
+     * The configuration settings of the storage of the tokens if a file system is used.
      */
     @JsonProperty(value = "fileSystem")
     private FileSystemTokenStore fileSystem;
 
     /*
-     * The configuration settings of the storage of the tokens if blob storage
-     * is used.
+     * The configuration settings of the storage of the tokens if blob storage is used.
      */
     @JsonProperty(value = "azureBlobStorage")
     private BlobStorageTokenStore azureBlobStorage;
+
+    /** Creates an instance of TokenStore class. */
+    public TokenStore() {
+    }
 
     /**
      * Get the enabled property: &lt;code&gt;true&lt;/code&gt; to durably store platform-specific security tokens that

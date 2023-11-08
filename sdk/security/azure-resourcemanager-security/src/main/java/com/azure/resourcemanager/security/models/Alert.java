@@ -33,6 +33,13 @@ public interface Alert {
     String type();
 
     /**
+     * Gets the version property: Schema version.
+     *
+     * @return the version value.
+     */
+    String version();
+
+    /**
      * Gets the alertType property: Unique identifier for the detection logic (all alert instances from the same
      * detection logic will have the same alertType).
      *
@@ -152,8 +159,9 @@ public interface Alert {
     OffsetDateTime timeGeneratedUtc();
 
     /**
-     * Gets the productName property: The name of the product which published this alert (Azure Security Center, Azure
-     * ATP, Microsoft Defender ATP, O365 ATP, MCAS, and so on).
+     * Gets the productName property: The name of the product which published this alert (Microsoft Sentinel, Microsoft
+     * Defender for Identity, Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for
+     * Cloud Apps, and so on).
      *
      * @return the productName value.
      */
@@ -202,6 +210,27 @@ public interface Alert {
      * @return the compromisedEntity value.
      */
     String compromisedEntity();
+
+    /**
+     * Gets the techniques property: kill chain related techniques behind the alert.
+     *
+     * @return the techniques value.
+     */
+    List<String> techniques();
+
+    /**
+     * Gets the subTechniques property: Kill chain related sub-techniques behind the alert.
+     *
+     * @return the subTechniques value.
+     */
+    List<String> subTechniques();
+
+    /**
+     * Gets the supportingEvidence property: Changing set of properties depending on the supportingEvidence type.
+     *
+     * @return the supportingEvidence value.
+     */
+    AlertPropertiesSupportingEvidence supportingEvidence();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.AlertInner object.

@@ -7,20 +7,21 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters to update Cosmos DB resource throughput. */
 @Fluent
 public final class ThroughputSettingsUpdateParameters extends ArmResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThroughputSettingsUpdateParameters.class);
-
     /*
      * Properties to update Azure Cosmos DB resource throughput.
      */
     @JsonProperty(value = "properties", required = true)
     private ThroughputSettingsUpdateProperties innerProperties = new ThroughputSettingsUpdateProperties();
+
+    /** Creates an instance of ThroughputSettingsUpdateParameters class. */
+    public ThroughputSettingsUpdateParameters() {
+    }
 
     /**
      * Get the innerProperties property: Properties to update Azure Cosmos DB resource throughput.
@@ -77,7 +78,7 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model ThroughputSettingsUpdateParameters"));
@@ -85,4 +86,6 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ThroughputSettingsUpdateParameters.class);
 }

@@ -7,10 +7,8 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.OS;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -20,8 +18,6 @@ import java.util.Map;
  */
 @Fluent
 public final class AgentPoolInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolInner.class);
-
     /*
      * The properties associated with the agent pool
      */
@@ -33,6 +29,10 @@ public final class AgentPoolInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of AgentPoolInner class. */
+    public AgentPoolInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties associated with the agent pool.

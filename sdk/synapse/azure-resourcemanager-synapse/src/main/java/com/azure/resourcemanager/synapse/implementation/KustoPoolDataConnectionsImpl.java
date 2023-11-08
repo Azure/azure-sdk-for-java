@@ -19,10 +19,9 @@ import com.azure.resourcemanager.synapse.models.DataConnection;
 import com.azure.resourcemanager.synapse.models.DataConnectionCheckNameRequest;
 import com.azure.resourcemanager.synapse.models.DataConnectionValidationListResult;
 import com.azure.resourcemanager.synapse.models.KustoPoolDataConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolDataConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KustoPoolDataConnectionsImpl.class);
 
     private final KustoPoolDataConnectionsClient innerClient;
 
@@ -32,24 +31,6 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         KustoPoolDataConnectionsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName) {
-        CheckNameResultInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(
-                    resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
@@ -70,6 +51,24 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CheckNameResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName,
+        String workspaceName,
+        String kustoPoolName,
+        String databaseName,
+        DataConnectionCheckNameRequest dataConnectionName) {
+        CheckNameResultInner inner =
+            this
+                .serviceClient()
+                .checkNameAvailability(
+                    resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -125,21 +124,6 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
         return Utils.mapPage(inner, inner1 -> new DataConnectionImpl(inner1, this.manager()));
     }
 
-    public DataConnection get(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName) {
-        DataConnectionInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
-        if (inner != null) {
-            return new DataConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataConnection> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -158,6 +142,21 @@ public final class KustoPoolDataConnectionsImpl implements KustoPoolDataConnecti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DataConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DataConnection get(
+        String resourceGroupName,
+        String workspaceName,
+        String kustoPoolName,
+        String databaseName,
+        String dataConnectionName) {
+        DataConnectionInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, kustoPoolName, databaseName, dataConnectionName);
+        if (inner != null) {
+            return new DataConnectionImpl(inner, this.manager());
         } else {
             return null;
         }

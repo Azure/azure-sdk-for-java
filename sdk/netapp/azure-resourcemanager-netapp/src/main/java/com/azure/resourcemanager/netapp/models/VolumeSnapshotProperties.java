@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Volume Snapshot Properties. */
 @Fluent
 public final class VolumeSnapshotProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeSnapshotProperties.class);
-
     /*
      * Snapshot Policy ResourceId
      */
     @JsonProperty(value = "snapshotPolicyId")
     private String snapshotPolicyId;
+
+    /** Creates an instance of VolumeSnapshotProperties class. */
+    public VolumeSnapshotProperties() {
+    }
 
     /**
      * Get the snapshotPolicyId property: Snapshot Policy ResourceId.

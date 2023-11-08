@@ -37,7 +37,7 @@ public class SpatialFormatterTests {
         assertEquals(expected, SpatialFormatter.encodePoint(longitude, latitude));
     }
 
-    private static Stream<Arguments> encodePointSupplier() {
+    static Stream<Arguments> encodePointSupplier() {
         final String pointFormat = "geography'POINT(%s %s)'";
 
         return Stream.of(
@@ -75,7 +75,7 @@ public class SpatialFormatterTests {
         assertEquals(expected, SpatialFormatter.encodePolygon(lineString, logger));
     }
 
-    private static Stream<Arguments> encodeGeoLineStringPolygonSupplier() {
+    static Stream<Arguments> encodeGeoLineStringPolygonSupplier() {
         return getGeoPositionsAndStringValues()
             .stream()
             .map(positionsExpected -> {
@@ -100,7 +100,7 @@ public class SpatialFormatterTests {
         assertEquals(expected, SpatialFormatter.encodePolygon(polygon, logger));
     }
 
-    private static Stream<Arguments> encodeGeoPolygonPolygonSupplier() {
+    static Stream<Arguments> encodeGeoPolygonPolygonSupplier() {
         return getGeoPositionsAndStringValues()
             .stream()
             .map(positionsExpected -> {
@@ -110,7 +110,7 @@ public class SpatialFormatterTests {
             });
     }
 
-    private static List<Tuple2<List<GeoPosition>, String>> getGeoPositionsAndStringValues() {
+    static List<Tuple2<List<GeoPosition>, String>> getGeoPositionsAndStringValues() {
         List<GeoPosition> noDecimalCoordinates = Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1),
             new GeoPosition(1, 1), new GeoPosition(0, 0));
         String noDecimalCoordinatesString = createGeographyPolygon("0", "0", "0", "1", "1", "1", "0", "0");

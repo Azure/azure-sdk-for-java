@@ -44,7 +44,7 @@ public class CreateIndexWithFieldBuilderExample {
     /**
      * A hotel.
      */
-    public class Hotel {
+    public static final class Hotel {
         @SimpleField(isKey = true, isFilterable = true, isSortable = true)
         private final String hotelId;
 
@@ -185,7 +185,7 @@ public class CreateIndexWithFieldBuilderExample {
     /**
      * An address.
      */
-    public class Address {
+    public static final class Address {
         @SearchableField
         private String streetAddress;
 

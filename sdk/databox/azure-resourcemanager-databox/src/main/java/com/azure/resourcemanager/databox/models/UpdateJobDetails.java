@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Job details for update. */
 @Fluent
 public final class UpdateJobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateJobDetails.class);
-
     /*
      * Contact details for notification and shipping.
      */
@@ -27,10 +23,32 @@ public final class UpdateJobDetails {
     private ShippingAddress shippingAddress;
 
     /*
+     * Reverse Shipping Address and contact details for a job.
+     */
+    @JsonProperty(value = "reverseShippingDetails")
+    private ReverseShippingDetails reverseShippingDetails;
+
+    /*
+     * Preferences related to the order
+     */
+    @JsonProperty(value = "preferences")
+    private Preferences preferences;
+
+    /*
      * Key encryption key for the job.
      */
     @JsonProperty(value = "keyEncryptionKey")
     private KeyEncryptionKey keyEncryptionKey;
+
+    /*
+     * Return package details of job.
+     */
+    @JsonProperty(value = "returnToCustomerPackageDetails")
+    private PackageCarrierDetails returnToCustomerPackageDetails;
+
+    /** Creates an instance of UpdateJobDetails class. */
+    public UpdateJobDetails() {
+    }
 
     /**
      * Get the contactDetails property: Contact details for notification and shipping.
@@ -73,6 +91,46 @@ public final class UpdateJobDetails {
     }
 
     /**
+     * Get the reverseShippingDetails property: Reverse Shipping Address and contact details for a job.
+     *
+     * @return the reverseShippingDetails value.
+     */
+    public ReverseShippingDetails reverseShippingDetails() {
+        return this.reverseShippingDetails;
+    }
+
+    /**
+     * Set the reverseShippingDetails property: Reverse Shipping Address and contact details for a job.
+     *
+     * @param reverseShippingDetails the reverseShippingDetails value to set.
+     * @return the UpdateJobDetails object itself.
+     */
+    public UpdateJobDetails withReverseShippingDetails(ReverseShippingDetails reverseShippingDetails) {
+        this.reverseShippingDetails = reverseShippingDetails;
+        return this;
+    }
+
+    /**
+     * Get the preferences property: Preferences related to the order.
+     *
+     * @return the preferences value.
+     */
+    public Preferences preferences() {
+        return this.preferences;
+    }
+
+    /**
+     * Set the preferences property: Preferences related to the order.
+     *
+     * @param preferences the preferences value to set.
+     * @return the UpdateJobDetails object itself.
+     */
+    public UpdateJobDetails withPreferences(Preferences preferences) {
+        this.preferences = preferences;
+        return this;
+    }
+
+    /**
      * Get the keyEncryptionKey property: Key encryption key for the job.
      *
      * @return the keyEncryptionKey value.
@@ -93,6 +151,26 @@ public final class UpdateJobDetails {
     }
 
     /**
+     * Get the returnToCustomerPackageDetails property: Return package details of job.
+     *
+     * @return the returnToCustomerPackageDetails value.
+     */
+    public PackageCarrierDetails returnToCustomerPackageDetails() {
+        return this.returnToCustomerPackageDetails;
+    }
+
+    /**
+     * Set the returnToCustomerPackageDetails property: Return package details of job.
+     *
+     * @param returnToCustomerPackageDetails the returnToCustomerPackageDetails value to set.
+     * @return the UpdateJobDetails object itself.
+     */
+    public UpdateJobDetails withReturnToCustomerPackageDetails(PackageCarrierDetails returnToCustomerPackageDetails) {
+        this.returnToCustomerPackageDetails = returnToCustomerPackageDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -104,8 +182,17 @@ public final class UpdateJobDetails {
         if (shippingAddress() != null) {
             shippingAddress().validate();
         }
+        if (reverseShippingDetails() != null) {
+            reverseShippingDetails().validate();
+        }
+        if (preferences() != null) {
+            preferences().validate();
+        }
         if (keyEncryptionKey() != null) {
             keyEncryptionKey().validate();
+        }
+        if (returnToCustomerPackageDetails() != null) {
+            returnToCustomerPackageDetails().validate();
         }
     }
 }

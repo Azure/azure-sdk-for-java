@@ -8,13 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PartnerTopicRoutingMode. */
+/**
+ * This determines if events published to this partner namespace should use the source attribute in the event payload or
+ * use the channel name in the header when matching to the partner topic. If none is specified, source attribute routing
+ * will be used to match the partner topic.
+ */
 public final class PartnerTopicRoutingMode extends ExpandableStringEnum<PartnerTopicRoutingMode> {
     /** Static value SourceEventAttribute for PartnerTopicRoutingMode. */
     public static final PartnerTopicRoutingMode SOURCE_EVENT_ATTRIBUTE = fromString("SourceEventAttribute");
 
     /** Static value ChannelNameHeader for PartnerTopicRoutingMode. */
     public static final PartnerTopicRoutingMode CHANNEL_NAME_HEADER = fromString("ChannelNameHeader");
+
+    /**
+     * Creates a new instance of PartnerTopicRoutingMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PartnerTopicRoutingMode() {
+    }
 
     /**
      * Creates or finds a PartnerTopicRoutingMode from its string representation.
@@ -27,7 +40,11 @@ public final class PartnerTopicRoutingMode extends ExpandableStringEnum<PartnerT
         return fromString(name, PartnerTopicRoutingMode.class);
     }
 
-    /** @return known PartnerTopicRoutingMode values. */
+    /**
+     * Gets known PartnerTopicRoutingMode values.
+     *
+     * @return known PartnerTopicRoutingMode values.
+     */
     public static Collection<PartnerTopicRoutingMode> values() {
         return values(PartnerTopicRoutingMode.class);
     }

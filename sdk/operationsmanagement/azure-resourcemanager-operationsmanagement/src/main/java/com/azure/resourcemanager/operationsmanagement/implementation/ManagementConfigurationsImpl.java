@@ -14,10 +14,9 @@ import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementCo
 import com.azure.resourcemanager.operationsmanagement.models.ManagementConfiguration;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementConfigurationPropertiesList;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ManagementConfigurationsImpl implements ManagementConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementConfigurationsImpl.class);
 
     private final ManagementConfigurationsClient innerClient;
 
@@ -28,15 +27,6 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ManagementConfigurationPropertiesList listBySubscription() {
-        ManagementConfigurationPropertiesListInner inner = this.serviceClient().listBySubscription();
-        if (inner != null) {
-            return new ManagementConfigurationPropertiesListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ManagementConfigurationPropertiesList> listBySubscriptionWithResponse(Context context) {
@@ -53,23 +43,22 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String managementConfigurationName) {
-        this.serviceClient().delete(resourceGroupName, managementConfigurationName);
+    public ManagementConfigurationPropertiesList listBySubscription() {
+        ManagementConfigurationPropertiesListInner inner = this.serviceClient().listBySubscription();
+        if (inner != null) {
+            return new ManagementConfigurationPropertiesListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(
+    public Response<Void> deleteByResourceGroupWithResponse(
         String resourceGroupName, String managementConfigurationName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, managementConfigurationName, context);
     }
 
-    public ManagementConfiguration getByResourceGroup(String resourceGroupName, String managementConfigurationName) {
-        ManagementConfigurationInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, managementConfigurationName);
-        if (inner != null) {
-            return new ManagementConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void deleteByResourceGroup(String resourceGroupName, String managementConfigurationName) {
+        this.serviceClient().delete(resourceGroupName, managementConfigurationName);
     }
 
     public Response<ManagementConfiguration> getByResourceGroupWithResponse(
@@ -89,10 +78,20 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
         }
     }
 
+    public ManagementConfiguration getByResourceGroup(String resourceGroupName, String managementConfigurationName) {
+        ManagementConfigurationInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, managementConfigurationName);
+        if (inner != null) {
+            return new ManagementConfigurationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public ManagementConfiguration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -100,7 +99,7 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
         }
         String managementConfigurationName = Utils.getValueFromIdByName(id, "ManagementConfigurations");
         if (managementConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,7 +115,7 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
     public Response<ManagementConfiguration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,7 +123,7 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
         }
         String managementConfigurationName = Utils.getValueFromIdByName(id, "ManagementConfigurations");
         if (managementConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +137,7 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,7 +145,7 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
         }
         String managementConfigurationName = Utils.getValueFromIdByName(id, "ManagementConfigurations");
         if (managementConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,13 +153,13 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
                                 "The resource ID '%s' is not valid. Missing path segment 'ManagementConfigurations'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, managementConfigurationName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,7 +167,7 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
         }
         String managementConfigurationName = Utils.getValueFromIdByName(id, "ManagementConfigurations");
         if (managementConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -176,7 +175,7 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
                                 "The resource ID '%s' is not valid. Missing path segment 'ManagementConfigurations'.",
                                 id)));
         }
-        return this.deleteWithResponse(resourceGroupName, managementConfigurationName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, context);
     }
 
     private ManagementConfigurationsClient serviceClient() {

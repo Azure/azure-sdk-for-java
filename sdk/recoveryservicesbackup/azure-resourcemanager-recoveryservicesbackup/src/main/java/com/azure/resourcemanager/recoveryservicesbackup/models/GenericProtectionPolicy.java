@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("GenericProtectionPolicy")
 @Fluent
 public final class GenericProtectionPolicy extends ProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericProtectionPolicy.class);
-
     /*
      * List of sub-protection policies which includes schedule and retention
      */
@@ -26,8 +22,7 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
     private List<SubProtectionPolicy> subProtectionPolicy;
 
     /*
-     * TimeZone optional input as string. For example: TimeZone = "Pacific
-     * Standard Time".
+     * TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
@@ -37,6 +32,10 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
      */
     @JsonProperty(value = "fabricName")
     private String fabricName;
+
+    /** Creates an instance of GenericProtectionPolicy class. */
+    public GenericProtectionPolicy() {
+    }
 
     /**
      * Get the subProtectionPolicy property: List of sub-protection policies which includes schedule and retention.

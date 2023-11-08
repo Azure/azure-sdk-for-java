@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.BillingSubscriptionInner;
 
 /** Samples for BillingSubscriptions Update. */
@@ -21,6 +20,8 @@ public final class BillingSubscriptionsUpdateSamples {
         manager
             .billingSubscriptions()
             .updateWithResponse(
-                "{billingAccountName}", new BillingSubscriptionInner().withCostCenter("ABC1234"), Context.NONE);
+                "{billingAccountName}",
+                new BillingSubscriptionInner().withCostCenter("ABC1234"),
+                com.azure.core.util.Context.NONE);
     }
 }

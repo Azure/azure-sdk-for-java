@@ -4,27 +4,24 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentWhatIf;
 import com.azure.resourcemanager.resources.models.DeploymentWhatIfProperties;
 import com.azure.resourcemanager.resources.models.TemplateLink;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for Deployments WhatIfAtSubscriptionScope. */
 public final class DeploymentsWhatIfAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PostDeploymentWhatIfOnSubscription.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PostDeploymentWhatIfOnSubscription.json
      */
     /**
      * Sample code: Predict template changes at subscription scope.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void predictTemplateChangesAtSubscriptionScope(com.azure.resourcemanager.AzureResourceManager azure)
-        throws IOException {
+    public static void predictTemplateChangesAtSubscriptionScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .genericResources()
             .manager()
@@ -36,12 +33,21 @@ public final class DeploymentsWhatIfAtSubscriptionScopeSamples {
                     .withLocation("westus")
                     .withProperties(
                         new DeploymentWhatIfProperties()
-                            .withTemplateLink(new TemplateLink())
-                            .withParameters(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                            .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                            .withParameters(mapOf())
                             .withMode(DeploymentMode.INCREMENTAL)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

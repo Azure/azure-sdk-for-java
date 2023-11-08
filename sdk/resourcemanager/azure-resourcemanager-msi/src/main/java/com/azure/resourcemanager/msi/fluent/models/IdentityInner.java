@@ -6,8 +6,7 @@ package com.azure.resourcemanager.msi.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.UUID;
@@ -15,22 +14,42 @@ import java.util.UUID;
 /** Describes an identity resource. */
 @Fluent
 public final class IdentityInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityInner.class);
-
     /*
-     * User Assigned Identity properties. The properties associated with the
-     * identity.
+     * User Assigned Identity properties.
+     *
+     * The properties associated with the identity.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private UserAssignedIdentityProperties innerProperties;
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of IdentityInner class. */
+    public IdentityInner() {
+    }
+
     /**
-     * Get the innerProperties property: User Assigned Identity properties. The properties associated with the identity.
+     * Get the innerProperties property: User Assigned Identity properties.
+     *
+     * <p>The properties associated with the identity.
      *
      * @return the innerProperties value.
      */
     private UserAssignedIdentityProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */

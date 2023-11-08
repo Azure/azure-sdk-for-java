@@ -5,24 +5,23 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** ScheduleBasedBackupCriteria Schedule based backup criteria. */
+/**
+ * ScheduleBasedBackupCriteria
+ *
+ * <p>Schedule based backup criteria.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ScheduleBasedBackupCriteria")
 @Fluent
 public final class ScheduleBasedBackupCriteria extends BackupCriteria {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleBasedBackupCriteria.class);
-
     /*
-     * it contains absolute values like "AllBackup" / "FirstOfDay" /
-     * "FirstOfWeek" / "FirstOfMonth"
+     * it contains absolute values like "AllBackup"\  / "FirstOfDay"\  / "FirstOfWeek"\  / "FirstOfMonth"
      * and should be part of AbsoluteMarker enum
      */
     @JsonProperty(value = "absoluteCriteria")
@@ -58,9 +57,13 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     @JsonProperty(value = "weeksOfTheMonth")
     private List<WeekNumber> weeksOfTheMonth;
 
+    /** Creates an instance of ScheduleBasedBackupCriteria class. */
+    public ScheduleBasedBackupCriteria() {
+    }
+
     /**
-     * Get the absoluteCriteria property: it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" /
-     * "FirstOfMonth" and should be part of AbsoluteMarker enum.
+     * Get the absoluteCriteria property: it contains absolute values like "AllBackup"\ / "FirstOfDay"\ / "FirstOfWeek"\
+     * / "FirstOfMonth" and should be part of AbsoluteMarker enum.
      *
      * @return the absoluteCriteria value.
      */
@@ -69,8 +72,8 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     }
 
     /**
-     * Set the absoluteCriteria property: it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" /
-     * "FirstOfMonth" and should be part of AbsoluteMarker enum.
+     * Set the absoluteCriteria property: it contains absolute values like "AllBackup"\ / "FirstOfDay"\ / "FirstOfWeek"\
+     * / "FirstOfMonth" and should be part of AbsoluteMarker enum.
      *
      * @param absoluteCriteria the absoluteCriteria value to set.
      * @return the ScheduleBasedBackupCriteria object itself.

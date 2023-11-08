@@ -6,13 +6,14 @@ package com.azure.core.implementation.util;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by a serializable object.
@@ -22,7 +23,9 @@ public final class SerializableContent extends BinaryDataContent {
     private final Object content;
     private final ObjectSerializer serializer;
 
-    private final AtomicReference<byte[]> bytes = new AtomicReference<>();
+    private volatile byte[] bytes;
+    private static final AtomicReferenceFieldUpdater<SerializableContent, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(SerializableContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link SerializableContent}.
@@ -47,12 +50,7 @@ public final class SerializableContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        byte[] data = this.bytes.get();
-        if (data == null) {
-            bytes.set(getBytes());
-            data = this.bytes.get();
-        }
-        return data;
+        return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
     @Override
@@ -72,7 +70,27 @@ public final class SerializableContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(toBytes())));
+        return Mono.fromSupplier(() -> ByteBuffer.wrap(toBytes())).flux();
+    }
+
+    @Override
+    public boolean isReplayable() {
+        return true;
+    }
+
+    @Override
+    public BinaryDataContent toReplayableContent() {
+        return this;
+    }
+
+    @Override
+    public Mono<BinaryDataContent> toReplayableContentAsync() {
+        return Mono.just(this);
+    }
+
+    @Override
+    public BinaryDataContentType getContentType() {
+        return BinaryDataContentType.OBJECT;
     }
 
     private byte[] getBytes() {

@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.KustoPoolAttachedDatabaseConfigurationsClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
  */
 public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
     implements KustoPoolAttachedDatabaseConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(KustoPoolAttachedDatabaseConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final KustoPoolAttachedDatabaseConfigurationsService service;
 
@@ -74,7 +71,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface KustoPoolAttachedDatabaseConfigurationsService {
+    public interface KustoPoolAttachedDatabaseConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -272,7 +269,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list attached database configurations operation response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttachedDatabaseConfigurationInner> listByKustoPoolAsync(
@@ -290,7 +288,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list attached database configurations operation response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttachedDatabaseConfigurationInner> listByKustoPoolAsync(
@@ -308,7 +307,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list attached database configurations operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttachedDatabaseConfigurationInner> listByKustoPool(
@@ -326,7 +326,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list attached database configurations operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttachedDatabaseConfigurationInner> listByKustoPool(
@@ -484,35 +485,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
         String attachedDatabaseConfigurationName,
         String resourceGroupName) {
         return getWithResponseAsync(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName)
-            .flatMap(
-                (Response<AttachedDatabaseConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns an attached database configuration.
-     *
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDatabaseConfigurationInner get(
-        String workspaceName,
-        String kustoPoolName,
-        String attachedDatabaseConfigurationName,
-        String resourceGroupName) {
-        return getAsync(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -538,6 +511,29 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
         return getWithResponseAsync(
                 workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, context)
             .block();
+    }
+
+    /**
+     * Returns an attached database configuration.
+     *
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing an attached database configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AttachedDatabaseConfigurationInner get(
+        String workspaceName,
+        String kustoPoolName,
+        String attachedDatabaseConfigurationName,
+        String resourceGroupName) {
+        return getWithResponse(
+                workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -698,8 +694,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of class representing an attached database configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
@@ -734,8 +729,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of class representing an attached database configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
@@ -776,8 +770,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of class representing an attached database configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
@@ -787,7 +780,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
             String attachedDatabaseConfigurationName,
             String resourceGroupName,
             AttachedDatabaseConfigurationInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, parameters)
             .getSyncPoller();
     }
@@ -804,8 +798,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of class representing an attached database configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
@@ -816,7 +809,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
             String resourceGroupName,
             AttachedDatabaseConfigurationInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, parameters, context)
             .getSyncPoller();
     }
@@ -1066,7 +1060,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1093,7 +1087,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1121,7 +1115,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1129,7 +1123,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
         String kustoPoolName,
         String attachedDatabaseConfigurationName,
         String resourceGroupName) {
-        return beginDeleteAsync(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName)
+        return this
+            .beginDeleteAsync(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName)
             .getSyncPoller();
     }
 
@@ -1144,7 +1139,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1153,7 +1148,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
         String attachedDatabaseConfigurationName,
         String resourceGroupName,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName, context)
             .getSyncPoller();
     }

@@ -14,10 +14,9 @@ import com.azure.resourcemanager.logic.fluent.models.WorkflowRunActionInner;
 import com.azure.resourcemanager.logic.models.ExpressionRoot;
 import com.azure.resourcemanager.logic.models.WorkflowRunAction;
 import com.azure.resourcemanager.logic.models.WorkflowRunActions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowRunActionsImpl implements WorkflowRunActions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowRunActionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunActionsImpl.class);
 
     private final WorkflowRunActionsClient innerClient;
 
@@ -42,15 +41,6 @@ public final class WorkflowRunActionsImpl implements WorkflowRunActions {
         return Utils.mapPage(inner, inner1 -> new WorkflowRunActionImpl(inner1, this.manager()));
     }
 
-    public WorkflowRunAction get(String resourceGroupName, String workflowName, String runName, String actionName) {
-        WorkflowRunActionInner inner = this.serviceClient().get(resourceGroupName, workflowName, runName, actionName);
-        if (inner != null) {
-            return new WorkflowRunActionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WorkflowRunAction> getWithResponse(
         String resourceGroupName, String workflowName, String runName, String actionName, Context context) {
         Response<WorkflowRunActionInner> inner =
@@ -61,6 +51,15 @@ public final class WorkflowRunActionsImpl implements WorkflowRunActions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WorkflowRunActionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WorkflowRunAction get(String resourceGroupName, String workflowName, String runName, String actionName) {
+        WorkflowRunActionInner inner = this.serviceClient().get(resourceGroupName, workflowName, runName, actionName);
+        if (inner != null) {
+            return new WorkflowRunActionImpl(inner, this.manager());
         } else {
             return null;
         }

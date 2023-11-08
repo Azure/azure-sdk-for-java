@@ -24,6 +24,10 @@ public final class FtpServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private FtpServerLinkedServiceTypeProperties innerTypeProperties = new FtpServerLinkedServiceTypeProperties();
 
+    /** Creates an instance of FtpServerLinkedService class. */
+    public FtpServerLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
      *
@@ -180,22 +184,22 @@ public final class FtpServerLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the FtpServerLinkedService object itself.
      */
-    public FtpServerLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public FtpServerLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new FtpServerLinkedServiceTypeProperties();
         }

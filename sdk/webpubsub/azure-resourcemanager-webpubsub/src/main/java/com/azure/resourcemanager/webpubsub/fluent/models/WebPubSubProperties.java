@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubTlsSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A class that describes the properties of the resource. */
 @Fluent
 public final class WebPubSubProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubProperties.class);
-
     /*
      * Provisioning state of the resource.
      */
@@ -39,22 +35,19 @@ public final class WebPubSubProperties {
     private String hostname;
 
     /*
-     * The publicly accessible port of the resource which is designed for
-     * browser/client side usage.
+     * The publicly accessible port of the resource which is designed for browser/client side usage.
      */
     @JsonProperty(value = "publicPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer publicPort;
 
     /*
-     * The publicly accessible port of the resource which is designed for
-     * customer server side usage.
+     * The publicly accessible port of the resource which is designed for customer server side usage.
      */
     @JsonProperty(value = "serverPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer serverPort;
 
     /*
-     * Version of the resource. Probably you need the same or higher version of
-     * client SDKs.
+     * Version of the resource. Probably you need the same or higher version of client SDKs.
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
@@ -72,7 +65,7 @@ public final class WebPubSubProperties {
     private List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources;
 
     /*
-     * TLS settings.
+     * TLS settings for the resource
      */
     @JsonProperty(value = "tls")
     private WebPubSubTlsSettings tls;
@@ -91,16 +84,12 @@ public final class WebPubSubProperties {
 
     /*
      * Resource log configuration of a Microsoft.SignalRService resource.
-     * If resourceLogConfiguration isn't null or empty, it will override
-     * options "EnableConnectivityLog" and "EnableMessagingLogs" in features.
-     * Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs"
-     * in features.
      */
     @JsonProperty(value = "resourceLogConfiguration")
     private ResourceLogConfiguration resourceLogConfiguration;
 
     /*
-     * Network ACLs
+     * Network ACLs for the resource
      */
     @JsonProperty(value = "networkACLs")
     private WebPubSubNetworkACLs networkACLs;
@@ -108,8 +97,7 @@ public final class WebPubSubProperties {
     /*
      * Enable or disable public network access. Default to "Enabled".
      * When it's Enabled, network ACLs still apply.
-     * When it's Disabled, public network access is always disabled no matter
-     * what you set in network ACLs.
+     * When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private String publicNetworkAccess;
@@ -129,6 +117,27 @@ public final class WebPubSubProperties {
      */
     @JsonProperty(value = "disableAadAuth")
     private Boolean disableAadAuth;
+
+    /*
+     * Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not
+     * be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     */
+    @JsonProperty(value = "regionEndpointEnabled")
+    private String regionEndpointEnabled;
+
+    /*
+     * Stop or start the resource.  Default to "false".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     */
+    @JsonProperty(value = "resourceStopped")
+    private String resourceStopped;
+
+    /** Creates an instance of WebPubSubProperties class. */
+    public WebPubSubProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
@@ -205,7 +214,7 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Get the tls property: TLS settings.
+     * Get the tls property: TLS settings for the resource.
      *
      * @return the tls value.
      */
@@ -214,7 +223,7 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Set the tls property: TLS settings.
+     * Set the tls property: TLS settings for the resource.
      *
      * @param tls the tls value to set.
      * @return the WebPubSubProperties object itself.
@@ -254,10 +263,7 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Get the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
-     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
-     * features.
+     * Get the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
      *
      * @return the resourceLogConfiguration value.
      */
@@ -266,10 +272,7 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Set the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
-     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
-     * features.
+     * Set the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
      *
      * @param resourceLogConfiguration the resourceLogConfiguration value to set.
      * @return the WebPubSubProperties object itself.
@@ -280,7 +283,7 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Get the networkACLs property: Network ACLs.
+     * Get the networkACLs property: Network ACLs for the resource.
      *
      * @return the networkACLs value.
      */
@@ -289,7 +292,7 @@ public final class WebPubSubProperties {
     }
 
     /**
-     * Set the networkACLs property: Network ACLs.
+     * Set the networkACLs property: Network ACLs for the resource.
      *
      * @param networkACLs the networkACLs value to set.
      * @return the WebPubSubProperties object itself.
@@ -364,6 +367,52 @@ public final class WebPubSubProperties {
      */
     public WebPubSubProperties withDisableAadAuth(Boolean disableAadAuth) {
         this.disableAadAuth = disableAadAuth;
+        return this;
+    }
+
+    /**
+     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @return the regionEndpointEnabled value.
+     */
+    public String regionEndpointEnabled() {
+        return this.regionEndpointEnabled;
+    }
+
+    /**
+     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @param regionEndpointEnabled the regionEndpointEnabled value to set.
+     * @return the WebPubSubProperties object itself.
+     */
+    public WebPubSubProperties withRegionEndpointEnabled(String regionEndpointEnabled) {
+        this.regionEndpointEnabled = regionEndpointEnabled;
+        return this;
+    }
+
+    /**
+     * Get the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @return the resourceStopped value.
+     */
+    public String resourceStopped() {
+        return this.resourceStopped;
+    }
+
+    /**
+     * Set the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @param resourceStopped the resourceStopped value to set.
+     * @return the WebPubSubProperties object itself.
+     */
+    public WebPubSubProperties withResourceStopped(String resourceStopped) {
+        this.resourceStopped = resourceStopped;
         return this;
     }
 

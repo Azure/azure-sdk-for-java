@@ -28,6 +28,10 @@ public final class EdgeUsageDataEventHub {
     @JsonProperty(value = "token")
     private String token;
 
+    /** Creates an instance of EdgeUsageDataEventHub class. */
+    public EdgeUsageDataEventHub() {
+    }
+
     /**
      * Get the name property: Name of the Event Hub where usage will be reported.
      *

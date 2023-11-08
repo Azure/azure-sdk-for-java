@@ -23,7 +23,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources.
+     * @return a pageable list of resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByResourceAsync(String resourceUri);
@@ -35,7 +35,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources.
+     * @return a pageable list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByResource(String resourceUri);
@@ -48,7 +48,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources.
+     * @return a pageable list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByResource(
@@ -62,7 +62,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources.
+     * @return a pageable list of resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRuleAsync(
@@ -76,7 +76,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources.
+     * @return a pageable list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(
@@ -91,11 +91,54 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources.
+     * @return a pageable list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(
         String resourceGroupName, String dataCollectionRuleName, Context context);
+
+    /**
+     * Lists associations for the specified data collection endpoint.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pageable list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByDataCollectionEndpointAsync(
+        String resourceGroupName, String dataCollectionEndpointName);
+
+    /**
+     * Lists associations for the specified data collection endpoint.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pageable list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByDataCollectionEndpoint(
+        String resourceGroupName, String dataCollectionEndpointName);
+
+    /**
+     * Lists associations for the specified data collection endpoint.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pageable list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByDataCollectionEndpoint(
+        String resourceGroupName, String dataCollectionEndpointName, Context context);
 
     /**
      * Returns the specified association.
@@ -105,7 +148,8 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
+     * @return definition of generic ARM proxy resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DataCollectionRuleAssociationProxyOnlyResourceInner>> getWithResponseAsync(
@@ -119,10 +163,25 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
+     * @return definition of generic ARM proxy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DataCollectionRuleAssociationProxyOnlyResourceInner> getAsync(String resourceUri, String associationName);
+
+    /**
+     * Returns the specified association.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param associationName The name of the association. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of generic ARM proxy resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DataCollectionRuleAssociationProxyOnlyResourceInner> getWithResponse(
+        String resourceUri, String associationName, Context context);
 
     /**
      * Returns the specified association.
@@ -138,21 +197,6 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
     DataCollectionRuleAssociationProxyOnlyResourceInner get(String resourceUri, String associationName);
 
     /**
-     * Returns the specified association.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataCollectionRuleAssociationProxyOnlyResourceInner> getWithResponse(
-        String resourceUri, String associationName, Context context);
-
-    /**
      * Creates or updates an association.
      *
      * @param resourceUri The identifier of the resource.
@@ -161,7 +205,8 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
+     * @return definition of generic ARM proxy resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DataCollectionRuleAssociationProxyOnlyResourceInner>> createWithResponseAsync(
@@ -172,28 +217,32 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      *
      * @param resourceUri The identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
-     * @param body The payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
+     * @return definition of generic ARM proxy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DataCollectionRuleAssociationProxyOnlyResourceInner> createAsync(
-        String resourceUri, String associationName, DataCollectionRuleAssociationProxyOnlyResourceInner body);
+    Mono<DataCollectionRuleAssociationProxyOnlyResourceInner> createAsync(String resourceUri, String associationName);
 
     /**
      * Creates or updates an association.
      *
      * @param resourceUri The identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
+     * @param body The payload.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
+     * @return definition of generic ARM proxy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DataCollectionRuleAssociationProxyOnlyResourceInner> createAsync(String resourceUri, String associationName);
+    Response<DataCollectionRuleAssociationProxyOnlyResourceInner> createWithResponse(
+        String resourceUri,
+        String associationName,
+        DataCollectionRuleAssociationProxyOnlyResourceInner body,
+        Context context);
 
     /**
      * Creates or updates an association.
@@ -209,25 +258,6 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
     DataCollectionRuleAssociationProxyOnlyResourceInner create(String resourceUri, String associationName);
 
     /**
-     * Creates or updates an association.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @param body The payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataCollectionRuleAssociationProxyOnlyResourceInner> createWithResponse(
-        String resourceUri,
-        String associationName,
-        DataCollectionRuleAssociationProxyOnlyResourceInner body,
-        Context context);
-
-    /**
      * Deletes an association.
      *
      * @param resourceUri The identifier of the resource.
@@ -235,7 +265,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String associationName);
@@ -248,10 +278,24 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceUri, String associationName);
+
+    /**
+     * Deletes an association.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param associationName The name of the association. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceUri, String associationName, Context context);
 
     /**
      * Deletes an association.
@@ -264,18 +308,4 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceUri, String associationName);
-
-    /**
-     * Deletes an association.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @param associationName The name of the association. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceUri, String associationName, Context context);
 }

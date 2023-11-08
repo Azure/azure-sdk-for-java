@@ -60,6 +60,48 @@ public interface AppPlatformManagementClient {
     ConfigServersClient getConfigServers();
 
     /**
+     * Gets the ConfigurationServicesClient object to access its operations.
+     *
+     * @return the ConfigurationServicesClient object.
+     */
+    ConfigurationServicesClient getConfigurationServices();
+
+    /**
+     * Gets the ServiceRegistriesClient object to access its operations.
+     *
+     * @return the ServiceRegistriesClient object.
+     */
+    ServiceRegistriesClient getServiceRegistries();
+
+    /**
+     * Gets the BuildServicesClient object to access its operations.
+     *
+     * @return the BuildServicesClient object.
+     */
+    BuildServicesClient getBuildServices();
+
+    /**
+     * Gets the BuildpackBindingsClient object to access its operations.
+     *
+     * @return the BuildpackBindingsClient object.
+     */
+    BuildpackBindingsClient getBuildpackBindings();
+
+    /**
+     * Gets the BuildServiceBuildersClient object to access its operations.
+     *
+     * @return the BuildServiceBuildersClient object.
+     */
+    BuildServiceBuildersClient getBuildServiceBuilders();
+
+    /**
+     * Gets the BuildServiceAgentPoolsClient object to access its operations.
+     *
+     * @return the BuildServiceAgentPoolsClient object.
+     */
+    BuildServiceAgentPoolsClient getBuildServiceAgentPools();
+
+    /**
      * Gets the MonitoringSettingsClient object to access its operations.
      *
      * @return the MonitoringSettingsClient object.
@@ -79,6 +121,13 @@ public interface AppPlatformManagementClient {
      * @return the BindingsClient object.
      */
     BindingsClient getBindings();
+
+    /**
+     * Gets the StoragesClient object to access its operations.
+     *
+     * @return the StoragesClient object.
+     */
+    StoragesClient getStorages();
 
     /**
      * Gets the CertificatesClient object to access its operations.
@@ -121,4 +170,39 @@ public interface AppPlatformManagementClient {
      * @return the SkusClient object.
      */
     SkusClient getSkus();
+
+    /**
+     * Gets the GatewaysClient object to access its operations.
+     *
+     * @return the GatewaysClient object.
+     */
+    GatewaysClient getGateways();
+
+    /**
+     * Gets the GatewayRouteConfigsClient object to access its operations.
+     *
+     * @return the GatewayRouteConfigsClient object.
+     */
+    GatewayRouteConfigsClient getGatewayRouteConfigs();
+
+    /**
+     * Gets the GatewayCustomDomainsClient object to access its operations.
+     *
+     * @return the GatewayCustomDomainsClient object.
+     */
+    GatewayCustomDomainsClient getGatewayCustomDomains();
+
+    /**
+     * Gets the ApiPortalsClient object to access its operations.
+     *
+     * @return the ApiPortalsClient object.
+     */
+    ApiPortalsClient getApiPortals();
+
+    /**
+     * Gets the ApiPortalCustomDomainsClient object to access its operations.
+     *
+     * @return the ApiPortalCustomDomainsClient object.
+     */
+    ApiPortalCustomDomainsClient getApiPortalCustomDomains();
 }

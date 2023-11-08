@@ -23,6 +23,50 @@ import reactor.core.publisher.Mono;
  */
 public interface ExtendedServerBlobAuditingPoliciesClient {
     /**
+     * Lists extended auditing settings of a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server extended auditing settings as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ExtendedServerBlobAuditingPolicyInner> listByServerAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Lists extended auditing settings of a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server extended auditing settings as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByServer(String resourceGroupName, String serverName);
+
+    /**
+     * Lists extended auditing settings of a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server extended auditing settings as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByServer(
+        String resourceGroupName, String serverName, Context context);
+
+    /**
      * Gets an extended server's blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -31,7 +75,8 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server's blob auditing policy.
+     * @return an extended server's blob auditing policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ExtendedServerBlobAuditingPolicyInner>> getWithResponseAsync(
@@ -46,10 +91,26 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server's blob auditing policy.
+     * @return an extended server's blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExtendedServerBlobAuditingPolicyInner> getAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Gets an extended server's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended server's blob auditing policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ExtendedServerBlobAuditingPolicyInner> getWithResponse(
+        String resourceGroupName, String serverName, Context context);
 
     /**
      * Gets an extended server's blob auditing policy.
@@ -66,32 +127,17 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
     ExtendedServerBlobAuditingPolicyInner get(String resourceGroupName, String serverName);
 
     /**
-     * Gets an extended server's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server's blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtendedServerBlobAuditingPolicyInner> getWithResponse(
-        String resourceGroupName, String serverName, Context context);
-
-    /**
      * Creates or updates an extended server's blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
+     * @param parameters Properties of extended blob auditing policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -103,13 +149,13 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
+     * @param parameters Properties of extended blob auditing policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return the {@link PollerFlux} for polling of an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName, String serverName, ExtendedServerBlobAuditingPolicyInner parameters);
@@ -120,13 +166,13 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
+     * @param parameters Properties of extended blob auditing policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return the {@link SyncPoller} for polling of an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName, String serverName, ExtendedServerBlobAuditingPolicyInner parameters);
@@ -137,14 +183,14 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
+     * @param parameters Properties of extended blob auditing policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return the {@link SyncPoller} for polling of an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -158,11 +204,11 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
+     * @param parameters Properties of extended blob auditing policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return an extended server blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExtendedServerBlobAuditingPolicyInner> createOrUpdateAsync(
@@ -174,7 +220,7 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
+     * @param parameters Properties of extended blob auditing policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -190,7 +236,7 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An extended server blob auditing policy.
+     * @param parameters Properties of extended blob auditing policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -200,48 +246,4 @@ public interface ExtendedServerBlobAuditingPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExtendedServerBlobAuditingPolicyInner createOrUpdate(
         String resourceGroupName, String serverName, ExtendedServerBlobAuditingPolicyInner parameters, Context context);
-
-    /**
-     * Lists extended auditing settings of a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ExtendedServerBlobAuditingPolicyInner> listByServerAsync(String resourceGroupName, String serverName);
-
-    /**
-     * Lists extended auditing settings of a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByServer(String resourceGroupName, String serverName);
-
-    /**
-     * Lists extended auditing settings of a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByServer(
-        String resourceGroupName, String serverName, Context context);
 }

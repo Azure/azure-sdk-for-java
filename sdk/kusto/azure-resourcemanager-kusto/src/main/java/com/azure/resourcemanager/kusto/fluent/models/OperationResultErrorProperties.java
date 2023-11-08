@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation result error properties. */
 @Fluent
 public final class OperationResultErrorProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultErrorProperties.class);
-
     /*
      * The code of the error.
      */
@@ -25,6 +21,10 @@ public final class OperationResultErrorProperties {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of OperationResultErrorProperties class. */
+    public OperationResultErrorProperties() {
+    }
 
     /**
      * Get the code property: The code of the error.

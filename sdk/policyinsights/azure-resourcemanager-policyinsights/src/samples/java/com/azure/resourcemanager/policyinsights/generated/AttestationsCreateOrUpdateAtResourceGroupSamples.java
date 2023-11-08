@@ -4,15 +4,18 @@
 
 package com.azure.resourcemanager.policyinsights.generated;
 
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.policyinsights.models.AttestationEvidence;
 import com.azure.resourcemanager.policyinsights.models.ComplianceState;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 /** Samples for Attestations CreateOrUpdateAtResourceGroup. */
 public final class AttestationsCreateOrUpdateAtResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_CreateResourceGroupScope.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_CreateResourceGroupScope.json
      */
     /**
      * Sample code: Create attestation at resource group scope.
@@ -20,7 +23,7 @@ public final class AttestationsCreateOrUpdateAtResourceGroupSamples {
      * @param manager Entry point to PolicyInsightsManager.
      */
     public static void createAttestationAtResourceGroupScope(
-        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) throws IOException {
         manager
             .attestations()
             .define("790996e6-9871-4b1f-9cd9-ec42cd6ced1e")
@@ -38,6 +41,11 @@ public final class AttestationsCreateOrUpdateAtResourceGroupSamples {
                         new AttestationEvidence()
                             .withDescription("The results of the security audit.")
                             .withSourceUri("https://gist.github.com/contoso/9573e238762c60166c090ae16b814011")))
+            .withAssessmentDate(OffsetDateTime.parse("2021-06-10T00:00:00Z"))
+            .withMetadata(
+                SerializerFactory
+                    .createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"departmentId\":\"NYC-MARKETING-1\"}", Object.class, SerializerEncoding.JSON))
             .create();
     }
 }

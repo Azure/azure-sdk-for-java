@@ -5,32 +5,40 @@
 package com.azure.resourcemanager.msi.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.msi.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Microsoft.ManagedIdentity Operation. Operation supported by the Microsoft.ManagedIdentity REST API. */
+/**
+ * Microsoft.ManagedIdentity Operation.
+ *
+ * <p>Operation supported by the Microsoft.ManagedIdentity REST API.
+ */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
-     * Operation Name. The name of the REST Operation. This is of the format
-     * {provider}/{resource}/{operation}.
+     * Operation Name.
+     *
+     * The name of the REST Operation. This is of the format {provider}/{resource}/{operation}.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Operation Display. The object that describes the operation.
+     * Operation Display.
+     *
+     * The object that describes the operation.
      */
     @JsonProperty(value = "display")
     private OperationDisplay display;
 
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
+
     /**
-     * Get the name property: Operation Name. The name of the REST Operation. This is of the format
-     * {provider}/{resource}/{operation}.
+     * Get the name property: Operation Name.
+     *
+     * <p>The name of the REST Operation. This is of the format {provider}/{resource}/{operation}.
      *
      * @return the name value.
      */
@@ -39,8 +47,9 @@ public final class OperationInner {
     }
 
     /**
-     * Set the name property: Operation Name. The name of the REST Operation. This is of the format
-     * {provider}/{resource}/{operation}.
+     * Set the name property: Operation Name.
+     *
+     * <p>The name of the REST Operation. This is of the format {provider}/{resource}/{operation}.
      *
      * @param name the name value to set.
      * @return the OperationInner object itself.
@@ -51,7 +60,9 @@ public final class OperationInner {
     }
 
     /**
-     * Get the display property: Operation Display. The object that describes the operation.
+     * Get the display property: Operation Display.
+     *
+     * <p>The object that describes the operation.
      *
      * @return the display value.
      */
@@ -60,7 +71,9 @@ public final class OperationInner {
     }
 
     /**
-     * Set the display property: Operation Display. The object that describes the operation.
+     * Set the display property: Operation Display.
+     *
+     * <p>The object that describes the operation.
      *
      * @param display the display value to set.
      * @return the OperationInner object itself.

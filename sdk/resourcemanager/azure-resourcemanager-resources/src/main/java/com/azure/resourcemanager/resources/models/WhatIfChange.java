@@ -19,8 +19,7 @@ public final class WhatIfChange {
     private String resourceId;
 
     /*
-     * Type of change that will be made to the resource when the deployment is
-     * executed.
+     * Type of change that will be made to the resource when the deployment is executed.
      */
     @JsonProperty(value = "changeType", required = true)
     private ChangeType changeType;
@@ -48,6 +47,10 @@ public final class WhatIfChange {
      */
     @JsonProperty(value = "delta")
     private List<WhatIfPropertyChange> delta;
+
+    /** Creates an instance of WhatIfChange class. */
+    public WhatIfChange() {
+    }
 
     /**
      * Get the resourceId property: Resource ID.

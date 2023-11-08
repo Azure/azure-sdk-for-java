@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.RoleDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Role definition list operation result. */
 @Fluent
 public final class RoleDefinitionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleDefinitionListResult.class);
-
     /*
      * Role definition list.
      */
@@ -27,6 +23,10 @@ public final class RoleDefinitionListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of RoleDefinitionListResult class. */
+    public RoleDefinitionListResult() {
+    }
 
     /**
      * Get the value property: Role definition list.

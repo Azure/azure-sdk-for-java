@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskAccesses ListPrivateEndpointConnections. */
 public final class DiskAccessesListPrivateEndpointConnectionsSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListPrivateEndpointConnectionsInADiskAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/diskAccessExamples/DiskAccessPrivateEndpointConnection_ListByDiskAccess.json
      */
     /**
      * Sample code: Get information about a private endpoint connection under a disk access resource.
@@ -23,6 +21,6 @@ public final class DiskAccessesListPrivateEndpointConnectionsSamples {
             .manager()
             .serviceClient()
             .getDiskAccesses()
-            .listPrivateEndpointConnections("myResourceGroup", "myDiskAccess", Context.NONE);
+            .listPrivateEndpointConnections("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

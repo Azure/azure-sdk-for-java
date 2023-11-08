@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
@@ -42,6 +43,10 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of VirtualNetworkGatewayConnectionListEntityInner class. */
+    public VirtualNetworkGatewayConnectionListEntityInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the virtual network gateway connection.
@@ -391,6 +396,32 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
+     * Get the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     *
+     * @return the gatewayCustomBgpIpAddresses value.
+     */
+    public List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().gatewayCustomBgpIpAddresses();
+    }
+
+    /**
+     * Set the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     *
+     * @param gatewayCustomBgpIpAddresses the gatewayCustomBgpIpAddresses value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionListEntityInner withGatewayCustomBgpIpAddresses(
+        List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
+        }
+        this.innerProperties().withGatewayCustomBgpIpAddresses(gatewayCustomBgpIpAddresses);
+        return this;
+    }
+
+    /**
      * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
      *
      * @return the usePolicyBasedTrafficSelectors value.
@@ -500,6 +531,32 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
             this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
         }
         this.innerProperties().withExpressRouteGatewayBypass(expressRouteGatewayBypass);
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @return the enablePrivateLinkFastPath value.
+     */
+    public Boolean enablePrivateLinkFastPath() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePrivateLinkFastPath();
+    }
+
+    /**
+     * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionListEntityInner withEnablePrivateLinkFastPath(
+        Boolean enablePrivateLinkFastPath) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
+        }
+        this.innerProperties().withEnablePrivateLinkFastPath(enablePrivateLinkFastPath);
         return this;
     }
 

@@ -212,14 +212,7 @@ public final class EntitiesGetTimelinesClientImpl implements EntitiesGetTimeline
     private Mono<EntityTimelineResponseInner> listAsync(
         String resourceGroupName, String workspaceName, String entityId, EntityTimelineParameters parameters) {
         return listWithResponseAsync(resourceGroupName, workspaceName, entityId, parameters)
-            .flatMap(
-                (Response<EntityTimelineResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -17,6 +17,10 @@ public final class VnetParameters extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private VnetParametersProperties innerProperties;
 
+    /** Creates an instance of VnetParameters class. */
+    public VnetParameters() {
+    }
+
     /**
      * Get the innerProperties property: VnetParameters resource specific properties.
      *

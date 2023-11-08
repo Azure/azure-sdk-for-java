@@ -44,7 +44,7 @@ public final class KeyClientJavaDocCodeSnippets {
     public KeyClient createClient() {
         // BEGIN: com.azure.security.keyvault.keys.KeyClient.instantiation
         KeyClient keyClient = new KeyClientBuilder()
-            .vaultUrl("https://myvault.azure.net/")
+            .vaultUrl("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.security.keyvault.keys.KeyClient.instantiation
@@ -61,7 +61,6 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType
         KeyVaultKey key = keyClient.createKey("keyName", KeyType.EC);
-
         System.out.printf("Created key with name: %s and id: %s%n", key.getName(), key.getId());
         // END: com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType
 
@@ -94,14 +93,14 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Created key with name: %s and id: %s%n", ecKey.getName(), ecKey.getId());
         // END: com.azure.security.keyvault.keys.KeyClient.createEcKey#CreateOctKeyOptions
 
-        // BEGIN: com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions
+        // BEGIN: com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions
         CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
             .setNotBefore(OffsetDateTime.now().plusDays(1))
             .setExpiresOn(OffsetDateTime.now().plusYears(1));
         KeyVaultKey octKey = keyClient.createOctKey(createOctKeyOptions);
 
         System.out.printf("Created key with name: %s and id: %s%n", octKey.getName(), octKey.getId());
-        // END: com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions
+        // END: com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions
     }
 
     /**
@@ -150,10 +149,10 @@ public final class KeyClientJavaDocCodeSnippets {
         // Deleted date only works for SoftDelete Enabled Key Vault.
         DeletedKey deletedKey = deleteKeyPollResponse.getValue();
 
-        System.out.printf("Key delete date: %s%n" + deletedKey.getDeletedOn());
+        System.out.printf("Key delete date: %s%n", deletedKey.getDeletedOn());
         System.out.printf("Deleted key's recovery id: %s%n", deletedKey.getRecoveryId());
 
-        // Key is being deleted on server.
+        // Key is being deleted on the server.
         deleteKeyPoller.waitForCompletion();
         // Key is deleted
         // END: com.azure.security.keyvault.keys.KeyClient.deleteKey#String
@@ -214,7 +213,7 @@ public final class KeyClientJavaDocCodeSnippets {
             createEcKeyResponse.getValue().getId());
         // END: com.azure.security.keyvault.keys.KeyClient.createEcKeyWithResponse#CreateEcKeyOptions-Context
 
-        // BEGIN: com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context
+        // BEGIN: com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-Context
         CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
             .setNotBefore(OffsetDateTime.now().plusDays(1))
             .setExpiresOn(OffsetDateTime.now().plusYears(1));
@@ -223,7 +222,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
         System.out.printf("Created key with name: %s and: id %s%n", createOctKeyResponse.getValue().getName(),
             createOctKeyResponse.getValue().getId());
-        // END: com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context
+        // END: com.azure.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-Context
     }
 
     /**
@@ -350,7 +349,7 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Recovered key name: %s%n", recoveredKey.getName());
         System.out.printf("Recovered key id: %s%n", recoveredKey.getId());
 
-        // Key is being recovered on server.
+        // Key is being recovered on the server.
         recoverKeyPoller.waitForCompletion();
         // Key is recovered
         // END: com.azure.security.keyvault.keys.KeyClient.recoverDeletedKey#String

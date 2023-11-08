@@ -54,6 +54,13 @@ public interface User {
     UserType userType();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.databoxedge.fluent.models.UserInner object.
      *
      * @return the inner object.

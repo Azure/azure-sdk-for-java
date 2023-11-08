@@ -6,15 +6,17 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.catalyst.InternalRow
+import org.apache.spark.sql.catalyst.CatalystTypeConverters.convertToCatalyst
+import org.apache.spark.sql.catalyst.{CatalystTypeConverters, InternalRow}
 import org.apache.spark.sql.catalyst.util.ArrayData
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
-import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, Uuid}
+import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDateTime, OffsetDateTime, ZoneOffset}
-import java.util.UUID
+import java.time.temporal.ChronoUnit
+import java.time.{Instant, LocalDate, LocalDateTime, OffsetDateTime, ZoneOffset}
+import java.util.{TimeZone, UUID}
 import scala.util.Random
 
 // scalastyle:off underscore.import
@@ -28,13 +30,67 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
 
   val objectMapper = new ObjectMapper()
   private[this] val defaultRowConverter =
-    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.Always))
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.Always,
+        SerializationDateTimeConversionModes.Default
+      )
+    )
+  private[this] val alwaysEpochMsRowConverter =
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.Always,
+        SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithUtcTimezone
+      )
+    )
+
+  private[this] val alwaysEpochMsRowConverterWithSystemDefaultTimezone =
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.Always,
+        SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithSystemDefaultTimezone
+      )
+    )
+
+  private[this] val alwaysEpochMsRowConverterNonNull =
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.NonNull,
+        SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithUtcTimezone
+      )
+    )
+
+  private[this] val alwaysEpochMsRowConverterNonNullWithSystemDefaultTimezone =
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.NonNull,
+        SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithSystemDefaultTimezone
+      )
+    )
+
   private[this] val rowConverterInclusionNonNull =
-    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonNull))
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.NonNull,
+        SerializationDateTimeConversionModes.Default
+      )
+    )
+
   private[this] val rowConverterInclusionNonDefault =
-    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonDefault))
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.NonDefault,
+        SerializationDateTimeConversionModes.Default
+      )
+    )
+
   private[this] val rowConverterInclusionNonEmpty =
-    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonEmpty))
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.NonEmpty,
+        SerializationDateTimeConversionModes.Default
+      )
+    )
 
   "basic spark row" should "translate to ObjectNode" in {
 
@@ -251,6 +307,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   }
 
   "array in spark row" should "translate to ObjectNode" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val colName1 = "testCol1"
     val colName2 = "testCol2"
     val colName3 = "testCol3"
@@ -421,6 +480,115 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.get(colName2).asLong() shouldEqual currentMillis
     objectNode.get(colName3).asInt() shouldEqual colVal3
     objectNode.get(colName4).asInt() shouldEqual colVal3
+  }
+
+  "date and time in spark row" should "should honor dateTimeConversionMode config" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colName3 = "testCol3"
+
+    val testDate = LocalDate.of(1945, 12, 12)
+    val testTimestamp = new java.sql.Timestamp(
+      46, 11, 12, 12, 12, 12, 0)
+      .toLocalDateTime.toInstant(ZoneOffset.UTC)
+
+    // Catalyst optimizer will convert java.sql.Date into LocalDate.toEpochDay
+    val colVal1Raw = new Date(45, 11, 12)
+    convertToCatalyst(colVal1Raw).isInstanceOf[Int] shouldEqual true
+    val colVal1= convertToCatalyst(colVal1Raw).asInstanceOf[Int]
+    colVal1 shouldEqual -8786
+    colVal1 shouldEqual testDate.toEpochDay
+    val testDateLocalInstant = Timestamp.valueOf(new java.sql.Timestamp(
+      45, 11, 12, 0, 0, 0, 0)
+      .toLocalDateTime).toInstant
+
+    // Catalyst optimizer will convert java.sql.Timestamp into epoch Microseconds
+    val colVal2Raw = Timestamp.from(testTimestamp)
+    convertToCatalyst(colVal2Raw).isInstanceOf[Long] shouldEqual true
+    val colVal2= convertToCatalyst(colVal2Raw).asInstanceOf[Long]
+    colVal2 shouldEqual -727530468000000L
+    colVal2 shouldEqual ChronoUnit.MICROS.between(Instant.EPOCH, testTimestamp)
+
+    val testTimestampCol3 = new java.sql.Timestamp(
+      100, 11, 12, 12, 12, 12, 0)
+      .toLocalDateTime.toInstant(ZoneOffset.UTC)
+
+    val testDateCol3 = LocalDate.of(2000, 12, 12)
+    val colVal3Raw = new Date(100, 11, 12)
+    convertToCatalyst(colVal3Raw).isInstanceOf[Int] shouldEqual true
+    val colVal3= convertToCatalyst(colVal3Raw).asInstanceOf[Int]
+    colVal3 shouldEqual 11303
+    colVal3 shouldEqual testDateCol3.toEpochDay
+    val testDateCol3Timestamp = Timestamp.valueOf(new java.sql.Timestamp(
+      100, 11, 12, 0, 0, 0, 0)
+      .toLocalDateTime)
+    val testDateCol3LocalInstant = testDateCol3Timestamp.toInstant
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2, Seq(colVal3)),
+      StructType(Seq(StructField(colName1, DateType),
+        StructField(colName2, TimestampType),
+        StructField(colName3, ArrayType(DateType)))))
+
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    objectNode.get(colName1).asLong() shouldEqual colVal1
+    objectNode.get(colName2).asLong() shouldEqual colVal2
+    objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual colVal3
+
+    objectNode = alwaysEpochMsRowConverter.fromRowToObjectNode(row)
+    objectNode.get(colName1).asLong() shouldEqual testDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
+    objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+    objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual testDateCol3.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
+
+    val originalDefaultTimezone = java.time.ZoneId.systemDefault
+    try {
+      TimeZone.setDefault(TimeZone.getTimeZone("America/Los_Angeles"))
+      java.time.ZoneId.systemDefault().getId shouldEqual "America/Los_Angeles"
+      objectNode = alwaysEpochMsRowConverterWithSystemDefaultTimezone.fromRowToObjectNode(row)
+      objectNode.get(colName1).asLong() shouldEqual testDate
+        .atStartOfDay()
+        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(testDateLocalInstant))
+        .toEpochMilli
+      objectNode.get(colName1).asLong() shouldEqual -759081600000L
+      objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+      objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual testDateCol3
+        .atStartOfDay()
+        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(testDateCol3LocalInstant))
+        .toEpochMilli
+      objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual 976608000000L
+    } finally {
+      TimeZone.setDefault(TimeZone.getTimeZone(originalDefaultTimezone.getId))
+    }
+
+    objectNode = alwaysEpochMsRowConverterNonNull.fromRowToObjectNode(row)
+    objectNode.get(colName1).asLong() shouldEqual testDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
+    objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+    objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual
+      testDateCol3.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
+
+    try {
+      TimeZone.setDefault(TimeZone.getTimeZone("America/Los_Angeles"))
+      java.time.ZoneId.systemDefault().getId shouldEqual "America/Los_Angeles"
+      objectNode = alwaysEpochMsRowConverterNonNullWithSystemDefaultTimezone.fromRowToObjectNode(row)
+      objectNode.get(colName1).asLong() shouldEqual testDate
+        .atStartOfDay()
+        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(testDateLocalInstant))
+        .toEpochMilli
+
+      objectNode.get(colName1).asLong() shouldEqual -759081600000L
+      objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+
+      objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual testDateCol3
+        .atStartOfDay()
+        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(testDateCol3LocalInstant))
+        .toEpochMilli
+      objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual 976608000000L
+    } finally {
+      TimeZone.setDefault(TimeZone.getTimeZone(originalDefaultTimezone.getId))
+    }
   }
 
   "numeric types in spark row" should "translate to ObjectNode" in {
@@ -734,6 +902,21 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     row.getString(1) shouldEqual colVal2
   }
 
+  "basic ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 = 8
+    val colVal2 = "strVal"
+
+    val schema = StructType(Seq(StructField(colName1, IntegerType), StructField(colName2, StringType)))
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    objectNode.put(colName2, colVal2)
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getInt(0) shouldEqual colVal1
+    row.getString(1) shouldEqual colVal2
+  }
+
   "numeric types in ObjectNode" should "translate to Row" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
@@ -755,6 +938,33 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2))))
 
     val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getDouble(0) shouldEqual colVal1
+    row.getDouble(1) shouldEqual colVal2
+    row.getLong(2) shouldEqual colVal3
+    row.getDecimal(3) shouldEqual colVal4
+  }
+
+  "numeric types in ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colName4 = "testCol4"
+
+    val colVal1: Double = 3.5
+    val colVal2: Float = 1e14f
+    val colVal3: Long = 1000000000
+    val colVal4: java.math.BigDecimal = new java.math.BigDecimal(4.6)
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    objectNode.put(colName2, colVal2)
+    objectNode.put(colName3, colVal3)
+    objectNode.put(colName4, colVal4)
+
+    val schema = StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
+      StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2))))
+
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
     row.getDouble(0) shouldEqual colVal1
     row.getDouble(1) shouldEqual colVal2
     row.getLong(2) shouldEqual colVal3
@@ -788,6 +998,33 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     row.getDecimal(3) shouldEqual colVal4
   }
 
+  "numeric types as strings in ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colName4 = "testCol4"
+
+    val colVal1: Double = 3.5
+    val colVal2: Float = 1e14f
+    val colVal3: Long = 1000000000
+    val colVal4: java.math.BigDecimal = new java.math.BigDecimal(4.6)
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1.toString)
+    objectNode.put(colName2, colVal2.toString)
+    objectNode.put(colName3, colVal3.toString)
+    objectNode.put(colName4, colVal4.toString)
+
+    val schema = StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
+      StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2))))
+
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getDouble(0) shouldEqual colVal1
+    row.getFloat(1) shouldEqual colVal2
+    row.getLong(2) shouldEqual colVal3
+    row.getDecimal(3) shouldEqual colVal4
+  }
+
   "invalid double in ObjectNode" should "throw in Strict mode" in {
     val colName1 = "testCol1"
     val colVal1 = "some invalid value"
@@ -798,6 +1035,23 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName1, DoubleType)))
     try {
       defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
+      fail("Should have thrown on invalid data")
+    }
+    catch {
+      case _: Exception => succeed
+    }
+  }
+
+  "invalid double in ObjectNode" should "throw in (Change Feed V1) Strict mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, DoubleType)))
+    try {
+      defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Strict)
       fail("Should have thrown on invalid data")
     }
     catch {
@@ -925,6 +1179,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   }
 
   "null for decimal in ObjectNode" should "should not throw when nullable" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val colName1 = "testCol1"
     val colVal1 = ""
 
@@ -946,6 +1203,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   }
 
   "null for decimal in ObjectNode" should "should throw when not nullable" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val colName1 = "testCol1"
     val colVal1 = ""
 
@@ -995,6 +1255,20 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.put(colName1, colVal1)
 
     val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.isNullAt(1) shouldBe true
+  }
+
+  "missing attribute in ObjectNode" should "translate to (Change Feed V1) Row" in {
+
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 = "strVal"
+
+    val schema = StructType(Seq(StructField(colName1, NullType), StructField(colName2, StringType)))
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
     row.isNullAt(1) shouldBe true
   }
 
@@ -1227,6 +1501,212 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     row.getString(0) shouldEqual objectNode.toString
   }
 
+  "invalid raw in ObjectNode" should "translate to null (Change Feed V1) Row" in {
+    val colName1 = "testCol1"
+    val colVal1 = "testVal1"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getString(0) shouldEqual null
+  }
+
+  "current in ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val current = "current"
+    val colName1 = "testCol1"
+    val colVal1 = "testVal1"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val currentNode: ObjectNode = objectNode.putObject(current)
+    currentNode.put(colName1, colVal1)
+    objectNode.set(current, currentNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getString(0) shouldEqual currentNode.toString
+  }
+
+  "previous in ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val previous = "previous"
+    val colName1 = "testCol1"
+    val colVal1 = "testVal1"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val previousNode: ObjectNode = objectNode.putObject(previous)
+    previousNode.put(colName1, colVal1)
+    objectNode.set(previous, previousNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.PreviousRawJsonBodyAttributeName, StringType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getString(0) shouldEqual previousNode.toString
+  }
+
+  "metadata in ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val metadata = "metadata"
+    val colName1 = "testCol1"
+    val colVal1 = "testVal1"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val metadataNode: ObjectNode = objectNode.putObject(metadata)
+    metadataNode.put(colName1, colVal1)
+    objectNode.set(metadata, metadataNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.MetadataJsonBodyAttributeName, StringType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getString(0) shouldEqual metadataNode.toString
+  }
+
+  "id in current ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val current = "current"
+    val colName1 = "id"
+    val colVal1 = "cat1"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val currentNode: ObjectNode = objectNode.putObject(current)
+    currentNode.put(colName1, colVal1)
+    objectNode.set(current, currentNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.IdAttributeName, StringType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getString(0) shouldEqual colVal1
+  }
+
+  "id in previous ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val previous = "previous"
+    val colName1 = "id"
+    val colVal1 = "cat1"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val previousNode: ObjectNode = objectNode.putObject(previous)
+    previousNode.put(colName1, colVal1)
+    objectNode.set(previous, previousNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.IdAttributeName, StringType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getString(0) shouldEqual colVal1
+  }
+
+  "etag in current ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val current = "current"
+    val colName1 = "_etag"
+    val colVal1 = "cat-etag"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val currentNode: ObjectNode = objectNode.putObject(current)
+    currentNode.put(colName1, colVal1)
+    objectNode.set(current, currentNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.ETagAttributeName, StringType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getString(0) shouldEqual colVal1
+  }
+
+  "etag in previous ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val previous = "previous"
+    val colName1 = "_etag"
+    val colVal1 = "cat-etag"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val previousNode: ObjectNode = objectNode.putObject(previous)
+    previousNode.put(colName1, colVal1)
+    objectNode.set(previous, previousNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.ETagAttributeName, StringType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getString(0) shouldEqual colVal1
+  }
+
+  "lsn in ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val metadata = "metadata"
+    val colName1 = "lsn"
+    val colVal1 = 6
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val metadataNode: ObjectNode = objectNode.putObject(metadata)
+    metadataNode.put(colName1, colVal1)
+    objectNode.set(metadata, metadataNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.LsnAttributeName, LongType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getLong(0) shouldEqual colVal1
+  }
+
+  "conflict resolution timestamp in metadata ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val metadata = "metadata"
+    val colName1 = "crts"
+    val colVal1 = 123456
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val metadataNode: ObjectNode = objectNode.putObject(metadata)
+    metadataNode.put(colName1, colVal1)
+    objectNode.set(metadata, metadataNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.CrtsAttributeName, LongType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getLong(0) shouldEqual colVal1
+  }
+
+  "timestamp in current ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val current = "current"
+    val colName1 = "_ts"
+    val colVal1 = 123456789
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val currentNode: ObjectNode = objectNode.putObject(current)
+    currentNode.put(colName1, colVal1)
+    objectNode.set(current, currentNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.TimestampAttributeName, LongType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getLong(0) shouldEqual colVal1
+  }
+
+  "timestamp in previous ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val previous = "previous"
+    val colName1 = "_ts"
+    val colVal1 = 123456789
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val previousNode: ObjectNode = objectNode.putObject(previous)
+    previousNode.put(colName1, colVal1)
+    objectNode.set(previous, previousNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.TimestampAttributeName, LongType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getLong(0) shouldEqual colVal1
+  }
+
+  "operationType in metadata ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val metadata = "metadata"
+    val colName1 = "operationType"
+    val colVal1 = "cat1"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val metadataNode: ObjectNode = objectNode.putObject(metadata)
+    metadataNode.put(colName1, colVal1)
+    objectNode.set(metadata, metadataNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.OperationTypeAttributeName, StringType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getString(0) shouldEqual colVal1
+  }
+
+  "previousImageLSN in metadata ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val metadata = "metadata"
+    val colName1 = "previousImageLSN"
+    val colVal1 = 8
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val metadataNode: ObjectNode = objectNode.putObject(metadata)
+    metadataNode.put(colName1, colVal1)
+    objectNode.set(metadata, metadataNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.PreviousImageLsnAttributeName, LongType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getLong(0) shouldEqual colVal1
+  }
+
   "lsn in ObjectNode" should "translate to Row" in {
     val colName1 = "testCol1"
     val colVal1 = "testVal1"
@@ -1247,6 +1727,28 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     schema.head.dataType shouldEqual LongType
     val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     row.getLong(0) shouldEqual 12345
+  }
+
+  "invalid lsn in ObjectNode" should "translate to -1 (Change Feed V1) Row" in {
+    val colName1 = "testCol1"
+    val colVal1 = "testVal1"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    objectNode.put(CosmosTableSchemaInferrer.LsnAttributeName, "12345")
+    val schemaIncorrectType = StructType(Seq(StructField(CosmosTableSchemaInferrer.LsnAttributeName, StringType)))
+    schemaIncorrectType.size shouldEqual 1
+    schemaIncorrectType.head.dataType shouldEqual StringType
+    val rowIncorrectType = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schemaIncorrectType,
+      objectNode,
+      SchemaConversionModes.Relaxed)
+    rowIncorrectType.getString(0) shouldEqual "12345"
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.LsnAttributeName, LongType)))
+    schema.size shouldEqual 1
+    schema.head.dataType shouldEqual LongType
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getLong(0) shouldEqual -1
   }
 
   "unknown mapping" should "throw in Strict mode" in {
@@ -1276,6 +1778,23 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName1, BinaryType)))
     try {
       val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+      row.isNullAt(0) shouldBe true
+    }
+    catch {
+      case _: Exception => fail("Should not throw in Relaxed mode")
+    }
+  }
+
+  "unknown mapping" should "return null in (Change Feed V1) Relaxed mode" in {
+    val colName1 = "testCol1"
+    val colVal1 = "some invalid value"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(
+      StructField(colName1, BinaryType)))
+    try {
+      val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
       row.isNullAt(0) shouldBe true
     }
     catch {

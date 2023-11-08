@@ -8,13 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionType. */
+/**
+ * encryptionType
+ *
+ * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
+ * This value can only be set when creating new pool.
+ */
 public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
     /** Static value Single for EncryptionType. */
     public static final EncryptionType SINGLE = fromString("Single");
 
     /** Static value Double for EncryptionType. */
     public static final EncryptionType DOUBLE = fromString("Double");
+
+    /**
+     * Creates a new instance of EncryptionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionType() {
+    }
 
     /**
      * Creates or finds a EncryptionType from its string representation.
@@ -27,7 +41,11 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
         return fromString(name, EncryptionType.class);
     }
 
-    /** @return known EncryptionType values. */
+    /**
+     * Gets known EncryptionType values.
+     *
+     * @return known EncryptionType values.
+     */
     public static Collection<EncryptionType> values() {
         return values(EncryptionType.class);
     }

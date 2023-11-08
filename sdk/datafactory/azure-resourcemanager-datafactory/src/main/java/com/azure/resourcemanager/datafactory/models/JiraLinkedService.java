@@ -24,6 +24,10 @@ public final class JiraLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private JiraLinkedServiceTypeProperties innerTypeProperties = new JiraLinkedServiceTypeProperties();
 
+    /** Creates an instance of JiraLinkedService class. */
+    public JiraLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Jira Service linked service properties.
      *
@@ -232,22 +236,22 @@ public final class JiraLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the JiraLinkedService object itself.
      */
-    public JiraLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public JiraLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new JiraLinkedServiceTypeProperties();
         }

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databoxedge.fluent.OrdersClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.OrderInner;
 import com.azure.resourcemanager.databoxedge.models.Order;
 import com.azure.resourcemanager.databoxedge.models.Orders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OrdersImpl implements Orders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrdersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OrdersImpl.class);
 
     private final OrdersClient innerClient;
 
@@ -39,15 +38,6 @@ public final class OrdersImpl implements Orders {
         return Utils.mapPage(inner, inner1 -> new OrderImpl(inner1, this.manager()));
     }
 
-    public Order get(String deviceName, String resourceGroupName) {
-        OrderInner inner = this.serviceClient().get(deviceName, resourceGroupName);
-        if (inner != null) {
-            return new OrderImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Order> getWithResponse(String deviceName, String resourceGroupName, Context context) {
         Response<OrderInner> inner = this.serviceClient().getWithResponse(deviceName, resourceGroupName, context);
         if (inner != null) {
@@ -56,6 +46,15 @@ public final class OrdersImpl implements Orders {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OrderImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Order get(String deviceName, String resourceGroupName) {
+        OrderInner inner = this.serviceClient().get(deviceName, resourceGroupName);
+        if (inner != null) {
+            return new OrderImpl(inner, this.manager());
         } else {
             return null;
         }

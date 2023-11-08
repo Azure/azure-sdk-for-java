@@ -4,108 +4,32 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Collection;
 
-/** GetInsights Query Errors. */
-@Fluent
-public final class GetInsightsError {
-    /*
-     * the query kind
+/** the query kind. */
+public final class GetInsightsError extends ExpandableStringEnum<GetInsightsError> {
+    /** Static value Insight for GetInsightsError. */
+    public static final GetInsightsError INSIGHT = fromString("Insight");
+
+    /**
+     * Creates or finds a GetInsightsError from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding GetInsightsError.
      */
-    @JsonProperty(value = "kind", required = true)
-    private String kind = "Insight";
-
-    /*
-     * the query id
-     */
-    @JsonProperty(value = "queryId")
-    private String queryId;
-
-    /*
-     * the error message
-     */
-    @JsonProperty(value = "errorMessage", required = true)
-    private String errorMessage;
-
-    /** Creates an instance of GetInsightsError class. */
-    public GetInsightsError() {
-        kind = "Insight";
+    @JsonCreator
+    public static GetInsightsError fromString(String name) {
+        return fromString(name, GetInsightsError.class);
     }
 
     /**
-     * Get the kind property: the query kind.
+     * Gets known GetInsightsError values.
      *
-     * @return the kind value.
+     * @return known GetInsightsError values.
      */
-    public String kind() {
-        return this.kind;
+    public static Collection<GetInsightsError> values() {
+        return values(GetInsightsError.class);
     }
-
-    /**
-     * Set the kind property: the query kind.
-     *
-     * @param kind the kind value to set.
-     * @return the GetInsightsError object itself.
-     */
-    public GetInsightsError withKind(String kind) {
-        this.kind = kind;
-        return this;
-    }
-
-    /**
-     * Get the queryId property: the query id.
-     *
-     * @return the queryId value.
-     */
-    public String queryId() {
-        return this.queryId;
-    }
-
-    /**
-     * Set the queryId property: the query id.
-     *
-     * @param queryId the queryId value to set.
-     * @return the GetInsightsError object itself.
-     */
-    public GetInsightsError withQueryId(String queryId) {
-        this.queryId = queryId;
-        return this;
-    }
-
-    /**
-     * Get the errorMessage property: the error message.
-     *
-     * @return the errorMessage value.
-     */
-    public String errorMessage() {
-        return this.errorMessage;
-    }
-
-    /**
-     * Set the errorMessage property: the error message.
-     *
-     * @param errorMessage the errorMessage value to set.
-     * @return the GetInsightsError object itself.
-     */
-    public GetInsightsError withErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (errorMessage() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property errorMessage in model GetInsightsError"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GetInsightsError.class);
 }

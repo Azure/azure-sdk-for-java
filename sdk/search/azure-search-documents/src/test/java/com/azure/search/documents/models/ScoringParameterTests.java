@@ -8,13 +8,18 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@SuppressWarnings("unchecked")
 public class ScoringParameterTests {
+    private static final Map<String, Object> FOOL_SPOTBUGS = new HashMap<>();
+
     @Test
     public void testConstructorWithMap() {
         List<String> parameters = new ArrayList<>(Arrays.asList("hello", "tests"));
@@ -45,12 +50,14 @@ public class ScoringParameterTests {
 
     @Test
     public void testConstructorWithMapNullName() {
-        assertThrows(NullPointerException.class, () -> new ScoringParameter(null, Arrays.asList("hello", "tests")));
+        assertThrows(NullPointerException.class, () -> new ScoringParameter((String) FOOL_SPOTBUGS.get("name"),
+            Arrays.asList("hello", "tests")));
     }
 
     @Test
     public void testConstructorWithMapNullValues() {
-        assertThrows(NullPointerException.class, () -> new ScoringParameter("null value", (List<String>) null));
+        assertThrows(NullPointerException.class, () -> new ScoringParameter("null value",
+            (List<String>) FOOL_SPOTBUGS.get("values")));
     }
 
     @Test
@@ -65,6 +72,7 @@ public class ScoringParameterTests {
 
     @Test
     public void testConstructorWithNullGeoPoint() {
-        assertThrows(NullPointerException.class, () -> new ScoringParameter("null geopoint", (GeoPoint) null));
+        assertThrows(NullPointerException.class, () -> new ScoringParameter("null geopoint",
+            (GeoPoint) FOOL_SPOTBUGS.get("geoPoint")));
     }
 }

@@ -22,6 +22,10 @@ public final class FunctionSecretsInner {
     @JsonProperty(value = "trigger_url")
     private String triggerUrl;
 
+    /** Creates an instance of FunctionSecretsInner class. */
+    public FunctionSecretsInner() {
+    }
+
     /**
      * Get the key property: Secret key.
      *

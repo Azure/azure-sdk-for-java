@@ -7,16 +7,12 @@ package com.azure.resourcemanager.digitaltwins.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The common properties of a DigitalTwinsInstance. */
 @Fluent
 public class DigitalTwinsResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DigitalTwinsResource.class);
-
     /*
      * The managed identity for the DigitalTwinsInstance.
      */
@@ -24,11 +20,14 @@ public class DigitalTwinsResource extends Resource {
     private DigitalTwinsIdentity identity;
 
     /*
-     * Metadata pertaining to creation and last modification of the
-     * DigitalTwinsInstance.
+     * Metadata pertaining to creation and last modification of the DigitalTwinsInstance.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of DigitalTwinsResource class. */
+    public DigitalTwinsResource() {
+    }
 
     /**
      * Get the identity property: The managed identity for the DigitalTwinsInstance.

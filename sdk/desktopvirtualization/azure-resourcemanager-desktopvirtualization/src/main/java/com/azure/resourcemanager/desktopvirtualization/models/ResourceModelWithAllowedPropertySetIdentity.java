@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The ResourceModelWithAllowedPropertySetIdentity model. */
 @Fluent
-public class ResourceModelWithAllowedPropertySetIdentity extends Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceModelWithAllowedPropertySetIdentity.class);
+public final class ResourceModelWithAllowedPropertySetIdentity extends Identity {
+    /** Creates an instance of ResourceModelWithAllowedPropertySetIdentity class. */
+    public ResourceModelWithAllowedPropertySetIdentity() {
+    }
 
     /** {@inheritDoc} */
     @Override

@@ -22,6 +22,10 @@ public final class Dimension {
     @JsonProperty(value = "displayName")
     private String displayName;
 
+    /** Creates an instance of Dimension class. */
+    public Dimension() {
+    }
+
     /**
      * Get the name property: Display name of dimension.
      *

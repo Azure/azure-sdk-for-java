@@ -4,43 +4,41 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMs Restart. */
 public final class VirtualMachineScaleSetVMsRestartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_Restart_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Restart_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetVMs_Restart_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSetVM_Restart_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetVMsRestartMinimumSetGen(
+    public static void virtualMachineScaleSetVMRestartMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .restart("rgcompute", "aaaaaaaaaaaa", "aaaaaa", Context.NONE);
+            .restart("rgcompute", "aaaaaaaaaaaa", "aaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_Restart_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Restart_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetVMs_Restart_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSetVM_Restart_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetVMsRestartMaximumSetGen(
+    public static void virtualMachineScaleSetVMRestartMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .restart("rgcompute", "aa", "aaaaaaaaaaaaaaaaa", Context.NONE);
+            .restart("rgcompute", "aa", "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Partner server information for the failover group. */
 @Fluent
 public final class PartnerInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerInfo.class);
-
     /*
      * Resource identifier of the partner server.
      */
@@ -31,6 +28,10 @@ public final class PartnerInfo {
      */
     @JsonProperty(value = "replicationRole", access = JsonProperty.Access.WRITE_ONLY)
     private FailoverGroupReplicationRole replicationRole;
+
+    /** Creates an instance of PartnerInfo class. */
+    public PartnerInfo() {
+    }
 
     /**
      * Get the id property: Resource identifier of the partner server.
@@ -77,8 +78,10 @@ public final class PartnerInfo {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property id in model PartnerInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PartnerInfo.class);
 }

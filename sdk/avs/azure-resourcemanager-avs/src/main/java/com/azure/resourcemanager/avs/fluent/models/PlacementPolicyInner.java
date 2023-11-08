@@ -6,21 +6,21 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.PlacementPolicyProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A vSphere Distributed Resource Scheduler (DRS) placement policy. */
 @Fluent
 public final class PlacementPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PlacementPolicyInner.class);
-
     /*
      * placement policy properties
      */
     @JsonProperty(value = "properties")
     private PlacementPolicyProperties properties;
+
+    /** Creates an instance of PlacementPolicyInner class. */
+    public PlacementPolicyInner() {
+    }
 
     /**
      * Get the properties property: placement policy properties.

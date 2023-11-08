@@ -4,12 +4,15 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import java.util.List;
 
 /** Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceExited event. */
-@Immutable
+@Fluent
 public final class MapsGeofenceExitedEventData extends MapsGeofenceEventProperties {
+    /** Creates an instance of MapsGeofenceExitedEventData class. */
+    public MapsGeofenceExitedEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public MapsGeofenceExitedEventData setExpiredGeofenceGeometryId(List<String> expiredGeofenceGeometryId) {

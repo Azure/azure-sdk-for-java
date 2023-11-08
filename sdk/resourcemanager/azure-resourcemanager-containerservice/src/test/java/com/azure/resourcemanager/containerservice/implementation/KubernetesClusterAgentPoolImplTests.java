@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class KubernetesClusterAgentPoolImplTests {
 
-    private static final Random RANDOM = new Random();
+    private static final Random RANDOM = new Random(3);
 
     @Test
     void testGetAgentPoolInner() throws Exception {
@@ -75,7 +75,6 @@ public class KubernetesClusterAgentPoolImplTests {
         int targetStringLength = 10;
 
         return RANDOM.ints(leftLimit, rightLimit + 1)
-            .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
             .limit(targetStringLength)
             .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
             .toString();

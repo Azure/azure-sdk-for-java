@@ -25,6 +25,10 @@ public final class AzureFileStorageLinkedService extends LinkedService {
     private AzureFileStorageLinkedServiceTypeProperties innerTypeProperties =
         new AzureFileStorageLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureFileStorageLinkedService class. */
+    public AzureFileStorageLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure File Storage linked service properties.
      *
@@ -279,22 +283,22 @@ public final class AzureFileStorageLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFileStorageLinkedService object itself.
      */
-    public AzureFileStorageLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureFileStorageLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureFileStorageLinkedServiceTypeProperties();
         }

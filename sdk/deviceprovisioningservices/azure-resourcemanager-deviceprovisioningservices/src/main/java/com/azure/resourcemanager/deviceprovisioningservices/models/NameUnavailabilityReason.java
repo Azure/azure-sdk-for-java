@@ -27,7 +27,11 @@ public final class NameUnavailabilityReason extends ExpandableStringEnum<NameUna
         return fromString(name, NameUnavailabilityReason.class);
     }
 
-    /** @return known NameUnavailabilityReason values. */
+    /**
+     * Gets known NameUnavailabilityReason values.
+     *
+     * @return known NameUnavailabilityReason values.
+     */
     public static Collection<NameUnavailabilityReason> values() {
         return values(NameUnavailabilityReason.class);
     }

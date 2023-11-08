@@ -230,38 +230,39 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public Mono<ShouldRetryResult> handleSplit(final RxDocumentClientImpl client,
-                                               final GoneException goneException) {
+    public Mono<ShouldRetryResult> handleFeedRangeGone(final RxDocumentClientImpl client,
+                                                       final GoneException goneException) {
 
         checkNotNull(client, "Argument 'client' must not be null");
         checkNotNull(goneException, "Argument 'goeException' must not be null");
 
         Integer nSubStatus = goneException.getSubStatusCode();
 
-        final boolean partitionSplit =
+        final boolean partitionSplitOrMerge =
             goneException.getStatusCode() == HttpConstants.StatusCodes.GONE &&
                 nSubStatus != null &&
                 (nSubStatus == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
-                || nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
+                || nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
 
-        if (!partitionSplit) {
+        if (!partitionSplitOrMerge) {
             return Mono.just(ShouldRetryResult.NO_RETRY);
         }
 
         final RxPartitionKeyRangeCache partitionKeyRangeCache = client.getPartitionKeyRangeCache();
         Range<String> effectiveTokenRange = this.currentToken.getRange();
         final Mono<Utils.ValueHolder<List<PartitionKeyRange>>> resolvedRangesTask =
-            this.tryGetOverlappingRanges(
-                partitionKeyRangeCache,
-                effectiveTokenRange.getMin(),
-                effectiveTokenRange.getMax(),
-                true);
+            this.tryGetOverlappingRanges(partitionKeyRangeCache, effectiveTokenRange, true);
 
         return resolvedRangesTask.flatMap(resolvedRanges -> {
-            if (resolvedRanges.v != null && resolvedRanges.v.size() > 0) {
-                this.createChildRanges(resolvedRanges.v, effectiveTokenRange);
+            if (resolvedRanges.v != null) {
+                if (resolvedRanges.v.size() == 1) {
+                    // Merge happen, will continue draining from the current range
+                    LOGGER.debug("ChangeFeedFetcher detected feed range gone due to merge for range [{}]", effectiveTokenRange);
+                } else {
+                    this.createChildRanges(resolvedRanges.v, effectiveTokenRange);
+                    LOGGER.debug("ChangeFeedFetcher detected feed range gone due to split for range [{}]", effectiveTokenRange);
+                }
             }
-
             return Mono.just(ShouldRetryResult.RETRY_NOW);
         });
     }
@@ -410,11 +411,16 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRanges(
-        final RxPartitionKeyRangeCache partitionKeyRangeCache, final String min, final String max,
+        final RxPartitionKeyRangeCache partitionKeyRangeCache,
+        Range<String> effectiveRange,
         final Boolean forceRefresh) {
 
-        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, this.getContainerRid(),
-            new Range<>(min, max, false, true), forceRefresh, null);
+        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(
+                null,
+                this.getContainerRid(),
+                effectiveRange,
+                forceRefresh,
+                null);
     }
 
     private static CompositeContinuationToken tryParseAsCompositeContinuationToken(

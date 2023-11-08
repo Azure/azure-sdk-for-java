@@ -18,6 +18,10 @@ public final class OperationCollectionInner {
     @JsonProperty(value = "value")
     private List<Operation> value;
 
+    /** Creates an instance of OperationCollectionInner class. */
+    public OperationCollectionInner() {
+    }
+
     /**
      * Get the value property: A collection of Operation items.
      *

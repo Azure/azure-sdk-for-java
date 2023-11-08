@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabaseMigrationStage. */
+/** Current stage of migration. */
 public final class DatabaseMigrationStage extends ExpandableStringEnum<DatabaseMigrationStage> {
     /** Static value None for DatabaseMigrationStage. */
     public static final DatabaseMigrationStage NONE = fromString("None");
@@ -29,6 +29,15 @@ public final class DatabaseMigrationStage extends ExpandableStringEnum<DatabaseM
     public static final DatabaseMigrationStage COMPLETED = fromString("Completed");
 
     /**
+     * Creates a new instance of DatabaseMigrationStage value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseMigrationStage() {
+    }
+
+    /**
      * Creates or finds a DatabaseMigrationStage from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class DatabaseMigrationStage extends ExpandableStringEnum<DatabaseM
         return fromString(name, DatabaseMigrationStage.class);
     }
 
-    /** @return known DatabaseMigrationStage values. */
+    /**
+     * Gets known DatabaseMigrationStage values.
+     *
+     * @return known DatabaseMigrationStage values.
+     */
     public static Collection<DatabaseMigrationStage> values() {
         return values(DatabaseMigrationStage.class);
     }

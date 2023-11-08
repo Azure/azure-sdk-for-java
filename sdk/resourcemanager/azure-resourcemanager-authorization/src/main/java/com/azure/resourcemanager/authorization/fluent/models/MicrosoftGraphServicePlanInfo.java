@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,24 +16,19 @@ import java.util.UUID;
 /** servicePlanInfo. */
 @Fluent
 public final class MicrosoftGraphServicePlanInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphServicePlanInfo.class);
-
     /*
-     * The object the service plan can be assigned to. Possible values:'User' -
-     * service plan can be assigned to individual users.'Company' - service
-     * plan can be assigned to the entire tenant.
+     * The object the service plan can be assigned to. Possible values:'User' - service plan can be assigned to
+     * individual users.'Company' - service plan can be assigned to the entire tenant.
      */
     @JsonProperty(value = "appliesTo")
     private String appliesTo;
 
     /*
-     * The provisioning status of the service plan. Possible values:'Success' -
-     * Service is fully provisioned.'Disabled' - Service has been
-     * disabled.'PendingInput' - Service is not yet provisioned; awaiting
-     * service confirmation.'PendingActivation' - Service is provisioned but
-     * requires explicit activation by administrator (for example, Intune_O365
-     * service plan)'PendingProvisioning' - Microsoft has added a new service
-     * to the product SKU and it has not been activated in the tenant, yet.
+     * The provisioning status of the service plan. Possible values:'Success' - Service is fully provisioned.'Disabled'
+     * - Service has been disabled.'PendingInput' - Service is not yet provisioned; awaiting service
+     * confirmation.'PendingActivation' - Service is provisioned but requires explicit activation by administrator (for
+     * example, Intune_O365 service plan)'PendingProvisioning' - Microsoft has added a new service to the product SKU
+     * and it has not been activated in the tenant, yet.
      */
     @JsonProperty(value = "provisioningStatus")
     private String provisioningStatus;
@@ -55,6 +49,10 @@ public final class MicrosoftGraphServicePlanInfo {
      * servicePlanInfo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphServicePlanInfo class. */
+    public MicrosoftGraphServicePlanInfo() {
+    }
 
     /**
      * Get the appliesTo property: The object the service plan can be assigned to. Possible values:'User' - service plan

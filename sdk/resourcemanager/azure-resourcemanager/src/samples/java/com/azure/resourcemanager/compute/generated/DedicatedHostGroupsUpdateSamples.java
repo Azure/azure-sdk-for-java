@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupUpdate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,31 +12,14 @@ import java.util.Map;
 /** Samples for DedicatedHostGroups Update. */
 public final class DedicatedHostGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHostGroup_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: DedicatedHostGroups_Update_MinimumSet_Gen.
+     * Sample code: DedicatedHostGroup_Update_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dedicatedHostGroupsUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getDedicatedHostGroups()
-            .updateWithResponse("rgcompute", "aaaaaaaaaaa", new DedicatedHostGroupUpdate(), Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: DedicatedHostGroups_Update_MaximumSet_Gen.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void dedicatedHostGroupsUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void dedicatedHostGroupUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
@@ -47,11 +29,29 @@ public final class DedicatedHostGroupsUpdateSamples {
                 "rgcompute",
                 "aaaa",
                 new DedicatedHostGroupUpdate()
-                    .withTags(mapOf("key9921", "aaaaaaaaaa"))
+                    .withTags(mapOf("key9921", "fakeTokenPlaceholder"))
                     .withZones(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
                     .withPlatformFaultDomainCount(3)
                     .withSupportAutomaticPlacement(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHostGroup_Update_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: DedicatedHostGroup_Update_MinimumSet_Gen.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void dedicatedHostGroupUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .updateWithResponse(
+                "rgcompute", "aaaaaaaaaaa", new DedicatedHostGroupUpdate(), com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

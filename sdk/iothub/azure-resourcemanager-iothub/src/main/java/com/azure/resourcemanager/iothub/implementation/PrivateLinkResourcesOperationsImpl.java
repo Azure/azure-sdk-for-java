@@ -14,10 +14,9 @@ import com.azure.resourcemanager.iothub.fluent.models.PrivateLinkResourcesInner;
 import com.azure.resourcemanager.iothub.models.GroupIdInformation;
 import com.azure.resourcemanager.iothub.models.PrivateLinkResources;
 import com.azure.resourcemanager.iothub.models.PrivateLinkResourcesOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkResourcesOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesOperationsImpl.class);
 
     private final PrivateLinkResourcesOperationsClient innerClient;
 
@@ -28,15 +27,6 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
         com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public PrivateLinkResources list(String resourceGroupName, String resourceName) {
-        PrivateLinkResourcesInner inner = this.serviceClient().list(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new PrivateLinkResourcesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<PrivateLinkResources> listWithResponse(
@@ -54,10 +44,10 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
         }
     }
 
-    public GroupIdInformation get(String resourceGroupName, String resourceName, String groupId) {
-        GroupIdInformationInner inner = this.serviceClient().get(resourceGroupName, resourceName, groupId);
+    public PrivateLinkResources list(String resourceGroupName, String resourceName) {
+        PrivateLinkResourcesInner inner = this.serviceClient().list(resourceGroupName, resourceName);
         if (inner != null) {
-            return new GroupIdInformationImpl(inner, this.manager());
+            return new PrivateLinkResourcesImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -73,6 +63,15 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new GroupIdInformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public GroupIdInformation get(String resourceGroupName, String resourceName, String groupId) {
+        GroupIdInformationInner inner = this.serviceClient().get(resourceGroupName, resourceName, groupId);
+        if (inner != null) {
+            return new GroupIdInformationImpl(inner, this.manager());
         } else {
             return null;
         }

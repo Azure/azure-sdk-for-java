@@ -28,6 +28,10 @@ public final class ConnStringInfo {
     @JsonProperty(value = "type")
     private ConnectionStringType type;
 
+    /** Creates an instance of ConnStringInfo class. */
+    public ConnStringInfo() {
+    }
+
     /**
      * Get the name property: Name of connection string.
      *

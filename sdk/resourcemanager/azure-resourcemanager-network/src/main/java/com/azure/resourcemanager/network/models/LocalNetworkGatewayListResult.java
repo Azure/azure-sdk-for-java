@@ -24,6 +24,10 @@ public final class LocalNetworkGatewayListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of LocalNetworkGatewayListResult class. */
+    public LocalNetworkGatewayListResult() {
+    }
+
     /**
      * Get the value property: A list of local network gateways that exists in a resource group.
      *

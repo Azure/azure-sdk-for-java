@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationCollectionItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** result of listing all software update configuration. */
 @Fluent
 public final class SoftwareUpdateConfigurationListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareUpdateConfigurationListResultInner.class);
-
     /*
      * outer object returned when listing all software update configurations
      */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkloadNetworkDnsZoneProvisioningState. */
+/** The provisioning state. */
 public final class WorkloadNetworkDnsZoneProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkDnsZoneProvisioningState> {
     /** Static value Succeeded for WorkloadNetworkDnsZoneProvisioningState. */
@@ -26,6 +26,18 @@ public final class WorkloadNetworkDnsZoneProvisioningState
     /** Static value Updating for WorkloadNetworkDnsZoneProvisioningState. */
     public static final WorkloadNetworkDnsZoneProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Canceled for WorkloadNetworkDnsZoneProvisioningState. */
+    public static final WorkloadNetworkDnsZoneProvisioningState CANCELED = fromString("Canceled");
+
+    /**
+     * Creates a new instance of WorkloadNetworkDnsZoneProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadNetworkDnsZoneProvisioningState() {
+    }
+
     /**
      * Creates or finds a WorkloadNetworkDnsZoneProvisioningState from its string representation.
      *
@@ -37,7 +49,11 @@ public final class WorkloadNetworkDnsZoneProvisioningState
         return fromString(name, WorkloadNetworkDnsZoneProvisioningState.class);
     }
 
-    /** @return known WorkloadNetworkDnsZoneProvisioningState values. */
+    /**
+     * Gets known WorkloadNetworkDnsZoneProvisioningState values.
+     *
+     * @return known WorkloadNetworkDnsZoneProvisioningState values.
+     */
     public static Collection<WorkloadNetworkDnsZoneProvisioningState> values() {
         return values(WorkloadNetworkDnsZoneProvisioningState.class);
     }

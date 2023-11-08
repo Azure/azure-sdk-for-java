@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** How the data that is collected should be combined over time. */
 @Fluent
 public final class ManagementEventAggregationCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementEventAggregationCondition.class);
-
     /*
      * the condition operator.
      */
@@ -28,12 +24,15 @@ public final class ManagementEventAggregationCondition {
     private Double threshold;
 
     /*
-     * the period of time (in ISO 8601 duration format) that is used to monitor
-     * alert activity based on the threshold. If specified then it must be
-     * between 5 minutes and 1 day.
+     * the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
+     * If specified then it must be between 5 minutes and 1 day.
      */
     @JsonProperty(value = "windowSize")
     private Duration windowSize;
+
+    /** Creates an instance of ManagementEventAggregationCondition class. */
+    public ManagementEventAggregationCondition() {
+    }
 
     /**
      * Get the operator property: the condition operator.

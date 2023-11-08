@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeConnectionInfosClient;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeConnectionInfoInner;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in IntegrationRuntimeConnectionInfosClient.
  */
 public final class IntegrationRuntimeConnectionInfosClientImpl implements IntegrationRuntimeConnectionInfosClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimeConnectionInfosClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationRuntimeConnectionInfosService service;
 
@@ -59,7 +56,7 @@ public final class IntegrationRuntimeConnectionInfosClientImpl implements Integr
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface IntegrationRuntimeConnectionInfosService {
+    public interface IntegrationRuntimeConnectionInfosService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -78,7 +75,9 @@ public final class IntegrationRuntimeConnectionInfosClientImpl implements Integr
     }
 
     /**
-     * Get connection info for an integration runtime.
+     * Get integration runtime connection info
+     *
+     * <p>Get connection info for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -135,7 +134,9 @@ public final class IntegrationRuntimeConnectionInfosClientImpl implements Integr
     }
 
     /**
-     * Get connection info for an integration runtime.
+     * Get integration runtime connection info
+     *
+     * <p>Get connection info for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -190,7 +191,9 @@ public final class IntegrationRuntimeConnectionInfosClientImpl implements Integr
     }
 
     /**
-     * Get connection info for an integration runtime.
+     * Get integration runtime connection info
+     *
+     * <p>Get connection info for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -204,35 +207,13 @@ public final class IntegrationRuntimeConnectionInfosClientImpl implements Integr
     private Mono<IntegrationRuntimeConnectionInfoInner> getAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName)
-            .flatMap(
-                (Response<IntegrationRuntimeConnectionInfoInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get connection info for an integration runtime.
+     * Get integration runtime connection info
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection info for an integration runtime.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeConnectionInfoInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        return getAsync(resourceGroupName, workspaceName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Get connection info for an integration runtime.
+     * <p>Get connection info for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -247,5 +228,24 @@ public final class IntegrationRuntimeConnectionInfosClientImpl implements Integr
     public Response<IntegrationRuntimeConnectionInfoInner> getWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).block();
+    }
+
+    /**
+     * Get integration runtime connection info
+     *
+     * <p>Get connection info for an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return connection info for an integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeConnectionInfoInner get(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return getWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, Context.NONE).getValue();
     }
 }

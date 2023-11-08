@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.models.TableInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list tables operation response. */
 @Fluent
 public final class TablesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TablesListResult.class);
-
     /*
      * A list of data tables.
      */
     @JsonProperty(value = "value")
     private List<TableInner> value;
+
+    /** Creates an instance of TablesListResult class. */
+    public TablesListResult() {
+    }
 
     /**
      * Get the value property: A list of data tables.

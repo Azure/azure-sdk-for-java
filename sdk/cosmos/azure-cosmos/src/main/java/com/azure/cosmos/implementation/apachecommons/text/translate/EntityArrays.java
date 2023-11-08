@@ -24,7 +24,12 @@ package com.azure.cosmos.implementation.apachecommons.text.translate;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
+/**
+ * This class is shaded from version 1.10.0 of apache commons-text library
+ */
 public class EntityArrays {
     /**
      * A Map&lt;CharSequence, CharSequence&gt; to escape the Java
@@ -47,20 +52,18 @@ public class EntityArrays {
      * Reverse of {@link #JAVA_CTRL_CHARS_ESCAPE} for unescaping purposes.
      */
     public static final Map<CharSequence, CharSequence> JAVA_CTRL_CHARS_UNESCAPE;
+
     static {
         JAVA_CTRL_CHARS_UNESCAPE = Collections.unmodifiableMap(invert(JAVA_CTRL_CHARS_ESCAPE));
     }
 
     /**
-     * Used to invert an escape Map into an unescape Map.
+     * Inverts an escape Map into an unescape Map.
+     *
      * @param map Map&lt;String, String&gt; to be inverted
      * @return Map&lt;String, String&gt; inverted array
      */
     public static Map<CharSequence, CharSequence> invert(final Map<CharSequence, CharSequence> map) {
-        final Map<CharSequence, CharSequence> newMap = new HashMap<>();
-        for (final Map.Entry<CharSequence, CharSequence> pair : map.entrySet()) {
-            newMap.put(pair.getValue(), pair.getKey());
-        }
-        return newMap;
+        return map.entrySet().stream().collect(Collectors.toMap(Entry::getValue, Entry::getKey));
     }
 }

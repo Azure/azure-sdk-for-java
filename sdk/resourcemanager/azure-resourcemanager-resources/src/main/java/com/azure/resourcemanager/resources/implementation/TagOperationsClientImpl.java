@@ -27,14 +27,19 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluent.TagOperationsClient;
 import com.azure.resourcemanager.resources.fluent.models.TagDetailsInner;
 import com.azure.resourcemanager.resources.fluent.models.TagValueInner;
 import com.azure.resourcemanager.resources.fluent.models.TagsResourceInner;
 import com.azure.resourcemanager.resources.models.TagsListResult;
 import com.azure.resourcemanager.resources.models.TagsPatchResource;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TagOperationsClient. */
@@ -62,7 +67,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
-    private interface TagOperationsService {
+    public interface TagOperationsService {
         @Headers({"Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
         @ExpectedResponses({200, 204})
@@ -126,9 +131,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put("/{scope}/providers/Microsoft.Resources/tags/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagsResourceInner>> createOrUpdateAtScope(
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtScope(
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
@@ -138,9 +143,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch("/{scope}/providers/Microsoft.Resources/tags/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagsResourceInner>> updateAtScope(
+        Mono<Response<Flux<ByteBuffer>>> updateAtScope(
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
@@ -161,9 +166,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete("/{scope}/providers/Microsoft.Resources/tags/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteAtScope(
+        Mono<Response<Flux<ByteBuffer>>> deleteAtScope(
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
@@ -182,7 +187,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
+     * Deletes a predefined tag value for a predefined tag name.
+     *
+     * <p>This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
      * The value being deleted must not be in use as a tag value for the given tag name for any resource.
      *
      * @param tagName The name of the tag.
@@ -229,7 +236,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
+     * Deletes a predefined tag value for a predefined tag name.
+     *
+     * <p>This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
      * The value being deleted must not be in use as a tag value for the given tag name for any resource.
      *
      * @param tagName The name of the tag.
@@ -274,7 +283,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
+     * Deletes a predefined tag value for a predefined tag name.
+     *
+     * <p>This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
      * The value being deleted must not be in use as a tag value for the given tag name for any resource.
      *
      * @param tagName The name of the tag.
@@ -286,26 +297,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteValueAsync(String tagName, String tagValue) {
-        return deleteValueWithResponseAsync(tagName, tagValue).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteValueWithResponseAsync(tagName, tagValue).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
-     * The value being deleted must not be in use as a tag value for the given tag name for any resource.
+     * Deletes a predefined tag value for a predefined tag name.
      *
-     * @param tagName The name of the tag.
-     * @param tagValue The value of the tag to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteValue(String tagName, String tagValue) {
-        deleteValueAsync(tagName, tagValue).block();
-    }
-
-    /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
+     * <p>This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
      * The value being deleted must not be in use as a tag value for the given tag name for any resource.
      *
      * @param tagName The name of the tag.
@@ -322,8 +320,27 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
+     * Deletes a predefined tag value for a predefined tag name.
+     *
+     * <p>This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
+     * The value being deleted must not be in use as a tag value for the given tag name for any resource.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteValue(String tagName, String tagValue) {
+        deleteValueWithResponse(tagName, tagValue, Context.NONE);
+    }
+
+    /**
+     * Creates a predefined value for a predefined tag name.
+     *
+     * <p>This operation allows adding a value to the list of predefined values for an existing predefined tag name. A
+     * tag value can have a maximum of 256 characters.
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
@@ -369,8 +386,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
+     * Creates a predefined value for a predefined tag name.
+     *
+     * <p>This operation allows adding a value to the list of predefined values for an existing predefined tag name. A
+     * tag value can have a maximum of 256 characters.
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
@@ -415,8 +434,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
+     * Creates a predefined value for a predefined tag name.
+     *
+     * <p>This operation allows adding a value to the list of predefined values for an existing predefined tag name. A
+     * tag value can have a maximum of 256 characters.
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
@@ -427,36 +448,14 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue) {
-        return createOrUpdateValueWithResponseAsync(tagName, tagValue)
-            .flatMap(
-                (Response<TagValueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return createOrUpdateValueWithResponseAsync(tagName, tagValue).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
+     * Creates a predefined value for a predefined tag name.
      *
-     * @param tagName The name of the tag.
-     * @param tagValue The value of the tag to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagValueInner createOrUpdateValue(String tagName, String tagValue) {
-        return createOrUpdateValueAsync(tagName, tagValue).block();
-    }
-
-    /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
+     * <p>This operation allows adding a value to the list of predefined values for an existing predefined tag name. A
+     * tag value can have a maximum of 256 characters.
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
@@ -472,7 +471,27 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
+     * Creates a predefined value for a predefined tag name.
+     *
+     * <p>This operation allows adding a value to the list of predefined values for an existing predefined tag name. A
+     * tag value can have a maximum of 256 characters.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TagValueInner createOrUpdateValue(String tagName, String tagValue) {
+        return createOrUpdateValueWithResponse(tagName, tagValue, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a predefined tag name.
+     *
+     * <p>This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
      * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
      * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
      *
@@ -515,7 +534,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
+     * Creates a predefined tag name.
+     *
+     * <p>This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
      * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
      * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
      *
@@ -556,7 +577,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
+     * Creates a predefined tag name.
+     *
+     * <p>This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
      * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
      * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
      *
@@ -568,35 +591,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagDetailsInner> createOrUpdateAsync(String tagName) {
-        return createOrUpdateWithResponseAsync(tagName)
-            .flatMap(
-                (Response<TagDetailsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return createOrUpdateWithResponseAsync(tagName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
-     * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
-     * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
+     * Creates a predefined tag name.
      *
-     * @param tagName The name of the tag to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagDetailsInner createOrUpdate(String tagName) {
-        return createOrUpdateAsync(tagName).block();
-    }
-
-    /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
+     * <p>This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
      * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
      * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
      *
@@ -613,9 +614,29 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
+     * Creates a predefined tag name.
+     *
+     * <p>This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
+     * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
+     * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
+     *
+     * @param tagName The name of the tag to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TagDetailsInner createOrUpdate(String tagName) {
+        return createOrUpdateWithResponse(tagName, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes a predefined tag name.
+     *
+     * <p>This operation allows deleting a name from the list of predefined tag names for the given subscription. The
+     * name being deleted must not be in use as a tag name for any resource. All predefined values for the given name
+     * must have already been deleted.
      *
      * @param tagName The name of the tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -656,9 +677,11 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
+     * Deletes a predefined tag name.
+     *
+     * <p>This operation allows deleting a name from the list of predefined tag names for the given subscription. The
+     * name being deleted must not be in use as a tag name for any resource. All predefined values for the given name
+     * must have already been deleted.
      *
      * @param tagName The name of the tag.
      * @param context The context to associate with this operation.
@@ -697,9 +720,11 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
+     * Deletes a predefined tag name.
+     *
+     * <p>This operation allows deleting a name from the list of predefined tag names for the given subscription. The
+     * name being deleted must not be in use as a tag name for any resource. All predefined values for the given name
+     * must have already been deleted.
      *
      * @param tagName The name of the tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -709,28 +734,15 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String tagName) {
-        return deleteWithResponseAsync(tagName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(tagName).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
+     * Deletes a predefined tag name.
      *
-     * @param tagName The name of the tag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String tagName) {
-        deleteAsync(tagName).block();
-    }
-
-    /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
+     * <p>This operation allows deleting a name from the list of predefined tag names for the given subscription. The
+     * name being deleted must not be in use as a tag name for any resource. All predefined values for the given name
+     * must have already been deleted.
      *
      * @param tagName The name of the tag.
      * @param context The context to associate with this operation.
@@ -745,9 +757,28 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
+     * Deletes a predefined tag name.
+     *
+     * <p>This operation allows deleting a name from the list of predefined tag names for the given subscription. The
+     * name being deleted must not be in use as a tag name for any resource. All predefined values for the given name
+     * must have already been deleted.
+     *
+     * @param tagName The name of the tag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String tagName) {
+        deleteWithResponse(tagName, Context.NONE);
+    }
+
+    /**
+     * Gets a summary of tag usage under the subscription.
+     *
+     * <p>This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags,
+     * and returns a summary of usage for each tag name and value under the given subscription. In case of a large
+     * number of tags, this operation may return a previously cached result.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -791,9 +822,11 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
+     * Gets a summary of tag usage under the subscription.
+     *
+     * <p>This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags,
+     * and returns a summary of usage for each tag name and value under the given subscription. In case of a large
+     * number of tags, this operation may return a previously cached result.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -836,9 +869,11 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
+     * Gets a summary of tag usage under the subscription.
+     *
+     * <p>This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags,
+     * and returns a summary of usage for each tag name and value under the given subscription. In case of a large
+     * number of tags, this operation may return a previously cached result.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -850,9 +885,11 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
+     * Gets a summary of tag usage under the subscription.
+     *
+     * <p>This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags,
+     * and returns a summary of usage for each tag name and value under the given subscription. In case of a large
+     * number of tags, this operation may return a previously cached result.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -867,9 +904,11 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
+     * Gets a summary of tag usage under the subscription.
+     *
+     * <p>This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags,
+     * and returns a summary of usage for each tag name and value under the given subscription. In case of a large
+     * number of tags, this operation may return a previously cached result.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -881,9 +920,11 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
+     * Gets a summary of tag usage under the subscription.
+     *
+     * <p>This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags,
+     * and returns a summary of usage for each tag name and value under the given subscription. In case of a large
+     * number of tags, this operation may return a previously cached result.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -897,8 +938,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags API requests and responses.
@@ -909,7 +952,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtScopeWithResponseAsync(
         String scope, TagsResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -936,8 +979,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags API requests and responses.
@@ -949,7 +994,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtScopeWithResponseAsync(
         String scope, TagsResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -973,8 +1018,101 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<TagsResourceInner>, TagsResourceInner> beginCreateOrUpdateAtScopeAsync(
+        String scope, TagsResourceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateAtScopeWithResponseAsync(scope, parameters);
+        return this
+            .client
+            .<TagsResourceInner, TagsResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TagsResourceInner.class,
+                TagsResourceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TagsResourceInner>, TagsResourceInner> beginCreateOrUpdateAtScopeAsync(
+        String scope, TagsResourceInner parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateAtScopeWithResponseAsync(scope, parameters, context);
+        return this
+            .client
+            .<TagsResourceInner, TagsResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), TagsResourceInner.class, TagsResourceInner.class, context);
+    }
+
+    /**
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TagsResourceInner>, TagsResourceInner> beginCreateOrUpdateAtScope(
+        String scope, TagsResourceInner parameters) {
+        return this.beginCreateOrUpdateAtScopeAsync(scope, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TagsResourceInner>, TagsResourceInner> beginCreateOrUpdateAtScope(
+        String scope, TagsResourceInner parameters, Context context) {
+        return this.beginCreateOrUpdateAtScopeAsync(scope, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags API requests and responses.
@@ -985,20 +1123,36 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, TagsResourceInner parameters) {
-        return createOrUpdateAtScopeWithResponseAsync(scope, parameters)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginCreateOrUpdateAtScopeAsync(scope, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper resource for tags API requests and responses on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TagsResourceInner> createOrUpdateAtScopeAsync(
+        String scope, TagsResourceInner parameters, Context context) {
+        return beginCreateOrUpdateAtScopeAsync(scope, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags API requests and responses.
@@ -1013,8 +1167,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
+     * Creates or updates the entire set of tags on a resource or subscription.
+     *
+     * <p>This operation allows adding or replacing the entire set of tags on the specified resource or subscription.
+     * The specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags API requests and responses.
@@ -1022,20 +1178,21 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses along with {@link Response}.
+     * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagsResourceInner> createOrUpdateAtScopeWithResponse(
-        String scope, TagsResourceInner parameters, Context context) {
-        return createOrUpdateAtScopeWithResponseAsync(scope, parameters, context).block();
+    public TagsResourceInner createOrUpdateAtScope(String scope, TagsResourceInner parameters, Context context) {
+        return createOrUpdateAtScopeAsync(scope, parameters, context).block();
     }
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
@@ -1046,8 +1203,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TagsResourceInner>> updateAtScopeWithResponseAsync(
-        String scope, TagsPatchResource parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateAtScopeWithResponseAsync(String scope, TagsPatchResource parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1073,11 +1229,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
@@ -1089,7 +1247,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TagsResourceInner>> updateAtScopeWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateAtScopeWithResponseAsync(
         String scope, TagsPatchResource parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1112,11 +1270,116 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<TagsResourceInner>, TagsResourceInner> beginUpdateAtScopeAsync(
+        String scope, TagsPatchResource parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateAtScopeWithResponseAsync(scope, parameters);
+        return this
+            .client
+            .<TagsResourceInner, TagsResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                TagsResourceInner.class,
+                TagsResourceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TagsResourceInner>, TagsResourceInner> beginUpdateAtScopeAsync(
+        String scope, TagsPatchResource parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateAtScopeWithResponseAsync(scope, parameters, context);
+        return this
+            .client
+            .<TagsResourceInner, TagsResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), TagsResourceInner.class, TagsResourceInner.class, context);
+    }
+
+    /**
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TagsResourceInner>, TagsResourceInner> beginUpdateAtScope(
+        String scope, TagsPatchResource parameters) {
+        return this.beginUpdateAtScopeAsync(scope, parameters).getSyncPoller();
+    }
+
+    /**
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TagsResourceInner>, TagsResourceInner> beginUpdateAtScope(
+        String scope, TagsPatchResource parameters, Context context) {
+        return this.beginUpdateAtScopeAsync(scope, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
@@ -1127,23 +1390,41 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagsResourceInner> updateAtScopeAsync(String scope, TagsPatchResource parameters) {
-        return updateAtScopeWithResponseAsync(scope, parameters)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAtScopeAsync(scope, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
+     *
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper resource for tags API requests and responses on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TagsResourceInner> updateAtScopeAsync(String scope, TagsPatchResource parameters, Context context) {
+        return beginUpdateAtScopeAsync(scope, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
@@ -1158,11 +1439,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
+     * Selectively updates the set of tags on a resource or subscription.
+     *
+     * <p>This operation allows replacing, merging or selectively deleting tags on the specified resource or
+     * subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace'
+     * option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new
+     * names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags
+     * based on given names or name/value pairs.
      *
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
@@ -1170,12 +1453,11 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses along with {@link Response}.
+     * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagsResourceInner> updateAtScopeWithResponse(
-        String scope, TagsPatchResource parameters, Context context) {
-        return updateAtScopeWithResponseAsync(scope, parameters, context).block();
+    public TagsResourceInner updateAtScope(String scope, TagsPatchResource parameters, Context context) {
+        return updateAtScopeAsync(scope, parameters, context).block();
     }
 
     /**
@@ -1245,29 +1527,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagsResourceInner> getAtScopeAsync(String scope) {
-        return getAtScopeWithResponseAsync(scope)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the entire set of tags on a resource or subscription.
-     *
-     * @param scope The resource scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entire set of tags on a resource or subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagsResourceInner getAtScope(String scope) {
-        return getAtScopeAsync(scope).block();
+        return getAtScopeWithResponseAsync(scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1286,6 +1546,20 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
+     * Gets the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the entire set of tags on a resource or subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TagsResourceInner getAtScope(String scope) {
+        return getAtScopeWithResponse(scope, Context.NONE).getValue();
+    }
+
+    /**
      * Deletes the entire set of tags on a resource or subscription.
      *
      * @param scope The resource scope.
@@ -1295,7 +1569,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteAtScopeWithResponseAsync(String scope) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteAtScopeWithResponseAsync(String scope) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1325,7 +1599,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteAtScopeWithResponseAsync(String scope, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteAtScopeWithResponseAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1347,11 +1621,92 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(String scope) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteAtScopeWithResponseAsync(scope);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(String scope, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteAtScopeWithResponseAsync(scope, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope) {
+        return this.beginDeleteAtScopeAsync(scope).getSyncPoller();
+    }
+
+    /**
+     * Deletes the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, Context context) {
+        return this.beginDeleteAtScopeAsync(scope, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtScopeAsync(String scope) {
-        return deleteAtScopeWithResponseAsync(scope).flatMap((Response<Void> res) -> Mono.empty());
+        return beginDeleteAtScopeAsync(scope).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the entire set of tags on a resource or subscription.
+     *
+     * @param scope The resource scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAtScopeAsync(String scope, Context context) {
+        return beginDeleteAtScopeAsync(scope, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1375,17 +1730,17 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteAtScopeWithResponse(String scope, Context context) {
-        return deleteAtScopeWithResponseAsync(scope, context).block();
+    public void deleteAtScope(String scope, Context context) {
+        deleteAtScopeAsync(scope, context).block();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1420,7 +1775,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

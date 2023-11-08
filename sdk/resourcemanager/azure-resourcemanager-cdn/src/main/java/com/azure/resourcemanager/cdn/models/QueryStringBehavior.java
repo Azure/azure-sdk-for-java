@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QueryStringBehavior. */
+/** Caching behavior for the requests. */
 public final class QueryStringBehavior extends ExpandableStringEnum<QueryStringBehavior> {
     /** Static value Include for QueryStringBehavior. */
     public static final QueryStringBehavior INCLUDE = fromString("Include");
@@ -23,6 +23,15 @@ public final class QueryStringBehavior extends ExpandableStringEnum<QueryStringB
     public static final QueryStringBehavior EXCLUDE_ALL = fromString("ExcludeAll");
 
     /**
+     * Creates a new instance of QueryStringBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryStringBehavior() {
+    }
+
+    /**
      * Creates or finds a QueryStringBehavior from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class QueryStringBehavior extends ExpandableStringEnum<QueryStringB
         return fromString(name, QueryStringBehavior.class);
     }
 
-    /** @return known QueryStringBehavior values. */
+    /**
+     * Gets known QueryStringBehavior values.
+     *
+     * @return known QueryStringBehavior values.
+     */
     public static Collection<QueryStringBehavior> values() {
         return values(QueryStringBehavior.class);
     }

@@ -24,6 +24,10 @@ public final class ListRoutingIntentResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ListRoutingIntentResult class. */
+    public ListRoutingIntentResult() {
+    }
+
     /**
      * Get the value property: List of RoutingIntent resource.
      *

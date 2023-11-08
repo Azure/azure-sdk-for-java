@@ -164,6 +164,13 @@ public interface DataFactoryManagementClient {
     ManagedPrivateEndpointsClient getManagedPrivateEndpoints();
 
     /**
+     * Gets the CredentialOperationsClient object to access its operations.
+     *
+     * @return the CredentialOperationsClient object.
+     */
+    CredentialOperationsClient getCredentialOperations();
+
+    /**
      * Gets the PrivateEndPointConnectionsClient object to access its operations.
      *
      * @return the PrivateEndPointConnectionsClient object.
@@ -183,4 +190,18 @@ public interface DataFactoryManagementClient {
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the GlobalParametersClient object to access its operations.
+     *
+     * @return the GlobalParametersClient object.
+     */
+    GlobalParametersClient getGlobalParameters();
+
+    /**
+     * Gets the ChangeDataCapturesClient object to access its operations.
+     *
+     * @return the ChangeDataCapturesClient object.
+     */
+    ChangeDataCapturesClient getChangeDataCaptures();
 }

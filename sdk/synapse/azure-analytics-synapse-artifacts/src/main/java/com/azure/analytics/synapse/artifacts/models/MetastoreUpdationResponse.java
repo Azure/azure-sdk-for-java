@@ -16,6 +16,9 @@ public final class MetastoreUpdationResponse {
     @JsonProperty(value = "status")
     private RequestStatus status;
 
+    /** Creates an instance of MetastoreUpdationResponse class. */
+    public MetastoreUpdationResponse() {}
+
     /**
      * Get the status property: Enumerates possible request statuses.
      *

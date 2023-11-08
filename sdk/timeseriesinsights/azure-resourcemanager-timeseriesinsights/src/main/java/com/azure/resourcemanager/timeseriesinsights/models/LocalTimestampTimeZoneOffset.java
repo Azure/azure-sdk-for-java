@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,18 +13,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class LocalTimestampTimeZoneOffset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalTimestampTimeZoneOffset.class);
-
     /*
-     * The event property that will be contain the offset information to
-     * calculate the local timestamp. When the LocalTimestampFormat is Iana,
-     * the property name will contain the name of the column which contains
-     * IANA Timezone Name (eg: Americas/Los Angeles). When LocalTimestampFormat
-     * is Timespan, it contains the name of property which contains values
-     * representing the offset (eg: P1D or 1.00:00:00)
+     * The event property that will be contain the offset information to calculate the local timestamp. When the
+     * LocalTimestampFormat is Iana, the property name will contain the name of the column which contains IANA Timezone
+     * Name (eg: Americas/Los Angeles). When LocalTimestampFormat is Timespan, it contains the name of property which
+     * contains values representing the offset (eg: P1D or 1.00:00:00)
      */
     @JsonProperty(value = "propertyName")
     private String propertyName;
+
+    /** Creates an instance of LocalTimestampTimeZoneOffset class. */
+    public LocalTimestampTimeZoneOffset() {
+    }
 
     /**
      * Get the propertyName property: The event property that will be contain the offset information to calculate the

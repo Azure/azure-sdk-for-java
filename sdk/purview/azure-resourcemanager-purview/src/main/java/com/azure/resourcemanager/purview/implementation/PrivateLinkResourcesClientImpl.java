@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.purview.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.purview.models.PrivateLinkResourceList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkResourcesService service;
 
@@ -59,7 +56,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @Host("{$host}")
     @ServiceInterface(name = "PurviewManagementCli")
-    private interface PrivateLinkResourcesService {
+    public interface PrivateLinkResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts"
@@ -105,12 +102,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a list of privately linkable resources for an account.
      *
+     * <p>Gets a list of privately linkable resources for an account.
+     *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of privately linkable resources for an account.
+     * @return a list of privately linkable resources for an account along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByAccountSinglePageAsync(
@@ -162,13 +162,16 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a list of privately linkable resources for an account.
      *
+     * <p>Gets a list of privately linkable resources for an account.
+     *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of privately linkable resources for an account.
+     * @return a list of privately linkable resources for an account along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByAccountSinglePageAsync(
@@ -217,12 +220,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a list of privately linkable resources for an account.
      *
+     * <p>Gets a list of privately linkable resources for an account.
+     *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of privately linkable resources for an account.
+     * @return a list of privately linkable resources for an account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateLinkResourceInner> listByAccountAsync(String resourceGroupName, String accountName) {
@@ -234,13 +239,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a list of privately linkable resources for an account.
      *
+     * <p>Gets a list of privately linkable resources for an account.
+     *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of privately linkable resources for an account.
+     * @return a list of privately linkable resources for an account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateLinkResourceInner> listByAccountAsync(
@@ -253,12 +260,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a list of privately linkable resources for an account.
      *
+     * <p>Gets a list of privately linkable resources for an account.
+     *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of privately linkable resources for an account.
+     * @return a list of privately linkable resources for an account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByAccount(String resourceGroupName, String accountName) {
@@ -268,13 +277,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a list of privately linkable resources for an account.
      *
+     * <p>Gets a list of privately linkable resources for an account.
+     *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of privately linkable resources for an account.
+     * @return a list of privately linkable resources for an account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByAccount(
@@ -285,13 +296,16 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a privately linkable resources for an account with given group identifier.
      *
+     * <p>Gets a privately linkable resources for an account with given group identifier.
+     *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @param groupId The group identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a privately linkable resources for an account with given group identifier.
+     * @return a privately linkable resources for an account with given group identifier along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceInner>> getByGroupIdWithResponseAsync(
@@ -338,6 +352,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a privately linkable resources for an account with given group identifier.
      *
+     * <p>Gets a privately linkable resources for an account with given group identifier.
+     *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @param groupId The group identifier.
@@ -345,7 +361,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a privately linkable resources for an account with given group identifier.
+     * @return a privately linkable resources for an account with given group identifier along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceInner>> getByGroupIdWithResponseAsync(
@@ -389,30 +406,48 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a privately linkable resources for an account with given group identifier.
      *
+     * <p>Gets a privately linkable resources for an account with given group identifier.
+     *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @param groupId The group identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a privately linkable resources for an account with given group identifier.
+     * @return a privately linkable resources for an account with given group identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkResourceInner> getByGroupIdAsync(
         String resourceGroupName, String accountName, String groupId) {
         return getByGroupIdWithResponseAsync(resourceGroupName, accountName, groupId)
-            .flatMap(
-                (Response<PrivateLinkResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a privately linkable resources for an account with given group identifier.
+     *
+     * <p>Gets a privately linkable resources for an account with given group identifier.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param accountName The name of the account.
+     * @param groupId The group identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a privately linkable resources for an account with given group identifier along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PrivateLinkResourceInner> getByGroupIdWithResponse(
+        String resourceGroupName, String accountName, String groupId, Context context) {
+        return getByGroupIdWithResponseAsync(resourceGroupName, accountName, groupId, context).block();
+    }
+
+    /**
+     * Gets a privately linkable resources for an account with given group identifier.
+     *
+     * <p>Gets a privately linkable resources for an account with given group identifier.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -424,35 +459,19 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceInner getByGroupId(String resourceGroupName, String accountName, String groupId) {
-        return getByGroupIdAsync(resourceGroupName, accountName, groupId).block();
-    }
-
-    /**
-     * Gets a privately linkable resources for an account with given group identifier.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName The name of the account.
-     * @param groupId The group identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a privately linkable resources for an account with given group identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceInner> getByGroupIdWithResponse(
-        String resourceGroupName, String accountName, String groupId, Context context) {
-        return getByGroupIdWithResponseAsync(resourceGroupName, accountName, groupId, context).block();
+        return getByGroupIdWithResponse(resourceGroupName, accountName, groupId, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of private link resources.
+     * @return paged list of private link resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByAccountNextSinglePageAsync(String nextLink) {
@@ -483,12 +502,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of private link resources.
+     * @return paged list of private link resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByAccountNextSinglePageAsync(

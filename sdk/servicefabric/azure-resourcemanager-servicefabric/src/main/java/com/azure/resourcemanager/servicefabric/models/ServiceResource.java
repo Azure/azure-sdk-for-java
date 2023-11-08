@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceInner;
-import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of ServiceResource. */
@@ -33,6 +32,13 @@ public interface ServiceResource {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the properties property: The service resource properties.
+     *
+     * @return the properties value.
+     */
+    ServiceResourceProperties properties();
 
     /**
      * Gets the location property: It will be deprecated in New API, resource location depends on the parent resource.
@@ -63,83 +69,6 @@ public interface ServiceResource {
     SystemData systemData();
 
     /**
-     * Gets the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
-     *
-     * @return the provisioningState value.
-     */
-    String provisioningState();
-
-    /**
-     * Gets the serviceTypeName property: The name of the service type.
-     *
-     * @return the serviceTypeName value.
-     */
-    String serviceTypeName();
-
-    /**
-     * Gets the partitionDescription property: Describes how the service is partitioned.
-     *
-     * @return the partitionDescription value.
-     */
-    PartitionSchemeDescription partitionDescription();
-
-    /**
-     * Gets the servicePackageActivationMode property: The activation Mode of the service package.
-     *
-     * @return the servicePackageActivationMode value.
-     */
-    ArmServicePackageActivationMode servicePackageActivationMode();
-
-    /**
-     * Gets the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
-     * accessed via its DNS name instead of service name.
-     *
-     * @return the serviceDnsName value.
-     */
-    String serviceDnsName();
-
-    /**
-     * Gets the placementConstraints property: The placement constraints as a string. Placement constraints are boolean
-     * expressions on node properties and allow for restricting a service to particular nodes based on the service
-     * requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor
-     * == blue)".
-     *
-     * @return the placementConstraints value.
-     */
-    String placementConstraints();
-
-    /**
-     * Gets the correlationScheme property: A list that describes the correlation of the service with other services.
-     *
-     * @return the correlationScheme value.
-     */
-    List<ServiceCorrelationDescription> correlationScheme();
-
-    /**
-     * Gets the serviceLoadMetrics property: The service load metrics is given as an array of
-     * ServiceLoadMetricDescription objects.
-     *
-     * @return the serviceLoadMetrics value.
-     */
-    List<ServiceLoadMetricDescription> serviceLoadMetrics();
-
-    /**
-     * Gets the servicePlacementPolicies property: A list that describes the correlation of the service with other
-     * services.
-     *
-     * @return the servicePlacementPolicies value.
-     */
-    List<ServicePlacementPolicyDescription> servicePlacementPolicies();
-
-    /**
-     * Gets the defaultMoveCost property: Specifies the move cost for the service.
-     *
-     * @return the defaultMoveCost value.
-     */
-    MoveCost defaultMoveCost();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -152,6 +81,13 @@ public interface ServiceResource {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceInner object.
@@ -186,17 +122,7 @@ public interface ServiceResource {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithLocation,
-                DefinitionStages.WithTags,
-                DefinitionStages.WithServiceTypeName,
-                DefinitionStages.WithPartitionDescription,
-                DefinitionStages.WithServicePackageActivationMode,
-                DefinitionStages.WithServiceDnsName,
-                DefinitionStages.WithPlacementConstraints,
-                DefinitionStages.WithCorrelationScheme,
-                DefinitionStages.WithServiceLoadMetrics,
-                DefinitionStages.WithServicePlacementPolicies,
-                DefinitionStages.WithDefaultMoveCost {
+            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -240,107 +166,15 @@ public interface ServiceResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the ServiceResource definition allowing to specify serviceTypeName. */
-        interface WithServiceTypeName {
+        /** The stage of the ServiceResource definition allowing to specify properties. */
+        interface WithProperties {
             /**
-             * Specifies the serviceTypeName property: The name of the service type.
+             * Specifies the properties property: The service resource properties..
              *
-             * @param serviceTypeName The name of the service type.
+             * @param properties The service resource properties.
              * @return the next definition stage.
              */
-            WithCreate withServiceTypeName(String serviceTypeName);
-        }
-        /** The stage of the ServiceResource definition allowing to specify partitionDescription. */
-        interface WithPartitionDescription {
-            /**
-             * Specifies the partitionDescription property: Describes how the service is partitioned..
-             *
-             * @param partitionDescription Describes how the service is partitioned.
-             * @return the next definition stage.
-             */
-            WithCreate withPartitionDescription(PartitionSchemeDescription partitionDescription);
-        }
-        /** The stage of the ServiceResource definition allowing to specify servicePackageActivationMode. */
-        interface WithServicePackageActivationMode {
-            /**
-             * Specifies the servicePackageActivationMode property: The activation Mode of the service package.
-             *
-             * @param servicePackageActivationMode The activation Mode of the service package.
-             * @return the next definition stage.
-             */
-            WithCreate withServicePackageActivationMode(ArmServicePackageActivationMode servicePackageActivationMode);
-        }
-        /** The stage of the ServiceResource definition allowing to specify serviceDnsName. */
-        interface WithServiceDnsName {
-            /**
-             * Specifies the serviceDnsName property: Dns name used for the service. If this is specified, then the
-             * service can be accessed via its DNS name instead of service name..
-             *
-             * @param serviceDnsName Dns name used for the service. If this is specified, then the service can be
-             *     accessed via its DNS name instead of service name.
-             * @return the next definition stage.
-             */
-            WithCreate withServiceDnsName(String serviceDnsName);
-        }
-        /** The stage of the ServiceResource definition allowing to specify placementConstraints. */
-        interface WithPlacementConstraints {
-            /**
-             * Specifies the placementConstraints property: The placement constraints as a string. Placement constraints
-             * are boolean expressions on node properties and allow for restricting a service to particular nodes based
-             * on the service requirements. For example, to place a service on nodes where NodeType is blue specify the
-             * following: "NodeColor == blue)"..
-             *
-             * @param placementConstraints The placement constraints as a string. Placement constraints are boolean
-             *     expressions on node properties and allow for restricting a service to particular nodes based on the
-             *     service requirements. For example, to place a service on nodes where NodeType is blue specify the
-             *     following: "NodeColor == blue)".
-             * @return the next definition stage.
-             */
-            WithCreate withPlacementConstraints(String placementConstraints);
-        }
-        /** The stage of the ServiceResource definition allowing to specify correlationScheme. */
-        interface WithCorrelationScheme {
-            /**
-             * Specifies the correlationScheme property: A list that describes the correlation of the service with other
-             * services..
-             *
-             * @param correlationScheme A list that describes the correlation of the service with other services.
-             * @return the next definition stage.
-             */
-            WithCreate withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme);
-        }
-        /** The stage of the ServiceResource definition allowing to specify serviceLoadMetrics. */
-        interface WithServiceLoadMetrics {
-            /**
-             * Specifies the serviceLoadMetrics property: The service load metrics is given as an array of
-             * ServiceLoadMetricDescription objects..
-             *
-             * @param serviceLoadMetrics The service load metrics is given as an array of ServiceLoadMetricDescription
-             *     objects.
-             * @return the next definition stage.
-             */
-            WithCreate withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics);
-        }
-        /** The stage of the ServiceResource definition allowing to specify servicePlacementPolicies. */
-        interface WithServicePlacementPolicies {
-            /**
-             * Specifies the servicePlacementPolicies property: A list that describes the correlation of the service
-             * with other services..
-             *
-             * @param servicePlacementPolicies A list that describes the correlation of the service with other services.
-             * @return the next definition stage.
-             */
-            WithCreate withServicePlacementPolicies(List<ServicePlacementPolicyDescription> servicePlacementPolicies);
-        }
-        /** The stage of the ServiceResource definition allowing to specify defaultMoveCost. */
-        interface WithDefaultMoveCost {
-            /**
-             * Specifies the defaultMoveCost property: Specifies the move cost for the service..
-             *
-             * @param defaultMoveCost Specifies the move cost for the service.
-             * @return the next definition stage.
-             */
-            WithCreate withDefaultMoveCost(MoveCost defaultMoveCost);
+            WithCreate withProperties(ServiceResourceProperties properties);
         }
     }
     /**
@@ -351,7 +185,7 @@ public interface ServiceResource {
     ServiceResource.Update update();
 
     /** The template for ServiceResource update. */
-    interface Update {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          *
@@ -369,6 +203,16 @@ public interface ServiceResource {
     }
     /** The ServiceResource update stages. */
     interface UpdateStages {
+        /** The stage of the ServiceResource update allowing to specify properties. */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The service resource properties for patch operations..
+             *
+             * @param properties The service resource properties for patch operations.
+             * @return the next definition stage.
+             */
+            Update withProperties(ServiceResourceUpdateProperties properties);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.

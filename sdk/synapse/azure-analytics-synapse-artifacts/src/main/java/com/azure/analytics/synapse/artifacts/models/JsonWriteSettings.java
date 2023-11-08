@@ -15,12 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class JsonWriteSettings extends FormatWriteSettings {
     /*
-     * File pattern of JSON. This setting controls the way a collection of JSON
-     * objects will be treated. The default value is 'setOfObjects'. It is
-     * case-sensitive.
+     * File pattern of JSON. This setting controls the way a collection of JSON objects will be treated. The default
+     * value is 'setOfObjects'. It is case-sensitive.
      */
     @JsonProperty(value = "filePattern")
     private Object filePattern;
+
+    /** Creates an instance of JsonWriteSettings class. */
+    public JsonWriteSettings() {}
 
     /**
      * Get the filePattern property: File pattern of JSON. This setting controls the way a collection of JSON objects

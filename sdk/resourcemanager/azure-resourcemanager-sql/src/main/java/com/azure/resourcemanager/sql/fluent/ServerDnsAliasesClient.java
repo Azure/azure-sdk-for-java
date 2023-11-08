@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.models.ServerDnsAliasInner;
+import com.azure.resourcemanager.sql.models.ServerDnsAliasAcquisition;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,16 +22,59 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in ServerDnsAliasesClient. */
 public interface ServerDnsAliasesClient {
     /**
+     * Gets a list of server DNS aliases for a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server DNS aliases for a server as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ServerDnsAliasInner> listByServerAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Gets a list of server DNS aliases for a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server DNS aliases for a server as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerDnsAliasInner> listByServer(String resourceGroupName, String serverName);
+
+    /**
+     * Gets a list of server DNS aliases for a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server DNS aliases for a server as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerDnsAliasInner> listByServer(String resourceGroupName, String serverName, Context context);
+
+    /**
      * Gets a server DNS alias.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServerDnsAliasInner>> getWithResponseAsync(
@@ -42,11 +86,11 @@ public interface ServerDnsAliasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerDnsAliasInner> getAsync(String resourceGroupName, String serverName, String dnsAliasName);
@@ -57,7 +101,24 @@ public interface ServerDnsAliasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ServerDnsAliasInner> getWithResponse(
+        String resourceGroupName, String serverName, String dnsAliasName, Context context);
+
+    /**
+     * Gets a server DNS alias.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server that the alias is pointing to.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -67,109 +128,92 @@ public interface ServerDnsAliasesClient {
     ServerDnsAliasInner get(String resourceGroupName, String serverName, String dnsAliasName);
 
     /**
-     * Gets a server DNS alias.
+     * Creates a server DNS alias.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
-     * @param context The context to associate with this operation.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerDnsAliasInner> getWithResponse(
-        String resourceGroupName, String serverName, String dnsAliasName, Context context);
-
-    /**
-     * Creates a server dns alias.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String serverName, String dnsAliasName);
 
     /**
-     * Creates a server dns alias.
+     * Creates a server DNS alias.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return the {@link PollerFlux} for polling of a server DNS alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String dnsAliasName);
 
     /**
-     * Creates a server dns alias.
+     * Creates a server DNS alias.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return the {@link SyncPoller} for polling of a server DNS alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String dnsAliasName);
 
     /**
-     * Creates a server dns alias.
+     * Creates a server DNS alias.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return the {@link SyncPoller} for polling of a server DNS alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String dnsAliasName, Context context);
 
     /**
-     * Creates a server dns alias.
+     * Creates a server DNS alias.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerDnsAliasInner> createOrUpdateAsync(String resourceGroupName, String serverName, String dnsAliasName);
 
     /**
-     * Creates a server dns alias.
+     * Creates a server DNS alias.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -179,12 +223,12 @@ public interface ServerDnsAliasesClient {
     ServerDnsAliasInner createOrUpdate(String resourceGroupName, String serverName, String dnsAliasName);
 
     /**
-     * Creates a server dns alias.
+     * Creates a server DNS alias.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -201,11 +245,11 @@ public interface ServerDnsAliasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -217,13 +261,13 @@ public interface ServerDnsAliasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String dnsAliasName);
 
@@ -233,13 +277,13 @@ public interface ServerDnsAliasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String dnsAliasName);
 
     /**
@@ -248,14 +292,14 @@ public interface ServerDnsAliasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String dnsAliasName, Context context);
 
@@ -265,11 +309,11 @@ public interface ServerDnsAliasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String dnsAliasName);
@@ -280,7 +324,7 @@ public interface ServerDnsAliasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -294,7 +338,7 @@ public interface ServerDnsAliasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server DNS alias.
+     * @param dnsAliasName The name of the server dns alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -304,64 +348,21 @@ public interface ServerDnsAliasesClient {
     void delete(String resourceGroupName, String serverName, String dnsAliasName, Context context);
 
     /**
-     * Gets a list of server DNS aliases for a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server that the alias is pointing to.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ServerDnsAliasInner> listByServerAsync(String resourceGroupName, String serverName);
-
-    /**
-     * Gets a list of server DNS aliases for a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server that the alias is pointing to.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerDnsAliasInner> listByServer(String resourceGroupName, String serverName);
-
-    /**
-     * Gets a list of server DNS aliases for a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server that the alias is pointing to.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerDnsAliasInner> listByServer(String resourceGroupName, String serverName, Context context);
-
-    /**
      * Acquires server DNS alias from another server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server dns alias acquisition request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> acquireWithResponseAsync(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId);
+        String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters);
 
     /**
      * Acquires server DNS alias from another server.
@@ -370,15 +371,15 @@ public interface ServerDnsAliasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server dns alias acquisition request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of a server DNS alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginAcquireAsync(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginAcquireAsync(
+        String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters);
 
     /**
      * Acquires server DNS alias from another server.
@@ -387,15 +388,15 @@ public interface ServerDnsAliasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server dns alias acquisition request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of a server DNS alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginAcquire(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginAcquire(
+        String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters);
 
     /**
      * Acquires server DNS alias from another server.
@@ -404,16 +405,20 @@ public interface ServerDnsAliasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server dns alias acquisition request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of a server DNS alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginAcquire(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginAcquire(
+        String resourceGroupName,
+        String serverName,
+        String dnsAliasName,
+        ServerDnsAliasAcquisition parameters,
+        Context context);
 
     /**
      * Acquires server DNS alias from another server.
@@ -422,15 +427,15 @@ public interface ServerDnsAliasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server dns alias acquisition request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return a server DNS alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> acquireAsync(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId);
+    Mono<ServerDnsAliasInner> acquireAsync(
+        String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters);
 
     /**
      * Acquires server DNS alias from another server.
@@ -439,13 +444,15 @@ public interface ServerDnsAliasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
+     * @param parameters A server dns alias acquisition request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> acquireAsync(String resourceGroupName, String serverName, String dnsAliasName);
+    ServerDnsAliasInner acquire(
+        String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters);
 
     /**
      * Acquires server DNS alias from another server.
@@ -454,42 +461,18 @@ public interface ServerDnsAliasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void acquire(String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId);
-
-    /**
-     * Acquires server DNS alias from another server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server dns alias acquisition request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server DNS alias.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void acquire(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId, Context context);
-
-    /**
-     * Acquires server DNS alias from another server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void acquire(String resourceGroupName, String serverName, String dnsAliasName);
+    ServerDnsAliasInner acquire(
+        String resourceGroupName,
+        String serverName,
+        String dnsAliasName,
+        ServerDnsAliasAcquisition parameters,
+        Context context);
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** sharingLink. */
 @Fluent
 public final class MicrosoftGraphSharingLink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphSharingLink.class);
-
     /*
      * identity
      */
@@ -25,17 +22,15 @@ public final class MicrosoftGraphSharingLink {
     private MicrosoftGraphIdentity application;
 
     /*
-     * If true then the user can only use this link to view the item on the
-     * web, and cannot use it to download the contents of the item. Only for
-     * OneDrive for Business and SharePoint.
+     * If true then the user can only use this link to view the item on the web, and cannot use it to download the
+     * contents of the item. Only for OneDrive for Business and SharePoint.
      */
     @JsonProperty(value = "preventsDownload")
     private Boolean preventsDownload;
 
     /*
-     * The scope of the link represented by this permission. Value anonymous
-     * indicates the link is usable by anyone, organization indicates the link
-     * is only usable for users signed into the same tenant.
+     * The scope of the link represented by this permission. Value anonymous indicates the link is usable by anyone,
+     * organization indicates the link is only usable for users signed into the same tenant.
      */
     @JsonProperty(value = "scope")
     private String scope;
@@ -47,8 +42,8 @@ public final class MicrosoftGraphSharingLink {
     private String type;
 
     /*
-     * For embed links, this property contains the HTML code for an <iframe>
-     * element that will embed the item in a webpage.
+     * For embed links, this property contains the HTML code for an <iframe> element that will embed the item in a
+     * webpage.
      */
     @JsonProperty(value = "webHtml")
     private String webHtml;
@@ -63,6 +58,10 @@ public final class MicrosoftGraphSharingLink {
      * sharingLink
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSharingLink class. */
+    public MicrosoftGraphSharingLink() {
+    }
 
     /**
      * Get the application property: identity.

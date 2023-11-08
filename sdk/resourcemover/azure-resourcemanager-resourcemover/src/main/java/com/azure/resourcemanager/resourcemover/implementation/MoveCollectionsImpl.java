@@ -22,10 +22,9 @@ import com.azure.resourcemanager.resourcemover.models.OperationStatus;
 import com.azure.resourcemanager.resourcemover.models.PrepareRequest;
 import com.azure.resourcemanager.resourcemover.models.RequiredForResourcesCollection;
 import com.azure.resourcemanager.resourcemover.models.ResourceMoveRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MoveCollectionsImpl implements MoveCollections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveCollectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MoveCollectionsImpl.class);
 
     private final MoveCollectionsClient innerClient;
 
@@ -56,15 +55,6 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
     }
 
-    public MoveCollection getByResourceGroup(String resourceGroupName, String moveCollectionName) {
-        MoveCollectionInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, moveCollectionName);
-        if (inner != null) {
-            return new MoveCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MoveCollection> getByResourceGroupWithResponse(
         String resourceGroupName, String moveCollectionName, Context context) {
         Response<MoveCollectionInner> inner =
@@ -80,10 +70,10 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
     }
 
-    public OperationStatus prepare(String resourceGroupName, String moveCollectionName, PrepareRequest body) {
-        OperationStatusInner inner = this.serviceClient().prepare(resourceGroupName, moveCollectionName, body);
+    public MoveCollection getByResourceGroup(String resourceGroupName, String moveCollectionName) {
+        MoveCollectionInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, moveCollectionName);
         if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
+            return new MoveCollectionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -101,15 +91,6 @@ public final class MoveCollectionsImpl implements MoveCollections {
     public OperationStatus prepare(
         String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context) {
         OperationStatusInner inner = this.serviceClient().prepare(resourceGroupName, moveCollectionName, body, context);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public OperationStatus initiateMove(String resourceGroupName, String moveCollectionName, ResourceMoveRequest body) {
-        OperationStatusInner inner = this.serviceClient().initiateMove(resourceGroupName, moveCollectionName, body);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {
@@ -137,15 +118,6 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
     }
 
-    public OperationStatus commit(String resourceGroupName, String moveCollectionName, CommitRequest body) {
-        OperationStatusInner inner = this.serviceClient().commit(resourceGroupName, moveCollectionName, body);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public OperationStatus commit(String resourceGroupName, String moveCollectionName) {
         OperationStatusInner inner = this.serviceClient().commit(resourceGroupName, moveCollectionName);
         if (inner != null) {
@@ -158,15 +130,6 @@ public final class MoveCollectionsImpl implements MoveCollections {
     public OperationStatus commit(
         String resourceGroupName, String moveCollectionName, CommitRequest body, Context context) {
         OperationStatusInner inner = this.serviceClient().commit(resourceGroupName, moveCollectionName, body, context);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public OperationStatus discard(String resourceGroupName, String moveCollectionName, DiscardRequest body) {
-        OperationStatusInner inner = this.serviceClient().discard(resourceGroupName, moveCollectionName, body);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {
@@ -205,15 +168,6 @@ public final class MoveCollectionsImpl implements MoveCollections {
     public OperationStatus resolveDependencies(String resourceGroupName, String moveCollectionName, Context context) {
         OperationStatusInner inner =
             this.serviceClient().resolveDependencies(resourceGroupName, moveCollectionName, context);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public OperationStatus bulkRemove(String resourceGroupName, String moveCollectionName, BulkRemoveRequest body) {
-        OperationStatusInner inner = this.serviceClient().bulkRemove(resourceGroupName, moveCollectionName, body);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {
@@ -261,17 +215,6 @@ public final class MoveCollectionsImpl implements MoveCollections {
         return Utils.mapPage(inner, inner1 -> new MoveCollectionImpl(inner1, this.manager()));
     }
 
-    public RequiredForResourcesCollection listRequiredFor(
-        String resourceGroupName, String moveCollectionName, String sourceId) {
-        RequiredForResourcesCollectionInner inner =
-            this.serviceClient().listRequiredFor(resourceGroupName, moveCollectionName, sourceId);
-        if (inner != null) {
-            return new RequiredForResourcesCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RequiredForResourcesCollection> listRequiredForWithResponse(
         String resourceGroupName, String moveCollectionName, String sourceId, Context context) {
         Response<RequiredForResourcesCollectionInner> inner =
@@ -287,10 +230,21 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
     }
 
+    public RequiredForResourcesCollection listRequiredFor(
+        String resourceGroupName, String moveCollectionName, String sourceId) {
+        RequiredForResourcesCollectionInner inner =
+            this.serviceClient().listRequiredFor(resourceGroupName, moveCollectionName, sourceId);
+        if (inner != null) {
+            return new RequiredForResourcesCollectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public MoveCollection getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -298,7 +252,7 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
         String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -310,7 +264,7 @@ public final class MoveCollectionsImpl implements MoveCollections {
     public Response<MoveCollection> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -318,7 +272,7 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
         String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -330,7 +284,7 @@ public final class MoveCollectionsImpl implements MoveCollections {
     public OperationStatus deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -338,7 +292,7 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
         String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -350,7 +304,7 @@ public final class MoveCollectionsImpl implements MoveCollections {
     public OperationStatus deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -358,7 +312,7 @@ public final class MoveCollectionsImpl implements MoveCollections {
         }
         String moveCollectionName = Utils.getValueFromIdByName(id, "moveCollections");
         if (moveCollectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

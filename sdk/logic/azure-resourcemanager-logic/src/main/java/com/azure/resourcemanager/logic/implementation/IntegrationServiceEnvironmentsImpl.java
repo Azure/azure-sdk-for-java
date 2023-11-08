@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.IntegrationServiceEnvironmentsClie
 import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentInner;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironment;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationServiceEnvironmentsImpl implements IntegrationServiceEnvironments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationServiceEnvironmentsImpl.class);
 
     private final IntegrationServiceEnvironmentsClient innerClient;
 
@@ -51,17 +50,6 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
         return Utils.mapPage(inner, inner1 -> new IntegrationServiceEnvironmentImpl(inner1, this.manager()));
     }
 
-    public IntegrationServiceEnvironment getByResourceGroup(
-        String resourceGroup, String integrationServiceEnvironmentName) {
-        IntegrationServiceEnvironmentInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroup, integrationServiceEnvironmentName);
-        if (inner != null) {
-            return new IntegrationServiceEnvironmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationServiceEnvironment> getByResourceGroupWithResponse(
         String resourceGroup, String integrationServiceEnvironmentName, Context context) {
         Response<IntegrationServiceEnvironmentInner> inner =
@@ -79,17 +67,24 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroup, String integrationServiceEnvironmentName) {
-        this.serviceClient().delete(resourceGroup, integrationServiceEnvironmentName);
+    public IntegrationServiceEnvironment getByResourceGroup(
+        String resourceGroup, String integrationServiceEnvironmentName) {
+        IntegrationServiceEnvironmentInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroup, integrationServiceEnvironmentName);
+        if (inner != null) {
+            return new IntegrationServiceEnvironmentImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(
+    public Response<Void> deleteByResourceGroupWithResponse(
         String resourceGroup, String integrationServiceEnvironmentName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
     }
 
-    public void restart(String resourceGroup, String integrationServiceEnvironmentName) {
-        this.serviceClient().restart(resourceGroup, integrationServiceEnvironmentName);
+    public void deleteByResourceGroup(String resourceGroup, String integrationServiceEnvironmentName) {
+        this.serviceClient().delete(resourceGroup, integrationServiceEnvironmentName);
     }
 
     public Response<Void> restartWithResponse(
@@ -97,10 +92,14 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
         return this.serviceClient().restartWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
     }
 
+    public void restart(String resourceGroup, String integrationServiceEnvironmentName) {
+        this.serviceClient().restart(resourceGroup, integrationServiceEnvironmentName);
+    }
+
     public IntegrationServiceEnvironment getById(String id) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,7 +107,7 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
         }
         String integrationServiceEnvironmentName = Utils.getValueFromIdByName(id, "integrationServiceEnvironments");
         if (integrationServiceEnvironmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,7 +124,7 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
     public Response<IntegrationServiceEnvironment> getByIdWithResponse(String id, Context context) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -133,7 +132,7 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
         }
         String integrationServiceEnvironmentName = Utils.getValueFromIdByName(id, "integrationServiceEnvironments");
         if (integrationServiceEnvironmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +147,7 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
     public void deleteById(String id) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -156,7 +155,7 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
         }
         String integrationServiceEnvironmentName = Utils.getValueFromIdByName(id, "integrationServiceEnvironments");
         if (integrationServiceEnvironmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -165,13 +164,13 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
                                     + " 'integrationServiceEnvironments'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroup, integrationServiceEnvironmentName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -179,7 +178,7 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
         }
         String integrationServiceEnvironmentName = Utils.getValueFromIdByName(id, "integrationServiceEnvironments");
         if (integrationServiceEnvironmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,7 +187,7 @@ public final class IntegrationServiceEnvironmentsImpl implements IntegrationServ
                                     + " 'integrationServiceEnvironments'.",
                                 id)));
         }
-        return this.deleteWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
     }
 
     private IntegrationServiceEnvironmentsClient serviceClient() {

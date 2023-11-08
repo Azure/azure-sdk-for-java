@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.RecommendedSensitivityLabelUpdate;
 import com.azure.resourcemanager.synapse.models.RecommendedSensitivityLabelUpdateKind;
 import com.azure.resourcemanager.synapse.models.RecommendedSensitivityLabelUpdateList;
@@ -47,6 +46,6 @@ public final class SqlPoolRecommendedSensitivityLabelsUpdateSamples {
                                     .withSchema("dbo")
                                     .withTable("table1")
                                     .withColumn("column3"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

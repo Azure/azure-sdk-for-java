@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Customers ListByBillingProfile. */
 public final class CustomersListByBillingProfileSamples {
     /*
@@ -19,6 +17,7 @@ public final class CustomersListByBillingProfileSamples {
     public static void customersListByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .customers()
-            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", null, null, Context.NONE);
+            .listByBillingProfile(
+                "{billingAccountName}", "{billingProfileName}", null, null, com.azure.core.util.Context.NONE);
     }
 }

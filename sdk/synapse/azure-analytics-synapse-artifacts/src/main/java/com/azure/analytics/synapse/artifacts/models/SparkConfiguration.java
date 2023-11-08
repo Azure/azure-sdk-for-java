@@ -10,7 +10,11 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Information about a SparkConfiguration created at the workspace level. SparkConfiguration Artifact information. */
+/**
+ * Information about a SparkConfiguration created at the workspace level.
+ *
+ * <p>SparkConfiguration Artifact information.
+ */
 @Fluent
 public final class SparkConfiguration {
     /*
@@ -54,6 +58,9 @@ public final class SparkConfiguration {
      */
     @JsonProperty(value = "configMergeRule")
     private Map<String, String> configMergeRule;
+
+    /** Creates an instance of SparkConfiguration class. */
+    public SparkConfiguration() {}
 
     /**
      * Get the description property: Description about the SparkConfiguration.

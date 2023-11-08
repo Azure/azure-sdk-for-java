@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A domain name that a service is reached at, including details of the current connection status. */
 @Fluent
 public final class EndpointDependency {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointDependency.class);
-
     /*
      * The domain name of the dependency.
      */
@@ -26,6 +22,10 @@ public final class EndpointDependency {
      */
     @JsonProperty(value = "endpointDetails")
     private List<EndpointDetail> endpointDetails;
+
+    /** Creates an instance of EndpointDependency class. */
+    public EndpointDependency() {
+    }
 
     /**
      * Get the domainName property: The domain name of the dependency.

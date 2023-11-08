@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,41 +16,36 @@ import java.util.Map;
 /** recurrenceRange. */
 @Fluent
 public final class MicrosoftGraphRecurrenceRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphRecurrenceRange.class);
-
     /*
-     * The date to stop applying the recurrence pattern. Depending on the
-     * recurrence pattern of the event, the last occurrence of the meeting may
-     * not be this date. Required if type is endDate.
+     * The date to stop applying the recurrence pattern. Depending on the recurrence pattern of the event, the last
+     * occurrence of the meeting may not be this date. Required if type is endDate.
      */
     @JsonProperty(value = "endDate")
     private LocalDate endDate;
 
     /*
-     * The number of times to repeat the event. Required and must be positive
-     * if type is numbered.
+     * The number of times to repeat the event. Required and must be positive if type is numbered.
      */
     @JsonProperty(value = "numberOfOccurrences")
     private Integer numberOfOccurrences;
 
     /*
-     * Time zone for the startDate and endDate properties. Optional. If not
-     * specified, the time zone of the event is used.
+     * Time zone for the startDate and endDate properties. Optional. If not specified, the time zone of the event is
+     * used.
      */
     @JsonProperty(value = "recurrenceTimeZone")
     private String recurrenceTimeZone;
 
     /*
-     * The date to start applying the recurrence pattern. The first occurrence
-     * of the meeting may be this date or later, depending on the recurrence
-     * pattern of the event. Must be the same value as the start property of
-     * the recurring event. Required.
+     * The date to start applying the recurrence pattern. The first occurrence of the meeting may be this date or
+     * later, depending on the recurrence pattern of the event. Must be the same value as the start property of the
+     * recurring event. Required.
      */
     @JsonProperty(value = "startDate")
     private LocalDate startDate;
 
     /*
-     * The type property.
+     * recurrenceRangeType
      */
     @JsonProperty(value = "type")
     private MicrosoftGraphRecurrenceRangeType type;
@@ -60,6 +54,10 @@ public final class MicrosoftGraphRecurrenceRange {
      * recurrenceRange
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphRecurrenceRange class. */
+    public MicrosoftGraphRecurrenceRange() {
+    }
 
     /**
      * Get the endDate property: The date to stop applying the recurrence pattern. Depending on the recurrence pattern
@@ -152,7 +150,7 @@ public final class MicrosoftGraphRecurrenceRange {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: recurrenceRangeType.
      *
      * @return the type value.
      */
@@ -161,7 +159,7 @@ public final class MicrosoftGraphRecurrenceRange {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: recurrenceRangeType.
      *
      * @param type the type value to set.
      * @return the MicrosoftGraphRecurrenceRange object itself.

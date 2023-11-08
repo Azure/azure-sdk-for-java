@@ -18,19 +18,6 @@ public interface SecurityPINsClient {
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TokenInformationInner get(String vaultName, String resourceGroupName);
-
-    /**
-     * Get the security PIN.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters security pin request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,4 +28,17 @@ public interface SecurityPINsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TokenInformationInner> getWithResponse(
         String vaultName, String resourceGroupName, SecurityPinBase parameters, Context context);
+
+    /**
+     * Get the security PIN.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security PIN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TokenInformationInner get(String vaultName, String resourceGroupName);
 }

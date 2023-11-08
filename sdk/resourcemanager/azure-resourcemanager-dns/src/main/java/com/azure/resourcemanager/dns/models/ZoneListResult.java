@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dns.fluent.models.ZoneInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a Zone List or ListAll operation. */
 @Fluent
 public final class ZoneListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ZoneListResult.class);
-
     /*
      * Information about the DNS zones.
      */
@@ -27,6 +23,10 @@ public final class ZoneListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ZoneListResult class. */
+    public ZoneListResult() {
+    }
 
     /**
      * Get the value property: Information about the DNS zones.

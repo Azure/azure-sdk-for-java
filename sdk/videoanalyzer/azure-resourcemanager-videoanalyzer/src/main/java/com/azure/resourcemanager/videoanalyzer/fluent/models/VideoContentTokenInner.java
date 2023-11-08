@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** "Video content token grants access to the video content URLs.". */
 @Immutable
 public final class VideoContentTokenInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoContentTokenInner.class);
-
     /*
      * The content token expiration date in ISO8601 format (eg.
      * 2021-01-01T00:00:00Z).

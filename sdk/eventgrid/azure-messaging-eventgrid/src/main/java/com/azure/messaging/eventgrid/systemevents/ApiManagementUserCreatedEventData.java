@@ -4,19 +4,22 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.UserCreated event. */
-@Immutable
+@Fluent
 public final class ApiManagementUserCreatedEventData {
     /*
-     * The fully qualified ID of the resource that the compliance state change
-     * is for, including the resource name and resource type. Uses the format,
+     * The fully qualified ID of the resource that the compliance state change is for, including the resource name and
+     * resource type. Uses the format,
      * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>`
      */
     @JsonProperty(value = "resourceUri")
     private String resourceUri;
+
+    /** Creates an instance of ApiManagementUserCreatedEventData class. */
+    public ApiManagementUserCreatedEventData() {}
 
     /**
      * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,

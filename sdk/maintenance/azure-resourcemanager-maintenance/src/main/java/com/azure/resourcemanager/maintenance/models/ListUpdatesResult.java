@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.models.UpdateInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for Updates list. */
 @Fluent
 public final class ListUpdatesResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListUpdatesResult.class);
-
     /*
      * The pending updates
      */
     @JsonProperty(value = "value")
     private List<UpdateInner> value;
+
+    /** Creates an instance of ListUpdatesResult class. */
+    public ListUpdatesResult() {
+    }
 
     /**
      * Get the value property: The pending updates.

@@ -32,6 +32,13 @@ public interface ApplyUpdate {
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the status property: The status.
      *
      * @return the status value.
@@ -51,13 +58,6 @@ public interface ApplyUpdate {
      * @return the lastUpdateTime value.
      */
     OffsetDateTime lastUpdateTime();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner object.

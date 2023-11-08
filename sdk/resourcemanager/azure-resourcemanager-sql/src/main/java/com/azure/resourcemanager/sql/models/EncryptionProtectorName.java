@@ -24,7 +24,11 @@ public final class EncryptionProtectorName extends ExpandableStringEnum<Encrypti
         return fromString(name, EncryptionProtectorName.class);
     }
 
-    /** @return known EncryptionProtectorName values. */
+    /**
+     * Gets known EncryptionProtectorName values.
+     *
+     * @return known EncryptionProtectorName values.
+     */
     public static Collection<EncryptionProtectorName> values() {
         return values(EncryptionProtectorName.class);
     }

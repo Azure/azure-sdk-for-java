@@ -29,6 +29,10 @@ public final class DataTableResponseObject {
     @JsonProperty(value = "rows")
     private List<List<String>> rows;
 
+    /** Creates an instance of DataTableResponseObject class. */
+    public DataTableResponseObject() {
+    }
+
     /**
      * Get the tableName property: Name of the table.
      *

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Disk Pool SKU Details. */
 @Immutable
 public final class DiskPoolZoneInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolZoneInfoInner.class);
-
     /*
      * Logical zone for Disk Pool resource; example: ["1"].
      */
@@ -32,6 +28,10 @@ public final class DiskPoolZoneInfoInner {
      */
     @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
+
+    /** Creates an instance of DiskPoolZoneInfoInner class. */
+    public DiskPoolZoneInfoInner() {
+    }
 
     /**
      * Get the availabilityZones property: Logical zone for Disk Pool resource; example: ["1"].

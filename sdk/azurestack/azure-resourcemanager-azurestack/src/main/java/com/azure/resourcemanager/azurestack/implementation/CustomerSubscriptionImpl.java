@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.azurestack.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestack.fluent.models.CustomerSubscriptionInner;
 import com.azure.resourcemanager.azurestack.models.CustomerSubscription;
@@ -32,16 +31,12 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public String tenantId() {
         return this.innerModel().tenantId();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public CustomerSubscriptionInner innerModel() {
@@ -112,13 +107,13 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
         return this;
     }
 
-    public CustomerSubscriptionImpl withTenantId(String tenantId) {
-        this.innerModel().withTenantId(tenantId);
+    public CustomerSubscriptionImpl withEtag(String etag) {
+        this.innerModel().withEtag(etag);
         return this;
     }
 
-    public CustomerSubscriptionImpl withEtag(String etag) {
-        this.innerModel().withEtag(etag);
+    public CustomerSubscriptionImpl withTenantId(String tenantId) {
+        this.innerModel().withTenantId(tenantId);
         return this;
     }
 }

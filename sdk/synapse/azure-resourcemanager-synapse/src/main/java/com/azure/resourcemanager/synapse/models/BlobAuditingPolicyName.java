@@ -14,6 +14,15 @@ public final class BlobAuditingPolicyName extends ExpandableStringEnum<BlobAudit
     public static final BlobAuditingPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of BlobAuditingPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobAuditingPolicyName() {
+    }
+
+    /**
      * Creates or finds a BlobAuditingPolicyName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class BlobAuditingPolicyName extends ExpandableStringEnum<BlobAudit
         return fromString(name, BlobAuditingPolicyName.class);
     }
 
-    /** @return known BlobAuditingPolicyName values. */
+    /**
+     * Gets known BlobAuditingPolicyName values.
+     *
+     * @return known BlobAuditingPolicyName values.
+     */
     public static Collection<BlobAuditingPolicyName> values() {
         return values(BlobAuditingPolicyName.class);
     }

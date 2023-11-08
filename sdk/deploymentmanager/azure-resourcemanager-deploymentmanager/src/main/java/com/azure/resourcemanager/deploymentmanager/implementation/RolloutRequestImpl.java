@@ -79,6 +79,10 @@ public final class RolloutRequestImpl implements RolloutRequest, RolloutRequest.
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public RolloutRequestInner innerModel() {
         return this.innerObject;
     }
@@ -150,20 +154,20 @@ public final class RolloutRequestImpl implements RolloutRequest, RolloutRequest.
         this.rolloutName = Utils.getValueFromIdByName(innerObject.id(), "rollouts");
     }
 
-    public Rollout cancel() {
-        return serviceManager.rollouts().cancel(resourceGroupName, rolloutName);
-    }
-
     public Response<Rollout> cancelWithResponse(Context context) {
         return serviceManager.rollouts().cancelWithResponse(resourceGroupName, rolloutName, context);
     }
 
-    public Rollout restart() {
-        return serviceManager.rollouts().restart(resourceGroupName, rolloutName);
+    public Rollout cancel() {
+        return serviceManager.rollouts().cancel(resourceGroupName, rolloutName);
     }
 
     public Response<Rollout> restartWithResponse(Boolean skipSucceeded, Context context) {
         return serviceManager.rollouts().restartWithResponse(resourceGroupName, rolloutName, skipSucceeded, context);
+    }
+
+    public Rollout restart() {
+        return serviceManager.rollouts().restart(resourceGroupName, rolloutName);
     }
 
     public RolloutRequestImpl withRegion(Region location) {

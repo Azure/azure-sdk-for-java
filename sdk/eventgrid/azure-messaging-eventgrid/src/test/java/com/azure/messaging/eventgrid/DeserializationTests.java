@@ -3,14 +3,100 @@
 
 package com.azure.messaging.eventgrid;
 
-import com.azure.core.util.BinaryData;
 import com.azure.core.models.CloudEvent;
+import com.azure.core.models.ResponseError;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventgrid.implementation.models.ContosoItemReceivedEventData;
 import com.azure.messaging.eventgrid.implementation.models.ContosoItemSentEventData;
 import com.azure.messaging.eventgrid.implementation.models.DroneShippingInfo;
 import com.azure.messaging.eventgrid.implementation.models.RocketShippingInfo;
-import com.azure.messaging.eventgrid.systemevents.*;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterJobClassificationFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
+import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceType;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.IotHubDeviceConnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.IotHubDeviceTelemetryEventData;
+import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesDatasetDriftDetectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesModelDeployedEventData;
+import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesModelRegisteredEventData;
+import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesRunCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.MachineLearningServicesRunStatusChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.MapsGeofenceEnteredEventData;
+import com.azure.messaging.eventgrid.systemevents.MapsGeofenceExitedEventData;
+import com.azure.messaging.eventgrid.systemevents.MapsGeofenceResultEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobCanceledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobCancelingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobErrorCategory;
+import com.azure.messaging.eventgrid.systemevents.MediaJobErrorCode;
+import com.azure.messaging.eventgrid.systemevents.MediaJobErroredEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobFinishedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputAsset;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputCanceledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputCancelingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputErroredEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputFinishedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputProcessingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputProgressEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputScheduledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobOutputStateChangeEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobProcessingEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobScheduledEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaJobState;
+import com.azure.messaging.eventgrid.systemevents.MediaJobStateChangeEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventChannelArchiveHeartbeatEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventConnectionRejectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderConnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingDataChunkDroppedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamsOutOfSyncEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIngestHeartbeatEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventTrackDiscontinuityDetectedEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceActionCancelEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceActionFailureEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceActionSuccessEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceDeleteCancelEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceDeleteFailureEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessEventData;
+import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvailableWithNoListenersEventData;
+import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageDirectoryDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageDirectoryRenamedEventData;
+import com.azure.messaging.eventgrid.systemevents.SubscriptionDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
+import com.azure.messaging.eventgrid.systemevents.WebAppServicePlanUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebAppUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebBackupOperationCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebBackupOperationFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebBackupOperationStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebRestoreOperationCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebRestoreOperationFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebRestoreOperationStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebSlotSwapCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebSlotSwapFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebSlotSwapStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.WebSlotSwapWithPreviewCancelledEventData;
+import com.azure.messaging.eventgrid.systemevents.WebSlotSwapWithPreviewStartedEventData;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -23,10 +109,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DeserializationTests {
     static <T> Object toSystemEventData(EventGridEvent event) {
@@ -1298,6 +1391,96 @@ public class DeserializationTests {
         assertEquals(planName, eventData.getName());
     }
     //end of web
+
+    // Healthcare FHIR
+    @Test
+    public void consumeFhirResourceCreatedEvent() {
+        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceCreated\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
+        assertNotNull(events);
+        HealthcareFhirResourceCreatedEventData eventData = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeFhirResourceUpdatedEvent() {
+        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceUpdated\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
+        assertNotNull(events);
+        HealthcareFhirResourceUpdatedEventData eventData = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeFhirResourceDeletedEvent() {
+        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceDeleted\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
+        assertNotNull(events);
+        HealthcareFhirResourceDeletedEventData eventData = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeCloudEventFhirResourceCreatedEvent() {
+        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceCreated\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+
+        List<CloudEvent> events = CloudEvent.fromString(requestContent);
+        HealthcareFhirResourceCreatedEventData eventData = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
+        assertNotNull(events);
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeCloudEventFhirResourceUpdatedEvent() {
+        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceUpdated\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+
+        List<CloudEvent> events = CloudEvent.fromString(requestContent);
+        HealthcareFhirResourceUpdatedEventData eventData = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
+        assertNotNull(events);
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeCloudEventFhirResourceDeletedEvent() {
+        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceDeleted\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+
+        List<CloudEvent> events = CloudEvent.fromString(requestContent);
+        HealthcareFhirResourceDeletedEventData eventData = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
+        assertNotNull(events);
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    // End of healthcare FHIR
+
+    @Test
+    public void verifyAcsRouterJobClassificationFailedEventDataErrors() {
+        ResponseError error = new ResponseError("InvalidRequest", "The request is invalid");
+        AcsRouterJobClassificationFailedEventData eventData = new AcsRouterJobClassificationFailedEventData();
+        eventData.setErrors(Collections.singletonList(error));
+        List<ResponseError> errors = eventData.getErrors();
+        assertEquals(1, errors.size());
+        assertEquals("InvalidRequest", errors.get(0).getCode());
+        assertEquals("The request is invalid", errors.get(0).getMessage());
+    }
+
 
     // TODO: When new event types are introduced, add one test here for each event type
     private String getTestPayloadFromFile(String fileName) throws IOException {

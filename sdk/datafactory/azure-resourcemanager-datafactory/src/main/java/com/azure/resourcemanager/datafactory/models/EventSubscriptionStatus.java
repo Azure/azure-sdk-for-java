@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventSubscriptionStatus. */
+/** Event Subscription Status. */
 public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSubscriptionStatus> {
     /** Static value Enabled for EventSubscriptionStatus. */
     public static final EventSubscriptionStatus ENABLED = fromString("Enabled");
@@ -26,6 +26,15 @@ public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSub
     public static final EventSubscriptionStatus UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of EventSubscriptionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventSubscriptionStatus() {
+    }
+
+    /**
      * Creates or finds a EventSubscriptionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSub
         return fromString(name, EventSubscriptionStatus.class);
     }
 
-    /** @return known EventSubscriptionStatus values. */
+    /**
+     * Gets known EventSubscriptionStatus values.
+     *
+     * @return known EventSubscriptionStatus values.
+     */
     public static Collection<EventSubscriptionStatus> values() {
         return values(EventSubscriptionStatus.class);
     }

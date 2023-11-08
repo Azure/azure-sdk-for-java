@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.VolumeGroupMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /** Volume group resource. */
 @Fluent
 public final class VolumeGroupInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeGroupInner.class);
-
     /*
      * Resource location
      */
@@ -42,17 +36,14 @@ public final class VolumeGroupInner {
     private String type;
 
     /*
-     * Resource tags
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
-
-    /*
      * Volume group properties
      */
     @JsonProperty(value = "properties")
     private VolumeGroupListProperties innerProperties;
+
+    /** Creates an instance of VolumeGroupInner class. */
+    public VolumeGroupInner() {
+    }
 
     /**
      * Get the location property: Resource location.
@@ -99,26 +90,6 @@ public final class VolumeGroupInner {
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the VolumeGroupInner object itself.
-     */
-    public VolumeGroupInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**

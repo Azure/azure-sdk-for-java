@@ -63,6 +63,10 @@ public final class FlowLogPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of FlowLogPropertiesFormat class. */
+    public FlowLogPropertiesFormat() {
+    }
+
     /**
      * Get the targetResourceId property: ID of network security group to which flow log will be applied.
      *

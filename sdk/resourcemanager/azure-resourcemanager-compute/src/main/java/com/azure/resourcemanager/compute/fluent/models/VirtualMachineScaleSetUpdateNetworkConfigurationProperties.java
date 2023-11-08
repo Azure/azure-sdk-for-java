@@ -7,6 +7,8 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
+import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliaryMode;
+import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateIpConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,11 +27,16 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     private Boolean primary;
 
     /*
-     * Specifies whether the network interface is accelerated
-     * networking-enabled.
+     * Specifies whether the network interface is accelerated networking-enabled.
      */
     @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;
+
+    /*
+     * Specifies whether the network interface is disabled for tcp state tracking.
+     */
+    @JsonProperty(value = "disableTcpStateTracking")
+    private Boolean disableTcpStateTracking;
 
     /*
      * Specifies whether the network interface is FPGA networking-enabled.
@@ -66,6 +73,22 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
      */
     @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
+
+    /*
+     * Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
+     */
+    @JsonProperty(value = "auxiliaryMode")
+    private NetworkInterfaceAuxiliaryMode auxiliaryMode;
+
+    /*
+     * Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     */
+    @JsonProperty(value = "auxiliarySku")
+    private NetworkInterfaceAuxiliarySku auxiliarySku;
+
+    /** Creates an instance of VirtualMachineScaleSetUpdateNetworkConfigurationProperties class. */
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties() {
+    }
 
     /**
      * Get the primary property: Whether this is a primary NIC on a virtual machine.
@@ -107,6 +130,29 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withEnableAcceleratedNetworking(
         Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.disableTcpStateTracking;
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withDisableTcpStateTracking(
+        Boolean disableTcpStateTracking) {
+        this.disableTcpStateTracking = disableTcpStateTracking;
         return this;
     }
 
@@ -231,6 +277,50 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
      */
     public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withDeleteOption(DeleteOptions deleteOption) {
         this.deleteOption = deleteOption;
+        return this;
+    }
+
+    /**
+     * Get the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     *
+     * @return the auxiliaryMode value.
+     */
+    public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
+        return this.auxiliaryMode;
+    }
+
+    /**
+     * Set the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     *
+     * @param auxiliaryMode the auxiliaryMode value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withAuxiliaryMode(
+        NetworkInterfaceAuxiliaryMode auxiliaryMode) {
+        this.auxiliaryMode = auxiliaryMode;
+        return this;
+    }
+
+    /**
+     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     *
+     * @return the auxiliarySku value.
+     */
+    public NetworkInterfaceAuxiliarySku auxiliarySku() {
+        return this.auxiliarySku;
+    }
+
+    /**
+     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     *
+     * @param auxiliarySku the auxiliarySku value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withAuxiliarySku(
+        NetworkInterfaceAuxiliarySku auxiliarySku) {
+        this.auxiliarySku = auxiliarySku;
         return this;
     }
 

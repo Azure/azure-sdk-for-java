@@ -20,6 +20,10 @@ public final class Db2Source extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of Db2Source class. */
+    public Db2Source() {
+    }
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *

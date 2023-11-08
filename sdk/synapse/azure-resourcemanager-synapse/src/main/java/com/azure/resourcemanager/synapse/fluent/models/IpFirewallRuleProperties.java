@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP firewall rule properties. */
 @Fluent
 public final class IpFirewallRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpFirewallRuleProperties.class);
-
     /*
-     * The end IP address of the firewall rule. Must be IPv4 format. Must be
-     * greater than or equal to startIpAddress
+     * The end IP address of the firewall rule. Must be IPv4 format. Must be greater than or equal to startIpAddress
      */
     @JsonProperty(value = "endIpAddress")
     private String endIpAddress;
@@ -33,6 +28,10 @@ public final class IpFirewallRuleProperties {
      */
     @JsonProperty(value = "startIpAddress")
     private String startIpAddress;
+
+    /** Creates an instance of IpFirewallRuleProperties class. */
+    public IpFirewallRuleProperties() {
+    }
 
     /**
      * Get the endIpAddress property: The end IP address of the firewall rule. Must be IPv4 format. Must be greater than

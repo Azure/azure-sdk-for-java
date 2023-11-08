@@ -56,7 +56,7 @@ public interface BackupPolicy {
     String etag();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -133,6 +133,13 @@ public interface BackupPolicy {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.BackupPolicyInner object.
      *
      * @return the inner object.
@@ -146,11 +153,13 @@ public interface BackupPolicy {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The BackupPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the BackupPolicy definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the BackupPolicy definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -169,17 +178,19 @@ public interface BackupPolicy {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the BackupPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, accountName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @return the next definition stage.
              */
             WithCreate withExistingNetAppAccount(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the BackupPolicy definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -205,6 +216,7 @@ public interface BackupPolicy {
              */
             BackupPolicy create(Context context);
         }
+
         /** The stage of the BackupPolicy definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -215,6 +227,7 @@ public interface BackupPolicy {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the BackupPolicy definition allowing to specify dailyBackupsToKeep. */
         interface WithDailyBackupsToKeep {
             /**
@@ -225,6 +238,7 @@ public interface BackupPolicy {
              */
             WithCreate withDailyBackupsToKeep(Integer dailyBackupsToKeep);
         }
+
         /** The stage of the BackupPolicy definition allowing to specify weeklyBackupsToKeep. */
         interface WithWeeklyBackupsToKeep {
             /**
@@ -235,6 +249,7 @@ public interface BackupPolicy {
              */
             WithCreate withWeeklyBackupsToKeep(Integer weeklyBackupsToKeep);
         }
+
         /** The stage of the BackupPolicy definition allowing to specify monthlyBackupsToKeep. */
         interface WithMonthlyBackupsToKeep {
             /**
@@ -245,6 +260,7 @@ public interface BackupPolicy {
              */
             WithCreate withMonthlyBackupsToKeep(Integer monthlyBackupsToKeep);
         }
+
         /** The stage of the BackupPolicy definition allowing to specify enabled. */
         interface WithEnabled {
             /**
@@ -256,6 +272,7 @@ public interface BackupPolicy {
             WithCreate withEnabled(Boolean enabled);
         }
     }
+
     /**
      * Begins update for the BackupPolicy resource.
      *
@@ -285,6 +302,7 @@ public interface BackupPolicy {
          */
         BackupPolicy apply(Context context);
     }
+
     /** The BackupPolicy update stages. */
     interface UpdateStages {
         /** The stage of the BackupPolicy update allowing to specify tags. */
@@ -297,6 +315,7 @@ public interface BackupPolicy {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the BackupPolicy update allowing to specify dailyBackupsToKeep. */
         interface WithDailyBackupsToKeep {
             /**
@@ -307,6 +326,7 @@ public interface BackupPolicy {
              */
             Update withDailyBackupsToKeep(Integer dailyBackupsToKeep);
         }
+
         /** The stage of the BackupPolicy update allowing to specify weeklyBackupsToKeep. */
         interface WithWeeklyBackupsToKeep {
             /**
@@ -317,6 +337,7 @@ public interface BackupPolicy {
              */
             Update withWeeklyBackupsToKeep(Integer weeklyBackupsToKeep);
         }
+
         /** The stage of the BackupPolicy update allowing to specify monthlyBackupsToKeep. */
         interface WithMonthlyBackupsToKeep {
             /**
@@ -327,6 +348,7 @@ public interface BackupPolicy {
              */
             Update withMonthlyBackupsToKeep(Integer monthlyBackupsToKeep);
         }
+
         /** The stage of the BackupPolicy update allowing to specify enabled. */
         interface WithEnabled {
             /**
@@ -338,6 +360,7 @@ public interface BackupPolicy {
             Update withEnabled(Boolean enabled);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

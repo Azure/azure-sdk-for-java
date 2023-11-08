@@ -22,6 +22,9 @@ public final class SQLSourceParameterPatch {
     @JsonProperty(value = "query")
     private String query;
 
+    /** Creates an instance of SQLSourceParameterPatch class. */
+    public SQLSourceParameterPatch() {}
+
     /**
      * Get the connectionString property: The connection string of this database.
      *

@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountInner;
-import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentInner;
 import java.util.Map;
 
 /** An immutable client-side representation of IntegrationAccount. */
@@ -61,7 +60,7 @@ public interface IntegrationAccount {
      *
      * @return the integrationServiceEnvironment value.
      */
-    IntegrationServiceEnvironment integrationServiceEnvironment();
+    ResourceReference integrationServiceEnvironment();
 
     /**
      * Gets the state property: The workflow state.
@@ -83,6 +82,13 @@ public interface IntegrationAccount {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.logic.fluent.models.IntegrationAccountInner object.
@@ -183,8 +189,7 @@ public interface IntegrationAccount {
              * @param integrationServiceEnvironment The integration service environment.
              * @return the next definition stage.
              */
-            WithCreate withIntegrationServiceEnvironment(
-                IntegrationServiceEnvironmentInner integrationServiceEnvironment);
+            WithCreate withIntegrationServiceEnvironment(ResourceReference integrationServiceEnvironment);
         }
         /** The stage of the IntegrationAccount definition allowing to specify state. */
         interface WithState {
@@ -255,7 +260,7 @@ public interface IntegrationAccount {
              * @param integrationServiceEnvironment The integration service environment.
              * @return the next definition stage.
              */
-            Update withIntegrationServiceEnvironment(IntegrationServiceEnvironmentInner integrationServiceEnvironment);
+            Update withIntegrationServiceEnvironment(ResourceReference integrationServiceEnvironment);
         }
         /** The stage of the IntegrationAccount update allowing to specify state. */
         interface WithState {
@@ -287,6 +292,18 @@ public interface IntegrationAccount {
      * Gets the integration account callback URL.
      *
      * @param parameters The callback URL parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration account callback URL along with {@link Response}.
+     */
+    Response<CallbackUrl> listCallbackUrlWithResponse(GetCallbackUrlParameters parameters, Context context);
+
+    /**
+     * Gets the integration account callback URL.
+     *
+     * @param parameters The callback URL parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -295,25 +312,13 @@ public interface IntegrationAccount {
     CallbackUrl listCallbackUrl(GetCallbackUrlParameters parameters);
 
     /**
-     * Gets the integration account callback URL.
-     *
-     * @param parameters The callback URL parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account callback URL.
-     */
-    Response<CallbackUrl> listCallbackUrlWithResponse(GetCallbackUrlParameters parameters, Context context);
-
-    /**
      * Gets the integration account's Key Vault keys.
      *
      * @param listKeyVaultKeys The key vault parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account's Key Vault keys.
+     * @return the integration account's Key Vault keys as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KeyVaultKey> listKeyVaultKeys(ListKeyVaultKeysDefinition listKeyVaultKeys);
 
@@ -325,9 +330,21 @@ public interface IntegrationAccount {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account's Key Vault keys.
+     * @return the integration account's Key Vault keys as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KeyVaultKey> listKeyVaultKeys(ListKeyVaultKeysDefinition listKeyVaultKeys, Context context);
+
+    /**
+     * Logs the integration account's tracking events.
+     *
+     * @param logTrackingEvents The callback URL parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> logTrackingEventsWithResponse(TrackingEventsDefinition logTrackingEvents, Context context);
 
     /**
      * Logs the integration account's tracking events.
@@ -340,16 +357,17 @@ public interface IntegrationAccount {
     void logTrackingEvents(TrackingEventsDefinition logTrackingEvents);
 
     /**
-     * Logs the integration account's tracking events.
+     * Regenerates the integration account access key.
      *
-     * @param logTrackingEvents The callback URL parameters.
+     * @param regenerateAccessKey The access key type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the integration account along with {@link Response}.
      */
-    Response<Void> logTrackingEventsWithResponse(TrackingEventsDefinition logTrackingEvents, Context context);
+    Response<IntegrationAccount> regenerateAccessKeyWithResponse(
+        RegenerateActionParameter regenerateAccessKey, Context context);
 
     /**
      * Regenerates the integration account access key.
@@ -361,17 +379,4 @@ public interface IntegrationAccount {
      * @return the integration account.
      */
     IntegrationAccount regenerateAccessKey(RegenerateActionParameter regenerateAccessKey);
-
-    /**
-     * Regenerates the integration account access key.
-     *
-     * @param regenerateAccessKey The access key type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account.
-     */
-    Response<IntegrationAccount> regenerateAccessKeyWithResponse(
-        RegenerateActionParameter regenerateAccessKey, Context context);
 }

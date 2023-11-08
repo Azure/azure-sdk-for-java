@@ -7,14 +7,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Integration runtime status response. */
 @Fluent
 public final class IntegrationRuntimeStatusResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeStatusResponseInner.class);
-
     /*
      * The integration runtime name.
      */
@@ -26,6 +23,10 @@ public final class IntegrationRuntimeStatusResponseInner {
      */
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntimeStatus properties;
+
+    /** Creates an instance of IntegrationRuntimeStatusResponseInner class. */
+    public IntegrationRuntimeStatusResponseInner() {
+    }
 
     /**
      * Get the name property: The integration runtime name.
@@ -63,7 +64,7 @@ public final class IntegrationRuntimeStatusResponseInner {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model IntegrationRuntimeStatusResponseInner"));
@@ -71,4 +72,6 @@ public final class IntegrationRuntimeStatusResponseInner {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeStatusResponseInner.class);
 }

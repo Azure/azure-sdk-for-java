@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphLobbyBypassScope. */
+/** lobbyBypassScope. */
 public final class MicrosoftGraphLobbyBypassScope extends ExpandableStringEnum<MicrosoftGraphLobbyBypassScope> {
     /** Static value organizer for MicrosoftGraphLobbyBypassScope. */
     public static final MicrosoftGraphLobbyBypassScope ORGANIZER = fromString("organizer");
@@ -27,6 +27,15 @@ public final class MicrosoftGraphLobbyBypassScope extends ExpandableStringEnum<M
     public static final MicrosoftGraphLobbyBypassScope UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphLobbyBypassScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphLobbyBypassScope() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphLobbyBypassScope from its string representation.
      *
      * @param name a name to look for.
@@ -37,7 +46,11 @@ public final class MicrosoftGraphLobbyBypassScope extends ExpandableStringEnum<M
         return fromString(name, MicrosoftGraphLobbyBypassScope.class);
     }
 
-    /** @return known MicrosoftGraphLobbyBypassScope values. */
+    /**
+     * Gets known MicrosoftGraphLobbyBypassScope values.
+     *
+     * @return known MicrosoftGraphLobbyBypassScope values.
+     */
     public static Collection<MicrosoftGraphLobbyBypassScope> values() {
         return values(MicrosoftGraphLobbyBypassScope.class);
     }

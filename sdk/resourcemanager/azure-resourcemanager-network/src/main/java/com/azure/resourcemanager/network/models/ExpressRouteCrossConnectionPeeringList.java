@@ -24,6 +24,10 @@ public final class ExpressRouteCrossConnectionPeeringList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ExpressRouteCrossConnectionPeeringList class. */
+    public ExpressRouteCrossConnectionPeeringList() {
+    }
+
     /**
      * Get the value property: The peerings in an express route cross connection.
      *

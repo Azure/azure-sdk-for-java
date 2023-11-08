@@ -53,24 +53,59 @@ pr:
       - sdk/keyvault/azure-security-keyvault-secrets/pom.xml
       - sdk/keyvault/azure-security-test-keyvault-jca/pom.xml
 
+parameters:
+- name: release_azuresecuritykeyvaultadministration
+  displayName: 'azure-security-keyvault-administration'
+  type: boolean
+  default: true
+- name: release_azuresecuritykeyvaultcertificates
+  displayName: 'azure-security-keyvault-certificates'
+  type: boolean
+  default: true
+- name: release_azuresecuritykeyvaultjca
+  displayName: 'azure-security-keyvault-jca'
+  type: boolean
+  default: true
+- name: release_azuresecuritykeyvaultkeys
+  displayName: 'azure-security-keyvault-keys'
+  type: boolean
+  default: true
+- name: release_azuresecuritykeyvaultsecrets
+  displayName: 'azure-security-keyvault-secrets'
+  type: boolean
+  default: true
+
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: keyvault
+    EnableBatchRelease: true
     AdditionalLintingOptions: '-DcreateSourcesJar=false'
     Artifacts:
       - name: azure-security-keyvault-administration
         groupId: com.azure
         safeName: azuresecuritykeyvaultadministration
+        releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultadministration }}
       - name: azure-security-keyvault-certificates
         groupId: com.azure
         safeName: azuresecuritykeyvaultcertificates
+        releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultcertificates }}
       - name: azure-security-keyvault-jca
         groupId: com.azure
         safeName: azuresecuritykeyvaultjca
+        releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultjca }}
       - name: azure-security-keyvault-keys
         groupId: com.azure
         safeName: azuresecuritykeyvaultkeys
+        releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultkeys }}
       - name: azure-security-keyvault-secrets
         groupId: com.azure
         safeName: azuresecuritykeyvaultsecrets
+        releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultsecrets }}
+    AdditionalModules:
+      - name: azure-security-keyvault-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

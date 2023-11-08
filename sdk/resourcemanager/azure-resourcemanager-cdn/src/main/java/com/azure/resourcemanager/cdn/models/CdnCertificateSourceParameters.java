@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the parameters for using CDN managed certificate for securing custom domain. */
 @Fluent
 public final class CdnCertificateSourceParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CdnCertificateSourceParameters.class);
-
     /*
      * The typeName property.
      */
@@ -78,10 +75,12 @@ public final class CdnCertificateSourceParameters {
      */
     public void validate() {
         if (certificateType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property certificateType in model CdnCertificateSourceParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CdnCertificateSourceParameters.class);
 }

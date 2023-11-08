@@ -5,104 +5,85 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.models.ProxyResourceWithWritableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a server firewall rule. */
-@JsonFlatten
+/** A server firewall rule. */
 @Fluent
-public class FirewallRuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleInner.class);
-
+public final class FirewallRuleInner extends ProxyResourceWithWritableName {
     /*
-     * Kind of server that contains this firewall rule.
+     * Resource properties.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
-    private String kind;
+    @JsonProperty(value = "properties")
+    private ServerFirewallRuleProperties innerProperties;
 
-    /*
-     * Location of the server that contains this firewall rule.
-     */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
-
-    /*
-     * The start IP address of the firewall rule. Must be IPv4 format. Use
-     * value '0.0.0.0' to represent all Azure-internal IP addresses.
-     */
-    @JsonProperty(value = "properties.startIpAddress")
-    private String startIpAddress;
-
-    /*
-     * The end IP address of the firewall rule. Must be IPv4 format. Must be
-     * greater than or equal to startIpAddress. Use value '0.0.0.0' to
-     * represent all Azure-internal IP addresses.
-     */
-    @JsonProperty(value = "properties.endIpAddress")
-    private String endIpAddress;
-
-    /**
-     * Get the kind property: Kind of server that contains this firewall rule.
-     *
-     * @return the kind value.
-     */
-    public String kind() {
-        return this.kind;
+    /** Creates an instance of FirewallRuleInner class. */
+    public FirewallRuleInner() {
     }
 
     /**
-     * Get the location property: Location of the server that contains this firewall rule.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the location value.
+     * @return the innerProperties value.
      */
-    public String location() {
-        return this.location;
+    private ServerFirewallRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FirewallRuleInner withName(String name) {
+        super.withName(name);
+        return this;
     }
 
     /**
      * Get the startIpAddress property: The start IP address of the firewall rule. Must be IPv4 format. Use value
-     * '0.0.0.0' to represent all Azure-internal IP addresses.
+     * '0.0.0.0' for all Azure-internal IP addresses.
      *
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
-        return this.startIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().startIpAddress();
     }
 
     /**
      * Set the startIpAddress property: The start IP address of the firewall rule. Must be IPv4 format. Use value
-     * '0.0.0.0' to represent all Azure-internal IP addresses.
+     * '0.0.0.0' for all Azure-internal IP addresses.
      *
      * @param startIpAddress the startIpAddress value to set.
      * @return the FirewallRuleInner object itself.
      */
     public FirewallRuleInner withStartIpAddress(String startIpAddress) {
-        this.startIpAddress = startIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerFirewallRuleProperties();
+        }
+        this.innerProperties().withStartIpAddress(startIpAddress);
         return this;
     }
 
     /**
      * Get the endIpAddress property: The end IP address of the firewall rule. Must be IPv4 format. Must be greater than
-     * or equal to startIpAddress. Use value '0.0.0.0' to represent all Azure-internal IP addresses.
+     * or equal to startIpAddress. Use value '0.0.0.0' for all Azure-internal IP addresses.
      *
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
-        return this.endIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().endIpAddress();
     }
 
     /**
      * Set the endIpAddress property: The end IP address of the firewall rule. Must be IPv4 format. Must be greater than
-     * or equal to startIpAddress. Use value '0.0.0.0' to represent all Azure-internal IP addresses.
+     * or equal to startIpAddress. Use value '0.0.0.0' for all Azure-internal IP addresses.
      *
      * @param endIpAddress the endIpAddress value to set.
      * @return the FirewallRuleInner object itself.
      */
     public FirewallRuleInner withEndIpAddress(String endIpAddress) {
-        this.endIpAddress = endIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerFirewallRuleProperties();
+        }
+        this.innerProperties().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -111,6 +92,11 @@ public class FirewallRuleInner extends ProxyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

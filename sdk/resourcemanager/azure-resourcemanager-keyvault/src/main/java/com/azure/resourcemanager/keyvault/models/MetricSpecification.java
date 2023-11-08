@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Metric specification of operation. */
 @Fluent
 public final class MetricSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);
-
     /*
      * Name of metric specification.
      */
@@ -22,27 +18,25 @@ public final class MetricSpecification {
     private String name;
 
     /*
-     * Display name of Metric specification.
+     * Display name of metric specification.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Display description of Metric specification.
+     * Display description of metric specification.
      */
     @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
-     * The metric unit. Possible values include: 'Bytes', 'Count',
-     * 'Milliseconds'.
+     * The metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
      */
     @JsonProperty(value = "unit")
     private String unit;
 
     /*
-     * The metric aggregation type. Possible values include: 'Average',
-     * 'Count', 'Total'.
+     * The metric aggregation type. Possible values include: 'Average', 'Count', 'Total'.
      */
     @JsonProperty(value = "aggregationType")
     private String aggregationType;
@@ -83,6 +77,10 @@ public final class MetricSpecification {
     @JsonProperty(value = "internalMetricName")
     private String internalMetricName;
 
+    /** Creates an instance of MetricSpecification class. */
+    public MetricSpecification() {
+    }
+
     /**
      * Get the name property: Name of metric specification.
      *
@@ -104,7 +102,7 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the displayName property: Display name of Metric specification.
+     * Get the displayName property: Display name of metric specification.
      *
      * @return the displayName value.
      */
@@ -113,7 +111,7 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the displayName property: Display name of Metric specification.
+     * Set the displayName property: Display name of metric specification.
      *
      * @param displayName the displayName value to set.
      * @return the MetricSpecification object itself.
@@ -124,7 +122,7 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the displayDescription property: Display description of Metric specification.
+     * Get the displayDescription property: Display description of metric specification.
      *
      * @return the displayDescription value.
      */
@@ -133,7 +131,7 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the displayDescription property: Display description of Metric specification.
+     * Set the displayDescription property: Display description of metric specification.
      *
      * @param displayDescription the displayDescription value to set.
      * @return the MetricSpecification object itself.

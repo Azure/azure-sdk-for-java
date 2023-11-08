@@ -22,6 +22,10 @@ public final class TagsPatchResource {
     @JsonProperty(value = "properties")
     private Tags properties;
 
+    /** Creates an instance of TagsPatchResource class. */
+    public TagsPatchResource() {
+    }
+
     /**
      * Get the operation property: The operation type for the patch API.
      *

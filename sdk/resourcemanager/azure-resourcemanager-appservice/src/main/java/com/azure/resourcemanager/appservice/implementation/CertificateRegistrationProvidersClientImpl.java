@@ -61,7 +61,7 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface CertificateRegistrationProvidersService {
+    public interface CertificateRegistrationProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.CertificateRegistration/operations")
         @ExpectedResponses({200})
@@ -84,7 +84,9 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -118,7 +120,9 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @param context The context to associate with this operation.
@@ -152,7 +156,9 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -166,7 +172,9 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @param context The context to associate with this operation.
@@ -183,7 +191,9 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -196,7 +206,9 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     *
+     * <p>Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
      * @param context The context to associate with this operation.
@@ -213,7 +225,8 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -249,7 +262,8 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

@@ -14,14 +14,13 @@ import java.util.List;
 @Fluent
 public final class AutomationRuleTriggeringLogic {
     /*
-     * Determines whether the automation rule is enabled or disabled
+     * Determines whether the automation rule is enabled or disabled.
      */
     @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
     /*
-     * Determines when the automation rule should automatically expire and be
-     * disabled.
+     * Determines when the automation rule should automatically expire and be disabled.
      */
     @JsonProperty(value = "expirationTimeUtc")
     private OffsetDateTime expirationTimeUtc;
@@ -39,8 +38,7 @@ public final class AutomationRuleTriggeringLogic {
     private TriggersWhen triggersWhen;
 
     /*
-     * The conditions to evaluate to determine if the automation rule should be
-     * triggered on a given object
+     * The conditions to evaluate to determine if the automation rule should be triggered on a given object.
      */
     @JsonProperty(value = "conditions")
     private List<AutomationRuleCondition> conditions;

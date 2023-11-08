@@ -1,17 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
+import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateLinkResourceInner;
+import com.azure.resourcemanager.containerservice.models.AgentPool;
+import com.azure.resourcemanager.containerservice.models.AgentPoolData;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;
@@ -35,15 +43,19 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -57,6 +69,10 @@ public class KubernetesClusterImpl
     private List<CredentialResult> adminKubeConfigs;
     private List<CredentialResult> userKubeConfigs;
     private final Map<Format, List<CredentialResult>> formatUserKubeConfigsMap = new ConcurrentHashMap<>();
+
+    private ManagedClusterInner parameterSnapshotOnUpdate;
+    private static final SerializerAdapter SERIALIZER_ADAPTER =
+        SerializerFactory.createDefaultManagementSerializerAdapter();
 
     protected KubernetesClusterImpl(String name, ManagedClusterInner innerObject, ContainerServiceManager manager) {
         super(name, innerObject, manager);
@@ -210,7 +226,9 @@ public class KubernetesClusterImpl
 
     @Override
     public Map<String, ManagedClusterAddonProfile> addonProfiles() {
-        return Collections.unmodifiableMap(this.innerModel().addonProfiles());
+        return this.innerModel().addonProfiles() == null
+            ? Collections.emptyMap()
+            : Collections.unmodifiableMap(this.innerModel().addonProfiles());
     }
 
     @Override
@@ -220,7 +238,7 @@ public class KubernetesClusterImpl
 
     @Override
     public boolean enableRBAC() {
-        return this.innerModel().enableRbac();
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().enableRbac());
     }
 
     @Override
@@ -268,6 +286,11 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public String agentPoolResourceGroup() {
+        return innerModel().nodeResourceGroup();
+    }
+
+    @Override
     public void start() {
         this.startAsync().block();
     }
@@ -288,6 +311,21 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public Accepted<AgentPool> beginCreateAgentPool(String agentPoolName, AgentPoolData agentPool) {
+        return AcceptedImpl.newAccepted(
+            logger,
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.manager().serviceClient().getAgentPools()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), agentPoolName, agentPool.innerModel())
+                .block(),
+            AgentPoolDataImpl::new,
+            AgentPoolInner.class,
+            null,
+            Context.NONE);
+    }
+
+    @Override
     protected Mono<ManagedClusterInner> getInnerAsync() {
         return this
             .manager()
@@ -301,22 +339,95 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public KubernetesClusterImpl update() {
+        parameterSnapshotOnUpdate = this.deepCopyInner();
+        parameterSnapshotOnUpdate.withServicePrincipalProfile(null);    // servicePrincipalProfile is null in update
+        return super.update();
+    }
+
+    boolean isClusterModifiedDuringUpdate(ManagedClusterInner parameter) {
+        if (parameterSnapshotOnUpdate == null || parameter == null) {
+            return true;
+        } else {
+            final List<ManagedClusterAgentPoolProfile> parameterSnapshotAgentPools =
+                parameterSnapshotOnUpdate.agentPoolProfiles();
+            final List<ManagedClusterAgentPoolProfile> parameterAgentPools = parameter.agentPoolProfiles();
+
+            // intersection of agent pool names
+            Set<String> intersectAgentPoolNames = parameter.agentPoolProfiles().stream()
+                .map(ManagedClusterAgentPoolProfile::name)
+                .collect(Collectors.toSet());
+            intersectAgentPoolNames.retainAll(parameterSnapshotOnUpdate.agentPoolProfiles().stream()
+                .map(ManagedClusterAgentPoolProfile::name)
+                .collect(Collectors.toSet()));
+
+            // compare the intersection, as add/delete is handled by REST API on AgentPoolsClient
+            List<ManagedClusterAgentPoolProfile> agentPools = parameterSnapshotOnUpdate.agentPoolProfiles()
+                .stream()
+                .filter(p -> intersectAgentPoolNames.contains(p.name()))
+                .collect(Collectors.toList());
+            // will be reverted in finally block
+            parameterSnapshotOnUpdate.withAgentPoolProfiles(agentPools);
+
+            agentPools = parameter.agentPoolProfiles()
+                .stream()
+                .filter(p -> intersectAgentPoolNames.contains(p.name()))
+                .collect(Collectors.toList());
+            // will be reverted in finally block
+            parameter.withAgentPoolProfiles(agentPools);
+
+            try {
+                String jsonStrSnapshot =
+                    SERIALIZER_ADAPTER.serialize(parameterSnapshotOnUpdate, SerializerEncoding.JSON);
+                String jsonStr = SERIALIZER_ADAPTER.serialize(parameter, SerializerEncoding.JSON);
+                return !jsonStr.equals(jsonStrSnapshot);
+            } catch (IOException e) {
+                // ignored, treat as modified
+                return true;
+            } finally {
+                parameterSnapshotOnUpdate.withAgentPoolProfiles(parameterSnapshotAgentPools);
+                parameter.withAgentPoolProfiles(parameterAgentPools);
+            }
+        }
+    }
+
+    ManagedClusterInner deepCopyInner() {
+        ManagedClusterInner updateParameter;
+        try {
+            // deep copy via json
+            String jsonStr = SERIALIZER_ADAPTER.serialize(this.innerModel(), SerializerEncoding.JSON);
+            updateParameter =
+                SERIALIZER_ADAPTER.deserialize(jsonStr, ManagedClusterInner.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            // ignored, null to signify not available
+            updateParameter = null;
+        }
+        return updateParameter;
+    }
+
+    @Override
     public Mono<KubernetesCluster> createResourceAsync() {
         final KubernetesClusterImpl self = this;
         if (!this.isInCreateMode()) {
             this.innerModel().withServicePrincipalProfile(null);
         }
 
-        return this
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.innerModel())
-            .map(inner -> {
-                self.setInner(inner);
-                clearKubeConfig();
-                return self;
-            });
+        final boolean createOrModified = this.isInCreateMode() || this.isClusterModifiedDuringUpdate(this.innerModel());
+
+        if (createOrModified) {
+            return this
+                .manager()
+                .serviceClient()
+                .getManagedClusters()
+                .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.innerModel())
+                .map(inner -> {
+                    self.setInner(inner);
+                    clearKubeConfig();
+                    return self;
+                });
+        } else {
+            return Mono.just(this);
+        }
     }
 
     private void clearKubeConfig() {
@@ -387,8 +498,9 @@ public class KubernetesClusterImpl
 
     @Override
     public KubernetesClusterAgentPoolImpl defineAgentPool(String name) {
-        ManagedClusterAgentPoolProfile innerPoolProfile = new ManagedClusterAgentPoolProfile();
-        innerPoolProfile.withName(name);
+        ManagedClusterAgentPoolProfile innerPoolProfile = new ManagedClusterAgentPoolProfile()
+            .withName(name)
+            .withOrchestratorVersion(this.innerModel().kubernetesVersion());
         return new KubernetesClusterAgentPoolImpl(innerPoolProfile, this);
     }
 
@@ -546,14 +658,20 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public KubernetesCluster.DefinitionStages.WithCreate disableKubernetesRbac() {
+    public KubernetesClusterImpl disableKubernetesRbac() {
         this.innerModel().withEnableRbac(false);
         return this;
     }
 
     @Override
-    public KubernetesCluster.DefinitionStages.WithCreate withDiskEncryptionSet(String diskEncryptionSetId) {
+    public KubernetesClusterImpl withDiskEncryptionSet(String diskEncryptionSetId) {
         this.innerModel().withDiskEncryptionSetId(diskEncryptionSetId);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withAgentPoolResourceGroup(String resourceGroupName) {
+        this.innerModel().withNodeResourceGroup(resourceGroupName);
         return this;
     }
 

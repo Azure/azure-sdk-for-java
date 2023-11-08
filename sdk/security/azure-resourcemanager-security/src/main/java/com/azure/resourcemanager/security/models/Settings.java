@@ -12,50 +12,63 @@ import com.azure.resourcemanager.security.fluent.models.SettingInner;
 /** Resource collection API of Settings. */
 public interface Settings {
     /**
-     * Settings about different configurations in security center.
+     * Settings about different configurations in Microsoft Defender for Cloud.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list.
+     * @return subscription settings list as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Setting> list();
 
     /**
-     * Settings about different configurations in security center.
+     * Settings about different configurations in Microsoft Defender for Cloud.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list.
+     * @return subscription settings list as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Setting> list(Context context);
 
     /**
-     * Settings of different configurations in security center.
-     *
-     * @param settingName The name of the setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
-     */
-    Setting get(SettingsSettingName settingName);
-
-    /**
-     * Settings of different configurations in security center.
+     * Settings of different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
+     * @return the kind of the security setting along with {@link Response}.
      */
-    Response<Setting> getWithResponse(SettingsSettingName settingName, Context context);
+    Response<Setting> getWithResponse(SettingName settingName, Context context);
 
     /**
-     * updating settings about different configurations in security center.
+     * Settings of different configurations in Microsoft Defender for Cloud.
+     *
+     * @param settingName The name of the setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the kind of the security setting.
+     */
+    Setting get(SettingName settingName);
+
+    /**
+     * updating settings about different configurations in Microsoft Defender for Cloud.
+     *
+     * @param settingName The name of the setting.
+     * @param setting Setting object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the kind of the security setting along with {@link Response}.
+     */
+    Response<Setting> updateWithResponse(SettingName settingName, SettingInner setting, Context context);
+
+    /**
+     * updating settings about different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @param setting Setting object.
@@ -64,18 +77,5 @@ public interface Settings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the kind of the security setting.
      */
-    Setting update(SettingsSettingName settingName, SettingInner setting);
-
-    /**
-     * updating settings about different configurations in security center.
-     *
-     * @param settingName The name of the setting.
-     * @param setting Setting object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
-     */
-    Response<Setting> updateWithResponse(SettingsSettingName settingName, SettingInner setting, Context context);
+    Setting update(SettingName settingName, SettingInner setting);
 }

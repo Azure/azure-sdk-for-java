@@ -37,6 +37,10 @@ public final class OrchestratorVersionProfileListResultInner {
     @JsonProperty(value = "properties", required = true)
     private OrchestratorVersionProfileProperties innerProperties = new OrchestratorVersionProfileProperties();
 
+    /** Creates an instance of OrchestratorVersionProfileListResultInner class. */
+    public OrchestratorVersionProfileListResultInner() {
+    }
+
     /**
      * Get the id property: Id of the orchestrator version profile list result.
      *

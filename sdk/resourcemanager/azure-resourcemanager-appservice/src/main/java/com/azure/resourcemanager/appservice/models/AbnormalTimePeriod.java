@@ -36,6 +36,10 @@ public final class AbnormalTimePeriod {
     @JsonProperty(value = "solutions")
     private List<Solution> solutions;
 
+    /** Creates an instance of AbnormalTimePeriod class. */
+    public AbnormalTimePeriod() {
+    }
+
     /**
      * Get the startTime property: Start time of the downtime.
      *

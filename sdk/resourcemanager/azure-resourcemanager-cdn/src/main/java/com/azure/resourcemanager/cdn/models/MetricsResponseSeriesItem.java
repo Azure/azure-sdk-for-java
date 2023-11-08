@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The MetricsResponseSeriesItem model. */
 @Fluent
 public final class MetricsResponseSeriesItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricsResponseSeriesItem.class);
-
     /*
      * The metric property.
      */
@@ -25,7 +21,7 @@ public final class MetricsResponseSeriesItem {
      * The unit property.
      */
     @JsonProperty(value = "unit")
-    private MetricsResponseSeriesItemUnit unit;
+    private MetricsSeriesUnit unit;
 
     /*
      * The groups property.
@@ -37,7 +33,11 @@ public final class MetricsResponseSeriesItem {
      * The data property.
      */
     @JsonProperty(value = "data")
-    private List<Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems> data;
+    private List<MetricsResponseSeriesItemData> data;
+
+    /** Creates an instance of MetricsResponseSeriesItem class. */
+    public MetricsResponseSeriesItem() {
+    }
 
     /**
      * Get the metric property: The metric property.
@@ -64,7 +64,7 @@ public final class MetricsResponseSeriesItem {
      *
      * @return the unit value.
      */
-    public MetricsResponseSeriesItemUnit unit() {
+    public MetricsSeriesUnit unit() {
         return this.unit;
     }
 
@@ -74,7 +74,7 @@ public final class MetricsResponseSeriesItem {
      * @param unit the unit value to set.
      * @return the MetricsResponseSeriesItem object itself.
      */
-    public MetricsResponseSeriesItem withUnit(MetricsResponseSeriesItemUnit unit) {
+    public MetricsResponseSeriesItem withUnit(MetricsSeriesUnit unit) {
         this.unit = unit;
         return this;
     }
@@ -104,7 +104,7 @@ public final class MetricsResponseSeriesItem {
      *
      * @return the data value.
      */
-    public List<Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems> data() {
+    public List<MetricsResponseSeriesItemData> data() {
         return this.data;
     }
 
@@ -114,8 +114,7 @@ public final class MetricsResponseSeriesItem {
      * @param data the data value to set.
      * @return the MetricsResponseSeriesItem object itself.
      */
-    public MetricsResponseSeriesItem withData(
-        List<Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems> data) {
+    public MetricsResponseSeriesItem withData(List<MetricsResponseSeriesItemData> data) {
         this.data = data;
         return this;
     }

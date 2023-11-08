@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.AttachedDatabaseConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list attached database configurations operation response. */
 @Fluent
 public final class AttachedDatabaseConfigurationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachedDatabaseConfigurationListResult.class);
-
     /*
      * The list of attached database configurations.
      */
     @JsonProperty(value = "value")
     private List<AttachedDatabaseConfigurationInner> value;
+
+    /** Creates an instance of AttachedDatabaseConfigurationListResult class. */
+    public AttachedDatabaseConfigurationListResult() {
+    }
 
     /**
      * Get the value property: The list of attached database configurations.

@@ -17,6 +17,10 @@ public final class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private StaticSiteUserArmResourceProperties innerProperties;
 
+    /** Creates an instance of StaticSiteUserArmResourceInner class. */
+    public StaticSiteUserArmResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: StaticSiteUserARMResource resource specific properties.
      *

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.TaskRunInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The collection of task runs. */
 @Fluent
 public final class TaskRunListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskRunListResult.class);
-
     /*
      * The collection value.
      */
@@ -27,6 +23,10 @@ public final class TaskRunListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of TaskRunListResult class. */
+    public TaskRunListResult() {
+    }
 
     /**
      * Get the value property: The collection value.

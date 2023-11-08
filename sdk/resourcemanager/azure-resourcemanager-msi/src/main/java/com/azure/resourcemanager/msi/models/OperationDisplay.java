@@ -5,41 +5,55 @@
 package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Operation Display. The object that describes the operation. */
+/**
+ * Operation Display.
+ *
+ * <p>The object that describes the operation.
+ */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
-     * Resource Provider Name. Friendly name of the resource provider.
+     * Resource Provider Name.
+     *
+     * Friendly name of the resource provider.
      */
     @JsonProperty(value = "provider")
     private String provider;
 
     /*
-     * Operation Type. The type of operation. For example: read, write, delete.
+     * Operation Type.
+     *
+     * The type of operation. For example: read, write, delete.
      */
     @JsonProperty(value = "operation")
     private String operation;
 
     /*
-     * Resource Type. The resource type on which the operation is performed.
+     * Resource Type.
+     *
+     * The resource type on which the operation is performed.
      */
     @JsonProperty(value = "resource")
     private String resource;
 
     /*
-     * Operation description A description of the operation.
+     * Operation description
+     *
+     * A description of the operation.
      */
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
+
     /**
-     * Get the provider property: Resource Provider Name. Friendly name of the resource provider.
+     * Get the provider property: Resource Provider Name.
+     *
+     * <p>Friendly name of the resource provider.
      *
      * @return the provider value.
      */
@@ -48,7 +62,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the provider property: Resource Provider Name. Friendly name of the resource provider.
+     * Set the provider property: Resource Provider Name.
+     *
+     * <p>Friendly name of the resource provider.
      *
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.
@@ -59,7 +75,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the operation property: Operation Type. The type of operation. For example: read, write, delete.
+     * Get the operation property: Operation Type.
+     *
+     * <p>The type of operation. For example: read, write, delete.
      *
      * @return the operation value.
      */
@@ -68,7 +86,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the operation property: Operation Type. The type of operation. For example: read, write, delete.
+     * Set the operation property: Operation Type.
+     *
+     * <p>The type of operation. For example: read, write, delete.
      *
      * @param operation the operation value to set.
      * @return the OperationDisplay object itself.
@@ -79,7 +99,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the resource property: Resource Type. The resource type on which the operation is performed.
+     * Get the resource property: Resource Type.
+     *
+     * <p>The resource type on which the operation is performed.
      *
      * @return the resource value.
      */
@@ -88,7 +110,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the resource property: Resource Type. The resource type on which the operation is performed.
+     * Set the resource property: Resource Type.
+     *
+     * <p>The resource type on which the operation is performed.
      *
      * @param resource the resource value to set.
      * @return the OperationDisplay object itself.
@@ -99,7 +123,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the description property: Operation description A description of the operation.
+     * Get the description property: Operation description
+     *
+     * <p>A description of the operation.
      *
      * @return the description value.
      */
@@ -108,7 +134,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the description property: Operation description A description of the operation.
+     * Set the description property: Operation description
+     *
+     * <p>A description of the operation.
      *
      * @param description the description value to set.
      * @return the OperationDisplay object itself.

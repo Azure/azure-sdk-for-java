@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PasswordName. */
+/** The password name. */
 public enum PasswordName {
     /** Enum value password. */
     PASSWORD("password"),
@@ -30,6 +30,9 @@ public enum PasswordName {
      */
     @JsonCreator
     public static PasswordName fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PasswordName[] items = PasswordName.values();
         for (PasswordName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum PasswordName {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

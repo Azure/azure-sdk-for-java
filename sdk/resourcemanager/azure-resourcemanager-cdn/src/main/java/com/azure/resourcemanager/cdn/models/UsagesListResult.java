@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.UsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list usages operation response. */
 @Fluent
 public final class UsagesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesListResult.class);
-
     /*
      * The list of resource usages.
      */
@@ -27,6 +23,10 @@ public final class UsagesListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of UsagesListResult class. */
+    public UsagesListResult() {
+    }
 
     /**
      * Get the value property: The list of resource usages.

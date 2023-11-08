@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EdifactCharacterSet. */
+/** The edifact character set. */
 public final class EdifactCharacterSet extends ExpandableStringEnum<EdifactCharacterSet> {
     /** Static value NotSpecified for EdifactCharacterSet. */
     public static final EdifactCharacterSet NOT_SPECIFIED = fromString("NotSpecified");
@@ -56,6 +56,15 @@ public final class EdifactCharacterSet extends ExpandableStringEnum<EdifactChara
     public static final EdifactCharacterSet KECA = fromString("KECA");
 
     /**
+     * Creates a new instance of EdifactCharacterSet value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EdifactCharacterSet() {
+    }
+
+    /**
      * Creates or finds a EdifactCharacterSet from its string representation.
      *
      * @param name a name to look for.
@@ -66,7 +75,11 @@ public final class EdifactCharacterSet extends ExpandableStringEnum<EdifactChara
         return fromString(name, EdifactCharacterSet.class);
     }
 
-    /** @return known EdifactCharacterSet values. */
+    /**
+     * Gets known EdifactCharacterSet values.
+     *
+     * @return known EdifactCharacterSet values.
+     */
     public static Collection<EdifactCharacterSet> values() {
         return values(EdifactCharacterSet.class);
     }

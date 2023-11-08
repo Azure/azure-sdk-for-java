@@ -10,13 +10,13 @@
 > see https://github.com/Azure/autorest.java/releases for the latest version of autorest
 ```ps
 cd <swagger-folder>
-mvn install
-autorest --java --use:@autorest/java@4.0.x
+autorest
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-04-10/blob.json
+use: '@autorest/java@4.1.16'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a32d0b2423d19835246bb2ef92941503bfd5e734/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-12-02/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -24,15 +24,17 @@ enable-xml: true
 generate-client-as-impl: true
 generate-client-interfaces: false
 service-interface-as-public: true
-sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 optional-constant-as-enum: true
 default-http-exception-type: com.azure.storage.blob.models.BlobStorageException
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode,BlobCopySourceTagsMode
 custom-types-subpackage: models
 customization-class: src/main/java/BlobStorageCustomization.java
+generic-response-type: true
+use-input-stream-for-binary: true
+no-custom-headers: true
 ```
 
 ### /{containerName}/{blob}
@@ -355,6 +357,7 @@ directive:
   where: $.definitions.ErrorCode
   transform: >
     $.enum.push("SnaphotOperationRateExceeded");
+    $.enum.push("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
 ```
 
 ### BlobServiceProperties, BlobAnalyticsLogging, BlobMetrics, BlobCorsRule, and BlobRetentionPolicy
@@ -390,12 +393,15 @@ directive:
     $.StorageServiceProperties.name = "BlobServiceProperties";
 ```
 
-### BlobServiceStatistics
+### BlobServiceStatistics and BlobPrefixInternal
 ``` yaml
 directive:
 - rename-model:
     from: StorageServiceStats
     to: BlobServiceStatistics
+- rename-model:
+    from: BlobPrefix
+    to: BlobPrefixInternal
 ```
 
 ### BlobAccessPolicy and BlobSignedIdentifier
@@ -431,6 +437,7 @@ directive:
     $.BlobContentLanguage["x-ms-client-name"] = "contentLanguage";
     $.BlobContentMD5["x-ms-parameter-grouping"].name = "blob-http-headers";
     $.BlobContentMD5["x-ms-client-name"] = "contentMd5";
+    $.BlobContentMD5.description = "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks were validated when each was uploaded. The value does not need to be base64 encoded as the SDK will perform the encoding.";
     $.BlobContentType["x-ms-parameter-grouping"].name = "blob-http-headers";
     $.BlobContentType["x-ms-client-name"] = "contentType";
 ```
@@ -571,6 +578,103 @@ directive:
   where: $.parameters.BlobDeleteType
   transform: >
     $["x-ms-enum"].modelAsString = true;
+```
+
+### Delete PageBlob_GetPageRanges x-ms-pageable as autorest can't recognize the itemName for this
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### Delete PageList_GetPageRangesDiff x-ms-pageable as autorest can't recognize the itemName for this
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### BlobCopySourceTags expandable string enum and rename
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.CopySourceTags
+  transform: >
+    $["x-ms-enum"].modelAsString = true;
+    $["x-ms-enum"].name = "BlobCopySourceTagsMode";
+```
+
+### Fix putBlobFromUrl Apostrophe
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?BlockBlob&fromUrl"].put
+  transform: >
+    $.description = "The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from a given URL.  This API is supported beginning with the 2020-04-08 version. Partial updates are not supported with Put Blob from URL; the content of an existing blob is overwritten with the content of the new blob.  To perform partial updates to a block blob's contents using a source URL, use the Put Block from URL API in conjunction with Put Block List.";
+```
+
+### Rename ListBlobsIncludeItem Enums to be underscore cased
+```yaml
+directive:
+  - from: swagger-document
+    where: $.parameters.ListBlobsInclude
+    transform: >
+      $.items["x-ms-enum"].values = [
+        {
+          "value": "copy",
+          "name": "copy",
+          "description": ""
+        },
+        {
+          "value": "deleted",
+          "name": "deleted",
+          "description": ""
+        },
+        {
+          "value": "metadata",
+          "name": "metadata",
+          "description": ""
+        },
+        {
+          "value": "snapshots",
+          "name": "snapshots",
+          "description": ""
+        },
+        {
+          "value": "uncommittedblobs",
+          "name": "uncommittedblobs",
+          "description": ""
+        },
+        {
+          "value": "versions",
+          "name": "versions",
+          "description": ""
+        },
+        {
+          "value": "tags",
+          "name": "tags",
+          "description": ""
+        },
+        {
+          "value": "immutabilitypolicy",
+          "name": "immutability_policy",
+          "description": ""
+        },
+        {
+          "value": "legalhold",
+          "name": "legal_hold",
+          "description": ""
+        },
+        {
+          "value": "deletedwithversions",
+          "name": "deleted_with_versions",
+          "description": ""
+        }
+      ];
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

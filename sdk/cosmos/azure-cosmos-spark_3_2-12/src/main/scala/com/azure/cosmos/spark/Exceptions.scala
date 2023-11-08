@@ -3,9 +3,6 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.HttpConstants
-import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes
-import reactor.core.scala.publisher.SMono
 
 private object Exceptions {
   def isResourceExistsException(statusCode: Int): Boolean = {
@@ -42,5 +39,25 @@ private object Exceptions {
   def isNotFoundExceptionCore(statusCode: Int, subStatusCode: Int): Boolean = {
       statusCode == CosmosConstants.StatusCodes.NotFound &&
         subStatusCode == 0
+  }
+
+  def isBadRequestException(throwable: Throwable): Boolean = {
+      throwable match {
+          case cosmosException: CosmosException =>
+              isBadRequestExceptionCore(cosmosException.getStatusCode)
+          case _ => false
+      }
+  }
+
+  def isResourceExistsException(throwable: Throwable): Boolean = {
+      throwable match {
+          case cosmosException: CosmosException =>
+              isResourceExistsException(cosmosException.getStatusCode)
+          case _ => false
+      }
+  }
+
+  def isBadRequestExceptionCore(statusCode: Int): Boolean = {
+      statusCode == CosmosConstants.StatusCodes.BadRequest
   }
 }

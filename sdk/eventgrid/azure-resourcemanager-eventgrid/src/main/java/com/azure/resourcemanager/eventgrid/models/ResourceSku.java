@@ -16,6 +16,10 @@ public final class ResourceSku {
     @JsonProperty(value = "name")
     private Sku name;
 
+    /** Creates an instance of ResourceSku class. */
+    public ResourceSku() {
+    }
+
     /**
      * Get the name property: The Sku name of the resource. The possible values are: Basic or Premium.
      *

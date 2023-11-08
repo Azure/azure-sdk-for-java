@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data Lake Store account name availability check parameters. */
 @Fluent
 public final class CheckNameAvailabilityParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityParameters.class);
-
     /*
      * The Data Lake Store name to check availability for.
      */
@@ -21,11 +18,11 @@ public final class CheckNameAvailabilityParameters {
     private String name;
 
     /*
-     * The resource type. Note: This should not be set by the user, as the
-     * constant value is Microsoft.DataLakeStore/accounts
+     * The resource type. Note: This should not be set by the user, as the constant value is
+     * Microsoft.DataLakeStore/accounts
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.DataLakeStore/accounts";
 
     /** Creates an instance of CheckNameAvailabilityParameters class. */
     public CheckNameAvailabilityParameters() {
@@ -81,10 +78,12 @@ public final class CheckNameAvailabilityParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model CheckNameAvailabilityParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilityParameters.class);
 }

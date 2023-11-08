@@ -332,14 +332,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
     private Mono<ThreatIntelligenceInformationInner> createIndicatorAsync(
         String resourceGroupName, String workspaceName, ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
         return createIndicatorWithResponseAsync(resourceGroupName, workspaceName, threatIntelligenceProperties)
-            .flatMap(
-                (Response<ThreatIntelligenceInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -502,14 +495,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
     private Mono<ThreatIntelligenceInformationInner> getAsync(
         String resourceGroupName, String workspaceName, String name) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name)
-            .flatMap(
-                (Response<ThreatIntelligenceInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -698,14 +684,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
         String name,
         ThreatIntelligenceIndicatorModel threatIntelligenceProperties) {
         return createWithResponseAsync(resourceGroupName, workspaceName, name, threatIntelligenceProperties)
-            .flatMap(
-                (Response<ThreatIntelligenceInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -869,8 +848,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String name) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, name)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, name).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1283,7 +1261,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
         String name,
         ThreatIntelligenceAppendTags threatIntelligenceAppendTags) {
         return appendTagsWithResponseAsync(resourceGroupName, workspaceName, name, threatIntelligenceAppendTags)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1483,14 +1461,7 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
         String name,
         ThreatIntelligenceIndicatorModel threatIntelligenceReplaceTags) {
         return replaceTagsWithResponseAsync(resourceGroupName, workspaceName, name, threatIntelligenceReplaceTags)
-            .flatMap(
-                (Response<ThreatIntelligenceInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1542,7 +1513,8 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1579,7 +1551,8 @@ public final class ThreatIntelligenceIndicatorsClientImpl implements ThreatIntel
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

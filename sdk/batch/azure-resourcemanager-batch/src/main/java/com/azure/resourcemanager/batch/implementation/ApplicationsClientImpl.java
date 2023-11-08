@@ -59,11 +59,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "BatchManagementClien")
-    private interface ApplicationsService {
+    public interface ApplicationsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/applications/{applicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInner>> create(
@@ -79,8 +78,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/applications/{applicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -95,8 +93,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/applications/{applicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInner>> get(
@@ -111,8 +108,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/applications/{applicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInner>> update(
@@ -128,8 +124,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts"
-                + "/{accountName}/applications")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListApplicationsResult>> list(
@@ -281,32 +276,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in a Batch account on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInner> createAsync(
-        String resourceGroupName, String accountName, String applicationName, ApplicationInner parameters) {
-        return createWithResponseAsync(resourceGroupName, accountName, applicationName, parameters)
-            .flatMap(
-                (Response<ApplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Adds an application to the specified Batch account.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,31 +285,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     private Mono<ApplicationInner> createAsync(String resourceGroupName, String accountName, String applicationName) {
         final ApplicationInner parameters = null;
         return createWithResponseAsync(resourceGroupName, accountName, applicationName, parameters)
-            .flatMap(
-                (Response<ApplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Adds an application to the specified Batch account.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in a Batch account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner create(String resourceGroupName, String accountName, String applicationName) {
-        final ApplicationInner parameters = null;
-        return createAsync(resourceGroupName, accountName, applicationName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -364,6 +309,23 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         ApplicationInner parameters,
         Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, applicationName, parameters, context).block();
+    }
+
+    /**
+     * Adds an application to the specified Batch account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about an application in a Batch account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInner create(String resourceGroupName, String accountName, String applicationName) {
+        final ApplicationInner parameters = null;
+        return createWithResponse(resourceGroupName, accountName, applicationName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -486,22 +448,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String applicationName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, applicationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes an application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String applicationName) {
-        deleteAsync(resourceGroupName, accountName, applicationName).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -520,6 +467,21 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String applicationName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, applicationName, context).block();
+    }
+
+    /**
+     * Deletes an application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accountName, String applicationName) {
+        deleteWithResponse(resourceGroupName, accountName, applicationName, Context.NONE);
     }
 
     /**
@@ -644,30 +606,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInner> getAsync(String resourceGroupName, String accountName, String applicationName) {
         return getWithResponseAsync(resourceGroupName, accountName, applicationName)
-            .flatMap(
-                (Response<ApplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets information about the specified application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner get(String resourceGroupName, String accountName, String applicationName) {
-        return getAsync(resourceGroupName, accountName, applicationName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -686,6 +625,22 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     public Response<ApplicationInner> getWithResponse(
         String resourceGroupName, String accountName, String applicationName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, applicationName, context).block();
+    }
+
+    /**
+     * Gets information about the specified application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified application.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInner get(String resourceGroupName, String accountName, String applicationName) {
+        return getWithResponse(resourceGroupName, accountName, applicationName, Context.NONE).getValue();
     }
 
     /**
@@ -830,32 +785,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     private Mono<ApplicationInner> updateAsync(
         String resourceGroupName, String accountName, String applicationName, ApplicationInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, applicationName, parameters)
-            .flatMap(
-                (Response<ApplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates settings for the specified application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in a Batch account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner update(
-        String resourceGroupName, String accountName, String applicationName, ApplicationInner parameters) {
-        return updateAsync(resourceGroupName, accountName, applicationName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -879,6 +809,24 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         ApplicationInner parameters,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, applicationName, parameters, context).block();
+    }
+
+    /**
+     * Updates settings for the specified application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about an application in a Batch account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInner update(
+        String resourceGroupName, String accountName, String applicationName, ApplicationInner parameters) {
+        return updateWithResponse(resourceGroupName, accountName, applicationName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1092,7 +1040,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1128,7 +1077,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

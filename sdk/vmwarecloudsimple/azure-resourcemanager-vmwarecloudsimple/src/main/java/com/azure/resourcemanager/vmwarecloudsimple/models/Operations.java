@@ -11,41 +11,36 @@ import com.azure.core.util.Context;
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * Return list of operations.
+     * Implements list of available operations
+     *
+     * <p>Return list of operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations.
+     * @return list of available operations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailableOperation> list();
 
     /**
-     * Return list of operations.
+     * Implements list of available operations
+     *
+     * <p>Return list of operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations.
+     * @return list of available operations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AvailableOperation> list(Context context);
 
     /**
-     * Return an async operation.
+     * Implements get of async operation
+     *
+     * <p>Return an async operation.
      *
      * @param regionId The region Id (westus, eastus).
-     * @param operationId operation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status response.
-     */
-    OperationResource get(String regionId, String operationId);
-
-    /**
-     * Return an async operation.
-     *
-     * @param regionId The region Id (westus, eastus).
+     * @param referer referer url.
      * @param operationId operation id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,5 +48,20 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status response.
      */
-    Response<OperationResource> getWithResponse(String regionId, String operationId, Context context);
+    Response<OperationResource> getWithResponse(String regionId, String referer, String operationId, Context context);
+
+    /**
+     * Implements get of async operation
+     *
+     * <p>Return an async operation.
+     *
+     * @param regionId The region Id (westus, eastus).
+     * @param referer referer url.
+     * @param operationId operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation status response.
+     */
+    OperationResource get(String regionId, String referer, String operationId);
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BigDataPools Get. */
 public final class BigDataPoolsGetSamples {
     /*
@@ -17,6 +15,9 @@ public final class BigDataPoolsGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getABigDataPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.bigDataPools().getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", Context.NONE);
+        manager
+            .bigDataPools()
+            .getWithResponse(
+                "ExampleResourceGroup", "ExampleWorkspace", "ExamplePool", com.azure.core.util.Context.NONE);
     }
 }

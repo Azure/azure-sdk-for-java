@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.digitaltwins.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.digitaltwins.models.ProvisioningState;
 import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** The properties of a DigitalTwinsInstance. */
 @Fluent
 public final class DigitalTwinsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DigitalTwinsProperties.class);
-
     /*
      * Time when DigitalTwinsInstance was created.
      */
@@ -53,6 +49,10 @@ public final class DigitalTwinsProperties {
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
+
+    /** Creates an instance of DigitalTwinsProperties class. */
+    public DigitalTwinsProperties() {
+    }
 
     /**
      * Get the createdTime property: Time when DigitalTwinsInstance was created.

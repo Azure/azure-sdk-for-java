@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.cdn.fluent.models.ProfilePropertiesUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,14 +13,28 @@ import java.util.Map;
 /** Properties required to update a profile. */
 @Fluent
 public final class ProfileUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileUpdateParameters.class);
-
     /*
      * Profile tags
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /*
+     * Managed service identity (system assigned and/or user assigned identities).
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /*
+     * The JSON object containing profile update parameters.
+     */
+    @JsonProperty(value = "properties")
+    private ProfilePropertiesUpdateParameters innerProperties;
+
+    /** Creates an instance of ProfileUpdateParameters class. */
+    public ProfileUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Profile tags.
@@ -44,10 +57,70 @@ public final class ProfileUpdateParameters {
     }
 
     /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the ProfileUpdateParameters object itself.
+     */
+    public ProfileUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the innerProperties property: The JSON object containing profile update parameters.
+     *
+     * @return the innerProperties value.
+     */
+    private ProfilePropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
+     * timeout is reached, the request fails and returns.
+     *
+     * @return the originResponseTimeoutSeconds value.
+     */
+    public Integer originResponseTimeoutSeconds() {
+        return this.innerProperties() == null ? null : this.innerProperties().originResponseTimeoutSeconds();
+    }
+
+    /**
+     * Set the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
+     * timeout is reached, the request fails and returns.
+     *
+     * @param originResponseTimeoutSeconds the originResponseTimeoutSeconds value to set.
+     * @return the ProfileUpdateParameters object itself.
+     */
+    public ProfileUpdateParameters withOriginResponseTimeoutSeconds(Integer originResponseTimeoutSeconds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfilePropertiesUpdateParameters();
+        }
+        this.innerProperties().withOriginResponseTimeoutSeconds(originResponseTimeoutSeconds);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

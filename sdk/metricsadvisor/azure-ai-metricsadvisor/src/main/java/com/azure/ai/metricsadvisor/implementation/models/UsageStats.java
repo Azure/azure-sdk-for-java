@@ -41,6 +41,9 @@ public final class UsageStats {
     @JsonProperty(value = "dataFeedCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer dataFeedCount;
 
+    /** Creates an instance of UsageStats class. */
+    public UsageStats() {}
+
     /**
      * Get the timestamp property: The timestamp of the stats.
      *

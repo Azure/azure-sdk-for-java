@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        processor:
+          initial-partition-event-position:
+            0:
+              offset: earliest
+          consumer-group: $Default
+          checkpoint-store:
+            container-name: ${AZURE_STORAGE_CONTAINER_NAME_FOR_EVENTHUB}
+            account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+        namespace: ${AZURE_EVENTHUBS_NAMESPACE}
+        event-hub-name: ${AZURE_EVENT_HUB_NAME}
+        consumer:
+          consumer-group: $Default

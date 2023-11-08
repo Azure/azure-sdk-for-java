@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.fluent.DirectLinesClient;
 import com.azure.resourcemanager.botservice.fluent.models.BotChannelInner;
 import com.azure.resourcemanager.botservice.models.RegenerateKeysChannelName;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DirectLinesClient. */
 public final class DirectLinesClientImpl implements DirectLinesClient {
-    private final ClientLogger logger = new ClientLogger(DirectLinesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DirectLinesService service;
 
@@ -213,14 +210,7 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
     private Mono<BotChannelInner> regenerateKeysAsync(
         String resourceGroupName, String resourceName, RegenerateKeysChannelName channelName, SiteInfo parameters) {
         return regenerateKeysWithResponseAsync(resourceGroupName, resourceName, channelName, parameters)
-            .flatMap(
-                (Response<BotChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

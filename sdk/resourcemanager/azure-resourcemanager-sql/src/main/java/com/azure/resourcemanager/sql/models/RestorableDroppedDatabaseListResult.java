@@ -4,26 +4,32 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedDatabaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a list restorable dropped databases request. */
-@Fluent
+/** A list of restorable dropped databases. */
+@Immutable
 public final class RestorableDroppedDatabaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDroppedDatabaseListResult.class);
-
     /*
-     * A list of restorable dropped databases
+     * Array of results.
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableDroppedDatabaseInner> value;
 
+    /*
+     * Link to retrieve next page of results.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
+    /** Creates an instance of RestorableDroppedDatabaseListResult class. */
+    public RestorableDroppedDatabaseListResult() {
+    }
+
     /**
-     * Get the value property: A list of restorable dropped databases.
+     * Get the value property: Array of results.
      *
      * @return the value value.
      */
@@ -32,14 +38,12 @@ public final class RestorableDroppedDatabaseListResult {
     }
 
     /**
-     * Set the value property: A list of restorable dropped databases.
+     * Get the nextLink property: Link to retrieve next page of results.
      *
-     * @param value the value value to set.
-     * @return the RestorableDroppedDatabaseListResult object itself.
+     * @return the nextLink value.
      */
-    public RestorableDroppedDatabaseListResult withValue(List<RestorableDroppedDatabaseInner> value) {
-        this.value = value;
-        return this;
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
@@ -48,12 +52,7 @@ public final class RestorableDroppedDatabaseListResult {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model RestorableDroppedDatabaseListResult"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
     }

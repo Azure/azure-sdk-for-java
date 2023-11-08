@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkloadRuntime. */
+/** Determines the type of workload a node can run. */
 public final class WorkloadRuntime extends ExpandableStringEnum<WorkloadRuntime> {
     /** Static value OCIContainer for WorkloadRuntime. */
     public static final WorkloadRuntime OCICONTAINER = fromString("OCIContainer");
 
     /** Static value WasmWasi for WorkloadRuntime. */
     public static final WorkloadRuntime WASM_WASI = fromString("WasmWasi");
+
+    /**
+     * Creates a new instance of WorkloadRuntime value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadRuntime() {
+    }
 
     /**
      * Creates or finds a WorkloadRuntime from its string representation.
@@ -27,7 +36,11 @@ public final class WorkloadRuntime extends ExpandableStringEnum<WorkloadRuntime>
         return fromString(name, WorkloadRuntime.class);
     }
 
-    /** @return known WorkloadRuntime values. */
+    /**
+     * Gets known WorkloadRuntime values.
+     *
+     * @return known WorkloadRuntime values.
+     */
     public static Collection<WorkloadRuntime> values() {
         return values(WorkloadRuntime.class);
     }

@@ -8,12 +8,12 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,6 +35,7 @@ public class EventHubsAzureMonitorExporterSample {
 
     /**
      * The main method to run the application.
+     *
      * @param args Ignored args.
      */
     public static void main(String[] args) {
@@ -43,22 +44,19 @@ public class EventHubsAzureMonitorExporterSample {
 
     /**
      * Configure the OpenTelemetry {@link AzureMonitorTraceExporter} to enable tracing.
+     *
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureAzureMonitorExporter() {
-        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
+        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+        new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .buildTraceExporter();
+            .build(sdkBuilder);
 
-        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
-            .build();
+        OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
-        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal();
-
-        return openTelemetrySdk.getTracer("Sample");
+        return openTelemetry.getTracer("Sample");
     }
 
     /**

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceMoveState. */
+/** Resource move state for backup vault. */
 public final class ResourceMoveState extends ExpandableStringEnum<ResourceMoveState> {
     /** Static value Unknown for ResourceMoveState. */
     public static final ResourceMoveState UNKNOWN = fromString("Unknown");
@@ -41,6 +41,15 @@ public final class ResourceMoveState extends ExpandableStringEnum<ResourceMoveSt
     public static final ResourceMoveState MOVE_SUCCEEDED = fromString("MoveSucceeded");
 
     /**
+     * Creates a new instance of ResourceMoveState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceMoveState() {
+    }
+
+    /**
      * Creates or finds a ResourceMoveState from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class ResourceMoveState extends ExpandableStringEnum<ResourceMoveSt
         return fromString(name, ResourceMoveState.class);
     }
 
-    /** @return known ResourceMoveState values. */
+    /**
+     * Gets known ResourceMoveState values.
+     *
+     * @return known ResourceMoveState values.
+     */
     public static Collection<ResourceMoveState> values() {
         return values(ResourceMoveState.class);
     }

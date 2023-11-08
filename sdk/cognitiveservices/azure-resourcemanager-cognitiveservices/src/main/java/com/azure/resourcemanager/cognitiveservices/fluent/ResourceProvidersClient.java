@@ -20,6 +20,21 @@ public interface ResourceProvidersClient {
      *
      * @param location Resource location.
      * @param parameters Check SKU Availability POST body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return check SKU availability result list along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(
+        String location, CheckSkuAvailabilityParameter parameters, Context context);
+
+    /**
+     * Check available SKUs.
+     *
+     * @param location Resource location.
+     * @param parameters Check SKU Availability POST body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -29,19 +44,18 @@ public interface ResourceProvidersClient {
     SkuAvailabilityListResultInner checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters);
 
     /**
-     * Check available SKUs.
+     * Check whether a domain is available.
      *
-     * @param location Resource location.
-     * @param parameters Check SKU Availability POST body.
+     * @param parameters Check Domain Availability parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check SKU availability result list.
+     * @return domain availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(
-        String location, CheckSkuAvailabilityParameter parameters, Context context);
+    Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(
+        CheckDomainAvailabilityParameter parameters, Context context);
 
     /**
      * Check whether a domain is available.
@@ -54,18 +68,4 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DomainAvailabilityInner checkDomainAvailability(CheckDomainAvailabilityParameter parameters);
-
-    /**
-     * Check whether a domain is available.
-     *
-     * @param parameters Check Domain Availability parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(
-        CheckDomainAvailabilityParameter parameters, Context context);
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Addons Get. */
 public final class AddonsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Addons_Get_SRM.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_SRM.json
      */
     /**
      * Sample code: Addons_Get_SRM.
@@ -17,11 +15,11 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetSRM(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "srm", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "srm", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Addons_Get_VR.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_VR.json
      */
     /**
      * Sample code: Addons_Get_VR.
@@ -29,11 +27,11 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetVR(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "vr", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "vr", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Addons_Get_HCX.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_HCX.json
      */
     /**
      * Sample code: Addons_Get_HCX.
@@ -41,6 +39,18 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetHCX(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "hcx", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "hcx", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_ArcReg.json
+     */
+    /**
+     * Sample code: Addons_Get_ArcReg.
+     *
+     * @param manager Entry point to AvsManager.
+     */
+    public static void addonsGetArcReg(com.azure.resourcemanager.avs.AvsManager manager) {
+        manager.addons().getWithResponse("group1", "cloud1", "arc", com.azure.core.util.Context.NONE);
     }
 }

@@ -43,6 +43,7 @@ $ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-
 $SpringSampleParents = ("spring-boot-starter-parent", "azure-spring-boot-test-parent")
 
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
+$SamplesPath = Resolve-Path ($PSScriptRoot + "/../../samples")
 
 # Not all POM files have a parent entry
 $PomFilesIgnoreParent = ("$($Path)\parent\pom.xml")
@@ -401,6 +402,15 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         return
     }
 
+    # Exclude everything that's in samples as this folder contains end to end samples
+    # that uses BOM and some dependencies will not have versions as they are deduced from
+    # the BOM. Running version checks on these samples will always fail. So, we'll skip
+    # all version checks in the root samples directory.
+    if ($_.FullName.StartsWith($SamplesPath))
+    {
+        return
+    }
+
     # azure-core-jackson-tests verifies compatibility with different
     # Jackson versions, it should be excluded from version checks
     if ($_.FullName -like "*azure-core-jackson-tests*")
@@ -410,6 +420,12 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
 
     # Packages under sdk/resourcemanagerhybrid has duplicate artifactId with that under sdk/resourcemanager
     if ($_.FullName -like "*resourcemanagerhybrid*")
+    {
+        return
+    }
+
+    # Code customization packages should be excluded.
+    if ($_.FullName -like "*swagger*")
     {
         return
     }

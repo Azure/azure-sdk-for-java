@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceEncryptionProtectorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of managed instance encryption protectors. */
 @Immutable
 public final class ManagedInstanceEncryptionProtectorListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedInstanceEncryptionProtectorListResult.class);
-
     /*
      * Array of results.
      */
@@ -28,6 +23,10 @@ public final class ManagedInstanceEncryptionProtectorListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ManagedInstanceEncryptionProtectorListResult class. */
+    public ManagedInstanceEncryptionProtectorListResult() {
+    }
 
     /**
      * Get the value property: Array of results.

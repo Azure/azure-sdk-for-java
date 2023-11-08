@@ -14,10 +14,9 @@ import com.azure.resourcemanager.synapse.fluent.models.RestorePointInner;
 import com.azure.resourcemanager.synapse.models.CreateSqlPoolRestorePointDefinition;
 import com.azure.resourcemanager.synapse.models.RestorePoint;
 import com.azure.resourcemanager.synapse.models.SqlPoolRestorePoints;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolRestorePointsImpl implements SqlPoolRestorePoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolRestorePointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolRestorePointsImpl.class);
 
     private final SqlPoolRestorePointsClient innerClient;
 
@@ -71,17 +70,6 @@ public final class SqlPoolRestorePointsImpl implements SqlPoolRestorePoints {
         }
     }
 
-    public RestorePoint get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
-        RestorePointInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, restorePointName);
-        if (inner != null) {
-            return new RestorePointImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RestorePoint> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context) {
         Response<RestorePointInner> inner =
@@ -99,8 +87,15 @@ public final class SqlPoolRestorePointsImpl implements SqlPoolRestorePoints {
         }
     }
 
-    public void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, sqlPoolName, restorePointName);
+    public RestorePoint get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+        RestorePointInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, restorePointName);
+        if (inner != null) {
+            return new RestorePointImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -108,6 +103,10 @@ public final class SqlPoolRestorePointsImpl implements SqlPoolRestorePoints {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, workspaceName, sqlPoolName, restorePointName, context);
+    }
+
+    public void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, sqlPoolName, restorePointName);
     }
 
     private SqlPoolRestorePointsClient serviceClient() {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PollingFrequency. */
+/** The polling frequency for the TAXII server. */
 public final class PollingFrequency extends ExpandableStringEnum<PollingFrequency> {
     /** Static value OnceAMinute for PollingFrequency. */
     public static final PollingFrequency ONCE_AMINUTE = fromString("OnceAMinute");
@@ -30,7 +30,11 @@ public final class PollingFrequency extends ExpandableStringEnum<PollingFrequenc
         return fromString(name, PollingFrequency.class);
     }
 
-    /** @return known PollingFrequency values. */
+    /**
+     * Gets known PollingFrequency values.
+     *
+     * @return known PollingFrequency values.
+     */
     public static Collection<PollingFrequency> values() {
         return values(PollingFrequency.class);
     }

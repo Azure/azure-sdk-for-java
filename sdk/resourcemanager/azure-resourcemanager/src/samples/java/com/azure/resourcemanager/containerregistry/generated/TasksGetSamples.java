@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tasks Get. */
 public final class TasksGetSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksGet.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksGet.json
      */
     /**
      * Sample code: Tasks_Get.
@@ -22,6 +20,6 @@ public final class TasksGetSamples {
             .manager()
             .serviceClient()
             .getTasks()
-            .getWithResponse("myResourceGroup", "myRegistry", "myTask", Context.NONE);
+            .getWithResponse("myResourceGroup", "myRegistry", "myTask", com.azure.core.util.Context.NONE);
     }
 }

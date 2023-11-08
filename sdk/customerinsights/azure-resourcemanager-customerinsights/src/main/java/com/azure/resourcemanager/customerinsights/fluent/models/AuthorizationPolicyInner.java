@@ -7,15 +7,12 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.PermissionTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The authorization policy. */
 @Fluent
 public final class AuthorizationPolicyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationPolicyInner.class);
-
     /*
      * Name of the policy.
      */
@@ -39,6 +36,10 @@ public final class AuthorizationPolicyInner {
      */
     @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
+
+    /** Creates an instance of AuthorizationPolicyInner class. */
+    public AuthorizationPolicyInner() {
+    }
 
     /**
      * Get the policyName property: Name of the policy.
@@ -116,10 +117,12 @@ public final class AuthorizationPolicyInner {
      */
     public void validate() {
         if (permissions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property permissions in model AuthorizationPolicyInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationPolicyInner.class);
 }

@@ -22,11 +22,15 @@ public final class FileShareItems {
     private List<FileShareItemInner> value;
 
     /*
-     * Request URL that can be used to query next page of shares. Returned when
-     * total number of requested shares exceed maximum page size.
+     * Request URL that can be used to query next page of shares. Returned when total number of requested shares exceed
+     * maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of FileShareItems class. */
+    public FileShareItems() {
+    }
 
     /**
      * Get the value property: List of file shares returned.

@@ -23,7 +23,8 @@ public interface TrustedIdProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TrustedIdProviderInner> listByAccount(String resourceGroupName, String accountName);
@@ -37,10 +38,34 @@ public interface TrustedIdProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TrustedIdProviderInner> listByAccount(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Creates or updates the specified trusted identity provider. During update, the trusted identity provider with the
+     * specified name will be replaced with this new provider.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of
+     *     providers in the account.
+     * @param parameters Parameters supplied to create or replace the trusted identity provider.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Lake Store trusted identity provider information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<TrustedIdProviderInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String trustedIdProviderName,
+        CreateOrUpdateTrustedIdProviderParameters parameters,
+        Context context);
 
     /**
      * Creates or updates the specified trusted identity provider. During update, the trusted identity provider with the
@@ -64,27 +89,20 @@ public interface TrustedIdProvidersClient {
         CreateOrUpdateTrustedIdProviderParameters parameters);
 
     /**
-     * Creates or updates the specified trusted identity provider. During update, the trusted identity provider with the
-     * specified name will be replaced with this new provider.
+     * Gets the specified Data Lake Store trusted identity provider.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
-     * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of
-     *     providers in the account.
-     * @param parameters Parameters supplied to create or replace the trusted identity provider.
+     * @param trustedIdProviderName The name of the trusted identity provider to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return the specified Data Lake Store trusted identity provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TrustedIdProviderInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String trustedIdProviderName,
-        CreateOrUpdateTrustedIdProviderParameters parameters,
-        Context context);
+    Response<TrustedIdProviderInner> getWithResponse(
+        String resourceGroupName, String accountName, String trustedIdProviderName, Context context);
 
     /**
      * Gets the specified Data Lake Store trusted identity provider.
@@ -101,20 +119,26 @@ public interface TrustedIdProvidersClient {
     TrustedIdProviderInner get(String resourceGroupName, String accountName, String trustedIdProviderName);
 
     /**
-     * Gets the specified Data Lake Store trusted identity provider.
+     * Updates the specified trusted identity provider.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
-     * @param trustedIdProviderName The name of the trusted identity provider to retrieve.
+     * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of
+     *     providers in the account.
+     * @param parameters Parameters supplied to update the trusted identity provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store trusted identity provider.
+     * @return data Lake Store trusted identity provider information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TrustedIdProviderInner> getWithResponse(
-        String resourceGroupName, String accountName, String trustedIdProviderName, Context context);
+    Response<TrustedIdProviderInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String trustedIdProviderName,
+        UpdateTrustedIdProviderParameters parameters,
+        Context context);
 
     /**
      * Updates the specified trusted identity provider.
@@ -132,26 +156,20 @@ public interface TrustedIdProvidersClient {
     TrustedIdProviderInner update(String resourceGroupName, String accountName, String trustedIdProviderName);
 
     /**
-     * Updates the specified trusted identity provider.
+     * Deletes the specified trusted identity provider from the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
-     * @param trustedIdProviderName The name of the trusted identity provider. This is used for differentiation of
-     *     providers in the account.
-     * @param parameters Parameters supplied to update the trusted identity provider.
+     * @param trustedIdProviderName The name of the trusted identity provider to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TrustedIdProviderInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String trustedIdProviderName,
-        UpdateTrustedIdProviderParameters parameters,
-        Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String trustedIdProviderName, Context context);
 
     /**
      * Deletes the specified trusted identity provider from the specified Data Lake Store account.
@@ -165,20 +183,4 @@ public interface TrustedIdProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String accountName, String trustedIdProviderName);
-
-    /**
-     * Deletes the specified trusted identity provider from the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param trustedIdProviderName The name of the trusted identity provider to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String trustedIdProviderName, Context context);
 }

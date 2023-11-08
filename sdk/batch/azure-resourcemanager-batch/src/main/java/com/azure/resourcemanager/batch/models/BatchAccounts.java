@@ -38,18 +38,6 @@ public interface BatchAccounts {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Batch account.
-     */
-    BatchAccount getByResourceGroup(String resourceGroupName, String accountName);
-
-    /**
-     * Gets information about the specified Batch account.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,6 +46,18 @@ public interface BatchAccounts {
      */
     Response<BatchAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Gets information about the specified Batch account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Batch account.
+     */
+    BatchAccount getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
      * Gets information about the Batch accounts associated with the subscription.
@@ -112,18 +112,6 @@ public interface BatchAccounts {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void synchronizeAutoStorageKeys(String resourceGroupName, String accountName);
-
-    /**
-     * Synchronizes access keys for the auto-storage account configured for the specified Batch account, only if storage
-     * key authentication is being used.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,24 +122,21 @@ public interface BatchAccounts {
         String resourceGroupName, String accountName, Context context);
 
     /**
-     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
-     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
-     * authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the keys will
-     * fail.
+     * Synchronizes access keys for the auto-storage account configured for the specified Batch account, only if storage
+     * key authentication is being used.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @param parameters The type of key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a set of Azure Batch account keys.
      */
-    BatchAccountKeys regenerateKey(
-        String resourceGroupName, String accountName, BatchAccountRegenerateKeyParameters parameters);
+    void synchronizeAutoStorageKeys(String resourceGroupName, String accountName);
 
     /**
-     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Regenerates the specified account key for the Batch account.
+     *
+     * <p>This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
      * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
      * authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the keys will
      * fail.
@@ -169,21 +154,28 @@ public interface BatchAccounts {
         String resourceGroupName, String accountName, BatchAccountRegenerateKeyParameters parameters, Context context);
 
     /**
-     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Regenerates the specified account key for the Batch account.
+     *
+     * <p>This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
      * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
-     * authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys will fail.
+     * authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the keys will
+     * fail.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
+     * @param parameters The type of key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a set of Azure Batch account keys.
      */
-    BatchAccountKeys getKeys(String resourceGroupName, String accountName);
+    BatchAccountKeys regenerateKey(
+        String resourceGroupName, String accountName, BatchAccountRegenerateKeyParameters parameters);
 
     /**
-     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Gets the account keys for the specified Batch account.
+     *
+     * <p>This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
      * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
      * authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys will fail.
      *
@@ -196,6 +188,22 @@ public interface BatchAccounts {
      * @return a set of Azure Batch account keys along with {@link Response}.
      */
     Response<BatchAccountKeys> getKeysWithResponse(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Gets the account keys for the specified Batch account.
+     *
+     * <p>This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
+     * authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys will fail.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a set of Azure Batch account keys.
+     */
+    BatchAccountKeys getKeys(String resourceGroupName, String accountName);
 
     /**
      * Gets information about the detectors available for a given Batch account.
@@ -230,19 +238,6 @@ public interface BatchAccounts {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param detectorId The name of the detector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the given detector for a given Batch account.
-     */
-    DetectorResponse getDetector(String resourceGroupName, String accountName, String detectorId);
-
-    /**
-     * Gets information about the given detector for a given Batch account.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param detectorId The name of the detector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -251,6 +246,19 @@ public interface BatchAccounts {
      */
     Response<DetectorResponse> getDetectorWithResponse(
         String resourceGroupName, String accountName, String detectorId, Context context);
+
+    /**
+     * Gets information about the given detector for a given Batch account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param detectorId The name of the detector.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the given detector for a given Batch account.
+     */
+    DetectorResponse getDetector(String resourceGroupName, String accountName, String detectorId);
 
     /**
      * Lists the endpoints that a Batch Compute Node under this Batch Account may call as part of Batch service

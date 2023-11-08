@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.models.OperationDefinitionDisplay;
 import com.azure.resourcemanager.appconfiguration.models.OperationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of a configuration store operation. */
 @Fluent
 public final class OperationDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDefinitionInner.class);
-
     /*
      * Operation name: {provider}/{resource}/{operation}.
      */
@@ -45,6 +41,10 @@ public final class OperationDefinitionInner {
      */
     @JsonProperty(value = "properties")
     private OperationProperties properties;
+
+    /** Creates an instance of OperationDefinitionInner class. */
+    public OperationDefinitionInner() {
+    }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.

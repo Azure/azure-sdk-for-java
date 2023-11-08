@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Valid enum values in case of an enum property. */
 @Fluent
 public final class ProfileEnumValidValuesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileEnumValidValuesFormat.class);
-
     /*
      * The integer value of the enum member.
      */
@@ -25,7 +22,12 @@ public final class ProfileEnumValidValuesFormat {
      * Localized names of the enum member.
      */
     @JsonProperty(value = "localizedValueNames")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> localizedValueNames;
+
+    /** Creates an instance of ProfileEnumValidValuesFormat class. */
+    public ProfileEnumValidValuesFormat() {
+    }
 
     /**
      * Get the value property: The integer value of the enum member.

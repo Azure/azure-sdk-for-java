@@ -32,6 +32,15 @@ public interface RulesEngine {
     String type();
 
     /**
+     * Gets the resourceState property: Resource status of the Front Door or Front Door SubResource.
+     *
+     * <p>Resource status.
+     *
+     * @return the resourceState value.
+     */
+    FrontDoorResourceState resourceState();
+
+    /**
      * Gets the rules property: A list of rules that define a particular Rules Engine Configuration.
      *
      * @return the rules value.
@@ -39,11 +48,11 @@ public interface RulesEngine {
     List<RulesEngineRule> rules();
 
     /**
-     * Gets the resourceState property: Resource status.
+     * Gets the name of the resource group.
      *
-     * @return the resourceState value.
+     * @return the name of the resource group.
      */
-    FrontDoorResourceState resourceState();
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.frontdoor.fluent.models.RulesEngineInner object.

@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.MaintenanceWindowTimeRange;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Maintenance windows resource properties. */
 @Fluent
 public final class MaintenanceWindowsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceWindowsProperties.class);
-
     /*
      * The timeRanges property.
      */
     @JsonProperty(value = "timeRanges")
     private List<MaintenanceWindowTimeRange> timeRanges;
+
+    /** Creates an instance of MaintenanceWindowsProperties class. */
+    public MaintenanceWindowsProperties() {
+    }
 
     /**
      * Get the timeRanges property: The timeRanges property.

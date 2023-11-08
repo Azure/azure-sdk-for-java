@@ -25,6 +25,7 @@ import reactor.util.retry.Retry;
 import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,6 +40,7 @@ public final class EncryptionSettings {
     private EncryptionType encryptionType;
     private String databaseRid;
     private CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties;
+    private List<String> partitionKeyPaths;
     private final static EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor cosmosEncryptionAsyncClientAccessor =
         EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.getCosmosEncryptionAsyncClientAccessor();
 
@@ -224,6 +226,14 @@ public final class EncryptionSettings {
                                          Instant expiryUtc) {
         CachedEncryptionSettings cachedEncryptionSettings = new CachedEncryptionSettings(encryptionSettings, expiryUtc);
         this.encryptionSettingCacheByPropertyName.set(propertyName, cachedEncryptionSettings);
+    }
+
+    public List<String> getPartitionKeyPaths() {
+        return partitionKeyPaths;
+    }
+
+    public void setPartitionKeyPaths(List<String> partitionKeyPaths) {
+        this.partitionKeyPaths = partitionKeyPaths;
     }
 
     static EncryptionSettings create(

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** textColumn. */
 @Fluent
 public final class MicrosoftGraphTextColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTextColumn.class);
-
     /*
      * Whether to allow multiple lines of text.
      */
@@ -25,8 +22,7 @@ public final class MicrosoftGraphTextColumn {
     private Boolean allowMultipleLines;
 
     /*
-     * Whether updates to this column should replace existing text, or append
-     * to it.
+     * Whether updates to this column should replace existing text, or append to it.
      */
     @JsonProperty(value = "appendChangesToExistingText")
     private Boolean appendChangesToExistingText;
@@ -53,6 +49,10 @@ public final class MicrosoftGraphTextColumn {
      * textColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTextColumn class. */
+    public MicrosoftGraphTextColumn() {
+    }
 
     /**
      * Get the allowMultipleLines property: Whether to allow multiple lines of text.

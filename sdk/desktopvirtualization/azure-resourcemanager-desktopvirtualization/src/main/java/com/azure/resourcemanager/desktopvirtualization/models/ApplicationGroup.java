@@ -146,18 +146,18 @@ public interface ApplicationGroup {
     ApplicationGroupType applicationGroupType();
 
     /**
-     * Gets the migrationRequest property: The registration info of HostPool.
-     *
-     * @return the migrationRequest value.
-     */
-    MigrationRequestProperties migrationRequest();
-
-    /**
      * Gets the cloudPcResource property: Is cloud pc resource.
      *
      * @return the cloudPcResource value.
      */
     Boolean cloudPcResource();
+
+    /**
+     * Gets the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @return the showInFeed value.
+     */
+    Boolean showInFeed();
 
     /**
      * Gets the region of the resource.
@@ -172,6 +172,13 @@ public interface ApplicationGroup {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationGroupInner object.
@@ -189,11 +196,13 @@ public interface ApplicationGroup {
             DefinitionStages.WithApplicationGroupType,
             DefinitionStages.WithCreate {
     }
+
     /** The ApplicationGroup definition stages. */
     interface DefinitionStages {
         /** The first stage of the ApplicationGroup definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -212,6 +221,7 @@ public interface ApplicationGroup {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -222,6 +232,7 @@ public interface ApplicationGroup {
              */
             WithHostPoolArmPath withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify hostPoolArmPath. */
         interface WithHostPoolArmPath {
             /**
@@ -232,6 +243,7 @@ public interface ApplicationGroup {
              */
             WithApplicationGroupType withHostPoolArmPath(String hostPoolArmPath);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify applicationGroupType. */
         interface WithApplicationGroupType {
             /**
@@ -242,6 +254,7 @@ public interface ApplicationGroup {
              */
             WithCreate withApplicationGroupType(ApplicationGroupType applicationGroupType);
         }
+
         /**
          * The stage of the ApplicationGroup definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -255,7 +268,7 @@ public interface ApplicationGroup {
                 DefinitionStages.WithPlan,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithFriendlyName,
-                DefinitionStages.WithMigrationRequest {
+                DefinitionStages.WithShowInFeed {
             /**
              * Executes the create request.
              *
@@ -271,6 +284,7 @@ public interface ApplicationGroup {
              */
             ApplicationGroup create(Context context);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -281,6 +295,7 @@ public interface ApplicationGroup {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify managedBy. */
         interface WithManagedBy {
             /**
@@ -296,6 +311,7 @@ public interface ApplicationGroup {
              */
             WithCreate withManagedBy(String managedBy);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -310,6 +326,7 @@ public interface ApplicationGroup {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -320,6 +337,7 @@ public interface ApplicationGroup {
              */
             WithCreate withIdentity(ResourceModelWithAllowedPropertySetIdentity identity);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -330,6 +348,7 @@ public interface ApplicationGroup {
              */
             WithCreate withSku(ResourceModelWithAllowedPropertySetSku sku);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify plan. */
         interface WithPlan {
             /**
@@ -340,6 +359,7 @@ public interface ApplicationGroup {
              */
             WithCreate withPlan(ResourceModelWithAllowedPropertySetPlan plan);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -350,6 +370,7 @@ public interface ApplicationGroup {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the ApplicationGroup definition allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -360,17 +381,20 @@ public interface ApplicationGroup {
              */
             WithCreate withFriendlyName(String friendlyName);
         }
-        /** The stage of the ApplicationGroup definition allowing to specify migrationRequest. */
-        interface WithMigrationRequest {
+
+        /** The stage of the ApplicationGroup definition allowing to specify showInFeed. */
+        interface WithShowInFeed {
             /**
-             * Specifies the migrationRequest property: The registration info of HostPool..
+             * Specifies the showInFeed property: Boolean representing whether the applicationGroup is show in the
+             * feed..
              *
-             * @param migrationRequest The registration info of HostPool.
+             * @param showInFeed Boolean representing whether the applicationGroup is show in the feed.
              * @return the next definition stage.
              */
-            WithCreate withMigrationRequest(MigrationRequestProperties migrationRequest);
+            WithCreate withShowInFeed(Boolean showInFeed);
         }
     }
+
     /**
      * Begins update for the ApplicationGroup resource.
      *
@@ -379,7 +403,11 @@ public interface ApplicationGroup {
     ApplicationGroup.Update update();
 
     /** The template for ApplicationGroup update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithDescription, UpdateStages.WithFriendlyName {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithDescription,
+            UpdateStages.WithFriendlyName,
+            UpdateStages.WithShowInFeed {
         /**
          * Executes the update request.
          *
@@ -395,6 +423,7 @@ public interface ApplicationGroup {
          */
         ApplicationGroup apply(Context context);
     }
+
     /** The ApplicationGroup update stages. */
     interface UpdateStages {
         /** The stage of the ApplicationGroup update allowing to specify tags. */
@@ -407,6 +436,7 @@ public interface ApplicationGroup {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ApplicationGroup update allowing to specify description. */
         interface WithDescription {
             /**
@@ -417,6 +447,7 @@ public interface ApplicationGroup {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the ApplicationGroup update allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -427,7 +458,20 @@ public interface ApplicationGroup {
              */
             Update withFriendlyName(String friendlyName);
         }
+
+        /** The stage of the ApplicationGroup update allowing to specify showInFeed. */
+        interface WithShowInFeed {
+            /**
+             * Specifies the showInFeed property: Boolean representing whether the applicationGroup is show in the
+             * feed..
+             *
+             * @param showInFeed Boolean representing whether the applicationGroup is show in the feed.
+             * @return the next definition stage.
+             */
+            Update withShowInFeed(Boolean showInFeed);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

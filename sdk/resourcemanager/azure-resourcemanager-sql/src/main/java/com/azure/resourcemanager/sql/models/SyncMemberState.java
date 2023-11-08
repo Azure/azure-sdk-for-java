@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SyncMemberState. */
+/** Sync state of the sync member. */
 public final class SyncMemberState extends ExpandableStringEnum<SyncMemberState> {
     /** Static value SyncInProgress for SyncMemberState. */
     public static final SyncMemberState SYNC_IN_PROGRESS = fromString("SyncInProgress");
@@ -75,7 +75,11 @@ public final class SyncMemberState extends ExpandableStringEnum<SyncMemberState>
         return fromString(name, SyncMemberState.class);
     }
 
-    /** @return known SyncMemberState values. */
+    /**
+     * Gets known SyncMemberState values.
+     *
+     * @return known SyncMemberState values.
+     */
     public static Collection<SyncMemberState> values() {
         return values(SyncMemberState.class);
     }

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.SecurityPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class SecurityPolicyListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPolicyListResult.class);
-
     /*
      * List of Security policies within a profile
      */
@@ -30,6 +26,10 @@ public final class SecurityPolicyListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of SecurityPolicyListResult class. */
+    public SecurityPolicyListResult() {
+    }
 
     /**
      * Get the value property: List of Security policies within a profile.

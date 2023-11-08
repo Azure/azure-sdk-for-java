@@ -38,7 +38,7 @@ public final class BlobPropertiesInternalDownload implements BlobPropertiesInter
 
     @Override
     public OffsetDateTime getCreationTime() {
-        return null;
+        return headers.getCreationTime();
     }
 
     @Override
@@ -250,5 +250,10 @@ public final class BlobPropertiesInternalDownload implements BlobPropertiesInter
     @Override
     public Boolean hasLegalHold() {
         return headers.hasLegalHold();
+    }
+
+    @Override
+    public String getRequestId() {
+        return headers.getRequestId();
     }
 }

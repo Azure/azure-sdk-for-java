@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** shared. */
 @Fluent
 public final class MicrosoftGraphShared {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphShared.class);
-
     /*
      * identitySet
      */
@@ -26,8 +23,7 @@ public final class MicrosoftGraphShared {
     private MicrosoftGraphIdentitySet owner;
 
     /*
-     * Indicates the scope of how the item is shared: anonymous, organization,
-     * or users. Read-only.
+     * Indicates the scope of how the item is shared: anonymous, organization, or users. Read-only.
      */
     @JsonProperty(value = "scope")
     private String scope;
@@ -48,6 +44,10 @@ public final class MicrosoftGraphShared {
      * shared
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphShared class. */
+    public MicrosoftGraphShared() {
+    }
 
     /**
      * Get the owner property: identitySet.

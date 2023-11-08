@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Request body of unlock delete API. */
 @Fluent
 public final class UnlockDeleteRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UnlockDeleteRequest.class);
-
     /*
      * The resourceGuardOperationRequests property.
      */
@@ -26,6 +22,10 @@ public final class UnlockDeleteRequest {
      */
     @JsonProperty(value = "resourceToBeDeleted")
     private String resourceToBeDeleted;
+
+    /** Creates an instance of UnlockDeleteRequest class. */
+    public UnlockDeleteRequest() {
+    }
 
     /**
      * Get the resourceGuardOperationRequests property: The resourceGuardOperationRequests property.

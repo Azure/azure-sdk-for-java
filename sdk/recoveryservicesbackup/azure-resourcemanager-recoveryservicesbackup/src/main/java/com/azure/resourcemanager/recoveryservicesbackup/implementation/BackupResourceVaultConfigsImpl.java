@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceVau
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfigResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfigs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupResourceVaultConfigsImpl implements BackupResourceVaultConfigs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceVaultConfigsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupResourceVaultConfigsImpl.class);
 
     private final BackupResourceVaultConfigsClient innerClient;
 
@@ -26,15 +25,6 @@ public final class BackupResourceVaultConfigsImpl implements BackupResourceVault
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public BackupResourceVaultConfigResource get(String vaultName, String resourceGroupName) {
-        BackupResourceVaultConfigResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName);
-        if (inner != null) {
-            return new BackupResourceVaultConfigResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<BackupResourceVaultConfigResource> getWithResponse(
@@ -52,10 +42,8 @@ public final class BackupResourceVaultConfigsImpl implements BackupResourceVault
         }
     }
 
-    public BackupResourceVaultConfigResource update(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
-        BackupResourceVaultConfigResourceInner inner =
-            this.serviceClient().update(vaultName, resourceGroupName, parameters);
+    public BackupResourceVaultConfigResource get(String vaultName, String resourceGroupName) {
+        BackupResourceVaultConfigResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName);
         if (inner != null) {
             return new BackupResourceVaultConfigResourceImpl(inner, this.manager());
         } else {
@@ -81,10 +69,10 @@ public final class BackupResourceVaultConfigsImpl implements BackupResourceVault
         }
     }
 
-    public BackupResourceVaultConfigResource put(
+    public BackupResourceVaultConfigResource update(
         String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
         BackupResourceVaultConfigResourceInner inner =
-            this.serviceClient().put(vaultName, resourceGroupName, parameters);
+            this.serviceClient().update(vaultName, resourceGroupName, parameters);
         if (inner != null) {
             return new BackupResourceVaultConfigResourceImpl(inner, this.manager());
         } else {
@@ -105,6 +93,17 @@ public final class BackupResourceVaultConfigsImpl implements BackupResourceVault
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BackupResourceVaultConfigResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BackupResourceVaultConfigResource put(
+        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
+        BackupResourceVaultConfigResourceInner inner =
+            this.serviceClient().put(vaultName, resourceGroupName, parameters);
+        if (inner != null) {
+            return new BackupResourceVaultConfigResourceImpl(inner, this.manager());
         } else {
             return null;
         }

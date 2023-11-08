@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CheckNameResourceTypes. */
+/** Resource type used for verification. */
 public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckNameResourceTypes> {
     /** Static value Microsoft.NetApp/netAppAccounts for CheckNameResourceTypes. */
     public static final CheckNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS =
@@ -27,6 +27,15 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
         fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots");
 
     /**
+     * Creates a new instance of CheckNameResourceTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CheckNameResourceTypes() {
+    }
+
+    /**
      * Creates or finds a CheckNameResourceTypes from its string representation.
      *
      * @param name a name to look for.
@@ -37,7 +46,11 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
         return fromString(name, CheckNameResourceTypes.class);
     }
 
-    /** @return known CheckNameResourceTypes values. */
+    /**
+     * Gets known CheckNameResourceTypes values.
+     *
+     * @return known CheckNameResourceTypes values.
+     */
     public static Collection<CheckNameResourceTypes> values() {
         return values(CheckNameResourceTypes.class);
     }

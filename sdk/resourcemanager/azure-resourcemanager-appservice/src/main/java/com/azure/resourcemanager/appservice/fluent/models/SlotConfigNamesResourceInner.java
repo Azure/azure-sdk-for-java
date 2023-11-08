@@ -18,6 +18,10 @@ public final class SlotConfigNamesResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SlotConfigNames innerProperties;
 
+    /** Creates an instance of SlotConfigNamesResourceInner class. */
+    public SlotConfigNamesResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Core resource properties.
      *

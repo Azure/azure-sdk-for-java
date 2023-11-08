@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Weekly Schedule properties, make a snapshot every week at a specific day or days. */
 @Fluent
 public final class WeeklySchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WeeklySchedule.class);
-
     /*
      * Weekly snapshot count to keep
      */
@@ -21,8 +17,7 @@ public final class WeeklySchedule {
     private Integer snapshotsToKeep;
 
     /*
-     * Indicates which weekdays snapshot should be taken, accepts a comma
-     * separated list of week day names in english
+     * Indicates which weekdays snapshot should be taken, accepts a comma separated list of week day names in english
      */
     @JsonProperty(value = "day")
     private String day;
@@ -44,6 +39,10 @@ public final class WeeklySchedule {
      */
     @JsonProperty(value = "usedBytes")
     private Long usedBytes;
+
+    /** Creates an instance of WeeklySchedule class. */
+    public WeeklySchedule() {
+    }
 
     /**
      * Get the snapshotsToKeep property: Weekly snapshot count to keep.

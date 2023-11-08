@@ -24,6 +24,10 @@ public final class AzureDataExplorerCommandActivity extends ExecutionActivity {
     private AzureDataExplorerCommandActivityTypeProperties innerTypeProperties =
         new AzureDataExplorerCommandActivityTypeProperties();
 
+    /** Creates an instance of AzureDataExplorerCommandActivity class. */
+    public AzureDataExplorerCommandActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Data Explorer command activity properties.
      *
@@ -58,6 +62,20 @@ public final class AzureDataExplorerCommandActivity extends ExecutionActivity {
     @Override
     public AzureDataExplorerCommandActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

@@ -43,6 +43,10 @@ public final class BgpConnectionProperties {
     @JsonProperty(value = "connectionState", access = JsonProperty.Access.WRITE_ONLY)
     private HubBgpConnectionStatus connectionState;
 
+    /** Creates an instance of BgpConnectionProperties class. */
+    public BgpConnectionProperties() {
+    }
+
     /**
      * Get the peerAsn property: Peer ASN.
      *

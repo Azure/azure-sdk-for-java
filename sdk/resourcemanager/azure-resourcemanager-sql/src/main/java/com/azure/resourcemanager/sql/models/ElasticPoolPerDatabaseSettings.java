@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Per database settings of an elastic pool. */
 @Fluent
 public final class ElasticPoolPerDatabaseSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolPerDatabaseSettings.class);
-
     /*
      * The minimum capacity all databases are guaranteed.
      */
@@ -25,6 +21,10 @@ public final class ElasticPoolPerDatabaseSettings {
      */
     @JsonProperty(value = "maxCapacity")
     private Double maxCapacity;
+
+    /** Creates an instance of ElasticPoolPerDatabaseSettings class. */
+    public ElasticPoolPerDatabaseSettings() {
+    }
 
     /**
      * Get the minCapacity property: The minimum capacity all databases are guaranteed.

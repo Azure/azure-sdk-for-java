@@ -32,7 +32,7 @@ public interface SharedPrivateLinkResource {
     String type();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -53,7 +53,7 @@ public interface SharedPrivateLinkResource {
     String privateLinkResourceId();
 
     /**
-     * Gets the provisioningState property: Provisioning state of the shared private link resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -75,6 +75,13 @@ public interface SharedPrivateLinkResource {
     SharedPrivateLinkResourceStatus status();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResourceInner object.
      *
      * @return the inner object.
@@ -85,23 +92,25 @@ public interface SharedPrivateLinkResource {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The SharedPrivateLinkResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the SharedPrivateLinkResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the SharedPrivateLinkResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, resourceName.
              *
-             * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this
-             *     value from the Azure Resource Manager API or the portal.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param resourceName The name of the resource.
              * @return the next definition stage.
              */
             WithCreate withExistingWebPubSub(String resourceGroupName, String resourceName);
         }
+
         /**
          * The stage of the SharedPrivateLinkResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -125,6 +134,7 @@ public interface SharedPrivateLinkResource {
              */
             SharedPrivateLinkResource create(Context context);
         }
+
         /** The stage of the SharedPrivateLinkResource definition allowing to specify groupId. */
         interface WithGroupId {
             /**
@@ -136,6 +146,7 @@ public interface SharedPrivateLinkResource {
              */
             WithCreate withGroupId(String groupId);
         }
+
         /** The stage of the SharedPrivateLinkResource definition allowing to specify privateLinkResourceId. */
         interface WithPrivateLinkResourceId {
             /**
@@ -147,6 +158,7 @@ public interface SharedPrivateLinkResource {
              */
             WithCreate withPrivateLinkResourceId(String privateLinkResourceId);
         }
+
         /** The stage of the SharedPrivateLinkResource definition allowing to specify requestMessage. */
         interface WithRequestMessage {
             /**
@@ -159,6 +171,7 @@ public interface SharedPrivateLinkResource {
             WithCreate withRequestMessage(String requestMessage);
         }
     }
+
     /**
      * Begins update for the SharedPrivateLinkResource resource.
      *
@@ -184,6 +197,7 @@ public interface SharedPrivateLinkResource {
          */
         SharedPrivateLinkResource apply(Context context);
     }
+
     /** The SharedPrivateLinkResource update stages. */
     interface UpdateStages {
         /** The stage of the SharedPrivateLinkResource update allowing to specify groupId. */
@@ -197,6 +211,7 @@ public interface SharedPrivateLinkResource {
              */
             Update withGroupId(String groupId);
         }
+
         /** The stage of the SharedPrivateLinkResource update allowing to specify privateLinkResourceId. */
         interface WithPrivateLinkResourceId {
             /**
@@ -208,6 +223,7 @@ public interface SharedPrivateLinkResource {
              */
             Update withPrivateLinkResourceId(String privateLinkResourceId);
         }
+
         /** The stage of the SharedPrivateLinkResource update allowing to specify requestMessage. */
         interface WithRequestMessage {
             /**
@@ -220,6 +236,7 @@ public interface SharedPrivateLinkResource {
             Update withRequestMessage(String requestMessage);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

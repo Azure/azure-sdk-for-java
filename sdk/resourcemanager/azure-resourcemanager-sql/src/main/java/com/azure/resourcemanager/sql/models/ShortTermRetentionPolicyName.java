@@ -24,7 +24,11 @@ public final class ShortTermRetentionPolicyName extends ExpandableStringEnum<Sho
         return fromString(name, ShortTermRetentionPolicyName.class);
     }
 
-    /** @return known ShortTermRetentionPolicyName values. */
+    /**
+     * Gets known ShortTermRetentionPolicyName values.
+     *
+     * @return known ShortTermRetentionPolicyName values.
+     */
     public static Collection<ShortTermRetentionPolicyName> values() {
         return values(ShortTermRetentionPolicyName.class);
     }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.SkuNameEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Service Tier details. */
 @Immutable
 public final class AvailableServiceTierInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableServiceTierInner.class);
-
     /*
      * The name of the Service Tier.
      */
@@ -46,18 +42,20 @@ public final class AvailableServiceTierInner {
     private Long defaultRetention;
 
     /*
-     * The capacity reservation level in GB per day. Returned for the Capacity
-     * Reservation Service Tier.
+     * The capacity reservation level in GB per day. Returned for the Capacity Reservation Service Tier.
      */
     @JsonProperty(value = "capacityReservationLevel", access = JsonProperty.Access.WRITE_ONLY)
     private Long capacityReservationLevel;
 
     /*
-     * Time when the sku was last updated for the workspace. Returned for the
-     * Capacity Reservation Service Tier.
+     * Time when the sku was last updated for the workspace. Returned for the Capacity Reservation Service Tier.
      */
     @JsonProperty(value = "lastSkuUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private String lastSkuUpdate;
+
+    /** Creates an instance of AvailableServiceTierInner class. */
+    public AvailableServiceTierInner() {
+    }
 
     /**
      * Get the serviceTier property: The name of the Service Tier.

@@ -55,29 +55,35 @@ public interface CapacityPool {
     String etag();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the poolId property: poolId UUID v4 used to identify the Pool.
+     * Gets the poolId property: poolId
+     *
+     * <p>UUID v4 used to identify the Pool.
      *
      * @return the poolId value.
      */
     String poolId();
 
     /**
-     * Gets the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value
-     * must be multiply of 4398046511104).
+     * Gets the size property: size
+     *
+     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 4398046511104).
      *
      * @return the size value.
      */
     long size();
 
     /**
-     * Gets the serviceLevel property: serviceLevel The service level of the file system.
+     * Gets the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @return the serviceLevel value.
      */
@@ -91,14 +97,14 @@ public interface CapacityPool {
     String provisioningState();
 
     /**
-     * Gets the totalThroughputMibps property: Total throughput of pool in Mibps.
+     * Gets the totalThroughputMibps property: Total throughput of pool in MiB/s.
      *
      * @return the totalThroughputMibps value.
      */
     Float totalThroughputMibps();
 
     /**
-     * Gets the utilizedThroughputMibps property: Utilized throughput of pool in Mibps.
+     * Gets the utilizedThroughputMibps property: Utilized throughput of pool in MiB/s.
      *
      * @return the utilizedThroughputMibps value.
      */
@@ -119,8 +125,10 @@ public interface CapacityPool {
     Boolean coolAccess();
 
     /**
-     * Gets the encryptionType property: encryptionType Encryption type of the capacity pool, set encryption type for
-     * data at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+     * Gets the encryptionType property: encryptionType
+     *
+     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
+     * it. This value can only be set when creating new pool.
      *
      * @return the encryptionType value.
      */
@@ -141,6 +149,13 @@ public interface CapacityPool {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner object.
      *
      * @return the inner object.
@@ -156,11 +171,13 @@ public interface CapacityPool {
             DefinitionStages.WithServiceLevel,
             DefinitionStages.WithCreate {
     }
+
     /** The CapacityPool definition stages. */
     interface DefinitionStages {
         /** The first stage of the CapacityPool definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the CapacityPool definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -179,39 +196,49 @@ public interface CapacityPool {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the CapacityPool definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, accountName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @return the next definition stage.
              */
             WithSize withExistingNetAppAccount(String resourceGroupName, String accountName);
         }
+
         /** The stage of the CapacityPool definition allowing to specify size. */
         interface WithSize {
             /**
-             * Specifies the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB
-             * chunks (value must be multiply of 4398046511104)..
+             * Specifies the size property: size
              *
-             * @param size size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must
-             *     be multiply of 4398046511104).
+             * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+             * 4398046511104)..
+             *
+             * @param size size
+             *     <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply
+             *     of 4398046511104).
              * @return the next definition stage.
              */
             WithServiceLevel withSize(long size);
         }
+
         /** The stage of the CapacityPool definition allowing to specify serviceLevel. */
         interface WithServiceLevel {
             /**
-             * Specifies the serviceLevel property: serviceLevel The service level of the file system.
+             * Specifies the serviceLevel property: serviceLevel
              *
-             * @param serviceLevel serviceLevel The service level of the file system.
+             * <p>The service level of the file system.
+             *
+             * @param serviceLevel serviceLevel
+             *     <p>The service level of the file system.
              * @return the next definition stage.
              */
             WithCreate withServiceLevel(ServiceLevel serviceLevel);
         }
+
         /**
          * The stage of the CapacityPool definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -236,6 +263,7 @@ public interface CapacityPool {
              */
             CapacityPool create(Context context);
         }
+
         /** The stage of the CapacityPool definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -246,6 +274,7 @@ public interface CapacityPool {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the CapacityPool definition allowing to specify qosType. */
         interface WithQosType {
             /**
@@ -256,6 +285,7 @@ public interface CapacityPool {
              */
             WithCreate withQosType(QosType qosType);
         }
+
         /** The stage of the CapacityPool definition allowing to specify coolAccess. */
         interface WithCoolAccess {
             /**
@@ -266,20 +296,24 @@ public interface CapacityPool {
              */
             WithCreate withCoolAccess(Boolean coolAccess);
         }
+
         /** The stage of the CapacityPool definition allowing to specify encryptionType. */
         interface WithEncryptionType {
             /**
-             * Specifies the encryptionType property: encryptionType Encryption type of the capacity pool, set
-             * encryption type for data at rest for this pool and all volumes in it. This value can only be set when
-             * creating new pool..
+             * Specifies the encryptionType property: encryptionType
              *
-             * @param encryptionType encryptionType Encryption type of the capacity pool, set encryption type for data
-             *     at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+             * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all
+             * volumes in it. This value can only be set when creating new pool..
+             *
+             * @param encryptionType encryptionType
+             *     <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all
+             *     volumes in it. This value can only be set when creating new pool.
              * @return the next definition stage.
              */
             WithCreate withEncryptionType(EncryptionType encryptionType);
         }
     }
+
     /**
      * Begins update for the CapacityPool resource.
      *
@@ -288,7 +322,8 @@ public interface CapacityPool {
     CapacityPool.Update update();
 
     /** The template for CapacityPool update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSize, UpdateStages.WithQosType {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithSize, UpdateStages.WithQosType, UpdateStages.WithCoolAccess {
         /**
          * Executes the update request.
          *
@@ -304,6 +339,7 @@ public interface CapacityPool {
          */
         CapacityPool apply(Context context);
     }
+
     /** The CapacityPool update stages. */
     interface UpdateStages {
         /** The stage of the CapacityPool update allowing to specify tags. */
@@ -316,18 +352,23 @@ public interface CapacityPool {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the CapacityPool update allowing to specify size. */
         interface WithSize {
             /**
-             * Specifies the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB
-             * chunks (value must be multiply of 4398046511104)..
+             * Specifies the size property: size
              *
-             * @param size size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must
-             *     be multiply of 4398046511104).
+             * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+             * 4398046511104)..
+             *
+             * @param size size
+             *     <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply
+             *     of 4398046511104).
              * @return the next definition stage.
              */
             Update withSize(Long size);
         }
+
         /** The stage of the CapacityPool update allowing to specify qosType. */
         interface WithQosType {
             /**
@@ -338,7 +379,19 @@ public interface CapacityPool {
              */
             Update withQosType(QosType qosType);
         }
+
+        /** The stage of the CapacityPool update allowing to specify coolAccess. */
+        interface WithCoolAccess {
+            /**
+             * Specifies the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes..
+             *
+             * @param coolAccess If enabled (true) the pool can contain cool Access enabled volumes.
+             * @return the next definition stage.
+             */
+            Update withCoolAccess(Boolean coolAccess);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

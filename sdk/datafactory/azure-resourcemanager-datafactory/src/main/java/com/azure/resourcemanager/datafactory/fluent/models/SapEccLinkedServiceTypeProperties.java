@@ -13,19 +13,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapEccLinkedServiceTypeProperties {
     /*
-     * The URL of SAP ECC OData API. For example,
-     * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string
-     * (or Expression with resultType string).
+     * The URL of SAP ECC OData API. For example, '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
-    private String url;
+    private Object url;
 
     /*
-     * The username for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * The username for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username")
-    private String username;
+    private Object username;
 
     /*
      * The password for Basic authentication.
@@ -34,13 +32,15 @@ public final class SapEccLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either
-     * encryptedCredential or username/password must be provided. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Either encryptedCredential or username/password must be provided. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
+
+    /** Creates an instance of SapEccLinkedServiceTypeProperties class. */
+    public SapEccLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the url property: The URL of SAP ECC OData API. For example,
@@ -48,7 +48,7 @@ public final class SapEccLinkedServiceTypeProperties {
      *
      * @return the url value.
      */
-    public String url() {
+    public Object url() {
         return this.url;
     }
 
@@ -59,7 +59,7 @@ public final class SapEccLinkedServiceTypeProperties {
      * @param url the url value to set.
      * @return the SapEccLinkedServiceTypeProperties object itself.
      */
-    public SapEccLinkedServiceTypeProperties withUrl(String url) {
+    public SapEccLinkedServiceTypeProperties withUrl(Object url) {
         this.url = url;
         return this;
     }
@@ -70,7 +70,7 @@ public final class SapEccLinkedServiceTypeProperties {
      *
      * @return the username value.
      */
-    public String username() {
+    public Object username() {
         return this.username;
     }
 
@@ -81,7 +81,7 @@ public final class SapEccLinkedServiceTypeProperties {
      * @param username the username value to set.
      * @return the SapEccLinkedServiceTypeProperties object itself.
      */
-    public SapEccLinkedServiceTypeProperties withUsername(String username) {
+    public SapEccLinkedServiceTypeProperties withUsername(Object username) {
         this.username = username;
         return this;
     }
@@ -109,7 +109,7 @@ public final class SapEccLinkedServiceTypeProperties {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
+     * provided. Type: string.
      *
      * @return the encryptedCredential value.
      */
@@ -120,7 +120,7 @@ public final class SapEccLinkedServiceTypeProperties {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
+     * provided. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapEccLinkedServiceTypeProperties object itself.

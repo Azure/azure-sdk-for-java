@@ -15,7 +15,7 @@ import java.util.List;
  * modified as long as the original subnet and the new subnet are in the same virtual network.
  */
 @Fluent
-public final class VirtualMachineScaleSetUpdateIpConfiguration extends SubResource {
+public final class VirtualMachineScaleSetUpdateIpConfiguration {
     /*
      * The IP configuration name.
      */
@@ -23,11 +23,14 @@ public final class VirtualMachineScaleSetUpdateIpConfiguration extends SubResour
     private String name;
 
     /*
-     * Describes a virtual machine scale set network profile's IP configuration
-     * properties.
+     * Describes a virtual machine scale set network profile's IP configuration properties.
      */
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdateIpConfigurationProperties innerProperties;
+
+    /** Creates an instance of VirtualMachineScaleSetUpdateIpConfiguration class. */
+    public VirtualMachineScaleSetUpdateIpConfiguration() {
+    }
 
     /**
      * Get the name property: The IP configuration name.
@@ -57,13 +60,6 @@ public final class VirtualMachineScaleSetUpdateIpConfiguration extends SubResour
      */
     private VirtualMachineScaleSetUpdateIpConfigurationProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineScaleSetUpdateIpConfiguration withId(String id) {
-        super.withId(id);
-        return this;
     }
 
     /**

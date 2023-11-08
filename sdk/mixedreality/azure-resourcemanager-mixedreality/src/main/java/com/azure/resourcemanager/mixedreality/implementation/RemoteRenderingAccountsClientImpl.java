@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mixedreality.fluent.RemoteRenderingAccountsClient;
 import com.azure.resourcemanager.mixedreality.fluent.models.AccountKeysInner;
 import com.azure.resourcemanager.mixedreality.fluent.models.RemoteRenderingAccountInner;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RemoteRenderingAccountsClient. */
 public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingAccountsClient {
-    private final ClientLogger logger = new ClientLogger(RemoteRenderingAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RemoteRenderingAccountsService service;
 
@@ -66,7 +63,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      */
     @Host("{$host}")
     @ServiceInterface(name = "MixedRealityClientRe")
-    private interface RemoteRenderingAccountsService {
+    public interface RemoteRenderingAccountsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.MixedReality/remoteRenderingAccounts")
         @ExpectedResponses({200})
@@ -211,7 +208,8 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemoteRenderingAccountInner>> listSinglePageAsync() {
@@ -257,7 +255,8 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemoteRenderingAccountInner>> listSinglePageAsync(Context context) {
@@ -298,7 +297,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemoteRenderingAccountInner> listAsync() {
@@ -313,7 +312,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemoteRenderingAccountInner> listAsync(Context context) {
@@ -326,7 +325,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemoteRenderingAccountInner> list() {
@@ -340,7 +339,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemoteRenderingAccountInner> list(Context context) {
@@ -354,7 +353,8 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemoteRenderingAccountInner>> listByResourceGroupSinglePageAsync(
@@ -407,7 +407,8 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemoteRenderingAccountInner>> listByResourceGroupSinglePageAsync(
@@ -456,7 +457,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemoteRenderingAccountInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -473,7 +474,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemoteRenderingAccountInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -489,7 +490,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemoteRenderingAccountInner> listByResourceGroup(String resourceGroupName) {
@@ -504,7 +505,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemoteRenderingAccountInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -519,7 +520,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
@@ -567,7 +568,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -612,11 +613,27 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a Remote Rendering Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -630,23 +647,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName) {
-        deleteAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Delete a Remote Rendering Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, context).block();
+        deleteWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -657,7 +658,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemoteRenderingAccountInner>> getByResourceGroupWithResponseAsync(
@@ -706,7 +707,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemoteRenderingAccountInner>> getByResourceGroupWithResponseAsync(
@@ -751,19 +752,29 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemoteRenderingAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<RemoteRenderingAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieve a Remote Rendering Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remoteRenderingAccount Response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemoteRenderingAccountInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String accountName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -778,24 +789,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemoteRenderingAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
-        return getByResourceGroupAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Retrieve a Remote Rendering Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoteRenderingAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -807,7 +801,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemoteRenderingAccountInner>> updateWithResponseAsync(
@@ -865,7 +859,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemoteRenderingAccountInner>> updateWithResponseAsync(
@@ -922,20 +916,34 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemoteRenderingAccountInner> updateAsync(
         String resourceGroupName, String accountName, RemoteRenderingAccountInner remoteRenderingAccount) {
         return updateWithResponseAsync(resourceGroupName, accountName, remoteRenderingAccount)
-            .flatMap(
-                (Response<RemoteRenderingAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updating a Remote Rendering Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param remoteRenderingAccount Remote Rendering Account parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remoteRenderingAccount Response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemoteRenderingAccountInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        RemoteRenderingAccountInner remoteRenderingAccount,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, accountName, remoteRenderingAccount, context).block();
     }
 
     /**
@@ -952,28 +960,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemoteRenderingAccountInner update(
         String resourceGroupName, String accountName, RemoteRenderingAccountInner remoteRenderingAccount) {
-        return updateAsync(resourceGroupName, accountName, remoteRenderingAccount).block();
-    }
-
-    /**
-     * Updating a Remote Rendering Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param remoteRenderingAccount Remote Rendering Account parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoteRenderingAccountInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        RemoteRenderingAccountInner remoteRenderingAccount,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, remoteRenderingAccount, context).block();
+        return updateWithResponse(resourceGroupName, accountName, remoteRenderingAccount, Context.NONE).getValue();
     }
 
     /**
@@ -985,7 +972,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemoteRenderingAccountInner>> createWithResponseAsync(
@@ -1043,7 +1030,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemoteRenderingAccountInner>> createWithResponseAsync(
@@ -1100,20 +1087,34 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemoteRenderingAccountInner> createAsync(
         String resourceGroupName, String accountName, RemoteRenderingAccountInner remoteRenderingAccount) {
         return createWithResponseAsync(resourceGroupName, accountName, remoteRenderingAccount)
-            .flatMap(
-                (Response<RemoteRenderingAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creating or Updating a Remote Rendering Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param remoteRenderingAccount Remote Rendering Account parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remoteRenderingAccount Response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemoteRenderingAccountInner> createWithResponse(
+        String resourceGroupName,
+        String accountName,
+        RemoteRenderingAccountInner remoteRenderingAccount,
+        Context context) {
+        return createWithResponseAsync(resourceGroupName, accountName, remoteRenderingAccount, context).block();
     }
 
     /**
@@ -1130,28 +1131,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemoteRenderingAccountInner create(
         String resourceGroupName, String accountName, RemoteRenderingAccountInner remoteRenderingAccount) {
-        return createAsync(resourceGroupName, accountName, remoteRenderingAccount).block();
-    }
-
-    /**
-     * Creating or Updating a Remote Rendering Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param remoteRenderingAccount Remote Rendering Account parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoteRenderingAccountInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        RemoteRenderingAccountInner remoteRenderingAccount,
-        Context context) {
-        return createWithResponseAsync(resourceGroupName, accountName, remoteRenderingAccount, context).block();
+        return createWithResponse(resourceGroupName, accountName, remoteRenderingAccount, Context.NONE).getValue();
     }
 
     /**
@@ -1162,7 +1142,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String accountName) {
@@ -1210,7 +1190,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountKeysInner>> listKeysWithResponseAsync(
@@ -1255,19 +1235,29 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountKeysInner> listKeysAsync(String resourceGroupName, String accountName) {
         return listKeysWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<AccountKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List Both of the 2 Keys of a Remote Rendering Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return developer Keys of account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccountKeysInner> listKeysWithResponse(
+        String resourceGroupName, String accountName, Context context) {
+        return listKeysWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -1282,24 +1272,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccountKeysInner listKeys(String resourceGroupName, String accountName) {
-        return listKeysAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * List Both of the 2 Keys of a Remote Rendering Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccountKeysInner> listKeysWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        return listKeysWithResponseAsync(resourceGroupName, accountName, context).block();
+        return listKeysWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -1311,7 +1284,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountKeysInner>> regenerateKeysWithResponseAsync(
@@ -1367,7 +1340,7 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountKeysInner>> regenerateKeysWithResponseAsync(
@@ -1419,20 +1392,31 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountKeysInner> regenerateKeysAsync(
         String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate) {
         return regenerateKeysWithResponseAsync(resourceGroupName, accountName, regenerate)
-            .flatMap(
-                (Response<AccountKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Regenerate specified Key of a Remote Rendering Account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param regenerate Required information for key regeneration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return developer Keys of account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccountKeysInner> regenerateKeysWithResponse(
+        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate, Context context) {
+        return regenerateKeysWithResponseAsync(resourceGroupName, accountName, regenerate, context).block();
     }
 
     /**
@@ -1449,35 +1433,19 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccountKeysInner regenerateKeys(
         String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate) {
-        return regenerateKeysAsync(resourceGroupName, accountName, regenerate).block();
-    }
-
-    /**
-     * Regenerate specified Key of a Remote Rendering Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param regenerate Required information for key regeneration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccountKeysInner> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate, Context context) {
-        return regenerateKeysWithResponseAsync(resourceGroupName, accountName, regenerate, context).block();
+        return regenerateKeysWithResponse(resourceGroupName, accountName, regenerate, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemoteRenderingAccountInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1509,12 +1477,14 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemoteRenderingAccountInner>> listBySubscriptionNextSinglePageAsync(
@@ -1546,11 +1516,13 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemoteRenderingAccountInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1582,12 +1554,14 @@ public final class RemoteRenderingAccountsClientImpl implements RemoteRenderingA
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemoteRenderingAccountInner>> listByResourceGroupNextSinglePageAsync(

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateLinkServiceConnectionStateStatus. */
+/** The private link service connection status. */
 public final class PrivateLinkServiceConnectionStateStatus
     extends ExpandableStringEnum<PrivateLinkServiceConnectionStateStatus> {
     /** Static value Approved for PrivateLinkServiceConnectionStateStatus. */
@@ -34,7 +34,11 @@ public final class PrivateLinkServiceConnectionStateStatus
         return fromString(name, PrivateLinkServiceConnectionStateStatus.class);
     }
 
-    /** @return known PrivateLinkServiceConnectionStateStatus values. */
+    /**
+     * Gets known PrivateLinkServiceConnectionStateStatus values.
+     *
+     * @return known PrivateLinkServiceConnectionStateStatus values.
+     */
     public static Collection<PrivateLinkServiceConnectionStateStatus> values() {
         return values(PrivateLinkServiceConnectionStateStatus.class);
     }

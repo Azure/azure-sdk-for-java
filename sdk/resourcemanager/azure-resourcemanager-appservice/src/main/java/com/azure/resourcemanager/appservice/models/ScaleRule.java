@@ -34,6 +34,10 @@ public final class ScaleRule {
     @JsonProperty(value = "http")
     private HttpScaleRule http;
 
+    /** Creates an instance of ScaleRule class. */
+    public ScaleRule() {
+    }
+
     /**
      * Get the name property: Scale Rule Name.
      *

@@ -19,10 +19,40 @@ import java.util.Map;
 @Fluent
 public final class ExecutePipelineActivity extends ControlActivity {
     /*
+     * Execute pipeline activity policy.
+     */
+    @JsonProperty(value = "policy")
+    private ExecutePipelineActivityPolicy policy;
+
+    /*
      * Execute pipeline activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private ExecutePipelineActivityTypeProperties innerTypeProperties = new ExecutePipelineActivityTypeProperties();
+
+    /** Creates an instance of ExecutePipelineActivity class. */
+    public ExecutePipelineActivity() {
+    }
+
+    /**
+     * Get the policy property: Execute pipeline activity policy.
+     *
+     * @return the policy value.
+     */
+    public ExecutePipelineActivityPolicy policy() {
+        return this.policy;
+    }
+
+    /**
+     * Set the policy property: Execute pipeline activity policy.
+     *
+     * @param policy the policy value to set.
+     * @return the ExecutePipelineActivity object itself.
+     */
+    public ExecutePipelineActivity withPolicy(ExecutePipelineActivityPolicy policy) {
+        this.policy = policy;
+        return this;
+    }
 
     /**
      * Get the innerTypeProperties property: Execute pipeline activity properties.
@@ -44,6 +74,20 @@ public final class ExecutePipelineActivity extends ControlActivity {
     @Override
     public ExecutePipelineActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutePipelineActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutePipelineActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
@@ -140,6 +184,9 @@ public final class ExecutePipelineActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
+        if (policy() != null) {
+            policy().validate();
+        }
         if (innerTypeProperties() == null) {
             throw LOGGER
                 .logExceptionAsError(

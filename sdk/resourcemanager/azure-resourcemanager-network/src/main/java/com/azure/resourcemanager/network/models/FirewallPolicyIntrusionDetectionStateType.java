@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FirewallPolicyIntrusionDetectionStateType. */
+/** Possible state values. */
 public final class FirewallPolicyIntrusionDetectionStateType
     extends ExpandableStringEnum<FirewallPolicyIntrusionDetectionStateType> {
     /** Static value Off for FirewallPolicyIntrusionDetectionStateType. */
@@ -21,6 +21,15 @@ public final class FirewallPolicyIntrusionDetectionStateType
     public static final FirewallPolicyIntrusionDetectionStateType DENY = fromString("Deny");
 
     /**
+     * Creates a new instance of FirewallPolicyIntrusionDetectionStateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyIntrusionDetectionStateType() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicyIntrusionDetectionStateType from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class FirewallPolicyIntrusionDetectionStateType
         return fromString(name, FirewallPolicyIntrusionDetectionStateType.class);
     }
 
-    /** @return known FirewallPolicyIntrusionDetectionStateType values. */
+    /**
+     * Gets known FirewallPolicyIntrusionDetectionStateType values.
+     *
+     * @return known FirewallPolicyIntrusionDetectionStateType values.
+     */
     public static Collection<FirewallPolicyIntrusionDetectionStateType> values() {
         return values(FirewallPolicyIntrusionDetectionStateType.class);
     }

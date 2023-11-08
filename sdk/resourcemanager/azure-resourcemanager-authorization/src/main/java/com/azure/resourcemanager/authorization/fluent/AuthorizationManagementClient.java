@@ -52,11 +52,25 @@ public interface AuthorizationManagementClient {
     GlobalAdministratorsClient getGlobalAdministrators();
 
     /**
+     * Gets the DenyAssignmentsClient object to access its operations.
+     *
+     * @return the DenyAssignmentsClient object.
+     */
+    DenyAssignmentsClient getDenyAssignments();
+
+    /**
      * Gets the ProviderOperationsMetadatasClient object to access its operations.
      *
      * @return the ProviderOperationsMetadatasClient object.
      */
     ProviderOperationsMetadatasClient getProviderOperationsMetadatas();
+
+    /**
+     * Gets the RoleAssignmentsClient object to access its operations.
+     *
+     * @return the RoleAssignmentsClient object.
+     */
+    RoleAssignmentsClient getRoleAssignments();
 
     /**
      * Gets the PermissionsClient object to access its operations.
@@ -73,23 +87,65 @@ public interface AuthorizationManagementClient {
     RoleDefinitionsClient getRoleDefinitions();
 
     /**
-     * Gets the DenyAssignmentsClient object to access its operations.
+     * Gets the EligibleChildResourcesClient object to access its operations.
      *
-     * @return the DenyAssignmentsClient object.
+     * @return the EligibleChildResourcesClient object.
      */
-    DenyAssignmentsClient getDenyAssignments();
+    EligibleChildResourcesClient getEligibleChildResources();
 
     /**
-     * Gets the RoleAssignmentMetricsClient object to access its operations.
+     * Gets the RoleAssignmentSchedulesClient object to access its operations.
      *
-     * @return the RoleAssignmentMetricsClient object.
+     * @return the RoleAssignmentSchedulesClient object.
      */
-    RoleAssignmentMetricsClient getRoleAssignmentMetrics();
+    RoleAssignmentSchedulesClient getRoleAssignmentSchedules();
 
     /**
-     * Gets the RoleAssignmentsClient object to access its operations.
+     * Gets the RoleAssignmentScheduleInstancesClient object to access its operations.
      *
-     * @return the RoleAssignmentsClient object.
+     * @return the RoleAssignmentScheduleInstancesClient object.
      */
-    RoleAssignmentsClient getRoleAssignments();
+    RoleAssignmentScheduleInstancesClient getRoleAssignmentScheduleInstances();
+
+    /**
+     * Gets the RoleAssignmentScheduleRequestsClient object to access its operations.
+     *
+     * @return the RoleAssignmentScheduleRequestsClient object.
+     */
+    RoleAssignmentScheduleRequestsClient getRoleAssignmentScheduleRequests();
+
+    /**
+     * Gets the RoleEligibilitySchedulesClient object to access its operations.
+     *
+     * @return the RoleEligibilitySchedulesClient object.
+     */
+    RoleEligibilitySchedulesClient getRoleEligibilitySchedules();
+
+    /**
+     * Gets the RoleEligibilityScheduleInstancesClient object to access its operations.
+     *
+     * @return the RoleEligibilityScheduleInstancesClient object.
+     */
+    RoleEligibilityScheduleInstancesClient getRoleEligibilityScheduleInstances();
+
+    /**
+     * Gets the RoleEligibilityScheduleRequestsClient object to access its operations.
+     *
+     * @return the RoleEligibilityScheduleRequestsClient object.
+     */
+    RoleEligibilityScheduleRequestsClient getRoleEligibilityScheduleRequests();
+
+    /**
+     * Gets the RoleManagementPoliciesClient object to access its operations.
+     *
+     * @return the RoleManagementPoliciesClient object.
+     */
+    RoleManagementPoliciesClient getRoleManagementPolicies();
+
+    /**
+     * Gets the RoleManagementPolicyAssignmentsClient object to access its operations.
+     *
+     * @return the RoleManagementPolicyAssignmentsClient object.
+     */
+    RoleManagementPolicyAssignmentsClient getRoleManagementPolicyAssignments();
 }

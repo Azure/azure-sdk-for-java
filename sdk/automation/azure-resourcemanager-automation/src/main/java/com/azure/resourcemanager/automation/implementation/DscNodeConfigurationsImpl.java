@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.DscNodeConfigurationsClient;
 import com.azure.resourcemanager.automation.fluent.models.DscNodeConfigurationInner;
 import com.azure.resourcemanager.automation.models.DscNodeConfiguration;
 import com.azure.resourcemanager.automation.models.DscNodeConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscNodeConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DscNodeConfigurationsImpl.class);
 
     private final DscNodeConfigurationsClient innerClient;
 
@@ -94,7 +93,7 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
     public DscNodeConfiguration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -102,7 +101,7 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +110,7 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
         }
         String nodeConfigurationName = Utils.getValueFromIdByName(id, "nodeConfigurations");
         if (nodeConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -126,7 +125,7 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
     public Response<DscNodeConfiguration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +133,7 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
         }
         String nodeConfigurationName = Utils.getValueFromIdByName(id, "nodeConfigurations");
         if (nodeConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -156,7 +155,7 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,7 +163,7 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -173,22 +172,20 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
         }
         String nodeConfigurationName = Utils.getValueFromIdByName(id, "nodeConfigurations");
         if (nodeConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'nodeConfigurations'.", id)));
         }
-        this
-            .deleteWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE)
-            .getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, nodeConfigurationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,7 +193,7 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -205,7 +202,7 @@ public final class DscNodeConfigurationsImpl implements DscNodeConfigurations {
         }
         String nodeConfigurationName = Utils.getValueFromIdByName(id, "nodeConfigurations");
         if (nodeConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

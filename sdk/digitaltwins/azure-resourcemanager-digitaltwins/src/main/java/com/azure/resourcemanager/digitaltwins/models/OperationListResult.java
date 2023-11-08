@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.digitaltwins.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
      * The link used to get the next page of DigitalTwins description objects.
      */
@@ -26,11 +22,14 @@ public final class OperationListResult {
     private String nextLink;
 
     /*
-     * A list of DigitalTwins operations supported by the
-     * Microsoft.DigitalTwins resource provider.
+     * A list of DigitalTwins operations supported by the Microsoft.DigitalTwins resource provider.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationInner> value;
+
+    /** Creates an instance of OperationListResult class. */
+    public OperationListResult() {
+    }
 
     /**
      * Get the nextLink property: The link used to get the next page of DigitalTwins description objects.

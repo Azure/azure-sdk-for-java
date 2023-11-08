@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** workbookIcon. */
 @Fluent
 public final class MicrosoftGraphWorkbookIcon {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookIcon.class);
-
     /*
      * Represents the index of the icon in the given set.
      */
@@ -25,12 +22,10 @@ public final class MicrosoftGraphWorkbookIcon {
     private Integer index;
 
     /*
-     * Represents the set that the icon is part of. The possible values are:
-     * Invalid, ThreeArrows, ThreeArrowsGray, ThreeFlags, ThreeTrafficLights1,
-     * ThreeTrafficLights2, ThreeSigns, ThreeSymbols, ThreeSymbols2,
-     * FourArrows, FourArrowsGray, FourRedToBlack, FourRating,
-     * FourTrafficLights, FiveArrows, FiveArrowsGray, FiveRating, FiveQuarters,
-     * ThreeStars, ThreeTriangles, FiveBoxes.
+     * Represents the set that the icon is part of. The possible values are: Invalid, ThreeArrows, ThreeArrowsGray,
+     * ThreeFlags, ThreeTrafficLights1, ThreeTrafficLights2, ThreeSigns, ThreeSymbols, ThreeSymbols2, FourArrows,
+     * FourArrowsGray, FourRedToBlack, FourRating, FourTrafficLights, FiveArrows, FiveArrowsGray, FiveRating,
+     * FiveQuarters, ThreeStars, ThreeTriangles, FiveBoxes.
      */
     @JsonProperty(value = "set")
     private String set;
@@ -39,6 +34,10 @@ public final class MicrosoftGraphWorkbookIcon {
      * workbookIcon
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookIcon class. */
+    public MicrosoftGraphWorkbookIcon() {
+    }
 
     /**
      * Get the index property: Represents the index of the icon in the given set.

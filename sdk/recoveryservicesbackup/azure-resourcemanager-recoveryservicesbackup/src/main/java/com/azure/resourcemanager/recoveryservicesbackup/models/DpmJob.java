@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("DpmJob")
 @Fluent
 public final class DpmJob extends Job {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DpmJob.class);
-
     /*
      * Time elapsed for job.
      */
@@ -68,6 +64,10 @@ public final class DpmJob extends Job {
      */
     @JsonProperty(value = "extendedInfo")
     private DpmJobExtendedInfo extendedInfo;
+
+    /** Creates an instance of DpmJob class. */
+    public DpmJob() {
+    }
 
     /**
      * Get the duration property: Time elapsed for job.

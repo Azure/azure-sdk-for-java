@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** workbookChartSeriesFormat. */
 @Fluent
 public final class MicrosoftGraphWorkbookChartSeriesFormat extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookChartSeriesFormat.class);
-
     /*
      * workbookChartFill
      */
@@ -34,6 +31,10 @@ public final class MicrosoftGraphWorkbookChartSeriesFormat extends MicrosoftGrap
      * workbookChartSeriesFormat
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookChartSeriesFormat class. */
+    public MicrosoftGraphWorkbookChartSeriesFormat() {
+    }
 
     /**
      * Get the fill property: workbookChartFill.

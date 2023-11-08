@@ -20,15 +20,13 @@ public final class ZendeskLinkedServiceTypeProperties {
     private ZendeskAuthenticationType authenticationType;
 
     /*
-     * The url to connect Zendesk source. Type: string (or Expression with
-     * resultType string).
+     * The url to connect Zendesk source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * The username of the Zendesk source. Type: string (or Expression with
-     * resultType string).
+     * The username of the Zendesk source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -46,12 +44,15 @@ public final class ZendeskLinkedServiceTypeProperties {
     private SecretBase apiToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of ZendeskLinkedServiceTypeProperties class. */
+    public ZendeskLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the authenticationType property: The authentication type to use.
@@ -157,22 +158,22 @@ public final class ZendeskLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ZendeskLinkedServiceTypeProperties object itself.
      */
-    public ZendeskLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public ZendeskLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

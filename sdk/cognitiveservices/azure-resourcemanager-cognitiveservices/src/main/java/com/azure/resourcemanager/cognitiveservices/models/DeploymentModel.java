@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of Cognitive Services account deployment model. */
 @Fluent
-public final class DeploymentModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentModel.class);
-
+public class DeploymentModel {
     /*
      * Deployment model format.
      */
@@ -27,10 +23,28 @@ public final class DeploymentModel {
     private String name;
 
     /*
-     * Deployment model version.
+     * Optional. Deployment model version. If version is not specified, a default version will be assigned. The default
+     * version is different for different models and might change when there is new version available for a model.
+     * Default version for a model could be found from list models API.
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /*
+     * Optional. Deployment model source ARM resource ID.
+     */
+    @JsonProperty(value = "source")
+    private String source;
+
+    /*
+     * The call rate limit Cognitive Services account.
+     */
+    @JsonProperty(value = "callRateLimit", access = JsonProperty.Access.WRITE_ONLY)
+    private CallRateLimit callRateLimit;
+
+    /** Creates an instance of DeploymentModel class. */
+    public DeploymentModel() {
+    }
 
     /**
      * Get the format property: Deployment model format.
@@ -73,7 +87,9 @@ public final class DeploymentModel {
     }
 
     /**
-     * Get the version property: Deployment model version.
+     * Get the version property: Optional. Deployment model version. If version is not specified, a default version will
+     * be assigned. The default version is different for different models and might change when there is new version
+     * available for a model. Default version for a model could be found from list models API.
      *
      * @return the version value.
      */
@@ -82,7 +98,9 @@ public final class DeploymentModel {
     }
 
     /**
-     * Set the version property: Deployment model version.
+     * Set the version property: Optional. Deployment model version. If version is not specified, a default version will
+     * be assigned. The default version is different for different models and might change when there is new version
+     * available for a model. Default version for a model could be found from list models API.
      *
      * @param version the version value to set.
      * @return the DeploymentModel object itself.
@@ -93,10 +111,42 @@ public final class DeploymentModel {
     }
 
     /**
+     * Get the source property: Optional. Deployment model source ARM resource ID.
+     *
+     * @return the source value.
+     */
+    public String source() {
+        return this.source;
+    }
+
+    /**
+     * Set the source property: Optional. Deployment model source ARM resource ID.
+     *
+     * @param source the source value to set.
+     * @return the DeploymentModel object itself.
+     */
+    public DeploymentModel withSource(String source) {
+        this.source = source;
+        return this;
+    }
+
+    /**
+     * Get the callRateLimit property: The call rate limit Cognitive Services account.
+     *
+     * @return the callRateLimit value.
+     */
+    public CallRateLimit callRateLimit() {
+        return this.callRateLimit;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (callRateLimit() != null) {
+            callRateLimit().validate();
+        }
     }
 }

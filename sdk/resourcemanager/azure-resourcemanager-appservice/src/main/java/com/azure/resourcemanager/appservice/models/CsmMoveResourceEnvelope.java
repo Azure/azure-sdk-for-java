@@ -23,6 +23,10 @@ public final class CsmMoveResourceEnvelope {
     @JsonProperty(value = "resources")
     private List<String> resources;
 
+    /** Creates an instance of CsmMoveResourceEnvelope class. */
+    public CsmMoveResourceEnvelope() {
+    }
+
     /**
      * Get the targetResourceGroup property: The targetResourceGroup property.
      *

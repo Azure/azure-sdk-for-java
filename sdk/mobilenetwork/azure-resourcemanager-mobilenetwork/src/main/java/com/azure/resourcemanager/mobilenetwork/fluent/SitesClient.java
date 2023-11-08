@@ -12,12 +12,14 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner;
+import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 
 /** An instance of this class provides access to all the operations defined in SitesClient. */
 public interface SitesClient {
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -31,7 +33,8 @@ public interface SitesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName, String siteName);
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -47,7 +50,8 @@ public interface SitesClient {
         String resourceGroupName, String mobileNetworkName, String siteName, Context context);
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -60,7 +64,8 @@ public interface SitesClient {
     void delete(String resourceGroupName, String mobileNetworkName, String siteName);
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -79,20 +84,6 @@ public interface SitesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network site.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SiteInner get(String resourceGroupName, String mobileNetworkName, String siteName);
-
-    /**
-     * Gets information about the specified mobile network site.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param siteName The name of the mobile network site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,7 +95,21 @@ public interface SitesClient {
         String resourceGroupName, String mobileNetworkName, String siteName, Context context);
 
     /**
-     * Creates or updates a mobile network site.
+     * Gets information about the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified mobile network site.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SiteInner get(String resourceGroupName, String mobileNetworkName, String siteName);
+
+    /**
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -120,7 +125,7 @@ public interface SitesClient {
         String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters);
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -137,7 +142,7 @@ public interface SitesClient {
         String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters, Context context);
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -152,7 +157,7 @@ public interface SitesClient {
     SiteInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters);
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -169,22 +174,7 @@ public interface SitesClient {
         String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters, Context context);
 
     /**
-     * Updates a site update tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param siteName The name of the mobile network site.
-     * @param parameters Parameters supplied to update network site tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SiteInner updateTags(String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters);
-
-    /**
-     * Updates a site update tags.
+     * Updates site tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -199,6 +189,21 @@ public interface SitesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SiteInner> updateTagsWithResponse(
         String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters, Context context);
+
+    /**
+     * Updates site tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to update network site tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return site resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SiteInner updateTags(String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters);
 
     /**
      * Lists all sites in the mobile network.
@@ -226,4 +231,76 @@ public interface SitesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SiteInner> listByMobileNetwork(String resourceGroupName, String mobileNetworkName, Context context);
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeletePacketCore(
+        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters);
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeletePacketCore(
+        String resourceGroupName,
+        String mobileNetworkName,
+        String siteName,
+        SiteDeletePacketCore parameters,
+        Context context);
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePacketCore(
+        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters);
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePacketCore(
+        String resourceGroupName,
+        String mobileNetworkName,
+        String siteName,
+        SiteDeletePacketCore parameters,
+        Context context);
 }

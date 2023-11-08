@@ -57,6 +57,9 @@ public class MetricFeedback {
     @JsonProperty(value = "dimensionFilter", required = true)
     private FeedbackDimensionFilter dimensionFilter;
 
+    /** Creates an instance of MetricFeedback class. */
+    public MetricFeedback() {}
+
     /**
      * Get the feedbackId property: feedback unique id.
      *

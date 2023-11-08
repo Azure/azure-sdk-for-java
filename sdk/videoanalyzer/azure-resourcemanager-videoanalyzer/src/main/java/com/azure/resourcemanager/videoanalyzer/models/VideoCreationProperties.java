@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class VideoCreationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoCreationProperties.class);
-
     /*
      * Optional title provided by the user. Value can be up to 256 characters
      * long.

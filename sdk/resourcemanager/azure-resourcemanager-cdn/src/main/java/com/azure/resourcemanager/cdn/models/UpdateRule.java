@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UpdateRule. */
+/** Describes the action that shall be taken when the certificate is updated in Key Vault. */
 public final class UpdateRule extends ExpandableStringEnum<UpdateRule> {
     /** Static value NoAction for UpdateRule. */
     public static final UpdateRule NO_ACTION = fromString("NoAction");
+
+    /**
+     * Creates a new instance of UpdateRule value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UpdateRule() {
+    }
 
     /**
      * Creates or finds a UpdateRule from its string representation.
@@ -24,7 +33,11 @@ public final class UpdateRule extends ExpandableStringEnum<UpdateRule> {
         return fromString(name, UpdateRule.class);
     }
 
-    /** @return known UpdateRule values. */
+    /**
+     * Gets known UpdateRule values.
+     *
+     * @return known UpdateRule values.
+     */
     public static Collection<UpdateRule> values() {
         return values(UpdateRule.class);
     }

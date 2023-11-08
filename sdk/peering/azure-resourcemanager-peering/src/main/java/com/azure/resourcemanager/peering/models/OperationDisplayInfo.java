@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information related to the operation. */
 @Immutable
 public final class OperationDisplayInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplayInfo.class);
-
     /*
      * The name of the resource provider.
      */
@@ -37,6 +33,10 @@ public final class OperationDisplayInfo {
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
+
+    /** Creates an instance of OperationDisplayInfo class. */
+    public OperationDisplayInfo() {
+    }
 
     /**
      * Get the provider property: The name of the resource provider.

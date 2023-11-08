@@ -15,6 +15,7 @@ import io.micrometer.azuremonitor.AzureMonitorConfig;
 import io.micrometer.azuremonitor.AzureMonitorMeterRegistry;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.config.NamingConvention;
 import io.micrometer.core.lang.Nullable;
 import io.micrometer.graphite.GraphiteConfig;
@@ -32,7 +33,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Configuration {
-
+    public static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
+    public static final String FAILURE_COUNTER_METER_NAME = "#Unsuccessful Operations";
+    public static final String LATENCY_METER_NAME = "Latency";
     public final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
     private final static int DEFAULT_GRAPHITE_SERVER_PORT = 2003;
     private MeterRegistry azureMonitorMeterRegistry;
@@ -108,6 +111,29 @@ public class Configuration {
     @Parameter(names = "-encryptionEnabled", description = "Control switch to enable the encryption operation")
     private boolean encryptionEnabled = false;
 
+    @Parameter(names = "-defaultLog4jLoggerEnabled", description = "Control switch to enable the default log4j logger in 4.42 and above")
+    private String defaultLog4jLoggerEnabled = String.valueOf(false);
+
+
+    @Parameter(names = "-tupleSize", description = "Number of cosmos identity tuples to be queried using readMany")
+    private int tupleSize = 1;
+
+    @Parameter(names = "-isProactiveConnectionManagementEnabled", description = "Mode which denotes whether connections are proactively established during warm up.")
+    private String isProactiveConnectionManagementEnabled = String.valueOf(false);
+
+    @Parameter(names = "-isUseUnWarmedUpContainer", description = "Mode which denotes whether to use a container with no warmed up connections. NOTE: " +
+            "To be used when isProactiveConnectionManagementEnabled is set to false and isUseUnWarmedUpContainer is set to true")
+    private String isUseUnWarmedUpContainer = String.valueOf(false);
+
+    @Parameter(names = "-proactiveConnectionRegionsCount", description = "Number of regions where endpoints are to be proactively connected to.")
+    private int proactiveConnectionRegionsCount = 1;
+
+    @Parameter(names = "-minConnectionPoolSizePerEndpoint", description = "Minimum number of connections to establish per endpoint for proactive connection management")
+    private int minConnectionPoolSizePerEndpoint = 0;
+
+    @Parameter(names = "-aggressiveWarmupDuration", description = "The duration for which proactive connections are aggressively established", converter = DurationConverter.class)
+    private Duration aggressiveWarmupDuration = Duration.ZERO;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -128,7 +154,9 @@ public class Configuration {
         + "\tCtlWorkload - run a ctl workflow.*\n"
         + "\tReadAllItemsOfLogicalPartition - run a workload that uses readAllItems for a logical partition and prints throughput\n"
         + "\n\t* writes 10k documents initially, which are used in the reads"
-        + "\tLinkedInCtlWorkload - ctl for LinkedIn workload.*\n",
+        + "\tLinkedInCtlWorkload - ctl for LinkedIn workload.*\n"
+        + "\tReadManyLatency - run a workload for readMany for a finite number of cosmos identity tuples that prints both throughput and latency*\n"
+        + "\tReadManyThroughput - run a workload for readMany for a finite no of cosmos identity tuples that prints throughput*\n",
         converter = Operation.OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
@@ -183,8 +211,41 @@ public class Configuration {
     @Parameter(names = "-testScenario", description = "The test scenario (GET, QUERY) for the LinkedInCtlWorkload")
     private String testScenario = "GET";
 
+    @Parameter(names = "-applicationName", description = "The application name suffix in the user agent header")
+    private String applicationName = "";
+
     @Parameter(names = "-accountNameInGraphiteReporter", description = "if set, account name with be appended in graphite reporter")
     private boolean accountNameInGraphiteReporter = false;
+
+    @Parameter(names = "-clientTelemetryEnabled", description = "Switch to enable client telemetry")
+    private String clientTelemetryEnabled = String.valueOf(false);
+
+    @Parameter(names = "-clientTelemetrySchedulingInSeconds", description = "Client telemetry scheduling intervals in seconds")
+    private int clientTelemetrySchedulingInSeconds = 10 * 60;
+
+    @Parameter(names = "-clientTelemetryEndpoint", description = "Client Telemetry Juno endpoint")
+    private String clientTelemetryEndpoint;
+
+    @Parameter(names = "-pointLatencyThresholdMs", description = "Latency threshold for point operations")
+    private int pointLatencyThresholdMs = -1;
+
+    @Parameter(names = "-nonPointLatencyThresholdMs", description = "Latency threshold for non-point operations")
+    private int nonPointLatencyThresholdMs = -1;
+
+    @Parameter(names = "-testVariationName", description = "An identifier for the test variation")
+    private String testVariationName = "";
+
+    @Parameter(names = "-branchName", description = "The branch name form where the source code being tested was built")
+    private String branchName = "";
+
+    @Parameter(names = "-commitId", description = "A commit identifier showing the version of the source code being tested")
+    private String commitId = "";
+
+    @Parameter(names = "-resultUploadDatabase", description = "The name of the database into which to upload the results")
+    private String resultUploadDatabase = "";
+
+    @Parameter(names = "-resultUploadContainer", description = "AThe name of the container inot which to upload the results")
+    private String resultUploadContainer = "";
 
     public enum Environment {
         Daily,   // This is the CTL environment where we run the workload for a fixed number of hours
@@ -228,7 +289,9 @@ public class Configuration {
         ReadThroughputWithMultipleClients,
         CtlWorkload,
         ReadAllItemsOfLogicalPartition,
-        LinkedInCtlWorkload;
+        LinkedInCtlWorkload,
+        ReadManyLatency,
+        ReadManyThroughput;
 
         static Operation fromString(String code) {
 
@@ -331,6 +394,10 @@ public class Configuration {
         return masterKey;
     }
 
+    public String getApplicationName() {
+        return applicationName;
+    }
+
     public boolean isHelp() {
         return help;
     }
@@ -355,8 +422,8 @@ public class Configuration {
         return consistencyLevel;
     }
 
-    public String isContentResponseOnWriteEnabled() {
-        return contentResponseOnWriteEnabled;
+    public boolean isContentResponseOnWriteEnabled() {
+        return Boolean.parseBoolean(contentResponseOnWriteEnabled);
     }
 
     public String getDatabaseId() {
@@ -434,6 +501,18 @@ public class Configuration {
         }
     }
 
+    public String getTestVariationName() {
+        return this.testVariationName;
+    }
+
+    public String getBranchName() {
+        return this.branchName;
+    }
+
+    public String getCommitId() {
+        return this.commitId;
+    }
+
     public int getNumberOfCollectionForCtl(){
         return this.numberOfCollectionForCtl;
     }
@@ -487,6 +566,70 @@ public class Configuration {
 
     public boolean isEncryptionEnabled() {
         return encryptionEnabled;
+    }
+
+    public boolean isClientTelemetryEnabled() {
+        return Boolean.parseBoolean(clientTelemetryEnabled);
+    }
+
+    public boolean isDefaultLog4jLoggerEnabled() {
+        return Boolean.parseBoolean(defaultLog4jLoggerEnabled);
+    }
+
+    public String getClientTelemetryEndpoint() {
+        return clientTelemetryEndpoint;
+    }
+
+    public int getClientTelemetrySchedulingInSeconds() {
+        return clientTelemetrySchedulingInSeconds;
+    }
+
+    public Integer getTupleSize() {
+        return tupleSize;
+    }
+
+    public Duration getPointOperationThreshold() {
+        if (this.pointLatencyThresholdMs < 0) {
+            return Duration.ofDays(300);
+        }
+
+        return Duration.ofMillis(this.pointLatencyThresholdMs);
+    }
+
+    public Duration getNonPointOperationThreshold() {
+        if (this.nonPointLatencyThresholdMs < 0) {
+            return Duration.ofDays(300);
+        }
+
+        return Duration.ofMillis(this.nonPointLatencyThresholdMs);
+    }
+
+    public boolean isProactiveConnectionManagementEnabled() {
+        return Boolean.parseBoolean(isProactiveConnectionManagementEnabled);
+    }
+
+    public boolean isUseUnWarmedUpContainer() {
+        return Boolean.parseBoolean(isUseUnWarmedUpContainer);
+    }
+
+    public Integer getProactiveConnectionRegionsCount() {
+        return proactiveConnectionRegionsCount;
+    }
+
+    public Duration getAggressiveWarmupDuration() {
+        return aggressiveWarmupDuration;
+    }
+
+    public Integer getMinConnectionPoolSizePerEndpoint() {
+        return minConnectionPoolSizePerEndpoint;
+    }
+
+    public String getResultUploadDatabase() {
+        return Strings.emptyToNull(resultUploadDatabase);
+    }
+
+    public String getResultUploadContainer() {
+        return Strings.emptyToNull(resultUploadContainer);
     }
 
     public void tryGetValuesFromSystem() {
@@ -546,6 +689,25 @@ public class Configuration {
         encryptionEnabled = Boolean.parseBoolean(StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
             "ENCRYPTED_ENABLED")),
             Boolean.toString(encryptionEnabled)));
+
+        tupleSize = Integer.parseInt(
+                StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("COSMOS_IDENTITY_TUPLE_SIZE")),
+                        Integer.toString(tupleSize)));
+
+        testVariationName = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "COSMOS_TEST_VARIATION_NAME")), testVariationName);
+
+        branchName = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "COSMOS_BRANCH_NAME")), branchName);
+
+        commitId = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "COSMOS_COMMIT_ID")), commitId);
+
+        resultUploadDatabase = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "COSMOS_RESULT_UPLOAD_DATABASE")), resultUploadDatabase);
+
+        resultUploadContainer = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "COSMOS_RESULT_UPLOAD_CONTAINER")), resultUploadContainer);
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {
@@ -553,6 +715,7 @@ public class Configuration {
         if (this.azureMonitorMeterRegistry == null) {
 
             Duration step = Duration.ofSeconds(Integer.getInteger("azure.cosmos.monitoring.azureMonitor.step", this.printingInterval));
+            String testCategoryTag = System.getProperty("azure.cosmos.monitoring.azureMonitor.testCategory");
             boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.azureMonitor.disabled");
 
             final AzureMonitorConfig config = new AzureMonitorConfig() {
@@ -581,6 +744,11 @@ public class Configuration {
             };
 
             this.azureMonitorMeterRegistry = new AzureMonitorMeterRegistry(config, Clock.SYSTEM);
+            if (!Strings.isNullOrEmpty(testCategoryTag)) {
+                List<Tag> globalTags = new ArrayList<>();
+                globalTags.add(Tag.of("TestCategory", testCategoryTag));
+                this.azureMonitorMeterRegistry.config().commonTags(globalTags);
+            }
         }
 
         return this.azureMonitorMeterRegistry;

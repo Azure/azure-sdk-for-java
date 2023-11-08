@@ -41,19 +41,6 @@ public interface LinkedServices {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param linkedServiceName The linked service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service.
-     */
-    LinkedServiceResource get(String resourceGroupName, String factoryName, String linkedServiceName);
-
-    /**
-     * Gets a linked service.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param linkedServiceName The linked service name.
      * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the
      *     existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
@@ -66,7 +53,7 @@ public interface LinkedServices {
         String resourceGroupName, String factoryName, String linkedServiceName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a linked service.
+     * Gets a linked service.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -74,8 +61,9 @@ public interface LinkedServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a linked service.
      */
-    void delete(String resourceGroupName, String factoryName, String linkedServiceName);
+    LinkedServiceResource get(String resourceGroupName, String factoryName, String linkedServiceName);
 
     /**
      * Deletes a linked service.
@@ -91,6 +79,18 @@ public interface LinkedServices {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String linkedServiceName, Context context);
+
+    /**
+     * Deletes a linked service.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param linkedServiceName The linked service name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String factoryName, String linkedServiceName);
 
     /**
      * Gets a linked service.

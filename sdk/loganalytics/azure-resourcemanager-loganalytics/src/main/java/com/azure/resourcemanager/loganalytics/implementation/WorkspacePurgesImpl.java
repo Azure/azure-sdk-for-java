@@ -16,10 +16,9 @@ import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeResponse;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeStatusResponse;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurges;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgesPurgeResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspacePurgesImpl implements WorkspacePurges {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePurgesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspacePurgesImpl.class);
 
     private final WorkspacePurgesClient innerClient;
 
@@ -29,15 +28,6 @@ public final class WorkspacePurgesImpl implements WorkspacePurges {
         WorkspacePurgesClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public WorkspacePurgeResponse purge(String resourceGroupName, String workspaceName, WorkspacePurgeBody body) {
-        WorkspacePurgeResponseInner inner = this.serviceClient().purge(resourceGroupName, workspaceName, body);
-        if (inner != null) {
-            return new WorkspacePurgeResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<WorkspacePurgeResponse> purgeWithResponse(
@@ -55,11 +45,10 @@ public final class WorkspacePurgesImpl implements WorkspacePurges {
         }
     }
 
-    public WorkspacePurgeStatusResponse getPurgeStatus(String resourceGroupName, String workspaceName, String purgeId) {
-        WorkspacePurgeStatusResponseInner inner =
-            this.serviceClient().getPurgeStatus(resourceGroupName, workspaceName, purgeId);
+    public WorkspacePurgeResponse purge(String resourceGroupName, String workspaceName, WorkspacePurgeBody body) {
+        WorkspacePurgeResponseInner inner = this.serviceClient().purge(resourceGroupName, workspaceName, body);
         if (inner != null) {
-            return new WorkspacePurgeStatusResponseImpl(inner, this.manager());
+            return new WorkspacePurgeResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -75,6 +64,16 @@ public final class WorkspacePurgesImpl implements WorkspacePurges {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WorkspacePurgeStatusResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WorkspacePurgeStatusResponse getPurgeStatus(String resourceGroupName, String workspaceName, String purgeId) {
+        WorkspacePurgeStatusResponseInner inner =
+            this.serviceClient().getPurgeStatus(resourceGroupName, workspaceName, purgeId);
+        if (inner != null) {
+            return new WorkspacePurgeStatusResponseImpl(inner, this.manager());
         } else {
             return null;
         }

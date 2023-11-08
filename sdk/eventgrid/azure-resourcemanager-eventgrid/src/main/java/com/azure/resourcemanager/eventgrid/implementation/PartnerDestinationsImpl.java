@@ -27,16 +27,6 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
         this.serviceManager = serviceManager;
     }
 
-    public PartnerDestination getByResourceGroup(String resourceGroupName, String partnerDestinationName) {
-        PartnerDestinationInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, partnerDestinationName);
-        if (inner != null) {
-            return new PartnerDestinationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PartnerDestination> getByResourceGroupWithResponse(
         String resourceGroupName, String partnerDestinationName, Context context) {
         Response<PartnerDestinationInner> inner =
@@ -47,6 +37,16 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PartnerDestinationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PartnerDestination getByResourceGroup(String resourceGroupName, String partnerDestinationName) {
+        PartnerDestinationInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, partnerDestinationName);
+        if (inner != null) {
+            return new PartnerDestinationImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -82,15 +82,6 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
         return Utils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
     }
 
-    public PartnerDestination activate(String resourceGroupName, String partnerDestinationName) {
-        PartnerDestinationInner inner = this.serviceClient().activate(resourceGroupName, partnerDestinationName);
-        if (inner != null) {
-            return new PartnerDestinationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PartnerDestination> activateWithResponse(
         String resourceGroupName, String partnerDestinationName, Context context) {
         Response<PartnerDestinationInner> inner =
@@ -101,6 +92,15 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PartnerDestinationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PartnerDestination activate(String resourceGroupName, String partnerDestinationName) {
+        PartnerDestinationInner inner = this.serviceClient().activate(resourceGroupName, partnerDestinationName);
+        if (inner != null) {
+            return new PartnerDestinationImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -71,6 +71,10 @@ public final class LogzMonitorResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LogzMonitorResourceInner innerModel() {
         return this.innerObject;
     }

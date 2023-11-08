@@ -19,11 +19,15 @@ public final class MediaServiceCollection {
     private List<MediaServiceInner> value;
 
     /*
-     * A link to the next page of the collection (when the collection contains
-     * too many results to return in one response).
+     * A link to the next page of the collection (when the collection contains too many results to return in one
+     * response).
      */
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
+
+    /** Creates an instance of MediaServiceCollection class. */
+    public MediaServiceCollection() {
+    }
 
     /**
      * Get the value property: A collection of MediaService items.

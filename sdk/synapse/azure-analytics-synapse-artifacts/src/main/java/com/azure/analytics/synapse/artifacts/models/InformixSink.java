@@ -15,11 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class InformixSink extends CopySink {
     /*
-     * A query to execute before starting the copy. Type: string (or Expression
-     * with resultType string).
+     * A query to execute before starting the copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
+
+    /** Creates an instance of InformixSink class. */
+    public InformixSink() {}
 
     /**
      * Get the preCopyScript property: A query to execute before starting the copy. Type: string (or Expression with
@@ -40,6 +42,41 @@ public final class InformixSink extends CopySink {
      */
     public InformixSink setPreCopyScript(Object preCopyScript) {
         this.preCopyScript = preCopyScript;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InformixSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InformixSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InformixSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InformixSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InformixSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

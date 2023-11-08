@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,7 +14,9 @@ import java.util.List;
 @JsonTypeName("ConnectionFromIpNotAllowed")
 @Fluent
 public final class ConnectionFromIpNotAllowed extends AllowlistCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionFromIpNotAllowed.class);
+    /** Creates an instance of ConnectionFromIpNotAllowed class. */
+    public ConnectionFromIpNotAllowed() {
+    }
 
     /** {@inheritDoc} */
     @Override

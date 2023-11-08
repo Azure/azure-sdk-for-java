@@ -23,8 +23,7 @@ public final class DeletedAccountProperties {
     private String location;
 
     /*
-     * Can be used to attempt recovering this deleted account via
-     * PutStorageAccount API.
+     * Can be used to attempt recovering this deleted account via PutStorageAccount API.
      */
     @JsonProperty(value = "restoreReference", access = JsonProperty.Access.WRITE_ONLY)
     private String restoreReference;
@@ -40,6 +39,10 @@ public final class DeletedAccountProperties {
      */
     @JsonProperty(value = "deletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private String deletionTime;
+
+    /** Creates an instance of DeletedAccountProperties class. */
+    public DeletedAccountProperties() {
+    }
 
     /**
      * Get the storageAccountResourceId property: Full resource id of the original storage account.

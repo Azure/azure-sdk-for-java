@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrestoAuthenticationType. */
+/** The authentication mechanism used to connect to the Presto server. */
 public final class PrestoAuthenticationType extends ExpandableStringEnum<PrestoAuthenticationType> {
     /** Static value Anonymous for PrestoAuthenticationType. */
     public static final PrestoAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /** Static value LDAP for PrestoAuthenticationType. */
     public static final PrestoAuthenticationType LDAP = fromString("LDAP");
+
+    /**
+     * Creates a new instance of PrestoAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrestoAuthenticationType() {
+    }
 
     /**
      * Creates or finds a PrestoAuthenticationType from its string representation.
@@ -27,7 +36,11 @@ public final class PrestoAuthenticationType extends ExpandableStringEnum<PrestoA
         return fromString(name, PrestoAuthenticationType.class);
     }
 
-    /** @return known PrestoAuthenticationType values. */
+    /**
+     * Gets known PrestoAuthenticationType values.
+     *
+     * @return known PrestoAuthenticationType values.
+     */
     public static Collection<PrestoAuthenticationType> values() {
         return values(PrestoAuthenticationType.class);
     }

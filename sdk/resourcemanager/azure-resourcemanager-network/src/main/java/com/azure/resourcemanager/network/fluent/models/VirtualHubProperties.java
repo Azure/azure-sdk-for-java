@@ -6,10 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.HubRoutingPreference;
 import com.azure.resourcemanager.network.models.PreferredRoutingGateway;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
+import com.azure.resourcemanager.network.models.VirtualRouterAutoScaleConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -107,6 +109,12 @@ public final class VirtualHubProperties {
     private List<SubResource> ipConfigurations;
 
     /*
+     * List of references to RouteMaps.
+     */
+    @JsonProperty(value = "routeMaps", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> routeMaps;
+
+    /*
      * VirtualRouter ASN.
      */
     @JsonProperty(value = "virtualRouterAsn")
@@ -129,6 +137,22 @@ public final class VirtualHubProperties {
      */
     @JsonProperty(value = "preferredRoutingGateway")
     private PreferredRoutingGateway preferredRoutingGateway;
+
+    /*
+     * The hubRoutingPreference of this VirtualHub.
+     */
+    @JsonProperty(value = "hubRoutingPreference")
+    private HubRoutingPreference hubRoutingPreference;
+
+    /*
+     * The VirtualHub Router autoscale configuration.
+     */
+    @JsonProperty(value = "virtualRouterAutoScaleConfiguration")
+    private VirtualRouterAutoScaleConfiguration virtualRouterAutoScaleConfiguration;
+
+    /** Creates an instance of VirtualHubProperties class. */
+    public VirtualHubProperties() {
+    }
 
     /**
      * Get the virtualWan property: The VirtualWAN to which the VirtualHub belongs.
@@ -389,6 +413,15 @@ public final class VirtualHubProperties {
     }
 
     /**
+     * Get the routeMaps property: List of references to RouteMaps.
+     *
+     * @return the routeMaps value.
+     */
+    public List<SubResource> routeMaps() {
+        return this.routeMaps;
+    }
+
+    /**
      * Get the virtualRouterAsn property: VirtualRouter ASN.
      *
      * @return the virtualRouterAsn value.
@@ -469,6 +502,47 @@ public final class VirtualHubProperties {
     }
 
     /**
+     * Get the hubRoutingPreference property: The hubRoutingPreference of this VirtualHub.
+     *
+     * @return the hubRoutingPreference value.
+     */
+    public HubRoutingPreference hubRoutingPreference() {
+        return this.hubRoutingPreference;
+    }
+
+    /**
+     * Set the hubRoutingPreference property: The hubRoutingPreference of this VirtualHub.
+     *
+     * @param hubRoutingPreference the hubRoutingPreference value to set.
+     * @return the VirtualHubProperties object itself.
+     */
+    public VirtualHubProperties withHubRoutingPreference(HubRoutingPreference hubRoutingPreference) {
+        this.hubRoutingPreference = hubRoutingPreference;
+        return this;
+    }
+
+    /**
+     * Get the virtualRouterAutoScaleConfiguration property: The VirtualHub Router autoscale configuration.
+     *
+     * @return the virtualRouterAutoScaleConfiguration value.
+     */
+    public VirtualRouterAutoScaleConfiguration virtualRouterAutoScaleConfiguration() {
+        return this.virtualRouterAutoScaleConfiguration;
+    }
+
+    /**
+     * Set the virtualRouterAutoScaleConfiguration property: The VirtualHub Router autoscale configuration.
+     *
+     * @param virtualRouterAutoScaleConfiguration the virtualRouterAutoScaleConfiguration value to set.
+     * @return the VirtualHubProperties object itself.
+     */
+    public VirtualHubProperties withVirtualRouterAutoScaleConfiguration(
+        VirtualRouterAutoScaleConfiguration virtualRouterAutoScaleConfiguration) {
+        this.virtualRouterAutoScaleConfiguration = virtualRouterAutoScaleConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -479,6 +553,9 @@ public final class VirtualHubProperties {
         }
         if (virtualHubRouteTableV2S() != null) {
             virtualHubRouteTableV2S().forEach(e -> e.validate());
+        }
+        if (virtualRouterAutoScaleConfiguration() != null) {
+            virtualRouterAutoScaleConfiguration().validate();
         }
     }
 }

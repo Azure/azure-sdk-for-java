@@ -14,26 +14,26 @@ public interface Controllers {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dnc controller.
+     * @return details about the specified dnc controller along with {@link Response}.
      */
-    DelegatedController getByResourceGroup(String resourceGroupName, String resourceName);
+    Response<DelegatedController> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets details about the specified dnc controller.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified dnc controller.
      */
-    Response<DelegatedController> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    DelegatedController getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Deletes the DNC controller.
@@ -65,7 +65,7 @@ public interface Controllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dnc controller.
+     * @return details about the specified dnc controller along with {@link Response}.
      */
     DelegatedController getById(String id);
 
@@ -77,7 +77,7 @@ public interface Controllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dnc controller.
+     * @return details about the specified dnc controller along with {@link Response}.
      */
     Response<DelegatedController> getByIdWithResponse(String id, Context context);
 

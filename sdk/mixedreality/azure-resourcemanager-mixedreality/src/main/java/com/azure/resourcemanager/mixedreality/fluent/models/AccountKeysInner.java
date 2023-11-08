@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mixedreality.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Developer Keys of account. */
 @Immutable
 public final class AccountKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountKeysInner.class);
-
     /*
      * value of primary key.
      */
@@ -25,6 +21,10 @@ public final class AccountKeysInner {
      */
     @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
+
+    /** Creates an instance of AccountKeysInner class. */
+    public AccountKeysInner() {
+    }
 
     /**
      * Get the primaryKey property: value of primary key.

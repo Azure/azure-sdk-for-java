@@ -13,19 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryCreateGlossaryTermWithTermTemplate {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.glossarycreateglossaryterm.glossarycreateglossarytermwithtermtemplate
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarycreateglossaryterm.glossarycreateglossarytermwithtermtemplate
         BinaryData glossaryTerm =
                 BinaryData.fromString(
                         "{\"name\":\"ExampleTerm\",\"anchor\":{\"glossaryGuid\":\"c018ddaf-7c21-4b37-a838-dae5f110c3d8\"},\"attributes\":{\"ExampleTermTemplateAttribute\":{\"date\":1606233600000,\"multi choice\":[\"Example Multi Choice A\",\"Example Multi Choice B\"],\"plain string\":\"Example String\",\"single choice\":\"Example Single Choice A\"}}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = glossaryClient.createGlossaryTermWithResponse(glossaryTerm, requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.glossarycreateglossaryterm.glossarycreateglossarytermwithtermtemplate
+        // END:com.azure.analytics.purview.catalog.generated.glossarycreateglossaryterm.glossarycreateglossarytermwithtermtemplate
     }
 }

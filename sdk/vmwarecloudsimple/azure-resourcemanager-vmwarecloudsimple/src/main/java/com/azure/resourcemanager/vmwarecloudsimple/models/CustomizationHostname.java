@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Host name model. */
 @Fluent
 public final class CustomizationHostname {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomizationHostname.class);
-
     /*
      * Hostname
      */
@@ -25,6 +21,10 @@ public final class CustomizationHostname {
      */
     @JsonProperty(value = "type")
     private CustomizationHostnameType type;
+
+    /** Creates an instance of CustomizationHostname class. */
+    public CustomizationHostname() {
+    }
 
     /**
      * Get the name property: Hostname.

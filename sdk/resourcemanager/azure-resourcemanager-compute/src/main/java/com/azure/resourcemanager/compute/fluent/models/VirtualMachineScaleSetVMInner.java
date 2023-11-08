@@ -16,9 +16,11 @@ import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.StorageProfile;
+import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -44,13 +46,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     private VirtualMachineScaleSetVMPropertiesInner innerProperties;
 
     /*
-     * Specifies information about the marketplace image used to create the
-     * virtual machine. This element is only used for marketplace images.
-     * Before you can use a marketplace image from an API, you must enable the
-     * image for programmatic use.  In the Azure portal, find the marketplace
-     * image that you want to use and then click **Want to deploy
-     * programmatically, Get Started ->**. Enter any required information and
-     * then click **Save**.
+     * Specifies information about the marketplace image used to create the virtual machine. This element is only used
+     * for marketplace images. Before you can use a marketplace image from an API, you must enable the image for
+     * programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to
+     * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
     @JsonProperty(value = "plan")
     private Plan plan;
@@ -66,6 +65,16 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> zones;
+
+    /*
+     * The identity of the virtual machine, if configured.
+     */
+    @JsonProperty(value = "identity")
+    private VirtualMachineIdentity identity;
+
+    /** Creates an instance of VirtualMachineScaleSetVMInner class. */
+    public VirtualMachineScaleSetVMInner() {
+    }
 
     /**
      * Get the instanceId property: The virtual machine instance ID.
@@ -138,6 +147,26 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     public List<String> zones() {
         return this.zones;
+    }
+
+    /**
+     * Get the identity property: The identity of the virtual machine, if configured.
+     *
+     * @return the identity value.
+     */
+    public VirtualMachineIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the virtual machine, if configured.
+     *
+     * @param identity the identity value to set.
+     * @return the VirtualMachineScaleSetVMInner object itself.
+     */
+    public VirtualMachineScaleSetVMInner withIdentity(VirtualMachineIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -348,8 +377,8 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
+     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
+     * 2015-06-15.
      *
      * @return the diagnosticsProfile value.
      */
@@ -358,8 +387,8 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
+     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
+     * 2015-06-15.
      *
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
@@ -376,11 +405,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * Get the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
      * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
-     * set.
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
+     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
+     * added to availability set at creation time. An existing VM cannot be added to an availability set.
      *
      * @return the availabilitySet value.
      */
@@ -392,11 +420,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * Set the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
      * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
-     * set.
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
+     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
+     * added to availability set at creation time. An existing VM cannot be added to an availability set.
      *
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
@@ -517,6 +544,15 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
+     * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was created.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -533,6 +569,9 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
         }
         if (resources() != null) {
             resources().forEach(e -> e.validate());
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

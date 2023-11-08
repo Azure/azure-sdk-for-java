@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specification of destinations that can be used in data flows. */
 @Fluent
 public class DestinationsSpec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DestinationsSpec.class);
-
     /*
      * List of Log Analytics destinations.
      */
@@ -26,6 +22,10 @@ public class DestinationsSpec {
      */
     @JsonProperty(value = "azureMonitorMetrics")
     private DestinationsSpecAzureMonitorMetrics azureMonitorMetrics;
+
+    /** Creates an instance of DestinationsSpec class. */
+    public DestinationsSpec() {
+    }
 
     /**
      * Get the logAnalytics property: List of Log Analytics destinations.

@@ -12,6 +12,7 @@ import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.DeliveryOutcome;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
@@ -21,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addKeyValueIfNotNull;
+import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_STATE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ERROR_CONDITION_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ERROR_DESCRIPTION_KEY;
@@ -57,9 +60,7 @@ public class ManagementChannel implements AmqpManagementNode {
             return channel.sendWithAck(protonJMessage)
                 .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) ->
                     handleResponse(responseMessage, sink, channel.getErrorContext()))
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new AmqpException(true, String.format(
-                    "entityPath[%s] No response received from management channel.", entityPath),
-                    channel.getErrorContext()))));
+                .switchIfEmpty(errorIfEmpty(channel, null));
         }));
     }
 
@@ -72,9 +73,7 @@ public class ManagementChannel implements AmqpManagementNode {
             return channel.sendWithAck(protonJMessage, protonJDeliveryState)
                 .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) ->
                     handleResponse(responseMessage, sink, channel.getErrorContext()))
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new AmqpException(true, String.format(
-                    "entityPath[%s] outcome[%s] No response received from management channel.", entityPath,
-                    deliveryOutcome.getDeliveryState()), channel.getErrorContext()))));
+                .switchIfEmpty(errorIfEmpty(channel, deliveryOutcome.getDeliveryState()));
         }));
     }
 
@@ -114,21 +113,32 @@ public class ManagementChannel implements AmqpManagementNode {
 
         final String statusDescription = RequestResponseUtils.getStatusDescription(response);
 
-        logger.atWarning()
-            .addKeyValue("status", statusCode)
-            .addKeyValue(ERROR_DESCRIPTION_KEY, statusDescription)
-            .addKeyValue(ERROR_CONDITION_KEY, errorCondition)
-            .log("Operation not successful.");
+        LoggingEventBuilder log = logger.atWarning().addKeyValue("status", statusCode);
+
+        addKeyValueIfNotNull(log, ERROR_DESCRIPTION_KEY, statusDescription);
+        addKeyValueIfNotNull(log, ERROR_CONDITION_KEY, errorCondition);
+        log.log("Operation not successful.");
 
         final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription, errorContext);
         sink.error(throwable);
     }
 
+    private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel, com.azure.core.amqp.models.DeliveryState deliveryState) {
+        return Mono.error(() -> {
+            String error = String.format(
+                "entityPath[%s] deliveryState[%s] No response received from management channel.", entityPath, deliveryState);
+            AmqpException exception = new AmqpException(true, error, channel.getErrorContext());
+            return logger.atError()
+                .addKeyValue(DELIVERY_STATE_KEY, deliveryState)
+                .log(exception);
+        });
+    }
+
     private Mono<Void> isAuthorized() {
         return tokenManager.getAuthorizationResults()
             .next()
-            .switchIfEmpty(Mono.defer(() -> Mono.error(
-                new AmqpException(false, "Did not get response from tokenManager: " + entityPath, getErrorContext()))))
+            .switchIfEmpty(Mono.error(() -> new AmqpException(false,
+                "Did not get response from tokenManager: " + entityPath, getErrorContext())))
             .handle((response, sink) -> {
                 if (RequestResponseUtils.isSuccessful(response)) {
                     sink.complete();

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Actions ListByAlertRule. */
 public final class ActionsListByAlertRuleSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/actions/GetAllActionsByAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/actions/GetAllActionsByAlertRule.json
      */
     /**
      * Sample code: Get all actions of alert rule.

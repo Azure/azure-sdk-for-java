@@ -65,6 +65,10 @@ public final class WorkloadNetworkSegmentImpl
         return this.innerModel().revision();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WorkloadNetworkSegmentInner innerModel() {
         return this.innerObject;
     }

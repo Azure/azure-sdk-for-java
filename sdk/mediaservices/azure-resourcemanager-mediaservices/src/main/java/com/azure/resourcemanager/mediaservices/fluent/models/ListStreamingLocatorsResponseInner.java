@@ -18,6 +18,10 @@ public final class ListStreamingLocatorsResponseInner {
     @JsonProperty(value = "streamingLocators", access = JsonProperty.Access.WRITE_ONLY)
     private List<AssetStreamingLocator> streamingLocators;
 
+    /** Creates an instance of ListStreamingLocatorsResponseInner class. */
+    public ListStreamingLocatorsResponseInner() {
+    }
+
     /**
      * Get the streamingLocators property: The list of Streaming Locators.
      *

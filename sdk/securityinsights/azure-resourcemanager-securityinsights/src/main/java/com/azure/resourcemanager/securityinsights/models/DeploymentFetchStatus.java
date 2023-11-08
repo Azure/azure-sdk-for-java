@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeploymentFetchStatus. */
+/** Status while trying to fetch the deployment information. */
 public final class DeploymentFetchStatus extends ExpandableStringEnum<DeploymentFetchStatus> {
     /** Static value Success for DeploymentFetchStatus. */
     public static final DeploymentFetchStatus SUCCESS = fromString("Success");
@@ -30,7 +30,11 @@ public final class DeploymentFetchStatus extends ExpandableStringEnum<Deployment
         return fromString(name, DeploymentFetchStatus.class);
     }
 
-    /** @return known DeploymentFetchStatus values. */
+    /**
+     * Gets known DeploymentFetchStatus values.
+     *
+     * @return known DeploymentFetchStatus values.
+     */
     public static Collection<DeploymentFetchStatus> values() {
         return values(DeploymentFetchStatus.class);
     }

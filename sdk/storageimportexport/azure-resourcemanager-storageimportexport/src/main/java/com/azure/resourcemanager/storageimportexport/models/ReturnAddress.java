@@ -6,17 +6,13 @@ package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the return address information for the job. */
 @Fluent
 public final class ReturnAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReturnAddress.class);
-
     /*
-     * The name of the recipient who will receive the hard drives when they are
-     * returned.
+     * The name of the recipient who will receive the hard drives when they are returned.
      */
     @JsonProperty(value = "recipientName", required = true)
     private String recipientName;
@@ -68,6 +64,10 @@ public final class ReturnAddress {
      */
     @JsonProperty(value = "email", required = true)
     private String email;
+
+    /** Creates an instance of ReturnAddress class. */
+    public ReturnAddress() {
+    }
 
     /**
      * Get the recipientName property: The name of the recipient who will receive the hard drives when they are
@@ -258,39 +258,41 @@ public final class ReturnAddress {
      */
     public void validate() {
         if (recipientName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property recipientName in model ReturnAddress"));
         }
         if (streetAddress1() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property streetAddress1 in model ReturnAddress"));
         }
         if (city() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property city in model ReturnAddress"));
         }
         if (postalCode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property postalCode in model ReturnAddress"));
         }
         if (countryOrRegion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property countryOrRegion in model ReturnAddress"));
         }
         if (phone() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property phone in model ReturnAddress"));
         }
         if (email() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property email in model ReturnAddress"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReturnAddress.class);
 }

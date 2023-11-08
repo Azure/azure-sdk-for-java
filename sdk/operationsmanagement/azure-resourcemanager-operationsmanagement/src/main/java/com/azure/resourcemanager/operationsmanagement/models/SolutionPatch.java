@@ -5,21 +5,23 @@
 package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The properties of a Solution that can be patched. */
 @Fluent
 public final class SolutionPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SolutionPatch.class);
-
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of SolutionPatch class. */
+    public SolutionPatch() {
+    }
 
     /**
      * Get the tags property: Resource tags.

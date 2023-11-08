@@ -24,6 +24,10 @@ public final class ServerBackupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ServerBackupListResult class. */
+    public ServerBackupListResult() {
+    }
+
     /**
      * Get the value property: The list of backups of a server.
      *

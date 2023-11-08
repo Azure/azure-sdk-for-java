@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data of a property change. */
 @Fluent
 public final class PropertyChange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PropertyChange.class);
-
     /*
      * The type of the change.
      */
@@ -33,9 +29,8 @@ public final class PropertyChange {
     private String jsonPath;
 
     /*
-     * The enhanced display name of the json path. E.g., the json path
-     * value[0].properties will be translated to something meaningful like
-     * slots["Staging"].properties.
+     * The enhanced display name of the json path. E.g., the json path value[0].properties will be translated to
+     * something meaningful like slots["Staging"].properties.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
@@ -65,12 +60,15 @@ public final class PropertyChange {
     private String newValue;
 
     /*
-     * The boolean indicating whether the oldValue and newValue are masked. The
-     * values are masked if it contains sensitive information that the user
-     * doesn't have access to.
+     * The boolean indicating whether the oldValue and newValue are masked. The values are masked if it contains
+     * sensitive information that the user doesn't have access to.
      */
     @JsonProperty(value = "isDataMasked")
     private Boolean isDataMasked;
+
+    /** Creates an instance of PropertyChange class. */
+    public PropertyChange() {
+    }
 
     /**
      * Get the changeType property: The type of the change.

@@ -68,6 +68,10 @@ public final class SensitivityLabelImpl
         return this.innerModel().rank();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SensitivityLabelInner innerModel() {
         return this.innerObject;
     }
@@ -197,12 +201,6 @@ public final class SensitivityLabelImpl
         this.columnName = Utils.getValueFromIdByName(innerObject.id(), "columns");
     }
 
-    public void enableRecommendation() {
-        serviceManager
-            .sqlPoolSensitivityLabels()
-            .enableRecommendation(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
-    }
-
     public Response<Void> enableRecommendationWithResponse(Context context) {
         return serviceManager
             .sqlPoolSensitivityLabels()
@@ -210,10 +208,10 @@ public final class SensitivityLabelImpl
                 resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context);
     }
 
-    public void disableRecommendation() {
+    public void enableRecommendation() {
         serviceManager
             .sqlPoolSensitivityLabels()
-            .disableRecommendation(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
+            .enableRecommendation(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
     }
 
     public Response<Void> disableRecommendationWithResponse(Context context) {
@@ -221,6 +219,12 @@ public final class SensitivityLabelImpl
             .sqlPoolSensitivityLabels()
             .disableRecommendationWithResponse(
                 resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context);
+    }
+
+    public void disableRecommendation() {
+        serviceManager
+            .sqlPoolSensitivityLabels()
+            .disableRecommendation(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
     }
 
     public SensitivityLabelImpl withLabelName(String labelName) {

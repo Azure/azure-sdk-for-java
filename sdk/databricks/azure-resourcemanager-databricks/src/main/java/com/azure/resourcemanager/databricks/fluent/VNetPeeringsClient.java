@@ -21,6 +21,23 @@ public interface VNetPeeringsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the workspace vNet Peering along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VirtualNetworkPeeringInner> getWithResponse(
+        String resourceGroupName, String workspaceName, String peeringName, Context context);
+
+    /**
+     * Gets the workspace vNet Peering.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param peeringName The name of the workspace vNet peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
@@ -29,23 +46,6 @@ public interface VNetPeeringsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualNetworkPeeringInner get(String resourceGroupName, String workspaceName, String peeringName);
-
-    /**
-     * Gets the workspace vNet Peering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkPeeringInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String peeringName, Context context);
 
     /**
      * Deletes the workspace vNetPeering.
@@ -57,9 +57,9 @@ public interface VNetPeeringsClient {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String peeringName);
 
     /**
@@ -73,9 +73,9 @@ public interface VNetPeeringsClient {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String peeringName, Context context);
 
@@ -119,9 +119,9 @@ public interface VNetPeeringsClient {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
+     * @return the {@link SyncPoller} for polling of peerings in a VirtualNetwork resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -140,9 +140,9 @@ public interface VNetPeeringsClient {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
+     * @return the {@link SyncPoller} for polling of peerings in a VirtualNetwork resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -201,7 +201,7 @@ public interface VNetPeeringsClient {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return gets all virtual network peerings under a workspace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkPeeringInner> listByWorkspace(String resourceGroupName, String workspaceName);
@@ -216,7 +216,7 @@ public interface VNetPeeringsClient {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return gets all virtual network peerings under a workspace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkPeeringInner> listByWorkspace(

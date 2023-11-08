@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of volume group resources. */
 @Fluent
 public final class VolumeGroupList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeGroupList.class);
-
     /*
      * List of volume Groups
      */
     @JsonProperty(value = "value")
     private List<VolumeGroupInner> value;
+
+    /** Creates an instance of VolumeGroupList class. */
+    public VolumeGroupList() {
+    }
 
     /**
      * Get the value property: List of volume Groups.

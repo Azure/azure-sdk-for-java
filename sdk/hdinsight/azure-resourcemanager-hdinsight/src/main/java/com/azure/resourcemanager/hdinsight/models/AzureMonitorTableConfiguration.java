@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The table configuration for the Log Analytics integration. */
 @Fluent
 public final class AzureMonitorTableConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMonitorTableConfiguration.class);
-
     /*
      * The name.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of AzureMonitorTableConfiguration class. */
+    public AzureMonitorTableConfiguration() {
+    }
 
     /**
      * Get the name property: The name.

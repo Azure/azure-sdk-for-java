@@ -7,7 +7,6 @@ package com.azure.resourcemanager.vmwarecloudsimple.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
@@ -31,22 +30,6 @@ public final class VMwareCloudSimpleBuilder {
      */
     public VMwareCloudSimpleBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
-        return this;
-    }
-
-    /*
-     * referer url
-     */
-    private String referer;
-
-    /**
-     * Sets referer url.
-     *
-     * @param referer the referer value.
-     * @return the VMwareCloudSimpleBuilder.
-     */
-    public VMwareCloudSimpleBuilder referer(String referer) {
-        this.referer = referer;
         return this;
     }
 
@@ -83,22 +66,6 @@ public final class VMwareCloudSimpleBuilder {
     }
 
     /*
-     * The default poll interval for long-running operation
-     */
-    private Duration defaultPollInterval;
-
-    /**
-     * Sets The default poll interval for long-running operation.
-     *
-     * @param defaultPollInterval the defaultPollInterval value.
-     * @return the VMwareCloudSimpleBuilder.
-     */
-    public VMwareCloudSimpleBuilder defaultPollInterval(Duration defaultPollInterval) {
-        this.defaultPollInterval = defaultPollInterval;
-        return this;
-    }
-
-    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -111,6 +78,22 @@ public final class VMwareCloudSimpleBuilder {
      */
     public VMwareCloudSimpleBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the VMwareCloudSimpleBuilder.
+     */
+    public VMwareCloudSimpleBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
         return this;
     }
 
@@ -136,27 +119,26 @@ public final class VMwareCloudSimpleBuilder {
      * @return an instance of VMwareCloudSimpleImpl.
      */
     public VMwareCloudSimpleImpl buildClient() {
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                    .build();
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline =
+            (pipeline != null)
+                ? pipeline
+                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval =
+            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter =
+            (serializerAdapter != null)
+                ? serializerAdapter
+                : SerializerFactory.createDefaultManagementSerializerAdapter();
         VMwareCloudSimpleImpl client =
             new VMwareCloudSimpleImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, referer, endpoint);
+                localPipeline,
+                localSerializerAdapter,
+                localDefaultPollInterval,
+                localEnvironment,
+                subscriptionId,
+                localEndpoint);
         return client;
     }
 }

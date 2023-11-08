@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.AgentRegistrationKeys;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the agent registration information type. */
 @Fluent
 public final class AgentRegistrationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentRegistrationInner.class);
-
     /*
      * Gets or sets the dsc meta configuration.
      */

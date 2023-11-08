@@ -20,26 +20,7 @@ public interface DatabasePrincipalAssignmentsClient {
     /**
      * Checks that the database principal assignment is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param principalAssignmentName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName);
-
-    /**
-     * Checks that the database principal assignment is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the resource.
@@ -58,25 +39,28 @@ public interface DatabasePrincipalAssignmentsClient {
         Context context);
 
     /**
-     * Gets a Kusto cluster database principalAssignment.
+     * Checks that the database principal assignment is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
-     * @param principalAssignmentName The name of the Kusto principalAssignment.
+     * @param principalAssignmentName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster database principalAssignment.
+     * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalAssignmentInner get(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName);
+    CheckNameResultInner checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
      * Gets a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -95,9 +79,25 @@ public interface DatabasePrincipalAssignmentsClient {
         Context context);
 
     /**
+     * Gets a Kusto cluster database principalAssignment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param principalAssignmentName The name of the Kusto principalAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto cluster database principalAssignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabasePrincipalAssignmentInner get(
+        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName);
+
+    /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -118,7 +118,7 @@ public interface DatabasePrincipalAssignmentsClient {
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -141,7 +141,7 @@ public interface DatabasePrincipalAssignmentsClient {
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -162,7 +162,7 @@ public interface DatabasePrincipalAssignmentsClient {
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -185,7 +185,7 @@ public interface DatabasePrincipalAssignmentsClient {
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -201,7 +201,7 @@ public interface DatabasePrincipalAssignmentsClient {
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -222,7 +222,7 @@ public interface DatabasePrincipalAssignmentsClient {
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -236,7 +236,7 @@ public interface DatabasePrincipalAssignmentsClient {
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -256,7 +256,7 @@ public interface DatabasePrincipalAssignmentsClient {
     /**
      * Lists all Kusto cluster database principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,7 +272,7 @@ public interface DatabasePrincipalAssignmentsClient {
     /**
      * Lists all Kusto cluster database principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.

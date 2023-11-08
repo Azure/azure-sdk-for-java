@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.Site;
+import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.util.Collections;
 import java.util.List;
@@ -69,6 +70,10 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public SiteInner innerModel() {
@@ -170,6 +175,14 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
         return this;
     }
 
+    public void deletePacketCore(SiteDeletePacketCore parameters) {
+        serviceManager.sites().deletePacketCore(resourceGroupName, mobileNetworkName, siteName, parameters);
+    }
+
+    public void deletePacketCore(SiteDeletePacketCore parameters, Context context) {
+        serviceManager.sites().deletePacketCore(resourceGroupName, mobileNetworkName, siteName, parameters, context);
+    }
+
     public SiteImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -188,11 +201,6 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
             this.updateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public SiteImpl withNetworkFunctions(List<SubResource> networkFunctions) {
-        this.innerModel().withNetworkFunctions(networkFunctions);
-        return this;
     }
 
     private boolean isInCreateMode() {

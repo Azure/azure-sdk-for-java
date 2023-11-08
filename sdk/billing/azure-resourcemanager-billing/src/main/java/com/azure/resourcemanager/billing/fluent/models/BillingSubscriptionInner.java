@@ -6,11 +6,9 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusType;
 import com.azure.resourcemanager.billing.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -18,13 +16,15 @@ import java.util.UUID;
 /** A billing subscription. */
 @Fluent
 public final class BillingSubscriptionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingSubscriptionInner.class);
-
     /*
      * The billing properties of a subscription.
      */
     @JsonProperty(value = "properties")
     private BillingSubscriptionProperties innerProperties;
+
+    /** Creates an instance of BillingSubscriptionInner class. */
+    public BillingSubscriptionInner() {
+    }
 
     /**
      * Get the innerProperties property: The billing properties of a subscription.

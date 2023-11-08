@@ -17,6 +17,10 @@ public final class P2SVpnConnectionRequest {
     @JsonProperty(value = "vpnConnectionIds")
     private List<String> vpnConnectionIds;
 
+    /** Creates an instance of P2SVpnConnectionRequest class. */
+    public P2SVpnConnectionRequest() {
+    }
+
     /**
      * Get the vpnConnectionIds property: List of p2s vpn connection Ids.
      *

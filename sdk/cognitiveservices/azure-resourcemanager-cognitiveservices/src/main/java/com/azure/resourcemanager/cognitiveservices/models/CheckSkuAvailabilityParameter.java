@@ -6,15 +6,12 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Check SKU availability parameter. */
 @Fluent
 public final class CheckSkuAvailabilityParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckSkuAvailabilityParameter.class);
-
     /*
      * The SKU of the resource.
      */
@@ -32,6 +29,10 @@ public final class CheckSkuAvailabilityParameter {
      */
     @JsonProperty(value = "type", required = true)
     private String type;
+
+    /** Creates an instance of CheckSkuAvailabilityParameter class. */
+    public CheckSkuAvailabilityParameter() {
+    }
 
     /**
      * Get the skus property: The SKU of the resource.
@@ -100,22 +101,24 @@ public final class CheckSkuAvailabilityParameter {
      */
     public void validate() {
         if (skus() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property skus in model CheckSkuAvailabilityParameter"));
         }
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property kind in model CheckSkuAvailabilityParameter"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property type in model CheckSkuAvailabilityParameter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckSkuAvailabilityParameter.class);
 }

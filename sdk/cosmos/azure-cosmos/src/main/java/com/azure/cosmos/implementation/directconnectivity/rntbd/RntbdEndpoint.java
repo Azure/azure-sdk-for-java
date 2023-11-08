@@ -4,7 +4,9 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micrometer.core.instrument.Tag;
@@ -28,6 +30,11 @@ public interface RntbdEndpoint extends AutoCloseable {
      * @return approximate number of acquired channels.
      */
     int channelsAcquiredMetric();
+
+    /**
+     * @return durable monotonic counters for total acquired/closed channels.
+     */
+    RntbdDurableEndpointMetrics durableEndpointMetrics();
 
     /**
      * @return approximate number of available channels.
@@ -65,9 +72,24 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     Tag tag();
 
+    Tag clientMetricTag();
+
     long usedDirectMemory();
 
     long usedHeapMemory();
+
+    URI serviceEndpoint();
+
+    void injectConnectionErrors(
+        String faultInjectionRuleId,
+        double threshold,
+        Class<?> eventType);
+
+    int getMinChannelsRequired();
+
+    void setMinChannelsRequired(int minChannelsRequired);
+
+    Uri getAddressUri();
 
     // endregion
 
@@ -77,6 +99,8 @@ public interface RntbdEndpoint extends AutoCloseable {
     void close();
 
     RntbdRequestRecord request(RntbdRequestArgs requestArgs);
+
+    OpenConnectionRntbdRequestRecord openConnection(RntbdRequestArgs requestArgs);
 
     // endregion
 
@@ -93,11 +117,20 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         int evictions();
 
+        RntbdEndpoint createIfAbsent(
+            URI serviceEndpoint,
+            Uri addressUri,
+            ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+            int minRequiredChannelsForEndpoint,
+            AddressSelector addressSelector);
+
         RntbdEndpoint get(URI physicalAddress);
 
         IAddressResolver getAddressResolver();
 
         Stream<RntbdEndpoint> list();
+
+        boolean isClosed();
     }
 
     final class Config {
@@ -236,6 +269,61 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         @JsonProperty
         public boolean preferTcpNative() { return this.options.preferTcpNative(); }
+
+        @JsonProperty
+        public long sslHandshakeTimeoutInMillis() {
+            return this.options.sslHandshakeTimeoutInMillis();
+        }
+
+        @JsonProperty
+        public boolean timeoutDetectionEnabled() {
+            return this.options.timeoutDetectionEnabled();
+        }
+
+        @JsonProperty
+        public double timeoutDetectionDisableCPUThreshold() {
+            return this.options.timeoutDetectionDisableCPUThreshold();
+        }
+
+        @JsonProperty
+        public long timeoutDetectionTimeLimitInNanos() {
+            return this.options.timeoutDetectionTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int timeoutDetectionHighFrequencyThreshold() {
+            return this.options.timeoutDetectionHighFrequencyThreshold();
+        }
+
+        @JsonProperty
+        public long timeoutDetectionHighFrequencyTimeLimitInNanos() {
+            return this.options.timeoutDetectionHighFrequencyTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int timeoutDetectionOnWriteThreshold() {
+            return this.options.timeoutDetectionOnWriteThreshold();
+        }
+
+        @JsonProperty
+        public long timeoutDetectionOnWriteTimeLimitInNanos() {
+            return this.options.timeoutDetectionOnWriteTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public long nonRespondingChannelReadDelayTimeLimitInNanos() {
+            return this.options.nonRespondingChannelReadDelayTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int cancellationCountSinceLastReadThreshold() {
+            return this.options.cancellationCountSinceLastReadThreshold();
+        }
+
+        @JsonProperty
+        public int minConnectionPoolSizePerEndpoint() {
+            return this.options.minConnectionPoolSizePerEndpoint();
+        }
 
         @Override
         public String toString() {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.P2SVpnGatewayInner;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.P2SConnectionConfiguration;
@@ -19,7 +18,7 @@ import java.util.Map;
 /** Samples for P2SVpnGateways CreateOrUpdate. */
 public final class P2SVpnGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/P2SVpnGatewayPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/P2SVpnGatewayPut.json
      */
     /**
      * Sample code: P2SVpnGatewayPut.
@@ -37,7 +36,7 @@ public final class P2SVpnGatewaysCreateOrUpdateSamples {
                 "p2sVpnGateway1",
                 new P2SVpnGatewayInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withVirtualHub(
                         new SubResource()
                             .withId(
@@ -80,9 +79,10 @@ public final class P2SVpnGatewaysCreateOrUpdateSamples {
                                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnServerConfiguration1"))
                     .withCustomDnsServers(Arrays.asList("1.1.1.1", "2.2.2.2"))
                     .withIsRoutingPreferenceInternet(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

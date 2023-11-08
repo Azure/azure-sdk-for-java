@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Invoices GetBySubscriptionAndInvoiceId. */
 public final class InvoicesGetBySubscriptionAndInvoiceIdSamples {
     /*
@@ -18,6 +16,6 @@ public final class InvoicesGetBySubscriptionAndInvoiceIdSamples {
      */
     public static void billingSubscriptionsListByBillingAccount(
         com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getBySubscriptionAndInvoiceIdWithResponse("{invoiceName}", Context.NONE);
+        manager.invoices().getBySubscriptionAndInvoiceIdWithResponse("{invoiceName}", com.azure.core.util.Context.NONE);
     }
 }

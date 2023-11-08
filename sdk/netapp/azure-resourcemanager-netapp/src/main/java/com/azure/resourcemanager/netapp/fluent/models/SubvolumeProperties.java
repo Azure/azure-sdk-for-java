@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This represents path associated with the subvolume. */
 @Fluent
 public final class SubvolumeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubvolumeProperties.class);
-
     /*
-     * path Path to the subvolume
+     * path
+     *
+     * Path to the subvolume
      */
     @JsonProperty(value = "path")
     private String path;
 
     /*
-     * size Truncate subvolume to the provided size in bytes
+     * size
+     *
+     * Truncate subvolume to the provided size in bytes
      */
     @JsonProperty(value = "size")
     private Long size;
 
     /*
-     * name parent path to the subvolume
+     * name
+     *
+     * parent path to the subvolume
      */
     @JsonProperty(value = "parentPath")
     private String parentPath;
@@ -38,8 +40,14 @@ public final class SubvolumeProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of SubvolumeProperties class. */
+    public SubvolumeProperties() {
+    }
+
     /**
-     * Get the path property: path Path to the subvolume.
+     * Get the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @return the path value.
      */
@@ -48,7 +56,9 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Set the path property: path Path to the subvolume.
+     * Set the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @param path the path value to set.
      * @return the SubvolumeProperties object itself.
@@ -59,7 +69,9 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Get the size property: size Truncate subvolume to the provided size in bytes.
+     * Get the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @return the size value.
      */
@@ -68,7 +80,9 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Set the size property: size Truncate subvolume to the provided size in bytes.
+     * Set the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @param size the size value to set.
      * @return the SubvolumeProperties object itself.
@@ -79,7 +93,9 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Get the parentPath property: name parent path to the subvolume.
+     * Get the parentPath property: name
+     *
+     * <p>parent path to the subvolume.
      *
      * @return the parentPath value.
      */
@@ -88,7 +104,9 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Set the parentPath property: name parent path to the subvolume.
+     * Set the parentPath property: name
+     *
+     * <p>parent path to the subvolume.
      *
      * @param parentPath the parentPath value to set.
      * @return the SubvolumeProperties object itself.

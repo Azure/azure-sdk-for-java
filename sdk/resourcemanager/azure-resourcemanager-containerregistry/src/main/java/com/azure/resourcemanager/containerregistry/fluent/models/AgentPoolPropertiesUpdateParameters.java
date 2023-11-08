@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AgentPoolPropertiesUpdateParameters model. */
 @Fluent
 public final class AgentPoolPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolPropertiesUpdateParameters.class);
-
     /*
      * The count of agent machine
      */
     @JsonProperty(value = "count")
     private Integer count;
+
+    /** Creates an instance of AgentPoolPropertiesUpdateParameters class. */
+    public AgentPoolPropertiesUpdateParameters() {
+    }
 
     /**
      * Get the count property: The count of agent machine.

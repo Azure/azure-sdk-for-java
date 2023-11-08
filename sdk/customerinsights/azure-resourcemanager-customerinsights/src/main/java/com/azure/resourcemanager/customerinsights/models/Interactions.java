@@ -16,12 +16,15 @@ public interface Interactions {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
+     * @param localeCode Locale of interaction to retrieve, default is en-us.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
+     * @return information about the specified interaction along with {@link Response}.
      */
-    InteractionResourceFormat get(String resourceGroupName, String hubName, String interactionName);
+    Response<InteractionResourceFormat> getWithResponse(
+        String resourceGroupName, String hubName, String interactionName, String localeCode, Context context);
 
     /**
      * Gets information about the specified interaction.
@@ -29,15 +32,12 @@ public interface Interactions {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
-     * @param localeCode Locale of interaction to retrieve, default is en-us.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified interaction.
      */
-    Response<InteractionResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String interactionName, String localeCode, Context context);
+    InteractionResourceFormat get(String resourceGroupName, String hubName, String interactionName);
 
     /**
      * Gets all interactions in the hub.
@@ -47,7 +47,7 @@ public interface Interactions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<InteractionResourceFormat> listByHub(String resourceGroupName, String hubName);
 
@@ -61,10 +61,25 @@ public interface Interactions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<InteractionResourceFormat> listByHub(
         String resourceGroupName, String hubName, String localeCode, Context context);
+
+    /**
+     * Suggests relationships to create relationship links.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param interactionName The name of the interaction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of suggest relationship links operation along with {@link Response}.
+     */
+    Response<SuggestRelationshipLinksResponse> suggestRelationshipLinksWithResponse(
+        String resourceGroupName, String hubName, String interactionName, Context context);
 
     /**
      * Suggests relationships to create relationship links.
@@ -81,28 +96,13 @@ public interface Interactions {
         String resourceGroupName, String hubName, String interactionName);
 
     /**
-     * Suggests relationships to create relationship links.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param interactionName The name of the interaction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
-     */
-    Response<SuggestRelationshipLinksResponse> suggestRelationshipLinksWithResponse(
-        String resourceGroupName, String hubName, String interactionName, Context context);
-
-    /**
      * Gets information about the specified interaction.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
+     * @return information about the specified interaction along with {@link Response}.
      */
     InteractionResourceFormat getById(String id);
 
@@ -115,7 +115,7 @@ public interface Interactions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
+     * @return information about the specified interaction along with {@link Response}.
      */
     Response<InteractionResourceFormat> getByIdWithResponse(String id, String localeCode, Context context);
 

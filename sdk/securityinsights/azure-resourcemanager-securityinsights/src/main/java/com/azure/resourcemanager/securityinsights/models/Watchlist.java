@@ -176,14 +176,6 @@ public interface Watchlist {
     String rawContent();
 
     /**
-     * Gets the sasUri property: The Shared Access Signature (SAS) URI under which the large csv watchlist file is
-     * located and from which the watchlist and its items will be created.
-     *
-     * @return the sasUri value.
-     */
-    String sasUri();
-
-    /**
      * Gets the itemsSearchKey property: The search key is used to optimize query performance when using watchlists for
      * joins with other data. For example, enable a column with IP addresses to be the designated SearchKey field, then
      * use this field as the key field when joining to other event data by IP address.
@@ -208,11 +200,11 @@ public interface Watchlist {
     String uploadStatus();
 
     /**
-     * Gets the provisioningState property: The provisioning state of the watchlist resource.
+     * Gets the name of the resource group.
      *
-     * @return the provisioningState value.
+     * @return the name of the resource group.
      */
-    ProvisioningState provisioningState();
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.WatchlistInner object.
@@ -265,7 +257,6 @@ public interface Watchlist {
                 DefinitionStages.WithTenantId,
                 DefinitionStages.WithNumberOfLinesToSkip,
                 DefinitionStages.WithRawContent,
-                DefinitionStages.WithSasUri,
                 DefinitionStages.WithItemsSearchKey,
                 DefinitionStages.WithContentType,
                 DefinitionStages.WithUploadStatus {
@@ -478,18 +469,6 @@ public interface Watchlist {
              */
             WithCreate withRawContent(String rawContent);
         }
-        /** The stage of the Watchlist definition allowing to specify sasUri. */
-        interface WithSasUri {
-            /**
-             * Specifies the sasUri property: The Shared Access Signature (SAS) URI under which the large csv watchlist
-             * file is located and from which the watchlist and its items will be created.
-             *
-             * @param sasUri The Shared Access Signature (SAS) URI under which the large csv watchlist file is located
-             *     and from which the watchlist and its items will be created.
-             * @return the next definition stage.
-             */
-            WithCreate withSasUri(String sasUri);
-        }
         /** The stage of the Watchlist definition allowing to specify itemsSearchKey. */
         interface WithItemsSearchKey {
             /**
@@ -555,7 +534,6 @@ public interface Watchlist {
             UpdateStages.WithTenantId,
             UpdateStages.WithNumberOfLinesToSkip,
             UpdateStages.WithRawContent,
-            UpdateStages.WithSasUri,
             UpdateStages.WithItemsSearchKey,
             UpdateStages.WithContentType,
             UpdateStages.WithUploadStatus {
@@ -769,18 +747,6 @@ public interface Watchlist {
              * @return the next definition stage.
              */
             Update withRawContent(String rawContent);
-        }
-        /** The stage of the Watchlist update allowing to specify sasUri. */
-        interface WithSasUri {
-            /**
-             * Specifies the sasUri property: The Shared Access Signature (SAS) URI under which the large csv watchlist
-             * file is located and from which the watchlist and its items will be created.
-             *
-             * @param sasUri The Shared Access Signature (SAS) URI under which the large csv watchlist file is located
-             *     and from which the watchlist and its items will be created.
-             * @return the next definition stage.
-             */
-            Update withSasUri(String sasUri);
         }
         /** The stage of the Watchlist update allowing to specify itemsSearchKey. */
         interface WithItemsSearchKey {

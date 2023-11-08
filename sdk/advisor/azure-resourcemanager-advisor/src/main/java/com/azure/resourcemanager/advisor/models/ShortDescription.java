@@ -5,29 +5,29 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A summary of the recommendation. */
 @Fluent
 public final class ShortDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShortDescription.class);
-
     /*
-     * The issue or opportunity identified by the recommendation.
+     * The issue or opportunity identified by the recommendation and proposed solution.
      */
     @JsonProperty(value = "problem")
     private String problem;
 
     /*
-     * The remediation action suggested by the recommendation.
+     * The issue or opportunity identified by the recommendation and proposed solution.
      */
     @JsonProperty(value = "solution")
     private String solution;
 
+    /** Creates an instance of ShortDescription class. */
+    public ShortDescription() {
+    }
+
     /**
-     * Get the problem property: The issue or opportunity identified by the recommendation.
+     * Get the problem property: The issue or opportunity identified by the recommendation and proposed solution.
      *
      * @return the problem value.
      */
@@ -36,7 +36,7 @@ public final class ShortDescription {
     }
 
     /**
-     * Set the problem property: The issue or opportunity identified by the recommendation.
+     * Set the problem property: The issue or opportunity identified by the recommendation and proposed solution.
      *
      * @param problem the problem value to set.
      * @return the ShortDescription object itself.
@@ -47,7 +47,7 @@ public final class ShortDescription {
     }
 
     /**
-     * Get the solution property: The remediation action suggested by the recommendation.
+     * Get the solution property: The issue or opportunity identified by the recommendation and proposed solution.
      *
      * @return the solution value.
      */
@@ -56,7 +56,7 @@ public final class ShortDescription {
     }
 
     /**
-     * Set the solution property: The remediation action suggested by the recommendation.
+     * Set the solution property: The issue or opportunity identified by the recommendation and proposed solution.
      *
      * @param solution the solution value to set.
      * @return the ShortDescription object itself.

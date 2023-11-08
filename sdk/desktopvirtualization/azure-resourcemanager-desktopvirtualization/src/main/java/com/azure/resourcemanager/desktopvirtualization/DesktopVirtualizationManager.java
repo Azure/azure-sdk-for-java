@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -32,6 +34,8 @@ import com.azure.resourcemanager.desktopvirtualization.implementation.MsixPackag
 import com.azure.resourcemanager.desktopvirtualization.implementation.OperationsImpl;
 import com.azure.resourcemanager.desktopvirtualization.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.desktopvirtualization.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.desktopvirtualization.implementation.ScalingPlanPersonalSchedulesImpl;
+import com.azure.resourcemanager.desktopvirtualization.implementation.ScalingPlanPooledSchedulesImpl;
 import com.azure.resourcemanager.desktopvirtualization.implementation.ScalingPlansImpl;
 import com.azure.resourcemanager.desktopvirtualization.implementation.SessionHostsImpl;
 import com.azure.resourcemanager.desktopvirtualization.implementation.StartMenuItemsImpl;
@@ -46,6 +50,8 @@ import com.azure.resourcemanager.desktopvirtualization.models.MsixPackages;
 import com.azure.resourcemanager.desktopvirtualization.models.Operations;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkResources;
+import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedules;
+import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedules;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlans;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHosts;
 import com.azure.resourcemanager.desktopvirtualization.models.StartMenuItems;
@@ -64,7 +70,15 @@ public final class DesktopVirtualizationManager {
 
     private Workspaces workspaces;
 
+    private PrivateEndpointConnections privateEndpointConnections;
+
+    private PrivateLinkResources privateLinkResources;
+
     private ScalingPlans scalingPlans;
+
+    private ScalingPlanPooledSchedules scalingPlanPooledSchedules;
+
+    private ScalingPlanPersonalSchedules scalingPlanPersonalSchedules;
 
     private ApplicationGroups applicationGroups;
 
@@ -83,10 +97,6 @@ public final class DesktopVirtualizationManager {
     private MsixPackages msixPackages;
 
     private MsixImages msixImages;
-
-    private PrivateEndpointConnections privateEndpointConnections;
-
-    private PrivateLinkResources privateLinkResources;
 
     private final DesktopVirtualizationApiClient clientObject;
 
@@ -117,6 +127,19 @@ public final class DesktopVirtualizationManager {
     }
 
     /**
+     * Creates an instance of DesktopVirtualization service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the DesktopVirtualization service API instance.
+     */
+    public static DesktopVirtualizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new DesktopVirtualizationManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create DesktopVirtualizationManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -127,13 +150,14 @@ public final class DesktopVirtualizationManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -195,15 +219,30 @@ public final class DesktopVirtualizationManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -225,7 +264,7 @@ public final class DesktopVirtualizationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.desktopvirtualization")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -243,10 +282,15 @@ public final class DesktopVirtualizationManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -277,7 +321,11 @@ public final class DesktopVirtualizationManager {
         }
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -285,7 +333,11 @@ public final class DesktopVirtualizationManager {
         return operations;
     }
 
-    /** @return Resource collection API of Workspaces. */
+    /**
+     * Gets the resource collection API of Workspaces. It manages Workspace.
+     *
+     * @return Resource collection API of Workspaces.
+     */
     public Workspaces workspaces() {
         if (this.workspaces == null) {
             this.workspaces = new WorkspacesImpl(clientObject.getWorkspaces(), this);
@@ -293,87 +345,11 @@ public final class DesktopVirtualizationManager {
         return workspaces;
     }
 
-    /** @return Resource collection API of ScalingPlans. */
-    public ScalingPlans scalingPlans() {
-        if (this.scalingPlans == null) {
-            this.scalingPlans = new ScalingPlansImpl(clientObject.getScalingPlans(), this);
-        }
-        return scalingPlans;
-    }
-
-    /** @return Resource collection API of ApplicationGroups. */
-    public ApplicationGroups applicationGroups() {
-        if (this.applicationGroups == null) {
-            this.applicationGroups = new ApplicationGroupsImpl(clientObject.getApplicationGroups(), this);
-        }
-        return applicationGroups;
-    }
-
-    /** @return Resource collection API of StartMenuItems. */
-    public StartMenuItems startMenuItems() {
-        if (this.startMenuItems == null) {
-            this.startMenuItems = new StartMenuItemsImpl(clientObject.getStartMenuItems(), this);
-        }
-        return startMenuItems;
-    }
-
-    /** @return Resource collection API of Applications. */
-    public Applications applications() {
-        if (this.applications == null) {
-            this.applications = new ApplicationsImpl(clientObject.getApplications(), this);
-        }
-        return applications;
-    }
-
-    /** @return Resource collection API of Desktops. */
-    public Desktops desktops() {
-        if (this.desktops == null) {
-            this.desktops = new DesktopsImpl(clientObject.getDesktops(), this);
-        }
-        return desktops;
-    }
-
-    /** @return Resource collection API of HostPools. */
-    public HostPools hostPools() {
-        if (this.hostPools == null) {
-            this.hostPools = new HostPoolsImpl(clientObject.getHostPools(), this);
-        }
-        return hostPools;
-    }
-
-    /** @return Resource collection API of UserSessions. */
-    public UserSessions userSessions() {
-        if (this.userSessions == null) {
-            this.userSessions = new UserSessionsImpl(clientObject.getUserSessions(), this);
-        }
-        return userSessions;
-    }
-
-    /** @return Resource collection API of SessionHosts. */
-    public SessionHosts sessionHosts() {
-        if (this.sessionHosts == null) {
-            this.sessionHosts = new SessionHostsImpl(clientObject.getSessionHosts(), this);
-        }
-        return sessionHosts;
-    }
-
-    /** @return Resource collection API of MsixPackages. */
-    public MsixPackages msixPackages() {
-        if (this.msixPackages == null) {
-            this.msixPackages = new MsixPackagesImpl(clientObject.getMsixPackages(), this);
-        }
-        return msixPackages;
-    }
-
-    /** @return Resource collection API of MsixImages. */
-    public MsixImages msixImages() {
-        if (this.msixImages == null) {
-            this.msixImages = new MsixImagesImpl(clientObject.getMsixImages(), this);
-        }
-        return msixImages;
-    }
-
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -382,7 +358,11 @@ public final class DesktopVirtualizationManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of PrivateLinkResources. */
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
     public PrivateLinkResources privateLinkResources() {
         if (this.privateLinkResources == null) {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
@@ -391,8 +371,156 @@ public final class DesktopVirtualizationManager {
     }
 
     /**
-     * @return Wrapped service client DesktopVirtualizationApiClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets the resource collection API of ScalingPlans. It manages ScalingPlan.
+     *
+     * @return Resource collection API of ScalingPlans.
+     */
+    public ScalingPlans scalingPlans() {
+        if (this.scalingPlans == null) {
+            this.scalingPlans = new ScalingPlansImpl(clientObject.getScalingPlans(), this);
+        }
+        return scalingPlans;
+    }
+
+    /**
+     * Gets the resource collection API of ScalingPlanPooledSchedules. It manages ScalingPlanPooledSchedule.
+     *
+     * @return Resource collection API of ScalingPlanPooledSchedules.
+     */
+    public ScalingPlanPooledSchedules scalingPlanPooledSchedules() {
+        if (this.scalingPlanPooledSchedules == null) {
+            this.scalingPlanPooledSchedules =
+                new ScalingPlanPooledSchedulesImpl(clientObject.getScalingPlanPooledSchedules(), this);
+        }
+        return scalingPlanPooledSchedules;
+    }
+
+    /**
+     * Gets the resource collection API of ScalingPlanPersonalSchedules. It manages ScalingPlanPersonalSchedule.
+     *
+     * @return Resource collection API of ScalingPlanPersonalSchedules.
+     */
+    public ScalingPlanPersonalSchedules scalingPlanPersonalSchedules() {
+        if (this.scalingPlanPersonalSchedules == null) {
+            this.scalingPlanPersonalSchedules =
+                new ScalingPlanPersonalSchedulesImpl(clientObject.getScalingPlanPersonalSchedules(), this);
+        }
+        return scalingPlanPersonalSchedules;
+    }
+
+    /**
+     * Gets the resource collection API of ApplicationGroups. It manages ApplicationGroup.
+     *
+     * @return Resource collection API of ApplicationGroups.
+     */
+    public ApplicationGroups applicationGroups() {
+        if (this.applicationGroups == null) {
+            this.applicationGroups = new ApplicationGroupsImpl(clientObject.getApplicationGroups(), this);
+        }
+        return applicationGroups;
+    }
+
+    /**
+     * Gets the resource collection API of StartMenuItems.
+     *
+     * @return Resource collection API of StartMenuItems.
+     */
+    public StartMenuItems startMenuItems() {
+        if (this.startMenuItems == null) {
+            this.startMenuItems = new StartMenuItemsImpl(clientObject.getStartMenuItems(), this);
+        }
+        return startMenuItems;
+    }
+
+    /**
+     * Gets the resource collection API of Applications. It manages Application.
+     *
+     * @return Resource collection API of Applications.
+     */
+    public Applications applications() {
+        if (this.applications == null) {
+            this.applications = new ApplicationsImpl(clientObject.getApplications(), this);
+        }
+        return applications;
+    }
+
+    /**
+     * Gets the resource collection API of Desktops.
+     *
+     * @return Resource collection API of Desktops.
+     */
+    public Desktops desktops() {
+        if (this.desktops == null) {
+            this.desktops = new DesktopsImpl(clientObject.getDesktops(), this);
+        }
+        return desktops;
+    }
+
+    /**
+     * Gets the resource collection API of HostPools. It manages HostPool.
+     *
+     * @return Resource collection API of HostPools.
+     */
+    public HostPools hostPools() {
+        if (this.hostPools == null) {
+            this.hostPools = new HostPoolsImpl(clientObject.getHostPools(), this);
+        }
+        return hostPools;
+    }
+
+    /**
+     * Gets the resource collection API of UserSessions.
+     *
+     * @return Resource collection API of UserSessions.
+     */
+    public UserSessions userSessions() {
+        if (this.userSessions == null) {
+            this.userSessions = new UserSessionsImpl(clientObject.getUserSessions(), this);
+        }
+        return userSessions;
+    }
+
+    /**
+     * Gets the resource collection API of SessionHosts.
+     *
+     * @return Resource collection API of SessionHosts.
+     */
+    public SessionHosts sessionHosts() {
+        if (this.sessionHosts == null) {
+            this.sessionHosts = new SessionHostsImpl(clientObject.getSessionHosts(), this);
+        }
+        return sessionHosts;
+    }
+
+    /**
+     * Gets the resource collection API of MsixPackages. It manages MsixPackage.
+     *
+     * @return Resource collection API of MsixPackages.
+     */
+    public MsixPackages msixPackages() {
+        if (this.msixPackages == null) {
+            this.msixPackages = new MsixPackagesImpl(clientObject.getMsixPackages(), this);
+        }
+        return msixPackages;
+    }
+
+    /**
+     * Gets the resource collection API of MsixImages.
+     *
+     * @return Resource collection API of MsixImages.
+     */
+    public MsixImages msixImages() {
+        if (this.msixImages == null) {
+            this.msixImages = new MsixImagesImpl(clientObject.getMsixImages(), this);
+        }
+        return msixImages;
+    }
+
+    /**
+     * Gets wrapped service client DesktopVirtualizationApiClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client DesktopVirtualizationApiClient.
      */
     public DesktopVirtualizationApiClient serviceClient() {
         return this.clientObject;

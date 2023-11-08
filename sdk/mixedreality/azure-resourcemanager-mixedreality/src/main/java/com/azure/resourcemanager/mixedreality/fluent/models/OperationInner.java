@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mixedreality.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mixedreality.models.OperationDisplay;
 import com.azure.resourcemanager.mixedreality.models.OperationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** REST API operation. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * Operation name: {provider}/{resource}/{operation}
      */
@@ -45,6 +41,10 @@ public final class OperationInner {
      */
     @JsonProperty(value = "properties")
     private OperationProperties properties;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.

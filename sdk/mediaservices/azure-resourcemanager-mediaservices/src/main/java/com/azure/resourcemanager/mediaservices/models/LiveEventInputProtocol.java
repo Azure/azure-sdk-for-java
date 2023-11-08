@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LiveEventInputProtocol. */
+/** The input protocol for the live event. This is specified at creation time and cannot be updated. */
 public final class LiveEventInputProtocol extends ExpandableStringEnum<LiveEventInputProtocol> {
     /** Static value FragmentedMP4 for LiveEventInputProtocol. */
     public static final LiveEventInputProtocol FRAGMENTED_MP4 = fromString("FragmentedMP4");
 
     /** Static value RTMP for LiveEventInputProtocol. */
     public static final LiveEventInputProtocol RTMP = fromString("RTMP");
+
+    /**
+     * Creates a new instance of LiveEventInputProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LiveEventInputProtocol() {
+    }
 
     /**
      * Creates or finds a LiveEventInputProtocol from its string representation.
@@ -27,7 +36,11 @@ public final class LiveEventInputProtocol extends ExpandableStringEnum<LiveEvent
         return fromString(name, LiveEventInputProtocol.class);
     }
 
-    /** @return known LiveEventInputProtocol values. */
+    /**
+     * Gets known LiveEventInputProtocol values.
+     *
+     * @return known LiveEventInputProtocol values.
+     */
     public static Collection<LiveEventInputProtocol> values() {
         return values(LiveEventInputProtocol.class);
     }

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.WebhooksClient;
 import com.azure.resourcemanager.automation.fluent.models.WebhookInner;
 import com.azure.resourcemanager.automation.models.Webhook;
 import com.azure.resourcemanager.automation.models.Webhooks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WebhooksImpl implements Webhooks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhooksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebhooksImpl.class);
 
     private final WebhooksClient innerClient;
 
@@ -86,7 +85,7 @@ public final class WebhooksImpl implements Webhooks {
     public Webhook getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class WebhooksImpl implements Webhooks {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -103,7 +102,7 @@ public final class WebhooksImpl implements Webhooks {
         }
         String webhookName = Utils.getValueFromIdByName(id, "webhooks");
         if (webhookName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
@@ -114,7 +113,7 @@ public final class WebhooksImpl implements Webhooks {
     public Response<Webhook> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,7 +121,7 @@ public final class WebhooksImpl implements Webhooks {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class WebhooksImpl implements Webhooks {
         }
         String webhookName = Utils.getValueFromIdByName(id, "webhooks");
         if (webhookName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
@@ -142,7 +141,7 @@ public final class WebhooksImpl implements Webhooks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,7 +149,7 @@ public final class WebhooksImpl implements Webhooks {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,18 +158,18 @@ public final class WebhooksImpl implements Webhooks {
         }
         String webhookName = Utils.getValueFromIdByName(id, "webhooks");
         if (webhookName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, webhookName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, webhookName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,7 +177,7 @@ public final class WebhooksImpl implements Webhooks {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,7 +186,7 @@ public final class WebhooksImpl implements Webhooks {
         }
         String webhookName = Utils.getValueFromIdByName(id, "webhooks");
         if (webhookName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webhooks'.", id)));

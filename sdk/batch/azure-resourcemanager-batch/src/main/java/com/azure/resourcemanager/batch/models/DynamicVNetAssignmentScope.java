@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DynamicVNetAssignmentScope. */
+/** The scope of dynamic vnet assignment. */
 public enum DynamicVNetAssignmentScope {
     /** Enum value none. */
     NONE("none"),
@@ -30,6 +30,9 @@ public enum DynamicVNetAssignmentScope {
      */
     @JsonCreator
     public static DynamicVNetAssignmentScope fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DynamicVNetAssignmentScope[] items = DynamicVNetAssignmentScope.values();
         for (DynamicVNetAssignmentScope item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum DynamicVNetAssignmentScope {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

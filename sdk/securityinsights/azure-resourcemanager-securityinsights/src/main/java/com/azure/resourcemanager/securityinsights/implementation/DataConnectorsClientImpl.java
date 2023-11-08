@@ -468,14 +468,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataConnectorInner> getAsync(String resourceGroupName, String workspaceName, String dataConnectorId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, dataConnectorId)
-            .flatMap(
-                (Response<DataConnectorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -652,14 +645,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
     private Mono<DataConnectorInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String dataConnectorId, DataConnectorInner dataConnector) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, dataConnectorId, dataConnector)
-            .flatMap(
-                (Response<DataConnectorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -825,7 +811,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String dataConnectorId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, dataConnectorId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1001,7 +987,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
     private Mono<Void> connectAsync(
         String resourceGroupName, String workspaceName, String dataConnectorId, DataConnectorConnectBody connectBody) {
         return connectWithResponseAsync(resourceGroupName, workspaceName, dataConnectorId, connectBody)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1165,7 +1151,7 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> disconnectAsync(String resourceGroupName, String workspaceName, String dataConnectorId) {
         return disconnectWithResponseAsync(resourceGroupName, workspaceName, dataConnectorId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1204,7 +1190,8 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1239,7 +1226,8 @@ public final class DataConnectorsClientImpl implements DataConnectorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

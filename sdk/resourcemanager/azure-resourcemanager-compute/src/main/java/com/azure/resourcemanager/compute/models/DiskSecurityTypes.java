@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskSecurityTypes. */
+/** Specifies the SecurityType of the VM. Applicable for OS disks only. */
 public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTypes> {
     /** Static value TrustedLaunch for DiskSecurityTypes. */
     public static final DiskSecurityTypes TRUSTED_LAUNCH = fromString("TrustedLaunch");
@@ -26,6 +26,15 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
         fromString("ConfidentialVM_DiskEncryptedWithCustomerKey");
 
     /**
+     * Creates a new instance of DiskSecurityTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskSecurityTypes() {
+    }
+
+    /**
      * Creates or finds a DiskSecurityTypes from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
         return fromString(name, DiskSecurityTypes.class);
     }
 
-    /** @return known DiskSecurityTypes values. */
+    /**
+     * Gets known DiskSecurityTypes values.
+     *
+     * @return known DiskSecurityTypes values.
+     */
     public static Collection<DiskSecurityTypes> values() {
         return values(DiskSecurityTypes.class);
     }

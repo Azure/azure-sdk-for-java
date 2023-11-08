@@ -7,8 +7,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.util.Collection;
+
 /**
- * The {@link EntityConditionality} model.
+ * The {@code EntityConditionality} model.
  */
 @Immutable
 public final class EntityConditionality extends ExpandableStringEnum<EntityConditionality> {
@@ -19,13 +21,31 @@ public final class EntityConditionality extends ExpandableStringEnum<EntityCondi
     public static final EntityConditionality CONDITIONAL = fromString("Conditional");
 
     /**
-     * Creates or finds a {@link EntityConditionality} from its string representation.
+     * Creates a new instance of {@code EntityConditionality} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityConditionality() {
+    }
+
+    /**
+     * Creates or finds a {@code EntityConditionality} from its string representation.
      *
      * @param name The string name to look for.
-     * @return The corresponding {@link EntityConditionality}.
+     * @return The corresponding {@code EntityConditionality}.
      */
     @JsonCreator
     public static EntityConditionality fromString(String name) {
         return fromString(name, EntityConditionality.class);
+    }
+
+    /**
+     * All known EntityConditionality values.
+     *
+     * @return known EntityConditionality values.
+     */
+    public static Collection<EntityConditionality> values() {
+        return values(EntityConditionality.class);
     }
 }

@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FrontDoorCertificateType. */
+/** Defines the type of the certificate used for secure connections to a frontendEndpoint. */
 public final class FrontDoorCertificateType extends ExpandableStringEnum<FrontDoorCertificateType> {
     /** Static value Dedicated for FrontDoorCertificateType. */
     public static final FrontDoorCertificateType DEDICATED = fromString("Dedicated");
+
+    /**
+     * Creates a new instance of FrontDoorCertificateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FrontDoorCertificateType() {
+    }
 
     /**
      * Creates or finds a FrontDoorCertificateType from its string representation.
@@ -24,7 +33,11 @@ public final class FrontDoorCertificateType extends ExpandableStringEnum<FrontDo
         return fromString(name, FrontDoorCertificateType.class);
     }
 
-    /** @return known FrontDoorCertificateType values. */
+    /**
+     * Gets known FrontDoorCertificateType values.
+     *
+     * @return known FrontDoorCertificateType values.
+     */
     public static Collection<FrontDoorCertificateType> values() {
         return values(FrontDoorCertificateType.class);
     }

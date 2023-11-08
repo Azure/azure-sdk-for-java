@@ -14,23 +14,23 @@ public interface OperationStatuses {
      *
      * @param location The region name of operation.
      * @param asyncOperationId The operation Id.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running azure asynchronous operation.
+     * @return the status of a long running azure asynchronous operation along with {@link Response}.
      */
-    OperationStatus get(String location, String asyncOperationId);
+    Response<OperationStatus> getWithResponse(String location, String asyncOperationId, Context context);
 
     /**
      * Get the status of a long running azure asynchronous operation.
      *
      * @param location The region name of operation.
      * @param asyncOperationId The operation Id.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a long running azure asynchronous operation.
      */
-    Response<OperationStatus> getWithResponse(String location, String asyncOperationId, Context context);
+    OperationStatus get(String location, String asyncOperationId);
 }

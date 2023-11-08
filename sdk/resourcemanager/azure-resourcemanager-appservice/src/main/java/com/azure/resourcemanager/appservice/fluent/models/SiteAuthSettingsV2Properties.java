@@ -16,40 +16,41 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SiteAuthSettingsV2Properties {
     /*
-     * The configuration settings of the platform of App Service
-     * Authentication/Authorization.
+     * The configuration settings of the platform of App Service Authentication/Authorization.
      */
     @JsonProperty(value = "platform")
     private AuthPlatform platform;
 
     /*
-     * The configuration settings that determines the validation flow of users
-     * using App Service Authentication/Authorization.
+     * The configuration settings that determines the validation flow of users using App Service
+     * Authentication/Authorization.
      */
     @JsonProperty(value = "globalValidation")
     private GlobalValidation globalValidation;
 
     /*
-     * The configuration settings of each of the identity providers used to
-     * configure App Service Authentication/Authorization.
+     * The configuration settings of each of the identity providers used to configure App Service
+     * Authentication/Authorization.
      */
     @JsonProperty(value = "identityProviders")
     private IdentityProviders identityProviders;
 
     /*
-     * The configuration settings of the login flow of users using App Service
-     * Authentication/Authorization.
+     * The configuration settings of the login flow of users using App Service Authentication/Authorization.
      */
     @JsonProperty(value = "login")
     private Login login;
 
     /*
-     * The configuration settings of the HTTP requests for authentication and
-     * authorization requests made against App Service
-     * Authentication/Authorization.
+     * The configuration settings of the HTTP requests for authentication and authorization requests made against App
+     * Service Authentication/Authorization.
      */
     @JsonProperty(value = "httpSettings")
     private HttpSettings httpSettings;
+
+    /** Creates an instance of SiteAuthSettingsV2Properties class. */
+    public SiteAuthSettingsV2Properties() {
+    }
 
     /**
      * Get the platform property: The configuration settings of the platform of App Service

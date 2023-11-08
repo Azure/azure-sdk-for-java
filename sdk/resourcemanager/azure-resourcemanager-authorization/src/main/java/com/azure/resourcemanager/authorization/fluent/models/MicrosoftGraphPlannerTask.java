@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -17,11 +17,8 @@ import java.util.Map;
 /** plannerTask. */
 @Fluent
 public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPlannerTask.class);
-
     /*
-     * Number of checklist items with value set to false, representing
-     * incomplete items.
+     * Number of checklist items with value set to false, representing incomplete items.
      */
     @JsonProperty(value = "activeChecklistItemCount")
     private Integer activeChecklistItemCount;
@@ -30,11 +27,11 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
      * plannerAppliedCategories
      */
     @JsonProperty(value = "appliedCategories")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> appliedCategories;
 
     /*
-     * Hint used to order items of this type in a list view. The format is
-     * defined as outlined here.
+     * Hint used to order items of this type in a list view. The format is defined as outlined here.
      */
     @JsonProperty(value = "assigneePriority")
     private String assigneePriority;
@@ -43,12 +40,12 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
      * plannerAssignments
      */
     @JsonProperty(value = "assignments")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> assignments;
 
     /*
-     * Bucket ID to which the task belongs. The bucket needs to be in the plan
-     * that the task is in. It is 28 characters long and case-sensitive. Format
-     * validation is done on the service.
+     * Bucket ID to which the task belongs. The bucket needs to be in the plan that the task is in. It is 28 characters
+     * long and case-sensitive. Format validation is done on the service.
      */
     @JsonProperty(value = "bucketId")
     private String bucketId;
@@ -66,17 +63,16 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
     private MicrosoftGraphIdentitySet completedBy;
 
     /*
-     * Read-only. Date and time at which the 'percentComplete' of the task is
-     * set to '100'. The Timestamp type represents date and time information
-     * using ISO 8601 format and is always in UTC time. For example, midnight
-     * UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
+     * Read-only. Date and time at which the 'percentComplete' of the task is set to '100'. The Timestamp type
+     * represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC
+     * on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "completedDateTime")
     private OffsetDateTime completedDateTime;
 
     /*
-     * Thread ID of the conversation on the task. This is the ID of the
-     * conversation thread object created in the group.
+     * Thread ID of the conversation on the task. This is the ID of the conversation thread object created in the
+     * group.
      */
     @JsonProperty(value = "conversationThreadId")
     private String conversationThreadId;
@@ -88,40 +84,35 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
     private MicrosoftGraphIdentitySet createdBy;
 
     /*
-     * Read-only. Date and time at which the task is created. The Timestamp
-     * type represents date and time information using ISO 8601 format and is
-     * always in UTC time. For example, midnight UTC on Jan 1, 2014 would look
-     * like this: '2014-01-01T00:00:00Z'
+     * Read-only. Date and time at which the task is created. The Timestamp type represents date and time information
+     * using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
-     * Date and time at which the task is due. The Timestamp type represents
-     * date and time information using ISO 8601 format and is always in UTC
-     * time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * Date and time at which the task is due. The Timestamp type represents date and time information using ISO 8601
+     * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "dueDateTime")
     private OffsetDateTime dueDateTime;
 
     /*
-     * Read-only. Value is true if the details object of the task has a
-     * non-empty description and false otherwise.
+     * Read-only. Value is true if the details object of the task has a non-empty description and false otherwise.
      */
     @JsonProperty(value = "hasDescription")
     private Boolean hasDescription;
 
     /*
-     * Hint used to order items of this type in a list view. The format is
-     * defined as outlined here.
+     * Hint used to order items of this type in a list view. The format is defined as outlined here.
      */
     @JsonProperty(value = "orderHint")
     private String orderHint;
 
     /*
-     * Percentage of task completion. When set to 100, the task is considered
-     * completed.
+     * Percentage of task completion. When set to 100, the task is considered completed.
      */
     @JsonProperty(value = "percentComplete")
     private Integer percentComplete;
@@ -133,7 +124,7 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
     private String planId;
 
     /*
-     * The previewType property.
+     * plannerPreviewType
      */
     @JsonProperty(value = "previewType")
     private MicrosoftGraphPlannerPreviewType previewType;
@@ -145,9 +136,8 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
     private Integer referenceCount;
 
     /*
-     * Date and time at which the task starts. The Timestamp type represents
-     * date and time information using ISO 8601 format and is always in UTC
-     * time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * Date and time at which the task starts. The Timestamp type represents date and time information using ISO 8601
+     * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "startDateTime")
@@ -187,6 +177,10 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
      * plannerTask
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerTask class. */
+    public MicrosoftGraphPlannerTask() {
+    }
 
     /**
      * Get the activeChecklistItemCount property: Number of checklist items with value set to false, representing
@@ -535,7 +529,7 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the previewType property: The previewType property.
+     * Get the previewType property: plannerPreviewType.
      *
      * @return the previewType value.
      */
@@ -544,7 +538,7 @@ public final class MicrosoftGraphPlannerTask extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the previewType property: The previewType property.
+     * Set the previewType property: plannerPreviewType.
      *
      * @param previewType the previewType value to set.
      * @return the MicrosoftGraphPlannerTask object itself.

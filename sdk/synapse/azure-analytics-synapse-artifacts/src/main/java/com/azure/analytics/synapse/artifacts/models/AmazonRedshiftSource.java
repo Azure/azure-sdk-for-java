@@ -21,13 +21,15 @@ public final class AmazonRedshiftSource extends TabularSource {
     private Object query;
 
     /*
-     * The Amazon S3 settings needed for the interim Amazon S3 when copying
-     * from Amazon Redshift with unload. With this, data from Amazon Redshift
-     * source will be unloaded into S3 first and then copied into the targeted
-     * sink from the interim S3.
+     * The Amazon S3 settings needed for the interim Amazon S3 when copying from Amazon Redshift with unload. With
+     * this, data from Amazon Redshift source will be unloaded into S3 first and then copied into the targeted sink
+     * from the interim S3.
      */
     @JsonProperty(value = "redshiftUnloadSettings")
     private RedshiftUnloadSettings redshiftUnloadSettings;
+
+    /** Creates an instance of AmazonRedshiftSource class. */
+    public AmazonRedshiftSource() {}
 
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
@@ -70,6 +72,41 @@ public final class AmazonRedshiftSource extends TabularSource {
      */
     public AmazonRedshiftSource setRedshiftUnloadSettings(RedshiftUnloadSettings redshiftUnloadSettings) {
         this.redshiftUnloadSettings = redshiftUnloadSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class StoredProcedureParameter {
     /*
-     * Stored procedure parameter value. Type: string (or Expression with
-     * resultType string).
+     * Stored procedure parameter value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value")
     private Object value;
@@ -22,6 +21,9 @@ public final class StoredProcedureParameter {
      */
     @JsonProperty(value = "type")
     private StoredProcedureParameterType type;
+
+    /** Creates an instance of StoredProcedureParameter class. */
+    public StoredProcedureParameter() {}
 
     /**
      * Get the value property: Stored procedure parameter value. Type: string (or Expression with resultType string).

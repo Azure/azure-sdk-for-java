@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,18 +14,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * homeRealmDiscoveryPolicy
+ *
+ * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
 public final class MicrosoftGraphHomeRealmDiscoveryPolicyInner extends MicrosoftGraphStsPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphHomeRealmDiscoveryPolicyInner.class);
-
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * entity types.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphHomeRealmDiscoveryPolicyInner class. */
+    public MicrosoftGraphHomeRealmDiscoveryPolicyInner() {
+    }
 
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is

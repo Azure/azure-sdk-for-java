@@ -15,6 +15,7 @@ import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalListResultInner;
+import com.azure.resourcemanager.kusto.models.CallerRole;
 import com.azure.resourcemanager.kusto.models.CheckNameRequest;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalListRequest;
 
@@ -23,22 +24,7 @@ public interface DatabasesClient {
     /**
      * Checks that the databases resource name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName);
-
-    /**
-     * Checks that the databases resource name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -52,9 +38,24 @@ public interface DatabasesClient {
         String resourceGroupName, String clusterName, CheckNameRequest resourceName, Context context);
 
     /**
+     * Checks that the databases resource name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameResultInner checkNameAvailability(
+        String resourceGroupName, String clusterName, CheckNameRequest resourceName);
+
+    /**
      * Returns the list of databases of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -67,8 +68,12 @@ public interface DatabasesClient {
     /**
      * Returns the list of databases of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
+     * @param top limit the number of results.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,26 +81,13 @@ public interface DatabasesClient {
      * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseInner> listByCluster(String resourceGroupName, String clusterName, Context context);
+    PagedIterable<DatabaseInner> listByCluster(
+        String resourceGroupName, String clusterName, Integer top, String skiptoken, Context context);
 
     /**
      * Returns a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner get(String resourceGroupName, String clusterName, String databaseName);
-
-    /**
-     * Returns a database.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -109,9 +101,23 @@ public interface DatabasesClient {
         String resourceGroupName, String clusterName, String databaseName, Context context);
 
     /**
+     * Returns a database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Kusto database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseInner get(String resourceGroupName, String clusterName, String databaseName);
+
+    /**
      * Creates or updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -127,10 +133,12 @@ public interface DatabasesClient {
     /**
      * Creates or updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
+     *     allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -139,12 +147,17 @@ public interface DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context);
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole,
+        Context context);
 
     /**
      * Creates or updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -160,10 +173,12 @@ public interface DatabasesClient {
     /**
      * Creates or updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
+     *     allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -172,12 +187,17 @@ public interface DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DatabaseInner createOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context);
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole,
+        Context context);
 
     /**
      * Updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
@@ -193,10 +213,12 @@ public interface DatabasesClient {
     /**
      * Updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
+     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
+     *     allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -205,12 +227,17 @@ public interface DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context);
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole,
+        Context context);
 
     /**
      * Updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
@@ -225,10 +252,12 @@ public interface DatabasesClient {
     /**
      * Updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
+     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
+     *     allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -237,12 +266,17 @@ public interface DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DatabaseInner update(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context);
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole,
+        Context context);
 
     /**
      * Deletes the database with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -256,7 +290,7 @@ public interface DatabasesClient {
     /**
      * Deletes the database with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -272,7 +306,7 @@ public interface DatabasesClient {
     /**
      * Deletes the database with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,7 +319,7 @@ public interface DatabasesClient {
     /**
      * Deletes the database with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -299,7 +333,7 @@ public interface DatabasesClient {
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,7 +348,7 @@ public interface DatabasesClient {
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -330,26 +364,7 @@ public interface DatabasesClient {
     /**
      * Add Database principals permissions.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param databasePrincipalsToAdd List of database principals to add.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalListResultInner addPrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd);
-
-    /**
-     * Add Database principals permissions.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param databasePrincipalsToAdd List of database principals to add.
@@ -368,28 +383,28 @@ public interface DatabasesClient {
         Context context);
 
     /**
-     * Remove Database principals permissions.
+     * Add Database principals permissions.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
-     * @param databasePrincipalsToRemove List of database principals to remove.
+     * @param databasePrincipalsToAdd List of database principals to add.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalListResultInner removePrincipals(
+    DatabasePrincipalListResultInner addPrincipals(
         String resourceGroupName,
         String clusterName,
         String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove);
+        DatabasePrincipalListRequest databasePrincipalsToAdd);
 
     /**
      * Remove Database principals permissions.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param databasePrincipalsToRemove List of database principals to remove.
@@ -406,4 +421,23 @@ public interface DatabasesClient {
         String databaseName,
         DatabasePrincipalListRequest databasePrincipalsToRemove,
         Context context);
+
+    /**
+     * Remove Database principals permissions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param databasePrincipalsToRemove List of database principals to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabasePrincipalListResultInner removePrincipals(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabasePrincipalListRequest databasePrincipalsToRemove);
 }

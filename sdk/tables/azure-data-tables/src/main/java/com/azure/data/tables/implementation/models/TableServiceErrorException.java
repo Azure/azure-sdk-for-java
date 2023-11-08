@@ -30,6 +30,7 @@ public final class TableServiceErrorException extends HttpResponseException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public TableServiceError getValue() {
         return (TableServiceError) super.getValue();

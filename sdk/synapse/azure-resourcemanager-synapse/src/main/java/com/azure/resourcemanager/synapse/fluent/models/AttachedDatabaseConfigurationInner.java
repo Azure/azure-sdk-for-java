@@ -7,19 +7,15 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DefaultPrincipalsModificationKind;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
 import com.azure.resourcemanager.synapse.models.TableLevelSharingProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class representing an attached database configuration. */
 @Fluent
 public final class AttachedDatabaseConfigurationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachedDatabaseConfigurationInner.class);
-
     /*
      * Resource location.
      */
@@ -33,11 +29,14 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
     private AttachedDatabaseConfigurationProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of AttachedDatabaseConfigurationInner class. */
+    public AttachedDatabaseConfigurationInner() {
+    }
 
     /**
      * Get the location property: Resource location.

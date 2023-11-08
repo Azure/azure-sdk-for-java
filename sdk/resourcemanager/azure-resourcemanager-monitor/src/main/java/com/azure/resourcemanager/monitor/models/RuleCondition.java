@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "odata\\.type",
+    property = "odata.type",
     defaultImpl = RuleCondition.class)
 @JsonTypeName("RuleCondition")
 @JsonSubTypes({
@@ -31,17 +28,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         name = "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition",
         value = ManagementEventRuleCondition.class)
 })
-@JsonFlatten
 @Fluent
 public class RuleCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleCondition.class);
-
     /*
-     * the resource from which the rule collects its data. For this type
-     * dataSource will always be of type RuleMetricDataSource.
+     * the resource from which the rule collects its data. For this type dataSource will always be of type
+     * RuleMetricDataSource.
      */
     @JsonProperty(value = "dataSource")
     private RuleDataSource dataSource;
+
+    /** Creates an instance of RuleCondition class. */
+    public RuleCondition() {
+    }
 
     /**
      * Get the dataSource property: the resource from which the rule collects its data. For this type dataSource will

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.AutoPauseProperties;
 import com.azure.resourcemanager.synapse.models.AutoScaleProperties;
 import com.azure.resourcemanager.synapse.models.DynamicExecutorAllocation;
@@ -14,25 +13,34 @@ import com.azure.resourcemanager.synapse.models.LibraryRequirements;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
 import com.azure.resourcemanager.synapse.models.SparkConfigProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Big Data pool A Big Data pool. */
+/**
+ * Big Data pool
+ *
+ * <p>A Big Data pool.
+ */
 @Fluent
 public final class BigDataPoolResourceInfoInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BigDataPoolResourceInfoInner.class);
-
     /*
-     * Spark pool properties Big Data pool properties
+     * Spark pool properties
+     *
+     * Big Data pool properties
      */
     @JsonProperty(value = "properties")
     private BigDataPoolResourceProperties innerProperties;
 
+    /** Creates an instance of BigDataPoolResourceInfoInner class. */
+    public BigDataPoolResourceInfoInner() {
+    }
+
     /**
-     * Get the innerProperties property: Spark pool properties Big Data pool properties.
+     * Get the innerProperties property: Spark pool properties
+     *
+     * <p>Big Data pool properties.
      *
      * @return the innerProperties value.
      */
@@ -78,7 +86,9 @@ public final class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Get the autoScale property: Spark pool auto-scaling properties Auto-scaling properties.
+     * Get the autoScale property: Spark pool auto-scaling properties
+     *
+     * <p>Auto-scaling properties.
      *
      * @return the autoScale value.
      */
@@ -87,7 +97,9 @@ public final class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Set the autoScale property: Spark pool auto-scaling properties Auto-scaling properties.
+     * Set the autoScale property: Spark pool auto-scaling properties
+     *
+     * <p>Auto-scaling properties.
      *
      * @param autoScale the autoScale value to set.
      * @return the BigDataPoolResourceInfoInner object itself.
@@ -110,7 +122,9 @@ public final class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Get the autoPause property: Spark pool auto-pausing properties Auto-pausing properties.
+     * Get the autoPause property: Spark pool auto-pausing properties
+     *
+     * <p>Auto-pausing properties.
      *
      * @return the autoPause value.
      */
@@ -119,7 +133,9 @@ public final class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Set the autoPause property: Spark pool auto-pausing properties Auto-pausing properties.
+     * Set the autoPause property: Spark pool auto-pausing properties
+     *
+     * <p>Auto-pausing properties.
      *
      * @param autoPause the autoPause value to set.
      * @return the BigDataPoolResourceInfoInner object itself.
@@ -156,6 +172,33 @@ public final class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
+     * Get the isAutotuneEnabled property: Enable Autotune
+     *
+     * <p>Whether autotune is required or not.
+     *
+     * @return the isAutotuneEnabled value.
+     */
+    public Boolean isAutotuneEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isAutotuneEnabled();
+    }
+
+    /**
+     * Set the isAutotuneEnabled property: Enable Autotune
+     *
+     * <p>Whether autotune is required or not.
+     *
+     * @param isAutotuneEnabled the isAutotuneEnabled value to set.
+     * @return the BigDataPoolResourceInfoInner object itself.
+     */
+    public BigDataPoolResourceInfoInner withIsAutotuneEnabled(Boolean isAutotuneEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BigDataPoolResourceProperties();
+        }
+        this.innerProperties().withIsAutotuneEnabled(isAutotuneEnabled);
+        return this;
+    }
+
+    /**
      * Get the sessionLevelPackagesEnabled property: Whether session level packages enabled.
      *
      * @return the sessionLevelPackagesEnabled value.
@@ -185,20 +228,6 @@ public final class BigDataPoolResourceInfoInner extends Resource {
      */
     public Integer cacheSize() {
         return this.innerProperties() == null ? null : this.innerProperties().cacheSize();
-    }
-
-    /**
-     * Set the cacheSize property: The cache size.
-     *
-     * @param cacheSize the cacheSize value to set.
-     * @return the BigDataPoolResourceInfoInner object itself.
-     */
-    public BigDataPoolResourceInfoInner withCacheSize(Integer cacheSize) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BigDataPoolResourceProperties();
-        }
-        this.innerProperties().withCacheSize(cacheSize);
-        return this;
     }
 
     /**
@@ -272,7 +301,9 @@ public final class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Get the libraryRequirements property: Spark pool library version requirements Library version requirements.
+     * Get the libraryRequirements property: Spark pool library version requirements
+     *
+     * <p>Library version requirements.
      *
      * @return the libraryRequirements value.
      */
@@ -281,7 +312,9 @@ public final class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Set the libraryRequirements property: Spark pool library version requirements Library version requirements.
+     * Set the libraryRequirements property: Spark pool library version requirements
+     *
+     * <p>Library version requirements.
      *
      * @param libraryRequirements the libraryRequirements value to set.
      * @return the BigDataPoolResourceInfoInner object itself.
@@ -318,8 +351,9 @@ public final class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Get the sparkConfigProperties property: Spark pool Config Properties Spark configuration file to specify
-     * additional properties.
+     * Get the sparkConfigProperties property: Spark pool Config Properties
+     *
+     * <p>Spark configuration file to specify additional properties.
      *
      * @return the sparkConfigProperties value.
      */
@@ -328,8 +362,9 @@ public final class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Set the sparkConfigProperties property: Spark pool Config Properties Spark configuration file to specify
-     * additional properties.
+     * Set the sparkConfigProperties property: Spark pool Config Properties
+     *
+     * <p>Spark configuration file to specify additional properties.
      *
      * @param sparkConfigProperties the sparkConfigProperties value to set.
      * @return the BigDataPoolResourceInfoInner object itself.

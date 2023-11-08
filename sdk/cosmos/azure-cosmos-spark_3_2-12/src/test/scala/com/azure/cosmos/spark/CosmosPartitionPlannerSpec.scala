@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.management.AzureEnvironment
+import com.azure.cosmos.spark
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
 
 import java.time.Instant
@@ -16,12 +18,20 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
       enableClientTelemetry = false,
+      disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -72,17 +82,163 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     calculate(0).endLsn.get shouldBe latestLsn
   }
 
-  it should "calculateEndLsn with readLimit should honor estimated lag" in {
+  it should "calculateEndLsn should have latestLsn >= startLsn when latestLsn==0 (no continuation)" in {
 
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
       enableClientTelemetry = false,
+      disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
+
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docSizeInKB = rnd.nextInt()
+    val firstLsn = None
+    val latestLsn = 0
+    val startLsn = 2057
+    val docCount = 200174
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    val metadata1 = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      firstLsn,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    val metadata2 = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      firstLsn,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    val calculate = CosmosPartitionPlanner.calculateEndLsn(
+      Array[PartitionMetadata](metadata1, metadata2),
+      ReadLimit.allAvailable()
+    )
+
+    calculate(0).endLsn.get shouldBe startLsn
+  }
+
+  it should "calculateEndLsn should return startLsn when lastLsn < startLsn (possible with replication lag)" in {
+
+    val clientConfig = spark.CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
+      None,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      useEventualConsistency = true,
+      enableClientTelemetry = false,
+      disableTcpConnectionEndpointRediscovery = false,
+      clientTelemetryEndpoint = None,
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
+
+    val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
+    val docSizeInKB = rnd.nextInt()
+    val firstLsn = None
+    val latestLsn = 2056
+    val startLsn = 2057
+    val docCount = 200174
+    val nowEpochMs = Instant.now.toEpochMilli
+    val createdAt = new AtomicLong(nowEpochMs)
+    val lastRetrievedAt = new AtomicLong(nowEpochMs)
+
+    val metadata1 = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      firstLsn,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    val metadata2 = PartitionMetadata(
+      Map[String, String](),
+      clientConfig,
+      None,
+      containerConfig,
+      normalizedRange,
+      docCount,
+      docSizeInKB,
+      firstLsn,
+      latestLsn,
+      startLsn,
+      None,
+      createdAt,
+      lastRetrievedAt)
+
+    val calculate = CosmosPartitionPlanner.calculateEndLsn(
+      Array[PartitionMetadata](metadata1, metadata2),
+      ReadLimit.allAvailable()
+    )
+
+    calculate(0).endLsn.get shouldBe startLsn
+  }
+
+  it should "calculateEndLsn with readLimit should honor estimated lag" in {
+
+    val clientConfig = spark.CosmosClientConfiguration(
+      UUID.randomUUID().toString,
+      UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
+      None,
+      UUID.randomUUID().toString,
+      useGatewayMode = false,
+      useEventualConsistency = true,
+      enableClientTelemetry = false,
+      disableTcpConnectionEndpointRediscovery = false,
+      clientTelemetryEndpoint = None,
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -133,15 +289,23 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
   it should "calculateEndLsn with readLimit should proceed at least 1 LSN when there is any lag" in {
 
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
       enableClientTelemetry = false,
+      disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -208,15 +372,23 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
   it should "calculateEndLsn with readLimit should exceed weightedGap if totalWeighted gap < maxReadLimit" in {
 
-    val clientConfig = CosmosClientConfiguration(
+    val clientConfig = spark.CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      CosmosMasterKeyAuthConfig(UUID.randomUUID().toString),
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
       enableClientTelemetry = false,
+      disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
-      preferredRegionsList = Option.empty)
+      preferredRegionsList = Option.empty,
+      subscriptionId = None,
+      tenantId = None,
+      resourceGroupName = None,
+      azureEnvironment = AzureEnvironment.AZURE,
+      sparkEnvironmentInfo = "")
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)

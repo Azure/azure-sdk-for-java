@@ -17,6 +17,22 @@ public interface DeploymentInfoesClient {
      *
      * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
      * @param monitorName Monitor resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource along with
+     *     {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DeploymentInfoResponseInner> listWithResponse(
+        String resourceGroupName, String monitorName, Context context);
+
+    /**
+     * Fetch information regarding Elastic cloud deployment corresponding to the Elastic monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,19 +40,4 @@ public interface DeploymentInfoesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DeploymentInfoResponseInner list(String resourceGroupName, String monitorName);
-
-    /**
-     * Fetch information regarding Elastic cloud deployment corresponding to the Elastic monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of deployment in Elastic cloud corresponding to the Elastic monitor resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentInfoResponseInner> listWithResponse(
-        String resourceGroupName, String monitorName, Context context);
 }

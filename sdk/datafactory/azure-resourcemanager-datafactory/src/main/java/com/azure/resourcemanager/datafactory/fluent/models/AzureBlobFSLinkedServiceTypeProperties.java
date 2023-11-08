@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,57 +13,51 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureBlobFSLinkedServiceTypeProperties {
     /*
-     * Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or
-     * Expression with resultType string).
+     * Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "url", required = true)
+    @JsonProperty(value = "url")
     private Object url;
 
     /*
-     * Account key for the Azure Data Lake Storage Gen2 service. Type: string
-     * (or Expression with resultType string).
+     * Account key for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "accountKey")
     private Object accountKey;
 
     /*
-     * The ID of the application used to authenticate against the Azure Data
-     * Lake Storage Gen2 account. Type: string (or Expression with resultType
-     * string).
+     * The ID of the application used to authenticate against the Azure Data Lake Storage Gen2 account. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The Key of the application used to authenticate against the Azure Data
-     * Lake Storage Gen2 account.
+     * The Key of the application used to authenticate against the Azure Data Lake Storage Gen2 account.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed
-     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
-     * Default value is the data factory regions’ cloud type. Type: string (or
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
     @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
@@ -73,24 +66,36 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     private CredentialReference credential;
 
     /*
-     * The service principal credential type to use in Server-To-Server
-     * authentication. 'ServicePrincipalKey' for key/secret,
-     * 'ServicePrincipalCert' for certificate. Type: string (or Expression with
-     * resultType string).
+     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
+     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalCredentialType")
     private Object servicePrincipalCredentialType;
 
     /*
-     * The credential of the service principal object in Azure Active
-     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey',
-     * servicePrincipalCredential can be SecureString or
-     * AzureKeyVaultSecretReference. If servicePrincipalCredentialType is
-     * 'ServicePrincipalCert', servicePrincipalCredential can only be
+     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is
+     * 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If
+     * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
+
+    /*
+     * SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or AzureKeyVaultSecretReference.
+     */
+    @JsonProperty(value = "sasUri")
+    private Object sasUri;
+
+    /*
+     * The Azure key vault secret reference of sasToken in sas uri.
+     */
+    @JsonProperty(value = "sasToken")
+    private SecretBase sasToken;
+
+    /** Creates an instance of AzureBlobFSLinkedServiceTypeProperties class. */
+    public AzureBlobFSLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the url property: Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with
@@ -228,22 +233,22 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
      */
-    public AzureBlobFSLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureBlobFSLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
@@ -321,17 +326,53 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @return the sasUri value.
+     */
+    public Object sasUri() {
+        return this.sasUri;
+    }
+
+    /**
+     * Set the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @param sasUri the sasUri value to set.
+     * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
+     */
+    public AzureBlobFSLinkedServiceTypeProperties withSasUri(Object sasUri) {
+        this.sasUri = sasUri;
+        return this;
+    }
+
+    /**
+     * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value.
+     */
+    public SecretBase sasToken() {
+        return this.sasToken;
+    }
+
+    /**
+     * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set.
+     * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
+     */
+    public AzureBlobFSLinkedServiceTypeProperties withSasToken(SecretBase sasToken) {
+        this.sasToken = sasToken;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property url in model AzureBlobFSLinkedServiceTypeProperties"));
-        }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();
         }
@@ -341,7 +382,8 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
         if (servicePrincipalCredential() != null) {
             servicePrincipalCredential().validate();
         }
+        if (sasToken() != null) {
+            sasToken().validate();
+        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureBlobFSLinkedServiceTypeProperties.class);
 }

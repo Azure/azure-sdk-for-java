@@ -4,21 +4,20 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
 import java.util.Arrays;
 
 /** Samples for VirtualMachineScaleSets DeleteInstances. */
 public final class VirtualMachineScaleSetsDeleteInstancesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_DeleteInstances_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_DeleteInstances_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_DeleteInstances_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsDeleteInstancesMaximumSetGen(
+    public static void virtualMachineScaleSetDeleteInstancesMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -31,18 +30,18 @@ public final class VirtualMachineScaleSetsDeleteInstancesSamples {
                 new VirtualMachineScaleSetVMInstanceRequiredIDs()
                     .withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaa")),
                 true,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_DeleteInstances_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_DeleteInstances_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_DeleteInstances_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsDeleteInstancesMinimumSetGen(
+    public static void virtualMachineScaleSetDeleteInstancesMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -55,6 +54,6 @@ public final class VirtualMachineScaleSetsDeleteInstancesSamples {
                 new VirtualMachineScaleSetVMInstanceRequiredIDs()
                     .withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaa")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

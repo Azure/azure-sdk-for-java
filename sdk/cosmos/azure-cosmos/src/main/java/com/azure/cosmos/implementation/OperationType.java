@@ -53,4 +53,23 @@ public enum OperationType {
                 this == Patch ||
                 this == Batch;
     }
+
+    public boolean isPointOperation() {
+        return this == Create ||
+            this == Delete ||
+            this == Replace ||
+            this == Upsert ||
+            this == Patch ||
+            this == Read;
+    }
+
+    public boolean isReadOnlyOperation() {
+        return this == Read
+            || this == ReadFeed
+            || this == Head
+            || this == HeadFeed
+            || this == Query
+            || this == SqlQuery
+            || this == QueryPlan;
+    }
 }

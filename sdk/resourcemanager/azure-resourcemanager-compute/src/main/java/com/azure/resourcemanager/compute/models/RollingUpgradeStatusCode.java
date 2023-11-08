@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RollingUpgradeStatusCode. */
+/** Code indicating the current status of the upgrade. */
 public enum RollingUpgradeStatusCode {
     /** Enum value RollingForward. */
     ROLLING_FORWARD("RollingForward"),
@@ -36,6 +36,9 @@ public enum RollingUpgradeStatusCode {
      */
     @JsonCreator
     public static RollingUpgradeStatusCode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RollingUpgradeStatusCode[] items = RollingUpgradeStatusCode.values();
         for (RollingUpgradeStatusCode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum RollingUpgradeStatusCode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -31,6 +31,24 @@ public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsR
     /** Static value PUT for CorsRuleAllowedMethodsItem. */
     public static final CorsRuleAllowedMethodsItem PUT = fromString("PUT");
 
+    /** Static value PATCH for CorsRuleAllowedMethodsItem. */
+    public static final CorsRuleAllowedMethodsItem PATCH = fromString("PATCH");
+
+    /** Static value CONNECT for CorsRuleAllowedMethodsItem. */
+    public static final CorsRuleAllowedMethodsItem CONNECT = fromString("CONNECT");
+
+    /** Static value TRACE for CorsRuleAllowedMethodsItem. */
+    public static final CorsRuleAllowedMethodsItem TRACE = fromString("TRACE");
+
+    /**
+     * Creates a new instance of CorsRuleAllowedMethodsItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CorsRuleAllowedMethodsItem() {
+    }
+
     /**
      * Creates or finds a CorsRuleAllowedMethodsItem from its string representation.
      *
@@ -42,7 +60,11 @@ public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsR
         return fromString(name, CorsRuleAllowedMethodsItem.class);
     }
 
-    /** @return known CorsRuleAllowedMethodsItem values. */
+    /**
+     * Gets known CorsRuleAllowedMethodsItem values.
+     *
+     * @return known CorsRuleAllowedMethodsItem values.
+     */
     public static Collection<CorsRuleAllowedMethodsItem> values() {
         return values(CorsRuleAllowedMethodsItem.class);
     }

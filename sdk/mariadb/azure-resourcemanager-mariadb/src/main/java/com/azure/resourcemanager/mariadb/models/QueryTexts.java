@@ -17,12 +17,13 @@ public interface QueryTexts {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryId The Query-Store query identifier.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Text.
+     * @return represents a Query Text along with {@link Response}.
      */
-    QueryText get(String resourceGroupName, String serverName, String queryId);
+    Response<QueryText> getWithResponse(String resourceGroupName, String serverName, String queryId, Context context);
 
     /**
      * Retrieve the Query-Store query texts for the queryId.
@@ -30,13 +31,12 @@ public interface QueryTexts {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryId The Query-Store query identifier.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Query Text.
      */
-    Response<QueryText> getWithResponse(String resourceGroupName, String serverName, String queryId, Context context);
+    QueryText get(String resourceGroupName, String serverName, String queryId);
 
     /**
      * Retrieve the Query-Store query texts for specified queryIds.
@@ -47,7 +47,7 @@ public interface QueryTexts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query texts.
+     * @return a list of query texts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<QueryText> listByServer(String resourceGroupName, String serverName, List<String> queryIds);
 
@@ -61,7 +61,7 @@ public interface QueryTexts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query texts.
+     * @return a list of query texts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<QueryText> listByServer(
         String resourceGroupName, String serverName, List<String> queryIds, Context context);

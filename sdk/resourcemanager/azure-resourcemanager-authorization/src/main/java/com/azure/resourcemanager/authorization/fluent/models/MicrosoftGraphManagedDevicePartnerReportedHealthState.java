@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphManagedDevicePartnerReportedHealthState. */
+/** managedDevicePartnerReportedHealthState. */
 public final class MicrosoftGraphManagedDevicePartnerReportedHealthState
     extends ExpandableStringEnum<MicrosoftGraphManagedDevicePartnerReportedHealthState> {
     /** Static value unknown for MicrosoftGraphManagedDevicePartnerReportedHealthState. */
@@ -45,6 +45,15 @@ public final class MicrosoftGraphManagedDevicePartnerReportedHealthState
         fromString("misconfigured");
 
     /**
+     * Creates a new instance of MicrosoftGraphManagedDevicePartnerReportedHealthState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphManagedDevicePartnerReportedHealthState() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphManagedDevicePartnerReportedHealthState from its string representation.
      *
      * @param name a name to look for.
@@ -55,7 +64,11 @@ public final class MicrosoftGraphManagedDevicePartnerReportedHealthState
         return fromString(name, MicrosoftGraphManagedDevicePartnerReportedHealthState.class);
     }
 
-    /** @return known MicrosoftGraphManagedDevicePartnerReportedHealthState values. */
+    /**
+     * Gets known MicrosoftGraphManagedDevicePartnerReportedHealthState values.
+     *
+     * @return known MicrosoftGraphManagedDevicePartnerReportedHealthState values.
+     */
     public static Collection<MicrosoftGraphManagedDevicePartnerReportedHealthState> values() {
         return values(MicrosoftGraphManagedDevicePartnerReportedHealthState.class);
     }

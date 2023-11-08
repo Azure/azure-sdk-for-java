@@ -268,6 +268,13 @@ public interface ApplicationInsightsComponent {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentInner
      * object.
      *
@@ -283,11 +290,13 @@ public interface ApplicationInsightsComponent {
             DefinitionStages.WithKind,
             DefinitionStages.WithCreate {
     }
+
     /** The ApplicationInsightsComponent definition stages. */
     interface DefinitionStages {
         /** The first stage of the ApplicationInsightsComponent definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -306,6 +315,7 @@ public interface ApplicationInsightsComponent {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -316,6 +326,7 @@ public interface ApplicationInsightsComponent {
              */
             WithKind withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -330,6 +341,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withKind(String kind);
         }
+
         /**
          * The stage of the ApplicationInsightsComponent definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -366,6 +378,7 @@ public interface ApplicationInsightsComponent {
              */
             ApplicationInsightsComponent create(Context context);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -376,6 +389,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -386,6 +400,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withEtag(String etag);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify applicationType. */
         interface WithApplicationType {
             /**
@@ -396,6 +411,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withApplicationType(ApplicationType applicationType);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify flowType. */
         interface WithFlowType {
             /**
@@ -409,6 +425,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withFlowType(FlowType flowType);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify requestSource. */
         interface WithRequestSource {
             /**
@@ -421,6 +438,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withRequestSource(RequestSource requestSource);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify hockeyAppId. */
         interface WithHockeyAppId {
             /**
@@ -433,6 +451,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withHockeyAppId(String hockeyAppId);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify samplingPercentage. */
         interface WithSamplingPercentage {
             /**
@@ -445,6 +464,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withSamplingPercentage(Double samplingPercentage);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify retentionInDays. */
         interface WithRetentionInDays {
             /**
@@ -455,6 +475,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withRetentionInDays(Integer retentionInDays);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify disableIpMasking. */
         interface WithDisableIpMasking {
             /**
@@ -465,6 +486,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withDisableIpMasking(Boolean disableIpMasking);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify immediatePurgeDataOn30Days. */
         interface WithImmediatePurgeDataOn30Days {
             /**
@@ -475,6 +497,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify workspaceResourceId. */
         interface WithWorkspaceResourceId {
             /**
@@ -489,6 +512,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withWorkspaceResourceId(String workspaceResourceId);
         }
+
         /**
          * The stage of the ApplicationInsightsComponent definition allowing to specify publicNetworkAccessForIngestion.
          */
@@ -503,6 +527,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withPublicNetworkAccessForIngestion(PublicNetworkAccessType publicNetworkAccessForIngestion);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify publicNetworkAccessForQuery. */
         interface WithPublicNetworkAccessForQuery {
             /**
@@ -514,6 +539,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withPublicNetworkAccessForQuery(PublicNetworkAccessType publicNetworkAccessForQuery);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify ingestionMode. */
         interface WithIngestionMode {
             /**
@@ -524,6 +550,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withIngestionMode(IngestionMode ingestionMode);
         }
+
         /** The stage of the ApplicationInsightsComponent definition allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -534,6 +561,7 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
         /**
          * The stage of the ApplicationInsightsComponent definition allowing to specify forceCustomerStorageForProfiler.
          */
@@ -549,6 +577,7 @@ public interface ApplicationInsightsComponent {
             WithCreate withForceCustomerStorageForProfiler(Boolean forceCustomerStorageForProfiler);
         }
     }
+
     /**
      * Begins update for the ApplicationInsightsComponent resource.
      *
@@ -573,6 +602,7 @@ public interface ApplicationInsightsComponent {
          */
         ApplicationInsightsComponent apply(Context context);
     }
+
     /** The ApplicationInsightsComponent update stages. */
     interface UpdateStages {
         /** The stage of the ApplicationInsightsComponent update allowing to specify tags. */
@@ -586,6 +616,7 @@ public interface ApplicationInsightsComponent {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -607,23 +638,10 @@ public interface ApplicationInsightsComponent {
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
-     *
-     * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing operationId for a specific purge action.
-     */
-    ComponentPurgeResponse purge(ComponentPurgeBody body);
-
-    /**
-     * Purges data in an Application Insights component by a set of user-defined filters.
-     *
-     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
-     * the execution of purge requests by sending a single command whose predicate includes all user identities that
-     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Note: this operation is intended for Classic resources,
+     * for workspace-based Application Insights resource please run purge operation (directly on the
+     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
+     * resource id.
      *
      * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
      * @param context The context to associate with this operation.
@@ -633,4 +651,23 @@ public interface ApplicationInsightsComponent {
      * @return response containing operationId for a specific purge action along with {@link Response}.
      */
     Response<ComponentPurgeResponse> purgeWithResponse(ComponentPurgeBody body, Context context);
+
+    /**
+     * Purges data in an Application Insights component by a set of user-defined filters.
+     *
+     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
+     * the execution of purge requests by sending a single command whose predicate includes all user identities that
+     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
+     * a purge request to verify that the results are expected. Note: this operation is intended for Classic resources,
+     * for workspace-based Application Insights resource please run purge operation (directly on the
+     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
+     * resource id.
+     *
+     * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing operationId for a specific purge action.
+     */
+    ComponentPurgeResponse purge(ComponentPurgeBody body);
 }

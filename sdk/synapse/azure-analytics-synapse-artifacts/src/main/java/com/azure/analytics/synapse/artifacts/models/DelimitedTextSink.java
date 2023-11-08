@@ -26,6 +26,9 @@ public final class DelimitedTextSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private DelimitedTextWriteSettings formatSettings;
 
+    /** Creates an instance of DelimitedTextSink class. */
+    public DelimitedTextSink() {}
+
     /**
      * Get the storeSettings property: DelimitedText store settings.
      *
@@ -63,6 +66,41 @@ public final class DelimitedTextSink extends CopySink {
      */
     public DelimitedTextSink setFormatSettings(DelimitedTextWriteSettings formatSettings) {
         this.formatSettings = formatSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

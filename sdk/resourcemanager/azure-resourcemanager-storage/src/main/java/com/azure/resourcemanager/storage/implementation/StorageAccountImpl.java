@@ -133,7 +133,7 @@ class StorageAccountImpl
 
     @Override
     public boolean infrastructureEncryptionEnabled() {
-        return this.encryptionHelper.infrastructureEncryptionEnabled();
+        return StorageEncryptionHelper.infrastructureEncryptionEnabled(this.innerModel());
     }
 
     @Override
@@ -238,6 +238,19 @@ class StorageAccountImpl
             return true;
         }
         return this.innerModel().allowSharedKeyAccess();
+    }
+
+    @Override
+    public boolean isAllowCrossTenantReplication() {
+        if (this.innerModel().allowCrossTenantReplication() == null) {
+            return true;
+        }
+        return this.innerModel().allowCrossTenantReplication();
+    }
+
+    @Override
+    public boolean isDefaultToOAuthAuthentication() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().defaultToOAuthAuthentication());
     }
 
     @Override
@@ -561,6 +574,46 @@ class StorageAccountImpl
             createParameters.withAllowSharedKeyAccess(false);
         } else {
             updateParameters.withAllowSharedKeyAccess(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl allowCrossTenantReplication() {
+        if (isInCreateMode()) {
+            createParameters.withAllowCrossTenantReplication(true);
+        } else {
+            updateParameters.withAllowCrossTenantReplication(true);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl disallowCrossTenantReplication() {
+        if (isInCreateMode()) {
+            createParameters.withAllowCrossTenantReplication(false);
+        } else {
+            updateParameters.withAllowCrossTenantReplication(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl enableDefaultToOAuthAuthentication() {
+        if (isInCreateMode()) {
+            createParameters.withDefaultToOAuthAuthentication(true);
+        } else {
+            updateParameters.withDefaultToOAuthAuthentication(true);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl disableDefaultToOAuthAuthentication() {
+        if (isInCreateMode()) {
+            createParameters.withDefaultToOAuthAuthentication(false);
+        } else {
+            updateParameters.withDefaultToOAuthAuthentication(false);
         }
         return this;
     }

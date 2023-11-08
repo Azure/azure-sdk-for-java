@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The InstantRPAdditionalDetails model. */
 @Fluent
 public final class InstantRPAdditionalDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstantRPAdditionalDetails.class);
-
     /*
      * The azureBackupRGNamePrefix property.
      */
@@ -25,6 +21,10 @@ public final class InstantRPAdditionalDetails {
      */
     @JsonProperty(value = "azureBackupRGNameSuffix")
     private String azureBackupRGNameSuffix;
+
+    /** Creates an instance of InstantRPAdditionalDetails class. */
+    public InstantRPAdditionalDetails() {
+    }
 
     /**
      * Get the azureBackupRGNamePrefix property: The azureBackupRGNamePrefix property.

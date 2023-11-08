@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationStatusesClient. */
 public final class OperationStatusesClientImpl implements OperationStatusesClient {
-    private final ClientLogger logger = new ClientLogger(OperationStatusesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationStatusesService service;
 
@@ -53,11 +50,10 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
-    private interface OperationStatusesService {
+    public interface OperationStatusesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/locations/{location}"
-                + "/operationStatuses/{asyncOperationId}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/locations/{location}/operationStatuses/{asyncOperationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationStatusInner>> get(
@@ -78,7 +74,8 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running azure asynchronous operation.
+     * @return the status of a long running azure asynchronous operation along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationStatusInner>> getWithResponseAsync(String location, String asyncOperationId) {
@@ -101,6 +98,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -110,7 +108,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
                             this.client.getEndpoint(),
                             location,
                             asyncOperationId,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -126,7 +124,8 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running azure asynchronous operation.
+     * @return the status of a long running azure asynchronous operation along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationStatusInner>> getWithResponseAsync(
@@ -150,6 +149,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -157,7 +157,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
                 this.client.getEndpoint(),
                 location,
                 asyncOperationId,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -171,19 +171,27 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running azure asynchronous operation.
+     * @return the status of a long running azure asynchronous operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> getAsync(String location, String asyncOperationId) {
-        return getWithResponseAsync(location, asyncOperationId)
-            .flatMap(
-                (Response<OperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(location, asyncOperationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the status of a long running azure asynchronous operation.
+     *
+     * @param location The region name of operation.
+     * @param asyncOperationId The operation Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of a long running azure asynchronous operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<OperationStatusInner> getWithResponse(String location, String asyncOperationId, Context context) {
+        return getWithResponseAsync(location, asyncOperationId, context).block();
     }
 
     /**
@@ -198,22 +206,6 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner get(String location, String asyncOperationId) {
-        return getAsync(location, asyncOperationId).block();
-    }
-
-    /**
-     * Get the status of a long running azure asynchronous operation.
-     *
-     * @param location The region name of operation.
-     * @param asyncOperationId The operation Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running azure asynchronous operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusInner> getWithResponse(String location, String asyncOperationId, Context context) {
-        return getWithResponseAsync(location, asyncOperationId, context).block();
+        return getWithResponse(location, asyncOperationId, Context.NONE).getValue();
     }
 }

@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Scaling plan schedule. */
+/** A ScalingPlanPooledSchedule. */
 @Fluent
 public final class ScalingSchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScalingSchedule.class);
-
     /*
-     * Name of the scaling schedule.
+     * Name of the ScalingPlanPooledSchedule.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -123,8 +119,12 @@ public final class ScalingSchedule {
     @JsonProperty(value = "offPeakLoadBalancingAlgorithm")
     private SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm;
 
+    /** Creates an instance of ScalingSchedule class. */
+    public ScalingSchedule() {
+    }
+
     /**
-     * Get the name property: Name of the scaling schedule.
+     * Get the name property: Name of the ScalingPlanPooledSchedule.
      *
      * @return the name value.
      */
@@ -133,7 +133,7 @@ public final class ScalingSchedule {
     }
 
     /**
-     * Set the name property: Name of the scaling schedule.
+     * Set the name property: Name of the ScalingPlanPooledSchedule.
      *
      * @param name the name value to set.
      * @return the ScalingSchedule object itself.

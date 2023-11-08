@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSiteStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an HCX Enterprise Site. */
 @Immutable
 public final class HcxEnterpriseSiteProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HcxEnterpriseSiteProperties.class);
-
     /*
      * The activation key
      */
@@ -26,6 +22,10 @@ public final class HcxEnterpriseSiteProperties {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private HcxEnterpriseSiteStatus status;
+
+    /** Creates an instance of HcxEnterpriseSiteProperties class. */
+    public HcxEnterpriseSiteProperties() {
+    }
 
     /**
      * Get the activationKey property: The activation key.

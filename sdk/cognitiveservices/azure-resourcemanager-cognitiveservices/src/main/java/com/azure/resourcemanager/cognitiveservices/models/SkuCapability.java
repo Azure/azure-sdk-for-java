@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SkuCapability indicates the capability of a certain feature. */
 @Fluent
 public final class SkuCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuCapability.class);
-
     /*
      * The name of the SkuCapability.
      */
@@ -25,6 +21,10 @@ public final class SkuCapability {
      */
     @JsonProperty(value = "value")
     private String value;
+
+    /** Creates an instance of SkuCapability class. */
+    public SkuCapability() {
+    }
 
     /**
      * Get the name property: The name of the SkuCapability.

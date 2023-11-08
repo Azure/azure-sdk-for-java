@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The batch release criteria. */
 @Fluent
 public final class BatchReleaseCriteria {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchReleaseCriteria.class);
-
     /*
      * The message count.
      */
@@ -31,6 +27,10 @@ public final class BatchReleaseCriteria {
      */
     @JsonProperty(value = "recurrence")
     private WorkflowTriggerRecurrence recurrence;
+
+    /** Creates an instance of BatchReleaseCriteria class. */
+    public BatchReleaseCriteria() {
+    }
 
     /**
      * Get the messageCount property: The message count.

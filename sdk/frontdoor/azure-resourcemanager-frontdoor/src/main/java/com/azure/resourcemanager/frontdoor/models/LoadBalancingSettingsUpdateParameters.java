@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Round-Robin load balancing settings for a backend pool. */
 @Fluent
 public class LoadBalancingSettingsUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancingSettingsUpdateParameters.class);
-
     /*
      * The number of samples to consider for load balancing decisions
      */
@@ -27,11 +23,14 @@ public class LoadBalancingSettingsUpdateParameters {
     private Integer successfulSamplesRequired;
 
     /*
-     * The additional latency in milliseconds for probes to fall into the
-     * lowest latency bucket
+     * The additional latency in milliseconds for probes to fall into the lowest latency bucket
      */
     @JsonProperty(value = "additionalLatencyMilliseconds")
     private Integer additionalLatencyMilliseconds;
+
+    /** Creates an instance of LoadBalancingSettingsUpdateParameters class. */
+    public LoadBalancingSettingsUpdateParameters() {
+    }
 
     /**
      * Get the sampleSize property: The number of samples to consider for load balancing decisions.

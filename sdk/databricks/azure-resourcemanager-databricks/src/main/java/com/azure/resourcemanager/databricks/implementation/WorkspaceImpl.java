@@ -114,6 +114,14 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().storageAccountIdentity();
     }
 
+    public ManagedIdentityConfiguration managedDiskIdentity() {
+        return this.innerModel().managedDiskIdentity();
+    }
+
+    public String diskEncryptionSetId() {
+        return this.innerModel().diskEncryptionSetId();
+    }
+
     public WorkspacePropertiesEncryption encryption() {
         return this.innerModel().encryption();
     }
@@ -146,6 +154,10 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public WorkspaceInner innerModel() {
@@ -299,6 +311,11 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public WorkspaceImpl withStorageAccountIdentity(ManagedIdentityConfiguration storageAccountIdentity) {
         this.innerModel().withStorageAccountIdentity(storageAccountIdentity);
+        return this;
+    }
+
+    public WorkspaceImpl withManagedDiskIdentity(ManagedIdentityConfiguration managedDiskIdentity) {
+        this.innerModel().withManagedDiskIdentity(managedDiskIdentity);
         return this;
     }
 

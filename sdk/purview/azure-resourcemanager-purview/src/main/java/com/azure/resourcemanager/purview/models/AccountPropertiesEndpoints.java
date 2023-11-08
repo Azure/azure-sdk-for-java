@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The URIs that are the public endpoints of the account. */
 @Immutable
 public final class AccountPropertiesEndpoints extends AccountEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountPropertiesEndpoints.class);
+    /** Creates an instance of AccountPropertiesEndpoints class. */
+    public AccountPropertiesEndpoints() {
+    }
 
     /**
      * Validates the instance.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphCalendarRoleType. */
+/** calendarRoleType. */
 public final class MicrosoftGraphCalendarRoleType extends ExpandableStringEnum<MicrosoftGraphCalendarRoleType> {
     /** Static value none for MicrosoftGraphCalendarRoleType. */
     public static final MicrosoftGraphCalendarRoleType NONE = fromString("none");
@@ -37,6 +37,15 @@ public final class MicrosoftGraphCalendarRoleType extends ExpandableStringEnum<M
     public static final MicrosoftGraphCalendarRoleType CUSTOM = fromString("custom");
 
     /**
+     * Creates a new instance of MicrosoftGraphCalendarRoleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphCalendarRoleType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphCalendarRoleType from its string representation.
      *
      * @param name a name to look for.
@@ -47,7 +56,11 @@ public final class MicrosoftGraphCalendarRoleType extends ExpandableStringEnum<M
         return fromString(name, MicrosoftGraphCalendarRoleType.class);
     }
 
-    /** @return known MicrosoftGraphCalendarRoleType values. */
+    /**
+     * Gets known MicrosoftGraphCalendarRoleType values.
+     *
+     * @return known MicrosoftGraphCalendarRoleType values.
+     */
     public static Collection<MicrosoftGraphCalendarRoleType> values() {
         return values(MicrosoftGraphCalendarRoleType.class);
     }

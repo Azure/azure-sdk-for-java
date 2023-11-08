@@ -5,69 +5,61 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
 import com.azure.resourcemanager.sql.models.SyncGroupSchema;
 import com.azure.resourcemanager.sql.models.SyncGroupState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An Azure SQL Database sync group. */
-@JsonFlatten
 @Fluent
-public class SyncGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncGroupInner.class);
+public final class SyncGroupInner extends ProxyResource {
+    /*
+     * The name and capacity of the SKU.
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
 
     /*
-     * Sync interval of the sync group.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.interval")
-    private Integer interval;
+    @JsonProperty(value = "properties")
+    private SyncGroupProperties innerProperties;
 
-    /*
-     * Last sync time of the sync group.
-     */
-    @JsonProperty(value = "properties.lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastSyncTime;
+    /** Creates an instance of SyncGroupInner class. */
+    public SyncGroupInner() {
+    }
 
-    /*
-     * Conflict resolution policy of the sync group.
+    /**
+     * Get the sku property: The name and capacity of the SKU.
+     *
+     * @return the sku value.
      */
-    @JsonProperty(value = "properties.conflictResolutionPolicy")
-    private SyncConflictResolutionPolicy conflictResolutionPolicy;
+    public Sku sku() {
+        return this.sku;
+    }
 
-    /*
-     * ARM resource id of the sync database in the sync group.
+    /**
+     * Set the sku property: The name and capacity of the SKU.
+     *
+     * @param sku the sku value to set.
+     * @return the SyncGroupInner object itself.
      */
-    @JsonProperty(value = "properties.syncDatabaseId")
-    private String syncDatabaseId;
+    public SyncGroupInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
 
-    /*
-     * User name for the sync group hub database credential.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.hubDatabaseUserName")
-    private String hubDatabaseUsername;
-
-    /*
-     * Password for the sync group hub database credential.
-     */
-    @JsonProperty(value = "properties.hubDatabasePassword")
-    private String hubDatabasePassword;
-
-    /*
-     * Sync state of the sync group.
-     */
-    @JsonProperty(value = "properties.syncState", access = JsonProperty.Access.WRITE_ONLY)
-    private SyncGroupState syncState;
-
-    /*
-     * Sync schema of the sync group.
-     */
-    @JsonProperty(value = "properties.schema")
-    private SyncGroupSchema schema;
+    private SyncGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the interval property: Sync interval of the sync group.
@@ -75,7 +67,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the interval value.
      */
     public Integer interval() {
-        return this.interval;
+        return this.innerProperties() == null ? null : this.innerProperties().interval();
     }
 
     /**
@@ -85,7 +77,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withInterval(Integer interval) {
-        this.interval = interval;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withInterval(interval);
         return this;
     }
 
@@ -95,7 +90,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the lastSyncTime value.
      */
     public OffsetDateTime lastSyncTime() {
-        return this.lastSyncTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastSyncTime();
     }
 
     /**
@@ -104,7 +99,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the conflictResolutionPolicy value.
      */
     public SyncConflictResolutionPolicy conflictResolutionPolicy() {
-        return this.conflictResolutionPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().conflictResolutionPolicy();
     }
 
     /**
@@ -114,7 +109,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withConflictResolutionPolicy(SyncConflictResolutionPolicy conflictResolutionPolicy) {
-        this.conflictResolutionPolicy = conflictResolutionPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withConflictResolutionPolicy(conflictResolutionPolicy);
         return this;
     }
 
@@ -124,7 +122,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the syncDatabaseId value.
      */
     public String syncDatabaseId() {
-        return this.syncDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().syncDatabaseId();
     }
 
     /**
@@ -134,7 +132,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withSyncDatabaseId(String syncDatabaseId) {
-        this.syncDatabaseId = syncDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withSyncDatabaseId(syncDatabaseId);
         return this;
     }
 
@@ -144,7 +145,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the hubDatabaseUsername value.
      */
     public String hubDatabaseUsername() {
-        return this.hubDatabaseUsername;
+        return this.innerProperties() == null ? null : this.innerProperties().hubDatabaseUsername();
     }
 
     /**
@@ -154,7 +155,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withHubDatabaseUsername(String hubDatabaseUsername) {
-        this.hubDatabaseUsername = hubDatabaseUsername;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withHubDatabaseUsername(hubDatabaseUsername);
         return this;
     }
 
@@ -164,7 +168,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the hubDatabasePassword value.
      */
     public String hubDatabasePassword() {
-        return this.hubDatabasePassword;
+        return this.innerProperties() == null ? null : this.innerProperties().hubDatabasePassword();
     }
 
     /**
@@ -174,7 +178,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withHubDatabasePassword(String hubDatabasePassword) {
-        this.hubDatabasePassword = hubDatabasePassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withHubDatabasePassword(hubDatabasePassword);
         return this;
     }
 
@@ -184,7 +191,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the syncState value.
      */
     public SyncGroupState syncState() {
-        return this.syncState;
+        return this.innerProperties() == null ? null : this.innerProperties().syncState();
     }
 
     /**
@@ -193,7 +200,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the schema value.
      */
     public SyncGroupSchema schema() {
-        return this.schema;
+        return this.innerProperties() == null ? null : this.innerProperties().schema();
     }
 
     /**
@@ -203,8 +210,90 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withSchema(SyncGroupSchema schema) {
-        this.schema = schema;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withSchema(schema);
         return this;
+    }
+
+    /**
+     * Get the enableConflictLogging property: If conflict logging is enabled.
+     *
+     * @return the enableConflictLogging value.
+     */
+    public Boolean enableConflictLogging() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableConflictLogging();
+    }
+
+    /**
+     * Set the enableConflictLogging property: If conflict logging is enabled.
+     *
+     * @param enableConflictLogging the enableConflictLogging value to set.
+     * @return the SyncGroupInner object itself.
+     */
+    public SyncGroupInner withEnableConflictLogging(Boolean enableConflictLogging) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withEnableConflictLogging(enableConflictLogging);
+        return this;
+    }
+
+    /**
+     * Get the conflictLoggingRetentionInDays property: Conflict logging retention period.
+     *
+     * @return the conflictLoggingRetentionInDays value.
+     */
+    public Integer conflictLoggingRetentionInDays() {
+        return this.innerProperties() == null ? null : this.innerProperties().conflictLoggingRetentionInDays();
+    }
+
+    /**
+     * Set the conflictLoggingRetentionInDays property: Conflict logging retention period.
+     *
+     * @param conflictLoggingRetentionInDays the conflictLoggingRetentionInDays value to set.
+     * @return the SyncGroupInner object itself.
+     */
+    public SyncGroupInner withConflictLoggingRetentionInDays(Integer conflictLoggingRetentionInDays) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withConflictLoggingRetentionInDays(conflictLoggingRetentionInDays);
+        return this;
+    }
+
+    /**
+     * Get the usePrivateLinkConnection property: If use private link connection is enabled.
+     *
+     * @return the usePrivateLinkConnection value.
+     */
+    public Boolean usePrivateLinkConnection() {
+        return this.innerProperties() == null ? null : this.innerProperties().usePrivateLinkConnection();
+    }
+
+    /**
+     * Set the usePrivateLinkConnection property: If use private link connection is enabled.
+     *
+     * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
+     * @return the SyncGroupInner object itself.
+     */
+    public SyncGroupInner withUsePrivateLinkConnection(Boolean usePrivateLinkConnection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withUsePrivateLinkConnection(usePrivateLinkConnection);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointName property: Private endpoint name of the sync group if use private link connection is
+     * enabled.
+     *
+     * @return the privateEndpointName value.
+     */
+    public String privateEndpointName() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointName();
     }
 
     /**
@@ -213,8 +302,11 @@ public class SyncGroupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (schema() != null) {
-            schema().validate();
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -16,10 +16,9 @@ import com.azure.resourcemanager.timeseriesinsights.models.EventSourceListRespon
 import com.azure.resourcemanager.timeseriesinsights.models.EventSourceResource;
 import com.azure.resourcemanager.timeseriesinsights.models.EventSourceUpdateParameters;
 import com.azure.resourcemanager.timeseriesinsights.models.EventSources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EventSourcesImpl implements EventSources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventSourcesImpl.class);
 
     private final EventSourcesClient innerClient;
 
@@ -30,20 +29,6 @@ public final class EventSourcesImpl implements EventSources {
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public EventSourceResource createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters) {
-        EventSourceResourceInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, environmentName, eventSourceName, parameters);
-        if (inner != null) {
-            return new EventSourceResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<EventSourceResource> createOrUpdateWithResponse(
@@ -67,8 +52,13 @@ public final class EventSourcesImpl implements EventSources {
         }
     }
 
-    public EventSourceResource get(String resourceGroupName, String environmentName, String eventSourceName) {
-        EventSourceResourceInner inner = this.serviceClient().get(resourceGroupName, environmentName, eventSourceName);
+    public EventSourceResource createOrUpdate(
+        String resourceGroupName,
+        String environmentName,
+        String eventSourceName,
+        EventSourceCreateOrUpdateParameters parameters) {
+        EventSourceResourceInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, environmentName, eventSourceName, parameters);
         if (inner != null) {
             return new EventSourceResourceImpl(inner, this.manager());
         } else {
@@ -91,15 +81,8 @@ public final class EventSourcesImpl implements EventSources {
         }
     }
 
-    public EventSourceResource update(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters) {
-        EventSourceResourceInner inner =
-            this
-                .serviceClient()
-                .update(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters);
+    public EventSourceResource get(String resourceGroupName, String environmentName, String eventSourceName) {
+        EventSourceResourceInner inner = this.serviceClient().get(resourceGroupName, environmentName, eventSourceName);
         if (inner != null) {
             return new EventSourceResourceImpl(inner, this.manager());
         } else {
@@ -129,8 +112,20 @@ public final class EventSourcesImpl implements EventSources {
         }
     }
 
-    public void delete(String resourceGroupName, String environmentName, String eventSourceName) {
-        this.serviceClient().delete(resourceGroupName, environmentName, eventSourceName);
+    public EventSourceResource update(
+        String resourceGroupName,
+        String environmentName,
+        String eventSourceName,
+        EventSourceUpdateParameters eventSourceUpdateParameters) {
+        EventSourceResourceInner inner =
+            this
+                .serviceClient()
+                .update(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters);
+        if (inner != null) {
+            return new EventSourceResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -138,13 +133,8 @@ public final class EventSourcesImpl implements EventSources {
         return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, eventSourceName, context);
     }
 
-    public EventSourceListResponse listByEnvironment(String resourceGroupName, String environmentName) {
-        EventSourceListResponseInner inner = this.serviceClient().listByEnvironment(resourceGroupName, environmentName);
-        if (inner != null) {
-            return new EventSourceListResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String environmentName, String eventSourceName) {
+        this.serviceClient().delete(resourceGroupName, environmentName, eventSourceName);
     }
 
     public Response<EventSourceListResponse> listByEnvironmentWithResponse(
@@ -157,6 +147,15 @@ public final class EventSourcesImpl implements EventSources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EventSourceListResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EventSourceListResponse listByEnvironment(String resourceGroupName, String environmentName) {
+        EventSourceListResponseInner inner = this.serviceClient().listByEnvironment(resourceGroupName, environmentName);
+        if (inner != null) {
+            return new EventSourceListResponseImpl(inner, this.manager());
         } else {
             return null;
         }

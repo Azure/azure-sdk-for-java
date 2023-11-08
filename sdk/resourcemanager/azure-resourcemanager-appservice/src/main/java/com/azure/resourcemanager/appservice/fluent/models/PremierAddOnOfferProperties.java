@@ -30,8 +30,7 @@ public final class PremierAddOnOfferProperties {
     private String vendor;
 
     /*
-     * <code>true</code> if promotion code is required; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if promotion code is required; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "promoCodeRequired")
     private Boolean promoCodeRequired;
@@ -71,6 +70,10 @@ public final class PremierAddOnOfferProperties {
      */
     @JsonProperty(value = "marketplaceOffer")
     private String marketplaceOffer;
+
+    /** Creates an instance of PremierAddOnOfferProperties class. */
+    public PremierAddOnOfferProperties() {
+    }
 
     /**
      * Get the sku property: Premier add on SKU.

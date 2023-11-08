@@ -4,48 +4,26 @@ package com.azure.core.implementation.http;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.implementation.util.Providers;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.core.util.logging.ClientLogger;
 
-import java.util.Iterator;
-import java.util.ServiceLoader;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION;
 
 /**
  * This class handles loading available HTTP clients
  */
 public final class HttpClientProviders {
-    private static final String CANNOT_FIND_HTTP_CLIENT = "A request was made to load the default HttpClient provider "
+    private static final String NO_DEFAULT_PROVIDER_MESSAGE = "A request was made to load the default HttpClient provider "
         + "but one could not be found on the classpath. If you are using a dependency manager, consider including a "
         + "dependency on azure-core-http-netty or azure-core-http-okhttp. Depending on your existing dependencies, you "
         + "have the choice of Netty or OkHttp implementations. Additionally, refer to "
         + "https://aka.ms/azsdk/java/docs/custom-httpclient to learn about writing your own implementation.";
 
-    private static final ClientLogger LOGGER = new ClientLogger(HttpClientProviders.class);
-
-    private static HttpClientProvider defaultProvider;
-
-    static {
-        // Use as classloader to load provider-configuration files and provider classes the classloader
-        // that loaded this class. In most cases this will be the System classloader.
-        // But this choice here provides additional flexibility in managed environments that control
-        // classloading differently (OSGi, Spring and others) and don't/ depend on the
-        // System classloader to load HttpClientProvider classes.
-        ServiceLoader<HttpClientProvider> serviceLoader = ServiceLoader.load(HttpClientProvider.class,
-            HttpClientProviders.class.getClassLoader());
-        // Use the first provider found in the service loader iterator.
-        Iterator<HttpClientProvider> it = serviceLoader.iterator();
-        if (it.hasNext()) {
-            defaultProvider = it.next();
-            LOGGER.verbose("Using {} as the default HttpClientProvider.", defaultProvider.getClass().getName());
-        }
-
-        while (it.hasNext()) {
-            HttpClientProvider ignoredProvider = it.next();
-            LOGGER.warning("Multiple HttpClientProviders were found on the classpath, ignoring {}.",
-                ignoredProvider.getClass().getName());
-        }
-    }
+    private static final Providers<HttpClientProvider, HttpClient> HTTP_CLIENT_PROVIDERS = new Providers<>(HttpClientProvider.class,
+        Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION),
+        NO_DEFAULT_PROVIDER_MESSAGE);
 
     private HttpClientProviders() {
         // no-op
@@ -56,14 +34,15 @@ public final class HttpClientProviders {
     }
 
     public static HttpClient createInstance(ClientOptions clientOptions) {
-        if (defaultProvider == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(CANNOT_FIND_HTTP_CLIENT));
-        }
-
+        Class<? extends HttpClientProvider> selectedImplementation = null;
+        final HttpClientOptions httpClientOptions;
         if (clientOptions instanceof HttpClientOptions) {
-            return defaultProvider.createInstance((HttpClientOptions) clientOptions);
+            httpClientOptions = (HttpClientOptions) clientOptions;
+            selectedImplementation = httpClientOptions.getHttpClientProvider();
+        } else {
+            httpClientOptions = null;
         }
 
-        return defaultProvider.createInstance();
+        return HTTP_CLIENT_PROVIDERS.create(p -> p.createInstance(httpClientOptions), null, selectedImplementation);
     }
 }

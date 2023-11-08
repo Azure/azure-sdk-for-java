@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** signed identifier. */
-@Fluent
 @JacksonXmlRootElement(localName = "SignedIdentifier")
+@Fluent
 public final class QueueSignedIdentifier {
 
     /*
@@ -23,6 +23,9 @@ public final class QueueSignedIdentifier {
      */
     @JsonProperty(value = "AccessPolicy", required = true)
     private QueueAccessPolicy accessPolicy;
+
+    /** Creates an instance of QueueSignedIdentifier class. */
+    public QueueSignedIdentifier() {}
 
     /**
      * Get the id property: a unique id.

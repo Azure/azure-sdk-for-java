@@ -114,10 +114,8 @@ public abstract class AzureServiceClient {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        // data from context would override data from client
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**

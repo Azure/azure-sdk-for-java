@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DirectoryServiceOptions. */
+/** Indicates the directory service used. Note that this enum may be extended in the future. */
 public final class DirectoryServiceOptions extends ExpandableStringEnum<DirectoryServiceOptions> {
     /** Static value None for DirectoryServiceOptions. */
     public static final DirectoryServiceOptions NONE = fromString("None");
@@ -18,6 +18,18 @@ public final class DirectoryServiceOptions extends ExpandableStringEnum<Director
 
     /** Static value AD for DirectoryServiceOptions. */
     public static final DirectoryServiceOptions AD = fromString("AD");
+
+    /** Static value AADKERB for DirectoryServiceOptions. */
+    public static final DirectoryServiceOptions AADKERB = fromString("AADKERB");
+
+    /**
+     * Creates a new instance of DirectoryServiceOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DirectoryServiceOptions() {
+    }
 
     /**
      * Creates or finds a DirectoryServiceOptions from its string representation.
@@ -30,7 +42,11 @@ public final class DirectoryServiceOptions extends ExpandableStringEnum<Director
         return fromString(name, DirectoryServiceOptions.class);
     }
 
-    /** @return known DirectoryServiceOptions values. */
+    /**
+     * Gets known DirectoryServiceOptions values.
+     *
+     * @return known DirectoryServiceOptions values.
+     */
     public static Collection<DirectoryServiceOptions> values() {
         return values(DirectoryServiceOptions.class);
     }

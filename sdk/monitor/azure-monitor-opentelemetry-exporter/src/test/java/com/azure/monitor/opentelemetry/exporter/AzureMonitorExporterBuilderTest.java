@@ -3,6 +3,8 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -14,15 +16,19 @@ import java.util.stream.Stream;
  * Unit tests for {@link AzureMonitorExporterBuilder}.
  */
 public class AzureMonitorExporterBuilderTest {
-
     @ParameterizedTest
     @MethodSource("getInvalidConnectionStrings")
-    public <T extends RuntimeException> void testInvalidConnectionStrings(String connectionString,
-                                                                          Class<T> exceptionExpected) {
-        Assertions.assertThrows(exceptionExpected, () -> new AzureMonitorExporterBuilder()
-            .connectionString(connectionString)
-            .buildTraceExporter());
-
+    public <T extends RuntimeException> void testInvalidConnectionStrings(
+        String connectionString, Class<T> exceptionExpected) {
+        Assertions.assertThrows(
+            exceptionExpected,
+            () -> {
+                AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+                new AzureMonitorExporterBuilder()
+                    .connectionString(connectionString)
+                    .build(sdkBuilder);
+                sdkBuilder.build();
+            });
     }
 
     private static Stream<Arguments> getInvalidConnectionStrings() {
@@ -33,7 +39,6 @@ public class AzureMonitorExporterBuilderTest {
             Arguments.of("Instrumentation=iKey;IngestionEndpoint=url", IllegalArgumentException.class),
             Arguments.of("InstrumentationKey;IngestionEndpoint=url", IllegalArgumentException.class),
             Arguments.of("InstrumentationKey;IngestionEndpoint=url", IllegalArgumentException.class),
-            Arguments.of("IngestionEndpoint=url", IllegalArgumentException.class)
-        );
+            Arguments.of("IngestionEndpoint=url", IllegalArgumentException.class));
     }
 }

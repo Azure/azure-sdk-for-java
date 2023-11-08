@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The Azure Blob storage. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,36 +19,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureBlobDataset extends Dataset {
     /*
-     * The path of the Azure Blob storage. Type: string (or Expression with
-     * resultType string).
+     * The path of the Azure Blob storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
 
     /*
-     * The root of blob path. Type: string (or Expression with resultType
-     * string).
+     * The root of blob path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableRootLocation")
     private Object tableRootLocation;
 
     /*
-     * The name of the Azure Blob. Type: string (or Expression with resultType
-     * string).
+     * The name of the Azure Blob. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.fileName")
     private Object fileName;
 
     /*
-     * The start of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The start of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The end of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
@@ -62,6 +59,9 @@ public class AzureBlobDataset extends Dataset {
      */
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
+
+    /** Creates an instance of AzureBlobDataset class. */
+    public AzureBlobDataset() {}
 
     /**
      * Get the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType
@@ -206,6 +206,55 @@ public class AzureBlobDataset extends Dataset {
      */
     public AzureBlobDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

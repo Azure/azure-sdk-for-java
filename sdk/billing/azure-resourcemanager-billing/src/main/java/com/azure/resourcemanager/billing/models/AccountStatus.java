@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AccountStatus. */
+/** The current status of the billing account. */
 public final class AccountStatus extends ExpandableStringEnum<AccountStatus> {
     /** Static value Active for AccountStatus. */
     public static final AccountStatus ACTIVE = fromString("Active");
@@ -32,6 +32,15 @@ public final class AccountStatus extends ExpandableStringEnum<AccountStatus> {
     public static final AccountStatus TERMINATED = fromString("Terminated");
 
     /**
+     * Creates a new instance of AccountStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccountStatus() {
+    }
+
+    /**
      * Creates or finds a AccountStatus from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class AccountStatus extends ExpandableStringEnum<AccountStatus> {
         return fromString(name, AccountStatus.class);
     }
 
-    /** @return known AccountStatus values. */
+    /**
+     * Gets known AccountStatus values.
+     *
+     * @return known AccountStatus values.
+     */
     public static Collection<AccountStatus> values() {
         return values(AccountStatus.class);
     }

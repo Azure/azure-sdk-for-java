@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.AfdEndpointPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Properties required to create or update an endpoint. */
 @Fluent
 public final class AfdEndpointUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdEndpointUpdateParameters.class);
-
     /*
      * Endpoint tags.
      */
@@ -29,6 +25,10 @@ public final class AfdEndpointUpdateParameters {
      */
     @JsonProperty(value = "properties")
     private AfdEndpointPropertiesUpdateParameters innerProperties;
+
+    /** Creates an instance of AfdEndpointUpdateParameters class. */
+    public AfdEndpointUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Endpoint tags.

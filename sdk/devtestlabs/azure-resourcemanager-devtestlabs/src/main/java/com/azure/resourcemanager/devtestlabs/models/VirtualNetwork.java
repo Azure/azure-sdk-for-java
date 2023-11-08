@@ -119,6 +119,13 @@ public interface VirtualNetwork {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.VirtualNetworkInner object.
      *
      * @return the inner object.
@@ -132,11 +139,13 @@ public interface VirtualNetwork {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The VirtualNetwork definition stages. */
     interface DefinitionStages {
         /** The first stage of the VirtualNetwork definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -155,6 +164,7 @@ public interface VirtualNetwork {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -166,6 +176,7 @@ public interface VirtualNetwork {
              */
             WithCreate withExistingLab(String resourceGroupName, String labName);
         }
+
         /**
          * The stage of the VirtualNetwork definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -191,6 +202,7 @@ public interface VirtualNetwork {
              */
             VirtualNetwork create(Context context);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -201,6 +213,7 @@ public interface VirtualNetwork {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify allowedSubnets. */
         interface WithAllowedSubnets {
             /**
@@ -211,6 +224,7 @@ public interface VirtualNetwork {
              */
             WithCreate withAllowedSubnets(List<Subnet> allowedSubnets);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -221,6 +235,7 @@ public interface VirtualNetwork {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify externalProviderResourceId. */
         interface WithExternalProviderResourceId {
             /**
@@ -232,6 +247,7 @@ public interface VirtualNetwork {
              */
             WithCreate withExternalProviderResourceId(String externalProviderResourceId);
         }
+
         /** The stage of the VirtualNetwork definition allowing to specify subnetOverrides. */
         interface WithSubnetOverrides {
             /**
@@ -243,6 +259,7 @@ public interface VirtualNetwork {
             WithCreate withSubnetOverrides(List<SubnetOverride> subnetOverrides);
         }
     }
+
     /**
      * Begins update for the VirtualNetwork resource.
      *
@@ -267,6 +284,7 @@ public interface VirtualNetwork {
          */
         VirtualNetwork apply(Context context);
     }
+
     /** The VirtualNetwork update stages. */
     interface UpdateStages {
         /** The stage of the VirtualNetwork update allowing to specify tags. */
@@ -280,6 +298,7 @@ public interface VirtualNetwork {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

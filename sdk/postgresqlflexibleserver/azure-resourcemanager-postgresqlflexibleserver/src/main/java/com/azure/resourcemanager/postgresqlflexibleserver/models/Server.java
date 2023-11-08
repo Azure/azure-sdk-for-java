@@ -56,7 +56,14 @@ public interface Server {
     Sku sku();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
+     * Gets the identity property: Describes the identity of the application.
+     *
+     * @return the identity value.
+     */
+    UserAssignedIdentity identity();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -113,6 +120,20 @@ public interface Server {
     Storage storage();
 
     /**
+     * Gets the authConfig property: AuthConfig properties of a server.
+     *
+     * @return the authConfig value.
+     */
+    AuthConfig authConfig();
+
+    /**
+     * Gets the dataEncryption property: Data encryption properties of a server.
+     *
+     * @return the dataEncryption value.
+     */
+    DataEncryption dataEncryption();
+
+    /**
      * Gets the backup property: Backup properties of a server.
      *
      * @return the backup value.
@@ -120,7 +141,8 @@ public interface Server {
     Backup backup();
 
     /**
-     * Gets the network property: Network properties of a server.
+     * Gets the network property: Network properties of a server. This Network property is required to be passed only in
+     * case you want the server to be Private access server.
      *
      * @return the network value.
      */
@@ -142,7 +164,8 @@ public interface Server {
 
     /**
      * Gets the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for Replica
+     * server.
      *
      * @return the sourceServerResourceId value.
      */
@@ -150,7 +173,7 @@ public interface Server {
 
     /**
      * Gets the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -164,18 +187,25 @@ public interface Server {
     String availabilityZone();
 
     /**
+     * Gets the replicationRole property: Replication role of the server.
+     *
+     * @return the replicationRole value.
+     */
+    ReplicationRole replicationRole();
+
+    /**
+     * Gets the replicaCapacity property: Replicas allowed for a server.
+     *
+     * @return the replicaCapacity value.
+     */
+    Integer replicaCapacity();
+
+    /**
      * Gets the createMode property: The mode to create a new PostgreSQL server.
      *
      * @return the createMode value.
      */
     CreateMode createMode();
-
-    /**
-     * Gets the tagsPropertiesTags property: Application-specific metadata in the form of key-value pairs.
-     *
-     * @return the tagsPropertiesTags value.
-     */
-    Map<String, String> tagsPropertiesTags();
 
     /**
      * Gets the region of the resource.
@@ -192,6 +222,13 @@ public interface Server {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner object.
      *
      * @return the inner object.
@@ -205,11 +242,13 @@ public interface Server {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Server definition stages. */
     interface DefinitionStages {
         /** The first stage of the Server definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Server definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -228,6 +267,7 @@ public interface Server {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Server definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -238,6 +278,7 @@ public interface Server {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Server definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -245,18 +286,21 @@ public interface Server {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithSku,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithAdministratorLogin,
                 DefinitionStages.WithAdministratorLoginPassword,
                 DefinitionStages.WithVersion,
                 DefinitionStages.WithStorage,
+                DefinitionStages.WithAuthConfig,
+                DefinitionStages.WithDataEncryption,
                 DefinitionStages.WithBackup,
                 DefinitionStages.WithNetwork,
                 DefinitionStages.WithHighAvailability,
                 DefinitionStages.WithSourceServerResourceId,
                 DefinitionStages.WithPointInTimeUtc,
                 DefinitionStages.WithAvailabilityZone,
-                DefinitionStages.WithCreateMode,
-                DefinitionStages.WithTagsPropertiesTags {
+                DefinitionStages.WithReplicationRole,
+                DefinitionStages.WithCreateMode {
             /**
              * Executes the create request.
              *
@@ -272,6 +316,7 @@ public interface Server {
              */
             Server create(Context context);
         }
+
         /** The stage of the Server definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -282,6 +327,7 @@ public interface Server {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Server definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -292,6 +338,18 @@ public interface Server {
              */
             WithCreate withSku(Sku sku);
         }
+
+        /** The stage of the Server definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Describes the identity of the application..
+             *
+             * @param identity Describes the identity of the application.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(UserAssignedIdentity identity);
+        }
+
         /** The stage of the Server definition allowing to specify administratorLogin. */
         interface WithAdministratorLogin {
             /**
@@ -304,6 +362,7 @@ public interface Server {
              */
             WithCreate withAdministratorLogin(String administratorLogin);
         }
+
         /** The stage of the Server definition allowing to specify administratorLoginPassword. */
         interface WithAdministratorLoginPassword {
             /**
@@ -315,6 +374,7 @@ public interface Server {
              */
             WithCreate withAdministratorLoginPassword(String administratorLoginPassword);
         }
+
         /** The stage of the Server definition allowing to specify version. */
         interface WithVersion {
             /**
@@ -325,6 +385,7 @@ public interface Server {
              */
             WithCreate withVersion(ServerVersion version);
         }
+
         /** The stage of the Server definition allowing to specify storage. */
         interface WithStorage {
             /**
@@ -335,6 +396,29 @@ public interface Server {
              */
             WithCreate withStorage(Storage storage);
         }
+
+        /** The stage of the Server definition allowing to specify authConfig. */
+        interface WithAuthConfig {
+            /**
+             * Specifies the authConfig property: AuthConfig properties of a server..
+             *
+             * @param authConfig AuthConfig properties of a server.
+             * @return the next definition stage.
+             */
+            WithCreate withAuthConfig(AuthConfig authConfig);
+        }
+
+        /** The stage of the Server definition allowing to specify dataEncryption. */
+        interface WithDataEncryption {
+            /**
+             * Specifies the dataEncryption property: Data encryption properties of a server..
+             *
+             * @param dataEncryption Data encryption properties of a server.
+             * @return the next definition stage.
+             */
+            WithCreate withDataEncryption(DataEncryption dataEncryption);
+        }
+
         /** The stage of the Server definition allowing to specify backup. */
         interface WithBackup {
             /**
@@ -345,16 +429,20 @@ public interface Server {
              */
             WithCreate withBackup(Backup backup);
         }
+
         /** The stage of the Server definition allowing to specify network. */
         interface WithNetwork {
             /**
-             * Specifies the network property: Network properties of a server..
+             * Specifies the network property: Network properties of a server. This Network property is required to be
+             * passed only in case you want the server to be Private access server..
              *
-             * @param network Network properties of a server.
+             * @param network Network properties of a server. This Network property is required to be passed only in
+             *     case you want the server to be Private access server.
              * @return the next definition stage.
              */
             WithCreate withNetwork(Network network);
         }
+
         /** The stage of the Server definition allowing to specify highAvailability. */
         interface WithHighAvailability {
             /**
@@ -365,30 +453,35 @@ public interface Server {
              */
             WithCreate withHighAvailability(HighAvailability highAvailability);
         }
+
         /** The stage of the Server definition allowing to specify sourceServerResourceId. */
         interface WithSourceServerResourceId {
             /**
              * Specifies the sourceServerResourceId property: The source server resource ID to restore from. It's
-             * required when 'createMode' is 'PointInTimeRestore'..
+             * required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is
+             * returned only for Replica server.
              *
              * @param sourceServerResourceId The source server resource ID to restore from. It's required when
-             *     'createMode' is 'PointInTimeRestore'.
+             *     'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for
+             *     Replica server.
              * @return the next definition stage.
              */
             WithCreate withSourceServerResourceId(String sourceServerResourceId);
         }
+
         /** The stage of the Server definition allowing to specify pointInTimeUtc. */
         interface WithPointInTimeUtc {
             /**
              * Specifies the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time
-             * to restore from. It's required when 'createMode' is 'PointInTimeRestore'..
+             * to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'..
              *
              * @param pointInTimeUtc Restore point creation time (ISO8601 format), specifying the time to restore from.
-             *     It's required when 'createMode' is 'PointInTimeRestore'.
+             *     It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
              * @return the next definition stage.
              */
             WithCreate withPointInTimeUtc(OffsetDateTime pointInTimeUtc);
         }
+
         /** The stage of the Server definition allowing to specify availabilityZone. */
         interface WithAvailabilityZone {
             /**
@@ -399,6 +492,18 @@ public interface Server {
              */
             WithCreate withAvailabilityZone(String availabilityZone);
         }
+
+        /** The stage of the Server definition allowing to specify replicationRole. */
+        interface WithReplicationRole {
+            /**
+             * Specifies the replicationRole property: Replication role of the server.
+             *
+             * @param replicationRole Replication role of the server.
+             * @return the next definition stage.
+             */
+            WithCreate withReplicationRole(ReplicationRole replicationRole);
+        }
+
         /** The stage of the Server definition allowing to specify createMode. */
         interface WithCreateMode {
             /**
@@ -409,17 +514,8 @@ public interface Server {
              */
             WithCreate withCreateMode(CreateMode createMode);
         }
-        /** The stage of the Server definition allowing to specify tagsPropertiesTags. */
-        interface WithTagsPropertiesTags {
-            /**
-             * Specifies the tagsPropertiesTags property: Application-specific metadata in the form of key-value pairs..
-             *
-             * @param tagsPropertiesTags Application-specific metadata in the form of key-value pairs.
-             * @return the next definition stage.
-             */
-            WithCreate withTagsPropertiesTags(Map<String, String> tagsPropertiesTags);
-        }
     }
+
     /**
      * Begins update for the Server resource.
      *
@@ -431,12 +527,18 @@ public interface Server {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithSku,
+            UpdateStages.WithIdentity,
             UpdateStages.WithAdministratorLoginPassword,
+            UpdateStages.WithVersion,
             UpdateStages.WithStorage,
             UpdateStages.WithBackup,
             UpdateStages.WithHighAvailability,
             UpdateStages.WithMaintenanceWindow,
-            UpdateStages.WithCreateMode {
+            UpdateStages.WithAuthConfig,
+            UpdateStages.WithDataEncryption,
+            UpdateStages.WithCreateMode,
+            UpdateStages.WithReplicationRole,
+            UpdateStages.WithNetwork {
         /**
          * Executes the update request.
          *
@@ -452,6 +554,7 @@ public interface Server {
          */
         Server apply(Context context);
     }
+
     /** The Server update stages. */
     interface UpdateStages {
         /** The stage of the Server update allowing to specify tags. */
@@ -464,6 +567,7 @@ public interface Server {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Server update allowing to specify sku. */
         interface WithSku {
             /**
@@ -474,6 +578,18 @@ public interface Server {
              */
             Update withSku(Sku sku);
         }
+
+        /** The stage of the Server update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Describes the identity of the application..
+             *
+             * @param identity Describes the identity of the application.
+             * @return the next definition stage.
+             */
+            Update withIdentity(UserAssignedIdentity identity);
+        }
+
         /** The stage of the Server update allowing to specify administratorLoginPassword. */
         interface WithAdministratorLoginPassword {
             /**
@@ -484,6 +600,18 @@ public interface Server {
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
         }
+
+        /** The stage of the Server update allowing to specify version. */
+        interface WithVersion {
+            /**
+             * Specifies the version property: PostgreSQL Server version..
+             *
+             * @param version PostgreSQL Server version.
+             * @return the next definition stage.
+             */
+            Update withVersion(ServerVersion version);
+        }
+
         /** The stage of the Server update allowing to specify storage. */
         interface WithStorage {
             /**
@@ -494,6 +622,7 @@ public interface Server {
              */
             Update withStorage(Storage storage);
         }
+
         /** The stage of the Server update allowing to specify backup. */
         interface WithBackup {
             /**
@@ -504,6 +633,7 @@ public interface Server {
              */
             Update withBackup(Backup backup);
         }
+
         /** The stage of the Server update allowing to specify highAvailability. */
         interface WithHighAvailability {
             /**
@@ -514,6 +644,7 @@ public interface Server {
              */
             Update withHighAvailability(HighAvailability highAvailability);
         }
+
         /** The stage of the Server update allowing to specify maintenanceWindow. */
         interface WithMaintenanceWindow {
             /**
@@ -524,6 +655,29 @@ public interface Server {
              */
             Update withMaintenanceWindow(MaintenanceWindow maintenanceWindow);
         }
+
+        /** The stage of the Server update allowing to specify authConfig. */
+        interface WithAuthConfig {
+            /**
+             * Specifies the authConfig property: AuthConfig properties of a server..
+             *
+             * @param authConfig AuthConfig properties of a server.
+             * @return the next definition stage.
+             */
+            Update withAuthConfig(AuthConfig authConfig);
+        }
+
+        /** The stage of the Server update allowing to specify dataEncryption. */
+        interface WithDataEncryption {
+            /**
+             * Specifies the dataEncryption property: Data encryption properties of a server..
+             *
+             * @param dataEncryption Data encryption properties of a server.
+             * @return the next definition stage.
+             */
+            Update withDataEncryption(DataEncryption dataEncryption);
+        }
+
         /** The stage of the Server update allowing to specify createMode. */
         interface WithCreateMode {
             /**
@@ -534,7 +688,32 @@ public interface Server {
              */
             Update withCreateMode(CreateModeForUpdate createMode);
         }
+
+        /** The stage of the Server update allowing to specify replicationRole. */
+        interface WithReplicationRole {
+            /**
+             * Specifies the replicationRole property: Replication role of the server.
+             *
+             * @param replicationRole Replication role of the server.
+             * @return the next definition stage.
+             */
+            Update withReplicationRole(ReplicationRole replicationRole);
+        }
+
+        /** The stage of the Server update allowing to specify network. */
+        interface WithNetwork {
+            /**
+             * Specifies the network property: Network properties of a server. These are required to be passed only in
+             * case if server is a private access server..
+             *
+             * @param network Network properties of a server. These are required to be passed only in case if server is
+             *     a private access server.
+             * @return the next definition stage.
+             */
+            Update withNetwork(Network network);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -549,16 +728,6 @@ public interface Server {
      * @return the refreshed resource.
      */
     Server refresh(Context context);
-
-    /**
-     * Restarts a server.
-     *
-     * @param parameters The parameters for restarting a server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void restart(RestartParameter parameters);
 
     /**
      * Restarts a server.

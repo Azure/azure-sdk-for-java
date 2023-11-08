@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.OperationMetaServiceSpecification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** What is this?. */
 @Fluent
 public final class OperationMetaPropertyInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetaPropertyInfo.class);
-
     /*
      * Operation service specification
      */
     @JsonProperty(value = "serviceSpecification")
     private OperationMetaServiceSpecification serviceSpecification;
+
+    /** Creates an instance of OperationMetaPropertyInfo class. */
+    public OperationMetaPropertyInfo() {
+    }
 
     /**
      * Get the serviceSpecification property: Operation service specification.

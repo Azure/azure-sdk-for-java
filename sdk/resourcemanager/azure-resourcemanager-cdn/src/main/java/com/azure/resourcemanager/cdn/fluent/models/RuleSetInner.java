@@ -4,31 +4,24 @@
 
 package com.azure.resourcemanager.cdn.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Friendly RuleSet name mapping to the any RuleSet or secret related information. */
-@Fluent
+@Immutable
 public final class RuleSetInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleSetInner.class);
-
     /*
      * The JSON object that contains the properties of the Rule Set to create.
      */
     @JsonProperty(value = "properties")
     private RuleSetProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of RuleSetInner class. */
+    public RuleSetInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the Rule Set to create.
@@ -37,15 +30,6 @@ public final class RuleSetInner extends ProxyResource {
      */
     private RuleSetProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

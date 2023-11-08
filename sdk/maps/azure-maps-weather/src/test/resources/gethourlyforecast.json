@@ -1,0 +1,1012 @@
+{
+    "forecasts": [
+        {
+            "date": "2022-03-23T12:00:00-07:00",
+            "iconCode": 7,
+            "iconPhrase": "Cloudy",
+            "hasPrecipitation": false,
+            "isDaylight": true,
+            "temperature": {
+                "value": 12.8,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 11.8,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 11.2,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 9.5,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 202.0,
+                    "localizedDescription": "SSW"
+                },
+                "speed": {
+                    "value": 13.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 24.1,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 80,
+            "visibility": {
+                "value": 16.1,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 95,
+            "ceiling": {
+                "value": 610.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 1,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 49,
+            "rainProbability": 49,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T13:00:00-07:00",
+            "iconCode": 12,
+            "iconPhrase": "Showers",
+            "hasPrecipitation": true,
+            "precipitationType": "Rain",
+            "precipitationIntensity": "Light",
+            "isDaylight": true,
+            "temperature": {
+                "value": 12.5,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 10.2,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 10.7,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 8.9,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 207.0,
+                    "localizedDescription": "SSW"
+                },
+                "speed": {
+                    "value": 13.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 27.8,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 78,
+            "visibility": {
+                "value": 9.7,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 100,
+            "ceiling": {
+                "value": 610.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 1,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 51,
+            "rainProbability": 51,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 0.1,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 0.1,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T14:00:00-07:00",
+            "iconCode": 18,
+            "iconPhrase": "Rain",
+            "hasPrecipitation": true,
+            "precipitationType": "Rain",
+            "precipitationIntensity": "Light",
+            "isDaylight": true,
+            "temperature": {
+                "value": 12.1,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 9.3,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 10.3,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 8.5,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 214.0,
+                    "localizedDescription": "SW"
+                },
+                "speed": {
+                    "value": 13.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 25.9,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 79,
+            "visibility": {
+                "value": 9.7,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 100,
+            "ceiling": {
+                "value": 610.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 1,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 75,
+            "rainProbability": 75,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 1.1,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 1.1,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T15:00:00-07:00",
+            "iconCode": 18,
+            "iconPhrase": "Rain",
+            "hasPrecipitation": true,
+            "precipitationType": "Rain",
+            "precipitationIntensity": "Light",
+            "isDaylight": true,
+            "temperature": {
+                "value": 12.0,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 9.1,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 10.1,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 8.1,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 225.0,
+                    "localizedDescription": "SW"
+                },
+                "speed": {
+                    "value": 13.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 20.4,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 77,
+            "visibility": {
+                "value": 9.7,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 97,
+            "ceiling": {
+                "value": 762.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 1,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 75,
+            "rainProbability": 75,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 1.1,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 1.1,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T16:00:00-07:00",
+            "iconCode": 7,
+            "iconPhrase": "Cloudy",
+            "hasPrecipitation": false,
+            "isDaylight": true,
+            "temperature": {
+                "value": 11.7,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 10.9,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 9.6,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 7.4,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 252.0,
+                    "localizedDescription": "WSW"
+                },
+                "speed": {
+                    "value": 11.1,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 13.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 75,
+            "visibility": {
+                "value": 16.1,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 93,
+            "ceiling": {
+                "value": 945.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 1,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 49,
+            "rainProbability": 49,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T17:00:00-07:00",
+            "iconCode": 18,
+            "iconPhrase": "Rain",
+            "hasPrecipitation": true,
+            "precipitationType": "Rain",
+            "precipitationIntensity": "Light",
+            "isDaylight": true,
+            "temperature": {
+                "value": 11.0,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 8.8,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 8.8,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 6.3,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 331.0,
+                    "localizedDescription": "NNW"
+                },
+                "speed": {
+                    "value": 9.3,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 11.1,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 73,
+            "visibility": {
+                "value": 9.7,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 90,
+            "ceiling": {
+                "value": 1128.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 0,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 66,
+            "rainProbability": 66,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 1.1,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 1.1,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T18:00:00-07:00",
+            "iconCode": 18,
+            "iconPhrase": "Rain",
+            "hasPrecipitation": true,
+            "precipitationType": "Rain",
+            "precipitationIntensity": "Light",
+            "isDaylight": true,
+            "temperature": {
+                "value": 10.4,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 7.8,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 8.2,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 5.6,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 19.0,
+                    "localizedDescription": "NNE"
+                },
+                "speed": {
+                    "value": 9.3,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 11.1,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 72,
+            "visibility": {
+                "value": 9.7,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 86,
+            "ceiling": {
+                "value": 2225.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 0,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 66,
+            "rainProbability": 66,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 1.1,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 1.1,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T19:00:00-07:00",
+            "iconCode": 6,
+            "iconPhrase": "Mostly cloudy",
+            "hasPrecipitation": false,
+            "isDaylight": true,
+            "temperature": {
+                "value": 9.1,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 7.6,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 7.5,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 5.4,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 52.0,
+                    "localizedDescription": "NE"
+                },
+                "speed": {
+                    "value": 9.3,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 13.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 78,
+            "visibility": {
+                "value": 16.1,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 83,
+            "ceiling": {
+                "value": 3353.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 0,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 49,
+            "rainProbability": 49,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T20:00:00-07:00",
+            "iconCode": 38,
+            "iconPhrase": "Mostly cloudy",
+            "hasPrecipitation": false,
+            "isDaylight": false,
+            "temperature": {
+                "value": 8.3,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 6.8,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 6.9,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 5.0,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 62.0,
+                    "localizedDescription": "ENE"
+                },
+                "speed": {
+                    "value": 9.3,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 13.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 79,
+            "visibility": {
+                "value": 16.1,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 80,
+            "ceiling": {
+                "value": 4481.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 0,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 47,
+            "rainProbability": 47,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T21:00:00-07:00",
+            "iconCode": 18,
+            "iconPhrase": "Rain",
+            "hasPrecipitation": true,
+            "precipitationType": "Rain",
+            "precipitationIntensity": "Light",
+            "isDaylight": false,
+            "temperature": {
+                "value": 7.2,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 5.1,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 6.1,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 4.5,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 64.0,
+                    "localizedDescription": "ENE"
+                },
+                "speed": {
+                    "value": 9.3,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 11.1,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 83,
+            "visibility": {
+                "value": 16.1,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 76,
+            "ceiling": {
+                "value": 4481.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 0,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 51,
+            "rainProbability": 51,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 0.3,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 0.3,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T22:00:00-07:00",
+            "iconCode": 38,
+            "iconPhrase": "Mostly cloudy",
+            "hasPrecipitation": false,
+            "isDaylight": false,
+            "temperature": {
+                "value": 7.0,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 6.5,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 6.1,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 4.7,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 70.0,
+                    "localizedDescription": "ENE"
+                },
+                "speed": {
+                    "value": 7.4,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 9.3,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 85,
+            "visibility": {
+                "value": 16.1,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 76,
+            "ceiling": {
+                "value": 4481.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 0,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 47,
+            "rainProbability": 47,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        },
+        {
+            "date": "2022-03-23T23:00:00-07:00",
+            "iconCode": 38,
+            "iconPhrase": "Mostly cloudy",
+            "hasPrecipitation": false,
+            "isDaylight": false,
+            "temperature": {
+                "value": 6.5,
+                "unit": "C",
+                "unitType": 17
+            },
+            "realFeelTemperature": {
+                "value": 6.3,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wetBulbTemperature": {
+                "value": 5.7,
+                "unit": "C",
+                "unitType": 17
+            },
+            "dewPoint": {
+                "value": 4.5,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 78.0,
+                    "localizedDescription": "ENE"
+                },
+                "speed": {
+                    "value": 7.4,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 7.4,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "relativeHumidity": 87,
+            "visibility": {
+                "value": 16.1,
+                "unit": "km",
+                "unitType": 6
+            },
+            "cloudCover": 76,
+            "ceiling": {
+                "value": 4481.0,
+                "unit": "m",
+                "unitType": 5
+            },
+            "uvIndex": 0,
+            "uvIndexPhrase": "Low",
+            "precipitationProbability": 34,
+            "rainProbability": 34,
+            "snowProbability": 0,
+            "iceProbability": 0,
+            "totalLiquid": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "rain": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            },
+            "snow": {
+                "value": 0.0,
+                "unit": "cm",
+                "unitType": 4
+            },
+            "ice": {
+                "value": 0.0,
+                "unit": "mm",
+                "unitType": 3
+            }
+        }
+    ]
+}

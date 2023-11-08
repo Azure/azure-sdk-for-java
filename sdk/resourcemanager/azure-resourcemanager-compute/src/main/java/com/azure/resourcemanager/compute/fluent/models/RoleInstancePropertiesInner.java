@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.RoleInstanceNetworkProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RoleInstanceProperties model. */
+/** Role instance properties. */
 @Fluent
 public final class RoleInstancePropertiesInner {
     /*
@@ -22,6 +22,10 @@ public final class RoleInstancePropertiesInner {
      */
     @JsonProperty(value = "instanceView")
     private RoleInstanceViewInner instanceView;
+
+    /** Creates an instance of RoleInstancePropertiesInner class. */
+    public RoleInstancePropertiesInner() {
+    }
 
     /**
      * Get the networkProfile property: Describes the network profile for the role instance.

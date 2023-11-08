@@ -26,64 +26,57 @@ public final class DiskUpdateProperties {
     private OperatingSystemTypes osType;
 
     /*
-     * If creationData.createOption is Empty, this field is mandatory and it
-     * indicates the size of the disk to create. If this field is present for
-     * updates or creation with other options, it indicates a resize. Resizes
-     * are only allowed if the disk is not attached to a running VM, and can
-     * only increase the disk's size.
+     * If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create.
+     * If this field is present for updates or creation with other options, it indicates a resize. Resizes are only
+     * allowed if the disk is not attached to a running VM, and can only increase the disk's size.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
-     * Encryption settings collection used be Azure Disk Encryption, can
-     * contain multiple encryption settings per disk or snapshot.
+     * Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk
+     * or snapshot.
      */
     @JsonProperty(value = "encryptionSettingsCollection")
     private EncryptionSettingsCollection encryptionSettingsCollection;
 
     /*
-     * The number of IOPS allowed for this disk; only settable for UltraSSD
-     * disks. One operation can transfer between 4k and 256k bytes.
+     * The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between
+     * 4k and 256k bytes.
      */
     @JsonProperty(value = "diskIOPSReadWrite")
     private Long diskIopsReadWrite;
 
     /*
-     * The bandwidth allowed for this disk; only settable for UltraSSD disks.
-     * MBps means millions of bytes per second - MB here uses the ISO notation,
-     * of powers of 10.
+     * The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second -
+     * MB here uses the ISO notation, of powers of 10.
      */
     @JsonProperty(value = "diskMBpsReadWrite")
     private Long diskMBpsReadWrite;
 
     /*
-     * The total number of IOPS that will be allowed across all VMs mounting
-     * the shared disk as ReadOnly. One operation can transfer between 4k and
-     * 256k bytes.
+     * The total number of IOPS that will be allowed across all VMs mounting the shared disk as ReadOnly. One operation
+     * can transfer between 4k and 256k bytes.
      */
     @JsonProperty(value = "diskIOPSReadOnly")
     private Long diskIopsReadOnly;
 
     /*
-     * The total throughput (MBps) that will be allowed across all VMs mounting
-     * the shared disk as ReadOnly. MBps means millions of bytes per second -
-     * MB here uses the ISO notation, of powers of 10.
+     * The total throughput (MBps) that will be allowed across all VMs mounting the shared disk as ReadOnly. MBps means
+     * millions of bytes per second - MB here uses the ISO notation, of powers of 10.
      */
     @JsonProperty(value = "diskMBpsReadOnly")
     private Long diskMBpsReadOnly;
 
     /*
-     * The maximum number of VMs that can attach to the disk at the same time.
-     * Value greater than one indicates a disk that can be mounted on multiple
-     * VMs at the same time.
+     * The maximum number of VMs that can attach to the disk at the same time. Value greater than one indicates a disk
+     * that can be mounted on multiple VMs at the same time.
      */
     @JsonProperty(value = "maxShares")
     private Integer maxShares;
 
     /*
-     * Encryption property can be used to encrypt data at rest with customer
-     * managed keys or platform managed keys.
+     * Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
      */
     @JsonProperty(value = "encryption")
     private Encryption encryption;
@@ -102,16 +95,14 @@ public final class DiskUpdateProperties {
 
     /*
      * Performance tier of the disk (e.g, P4, S10) as described here:
-     * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does
-     * not apply to Ultra disks.
+     * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra disks.
      */
     @JsonProperty(value = "tier")
     private String tier;
 
     /*
-     * Set to true to enable bursting beyond the provisioned performance target
-     * of the disk. Bursting is disabled by default. Does not apply to Ultra
-     * disks.
+     * Set to true to enable bursting beyond the provisioned performance target of the disk. Bursting is disabled by
+     * default. Does not apply to Ultra disks.
      */
     @JsonProperty(value = "burstingEnabled")
     private Boolean burstingEnabled;
@@ -147,11 +138,23 @@ public final class DiskUpdateProperties {
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Additional authentication requirements when exporting or uploading to a disk or snapshot.
      */
     @JsonProperty(value = "dataAccessAuthMode")
     private DataAccessAuthMode dataAccessAuthMode;
+
+    /*
+     * Setting this property to true improves reliability and performance of data disks that are frequently (more than
+     * 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for
+     * disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of
+     * the virtual machine.
+     */
+    @JsonProperty(value = "optimizedForFrequentAttach")
+    private Boolean optimizedForFrequentAttach;
+
+    /** Creates an instance of DiskUpdateProperties class. */
+    public DiskUpdateProperties() {
+    }
 
     /**
      * Get the osType property: the Operating System type.
@@ -548,6 +551,32 @@ public final class DiskUpdateProperties {
      */
     public DiskUpdateProperties withDataAccessAuthMode(DataAccessAuthMode dataAccessAuthMode) {
         this.dataAccessAuthMode = dataAccessAuthMode;
+        return this;
+    }
+
+    /**
+     * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @return the optimizedForFrequentAttach value.
+     */
+    public Boolean optimizedForFrequentAttach() {
+        return this.optimizedForFrequentAttach;
+    }
+
+    /**
+     * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
+     * @return the DiskUpdateProperties object itself.
+     */
+    public DiskUpdateProperties withOptimizedForFrequentAttach(Boolean optimizedForFrequentAttach) {
+        this.optimizedForFrequentAttach = optimizedForFrequentAttach;
         return this;
     }
 

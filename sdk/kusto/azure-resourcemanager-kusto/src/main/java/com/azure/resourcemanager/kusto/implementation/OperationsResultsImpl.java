@@ -12,10 +12,9 @@ import com.azure.resourcemanager.kusto.fluent.OperationsResultsClient;
 import com.azure.resourcemanager.kusto.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.kusto.models.OperationResult;
 import com.azure.resourcemanager.kusto.models.OperationsResults;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsResultsImpl implements OperationsResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsResultsImpl.class);
 
     private final OperationsResultsClient innerClient;
 
@@ -27,15 +26,6 @@ public final class OperationsResultsImpl implements OperationsResults {
         this.serviceManager = serviceManager;
     }
 
-    public OperationResult get(String location, String operationId) {
-        OperationResultInner inner = this.serviceClient().get(location, operationId);
-        if (inner != null) {
-            return new OperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OperationResult> getWithResponse(String location, String operationId, Context context) {
         Response<OperationResultInner> inner = this.serviceClient().getWithResponse(location, operationId, context);
         if (inner != null) {
@@ -44,6 +34,15 @@ public final class OperationsResultsImpl implements OperationsResults {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationResult get(String location, String operationId) {
+        OperationResultInner inner = this.serviceClient().get(location, operationId);
+        if (inner != null) {
+            return new OperationResultImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -4,23 +4,23 @@
 
 package com.azure.resourcemanager.synapse.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A recoverable sql pool. */
-@Fluent
+@Immutable
 public final class RecoverableSqlPoolInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableSqlPoolInner.class);
-
     /*
      * The properties of a recoverable sql pool
      */
     @JsonProperty(value = "properties")
     private RecoverableSqlPoolProperties innerProperties;
+
+    /** Creates an instance of RecoverableSqlPoolInner class. */
+    public RecoverableSqlPoolInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a recoverable sql pool.

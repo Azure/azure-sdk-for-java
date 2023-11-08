@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class for CheckServiceProviderAvailabilityInput. */
 @Fluent
 public final class CheckServiceProviderAvailabilityInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckServiceProviderAvailabilityInput.class);
-
     /*
      * Gets or sets the peering service location.
      */
@@ -25,6 +21,10 @@ public final class CheckServiceProviderAvailabilityInput {
      */
     @JsonProperty(value = "peeringServiceProvider")
     private String peeringServiceProvider;
+
+    /** Creates an instance of CheckServiceProviderAvailabilityInput class. */
+    public CheckServiceProviderAvailabilityInput() {
+    }
 
     /**
      * Get the peeringServiceLocation property: Gets or sets the peering service location.

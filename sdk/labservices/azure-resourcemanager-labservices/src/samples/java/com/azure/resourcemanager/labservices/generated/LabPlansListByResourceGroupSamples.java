@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LabPlans ListByResourceGroup. */
 public final class LabPlansListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/LabPlans/listResourceGroupLabPlans.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/LabPlans/listResourceGroupLabPlans.json
      */
     /**
      * Sample code: listResourceGroupLabPlans.

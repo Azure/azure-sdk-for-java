@@ -5,44 +5,31 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.trafficmanager.models.Region;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing the Geographic hierarchy used with the Geographic traffic routing method. */
-@JsonFlatten
 @Fluent
-public class TrafficManagerGeographicHierarchyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficManagerGeographicHierarchyInner.class);
-
+public final class TrafficManagerGeographicHierarchyInner extends ProxyResource {
     /*
-     * The region at the root of the hierarchy from all the regions in the
-     * hierarchy can be retrieved.
+     * The properties of the Geographic Hierarchy resource.
      */
-    @JsonProperty(value = "properties.geographicHierarchy")
-    private Region geographicHierarchy;
+    @JsonProperty(value = "properties")
+    private GeographicHierarchyProperties innerProperties;
 
-    /*
-     * Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
-     */
-    @JsonProperty(value = "id")
-    private String id;
+    /** Creates an instance of TrafficManagerGeographicHierarchyInner class. */
+    public TrafficManagerGeographicHierarchyInner() {
+    }
 
-    /*
-     * The name of the resource
+    /**
+     * Get the innerProperties property: The properties of the Geographic Hierarchy resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /*
-     * The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     */
-    @JsonProperty(value = "type")
-    private String type;
+    private GeographicHierarchyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the geographicHierarchy property: The region at the root of the hierarchy from all the regions in the
@@ -51,7 +38,7 @@ public class TrafficManagerGeographicHierarchyInner extends ProxyResource {
      * @return the geographicHierarchy value.
      */
     public Region geographicHierarchy() {
-        return this.geographicHierarchy;
+        return this.innerProperties() == null ? null : this.innerProperties().geographicHierarchy();
     }
 
     /**
@@ -62,69 +49,10 @@ public class TrafficManagerGeographicHierarchyInner extends ProxyResource {
      * @return the TrafficManagerGeographicHierarchyInner object itself.
      */
     public TrafficManagerGeographicHierarchyInner withGeographicHierarchy(Region geographicHierarchy) {
-        this.geographicHierarchy = geographicHierarchy;
-        return this;
-    }
-
-    /**
-     * Get the id property: Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Set the id property: Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
-     * @param id the id value to set.
-     * @return the TrafficManagerGeographicHierarchyInner object itself.
-     */
-    public TrafficManagerGeographicHierarchyInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the resource.
-     *
-     * @param name the name value to set.
-     * @return the TrafficManagerGeographicHierarchyInner object itself.
-     */
-    public TrafficManagerGeographicHierarchyInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
-     * @param type the type value to set.
-     * @return the TrafficManagerGeographicHierarchyInner object itself.
-     */
-    public TrafficManagerGeographicHierarchyInner withType(String type) {
-        this.type = type;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GeographicHierarchyProperties();
+        }
+        this.innerProperties().withGeographicHierarchy(geographicHierarchy);
         return this;
     }
 
@@ -134,8 +62,8 @@ public class TrafficManagerGeographicHierarchyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (geographicHierarchy() != null) {
-            geographicHierarchy().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

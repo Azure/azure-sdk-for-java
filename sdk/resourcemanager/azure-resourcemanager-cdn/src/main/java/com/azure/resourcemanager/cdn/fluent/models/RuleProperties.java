@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleCondition;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.MatchProcessingBehavior;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON object that contains the properties of the Rules to create. */
 @Fluent
 public final class RuleProperties extends RuleUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleProperties.class);
-
     /*
      * Provisioning status
      */
@@ -31,6 +27,10 @@ public final class RuleProperties extends RuleUpdatePropertiesParameters {
      */
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
+
+    /** Creates an instance of RuleProperties class. */
+    public RuleProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning status.

@@ -21,8 +21,7 @@ public final class SapHanaSource extends TabularSource {
     private Object query;
 
     /*
-     * The packet size of data read from SAP HANA. Type: integer(or Expression
-     * with resultType integer).
+     * The packet size of data read from SAP HANA. Type: integer(or Expression with resultType integer).
      */
     @JsonProperty(value = "packetSize")
     private Object packetSize;
@@ -38,6 +37,9 @@ public final class SapHanaSource extends TabularSource {
      */
     @JsonProperty(value = "partitionSettings")
     private SapHanaPartitionSettings partitionSettings;
+
+    /** Creates an instance of SapHanaSource class. */
+    public SapHanaSource() {}
 
     /**
      * Get the query property: SAP HANA Sql query. Type: string (or Expression with resultType string).
@@ -118,6 +120,41 @@ public final class SapHanaSource extends TabularSource {
      */
     public SapHanaSource setPartitionSettings(SapHanaPartitionSettings partitionSettings) {
         this.partitionSettings = partitionSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapHanaSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapHanaSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapHanaSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapHanaSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapHanaSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.purview.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paged list of private endpoint connections. */
 @Fluent
 public final class PrivateEndpointConnectionList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionList.class);
-
     /*
      * Total item count.
      */
@@ -33,6 +30,10 @@ public final class PrivateEndpointConnectionList {
      */
     @JsonProperty(value = "value", required = true)
     private List<PrivateEndpointConnectionInner> value;
+
+    /** Creates an instance of PrivateEndpointConnectionList class. */
+    public PrivateEndpointConnectionList() {
+    }
 
     /**
      * Get the count property: Total item count.
@@ -101,7 +102,7 @@ public final class PrivateEndpointConnectionList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model PrivateEndpointConnectionList"));
@@ -109,4 +110,6 @@ public final class PrivateEndpointConnectionList {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionList.class);
 }

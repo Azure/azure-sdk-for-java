@@ -11,10 +11,9 @@ import com.azure.resourcemanager.databoxedge.fluent.SkusClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.ResourceTypeSkuInner;
 import com.azure.resourcemanager.databoxedge.models.ResourceTypeSku;
 import com.azure.resourcemanager.databoxedge.models.Skus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SkusImpl implements Skus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SkusImpl.class);
 
     private final SkusClient innerClient;
 

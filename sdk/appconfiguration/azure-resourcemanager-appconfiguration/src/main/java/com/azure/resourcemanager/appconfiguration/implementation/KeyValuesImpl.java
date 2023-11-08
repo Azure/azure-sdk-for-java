@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appconfiguration.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -13,10 +12,9 @@ import com.azure.resourcemanager.appconfiguration.fluent.KeyValuesClient;
 import com.azure.resourcemanager.appconfiguration.fluent.models.KeyValueInner;
 import com.azure.resourcemanager.appconfiguration.models.KeyValue;
 import com.azure.resourcemanager.appconfiguration.models.KeyValues;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KeyValuesImpl implements KeyValues {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyValuesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeyValuesImpl.class);
 
     private final KeyValuesClient innerClient;
 
@@ -27,28 +25,6 @@ public final class KeyValuesImpl implements KeyValues {
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public PagedIterable<KeyValue> listByConfigurationStore(String resourceGroupName, String configStoreName) {
-        PagedIterable<KeyValueInner> inner =
-            this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName);
-        return Utils.mapPage(inner, inner1 -> new KeyValueImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<KeyValue> listByConfigurationStore(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
-        PagedIterable<KeyValueInner> inner =
-            this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new KeyValueImpl(inner1, this.manager()));
-    }
-
-    public KeyValue get(String resourceGroupName, String configStoreName, String keyValueName) {
-        KeyValueInner inner = this.serviceClient().get(resourceGroupName, configStoreName, keyValueName);
-        if (inner != null) {
-            return new KeyValueImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<KeyValue> getWithResponse(
@@ -66,6 +42,15 @@ public final class KeyValuesImpl implements KeyValues {
         }
     }
 
+    public KeyValue get(String resourceGroupName, String configStoreName, String keyValueName) {
+        KeyValueInner inner = this.serviceClient().get(resourceGroupName, configStoreName, keyValueName);
+        if (inner != null) {
+            return new KeyValueImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String configStoreName, String keyValueName) {
         this.serviceClient().delete(resourceGroupName, configStoreName, keyValueName);
     }
@@ -77,7 +62,7 @@ public final class KeyValuesImpl implements KeyValues {
     public KeyValue getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,7 +70,7 @@ public final class KeyValuesImpl implements KeyValues {
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +79,7 @@ public final class KeyValuesImpl implements KeyValues {
         }
         String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
@@ -105,7 +90,7 @@ public final class KeyValuesImpl implements KeyValues {
     public Response<KeyValue> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,7 +98,7 @@ public final class KeyValuesImpl implements KeyValues {
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,7 +107,7 @@ public final class KeyValuesImpl implements KeyValues {
         }
         String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
@@ -133,7 +118,7 @@ public final class KeyValuesImpl implements KeyValues {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +126,7 @@ public final class KeyValuesImpl implements KeyValues {
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,7 +135,7 @@ public final class KeyValuesImpl implements KeyValues {
         }
         String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));
@@ -161,7 +146,7 @@ public final class KeyValuesImpl implements KeyValues {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +154,7 @@ public final class KeyValuesImpl implements KeyValues {
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,7 +163,7 @@ public final class KeyValuesImpl implements KeyValues {
         }
         String keyValueName = Utils.getValueFromIdByName(id, "keyValues");
         if (keyValueName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'keyValues'.", id)));

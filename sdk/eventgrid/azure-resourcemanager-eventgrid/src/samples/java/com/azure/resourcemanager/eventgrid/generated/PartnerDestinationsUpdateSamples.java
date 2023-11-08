@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestination;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for PartnerDestinations Update. */
 public final class PartnerDestinationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerDestinations_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerDestinations_Update.json
      */
     /**
      * Sample code: PartnerDestinations_Update.
@@ -23,7 +22,8 @@ public final class PartnerDestinationsUpdateSamples {
         PartnerDestination resource =
             manager
                 .partnerDestinations()
-                .getByResourceGroupWithResponse("examplerg", "examplePartnerDestinationName1", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "examplerg", "examplePartnerDestinationName1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
+import com.azure.resourcemanager.datafactory.models.PrivateEndpoint;
 import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionApprovalRequest;
 import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionState;
 
@@ -29,7 +30,11 @@ public final class PrivateEndpointConnectionOperationCreateOrUpdateSamples {
                         new PrivateLinkConnectionState()
                             .withStatus("Approved")
                             .withDescription("Approved by admin.")
-                            .withActionsRequired("")))
+                            .withActionsRequired(""))
+                    .withPrivateEndpoint(
+                        new PrivateEndpoint()
+                            .withId(
+                                "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName/privateEndpoints/myPrivateEndpoint")))
             .create();
     }
 }

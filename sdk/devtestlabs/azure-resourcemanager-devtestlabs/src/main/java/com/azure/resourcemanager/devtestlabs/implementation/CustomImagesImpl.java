@@ -13,10 +13,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.CustomImagesClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.CustomImageInner;
 import com.azure.resourcemanager.devtestlabs.models.CustomImage;
 import com.azure.resourcemanager.devtestlabs.models.CustomImages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CustomImagesImpl implements CustomImages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomImagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomImagesImpl.class);
 
     private final CustomImagesClient innerClient;
 
@@ -46,15 +45,6 @@ public final class CustomImagesImpl implements CustomImages {
         return Utils.mapPage(inner, inner1 -> new CustomImageImpl(inner1, this.manager()));
     }
 
-    public CustomImage get(String resourceGroupName, String labName, String name) {
-        CustomImageInner inner = this.serviceClient().get(resourceGroupName, labName, name);
-        if (inner != null) {
-            return new CustomImageImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CustomImage> getWithResponse(
         String resourceGroupName, String labName, String name, String expand, Context context) {
         Response<CustomImageInner> inner =
@@ -65,6 +55,15 @@ public final class CustomImagesImpl implements CustomImages {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CustomImageImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CustomImage get(String resourceGroupName, String labName, String name) {
+        CustomImageInner inner = this.serviceClient().get(resourceGroupName, labName, name);
+        if (inner != null) {
+            return new CustomImageImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -81,7 +80,7 @@ public final class CustomImagesImpl implements CustomImages {
     public CustomImage getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,14 +88,14 @@ public final class CustomImagesImpl implements CustomImages {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "customimages");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'customimages'.", id)));
@@ -108,7 +107,7 @@ public final class CustomImagesImpl implements CustomImages {
     public Response<CustomImage> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,14 +115,14 @@ public final class CustomImagesImpl implements CustomImages {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "customimages");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'customimages'.", id)));
@@ -134,7 +133,7 @@ public final class CustomImagesImpl implements CustomImages {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,14 +141,14 @@ public final class CustomImagesImpl implements CustomImages {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "customimages");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'customimages'.", id)));
@@ -160,7 +159,7 @@ public final class CustomImagesImpl implements CustomImages {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,14 +167,14 @@ public final class CustomImagesImpl implements CustomImages {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "customimages");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'customimages'.", id)));

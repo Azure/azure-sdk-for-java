@@ -7,16 +7,12 @@ package com.azure.resourcemanager.automanage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Definition of the configuration profile. */
 @Fluent
 public final class ConfigurationProfileInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationProfileInner.class);
-
     /*
      * Properties of the configuration profile.
      */
@@ -24,8 +20,7 @@ public final class ConfigurationProfileInner extends Resource {
     private ConfigurationProfileProperties properties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;

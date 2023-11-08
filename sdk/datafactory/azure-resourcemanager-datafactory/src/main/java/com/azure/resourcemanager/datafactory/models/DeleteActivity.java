@@ -23,6 +23,10 @@ public final class DeleteActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private DeleteActivityTypeProperties innerTypeProperties = new DeleteActivityTypeProperties();
 
+    /** Creates an instance of DeleteActivity class. */
+    public DeleteActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Delete activity properties.
      *
@@ -57,6 +61,20 @@ public final class DeleteActivity extends ExecutionActivity {
     @Override
     public DeleteActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

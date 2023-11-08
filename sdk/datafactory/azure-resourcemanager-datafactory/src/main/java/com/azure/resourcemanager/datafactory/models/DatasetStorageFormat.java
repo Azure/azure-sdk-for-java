@@ -48,6 +48,10 @@ public class DatasetStorageFormat {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of DatasetStorageFormat class. */
+    public DatasetStorageFormat() {
+    }
+
     /**
      * Get the serializer property: Serializer. Type: string (or Expression with resultType string).
      *

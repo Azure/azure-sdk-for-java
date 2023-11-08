@@ -28,6 +28,10 @@ public final class O365BreakOutCategoryPolicies {
     @JsonProperty(value = "default")
     private Boolean defaultProperty;
 
+    /** Creates an instance of O365BreakOutCategoryPolicies class. */
+    public O365BreakOutCategoryPolicies() {
+    }
+
     /**
      * Get the allow property: Flag to control allow category.
      *

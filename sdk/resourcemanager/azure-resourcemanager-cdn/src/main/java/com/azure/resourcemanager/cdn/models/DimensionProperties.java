@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Type of operation: get, read, delete, etc. */
 @Fluent
 public final class DimensionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DimensionProperties.class);
-
     /*
      * Name of dimension.
      */
@@ -31,6 +27,10 @@ public final class DimensionProperties {
      */
     @JsonProperty(value = "internalName")
     private String internalName;
+
+    /** Creates an instance of DimensionProperties class. */
+    public DimensionProperties() {
+    }
 
     /**
      * Get the name property: Name of dimension.

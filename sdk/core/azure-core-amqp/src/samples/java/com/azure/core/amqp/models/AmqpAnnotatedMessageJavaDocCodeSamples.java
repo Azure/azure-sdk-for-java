@@ -45,7 +45,7 @@ public class AmqpAnnotatedMessageJavaDocCodeSamples {
     public void address() {
         // BEGIN: com.azure.core.amqp.models.AmqpAddress.createAndGet
         AmqpAddress amqpAddress = new AmqpAddress("my-address");
-        // Retrieve Adderss
+        // Retrieve Address
         String address = amqpAddress.toString();
         System.out.println("Address " + address);
         // END: com.azure.core.amqp.models.AmqpAddress.createAndGet

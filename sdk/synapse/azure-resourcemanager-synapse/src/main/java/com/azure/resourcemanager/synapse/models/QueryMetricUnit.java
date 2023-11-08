@@ -7,7 +7,7 @@ package com.azure.resourcemanager.synapse.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for QueryMetricUnit. */
+/** The unit of measurement. */
 public enum QueryMetricUnit {
     /** Enum value percentage. */
     PERCENTAGE("percentage"),
@@ -33,6 +33,9 @@ public enum QueryMetricUnit {
      */
     @JsonCreator
     public static QueryMetricUnit fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         QueryMetricUnit[] items = QueryMetricUnit.values();
         for (QueryMetricUnit item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum QueryMetricUnit {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

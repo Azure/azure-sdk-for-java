@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakestore.fluent.models.DataLakeStoreAccountBasicInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Data Lake Store account list information response. */
 @Immutable
 public final class DataLakeStoreAccountListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeStoreAccountListResult.class);
-
     /*
      * The results of the list operation.
      */
@@ -27,6 +23,10 @@ public final class DataLakeStoreAccountListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of DataLakeStoreAccountListResult class. */
+    public DataLakeStoreAccountListResult() {
+    }
 
     /**
      * Get the value property: The results of the list operation.

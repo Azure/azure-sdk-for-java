@@ -24,6 +24,10 @@ public final class AzureMySqlTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureMySqlTableDatasetTypeProperties innerTypeProperties = new AzureMySqlTableDatasetTypeProperties();
 
+    /** Creates an instance of AzureMySqlTableDataset class. */
+    public AzureMySqlTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure MySQL database dataset properties.
      *

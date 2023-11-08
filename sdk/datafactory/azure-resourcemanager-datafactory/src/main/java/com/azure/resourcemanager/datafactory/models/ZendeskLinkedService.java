@@ -24,6 +24,10 @@ public final class ZendeskLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ZendeskLinkedServiceTypeProperties innerTypeProperties = new ZendeskLinkedServiceTypeProperties();
 
+    /** Creates an instance of ZendeskLinkedService class. */
+    public ZendeskLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Zendesk linked service properties.
      *
@@ -180,22 +184,22 @@ public final class ZendeskLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ZendeskLinkedService object itself.
      */
-    public ZendeskLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public ZendeskLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new ZendeskLinkedServiceTypeProperties();
         }

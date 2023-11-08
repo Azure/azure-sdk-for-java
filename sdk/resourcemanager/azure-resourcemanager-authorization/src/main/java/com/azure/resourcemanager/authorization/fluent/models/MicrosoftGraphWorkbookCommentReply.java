@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** workbookCommentReply. */
 @Fluent
 public final class MicrosoftGraphWorkbookCommentReply extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookCommentReply.class);
-
     /*
      * The content of a comment reply.
      */
@@ -34,6 +31,10 @@ public final class MicrosoftGraphWorkbookCommentReply extends MicrosoftGraphEnti
      * workbookCommentReply
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookCommentReply class. */
+    public MicrosoftGraphWorkbookCommentReply() {
+    }
 
     /**
      * Get the content property: The content of a comment reply.

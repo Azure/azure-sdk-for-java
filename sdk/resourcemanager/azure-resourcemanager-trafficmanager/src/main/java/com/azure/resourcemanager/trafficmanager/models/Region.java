@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class representing a region in the Geographic hierarchy used with the Geographic traffic routing method. */
 @Fluent
 public final class Region {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Region.class);
-
     /*
      * The code of the region
      */
@@ -28,11 +24,14 @@ public final class Region {
     private String name;
 
     /*
-     * The list of Regions grouped under this Region in the Geographic
-     * Hierarchy.
+     * The list of Regions grouped under this Region in the Geographic Hierarchy.
      */
     @JsonProperty(value = "regions")
     private List<Region> regions;
+
+    /** Creates an instance of Region class. */
+    public Region() {
+    }
 
     /**
      * Get the code property: The code of the region.

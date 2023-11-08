@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IaaS VM workload specific restore details for restores using managed identity. */
 @Fluent
 public final class IdentityBasedRestoreDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityBasedRestoreDetails.class);
-
     /*
      * Gets the class type.
      */
@@ -25,6 +21,10 @@ public final class IdentityBasedRestoreDetails {
      */
     @JsonProperty(value = "targetStorageAccountId")
     private String targetStorageAccountId;
+
+    /** Creates an instance of IdentityBasedRestoreDetails class. */
+    public IdentityBasedRestoreDetails() {
+    }
 
     /**
      * Get the objectType property: Gets the class type.

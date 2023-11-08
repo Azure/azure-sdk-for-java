@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScheduleRunType. */
+/** Frequency of the schedule operation of this policy. */
 public final class ScheduleRunType extends ExpandableStringEnum<ScheduleRunType> {
     /** Static value Invalid for ScheduleRunType. */
     public static final ScheduleRunType INVALID = fromString("Invalid");
@@ -23,6 +23,15 @@ public final class ScheduleRunType extends ExpandableStringEnum<ScheduleRunType>
     public static final ScheduleRunType HOURLY = fromString("Hourly");
 
     /**
+     * Creates a new instance of ScheduleRunType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScheduleRunType() {
+    }
+
+    /**
      * Creates or finds a ScheduleRunType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ScheduleRunType extends ExpandableStringEnum<ScheduleRunType>
         return fromString(name, ScheduleRunType.class);
     }
 
-    /** @return known ScheduleRunType values. */
+    /**
+     * Gets known ScheduleRunType values.
+     *
+     * @return known ScheduleRunType values.
+     */
     public static Collection<ScheduleRunType> values() {
         return values(ScheduleRunType.class);
     }

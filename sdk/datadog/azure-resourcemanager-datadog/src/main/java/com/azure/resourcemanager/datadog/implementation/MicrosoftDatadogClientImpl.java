@@ -15,14 +15,17 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.datadog.fluent.CreationSupportedsClient;
 import com.azure.resourcemanager.datadog.fluent.MarketplaceAgreementsClient;
 import com.azure.resourcemanager.datadog.fluent.MicrosoftDatadogClient;
+import com.azure.resourcemanager.datadog.fluent.MonitoredSubscriptionsClient;
 import com.azure.resourcemanager.datadog.fluent.MonitorsClient;
 import com.azure.resourcemanager.datadog.fluent.OperationsClient;
 import com.azure.resourcemanager.datadog.fluent.SingleSignOnConfigurationsClient;
@@ -33,15 +36,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the MicrosoftDatadogClientImpl type. */
 @ServiceClient(builder = MicrosoftDatadogClientBuilder.class)
 public final class MicrosoftDatadogClientImpl implements MicrosoftDatadogClient {
-    private final ClientLogger logger = new ClientLogger(MicrosoftDatadogClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -126,6 +126,18 @@ public final class MicrosoftDatadogClientImpl implements MicrosoftDatadogClient 
         return this.marketplaceAgreements;
     }
 
+    /** The CreationSupportedsClient object to access its operations. */
+    private final CreationSupportedsClient creationSupporteds;
+
+    /**
+     * Gets the CreationSupportedsClient object to access its operations.
+     *
+     * @return the CreationSupportedsClient object.
+     */
+    public CreationSupportedsClient getCreationSupporteds() {
+        return this.creationSupporteds;
+    }
+
     /** The MonitorsClient object to access its operations. */
     private final MonitorsClient monitors;
 
@@ -174,6 +186,18 @@ public final class MicrosoftDatadogClientImpl implements MicrosoftDatadogClient 
         return this.singleSignOnConfigurations;
     }
 
+    /** The MonitoredSubscriptionsClient object to access its operations. */
+    private final MonitoredSubscriptionsClient monitoredSubscriptions;
+
+    /**
+     * Gets the MonitoredSubscriptionsClient object to access its operations.
+     *
+     * @return the MonitoredSubscriptionsClient object.
+     */
+    public MonitoredSubscriptionsClient getMonitoredSubscriptions() {
+        return this.monitoredSubscriptions;
+    }
+
     /**
      * Initializes an instance of MicrosoftDatadogClient client.
      *
@@ -196,12 +220,14 @@ public final class MicrosoftDatadogClientImpl implements MicrosoftDatadogClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
+        this.apiVersion = "2023-01-01";
         this.marketplaceAgreements = new MarketplaceAgreementsClientImpl(this);
+        this.creationSupporteds = new CreationSupportedsClientImpl(this);
         this.monitors = new MonitorsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.tagRules = new TagRulesClientImpl(this);
         this.singleSignOnConfigurations = new SingleSignOnConfigurationsClientImpl(this);
+        this.monitoredSubscriptions = new MonitoredSubscriptionsClientImpl(this);
     }
 
     /**
@@ -220,10 +246,7 @@ public final class MicrosoftDatadogClientImpl implements MicrosoftDatadogClient 
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -287,7 +310,7 @@ public final class MicrosoftDatadogClientImpl implements MicrosoftDatadogClient 
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -346,4 +369,6 @@ public final class MicrosoftDatadogClientImpl implements MicrosoftDatadogClient 
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MicrosoftDatadogClientImpl.class);
 }

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -52,13 +52,14 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
 
   // purged cached items if they haven't been retrieved within 2 hours
   private[this] val cachedItemTtlInMsDefault: Long = 2 * 60 * 60 * 1000
-  // TODO @fabianm reevaluate usage of test hooks over reflection and/or making the fields vars
   // so that they can simply be changed under test
   private[this] var cacheTestOverride: Option[TrieMap[String, PartitionMetadata]] = None
   private[this] var testTimerOverride: Option[Timer] = None
   private[this] var refreshIntervalInMsOverride: Option[Long] = None
   private[this] var staleCachedItemRefreshPeriodInMsOverride: Option[Long] = None
   private[this] var cachedItemTtlInMsOverride: Option[Long] = None
+
+  def cachedCount(): Int = cache.readOnlySnapshot().size
 
   // NOTE
   // This method can only be used from the Spark driver
@@ -68,7 +69,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
   // This also helps reducing the RU consumption of the Cosmos DB call to get the metadata
   def apply(userConfig: Map[String, String],
             cosmosClientConfig: CosmosClientConfiguration,
-            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
             cosmosContainerConfig: CosmosContainerConfig,
             feedRange: NormalizedRange,
             maxStaleness: Option[Duration] = None): SMono[PartitionMetadata] = {
@@ -90,14 +91,18 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
             key,
             userConfig,
             cosmosClientConfig,
-            cosmosClientStateHandle,
+            cosmosClientStateHandles,
             cosmosContainerConfig,
             feedRange,
             maxStaleness)
         }
       case None => this.getOrCreate(
-        key, userConfig, cosmosClientConfig, cosmosClientStateHandle, cosmosContainerConfig, feedRange, maxStaleness)
+        key, userConfig, cosmosClientConfig, cosmosClientStateHandles, cosmosContainerConfig, feedRange, maxStaleness)
     }
+  }
+
+  def clearCache(): Unit = {
+    this.cache.clear()
   }
 
   private[this] def getOrCreate
@@ -105,7 +110,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
     key: String,
     userConfig: Map[String, String],
     cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig,
     feedRange: NormalizedRange,
     maxStaleness: Option[Duration] = None
@@ -123,7 +128,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
           readPartitionMetadata(
             metadata.userConfig,
             metadata.cosmosClientConfig,
-            metadata.cosmosClientStateHandle,
+            metadata.cosmosClientStateHandles,
             metadata.cosmosContainerConfig,
             metadata.feedRange,
             metadata.firstLsn,
@@ -153,7 +158,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
                 this.create(
                   userConfig,
                   cosmosClientConfig,
-                  cosmosClientStateHandle,
+                  cosmosClientStateHandles,
                   cosmosContainerConfig,
                   feedRange,
                   key)
@@ -165,7 +170,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
       case None => this.create(
         userConfig,
         cosmosClientConfig,
-        cosmosClientStateHandle,
+        cosmosClientStateHandles,
         cosmosContainerConfig,
         feedRange,
         key)
@@ -176,7 +181,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
   (
     userConfig: Map[String, String],
     cosmosClientConfiguration: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig,
     feedRange: NormalizedRange,
     key: String
@@ -185,7 +190,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
     readPartitionMetadata(
       userConfig,
       cosmosClientConfiguration,
-      cosmosClientStateHandle,
+      cosmosClientStateHandles,
       cosmosContainerConfig,
       feedRange,
       None,
@@ -204,7 +209,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
   (
     userConfig: Map[String, String],
     cosmosClientConfiguration: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig,
     feedRange: NormalizedRange,
     firstLsn: Option[Long],
@@ -215,7 +220,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
       readPartitionMetadataImpl(
         userConfig,
         cosmosClientConfiguration,
-        cosmosClientStateHandle,
+        cosmosClientStateHandles,
         cosmosContainerConfig,
         feedRange,
         firstLsn,
@@ -227,20 +232,37 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
   (
     userConfig: Map[String, String],
     cosmosClientConfiguration: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig,
     feedRange: NormalizedRange,
     previouslyCalculatedFirstLsn: Option[Long],
     tolerateNotFound: Boolean
   ): SMono[Option[PartitionMetadata]] = {
-    Loan(CosmosClientCache(
-      cosmosClientConfiguration,
-      cosmosClientStateHandle,
-      "PartitionMetadataCache.readPartitionMetadata(" +
-        s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}, $feedRange)"
-    ))
-      .to(clientCacheItem => {
-        val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, clientCacheItem.client)
+
+    val cosmosClientMetadataCache =
+      cosmosClientStateHandles match {
+        case None => None
+        case Some(_) => Some(cosmosClientStateHandles.get.value.cosmosClientMetadataCaches)
+      }
+
+    val calledFrom = s"PartitionMetadataCache.readPartitionMetadata(${cosmosContainerConfig.database}.${cosmosContainerConfig.container}, $feedRange)"
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(
+          CosmosClientCache(
+            cosmosClientConfiguration,
+            cosmosClientMetadataCache,
+            calledFrom)),
+        ThroughputControlHelper.getThroughputControlClientCacheItem(
+          userConfig, calledFrom, cosmosClientStateHandles, cosmosClientConfiguration.sparkEnvironmentInfo)
+      ))
+      .to(clientCacheItems => {
+        val container =
+          ThroughputControlHelper.getContainer(
+            userConfig,
+            cosmosContainerConfig,
+            clientCacheItems(0).get,
+            clientCacheItems(1))
 
         val optionsFromNow = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
           SparkBridgeImplementationInternal.toFeedRange(feedRange))
@@ -311,7 +333,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
             Some(PartitionMetadata(
               userConfig,
               cosmosClientConfiguration,
-              cosmosClientStateHandle,
+              cosmosClientStateHandles,
               cosmosContainerConfig,
               feedRange,
               assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
@@ -430,7 +452,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
       readPartitionMetadata(
         metadataSnapshot.userConfig,
         metadataSnapshot.cosmosClientConfig,
-        metadataSnapshot.cosmosClientStateHandle,
+        metadataSnapshot.cosmosClientStateHandles,
         metadataSnapshot.cosmosContainerConfig,
         metadataSnapshot.feedRange,
         metadataSnapshot.firstLsn,
@@ -478,5 +500,18 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
       case Some(_) =>
         cache.remove(key).isDefined
     }
+  }
+
+  def purge(cosmosContainerConfig: CosmosContainerConfig): Unit = {
+    assertOnSparkDriver()
+    cache.readOnlySnapshot().foreach(keyValuePair =>
+      if (keyValuePair._2.cosmosContainerConfig == cosmosContainerConfig) {
+        cache.get(keyValuePair._1) match {
+          case None => false
+          case Some(_) =>
+            cache.remove(keyValuePair._1).isDefined
+        }
+      }
+    )
   }
 }

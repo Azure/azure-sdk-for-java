@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.containerservice.models.MaintenanceWindow;
 import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,9 +15,10 @@ import java.util.List;
 @Fluent
 public final class MaintenanceConfigurationProperties {
     /*
-     * Time slots during the week when planned maintenance is allowed to
-     * proceed. If two array entries specify the same day of the week, the
-     * applied configuration is the union of times in both entries.
+     * Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      */
     @JsonProperty(value = "timeInWeek")
     private List<TimeInWeek> timeInWeek;
@@ -27,9 +29,21 @@ public final class MaintenanceConfigurationProperties {
     @JsonProperty(value = "notAllowedTime")
     private List<TimeSpan> notAllowedTime;
 
+    /*
+     * Maintenance window for the maintenance configuration.
+     */
+    @JsonProperty(value = "maintenanceWindow")
+    private MaintenanceWindow maintenanceWindow;
+
+    /** Creates an instance of MaintenanceConfigurationProperties class. */
+    public MaintenanceConfigurationProperties() {
+    }
+
     /**
-     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
-     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      *
      * @return the timeInWeek value.
      */
@@ -38,8 +52,10 @@ public final class MaintenanceConfigurationProperties {
     }
 
     /**
-     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
-     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      *
      * @param timeInWeek the timeInWeek value to set.
      * @return the MaintenanceConfigurationProperties object itself.
@@ -70,6 +86,26 @@ public final class MaintenanceConfigurationProperties {
     }
 
     /**
+     * Get the maintenanceWindow property: Maintenance window for the maintenance configuration.
+     *
+     * @return the maintenanceWindow value.
+     */
+    public MaintenanceWindow maintenanceWindow() {
+        return this.maintenanceWindow;
+    }
+
+    /**
+     * Set the maintenanceWindow property: Maintenance window for the maintenance configuration.
+     *
+     * @param maintenanceWindow the maintenanceWindow value to set.
+     * @return the MaintenanceConfigurationProperties object itself.
+     */
+    public MaintenanceConfigurationProperties withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {
+        this.maintenanceWindow = maintenanceWindow;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -80,6 +116,9 @@ public final class MaintenanceConfigurationProperties {
         }
         if (notAllowedTime() != null) {
             notAllowedTime().forEach(e -> e.validate());
+        }
+        if (maintenanceWindow() != null) {
+            maintenanceWindow().validate();
         }
     }
 }

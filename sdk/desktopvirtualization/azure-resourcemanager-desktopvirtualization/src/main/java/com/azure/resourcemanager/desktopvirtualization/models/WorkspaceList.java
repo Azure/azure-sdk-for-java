@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.WorkspaceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** WorkspaceList List of Workspace definitions. */
+/**
+ * WorkspaceList
+ *
+ * <p>List of Workspace definitions.
+ */
 @Fluent
 public final class WorkspaceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceList.class);
-
     /*
      * List of Workspace definitions.
      */
@@ -27,6 +27,10 @@ public final class WorkspaceList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of WorkspaceList class. */
+    public WorkspaceList() {
+    }
 
     /**
      * Get the value property: List of Workspace definitions.

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,20 +23,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class DataAccountDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataAccountDetails.class);
-
     /*
-     * Password for all the shares to be created on the device. Should not be
-     * passed for TransferType:ExportFromAzure jobs. If this is not passed, the
-     * service will generate password itself. This will not be returned in Get
-     * Call. Password Requirements :  Password must be minimum of 12 and
-     * maximum of 64 characters. Password must have at least one uppercase
-     * alphabet, one number and one special character. Password cannot have the
-     * following characters : IilLoO0 Password can have only alphabets, numbers
-     * and these characters : @#\-$%^!+=;:_()]+
+     * Password for all the shares to be created on the device. Should not be passed for TransferType:ExportFromAzure
+     * jobs. If this is not passed, the service will generate password itself. This will not be returned in Get Call.
+     * Password Requirements :  Password must be minimum of 12 and maximum of 64 characters. Password must have at
+     * least one uppercase alphabet, one number and one special character. Password cannot have the following
+     * characters : IilLoO0 Password can have only alphabets, numbers and these characters : @#\-$%^!+=;:_()]+
      */
     @JsonProperty(value = "sharePassword")
     private String sharePassword;
+
+    /** Creates an instance of DataAccountDetails class. */
+    public DataAccountDetails() {
+    }
 
     /**
      * Get the sharePassword property: Password for all the shares to be created on the device. Should not be passed for

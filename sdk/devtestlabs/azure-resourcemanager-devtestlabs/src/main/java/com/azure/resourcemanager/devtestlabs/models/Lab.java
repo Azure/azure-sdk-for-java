@@ -213,6 +213,13 @@ public interface Lab {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.LabInner object.
      *
      * @return the inner object.
@@ -226,11 +233,13 @@ public interface Lab {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Lab definition stages. */
     interface DefinitionStages {
         /** The first stage of the Lab definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Lab definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -249,6 +258,7 @@ public interface Lab {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Lab definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -259,6 +269,7 @@ public interface Lab {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Lab definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -288,6 +299,7 @@ public interface Lab {
              */
             Lab create(Context context);
         }
+
         /** The stage of the Lab definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -298,6 +310,7 @@ public interface Lab {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Lab definition allowing to specify labStorageType. */
         interface WithLabStorageType {
             /**
@@ -310,6 +323,7 @@ public interface Lab {
              */
             WithCreate withLabStorageType(StorageType labStorageType);
         }
+
         /** The stage of the Lab definition allowing to specify mandatoryArtifactsResourceIdsLinux. */
         interface WithMandatoryArtifactsResourceIdsLinux {
             /**
@@ -322,6 +336,7 @@ public interface Lab {
              */
             WithCreate withMandatoryArtifactsResourceIdsLinux(List<String> mandatoryArtifactsResourceIdsLinux);
         }
+
         /** The stage of the Lab definition allowing to specify mandatoryArtifactsResourceIdsWindows. */
         interface WithMandatoryArtifactsResourceIdsWindows {
             /**
@@ -335,6 +350,7 @@ public interface Lab {
              */
             WithCreate withMandatoryArtifactsResourceIdsWindows(List<String> mandatoryArtifactsResourceIdsWindows);
         }
+
         /** The stage of the Lab definition allowing to specify premiumDataDisks. */
         interface WithPremiumDataDisks {
             /**
@@ -349,6 +365,7 @@ public interface Lab {
              */
             WithCreate withPremiumDataDisks(PremiumDataDisk premiumDataDisks);
         }
+
         /** The stage of the Lab definition allowing to specify environmentPermission. */
         interface WithEnvironmentPermission {
             /**
@@ -361,6 +378,7 @@ public interface Lab {
              */
             WithCreate withEnvironmentPermission(EnvironmentPermission environmentPermission);
         }
+
         /** The stage of the Lab definition allowing to specify announcement. */
         interface WithAnnouncement {
             /**
@@ -371,6 +389,7 @@ public interface Lab {
              */
             WithCreate withAnnouncement(LabAnnouncementProperties announcement);
         }
+
         /** The stage of the Lab definition allowing to specify support. */
         interface WithSupport {
             /**
@@ -381,6 +400,7 @@ public interface Lab {
              */
             WithCreate withSupport(LabSupportProperties support);
         }
+
         /** The stage of the Lab definition allowing to specify extendedProperties. */
         interface WithExtendedProperties {
             /**
@@ -392,6 +412,7 @@ public interface Lab {
             WithCreate withExtendedProperties(Map<String, String> extendedProperties);
         }
     }
+
     /**
      * Begins update for the Lab resource.
      *
@@ -416,6 +437,7 @@ public interface Lab {
          */
         Lab apply(Context context);
     }
+
     /** The Lab update stages. */
     interface UpdateStages {
         /** The stage of the Lab update allowing to specify tags. */
@@ -429,6 +451,7 @@ public interface Lab {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -508,25 +531,25 @@ public interface Lab {
      * Generate a URI for uploading custom disk images to a Lab.
      *
      * @param generateUploadUriParameter Properties for generating an upload URI.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for generating an upload URI along with {@link Response}.
+     */
+    Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
+        GenerateUploadUriParameter generateUploadUriParameter, Context context);
+
+    /**
+     * Generate a URI for uploading custom disk images to a Lab.
+     *
+     * @param generateUploadUriParameter Properties for generating an upload URI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for generating an upload URI.
      */
     GenerateUploadUriResponse generateUploadUri(GenerateUploadUriParameter generateUploadUriParameter);
-
-    /**
-     * Generate a URI for uploading custom disk images to a Lab.
-     *
-     * @param generateUploadUriParameter Properties for generating an upload URI.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for generating an upload URI.
-     */
-    Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
-        GenerateUploadUriParameter generateUploadUriParameter, Context context);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
@@ -556,7 +579,7 @@ public interface Lab {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabVhd> listVhds();
 
@@ -567,7 +590,7 @@ public interface Lab {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabVhd> listVhds(Context context);
 }

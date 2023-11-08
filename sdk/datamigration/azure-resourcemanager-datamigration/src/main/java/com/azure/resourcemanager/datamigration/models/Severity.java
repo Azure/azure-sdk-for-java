@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Severity. */
+/** Severity of the validation error. */
 public final class Severity extends ExpandableStringEnum<Severity> {
     /** Static value Message for Severity. */
     public static final Severity MESSAGE = fromString("Message");
@@ -18,6 +18,15 @@ public final class Severity extends ExpandableStringEnum<Severity> {
 
     /** Static value Error for Severity. */
     public static final Severity ERROR = fromString("Error");
+
+    /**
+     * Creates a new instance of Severity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Severity() {
+    }
 
     /**
      * Creates or finds a Severity from its string representation.
@@ -30,7 +39,11 @@ public final class Severity extends ExpandableStringEnum<Severity> {
         return fromString(name, Severity.class);
     }
 
-    /** @return known Severity values. */
+    /**
+     * Gets known Severity values.
+     *
+     * @return known Severity values.
+     */
     public static Collection<Severity> values() {
         return values(Severity.class);
     }

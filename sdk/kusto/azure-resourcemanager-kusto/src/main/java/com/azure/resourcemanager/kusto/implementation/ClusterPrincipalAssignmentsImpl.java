@@ -16,10 +16,9 @@ import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignment;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignmentCheckNameRequest;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAssignments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPrincipalAssignmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterPrincipalAssignmentsImpl.class);
 
     private final ClusterPrincipalAssignmentsClient innerClient;
 
@@ -29,19 +28,6 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         ClusterPrincipalAssignmentsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, principalAssignmentName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
@@ -64,12 +50,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         }
     }
 
-    public ClusterPrincipalAssignment get(
-        String resourceGroupName, String clusterName, String principalAssignmentName) {
-        ClusterPrincipalAssignmentInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, principalAssignmentName);
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, principalAssignmentName);
         if (inner != null) {
-            return new ClusterPrincipalAssignmentImpl(inner, this.manager());
+            return new CheckNameResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -85,6 +73,17 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ClusterPrincipalAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ClusterPrincipalAssignment get(
+        String resourceGroupName, String clusterName, String principalAssignmentName) {
+        ClusterPrincipalAssignmentInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, principalAssignmentName);
+        if (inner != null) {
+            return new ClusterPrincipalAssignmentImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -114,7 +113,7 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     public ClusterPrincipalAssignment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,14 +121,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     public Response<ClusterPrincipalAssignment> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,14 +150,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -172,7 +171,7 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,14 +179,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -201,7 +200,7 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -209,14 +208,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

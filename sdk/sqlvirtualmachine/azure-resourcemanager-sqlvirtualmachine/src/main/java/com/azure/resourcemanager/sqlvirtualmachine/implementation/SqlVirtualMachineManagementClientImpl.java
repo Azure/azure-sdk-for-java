@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -25,6 +26,7 @@ import com.azure.resourcemanager.sqlvirtualmachine.fluent.AvailabilityGroupListe
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.OperationsClient;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachineGroupsClient;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachineManagementClient;
+import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachineTroubleshootsClient;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachinesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -32,15 +34,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the SqlVirtualMachineManagementClientImpl type. */
 @ServiceClient(builder = SqlVirtualMachineManagementClientBuilder.class)
 public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMachineManagementClient {
-    private final ClientLogger logger = new ClientLogger(SqlVirtualMachineManagementClientImpl.class);
-
     /** Subscription ID that identifies an Azure subscription. */
     private final String subscriptionId;
 
@@ -161,6 +160,18 @@ public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMa
         return this.sqlVirtualMachines;
     }
 
+    /** The SqlVirtualMachineTroubleshootsClient object to access its operations. */
+    private final SqlVirtualMachineTroubleshootsClient sqlVirtualMachineTroubleshoots;
+
+    /**
+     * Gets the SqlVirtualMachineTroubleshootsClient object to access its operations.
+     *
+     * @return the SqlVirtualMachineTroubleshootsClient object.
+     */
+    public SqlVirtualMachineTroubleshootsClient getSqlVirtualMachineTroubleshoots() {
+        return this.sqlVirtualMachineTroubleshoots;
+    }
+
     /**
      * Initializes an instance of SqlVirtualMachineManagementClient client.
      *
@@ -183,11 +194,12 @@ public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMa
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-11-01-preview";
+        this.apiVersion = "2022-08-01-preview";
         this.availabilityGroupListeners = new AvailabilityGroupListenersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.sqlVirtualMachineGroups = new SqlVirtualMachineGroupsClientImpl(this);
         this.sqlVirtualMachines = new SqlVirtualMachinesClientImpl(this);
+        this.sqlVirtualMachineTroubleshoots = new SqlVirtualMachineTroubleshootsClientImpl(this);
     }
 
     /**
@@ -206,10 +218,7 @@ public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMa
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -273,7 +282,7 @@ public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMa
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -332,4 +341,6 @@ public final class SqlVirtualMachineManagementClientImpl implements SqlVirtualMa
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlVirtualMachineManagementClientImpl.class);
 }

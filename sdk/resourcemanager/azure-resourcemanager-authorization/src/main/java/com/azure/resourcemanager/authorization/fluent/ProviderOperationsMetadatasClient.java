@@ -23,7 +23,8 @@ public interface ProviderOperationsMetadatasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for the specified resource provider.
+     * @return provider operations metadata for the specified resource provider along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ProviderOperationsMetadataInner>> getWithResponseAsync(
@@ -33,26 +34,29 @@ public interface ProviderOperationsMetadatasClient {
      * Gets provider operations metadata for the specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand Specifies whether to expand the values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for the specified resource provider.
+     * @return provider operations metadata for the specified resource provider on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProviderOperationsMetadataInner> getAsync(String resourceProviderNamespace, String expand);
+    Mono<ProviderOperationsMetadataInner> getAsync(String resourceProviderNamespace);
 
     /**
      * Gets provider operations metadata for the specified resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param expand Specifies whether to expand the values.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for the specified resource provider.
+     * @return provider operations metadata for the specified resource provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProviderOperationsMetadataInner> getAsync(String resourceProviderNamespace);
+    Response<ProviderOperationsMetadataInner> getWithResponse(
+        String resourceProviderNamespace, String expand, Context context);
 
     /**
      * Gets provider operations metadata for the specified resource provider.
@@ -67,28 +71,13 @@ public interface ProviderOperationsMetadatasClient {
     ProviderOperationsMetadataInner get(String resourceProviderNamespace);
 
     /**
-     * Gets provider operations metadata for the specified resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand Specifies whether to expand the values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for the specified resource provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProviderOperationsMetadataInner> getWithResponse(
-        String resourceProviderNamespace, String expand, Context context);
-
-    /**
      * Gets provider operations metadata for all resource providers.
      *
      * @param expand Specifies whether to expand the values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for all resource providers.
+     * @return provider operations metadata for all resource providers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ProviderOperationsMetadataInner> listAsync(String expand);
@@ -98,7 +87,7 @@ public interface ProviderOperationsMetadatasClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for all resource providers.
+     * @return provider operations metadata for all resource providers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ProviderOperationsMetadataInner> listAsync();
@@ -108,7 +97,7 @@ public interface ProviderOperationsMetadatasClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for all resource providers.
+     * @return provider operations metadata for all resource providers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProviderOperationsMetadataInner> list();
@@ -121,7 +110,7 @@ public interface ProviderOperationsMetadatasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for all resource providers.
+     * @return provider operations metadata for all resource providers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProviderOperationsMetadataInner> list(String expand, Context context);

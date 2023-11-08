@@ -15,7 +15,7 @@ public interface BillingAccounts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingAccount> list();
 
@@ -27,9 +27,22 @@ public interface BillingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingAccount> list(String expand, Context context);
+
+    /**
+     * Gets a billing account by its ID.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param expand May be used to expand the soldTo, invoice sections and billing profiles.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a billing account by its ID along with {@link Response}.
+     */
+    Response<BillingAccount> getWithResponse(String billingAccountName, String expand, Context context);
 
     /**
      * Gets a billing account by its ID.
@@ -41,19 +54,6 @@ public interface BillingAccounts {
      * @return a billing account by its ID.
      */
     BillingAccount get(String billingAccountName);
-
-    /**
-     * Gets a billing account by its ID.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param expand May be used to expand the soldTo, invoice sections and billing profiles.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account by its ID.
-     */
-    Response<BillingAccount> getWithResponse(String billingAccountName, String expand, Context context);
 
     /**
      * Updates the properties of a billing account. Currently, displayName and address can be updated. The operation is
@@ -90,7 +90,8 @@ public interface BillingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<InvoiceSectionWithCreateSubPermission> listInvoiceSectionsByCreateSubscriptionPermission(
         String billingAccountName);
@@ -104,7 +105,8 @@ public interface BillingAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<InvoiceSectionWithCreateSubPermission> listInvoiceSectionsByCreateSubscriptionPermission(
         String billingAccountName, Context context);

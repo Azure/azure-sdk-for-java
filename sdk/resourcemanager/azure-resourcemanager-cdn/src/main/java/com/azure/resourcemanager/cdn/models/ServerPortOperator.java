@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServerPortOperator. */
+/** Describes operator to be matched. */
 public final class ServerPortOperator extends ExpandableStringEnum<ServerPortOperator> {
     /** Static value Any for ServerPortOperator. */
     public static final ServerPortOperator ANY = fromString("Any");
@@ -41,6 +41,15 @@ public final class ServerPortOperator extends ExpandableStringEnum<ServerPortOpe
     public static final ServerPortOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of ServerPortOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerPortOperator() {
+    }
+
+    /**
      * Creates or finds a ServerPortOperator from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class ServerPortOperator extends ExpandableStringEnum<ServerPortOpe
         return fromString(name, ServerPortOperator.class);
     }
 
-    /** @return known ServerPortOperator values. */
+    /**
+     * Gets known ServerPortOperator values.
+     *
+     * @return known ServerPortOperator values.
+     */
     public static Collection<ServerPortOperator> values() {
         return values(ServerPortOperator.class);
     }

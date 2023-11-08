@@ -81,6 +81,6 @@ public class PartitionKeyRangeIsSplittingException extends CosmosException {
     private void setSubStatus() {
         this.getResponseHeaders().put(
             WFConstants.BackendHeaders.SUB_STATUS,
-            Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_SPLIT));
+            Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE));
     }
 }

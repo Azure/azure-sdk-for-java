@@ -47,6 +47,9 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
     @JsonProperty(value = "version")
     private Long version;
 
+    /** Creates an instance of AcsChatMessageEventInThreadBaseProperties class. */
+    public AcsChatMessageEventInThreadBaseProperties() {}
+
     /**
      * Get the messageId property: The chat message id.
      *

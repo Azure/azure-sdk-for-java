@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The access keys for the cognitive services account. */
 @Fluent
 public final class ApiKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiKeysInner.class);
-
     /*
      * Gets the value of key 1.
      */
@@ -25,6 +21,10 @@ public final class ApiKeysInner {
      */
     @JsonProperty(value = "key2")
     private String key2;
+
+    /** Creates an instance of ApiKeysInner class. */
+    public ApiKeysInner() {
+    }
 
     /**
      * Get the key1 property: Gets the value of key 1.

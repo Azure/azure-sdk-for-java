@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TriggerRunStatus. */
+/** Trigger run status. */
 public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatus> {
     /** Static value Succeeded for TriggerRunStatus. */
     public static final TriggerRunStatus SUCCEEDED = fromString("Succeeded");
@@ -18,6 +18,15 @@ public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatu
 
     /** Static value Inprogress for TriggerRunStatus. */
     public static final TriggerRunStatus INPROGRESS = fromString("Inprogress");
+
+    /**
+     * Creates a new instance of TriggerRunStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TriggerRunStatus() {
+    }
 
     /**
      * Creates or finds a TriggerRunStatus from its string representation.
@@ -30,7 +39,11 @@ public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatu
         return fromString(name, TriggerRunStatus.class);
     }
 
-    /** @return known TriggerRunStatus values. */
+    /**
+     * Gets known TriggerRunStatus values.
+     *
+     * @return known TriggerRunStatus values.
+     */
     public static Collection<TriggerRunStatus> values() {
         return values(TriggerRunStatus.class);
     }

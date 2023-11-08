@@ -6,7 +6,6 @@ package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestack.fluent.models.RegistrationInner;
 import java.util.Map;
@@ -49,6 +48,13 @@ public interface Registration {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
      *
      * @return the objectId value.
@@ -70,27 +76,6 @@ public interface Registration {
     String billingModel();
 
     /**
-     * Gets the kind property: The kind of the resource.
-     *
-     * @return the kind value.
-     */
-    String kind();
-
-    /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
-     * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -103,6 +88,13 @@ public interface Registration {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.RegistrationInner object.
@@ -230,6 +222,17 @@ public interface Registration {
     /**
      * Returns Azure Stack Activation Key.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource containing the Azure Stack activation key along with {@link Response}.
+     */
+    Response<ActivationKeyResult> getActivationKeyWithResponse(Context context);
+
+    /**
+     * Returns Azure Stack Activation Key.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the resource containing the Azure Stack activation key.
@@ -237,15 +240,15 @@ public interface Registration {
     ActivationKeyResult getActivationKey();
 
     /**
-     * Returns Azure Stack Activation Key.
+     * Enables remote management for device under the Azure Stack registration.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource containing the Azure Stack activation key.
+     * @return the {@link Response}.
      */
-    Response<ActivationKeyResult> getActivationKeyWithResponse(Context context);
+    Response<Void> enableRemoteManagementWithResponse(Context context);
 
     /**
      * Enables remote management for device under the Azure Stack registration.
@@ -254,15 +257,4 @@ public interface Registration {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void enableRemoteManagement();
-
-    /**
-     * Enables remote management for device under the Azure Stack registration.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> enableRemoteManagementWithResponse(Context context);
 }

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.RestorableSqlContainersClient;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableSqlContainerGetResultInner;
 import com.azure.resourcemanager.cosmos.models.RestorableSqlContainersListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestorableSqlContainersClient. */
 public final class RestorableSqlContainersClientImpl implements RestorableSqlContainersClient {
-    private final ClientLogger logger = new ClientLogger(RestorableSqlContainersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RestorableSqlContainersService service;
 
@@ -59,11 +56,10 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface RestorableSqlContainersService {
+    public interface RestorableSqlContainersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}"
-                + "/restorableDatabaseAccounts/{instanceId}/restorableSqlContainers")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlContainers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorableSqlContainersListResult>> list(
@@ -87,12 +83,13 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL container events and their properties.
+     * @return the List operation response, that contains the SQL container events and their properties along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableSqlContainerGetResultInner>> listSinglePageAsync(
@@ -146,13 +143,14 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL container events and their properties.
+     * @return the List operation response, that contains the SQL container events and their properties along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableSqlContainerGetResultInner>> listSinglePageAsync(
@@ -208,12 +206,13 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL container events and their properties.
+     * @return the List operation response, that contains the SQL container events and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableSqlContainerGetResultInner> listAsync(
@@ -232,7 +231,8 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL container events and their properties.
+     * @return the List operation response, that contains the SQL container events and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableSqlContainerGetResultInner> listAsync(String location, String instanceId) {
@@ -251,13 +251,14 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL container events and their properties.
+     * @return the List operation response, that contains the SQL container events and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorableSqlContainerGetResultInner> listAsync(
@@ -281,7 +282,8 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL container events and their properties.
+     * @return the List operation response, that contains the SQL container events and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableSqlContainerGetResultInner> list(String location, String instanceId) {
@@ -299,13 +301,14 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL container events and their properties.
+     * @return the List operation response, that contains the SQL container events and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableSqlContainerGetResultInner> list(

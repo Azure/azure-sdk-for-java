@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A privately linkable resource properties. */
 @Immutable
 public final class PrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
-
     /*
      * The private link resource group identifier.
      */
@@ -22,8 +18,7 @@ public final class PrivateLinkResourceProperties {
     private String groupId;
 
     /*
-     * This translates to how many Private IPs should be created for each
-     * privately linkable resource.
+     * This translates to how many Private IPs should be created for each privately linkable resource.
      */
     @JsonProperty(value = "requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredMembers;
@@ -33,6 +28,10 @@ public final class PrivateLinkResourceProperties {
      */
     @JsonProperty(value = "requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredZoneNames;
+
+    /** Creates an instance of PrivateLinkResourceProperties class. */
+    public PrivateLinkResourceProperties() {
+    }
 
     /**
      * Get the groupId property: The private link resource group identifier.

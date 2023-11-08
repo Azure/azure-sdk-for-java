@@ -5,33 +5,41 @@
 package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.msi.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Operations List. A list of operations supported by Microsoft.ManagedIdentity Resource Provider. */
+/**
+ * Operations List.
+ *
+ * <p>A list of operations supported by Microsoft.ManagedIdentity Resource Provider.
+ */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
-     * Operations List. A list of operations supported by
-     * Microsoft.ManagedIdentity Resource Provider.
+     * Operations List.
+     *
+     * A list of operations supported by Microsoft.ManagedIdentity Resource Provider.
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
 
     /*
-     * Next Link The url to get the next page of results, if any.
+     * Next Link
+     *
+     * The url to get the next page of results, if any.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of OperationListResult class. */
+    public OperationListResult() {
+    }
+
     /**
-     * Get the value property: Operations List. A list of operations supported by Microsoft.ManagedIdentity Resource
-     * Provider.
+     * Get the value property: Operations List.
+     *
+     * <p>A list of operations supported by Microsoft.ManagedIdentity Resource Provider.
      *
      * @return the value value.
      */
@@ -40,8 +48,9 @@ public final class OperationListResult {
     }
 
     /**
-     * Set the value property: Operations List. A list of operations supported by Microsoft.ManagedIdentity Resource
-     * Provider.
+     * Set the value property: Operations List.
+     *
+     * <p>A list of operations supported by Microsoft.ManagedIdentity Resource Provider.
      *
      * @param value the value value to set.
      * @return the OperationListResult object itself.
@@ -52,7 +61,9 @@ public final class OperationListResult {
     }
 
     /**
-     * Get the nextLink property: Next Link The url to get the next page of results, if any.
+     * Get the nextLink property: Next Link
+     *
+     * <p>The url to get the next page of results, if any.
      *
      * @return the nextLink value.
      */
@@ -61,7 +72,9 @@ public final class OperationListResult {
     }
 
     /**
-     * Set the nextLink property: Next Link The url to get the next page of results, if any.
+     * Set the nextLink property: Next Link
+     *
+     * <p>The url to get the next page of results, if any.
      *
      * @param nextLink the nextLink value to set.
      * @return the OperationListResult object itself.

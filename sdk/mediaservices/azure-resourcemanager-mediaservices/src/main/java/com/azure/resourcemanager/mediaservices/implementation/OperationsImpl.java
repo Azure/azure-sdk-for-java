@@ -26,15 +26,6 @@ public final class OperationsImpl implements Operations {
         this.serviceManager = serviceManager;
     }
 
-    public OperationCollection list() {
-        OperationCollectionInner inner = this.serviceClient().list();
-        if (inner != null) {
-            return new OperationCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OperationCollection> listWithResponse(Context context) {
         Response<OperationCollectionInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
@@ -43,6 +34,15 @@ public final class OperationsImpl implements Operations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationCollection list() {
+        OperationCollectionInner inner = this.serviceClient().list();
+        if (inner != null) {
+            return new OperationCollectionImpl(inner, this.manager());
         } else {
             return null;
         }

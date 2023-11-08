@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.BillingPeriodsClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingPeriodInner;
 import com.azure.resourcemanager.billing.models.BillingPeriodsListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BillingPeriodsClient. */
 public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
-    private final ClientLogger logger = new ClientLogger(BillingPeriodsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BillingPeriodsService service;
 
@@ -58,7 +55,7 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
-    private interface BillingPeriodsService {
+    public interface BillingPeriodsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods")
         @ExpectedResponses({200})
@@ -110,7 +107,8 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPeriodInner>> listSinglePageAsync(String filter, String skiptoken, Integer top) {
@@ -168,7 +166,8 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPeriodInner>> listSinglePageAsync(
@@ -223,7 +222,7 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPeriodInner> listAsync(String filter, String skiptoken, Integer top) {
@@ -238,7 +237,7 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPeriodInner> listAsync() {
@@ -264,7 +263,7 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPeriodInner> listAsync(String filter, String skiptoken, Integer top, Context context) {
@@ -280,7 +279,7 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingPeriodInner> list() {
@@ -305,7 +304,7 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingPeriodInner> list(String filter, String skiptoken, Integer top, Context context) {
@@ -320,7 +319,7 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a named billing period.
+     * @return a named billing period along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingPeriodInner>> getWithResponseAsync(String billingPeriodName) {
@@ -365,7 +364,7 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a named billing period.
+     * @return a named billing period along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingPeriodInner>> getWithResponseAsync(String billingPeriodName, Context context) {
@@ -406,19 +405,27 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a named billing period.
+     * @return a named billing period on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingPeriodInner> getAsync(String billingPeriodName) {
-        return getWithResponseAsync(billingPeriodName)
-            .flatMap(
-                (Response<BillingPeriodInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(billingPeriodName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a named billing period. This is only supported for Azure Web-Direct subscriptions. Other subscription types
+     * which were not purchased directly through the Azure web portal are not supported through this preview API.
+     *
+     * @param billingPeriodName The name of a BillingPeriod resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a named billing period along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BillingPeriodInner> getWithResponse(String billingPeriodName, Context context) {
+        return getWithResponseAsync(billingPeriodName, context).block();
     }
 
     /**
@@ -433,33 +440,19 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BillingPeriodInner get(String billingPeriodName) {
-        return getAsync(billingPeriodName).block();
-    }
-
-    /**
-     * Gets a named billing period. This is only supported for Azure Web-Direct subscriptions. Other subscription types
-     * which were not purchased directly through the Azure web portal are not supported through this preview API.
-     *
-     * @param billingPeriodName The name of a BillingPeriod resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a named billing period.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BillingPeriodInner> getWithResponse(String billingPeriodName, Context context) {
-        return getWithResponseAsync(billingPeriodName, context).block();
+        return getWithResponse(billingPeriodName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPeriodInner>> listNextSinglePageAsync(String nextLink) {
@@ -490,12 +483,14 @@ public final class BillingPeriodsClientImpl implements BillingPeriodsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPeriodInner>> listNextSinglePageAsync(String nextLink, Context context) {

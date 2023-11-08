@@ -145,9 +145,9 @@ public class CloudPool {
     private Integer currentDedicatedNodes;
 
     /**
-     * The number of low-priority Compute Nodes currently in the Pool.
-     * low-priority Compute Nodes which have been preempted are included in
-     * this count.
+     * The number of Spot/Low-priority Compute Nodes currently in the Pool.
+     * Spot/Low-priority Compute Nodes which have been preempted are included
+     * in this count.
      */
     @JsonProperty(value = "currentLowPriorityNodes")
     private Integer currentLowPriorityNodes;
@@ -159,7 +159,7 @@ public class CloudPool {
     private Integer targetDedicatedNodes;
 
     /**
-     * The desired number of low-priority Compute Nodes in the Pool.
+     * The desired number of Spot/Low-priority Compute Nodes in the Pool.
      */
     @JsonProperty(value = "targetLowPriorityNodes")
     private Integer targetLowPriorityNodes;
@@ -231,6 +231,11 @@ public class CloudPool {
      * 'remoteUser', a 'certs' directory is created in the user's home
      * directory (e.g., /home/{user-name}/certs) and Certificates are placed in
      * that directory.
+     *
+     * Warning: This property is deprecated and will be removed after February,
+     * 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+     * instead.
      */
     @JsonProperty(value = "certificateReferences")
     private List<CertificateReference> certificateReferences;
@@ -310,6 +315,21 @@ public class CloudPool {
      */
     @JsonProperty(value = "identity")
     private BatchPoolIdentity identity;
+
+    /**
+     * The desired node communication mode for the pool.
+     * If omitted, the default value is Default. Possible values include:
+     * 'default', 'classic', 'simplified'.
+     */
+    @JsonProperty(value = "targetNodeCommunicationMode")
+    private NodeCommunicationMode targetNodeCommunicationMode;
+
+    /**
+     * The current state of the pool communication mode.
+     * Possible values include: 'default', 'classic', 'simplified'.
+     */
+    @JsonProperty(value = "currentNodeCommunicationMode", access = JsonProperty.Access.WRITE_ONLY)
+    private NodeCommunicationMode currentNodeCommunicationMode;
 
     /**
      * Get the ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
@@ -632,7 +652,7 @@ public class CloudPool {
     }
 
     /**
-     * Get low-priority Compute Nodes which have been preempted are included in this count.
+     * Get spot/Low-priority Compute Nodes which have been preempted are included in this count.
      *
      * @return the currentLowPriorityNodes value
      */
@@ -641,7 +661,7 @@ public class CloudPool {
     }
 
     /**
-     * Set low-priority Compute Nodes which have been preempted are included in this count.
+     * Set spot/Low-priority Compute Nodes which have been preempted are included in this count.
      *
      * @param currentLowPriorityNodes the currentLowPriorityNodes value to set
      * @return the CloudPool object itself.
@@ -833,6 +853,7 @@ public class CloudPool {
 
     /**
      * Get for Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @return the certificateReferences value
      */
@@ -842,6 +863,7 @@ public class CloudPool {
 
     /**
      * Set for Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @param certificateReferences the certificateReferences value to set
      * @return the CloudPool object itself.
@@ -1029,6 +1051,35 @@ public class CloudPool {
     public CloudPool withIdentity(BatchPoolIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get if omitted, the default value is Default. Possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @return the targetNodeCommunicationMode value
+     */
+    public NodeCommunicationMode targetNodeCommunicationMode() {
+        return this.targetNodeCommunicationMode;
+    }
+
+    /**
+     * Set if omitted, the default value is Default. Possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
+        this.targetNodeCommunicationMode = targetNodeCommunicationMode;
+        return this;
+    }
+
+    /**
+     * Get possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @return the currentNodeCommunicationMode value
+     */
+    public NodeCommunicationMode currentNodeCommunicationMode() {
+        return this.currentNodeCommunicationMode;
     }
 
 }

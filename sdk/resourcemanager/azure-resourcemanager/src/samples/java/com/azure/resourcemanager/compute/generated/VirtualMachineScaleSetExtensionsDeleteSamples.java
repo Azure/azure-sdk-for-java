@@ -4,43 +4,45 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetExtensions Delete. */
 public final class VirtualMachineScaleSetExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetExtensions_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Delete_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetExtensions_Delete_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSetExtension_Delete_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetExtensionsDeleteMaximumSetGen(
+    public static void virtualMachineScaleSetExtensionDeleteMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetExtensions()
-            .delete("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .delete("rgcompute", "aaaa", "aaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetExtensions_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetExtensions_Delete_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSetExtension_Delete_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetExtensionsDeleteMinimumSetGen(
+    public static void virtualMachineScaleSetExtensionDeleteMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetExtensions()
-            .delete("rgcompute", "aaaa", "aaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .delete(
+                "rgcompute",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The container group encryption properties. */
 @Fluent
 public final class EncryptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProperties.class);
-
     /*
      * The keyvault base url.
      */
@@ -31,6 +28,16 @@ public final class EncryptionProperties {
      */
     @JsonProperty(value = "keyVersion", required = true)
     private String keyVersion;
+
+    /*
+     * The keyvault managed identity.
+     */
+    @JsonProperty(value = "identity")
+    private String identity;
+
+    /** Creates an instance of EncryptionProperties class. */
+    public EncryptionProperties() {
+    }
 
     /**
      * Get the vaultBaseUrl property: The keyvault base url.
@@ -93,26 +100,48 @@ public final class EncryptionProperties {
     }
 
     /**
+     * Get the identity property: The keyvault managed identity.
+     *
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The keyvault managed identity.
+     *
+     * @param identity the identity value to set.
+     * @return the EncryptionProperties object itself.
+     */
+    public EncryptionProperties withIdentity(String identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vaultBaseUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property vaultBaseUrl in model EncryptionProperties"));
         }
         if (keyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyName in model EncryptionProperties"));
         }
         if (keyVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyVersion in model EncryptionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptionProperties.class);
 }

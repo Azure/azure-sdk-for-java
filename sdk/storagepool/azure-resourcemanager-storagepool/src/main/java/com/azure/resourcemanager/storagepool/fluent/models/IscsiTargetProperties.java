@@ -11,15 +11,12 @@ import com.azure.resourcemanager.storagepool.models.IscsiLun;
 import com.azure.resourcemanager.storagepool.models.IscsiTargetAclMode;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
 import com.azure.resourcemanager.storagepool.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response properties for iSCSI Target operations. */
 @Fluent
 public final class IscsiTargetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IscsiTargetProperties.class);
-
     /*
      * Mode for Target connectivity.
      */
@@ -27,8 +24,7 @@ public final class IscsiTargetProperties {
     private IscsiTargetAclMode aclMode;
 
     /*
-     * Access Control List (ACL) for an iSCSI Target; defines LUN masking
-     * policy
+     * Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
      */
     @JsonProperty(value = "staticAcls")
     private List<Acl> staticAcls;
@@ -40,8 +36,7 @@ public final class IscsiTargetProperties {
     private List<IscsiLun> luns;
 
     /*
-     * iSCSI Target IQN (iSCSI Qualified Name); example:
-     * "iqn.2005-03.org.iscsi:server".
+     * iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
      */
     @JsonProperty(value = "targetIqn", required = true)
     private String targetIqn;
@@ -75,6 +70,10 @@ public final class IscsiTargetProperties {
      */
     @JsonProperty(value = "sessions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> sessions;
+
+    /** Creates an instance of IscsiTargetProperties class. */
+    public IscsiTargetProperties() {
+    }
 
     /**
      * Get the aclMode property: Mode for Target connectivity.
@@ -241,7 +240,7 @@ public final class IscsiTargetProperties {
      */
     public void validate() {
         if (aclMode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property aclMode in model IscsiTargetProperties"));
         }
@@ -252,14 +251,16 @@ public final class IscsiTargetProperties {
             luns().forEach(e -> e.validate());
         }
         if (targetIqn() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property targetIqn in model IscsiTargetProperties"));
         }
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property status in model IscsiTargetProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetProperties.class);
 }

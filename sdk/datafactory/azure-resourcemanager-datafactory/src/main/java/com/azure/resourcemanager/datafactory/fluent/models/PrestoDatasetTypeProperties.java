@@ -11,25 +11,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PrestoDatasetTypeProperties {
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
-     * The table name of the Presto. Type: string (or Expression with
-     * resultType string).
+     * The table name of the Presto. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
 
     /*
-     * The schema name of the Presto. Type: string (or Expression with
-     * resultType string).
+     * The schema name of the Presto. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;
+
+    /** Creates an instance of PrestoDatasetTypeProperties class. */
+    public PrestoDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties

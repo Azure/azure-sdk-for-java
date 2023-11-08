@@ -6,14 +6,11 @@ package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the SKU name and Azure pricing tier for PowerBI Dedicated capacity resource. */
 @Fluent
 public final class CapacitySku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacitySku.class);
-
     /*
      * Name of the SKU level.
      */
@@ -25,6 +22,16 @@ public final class CapacitySku {
      */
     @JsonProperty(value = "tier")
     private CapacitySkuTier tier;
+
+    /*
+     * The capacity of the SKU.
+     */
+    @JsonProperty(value = "capacity")
+    private Integer capacity;
+
+    /** Creates an instance of CapacitySku class. */
+    public CapacitySku() {
+    }
 
     /**
      * Get the name property: Name of the SKU level.
@@ -67,15 +74,37 @@ public final class CapacitySku {
     }
 
     /**
+     * Get the capacity property: The capacity of the SKU.
+     *
+     * @return the capacity value.
+     */
+    public Integer capacity() {
+        return this.capacity;
+    }
+
+    /**
+     * Set the capacity property: The capacity of the SKU.
+     *
+     * @param capacity the capacity value to set.
+     * @return the CapacitySku object itself.
+     */
+    public CapacitySku withCapacity(Integer capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model CapacitySku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CapacitySku.class);
 }

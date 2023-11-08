@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
@@ -13,6 +14,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
@@ -26,6 +28,7 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
+    private Supplier<CosmosExcludedRegions> excludedRegionsSupplier;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private String userAgentSuffix;
@@ -46,23 +49,32 @@ public final class ConnectionPolicy {
     private boolean tcpConnectionEndpointRediscoveryEnabled;
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
-
-    private boolean clientTelemetryEnabled;
+    private boolean tcpHealthCheckTimeoutDetectionEnabled;
+    private int minConnectionPoolSizePerEndpoint;
+    private int openConnectionsConcurrency;
+    private int aggressiveWarmupConcurrency;
 
     /**
      * Constructor.
      */
-    public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
-        this(ConnectionMode.GATEWAY);
-        this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
-        this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
-        this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
-        this.proxy = gatewayConnectionConfig.getProxy();
-        this.tcpConnectionEndpointRediscoveryEnabled = false;
+    public ConnectionPolicy(DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
+        this(ConnectionMode.DIRECT, directConnectionConfig, gatewayConnectionConfig);
     }
 
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
-        this(ConnectionMode.DIRECT);
+        this(ConnectionMode.DIRECT, directConnectionConfig, GatewayConnectionConfig.getDefaultConfig());
+    }
+
+    public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
+        this(ConnectionMode.GATEWAY, DirectConnectionConfig.getDefaultConfig(), gatewayConnectionConfig);
+    }
+
+    private ConnectionPolicy(
+        ConnectionMode connectionMode,
+        DirectConnectionConfig directConnectionConfig,
+        GatewayConnectionConfig gatewayConnectionConfig) {
+        this();
+        this.connectionMode = connectionMode;
         this.connectTimeout = directConnectionConfig.getConnectTimeout();
         this.idleTcpConnectionTimeout = directConnectionConfig.getIdleConnectionTimeout();
         this.idleTcpEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
@@ -78,18 +90,37 @@ public final class ConnectionPolicy {
             .DirectConnectionConfigHelper
             .getDirectConnectionConfigAccessor()
             .getIoThreadPriority(directConnectionConfig);
+        this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
+        this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
+        this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
+        this.proxy = gatewayConnectionConfig.getProxy();
+        this.tcpHealthCheckTimeoutDetectionEnabled =
+            ImplementationBridgeHelpers
+                .DirectConnectionConfigHelper
+                .getDirectConnectionConfigAccessor()
+                .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
+
+        // NOTE: should be compared with COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT
+        // read during client initialization before connections are created for the container
+        this.minConnectionPoolSizePerEndpoint =
+                Math.max(ImplementationBridgeHelpers
+                    .DirectConnectionConfigHelper
+                    .getDirectConnectionConfigAccessor()
+                    .getMinConnectionPoolSizePerEndpoint(directConnectionConfig), Configs.getMinConnectionPoolSizePerEndpoint());
     }
 
-    private ConnectionPolicy(ConnectionMode connectionMode) {
-        this.connectionMode = connectionMode;
+    private ConnectionPolicy() {
         //  Default values
         this.endpointDiscoveryEnabled = true;
-        this.maxConnectionPoolSize = defaultGatewayMaxConnectionPoolSize;
         this.multipleWriteRegionsEnabled = true;
         this.readRequestsFallbackEnabled = true;
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
+        this.tcpHealthCheckTimeoutDetectionEnabled = true;
+        this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
+        this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
+        this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
     }
 
     /**
@@ -447,6 +478,15 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    public ConnectionPolicy setExcludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
+        this.excludedRegionsSupplier = excludedRegionsSupplier;
+        return this;
+    }
+
+    public Supplier<CosmosExcludedRegions> getExcludedRegionsSupplier() {
+        return this.excludedRegionsSupplier;
+    }
+
     /**
      * Gets the proxy options which contain the InetSocketAddress of proxy server.
      *
@@ -542,17 +582,13 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public boolean isClientTelemetryEnabled() {
-        return clientTelemetryEnabled;
-    }
-
-    public void setClientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        this.clientTelemetryEnabled = clientTelemetryEnabled;
-    }
-
     public int getIoThreadCountPerCoreFactor() { return this.ioThreadCountPerCoreFactor; }
 
     public int getIoThreadPriority() { return this.ioThreadPriority; }
+
+    public boolean isTcpHealthCheckTimeoutDetectionEnabled() {
+        return this.tcpHealthCheckTimeoutDetectionEnabled;
+    }
 
     public ConnectionPolicy setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
         this.ioThreadCountPerCoreFactor = ioThreadCountPerCoreFactor;
@@ -562,6 +598,18 @@ public final class ConnectionPolicy {
     public ConnectionPolicy setIoThreadPriority(int ioThreadPriority) {
         this.ioThreadPriority = ioThreadPriority;
         return this;
+    }
+
+    public int getMinConnectionPoolSizePerEndpoint() {
+        return minConnectionPoolSizePerEndpoint;
+    }
+
+    public String getExcludedRegionsAsString() {
+        if (this.excludedRegionsSupplier != null && this.excludedRegionsSupplier.get() != null) {
+            CosmosExcludedRegions excludedRegions = this.excludedRegionsSupplier.get();
+            return excludedRegions.toString();
+        }
+        return "[]";
     }
 
     @Override
@@ -586,7 +634,12 @@ public final class ConnectionPolicy {
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +
-            ", clientTelemetryEnabled=" + clientTelemetryEnabled +
+            ", ioThreadPriority=" + ioThreadPriority +
+            ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
+            ", tcpHealthCheckTimeoutDetectionEnabled=" + tcpHealthCheckTimeoutDetectionEnabled +
+            ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
+            ", openConnectionsConcurrency=" + openConnectionsConcurrency +
+            ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             '}';
     }
 }

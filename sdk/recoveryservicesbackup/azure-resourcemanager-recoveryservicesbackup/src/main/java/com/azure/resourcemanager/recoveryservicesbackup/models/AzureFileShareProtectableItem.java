@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureFileShare")
 @Fluent
 public final class AzureFileShareProtectableItem extends WorkloadProtectableItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileShareProtectableItem.class);
-
     /*
-     * Full Fabric ID of container to which this protectable item belongs. For
-     * example, ARM ID.
+     * Full Fabric ID of container to which this protectable item belongs. For example, ARM ID.
      */
     @JsonProperty(value = "parentContainerFabricId")
     private String parentContainerFabricId;
@@ -36,6 +31,10 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
      */
     @JsonProperty(value = "azureFileShareType")
     private AzureFileShareType azureFileShareType;
+
+    /** Creates an instance of AzureFileShareProtectableItem class. */
+    public AzureFileShareProtectableItem() {
+    }
 
     /**
      * Get the parentContainerFabricId property: Full Fabric ID of container to which this protectable item belongs. For

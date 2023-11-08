@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AccountStatus;
 import com.azure.resourcemanager.billing.models.AccountType;
 import com.azure.resourcemanager.billing.models.AddressDetails;
@@ -14,15 +13,12 @@ import com.azure.resourcemanager.billing.models.BillingProfilesOnExpand;
 import com.azure.resourcemanager.billing.models.Department;
 import com.azure.resourcemanager.billing.models.Enrollment;
 import com.azure.resourcemanager.billing.models.EnrollmentAccount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of the billing account. */
 @Fluent
 public final class BillingAccountProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingAccountProperties.class);
-
     /*
      * The billing account name.
      */
@@ -30,8 +26,7 @@ public final class BillingAccountProperties {
     private String displayName;
 
     /*
-     * The address of the individual or organization that is responsible for
-     * the billing account.
+     * The address of the individual or organization that is responsible for the billing account.
      */
     @JsonProperty(value = "soldTo")
     private AddressDetails soldTo;
@@ -55,15 +50,15 @@ public final class BillingAccountProperties {
     private AccountStatus accountStatus;
 
     /*
-     * The billing profiles associated with the billing account. By default
-     * this is not populated, unless it's specified in $expand.
+     * The billing profiles associated with the billing account. By default this is not populated, unless it's
+     * specified in $expand.
      */
     @JsonProperty(value = "billingProfiles")
     private BillingProfilesOnExpand billingProfiles;
 
     /*
-     * The details about the associated legacy enrollment. By default this is
-     * not populated, unless it's specified in $expand.
+     * The details about the associated legacy enrollment. By default this is not populated, unless it's specified in
+     * $expand.
      */
     @JsonProperty(value = "enrollmentDetails", access = JsonProperty.Access.WRITE_ONLY)
     private Enrollment enrollmentDetails;
@@ -91,6 +86,10 @@ public final class BillingAccountProperties {
      */
     @JsonProperty(value = "notificationEmailAddress")
     private String notificationEmailAddress;
+
+    /** Creates an instance of BillingAccountProperties class. */
+    public BillingAccountProperties() {
+    }
 
     /**
      * Get the displayName property: The billing account name.

@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -18,8 +18,6 @@ import java.util.Map;
 /** site. */
 @Fluent
 public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphSite.class);
-
     /*
      * The full title for the site. Read-only.
      */
@@ -36,6 +34,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
      * root
      */
     @JsonProperty(value = "root")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> root;
 
     /*
@@ -57,8 +56,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
     private MicrosoftGraphItemAnalytics analytics;
 
     /*
-     * The collection of column definitions reusable across lists under this
-     * site.
+     * The collection of column definitions reusable across lists under this site.
      */
     @JsonProperty(value = "columns")
     private List<MicrosoftGraphColumnDefinition> columns;
@@ -82,8 +80,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
     private List<MicrosoftGraphDrive> drives;
 
     /*
-     * Used to address any item contained in this site. This collection cannot
-     * be enumerated.
+     * Used to address any item contained in this site. This collection cannot be enumerated.
      */
     @JsonProperty(value = "items")
     private List<MicrosoftGraphBaseItemInner> items;
@@ -110,6 +107,10 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
      * site
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSite class. */
+    public MicrosoftGraphSite() {
+    }
 
     /**
      * Get the displayName property: The full title for the site. Read-only.

@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagepool.fluent.IscsiTargetsClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IscsiTargetsClient. */
 public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
-    private final ClientLogger logger = new ClientLogger(IscsiTargetsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IscsiTargetsService service;
 
@@ -69,7 +66,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StoragePoolManagemen")
-    private interface IscsiTargetsService {
+    public interface IscsiTargetsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
@@ -170,7 +167,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IscsiTargetInner>> listByDiskPoolSinglePageAsync(
@@ -228,7 +225,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IscsiTargetInner>> listByDiskPoolSinglePageAsync(
@@ -282,7 +279,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IscsiTargetInner> listByDiskPoolAsync(String resourceGroupName, String diskPoolName) {
@@ -300,7 +297,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IscsiTargetInner> listByDiskPoolAsync(
@@ -318,7 +315,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IscsiTargetInner> listByDiskPool(String resourceGroupName, String diskPoolName) {
@@ -334,7 +331,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IscsiTargetInner> listByDiskPool(
@@ -352,7 +349,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -419,7 +416,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -483,7 +480,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link PollerFlux} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdateAsync(
@@ -496,7 +493,11 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         return this
             .client
             .<IscsiTargetInner, IscsiTargetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IscsiTargetInner.class, IscsiTargetInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                IscsiTargetInner.class,
+                IscsiTargetInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -510,7 +511,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link PollerFlux} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdateAsync(
@@ -539,7 +540,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdate(
@@ -547,7 +548,8 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         String diskPoolName,
         String iscsiTargetName,
         IscsiTargetCreate iscsiTargetCreatePayload) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload)
             .getSyncPoller();
     }
 
@@ -562,7 +564,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdate(
@@ -571,7 +573,8 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         String iscsiTargetName,
         IscsiTargetCreate iscsiTargetCreatePayload,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload, context)
             .getSyncPoller();
     }
@@ -586,7 +589,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IscsiTargetInner> createOrUpdateAsync(
@@ -610,7 +613,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IscsiTargetInner> createOrUpdateAsync(
@@ -680,7 +683,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -747,7 +750,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -811,7 +814,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link PollerFlux} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdateAsync(
@@ -824,7 +827,11 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         return this
             .client
             .<IscsiTargetInner, IscsiTargetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IscsiTargetInner.class, IscsiTargetInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                IscsiTargetInner.class,
+                IscsiTargetInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -838,7 +845,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link PollerFlux} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdateAsync(
@@ -867,7 +874,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdate(
@@ -875,7 +882,8 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         String diskPoolName,
         String iscsiTargetName,
         IscsiTargetUpdate iscsiTargetUpdatePayload) {
-        return beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload)
+        return this
+            .beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload)
             .getSyncPoller();
     }
 
@@ -890,7 +898,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdate(
@@ -899,7 +907,8 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         String iscsiTargetName,
         IscsiTargetUpdate iscsiTargetUpdatePayload,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload, context)
             .getSyncPoller();
     }
 
@@ -913,7 +922,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IscsiTargetInner> updateAsync(
@@ -937,7 +946,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IscsiTargetInner> updateAsync(
@@ -1004,7 +1013,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1059,7 +1068,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1110,7 +1119,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1119,7 +1128,8 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
             deleteWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1132,7 +1142,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1154,12 +1164,12 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String diskPoolName, String iscsiTargetName) {
-        return beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName).getSyncPoller();
     }
 
     /**
@@ -1172,12 +1182,12 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName, context).getSyncPoller();
     }
 
     /**
@@ -1189,7 +1199,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String diskPoolName, String iscsiTargetName) {
@@ -1208,7 +1218,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1258,7 +1268,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
+     * @return an iSCSI Target along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IscsiTargetInner>> getWithResponseAsync(
@@ -1313,7 +1323,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
+     * @return an iSCSI Target along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IscsiTargetInner>> getWithResponseAsync(
@@ -1364,19 +1374,30 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
+     * @return an iSCSI Target on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IscsiTargetInner> getAsync(String resourceGroupName, String diskPoolName, String iscsiTargetName) {
         return getWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName)
-            .flatMap(
-                (Response<IscsiTargetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get an iSCSI Target.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param diskPoolName The name of the Disk Pool.
+     * @param iscsiTargetName The name of the iSCSI Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an iSCSI Target along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IscsiTargetInner> getWithResponse(
+        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context) {
+        return getWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName, context).block();
     }
 
     /**
@@ -1392,35 +1413,18 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IscsiTargetInner get(String resourceGroupName, String diskPoolName, String iscsiTargetName) {
-        return getAsync(resourceGroupName, diskPoolName, iscsiTargetName).block();
-    }
-
-    /**
-     * Get an iSCSI Target.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diskPoolName The name of the Disk Pool.
-     * @param iscsiTargetName The name of the iSCSI Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IscsiTargetInner> getWithResponse(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context) {
-        return getWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName, context).block();
+        return getWithResponse(resourceGroupName, diskPoolName, iscsiTargetName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of iSCSI Targets.
+     * @return list of iSCSI Targets along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IscsiTargetInner>> listByDiskPoolNextSinglePageAsync(String nextLink) {
@@ -1451,12 +1455,13 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of iSCSI Targets.
+     * @return list of iSCSI Targets along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IscsiTargetInner>> listByDiskPoolNextSinglePageAsync(String nextLink, Context context) {

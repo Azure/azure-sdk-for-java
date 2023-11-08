@@ -15,11 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureBlobFSLocation extends DatasetLocation {
     /*
-     * Specify the fileSystem of azure blobFS. Type: string (or Expression with
-     * resultType string).
+     * Specify the fileSystem of azure blobFS. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileSystem")
     private Object fileSystem;
+
+    /** Creates an instance of AzureBlobFSLocation class. */
+    public AzureBlobFSLocation() {}
 
     /**
      * Get the fileSystem property: Specify the fileSystem of azure blobFS. Type: string (or Expression with resultType
@@ -40,6 +42,20 @@ public final class AzureBlobFSLocation extends DatasetLocation {
      */
     public AzureBlobFSLocation setFileSystem(Object fileSystem) {
         this.fileSystem = fileSystem;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSLocation setFolderPath(Object folderPath) {
+        super.setFolderPath(folderPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSLocation setFileName(Object fileName) {
+        super.setFileName(fileName);
         return this;
     }
 }

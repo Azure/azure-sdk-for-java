@@ -21,7 +21,8 @@ public interface SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope.
+     * @return security sub-assessments on all your scanned resources inside a subscription scope as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecuritySubAssessmentInner> listAll(String scope);
@@ -35,7 +36,8 @@ public interface SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope.
+     * @return security sub-assessments on all your scanned resources inside a subscription scope as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecuritySubAssessmentInner> listAll(String scope, Context context);
@@ -49,7 +51,8 @@ public interface SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope.
+     * @return security sub-assessments on all your scanned resources inside a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecuritySubAssessmentInner> list(String scope, String assessmentName);
@@ -64,10 +67,28 @@ public interface SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope.
+     * @return security sub-assessments on all your scanned resources inside a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecuritySubAssessmentInner> list(String scope, String assessmentName, Context context);
+
+    /**
+     * Get a security sub-assessment on your scanned resource.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @param subAssessmentName The Sub-Assessment Key - Unique key for the sub-assessment type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a security sub-assessment on your scanned resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SecuritySubAssessmentInner> getWithResponse(
+        String scope, String assessmentName, String subAssessmentName, Context context);
 
     /**
      * Get a security sub-assessment on your scanned resource.
@@ -83,21 +104,4 @@ public interface SubAssessmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SecuritySubAssessmentInner get(String scope, String assessmentName, String subAssessmentName);
-
-    /**
-     * Get a security sub-assessment on your scanned resource.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param subAssessmentName The Sub-Assessment Key - Unique key for the sub-assessment type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security sub-assessment on your scanned resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecuritySubAssessmentInner> getWithResponse(
-        String scope, String assessmentName, String subAssessmentName, Context context);
 }

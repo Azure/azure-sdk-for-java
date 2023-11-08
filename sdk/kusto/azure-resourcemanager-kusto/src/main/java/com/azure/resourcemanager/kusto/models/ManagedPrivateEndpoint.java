@@ -76,6 +76,13 @@ public interface ManagedPrivateEndpoint {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.kusto.fluent.models.ManagedPrivateEndpointInner object.
      *
      * @return the inner object.
@@ -86,22 +93,25 @@ public interface ManagedPrivateEndpoint {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ManagedPrivateEndpoint definition stages. */
     interface DefinitionStages {
         /** The first stage of the ManagedPrivateEndpoint definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ManagedPrivateEndpoint definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, clusterName.
              *
-             * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param clusterName The name of the Kusto cluster.
              * @return the next definition stage.
              */
             WithCreate withExistingCluster(String resourceGroupName, String clusterName);
         }
+
         /**
          * The stage of the ManagedPrivateEndpoint definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -126,6 +136,7 @@ public interface ManagedPrivateEndpoint {
              */
             ManagedPrivateEndpoint create(Context context);
         }
+
         /** The stage of the ManagedPrivateEndpoint definition allowing to specify privateLinkResourceId. */
         interface WithPrivateLinkResourceId {
             /**
@@ -138,6 +149,7 @@ public interface ManagedPrivateEndpoint {
              */
             WithCreate withPrivateLinkResourceId(String privateLinkResourceId);
         }
+
         /** The stage of the ManagedPrivateEndpoint definition allowing to specify privateLinkResourceRegion. */
         interface WithPrivateLinkResourceRegion {
             /**
@@ -150,6 +162,7 @@ public interface ManagedPrivateEndpoint {
              */
             WithCreate withPrivateLinkResourceRegion(String privateLinkResourceRegion);
         }
+
         /** The stage of the ManagedPrivateEndpoint definition allowing to specify groupId. */
         interface WithGroupId {
             /**
@@ -160,6 +173,7 @@ public interface ManagedPrivateEndpoint {
              */
             WithCreate withGroupId(String groupId);
         }
+
         /** The stage of the ManagedPrivateEndpoint definition allowing to specify requestMessage. */
         interface WithRequestMessage {
             /**
@@ -171,6 +185,7 @@ public interface ManagedPrivateEndpoint {
             WithCreate withRequestMessage(String requestMessage);
         }
     }
+
     /**
      * Begins update for the ManagedPrivateEndpoint resource.
      *
@@ -199,6 +214,7 @@ public interface ManagedPrivateEndpoint {
          */
         ManagedPrivateEndpoint apply(Context context);
     }
+
     /** The ManagedPrivateEndpoint update stages. */
     interface UpdateStages {
         /** The stage of the ManagedPrivateEndpoint update allowing to specify privateLinkResourceId. */
@@ -213,6 +229,7 @@ public interface ManagedPrivateEndpoint {
              */
             Update withPrivateLinkResourceId(String privateLinkResourceId);
         }
+
         /** The stage of the ManagedPrivateEndpoint update allowing to specify privateLinkResourceRegion. */
         interface WithPrivateLinkResourceRegion {
             /**
@@ -225,6 +242,7 @@ public interface ManagedPrivateEndpoint {
              */
             Update withPrivateLinkResourceRegion(String privateLinkResourceRegion);
         }
+
         /** The stage of the ManagedPrivateEndpoint update allowing to specify groupId. */
         interface WithGroupId {
             /**
@@ -235,6 +253,7 @@ public interface ManagedPrivateEndpoint {
              */
             Update withGroupId(String groupId);
         }
+
         /** The stage of the ManagedPrivateEndpoint update allowing to specify requestMessage. */
         interface WithRequestMessage {
             /**
@@ -246,6 +265,7 @@ public interface ManagedPrivateEndpoint {
             Update withRequestMessage(String requestMessage);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

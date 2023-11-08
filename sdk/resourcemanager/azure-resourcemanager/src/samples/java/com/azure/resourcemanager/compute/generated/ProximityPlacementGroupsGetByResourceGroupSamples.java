@@ -4,24 +4,23 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProximityPlacementGroups GetByResourceGroup. */
 public final class ProximityPlacementGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetAProximityPlacementGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Get.json
      */
     /**
-     * Sample code: Create a proximity placement group.
+     * Sample code: Get proximity placement groups.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createAProximityPlacementGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getProximityPlacementGroups(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getProximityPlacementGroups()
-            .getByResourceGroupWithResponse("myResourceGroup", "myProximityPlacementGroup", null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myProximityPlacementGroup", null, com.azure.core.util.Context.NONE);
     }
 }

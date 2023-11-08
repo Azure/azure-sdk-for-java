@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("FileTaskRunRequest")
 @Fluent
 public final class FileTaskRunRequest extends RunRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileTaskRunRequest.class);
-
     /*
      * The template/definition file path relative to the source.
      */
@@ -32,8 +29,7 @@ public final class FileTaskRunRequest extends RunRequest {
     private String valuesFilePath;
 
     /*
-     * The collection of overridable values that can be passed when running a
-     * task.
+     * The collection of overridable values that can be passed when running a task.
      */
     @JsonProperty(value = "values")
     private List<SetValue> values;
@@ -57,20 +53,21 @@ public final class FileTaskRunRequest extends RunRequest {
     private AgentProperties agentConfiguration;
 
     /*
-     * The URL(absolute or relative) of the source context. It can be an URL to
-     * a tar or git repository.
-     * If it is relative URL, the relative path should be obtained from calling
-     * listBuildSourceUploadUrl API.
+     * The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
+     * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      */
     @JsonProperty(value = "sourceLocation")
     private String sourceLocation;
 
     /*
-     * The properties that describes a set of credentials that will be used
-     * when this run is invoked.
+     * The properties that describes a set of credentials that will be used when this run is invoked.
      */
     @JsonProperty(value = "credentials")
     private Credentials credentials;
+
+    /** Creates an instance of FileTaskRunRequest class. */
+    public FileTaskRunRequest() {
+    }
 
     /**
      * Get the taskFilePath property: The template/definition file path relative to the source.
@@ -268,7 +265,7 @@ public final class FileTaskRunRequest extends RunRequest {
     public void validate() {
         super.validate();
         if (taskFilePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property taskFilePath in model FileTaskRunRequest"));
         }
@@ -276,7 +273,7 @@ public final class FileTaskRunRequest extends RunRequest {
             values().forEach(e -> e.validate());
         }
         if (platform() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property platform in model FileTaskRunRequest"));
         } else {
@@ -289,4 +286,6 @@ public final class FileTaskRunRequest extends RunRequest {
             credentials().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FileTaskRunRequest.class);
 }

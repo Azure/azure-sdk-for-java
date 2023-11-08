@@ -6,19 +6,23 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The properties of a private endpoint connection. */
 @Fluent
 public final class PrivateEndpointConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionProperties.class);
-
     /*
      * Private endpoint
      */
     @JsonProperty(value = "privateEndpoint")
     private PrivateEndpoint privateEndpoint;
+
+    /*
+     * GroupIds from the private link service resource.
+     */
+    @JsonProperty(value = "groupIds")
+    private List<String> groupIds;
 
     /*
      * Private endpoint connection state
@@ -31,6 +35,10 @@ public final class PrivateEndpointConnectionProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointConnectionProvisioningState provisioningState;
+
+    /** Creates an instance of PrivateEndpointConnectionProperties class. */
+    public PrivateEndpointConnectionProperties() {
+    }
 
     /**
      * Get the privateEndpoint property: Private endpoint.
@@ -49,6 +57,26 @@ public final class PrivateEndpointConnectionProperties {
      */
     public PrivateEndpointConnectionProperties withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
         this.privateEndpoint = privateEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the groupIds property: GroupIds from the private link service resource.
+     *
+     * @return the groupIds value.
+     */
+    public List<String> groupIds() {
+        return this.groupIds;
+    }
+
+    /**
+     * Set the groupIds property: GroupIds from the private link service resource.
+     *
+     * @param groupIds the groupIds value to set.
+     * @return the PrivateEndpointConnectionProperties object itself.
+     */
+    public PrivateEndpointConnectionProperties withGroupIds(List<String> groupIds) {
+        this.groupIds = groupIds;
         return this;
     }
 
@@ -92,7 +120,7 @@ public final class PrivateEndpointConnectionProperties {
             privateEndpoint().validate();
         }
         if (privateLinkServiceConnectionState() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property privateLinkServiceConnectionState in model"
@@ -101,4 +129,6 @@ public final class PrivateEndpointConnectionProperties {
             privateLinkServiceConnectionState().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionProperties.class);
 }

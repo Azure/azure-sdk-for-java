@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Object that includes an array of Service resources and a possible link for next set. */
 @Fluent
 public final class ServiceResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourceList.class);
-
     /*
      * Collection of Service resources
      */

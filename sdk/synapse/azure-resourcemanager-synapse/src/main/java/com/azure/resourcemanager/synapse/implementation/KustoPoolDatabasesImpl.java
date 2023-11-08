@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.KustoPoolDatabasesClient;
 import com.azure.resourcemanager.synapse.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.synapse.models.Database;
 import com.azure.resourcemanager.synapse.models.KustoPoolDatabases;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KustoPoolDatabasesImpl implements KustoPoolDatabases {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolDatabasesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KustoPoolDatabasesImpl.class);
 
     private final KustoPoolDatabasesClient innerClient;
 
@@ -42,15 +41,6 @@ public final class KustoPoolDatabasesImpl implements KustoPoolDatabases {
         return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
-    public Database get(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
-        DatabaseInner inner = this.serviceClient().get(resourceGroupName, workspaceName, kustoPoolName, databaseName);
-        if (inner != null) {
-            return new DatabaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Database> getWithResponse(
         String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
         Response<DatabaseInner> inner =
@@ -63,6 +53,15 @@ public final class KustoPoolDatabasesImpl implements KustoPoolDatabases {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DatabaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Database get(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
+        DatabaseInner inner = this.serviceClient().get(resourceGroupName, workspaceName, kustoPoolName, databaseName);
+        if (inner != null) {
+            return new DatabaseImpl(inner, this.manager());
         } else {
             return null;
         }

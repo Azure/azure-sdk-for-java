@@ -6,15 +6,12 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The start and end date for pulling data for the query. */
 @Fluent
 public final class QueryTimePeriod {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTimePeriod.class);
-
     /*
      * The start date to pull data from.
      */
@@ -26,6 +23,10 @@ public final class QueryTimePeriod {
      */
     @JsonProperty(value = "to", required = true)
     private OffsetDateTime to;
+
+    /** Creates an instance of QueryTimePeriod class. */
+    public QueryTimePeriod() {
+    }
 
     /**
      * Get the from property: The start date to pull data from.
@@ -74,14 +75,16 @@ public final class QueryTimePeriod {
      */
     public void validate() {
         if (from() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property from in model QueryTimePeriod"));
         }
         if (to() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property to in model QueryTimePeriod"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QueryTimePeriod.class);
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Plan for the resource. */
 @Fluent
 public class Plan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Plan.class);
-
     /*
      * A user defined name of the 3rd Party Artifact that is being procured.
      */
@@ -21,23 +18,20 @@ public class Plan {
     private String name;
 
     /*
-     * The publisher of the 3rd Party Artifact that is being bought. E.g.
-     * NewRelic
+     * The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
      */
     @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /*
-     * The 3rd Party artifact that is being procured. E.g. NewRelic. Product
-     * maps to the OfferID specified for the artifact at the time of Data
-     * Market onboarding.
+     * The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the
+     * artifact at the time of Data Market onboarding.
      */
     @JsonProperty(value = "product", required = true)
     private String product;
 
     /*
-     * A publisher provided promotion code as provisioned in Data Market for
-     * the said product/artifact.
+     * A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
      */
     @JsonProperty(value = "promotionCode")
     private String promotionCode;
@@ -47,6 +41,10 @@ public class Plan {
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /** Creates an instance of Plan class. */
+    public Plan() {
+    }
 
     /**
      * Get the name property: A user defined name of the 3rd Party Artifact that is being procured.
@@ -159,16 +157,18 @@ public class Plan {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Plan"));
         }
         if (publisher() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property publisher in model Plan"));
         }
         if (product() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property product in model Plan"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Plan.class);
 }

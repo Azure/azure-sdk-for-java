@@ -25,7 +25,7 @@ public interface IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IscsiTargetInner> listByDiskPool(String resourceGroupName, String diskPoolName);
@@ -39,7 +39,7 @@ public interface IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IscsiTargetInner> listByDiskPool(String resourceGroupName, String diskPoolName, Context context);
@@ -54,7 +54,7 @@ public interface IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdate(
@@ -74,7 +74,7 @@ public interface IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdate(
@@ -134,7 +134,7 @@ public interface IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdate(
@@ -154,7 +154,7 @@ public interface IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdate(
@@ -213,7 +213,7 @@ public interface IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -229,7 +229,7 @@ public interface IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -268,13 +268,15 @@ public interface IscsiTargetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
+     * @return an iSCSI Target along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IscsiTargetInner get(String resourceGroupName, String diskPoolName, String iscsiTargetName);
+    Response<IscsiTargetInner> getWithResponse(
+        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context);
 
     /**
      * Get an iSCSI Target.
@@ -282,13 +284,11 @@ public interface IscsiTargetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an iSCSI Target.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IscsiTargetInner> getWithResponse(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context);
+    IscsiTargetInner get(String resourceGroupName, String diskPoolName, String iscsiTargetName);
 }

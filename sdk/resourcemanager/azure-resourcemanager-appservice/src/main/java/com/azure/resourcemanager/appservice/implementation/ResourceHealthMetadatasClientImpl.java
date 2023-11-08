@@ -58,7 +58,7 @@ public final class ResourceHealthMetadatasClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface ResourceHealthMetadatasService {
+    public interface ResourceHealthMetadatasService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata")
         @ExpectedResponses({200})
@@ -72,8 +72,7 @@ public final class ResourceHealthMetadatasClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/resourceHealthMetadata")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataCollection>> listByResourceGroup(
@@ -86,8 +85,7 @@ public final class ResourceHealthMetadatasClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/resourceHealthMetadata")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataCollection>> listBySite(
@@ -101,8 +99,7 @@ public final class ResourceHealthMetadatasClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/resourceHealthMetadata/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resourceHealthMetadata/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataInner>> getBySite(
@@ -116,8 +113,7 @@ public final class ResourceHealthMetadatasClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/slots/{slot}/resourceHealthMetadata")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataCollection>> listBySiteSlot(
@@ -132,8 +128,7 @@ public final class ResourceHealthMetadatasClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/slots/{slot}/resourceHealthMetadata/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resourceHealthMetadata/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceHealthMetadataInner>> getBySiteSlot(
@@ -188,7 +183,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the subscription.
+     * List all ResourceHealthMetadata for all sites in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -233,7 +230,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the subscription.
+     * List all ResourceHealthMetadata for all sites in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,7 +276,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the subscription.
+     * List all ResourceHealthMetadata for all sites in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -289,7 +290,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the subscription.
+     * List all ResourceHealthMetadata for all sites in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,7 +307,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the subscription.
+     * List all ResourceHealthMetadata for all sites in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,7 +321,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the subscription.
+     * List all ResourceHealthMetadata for all sites in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,7 +337,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -383,7 +392,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -434,7 +445,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -450,7 +463,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -467,7 +482,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -481,7 +498,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     *
+     * <p>Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -496,7 +515,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -554,7 +575,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -610,7 +633,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -627,7 +652,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -646,7 +673,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -661,7 +690,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -678,7 +709,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -727,7 +760,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -774,7 +809,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -785,34 +822,13 @@ public final class ResourceHealthMetadatasClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceHealthMetadataInner> getBySiteAsync(String resourceGroupName, String name) {
-        return getBySiteWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<ResourceHealthMetadataInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getBySiteWithResponseAsync(resourceGroupName, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return used for getting ResourceHealthCheck settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceHealthMetadataInner getBySite(String resourceGroupName, String name) {
-        return getBySiteAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -829,7 +845,26 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return used for getting ResourceHealthCheck settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceHealthMetadataInner getBySite(String resourceGroupName, String name) {
+        return getBySiteWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -892,7 +927,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -953,7 +990,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -972,7 +1011,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -992,7 +1033,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -1009,7 +1052,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -1027,7 +1072,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -1081,7 +1128,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -1133,7 +1182,9 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -1146,34 +1197,13 @@ public final class ResourceHealthMetadatasClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceHealthMetadataInner> getBySiteSlotAsync(String resourceGroupName, String name, String slot) {
         return getBySiteSlotWithResponseAsync(resourceGroupName, name, slot)
-            .flatMap(
-                (Response<ResourceHealthMetadataInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app.
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return used for getting ResourceHealthCheck settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceHealthMetadataInner getBySiteSlot(String resourceGroupName, String name, String slot) {
-        return getBySiteSlotAsync(resourceGroupName, name, slot).block();
-    }
-
-    /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -1191,9 +1221,28 @@ public final class ResourceHealthMetadatasClientImpl
     }
 
     /**
+     * Gets the category of ResourceHealthMetadata to use for the given site
+     *
+     * <p>Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app.
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return used for getting ResourceHealthCheck settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceHealthMetadataInner getBySiteSlot(String resourceGroupName, String name, String slot) {
+        return getBySiteSlotWithResponse(resourceGroupName, name, slot, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1229,7 +1278,8 @@ public final class ResourceHealthMetadatasClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1266,7 +1316,8 @@ public final class ResourceHealthMetadatasClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1303,7 +1354,8 @@ public final class ResourceHealthMetadatasClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1341,7 +1393,8 @@ public final class ResourceHealthMetadatasClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1377,7 +1430,8 @@ public final class ResourceHealthMetadatasClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1415,7 +1469,8 @@ public final class ResourceHealthMetadatasClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1451,7 +1506,8 @@ public final class ResourceHealthMetadatasClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

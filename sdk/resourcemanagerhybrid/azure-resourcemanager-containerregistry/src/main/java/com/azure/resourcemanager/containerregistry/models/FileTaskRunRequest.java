@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("FileTaskRunRequest")
 @Fluent
 public final class FileTaskRunRequest extends RunRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileTaskRunRequest.class);
-
     /*
      * The template/definition file path relative to the source.
      */
@@ -238,6 +235,13 @@ public final class FileTaskRunRequest extends RunRequest {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FileTaskRunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -247,7 +251,7 @@ public final class FileTaskRunRequest extends RunRequest {
     public void validate() {
         super.validate();
         if (taskFilePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property taskFilePath in model FileTaskRunRequest"));
         }
@@ -255,7 +259,7 @@ public final class FileTaskRunRequest extends RunRequest {
             values().forEach(e -> e.validate());
         }
         if (platform() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property platform in model FileTaskRunRequest"));
         } else {
@@ -268,4 +272,6 @@ public final class FileTaskRunRequest extends RunRequest {
             credentials().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FileTaskRunRequest.class);
 }

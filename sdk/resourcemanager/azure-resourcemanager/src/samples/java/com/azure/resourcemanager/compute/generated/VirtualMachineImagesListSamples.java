@@ -4,36 +4,35 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineImages List. */
 public final class VirtualMachineImagesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImages_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineImageExamples/VirtualMachineImage_List_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineImages_List_MinimumSet_Gen.
+     * Sample code: VirtualMachineImage_List_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineImagesListMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void virtualMachineImageListMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineImages()
-            .listWithResponse("aaaaaaa", "aaaaaaaaaaa", "aaaaaaaaaa", "aaaaaa", null, null, null, Context.NONE);
+            .listWithResponse(
+                "aaaaaaa", "aaaaaaaaaaa", "aaaaaaaaaa", "aaaaaa", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImages_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineImageExamples/VirtualMachineImage_List_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineImages_List_MaximumSet_Gen.
+     * Sample code: VirtualMachineImage_List_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineImagesListMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void virtualMachineImageListMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
@@ -47,6 +46,6 @@ public final class VirtualMachineImagesListSamples {
                 "aaaaaaaaaaaaaaaaaaaaaaaa",
                 18,
                 "aa",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

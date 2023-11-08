@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateEndpointConnectionsPutHeaders model. */
 @Fluent
 public final class PrivateEndpointConnectionsPutHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsPutHeaders.class);
-
     /*
      * The Retry-After property.
      */
@@ -25,6 +23,22 @@ public final class PrivateEndpointConnectionsPutHeaders {
      */
     @JsonProperty(value = "Azure-AsyncOperation")
     private String azureAsyncOperation;
+
+    private static final HttpHeaderName AZURE_ASYNC_OPERATION = HttpHeaderName.fromString("Azure-AsyncOperation");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of PrivateEndpointConnectionsPutHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public PrivateEndpointConnectionsPutHeaders(HttpHeaders rawHeaders) {
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
+        this.azureAsyncOperation = rawHeaders.getValue(AZURE_ASYNC_OPERATION);
+    }
 
     /**
      * Get the retryAfter property: The Retry-After property.

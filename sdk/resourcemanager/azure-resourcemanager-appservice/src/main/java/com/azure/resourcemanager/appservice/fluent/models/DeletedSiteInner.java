@@ -17,6 +17,10 @@ public final class DeletedSiteInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DeletedSiteProperties innerProperties;
 
+    /** Creates an instance of DeletedSiteInner class. */
+    public DeletedSiteInner() {
+    }
+
     /**
      * Get the innerProperties property: DeletedSite resource specific properties.
      *

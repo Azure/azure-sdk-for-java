@@ -53,6 +53,13 @@ public interface CertificateResponse {
     SystemData systemData();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner
      * object.
      *
@@ -84,8 +91,7 @@ public interface CertificateResponse {
          * The stage of the CertificateResponse definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithCertificate, DefinitionStages.WithIsVerified, DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithProperties, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -101,29 +107,15 @@ public interface CertificateResponse {
              */
             CertificateResponse create(Context context);
         }
-        /** The stage of the CertificateResponse definition allowing to specify certificate. */
-        interface WithCertificate {
+        /** The stage of the CertificateResponse definition allowing to specify properties. */
+        interface WithProperties {
             /**
-             * Specifies the certificate property: Base-64 representation of the X509 leaf certificate .cer file or just
-             * .pem file content..
+             * Specifies the properties property: properties of a certificate.
              *
-             * @param certificate Base-64 representation of the X509 leaf certificate .cer file or just .pem file
-             *     content.
+             * @param properties properties of a certificate.
              * @return the next definition stage.
              */
-            WithCreate withCertificate(String certificate);
-        }
-        /** The stage of the CertificateResponse definition allowing to specify isVerified. */
-        interface WithIsVerified {
-            /**
-             * Specifies the isVerified property: True indicates that the certificate will be created in verified state
-             * and proof of possession will not be required..
-             *
-             * @param isVerified True indicates that the certificate will be created in verified state and proof of
-             *     possession will not be required.
-             * @return the next definition stage.
-             */
-            WithCreate withIsVerified(Boolean isVerified);
+            WithCreate withProperties(CertificateProperties properties);
         }
         /** The stage of the CertificateResponse definition allowing to specify ifMatch. */
         interface WithIfMatch {
@@ -146,7 +138,7 @@ public interface CertificateResponse {
     CertificateResponse.Update update();
 
     /** The template for CertificateResponse update. */
-    interface Update extends UpdateStages.WithCertificate, UpdateStages.WithIsVerified, UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithProperties, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -164,29 +156,15 @@ public interface CertificateResponse {
     }
     /** The CertificateResponse update stages. */
     interface UpdateStages {
-        /** The stage of the CertificateResponse update allowing to specify certificate. */
-        interface WithCertificate {
+        /** The stage of the CertificateResponse update allowing to specify properties. */
+        interface WithProperties {
             /**
-             * Specifies the certificate property: Base-64 representation of the X509 leaf certificate .cer file or just
-             * .pem file content..
+             * Specifies the properties property: properties of a certificate.
              *
-             * @param certificate Base-64 representation of the X509 leaf certificate .cer file or just .pem file
-             *     content.
+             * @param properties properties of a certificate.
              * @return the next definition stage.
              */
-            Update withCertificate(String certificate);
-        }
-        /** The stage of the CertificateResponse update allowing to specify isVerified. */
-        interface WithIsVerified {
-            /**
-             * Specifies the isVerified property: True indicates that the certificate will be created in verified state
-             * and proof of possession will not be required..
-             *
-             * @param isVerified True indicates that the certificate will be created in verified state and proof of
-             *     possession will not be required.
-             * @return the next definition stage.
-             */
-            Update withIsVerified(Boolean isVerified);
+            Update withProperties(CertificateProperties properties);
         }
         /** The stage of the CertificateResponse update allowing to specify ifMatch. */
         interface WithIfMatch {

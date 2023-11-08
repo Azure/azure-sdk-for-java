@@ -26,6 +26,15 @@ public final class WeekNumber extends ExpandableStringEnum<WeekNumber> {
     public static final WeekNumber THIRD = fromString("Third");
 
     /**
+     * Creates a new instance of WeekNumber value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WeekNumber() {
+    }
+
+    /**
      * Creates or finds a WeekNumber from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class WeekNumber extends ExpandableStringEnum<WeekNumber> {
         return fromString(name, WeekNumber.class);
     }
 
-    /** @return known WeekNumber values. */
+    /**
+     * Gets known WeekNumber values.
+     *
+     * @return known WeekNumber values.
+     */
     public static Collection<WeekNumber> values() {
         return values(WeekNumber.class);
     }

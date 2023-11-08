@@ -17,7 +17,7 @@ public interface Automations {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Automation> list();
 
@@ -29,7 +29,7 @@ public interface Automations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Automation> list(Context context);
 
@@ -42,7 +42,7 @@ public interface Automations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Automation> listByResourceGroup(String resourceGroupName);
 
@@ -56,9 +56,24 @@ public interface Automations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Automation> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Retrieves information about the model of a security automation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param automationName The security automation name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security automation resource along with {@link Response}.
+     */
+    Response<Automation> getByResourceGroupWithResponse(
+        String resourceGroupName, String automationName, Context context);
 
     /**
      * Retrieves information about the model of a security automation.
@@ -74,7 +89,7 @@ public interface Automations {
     Automation getByResourceGroup(String resourceGroupName, String automationName);
 
     /**
-     * Retrieves information about the model of a security automation.
+     * Deletes a security automation.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
@@ -83,10 +98,9 @@ public interface Automations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
+     * @return the {@link Response}.
      */
-    Response<Automation> getByResourceGroupWithResponse(
-        String resourceGroupName, String automationName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String automationName, Context context);
 
     /**
      * Deletes a security automation.
@@ -101,18 +115,21 @@ public interface Automations {
     void deleteByResourceGroup(String resourceGroupName, String automationName);
 
     /**
-     * Deletes a security automation.
+     * Validates the security automation model before create or update. Any validation errors are returned to the
+     * client.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param automationName The security automation name.
+     * @param automation The security automation resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the security automation model state property bag along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String automationName, Context context);
+    Response<AutomationValidationStatus> validateWithResponse(
+        String resourceGroupName, String automationName, AutomationInner automation, Context context);
 
     /**
      * Validates the security automation model before create or update. Any validation errors are returned to the
@@ -130,30 +147,13 @@ public interface Automations {
     AutomationValidationStatus validate(String resourceGroupName, String automationName, AutomationInner automation);
 
     /**
-     * Validates the security automation model before create or update. Any validation errors are returned to the
-     * client.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param automationName The security automation name.
-     * @param automation The security automation resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag.
-     */
-    Response<AutomationValidationStatus> validateWithResponse(
-        String resourceGroupName, String automationName, AutomationInner automation, Context context);
-
-    /**
      * Retrieves information about the model of a security automation.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
+     * @return the security automation resource along with {@link Response}.
      */
     Automation getById(String id);
 
@@ -165,7 +165,7 @@ public interface Automations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
+     * @return the security automation resource along with {@link Response}.
      */
     Response<Automation> getByIdWithResponse(String id, Context context);
 
@@ -187,7 +187,7 @@ public interface Automations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

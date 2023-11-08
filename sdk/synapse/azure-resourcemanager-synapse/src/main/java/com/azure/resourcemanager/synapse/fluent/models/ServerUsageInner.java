@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents server metrics. */
 @Immutable
 public final class ServerUsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUsageInner.class);
-
     /*
      * Name of the server usage metric.
      */
@@ -56,6 +52,10 @@ public final class ServerUsageInner {
      */
     @JsonProperty(value = "nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextResetTime;
+
+    /** Creates an instance of ServerUsageInner class. */
+    public ServerUsageInner() {
+    }
 
     /**
      * Get the name property: Name of the server usage metric.

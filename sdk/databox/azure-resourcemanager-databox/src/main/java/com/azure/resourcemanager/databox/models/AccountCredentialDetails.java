@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Credential details of the account. */
 @Immutable
 public final class AccountCredentialDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountCredentialDetails.class);
-
     /*
      * Name of the account.
      */
@@ -28,8 +24,7 @@ public final class AccountCredentialDetails {
     private DataAccountType dataAccountType;
 
     /*
-     * Connection string of the account endpoint to use the account as a
-     * storage endpoint on the device.
+     * Connection string of the account endpoint to use the account as a storage endpoint on the device.
      */
     @JsonProperty(value = "accountConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String accountConnectionString;
@@ -39,6 +34,10 @@ public final class AccountCredentialDetails {
      */
     @JsonProperty(value = "shareCredentialDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<ShareCredentialDetails> shareCredentialDetails;
+
+    /** Creates an instance of AccountCredentialDetails class. */
+    public AccountCredentialDetails() {
+    }
 
     /**
      * Get the accountName property: Name of the account.

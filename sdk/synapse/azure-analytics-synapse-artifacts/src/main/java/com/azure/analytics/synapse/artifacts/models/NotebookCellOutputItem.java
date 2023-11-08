@@ -29,8 +29,7 @@ public final class NotebookCellOutputItem {
     private CellOutputType outputType;
 
     /*
-     * For output_type=stream, the stream's text output, represented as a
-     * string or an array of strings.
+     * For output_type=stream, the stream's text output, represented as a string or an array of strings.
      */
     @JsonProperty(value = "text")
     private Object text;
@@ -46,6 +45,9 @@ public final class NotebookCellOutputItem {
      */
     @JsonProperty(value = "metadata")
     private Object metadata;
+
+    /** Creates an instance of NotebookCellOutputItem class. */
+    public NotebookCellOutputItem() {}
 
     /**
      * Get the name property: For output_type=stream, determines the name of stream (stdout / stderr).

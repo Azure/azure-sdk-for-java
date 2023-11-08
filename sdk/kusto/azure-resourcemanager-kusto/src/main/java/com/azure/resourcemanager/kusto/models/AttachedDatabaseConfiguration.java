@@ -85,6 +85,22 @@ public interface AttachedDatabaseConfiguration {
     TableLevelSharingProperties tableLevelSharingProperties();
 
     /**
+     * Gets the databaseNameOverride property: Overrides the original database name. Relevant only when attaching to a
+     * specific database.
+     *
+     * @return the databaseNameOverride value.
+     */
+    String databaseNameOverride();
+
+    /**
+     * Gets the databaseNamePrefix property: Adds a prefix to the attached databases name. When following an entire
+     * cluster, that prefix would be added to all of the databases original names from leader cluster.
+     *
+     * @return the databaseNamePrefix value.
+     */
+    String databaseNamePrefix();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -99,6 +115,13 @@ public interface AttachedDatabaseConfiguration {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.kusto.fluent.models.AttachedDatabaseConfigurationInner object.
      *
      * @return the inner object.
@@ -109,22 +132,25 @@ public interface AttachedDatabaseConfiguration {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The AttachedDatabaseConfiguration definition stages. */
     interface DefinitionStages {
         /** The first stage of the AttachedDatabaseConfiguration definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the AttachedDatabaseConfiguration definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, clusterName.
              *
-             * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param clusterName The name of the Kusto cluster.
              * @return the next definition stage.
              */
             WithCreate withExistingCluster(String resourceGroupName, String clusterName);
         }
+
         /**
          * The stage of the AttachedDatabaseConfiguration definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -134,7 +160,9 @@ public interface AttachedDatabaseConfiguration {
                 DefinitionStages.WithDatabaseName,
                 DefinitionStages.WithClusterResourceId,
                 DefinitionStages.WithDefaultPrincipalsModificationKind,
-                DefinitionStages.WithTableLevelSharingProperties {
+                DefinitionStages.WithTableLevelSharingProperties,
+                DefinitionStages.WithDatabaseNameOverride,
+                DefinitionStages.WithDatabaseNamePrefix {
             /**
              * Executes the create request.
              *
@@ -150,6 +178,7 @@ public interface AttachedDatabaseConfiguration {
              */
             AttachedDatabaseConfiguration create(Context context);
         }
+
         /** The stage of the AttachedDatabaseConfiguration definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -168,6 +197,7 @@ public interface AttachedDatabaseConfiguration {
              */
             WithCreate withRegion(String location);
         }
+
         /** The stage of the AttachedDatabaseConfiguration definition allowing to specify databaseName. */
         interface WithDatabaseName {
             /**
@@ -180,6 +210,7 @@ public interface AttachedDatabaseConfiguration {
              */
             WithCreate withDatabaseName(String databaseName);
         }
+
         /** The stage of the AttachedDatabaseConfiguration definition allowing to specify clusterResourceId. */
         interface WithClusterResourceId {
             /**
@@ -192,6 +223,7 @@ public interface AttachedDatabaseConfiguration {
              */
             WithCreate withClusterResourceId(String clusterResourceId);
         }
+
         /**
          * The stage of the AttachedDatabaseConfiguration definition allowing to specify
          * defaultPrincipalsModificationKind.
@@ -206,6 +238,7 @@ public interface AttachedDatabaseConfiguration {
             WithCreate withDefaultPrincipalsModificationKind(
                 DefaultPrincipalsModificationKind defaultPrincipalsModificationKind);
         }
+
         /**
          * The stage of the AttachedDatabaseConfiguration definition allowing to specify tableLevelSharingProperties.
          */
@@ -218,7 +251,35 @@ public interface AttachedDatabaseConfiguration {
              */
             WithCreate withTableLevelSharingProperties(TableLevelSharingProperties tableLevelSharingProperties);
         }
+
+        /** The stage of the AttachedDatabaseConfiguration definition allowing to specify databaseNameOverride. */
+        interface WithDatabaseNameOverride {
+            /**
+             * Specifies the databaseNameOverride property: Overrides the original database name. Relevant only when
+             * attaching to a specific database..
+             *
+             * @param databaseNameOverride Overrides the original database name. Relevant only when attaching to a
+             *     specific database.
+             * @return the next definition stage.
+             */
+            WithCreate withDatabaseNameOverride(String databaseNameOverride);
+        }
+
+        /** The stage of the AttachedDatabaseConfiguration definition allowing to specify databaseNamePrefix. */
+        interface WithDatabaseNamePrefix {
+            /**
+             * Specifies the databaseNamePrefix property: Adds a prefix to the attached databases name. When following
+             * an entire cluster, that prefix would be added to all of the databases original names from leader
+             * cluster..
+             *
+             * @param databaseNamePrefix Adds a prefix to the attached databases name. When following an entire cluster,
+             *     that prefix would be added to all of the databases original names from leader cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withDatabaseNamePrefix(String databaseNamePrefix);
+        }
     }
+
     /**
      * Begins update for the AttachedDatabaseConfiguration resource.
      *
@@ -231,7 +292,9 @@ public interface AttachedDatabaseConfiguration {
         extends UpdateStages.WithDatabaseName,
             UpdateStages.WithClusterResourceId,
             UpdateStages.WithDefaultPrincipalsModificationKind,
-            UpdateStages.WithTableLevelSharingProperties {
+            UpdateStages.WithTableLevelSharingProperties,
+            UpdateStages.WithDatabaseNameOverride,
+            UpdateStages.WithDatabaseNamePrefix {
         /**
          * Executes the update request.
          *
@@ -247,6 +310,7 @@ public interface AttachedDatabaseConfiguration {
          */
         AttachedDatabaseConfiguration apply(Context context);
     }
+
     /** The AttachedDatabaseConfiguration update stages. */
     interface UpdateStages {
         /** The stage of the AttachedDatabaseConfiguration update allowing to specify databaseName. */
@@ -261,6 +325,7 @@ public interface AttachedDatabaseConfiguration {
              */
             Update withDatabaseName(String databaseName);
         }
+
         /** The stage of the AttachedDatabaseConfiguration update allowing to specify clusterResourceId. */
         interface WithClusterResourceId {
             /**
@@ -273,6 +338,7 @@ public interface AttachedDatabaseConfiguration {
              */
             Update withClusterResourceId(String clusterResourceId);
         }
+
         /**
          * The stage of the AttachedDatabaseConfiguration update allowing to specify defaultPrincipalsModificationKind.
          */
@@ -286,6 +352,7 @@ public interface AttachedDatabaseConfiguration {
             Update withDefaultPrincipalsModificationKind(
                 DefaultPrincipalsModificationKind defaultPrincipalsModificationKind);
         }
+
         /** The stage of the AttachedDatabaseConfiguration update allowing to specify tableLevelSharingProperties. */
         interface WithTableLevelSharingProperties {
             /**
@@ -296,7 +363,35 @@ public interface AttachedDatabaseConfiguration {
              */
             Update withTableLevelSharingProperties(TableLevelSharingProperties tableLevelSharingProperties);
         }
+
+        /** The stage of the AttachedDatabaseConfiguration update allowing to specify databaseNameOverride. */
+        interface WithDatabaseNameOverride {
+            /**
+             * Specifies the databaseNameOverride property: Overrides the original database name. Relevant only when
+             * attaching to a specific database..
+             *
+             * @param databaseNameOverride Overrides the original database name. Relevant only when attaching to a
+             *     specific database.
+             * @return the next definition stage.
+             */
+            Update withDatabaseNameOverride(String databaseNameOverride);
+        }
+
+        /** The stage of the AttachedDatabaseConfiguration update allowing to specify databaseNamePrefix. */
+        interface WithDatabaseNamePrefix {
+            /**
+             * Specifies the databaseNamePrefix property: Adds a prefix to the attached databases name. When following
+             * an entire cluster, that prefix would be added to all of the databases original names from leader
+             * cluster..
+             *
+             * @param databaseNamePrefix Adds a prefix to the attached databases name. When following an entire cluster,
+             *     that prefix would be added to all of the databases original names from leader cluster.
+             * @return the next definition stage.
+             */
+            Update withDatabaseNamePrefix(String databaseNamePrefix);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

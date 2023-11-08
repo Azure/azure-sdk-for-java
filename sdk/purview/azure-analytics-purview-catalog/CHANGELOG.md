@@ -1,14 +1,34 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
-
-### Features Added
+## 1.0.0-beta.5 (Unreleased)
 
 ### Breaking Changes
 
+- Modified `getSampleBusinessMetadataTemplate` method, method returns `BinaryData`.
+- Modified `exportGlossaryTermsAsCsv` method, method returns `BinaryData`.
+- Removed `importGlossaryTermsViaCsvByGlossaryName` and `importGlossaryTermsViaCsv` method. Please use `beginImportGlossaryTermsViaCsvByGlossaryName` and `beginImportGlossaryTermsViaCsv`, respectively.
+
+## 1.0.0-beta.4 (2022-06-15)
+
+### Features Added
+
+- Supported Atlas 2.2 APIs.
+
+### Breaking Changes
+
+- Exposed required query and header parameters to method signature.
+
 ### Bugs Fixed
 
+- Added missing query parameter `includeTermHierarchy` for update term API.
+- Added missing query parameter `excludeRelationshipTypes` for get term API.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.29.1`.
+- Upgraded `azure-core-http-netty` to `1.12.2`.
 
 ## 1.0.0-beta.3 (2022-03-15)
 

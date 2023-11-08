@@ -18,6 +18,10 @@ public final class PremierAddOnOfferInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private PremierAddOnOfferProperties innerProperties;
 
+    /** Creates an instance of PremierAddOnOfferInner class. */
+    public PremierAddOnOfferInner() {
+    }
+
     /**
      * Get the innerProperties property: PremierAddOnOffer resource specific properties.
      *

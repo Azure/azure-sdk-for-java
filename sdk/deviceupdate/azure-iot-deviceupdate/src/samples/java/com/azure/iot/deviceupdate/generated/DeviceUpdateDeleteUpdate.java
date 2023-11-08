@@ -13,16 +13,16 @@ import com.azure.iot.deviceupdate.DeviceUpdateClientBuilder;
 
 public class DeviceUpdateDeleteUpdate {
     public static void main(String[] args) {
-        // BEGIN: com.azure.iot.deviceupdate.generated.deviceupdatedeleteupdate.deviceupdatedeleteupdate
         DeviceUpdateClient deviceUpdateClient =
                 new DeviceUpdateClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
+        // BEGIN:com.azure.iot.deviceupdate.generated.deviceupdatedeleteupdate.deviceupdatedeleteupdate
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
                 deviceUpdateClient.beginDeleteUpdate("microsoft", "adu", "1.0.0.0", requestOptions);
-        // END: com.azure.iot.deviceupdate.generated.deviceupdatedeleteupdate.deviceupdatedeleteupdate
+        // END:com.azure.iot.deviceupdate.generated.deviceupdatedeleteupdate.deviceupdatedeleteupdate
     }
 }

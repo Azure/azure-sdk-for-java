@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("AzureStorageJob")
 @Fluent
 public final class AzureStorageJob extends Job {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStorageJob.class);
-
     /*
      * Time elapsed during the execution of this job.
      */
@@ -46,8 +42,7 @@ public final class AzureStorageJob extends Job {
     private String storageAccountName;
 
     /*
-     * Specifies whether the Storage account is a Classic or an Azure Resource
-     * Manager Storage account.
+     * Specifies whether the Storage account is a Classic or an Azure Resource Manager Storage account.
      */
     @JsonProperty(value = "storageAccountVersion")
     private String storageAccountVersion;
@@ -63,6 +58,10 @@ public final class AzureStorageJob extends Job {
      */
     @JsonProperty(value = "isUserTriggered")
     private Boolean isUserTriggered;
+
+    /** Creates an instance of AzureStorageJob class. */
+    public AzureStorageJob() {
+    }
 
     /**
      * Get the duration property: Time elapsed during the execution of this job.

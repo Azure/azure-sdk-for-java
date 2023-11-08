@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of SqlPoolTableColumns. */
 public interface SqlPoolTableColumns {
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -20,13 +22,15 @@ public interface SqlPoolTableColumns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return columns in a given table in a SQL pool.
+     * @return columns in a given table in a SQL pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlPoolColumn> listByTableName(
         String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName);
 
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -38,7 +42,7 @@ public interface SqlPoolTableColumns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return columns in a given table in a SQL pool.
+     * @return columns in a given table in a SQL pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlPoolColumn> listByTableName(
         String resourceGroupName,

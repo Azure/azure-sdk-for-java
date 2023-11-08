@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PlacementPolicies List. */
 public final class PlacementPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PlacementPolicies_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PlacementPolicies_List.json
      */
     /**
      * Sample code: PlacementPolicies_List.
@@ -17,6 +15,6 @@ public final class PlacementPoliciesListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void placementPoliciesList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.placementPolicies().list("group1", "cloud1", "cluster1", Context.NONE);
+        manager.placementPolicies().list("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }

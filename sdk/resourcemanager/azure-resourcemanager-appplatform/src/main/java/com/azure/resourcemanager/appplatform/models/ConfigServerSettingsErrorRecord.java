@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Error record of the config server settings. */
 @Fluent
 public final class ConfigServerSettingsErrorRecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigServerSettingsErrorRecord.class);
-
     /*
      * The name of the config server settings error record
      */

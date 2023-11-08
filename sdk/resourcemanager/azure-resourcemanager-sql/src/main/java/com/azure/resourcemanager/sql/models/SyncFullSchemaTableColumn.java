@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the column in the table of database full schema. */
 @Immutable
 public final class SyncFullSchemaTableColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncFullSchemaTableColumn.class);
-
     /*
      * Data size of the column.
      */
@@ -55,6 +51,10 @@ public final class SyncFullSchemaTableColumn {
      */
     @JsonProperty(value = "quotedName", access = JsonProperty.Access.WRITE_ONLY)
     private String quotedName;
+
+    /** Creates an instance of SyncFullSchemaTableColumn class. */
+    public SyncFullSchemaTableColumn() {
+    }
 
     /**
      * Get the dataSize property: Data size of the column.

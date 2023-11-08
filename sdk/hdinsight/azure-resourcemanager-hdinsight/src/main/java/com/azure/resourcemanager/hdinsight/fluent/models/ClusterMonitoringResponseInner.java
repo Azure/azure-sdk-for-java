@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The cluster monitoring status response. */
 @Fluent
 public final class ClusterMonitoringResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterMonitoringResponseInner.class);
-
     /*
      * The status of the monitor on the HDInsight cluster.
      */
@@ -25,6 +21,10 @@ public final class ClusterMonitoringResponseInner {
      */
     @JsonProperty(value = "workspaceId")
     private String workspaceId;
+
+    /** Creates an instance of ClusterMonitoringResponseInner class. */
+    public ClusterMonitoringResponseInner() {
+    }
 
     /**
      * Get the clusterMonitoringEnabled property: The status of the monitor on the HDInsight cluster.

@@ -4,18 +4,16 @@
 
 package com.azure.resourcemanager.azurestackhci.implementation;
 
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.fluent.OperationsClient;
-import com.azure.resourcemanager.azurestackhci.fluent.models.AvailableOperationsInner;
-import com.azure.resourcemanager.azurestackhci.models.AvailableOperations;
+import com.azure.resourcemanager.azurestackhci.fluent.models.OperationInner;
+import com.azure.resourcemanager.azurestackhci.models.Operation;
 import com.azure.resourcemanager.azurestackhci.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
@@ -27,26 +25,14 @@ public final class OperationsImpl implements Operations {
         this.serviceManager = serviceManager;
     }
 
-    public AvailableOperations list() {
-        AvailableOperationsInner inner = this.serviceClient().list();
-        if (inner != null) {
-            return new AvailableOperationsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<Operation> list() {
+        PagedIterable<OperationInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
-    public Response<AvailableOperations> listWithResponse(Context context) {
-        Response<AvailableOperationsInner> inner = this.serviceClient().listWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AvailableOperationsImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<Operation> list(Context context) {
+        PagedIterable<OperationInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

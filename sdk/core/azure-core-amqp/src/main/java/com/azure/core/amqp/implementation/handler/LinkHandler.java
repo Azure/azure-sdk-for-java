@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -15,6 +16,7 @@ import java.util.Objects;
 
 import static com.azure.core.amqp.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
@@ -26,6 +28,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
  */
 abstract class LinkHandler extends Handler {
     private final String entityPath;
+    private final AmqpMetricsProvider metricsProvider;
 
     /**
      * Creates an instance with the parameters.
@@ -39,9 +42,10 @@ abstract class LinkHandler extends Handler {
      * @throws NullPointerException if {@code connectionId}, {@code hostname}, {@code entityPath}, or {@code logger} is
      * null.
      */
-    LinkHandler(String connectionId, String hostname, String entityPath) {
+    LinkHandler(String connectionId, String hostname, String entityPath, AmqpMetricsProvider metricsProvider) {
         super(connectionId, hostname);
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.metricsProvider = metricsProvider;
     }
 
     @Override
@@ -51,6 +55,7 @@ abstract class LinkHandler extends Handler {
 
         addErrorCondition(logger.atVerbose(), condition)
             .addKeyValue(LINK_NAME_KEY, link.getName())
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("onLinkLocalClose");
     }
 
@@ -71,6 +76,7 @@ abstract class LinkHandler extends Handler {
             : NOT_APPLICABLE;
         logger.atInfo()
             .addKeyValue(LINK_NAME_KEY, linkName)
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("onLinkFinal");
 
         // Be explicit about wanting to call Handler.close(). When we receive onLinkFinal, the service and proton-j are
@@ -79,6 +85,10 @@ abstract class LinkHandler extends Handler {
     }
 
     public AmqpErrorContext getErrorContext(Link link) {
+        return getErrorContext(getHostname(), entityPath, link);
+    }
+
+    static AmqpErrorContext getErrorContext(String hostName, String entityPath, Link link) {
         final String referenceId;
         if (link.getRemoteProperties() != null && link.getRemoteProperties().containsKey(TRACKING_ID_PROPERTY)) {
             referenceId = link.getRemoteProperties().get(TRACKING_ID_PROPERTY).toString();
@@ -86,7 +96,7 @@ abstract class LinkHandler extends Handler {
             referenceId = link.getName();
         }
 
-        return new LinkErrorContext(getHostname(), entityPath, referenceId, link.getCredit());
+        return new LinkErrorContext(hostName, entityPath, referenceId, link.getCredit());
     }
 
     private void handleRemoteLinkClosed(final String eventName, final Event event) {
@@ -95,11 +105,13 @@ abstract class LinkHandler extends Handler {
 
         addErrorCondition(logger.atInfo(), condition)
             .addKeyValue(LINK_NAME_KEY, link.getName())
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log(eventName);
 
         if (link.getLocalState() != EndpointState.CLOSED) {
             logger.atInfo()
                 .addKeyValue(LINK_NAME_KEY, link.getName())
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue("state", link.getLocalState())
                 .log("Local link state is not closed.");
 
@@ -108,6 +120,7 @@ abstract class LinkHandler extends Handler {
         }
 
         if (condition != null && condition.getCondition() != null) {
+            metricsProvider.recordHandlerError(AmqpMetricsProvider.ErrorSource.LINK, condition);
             final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
                 condition.getDescription(), getErrorContext(link));
 

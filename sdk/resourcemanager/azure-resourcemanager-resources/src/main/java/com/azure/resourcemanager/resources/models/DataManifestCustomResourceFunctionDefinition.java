@@ -18,27 +18,28 @@ public final class DataManifestCustomResourceFunctionDefinition {
     private String name;
 
     /*
-     * The fully qualified control plane resource type that this function
-     * represents. eg - 'Microsoft.KeyVault/vaults'.
+     * The fully qualified control plane resource type that this function represents. eg - 'Microsoft.KeyVault/vaults'.
      */
     @JsonProperty(value = "fullyQualifiedResourceType")
     private String fullyQualifiedResourceType;
 
     /*
-     * The top-level properties that can be selected on the function's output.
-     * eg - [ "name", "location" ] if vault().name and vault().location are
-     * supported
+     * The top-level properties that can be selected on the function's output. eg - [ "name", "location" ] if
+     * vault().name and vault().location are supported
      */
     @JsonProperty(value = "defaultProperties")
     private List<String> defaultProperties;
 
     /*
-     * A value indicating whether the custom properties within the property bag
-     * are allowed. Needs api-version to be specified in the policy rule eg -
-     * vault('2019-06-01').
+     * A value indicating whether the custom properties within the property bag are allowed. Needs api-version to be
+     * specified in the policy rule eg - vault('2019-06-01').
      */
     @JsonProperty(value = "allowCustomProperties")
     private Boolean allowCustomProperties;
+
+    /** Creates an instance of DataManifestCustomResourceFunctionDefinition class. */
+    public DataManifestCustomResourceFunctionDefinition() {
+    }
 
     /**
      * Get the name property: The function name as it will appear in the policy rule. eg - 'vault'.

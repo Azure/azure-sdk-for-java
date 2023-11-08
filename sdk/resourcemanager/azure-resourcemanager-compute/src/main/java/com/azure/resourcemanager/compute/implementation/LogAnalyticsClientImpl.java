@@ -58,11 +58,10 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface LogAnalyticsService {
+    public interface LogAnalyticsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
-                + "/getRequestRateByInterval")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getRequestRateByInterval")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> exportRequestRateByInterval(
@@ -76,8 +75,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
-                + "/getThrottledRequests")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getThrottledRequests")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> exportThrottledRequests(
@@ -125,7 +123,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -178,7 +176,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -259,7 +257,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters) {
-        return beginExportRequestRateByIntervalAsync(location, parameters).getSyncPoller();
+        return this.beginExportRequestRateByIntervalAsync(location, parameters).getSyncPoller();
     }
 
     /**
@@ -277,7 +275,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters, Context context) {
-        return beginExportRequestRateByIntervalAsync(location, parameters, context).getSyncPoller();
+        return this.beginExportRequestRateByIntervalAsync(location, parameters, context).getSyncPoller();
     }
 
     /**
@@ -388,7 +386,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -440,7 +438,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -517,7 +515,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportThrottledRequests(String location, ThrottledRequestsInput parameters) {
-        return beginExportThrottledRequestsAsync(location, parameters).getSyncPoller();
+        return this.beginExportThrottledRequestsAsync(location, parameters).getSyncPoller();
     }
 
     /**
@@ -534,7 +532,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportThrottledRequests(String location, ThrottledRequestsInput parameters, Context context) {
-        return beginExportThrottledRequestsAsync(location, parameters, context).getSyncPoller();
+        return this.beginExportThrottledRequestsAsync(location, parameters, context).getSyncPoller();
     }
 
     /**

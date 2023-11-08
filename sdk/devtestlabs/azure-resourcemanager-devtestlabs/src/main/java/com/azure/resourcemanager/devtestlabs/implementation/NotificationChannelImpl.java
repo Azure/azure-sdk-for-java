@@ -93,6 +93,10 @@ public final class NotificationChannelImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NotificationChannelInner innerModel() {
         return this.innerObject;
     }
@@ -197,14 +201,14 @@ public final class NotificationChannelImpl
         return this;
     }
 
-    public void notify(NotifyParameters notifyParameters) {
-        serviceManager.notificationChannels().notify(resourceGroupName, labName, name, notifyParameters);
-    }
-
     public Response<Void> notifyWithResponse(NotifyParameters notifyParameters, Context context) {
         return serviceManager
             .notificationChannels()
             .notifyWithResponse(resourceGroupName, labName, name, notifyParameters, context);
+    }
+
+    public void notify(NotifyParameters notifyParameters) {
+        serviceManager.notificationChannels().notify(resourceGroupName, labName, name, notifyParameters);
     }
 
     public NotificationChannelImpl withRegion(Region location) {

@@ -13,19 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityAddClassificationToEntityByGuids {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.entityaddclassification.entityaddclassificationtoentitybyguids
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entityaddclassification.entityaddclassificationtoentitybyguids
         BinaryData request =
                 BinaryData.fromString(
                         "{\"classification\":{\"attributes\":{},\"typeName\":\"MICROSOFT.FINANCIAL.US.ABA_ROUTING_NUMBER\",\"validityPeriods\":[]},\"entityGuids\":[\"784c0f2f-afd2-e26b-f9cb-984f6c2c5021\",\"b4ebc8be-cef4-860a-bee9-28cc34cb5caa\"]}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = entityClient.addClassificationWithResponse(request, requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.entityaddclassification.entityaddclassificationtoentitybyguids
+        // END:com.azure.analytics.purview.catalog.generated.entityaddclassification.entityaddclassificationtoentitybyguids
     }
 }

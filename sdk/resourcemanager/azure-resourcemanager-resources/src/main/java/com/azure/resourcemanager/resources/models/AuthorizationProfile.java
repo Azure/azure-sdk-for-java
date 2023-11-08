@@ -41,6 +41,10 @@ public final class AuthorizationProfile {
     @JsonProperty(value = "approver", access = JsonProperty.Access.WRITE_ONLY)
     private String approver;
 
+    /** Creates an instance of AuthorizationProfile class. */
+    public AuthorizationProfile() {
+    }
+
     /**
      * Get the requestedTime property: The requested time.
      *

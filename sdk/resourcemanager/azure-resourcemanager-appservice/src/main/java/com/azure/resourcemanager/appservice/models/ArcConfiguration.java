@@ -52,6 +52,10 @@ public final class ArcConfiguration {
     @JsonProperty(value = "kubeConfig")
     private String kubeConfig;
 
+    /** Creates an instance of ArcConfiguration class. */
+    public ArcConfiguration() {
+    }
+
     /**
      * Get the artifactsStorageType property: The artifactsStorageType property.
      *

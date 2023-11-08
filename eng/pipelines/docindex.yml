@@ -1,11 +1,13 @@
 trigger: none
-
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
 jobs:
   - template: /eng/common/pipelines/templates/jobs/docindex.yml
 
   - job: UpdateDocsMsBuildConfig
     pool:
       vmImage: ubuntu-20.04
+    timeoutInMinutes: 180
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs
       DailyDocRepoLocation: $(Pipeline.Workspace)/daily
@@ -16,10 +18,12 @@ jobs:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          SkipDefaultCheckout: true
+          SkipCheckoutNone: true
           Paths:
             - package.json
             - metadata/
+            - docs-ref-mapping/reference-unified.yml
+            - docs-ref-services/
           Repositories:
             - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
@@ -29,14 +33,48 @@ jobs:
           ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
           ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
           ImageId: "$(DocValidationImageId)"
-      # Call update docs ci script to onboard packages
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsPackageMonikers.ps1
+          arguments: -DocRepoLocation $(DocRepoLocation)
+        displayName: Move deprecated packages to legacy moniker
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
       - task: Powershell@2
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
           arguments: -DocRepoLocation $(DocRepoLocation) -ImageId '$(DocValidationImageId)'
-        displayName: Update Docs Onboarding
+        displayName: Update Docs Onboarding for main branch
         condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
+          arguments: -DocRepoLocation $(DocRepoLocation)
+        displayName: Generate Service Level Readme for main branch
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsToc.ps1
+          arguments: >-
+            -DocRepoLocation $(DocRepoLocation)
+            -OutputLocation $(DocRepoLocation)/docs-ref-mapping/reference-unified.yml
+        displayName: Generate ToC for main branch
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Verify-RequiredDocsJsonMembers.ps1
+          arguments: >-
+            -DocRepoLocation $(DocRepoLocation)
+        displayName: Verify Required Docs Json Members
 
       # Push changes to docs repo
       - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
@@ -58,15 +96,16 @@ jobs:
           DailyBranchVariableName: DailyDocsBranchName
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          SkipDefaultCheckout: true
+          SkipCheckoutNone: true
           Paths:
             - package.json
             - metadata/
             - docs-ref-mapping/reference-unified.yml
+            - docs-ref-services/
           Repositories:
             - Name: azure-sdk/$(DocRepoName)
               WorkingDirectory: $(DailyDocRepoLocation)
-        
+
       # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
       # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
       - powershell: |
@@ -81,12 +120,27 @@ jobs:
           Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
         displayName: 'Configure mvn'
         workingDirectory: $(Build.SourcesDirectory)
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsPackageMonikers.ps1
+          arguments: -DocRepoLocation $(DocRepoLocation)
+        displayName: Move deprecated packages to legacy moniker
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
       - task: Powershell@2
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
           arguments: -DocRepoLocation $(DailyDocRepoLocation)
-        displayName: Update Docs Onboarding for Daily branch
+        displayName: Update Docs Onboarding for Daily docs
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
+          arguments: -DocRepoLocation $(DailyDocRepoLocation)
+        displayName: Generate Service Level Readme for Daily docs
       - task: Powershell@2
         inputs:
           pwsh: true
@@ -94,7 +148,16 @@ jobs:
           arguments: >-
             -DocRepoLocation $(DailyDocRepoLocation)
             -OutputLocation $(DailyDocRepoLocation)/docs-ref-mapping/reference-unified.yml
-        displayName: Generate ToC for Daily branch
+        displayName: Generate ToC for Daily docs
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Verify-RequiredDocsJsonMembers.ps1
+          arguments: >-
+            -DocRepoLocation $(DocRepoLocation)
+        displayName: Verify Required Docs Json Members
+
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:
           BaseRepoBranch: $(DailyDocsBranchName)
@@ -104,6 +167,7 @@ jobs:
           TargetRepoOwner: azure-sdk
           WorkingDirectory: $(DailyDocRepoLocation)
           ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
+          PushArgs: -f
 
       - task: PowerShell@2
         displayName: Queue Docs CI build
@@ -114,5 +178,5 @@ jobs:
             -Organization "apidrop"
             -Project "Content%20CI"
             -DefinitionId 3188
-            -Base64EncodedAuthToken "$(azuresdk-apidrop-devops-queue-build-pat)"
+            -AuthToken "$(azuresdk-apidrop-devops-queue-build-pat)"
             -BuildParametersJson (@{ params = (Get-Content ./eng/dailydocsconfig.json -Raw) -replace '%%DailyDocsBranchName%%', "$(DailyDocsBranchName)" } | ConvertTo-Json)

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redis.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RedisKeyType. */
+/** The Redis access key to regenerate. */
 public enum RedisKeyType {
     /** Enum value Primary. */
     PRIMARY("Primary"),
@@ -30,6 +30,9 @@ public enum RedisKeyType {
      */
     @JsonCreator
     public static RedisKeyType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RedisKeyType[] items = RedisKeyType.values();
         for (RedisKeyType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum RedisKeyType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

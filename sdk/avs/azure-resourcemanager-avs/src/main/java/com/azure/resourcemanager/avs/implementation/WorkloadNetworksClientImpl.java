@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworksClient;
@@ -38,6 +37,7 @@ import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDhcpInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsServiceInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsZoneInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkGatewayInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPortMirroringInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner;
@@ -47,6 +47,8 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServicesList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZonesList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkGatewayList;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkList;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkName;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIPsList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentsList;
@@ -58,8 +60,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkloadNetworksClient. */
 public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient {
-    private final ClientLogger logger = new ClientLogger(WorkloadNetworksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkloadNetworksService service;
 
@@ -83,11 +83,39 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientWorkloadNet")
-    private interface WorkloadNetworksService {
+    public interface WorkloadNetworksService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/segments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/{workloadNetworkName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<WorkloadNetworkInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("privateCloudName") String privateCloudName,
+            @PathParam("workloadNetworkName") WorkloadNetworkName workloadNetworkName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<WorkloadNetworkList>> list(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("privateCloudName") String privateCloudName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkSegmentsList>> listSegments(
@@ -101,8 +129,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkSegmentInner>> getSegment(
@@ -117,8 +144,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createSegments(
@@ -134,8 +160,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateSegments(
@@ -151,8 +176,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteSegment(
@@ -167,8 +191,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dhcpConfigurations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkDhcpList>> listDhcp(
@@ -182,8 +205,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkDhcpInner>> getDhcp(
@@ -198,8 +220,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createDhcp(
@@ -215,8 +236,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateDhcp(
@@ -232,8 +252,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteDhcp(
@@ -248,8 +267,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/gateways")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/gateways")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkGatewayList>> listGateways(
@@ -263,8 +281,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/gateways/{gatewayId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/gateways/{gatewayId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkGatewayInner>> getGateway(
@@ -279,8 +296,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/portMirroringProfiles")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkPortMirroringList>> listPortMirroring(
@@ -294,8 +310,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkPortMirroringInner>> getPortMirroring(
@@ -310,8 +325,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createPortMirroring(
@@ -327,8 +341,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updatePortMirroring(
@@ -344,8 +357,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deletePortMirroring(
@@ -360,8 +372,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/vmGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkVMGroupsList>> listVMGroups(
@@ -375,8 +386,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkVMGroupInner>> getVMGroup(
@@ -391,8 +401,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createVMGroup(
@@ -408,8 +417,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateVMGroup(
@@ -425,8 +433,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteVMGroup(
@@ -441,8 +448,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/virtualMachines")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/virtualMachines")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkVirtualMachinesList>> listVirtualMachines(
@@ -456,8 +462,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/virtualMachines/{virtualMachineId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/virtualMachines/{virtualMachineId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkVirtualMachineInner>> getVirtualMachine(
@@ -472,8 +477,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dnsServices")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkDnsServicesList>> listDnsServices(
@@ -487,8 +491,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkDnsServiceInner>> getDnsService(
@@ -503,8 +506,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createDnsService(
@@ -520,8 +522,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateDnsService(
@@ -537,8 +538,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteDnsService(
@@ -553,8 +553,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dnsZones")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkDnsZonesList>> listDnsZones(
@@ -568,8 +567,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkDnsZoneInner>> getDnsZone(
@@ -584,8 +582,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createDnsZone(
@@ -601,8 +598,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateDnsZone(
@@ -618,8 +614,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteDnsZone(
@@ -634,8 +629,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/publicIPs")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkPublicIPsList>> listPublicIPs(
@@ -649,8 +643,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkPublicIpInner>> getPublicIp(
@@ -665,8 +658,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createPublicIp(
@@ -682,8 +674,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deletePublicIp(
@@ -693,6 +684,16 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @QueryParam("api-version") String apiVersion,
             @PathParam("publicIPId") String publicIpId,
             @PathParam("privateCloudName") String privateCloudName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<WorkloadNetworkList>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -788,6 +789,349 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     }
 
     /**
+     * Get a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name for the workload network in the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud workload network along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<WorkloadNetworkInner>> getWithResponseAsync(
+        String resourceGroupName, String privateCloudName, WorkloadNetworkName workloadNetworkName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (workloadNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadNetworkName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            privateCloudName,
+                            workloadNetworkName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name for the workload network in the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud workload network along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<WorkloadNetworkInner>> getWithResponseAsync(
+        String resourceGroupName, String privateCloudName, WorkloadNetworkName workloadNetworkName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        if (workloadNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter workloadNetworkName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                privateCloudName,
+                workloadNetworkName,
+                accept,
+                context);
+    }
+
+    /**
+     * Get a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name for the workload network in the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud workload network on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<WorkloadNetworkInner> getAsync(
+        String resourceGroupName, String privateCloudName, WorkloadNetworkName workloadNetworkName) {
+        return getWithResponseAsync(resourceGroupName, privateCloudName, workloadNetworkName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name for the workload network in the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud workload network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkInner> getWithResponse(
+        String resourceGroupName, String privateCloudName, WorkloadNetworkName workloadNetworkName, Context context) {
+        return getWithResponseAsync(resourceGroupName, privateCloudName, workloadNetworkName, context).block();
+    }
+
+    /**
+     * Get a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name for the workload network in the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud workload network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkloadNetworkInner get(
+        String resourceGroupName, String privateCloudName, WorkloadNetworkName workloadNetworkName) {
+        return getWithResponse(resourceGroupName, privateCloudName, workloadNetworkName, Context.NONE).getValue();
+    }
+
+    /**
+     * List of workload networks in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of workload networks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<WorkloadNetworkInner>> listSinglePageAsync(
+        String resourceGroupName, String privateCloudName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            privateCloudName,
+                            accept,
+                            context))
+            .<PagedResponse<WorkloadNetworkInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List of workload networks in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of workload networks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<WorkloadNetworkInner>> listSinglePageAsync(
+        String resourceGroupName, String privateCloudName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateCloudName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .list(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                privateCloudName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * List of workload networks in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of workload networks as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<WorkloadNetworkInner> listAsync(String resourceGroupName, String privateCloudName) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, privateCloudName),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List of workload networks in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of workload networks as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<WorkloadNetworkInner> listAsync(
+        String resourceGroupName, String privateCloudName, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, privateCloudName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List of workload networks in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of workload networks as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, privateCloudName));
+    }
+
+    /**
+     * List of workload networks in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of workload networks as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<WorkloadNetworkInner> list(
+        String resourceGroupName, String privateCloudName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, privateCloudName, context));
+    }
+
+    /**
      * List of segments in a private cloud workload network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -795,7 +1139,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Segments.
+     * @return a list of NSX Segments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkSegmentInner>> listSegmentsSinglePageAsync(
@@ -854,7 +1198,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Segments.
+     * @return a list of NSX Segments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkSegmentInner>> listSegmentsSinglePageAsync(
@@ -909,7 +1253,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Segments.
+     * @return a list of NSX Segments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkSegmentInner> listSegmentsAsync(
@@ -928,7 +1272,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Segments.
+     * @return a list of NSX Segments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkSegmentInner> listSegmentsAsync(
@@ -946,7 +1290,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Segments.
+     * @return a list of NSX Segments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkSegmentInner> listSegments(String resourceGroupName, String privateCloudName) {
@@ -962,7 +1306,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Segments.
+     * @return a list of NSX Segments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkSegmentInner> listSegments(
@@ -979,7 +1323,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a segment by id in a private cloud workload network.
+     * @return a segment by id in a private cloud workload network along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkSegmentInner>> getSegmentWithResponseAsync(
@@ -1034,7 +1379,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a segment by id in a private cloud workload network.
+     * @return a segment by id in a private cloud workload network along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkSegmentInner>> getSegmentWithResponseAsync(
@@ -1085,20 +1431,31 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a segment by id in a private cloud workload network.
+     * @return a segment by id in a private cloud workload network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkSegmentInner> getSegmentAsync(
         String resourceGroupName, String privateCloudName, String segmentId) {
         return getSegmentWithResponseAsync(resourceGroupName, privateCloudName, segmentId)
-            .flatMap(
-                (Response<WorkloadNetworkSegmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a segment by id in a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param segmentId NSX Segment identifier. Generally the same as the Segment's display name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a segment by id in a private cloud workload network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkSegmentInner> getSegmentWithResponse(
+        String resourceGroupName, String privateCloudName, String segmentId, Context context) {
+        return getSegmentWithResponseAsync(resourceGroupName, privateCloudName, segmentId, context).block();
     }
 
     /**
@@ -1114,25 +1471,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkSegmentInner getSegment(String resourceGroupName, String privateCloudName, String segmentId) {
-        return getSegmentAsync(resourceGroupName, privateCloudName, segmentId).block();
-    }
-
-    /**
-     * Get a segment by id in a private cloud workload network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param segmentId NSX Segment identifier. Generally the same as the Segment's display name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a segment by id in a private cloud workload network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkSegmentInner> getSegmentWithResponse(
-        String resourceGroupName, String privateCloudName, String segmentId, Context context) {
-        return getSegmentWithResponseAsync(resourceGroupName, privateCloudName, segmentId, context).block();
+        return getSegmentWithResponse(resourceGroupName, privateCloudName, segmentId, Context.NONE).getValue();
     }
 
     /**
@@ -1145,7 +1484,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return nSX Segment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createSegmentsWithResponseAsync(
@@ -1212,7 +1551,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return nSX Segment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createSegmentsWithResponseAsync(
@@ -1276,7 +1615,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return the {@link PollerFlux} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegmentsAsync(
@@ -1293,7 +1632,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkSegmentInner.class,
                 WorkloadNetworkSegmentInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1307,7 +1646,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return the {@link PollerFlux} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegmentsAsync(
@@ -1340,7 +1679,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegments(
@@ -1348,7 +1687,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        return beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
+        return this
+            .beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
             .getSyncPoller();
     }
 
@@ -1363,7 +1703,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegments(
@@ -1372,7 +1712,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment,
         Context context) {
-        return beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
+        return this
+            .beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
             .getSyncPoller();
     }
 
@@ -1386,7 +1727,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return nSX Segment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkSegmentInner> createSegmentsAsync(
@@ -1410,7 +1751,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return nSX Segment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkSegmentInner> createSegmentsAsync(
@@ -1479,7 +1820,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return nSX Segment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateSegmentsWithResponseAsync(
@@ -1546,7 +1887,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return nSX Segment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateSegmentsWithResponseAsync(
@@ -1610,7 +1951,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return the {@link PollerFlux} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegmentsAsync(
@@ -1627,7 +1968,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkSegmentInner.class,
                 WorkloadNetworkSegmentInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1641,7 +1982,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return the {@link PollerFlux} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegmentsAsync(
@@ -1674,7 +2015,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
@@ -1682,7 +2023,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        return beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
+        return this
+            .beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
             .getSyncPoller();
     }
 
@@ -1697,7 +2039,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
@@ -1706,7 +2048,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment,
         Context context) {
-        return beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
+        return this
+            .beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
             .getSyncPoller();
     }
 
@@ -1720,7 +2063,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return nSX Segment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkSegmentInner> updateSegmentsAsync(
@@ -1744,7 +2087,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Segment.
+     * @return nSX Segment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkSegmentInner> updateSegmentsAsync(
@@ -1812,7 +2155,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteSegmentWithResponseAsync(
@@ -1867,7 +2210,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteSegmentWithResponseAsync(
@@ -1918,7 +2261,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSegmentAsync(
@@ -1927,7 +2270,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             deleteSegmentWithResponseAsync(resourceGroupName, privateCloudName, segmentId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1940,7 +2284,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSegmentAsync(
@@ -1962,12 +2306,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSegment(
         String resourceGroupName, String privateCloudName, String segmentId) {
-        return beginDeleteSegmentAsync(resourceGroupName, privateCloudName, segmentId).getSyncPoller();
+        return this.beginDeleteSegmentAsync(resourceGroupName, privateCloudName, segmentId).getSyncPoller();
     }
 
     /**
@@ -1980,12 +2324,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSegment(
         String resourceGroupName, String privateCloudName, String segmentId, Context context) {
-        return beginDeleteSegmentAsync(resourceGroupName, privateCloudName, segmentId, context).getSyncPoller();
+        return this.beginDeleteSegmentAsync(resourceGroupName, privateCloudName, segmentId, context).getSyncPoller();
     }
 
     /**
@@ -1997,7 +2341,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteSegmentAsync(String resourceGroupName, String privateCloudName, String segmentId) {
@@ -2016,7 +2360,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteSegmentAsync(
@@ -2065,7 +2409,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX dhcp entities.
+     * @return a list of NSX dhcp entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDhcpInner>> listDhcpSinglePageAsync(
@@ -2124,7 +2468,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX dhcp entities.
+     * @return a list of NSX dhcp entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDhcpInner>> listDhcpSinglePageAsync(
@@ -2179,7 +2523,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX dhcp entities.
+     * @return a list of NSX dhcp entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkDhcpInner> listDhcpAsync(String resourceGroupName, String privateCloudName) {
@@ -2197,7 +2541,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX dhcp entities.
+     * @return a list of NSX dhcp entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkDhcpInner> listDhcpAsync(
@@ -2215,7 +2559,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX dhcp entities.
+     * @return a list of NSX dhcp entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDhcpInner> listDhcp(String resourceGroupName, String privateCloudName) {
@@ -2231,7 +2575,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX dhcp entities.
+     * @return a list of NSX dhcp entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDhcpInner> listDhcp(
@@ -2248,7 +2592,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dhcp by id in a private cloud workload network.
+     * @return dhcp by id in a private cloud workload network along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkDhcpInner>> getDhcpWithResponseAsync(
@@ -2303,7 +2648,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dhcp by id in a private cloud workload network.
+     * @return dhcp by id in a private cloud workload network along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkDhcpInner>> getDhcpWithResponseAsync(
@@ -2354,20 +2700,31 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dhcp by id in a private cloud workload network.
+     * @return dhcp by id in a private cloud workload network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDhcpInner> getDhcpAsync(
         String resourceGroupName, String dhcpId, String privateCloudName) {
         return getDhcpWithResponseAsync(resourceGroupName, dhcpId, privateCloudName)
-            .flatMap(
-                (Response<WorkloadNetworkDhcpInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get dhcp by id in a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dhcpId NSX DHCP identifier. Generally the same as the DHCP display name.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dhcp by id in a private cloud workload network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkDhcpInner> getDhcpWithResponse(
+        String resourceGroupName, String dhcpId, String privateCloudName, Context context) {
+        return getDhcpWithResponseAsync(resourceGroupName, dhcpId, privateCloudName, context).block();
     }
 
     /**
@@ -2383,25 +2740,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDhcpInner getDhcp(String resourceGroupName, String dhcpId, String privateCloudName) {
-        return getDhcpAsync(resourceGroupName, dhcpId, privateCloudName).block();
-    }
-
-    /**
-     * Get dhcp by id in a private cloud workload network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dhcpId NSX DHCP identifier. Generally the same as the DHCP display name.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dhcp by id in a private cloud workload network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkDhcpInner> getDhcpWithResponse(
-        String resourceGroupName, String dhcpId, String privateCloudName, Context context) {
-        return getDhcpWithResponseAsync(resourceGroupName, dhcpId, privateCloudName, context).block();
+        return getDhcpWithResponse(resourceGroupName, dhcpId, privateCloudName, Context.NONE).getValue();
     }
 
     /**
@@ -2414,7 +2753,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return nSX DHCP along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createDhcpWithResponseAsync(
@@ -2480,7 +2819,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return nSX DHCP along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createDhcpWithResponseAsync(
@@ -2543,7 +2882,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return the {@link PollerFlux} for polling of nSX DHCP.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcpAsync(
@@ -2560,7 +2899,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkDhcpInner.class,
                 WorkloadNetworkDhcpInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2574,7 +2913,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return the {@link PollerFlux} for polling of nSX DHCP.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcpAsync(
@@ -2606,7 +2945,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return the {@link SyncPoller} for polling of nSX DHCP.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcp(
@@ -2614,7 +2953,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        return beginCreateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp).getSyncPoller();
+        return this
+            .beginCreateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp)
+            .getSyncPoller();
     }
 
     /**
@@ -2628,7 +2969,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return the {@link SyncPoller} for polling of nSX DHCP.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcp(
@@ -2637,7 +2978,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp,
         Context context) {
-        return beginCreateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
+        return this
+            .beginCreateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
             .getSyncPoller();
     }
 
@@ -2651,7 +2993,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return nSX DHCP on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDhcpInner> createDhcpAsync(
@@ -2675,7 +3017,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return nSX DHCP on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDhcpInner> createDhcpAsync(
@@ -2743,7 +3085,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return nSX DHCP along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateDhcpWithResponseAsync(
@@ -2809,7 +3151,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return nSX DHCP along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateDhcpWithResponseAsync(
@@ -2872,7 +3214,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return the {@link PollerFlux} for polling of nSX DHCP.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcpAsync(
@@ -2889,7 +3231,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkDhcpInner.class,
                 WorkloadNetworkDhcpInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2903,7 +3245,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return the {@link PollerFlux} for polling of nSX DHCP.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcpAsync(
@@ -2935,7 +3277,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return the {@link SyncPoller} for polling of nSX DHCP.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcp(
@@ -2943,7 +3285,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        return beginUpdateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp).getSyncPoller();
+        return this
+            .beginUpdateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp)
+            .getSyncPoller();
     }
 
     /**
@@ -2957,7 +3301,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return the {@link SyncPoller} for polling of nSX DHCP.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcp(
@@ -2966,7 +3310,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp,
         Context context) {
-        return beginUpdateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
+        return this
+            .beginUpdateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
             .getSyncPoller();
     }
 
@@ -2980,7 +3325,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return nSX DHCP on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDhcpInner> updateDhcpAsync(
@@ -3004,7 +3349,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DHCP.
+     * @return nSX DHCP on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDhcpInner> updateDhcpAsync(
@@ -3071,7 +3416,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteDhcpWithResponseAsync(
@@ -3126,7 +3471,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteDhcpWithResponseAsync(
@@ -3177,7 +3522,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDhcpAsync(
@@ -3186,7 +3531,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             deleteDhcpWithResponseAsync(resourceGroupName, privateCloudName, dhcpId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3199,7 +3545,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDhcpAsync(
@@ -3221,12 +3567,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDhcp(
         String resourceGroupName, String privateCloudName, String dhcpId) {
-        return beginDeleteDhcpAsync(resourceGroupName, privateCloudName, dhcpId).getSyncPoller();
+        return this.beginDeleteDhcpAsync(resourceGroupName, privateCloudName, dhcpId).getSyncPoller();
     }
 
     /**
@@ -3239,12 +3585,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDhcp(
         String resourceGroupName, String privateCloudName, String dhcpId, Context context) {
-        return beginDeleteDhcpAsync(resourceGroupName, privateCloudName, dhcpId, context).getSyncPoller();
+        return this.beginDeleteDhcpAsync(resourceGroupName, privateCloudName, dhcpId, context).getSyncPoller();
     }
 
     /**
@@ -3256,7 +3602,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteDhcpAsync(String resourceGroupName, String privateCloudName, String dhcpId) {
@@ -3275,7 +3621,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteDhcpAsync(
@@ -3324,7 +3670,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Gateways.
+     * @return a list of NSX Gateways along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkGatewayInner>> listGatewaysSinglePageAsync(
@@ -3383,7 +3729,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Gateways.
+     * @return a list of NSX Gateways along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkGatewayInner>> listGatewaysSinglePageAsync(
@@ -3438,7 +3784,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Gateways.
+     * @return a list of NSX Gateways as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkGatewayInner> listGatewaysAsync(
@@ -3457,7 +3803,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Gateways.
+     * @return a list of NSX Gateways as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkGatewayInner> listGatewaysAsync(
@@ -3475,7 +3821,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Gateways.
+     * @return a list of NSX Gateways as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkGatewayInner> listGateways(String resourceGroupName, String privateCloudName) {
@@ -3491,7 +3837,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Gateways.
+     * @return a list of NSX Gateways as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkGatewayInner> listGateways(
@@ -3508,7 +3854,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gateway by id in a private cloud workload network.
+     * @return a gateway by id in a private cloud workload network along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkGatewayInner>> getGatewayWithResponseAsync(
@@ -3563,7 +3910,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gateway by id in a private cloud workload network.
+     * @return a gateway by id in a private cloud workload network along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkGatewayInner>> getGatewayWithResponseAsync(
@@ -3614,20 +3962,31 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gateway by id in a private cloud workload network.
+     * @return a gateway by id in a private cloud workload network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkGatewayInner> getGatewayAsync(
         String resourceGroupName, String privateCloudName, String gatewayId) {
         return getGatewayWithResponseAsync(resourceGroupName, privateCloudName, gatewayId)
-            .flatMap(
-                (Response<WorkloadNetworkGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a gateway by id in a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param gatewayId NSX Gateway identifier. Generally the same as the Gateway's display name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a gateway by id in a private cloud workload network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkGatewayInner> getGatewayWithResponse(
+        String resourceGroupName, String privateCloudName, String gatewayId, Context context) {
+        return getGatewayWithResponseAsync(resourceGroupName, privateCloudName, gatewayId, context).block();
     }
 
     /**
@@ -3643,25 +4002,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkGatewayInner getGateway(String resourceGroupName, String privateCloudName, String gatewayId) {
-        return getGatewayAsync(resourceGroupName, privateCloudName, gatewayId).block();
-    }
-
-    /**
-     * Get a gateway by id in a private cloud workload network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param gatewayId NSX Gateway identifier. Generally the same as the Gateway's display name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gateway by id in a private cloud workload network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkGatewayInner> getGatewayWithResponse(
-        String resourceGroupName, String privateCloudName, String gatewayId, Context context) {
-        return getGatewayWithResponseAsync(resourceGroupName, privateCloudName, gatewayId, context).block();
+        return getGatewayWithResponse(resourceGroupName, privateCloudName, gatewayId, Context.NONE).getValue();
     }
 
     /**
@@ -3672,7 +4013,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Port Mirroring.
+     * @return a list of NSX Port Mirroring along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>> listPortMirroringSinglePageAsync(
@@ -3731,7 +4072,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Port Mirroring.
+     * @return a list of NSX Port Mirroring along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>> listPortMirroringSinglePageAsync(
@@ -3786,7 +4127,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Port Mirroring.
+     * @return a list of NSX Port Mirroring as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkPortMirroringInner> listPortMirroringAsync(
@@ -3805,7 +4146,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Port Mirroring.
+     * @return a list of NSX Port Mirroring as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkPortMirroringInner> listPortMirroringAsync(
@@ -3823,7 +4164,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Port Mirroring.
+     * @return a list of NSX Port Mirroring as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkPortMirroringInner> listPortMirroring(
@@ -3840,7 +4181,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Port Mirroring.
+     * @return a list of NSX Port Mirroring as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkPortMirroringInner> listPortMirroring(
@@ -3857,7 +4198,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a port mirroring profile by id in a private cloud workload network.
+     * @return a port mirroring profile by id in a private cloud workload network along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkPortMirroringInner>> getPortMirroringWithResponseAsync(
@@ -3913,7 +4255,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a port mirroring profile by id in a private cloud workload network.
+     * @return a port mirroring profile by id in a private cloud workload network along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkPortMirroringInner>> getPortMirroringWithResponseAsync(
@@ -3965,20 +4308,32 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a port mirroring profile by id in a private cloud workload network.
+     * @return a port mirroring profile by id in a private cloud workload network on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkPortMirroringInner> getPortMirroringAsync(
         String resourceGroupName, String privateCloudName, String portMirroringId) {
         return getPortMirroringWithResponseAsync(resourceGroupName, privateCloudName, portMirroringId)
-            .flatMap(
-                (Response<WorkloadNetworkPortMirroringInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a port mirroring profile by id in a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param portMirroringId NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a port mirroring profile by id in a private cloud workload network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkPortMirroringInner> getPortMirroringWithResponse(
+        String resourceGroupName, String privateCloudName, String portMirroringId, Context context) {
+        return getPortMirroringWithResponseAsync(resourceGroupName, privateCloudName, portMirroringId, context).block();
     }
 
     /**
@@ -3995,25 +4350,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPortMirroringInner getPortMirroring(
         String resourceGroupName, String privateCloudName, String portMirroringId) {
-        return getPortMirroringAsync(resourceGroupName, privateCloudName, portMirroringId).block();
-    }
-
-    /**
-     * Get a port mirroring profile by id in a private cloud workload network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param portMirroringId NSX Port Mirroring identifier. Generally the same as the Port Mirroring display name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a port mirroring profile by id in a private cloud workload network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkPortMirroringInner> getPortMirroringWithResponse(
-        String resourceGroupName, String privateCloudName, String portMirroringId, Context context) {
-        return getPortMirroringWithResponseAsync(resourceGroupName, privateCloudName, portMirroringId, context).block();
+        return getPortMirroringWithResponse(resourceGroupName, privateCloudName, portMirroringId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -4026,7 +4364,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return nSX Port Mirroring along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createPortMirroringWithResponseAsync(
@@ -4095,7 +4433,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return nSX Port Mirroring along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createPortMirroringWithResponseAsync(
@@ -4161,7 +4499,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return the {@link PollerFlux} for polling of nSX Port Mirroring.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
@@ -4180,7 +4518,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkPortMirroringInner.class,
                 WorkloadNetworkPortMirroringInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4194,7 +4532,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return the {@link PollerFlux} for polling of nSX Port Mirroring.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
@@ -4228,7 +4566,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
@@ -4237,7 +4575,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             String privateCloudName,
             String portMirroringId,
             WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        return beginCreatePortMirroringAsync(
+        return this
+            .beginCreatePortMirroringAsync(
                 resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring)
             .getSyncPoller();
     }
@@ -4253,7 +4592,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
@@ -4263,7 +4602,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             String portMirroringId,
             WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring,
             Context context) {
-        return beginCreatePortMirroringAsync(
+        return this
+            .beginCreatePortMirroringAsync(
                 resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring, context)
             .getSyncPoller();
     }
@@ -4278,7 +4618,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return nSX Port Mirroring on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkPortMirroringInner> createPortMirroringAsync(
@@ -4303,7 +4643,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return nSX Port Mirroring on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkPortMirroringInner> createPortMirroringAsync(
@@ -4376,7 +4716,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return nSX Port Mirroring along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updatePortMirroringWithResponseAsync(
@@ -4445,7 +4785,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return nSX Port Mirroring along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updatePortMirroringWithResponseAsync(
@@ -4511,7 +4851,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return the {@link PollerFlux} for polling of nSX Port Mirroring.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
@@ -4530,7 +4870,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkPortMirroringInner.class,
                 WorkloadNetworkPortMirroringInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4544,7 +4884,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return the {@link PollerFlux} for polling of nSX Port Mirroring.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
@@ -4578,7 +4918,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
@@ -4587,7 +4927,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             String privateCloudName,
             String portMirroringId,
             WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        return beginUpdatePortMirroringAsync(
+        return this
+            .beginUpdatePortMirroringAsync(
                 resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring)
             .getSyncPoller();
     }
@@ -4603,7 +4944,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
@@ -4613,7 +4954,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             String portMirroringId,
             WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring,
             Context context) {
-        return beginUpdatePortMirroringAsync(
+        return this
+            .beginUpdatePortMirroringAsync(
                 resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring, context)
             .getSyncPoller();
     }
@@ -4628,7 +4970,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return nSX Port Mirroring on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkPortMirroringInner> updatePortMirroringAsync(
@@ -4653,7 +4995,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Port Mirroring.
+     * @return nSX Port Mirroring on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkPortMirroringInner> updatePortMirroringAsync(
@@ -4725,7 +5067,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deletePortMirroringWithResponseAsync(
@@ -4781,7 +5123,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deletePortMirroringWithResponseAsync(
@@ -4833,7 +5175,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePortMirroringAsync(
@@ -4842,7 +5184,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             deletePortMirroringWithResponseAsync(resourceGroupName, portMirroringId, privateCloudName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -4855,7 +5198,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePortMirroringAsync(
@@ -4877,12 +5220,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePortMirroring(
         String resourceGroupName, String portMirroringId, String privateCloudName) {
-        return beginDeletePortMirroringAsync(resourceGroupName, portMirroringId, privateCloudName).getSyncPoller();
+        return this.beginDeletePortMirroringAsync(resourceGroupName, portMirroringId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -4895,12 +5238,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePortMirroring(
         String resourceGroupName, String portMirroringId, String privateCloudName, Context context) {
-        return beginDeletePortMirroringAsync(resourceGroupName, portMirroringId, privateCloudName, context)
+        return this
+            .beginDeletePortMirroringAsync(resourceGroupName, portMirroringId, privateCloudName, context)
             .getSyncPoller();
     }
 
@@ -4913,7 +5257,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deletePortMirroringAsync(
@@ -4933,7 +5277,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deletePortMirroringAsync(
@@ -4983,7 +5327,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX VM Groups.
+     * @return a list of NSX VM Groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVMGroupInner>> listVMGroupsSinglePageAsync(
@@ -5042,7 +5386,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX VM Groups.
+     * @return a list of NSX VM Groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVMGroupInner>> listVMGroupsSinglePageAsync(
@@ -5097,7 +5441,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX VM Groups.
+     * @return a list of NSX VM Groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkVMGroupInner> listVMGroupsAsync(
@@ -5116,7 +5460,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX VM Groups.
+     * @return a list of NSX VM Groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkVMGroupInner> listVMGroupsAsync(
@@ -5134,7 +5478,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX VM Groups.
+     * @return a list of NSX VM Groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkVMGroupInner> listVMGroups(String resourceGroupName, String privateCloudName) {
@@ -5150,7 +5494,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX VM Groups.
+     * @return a list of NSX VM Groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkVMGroupInner> listVMGroups(
@@ -5167,7 +5511,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vm group by id in a private cloud workload network.
+     * @return a vm group by id in a private cloud workload network along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkVMGroupInner>> getVMGroupWithResponseAsync(
@@ -5222,7 +5567,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vm group by id in a private cloud workload network.
+     * @return a vm group by id in a private cloud workload network along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkVMGroupInner>> getVMGroupWithResponseAsync(
@@ -5273,20 +5619,31 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vm group by id in a private cloud workload network.
+     * @return a vm group by id in a private cloud workload network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkVMGroupInner> getVMGroupAsync(
         String resourceGroupName, String privateCloudName, String vmGroupId) {
         return getVMGroupWithResponseAsync(resourceGroupName, privateCloudName, vmGroupId)
-            .flatMap(
-                (Response<WorkloadNetworkVMGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a vm group by id in a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param vmGroupId NSX VM Group identifier. Generally the same as the VM Group's display name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a vm group by id in a private cloud workload network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkVMGroupInner> getVMGroupWithResponse(
+        String resourceGroupName, String privateCloudName, String vmGroupId, Context context) {
+        return getVMGroupWithResponseAsync(resourceGroupName, privateCloudName, vmGroupId, context).block();
     }
 
     /**
@@ -5302,25 +5659,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkVMGroupInner getVMGroup(String resourceGroupName, String privateCloudName, String vmGroupId) {
-        return getVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId).block();
-    }
-
-    /**
-     * Get a vm group by id in a private cloud workload network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param vmGroupId NSX VM Group identifier. Generally the same as the VM Group's display name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vm group by id in a private cloud workload network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkVMGroupInner> getVMGroupWithResponse(
-        String resourceGroupName, String privateCloudName, String vmGroupId, Context context) {
-        return getVMGroupWithResponseAsync(resourceGroupName, privateCloudName, vmGroupId, context).block();
+        return getVMGroupWithResponse(resourceGroupName, privateCloudName, vmGroupId, Context.NONE).getValue();
     }
 
     /**
@@ -5333,7 +5672,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return nSX VM Group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createVMGroupWithResponseAsync(
@@ -5400,7 +5739,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return nSX VM Group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createVMGroupWithResponseAsync(
@@ -5464,7 +5803,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return the {@link PollerFlux} for polling of nSX VM Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroupAsync(
@@ -5481,7 +5820,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkVMGroupInner.class,
                 WorkloadNetworkVMGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -5495,7 +5834,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return the {@link PollerFlux} for polling of nSX VM Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroupAsync(
@@ -5528,7 +5867,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return the {@link SyncPoller} for polling of nSX VM Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroup(
@@ -5536,7 +5875,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String vmGroupId,
         WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        return beginCreateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
+        return this
+            .beginCreateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
             .getSyncPoller();
     }
 
@@ -5551,7 +5891,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return the {@link SyncPoller} for polling of nSX VM Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroup(
@@ -5560,7 +5900,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String vmGroupId,
         WorkloadNetworkVMGroupInner workloadNetworkVMGroup,
         Context context) {
-        return beginCreateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
+        return this
+            .beginCreateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
             .getSyncPoller();
     }
 
@@ -5574,7 +5915,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return nSX VM Group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkVMGroupInner> createVMGroupAsync(
@@ -5598,7 +5939,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return nSX VM Group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkVMGroupInner> createVMGroupAsync(
@@ -5667,7 +6008,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return nSX VM Group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateVMGroupWithResponseAsync(
@@ -5734,7 +6075,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return nSX VM Group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateVMGroupWithResponseAsync(
@@ -5798,7 +6139,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return the {@link PollerFlux} for polling of nSX VM Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroupAsync(
@@ -5815,7 +6156,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkVMGroupInner.class,
                 WorkloadNetworkVMGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -5829,7 +6170,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return the {@link PollerFlux} for polling of nSX VM Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroupAsync(
@@ -5862,7 +6203,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return the {@link SyncPoller} for polling of nSX VM Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroup(
@@ -5870,7 +6211,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String vmGroupId,
         WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        return beginUpdateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
+        return this
+            .beginUpdateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
             .getSyncPoller();
     }
 
@@ -5885,7 +6227,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return the {@link SyncPoller} for polling of nSX VM Group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroup(
@@ -5894,7 +6236,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String vmGroupId,
         WorkloadNetworkVMGroupInner workloadNetworkVMGroup,
         Context context) {
-        return beginUpdateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
+        return this
+            .beginUpdateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
             .getSyncPoller();
     }
 
@@ -5908,7 +6251,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return nSX VM Group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkVMGroupInner> updateVMGroupAsync(
@@ -5932,7 +6275,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX VM Group.
+     * @return nSX VM Group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkVMGroupInner> updateVMGroupAsync(
@@ -6000,7 +6343,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteVMGroupWithResponseAsync(
@@ -6055,7 +6398,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteVMGroupWithResponseAsync(
@@ -6106,7 +6449,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteVMGroupAsync(
@@ -6115,7 +6458,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             deleteVMGroupWithResponseAsync(resourceGroupName, vmGroupId, privateCloudName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -6128,7 +6472,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteVMGroupAsync(
@@ -6150,12 +6494,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteVMGroup(
         String resourceGroupName, String vmGroupId, String privateCloudName) {
-        return beginDeleteVMGroupAsync(resourceGroupName, vmGroupId, privateCloudName).getSyncPoller();
+        return this.beginDeleteVMGroupAsync(resourceGroupName, vmGroupId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -6168,12 +6512,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteVMGroup(
         String resourceGroupName, String vmGroupId, String privateCloudName, Context context) {
-        return beginDeleteVMGroupAsync(resourceGroupName, vmGroupId, privateCloudName, context).getSyncPoller();
+        return this.beginDeleteVMGroupAsync(resourceGroupName, vmGroupId, privateCloudName, context).getSyncPoller();
     }
 
     /**
@@ -6185,7 +6529,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteVMGroupAsync(String resourceGroupName, String vmGroupId, String privateCloudName) {
@@ -6204,7 +6548,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteVMGroupAsync(
@@ -6253,7 +6597,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Virtual Machines.
+     * @return a list of NSX Virtual Machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVirtualMachineInner>> listVirtualMachinesSinglePageAsync(
@@ -6312,7 +6656,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Virtual Machines.
+     * @return a list of NSX Virtual Machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVirtualMachineInner>> listVirtualMachinesSinglePageAsync(
@@ -6367,7 +6711,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Virtual Machines.
+     * @return a list of NSX Virtual Machines as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkVirtualMachineInner> listVirtualMachinesAsync(
@@ -6386,7 +6730,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Virtual Machines.
+     * @return a list of NSX Virtual Machines as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkVirtualMachineInner> listVirtualMachinesAsync(
@@ -6404,7 +6748,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Virtual Machines.
+     * @return a list of NSX Virtual Machines as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkVirtualMachineInner> listVirtualMachines(
@@ -6421,7 +6765,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Virtual Machines.
+     * @return a list of NSX Virtual Machines as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkVirtualMachineInner> listVirtualMachines(
@@ -6438,7 +6782,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine by id in a private cloud workload network.
+     * @return a virtual machine by id in a private cloud workload network along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkVirtualMachineInner>> getVirtualMachineWithResponseAsync(
@@ -6494,7 +6839,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine by id in a private cloud workload network.
+     * @return a virtual machine by id in a private cloud workload network along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkVirtualMachineInner>> getVirtualMachineWithResponseAsync(
@@ -6546,20 +6892,32 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine by id in a private cloud workload network.
+     * @return a virtual machine by id in a private cloud workload network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkVirtualMachineInner> getVirtualMachineAsync(
         String resourceGroupName, String privateCloudName, String virtualMachineId) {
         return getVirtualMachineWithResponseAsync(resourceGroupName, privateCloudName, virtualMachineId)
-            .flatMap(
-                (Response<WorkloadNetworkVirtualMachineInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a virtual machine by id in a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param virtualMachineId Virtual Machine identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine by id in a private cloud workload network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkVirtualMachineInner> getVirtualMachineWithResponse(
+        String resourceGroupName, String privateCloudName, String virtualMachineId, Context context) {
+        return getVirtualMachineWithResponseAsync(resourceGroupName, privateCloudName, virtualMachineId, context)
+            .block();
     }
 
     /**
@@ -6576,26 +6934,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkVirtualMachineInner getVirtualMachine(
         String resourceGroupName, String privateCloudName, String virtualMachineId) {
-        return getVirtualMachineAsync(resourceGroupName, privateCloudName, virtualMachineId).block();
-    }
-
-    /**
-     * Get a virtual machine by id in a private cloud workload network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param virtualMachineId Virtual Machine identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine by id in a private cloud workload network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkVirtualMachineInner> getVirtualMachineWithResponse(
-        String resourceGroupName, String privateCloudName, String virtualMachineId, Context context) {
-        return getVirtualMachineWithResponseAsync(resourceGroupName, privateCloudName, virtualMachineId, context)
-            .block();
+        return getVirtualMachineWithResponse(resourceGroupName, privateCloudName, virtualMachineId, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -6606,7 +6946,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Services.
+     * @return a list of NSX DNS Services along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsServiceInner>> listDnsServicesSinglePageAsync(
@@ -6665,7 +7005,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Services.
+     * @return a list of NSX DNS Services along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsServiceInner>> listDnsServicesSinglePageAsync(
@@ -6720,7 +7060,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Services.
+     * @return a list of NSX DNS Services as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkDnsServiceInner> listDnsServicesAsync(
@@ -6739,7 +7079,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Services.
+     * @return a list of NSX DNS Services as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkDnsServiceInner> listDnsServicesAsync(
@@ -6757,7 +7097,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Services.
+     * @return a list of NSX DNS Services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDnsServiceInner> listDnsServices(
@@ -6774,7 +7114,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Services.
+     * @return a list of NSX DNS Services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDnsServiceInner> listDnsServices(
@@ -6791,7 +7131,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS service by id in a private cloud workload network.
+     * @return a DNS service by id in a private cloud workload network along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkDnsServiceInner>> getDnsServiceWithResponseAsync(
@@ -6846,7 +7187,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS service by id in a private cloud workload network.
+     * @return a DNS service by id in a private cloud workload network along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkDnsServiceInner>> getDnsServiceWithResponseAsync(
@@ -6897,20 +7239,31 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS service by id in a private cloud workload network.
+     * @return a DNS service by id in a private cloud workload network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsServiceInner> getDnsServiceAsync(
         String resourceGroupName, String privateCloudName, String dnsServiceId) {
         return getDnsServiceWithResponseAsync(resourceGroupName, privateCloudName, dnsServiceId)
-            .flatMap(
-                (Response<WorkloadNetworkDnsServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a DNS service by id in a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param dnsServiceId NSX DNS Service identifier. Generally the same as the DNS Service's display name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DNS service by id in a private cloud workload network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkDnsServiceInner> getDnsServiceWithResponse(
+        String resourceGroupName, String privateCloudName, String dnsServiceId, Context context) {
+        return getDnsServiceWithResponseAsync(resourceGroupName, privateCloudName, dnsServiceId, context).block();
     }
 
     /**
@@ -6927,25 +7280,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsServiceInner getDnsService(
         String resourceGroupName, String privateCloudName, String dnsServiceId) {
-        return getDnsServiceAsync(resourceGroupName, privateCloudName, dnsServiceId).block();
-    }
-
-    /**
-     * Get a DNS service by id in a private cloud workload network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsServiceId NSX DNS Service identifier. Generally the same as the DNS Service's display name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS service by id in a private cloud workload network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkDnsServiceInner> getDnsServiceWithResponse(
-        String resourceGroupName, String privateCloudName, String dnsServiceId, Context context) {
-        return getDnsServiceWithResponseAsync(resourceGroupName, privateCloudName, dnsServiceId, context).block();
+        return getDnsServiceWithResponse(resourceGroupName, privateCloudName, dnsServiceId, Context.NONE).getValue();
     }
 
     /**
@@ -6958,7 +7293,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return nSX DNS Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createDnsServiceWithResponseAsync(
@@ -7026,7 +7361,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return nSX DNS Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createDnsServiceWithResponseAsync(
@@ -7091,7 +7426,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return the {@link PollerFlux} for polling of nSX DNS Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner>
@@ -7110,7 +7445,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkDnsServiceInner.class,
                 WorkloadNetworkDnsServiceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -7124,7 +7459,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return the {@link PollerFlux} for polling of nSX DNS Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner>
@@ -7158,7 +7493,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return the {@link SyncPoller} for polling of nSX DNS Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginCreateDnsService(
@@ -7166,7 +7501,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dnsServiceId,
         WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        return beginCreateDnsServiceAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
+        return this
+            .beginCreateDnsServiceAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
             .getSyncPoller();
     }
 
@@ -7181,7 +7517,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return the {@link SyncPoller} for polling of nSX DNS Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginCreateDnsService(
@@ -7190,7 +7526,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dnsServiceId,
         WorkloadNetworkDnsServiceInner workloadNetworkDnsService,
         Context context) {
-        return beginCreateDnsServiceAsync(
+        return this
+            .beginCreateDnsServiceAsync(
                 resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService, context)
             .getSyncPoller();
     }
@@ -7205,7 +7542,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return nSX DNS Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsServiceInner> createDnsServiceAsync(
@@ -7229,7 +7566,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return nSX DNS Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsServiceInner> createDnsServiceAsync(
@@ -7301,7 +7638,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return nSX DNS Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateDnsServiceWithResponseAsync(
@@ -7369,7 +7706,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return nSX DNS Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateDnsServiceWithResponseAsync(
@@ -7434,7 +7771,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return the {@link PollerFlux} for polling of nSX DNS Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner>
@@ -7453,7 +7790,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkDnsServiceInner.class,
                 WorkloadNetworkDnsServiceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -7467,7 +7804,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return the {@link PollerFlux} for polling of nSX DNS Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner>
@@ -7501,7 +7838,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return the {@link SyncPoller} for polling of nSX DNS Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateDnsService(
@@ -7509,7 +7846,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dnsServiceId,
         WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        return beginUpdateDnsServiceAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
+        return this
+            .beginUpdateDnsServiceAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
             .getSyncPoller();
     }
 
@@ -7524,7 +7862,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return the {@link SyncPoller} for polling of nSX DNS Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateDnsService(
@@ -7533,7 +7871,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dnsServiceId,
         WorkloadNetworkDnsServiceInner workloadNetworkDnsService,
         Context context) {
-        return beginUpdateDnsServiceAsync(
+        return this
+            .beginUpdateDnsServiceAsync(
                 resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService, context)
             .getSyncPoller();
     }
@@ -7548,7 +7887,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return nSX DNS Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsServiceInner> updateDnsServiceAsync(
@@ -7572,7 +7911,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Service.
+     * @return nSX DNS Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsServiceInner> updateDnsServiceAsync(
@@ -7643,7 +7982,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteDnsServiceWithResponseAsync(
@@ -7698,7 +8037,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteDnsServiceWithResponseAsync(
@@ -7749,7 +8088,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDnsServiceAsync(
@@ -7758,7 +8097,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             deleteDnsServiceWithResponseAsync(resourceGroupName, dnsServiceId, privateCloudName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -7771,7 +8111,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDnsServiceAsync(
@@ -7793,12 +8133,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsService(
         String resourceGroupName, String dnsServiceId, String privateCloudName) {
-        return beginDeleteDnsServiceAsync(resourceGroupName, dnsServiceId, privateCloudName).getSyncPoller();
+        return this.beginDeleteDnsServiceAsync(resourceGroupName, dnsServiceId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -7811,12 +8151,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsService(
         String resourceGroupName, String dnsServiceId, String privateCloudName, Context context) {
-        return beginDeleteDnsServiceAsync(resourceGroupName, dnsServiceId, privateCloudName, context).getSyncPoller();
+        return this
+            .beginDeleteDnsServiceAsync(resourceGroupName, dnsServiceId, privateCloudName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -7828,7 +8170,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteDnsServiceAsync(String resourceGroupName, String dnsServiceId, String privateCloudName) {
@@ -7847,7 +8189,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteDnsServiceAsync(
@@ -7897,7 +8239,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Zones.
+     * @return a list of NSX DNS Zones along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsZoneInner>> listDnsZonesSinglePageAsync(
@@ -7956,7 +8298,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Zones.
+     * @return a list of NSX DNS Zones along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsZoneInner>> listDnsZonesSinglePageAsync(
@@ -8011,7 +8353,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Zones.
+     * @return a list of NSX DNS Zones as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkDnsZoneInner> listDnsZonesAsync(
@@ -8030,7 +8372,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Zones.
+     * @return a list of NSX DNS Zones as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkDnsZoneInner> listDnsZonesAsync(
@@ -8048,7 +8390,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Zones.
+     * @return a list of NSX DNS Zones as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDnsZoneInner> listDnsZones(String resourceGroupName, String privateCloudName) {
@@ -8064,7 +8406,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Zones.
+     * @return a list of NSX DNS Zones as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkDnsZoneInner> listDnsZones(
@@ -8081,7 +8423,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS zone by id in a private cloud workload network.
+     * @return a DNS zone by id in a private cloud workload network along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkDnsZoneInner>> getDnsZoneWithResponseAsync(
@@ -8136,7 +8479,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS zone by id in a private cloud workload network.
+     * @return a DNS zone by id in a private cloud workload network along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkDnsZoneInner>> getDnsZoneWithResponseAsync(
@@ -8187,20 +8531,31 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS zone by id in a private cloud workload network.
+     * @return a DNS zone by id in a private cloud workload network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsZoneInner> getDnsZoneAsync(
         String resourceGroupName, String privateCloudName, String dnsZoneId) {
         return getDnsZoneWithResponseAsync(resourceGroupName, privateCloudName, dnsZoneId)
-            .flatMap(
-                (Response<WorkloadNetworkDnsZoneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a DNS zone by id in a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param dnsZoneId NSX DNS Zone identifier. Generally the same as the DNS Zone's display name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DNS zone by id in a private cloud workload network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkDnsZoneInner> getDnsZoneWithResponse(
+        String resourceGroupName, String privateCloudName, String dnsZoneId, Context context) {
+        return getDnsZoneWithResponseAsync(resourceGroupName, privateCloudName, dnsZoneId, context).block();
     }
 
     /**
@@ -8216,25 +8571,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsZoneInner getDnsZone(String resourceGroupName, String privateCloudName, String dnsZoneId) {
-        return getDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId).block();
-    }
-
-    /**
-     * Get a DNS zone by id in a private cloud workload network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param dnsZoneId NSX DNS Zone identifier. Generally the same as the DNS Zone's display name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS zone by id in a private cloud workload network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkDnsZoneInner> getDnsZoneWithResponse(
-        String resourceGroupName, String privateCloudName, String dnsZoneId, Context context) {
-        return getDnsZoneWithResponseAsync(resourceGroupName, privateCloudName, dnsZoneId, context).block();
+        return getDnsZoneWithResponse(resourceGroupName, privateCloudName, dnsZoneId, Context.NONE).getValue();
     }
 
     /**
@@ -8247,7 +8584,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return nSX DNS Zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createDnsZoneWithResponseAsync(
@@ -8314,7 +8651,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return nSX DNS Zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createDnsZoneWithResponseAsync(
@@ -8378,7 +8715,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return the {@link PollerFlux} for polling of nSX DNS Zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZoneAsync(
@@ -8395,7 +8732,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkDnsZoneInner.class,
                 WorkloadNetworkDnsZoneInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -8409,7 +8746,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return the {@link PollerFlux} for polling of nSX DNS Zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZoneAsync(
@@ -8442,7 +8779,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZone(
@@ -8450,7 +8787,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dnsZoneId,
         WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        return beginCreateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone)
+        return this
+            .beginCreateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone)
             .getSyncPoller();
     }
 
@@ -8465,7 +8803,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZone(
@@ -8474,7 +8812,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dnsZoneId,
         WorkloadNetworkDnsZoneInner workloadNetworkDnsZone,
         Context context) {
-        return beginCreateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context)
+        return this
+            .beginCreateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context)
             .getSyncPoller();
     }
 
@@ -8488,7 +8827,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return nSX DNS Zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsZoneInner> createDnsZoneAsync(
@@ -8512,7 +8851,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return nSX DNS Zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsZoneInner> createDnsZoneAsync(
@@ -8581,7 +8920,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return nSX DNS Zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateDnsZoneWithResponseAsync(
@@ -8648,7 +8987,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return nSX DNS Zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateDnsZoneWithResponseAsync(
@@ -8712,7 +9051,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return the {@link PollerFlux} for polling of nSX DNS Zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZoneAsync(
@@ -8729,7 +9068,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkDnsZoneInner.class,
                 WorkloadNetworkDnsZoneInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -8743,7 +9082,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return the {@link PollerFlux} for polling of nSX DNS Zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZoneAsync(
@@ -8776,7 +9115,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZone(
@@ -8784,7 +9123,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dnsZoneId,
         WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        return beginUpdateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone)
+        return this
+            .beginUpdateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone)
             .getSyncPoller();
     }
 
@@ -8799,7 +9139,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZone(
@@ -8808,7 +9148,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dnsZoneId,
         WorkloadNetworkDnsZoneInner workloadNetworkDnsZone,
         Context context) {
-        return beginUpdateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context)
+        return this
+            .beginUpdateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context)
             .getSyncPoller();
     }
 
@@ -8822,7 +9163,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return nSX DNS Zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsZoneInner> updateDnsZoneAsync(
@@ -8846,7 +9187,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX DNS Zone.
+     * @return nSX DNS Zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsZoneInner> updateDnsZoneAsync(
@@ -8914,7 +9255,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteDnsZoneWithResponseAsync(
@@ -8969,7 +9310,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteDnsZoneWithResponseAsync(
@@ -9020,7 +9361,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDnsZoneAsync(
@@ -9029,7 +9370,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             deleteDnsZoneWithResponseAsync(resourceGroupName, dnsZoneId, privateCloudName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -9042,7 +9384,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDnsZoneAsync(
@@ -9064,12 +9406,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsZone(
         String resourceGroupName, String dnsZoneId, String privateCloudName) {
-        return beginDeleteDnsZoneAsync(resourceGroupName, dnsZoneId, privateCloudName).getSyncPoller();
+        return this.beginDeleteDnsZoneAsync(resourceGroupName, dnsZoneId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -9082,12 +9424,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsZone(
         String resourceGroupName, String dnsZoneId, String privateCloudName, Context context) {
-        return beginDeleteDnsZoneAsync(resourceGroupName, dnsZoneId, privateCloudName, context).getSyncPoller();
+        return this.beginDeleteDnsZoneAsync(resourceGroupName, dnsZoneId, privateCloudName, context).getSyncPoller();
     }
 
     /**
@@ -9099,7 +9441,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteDnsZoneAsync(String resourceGroupName, String dnsZoneId, String privateCloudName) {
@@ -9118,7 +9460,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteDnsZoneAsync(
@@ -9167,7 +9509,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Public IP Blocks.
+     * @return a list of NSX Public IP Blocks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPublicIpInner>> listPublicIPsSinglePageAsync(
@@ -9226,7 +9568,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Public IP Blocks.
+     * @return a list of NSX Public IP Blocks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPublicIpInner>> listPublicIPsSinglePageAsync(
@@ -9281,7 +9623,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Public IP Blocks.
+     * @return a list of NSX Public IP Blocks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkPublicIpInner> listPublicIPsAsync(
@@ -9300,7 +9642,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Public IP Blocks.
+     * @return a list of NSX Public IP Blocks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadNetworkPublicIpInner> listPublicIPsAsync(
@@ -9318,7 +9660,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Public IP Blocks.
+     * @return a list of NSX Public IP Blocks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkPublicIpInner> listPublicIPs(
@@ -9335,7 +9677,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Public IP Blocks.
+     * @return a list of NSX Public IP Blocks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadNetworkPublicIpInner> listPublicIPs(
@@ -9352,7 +9694,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Public IP Block by id in a private cloud workload network.
+     * @return a Public IP Block by id in a private cloud workload network along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkPublicIpInner>> getPublicIpWithResponseAsync(
@@ -9407,7 +9750,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Public IP Block by id in a private cloud workload network.
+     * @return a Public IP Block by id in a private cloud workload network along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkPublicIpInner>> getPublicIpWithResponseAsync(
@@ -9458,20 +9802,31 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Public IP Block by id in a private cloud workload network.
+     * @return a Public IP Block by id in a private cloud workload network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkPublicIpInner> getPublicIpAsync(
         String resourceGroupName, String privateCloudName, String publicIpId) {
         return getPublicIpWithResponseAsync(resourceGroupName, privateCloudName, publicIpId)
-            .flatMap(
-                (Response<WorkloadNetworkPublicIpInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a Public IP Block by id in a private cloud workload network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param publicIpId NSX Public IP Block identifier. Generally the same as the Public IP Block's display name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Public IP Block by id in a private cloud workload network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkloadNetworkPublicIpInner> getPublicIpWithResponse(
+        String resourceGroupName, String privateCloudName, String publicIpId, Context context) {
+        return getPublicIpWithResponseAsync(resourceGroupName, privateCloudName, publicIpId, context).block();
     }
 
     /**
@@ -9488,25 +9843,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPublicIpInner getPublicIp(
         String resourceGroupName, String privateCloudName, String publicIpId) {
-        return getPublicIpAsync(resourceGroupName, privateCloudName, publicIpId).block();
-    }
-
-    /**
-     * Get a Public IP Block by id in a private cloud workload network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param publicIpId NSX Public IP Block identifier. Generally the same as the Public IP Block's display name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Public IP Block by id in a private cloud workload network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkPublicIpInner> getPublicIpWithResponse(
-        String resourceGroupName, String privateCloudName, String publicIpId, Context context) {
-        return getPublicIpWithResponseAsync(resourceGroupName, privateCloudName, publicIpId, context).block();
+        return getPublicIpWithResponse(resourceGroupName, privateCloudName, publicIpId, Context.NONE).getValue();
     }
 
     /**
@@ -9519,7 +9856,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Public IP Block.
+     * @return nSX Public IP Block along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createPublicIpWithResponseAsync(
@@ -9586,7 +9923,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Public IP Block.
+     * @return nSX Public IP Block along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createPublicIpWithResponseAsync(
@@ -9650,7 +9987,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Public IP Block.
+     * @return the {@link PollerFlux} for polling of nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIpAsync(
@@ -9667,7 +10004,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 this.client.getHttpPipeline(),
                 WorkloadNetworkPublicIpInner.class,
                 WorkloadNetworkPublicIpInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -9681,7 +10018,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Public IP Block.
+     * @return the {@link PollerFlux} for polling of nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIpAsync(
@@ -9714,7 +10051,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Public IP Block.
+     * @return the {@link SyncPoller} for polling of nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIp(
@@ -9722,7 +10059,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String publicIpId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIp) {
-        return beginCreatePublicIpAsync(resourceGroupName, privateCloudName, publicIpId, workloadNetworkPublicIp)
+        return this
+            .beginCreatePublicIpAsync(resourceGroupName, privateCloudName, publicIpId, workloadNetworkPublicIp)
             .getSyncPoller();
     }
 
@@ -9737,7 +10075,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Public IP Block.
+     * @return the {@link SyncPoller} for polling of nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIp(
@@ -9746,8 +10084,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String publicIpId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIp,
         Context context) {
-        return beginCreatePublicIpAsync(
-                resourceGroupName, privateCloudName, publicIpId, workloadNetworkPublicIp, context)
+        return this
+            .beginCreatePublicIpAsync(resourceGroupName, privateCloudName, publicIpId, workloadNetworkPublicIp, context)
             .getSyncPoller();
     }
 
@@ -9761,7 +10099,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Public IP Block.
+     * @return nSX Public IP Block on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkPublicIpInner> createPublicIpAsync(
@@ -9785,7 +10123,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSX Public IP Block.
+     * @return nSX Public IP Block on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkPublicIpInner> createPublicIpAsync(
@@ -9854,7 +10192,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deletePublicIpWithResponseAsync(
@@ -9909,7 +10247,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deletePublicIpWithResponseAsync(
@@ -9960,7 +10298,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePublicIpAsync(
@@ -9969,7 +10307,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             deletePublicIpWithResponseAsync(resourceGroupName, publicIpId, privateCloudName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -9982,7 +10321,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePublicIpAsync(
@@ -10004,12 +10343,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(
         String resourceGroupName, String publicIpId, String privateCloudName) {
-        return beginDeletePublicIpAsync(resourceGroupName, publicIpId, privateCloudName).getSyncPoller();
+        return this.beginDeletePublicIpAsync(resourceGroupName, publicIpId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -10022,12 +10361,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(
         String resourceGroupName, String publicIpId, String privateCloudName, Context context) {
-        return beginDeletePublicIpAsync(resourceGroupName, publicIpId, privateCloudName, context).getSyncPoller();
+        return this.beginDeletePublicIpAsync(resourceGroupName, publicIpId, privateCloudName, context).getSyncPoller();
     }
 
     /**
@@ -10039,7 +10378,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deletePublicIpAsync(String resourceGroupName, String publicIpId, String privateCloudName) {
@@ -10058,7 +10397,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deletePublicIpAsync(
@@ -10102,11 +10441,85 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Segments.
+     * @return a list of workload networks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<WorkloadNetworkInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<WorkloadNetworkInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of workload networks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<WorkloadNetworkInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of NSX Segments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkSegmentInner>> listSegmentsNextSinglePageAsync(String nextLink) {
@@ -10137,12 +10550,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Segments.
+     * @return a list of NSX Segments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkSegmentInner>> listSegmentsNextSinglePageAsync(
@@ -10174,11 +10588,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX dhcp entities.
+     * @return a list of NSX dhcp entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDhcpInner>> listDhcpNextSinglePageAsync(String nextLink) {
@@ -10209,12 +10624,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX dhcp entities.
+     * @return a list of NSX dhcp entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDhcpInner>> listDhcpNextSinglePageAsync(
@@ -10246,11 +10662,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Gateways.
+     * @return a list of NSX Gateways along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkGatewayInner>> listGatewaysNextSinglePageAsync(String nextLink) {
@@ -10281,12 +10698,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Gateways.
+     * @return a list of NSX Gateways along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkGatewayInner>> listGatewaysNextSinglePageAsync(
@@ -10318,11 +10736,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Port Mirroring.
+     * @return a list of NSX Port Mirroring along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>> listPortMirroringNextSinglePageAsync(
@@ -10354,12 +10773,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Port Mirroring.
+     * @return a list of NSX Port Mirroring along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>> listPortMirroringNextSinglePageAsync(
@@ -10391,11 +10811,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX VM Groups.
+     * @return a list of NSX VM Groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVMGroupInner>> listVMGroupsNextSinglePageAsync(String nextLink) {
@@ -10426,12 +10847,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX VM Groups.
+     * @return a list of NSX VM Groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVMGroupInner>> listVMGroupsNextSinglePageAsync(
@@ -10463,11 +10885,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Virtual Machines.
+     * @return a list of NSX Virtual Machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVirtualMachineInner>> listVirtualMachinesNextSinglePageAsync(
@@ -10500,12 +10923,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Virtual Machines.
+     * @return a list of NSX Virtual Machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVirtualMachineInner>> listVirtualMachinesNextSinglePageAsync(
@@ -10537,11 +10961,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Services.
+     * @return a list of NSX DNS Services along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsServiceInner>> listDnsServicesNextSinglePageAsync(String nextLink) {
@@ -10572,12 +10997,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Services.
+     * @return a list of NSX DNS Services along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsServiceInner>> listDnsServicesNextSinglePageAsync(
@@ -10609,11 +11035,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Zones.
+     * @return a list of NSX DNS Zones along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsZoneInner>> listDnsZonesNextSinglePageAsync(String nextLink) {
@@ -10644,12 +11071,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX DNS Zones.
+     * @return a list of NSX DNS Zones along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsZoneInner>> listDnsZonesNextSinglePageAsync(
@@ -10681,11 +11109,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Public IP Blocks.
+     * @return a list of NSX Public IP Blocks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPublicIpInner>> listPublicIPsNextSinglePageAsync(String nextLink) {
@@ -10716,12 +11145,13 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSX Public IP Blocks.
+     * @return a list of NSX Public IP Blocks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPublicIpInner>> listPublicIPsNextSinglePageAsync(

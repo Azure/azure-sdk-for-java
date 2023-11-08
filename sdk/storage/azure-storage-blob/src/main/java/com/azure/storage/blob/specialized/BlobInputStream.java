@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
@@ -32,6 +33,11 @@ public final class BlobInputStream extends StorageInputStream {
     private final BlobProperties properties;
 
     /**
+     * The context.
+     */
+    private final Context context;
+
+    /**
      * Initializes a new instance of the BlobInputStream class. Note that if {@code blobRangeOffset} is not {@code 0} or
      * {@code blobRangeLength} is not {@code null}, there will be no content MD5 verification.
      *
@@ -43,16 +49,18 @@ public final class BlobInputStream extends StorageInputStream {
      * @param initialBuffer The result of the initial download.
      * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
      * blob.
+     * @param context The {@link Context}
      * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
     BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
         final ByteBuffer initialBuffer, final BlobRequestConditions accessCondition,
-        final BlobProperties blobProperties) throws BlobStorageException {
+        final BlobProperties blobProperties, Context context) throws BlobStorageException {
         super(blobRangeOffset, blobRangeLength, chunkSize, blobProperties.getBlobSize(), initialBuffer);
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;
         this.properties = blobProperties;
+        this.context = context;
     }
 
     /**
@@ -65,8 +73,8 @@ public final class BlobInputStream extends StorageInputStream {
     @Override
     protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) throws IOException {
         try {
-            ByteBuffer currentBuffer = this.blobClient.downloadWithResponse(
-                new BlobRange(offset, (long) readLength), null, this.accessCondition, false)
+            ByteBuffer currentBuffer = this.blobClient.downloadStreamWithResponse(
+                new BlobRange(offset, (long) readLength), null, this.accessCondition, false, this.context)
                 .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
                 .block();
 

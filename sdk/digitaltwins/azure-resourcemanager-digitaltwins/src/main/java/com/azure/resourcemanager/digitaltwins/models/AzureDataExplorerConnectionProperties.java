@@ -6,7 +6,6 @@ package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureDataExplorer")
 @Fluent
 public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatabaseConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataExplorerConnectionProperties.class);
-
     /*
      * The resource ID of the Azure Data Explorer cluster.
      */
@@ -37,21 +34,34 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     private String adxDatabaseName;
 
     /*
-     * The name of the Azure Data Explorer table.
+     * The name of the Azure Data Explorer table used for storing updates to properties of twins and relationships.
+     * Defaults to AdtPropertyEvents.
      */
     @JsonProperty(value = "adxTableName")
     private String adxTableName;
 
     /*
-     * The URL of the EventHub namespace for identity-based authentication. It
-     * must include the protocol sb://
+     * The name of the Azure Data Explorer table used for recording twin lifecycle events. The table will not be
+     * created if this property is left unspecified.
+     */
+    @JsonProperty(value = "adxTwinLifecycleEventsTableName")
+    private String adxTwinLifecycleEventsTableName;
+
+    /*
+     * The name of the Azure Data Explorer table used for recording relationship lifecycle events. The table will not
+     * be created if this property is left unspecified.
+     */
+    @JsonProperty(value = "adxRelationshipLifecycleEventsTableName")
+    private String adxRelationshipLifecycleEventsTableName;
+
+    /*
+     * The URL of the EventHub namespace for identity-based authentication. It must include the protocol sb://
      */
     @JsonProperty(value = "eventHubEndpointUri", required = true)
     private String eventHubEndpointUri;
 
     /*
-     * The EventHub name in the EventHub namespace for identity-based
-     * authentication.
+     * The EventHub name in the EventHub namespace for identity-based authentication.
      */
     @JsonProperty(value = "eventHubEntityPath", required = true)
     private String eventHubEntityPath;
@@ -63,11 +73,23 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     private String eventHubNamespaceResourceId;
 
     /*
-     * The EventHub consumer group to use when ADX reads from EventHub.
-     * Defaults to $Default.
+     * The EventHub consumer group to use when ADX reads from EventHub. Defaults to $Default.
      */
     @JsonProperty(value = "eventHubConsumerGroup")
     private String eventHubConsumerGroup;
+
+    /*
+     * Specifies whether or not to record twin / relationship property and item removals, including removals of indexed
+     * or keyed values (such as map entries, array elements, etc.). This feature is de-activated unless explicitly set
+     * to 'true'. Setting this property to 'true' will generate an additional column in the property events table in
+     * ADX.
+     */
+    @JsonProperty(value = "recordPropertyAndItemRemovals")
+    private RecordPropertyAndItemRemovals recordPropertyAndItemRemovals;
+
+    /** Creates an instance of AzureDataExplorerConnectionProperties class. */
+    public AzureDataExplorerConnectionProperties() {
+    }
 
     /**
      * Get the adxResourceId property: The resource ID of the Azure Data Explorer cluster.
@@ -130,7 +152,8 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     }
 
     /**
-     * Get the adxTableName property: The name of the Azure Data Explorer table.
+     * Get the adxTableName property: The name of the Azure Data Explorer table used for storing updates to properties
+     * of twins and relationships. Defaults to AdtPropertyEvents.
      *
      * @return the adxTableName value.
      */
@@ -139,13 +162,60 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     }
 
     /**
-     * Set the adxTableName property: The name of the Azure Data Explorer table.
+     * Set the adxTableName property: The name of the Azure Data Explorer table used for storing updates to properties
+     * of twins and relationships. Defaults to AdtPropertyEvents.
      *
      * @param adxTableName the adxTableName value to set.
      * @return the AzureDataExplorerConnectionProperties object itself.
      */
     public AzureDataExplorerConnectionProperties withAdxTableName(String adxTableName) {
         this.adxTableName = adxTableName;
+        return this;
+    }
+
+    /**
+     * Get the adxTwinLifecycleEventsTableName property: The name of the Azure Data Explorer table used for recording
+     * twin lifecycle events. The table will not be created if this property is left unspecified.
+     *
+     * @return the adxTwinLifecycleEventsTableName value.
+     */
+    public String adxTwinLifecycleEventsTableName() {
+        return this.adxTwinLifecycleEventsTableName;
+    }
+
+    /**
+     * Set the adxTwinLifecycleEventsTableName property: The name of the Azure Data Explorer table used for recording
+     * twin lifecycle events. The table will not be created if this property is left unspecified.
+     *
+     * @param adxTwinLifecycleEventsTableName the adxTwinLifecycleEventsTableName value to set.
+     * @return the AzureDataExplorerConnectionProperties object itself.
+     */
+    public AzureDataExplorerConnectionProperties withAdxTwinLifecycleEventsTableName(
+        String adxTwinLifecycleEventsTableName) {
+        this.adxTwinLifecycleEventsTableName = adxTwinLifecycleEventsTableName;
+        return this;
+    }
+
+    /**
+     * Get the adxRelationshipLifecycleEventsTableName property: The name of the Azure Data Explorer table used for
+     * recording relationship lifecycle events. The table will not be created if this property is left unspecified.
+     *
+     * @return the adxRelationshipLifecycleEventsTableName value.
+     */
+    public String adxRelationshipLifecycleEventsTableName() {
+        return this.adxRelationshipLifecycleEventsTableName;
+    }
+
+    /**
+     * Set the adxRelationshipLifecycleEventsTableName property: The name of the Azure Data Explorer table used for
+     * recording relationship lifecycle events. The table will not be created if this property is left unspecified.
+     *
+     * @param adxRelationshipLifecycleEventsTableName the adxRelationshipLifecycleEventsTableName value to set.
+     * @return the AzureDataExplorerConnectionProperties object itself.
+     */
+    public AzureDataExplorerConnectionProperties withAdxRelationshipLifecycleEventsTableName(
+        String adxRelationshipLifecycleEventsTableName) {
+        this.adxRelationshipLifecycleEventsTableName = adxRelationshipLifecycleEventsTableName;
         return this;
     }
 
@@ -236,6 +306,40 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     }
 
     /**
+     * Get the recordPropertyAndItemRemovals property: Specifies whether or not to record twin / relationship property
+     * and item removals, including removals of indexed or keyed values (such as map entries, array elements, etc.).
+     * This feature is de-activated unless explicitly set to 'true'. Setting this property to 'true' will generate an
+     * additional column in the property events table in ADX.
+     *
+     * @return the recordPropertyAndItemRemovals value.
+     */
+    public RecordPropertyAndItemRemovals recordPropertyAndItemRemovals() {
+        return this.recordPropertyAndItemRemovals;
+    }
+
+    /**
+     * Set the recordPropertyAndItemRemovals property: Specifies whether or not to record twin / relationship property
+     * and item removals, including removals of indexed or keyed values (such as map entries, array elements, etc.).
+     * This feature is de-activated unless explicitly set to 'true'. Setting this property to 'true' will generate an
+     * additional column in the property events table in ADX.
+     *
+     * @param recordPropertyAndItemRemovals the recordPropertyAndItemRemovals value to set.
+     * @return the AzureDataExplorerConnectionProperties object itself.
+     */
+    public AzureDataExplorerConnectionProperties withRecordPropertyAndItemRemovals(
+        RecordPropertyAndItemRemovals recordPropertyAndItemRemovals) {
+        this.recordPropertyAndItemRemovals = recordPropertyAndItemRemovals;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerConnectionProperties withIdentity(ManagedIdentityReference identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -244,42 +348,44 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     public void validate() {
         super.validate();
         if (adxResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property adxResourceId in model AzureDataExplorerConnectionProperties"));
         }
         if (adxEndpointUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property adxEndpointUri in model AzureDataExplorerConnectionProperties"));
         }
         if (adxDatabaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property adxDatabaseName in model AzureDataExplorerConnectionProperties"));
         }
         if (eventHubEndpointUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventHubEndpointUri in model"
                             + " AzureDataExplorerConnectionProperties"));
         }
         if (eventHubEntityPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventHubEntityPath in model AzureDataExplorerConnectionProperties"));
         }
         if (eventHubNamespaceResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventHubNamespaceResourceId in model"
                             + " AzureDataExplorerConnectionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDataExplorerConnectionProperties.class);
 }

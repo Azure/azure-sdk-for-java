@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.SoftwareUpdateConfigurationsClient;
 import com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigurationInner;
 import com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigurationListResultInner;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SoftwareUpdateConfigurationsClient. */
 public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpdateConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(SoftwareUpdateConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SoftwareUpdateConfigurationsService service;
 
@@ -144,7 +141,8 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return software update configuration properties.
+     * @return software update configuration properties along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SoftwareUpdateConfigurationInner>> createWithResponseAsync(
@@ -216,7 +214,8 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return software update configuration properties.
+     * @return software update configuration properties along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SoftwareUpdateConfigurationInner>> createWithResponseAsync(
@@ -285,7 +284,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return software update configuration properties.
+     * @return software update configuration properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SoftwareUpdateConfigurationInner> createAsync(
@@ -296,14 +295,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         String clientRequestId) {
         return createWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, parameters, clientRequestId)
-            .flatMap(
-                (Response<SoftwareUpdateConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -316,7 +308,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return software update configuration properties.
+     * @return software update configuration properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SoftwareUpdateConfigurationInner> createAsync(
@@ -327,14 +319,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         final String clientRequestId = null;
         return createWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, parameters, clientRequestId)
-            .flatMap(
-                (Response<SoftwareUpdateConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -373,7 +358,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return software update configuration properties.
+     * @return software update configuration properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SoftwareUpdateConfigurationInner> createWithResponse(
@@ -403,7 +388,8 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return a single software update configuration by name along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SoftwareUpdateConfigurationInner>> getByNameWithResponseAsync(
@@ -467,7 +453,8 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return a single software update configuration by name along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SoftwareUpdateConfigurationInner>> getByNameWithResponseAsync(
@@ -528,7 +515,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return a single software update configuration by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SoftwareUpdateConfigurationInner> getByNameAsync(
@@ -538,14 +525,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         String clientRequestId) {
         return getByNameWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId)
-            .flatMap(
-                (Response<SoftwareUpdateConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -557,7 +537,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return a single software update configuration by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SoftwareUpdateConfigurationInner> getByNameAsync(
@@ -565,14 +545,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         final String clientRequestId = null;
         return getByNameWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId)
-            .flatMap(
-                (Response<SoftwareUpdateConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -606,7 +579,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return a single software update configuration by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SoftwareUpdateConfigurationInner> getByNameWithResponse(
@@ -630,7 +603,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -694,7 +667,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -755,7 +728,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -765,7 +738,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         String clientRequestId) {
         return deleteWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -777,7 +750,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -785,7 +758,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         final String clientRequestId = null;
         return deleteWithResponseAsync(
                 resourceGroupName, automationAccountName, softwareUpdateConfigurationName, clientRequestId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -815,7 +788,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -839,7 +812,8 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account.
+     * @return all software update configurations for the account along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SoftwareUpdateConfigurationListResultInner>> listWithResponseAsync(
@@ -894,7 +868,8 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account.
+     * @return all software update configurations for the account along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SoftwareUpdateConfigurationListResultInner>> listWithResponseAsync(
@@ -949,20 +924,13 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account.
+     * @return all software update configurations for the account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SoftwareUpdateConfigurationListResultInner> listAsync(
         String resourceGroupName, String automationAccountName, String clientRequestId, String filter) {
         return listWithResponseAsync(resourceGroupName, automationAccountName, clientRequestId, filter)
-            .flatMap(
-                (Response<SoftwareUpdateConfigurationListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -973,7 +941,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account.
+     * @return all software update configurations for the account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SoftwareUpdateConfigurationListResultInner> listAsync(
@@ -981,14 +949,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
         final String clientRequestId = null;
         final String filter = null;
         return listWithResponseAsync(resourceGroupName, automationAccountName, clientRequestId, filter)
-            .flatMap(
-                (Response<SoftwareUpdateConfigurationListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1019,7 +980,7 @@ public final class SoftwareUpdateConfigurationsClientImpl implements SoftwareUpd
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account.
+     * @return all software update configurations for the account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SoftwareUpdateConfigurationListResultInner> listWithResponse(

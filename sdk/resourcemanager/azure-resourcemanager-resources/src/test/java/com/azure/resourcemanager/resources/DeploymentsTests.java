@@ -103,7 +103,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertNotNull(resourceGroup.exportTemplate(ResourceGroupExportTemplateOptions.INCLUDE_BOTH));
         // Deployment operations
         PagedIterable<DeploymentOperation> operations = deployment.deploymentOperations().list();
-        Assertions.assertEquals(5, TestUtilities.getSize(operations));
+        Assertions.assertEquals(3, TestUtilities.getSize(operations));
         DeploymentOperation op = deployment.deploymentOperations().getById(operations.iterator().next().operationId());
         Assertions.assertNotNull(op);
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
@@ -143,7 +143,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             .whatIf();
 
         Assertions.assertEquals("Succeeded", result.status());
-        Assertions.assertEquals(3, result.changes().size());
+        Assertions.assertEquals(1, result.changes().size());
 
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
     }
@@ -248,7 +248,7 @@ public class DeploymentsTests extends ResourceManagementTest {
     public void canDeployVirtualNetworkSyncPoll() throws Exception {
         final long defaultDelayInMillis = 10 * 1000;
 
-        final String dp = "dpD" + testId;
+        String dp = "dpD" + testId;
 
         // Begin create
         Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
@@ -277,6 +277,24 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         Deployment deployment = acceptedDeployment.getFinalResult();
         Assertions.assertEquals("Succeeded", deployment.provisioningState());
+
+        // with a new resource group
+        final String newRgName = generateRandomResourceName("rg", 10);
+        dp = generateRandomResourceName("dp", 10);
+        try {
+            acceptedDeployment = resourceClient.deployments()
+                .define(dp)
+                .withNewResourceGroup(resourceClient.resourceGroups().define(newRgName).withRegion(Region.US_EAST2))
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreate();
+
+            deployment = acceptedDeployment.getFinalResult();
+            Assertions.assertEquals("Succeeded", deployment.provisioningState());
+        } finally {
+            resourceClient.resourceGroups().beginDeleteByName(newRgName);
+        }
     }
 
     @Test
@@ -474,6 +492,28 @@ public class DeploymentsTests extends ResourceManagementTest {
             } catch (Exception e) {
                 // ignored
             }
+        }
+    }
+
+    @Test
+    public void canBeginCreateAsync() {
+        final String dpName = "dpA" + testId;
+        final String rgName = generateRandomResourceName("rg", 9);
+        ResourceGroup resourceGroup = resourceGroups.define(rgName).withRegion(Region.US_SOUTH_CENTRAL).create();
+        try {
+            resourceClient.deployments()
+                .define(dpName)
+                .withExistingResourceGroup(resourceGroup)
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreateAsync()
+                .block();
+
+            Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dpName);
+            Assertions.assertNotNull(deployment);
+        } finally {
+            resourceGroups.beginDeleteByName(rgName);
         }
     }
 }

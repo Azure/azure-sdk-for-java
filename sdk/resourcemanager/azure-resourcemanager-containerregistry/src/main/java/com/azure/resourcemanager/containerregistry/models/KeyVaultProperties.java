@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The KeyVaultProperties model. */
 @Fluent
 public final class KeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
-
     /*
      * Key vault uri to access the encryption key.
      */
@@ -22,8 +18,7 @@ public final class KeyVaultProperties {
     private String keyIdentifier;
 
     /*
-     * The fully qualified key identifier that includes the version of the key
-     * that is actually used for encryption.
+     * The fully qualified key identifier that includes the version of the key that is actually used for encryption.
      */
     @JsonProperty(value = "versionedKeyIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String versionedKeyIdentifier;
@@ -45,6 +40,10 @@ public final class KeyVaultProperties {
      */
     @JsonProperty(value = "lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastKeyRotationTimestamp;
+
+    /** Creates an instance of KeyVaultProperties class. */
+    public KeyVaultProperties() {
+    }
 
     /**
      * Get the keyIdentifier property: Key vault uri to access the encryption key.

@@ -16,10 +16,9 @@ import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfiguration;
 import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurations;
 import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurationsCheckNameRequest;
 import com.azure.resourcemanager.kusto.models.CheckNameResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabaseConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachedDatabaseConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AttachedDatabaseConfigurationsImpl.class);
 
     private final AttachedDatabaseConfigurationsClient innerClient;
 
@@ -29,17 +28,6 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         AttachedDatabaseConfigurationsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
@@ -62,6 +50,17 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         }
     }
 
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<AttachedDatabaseConfigurationInner> inner =
             this.serviceClient().listByCluster(resourceGroupName, clusterName);
@@ -73,17 +72,6 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         PagedIterable<AttachedDatabaseConfigurationInner> inner =
             this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
-    }
-
-    public AttachedDatabaseConfiguration get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        AttachedDatabaseConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
-        if (inner != null) {
-            return new AttachedDatabaseConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AttachedDatabaseConfiguration> getWithResponse(
@@ -103,6 +91,17 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         }
     }
 
+    public AttachedDatabaseConfiguration get(
+        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+        AttachedDatabaseConfigurationInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
+        if (inner != null) {
+            return new AttachedDatabaseConfigurationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
         this.serviceClient().delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
     }
@@ -115,7 +114,7 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
     public AttachedDatabaseConfiguration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -123,14 +122,14 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,7 +146,7 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
     public Response<AttachedDatabaseConfiguration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,14 +154,14 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,7 +176,7 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -185,14 +184,14 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,7 +206,7 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -215,14 +214,14 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

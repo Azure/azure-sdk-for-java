@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SharingState. */
+/**
+ * The sharing state of the gallery.
+ *
+ * <p>The sharing state of the gallery, which only appears in the response.
+ */
 public final class SharingState extends ExpandableStringEnum<SharingState> {
     /** Static value Succeeded for SharingState. */
     public static final SharingState SUCCEEDED = fromString("Succeeded");
@@ -23,6 +27,15 @@ public final class SharingState extends ExpandableStringEnum<SharingState> {
     public static final SharingState UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of SharingState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SharingState() {
+    }
+
+    /**
      * Creates or finds a SharingState from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +46,11 @@ public final class SharingState extends ExpandableStringEnum<SharingState> {
         return fromString(name, SharingState.class);
     }
 
-    /** @return known SharingState values. */
+    /**
+     * Gets known SharingState values.
+     *
+     * @return known SharingState values.
+     */
     public static Collection<SharingState> values() {
         return values(SharingState.class);
     }

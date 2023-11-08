@@ -10,6 +10,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -73,7 +74,11 @@ public class ReceiveNamedSessionAsyncSample {
         // If the session is successfully accepted, begin receiving messages from it.
         // Flux.usingWhen is used to dispose of the receiver after consuming messages completes.
         Disposable subscription = Flux.usingWhen(receiverMono,
-            receiver -> receiver.receiveMessages(),
+            receiver -> {
+                // Customize session state if needed.
+                receiver.setSessionState("new".getBytes(StandardCharsets.UTF_8));
+                return receiver.receiveMessages();
+            },
             receiver -> Mono.fromRunnable(() -> receiver.close()))
             .subscribe(message -> {
                 // Process message.

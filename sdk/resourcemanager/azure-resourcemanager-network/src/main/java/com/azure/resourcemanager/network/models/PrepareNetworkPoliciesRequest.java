@@ -23,6 +23,10 @@ public final class PrepareNetworkPoliciesRequest {
     @JsonProperty(value = "networkIntentPolicyConfigurations")
     private List<NetworkIntentPolicyConfiguration> networkIntentPolicyConfigurations;
 
+    /** Creates an instance of PrepareNetworkPoliciesRequest class. */
+    public PrepareNetworkPoliciesRequest() {
+    }
+
     /**
      * Get the serviceName property: The name of the service for which subnet is being prepared for.
      *

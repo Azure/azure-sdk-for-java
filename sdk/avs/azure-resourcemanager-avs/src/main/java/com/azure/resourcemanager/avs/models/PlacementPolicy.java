@@ -39,6 +39,13 @@ public interface PlacementPolicy {
     PlacementPolicyProperties properties();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.PlacementPolicyInner object.
      *
      * @return the inner object.
@@ -49,11 +56,13 @@ public interface PlacementPolicy {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The PlacementPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the PlacementPolicy definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the PlacementPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -66,6 +75,7 @@ public interface PlacementPolicy {
              */
             WithCreate withExistingCluster(String resourceGroupName, String privateCloudName, String clusterName);
         }
+
         /**
          * The stage of the PlacementPolicy definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -86,6 +96,7 @@ public interface PlacementPolicy {
              */
             PlacementPolicy create(Context context);
         }
+
         /** The stage of the PlacementPolicy definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -97,6 +108,7 @@ public interface PlacementPolicy {
             WithCreate withProperties(PlacementPolicyProperties properties);
         }
     }
+
     /**
      * Begins update for the PlacementPolicy resource.
      *
@@ -105,7 +117,12 @@ public interface PlacementPolicy {
     PlacementPolicy.Update update();
 
     /** The template for PlacementPolicy update. */
-    interface Update extends UpdateStages.WithState, UpdateStages.WithVmMembers, UpdateStages.WithHostMembers {
+    interface Update
+        extends UpdateStages.WithState,
+            UpdateStages.WithVmMembers,
+            UpdateStages.WithHostMembers,
+            UpdateStages.WithAffinityStrength,
+            UpdateStages.WithAzureHybridBenefitType {
         /**
          * Executes the update request.
          *
@@ -121,6 +138,7 @@ public interface PlacementPolicy {
          */
         PlacementPolicy apply(Context context);
     }
+
     /** The PlacementPolicy update stages. */
     interface UpdateStages {
         /** The stage of the PlacementPolicy update allowing to specify state. */
@@ -133,6 +151,7 @@ public interface PlacementPolicy {
              */
             Update withState(PlacementPolicyState state);
         }
+
         /** The stage of the PlacementPolicy update allowing to specify vmMembers. */
         interface WithVmMembers {
             /**
@@ -143,6 +162,7 @@ public interface PlacementPolicy {
              */
             Update withVmMembers(List<String> vmMembers);
         }
+
         /** The stage of the PlacementPolicy update allowing to specify hostMembers. */
         interface WithHostMembers {
             /**
@@ -153,7 +173,30 @@ public interface PlacementPolicy {
              */
             Update withHostMembers(List<String> hostMembers);
         }
+
+        /** The stage of the PlacementPolicy update allowing to specify affinityStrength. */
+        interface WithAffinityStrength {
+            /**
+             * Specifies the affinityStrength property: vm-host placement policy affinity strength (should/must).
+             *
+             * @param affinityStrength vm-host placement policy affinity strength (should/must).
+             * @return the next definition stage.
+             */
+            Update withAffinityStrength(AffinityStrength affinityStrength);
+        }
+
+        /** The stage of the PlacementPolicy update allowing to specify azureHybridBenefitType. */
+        interface WithAzureHybridBenefitType {
+            /**
+             * Specifies the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
+             *
+             * @param azureHybridBenefitType placement policy azure hybrid benefit opt-in type.
+             * @return the next definition stage.
+             */
+            Update withAzureHybridBenefitType(AzureHybridBenefitType azureHybridBenefitType);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

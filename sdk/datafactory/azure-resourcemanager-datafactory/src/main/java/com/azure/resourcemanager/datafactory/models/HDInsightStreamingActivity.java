@@ -25,6 +25,10 @@ public final class HDInsightStreamingActivity extends ExecutionActivity {
     private HDInsightStreamingActivityTypeProperties innerTypeProperties =
         new HDInsightStreamingActivityTypeProperties();
 
+    /** Creates an instance of HDInsightStreamingActivity class. */
+    public HDInsightStreamingActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight streaming activity properties.
      *
@@ -59,6 +63,20 @@ public final class HDInsightStreamingActivity extends ExecutionActivity {
     @Override
     public HDInsightStreamingActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightStreamingActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightStreamingActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

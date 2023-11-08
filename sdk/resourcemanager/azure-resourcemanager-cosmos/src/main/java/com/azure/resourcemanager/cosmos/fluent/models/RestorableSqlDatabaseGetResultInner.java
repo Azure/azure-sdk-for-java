@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.RestorableSqlDatabasePropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Azure Cosmos DB SQL database event. */
 @Fluent
 public final class RestorableSqlDatabaseGetResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableSqlDatabaseGetResultInner.class);
-
     /*
      * The properties of a SQL database event.
      */
@@ -38,6 +34,10 @@ public final class RestorableSqlDatabaseGetResultInner {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of RestorableSqlDatabaseGetResultInner class. */
+    public RestorableSqlDatabaseGetResultInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a SQL database event.

@@ -15,8 +15,10 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in ResourceNamesClient. */
 public interface ResourceNamesClient {
     /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * Checks resource name validity
+     *
+     * <p>A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start
+     * with a reserved word.
      *
      * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,22 +32,10 @@ public interface ResourceNamesClient {
         ResourceName resourceNameDefinition);
 
     /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * Checks resource name validity
      *
-     * @param resourceNameDefinition Resource object with values for resource name and resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckResourceNameResultInner> checkResourceNameAsync(ResourceName resourceNameDefinition);
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * <p>A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start
+     * with a reserved word.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -56,20 +46,10 @@ public interface ResourceNamesClient {
     Mono<CheckResourceNameResultInner> checkResourceNameAsync();
 
     /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * Checks resource name validity
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckResourceNameResultInner checkResourceName();
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * <p>A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start
+     * with a reserved word.
      *
      * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @param context The context to associate with this operation.
@@ -82,4 +62,18 @@ public interface ResourceNamesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CheckResourceNameResultInner> checkResourceNameWithResponse(
         ResourceName resourceNameDefinition, Context context);
+
+    /**
+     * Checks resource name validity
+     *
+     * <p>A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start
+     * with a reserved word.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
+     *     reserved word.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckResourceNameResultInner checkResourceName();
 }

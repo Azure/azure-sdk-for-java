@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeNodeRequest;
 
 /** Samples for IntegrationRuntimeNodes Update. */
@@ -26,6 +25,6 @@ public final class IntegrationRuntimeNodesUpdateSamples {
                 "exampleIntegrationRuntime",
                 "Node_1",
                 new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(2),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

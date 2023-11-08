@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.compute.models.CopyCompletionError;
 import com.azure.resourcemanager.compute.models.CreationData;
 import com.azure.resourcemanager.compute.models.DataAccessAuthMode;
 import com.azure.resourcemanager.compute.models.DiskSecurityProfile;
@@ -34,17 +35,14 @@ public final class SnapshotInner extends Resource {
     private String managedBy;
 
     /*
-     * The snapshots sku name. Can be Standard_LRS, Premium_LRS, or
-     * Standard_ZRS. This is an optional parameter for incremental snapshot and
-     * the default behavior is the SKU will be set to the same sku as the
-     * previous snapshot
+     * The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an optional parameter for
+     * incremental snapshot and the default behavior is the SKU will be set to the same sku as the previous snapshot
      */
     @JsonProperty(value = "sku")
     private SnapshotSku sku;
 
     /*
-     * The extended location where the snapshot will be created. Extended
-     * location cannot be changed.
+     * The extended location where the snapshot will be created. Extended location cannot be changed.
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
@@ -54,6 +52,10 @@ public final class SnapshotInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
+
+    /** Creates an instance of SnapshotInner class. */
+    public SnapshotInner() {
+    }
 
     /**
      * Get the managedBy property: Unused. Always Null.
@@ -379,6 +381,16 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
+     * Get the incrementalSnapshotFamilyId property: Incremental snapshots for a disk share an incremental snapshot
+     * family id. The Get Page Range Diff API can only be called on incremental snapshots with the same family id.
+     *
+     * @return the incrementalSnapshotFamilyId value.
+     */
+    public String incrementalSnapshotFamilyId() {
+        return this.innerProperties() == null ? null : this.innerProperties().incrementalSnapshotFamilyId();
+    }
+
+    /**
      * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
      * or platform managed keys.
      *
@@ -540,6 +552,31 @@ public final class SnapshotInner extends Resource {
             this.innerProperties = new SnapshotProperties();
         }
         this.innerProperties().withCompletionPercent(completionPercent);
+        return this;
+    }
+
+    /**
+     * Get the copyCompletionError property: Indicates the error details if the background copy of a resource created
+     * via the CopyStart operation fails.
+     *
+     * @return the copyCompletionError value.
+     */
+    public CopyCompletionError copyCompletionError() {
+        return this.innerProperties() == null ? null : this.innerProperties().copyCompletionError();
+    }
+
+    /**
+     * Set the copyCompletionError property: Indicates the error details if the background copy of a resource created
+     * via the CopyStart operation fails.
+     *
+     * @param copyCompletionError the copyCompletionError value to set.
+     * @return the SnapshotInner object itself.
+     */
+    public SnapshotInner withCopyCompletionError(CopyCompletionError copyCompletionError) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotProperties();
+        }
+        this.innerProperties().withCopyCompletionError(copyCompletionError);
         return this;
     }
 

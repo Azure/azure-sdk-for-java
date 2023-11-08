@@ -7,15 +7,12 @@ package com.azure.resourcemanager.storagepool.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.fluent.models.DiskPoolInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of Disk Pools. */
 @Fluent
 public final class DiskPoolListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolListResult.class);
-
     /*
      * An array of Disk pool objects.
      */
@@ -27,6 +24,10 @@ public final class DiskPoolListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of DiskPoolListResult class. */
+    public DiskPoolListResult() {
+    }
 
     /**
      * Get the value property: An array of Disk pool objects.
@@ -64,11 +65,13 @@ public final class DiskPoolListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model DiskPoolListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiskPoolListResult.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The maximum size range capability. */
 @Fluent
 public final class MaxSizeRangeCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaxSizeRangeCapability.class);
-
     /*
      * Minimum value.
      */
@@ -27,8 +23,7 @@ public final class MaxSizeRangeCapability {
     private MaxSizeCapability maxValue;
 
     /*
-     * Scale/step size for discrete values between the minimum value and the
-     * maximum value.
+     * Scale/step size for discrete values between the minimum value and the maximum value.
      */
     @JsonProperty(value = "scaleSize", access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeCapability scaleSize;
@@ -50,6 +45,10 @@ public final class MaxSizeRangeCapability {
      */
     @JsonProperty(value = "reason")
     private String reason;
+
+    /** Creates an instance of MaxSizeRangeCapability class. */
+    public MaxSizeRangeCapability() {
+    }
 
     /**
      * Get the minValue property: Minimum value.

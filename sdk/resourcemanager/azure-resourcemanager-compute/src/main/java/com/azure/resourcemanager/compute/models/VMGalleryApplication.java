@@ -31,11 +31,28 @@ public final class VMGalleryApplication {
     private String packageReferenceId;
 
     /*
-     * Optional, Specifies the uri to an azure blob that will replace the
-     * default configuration for the package if provided
+     * Optional, Specifies the uri to an azure blob that will replace the default configuration for the package if
+     * provided
      */
     @JsonProperty(value = "configurationReference")
     private String configurationReference;
+
+    /*
+     * Optional, If true, any failure for any operation in the VmApplication will fail the deployment
+     */
+    @JsonProperty(value = "treatFailureAsDeploymentFailure")
+    private Boolean treatFailureAsDeploymentFailure;
+
+    /*
+     * If set to true, when a new Gallery Application version is available in PIR/SIG, it will be automatically updated
+     * for the VM/VMSS
+     */
+    @JsonProperty(value = "enableAutomaticUpgrade")
+    private Boolean enableAutomaticUpgrade;
+
+    /** Creates an instance of VMGalleryApplication class. */
+    public VMGalleryApplication() {
+    }
 
     /**
      * Get the tags property: Optional, Specifies a passthrough value for more generic context.
@@ -118,6 +135,50 @@ public final class VMGalleryApplication {
      */
     public VMGalleryApplication withConfigurationReference(String configurationReference) {
         this.configurationReference = configurationReference;
+        return this;
+    }
+
+    /**
+     * Get the treatFailureAsDeploymentFailure property: Optional, If true, any failure for any operation in the
+     * VmApplication will fail the deployment.
+     *
+     * @return the treatFailureAsDeploymentFailure value.
+     */
+    public Boolean treatFailureAsDeploymentFailure() {
+        return this.treatFailureAsDeploymentFailure;
+    }
+
+    /**
+     * Set the treatFailureAsDeploymentFailure property: Optional, If true, any failure for any operation in the
+     * VmApplication will fail the deployment.
+     *
+     * @param treatFailureAsDeploymentFailure the treatFailureAsDeploymentFailure value to set.
+     * @return the VMGalleryApplication object itself.
+     */
+    public VMGalleryApplication withTreatFailureAsDeploymentFailure(Boolean treatFailureAsDeploymentFailure) {
+        this.treatFailureAsDeploymentFailure = treatFailureAsDeploymentFailure;
+        return this;
+    }
+
+    /**
+     * Get the enableAutomaticUpgrade property: If set to true, when a new Gallery Application version is available in
+     * PIR/SIG, it will be automatically updated for the VM/VMSS.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    public Boolean enableAutomaticUpgrade() {
+        return this.enableAutomaticUpgrade;
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: If set to true, when a new Gallery Application version is available in
+     * PIR/SIG, it will be automatically updated for the VM/VMSS.
+     *
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the VMGalleryApplication object itself.
+     */
+    public VMGalleryApplication withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.enableAutomaticUpgrade = enableAutomaticUpgrade;
         return this;
     }
 

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImportSource model. */
 @Fluent
 public final class ImportSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportSource.class);
-
     /*
      * The resource identifier of the source Azure Container Registry.
      */
@@ -137,9 +134,11 @@ public final class ImportSource {
             credentials().validate();
         }
         if (sourceImage() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sourceImage in model ImportSource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImportSource.class);
 }

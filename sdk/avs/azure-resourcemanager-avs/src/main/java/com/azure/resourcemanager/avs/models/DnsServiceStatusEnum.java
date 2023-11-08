@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DnsServiceStatusEnum. */
+/** DNS Service status. */
 public final class DnsServiceStatusEnum extends ExpandableStringEnum<DnsServiceStatusEnum> {
     /** Static value SUCCESS for DnsServiceStatusEnum. */
     public static final DnsServiceStatusEnum SUCCESS = fromString("SUCCESS");
 
     /** Static value FAILURE for DnsServiceStatusEnum. */
     public static final DnsServiceStatusEnum FAILURE = fromString("FAILURE");
+
+    /**
+     * Creates a new instance of DnsServiceStatusEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DnsServiceStatusEnum() {
+    }
 
     /**
      * Creates or finds a DnsServiceStatusEnum from its string representation.
@@ -27,7 +36,11 @@ public final class DnsServiceStatusEnum extends ExpandableStringEnum<DnsServiceS
         return fromString(name, DnsServiceStatusEnum.class);
     }
 
-    /** @return known DnsServiceStatusEnum values. */
+    /**
+     * Gets known DnsServiceStatusEnum values.
+     *
+     * @return known DnsServiceStatusEnum values.
+     */
     public static Collection<DnsServiceStatusEnum> values() {
         return values(DnsServiceStatusEnum.class);
     }

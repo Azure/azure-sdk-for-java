@@ -42,6 +42,7 @@ import com.azure.resourcemanager.redis.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.redis.models.ExportRdbParameters;
 import com.azure.resourcemanager.redis.models.ImportRdbParameters;
 import com.azure.resourcemanager.redis.models.NotificationListResponse;
+import com.azure.resourcemanager.redis.models.OperationStatusResult;
 import com.azure.resourcemanager.redis.models.RedisCreateParameters;
 import com.azure.resourcemanager.redis.models.RedisListResult;
 import com.azure.resourcemanager.redis.models.RedisRebootParameters;
@@ -82,7 +83,7 @@ public final class RedisClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "RedisManagementClien")
-    private interface RedisService {
+    public interface RedisService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Cache/CheckNameAvailability")
         @ExpectedResponses({200})
@@ -97,8 +98,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/listUpgradeNotifications")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/listUpgradeNotifications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationListResponse>> listUpgradeNotifications(
@@ -129,9 +129,9 @@ public final class RedisClientImpl
         @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisResourceInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -194,8 +194,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/listKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisAccessKeysInner>> listKeys(
@@ -209,8 +208,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/regenerateKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/regenerateKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisAccessKeysInner>> regenerateKey(
@@ -225,8 +223,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/forceReboot")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/forceReboot")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisForceRebootResponseInner>> forceReboot(
@@ -241,8 +238,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/import")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/import")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> importData(
@@ -257,8 +253,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/export")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/export")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> exportData(
@@ -268,6 +263,20 @@ public final class RedisClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ExportRdbParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/flush")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> flushCache(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cacheName") String cacheName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -401,21 +410,7 @@ public final class RedisClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> checkNameAvailabilityAsync(CheckNameAvailabilityParameters parameters) {
-        return checkNameAvailabilityWithResponseAsync(parameters).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Checks that the redis cache name is valid and is not already in use.
-     *
-     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource
-     *     type is 'Microsoft.Cache/redis'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkNameAvailability(CheckNameAvailabilityParameters parameters) {
-        checkNameAvailabilityAsync(parameters).block();
+        return checkNameAvailabilityWithResponseAsync(parameters).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -436,9 +431,23 @@ public final class RedisClientImpl
     }
 
     /**
+     * Checks that the redis cache name is valid and is not already in use.
+     *
+     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource
+     *     type is 'Microsoft.Cache/redis'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void checkNameAvailability(CheckNameAvailabilityParameters parameters) {
+        checkNameAvailabilityWithResponse(parameters, Context.NONE);
+    }
+
+    /**
      * Gets any upgrade notifications for a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param history how many minutes in past to look for upgrade notifications.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -498,7 +507,7 @@ public final class RedisClientImpl
     /**
      * Gets any upgrade notifications for a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param history how many minutes in past to look for upgrade notifications.
      * @param context The context to associate with this operation.
@@ -556,7 +565,7 @@ public final class RedisClientImpl
     /**
      * Gets any upgrade notifications for a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param history how many minutes in past to look for upgrade notifications.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -575,7 +584,7 @@ public final class RedisClientImpl
     /**
      * Gets any upgrade notifications for a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param history how many minutes in past to look for upgrade notifications.
      * @param context The context to associate with this operation.
@@ -595,7 +604,7 @@ public final class RedisClientImpl
     /**
      * Gets any upgrade notifications for a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param history how many minutes in past to look for upgrade notifications.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -612,7 +621,7 @@ public final class RedisClientImpl
     /**
      * Gets any upgrade notifications for a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param history how many minutes in past to look for upgrade notifications.
      * @param context The context to associate with this operation.
@@ -630,7 +639,7 @@ public final class RedisClientImpl
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -686,7 +695,7 @@ public final class RedisClientImpl
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @param context The context to associate with this operation.
@@ -740,7 +749,7 @@ public final class RedisClientImpl
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -765,7 +774,7 @@ public final class RedisClientImpl
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @param context The context to associate with this operation.
@@ -788,7 +797,7 @@ public final class RedisClientImpl
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -799,13 +808,13 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginCreate(
         String resourceGroupName, String name, RedisCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, name, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @param context The context to associate with this operation.
@@ -817,13 +826,13 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginCreate(
         String resourceGroupName, String name, RedisCreateParameters parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -842,7 +851,7 @@ public final class RedisClientImpl
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @param context The context to associate with this operation.
@@ -862,7 +871,7 @@ public final class RedisClientImpl
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -878,7 +887,7 @@ public final class RedisClientImpl
     /**
      * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Create Redis operation.
      * @param context The context to associate with this operation.
@@ -896,7 +905,7 @@ public final class RedisClientImpl
     /**
      * Update an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Update Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -906,7 +915,7 @@ public final class RedisClientImpl
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisResourceInner>> updateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String name, RedisUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -952,7 +961,7 @@ public final class RedisClientImpl
     /**
      * Update an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Update Redis operation.
      * @param context The context to associate with this operation.
@@ -963,7 +972,7 @@ public final class RedisClientImpl
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RedisResourceInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String name, RedisUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1006,7 +1015,90 @@ public final class RedisClientImpl
     /**
      * Update an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a single Redis item in List or Get Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<RedisResourceInner>, RedisResourceInner> beginUpdateAsync(
+        String resourceGroupName, String name, RedisUpdateParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, name, parameters);
+        return this
+            .client
+            .<RedisResourceInner, RedisResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                RedisResourceInner.class,
+                RedisResourceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Update an existing Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a single Redis item in List or Get Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<RedisResourceInner>, RedisResourceInner> beginUpdateAsync(
+        String resourceGroupName, String name, RedisUpdateParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, name, parameters, context);
+        return this
+            .client
+            .<RedisResourceInner, RedisResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RedisResourceInner.class, RedisResourceInner.class, context);
+    }
+
+    /**
+     * Update an existing Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a single Redis item in List or Get Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginUpdate(
+        String resourceGroupName, String name, RedisUpdateParameters parameters) {
+        return this.beginUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
+    }
+
+    /**
+     * Update an existing Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a single Redis item in List or Get Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginUpdate(
+        String resourceGroupName, String name, RedisUpdateParameters parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Update an existing Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Update Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1017,21 +1109,35 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisResourceInner> updateAsync(
         String resourceGroupName, String name, RedisUpdateParameters parameters) {
-        return updateWithResponseAsync(resourceGroupName, name, parameters)
-            .flatMap(
-                (Response<RedisResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAsync(resourceGroupName, name, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single Redis item in List or Get Operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RedisResourceInner> updateAsync(
+        String resourceGroupName, String name, RedisUpdateParameters parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, name, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update an existing Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Update Redis operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1047,25 +1153,25 @@ public final class RedisClientImpl
     /**
      * Update an existing Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters supplied to the Update Redis operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single Redis item in List or Get Operation along with {@link Response}.
+     * @return a single Redis item in List or Get Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RedisResourceInner> updateWithResponse(
+    public RedisResourceInner update(
         String resourceGroupName, String name, RedisUpdateParameters parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, name, parameters, context).block();
+        return updateAsync(resourceGroupName, name, parameters, context).block();
     }
 
     /**
      * Deletes a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1112,7 +1218,7 @@ public final class RedisClientImpl
     /**
      * Deletes a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1158,7 +1264,7 @@ public final class RedisClientImpl
     /**
      * Deletes a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1177,7 +1283,7 @@ public final class RedisClientImpl
     /**
      * Deletes a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1198,7 +1304,7 @@ public final class RedisClientImpl
     /**
      * Deletes a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1207,13 +1313,13 @@ public final class RedisClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
-        return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
 
     /**
      * Deletes a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1223,13 +1329,13 @@ public final class RedisClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
     /**
      * Deletes a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1244,7 +1350,7 @@ public final class RedisClientImpl
     /**
      * Deletes a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1260,7 +1366,7 @@ public final class RedisClientImpl
     /**
      * Deletes a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1274,7 +1380,7 @@ public final class RedisClientImpl
     /**
      * Deletes a Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1289,7 +1395,7 @@ public final class RedisClientImpl
     /**
      * Gets a Redis cache (resource description).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1338,7 +1444,7 @@ public final class RedisClientImpl
     /**
      * Gets a Redis cache (resource description).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1385,7 +1491,7 @@ public final class RedisClientImpl
     /**
      * Gets a Redis cache (resource description).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1395,35 +1501,13 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<RedisResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Redis cache (resource description).
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Redis cache (resource description).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisResourceInner getByResourceGroup(String resourceGroupName, String name) {
-        return getByResourceGroupAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Gets a Redis cache (resource description).
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1438,9 +1522,24 @@ public final class RedisClientImpl
     }
 
     /**
+     * Gets a Redis cache (resource description).
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Redis cache (resource description).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RedisResourceInner getByResourceGroup(String resourceGroupName, String name) {
+        return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
      * Lists all Redis caches in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1492,7 +1591,7 @@ public final class RedisClientImpl
     /**
      * Lists all Redis caches in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1543,7 +1642,7 @@ public final class RedisClientImpl
     /**
      * Lists all Redis caches in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1559,7 +1658,7 @@ public final class RedisClientImpl
     /**
      * Lists all Redis caches in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1576,7 +1675,7 @@ public final class RedisClientImpl
     /**
      * Lists all Redis caches in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1590,7 +1689,7 @@ public final class RedisClientImpl
     /**
      * Lists all Redis caches in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1748,7 +1847,7 @@ public final class RedisClientImpl
     /**
      * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1795,7 +1894,7 @@ public final class RedisClientImpl
     /**
      * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1841,7 +1940,7 @@ public final class RedisClientImpl
     /**
      * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1850,36 +1949,13 @@ public final class RedisClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisAccessKeysInner> listKeysAsync(String resourceGroupName, String name) {
-        return listKeysWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<RedisAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listKeysWithResponseAsync(resourceGroupName, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisAccessKeysInner listKeys(String resourceGroupName, String name) {
-        return listKeysAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1893,9 +1969,24 @@ public final class RedisClientImpl
     }
 
     /**
+     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return redis cache access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RedisAccessKeysInner listKeys(String resourceGroupName, String name) {
+        return listKeysWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
      * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1950,7 +2041,7 @@ public final class RedisClientImpl
     /**
      * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
@@ -2003,7 +2094,7 @@ public final class RedisClientImpl
     /**
      * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2015,37 +2106,13 @@ public final class RedisClientImpl
     public Mono<RedisAccessKeysInner> regenerateKeyAsync(
         String resourceGroupName, String name, RedisRegenerateKeyParameters parameters) {
         return regenerateKeyWithResponseAsync(resourceGroupName, name, parameters)
-            .flatMap(
-                (Response<RedisAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Specifies which key to regenerate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return redis cache access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisAccessKeysInner regenerateKey(
-        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters) {
-        return regenerateKeyAsync(resourceGroupName, name, parameters).block();
-    }
-
-    /**
-     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
@@ -2061,10 +2128,27 @@ public final class RedisClientImpl
     }
 
     /**
+     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Redis cache.
+     * @param parameters Specifies which key to regenerate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return redis cache access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RedisAccessKeysInner regenerateKey(
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters) {
+        return regenerateKeyWithResponse(resourceGroupName, name, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
      * potential data loss.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Specifies which Redis node(s) to reboot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2121,7 +2205,7 @@ public final class RedisClientImpl
      * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
      * potential data loss.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Specifies which Redis node(s) to reboot.
      * @param context The context to associate with this operation.
@@ -2176,7 +2260,7 @@ public final class RedisClientImpl
      * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
      * potential data loss.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Specifies which Redis node(s) to reboot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2188,39 +2272,14 @@ public final class RedisClientImpl
     public Mono<RedisForceRebootResponseInner> forceRebootAsync(
         String resourceGroupName, String name, RedisRebootParameters parameters) {
         return forceRebootWithResponseAsync(resourceGroupName, name, parameters)
-            .flatMap(
-                (Response<RedisForceRebootResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
      * potential data loss.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param parameters Specifies which Redis node(s) to reboot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to force reboot for Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisForceRebootResponseInner forceReboot(
-        String resourceGroupName, String name, RedisRebootParameters parameters) {
-        return forceRebootAsync(resourceGroupName, name, parameters).block();
-    }
-
-    /**
-     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
-     * potential data loss.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Specifies which Redis node(s) to reboot.
      * @param context The context to associate with this operation.
@@ -2236,9 +2295,27 @@ public final class RedisClientImpl
     }
 
     /**
+     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
+     * potential data loss.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Redis cache.
+     * @param parameters Specifies which Redis node(s) to reboot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response to force reboot for Redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RedisForceRebootResponseInner forceReboot(
+        String resourceGroupName, String name, RedisRebootParameters parameters) {
+        return forceRebootWithResponse(resourceGroupName, name, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Import data into Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2293,7 +2370,7 @@ public final class RedisClientImpl
     /**
      * Import data into Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @param context The context to associate with this operation.
@@ -2346,7 +2423,7 @@ public final class RedisClientImpl
     /**
      * Import data into Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2367,7 +2444,7 @@ public final class RedisClientImpl
     /**
      * Import data into Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @param context The context to associate with this operation.
@@ -2390,7 +2467,7 @@ public final class RedisClientImpl
     /**
      * Import data into Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2401,13 +2478,13 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportData(
         String resourceGroupName, String name, ImportRdbParameters parameters) {
-        return beginImportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
+        return this.beginImportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
      * Import data into Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @param context The context to associate with this operation.
@@ -2419,13 +2496,13 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportData(
         String resourceGroupName, String name, ImportRdbParameters parameters, Context context) {
-        return beginImportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
+        return this.beginImportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**
      * Import data into Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2443,7 +2520,7 @@ public final class RedisClientImpl
     /**
      * Import data into Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @param context The context to associate with this operation.
@@ -2463,7 +2540,7 @@ public final class RedisClientImpl
     /**
      * Import data into Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2478,7 +2555,7 @@ public final class RedisClientImpl
     /**
      * Import data into Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis import operation.
      * @param context The context to associate with this operation.
@@ -2494,7 +2571,7 @@ public final class RedisClientImpl
     /**
      * Export data from the redis cache to blobs in a container.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2549,7 +2626,7 @@ public final class RedisClientImpl
     /**
      * Export data from the redis cache to blobs in a container.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @param context The context to associate with this operation.
@@ -2602,7 +2679,7 @@ public final class RedisClientImpl
     /**
      * Export data from the redis cache to blobs in a container.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2623,7 +2700,7 @@ public final class RedisClientImpl
     /**
      * Export data from the redis cache to blobs in a container.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @param context The context to associate with this operation.
@@ -2646,7 +2723,7 @@ public final class RedisClientImpl
     /**
      * Export data from the redis cache to blobs in a container.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2657,13 +2734,13 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportData(
         String resourceGroupName, String name, ExportRdbParameters parameters) {
-        return beginExportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
+        return this.beginExportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
      * Export data from the redis cache to blobs in a container.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @param context The context to associate with this operation.
@@ -2675,13 +2752,13 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportData(
         String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
-        return beginExportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
+        return this.beginExportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**
      * Export data from the redis cache to blobs in a container.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2699,7 +2776,7 @@ public final class RedisClientImpl
     /**
      * Export data from the redis cache to blobs in a container.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @param context The context to associate with this operation.
@@ -2719,7 +2796,7 @@ public final class RedisClientImpl
     /**
      * Export data from the redis cache to blobs in a container.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2734,7 +2811,7 @@ public final class RedisClientImpl
     /**
      * Export data from the redis cache to blobs in a container.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param parameters Parameters for Redis export operation.
      * @param context The context to associate with this operation.
@@ -2748,9 +2825,248 @@ public final class RedisClientImpl
     }
 
     /**
+     * Deletes all of the keys in a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> flushCacheWithResponseAsync(String resourceGroupName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .flushCache(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            cacheName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes all of the keys in a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> flushCacheWithResponseAsync(
+        String resourceGroupName, String cacheName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .flushCache(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                cacheName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
+    }
+
+    /**
+     * Deletes all of the keys in a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<OperationStatusResult>, OperationStatusResult> beginFlushCacheAsync(
+        String resourceGroupName, String cacheName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = flushCacheWithResponseAsync(resourceGroupName, cacheName);
+        return this
+            .client
+            .<OperationStatusResult, OperationStatusResult>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResult.class,
+                OperationStatusResult.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Deletes all of the keys in a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResult>, OperationStatusResult> beginFlushCacheAsync(
+        String resourceGroupName, String cacheName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = flushCacheWithResponseAsync(resourceGroupName, cacheName, context);
+        return this
+            .client
+            .<OperationStatusResult, OperationStatusResult>getLroResult(
+                mono, this.client.getHttpPipeline(), OperationStatusResult.class, OperationStatusResult.class, context);
+    }
+
+    /**
+     * Deletes all of the keys in a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginFlushCache(
+        String resourceGroupName, String cacheName) {
+        return this.beginFlushCacheAsync(resourceGroupName, cacheName).getSyncPoller();
+    }
+
+    /**
+     * Deletes all of the keys in a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResult>, OperationStatusResult> beginFlushCache(
+        String resourceGroupName, String cacheName, Context context) {
+        return this.beginFlushCacheAsync(resourceGroupName, cacheName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes all of the keys in a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OperationStatusResult> flushCacheAsync(String resourceGroupName, String cacheName) {
+        return beginFlushCacheAsync(resourceGroupName, cacheName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes all of the keys in a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResult> flushCacheAsync(String resourceGroupName, String cacheName, Context context) {
+        return beginFlushCacheAsync(resourceGroupName, cacheName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes all of the keys in a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResult flushCache(String resourceGroupName, String cacheName) {
+        return flushCacheAsync(resourceGroupName, cacheName).block();
+    }
+
+    /**
+     * Deletes all of the keys in a cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResult flushCache(String resourceGroupName, String cacheName, Context context) {
+        return flushCacheAsync(resourceGroupName, cacheName, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2787,7 +3103,8 @@ public final class RedisClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2825,7 +3142,8 @@ public final class RedisClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2862,7 +3180,8 @@ public final class RedisClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2900,7 +3219,8 @@ public final class RedisClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2937,7 +3257,8 @@ public final class RedisClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

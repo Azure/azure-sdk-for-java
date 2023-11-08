@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataSourceType. */
+/** Type of workload this item represents. */
 public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     /** Static value Invalid for DataSourceType. */
     public static final DataSourceType INVALID = fromString("Invalid");
@@ -55,6 +55,18 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     /** Static value SAPAseDatabase for DataSourceType. */
     public static final DataSourceType SAPASE_DATABASE = fromString("SAPAseDatabase");
 
+    /** Static value SAPHanaDBInstance for DataSourceType. */
+    public static final DataSourceType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
+
+    /**
+     * Creates a new instance of DataSourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataSourceType() {
+    }
+
     /**
      * Creates or finds a DataSourceType from its string representation.
      *
@@ -66,7 +78,11 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
         return fromString(name, DataSourceType.class);
     }
 
-    /** @return known DataSourceType values. */
+    /**
+     * Gets known DataSourceType values.
+     *
+     * @return known DataSourceType values.
+     */
     public static Collection<DataSourceType> values() {
         return values(DataSourceType.class);
     }

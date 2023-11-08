@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.Provider;
@@ -20,6 +21,8 @@ public class ProvidersTests extends ResourceManagementTest {
     protected void cleanUpResources() {
     }
 
+    // record data too big
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void canUnregisterAndRegisterProvider() throws Exception {
         PagedIterable<Provider> providers = resourceClient.providers().list();

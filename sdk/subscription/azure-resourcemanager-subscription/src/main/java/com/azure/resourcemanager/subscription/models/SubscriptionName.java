@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.subscription.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The new name of the subscription. */
 @Fluent
 public final class SubscriptionName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionName.class);
-
     /*
      * New subscription name
      */
     @JsonProperty(value = "subscriptionName")
     private String subscriptionName;
+
+    /** Creates an instance of SubscriptionName class. */
+    public SubscriptionName() {
+    }
 
     /**
      * Get the subscriptionName property: New subscription name.

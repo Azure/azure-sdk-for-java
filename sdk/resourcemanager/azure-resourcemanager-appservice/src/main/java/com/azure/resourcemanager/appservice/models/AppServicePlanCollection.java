@@ -25,6 +25,10 @@ public final class AppServicePlanCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AppServicePlanCollection class. */
+    public AppServicePlanCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

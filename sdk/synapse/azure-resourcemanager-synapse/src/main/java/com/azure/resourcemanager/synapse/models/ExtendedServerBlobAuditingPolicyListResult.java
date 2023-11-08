@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.ExtendedServerBlobAuditingPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of server extended auditing settings. */
 @Immutable
 public final class ExtendedServerBlobAuditingPolicyListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedServerBlobAuditingPolicyListResult.class);
-
     /*
      * Array of results.
      */
@@ -27,6 +23,10 @@ public final class ExtendedServerBlobAuditingPolicyListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ExtendedServerBlobAuditingPolicyListResult class. */
+    public ExtendedServerBlobAuditingPolicyListResult() {
+    }
 
     /**
      * Get the value property: Array of results.

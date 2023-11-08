@@ -35,6 +35,9 @@ public class FormatWriteSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of FormatWriteSettings class. */
+    public FormatWriteSettings() {}
+
     /**
      * Get the additionalProperties property: Format write settings.
      *

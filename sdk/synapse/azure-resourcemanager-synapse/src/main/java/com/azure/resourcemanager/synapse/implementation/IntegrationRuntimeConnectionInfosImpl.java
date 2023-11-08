@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeConnectionInfo
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeConnectionInfoInner;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeConnectionInfo;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeConnectionInfos;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeConnectionInfosImpl implements IntegrationRuntimeConnectionInfos {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeConnectionInfosImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeConnectionInfosImpl.class);
 
     private final IntegrationRuntimeConnectionInfosClient innerClient;
 
@@ -28,17 +27,6 @@ public final class IntegrationRuntimeConnectionInfosImpl implements IntegrationR
         this.serviceManager = serviceManager;
     }
 
-    public IntegrationRuntimeConnectionInfo get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeConnectionInfoInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeConnectionInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeConnectionInfo> getWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         Response<IntegrationRuntimeConnectionInfoInner> inner =
@@ -49,6 +37,17 @@ public final class IntegrationRuntimeConnectionInfosImpl implements IntegrationR
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeConnectionInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeConnectionInfo get(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeConnectionInfoInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeConnectionInfoImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -11,7 +11,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.search.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.search.models.PrivateEndpointConnectionProperties;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -22,132 +21,110 @@ public interface PrivateEndpointConnectionsClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
+     * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Private Endpoint connection to the Azure Cognitive
-     *     Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing private endpoint connection to the search service along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(
         String resourceGroupName,
         String searchServiceName,
         String privateEndpointConnectionName,
-        UUID clientRequestId,
-        PrivateEndpointConnectionProperties properties);
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        UUID clientRequestId);
 
     /**
      * Updates a Private Endpoint connection to the search service in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Private Endpoint connection to the Azure Cognitive
-     *     Search service.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
+     * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing private endpoint connection to the search service on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> updateAsync(
         String resourceGroupName,
         String searchServiceName,
         String privateEndpointConnectionName,
-        UUID clientRequestId,
-        PrivateEndpointConnectionProperties properties);
+        PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Updates a Private Endpoint connection to the search service in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> updateAsync(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName);
-
-    /**
-     * Updates a Private Endpoint connection to the search service in the given resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner update(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName);
-
-    /**
-     * Updates a Private Endpoint connection to the search service in the given resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
+     * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Private Endpoint connection to the Azure Cognitive
-     *     Search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing private endpoint connection to the search service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateEndpointConnectionInner> updateWithResponse(
         String resourceGroupName,
         String searchServiceName,
         String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
         UUID clientRequestId,
-        PrivateEndpointConnectionProperties properties,
         Context context);
+
+    /**
+     * Updates a Private Endpoint connection to the search service in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     *     value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
+     * @param privateEndpointConnection The definition of the private endpoint connection to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an existing private endpoint connection to the search service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner update(
+        String resourceGroupName,
+        String searchServiceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Gets the details of the private endpoint connection to the search service in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
+     * @return the details of the private endpoint connection to the search service in the given resource group along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -158,34 +135,14 @@ public interface PrivateEndpointConnectionsClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> getAsync(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName, UUID clientRequestId);
-
-    /**
-     * Gets the details of the private endpoint connection to the search service in the given resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
+     * @return the details of the private endpoint connection to the search service in the given resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> getAsync(
@@ -196,35 +153,17 @@ public interface PrivateEndpointConnectionsClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName);
-
-    /**
-     * Gets the details of the private endpoint connection to the search service in the given resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the private endpoint connection to the search service in the given resource group.
+     * @return the details of the private endpoint connection to the search service in the given resource group along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateEndpointConnectionInner> getWithResponse(
@@ -235,20 +174,37 @@ public interface PrivateEndpointConnectionsClient {
         Context context);
 
     /**
+     * Gets the details of the private endpoint connection to the search service in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     *     value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the private endpoint connection to the search service in the given resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner get(
+        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName);
+
+    /**
      * Disconnects the private endpoint connection and deletes it from the search service.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing private endpoint connection to the search service along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateEndpointConnectionInner>> deleteWithResponseAsync(
@@ -259,34 +215,14 @@ public interface PrivateEndpointConnectionsClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> deleteAsync(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName, UUID clientRequestId);
-
-    /**
-     * Disconnects the private endpoint connection and deletes it from the search service.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing private endpoint connection to the search service on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> deleteAsync(
@@ -297,35 +233,16 @@ public interface PrivateEndpointConnectionsClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner delete(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName);
-
-    /**
-     * Disconnects the private endpoint connection and deletes it from the search service.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param privateEndpointConnectionName The name of the private endpoint connection to the Azure Cognitive Search
-     *     service with the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an existing Private Endpoint connection to the Azure Cognitive Search service.
+     * @return describes an existing private endpoint connection to the search service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateEndpointConnectionInner> deleteWithResponse(
@@ -336,18 +253,35 @@ public interface PrivateEndpointConnectionsClient {
         Context context);
 
     /**
+     * Disconnects the private endpoint connection and deletes it from the search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     *     value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
+     *     specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an existing private endpoint connection to the search service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner delete(
+        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName);
+
+    /**
      * Gets a list of all private endpoint connections in the given service.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(
@@ -358,12 +292,12 @@ public interface PrivateEndpointConnectionsClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(String resourceGroupName, String searchServiceName);
@@ -373,12 +307,12 @@ public interface PrivateEndpointConnectionsClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> listByService(String resourceGroupName, String searchServiceName);
@@ -388,15 +322,15 @@ public interface PrivateEndpointConnectionsClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service.
+     * @return a list of all private endpoint connections in the given service as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> listByService(

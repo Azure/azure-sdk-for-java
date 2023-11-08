@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.Argument;
@@ -29,7 +28,7 @@ import java.util.Map;
 /** Samples for Registries ScheduleRun. */
 public final class RegistriesScheduleRunSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_FileTaskRun.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_FileTaskRun.json
      */
     /**
      * Sample code: Registries_ScheduleRun_FileTaskRun.
@@ -60,11 +59,11 @@ public final class RegistriesScheduleRunSamples {
                     .withAgentConfiguration(new AgentProperties().withCpu(2))
                     .withSourceLocation(
                         "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun.json
      */
     /**
      * Sample code: Registries_ScheduleRun.
@@ -98,11 +97,11 @@ public final class RegistriesScheduleRunSamples {
                     .withAgentConfiguration(new AgentProperties().withCpu(2))
                     .withSourceLocation(
                         "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_EncodedTaskRun.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_EncodedTaskRun.json
      */
     /**
      * Sample code: Registries_ScheduleRun_EncodedTaskRun.
@@ -119,9 +118,8 @@ public final class RegistriesScheduleRunSamples {
                 "myResourceGroup",
                 "myRegistry",
                 new EncodedTaskRunRequest()
-                    .withEncodedTaskContent(
-                        "c3RlcHM6Cnt7IGlmIFZhbHVlcy5lbnZpcm9ubWVudCA9PSAncHJvZCcgfX0KICAtIHJ1bjogcHJvZCBzZXR1cAp7eyBlbHNlIGlmIFZhbHVlcy5lbnZpcm9ubWVudCA9PSAnc3RhZ2luZycgfX0KICAtIHJ1bjogc3RhZ2luZyBzZXR1cAp7eyBlbHNlIH19CiAgLSBydW46IGRlZmF1bHQgc2V0dXAKe3sgZW5kIH19CgogIC0gcnVuOiBidWlsZCAtdCBGYW5jeVRoaW5nOnt7LlZhbHVlcy5lbnZpcm9ubWVudH19LXt7LlZhbHVlcy52ZXJzaW9ufX0gLgoKcHVzaDogWydGYW5jeVRoaW5nOnt7LlZhbHVlcy5lbnZpcm9ubWVudH19LXt7LlZhbHVlcy52ZXJzaW9ufX0nXQ==")
-                    .withEncodedValuesContent("ZW52aXJvbm1lbnQ6IHByb2QKdmVyc2lvbjogMQ==")
+                    .withEncodedTaskContent("fakeTokenPlaceholder")
+                    .withEncodedValuesContent("fakeTokenPlaceholder")
                     .withValues(
                         Arrays
                             .asList(
@@ -132,11 +130,11 @@ public final class RegistriesScheduleRunSamples {
                                     .withIsSecret(true)))
                     .withPlatform(new PlatformProperties().withOs(OS.LINUX))
                     .withAgentConfiguration(new AgentProperties().withCpu(2)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_WithCustomCredentials.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_WithCustomCredentials.json
      */
     /**
      * Sample code: Registries_ScheduleRun_WithCustomCredentials.
@@ -190,11 +188,11 @@ public final class RegistriesScheduleRunSamples {
                                             new SecretObject().withValue("reg2").withType(SecretObjectType.OPAQUE))
                                         .withPassword(
                                             new SecretObject().withValue("***").withType(SecretObjectType.OPAQUE))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_WithLogTemplate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_WithLogTemplate.json
      */
     /**
      * Sample code: Registries_ScheduleRun_WithLogTemplate.
@@ -229,11 +227,11 @@ public final class RegistriesScheduleRunSamples {
                     .withAgentConfiguration(new AgentProperties().withCpu(2))
                     .withSourceLocation(
                         "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_Task.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_Task.json
      */
     /**
      * Sample code: Registries_ScheduleRun_Task.
@@ -277,12 +275,12 @@ public final class RegistriesScheduleRunSamples {
                                             .withName("mysecrettestname")
                                             .withValue("mysecrettestvalue")
                                             .withIsSecret(true)))
-                            .withUpdateTriggerToken("aGVsbG8gd29ybGQ=")),
-                Context.NONE);
+                            .withUpdateTriggerToken("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_FileTask_WithCustomCredentials.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_FileTask_WithCustomCredentials.json
      */
     /**
      * Sample code: Registries_ScheduleRun_Task_WithCustomCredentials.
@@ -322,7 +320,7 @@ public final class RegistriesScheduleRunSamples {
                                             new SecretObject().withValue("reg1").withType(SecretObjectType.OPAQUE))
                                         .withPassword(
                                             new SecretObject().withValue("***").withType(SecretObjectType.OPAQUE))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

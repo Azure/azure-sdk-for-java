@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Snapshots ListByResourceGroup. */
 public final class SnapshotsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListSnapshotsInAResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/snapshotExamples/Snapshot_ListByResourceGroup.json
      */
     /**
      * Sample code: List all snapshots in a resource group.
@@ -22,6 +20,6 @@ public final class SnapshotsListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getSnapshots()
-            .listByResourceGroup("myResourceGroup", Context.NONE);
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

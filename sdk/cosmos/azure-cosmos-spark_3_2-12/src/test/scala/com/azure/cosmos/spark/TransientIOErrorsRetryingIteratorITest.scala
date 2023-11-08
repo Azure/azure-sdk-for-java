@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ServiceUnavailableException, SparkRowItem, Strings, Utils}
+import com.azure.cosmos.implementation.{HttpConstants, ImplementationBridgeHelpers, ServiceUnavailableException, SparkRowItem, Strings, Utils}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCountPerIOOperation
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -47,7 +47,11 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
-    val cosmosSerializationConfig = CosmosSerializationConfig(SerializationInclusionModes.Always)
+    val cosmosSerializationConfig = CosmosSerializationConfig(
+        SerializationInclusionModes.Always,
+        SerializationDateTimeConversionModes.Default
+      )
+
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
     ImplementationBridgeHelpers
@@ -61,7 +65,7 @@ class TransientIOErrorsRetryingIteratorITest
             jsonNode.asInstanceOf[ObjectNode],
             SchemaConversionModes.Strict)
 
-          SparkRowItem(row)
+          SparkRowItem(row, None)
         })
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
@@ -170,7 +174,10 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
-    val cosmosSerializationConfig = CosmosSerializationConfig(SerializationInclusionModes.Always)
+    val cosmosSerializationConfig = CosmosSerializationConfig(
+      SerializationInclusionModes.Always,
+      SerializationDateTimeConversionModes.Default
+    )
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
     ImplementationBridgeHelpers
@@ -184,7 +191,7 @@ class TransientIOErrorsRetryingIteratorITest
             jsonNode.asInstanceOf[ObjectNode],
             SchemaConversionModes.Strict)
 
-          SparkRowItem(row)
+          SparkRowItem(row, None)
         })
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
@@ -248,7 +255,7 @@ class TransientIOErrorsRetryingIteratorITest
     // transient I/O errors can only happen in reality between
     // pages - and the retry logic depends on this assertion
     // so the test here will only ever inject an error after retrieving the
-    // last document of one page (and before retrieving teh next one)
+    // last document of one page (and before retrieving the next one)
     if (!idSnapshot.equals("") &&
       idSnapshot.equals(lastIdOfPage.get()) &&
         idsWithRetries.computeIfAbsent(idSnapshot, _ => 0) < maxRetryCountPerIOOperation &&
@@ -256,7 +263,7 @@ class TransientIOErrorsRetryingIteratorITest
           idSnapshot, (_, currentRetryCount) => currentRetryCount + 1) < maxRetryCountPerIOOperation) {
 
       //scalastyle:off null
-      throw new ServiceUnavailableException("Dummy 503", null, null)
+      throw new ServiceUnavailableException("Dummy 503", null, null, HttpConstants.SubStatusCodes.UNKNOWN)
       //scalastyle:on null
     } else {
       func()
@@ -274,14 +281,14 @@ class TransientIOErrorsRetryingIteratorITest
     // transient I/O errors can only happen in reality between
     // pages - and the retry logic depends on this assertion
     // so the test here will only ever inject an error after retrieving the
-    // last document of one page (and before retrieving teh next one)
+    // last document of one page (and before retrieving the next one)
     if (
       idsWithRetries.computeIfAbsent(idSnapshot, _ => 0) <= maxRetryCountPerIOOperation * 100 &&
       idsWithRetries.computeIfPresent(
         idSnapshot, (_, currentRetryCount) => currentRetryCount + 1) <= maxRetryCountPerIOOperation * 100) {
 
       //scalastyle:off null
-      throw new ServiceUnavailableException("Dummy 503", null, null)
+      throw new ServiceUnavailableException("Dummy 503", null, null, HttpConstants.SubStatusCodes.UNKNOWN)
       //scalastyle:on null
     } else {
       func()

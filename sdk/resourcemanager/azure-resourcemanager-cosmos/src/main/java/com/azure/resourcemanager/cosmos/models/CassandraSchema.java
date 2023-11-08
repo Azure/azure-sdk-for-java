@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Cosmos DB Cassandra table schema. */
 @Fluent
 public final class CassandraSchema {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraSchema.class);
-
     /*
      * List of Cassandra table columns.
      */
@@ -32,6 +28,10 @@ public final class CassandraSchema {
      */
     @JsonProperty(value = "clusterKeys")
     private List<ClusterKey> clusterKeys;
+
+    /** Creates an instance of CassandraSchema class. */
+    public CassandraSchema() {
+    }
 
     /**
      * Get the columns property: List of Cassandra table columns.

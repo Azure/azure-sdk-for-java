@@ -53,12 +53,8 @@ public final class DedicatedCapacityImpl
         return this.innerModel().sku();
     }
 
-    public DedicatedCapacityAdministrators administration() {
-        return this.innerModel().administration();
-    }
-
-    public Mode mode() {
-        return this.innerModel().mode();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public State state() {
@@ -69,8 +65,20 @@ public final class DedicatedCapacityImpl
         return this.innerModel().provisioningState();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public DedicatedCapacityAdministrators administration() {
+        return this.innerModel().administration();
+    }
+
+    public Mode mode() {
+        return this.innerModel().mode();
+    }
+
+    public String tenantId() {
+        return this.innerModel().tenantId();
+    }
+
+    public String friendlyName() {
+        return this.innerModel().friendlyName();
     }
 
     public Region region() {
@@ -79,6 +87,10 @@ public final class DedicatedCapacityImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public DedicatedCapacityInner innerModel() {
@@ -223,6 +235,11 @@ public final class DedicatedCapacityImpl
         }
     }
 
+    public DedicatedCapacityImpl withSystemData(SystemData systemData) {
+        this.innerModel().withSystemData(systemData);
+        return this;
+    }
+
     public DedicatedCapacityImpl withAdministration(DedicatedCapacityAdministrators administration) {
         if (isInCreateMode()) {
             this.innerModel().withAdministration(administration);
@@ -241,11 +258,6 @@ public final class DedicatedCapacityImpl
             this.updateCapacityUpdateParameters.withMode(mode);
             return this;
         }
-    }
-
-    public DedicatedCapacityImpl withSystemData(SystemData systemData) {
-        this.innerModel().withSystemData(systemData);
-        return this;
     }
 
     private boolean isInCreateMode() {

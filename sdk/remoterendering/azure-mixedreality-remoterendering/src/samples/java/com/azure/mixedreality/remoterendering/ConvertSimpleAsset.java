@@ -13,8 +13,7 @@ import java.util.UUID;
 /**
  * Sample class demonstrating how to convert a simple asset.
  */
-public class ConvertSimpleAsset extends SampleBase
-{
+public class ConvertSimpleAsset extends SampleBase {
     /**
      * Main method to invoke this demo about how to convert a simple asset.
      *

@@ -36,22 +36,6 @@ public final class FrontendEndpointImpl implements FrontendEndpoint {
         return this.innerModel().type();
     }
 
-    public String hostname() {
-        return this.innerModel().hostname();
-    }
-
-    public SessionAffinityEnabledState sessionAffinityEnabledState() {
-        return this.innerModel().sessionAffinityEnabledState();
-    }
-
-    public Integer sessionAffinityTtlSeconds() {
-        return this.innerModel().sessionAffinityTtlSeconds();
-    }
-
-    public FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
-        return this.innerModel().webApplicationFirewallPolicyLink();
-    }
-
     public FrontDoorResourceState resourceState() {
         return this.innerModel().resourceState();
     }
@@ -66,6 +50,22 @@ public final class FrontendEndpointImpl implements FrontendEndpoint {
 
     public CustomHttpsConfiguration customHttpsConfiguration() {
         return this.innerModel().customHttpsConfiguration();
+    }
+
+    public String hostname() {
+        return this.innerModel().hostname();
+    }
+
+    public SessionAffinityEnabledState sessionAffinityEnabledState() {
+        return this.innerModel().sessionAffinityEnabledState();
+    }
+
+    public Integer sessionAffinityTtlSeconds() {
+        return this.innerModel().sessionAffinityTtlSeconds();
+    }
+
+    public FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
+        return this.innerModel().webApplicationFirewallPolicyLink();
     }
 
     public FrontendEndpointInner innerModel() {

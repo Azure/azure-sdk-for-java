@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** messageRuleActions. */
 @Fluent
 public final class MicrosoftGraphMessageRuleActions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphMessageRuleActions.class);
-
     /*
      * A list of categories to be assigned to a message.
      */
@@ -38,15 +35,13 @@ public final class MicrosoftGraphMessageRuleActions {
     private Boolean delete;
 
     /*
-     * The email addresses of the recipients to which a message should be
-     * forwarded as an attachment.
+     * The email addresses of the recipients to which a message should be forwarded as an attachment.
      */
     @JsonProperty(value = "forwardAsAttachmentTo")
     private List<MicrosoftGraphRecipient> forwardAsAttachmentTo;
 
     /*
-     * The email addresses of the recipients to which a message should be
-     * forwarded.
+     * The email addresses of the recipients to which a message should be forwarded.
      */
     @JsonProperty(value = "forwardTo")
     private List<MicrosoftGraphRecipient> forwardTo;
@@ -58,7 +53,7 @@ public final class MicrosoftGraphMessageRuleActions {
     private Boolean markAsRead;
 
     /*
-     * The markImportance property.
+     * importance
      */
     @JsonProperty(value = "markImportance")
     private MicrosoftGraphImportance markImportance;
@@ -70,8 +65,7 @@ public final class MicrosoftGraphMessageRuleActions {
     private String moveToFolder;
 
     /*
-     * Indicates whether a message should be permanently deleted and not saved
-     * to the Deleted Items folder.
+     * Indicates whether a message should be permanently deleted and not saved to the Deleted Items folder.
      */
     @JsonProperty(value = "permanentDelete")
     private Boolean permanentDelete;
@@ -92,6 +86,10 @@ public final class MicrosoftGraphMessageRuleActions {
      * messageRuleActions
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphMessageRuleActions class. */
+    public MicrosoftGraphMessageRuleActions() {
+    }
 
     /**
      * Get the assignCategories property: A list of categories to be assigned to a message.
@@ -217,7 +215,7 @@ public final class MicrosoftGraphMessageRuleActions {
     }
 
     /**
-     * Get the markImportance property: The markImportance property.
+     * Get the markImportance property: importance.
      *
      * @return the markImportance value.
      */
@@ -226,7 +224,7 @@ public final class MicrosoftGraphMessageRuleActions {
     }
 
     /**
-     * Set the markImportance property: The markImportance property.
+     * Set the markImportance property: importance.
      *
      * @param markImportance the markImportance value to set.
      * @return the MicrosoftGraphMessageRuleActions object itself.

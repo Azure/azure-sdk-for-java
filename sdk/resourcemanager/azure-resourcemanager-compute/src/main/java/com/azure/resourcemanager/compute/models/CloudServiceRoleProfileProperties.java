@@ -22,6 +22,10 @@ public final class CloudServiceRoleProfileProperties {
     @JsonProperty(value = "sku")
     private CloudServiceRoleSku sku;
 
+    /** Creates an instance of CloudServiceRoleProfileProperties class. */
+    public CloudServiceRoleProfileProperties() {
+    }
+
     /**
      * Get the name property: Resource name.
      *

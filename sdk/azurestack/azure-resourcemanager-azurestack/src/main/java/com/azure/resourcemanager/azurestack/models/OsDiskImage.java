@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** OS disk image. */
 @Immutable
 public final class OsDiskImage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OsDiskImage.class);
-
     /*
      * OS operating system type.
      */
@@ -25,6 +21,10 @@ public final class OsDiskImage {
      */
     @JsonProperty(value = "sourceBlobSasUri", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceBlobSasUri;
+
+    /** Creates an instance of OsDiskImage class. */
+    public OsDiskImage() {
+    }
 
     /**
      * Get the operatingSystem property: OS operating system type.

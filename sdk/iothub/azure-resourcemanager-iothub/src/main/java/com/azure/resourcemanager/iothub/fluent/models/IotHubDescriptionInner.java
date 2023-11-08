@@ -11,19 +11,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.ArmIdentity;
 import com.azure.resourcemanager.iothub.models.IotHubProperties;
 import com.azure.resourcemanager.iothub.models.IotHubSkuInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The description of the IoT hub. */
 @Fluent
 public final class IotHubDescriptionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubDescriptionInner.class);
-
     /*
-     * The Etag field is *not* required. If it is provided in the response
-     * body, it must also be provided as a header per the normal ETag
-     * convention.
+     * The Etag field is *not* required. If it is provided in the response body, it must also be provided as a header
+     * per the normal ETag convention.
      */
     @JsonProperty(value = "etag")
     private String etag;
@@ -51,6 +47,10 @@ public final class IotHubDescriptionInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of IotHubDescriptionInner class. */
+    public IotHubDescriptionInner() {
+    }
 
     /**
      * Get the etag property: The Etag field is *not* required. If it is provided in the response body, it must also be
@@ -167,7 +167,7 @@ public final class IotHubDescriptionInner extends Resource {
             properties().validate();
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model IotHubDescriptionInner"));
         } else {
@@ -177,4 +177,6 @@ public final class IotHubDescriptionInner extends Resource {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IotHubDescriptionInner.class);
 }

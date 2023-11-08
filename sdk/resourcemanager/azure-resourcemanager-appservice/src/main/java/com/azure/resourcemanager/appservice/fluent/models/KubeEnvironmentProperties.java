@@ -45,8 +45,7 @@ public final class KubeEnvironmentProperties {
     private String staticIp;
 
     /*
-     * Type of Kubernetes Environment. Only supported for Container App
-     * Environments with value as Managed
+     * Type of Kubernetes Environment. Only supported for Container App Environments with value as Managed
      */
     @JsonProperty(value = "environmentType")
     private String environmentType;
@@ -68,8 +67,8 @@ public final class KubeEnvironmentProperties {
     private AppLogsConfiguration appLogsConfiguration;
 
     /*
-     * Cluster configuration for Container Apps Environments to configure Dapr
-     * Instrumentation Key and VNET Configuration
+     * Cluster configuration for Container Apps Environments to configure Dapr Instrumentation Key and VNET
+     * Configuration
      */
     @JsonProperty(value = "containerAppsConfiguration")
     private ContainerAppsConfiguration containerAppsConfiguration;
@@ -79,6 +78,10 @@ public final class KubeEnvironmentProperties {
      */
     @JsonProperty(value = "aksResourceID")
     private String aksResourceId;
+
+    /** Creates an instance of KubeEnvironmentProperties class. */
+    public KubeEnvironmentProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the Kubernetes Environment.

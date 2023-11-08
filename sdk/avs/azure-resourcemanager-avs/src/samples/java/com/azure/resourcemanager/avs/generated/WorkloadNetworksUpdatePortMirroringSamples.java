@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroring;
 
 /** Samples for WorkloadNetworks UpdatePortMirroring. */
 public final class WorkloadNetworksUpdatePortMirroringSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_UpdatePortMirroringProfiles.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdatePortMirroringProfiles.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdatePortMirroring.
@@ -22,7 +21,7 @@ public final class WorkloadNetworksUpdatePortMirroringSamples {
         WorkloadNetworkPortMirroring resource =
             manager
                 .workloadNetworks()
-                .getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", Context.NONE)
+                .getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -20,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("IaasVMRecoveryPoint")
 @Fluent
 public final class IaasVMRecoveryPoint extends RecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaasVMRecoveryPoint.class);
-
     /*
      * Type of the backup copy.
      */
@@ -53,8 +49,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     private Boolean isSourceVMEncrypted;
 
     /*
-     * Required details for recovering an encrypted VM. Applicable only when
-     * IsSourceVMEncrypted is true.
+     * Required details for recovering an encrypted VM. Applicable only when IsSourceVMEncrypted is true.
      */
     @JsonProperty(value = "keyAndSecret")
     private KeyAndSecretDetails keyAndSecret;
@@ -102,8 +97,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     private RecoveryPointDiskConfiguration recoveryPointDiskConfiguration;
 
     /*
-     * Identifies the zone of the VM at the time of backup. Applicable only for
-     * zone-pinned Vms
+     * Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned Vms
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -114,6 +108,35 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     @JsonProperty(value = "recoveryPointMoveReadinessInfo")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo;
+
+    /*
+     * Security Type of the Disk
+     */
+    @JsonProperty(value = "securityType")
+    private String securityType;
+
+    /*
+     * Properties of Recovery Point
+     */
+    @JsonProperty(value = "recoveryPointProperties")
+    private RecoveryPointProperties recoveryPointProperties;
+
+    /*
+     * This flag denotes if any of the disks in the VM are using Private access network setting
+     */
+    @JsonProperty(value = "isPrivateAccessEnabledOnAnyDisk")
+    private Boolean isPrivateAccessEnabledOnAnyDisk;
+
+    /*
+     * Extended location of the VM recovery point,
+     * should be null if VM is in public cloud
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
+    /** Creates an instance of IaasVMRecoveryPoint class. */
+    public IaasVMRecoveryPoint() {
+    }
 
     /**
      * Get the recoveryPointType property: Type of the backup copy.
@@ -421,6 +444,90 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     }
 
     /**
+     * Get the securityType property: Security Type of the Disk.
+     *
+     * @return the securityType value.
+     */
+    public String securityType() {
+        return this.securityType;
+    }
+
+    /**
+     * Set the securityType property: Security Type of the Disk.
+     *
+     * @param securityType the securityType value to set.
+     * @return the IaasVMRecoveryPoint object itself.
+     */
+    public IaasVMRecoveryPoint withSecurityType(String securityType) {
+        this.securityType = securityType;
+        return this;
+    }
+
+    /**
+     * Get the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @return the recoveryPointProperties value.
+     */
+    public RecoveryPointProperties recoveryPointProperties() {
+        return this.recoveryPointProperties;
+    }
+
+    /**
+     * Set the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @param recoveryPointProperties the recoveryPointProperties value to set.
+     * @return the IaasVMRecoveryPoint object itself.
+     */
+    public IaasVMRecoveryPoint withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
+        this.recoveryPointProperties = recoveryPointProperties;
+        return this;
+    }
+
+    /**
+     * Get the isPrivateAccessEnabledOnAnyDisk property: This flag denotes if any of the disks in the VM are using
+     * Private access network setting.
+     *
+     * @return the isPrivateAccessEnabledOnAnyDisk value.
+     */
+    public Boolean isPrivateAccessEnabledOnAnyDisk() {
+        return this.isPrivateAccessEnabledOnAnyDisk;
+    }
+
+    /**
+     * Set the isPrivateAccessEnabledOnAnyDisk property: This flag denotes if any of the disks in the VM are using
+     * Private access network setting.
+     *
+     * @param isPrivateAccessEnabledOnAnyDisk the isPrivateAccessEnabledOnAnyDisk value to set.
+     * @return the IaasVMRecoveryPoint object itself.
+     */
+    public IaasVMRecoveryPoint withIsPrivateAccessEnabledOnAnyDisk(Boolean isPrivateAccessEnabledOnAnyDisk) {
+        this.isPrivateAccessEnabledOnAnyDisk = isPrivateAccessEnabledOnAnyDisk;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: Extended location of the VM recovery point, should be null if VM is in public
+     * cloud.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Extended location of the VM recovery point, should be null if VM is in public
+     * cloud.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the IaasVMRecoveryPoint object itself.
+     */
+    public IaasVMRecoveryPoint withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -446,6 +553,12 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
                             e.validate();
                         }
                     });
+        }
+        if (recoveryPointProperties() != null) {
+            recoveryPointProperties().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
     }
 }

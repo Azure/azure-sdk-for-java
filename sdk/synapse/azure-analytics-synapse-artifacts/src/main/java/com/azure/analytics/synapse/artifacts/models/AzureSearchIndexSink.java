@@ -15,11 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureSearchIndexSink extends CopySink {
     /*
-     * Specify the write behavior when upserting documents into Azure Search
-     * Index.
+     * Specify the write behavior when upserting documents into Azure Search Index.
      */
     @JsonProperty(value = "writeBehavior")
     private AzureSearchIndexWriteBehaviorType writeBehavior;
+
+    /** Creates an instance of AzureSearchIndexSink class. */
+    public AzureSearchIndexSink() {}
 
     /**
      * Get the writeBehavior property: Specify the write behavior when upserting documents into Azure Search Index.
@@ -38,6 +40,41 @@ public final class AzureSearchIndexSink extends CopySink {
      */
     public AzureSearchIndexSink setWriteBehavior(AzureSearchIndexWriteBehaviorType writeBehavior) {
         this.writeBehavior = writeBehavior;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

@@ -22,14 +22,29 @@ public final class UnknownIdentifier extends CommunicationIdentifier {
             throw new IllegalArgumentException("The initialization parameter [id] cannot be null or empty.");
         }
         this.id = id;
+        this.setRawId(id);
     }
 
     /**
      * Get id of this identifier
+     *
      * @return id of this identifier
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     * Set full id of the identifier
+     * RawId is the encoded format for identifiers to store in databases or as stable keys in general.
+     *
+     * @param rawId full id of the identifier
+     * @return UnknownIdentifier object itself
+     */
+    @Override
+    protected UnknownIdentifier setRawId(String rawId) {
+        super.setRawId(rawId);
+        return this;
     }
 
     @Override
@@ -43,11 +58,11 @@ public final class UnknownIdentifier extends CommunicationIdentifier {
         }
 
         UnknownIdentifier thatId = (UnknownIdentifier) that;
-        return this.id.equals(thatId.id);
+        return this.getRawId().equals(thatId.getRawId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return getRawId().hashCode();
     }
 }

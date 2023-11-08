@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Break replication request. */
 @Fluent
 public final class BreakReplicationRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BreakReplicationRequest.class);
-
     /*
-     * If replication is in status transferring and you want to force break the
-     * replication, set to true
+     * If replication is in status transferring and you want to force break the replication, set to true
      */
     @JsonProperty(value = "forceBreakReplication")
     private Boolean forceBreakReplication;
+
+    /** Creates an instance of BreakReplicationRequest class. */
+    public BreakReplicationRequest() {
+    }
 
     /**
      * Get the forceBreakReplication property: If replication is in status transferring and you want to force break the

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationServiceEnvironmentNetworkEndPointAccessibilityState. */
+/** The integration service environment network endpoint accessibility state. */
 public final class IntegrationServiceEnvironmentNetworkEndPointAccessibilityState
     extends ExpandableStringEnum<IntegrationServiceEnvironmentNetworkEndPointAccessibilityState> {
     /** Static value NotSpecified for IntegrationServiceEnvironmentNetworkEndPointAccessibilityState. */
@@ -27,6 +27,15 @@ public final class IntegrationServiceEnvironmentNetworkEndPointAccessibilityStat
         fromString("NotAvailable");
 
     /**
+     * Creates a new instance of IntegrationServiceEnvironmentNetworkEndPointAccessibilityState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationServiceEnvironmentNetworkEndPointAccessibilityState() {
+    }
+
+    /**
      * Creates or finds a IntegrationServiceEnvironmentNetworkEndPointAccessibilityState from its string representation.
      *
      * @param name a name to look for.
@@ -37,7 +46,11 @@ public final class IntegrationServiceEnvironmentNetworkEndPointAccessibilityStat
         return fromString(name, IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.class);
     }
 
-    /** @return known IntegrationServiceEnvironmentNetworkEndPointAccessibilityState values. */
+    /**
+     * Gets known IntegrationServiceEnvironmentNetworkEndPointAccessibilityState values.
+     *
+     * @return known IntegrationServiceEnvironmentNetworkEndPointAccessibilityState values.
+     */
     public static Collection<IntegrationServiceEnvironmentNetworkEndPointAccessibilityState> values() {
         return values(IntegrationServiceEnvironmentNetworkEndPointAccessibilityState.class);
     }

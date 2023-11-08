@@ -6,9 +6,11 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.compute.models.GalleryApplicationCustomAction;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** Specifies information about the gallery Application Definition that you want to create or update. */
@@ -19,6 +21,10 @@ public final class GalleryApplicationInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private GalleryApplicationProperties innerProperties;
+
+    /** Creates an instance of GalleryApplicationInner class. */
+    public GalleryApplicationInner() {
+    }
 
     /**
      * Get the innerProperties property: Describes the properties of a gallery Application Definition.
@@ -186,6 +192,31 @@ public final class GalleryApplicationInner extends Resource {
             this.innerProperties = new GalleryApplicationProperties();
         }
         this.innerProperties().withSupportedOSType(supportedOSType);
+        return this;
+    }
+
+    /**
+     * Get the customActions property: A list of custom actions that can be performed with all of the Gallery
+     * Application Versions within this Gallery Application.
+     *
+     * @return the customActions value.
+     */
+    public List<GalleryApplicationCustomAction> customActions() {
+        return this.innerProperties() == null ? null : this.innerProperties().customActions();
+    }
+
+    /**
+     * Set the customActions property: A list of custom actions that can be performed with all of the Gallery
+     * Application Versions within this Gallery Application.
+     *
+     * @param customActions the customActions value to set.
+     * @return the GalleryApplicationInner object itself.
+     */
+    public GalleryApplicationInner withCustomActions(List<GalleryApplicationCustomAction> customActions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withCustomActions(customActions);
         return this;
     }
 

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SeedNode model. */
 @Fluent
 public final class SeedNode {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SeedNode.class);
-
     /*
      * IP address of this seed node.
      */
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
+
+    /** Creates an instance of SeedNode class. */
+    public SeedNode() {
+    }
 
     /**
      * Get the ipAddress property: IP address of this seed node.

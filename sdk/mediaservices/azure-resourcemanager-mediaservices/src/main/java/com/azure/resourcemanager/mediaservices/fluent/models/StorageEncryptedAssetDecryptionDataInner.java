@@ -25,6 +25,10 @@ public final class StorageEncryptedAssetDecryptionDataInner {
     @JsonProperty(value = "assetFileEncryptionMetadata")
     private List<AssetFileEncryptionMetadata> assetFileEncryptionMetadata;
 
+    /** Creates an instance of StorageEncryptedAssetDecryptionDataInner class. */
+    public StorageEncryptedAssetDecryptionDataInner() {
+    }
+
     /**
      * Get the key property: The Asset File storage encryption key.
      *

@@ -37,6 +37,10 @@ public final class HubIpConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of HubIpConfigurationInner class. */
+    public HubIpConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the Virtual Hub IPConfigurations.
      *

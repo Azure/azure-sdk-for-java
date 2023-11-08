@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datadog.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datadog.models.DatadogHostMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DatadogHost model. */
 @Fluent
 public final class DatadogHostInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogHostInner.class);
-
     /*
      * The name of the host.
      */
@@ -23,7 +19,7 @@ public final class DatadogHostInner {
     private String name;
 
     /*
-     * The aliases for the host.
+     * The aliases for the host installed via the Datadog agent.
      */
     @JsonProperty(value = "aliases")
     private List<String> aliases;
@@ -39,6 +35,10 @@ public final class DatadogHostInner {
      */
     @JsonProperty(value = "meta")
     private DatadogHostMetadata meta;
+
+    /** Creates an instance of DatadogHostInner class. */
+    public DatadogHostInner() {
+    }
 
     /**
      * Get the name property: The name of the host.
@@ -61,7 +61,7 @@ public final class DatadogHostInner {
     }
 
     /**
-     * Get the aliases property: The aliases for the host.
+     * Get the aliases property: The aliases for the host installed via the Datadog agent.
      *
      * @return the aliases value.
      */
@@ -70,7 +70,7 @@ public final class DatadogHostInner {
     }
 
     /**
-     * Set the aliases property: The aliases for the host.
+     * Set the aliases property: The aliases for the host installed via the Datadog agent.
      *
      * @param aliases the aliases value to set.
      * @return the DatadogHostInner object itself.

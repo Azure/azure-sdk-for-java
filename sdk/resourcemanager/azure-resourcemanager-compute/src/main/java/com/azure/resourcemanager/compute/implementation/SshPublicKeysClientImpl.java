@@ -69,7 +69,7 @@ public final class SshPublicKeysClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface SshPublicKeysService {
+    public interface SshPublicKeysService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/sshPublicKeys")
         @ExpectedResponses({200})
@@ -83,8 +83,7 @@ public final class SshPublicKeysClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/sshPublicKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SshPublicKeysGroupListResult>> listByResourceGroup(
@@ -97,8 +96,7 @@ public final class SshPublicKeysClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/sshPublicKeys/{sshPublicKeyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SshPublicKeyResourceInner>> create(
@@ -113,8 +111,7 @@ public final class SshPublicKeysClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/sshPublicKeys/{sshPublicKeyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SshPublicKeyResourceInner>> update(
@@ -129,8 +126,7 @@ public final class SshPublicKeysClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/sshPublicKeys/{sshPublicKeyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Void>> delete(
@@ -144,8 +140,7 @@ public final class SshPublicKeysClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/sshPublicKeys/{sshPublicKeyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SshPublicKeyResourceInner>> getByResourceGroup(
@@ -159,8 +154,7 @@ public final class SshPublicKeysClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/sshPublicKeys/{sshPublicKeyName}/generateKeyPair")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}/generateKeyPair")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SshPublicKeyGenerateKeyPairResultInner>> generateKeyPair(
@@ -216,7 +210,7 @@ public final class SshPublicKeysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -260,7 +254,7 @@ public final class SshPublicKeysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -364,7 +358,7 @@ public final class SshPublicKeysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -420,7 +414,7 @@ public final class SshPublicKeysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -548,7 +542,7 @@ public final class SshPublicKeysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -607,7 +601,7 @@ public final class SshPublicKeysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -637,31 +631,7 @@ public final class SshPublicKeysClientImpl
     public Mono<SshPublicKeyResourceInner> createAsync(
         String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters) {
         return createWithResponseAsync(resourceGroupName, sshPublicKeyName, parameters)
-            .flatMap(
-                (Response<SshPublicKeyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a new SSH public key resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param sshPublicKeyName The name of the SSH public key.
-     * @param parameters Parameters supplied to create the SSH public key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the SSH public key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SshPublicKeyResourceInner create(
-        String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters) {
-        return createAsync(resourceGroupName, sshPublicKeyName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -680,6 +650,23 @@ public final class SshPublicKeysClientImpl
     public Response<SshPublicKeyResourceInner> createWithResponse(
         String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters, Context context) {
         return createWithResponseAsync(resourceGroupName, sshPublicKeyName, parameters, context).block();
+    }
+
+    /**
+     * Creates a new SSH public key resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param sshPublicKeyName The name of the SSH public key.
+     * @param parameters Parameters supplied to create the SSH public key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the SSH public key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SshPublicKeyResourceInner create(
+        String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters) {
+        return createWithResponse(resourceGroupName, sshPublicKeyName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -722,7 +709,7 @@ public final class SshPublicKeysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -781,7 +768,7 @@ public final class SshPublicKeysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -811,31 +798,7 @@ public final class SshPublicKeysClientImpl
     public Mono<SshPublicKeyResourceInner> updateAsync(
         String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters) {
         return updateWithResponseAsync(resourceGroupName, sshPublicKeyName, parameters)
-            .flatMap(
-                (Response<SshPublicKeyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a new SSH public key resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param sshPublicKeyName The name of the SSH public key.
-     * @param parameters Parameters supplied to update the SSH public key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the SSH public key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SshPublicKeyResourceInner update(
-        String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters) {
-        return updateAsync(resourceGroupName, sshPublicKeyName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -854,6 +817,23 @@ public final class SshPublicKeysClientImpl
     public Response<SshPublicKeyResourceInner> updateWithResponse(
         String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, sshPublicKeyName, parameters, context).block();
+    }
+
+    /**
+     * Updates a new SSH public key resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param sshPublicKeyName The name of the SSH public key.
+     * @param parameters Parameters supplied to update the SSH public key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the SSH public key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SshPublicKeyResourceInner update(
+        String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters) {
+        return updateWithResponse(resourceGroupName, sshPublicKeyName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -888,7 +868,7 @@ public final class SshPublicKeysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -939,7 +919,7 @@ public final class SshPublicKeysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -965,22 +945,7 @@ public final class SshPublicKeysClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String sshPublicKeyName) {
-        return deleteWithResponseAsync(resourceGroupName, sshPublicKeyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete an SSH public key.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param sshPublicKeyName The name of the SSH public key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String sshPublicKeyName) {
-        deleteAsync(resourceGroupName, sshPublicKeyName).block();
+        return deleteWithResponseAsync(resourceGroupName, sshPublicKeyName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -997,6 +962,20 @@ public final class SshPublicKeysClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String sshPublicKeyName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, sshPublicKeyName, context).block();
+    }
+
+    /**
+     * Delete an SSH public key.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param sshPublicKeyName The name of the SSH public key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String sshPublicKeyName) {
+        deleteWithResponse(resourceGroupName, sshPublicKeyName, Context.NONE);
     }
 
     /**
@@ -1033,7 +1012,7 @@ public final class SshPublicKeysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1085,7 +1064,7 @@ public final class SshPublicKeysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1112,29 +1091,7 @@ public final class SshPublicKeysClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SshPublicKeyResourceInner> getByResourceGroupAsync(String resourceGroupName, String sshPublicKeyName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, sshPublicKeyName)
-            .flatMap(
-                (Response<SshPublicKeyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Retrieves information about an SSH public key.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param sshPublicKeyName The name of the SSH public key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the SSH public key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SshPublicKeyResourceInner getByResourceGroup(String resourceGroupName, String sshPublicKeyName) {
-        return getByResourceGroupAsync(resourceGroupName, sshPublicKeyName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1152,6 +1109,21 @@ public final class SshPublicKeysClientImpl
     public Response<SshPublicKeyResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String sshPublicKeyName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, sshPublicKeyName, context).block();
+    }
+
+    /**
+     * Retrieves information about an SSH public key.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param sshPublicKeyName The name of the SSH public key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the SSH public key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SshPublicKeyResourceInner getByResourceGroup(String resourceGroupName, String sshPublicKeyName) {
+        return getByResourceGroupWithResponse(resourceGroupName, sshPublicKeyName, Context.NONE).getValue();
     }
 
     /**
@@ -1189,7 +1161,7 @@ public final class SshPublicKeysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1242,7 +1214,7 @@ public final class SshPublicKeysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1271,30 +1243,7 @@ public final class SshPublicKeysClientImpl
     public Mono<SshPublicKeyGenerateKeyPairResultInner> generateKeyPairAsync(
         String resourceGroupName, String sshPublicKeyName) {
         return generateKeyPairWithResponseAsync(resourceGroupName, sshPublicKeyName)
-            .flatMap(
-                (Response<SshPublicKeyGenerateKeyPairResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
-     * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param sshPublicKeyName The name of the SSH public key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from generation of an SSH key pair.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SshPublicKeyGenerateKeyPairResultInner generateKeyPair(String resourceGroupName, String sshPublicKeyName) {
-        return generateKeyPairAsync(resourceGroupName, sshPublicKeyName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1316,9 +1265,26 @@ public final class SshPublicKeysClientImpl
     }
 
     /**
+     * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
+     * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param sshPublicKeyName The name of the SSH public key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from generation of an SSH key pair.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SshPublicKeyGenerateKeyPairResultInner generateKeyPair(String resourceGroupName, String sshPublicKeyName) {
+        return generateKeyPairWithResponse(resourceGroupName, sshPublicKeyName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1355,7 +1321,8 @@ public final class SshPublicKeysClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1393,7 +1360,8 @@ public final class SshPublicKeysClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1430,7 +1398,8 @@ public final class SshPublicKeysClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

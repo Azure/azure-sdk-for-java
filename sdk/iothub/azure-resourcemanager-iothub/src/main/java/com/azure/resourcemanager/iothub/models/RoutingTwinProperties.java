@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RoutingTwinProperties model. */
 @Fluent
 public final class RoutingTwinProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingTwinProperties.class);
-
     /*
      * Twin desired properties
      */
@@ -25,6 +21,10 @@ public final class RoutingTwinProperties {
      */
     @JsonProperty(value = "reported")
     private Object reported;
+
+    /** Creates an instance of RoutingTwinProperties class. */
+    public RoutingTwinProperties() {
+    }
 
     /**
      * Get the desired property: Twin desired properties.

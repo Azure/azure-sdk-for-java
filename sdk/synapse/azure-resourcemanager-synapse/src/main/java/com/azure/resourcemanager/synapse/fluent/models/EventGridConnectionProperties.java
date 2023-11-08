@@ -9,14 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.BlobStorageEventType;
 import com.azure.resourcemanager.synapse.models.EventGridDataFormat;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing the Kusto event grid connection properties. */
 @Fluent
 public final class EventGridConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventGridConnectionProperties.class);
-
     /*
      * The resource ID of the storage account where the data resides.
      */
@@ -36,29 +33,25 @@ public final class EventGridConnectionProperties {
     private String consumerGroup;
 
     /*
-     * The table where the data should be ingested. Optionally the table
-     * information can be added to each message.
+     * The table where the data should be ingested. Optionally the table information can be added to each message.
      */
     @JsonProperty(value = "tableName")
     private String tableName;
 
     /*
-     * The mapping rule to be used to ingest the data. Optionally the mapping
-     * information can be added to each message.
+     * The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.
      */
     @JsonProperty(value = "mappingRuleName")
     private String mappingRuleName;
 
     /*
-     * The data format of the message. Optionally the data format can be added
-     * to each message.
+     * The data format of the message. Optionally the data format can be added to each message.
      */
     @JsonProperty(value = "dataFormat")
     private EventGridDataFormat dataFormat;
 
     /*
-     * A Boolean value that, if set to true, indicates that ingestion should
-     * ignore the first record of every file
+     * A Boolean value that, if set to true, indicates that ingestion should ignore the first record of every file
      */
     @JsonProperty(value = "ignoreFirstRecord")
     private Boolean ignoreFirstRecord;
@@ -74,6 +67,10 @@ public final class EventGridConnectionProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
+
+    /** Creates an instance of EventGridConnectionProperties class. */
+    public EventGridConnectionProperties() {
+    }
 
     /**
      * Get the storageAccountResourceId property: The resource ID of the storage account where the data resides.
@@ -259,22 +256,24 @@ public final class EventGridConnectionProperties {
      */
     public void validate() {
         if (storageAccountResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storageAccountResourceId in model EventGridConnectionProperties"));
         }
         if (eventHubResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventHubResourceId in model EventGridConnectionProperties"));
         }
         if (consumerGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property consumerGroup in model EventGridConnectionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventGridConnectionProperties.class);
 }

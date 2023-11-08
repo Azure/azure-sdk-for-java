@@ -20,6 +20,14 @@ public final class SchedulerCurrentState extends ExpandableStringEnum<SchedulerC
     public static final SchedulerCurrentState ENDED = fromString("Ended");
 
     /**
+     * Creates a new instance of SchedulerCurrentState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SchedulerCurrentState() {}
+
+    /**
      * Creates or finds a SchedulerCurrentState from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +38,11 @@ public final class SchedulerCurrentState extends ExpandableStringEnum<SchedulerC
         return fromString(name, SchedulerCurrentState.class);
     }
 
-    /** @return known SchedulerCurrentState values. */
+    /**
+     * Gets known SchedulerCurrentState values.
+     *
+     * @return known SchedulerCurrentState values.
+     */
     public static Collection<SchedulerCurrentState> values() {
         return values(SchedulerCurrentState.class);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that describes the operations. */
 @Fluent
 public final class OperationMetadataDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetadataDisplay.class);
-
     /*
      * Friendly name of the resource provider
      */
@@ -37,6 +33,10 @@ public final class OperationMetadataDisplay {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of OperationMetadataDisplay class. */
+    public OperationMetadataDisplay() {
+    }
 
     /**
      * Get the provider property: Friendly name of the resource provider.

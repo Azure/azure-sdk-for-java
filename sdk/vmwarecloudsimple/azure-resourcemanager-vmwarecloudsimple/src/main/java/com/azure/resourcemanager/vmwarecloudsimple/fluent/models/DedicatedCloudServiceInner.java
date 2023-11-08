@@ -5,92 +5,31 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OnboardingStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Dedicated cloud service model. */
-@JsonFlatten
 @Fluent
-public class DedicatedCloudServiceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCloudServiceInner.class);
-
+public final class DedicatedCloudServiceInner extends Resource {
     /*
-     * gateway Subnet for the account. It will collect the subnet address and
-     * always treat it as /28
+     * The properties of Dedicated Node Service
      */
-    @JsonProperty(value = "properties.gatewaySubnet")
-    private String gatewaySubnet;
+    @JsonProperty(value = "properties")
+    private DedicatedCloudServiceProperties innerProperties;
 
-    /*
-     * indicates whether account onboarded or not in a given region
-     */
-    @JsonProperty(value = "properties.isAccountOnboarded", access = JsonProperty.Access.WRITE_ONLY)
-    private OnboardingStatus isAccountOnboarded;
-
-    /*
-     * total nodes purchased
-     */
-    @JsonProperty(value = "properties.nodes", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer nodes;
-
-    /*
-     * link to a service management web portal
-     */
-    @JsonProperty(value = "properties.serviceURL", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceUrl;
-
-    /**
-     * Get the gatewaySubnet property: gateway Subnet for the account. It will collect the subnet address and always
-     * treat it as /28.
-     *
-     * @return the gatewaySubnet value.
-     */
-    public String gatewaySubnet() {
-        return this.gatewaySubnet;
+    /** Creates an instance of DedicatedCloudServiceInner class. */
+    public DedicatedCloudServiceInner() {
     }
 
     /**
-     * Set the gatewaySubnet property: gateway Subnet for the account. It will collect the subnet address and always
-     * treat it as /28.
+     * Get the innerProperties property: The properties of Dedicated Node Service.
      *
-     * @param gatewaySubnet the gatewaySubnet value to set.
-     * @return the DedicatedCloudServiceInner object itself.
+     * @return the innerProperties value.
      */
-    public DedicatedCloudServiceInner withGatewaySubnet(String gatewaySubnet) {
-        this.gatewaySubnet = gatewaySubnet;
-        return this;
-    }
-
-    /**
-     * Get the isAccountOnboarded property: indicates whether account onboarded or not in a given region.
-     *
-     * @return the isAccountOnboarded value.
-     */
-    public OnboardingStatus isAccountOnboarded() {
-        return this.isAccountOnboarded;
-    }
-
-    /**
-     * Get the nodes property: total nodes purchased.
-     *
-     * @return the nodes value.
-     */
-    public Integer nodes() {
-        return this.nodes;
-    }
-
-    /**
-     * Get the serviceUrl property: link to a service management web portal.
-     *
-     * @return the serviceUrl value.
-     */
-    public String serviceUrl() {
-        return this.serviceUrl;
+    private DedicatedCloudServiceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -108,10 +47,65 @@ public class DedicatedCloudServiceInner extends Resource {
     }
 
     /**
+     * Get the gatewaySubnet property: gateway Subnet for the account. It will collect the subnet address and always
+     * treat it as /28.
+     *
+     * @return the gatewaySubnet value.
+     */
+    public String gatewaySubnet() {
+        return this.innerProperties() == null ? null : this.innerProperties().gatewaySubnet();
+    }
+
+    /**
+     * Set the gatewaySubnet property: gateway Subnet for the account. It will collect the subnet address and always
+     * treat it as /28.
+     *
+     * @param gatewaySubnet the gatewaySubnet value to set.
+     * @return the DedicatedCloudServiceInner object itself.
+     */
+    public DedicatedCloudServiceInner withGatewaySubnet(String gatewaySubnet) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCloudServiceProperties();
+        }
+        this.innerProperties().withGatewaySubnet(gatewaySubnet);
+        return this;
+    }
+
+    /**
+     * Get the isAccountOnboarded property: indicates whether account onboarded or not in a given region.
+     *
+     * @return the isAccountOnboarded value.
+     */
+    public OnboardingStatus isAccountOnboarded() {
+        return this.innerProperties() == null ? null : this.innerProperties().isAccountOnboarded();
+    }
+
+    /**
+     * Get the nodes property: total nodes purchased.
+     *
+     * @return the nodes value.
+     */
+    public Integer nodes() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodes();
+    }
+
+    /**
+     * Get the serviceUrl property: link to a service management web portal.
+     *
+     * @return the serviceUrl value.
+     */
+    public String serviceUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceUrl();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

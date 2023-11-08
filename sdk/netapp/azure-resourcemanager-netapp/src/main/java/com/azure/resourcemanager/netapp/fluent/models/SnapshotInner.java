@@ -6,16 +6,14 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Snapshot of a Volume. */
 @Fluent
 public final class SnapshotInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotInner.class);
-
     /*
      * Resource location
      */
@@ -27,6 +25,16 @@ public final class SnapshotInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of SnapshotInner class. */
+    public SnapshotInner() {
+    }
 
     /**
      * Get the location property: Resource location.
@@ -58,7 +66,18 @@ public final class SnapshotInner extends ProxyResource {
     }
 
     /**
-     * Get the snapshotId property: snapshotId UUID v4 used to identify the Snapshot.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the snapshotId property: snapshotId
+     *
+     * <p>UUID v4 used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
@@ -67,7 +86,9 @@ public final class SnapshotInner extends ProxyResource {
     }
 
     /**
-     * Get the created property: name The creation date of the snapshot.
+     * Get the created property: name
+     *
+     * <p>The creation date of the snapshot.
      *
      * @return the created value.
      */
@@ -91,7 +112,7 @@ public final class SnapshotInner extends ProxyResource {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model SnapshotInner"));
         }
@@ -99,4 +120,6 @@ public final class SnapshotInner extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SnapshotInner.class);
 }

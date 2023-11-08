@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dimension of map account, for example API Category, Api Name, Result Type, and Response Code. */
 @Fluent
 public final class Dimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dimension.class);
-
     /*
      * Display name of dimension.
      */
@@ -25,6 +21,34 @@ public final class Dimension {
      */
     @JsonProperty(value = "displayName")
     private String displayName;
+
+    /*
+     * Internal name of the dimension.
+     */
+    @JsonProperty(value = "internalName")
+    private String internalName;
+
+    /*
+     * Internal metric name of the dimension.
+     */
+    @JsonProperty(value = "internalMetricName")
+    private String internalMetricName;
+
+    /*
+     * Source Mdm Namespace of the dimension.
+     */
+    @JsonProperty(value = "sourceMdmNamespace")
+    private String sourceMdmNamespace;
+
+    /*
+     * Flag to indicate exporting to Azure Monitor.
+     */
+    @JsonProperty(value = "toBeExportedToShoebox")
+    private Boolean toBeExportedToShoebox;
+
+    /** Creates an instance of Dimension class. */
+    public Dimension() {
+    }
 
     /**
      * Get the name property: Display name of dimension.
@@ -63,6 +87,86 @@ public final class Dimension {
      */
     public Dimension withDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get the internalName property: Internal name of the dimension.
+     *
+     * @return the internalName value.
+     */
+    public String internalName() {
+        return this.internalName;
+    }
+
+    /**
+     * Set the internalName property: Internal name of the dimension.
+     *
+     * @param internalName the internalName value to set.
+     * @return the Dimension object itself.
+     */
+    public Dimension withInternalName(String internalName) {
+        this.internalName = internalName;
+        return this;
+    }
+
+    /**
+     * Get the internalMetricName property: Internal metric name of the dimension.
+     *
+     * @return the internalMetricName value.
+     */
+    public String internalMetricName() {
+        return this.internalMetricName;
+    }
+
+    /**
+     * Set the internalMetricName property: Internal metric name of the dimension.
+     *
+     * @param internalMetricName the internalMetricName value to set.
+     * @return the Dimension object itself.
+     */
+    public Dimension withInternalMetricName(String internalMetricName) {
+        this.internalMetricName = internalMetricName;
+        return this;
+    }
+
+    /**
+     * Get the sourceMdmNamespace property: Source Mdm Namespace of the dimension.
+     *
+     * @return the sourceMdmNamespace value.
+     */
+    public String sourceMdmNamespace() {
+        return this.sourceMdmNamespace;
+    }
+
+    /**
+     * Set the sourceMdmNamespace property: Source Mdm Namespace of the dimension.
+     *
+     * @param sourceMdmNamespace the sourceMdmNamespace value to set.
+     * @return the Dimension object itself.
+     */
+    public Dimension withSourceMdmNamespace(String sourceMdmNamespace) {
+        this.sourceMdmNamespace = sourceMdmNamespace;
+        return this;
+    }
+
+    /**
+     * Get the toBeExportedToShoebox property: Flag to indicate exporting to Azure Monitor.
+     *
+     * @return the toBeExportedToShoebox value.
+     */
+    public Boolean toBeExportedToShoebox() {
+        return this.toBeExportedToShoebox;
+    }
+
+    /**
+     * Set the toBeExportedToShoebox property: Flag to indicate exporting to Azure Monitor.
+     *
+     * @param toBeExportedToShoebox the toBeExportedToShoebox value to set.
+     * @return the Dimension object itself.
+     */
+    public Dimension withToBeExportedToShoebox(Boolean toBeExportedToShoebox) {
+        this.toBeExportedToShoebox = toBeExportedToShoebox;
         return this;
     }
 

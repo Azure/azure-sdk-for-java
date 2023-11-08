@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.batch.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.batch.models.PackageState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An application package which represents a particular version of an application. */
-@Fluent
+@Immutable
 public final class ApplicationPackageInner extends ProxyResource {
     /*
      * The properties associated with the Application Package.
@@ -24,6 +24,10 @@ public final class ApplicationPackageInner extends ProxyResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of ApplicationPackageInner class. */
+    public ApplicationPackageInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties associated with the Application Package.

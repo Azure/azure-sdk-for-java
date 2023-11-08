@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ValidateAddress")
 @Fluent
 public final class ValidateAddress extends ValidationInputRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateAddress.class);
-
     /*
      * Shipping address of the customer.
      */
@@ -35,6 +32,10 @@ public final class ValidateAddress extends ValidationInputRequest {
      */
     @JsonProperty(value = "transportPreferences")
     private TransportPreferences transportPreferences;
+
+    /** Creates an instance of ValidateAddress class. */
+    public ValidateAddress() {
+    }
 
     /**
      * Get the shippingAddress property: Shipping address of the customer.
@@ -105,14 +106,14 @@ public final class ValidateAddress extends ValidationInputRequest {
     public void validate() {
         super.validate();
         if (shippingAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property shippingAddress in model ValidateAddress"));
         } else {
             shippingAddress().validate();
         }
         if (deviceType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property deviceType in model ValidateAddress"));
         }
@@ -120,4 +121,6 @@ public final class ValidateAddress extends ValidationInputRequest {
             transportPreferences().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ValidateAddress.class);
 }

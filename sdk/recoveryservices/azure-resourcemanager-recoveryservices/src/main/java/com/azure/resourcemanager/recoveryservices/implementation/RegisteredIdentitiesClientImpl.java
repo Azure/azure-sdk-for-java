@@ -20,14 +20,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.fluent.RegisteredIdentitiesClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RegisteredIdentitiesClient. */
 public final class RegisteredIdentitiesClientImpl implements RegisteredIdentitiesClient {
-    private final ClientLogger logger = new ClientLogger(RegisteredIdentitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RegisteredIdentitiesService service;
 
@@ -52,11 +49,10 @@ public final class RegisteredIdentitiesClientImpl implements RegisteredIdentitie
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesMana")
-    private interface RegisteredIdentitiesService {
+    public interface RegisteredIdentitiesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/registeredIdentities/{identityName}")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/registeredIdentities/{identityName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -72,13 +68,13 @@ public final class RegisteredIdentitiesClientImpl implements RegisteredIdentitie
     /**
      * Unregisters the given container from your Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param identityName Name of the protection container to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -117,20 +113,20 @@ public final class RegisteredIdentitiesClientImpl implements RegisteredIdentitie
                             vaultName,
                             identityName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Unregisters the given container from your Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param identityName Name of the protection container to unregister.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -172,24 +168,41 @@ public final class RegisteredIdentitiesClientImpl implements RegisteredIdentitie
     /**
      * Unregisters the given container from your Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param identityName Name of the protection container to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String identityName) {
-        return deleteWithResponseAsync(resourceGroupName, vaultName, identityName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, vaultName, identityName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Unregisters the given container from your Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param identityName Name of the protection container to unregister.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String vaultName, String identityName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, vaultName, identityName, context).block();
+    }
+
+    /**
+     * Unregisters the given container from your Recovery Services vault.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param identityName Name of the protection container to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,24 +211,6 @@ public final class RegisteredIdentitiesClientImpl implements RegisteredIdentitie
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String identityName) {
-        deleteAsync(resourceGroupName, vaultName, identityName).block();
-    }
-
-    /**
-     * Unregisters the given container from your Recovery Services vault.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param identityName Name of the protection container to unregister.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String vaultName, String identityName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, vaultName, identityName, context).block();
+        deleteWithResponse(resourceGroupName, vaultName, identityName, Context.NONE);
     }
 }

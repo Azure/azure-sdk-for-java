@@ -9,18 +9,21 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
 /** Initializes a new instance of the asynchronous PurviewMetadataClient type. */
-@ServiceClient(builder = PurviewMetadataClientBuilder.class, isAsync = true)
+@ServiceClient(builder = MetadataRolesClientBuilder.class, isAsync = true)
 public final class MetadataRolesAsyncClient {
     @Generated private final MetadataRolesImpl serviceClient;
 
     /**
-     * Initializes an instance of MetadataRoles client.
+     * Initializes an instance of MetadataRolesAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -32,59 +35,49 @@ public final class MetadataRolesAsyncClient {
     /**
      * Lists roles for Purview Account.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     values: [
-     *         {
-     *             id: String
-     *             name: String
-     *             type: String
-     *             properties: {
-     *                 provisioningState: String
-     *                 roleType: String
-     *                 friendlyName: String
-     *                 description: String
-     *                 cnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
-     *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
-     *                             ]
-     *                         }
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     type: String (Optional)
+     *     properties (Optional): {
+     *         provisioningState: String (Optional)
+     *         roleType: String (Optional)
+     *         friendlyName: String (Optional)
+     *         description: String (Optional)
+     *         cnfCondition (Optional): [
+     *              (Optional)[
+     *                  (Optional){
+     *                     attributeName: String (Optional)
+     *                     attributeValueIncludes: String (Optional)
+     *                     attributeValueIncludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 dnfCondition: [
-     *                     [
-     *                         (recursive schema, see above)
+     *                     attributeValueExcludes: String (Optional)
+     *                     attributeValueExcludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 version: Long
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
+     *                 }
+     *             ]
+     *         ]
+     *         dnfCondition (Optional): [
+     *              (Optional)[
+     *                 (recursive schema, see above)
+     *             ]
+     *         ]
+     *         version: Long (Optional)
+     *     }
      * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return list of Metadata roles.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of Metadata roles as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

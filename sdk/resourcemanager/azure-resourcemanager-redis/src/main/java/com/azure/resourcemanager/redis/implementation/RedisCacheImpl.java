@@ -5,6 +5,7 @@ package com.azure.resourcemanager.redis.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.RedisManager;
 import com.azure.resourcemanager.redis.fluent.models.PrivateEndpointConnectionInner;
@@ -586,6 +587,9 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     public Mono<RedisCache> createResourceAsync() {
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.innerModel().tags());
+        if (CoreUtils.isNullOrEmpty(this.createParameters.redisVersion())) {
+            withRedisVersion(RedisVersion.V6);
+        }
         this.patchScheduleAdded = false;
         return this
             .manager()

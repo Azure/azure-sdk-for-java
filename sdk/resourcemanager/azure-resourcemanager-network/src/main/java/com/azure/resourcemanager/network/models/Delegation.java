@@ -20,8 +20,7 @@ public final class Delegation extends SubResource {
     private ServiceDelegationPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within a subnet. This name can
-     * be used to access the resource.
+     * The name of the resource that is unique within a subnet. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -37,6 +36,10 @@ public final class Delegation extends SubResource {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of Delegation class. */
+    public Delegation() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the subnet.

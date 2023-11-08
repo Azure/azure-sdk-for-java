@@ -41,6 +41,15 @@ public final class MicrosoftGraphPhoneType extends ExpandableStringEnum<Microsof
     public static final MicrosoftGraphPhoneType RADIO = fromString("radio");
 
     /**
+     * Creates a new instance of MicrosoftGraphPhoneType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphPhoneType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphPhoneType from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class MicrosoftGraphPhoneType extends ExpandableStringEnum<Microsof
         return fromString(name, MicrosoftGraphPhoneType.class);
     }
 
-    /** @return known MicrosoftGraphPhoneType values. */
+    /**
+     * Gets known MicrosoftGraphPhoneType values.
+     *
+     * @return known MicrosoftGraphPhoneType values.
+     */
     public static Collection<MicrosoftGraphPhoneType> values() {
         return values(MicrosoftGraphPhoneType.class);
     }

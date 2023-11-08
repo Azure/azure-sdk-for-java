@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Name. */
+/** Name of the policy. The valid value is AccessTimeTracking. This field is currently read only. */
 public final class Name extends ExpandableStringEnum<Name> {
     /** Static value AccessTimeTracking for Name. */
     public static final Name ACCESS_TIME_TRACKING = fromString("AccessTimeTracking");
+
+    /**
+     * Creates a new instance of Name value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Name() {
+    }
 
     /**
      * Creates or finds a Name from its string representation.
@@ -24,7 +33,11 @@ public final class Name extends ExpandableStringEnum<Name> {
         return fromString(name, Name.class);
     }
 
-    /** @return known Name values. */
+    /**
+     * Gets known Name values.
+     *
+     * @return known Name values.
+     */
     public static Collection<Name> values() {
         return values(Name.class);
     }

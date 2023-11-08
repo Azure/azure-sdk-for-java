@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Daily Schedule properties. */
 @Fluent
 public final class DailySchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DailySchedule.class);
-
     /*
      * Daily snapshot count to keep
      */
@@ -37,6 +33,10 @@ public final class DailySchedule {
      */
     @JsonProperty(value = "usedBytes")
     private Long usedBytes;
+
+    /** Creates an instance of DailySchedule class. */
+    public DailySchedule() {
+    }
 
     /**
      * Get the snapshotsToKeep property: Daily snapshot count to keep.

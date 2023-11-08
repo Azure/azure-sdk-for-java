@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cognitive Services account commitment cost. */
 @Fluent
 public final class CommitmentCost {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommitmentCost.class);
-
     /*
      * Commitment meter Id.
      */
@@ -25,6 +21,10 @@ public final class CommitmentCost {
      */
     @JsonProperty(value = "overageMeterId")
     private String overageMeterId;
+
+    /** Creates an instance of CommitmentCost class. */
+    public CommitmentCost() {
+    }
 
     /**
      * Get the commitmentMeterId property: Commitment meter Id.

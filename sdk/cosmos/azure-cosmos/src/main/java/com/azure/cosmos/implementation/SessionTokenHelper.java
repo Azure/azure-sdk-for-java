@@ -117,15 +117,22 @@ public class SessionTokenHelper {
             if (rangeIdToTokenMap.containsKey(partitionKeyRangeId)) {
                 return rangeIdToTokenMap.get(partitionKeyRangeId);
             } else {
+                ISessionToken parentSessionToken = null;
+
                 Collection<String> parents = request.requestContext.resolvedPartitionKeyRange.getParents();
                 if (parents != null) {
                     List<String> parentsList = new ArrayList<>(parents);
                     for (int i = parentsList.size() - 1; i >= 0; i--) {
                         String parentId = parentsList.get(i);
                         if (rangeIdToTokenMap.containsKey(parentId)) {
-                            return rangeIdToTokenMap.get(parentId);
+                            // A partition can have more than 1 parent (merge). In that case, we apply Merge to generate a token with both parent's max LSNs
+                            parentSessionToken =
+                                parentSessionToken != null
+                                    ? parentSessionToken.merge(rangeIdToTokenMap.get(parentId)) : rangeIdToTokenMap.get(parentId);
                         }
                     }
+
+                    return parentSessionToken;
                 }
             }
         }

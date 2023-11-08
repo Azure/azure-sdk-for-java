@@ -8,7 +8,8 @@ import re
 import glob
 import subprocess
 import yaml
-from typing import Dict, List, Tuple
+import requests
+from typing import List, Tuple, Optional
 
 from parameters import *
 from utils import set_or_default_version
@@ -18,14 +19,157 @@ from utils import ListIndentDumper
 
 
 GROUP_ID = 'com.azure'
-LLC_ARGUMENTS = '--low-level-client --sdk-integration --generate-samples --generate-tests'
+DPG_ARGUMENTS = '--sdk-integration --generate-samples --generate-tests'
+YAML_BLOCK_REGEX = r'```\s?(?:yaml|YAML).*?\n(.*?)```'
+
+
+def sdk_automation_typespec(config: dict) -> List[dict]:
+    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
+    spec_root = os.path.abspath(config['specFolder'])
+
+    packages = []
+    if 'relatedTypeSpecProjectFolder' not in config:
+        return packages
+
+    head_sha = config['headSha']
+    repo_url = config['repoHttpsUrl']
+
+    tsp_projects = config['relatedTypeSpecProjectFolder']
+    if isinstance(tsp_projects, str):
+        tsp_projects = [tsp_projects]
+
+    for tsp_project in tsp_projects:
+        tsp_dir = os.path.join(spec_root, tsp_project)
+
+        succeeded = False
+        sdk_folder = None
+        service = None
+        module = None
+        try:
+            cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
+            logging.info('Command line: ' + ' '.join(cmd))
+            output = subprocess.check_output(cmd, cwd=sdk_root)
+            output_str = str(output, 'utf-8')
+            script_return = output_str.splitlines()[-1] # the path to sdk folder
+            sdk_folder = os.path.relpath(script_return, sdk_root)
+            logging.info('SDK folder: ' + sdk_folder)
+            succeeded = True
+        except subprocess.CalledProcessError as error:
+            logging.error(f'TypeSpec-Project-Process.ps1 fail: {error}')
+
+        if succeeded:
+            # check require_sdk_integration
+            require_sdk_integration = False
+            cmd = ['git', 'add', '.']
+            check_call(cmd, sdk_root)
+            cmd = ['git', 'status', '--porcelain', os.path.join(sdk_folder, 'pom.xml')]
+            logging.info('Command line: ' + ' '.join(cmd))
+            output = subprocess.check_output(cmd, cwd=sdk_root)
+            output_str = str(output, 'utf-8')
+            git_items = output_str.splitlines()
+            if len(git_items) > 0:
+                git_pom_item = git_items[0]
+                # new pom.xml implies new SDK
+                require_sdk_integration = git_pom_item.startswith('A ')
+
+            # parse service and module
+            match = re.match(r'sdk[\\/](.*)[\\/](.*)', sdk_folder)
+            service = match.group(1)
+            module = match.group(2)
+
+            # TODO (weidxu): move to typespec-java
+            if require_sdk_integration:
+                set_or_default_version(sdk_root, GROUP_ID, module)
+                update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+                update_root_pom(sdk_root, service)
+
+            # compile
+            succeeded = compile_package(sdk_root, GROUP_ID, module)
+
+        # output
+        if sdk_folder and module and service:
+            artifacts = [
+                '{0}/pom.xml'.format(sdk_folder)
+            ]
+            artifacts += [
+                jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
+            ]
+            result = 'succeeded' if succeeded else 'failed'
+
+            packages.append({
+                'packageName': module,
+                'path': [
+                    sdk_folder,
+                    CI_FILE_FORMAT.format(service),
+                    POM_FILE_FORMAT.format(service),
+                    'eng/versioning',
+                    'pom.xml'
+                ],
+                'typespecProject': [tsp_project],
+                'packageFolder': sdk_folder,
+                'artifacts': artifacts,
+                'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
+                'language': 'Java',
+                'result': result,
+            })
+        else:
+            # no info about package, abort with result=failed
+            packages.append({
+                'path': [
+                ],
+                'result': 'failed',
+            })
+            break
+
+    return packages
+
+
+def check_call(cmd: List[str], work_dir: str):
+    logging.info('Command line: ' + ' '.join(cmd))
+    subprocess.check_call(cmd, cwd=work_dir)
+
+
+def get_or_update_sdk_readme(config: dict, readme_file_path: str) -> Optional[str]:
+    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
+    sdk_readme_abspath = None
+
+    if 'autorestConfig' in config:
+        # autorestConfig
+
+        autorest_config: str = config['autorestConfig']
+
+        # find 'output-folder', and write swagger/README.md
+        autorest_config = autorest_config.replace(r'\r\n', r'\n')
+        yaml_blocks = re.findall(YAML_BLOCK_REGEX, autorest_config, re.DOTALL)
+        for yaml_str in yaml_blocks:
+            yaml_json = yaml.safe_load(yaml_str)
+            if 'output-folder' in yaml_json:
+                output_folder: str = yaml_json['output-folder']
+                if output_folder.startswith('sdk/'):
+                    sdk_readme_abspath = os.path.join(sdk_root, output_folder, 'swagger', 'README.md')
+                    os.makedirs(os.path.dirname(sdk_readme_abspath), exist_ok=True)
+                    with open(sdk_readme_abspath, 'w', encoding='utf-8') as f_out:
+                        f_out.write(autorest_config)
+                    logging.info('[RESOLVE] Create README from autorestConfig')
+                break
+
+    if not sdk_readme_abspath:
+        # swagger/README.md in sdk repository
+
+        # find all swagger/README.md in sdk repo
+        candidate_sdk_readmes = glob.glob(os.path.join(sdk_root, 'sdk/*/*/swagger/README.md'))
+        # find the README.md that matches
+        sdk_readme_abspath = find_sdk_readme(readme_file_path, candidate_sdk_readmes)
+
+    return sdk_readme_abspath
 
 
 def sdk_automation(config: dict) -> List[dict]:
-    # 1. README.java.md in spec repo, and it contains 'packages' block. Match json to 'input-file'.
-    # 2. If 'tag' is available, use spec README with tag. If package not in SDK repo, also run integration task.
-    # 3. If 'tag' is not available, try using README_SPEC in SDK repo.
-    # 4. Use default options, run integration task.
+    # priority:
+    # 1. autorestConfig from input
+    # 2. swagger/README.md in sdk repository that matches readme from input
 
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
@@ -33,115 +177,155 @@ def sdk_automation(config: dict) -> List[dict]:
 
     packages = []
 
-    readme_file_path = None
+    # find readme.md in spec repository
+    readme_file_paths = []
     for file_path in config['relatedReadmeMdFiles']:
         match = re.search(
-            'specification/([^/]+)/data-plane/readme.md',
+            r'specification/([^/]+)/data-plane(/.*)*/readme.md',
             file_path,
             re.IGNORECASE,
         )
         if match:
-            readme_file_path = file_path
-            break
+            readme_file_paths.append(file_path)
 
-    for file_path in config['changedFiles']:
-        match = re.search(
-            'specification/([^/]+)/data-plane/.*/([^/]+).json',
-            file_path,
-            re.IGNORECASE,
-        )
-        if match and '/examples/' not in file_path:
-            service = match.group(1)
-            file_name = match.group(2)
+    # readme.md required
+    if not readme_file_paths:
+        return packages
+    # we only take first readme.md
+    readme_file_path = readme_file_paths[0]
+    logging.info('[RESOLVE] README from specification %s', readme_file_path)
 
-            file_path = os.path.join(spec_root, file_path)
-            readme_file_path = os.path.join(spec_root, readme_file_path) if readme_file_path else None
+    sdk_readme_abspath = get_or_update_sdk_readme(config, readme_file_path)
 
-            input_file, service, module, module_tag = get_generate_parameters(
-                service, file_name, file_path, readme_file_path)
-
-            succeeded = generate(sdk_root, input_file,
-                                 service, module, '', '', '',
-                                 AUTOREST_CORE_VERSION, AUTOREST_JAVA,
-                                 '', readme_file_path, module_tag)
-
-            generated_folder = 'sdk/{0}/{1}'.format(service, module)
-
-            if succeeded:
-                compile_package(sdk_root, GROUP_ID, module)
-
-            artifacts = [
-                '{0}/pom.xml'.format(generated_folder)
-            ]
-            artifacts += [
-                jar for jar in glob.glob('{0}/target/*.jar'.format(
-                    generated_folder))
-            ]
-            result = 'succeeded' if succeeded else 'failed'
-
-            packages.append({
-                'packageName': module,
-                'path': [
-                    generated_folder,
-                    CI_FILE_FORMAT.format(service),
-                    POM_FILE_FORMAT.format(service),
-                    'eng/versioning',
-                    'pom.xml'
-                ],
-                'artifacts': artifacts,
-                'result': result,
-            })
-        else:
-            logging.info('[Skip] changed file {0}'.format(file_path))
+    if sdk_readme_abspath:
+        spec_readme_abspath = os.path.join(spec_root, readme_file_path)
+        update_readme(sdk_readme_abspath, spec_readme_abspath)
+        sdk_automation_readme(sdk_readme_abspath, packages, sdk_root)
 
     return packages
 
 
+def find_sdk_readme(spec_readme: str, candidate_sdk_readmes: List[str]) -> Optional[str]:
+    segments = spec_readme.split('/')
+    if 'data-plane' in segments:
+        index = segments.index('data-plane')
+        # include service name, exclude readme.md
+        search_target = '/' + '/'.join(segments[index-1:])
+
+        for sdk_readme_path in candidate_sdk_readmes:
+            spec_reference = find_sdk_spec_reference(sdk_readme_path)
+            if spec_reference and search_target in spec_reference:
+                return sdk_readme_path
+    return None
+
+
+def find_sdk_spec_reference(sdk_readme_path: str) -> Optional[str]:
+    with open(sdk_readme_path, 'r', encoding='utf-8') as f_in:
+        content = f_in.read()
+    if content:
+        yaml_blocks = re.findall(YAML_BLOCK_REGEX, content, re.DOTALL)
+        for yaml_str in yaml_blocks:
+            try:
+                yaml_json = yaml.safe_load(yaml_str)
+                if 'data-plane' in yaml_json and yaml_json['data-plane']:
+                    # take 'require'
+                    if 'require' in yaml_json:
+                        require = yaml_json['require']
+                        if isinstance(require, List):
+                            require = require[0]
+                        return require
+                    # take 'input-file', if 'require' not found
+                    if 'input-file' in yaml_json:
+                        input_file = yaml_json['input-file']
+                        if isinstance(input_file, List):
+                            input_file = input_file[0]
+                        return input_file
+            except yaml.YAMLError:
+                continue
+    return None
+
+
+def sdk_automation_readme(readme_file_abspath: str,
+                          packages: List[dict],
+                          sdk_root: str):
+    service, module = get_generate_parameters(readme_file_abspath)
+
+    if module:
+        succeeded = generate(sdk_root, service, module, readme=readme_file_abspath,
+                             autorest=AUTOREST_CORE_VERSION, use=AUTOREST_JAVA)
+
+        generated_folder = 'sdk/{0}/{1}'.format(service, module)
+
+        if succeeded:
+            compile_package(sdk_root, GROUP_ID, module)
+
+        artifacts = [
+            '{0}/pom.xml'.format(generated_folder)
+        ]
+        artifacts += [
+            jar for jar in glob.glob('{0}/target/*.jar'.format(generated_folder))
+        ]
+        result = 'succeeded' if succeeded else 'failed'
+
+        packages.append({
+            'packageName': module,
+            'path': [
+                generated_folder,
+                CI_FILE_FORMAT.format(service),
+                POM_FILE_FORMAT.format(service),
+                'eng/versioning',
+                'pom.xml'
+            ],
+            'artifacts': artifacts,
+            'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(generated_folder))), None),
+            'language': 'Java',
+            'result': result,
+        })
+
+
 def generate(
     sdk_root: str,
-    input_file: str,
     service: str,
     module: str,
-    security: str,
-    security_scopes: str,
-    title: str,
+    *,
+    input_file: str = None,
+    spec_readme: str = None,
+    security: str = None,
+    security_scopes: str = None,
+    title: str = None,
     autorest: str,
     use: str,
     autorest_options: str = '',
-    readme_file: str = None,
-    module_tag: str = None,
-    **kwargs,
+    readme: str = None
 ) -> bool:
-    # param readme_file and module_tag is for sdkautomation
-
     namespace = 'com.{0}'.format(module.replace('-', '.'))
-    output_dir = os.path.join(
-        sdk_root,
-        'sdk', service, module
-    )
-    shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
+    output_dir = os.path.join(sdk_root, 'sdk', service, module)
+    # shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
-    shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
+    shutil.rmtree(os.path.join(output_dir, 'src/test/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
-    if module_tag:
+    if readme:
         # use readme from spec repo
-        readme_file_path = readme_file
+        readme_file_path = readme
 
-        require_sdk_integration = not os.path.exists(output_dir)
+        require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
 
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-        command = 'autorest --version={0} --use={1} --java --java.output-folder={2} --tag={3} {4}'.format(
-            autorest,
-            use,
-            output_dir,
-            module_tag,
-            readme_file_path
-        )
+        command = 'autorest --version={0} --use={1} --java --data-plane ' \
+                  '--java.java-sdks-folder={2} --java.output-folder={3} {4} {5}'\
+            .format(
+                autorest,
+                use,
+                os.path.abspath(sdk_root),
+                os.path.abspath(output_dir),
+                readme_file_path,
+                autorest_options
+            )
         if require_sdk_integration:
-            command += LLC_ARGUMENTS
+            command += ' --java.namespace={0} '.format(namespace) + DPG_ARGUMENTS
         logging.info(command)
         try:
             subprocess.run(command, shell=True, check=True)
@@ -154,67 +338,51 @@ def generate(
             update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
     else:
-        readme_file_path = update_readme(output_dir, input_file, security, security_scopes, title)
-        if readme_file_path:
-            # use readme from SDK repo
+        # no readme
 
-            logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
+        security_arguments = ''
+        if security:
+            security_arguments += '--security={0}'.format(security)
+        if security_scopes:
+            security_arguments += ' --security-scopes={0}'.format(security_scopes)
 
-            command = 'autorest --version={0} --use={1} --java --java.output-folder={2} {3}'.format(
-                autorest,
-                use,
-                output_dir,
-                readme_file_path
-            )
-            logging.info(command)
-            try:
-                subprocess.run(command, shell=True, cwd=output_dir, check=True)
-            except subprocess.CalledProcessError:
-                logging.error('[GENERATE] Autorest fail')
-                return False
+        if spec_readme:
+            logging.info('[GENERATE] Autorest from README {}'.format(spec_readme))
+            input_arguments = '--require={0}'.format(spec_readme)
         else:
-            # no readme
-
             logging.info('[GENERATE] Autorest from JSON {}'.format(input_file))
-
-            security_arguments = ''
-            if security:
-                security_arguments += '--security={0}'.format(security)
-            if security_scopes:
-                security_arguments += ' --security-scopes={0}'.format(security_scopes)
-
             input_arguments = '--input-file={0}'.format(input_file)
 
-            artifact_arguments = '--artifact-id={0}'.format(module)
-            if title:
-                artifact_arguments += ' --title={0}'.format(title)
+        artifact_arguments = '--artifact-id={0}'.format(module)
+        if title:
+            artifact_arguments += ' --title={0}'.format(title)
 
-            command = 'autorest --version={0} --use={1} --java ' \
-                      '--java.azure-libraries-for-java-folder={2} --java.output-folder={3} ' \
-                      '--java.namespace={4} {5}'\
-                .format(
-                    autorest,
-                    use,
-                    os.path.abspath(sdk_root),
-                    os.path.abspath(output_dir),
-                    namespace,
-                    ' '.join((LLC_ARGUMENTS, input_arguments, security_arguments, artifact_arguments, autorest_options))
-                )
-            logging.info(command)
-            if os.system(command) != 0:
-                logging.error('[GENERATE] Autorest fail')
-                return False
+        command = 'autorest --version={0} --use={1} --java --data-plane ' \
+                  '--java.java-sdks-folder={2} --java.output-folder={3} ' \
+                  '--java.namespace={4} {5}'\
+            .format(
+                autorest,
+                use,
+                os.path.abspath(sdk_root),
+                os.path.abspath(output_dir),
+                namespace,
+                ' '.join((DPG_ARGUMENTS, input_arguments, security_arguments, artifact_arguments, autorest_options))
+            )
+        logging.info(command)
+        if os.system(command) != 0:
+            logging.error('[GENERATE] Autorest fail')
+            return False
 
-            set_or_default_version(sdk_root, GROUP_ID, module)
-            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
-            update_root_pom(sdk_root, service)
-            # update_version(sdk_root, output_dir)
+        set_or_default_version(sdk_root, GROUP_ID, module)
+        update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+        update_root_pom(sdk_root, service)
+        # update_version(sdk_root, output_dir)
 
     return True
 
 
 def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
-    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -Drevapi.skip -pl {1}:{2} -am'.format(
+    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am'.format(
         sdk_root, group_id, module)
     logging.info(command)
     if os.system(command) != 0:
@@ -223,138 +391,120 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
     return True
 
 
-def get_generate_parameters(
-    service, file_name, json_file_path, readme_file_path: str
-) -> Tuple[str, str, str, str]:
-    # get parameters from README.java.md from spec repo, or fallback to parameters deduced from json file path
+def get_generate_parameters(readme_file_abspath: str) -> Tuple[str, str]:
+    # get parameters from swagger/README.md from sdk repository
 
-    input_file = json_file_path
+    service = None
     module = None
-    module_tag = None
-    if readme_file_path:
-        # try readme, it must contain 'batch' and match the json file by name
-        java_readme_file_path = readme_file_path.replace('.md', '.java.md')
-        if os.path.exists(java_readme_file_path):
-            with open(java_readme_file_path, 'r', encoding='utf-8') as f_in:
-                content = f_in.read()
-            if content:
-                yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
-                for yaml_str in yaml_blocks:
-                    yaml_json = yaml.safe_load(yaml_str)
-                    if 'packages' in yaml_json:
-                        for item in yaml_json['packages']:
-                            input_files = item['input-file']
-                            for file in input_files:
-                                if os.path.basename(file) == os.path.basename(input_file):
-                                    # found in README
-                                    module = item['name']
-                                    if 'service' in item:
-                                        service = item['service']
-                                    logging.info('[GENERATE] service {0} and module {1} found for {2}'.format(
-                                        service, module, json_file_path))
-                                    if 'tag' in item:
-                                        module_tag = item['tag']
-                                    break
+    if readme_file_abspath:
+        # try swagger/readme.md for service and module
+        if not module and os.path.basename(readme_file_abspath).lower() == 'readme.md':
+            dir_name = os.path.dirname(readme_file_abspath).lower()
+            if os.path.basename(dir_name) == 'swagger':
+                dir_name = os.path.dirname(dir_name)
+                module = os.path.basename(dir_name)
+                dir_name = os.path.dirname(dir_name)
+                service = os.path.basename(dir_name)
+                dir_name = os.path.dirname(dir_name)
+                if not os.path.basename(dir_name) == 'sdk':
+                    module = None
+                    service = None
 
-    if not module:
-        # deduce from json file path
-        file_name_sans = ''.join(c for c in file_name if c.isalnum())
-        module = 'azure-{0}-{1}'.format(service, file_name_sans).lower()
-    return input_file, service, module, module_tag
+    return service, module
 
 
-def update_readme(
-    module_dir: str, input_file: str, security: str, security_scopes: str, title: str
-) -> str:
+def uri_file_exists(file_path: str) -> bool:
+    if file_path.startswith('http://') or file_path.startswith('https://'):
+        return requests.head(file_path).status_code / 100 == 2
+    else:
+        return os.path.exists(file_path)
+
+
+def uri_file_read(file_path: str) -> str:
+    if file_path.startswith('http://') or file_path.startswith('https://'):
+        return requests.get(file_path).text
+    else:
+        with open(file_path, 'r', encoding='utf-8') as f_in:
+            return f_in.read()
+
+
+def find_readme(json_file_path: str, readme_file_paths: List[str],
+                spec_root: str) -> Optional[str]:
+    if not readme_file_paths:
+        return None
+
+    # ideally we'd like to match readme in more specific path
+    readme_file_paths = sorted(readme_file_paths, key=len, reverse=True)
+
+    json_dir_name = os.path.dirname(json_file_path)
+    for readme_file_path in readme_file_paths:
+        readme_dir_name = os.path.dirname(readme_file_path)
+        if json_dir_name.startswith(readme_dir_name):
+            java_readme_path = os.path.join(spec_root, readme_file_path).replace('.md', '.java.md')
+            if os.path.exists(java_readme_path):
+                return readme_file_path
+
+    return None
+
+
+def update_readme(sdk_readme_abspath: str, spec_readme: str = None):
     # update README_SPEC.md in SDK repo
 
-    readme_relative_path = ''
+    with open(sdk_readme_abspath, 'r', encoding='utf-8') as f_in:
+        content = f_in.read()
+    if content:
+        yaml_blocks = re.findall(YAML_BLOCK_REGEX, content, re.DOTALL)
+        for yaml_str in yaml_blocks:
+            yaml_json = yaml.safe_load(yaml_str)
+            yaml_json.pop('require', None)
+            yaml_json.pop('input-file', None)
+            if spec_readme:
+                yaml_json['require'] = spec_readme
 
-    swagger_dir = os.path.join(module_dir, 'swagger')
-    if os.path.isdir(swagger_dir):
-        for filename in os.listdir(swagger_dir):
-            if filename.lower().startswith('readme') and filename.lower().endswith('.md'):
-                readme_yaml_found = False
-                readme_path = os.path.join(swagger_dir, filename)
-                with open(readme_path, 'r', encoding='utf-8') as f_in:
-                    content = f_in.read()
-                if content:
-                    yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
-                    for yaml_str in yaml_blocks:
-                        yaml_json = yaml.safe_load(yaml_str)
-                        if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
-                            match_found, input_files = update_yaml_input_files(yaml_json, input_file)
-                            if match_found:
-                                # yaml block found, update
-                                yaml_json['input-file'] = input_files
-                                if title:
-                                    yaml_json['title'] = title
-                                if security:
-                                    yaml_json['security'] = security
-                                if security_scopes:
-                                    yaml_json['security-scopes'] = security_scopes
+            # write updated yaml
+            updated_yaml_str = yaml.dump(yaml_json,
+                                         width=sys.maxsize,
+                                         sort_keys=False,
+                                         Dumper=ListIndentDumper)
 
-                                # write updated yaml
-                                updated_yaml_str = yaml.dump(yaml_json,
-                                                             sort_keys=False,
-                                                             Dumper=ListIndentDumper)
+            if not yaml_str == updated_yaml_str:
+                # update readme
+                updated_content = content.replace(yaml_str, updated_yaml_str, 1)
+                with open(sdk_readme_abspath, 'w', encoding='utf-8') as f_out:
+                    f_out.write(updated_content)
 
-                                if not yaml_str == updated_yaml_str:
-                                    # update readme
-                                    updated_content = content.replace(yaml_str, updated_yaml_str, 1)
-                                    with open(readme_path, 'w', encoding='utf-8') as f_out:
-                                        f_out.write(updated_content)
-
-                                    logging.info('[GENERATE] YAML block in README updated from\n{0}\nto\n{1}'.format(
-                                        yaml_str, updated_yaml_str
-                                    ))
-
-                                readme_yaml_found = True
-                                break
-
-                if readme_yaml_found:
-                    readme_relative_path = 'swagger/{}'.format(filename)
-                    break
-
-    return readme_relative_path
-
-
-def update_yaml_input_files(yaml_json: Dict[str, dict], input_json_file: str) -> Tuple[bool, List[str]]:
-    # update input-file with the json file
-
-    if 'input-file' in yaml_json:
-        input_files = yaml_json['input-file']
-        if not isinstance(input_files, List):
-            # str to List
-            input_files = [input_files]
-        updated_input_files = []
-        match_found = False
-        for file in input_files:
-            if os.path.basename(file) == os.path.basename(input_json_file):
-                match_found = True
-                updated_input_files.append(input_json_file)
-            else:
-                updated_input_files.append(file)
-        return match_found, updated_input_files
-    else:
-        return False, []
+                logging.info('[GENERATE] YAML block in README updated from\n{0}\nto\n{1}'.format(
+                    yaml_str, updated_yaml_str
+                ))
+            break
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--input-file',
-        required=True,
-        help='URL to OpenAPI 2.0 specification JSON as input file.',
+        required=False,
+        help='URL to OpenAPI 2.0 specification JSON as input file. "service" and "module" is required.',
+    )
+    parser.add_argument(
+        '--spec-readme',
+        required=False,
+        help='URL to readme.md from specification repository as input file. "service" and "module" is required.',
+    )
+    parser.add_argument(
+        '-r',
+        '--readme',
+        required=False,
+        help='URL to "readme.md" as configuration file.',
     )
     parser.add_argument(
         '--service',
-        required=True,
+        required=False,
         help='Service name under sdk/. Sample: storage',
     )
     parser.add_argument(
         '--module',
-        required=True,
+        required=False,
         help='Module name under sdk/<service>/. Sample: azure-storage-blob',
     )
     parser.add_argument(
@@ -368,19 +518,6 @@ def parse_args() -> argparse.Namespace:
         '--security-scopes',
         required=False,
         help='OAuth 2.0 scopes when "security" includes "AADToken". '
-             'Sample: https://storage.azure.com/.default',
-    )
-    parser.add_argument(
-        '--credential-types',
-        required=False,
-        help='[DEPRECATED] Credential types. '
-             'Sample: "tokencredential" for AAD credential for OAuth 2.0 authentication; '
-             '"azurekeycredential" for Azure key credential',
-    )
-    parser.add_argument(
-        '--credential-scopes',
-        required=False,
-        help='[DEPRECATED] OAuth 2.0 scopes when "credential-types" includes "tokencredential". '
              'Sample: https://storage.azure.com/.default',
     )
     parser.add_argument(
@@ -415,14 +552,18 @@ def main():
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
 
-    # convert credential-types/credential-scopes to security/security-scopes for backward-compatibility
-    if not args['security'] and args['credential_types']:
-        if args['credential_types'] == 'tokencredential':
-            args['security'] = 'AADToken'
-        elif args['credential_types'] == 'azurekeycredential':
-            args['security'] = 'AzureKey'
-    if not args['security_scopes'] and args['credential_scopes']:
-        args['security_scopes'] = args['credential_scopes']
+    if args['readme']:
+        readme_file_abspath = os.path.abspath(args['readme'])
+        service, module = get_generate_parameters(readme_file_abspath)
+        if not module:
+            raise ValueError('readme.md not found or not well-formed')
+        args['service'] = service
+        args['module'] = module
+    else:
+        if not args['input_file'] and not args['spec_readme']:
+            raise ValueError('Either "readme", or "spec-readme", or "input-file" argument is required')
+        if not args['service'] or not args['module']:
+            raise ValueError('"service" and "module" argument is required')
 
     succeeded = generate(sdk_root, **args)
     if succeeded:

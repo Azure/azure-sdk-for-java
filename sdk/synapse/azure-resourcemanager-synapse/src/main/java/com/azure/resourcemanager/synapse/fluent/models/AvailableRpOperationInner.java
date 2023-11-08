@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.AvailableRpOperationDisplayInfo;
 import com.azure.resourcemanager.synapse.models.OperationMetaServiceSpecification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An operation that is available in this resource provider. */
 @Fluent
 public final class AvailableRpOperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableRpOperationInner.class);
-
     /*
      * Display properties of the operation
      */
@@ -45,6 +41,10 @@ public final class AvailableRpOperationInner {
      */
     @JsonProperty(value = "origin")
     private String origin;
+
+    /** Creates an instance of AvailableRpOperationInner class. */
+    public AvailableRpOperationInner() {
+    }
 
     /**
      * Get the display property: Display properties of the operation.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,12 +17,9 @@ import java.util.Map;
 /** shiftItem. */
 @Fluent
 public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphShiftItem.class);
-
     /*
-     * An incremental part of a shift which can cover details of when and where
-     * an employee is during their shift. For example, an assignment or a
-     * scheduled break or lunch. Required.
+     * An incremental part of a shift which can cover details of when and where an employee is during their shift. For
+     * example, an assignment or a scheduled break or lunch. Required.
      */
     @JsonProperty(value = "activities")
     private List<MicrosoftGraphShiftActivity> activities;
@@ -44,6 +40,10 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
      * shiftItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphShiftItem class. */
+    public MicrosoftGraphShiftItem() {
+    }
 
     /**
      * Get the activities property: An incremental part of a shift which can cover details of when and where an employee

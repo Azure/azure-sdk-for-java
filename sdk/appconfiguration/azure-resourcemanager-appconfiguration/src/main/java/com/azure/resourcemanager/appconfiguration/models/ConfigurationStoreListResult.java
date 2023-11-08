@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.fluent.models.ConfigurationStoreInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of a request to list configuration stores. */
 @Fluent
 public final class ConfigurationStoreListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationStoreListResult.class);
-
     /*
      * The collection value.
      */
@@ -27,6 +23,10 @@ public final class ConfigurationStoreListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ConfigurationStoreListResult class. */
+    public ConfigurationStoreListResult() {
+    }
 
     /**
      * Get the value property: The collection value.

@@ -4,12 +4,15 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import java.time.OffsetDateTime;
 
 /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ImageDeleted event. */
-@Immutable
+@Fluent
 public final class ContainerRegistryImageDeletedEventData extends ContainerRegistryEventData {
+    /** Creates an instance of ContainerRegistryImageDeletedEventData class. */
+    public ContainerRegistryImageDeletedEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public ContainerRegistryImageDeletedEventData setId(String id) {

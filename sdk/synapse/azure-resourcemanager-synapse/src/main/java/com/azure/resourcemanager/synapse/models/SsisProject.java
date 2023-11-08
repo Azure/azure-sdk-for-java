@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("Project")
 @Fluent
 public final class SsisProject extends SsisObjectMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisProject.class);
-
     /*
      * Folder id which contains project.
      */
@@ -42,6 +38,10 @@ public final class SsisProject extends SsisObjectMetadata {
      */
     @JsonProperty(value = "parameters")
     private List<SsisParameter> parameters;
+
+    /** Creates an instance of SsisProject class. */
+    public SsisProject() {
+    }
 
     /**
      * Get the folderId property: Folder id which contains project.

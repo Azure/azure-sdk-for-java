@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +16,6 @@ import java.util.Map;
 /** plannerPlanDetails. */
 @Fluent
 public final class MicrosoftGraphPlannerPlanDetails extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPlannerPlanDetails.class);
-
     /*
      * plannerCategoryDescriptions
      */
@@ -28,12 +26,17 @@ public final class MicrosoftGraphPlannerPlanDetails extends MicrosoftGraphEntity
      * plannerUserIds
      */
     @JsonProperty(value = "sharedWith")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> sharedWith;
 
     /*
      * plannerPlanDetails
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerPlanDetails class. */
+    public MicrosoftGraphPlannerPlanDetails() {
+    }
 
     /**
      * Get the categoryDescriptions property: plannerCategoryDescriptions.

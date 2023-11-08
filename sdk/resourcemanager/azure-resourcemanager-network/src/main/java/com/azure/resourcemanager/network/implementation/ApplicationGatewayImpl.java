@@ -37,17 +37,23 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRouting
 import com.azure.resourcemanager.network.models.ApplicationGatewaySku;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCertificate;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslCipherSuite;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicyName;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicyType;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMap;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.KnownWebApplicationGatewayManagedRuleSet;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallMode;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -61,17 +67,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
-/** Implementation of the ApplicationGateway interface. */
+/**
+ * Implementation of the ApplicationGateway interface.
+ */
 class ApplicationGatewayImpl
     extends GroupableParentResourceWithTagsImpl<
-        ApplicationGateway, ApplicationGatewayInner, ApplicationGatewayImpl, NetworkManager>
+    ApplicationGateway, ApplicationGatewayInner, ApplicationGatewayImpl, NetworkManager>
     implements ApplicationGateway, ApplicationGateway.Definition, ApplicationGateway.Update {
 
     private Map<String, ApplicationGatewayIpConfiguration> ipConfigs;
@@ -81,6 +92,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayBackendHttpConfiguration> backendConfigs;
     private Map<String, ApplicationGatewayListener> listeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
+    private AddedRuleCollection addedRuleCollection;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
     private Map<String, ApplicationGatewayAuthenticationCertificate> authCertificates;
     private Map<String, ApplicationGatewayRedirectConfiguration> redirectConfigs;
@@ -91,6 +103,9 @@ class ApplicationGatewayImpl
     private ApplicationGatewayFrontendImpl defaultPublicFrontend;
 
     private Map<String, String> creatablePipsByFrontend;
+    private String creatableWafPolicy;
+    // whether legacy waf configuration is explicitly specified by the user during creation
+    private boolean legacyWafConfigurationSpecifiedInCreate = false;
 
     ApplicationGatewayImpl(String name, final ApplicationGatewayInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
@@ -146,6 +161,7 @@ class ApplicationGatewayImpl
         this.defaultPrivateFrontend = null;
         this.defaultPublicFrontend = null;
         this.creatablePipsByFrontend = new HashMap<>();
+        this.addedRuleCollection = new AddedRuleCollection();
     }
 
     private void initializeAuthCertificatesFromInner() {
@@ -274,7 +290,18 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public void beforeGroupCreateOrUpdate() {
+        ensureNoMixedWaf();
+    }
+
+    @Override
     protected void beforeCreating() {
+        if (this.creatableWafPolicy != null) {
+            Resource resource = this.taskResult(this.creatableWafPolicy);
+            withExistingWebApplicationFirewallPolicy(resource.id());
+        }
+        this.creatableWafPolicy = null;
+
         // Process created PIPs
         for (Entry<String, String> frontendPipPair : this.creatablePipsByFrontend.entrySet()) {
             Resource createdPip = this.<Resource>taskResult(frontendPipPair.getValue());
@@ -366,6 +393,9 @@ class ApplicationGatewayImpl
         }
 
         // Reset and update request routing rules
+        if (supportsRulePriority()) {
+            addedRuleCollection.autoAssignPriorities(requestRoutingRules().values(), name());
+        }
         this.innerModel().withRequestRoutingRules(innersFromWrappers(this.rules.values()));
         for (ApplicationGatewayRequestRoutingRule rule : this.rules.values()) {
             SubResource ref;
@@ -416,6 +446,25 @@ class ApplicationGatewayImpl
         ApplicationGatewayBackendImpl backend = this.defineBackend(name);
         backend.attach();
         return backend;
+    }
+
+    private void ensureNoMixedWaf() {
+        String errorMessage = "A mixture of legacy WAF configuration and WAF policy is not allowed. "
+            + "If you are using legacy WAF configuration, you are strongly encouraged to upgrade to WAF Policy "
+            + "for easier management, better scale, and a richer feature set at no additional cost. "
+            + "See https://learn.microsoft.com/azure/web-application-firewall/ag/upgrade-ag-waf-policy";
+        if (this.creatableWafPolicy != null || this.innerModel().firewallPolicy() != null) {
+            if (isInCreateMode()) {
+                if (this.legacyWafConfigurationSpecifiedInCreate) {
+                    throw new IllegalStateException(errorMessage);
+                }
+            } else {
+                if (this.innerModel().webApplicationFirewallConfiguration() != null) {
+                    throw new IllegalStateException(errorMessage);
+                }
+            }
+            this.innerModel().withWebApplicationFirewallConfiguration(null);
+        }
     }
 
     private ApplicationGatewayIpConfigurationImpl ensureDefaultIPConfig() {
@@ -580,7 +629,7 @@ class ApplicationGatewayImpl
      *
      * @param byName object found by name
      * @param byPort object found by port
-     * @param name the desired name of the object
+     * @param name   the desired name of the object
      * @return CreationState
      */
     <T> CreationState needToCreate(T byName, T byPort, String name) {
@@ -608,6 +657,66 @@ class ApplicationGatewayImpl
         }
     }
 
+    @Override
+    public ApplicationGatewayImpl withExistingWebApplicationFirewallPolicy(WebApplicationFirewallPolicy wafPolicy) {
+        ensureWafV2();
+        if (wafPolicy != null) {
+            return withExistingWebApplicationFirewallPolicy(wafPolicy.id());
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withExistingWebApplicationFirewallPolicy(String resourceId) {
+        ensureWafV2();
+        if (resourceId != null) {
+            this.innerModel().withFirewallPolicy(new SubResource().withId(resourceId));
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withNewWebApplicationFirewallPolicy(WebApplicationFirewallMode mode) {
+        ensureWafV2();
+        WebApplicationFirewallPolicy.DefinitionStages.WithCreate wafPolicyCreatable = this.manager().webApplicationFirewallPolicies()
+            .define(this.manager().resourceManager().internalContext().randomResourceName("wafpolicy", 14))
+            .withRegion(region())
+            .withExistingResourceGroup(this.resourceGroupName())
+            .withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet.OWASP_3_2)
+            .withMode(mode);
+        return withNewWebApplicationFirewallPolicy(wafPolicyCreatable);
+    }
+
+    @Override
+    public ApplicationGatewayImpl withNewWebApplicationFirewallPolicy(Creatable<WebApplicationFirewallPolicy> creatable) {
+        ensureWafV2();
+        this.creatableWafPolicy = this.addDependency(creatable);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withPredefinedSslPolicy(ApplicationGatewaySslPolicyName policyName) {
+        return withSslPolicy(
+            new ApplicationGatewaySslPolicy()
+                .withPolicyName(policyName)
+                .withPolicyType(ApplicationGatewaySslPolicyType.PREDEFINED));
+    }
+
+    @Override
+    public ApplicationGatewayImpl withCustomV2SslPolicy(ApplicationGatewaySslProtocol minProtocolVersion, List<ApplicationGatewaySslCipherSuite> cipherSuites) {
+        return withSslPolicy(
+            new ApplicationGatewaySslPolicy()
+                .withPolicyType(ApplicationGatewaySslPolicyType.CUSTOM_V2)
+                .withMinProtocolVersion(minProtocolVersion)
+                .withCipherSuites(cipherSuites));
+    }
+
+    @Override
+    public ApplicationGatewayImpl withSslPolicy(ApplicationGatewaySslPolicy sslPolicy) {
+        this.innerModel().withSslPolicy(sslPolicy);
+        return this;
+    }
+
     enum CreationState {
         Found,
         NeedToCreate,
@@ -623,7 +732,6 @@ class ApplicationGatewayImpl
     }
 
     // Withers (fluent)
-
     @Override
     public ApplicationGatewayImpl withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol) {
         if (protocol != null) {
@@ -676,7 +784,7 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withInstanceCount(int capacity) {
         if (this.innerModel().sku() == null) {
-            this.withSize(ApplicationGatewaySkuName.STANDARD_SMALL);
+            this.withSize(ApplicationGatewaySkuName.BASIC);
         }
 
         this.innerModel().sku().withCapacity(capacity);
@@ -694,6 +802,7 @@ class ApplicationGatewayImpl
                     .withFirewallMode(mode)
                     .withRuleSetType("OWASP")
                     .withRuleSetVersion("3.0"));
+        this.legacyWafConfigurationSpecifiedInCreate = true;
         return this;
     }
 
@@ -701,6 +810,7 @@ class ApplicationGatewayImpl
     public ApplicationGatewayImpl withWebApplicationFirewall(
         ApplicationGatewayWebApplicationFirewallConfiguration config) {
         this.innerModel().withWebApplicationFirewallConfiguration(config);
+        this.legacyWafConfigurationSpecifiedInCreate = true;
         return this;
     }
 
@@ -804,6 +914,14 @@ class ApplicationGatewayImpl
             this.innerModel().withSku(new ApplicationGatewaySku().withCapacity(1));
         }
         this.innerModel().sku().withTier(skuTier);
+        if (skuTier == ApplicationGatewayTier.WAF_V2 && this.innerModel().webApplicationFirewallConfiguration() == null) {
+            this.innerModel().withWebApplicationFirewallConfiguration(
+                new ApplicationGatewayWebApplicationFirewallConfiguration()
+                    .withEnabled(true)
+                    .withFirewallMode(ApplicationGatewayFirewallMode.DETECTION)
+                    .withRuleSetType("OWASP")
+                    .withRuleSetVersion("3.0"));
+        }
         return this;
     }
 
@@ -886,11 +1004,13 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl defineRequestRoutingRule(String name) {
-        return defineChild(
+        ApplicationGatewayRequestRoutingRuleImpl rule = defineChild(
             name,
             this.rules,
             ApplicationGatewayRequestRoutingRuleInner.class,
             ApplicationGatewayRequestRoutingRuleImpl.class);
+        addedRuleCollection.addRule(rule);
+        return rule;
     }
 
     @Override
@@ -928,7 +1048,9 @@ class ApplicationGatewayImpl
                 .withName(name)
                 .withRuleType(ApplicationGatewayRequestRoutingRuleType.PATH_BASED_ROUTING)
                 .withUrlPathMap(ref);
-        rules.put(name, new ApplicationGatewayRequestRoutingRuleImpl(inner, this));
+        ApplicationGatewayRequestRoutingRuleImpl requestRoutingRule = new ApplicationGatewayRequestRoutingRuleImpl(inner, this);
+        rules.put(name, requestRoutingRule);
+        addedRuleCollection.addRule(requestRoutingRule);
         return urlPathMap;
     }
 
@@ -966,11 +1088,11 @@ class ApplicationGatewayImpl
                     .getDeclaredConstructor(innerClass, ApplicationGatewayImpl.class)
                     .newInstance(inner, this);
             } catch (InstantiationException
-                | IllegalAccessException
-                | IllegalArgumentException
-                | InvocationTargetException
-                | NoSuchMethodException
-                | SecurityException e1) {
+                     | IllegalAccessException
+                     | IllegalArgumentException
+                     | InvocationTargetException
+                     | NoSuchMethodException
+                     | SecurityException e1) {
                 return null;
             }
         } else {
@@ -1215,6 +1337,7 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withoutRequestRoutingRule(String name) {
         this.rules.remove(name);
+        this.addedRuleCollection.removeRule(name);
         return this;
     }
 
@@ -1380,6 +1503,35 @@ class ApplicationGatewayImpl
             }
         }
         return listener;
+    }
+
+    @Override
+    public String getWebApplicationFirewallPolicyId() {
+        if (this.innerModel().firewallPolicy() == null) {
+            return null;
+        }
+        return this.innerModel().firewallPolicy().id();
+    }
+
+    @Override
+    public WebApplicationFirewallPolicy getWebApplicationFirewallPolicy() {
+        return getWebApplicationFirewallPolicyAsync().block();
+    }
+
+    @Override
+    public Mono<WebApplicationFirewallPolicy> getWebApplicationFirewallPolicyAsync() {
+        if (getWebApplicationFirewallPolicyId() == null) {
+            return Mono.empty();
+        }
+        return this
+            .manager()
+            .webApplicationFirewallPolicies()
+            .getByIdAsync(this.innerModel().firewallPolicy().id());
+    }
+
+    @Override
+    public ApplicationGatewaySslPolicy sslPolicy() {
+        return this.innerModel().sslPolicy();
     }
 
     @Override
@@ -1694,5 +1846,84 @@ class ApplicationGatewayImpl
                     }
                     return Collections.unmodifiableMap(backendHealths);
                 });
+    }
+
+    /*
+     * Legacy Gateways don't support priority.
+     */
+    private boolean supportsRulePriority() {
+        ApplicationGatewayTier tier = tier();
+        ApplicationGatewaySkuName sku = size();
+        return tier != ApplicationGatewayTier.STANDARD
+            && tier != ApplicationGatewayTier.WAF
+            && sku != ApplicationGatewaySkuName.STANDARD_SMALL && sku != ApplicationGatewaySkuName.STANDARD_MEDIUM
+            && sku != ApplicationGatewaySkuName.STANDARD_LARGE && sku != ApplicationGatewaySkuName.WAF_MEDIUM
+            && sku != ApplicationGatewaySkuName.WAF_LARGE;
+    }
+
+    private void ensureWafV2() {
+        if (this.tier() != ApplicationGatewayTier.WAF_V2) {
+            throw new IllegalStateException("WAF policy can only be used with WAF_V2 tier");
+        }
+    }
+
+    /**
+     * Keeps track of newly added request routing rules, for priority auto-assignment if not specified for them.
+     */
+    private static class AddedRuleCollection {
+        private static final int AUTO_ASSIGN_PRIORITY_START = 10010;
+        private static final int MAX_PRIORITY = 20000;
+        private static final int PRIORITY_INTERVAL = 10;
+        private final Map<String, ApplicationGatewayRequestRoutingRuleImpl> ruleMap = new LinkedHashMap<>();
+
+        /*
+         * Remove a rule from priority auto-assignment.
+         */
+        void removeRule(String name) {
+            ruleMap.remove(name);
+        }
+
+        /*
+         * Add a rule for priority auto-assignment while preserving the adding order.
+         */
+        void addRule(ApplicationGatewayRequestRoutingRuleImpl rule) {
+            ruleMap.put(rule.name(), rule);
+        }
+
+        /*
+         * Auto-assign priority values for rules without priority (ranging from 10010 to 20000).
+         * Rules defined later in the definition chain will have larger priority values over those defined earlier.
+         */
+        void autoAssignPriorities(Collection<ApplicationGatewayRequestRoutingRule> existingRules, String gatewayName) {
+            // list all existing rule priorities
+            Set<Integer> existingPriorities = existingRules
+                .stream()
+                .map(ApplicationGatewayRequestRoutingRule::priority)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+            // for all newly add rules without priority, assign priorities in the order they were added
+            int nextPriorityToAssign = AUTO_ASSIGN_PRIORITY_START;
+            for (ApplicationGatewayRequestRoutingRuleImpl rule : ruleMap.values()) {
+                if (rule.priority() != null) {
+                    continue;
+                }
+                boolean assigned = false;
+                for (int priority = nextPriorityToAssign; priority <= MAX_PRIORITY; priority += PRIORITY_INTERVAL) {
+                    if (existingPriorities.contains(priority)) {
+                        continue;
+                    }
+                    rule.withPriority(priority);
+                    assigned = true;
+                    existingPriorities.add(priority);
+                    nextPriorityToAssign = priority + PRIORITY_INTERVAL;
+                    break;
+                }
+                if (!assigned) {
+                    throw new IllegalStateException(
+                        String.format("Failed to auto assign priority for rule: %s, gateway: %s", rule.name(), gatewayName));
+                }
+            }
+        }
     }
 }

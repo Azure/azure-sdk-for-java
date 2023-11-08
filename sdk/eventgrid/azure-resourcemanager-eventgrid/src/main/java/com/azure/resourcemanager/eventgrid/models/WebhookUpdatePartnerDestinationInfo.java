@@ -21,6 +21,10 @@ public final class WebhookUpdatePartnerDestinationInfo extends PartnerUpdateDest
     @JsonProperty(value = "properties")
     private WebhookPartnerDestinationProperties innerProperties;
 
+    /** Creates an instance of WebhookUpdatePartnerDestinationInfo class. */
+    public WebhookUpdatePartnerDestinationInfo() {
+    }
+
     /**
      * Get the innerProperties property: WebHook Properties of the partner destination.
      *

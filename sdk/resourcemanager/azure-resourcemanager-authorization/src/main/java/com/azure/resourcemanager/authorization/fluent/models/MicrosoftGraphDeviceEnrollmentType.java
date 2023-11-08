@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphDeviceEnrollmentType. */
+/** deviceEnrollmentType. */
 public final class MicrosoftGraphDeviceEnrollmentType extends ExpandableStringEnum<MicrosoftGraphDeviceEnrollmentType> {
     /** Static value unknown for MicrosoftGraphDeviceEnrollmentType. */
     public static final MicrosoftGraphDeviceEnrollmentType UNKNOWN = fromString("unknown");
@@ -44,6 +44,15 @@ public final class MicrosoftGraphDeviceEnrollmentType extends ExpandableStringEn
     public static final MicrosoftGraphDeviceEnrollmentType WINDOWS_CO_MANAGEMENT = fromString("windowsCoManagement");
 
     /**
+     * Creates a new instance of MicrosoftGraphDeviceEnrollmentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphDeviceEnrollmentType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphDeviceEnrollmentType from its string representation.
      *
      * @param name a name to look for.
@@ -54,7 +63,11 @@ public final class MicrosoftGraphDeviceEnrollmentType extends ExpandableStringEn
         return fromString(name, MicrosoftGraphDeviceEnrollmentType.class);
     }
 
-    /** @return known MicrosoftGraphDeviceEnrollmentType values. */
+    /**
+     * Gets known MicrosoftGraphDeviceEnrollmentType values.
+     *
+     * @return known MicrosoftGraphDeviceEnrollmentType values.
+     */
     public static Collection<MicrosoftGraphDeviceEnrollmentType> values() {
         return values(MicrosoftGraphDeviceEnrollmentType.class);
     }

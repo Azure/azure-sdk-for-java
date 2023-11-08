@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,11 +16,8 @@ import java.util.Map;
 /** pendingContentUpdate. */
 @Fluent
 public final class MicrosoftGraphPendingContentUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPendingContentUpdate.class);
-
     /*
-     * Date and time the pending binary operation was queued in UTC time.
-     * Read-only.
+     * Date and time the pending binary operation was queued in UTC time. Read-only.
      */
     @JsonProperty(value = "queuedDateTime")
     private OffsetDateTime queuedDateTime;
@@ -30,6 +26,10 @@ public final class MicrosoftGraphPendingContentUpdate {
      * pendingContentUpdate
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPendingContentUpdate class. */
+    public MicrosoftGraphPendingContentUpdate() {
+    }
 
     /**
      * Get the queuedDateTime property: Date and time the pending binary operation was queued in UTC time. Read-only.

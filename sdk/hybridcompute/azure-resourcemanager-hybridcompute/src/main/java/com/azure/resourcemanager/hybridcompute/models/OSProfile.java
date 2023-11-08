@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the operating system settings for the hybrid machine. */
 @Immutable
 public final class OSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
-
     /*
      * Specifies the host OS name of the hybrid machine.
      */
     @JsonProperty(value = "computerName", access = JsonProperty.Access.WRITE_ONLY)
     private String computerName;
+
+    /** Creates an instance of OSProfile class. */
+    public OSProfile() {
+    }
 
     /**
      * Get the computerName property: Specifies the host OS name of the hybrid machine.

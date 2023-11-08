@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AudioAnalysisMode. */
+/**
+ * Determines the set of audio analysis operations to be performed. If unspecified, the Standard AudioAnalysisMode would
+ * be chosen.
+ */
 public final class AudioAnalysisMode extends ExpandableStringEnum<AudioAnalysisMode> {
     /** Static value Standard for AudioAnalysisMode. */
     public static final AudioAnalysisMode STANDARD = fromString("Standard");
 
     /** Static value Basic for AudioAnalysisMode. */
     public static final AudioAnalysisMode BASIC = fromString("Basic");
+
+    /**
+     * Creates a new instance of AudioAnalysisMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AudioAnalysisMode() {
+    }
 
     /**
      * Creates or finds a AudioAnalysisMode from its string representation.
@@ -27,7 +39,11 @@ public final class AudioAnalysisMode extends ExpandableStringEnum<AudioAnalysisM
         return fromString(name, AudioAnalysisMode.class);
     }
 
-    /** @return known AudioAnalysisMode values. */
+    /**
+     * Gets known AudioAnalysisMode values.
+     *
+     * @return known AudioAnalysisMode values.
+     */
     public static Collection<AudioAnalysisMode> values() {
         return values(AudioAnalysisMode.class);
     }

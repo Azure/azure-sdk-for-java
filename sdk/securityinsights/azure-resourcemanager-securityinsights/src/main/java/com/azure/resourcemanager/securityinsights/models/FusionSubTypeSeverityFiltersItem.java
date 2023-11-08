@@ -18,8 +18,7 @@ public final class FusionSubTypeSeverityFiltersItem {
     private AlertSeverity severity;
 
     /*
-     * Determines whether this severity is enabled or disabled for this source
-     * subtype consumed in Fusion detection.
+     * Determines whether this severity is enabled or disabled for this source subtype consumed in Fusion detection.
      */
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;

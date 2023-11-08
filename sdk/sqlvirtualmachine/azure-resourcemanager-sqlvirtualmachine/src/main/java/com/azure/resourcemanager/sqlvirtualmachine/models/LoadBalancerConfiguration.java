@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A load balancer configuration for an availability group listener. */
 @Fluent
 public final class LoadBalancerConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerConfiguration.class);
-
     /*
      * Private IP address.
      */
@@ -40,11 +36,14 @@ public final class LoadBalancerConfiguration {
     private Integer probePort;
 
     /*
-     * List of the SQL virtual machine instance resource id's that are enrolled
-     * into the availability group listener.
+     * List of the SQL virtual machine instance resource id's that are enrolled into the availability group listener.
      */
     @JsonProperty(value = "sqlVirtualMachineInstances")
     private List<String> sqlVirtualMachineInstances;
+
+    /** Creates an instance of LoadBalancerConfiguration class. */
+    public LoadBalancerConfiguration() {
+    }
 
     /**
      * Get the privateIpAddress property: Private IP address.

@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of Snapshot Policies. */
 @Fluent
 public final class SnapshotPoliciesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotPoliciesList.class);
-
     /*
      * A list of snapshot policies
      */
     @JsonProperty(value = "value")
     private List<SnapshotPolicyInner> value;
+
+    /** Creates an instance of SnapshotPoliciesList class. */
+    public SnapshotPoliciesList() {
+    }
 
     /**
      * Get the value property: A list of snapshot policies.

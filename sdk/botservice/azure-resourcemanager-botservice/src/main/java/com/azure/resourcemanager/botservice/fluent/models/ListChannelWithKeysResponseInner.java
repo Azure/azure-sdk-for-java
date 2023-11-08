@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.models.Channel;
 import com.azure.resourcemanager.botservice.models.ChannelSettings;
 import com.azure.resourcemanager.botservice.models.Kind;
 import com.azure.resourcemanager.botservice.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ARM channel of list channel with keys operation response. */
 @Fluent
 public final class ListChannelWithKeysResponseInner extends BotChannelInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListChannelWithKeysResponseInner.class);
-
     /*
      * The set of properties specific to bot channel resource
      */

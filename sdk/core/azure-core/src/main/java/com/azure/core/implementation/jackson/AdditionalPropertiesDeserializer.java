@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.regex.Pattern;
 
 /**
  * Custom serializer for deserializing complex types with additional properties. If a complex type has a property named
@@ -31,8 +30,6 @@ import java.util.regex.Pattern;
  */
 final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {
     private static final long serialVersionUID = 700052863615540646L;
-
-    private static final Pattern JSON_FLATTEN_SPLIT = Pattern.compile("((?<!\\\\))\\.");
 
     /**
      * The default mapperAdapter for the current type.
@@ -107,7 +104,7 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
                     continue;
                 }
                 JsonProperty property = field.getAnnotation(JsonProperty.class);
-                String key = isJsonFlatten ? JSON_FLATTEN_SPLIT.split(property.value())[0] : property.value();
+                String key = isJsonFlatten ? jsonFlattenSplit(property.value()) : property.value();
                 if (!key.isEmpty()) {
                     if (copy.has(key)) {
                         copy.remove(key);
@@ -127,5 +124,30 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         ((ResolvableDeserializer) defaultDeserializer).resolve(ctxt);
+    }
+
+    private static String jsonFlattenSplit(String str) {
+        int indexOfSplit = indexOfSplit(str);
+
+        return indexOfSplit == -1 ? str : str.substring(0, indexOfSplit);
+    }
+
+    private static int indexOfSplit(String str) {
+        int index = 0;
+
+        // Search for the split index.
+        while ((index = str.indexOf('.', index)) != -1) {
+            if (index - 2 < 0) {
+                // If the index of '.' is within the first two characters it cannot be preceded by '\\' return it.
+                return index;
+            } else if (str.charAt(index - 1) != '\\' || str.charAt(index - 2) != '\\') {
+                // If the index of '.' is not preceded by '\\' return it.
+                return index;
+            }
+
+            // Otherwise continue looping until the end of the string has been reached or the index is returned.
+        }
+
+        return -1;
     }
 }

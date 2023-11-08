@@ -32,6 +32,14 @@ public final class PluginCurrentState extends ExpandableStringEnum<PluginCurrent
     public static final PluginCurrentState ENDED = fromString("Ended");
 
     /**
+     * Creates a new instance of PluginCurrentState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PluginCurrentState() {}
+
+    /**
      * Creates or finds a PluginCurrentState from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +50,11 @@ public final class PluginCurrentState extends ExpandableStringEnum<PluginCurrent
         return fromString(name, PluginCurrentState.class);
     }
 
-    /** @return known PluginCurrentState values. */
+    /**
+     * Gets known PluginCurrentState values.
+     *
+     * @return known PluginCurrentState values.
+     */
     public static Collection<PluginCurrentState> values() {
         return values(PluginCurrentState.class);
     }

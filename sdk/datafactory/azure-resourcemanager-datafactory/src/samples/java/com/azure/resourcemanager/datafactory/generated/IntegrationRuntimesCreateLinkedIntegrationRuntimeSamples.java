@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.CreateLinkedIntegrationRuntimeRequest;
 
 /** Samples for IntegrationRuntimes CreateLinkedIntegrationRuntime. */
@@ -30,6 +29,6 @@ public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeSamples {
                     .withSubscriptionId("061774c7-4b5a-4159-a55b-365581830283")
                     .withDataFactoryName("e9955d6d-56ea-4be3-841c-52a12c1a9981")
                     .withDataFactoryLocation("West US"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

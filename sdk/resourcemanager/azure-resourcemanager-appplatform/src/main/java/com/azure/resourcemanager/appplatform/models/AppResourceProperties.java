@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 
 /** App resource properties payload. */
 @Fluent
 public final class AppResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppResourceProperties.class);
-
     /*
      * Indicates whether the App exposes public endpoint
      */
@@ -28,21 +26,22 @@ public final class AppResourceProperties {
     private String url;
 
     /*
+     * Collection of addons
+     */
+    @JsonProperty(value = "addonConfigs")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Map<String, Object>> addonConfigs;
+
+    /*
      * Provisioning state of the App
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AppResourceProvisioningState provisioningState;
 
     /*
-     * Name of the active deployment of the App
-     */
-    @JsonProperty(value = "activeDeploymentName")
-    private String activeDeploymentName;
-
-    /*
      * Fully qualified dns Name.
      */
-    @JsonProperty(value = "fqdn")
+    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
@@ -50,18 +49,6 @@ public final class AppResourceProperties {
      */
     @JsonProperty(value = "httpsOnly")
     private Boolean httpsOnly;
-
-    /*
-     * Indicate if end to end TLS is enabled.
-     */
-    @JsonProperty(value = "enableEndToEndTLS")
-    private Boolean enableEndToEndTls;
-
-    /*
-     * Date time when the resource is created
-     */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
 
     /*
      * Temporary disk settings
@@ -74,6 +61,36 @@ public final class AppResourceProperties {
      */
     @JsonProperty(value = "persistentDisk")
     private PersistentDisk persistentDisk;
+
+    /*
+     * List of custom persistent disks
+     */
+    @JsonProperty(value = "customPersistentDisks")
+    private List<CustomPersistentDiskResource> customPersistentDisks;
+
+    /*
+     * Indicate if end to end TLS is enabled.
+     */
+    @JsonProperty(value = "enableEndToEndTLS")
+    private Boolean enableEndToEndTls;
+
+    /*
+     * Collection of loaded certificates
+     */
+    @JsonProperty(value = "loadedCertificates")
+    private List<LoadedCertificate> loadedCertificates;
+
+    /*
+     * Additional App settings in vnet injection instance
+     */
+    @JsonProperty(value = "vnetAddons")
+    private AppVNetAddons vnetAddons;
+
+    /*
+     * App ingress settings payload.
+     */
+    @JsonProperty(value = "ingressSettings")
+    private IngressSettings ingressSettings;
 
     /**
      * Get the publicProperty property: Indicates whether the App exposes public endpoint.
@@ -105,6 +122,26 @@ public final class AppResourceProperties {
     }
 
     /**
+     * Get the addonConfigs property: Collection of addons.
+     *
+     * @return the addonConfigs value.
+     */
+    public Map<String, Map<String, Object>> addonConfigs() {
+        return this.addonConfigs;
+    }
+
+    /**
+     * Set the addonConfigs property: Collection of addons.
+     *
+     * @param addonConfigs the addonConfigs value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withAddonConfigs(Map<String, Map<String, Object>> addonConfigs) {
+        this.addonConfigs = addonConfigs;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the App.
      *
      * @return the provisioningState value.
@@ -114,43 +151,12 @@ public final class AppResourceProperties {
     }
 
     /**
-     * Get the activeDeploymentName property: Name of the active deployment of the App.
-     *
-     * @return the activeDeploymentName value.
-     */
-    public String activeDeploymentName() {
-        return this.activeDeploymentName;
-    }
-
-    /**
-     * Set the activeDeploymentName property: Name of the active deployment of the App.
-     *
-     * @param activeDeploymentName the activeDeploymentName value to set.
-     * @return the AppResourceProperties object itself.
-     */
-    public AppResourceProperties withActiveDeploymentName(String activeDeploymentName) {
-        this.activeDeploymentName = activeDeploymentName;
-        return this;
-    }
-
-    /**
      * Get the fqdn property: Fully qualified dns Name.
      *
      * @return the fqdn value.
      */
     public String fqdn() {
         return this.fqdn;
-    }
-
-    /**
-     * Set the fqdn property: Fully qualified dns Name.
-     *
-     * @param fqdn the fqdn value to set.
-     * @return the AppResourceProperties object itself.
-     */
-    public AppResourceProperties withFqdn(String fqdn) {
-        this.fqdn = fqdn;
-        return this;
     }
 
     /**
@@ -171,35 +177,6 @@ public final class AppResourceProperties {
     public AppResourceProperties withHttpsOnly(Boolean httpsOnly) {
         this.httpsOnly = httpsOnly;
         return this;
-    }
-
-    /**
-     * Get the enableEndToEndTls property: Indicate if end to end TLS is enabled.
-     *
-     * @return the enableEndToEndTls value.
-     */
-    public Boolean enableEndToEndTls() {
-        return this.enableEndToEndTls;
-    }
-
-    /**
-     * Set the enableEndToEndTls property: Indicate if end to end TLS is enabled.
-     *
-     * @param enableEndToEndTls the enableEndToEndTls value to set.
-     * @return the AppResourceProperties object itself.
-     */
-    public AppResourceProperties withEnableEndToEndTls(Boolean enableEndToEndTls) {
-        this.enableEndToEndTls = enableEndToEndTls;
-        return this;
-    }
-
-    /**
-     * Get the createdTime property: Date time when the resource is created.
-     *
-     * @return the createdTime value.
-     */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
     }
 
     /**
@@ -243,6 +220,106 @@ public final class AppResourceProperties {
     }
 
     /**
+     * Get the customPersistentDisks property: List of custom persistent disks.
+     *
+     * @return the customPersistentDisks value.
+     */
+    public List<CustomPersistentDiskResource> customPersistentDisks() {
+        return this.customPersistentDisks;
+    }
+
+    /**
+     * Set the customPersistentDisks property: List of custom persistent disks.
+     *
+     * @param customPersistentDisks the customPersistentDisks value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withCustomPersistentDisks(List<CustomPersistentDiskResource> customPersistentDisks) {
+        this.customPersistentDisks = customPersistentDisks;
+        return this;
+    }
+
+    /**
+     * Get the enableEndToEndTls property: Indicate if end to end TLS is enabled.
+     *
+     * @return the enableEndToEndTls value.
+     */
+    public Boolean enableEndToEndTls() {
+        return this.enableEndToEndTls;
+    }
+
+    /**
+     * Set the enableEndToEndTls property: Indicate if end to end TLS is enabled.
+     *
+     * @param enableEndToEndTls the enableEndToEndTls value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withEnableEndToEndTls(Boolean enableEndToEndTls) {
+        this.enableEndToEndTls = enableEndToEndTls;
+        return this;
+    }
+
+    /**
+     * Get the loadedCertificates property: Collection of loaded certificates.
+     *
+     * @return the loadedCertificates value.
+     */
+    public List<LoadedCertificate> loadedCertificates() {
+        return this.loadedCertificates;
+    }
+
+    /**
+     * Set the loadedCertificates property: Collection of loaded certificates.
+     *
+     * @param loadedCertificates the loadedCertificates value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withLoadedCertificates(List<LoadedCertificate> loadedCertificates) {
+        this.loadedCertificates = loadedCertificates;
+        return this;
+    }
+
+    /**
+     * Get the vnetAddons property: Additional App settings in vnet injection instance.
+     *
+     * @return the vnetAddons value.
+     */
+    public AppVNetAddons vnetAddons() {
+        return this.vnetAddons;
+    }
+
+    /**
+     * Set the vnetAddons property: Additional App settings in vnet injection instance.
+     *
+     * @param vnetAddons the vnetAddons value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withVnetAddons(AppVNetAddons vnetAddons) {
+        this.vnetAddons = vnetAddons;
+        return this;
+    }
+
+    /**
+     * Get the ingressSettings property: App ingress settings payload.
+     *
+     * @return the ingressSettings value.
+     */
+    public IngressSettings ingressSettings() {
+        return this.ingressSettings;
+    }
+
+    /**
+     * Set the ingressSettings property: App ingress settings payload.
+     *
+     * @param ingressSettings the ingressSettings value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withIngressSettings(IngressSettings ingressSettings) {
+        this.ingressSettings = ingressSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -253,6 +330,18 @@ public final class AppResourceProperties {
         }
         if (persistentDisk() != null) {
             persistentDisk().validate();
+        }
+        if (customPersistentDisks() != null) {
+            customPersistentDisks().forEach(e -> e.validate());
+        }
+        if (loadedCertificates() != null) {
+            loadedCertificates().forEach(e -> e.validate());
+        }
+        if (vnetAddons() != null) {
+            vnetAddons().validate();
+        }
+        if (ingressSettings() != null) {
+            ingressSettings().validate();
         }
     }
 }

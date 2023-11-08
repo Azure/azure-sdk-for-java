@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.DscMetaConfiguration;
 import com.azure.resourcemanager.automation.models.DscReportError;
 import com.azure.resourcemanager.automation.models.DscReportResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 /** Definition of the dsc node report type. */
 @Fluent
 public final class DscNodeReportInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscNodeReportInner.class);
-
     /*
      * Gets or sets the end time of the node report.
      */
@@ -98,8 +94,7 @@ public final class DscNodeReportInner {
     private List<DscReportResource> resources;
 
     /*
-     * Gets or sets the metaConfiguration of the node at the time of the
-     * report.
+     * Gets or sets the metaConfiguration of the node at the time of the report.
      */
     @JsonProperty(value = "metaConfiguration")
     private DscMetaConfiguration metaConfiguration;

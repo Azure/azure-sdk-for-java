@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubHubInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Hub setting list. */
 @Fluent
 public final class WebPubSubHubList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubHubList.class);
-
     /*
      * List of hub settings to this resource.
      */
@@ -23,12 +19,15 @@ public final class WebPubSubHubList {
     private List<WebPubSubHubInner> value;
 
     /*
-     * The URL the client should use to fetch the next page (per server side
-     * paging).
+     * The URL the client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of WebPubSubHubList class. */
+    public WebPubSubHubList() {
+    }
 
     /**
      * Get the value property: List of hub settings to this resource.

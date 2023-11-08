@@ -12,13 +12,17 @@ import java.util.List;
 @Immutable
 public final class InstanceViewStatusesSummary {
     /*
-     * The statusesSummary property.
+     * The summary.
      */
     @JsonProperty(value = "statusesSummary", access = JsonProperty.Access.WRITE_ONLY)
     private List<StatusCodeCount> statusesSummary;
 
+    /** Creates an instance of InstanceViewStatusesSummary class. */
+    public InstanceViewStatusesSummary() {
+    }
+
     /**
-     * Get the statusesSummary property: The statusesSummary property.
+     * Get the statusesSummary property: The summary.
      *
      * @return the statusesSummary value.
      */

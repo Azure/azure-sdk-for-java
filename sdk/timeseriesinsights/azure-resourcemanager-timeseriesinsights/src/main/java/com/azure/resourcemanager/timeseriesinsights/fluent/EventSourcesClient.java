@@ -23,6 +23,28 @@ public interface EventSourcesClient {
      *     group.
      * @param eventSourceName Name of the event source.
      * @param parameters Parameters for creating an event source resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment receives data from one or more event sources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<EventSourceResourceInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String environmentName,
+        String eventSourceName,
+        EventSourceCreateOrUpdateParameters parameters,
+        Context context);
+
+    /**
+     * Create or update an event source under the specified environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param eventSourceName Name of the event source.
+     * @param parameters Parameters for creating an event source resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -36,26 +58,22 @@ public interface EventSourcesClient {
         EventSourceCreateOrUpdateParameters parameters);
 
     /**
-     * Create or update an event source under the specified environment.
+     * Gets the event source with the specified name in the specified environment.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
      *     group.
-     * @param eventSourceName Name of the event source.
-     * @param parameters Parameters for creating an event source resource.
+     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
+     *     environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return the event source with the specified name in the specified environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventSourceResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters,
-        Context context);
+    Response<EventSourceResourceInner> getWithResponse(
+        String resourceGroupName, String environmentName, String eventSourceName, Context context);
 
     /**
      * Gets the event source with the specified name in the specified environment.
@@ -74,22 +92,27 @@ public interface EventSourcesClient {
     EventSourceResourceInner get(String resourceGroupName, String environmentName, String eventSourceName);
 
     /**
-     * Gets the event source with the specified name in the specified environment.
+     * Updates the event source with the specified name in the specified subscription, resource group, and environment.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
      *     group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
      *     environment.
+     * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the event source with the specified name in the specified environment.
+     * @return an environment receives data from one or more event sources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventSourceResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context);
+    Response<EventSourceResourceInner> updateWithResponse(
+        String resourceGroupName,
+        String environmentName,
+        String eventSourceName,
+        EventSourceUpdateParameters eventSourceUpdateParameters,
+        Context context);
 
     /**
      * Updates the event source with the specified name in the specified subscription, resource group, and environment.
@@ -113,27 +136,22 @@ public interface EventSourcesClient {
         EventSourceUpdateParameters eventSourceUpdateParameters);
 
     /**
-     * Updates the event source with the specified name in the specified subscription, resource group, and environment.
+     * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
      *     group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
      *     environment.
-     * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventSourceResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters,
-        Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String environmentName, String eventSourceName, Context context);
 
     /**
      * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
@@ -151,22 +169,21 @@ public interface EventSourcesClient {
     void delete(String resourceGroupName, String environmentName, String eventSourceName);
 
     /**
-     * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
+     * Lists all the available event sources associated with the subscription and within the specified resource group
+     * and environment.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
      *     group.
-     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of the List EventSources operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context);
+    Response<EventSourceListResponseInner> listByEnvironmentWithResponse(
+        String resourceGroupName, String environmentName, Context context);
 
     /**
      * Lists all the available event sources associated with the subscription and within the specified resource group
@@ -182,21 +199,4 @@ public interface EventSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EventSourceListResponseInner listByEnvironment(String resourceGroupName, String environmentName);
-
-    /**
-     * Lists all the available event sources associated with the subscription and within the specified resource group
-     * and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List EventSources operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventSourceListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
 }

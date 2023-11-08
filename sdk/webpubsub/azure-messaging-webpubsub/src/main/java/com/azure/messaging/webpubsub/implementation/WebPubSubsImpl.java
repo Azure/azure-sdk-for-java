@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Head;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -17,7 +18,11 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -52,47 +57,99 @@ public final class WebPubSubsImpl {
     @Host("{Endpoint}")
     @ServiceInterface(name = "AzureWebPubSubServic")
     public interface WebPubSubsService {
-        @Post("/api/hubs/{hub}/:generateToken")
-        @ExpectedResponses({200})
-        Mono<Response<BinaryData>> generateClientToken(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
-
         @Post("/api/hubs/{hub}/:closeConnections")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> closeAllConnections(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/api/hubs/{hub}/:generateToken")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> generateClientToken(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("hub") String hub,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Post("/api/hubs/{hub}/:send")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> sendToAll(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Content-Type") String contentType,
                 @BodyParam("application/octet-stream") BinaryData message,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Head("/api/hubs/{hub}/connections/{connectionId}")
-        @ExpectedResponses({200, 404})
-        Mono<Response<Boolean>> connectionExists(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Delete("/api/hubs/{hub}/connections/{connectionId}")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> closeConnection(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("hub") String hub,
+                @PathParam("connectionId") String connectionId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Head("/api/hubs/{hub}/connections/{connectionId}")
+        @ExpectedResponses({200, 404})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Boolean>> connectionExists(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("connectionId") String connectionId,
@@ -102,17 +159,57 @@ public final class WebPubSubsImpl {
 
         @Post("/api/hubs/{hub}/connections/{connectionId}/:send")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> sendToConnection(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("connectionId") String connectionId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Content-Type") String contentType,
                 @BodyParam("application/octet-stream") BinaryData message,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/api/hubs/{hub}/connections/{connectionId}/groups")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> removeConnectionFromAllGroups(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("hub") String hub,
+                @PathParam("connectionId") String connectionId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Head("/api/hubs/{hub}/groups/{group}")
         @ExpectedResponses({200, 404})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> groupExists(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -123,49 +220,163 @@ public final class WebPubSubsImpl {
 
         @Post("/api/hubs/{hub}/groups/{group}/:closeConnections")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> closeGroupConnections(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("group") String group,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Post("/api/hubs/{hub}/groups/{group}/:send")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> sendToGroup(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("group") String group,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Content-Type") String contentType,
                 @BodyParam("application/octet-stream") BinaryData message,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Put("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
-        @ExpectedResponses({200})
-        Mono<Response<Void>> addConnectionToGroup(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("group") String group,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Delete("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeConnectionFromGroup(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("group") String group,
                 @PathParam("connectionId") String connectionId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> addConnectionToGroup(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("hub") String hub,
+                @PathParam("group") String group,
+                @PathParam("connectionId") String connectionId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> revokePermission(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("hub") String hub,
+                @PathParam("permission") String permission,
+                @PathParam("connectionId") String connectionId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Head("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
+        @ExpectedResponses({200, 404})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Boolean>> checkPermission(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("hub") String hub,
+                @PathParam("permission") String permission,
+                @PathParam("connectionId") String connectionId,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> grantPermission(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("hub") String hub,
+                @PathParam("permission") String permission,
+                @PathParam("connectionId") String connectionId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Head("/api/hubs/{hub}/users/{userId}")
         @ExpectedResponses({200, 404})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> userExists(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -176,204 +387,112 @@ public final class WebPubSubsImpl {
 
         @Post("/api/hubs/{hub}/users/{userId}/:closeConnections")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> closeUserConnections(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("userId") String userId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Post("/api/hubs/{hub}/users/{userId}/:send")
         @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> sendToUser(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("userId") String userId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Content-Type") String contentType,
                 @BodyParam("application/octet-stream") BinaryData message,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Put("/api/hubs/{hub}/users/{userId}/groups/{group}")
-        @ExpectedResponses({200})
-        Mono<Response<Void>> addUserToGroup(
+        @Delete("/api/hubs/{hub}/users/{userId}/groups")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> removeUserFromAllGroups(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
-                @PathParam("group") String group,
                 @PathParam("userId") String userId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Delete("/api/hubs/{hub}/users/{userId}/groups/{group}")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeUserFromGroup(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("group") String group,
                 @PathParam("userId") String userId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/api/hubs/{hub}/users/{userId}/groups")
-        @ExpectedResponses({204})
-        Mono<Response<Void>> removeUserFromAllGroups(
+        @Put("/api/hubs/{hub}/users/{userId}/groups/{group}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> addUserToGroup(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
+                @PathParam("group") String group,
                 @PathParam("userId") String userId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
-
-        @Put("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
-        @ExpectedResponses({200})
-        Mono<Response<Void>> grantPermission(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("permission") String permission,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Delete("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
-        @ExpectedResponses({204})
-        Mono<Response<Void>> revokePermission(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("permission") String permission,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Head("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
-        @ExpectedResponses({200, 404})
-        Mono<Response<Boolean>> checkPermission(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("permission") String permission,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
-    }
-
-    /**
-     * Generate token for the client to connect Azure Web PubSub service.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
-     *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
-     *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     token: String
-     * }
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response object containing the token for the client.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> generateClientTokenWithResponseAsync(String hub, RequestOptions requestOptions) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        return FluxUtil.withContext(
-                context ->
-                        service.generateClientToken(
-                                this.client.getEndpoint(),
-                                hub,
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Generate token for the client to connect Azure Web PubSub service.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
-     *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
-     *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     token: String
-     * }
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response object containing the token for the client.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> generateClientTokenWithResponseAsync(
-            String hub, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        return service.generateClientToken(
-                this.client.getEndpoint(), hub, this.client.getServiceVersion().getVersion(), requestOptions, context);
-    }
-
-    /**
-     * Generate token for the client to connect Azure Web PubSub service.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
-     *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
-     *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     token: String
-     * }
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response object containing the token for the client.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateClientTokenWithResponse(String hub, RequestOptions requestOptions) {
-        return generateClientTokenWithResponseAsync(hub, requestOptions).block();
     }
 
     /**
@@ -384,28 +503,34 @@ public final class WebPubSubsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections in the hub.</td></tr>
+     *     <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the connections in the hub. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeAllConnectionsWithResponseAsync(String hub, RequestOptions requestOptions) {
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.closeAllConnections(
                                 this.client.getEndpoint(),
                                 hub,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -418,46 +543,20 @@ public final class WebPubSubsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections in the hub.</td></tr>
+     *     <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the connections in the hub. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> closeAllConnectionsWithResponseAsync(
-            String hub, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        return service.closeAllConnections(
-                this.client.getEndpoint(), hub, this.client.getServiceVersion().getVersion(), requestOptions, context);
-    }
-
-    /**
-     * Close the connections in the hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections in the hub.</td></tr>
-     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeAllConnectionsWithResponse(String hub, RequestOptions requestOptions) {
@@ -465,6 +564,95 @@ public final class WebPubSubsImpl {
     }
 
     /**
+     * Generate token for the client to connect Azure Web PubSub service.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
+     *     <tr><td>role</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Roles that the connection with the generated token will have. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minutesToExpire</td><td>Integer</td><td>No</td><td>The expire time of the generated token.</td></tr>
+     *     <tr><td>group</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Groups that the connection will join when it connects. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     token: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response object containing the token for the client along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateClientTokenWithResponseAsync(String hub, RequestOptions requestOptions) {
+        if (hub == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.generateClientToken(
+                                this.client.getEndpoint(),
+                                hub,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Generate token for the client to connect Azure Web PubSub service.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
+     *     <tr><td>role</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Roles that the connection with the generated token will have. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minutesToExpire</td><td>Integer</td><td>No</td><td>The expire time of the generated token.</td></tr>
+     *     <tr><td>group</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Groups that the connection will join when it connects. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     token: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response object containing the token for the client along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> generateClientTokenWithResponse(String hub, RequestOptions requestOptions) {
+        return generateClientTokenWithResponseAsync(hub, requestOptions).block();
+    }
+
+    /**
      * Broadcast content inside request body to all the connected client connections.
      *
      * <p><strong>Query Parameters</strong>
@@ -472,48 +660,52 @@ public final class WebPubSubsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Excluded connection Ids.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers receiving the messages.</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
+     * @param contentType Upload file type. Allowed values: "application/json", "application/octet-stream",
+     *     "text/plain".
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAllWithResponseAsync(
-            String hub, BinaryData message, RequestOptions requestOptions) {
+            String hub, String contentType, BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (contentType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
             return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.sendToAll(
                                 this.client.getEndpoint(),
                                 hub,
                                 this.client.getServiceVersion().getVersion(),
+                                contentType,
                                 message,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -526,100 +718,111 @@ public final class WebPubSubsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Excluded connection Ids.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers receiving the messages.</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
+     * @param contentType Upload file type. Allowed values: "application/json", "application/octet-stream",
+     *     "text/plain".
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToAllWithResponseAsync(
-            String hub, BinaryData message, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (message == null) {
-            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
-        }
-        return service.sendToAll(
-                this.client.getEndpoint(),
-                hub,
-                this.client.getServiceVersion().getVersion(),
-                message,
-                requestOptions,
-                context);
+    public Response<Void> sendToAllWithResponse(
+            String hub, String contentType, BinaryData message, RequestOptions requestOptions) {
+        return sendToAllWithResponseAsync(hub, contentType, message, requestOptions).block();
     }
 
     /**
-     * Broadcast content inside request body to all the connected client connections.
+     * Close the client connection.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Excluded connection Ids.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param message The payload body.
+     * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendToAllWithResponse(String hub, BinaryData message, RequestOptions requestOptions) {
-        return sendToAllWithResponseAsync(hub, message, requestOptions).block();
+    public Mono<Response<Void>> closeConnectionWithResponseAsync(
+            String hub, String connectionId, RequestOptions requestOptions) {
+        if (hub == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (connectionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.closeConnection(
+                                this.client.getEndpoint(),
+                                hub,
+                                connectionId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Close the client connection.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param connectionId Target connection Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> closeConnectionWithResponse(String hub, String connectionId, RequestOptions requestOptions) {
+        return closeConnectionWithResponseAsync(hub, connectionId, requestOptions).block();
     }
 
     /**
      * Check if the connection with the given connectionId exists.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -632,7 +835,9 @@ public final class WebPubSubsImpl {
      * @param connectionId The connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return whether resource exists.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> connectionExistsWithResponseAsync(
@@ -657,57 +862,6 @@ public final class WebPubSubsImpl {
     /**
      * Check if the connection with the given connectionId exists.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * boolean
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param connectionId The connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> connectionExistsWithResponseAsync(
-            String hub, String connectionId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        return service.connectionExists(
-                this.client.getEndpoint(),
-                hub,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Check if the connection with the given connectionId exists.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -719,7 +873,9 @@ public final class WebPubSubsImpl {
      * @param connectionId The connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> connectionExistsWithResponse(
@@ -728,152 +884,43 @@ public final class WebPubSubsImpl {
     }
 
     /**
-     * Close the client connection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> closeConnectionWithResponseAsync(
-            String hub, String connectionId, RequestOptions requestOptions) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        return FluxUtil.withContext(
-                context ->
-                        service.closeConnection(
-                                this.client.getEndpoint(),
-                                hub,
-                                connectionId,
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Close the client connection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> closeConnectionWithResponseAsync(
-            String hub, String connectionId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        return service.closeConnection(
-                this.client.getEndpoint(),
-                hub,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Close the client connection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeConnectionWithResponse(String hub, String connectionId, RequestOptions requestOptions) {
-        return closeConnectionWithResponseAsync(hub, connectionId, requestOptions).block();
-    }
-
-    /**
      * Send content inside request body to the specific connection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param connectionId The connection Id.
+     * @param contentType Upload file type. Allowed values: "application/json", "application/octet-stream",
+     *     "text/plain".
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToConnectionWithResponseAsync(
-            String hub, String connectionId, BinaryData message, RequestOptions requestOptions) {
+            String hub, String connectionId, String contentType, BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
+        if (contentType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+        }
         if (message == null) {
             return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.sendToConnection(
@@ -881,7 +928,9 @@ public final class WebPubSubsImpl {
                                 hub,
                                 connectionId,
                                 this.client.getServiceVersion().getVersion(),
+                                contentType,
                                 message,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -889,110 +938,87 @@ public final class WebPubSubsImpl {
     /**
      * Send content inside request body to the specific connection.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param connectionId The connection Id.
+     * @param contentType Upload file type. Allowed values: "application/json", "application/octet-stream",
+     *     "text/plain".
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToConnectionWithResponseAsync(
-            String hub, String connectionId, BinaryData message, RequestOptions requestOptions, Context context) {
+    public Response<Void> sendToConnectionWithResponse(
+            String hub, String connectionId, String contentType, BinaryData message, RequestOptions requestOptions) {
+        return sendToConnectionWithResponseAsync(hub, connectionId, contentType, message, requestOptions).block();
+    }
+
+    /**
+     * Remove a connection from all groups.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param connectionId Target connection Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> removeConnectionFromAllGroupsWithResponseAsync(
+            String hub, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
-        if (message == null) {
-            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
-        }
-        return service.sendToConnection(
-                this.client.getEndpoint(),
-                hub,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                message,
-                requestOptions,
-                context);
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.removeConnectionFromAllGroups(
+                                this.client.getEndpoint(),
+                                hub,
+                                connectionId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
-     * Send content inside request body to the specific connection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
+     * Remove a connection from all groups.
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param connectionId The connection Id.
-     * @param message The payload body.
+     * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendToConnectionWithResponse(
-            String hub, String connectionId, BinaryData message, RequestOptions requestOptions) {
-        return sendToConnectionWithResponseAsync(hub, connectionId, message, requestOptions).block();
+    public Response<Void> removeConnectionFromAllGroupsWithResponse(
+            String hub, String connectionId, RequestOptions requestOptions) {
+        return removeConnectionFromAllGroupsWithResponseAsync(hub, connectionId, requestOptions).block();
     }
 
     /**
      * Check if there are any client connections inside the given group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1005,7 +1031,9 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return whether resource exists.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> groupExistsWithResponseAsync(
@@ -1030,57 +1058,6 @@ public final class WebPubSubsImpl {
     /**
      * Check if there are any client connections inside the given group.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * boolean
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> groupExistsWithResponseAsync(
-            String hub, String group, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        return service.groupExists(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Check if there are any client connections inside the given group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1092,7 +1069,9 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> groupExistsWithResponse(String hub, String group, RequestOptions requestOptions) {
@@ -1107,17 +1086,21 @@ public final class WebPubSubsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections in the group.</td></tr>
+     *     <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the connections in the group. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeGroupConnectionsWithResponseAsync(
@@ -1128,6 +1111,7 @@ public final class WebPubSubsImpl {
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.closeGroupConnections(
@@ -1135,6 +1119,7 @@ public final class WebPubSubsImpl {
                                 hub,
                                 group,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1147,56 +1132,21 @@ public final class WebPubSubsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections in the group.</td></tr>
+     *     <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the connections in the group. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> closeGroupConnectionsWithResponseAsync(
-            String hub, String group, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        return service.closeGroupConnections(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Close connections in the specific group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections in the group.</td></tr>
-     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeGroupConnectionsWithResponse(String hub, String group, RequestOptions requestOptions) {
@@ -1211,45 +1161,47 @@ public final class WebPubSubsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Excluded connection Ids</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers receiving the messages.</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
+     * @param contentType Upload file type. Allowed values: "application/json", "application/octet-stream",
+     *     "text/plain".
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToGroupWithResponseAsync(
-            String hub, String group, BinaryData message, RequestOptions requestOptions) {
+            String hub, String group, String contentType, BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
             return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
+        if (contentType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+        }
         if (message == null) {
             return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.sendToGroup(
@@ -1257,7 +1209,9 @@ public final class WebPubSubsImpl {
                                 hub,
                                 group,
                                 this.client.getServiceVersion().getVersion(),
+                                contentType,
                                 message,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1270,225 +1224,50 @@ public final class WebPubSubsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Excluded connection Ids</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers receiving the messages.</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param message The payload body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToGroupWithResponseAsync(
-            String hub, String group, BinaryData message, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (message == null) {
-            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
-        }
-        return service.sendToGroup(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                this.client.getServiceVersion().getVersion(),
-                message,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Send content inside request body to a group of connections.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Excluded connection Ids</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
+     * @param contentType Upload file type. Allowed values: "application/json", "application/octet-stream",
+     *     "text/plain".
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToGroupWithResponse(
-            String hub, String group, BinaryData message, RequestOptions requestOptions) {
-        return sendToGroupWithResponseAsync(hub, group, message, requestOptions).block();
-    }
-
-    /**
-     * Add a connection to the target group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addConnectionToGroupWithResponseAsync(
-            String hub, String group, String connectionId, RequestOptions requestOptions) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        return FluxUtil.withContext(
-                context ->
-                        service.addConnectionToGroup(
-                                this.client.getEndpoint(),
-                                hub,
-                                group,
-                                connectionId,
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Add a connection to the target group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addConnectionToGroupWithResponseAsync(
-            String hub, String group, String connectionId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        return service.addConnectionToGroup(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Add a connection to the target group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addConnectionToGroupWithResponse(
-            String hub, String group, String connectionId, RequestOptions requestOptions) {
-        return addConnectionToGroupWithResponseAsync(hub, group, connectionId, requestOptions).block();
+            String hub, String group, String contentType, BinaryData message, RequestOptions requestOptions) {
+        return sendToGroupWithResponseAsync(hub, group, contentType, message, requestOptions).block();
     }
 
     /**
      * Remove a connection from the target group.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeConnectionFromGroupWithResponseAsync(
@@ -1502,6 +1281,7 @@ public final class WebPubSubsImpl {
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.removeConnectionFromGroup(
@@ -1510,6 +1290,7 @@ public final class WebPubSubsImpl {
                                 group,
                                 connectionId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1517,63 +1298,16 @@ public final class WebPubSubsImpl {
     /**
      * Remove a connection from the target group.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeConnectionFromGroupWithResponseAsync(
-            String hub, String group, String connectionId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        return service.removeConnectionFromGroup(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Remove a connection from the target group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeConnectionFromGroupWithResponse(
@@ -1582,810 +1316,63 @@ public final class WebPubSubsImpl {
     }
 
     /**
-     * Check if there are any client connections connected for the given user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * boolean
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> userExistsWithResponseAsync(
-            String hub, String userId, RequestOptions requestOptions) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return FluxUtil.withContext(
-                context ->
-                        service.userExists(
-                                this.client.getEndpoint(),
-                                hub,
-                                userId,
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Check if there are any client connections connected for the given user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * boolean
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> userExistsWithResponseAsync(
-            String hub, String userId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return service.userExists(
-                this.client.getEndpoint(),
-                hub,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Check if there are any client connections connected for the given user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * boolean
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> userExistsWithResponse(String hub, String userId, RequestOptions requestOptions) {
-        return userExistsWithResponseAsync(hub, userId, requestOptions).block();
-    }
-
-    /**
-     * Close connections for the specific user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections for the user.</td></tr>
-     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId The user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> closeUserConnectionsWithResponseAsync(
-            String hub, String userId, RequestOptions requestOptions) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return FluxUtil.withContext(
-                context ->
-                        service.closeUserConnections(
-                                this.client.getEndpoint(),
-                                hub,
-                                userId,
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Close connections for the specific user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections for the user.</td></tr>
-     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId The user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> closeUserConnectionsWithResponseAsync(
-            String hub, String userId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return service.closeUserConnections(
-                this.client.getEndpoint(),
-                hub,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Close connections for the specific user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections for the user.</td></tr>
-     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId The user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeUserConnectionsWithResponse(String hub, String userId, RequestOptions requestOptions) {
-        return closeUserConnectionsWithResponseAsync(hub, userId, requestOptions).block();
-    }
-
-    /**
-     * Send content inside request body to the specific user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId The user Id.
-     * @param message The payload body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToUserWithResponseAsync(
-            String hub, String userId, BinaryData message, RequestOptions requestOptions) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        if (message == null) {
-            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
-        }
-        return FluxUtil.withContext(
-                context ->
-                        service.sendToUser(
-                                this.client.getEndpoint(),
-                                hub,
-                                userId,
-                                this.client.getServiceVersion().getVersion(),
-                                message,
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Send content inside request body to the specific user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId The user Id.
-     * @param message The payload body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendToUserWithResponseAsync(
-            String hub, String userId, BinaryData message, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        if (message == null) {
-            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
-        }
-        return service.sendToUser(
-                this.client.getEndpoint(),
-                hub,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                message,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Send content inside request body to the specific user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentType</td><td>String</td><td>Yes</td><td>Upload file type</td></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId The user Id.
-     * @param message The payload body.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendToUserWithResponse(
-            String hub, String userId, BinaryData message, RequestOptions requestOptions) {
-        return sendToUserWithResponseAsync(hub, userId, message, requestOptions).block();
-    }
-
-    /**
-     * Add a user to the target group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
+     * Add a connection to the target group.
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addUserToGroupWithResponseAsync(
-            String hub, String group, String userId, RequestOptions requestOptions) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return FluxUtil.withContext(
-                context ->
-                        service.addUserToGroup(
-                                this.client.getEndpoint(),
-                                hub,
-                                group,
-                                userId,
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Add a user to the target group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addUserToGroupWithResponseAsync(
-            String hub, String group, String userId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return service.addUserToGroup(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Add a user to the target group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addUserToGroupWithResponse(
-            String hub, String group, String userId, RequestOptions requestOptions) {
-        return addUserToGroupWithResponseAsync(hub, group, userId, requestOptions).block();
-    }
-
-    /**
-     * Remove a user from the target group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeUserFromGroupWithResponseAsync(
-            String hub, String group, String userId, RequestOptions requestOptions) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return FluxUtil.withContext(
-                context ->
-                        service.removeUserFromGroup(
-                                this.client.getEndpoint(),
-                                hub,
-                                group,
-                                userId,
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Remove a user from the target group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeUserFromGroupWithResponseAsync(
-            String hub, String group, String userId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return service.removeUserFromGroup(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Remove a user from the target group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param group Target group name, which length should be greater than 0 and less than 1025.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeUserFromGroupWithResponse(
-            String hub, String group, String userId, RequestOptions requestOptions) {
-        return removeUserFromGroupWithResponseAsync(hub, group, userId, requestOptions).block();
-    }
-
-    /**
-     * Remove a user from all groups.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeUserFromAllGroupsWithResponseAsync(
-            String hub, String userId, RequestOptions requestOptions) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return FluxUtil.withContext(
-                context ->
-                        service.removeUserFromAllGroups(
-                                this.client.getEndpoint(),
-                                hub,
-                                userId,
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
-    }
-
-    /**
-     * Remove a user from all groups.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeUserFromAllGroupsWithResponseAsync(
-            String hub, String userId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return service.removeUserFromAllGroups(
-                this.client.getEndpoint(),
-                hub,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Remove a user from all groups.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param userId Target user Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeUserFromAllGroupsWithResponse(
-            String hub, String userId, RequestOptions requestOptions) {
-        return removeUserFromAllGroupsWithResponseAsync(hub, userId, requestOptions).block();
-    }
-
-    /**
-     * Grant permission to the connection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>targetName</td><td>String</td><td>No</td><td>The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required parameter standing for the group name.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> grantPermissionWithResponseAsync(
-            String hub, String permission, String connectionId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> addConnectionToGroupWithResponseAsync(
+            String hub, String group, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
-        if (permission == null) {
-            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
+        if (group == null) {
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.grantPermission(
+                        service.addConnectionToGroup(
                                 this.client.getEndpoint(),
                                 hub,
-                                permission,
+                                group,
                                 connectionId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
-     * Grant permission to the connection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>targetName</td><td>String</td><td>No</td><td>The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required parameter standing for the group name.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
+     * Add a connection to the target group.
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> grantPermissionWithResponseAsync(
-            String hub, String permission, String connectionId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (permission == null) {
-            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        return service.grantPermission(
-                this.client.getEndpoint(),
-                hub,
-                permission,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Grant permission to the connection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>targetName</td><td>String</td><td>No</td><td>The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required parameter standing for the group name.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
+     * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> grantPermissionWithResponse(
-            String hub, String permission, String connectionId, RequestOptions requestOptions) {
-        return grantPermissionWithResponseAsync(hub, permission, connectionId, requestOptions).block();
+    public Response<Void> addConnectionToGroupWithResponse(
+            String hub, String group, String connectionId, RequestOptions requestOptions) {
+        return addConnectionToGroupWithResponseAsync(hub, group, connectionId, requestOptions).block();
     }
 
     /**
@@ -2397,16 +1384,21 @@ public final class WebPubSubsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>targetName</td><td>String</td><td>No</td><td>The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required parameter standing for the group name.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
+     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
+     *     "sendToGroup", "joinLeaveGroup".
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokePermissionWithResponseAsync(
@@ -2420,6 +1412,7 @@ public final class WebPubSubsImpl {
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.revokePermission(
@@ -2428,6 +1421,7 @@ public final class WebPubSubsImpl {
                                 permission,
                                 connectionId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -2441,59 +1435,21 @@ public final class WebPubSubsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>targetName</td><td>String</td><td>No</td><td>The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required parameter standing for the group name.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
-     * @param connectionId Target connection Id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> revokePermissionWithResponseAsync(
-            String hub, String permission, String connectionId, RequestOptions requestOptions, Context context) {
-        if (hub == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (permission == null) {
-            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        return service.revokePermission(
-                this.client.getEndpoint(),
-                hub,
-                permission,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Revoke permission for the connection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>targetName</td><td>String</td><td>No</td><td>The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required parameter standing for the group name.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
+     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
+     *     "sendToGroup", "joinLeaveGroup".
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokePermissionWithResponse(
@@ -2510,8 +1466,9 @@ public final class WebPubSubsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>targetName</td><td>String</td><td>No</td><td>The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required parameter standing for the group name.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2521,11 +1478,14 @@ public final class WebPubSubsImpl {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
+     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
+     *     "sendToGroup", "joinLeaveGroup".
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return whether resource exists.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> checkPermissionWithResponseAsync(
@@ -2560,8 +1520,9 @@ public final class WebPubSubsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>targetName</td><td>String</td><td>No</td><td>The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required parameter standing for the group name.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2571,16 +1532,49 @@ public final class WebPubSubsImpl {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
+     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
+     *     "sendToGroup", "joinLeaveGroup".
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return whether resource exists.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> checkPermissionWithResponseAsync(
-            String hub, String permission, String connectionId, RequestOptions requestOptions, Context context) {
+    public Response<Boolean> checkPermissionWithResponse(
+            String hub, String permission, String connectionId, RequestOptions requestOptions) {
+        return checkPermissionWithResponseAsync(hub, permission, connectionId, requestOptions).block();
+    }
+
+    /**
+     * Grant permission to the connection.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>targetName</td><td>String</td><td>No</td><td>The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required parameter standing for the group name.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
+     *     "sendToGroup", "joinLeaveGroup".
+     * @param connectionId Target connection Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> grantPermissionWithResponseAsync(
+            String hub, String permission, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
             return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
@@ -2590,18 +1584,22 @@ public final class WebPubSubsImpl {
         if (connectionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
-        return service.checkPermission(
-                this.client.getEndpoint(),
-                hub,
-                permission,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.grantPermission(
+                                this.client.getEndpoint(),
+                                hub,
+                                permission,
+                                connectionId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
-     * Check if a connection has permission to the specified action.
+     * Grant permission to the connection.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -2609,8 +1607,30 @@ public final class WebPubSubsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>targetName</td><td>String</td><td>No</td><td>The meaning of the target depends on the specific permission. For joinLeaveGroup and sendToGroup, targetName is a required parameter standing for the group name.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
+     *     "sendToGroup", "joinLeaveGroup".
+     * @param connectionId Target connection Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> grantPermissionWithResponse(
+            String hub, String permission, String connectionId, RequestOptions requestOptions) {
+        return grantPermissionWithResponseAsync(hub, permission, connectionId, requestOptions).block();
+    }
+
+    /**
+     * Check if there are any client connections connected for the given user.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2620,15 +1640,402 @@ public final class WebPubSubsImpl {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
-     * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
-     * @param connectionId Target connection Id.
+     * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> checkPermissionWithResponse(
-            String hub, String permission, String connectionId, RequestOptions requestOptions) {
-        return checkPermissionWithResponseAsync(hub, permission, connectionId, requestOptions).block();
+    public Mono<Response<Boolean>> userExistsWithResponseAsync(
+            String hub, String userId, RequestOptions requestOptions) {
+        if (hub == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        return FluxUtil.withContext(
+                context ->
+                        service.userExists(
+                                this.client.getEndpoint(),
+                                hub,
+                                userId,
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Check if there are any client connections connected for the given user.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * boolean
+     * }</pre>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param userId Target user Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return whether resource exists along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> userExistsWithResponse(String hub, String userId, RequestOptions requestOptions) {
+        return userExistsWithResponseAsync(hub, userId, requestOptions).block();
+    }
+
+    /**
+     * Close connections for the specific user.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the connections for the user. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param userId The user Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> closeUserConnectionsWithResponseAsync(
+            String hub, String userId, RequestOptions requestOptions) {
+        if (hub == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.closeUserConnections(
+                                this.client.getEndpoint(),
+                                hub,
+                                userId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Close connections for the specific user.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the connections for the user. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param userId The user Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> closeUserConnectionsWithResponse(String hub, String userId, RequestOptions requestOptions) {
+        return closeUserConnectionsWithResponseAsync(hub, userId, requestOptions).block();
+    }
+
+    /**
+     * Send content inside request body to the specific user.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers receiving the messages.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param userId The user Id.
+     * @param contentType Upload file type. Allowed values: "application/json", "application/octet-stream",
+     *     "text/plain".
+     * @param message The payload body.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> sendToUserWithResponseAsync(
+            String hub, String userId, String contentType, BinaryData message, RequestOptions requestOptions) {
+        if (hub == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        if (contentType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+        }
+        if (message == null) {
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.sendToUser(
+                                this.client.getEndpoint(),
+                                hub,
+                                userId,
+                                this.client.getServiceVersion().getVersion(),
+                                contentType,
+                                message,
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Send content inside request body to the specific user.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers receiving the messages.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param userId The user Id.
+     * @param contentType Upload file type. Allowed values: "application/json", "application/octet-stream",
+     *     "text/plain".
+     * @param message The payload body.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> sendToUserWithResponse(
+            String hub, String userId, String contentType, BinaryData message, RequestOptions requestOptions) {
+        return sendToUserWithResponseAsync(hub, userId, contentType, message, requestOptions).block();
+    }
+
+    /**
+     * Remove a user from all groups.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param userId Target user Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> removeUserFromAllGroupsWithResponseAsync(
+            String hub, String userId, RequestOptions requestOptions) {
+        if (hub == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.removeUserFromAllGroups(
+                                this.client.getEndpoint(),
+                                hub,
+                                userId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Remove a user from all groups.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param userId Target user Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> removeUserFromAllGroupsWithResponse(
+            String hub, String userId, RequestOptions requestOptions) {
+        return removeUserFromAllGroupsWithResponseAsync(hub, userId, requestOptions).block();
+    }
+
+    /**
+     * Remove a user from the target group.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param group Target group name, which length should be greater than 0 and less than 1025.
+     * @param userId Target user Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> removeUserFromGroupWithResponseAsync(
+            String hub, String group, String userId, RequestOptions requestOptions) {
+        if (hub == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (group == null) {
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.removeUserFromGroup(
+                                this.client.getEndpoint(),
+                                hub,
+                                group,
+                                userId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Remove a user from the target group.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param group Target group name, which length should be greater than 0 and less than 1025.
+     * @param userId Target user Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> removeUserFromGroupWithResponse(
+            String hub, String group, String userId, RequestOptions requestOptions) {
+        return removeUserFromGroupWithResponseAsync(hub, group, userId, requestOptions).block();
+    }
+
+    /**
+     * Add a user to the target group.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param group Target group name, which length should be greater than 0 and less than 1025.
+     * @param userId Target user Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addUserToGroupWithResponseAsync(
+            String hub, String group, String userId, RequestOptions requestOptions) {
+        if (hub == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (group == null) {
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.addUserToGroup(
+                                this.client.getEndpoint(),
+                                hub,
+                                group,
+                                userId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Add a user to the target group.
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param group Target group name, which length should be greater than 0 and less than 1025.
+     * @param userId Target user Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addUserToGroupWithResponse(
+            String hub, String group, String userId, RequestOptions requestOptions) {
+        return addUserToGroupWithResponseAsync(hub, group, userId, requestOptions).block();
     }
 }

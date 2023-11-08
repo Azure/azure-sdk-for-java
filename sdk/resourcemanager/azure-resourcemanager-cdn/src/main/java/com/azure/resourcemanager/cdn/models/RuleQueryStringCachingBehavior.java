@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RuleQueryStringCachingBehavior. */
+/**
+ * Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching,
+ * ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
+ */
 public final class RuleQueryStringCachingBehavior extends ExpandableStringEnum<RuleQueryStringCachingBehavior> {
     /** Static value IgnoreQueryString for RuleQueryStringCachingBehavior. */
     public static final RuleQueryStringCachingBehavior IGNORE_QUERY_STRING = fromString("IgnoreQueryString");
@@ -25,6 +28,15 @@ public final class RuleQueryStringCachingBehavior extends ExpandableStringEnum<R
         fromString("IncludeSpecifiedQueryStrings");
 
     /**
+     * Creates a new instance of RuleQueryStringCachingBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RuleQueryStringCachingBehavior() {
+    }
+
+    /**
      * Creates or finds a RuleQueryStringCachingBehavior from its string representation.
      *
      * @param name a name to look for.
@@ -35,7 +47,11 @@ public final class RuleQueryStringCachingBehavior extends ExpandableStringEnum<R
         return fromString(name, RuleQueryStringCachingBehavior.class);
     }
 
-    /** @return known RuleQueryStringCachingBehavior values. */
+    /**
+     * Gets known RuleQueryStringCachingBehavior values.
+     *
+     * @return known RuleQueryStringCachingBehavior values.
+     */
     public static Collection<RuleQueryStringCachingBehavior> values() {
         return values(RuleQueryStringCachingBehavior.class);
     }

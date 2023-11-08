@@ -32,18 +32,25 @@ public interface WebPubSubHub {
     String type();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the properties property: Properties of a hub.
+     *
+     * @return the properties value.
+     */
+    WebPubSubHubProperties properties();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the properties property: Properties of the hub setting.
+     * Gets the name of the resource group.
      *
-     * @return the properties value.
+     * @return the name of the resource group.
      */
-    WebPubSubHubProperties properties();
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubHubInner object.
@@ -59,33 +66,36 @@ public interface WebPubSubHub {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The WebPubSubHub definition stages. */
     interface DefinitionStages {
         /** The first stage of the WebPubSubHub definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the WebPubSubHub definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, resourceName.
              *
-             * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this
-             *     value from the Azure Resource Manager API or the portal.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param resourceName The name of the resource.
              * @return the next definition stage.
              */
             WithProperties withExistingWebPubSub(String resourceGroupName, String resourceName);
         }
+
         /** The stage of the WebPubSubHub definition allowing to specify properties. */
         interface WithProperties {
             /**
-             * Specifies the properties property: Properties of the hub setting..
+             * Specifies the properties property: Properties of a hub..
              *
-             * @param properties Properties of the hub setting.
+             * @param properties Properties of a hub.
              * @return the next definition stage.
              */
             WithCreate withProperties(WebPubSubHubProperties properties);
         }
+
         /**
          * The stage of the WebPubSubHub definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -107,6 +117,7 @@ public interface WebPubSubHub {
             WebPubSubHub create(Context context);
         }
     }
+
     /**
      * Begins update for the WebPubSubHub resource.
      *
@@ -131,19 +142,21 @@ public interface WebPubSubHub {
          */
         WebPubSubHub apply(Context context);
     }
+
     /** The WebPubSubHub update stages. */
     interface UpdateStages {
         /** The stage of the WebPubSubHub update allowing to specify properties. */
         interface WithProperties {
             /**
-             * Specifies the properties property: Properties of the hub setting..
+             * Specifies the properties property: Properties of a hub..
              *
-             * @param properties Properties of the hub setting.
+             * @param properties Properties of a hub.
              * @return the next definition stage.
              */
             Update withProperties(WebPubSubHubProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

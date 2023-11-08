@@ -17,6 +17,10 @@ public final class ManagedClusterLoadBalancerProfileOutboundIpPrefixes {
     @JsonProperty(value = "publicIPPrefixes")
     private List<ResourceReference> publicIpPrefixes;
 
+    /** Creates an instance of ManagedClusterLoadBalancerProfileOutboundIpPrefixes class. */
+    public ManagedClusterLoadBalancerProfileOutboundIpPrefixes() {
+    }
+
     /**
      * Get the publicIpPrefixes property: A list of public IP prefix resources.
      *

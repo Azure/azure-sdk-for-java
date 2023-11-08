@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionPolicyOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionPolicyResourceInner;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ProtectionPolicyOperationResultsClient.
  */
 public final class ProtectionPolicyOperationResultsClientImpl implements ProtectionPolicyOperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(ProtectionPolicyOperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectionPolicyOperationResultsService service;
 
@@ -59,11 +56,10 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectionPolicyOperationResultsService {
+    public interface ProtectionPolicyOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupPolicies/{policyName}/operationResults/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}/operationResults/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionPolicyResourceInner>> get(
@@ -208,32 +204,7 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
     private Mono<ProtectionPolicyResourceInner> getAsync(
         String vaultName, String resourceGroupName, String policyName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName, operationId)
-            .flatMap(
-                (Response<ProtectionPolicyResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Provides the result of an operation.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param policyName Backup policy name whose operation's result needs to be fetched.
-     * @param operationId Operation ID which represents the operation whose result needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionPolicyResourceInner get(
-        String vaultName, String resourceGroupName, String policyName, String operationId) {
-        return getAsync(vaultName, resourceGroupName, policyName, operationId).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -253,5 +224,23 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
     public Response<ProtectionPolicyResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, String policyName, String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName, operationId, context).block();
+    }
+
+    /**
+     * Provides the result of an operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param policyName Backup policy name whose operation's result needs to be fetched.
+     * @param operationId Operation ID which represents the operation whose result needs to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for backup policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProtectionPolicyResourceInner get(
+        String vaultName, String resourceGroupName, String policyName, String operationId) {
+        return getWithResponse(vaultName, resourceGroupName, policyName, operationId, Context.NONE).getValue();
     }
 }

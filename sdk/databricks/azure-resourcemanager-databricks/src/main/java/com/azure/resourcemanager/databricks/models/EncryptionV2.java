@@ -6,17 +6,13 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that contains details of encryption used on the workspace. */
 @Fluent
 public final class EncryptionV2 {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionV2.class);
-
     /*
-     * The encryption keySource (provider). Possible values (case-insensitive):
-     * Microsoft.Keyvault
+     * The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Keyvault
      */
     @JsonProperty(value = "keySource", required = true)
     private EncryptionKeySource keySource;
@@ -26,6 +22,10 @@ public final class EncryptionV2 {
      */
     @JsonProperty(value = "keyVaultProperties")
     private EncryptionV2KeyVaultProperties keyVaultProperties;
+
+    /** Creates an instance of EncryptionV2 class. */
+    public EncryptionV2() {
+    }
 
     /**
      * Get the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
@@ -76,7 +76,7 @@ public final class EncryptionV2 {
      */
     public void validate() {
         if (keySource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keySource in model EncryptionV2"));
         }
@@ -84,4 +84,6 @@ public final class EncryptionV2 {
             keyVaultProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptionV2.class);
 }

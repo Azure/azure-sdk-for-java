@@ -24,6 +24,10 @@ public final class AzureMLLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureMLLinkedServiceTypeProperties innerTypeProperties = new AzureMLLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureMLLinkedService class. */
+    public AzureMLLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure ML Studio Web Service linked service properties.
      *
@@ -211,22 +215,22 @@ public final class AzureMLLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMLLinkedService object itself.
      */
-    public AzureMLLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureMLLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureMLLinkedServiceTypeProperties();
         }

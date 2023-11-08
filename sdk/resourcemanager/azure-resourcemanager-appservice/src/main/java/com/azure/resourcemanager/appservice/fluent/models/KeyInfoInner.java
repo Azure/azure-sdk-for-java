@@ -22,6 +22,10 @@ public final class KeyInfoInner {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of KeyInfoInner class. */
+    public KeyInfoInner() {
+    }
+
     /**
      * Get the name property: Key name.
      *

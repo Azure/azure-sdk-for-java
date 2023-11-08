@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,133 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2023-01-19)
+
+- Azure Resource Manager ServiceFabric client library for Java. This package contains Microsoft Azure SDK for ServiceFabric Management SDK. Service Fabric Management Client. Package tag package-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.StatefulServiceProperties` was modified
+
+* `fluent.models.ServiceResourceProperties withCorrelationScheme(java.util.List)` -> `models.ServiceResourceProperties withCorrelationScheme(java.util.List)`
+* `fluent.models.ServiceResourceProperties withServiceLoadMetrics(java.util.List)` -> `models.ServiceResourceProperties withServiceLoadMetrics(java.util.List)`
+* `fluent.models.ServiceResourceProperties withPartitionDescription(models.PartitionSchemeDescription)` -> `models.ServiceResourceProperties withPartitionDescription(models.PartitionSchemeDescription)`
+* `fluent.models.ServiceResourceProperties withServiceTypeName(java.lang.String)` -> `models.ServiceResourceProperties withServiceTypeName(java.lang.String)`
+* `fluent.models.ServiceResourceProperties withServiceDnsName(java.lang.String)` -> `models.ServiceResourceProperties withServiceDnsName(java.lang.String)`
+* `fluent.models.ServiceResourceProperties withPlacementConstraints(java.lang.String)` -> `models.ServiceResourceProperties withPlacementConstraints(java.lang.String)`
+* `fluent.models.ServiceResourceProperties withDefaultMoveCost(models.MoveCost)` -> `models.ServiceResourceProperties withDefaultMoveCost(models.MoveCost)`
+* `fluent.models.ServiceResourceProperties withServicePackageActivationMode(models.ArmServicePackageActivationMode)` -> `models.ServiceResourceProperties withServicePackageActivationMode(models.ArmServicePackageActivationMode)`
+* `fluent.models.ServiceResourceProperties withServicePlacementPolicies(java.util.List)` -> `models.ServiceResourceProperties withServicePlacementPolicies(java.util.List)`
+
+#### `models.StatelessServiceProperties` was modified
+
+* `fluent.models.ServiceResourceProperties withServiceDnsName(java.lang.String)` -> `models.ServiceResourceProperties withServiceDnsName(java.lang.String)`
+* `fluent.models.ServiceResourceProperties withServiceTypeName(java.lang.String)` -> `models.ServiceResourceProperties withServiceTypeName(java.lang.String)`
+* `fluent.models.ServiceResourceProperties withDefaultMoveCost(models.MoveCost)` -> `models.ServiceResourceProperties withDefaultMoveCost(models.MoveCost)`
+* `fluent.models.ServiceResourceProperties withCorrelationScheme(java.util.List)` -> `models.ServiceResourceProperties withCorrelationScheme(java.util.List)`
+* `fluent.models.ServiceResourceProperties withPartitionDescription(models.PartitionSchemeDescription)` -> `models.ServiceResourceProperties withPartitionDescription(models.PartitionSchemeDescription)`
+* `fluent.models.ServiceResourceProperties withServicePackageActivationMode(models.ArmServicePackageActivationMode)` -> `models.ServiceResourceProperties withServicePackageActivationMode(models.ArmServicePackageActivationMode)`
+* `fluent.models.ServiceResourceProperties withServicePlacementPolicies(java.util.List)` -> `models.ServiceResourceProperties withServicePlacementPolicies(java.util.List)`
+* `fluent.models.ServiceResourceProperties withPlacementConstraints(java.lang.String)` -> `models.ServiceResourceProperties withPlacementConstraints(java.lang.String)`
+* `fluent.models.ServiceResourceProperties withServiceLoadMetrics(java.util.List)` -> `models.ServiceResourceProperties withServiceLoadMetrics(java.util.List)`
+
+#### `models.StatefulServiceUpdateProperties` was modified
+
+* `fluent.models.ServiceResourceUpdateProperties withDefaultMoveCost(models.MoveCost)` -> `models.ServiceResourceUpdateProperties withDefaultMoveCost(models.MoveCost)`
+* `fluent.models.ServiceResourceUpdateProperties withServicePlacementPolicies(java.util.List)` -> `models.ServiceResourceUpdateProperties withServicePlacementPolicies(java.util.List)`
+* `fluent.models.ServiceResourceUpdateProperties withCorrelationScheme(java.util.List)` -> `models.ServiceResourceUpdateProperties withCorrelationScheme(java.util.List)`
+* `fluent.models.ServiceResourceUpdateProperties withServiceLoadMetrics(java.util.List)` -> `models.ServiceResourceUpdateProperties withServiceLoadMetrics(java.util.List)`
+* `fluent.models.ServiceResourceUpdateProperties withPlacementConstraints(java.lang.String)` -> `models.ServiceResourceUpdateProperties withPlacementConstraints(java.lang.String)`
+
+#### `models.ServiceResource$Definition` was modified
+
+* `withServiceTypeName(java.lang.String)` was removed
+* `withCorrelationScheme(java.util.List)` was removed
+* `withServiceDnsName(java.lang.String)` was removed
+* `withServiceLoadMetrics(java.util.List)` was removed
+* `withServicePackageActivationMode(models.ArmServicePackageActivationMode)` was removed
+* `withServicePlacementPolicies(java.util.List)` was removed
+* `withDefaultMoveCost(models.MoveCost)` was removed
+* `withPlacementConstraints(java.lang.String)` was removed
+* `withPartitionDescription(models.PartitionSchemeDescription)` was removed
+
+#### `models.ServiceResource` was modified
+
+* `placementConstraints()` was removed
+* `provisioningState()` was removed
+* `serviceTypeName()` was removed
+* `servicePackageActivationMode()` was removed
+* `correlationScheme()` was removed
+* `partitionDescription()` was removed
+* `serviceLoadMetrics()` was removed
+* `servicePlacementPolicies()` was removed
+* `serviceDnsName()` was removed
+* `defaultMoveCost()` was removed
+
+#### `models.Clusters` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.StatelessServiceUpdateProperties` was modified
+
+* `fluent.models.ServiceResourceUpdateProperties withCorrelationScheme(java.util.List)` -> `models.ServiceResourceUpdateProperties withCorrelationScheme(java.util.List)`
+* `fluent.models.ServiceResourceUpdateProperties withDefaultMoveCost(models.MoveCost)` -> `models.ServiceResourceUpdateProperties withDefaultMoveCost(models.MoveCost)`
+* `fluent.models.ServiceResourceUpdateProperties withPlacementConstraints(java.lang.String)` -> `models.ServiceResourceUpdateProperties withPlacementConstraints(java.lang.String)`
+* `fluent.models.ServiceResourceUpdateProperties withServicePlacementPolicies(java.util.List)` -> `models.ServiceResourceUpdateProperties withServicePlacementPolicies(java.util.List)`
+* `fluent.models.ServiceResourceUpdateProperties withServiceLoadMetrics(java.util.List)` -> `models.ServiceResourceUpdateProperties withServiceLoadMetrics(java.util.List)`
+
+### Features Added
+
+* `models.ServiceResourceUpdateProperties` was added
+
+* `models.ServiceResourceProperties` was added
+
+#### `models.ApplicationTypeVersionResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ServiceResource$Definition` was modified
+
+* `withProperties(models.ServiceResourceProperties)` was added
+
+#### `models.ServiceResourceUpdate` was modified
+
+* `properties()` was added
+* `withProperties(models.ServiceResourceUpdateProperties)` was added
+
+#### `models.ServiceResource` was modified
+
+* `properties()` was added
+* `resourceGroupName()` was added
+
+#### `models.Cluster` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ApplicationTypeResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Clusters` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ServiceResource$Update` was modified
+
+* `withProperties(models.ServiceResourceUpdateProperties)` was added
+
+#### `ServiceFabricManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.ApplicationResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `ServiceFabricManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
 
 ## 1.0.0-beta.2 (2021-08-31)
 

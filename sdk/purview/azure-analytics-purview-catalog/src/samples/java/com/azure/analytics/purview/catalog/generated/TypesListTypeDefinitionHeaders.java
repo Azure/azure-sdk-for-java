@@ -13,17 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesListTypeDefinitionHeaders {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.typeslisttypedefinitionheaders.typeslisttypedefinitionheaders
         TypesClient typesClient =
                 new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("includeTermTemplate", "true");
+        // BEGIN:com.azure.analytics.purview.catalog.generated.typeslisttypedefinitionheaders.typeslisttypedefinitionheaders
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("includeTermTemplate", "true");
         Response<BinaryData> response = typesClient.listTypeDefinitionHeadersWithResponse(requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.typeslisttypedefinitionheaders.typeslisttypedefinitionheaders
+        // END:com.azure.analytics.purview.catalog.generated.typeslisttypedefinitionheaders.typeslisttypedefinitionheaders
     }
 }

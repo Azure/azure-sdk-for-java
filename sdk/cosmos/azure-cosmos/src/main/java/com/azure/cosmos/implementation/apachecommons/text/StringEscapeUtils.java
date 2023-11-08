@@ -19,6 +19,9 @@ import com.azure.cosmos.implementation.apachecommons.text.translate.LookupTransl
 import com.azure.cosmos.implementation.apachecommons.text.translate.OctalUnescaper;
 import com.azure.cosmos.implementation.apachecommons.text.translate.UnicodeUnescaper;
 
+/**
+ * This class is shaded from version 1.10.0 of apache commons-text library
+ */
 public class StringEscapeUtils {
     public static final CharSequenceTranslator UNESCAPE_JAVA;
 
@@ -29,21 +32,22 @@ public class StringEscapeUtils {
         return new StringEscapeUtils.Builder(translator);
     }
 
-    public static final String unescapeJava(String input) {
+    public static String unescapeJava(String input) {
         return UNESCAPE_JAVA.translate(input);
     }
 
     static {
-        Map<CharSequence, CharSequence> unescapeJavaMap = new HashMap<>();
+        final Map<CharSequence, CharSequence> unescapeJavaMap = new HashMap<>();
         unescapeJavaMap.put("\\\\", "\\");
         unescapeJavaMap.put("\\\"", "\"");
         unescapeJavaMap.put("\\'", "'");
         unescapeJavaMap.put("\\", "");
-        UNESCAPE_JAVA = new AggregateTranslator(new CharSequenceTranslator[]{
-            new OctalUnescaper(),
+        UNESCAPE_JAVA = new AggregateTranslator(
+            new OctalUnescaper(),     // .between('\1', '\377'),
             new UnicodeUnescaper(),
             new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_UNESCAPE),
-            new LookupTranslator(Collections.unmodifiableMap(unescapeJavaMap))});
+            new LookupTranslator(Collections.unmodifiableMap(unescapeJavaMap))
+        );
     }
 
     public static final class Builder {

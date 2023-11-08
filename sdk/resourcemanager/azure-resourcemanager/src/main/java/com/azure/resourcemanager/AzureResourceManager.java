@@ -28,6 +28,7 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
 import com.azure.resourcemanager.compute.models.ComputeSkus;
 import com.azure.resourcemanager.compute.models.ComputeUsages;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSets;
 import com.azure.resourcemanager.compute.models.Disks;
 import com.azure.resourcemanager.compute.models.Galleries;
 import com.azure.resourcemanager.compute.models.GalleryImageVersions;
@@ -54,6 +55,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairin
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.models.ManagedHsms;
 import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.ActionGroups;
@@ -124,7 +126,23 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
 
 import java.util.Objects;
 
-/** The entry point for accessing resource management APIs in Azure. */
+/**
+ * The entry point for accessing resource management APIs in Azure.
+ *
+ * <p><strong>Instantiating an Azure Client</strong></p>
+ *
+ * <!-- src_embed com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
+ * <pre>
+ * AzureProfile profile = new AzureProfile&#40;tenantId, subscriptionId, AzureEnvironment.AZURE&#41;;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .authorityHost&#40;profile.getEnvironment&#40;&#41;.getActiveDirectoryEndpoint&#40;&#41;&#41;
+ *     .build&#40;&#41;;
+ * AzureResourceManager azure = AzureResourceManager
+ *     .authenticate&#40;credential, profile&#41;
+ *     .withDefaultSubscription&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
+ */
 public final class AzureResourceManager {
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
@@ -155,6 +173,20 @@ public final class AzureResourceManager {
     /**
      * Authenticate to Azure using an Azure credential object.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
+     * <pre>
+     * AzureProfile profile = new AzureProfile&#40;tenantId, subscriptionId, AzureEnvironment.AZURE&#41;;
+     * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;
+     *     .authorityHost&#40;profile.getEnvironment&#40;&#41;.getActiveDirectoryEndpoint&#40;&#41;&#41;
+     *     .build&#40;&#41;;
+     * AzureResourceManager azure = AzureResourceManager
+     *     .authenticate&#40;credential, profile&#41;
+     *     .withDefaultSubscription&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
+     *
      * @param credential the credential object
      * @param profile the profile to use
      * @return the authenticated Azure client
@@ -178,7 +210,25 @@ public final class AzureResourceManager {
         return new AuthenticatedImpl(httpPipeline, profile);
     }
 
-    /** @return an interface allow configurations on the client. */
+    /**
+     * Configures the Azure client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.configure -->
+     * <pre>
+     * AzureResourceManager azure = AzureResourceManager
+     *     .configure&#40;&#41;
+     *     .withLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;
+     *     .withPolicy&#40;customPolicy&#41;
+     *     .withRetryPolicy&#40;customRetryPolicy&#41;
+     *     .withHttpClient&#40;httpClient&#41;
+     *     &#47;&#47;...
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.configure -->
+     *
+     * @return an interface allow configurations on the client.
+     */
     public static Configurable configure() {
         return new ConfigurableImpl();
     }
@@ -446,7 +496,27 @@ public final class AzureResourceManager {
         return resourceManager.managementLocks();
     }
 
-    /** @return entry point to managing storage accounts */
+    /**
+     * Entry point to managing storage accounts
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create an Azure Storage Account</p>
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccount -->
+     * <pre>
+     * azure.storageAccounts&#40;&#41;.define&#40;&quot;&lt;storage-account-name&gt;&quot;&#41;
+     *     .withRegion&#40;Region.US_EAST&#41;
+     *     .withNewResourceGroup&#40;resourceGroupName&#41;
+     *     .withSku&#40;StorageAccountSkuType.STANDARD_LRS&#41;
+     *     .withGeneralPurposeAccountKindV2&#40;&#41;
+     *     .withOnlyHttpsTraffic&#40;&#41;
+     *     &#47;&#47;...
+     *     .create&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccount -->
+     *
+     * @return entry point to managing storage accounts
+     */
     public StorageAccounts storageAccounts() {
         return storageManager.storageAccounts();
     }
@@ -536,7 +606,42 @@ public final class AzureResourceManager {
         return networkManager.ddosProtectionPlans();
     }
 
-    /** @return entry point to managing virtual machines */
+    /**
+     * Entry point to managing virtual machines.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create a Virtual Machine instance.</p>
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.virtualMachines.createVirtualMachine -->
+     * <pre>
+     * VirtualMachine linuxVM = azure.virtualMachines&#40;&#41;
+     *     .define&#40;linuxVMName&#41;
+     *     .withRegion&#40;region&#41;
+     *     .withNewResourceGroup&#40;resourceGroupName&#41;
+     *     .withNewPrimaryNetwork&#40;&quot;10.0.0.0&#47;28&quot;&#41;
+     *     .withPrimaryPrivateIPAddressDynamic&#40;&#41;
+     *     .withoutPrimaryPublicIPAddress&#40;&#41;
+     *     .withPopularLinuxImage&#40;KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2&#41;
+     *     .withRootUsername&#40;userName&#41;
+     *     .withSsh&#40;sshPublicKey&#41;
+     *     .withNewDataDisk&#40;10&#41;
+     *     .withExistingDataDisk&#40;dataDisk&#41;
+     *     .withSize&#40;VirtualMachineSizeTypes.STANDARD_DS1_V2&#41;
+     *     .create&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.virtualMachines.createVirtualMachine -->
+     *
+     * <p>Restart Virtual Machine instance.</p>
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.virtualMachines.restartVirtualMachineAsync -->
+     * <pre>
+     * azure.virtualMachines&#40;&#41;.listByResourceGroupAsync&#40;resourceGroupName&#41;
+     *     .flatMap&#40;VirtualMachine::restartAsync&#41;
+     *     &#47;&#47;...
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.virtualMachines.restartVirtualMachineAsync -->
+     *
+     * @return entry point to managing virtual machines
+     */
     public VirtualMachines virtualMachines() {
         return computeManager.virtualMachines();
     }
@@ -632,7 +737,41 @@ public final class AzureResourceManager {
         return appServiceManager.webApps();
     }
 
-    /** @return entry point to managing function apps. */
+    /**
+     * Entry point to managing function apps.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create an Azure Function App</p>
+     *
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.functionApps.createFunctionApp -->
+     * <pre>
+     * Creatable&lt;StorageAccount&gt; creatableStorageAccount = azure.storageAccounts&#40;&#41;
+     *     .define&#40;&quot;&lt;storage-account-name&gt;&quot;&#41;
+     *     .withRegion&#40;Region.US_EAST&#41;
+     *     .withExistingResourceGroup&#40;resourceGroupName&#41;
+     *     .withGeneralPurposeAccountKindV2&#40;&#41;
+     *     .withSku&#40;StorageAccountSkuType.STANDARD_LRS&#41;;
+     * Creatable&lt;AppServicePlan&gt; creatableAppServicePlan = azure.appServicePlans&#40;&#41;
+     *     .define&#40;&quot;&lt;app-service-plan-name&gt;&quot;&#41;
+     *     .withRegion&#40;Region.US_EAST&#41;
+     *     .withExistingResourceGroup&#40;resourceGroupName&#41;
+     *     .withPricingTier&#40;PricingTier.STANDARD_S1&#41;
+     *     .withOperatingSystem&#40;OperatingSystem.LINUX&#41;;
+     * FunctionApp linuxFunctionApp = azure.functionApps&#40;&#41;.define&#40;&quot;&lt;function-app-name&gt;&quot;&#41;
+     *     .withRegion&#40;Region.US_EAST&#41;
+     *     .withExistingResourceGroup&#40;resourceGroupName&#41;
+     *     .withNewLinuxAppServicePlan&#40;creatableAppServicePlan&#41;
+     *     .withBuiltInImage&#40;FunctionRuntimeStack.JAVA_8&#41;
+     *     .withNewStorageAccount&#40;creatableStorageAccount&#41;
+     *     .withHttpsOnly&#40;true&#41;
+     *     .withAppSetting&#40;&quot;WEBSITE_RUN_FROM_PACKAGE&quot;, &quot;&lt;function-app-package-url&gt;&quot;&#41;
+     *     .create&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.functionApps.createFunctionApp -->
+     *
+     * @return entry point to managing function apps.
+     */
     public FunctionApps functionApps() {
         return appServiceManager.functionApps();
     }
@@ -789,7 +928,26 @@ public final class AzureResourceManager {
         return this.computeManager.galleryImageVersions();
     }
 
-    /** @return the blob container management API entry point */
+    /**
+     * Entry point to blob container management API.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create a Blob Container</p>
+     *
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainer -->
+     * <pre>
+     * azure.storageBlobContainers&#40;&#41;
+     *     .defineContainer&#40;&quot;container&quot;&#41;
+     *     .withExistingStorageAccount&#40;storageAccount&#41;
+     *     .withPublicAccess&#40;PublicAccess.NONE&#41;
+     *     &#47;&#47;...
+     *     .create&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainer -->
+     *
+     * @return the blob container management API entry point
+     */
     public BlobContainers storageBlobContainers() {
         return this.storageManager.blobContainers();
     }
@@ -827,5 +985,15 @@ public final class AzureResourceManager {
     /** @return entry point to network profiles management */
     public NetworkProfiles networkProfiles() {
         return this.networkManager.networkProfiles();
+    }
+
+    /** @return entry point to disk encryption sets management */
+    public DiskEncryptionSets diskEncryptionSets() {
+        return this.computeManager.diskEncryptionSets();
+    }
+
+    /** @return entry point to Managed Hardware Security Module management */
+    public ManagedHsms managedHsms() {
+        return this.keyVaultManager.managedHsms();
     }
 }

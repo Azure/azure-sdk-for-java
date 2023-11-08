@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.ReservationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of reservations and summary of roll out count of reservations in each state. */
 @Fluent
 public final class ReservationsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationsListResult.class);
-
     /*
      * The list of reservations.
      */
@@ -33,6 +29,10 @@ public final class ReservationsListResult {
      */
     @JsonProperty(value = "summary")
     private ReservationSummary summary;
+
+    /** Creates an instance of ReservationsListResult class. */
+    public ReservationsListResult() {
+    }
 
     /**
      * Get the value property: The list of reservations.

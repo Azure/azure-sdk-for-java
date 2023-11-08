@@ -44,6 +44,9 @@ public final class SqlConnection {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of SqlConnection class. */
+    public SqlConnection() {}
+
     /**
      * Get the type property: The type of the connection.
      *

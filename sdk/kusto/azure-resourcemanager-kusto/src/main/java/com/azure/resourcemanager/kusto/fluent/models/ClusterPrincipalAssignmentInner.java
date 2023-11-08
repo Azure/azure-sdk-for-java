@@ -6,23 +6,23 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing a cluster principal assignment. */
 @Fluent
 public final class ClusterPrincipalAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPrincipalAssignmentInner.class);
-
     /*
      * The cluster principal.
      */
     @JsonProperty(value = "properties")
     private ClusterPrincipalProperties innerProperties;
+
+    /** Creates an instance of ClusterPrincipalAssignmentInner class. */
+    public ClusterPrincipalAssignmentInner() {
+    }
 
     /**
      * Get the innerProperties property: The cluster principal.

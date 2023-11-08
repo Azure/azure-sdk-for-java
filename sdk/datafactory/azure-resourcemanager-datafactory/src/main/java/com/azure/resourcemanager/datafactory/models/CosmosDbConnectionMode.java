@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CosmosDbConnectionMode. */
+/** The connection mode used to access CosmosDB account. Type: string. */
 public final class CosmosDbConnectionMode extends ExpandableStringEnum<CosmosDbConnectionMode> {
     /** Static value Gateway for CosmosDbConnectionMode. */
     public static final CosmosDbConnectionMode GATEWAY = fromString("Gateway");
 
     /** Static value Direct for CosmosDbConnectionMode. */
     public static final CosmosDbConnectionMode DIRECT = fromString("Direct");
+
+    /**
+     * Creates a new instance of CosmosDbConnectionMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CosmosDbConnectionMode() {
+    }
 
     /**
      * Creates or finds a CosmosDbConnectionMode from its string representation.
@@ -27,7 +36,11 @@ public final class CosmosDbConnectionMode extends ExpandableStringEnum<CosmosDbC
         return fromString(name, CosmosDbConnectionMode.class);
     }
 
-    /** @return known CosmosDbConnectionMode values. */
+    /**
+     * Gets known CosmosDbConnectionMode values.
+     *
+     * @return known CosmosDbConnectionMode values.
+     */
     public static Collection<CosmosDbConnectionMode> values() {
         return values(CosmosDbConnectionMode.class);
     }

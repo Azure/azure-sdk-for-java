@@ -20,8 +20,7 @@ public final class PeerExpressRouteCircuitConnectionInner extends SubResource {
     private PeerExpressRouteCircuitConnectionPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -37,6 +36,10 @@ public final class PeerExpressRouteCircuitConnectionInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of PeerExpressRouteCircuitConnectionInner class. */
+    public PeerExpressRouteCircuitConnectionInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the peer express route circuit connection.

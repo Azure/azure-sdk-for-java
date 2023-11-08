@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** notebookLinks. */
 @Fluent
 public final class MicrosoftGraphNotebookLinks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphNotebookLinks.class);
-
     /*
      * externalLink
      */
@@ -34,6 +31,10 @@ public final class MicrosoftGraphNotebookLinks {
      * notebookLinks
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphNotebookLinks class. */
+    public MicrosoftGraphNotebookLinks() {
+    }
 
     /**
      * Get the oneNoteClientUrl property: externalLink.

@@ -16,6 +16,10 @@ public final class SignatureOverridesFilterValuesQuery {
     @JsonProperty(value = "filterName")
     private String filterName;
 
+    /** Creates an instance of SignatureOverridesFilterValuesQuery class. */
+    public SignatureOverridesFilterValuesQuery() {
+    }
+
     /**
      * Get the filterName property: Describes the name of the column which values will be returned.
      *

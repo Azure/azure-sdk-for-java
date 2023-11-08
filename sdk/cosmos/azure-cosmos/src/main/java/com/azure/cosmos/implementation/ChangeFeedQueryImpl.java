@@ -3,8 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextBase;
 import com.azure.cosmos.implementation.query.Paginator;
@@ -82,8 +82,7 @@ class ChangeFeedQueryImpl<T> {
         FeedRangeInternal feedRange = (FeedRangeInternal)this.options.getFeedRange();
 
         ChangeFeedState state;
-        if ((state = ModelBridgeInternal.getChangeFeedContinuationState(requestOptions)) == null)
-        {
+        if ((state = ModelBridgeInternal.getChangeFeedContinuationState(requestOptions)) == null) {
             state = new ChangeFeedStateV1(
                 collectionRid,
                 feedRange,
@@ -105,7 +104,12 @@ class ChangeFeedQueryImpl<T> {
             INITIAL_TOP_VALUE,
             this.options.getMaxItemCount(),
             this.options.getMaxPrefetchPageCount(),
-            ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(this.options));
+            ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(this.options),
+            ImplementationBridgeHelpers
+                .CosmosChangeFeedRequestOptionsHelper
+                .getCosmosChangeFeedRequestOptionsAccessor()
+                .getOperationContext(this.options)
+            );
     }
 
     private RxDocumentServiceRequest createDocumentServiceRequest() {
@@ -121,6 +125,10 @@ class ChangeFeedQueryImpl<T> {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
         }
 
+        if (this.client.getConsistencyLevel() != null) {
+            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
+        }
+
         return RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
             resourceType,
@@ -132,7 +140,9 @@ class ChangeFeedQueryImpl<T> {
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         if (this.operationContextAndListener == null) {
             return client.readFeed(request)
-                         .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, this.factoryMethod, klass));
+                .map(rsp -> {
+                    return BridgeInternal.toChangeFeedResponsePage(rsp, this.factoryMethod, klass);
+                });
         } else {
             final OperationListener listener = operationContextAndListener.getOperationListener();
             final OperationContext operationContext = operationContextAndListener.getOperationContext();
@@ -147,6 +157,19 @@ class ChangeFeedQueryImpl<T> {
 
                              final FeedResponse<T> feedResponse = BridgeInternal.toChangeFeedResponsePage(
                                  rsp, this.factoryMethod, klass);
+
+                             Map<String, String> rspHeaders = feedResponse.getResponseHeaders();
+                             String requestPkRangeId = null;
+                             if (!rspHeaders.containsKey(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID) &&
+                                 (requestPkRangeId = request
+                                     .getHeaders()
+                                     .get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) != null) {
+
+                                 rspHeaders.put(
+                                     HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID,
+                                     requestPkRangeId
+                                 );
+                             }
                              listener.feedResponseReceivedListener(operationContext, feedResponse);
 
                              return feedResponse;

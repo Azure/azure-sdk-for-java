@@ -16,6 +16,9 @@ public final class IntegrationRuntimeResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntime properties;
 
+    /** Creates an instance of IntegrationRuntimeResource class. */
+    public IntegrationRuntimeResource() {}
+
     /**
      * Get the properties property: Integration runtime properties.
      *

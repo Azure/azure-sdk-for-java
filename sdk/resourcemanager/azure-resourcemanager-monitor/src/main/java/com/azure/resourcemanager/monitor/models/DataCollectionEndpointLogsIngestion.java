@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The endpoint used by clients to ingest logs. */
 @Immutable
 public final class DataCollectionEndpointLogsIngestion extends LogsIngestionEndpointSpec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCollectionEndpointLogsIngestion.class);
+    /** Creates an instance of DataCollectionEndpointLogsIngestion class. */
+    public DataCollectionEndpointLogsIngestion() {
+    }
 
     /**
      * Validates the instance.

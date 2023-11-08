@@ -24,6 +24,10 @@ public final class HDInsightSparkActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightSparkActivityTypeProperties innerTypeProperties = new HDInsightSparkActivityTypeProperties();
 
+    /** Creates an instance of HDInsightSparkActivity class. */
+    public HDInsightSparkActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight spark activity properties.
      *
@@ -58,6 +62,20 @@ public final class HDInsightSparkActivity extends ExecutionActivity {
     @Override
     public HDInsightSparkActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightSparkActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightSparkActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request body to get the transport availability for given sku. */
 @Fluent
 public final class TransportAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransportAvailabilityRequest.class);
-
     /*
      * Type of the device.
      */
     @JsonProperty(value = "skuName")
     private SkuName skuName;
+
+    /** Creates an instance of TransportAvailabilityRequest class. */
+    public TransportAvailabilityRequest() {
+    }
 
     /**
      * Get the skuName property: Type of the device.

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link SentenceOpinion} model.
+ * The {@code SentenceOpinion} model.
  */
 @Immutable
 public final class SentenceOpinion {
@@ -31,6 +31,12 @@ public final class SentenceOpinion {
     }
 
     /**
+     * Constructs a {@code SentenceOpinion} model.
+     */
+    public SentenceOpinion() {
+    }
+
+    /**
      * Gets the target sentiment in text, such as the attributes of products or services. For example, if a customer leaves
      * feedback about a hotel such as "the room was great, but the staff was unfriendly", opinion mining will locate
      * target sentiments in the text. The "room" and "staff" are two target sentiments recognized.
@@ -47,7 +53,7 @@ public final class SentenceOpinion {
      * @return The assessments of target text.
      */
     public IterableStream<AssessmentSentiment> getAssessments() {
-        return assessments;
+        return assessments == null ? IterableStream.of(null) : assessments;
     }
 
     private void setTarget(TargetSentiment target) {

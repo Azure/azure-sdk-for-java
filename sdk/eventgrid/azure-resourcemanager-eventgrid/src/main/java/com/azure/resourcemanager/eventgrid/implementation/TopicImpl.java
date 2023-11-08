@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicInner;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
+import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
@@ -20,6 +21,7 @@ import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.ResourceKind;
 import com.azure.resourcemanager.eventgrid.models.ResourceSku;
+import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.azure.resourcemanager.eventgrid.models.Topic;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
@@ -102,6 +104,14 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this.innerModel().endpoint();
     }
 
+    public EventTypeInfo eventTypeInfo() {
+        return this.innerModel().eventTypeInfo();
+    }
+
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerModel().minimumTlsVersionAllowed();
+    }
+
     public InputSchema inputSchema() {
         return this.innerModel().inputSchema();
     }
@@ -141,6 +151,10 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public TopicInner innerModel() {
@@ -236,12 +250,12 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this;
     }
 
-    public TopicSharedAccessKeys listSharedAccessKeys() {
-        return serviceManager.topics().listSharedAccessKeys(resourceGroupName, topicName);
-    }
-
     public Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
         return serviceManager.topics().listSharedAccessKeysWithResponse(resourceGroupName, topicName, context);
+    }
+
+    public TopicSharedAccessKeys listSharedAccessKeys() {
+        return serviceManager.topics().listSharedAccessKeys(resourceGroupName, topicName);
     }
 
     public TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest) {
@@ -300,6 +314,26 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     public TopicImpl withExtendedLocation(ExtendedLocation extendedLocation) {
         this.innerModel().withExtendedLocation(extendedLocation);
         return this;
+    }
+
+    public TopicImpl withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        if (isInCreateMode()) {
+            this.innerModel().withEventTypeInfo(eventTypeInfo);
+            return this;
+        } else {
+            this.updateTopicUpdateParameters.withEventTypeInfo(eventTypeInfo);
+            return this;
+        }
+    }
+
+    public TopicImpl withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (isInCreateMode()) {
+            this.innerModel().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+            return this;
+        } else {
+            this.updateTopicUpdateParameters.withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+            return this;
+        }
     }
 
     public TopicImpl withInputSchema(InputSchema inputSchema) {

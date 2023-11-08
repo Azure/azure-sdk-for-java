@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** baseItem. */
 @Fluent
 public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphBaseItemInner.class);
-
     /*
      * identitySet
      */
@@ -74,12 +71,16 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     private String webUrl;
 
     /*
+     * user
+     *
      * Represents an Azure Active Directory user object.
      */
     @JsonProperty(value = "createdByUser")
     private MicrosoftGraphUserInner createdByUser;
 
     /*
+     * user
+     *
      * Represents an Azure Active Directory user object.
      */
     @JsonProperty(value = "lastModifiedByUser")
@@ -89,6 +90,10 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
      * baseItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphBaseItemInner class. */
+    public MicrosoftGraphBaseItemInner() {
+    }
 
     /**
      * Get the createdBy property: identitySet.
@@ -271,7 +276,9 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the createdByUser property: Represents an Azure Active Directory user object.
+     * Get the createdByUser property: user
+     *
+     * <p>Represents an Azure Active Directory user object.
      *
      * @return the createdByUser value.
      */
@@ -280,7 +287,9 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the createdByUser property: Represents an Azure Active Directory user object.
+     * Set the createdByUser property: user
+     *
+     * <p>Represents an Azure Active Directory user object.
      *
      * @param createdByUser the createdByUser value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.
@@ -291,7 +300,9 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the lastModifiedByUser property: Represents an Azure Active Directory user object.
+     * Get the lastModifiedByUser property: user
+     *
+     * <p>Represents an Azure Active Directory user object.
      *
      * @return the lastModifiedByUser value.
      */
@@ -300,7 +311,9 @@ public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the lastModifiedByUser property: Represents an Azure Active Directory user object.
+     * Set the lastModifiedByUser property: user
+     *
+     * <p>Represents an Azure Active Directory user object.
      *
      * @param lastModifiedByUser the lastModifiedByUser value to set.
      * @return the MicrosoftGraphBaseItemInner object itself.

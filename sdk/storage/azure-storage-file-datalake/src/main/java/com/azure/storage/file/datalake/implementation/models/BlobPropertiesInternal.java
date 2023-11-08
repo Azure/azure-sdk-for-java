@@ -195,6 +195,9 @@ public final class BlobPropertiesInternal {
     @JsonProperty(value = "DeleteTime")
     private DateTimeRfc1123 deleteTime;
 
+    /** Creates an instance of BlobPropertiesInternal class. */
+    public BlobPropertiesInternal() {}
+
     /**
      * Get the creationTime property: The Creation-Time property.
      *

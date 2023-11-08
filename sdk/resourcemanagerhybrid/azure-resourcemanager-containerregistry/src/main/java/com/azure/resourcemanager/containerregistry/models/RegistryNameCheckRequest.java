@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A request to check whether a container registry name is available. */
 @Fluent
 public final class RegistryNameCheckRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryNameCheckRequest.class);
-
     /*
      * The name of the container registry.
      */
@@ -25,7 +22,7 @@ public final class RegistryNameCheckRequest {
      * 'Microsoft.ContainerRegistry/registries'.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.ContainerRegistry/registries";
 
     /** Creates an instance of RegistryNameCheckRequest class. */
     public RegistryNameCheckRequest() {
@@ -81,9 +78,11 @@ public final class RegistryNameCheckRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model RegistryNameCheckRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegistryNameCheckRequest.class);
 }

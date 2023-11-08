@@ -5,89 +5,31 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.UpdateDataLakeStoreAccountProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Data Lake Store account information to update. */
-@JsonFlatten
 @Fluent
-public class UpdateDataLakeStoreAccountParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateDataLakeStoreAccountParameters.class);
-
+public final class UpdateDataLakeStoreAccountParameters {
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The default owner group for all new folders and files created in the
-     * Data Lake Store account.
+     * The Data Lake Store account properties to update.
      */
-    @JsonProperty(value = "properties.defaultGroup")
-    private String defaultGroup;
+    @JsonProperty(value = "properties")
+    private UpdateDataLakeStoreAccountProperties innerProperties;
 
-    /*
-     * Used for rotation of user managed Key Vault keys. Can only be used to
-     * rotate a user managed encryption Key Vault key.
-     */
-    @JsonProperty(value = "properties.encryptionConfig")
-    private UpdateEncryptionConfig encryptionConfig;
-
-    /*
-     * The list of firewall rules associated with this Data Lake Store account.
-     */
-    @JsonProperty(value = "properties.firewallRules")
-    private List<UpdateFirewallRuleWithAccountParameters> firewallRules;
-
-    /*
-     * The list of virtual network rules associated with this Data Lake Store
-     * account.
-     */
-    @JsonProperty(value = "properties.virtualNetworkRules")
-    private List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules;
-
-    /*
-     * The current state of the IP address firewall for this Data Lake Store
-     * account. Disabling the firewall does not remove existing rules, they
-     * will just be ignored until the firewall is re-enabled.
-     */
-    @JsonProperty(value = "properties.firewallState")
-    private FirewallState firewallState;
-
-    /*
-     * The current state of allowing or disallowing IPs originating within
-     * Azure through the firewall. If the firewall is disabled, this is not
-     * enforced.
-     */
-    @JsonProperty(value = "properties.firewallAllowAzureIps")
-    private FirewallAllowAzureIpsState firewallAllowAzureIps;
-
-    /*
-     * The list of trusted identity providers associated with this Data Lake
-     * Store account.
-     */
-    @JsonProperty(value = "properties.trustedIdProviders")
-    private List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders;
-
-    /*
-     * The current state of the trusted identity provider feature for this Data
-     * Lake Store account. Disabling trusted identity provider functionality
-     * does not remove the providers, they will just be ignored until this
-     * feature is re-enabled.
-     */
-    @JsonProperty(value = "properties.trustedIdProviderState")
-    private TrustedIdProviderState trustedIdProviderState;
-
-    /*
-     * The commitment tier to use for next month.
-     */
-    @JsonProperty(value = "properties.newTier")
-    private TierType newTier;
+    /** Creates an instance of UpdateDataLakeStoreAccountParameters class. */
+    public UpdateDataLakeStoreAccountParameters() {
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -110,13 +52,22 @@ public class UpdateDataLakeStoreAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The Data Lake Store account properties to update.
+     *
+     * @return the innerProperties value.
+     */
+    private UpdateDataLakeStoreAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the defaultGroup property: The default owner group for all new folders and files created in the Data Lake
      * Store account.
      *
      * @return the defaultGroup value.
      */
     public String defaultGroup() {
-        return this.defaultGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultGroup();
     }
 
     /**
@@ -127,7 +78,10 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the UpdateDataLakeStoreAccountParameters object itself.
      */
     public UpdateDataLakeStoreAccountParameters withDefaultGroup(String defaultGroup) {
-        this.defaultGroup = defaultGroup;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreAccountProperties();
+        }
+        this.innerProperties().withDefaultGroup(defaultGroup);
         return this;
     }
 
@@ -138,7 +92,7 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the encryptionConfig value.
      */
     public UpdateEncryptionConfig encryptionConfig() {
-        return this.encryptionConfig;
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionConfig();
     }
 
     /**
@@ -149,7 +103,10 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the UpdateDataLakeStoreAccountParameters object itself.
      */
     public UpdateDataLakeStoreAccountParameters withEncryptionConfig(UpdateEncryptionConfig encryptionConfig) {
-        this.encryptionConfig = encryptionConfig;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreAccountProperties();
+        }
+        this.innerProperties().withEncryptionConfig(encryptionConfig);
         return this;
     }
 
@@ -159,7 +116,7 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the firewallRules value.
      */
     public List<UpdateFirewallRuleWithAccountParameters> firewallRules() {
-        return this.firewallRules;
+        return this.innerProperties() == null ? null : this.innerProperties().firewallRules();
     }
 
     /**
@@ -170,7 +127,10 @@ public class UpdateDataLakeStoreAccountParameters {
      */
     public UpdateDataLakeStoreAccountParameters withFirewallRules(
         List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
-        this.firewallRules = firewallRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreAccountProperties();
+        }
+        this.innerProperties().withFirewallRules(firewallRules);
         return this;
     }
 
@@ -181,7 +141,7 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the virtualNetworkRules value.
      */
     public List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules() {
-        return this.virtualNetworkRules;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkRules();
     }
 
     /**
@@ -193,7 +153,10 @@ public class UpdateDataLakeStoreAccountParameters {
      */
     public UpdateDataLakeStoreAccountParameters withVirtualNetworkRules(
         List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
-        this.virtualNetworkRules = virtualNetworkRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreAccountProperties();
+        }
+        this.innerProperties().withVirtualNetworkRules(virtualNetworkRules);
         return this;
     }
 
@@ -205,7 +168,7 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the firewallState value.
      */
     public FirewallState firewallState() {
-        return this.firewallState;
+        return this.innerProperties() == null ? null : this.innerProperties().firewallState();
     }
 
     /**
@@ -217,7 +180,10 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the UpdateDataLakeStoreAccountParameters object itself.
      */
     public UpdateDataLakeStoreAccountParameters withFirewallState(FirewallState firewallState) {
-        this.firewallState = firewallState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreAccountProperties();
+        }
+        this.innerProperties().withFirewallState(firewallState);
         return this;
     }
 
@@ -228,7 +194,7 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the firewallAllowAzureIps value.
      */
     public FirewallAllowAzureIpsState firewallAllowAzureIps() {
-        return this.firewallAllowAzureIps;
+        return this.innerProperties() == null ? null : this.innerProperties().firewallAllowAzureIps();
     }
 
     /**
@@ -240,7 +206,10 @@ public class UpdateDataLakeStoreAccountParameters {
      */
     public UpdateDataLakeStoreAccountParameters withFirewallAllowAzureIps(
         FirewallAllowAzureIpsState firewallAllowAzureIps) {
-        this.firewallAllowAzureIps = firewallAllowAzureIps;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreAccountProperties();
+        }
+        this.innerProperties().withFirewallAllowAzureIps(firewallAllowAzureIps);
         return this;
     }
 
@@ -251,7 +220,7 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the trustedIdProviders value.
      */
     public List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders() {
-        return this.trustedIdProviders;
+        return this.innerProperties() == null ? null : this.innerProperties().trustedIdProviders();
     }
 
     /**
@@ -263,7 +232,10 @@ public class UpdateDataLakeStoreAccountParameters {
      */
     public UpdateDataLakeStoreAccountParameters withTrustedIdProviders(
         List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
-        this.trustedIdProviders = trustedIdProviders;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreAccountProperties();
+        }
+        this.innerProperties().withTrustedIdProviders(trustedIdProviders);
         return this;
     }
 
@@ -275,7 +247,7 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the trustedIdProviderState value.
      */
     public TrustedIdProviderState trustedIdProviderState() {
-        return this.trustedIdProviderState;
+        return this.innerProperties() == null ? null : this.innerProperties().trustedIdProviderState();
     }
 
     /**
@@ -288,7 +260,10 @@ public class UpdateDataLakeStoreAccountParameters {
      */
     public UpdateDataLakeStoreAccountParameters withTrustedIdProviderState(
         TrustedIdProviderState trustedIdProviderState) {
-        this.trustedIdProviderState = trustedIdProviderState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreAccountProperties();
+        }
+        this.innerProperties().withTrustedIdProviderState(trustedIdProviderState);
         return this;
     }
 
@@ -298,7 +273,7 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the newTier value.
      */
     public TierType newTier() {
-        return this.newTier;
+        return this.innerProperties() == null ? null : this.innerProperties().newTier();
     }
 
     /**
@@ -308,7 +283,10 @@ public class UpdateDataLakeStoreAccountParameters {
      * @return the UpdateDataLakeStoreAccountParameters object itself.
      */
     public UpdateDataLakeStoreAccountParameters withNewTier(TierType newTier) {
-        this.newTier = newTier;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreAccountProperties();
+        }
+        this.innerProperties().withNewTier(newTier);
         return this;
     }
 
@@ -318,17 +296,8 @@ public class UpdateDataLakeStoreAccountParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (encryptionConfig() != null) {
-            encryptionConfig().validate();
-        }
-        if (firewallRules() != null) {
-            firewallRules().forEach(e -> e.validate());
-        }
-        if (virtualNetworkRules() != null) {
-            virtualNetworkRules().forEach(e -> e.validate());
-        }
-        if (trustedIdProviders() != null) {
-            trustedIdProviders().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

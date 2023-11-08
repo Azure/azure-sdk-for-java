@@ -23,6 +23,10 @@ public final class AppendVariableActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private AppendVariableActivityTypeProperties innerTypeProperties = new AppendVariableActivityTypeProperties();
 
+    /** Creates an instance of AppendVariableActivity class. */
+    public AppendVariableActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Append Variable activity properties.
      *
@@ -43,6 +47,20 @@ public final class AppendVariableActivity extends ControlActivity {
     @Override
     public AppendVariableActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AppendVariableActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AppendVariableActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
@@ -84,7 +102,8 @@ public final class AppendVariableActivity extends ControlActivity {
     }
 
     /**
-     * Get the value property: Value to be appended. Could be a static value or Expression.
+     * Get the value property: Value to be appended. Type: could be a static value matching type of the variable item or
+     * Expression with resultType matching type of the variable item.
      *
      * @return the value value.
      */
@@ -93,7 +112,8 @@ public final class AppendVariableActivity extends ControlActivity {
     }
 
     /**
-     * Set the value property: Value to be appended. Could be a static value or Expression.
+     * Set the value property: Value to be appended. Type: could be a static value matching type of the variable item or
+     * Expression with resultType matching type of the variable item.
      *
      * @param value the value value to set.
      * @return the AppendVariableActivity object itself.

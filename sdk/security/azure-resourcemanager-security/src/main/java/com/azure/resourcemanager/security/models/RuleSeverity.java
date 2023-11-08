@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RuleSeverity. */
+/** The rule severity. */
 public final class RuleSeverity extends ExpandableStringEnum<RuleSeverity> {
     /** Static value High for RuleSeverity. */
     public static final RuleSeverity HIGH = fromString("High");
@@ -26,6 +26,15 @@ public final class RuleSeverity extends ExpandableStringEnum<RuleSeverity> {
     public static final RuleSeverity OBSOLETE = fromString("Obsolete");
 
     /**
+     * Creates a new instance of RuleSeverity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RuleSeverity() {
+    }
+
+    /**
      * Creates or finds a RuleSeverity from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class RuleSeverity extends ExpandableStringEnum<RuleSeverity> {
         return fromString(name, RuleSeverity.class);
     }
 
-    /** @return known RuleSeverity values. */
+    /**
+     * Gets known RuleSeverity values.
+     *
+     * @return known RuleSeverity values.
+     */
     public static Collection<RuleSeverity> values() {
         return values(RuleSeverity.class);
     }

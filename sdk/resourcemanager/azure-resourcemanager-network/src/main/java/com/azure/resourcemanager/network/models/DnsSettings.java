@@ -29,6 +29,10 @@ public final class DnsSettings {
     @JsonProperty(value = "requireProxyForNetworkRules")
     private Boolean requireProxyForNetworkRules;
 
+    /** Creates an instance of DnsSettings class. */
+    public DnsSettings() {
+    }
+
     /**
      * Get the servers property: List of Custom DNS Servers.
      *

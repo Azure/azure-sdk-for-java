@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.ReservationsClient;
 import com.azure.resourcemanager.billing.fluent.models.ReservationInner;
 import com.azure.resourcemanager.billing.models.ReservationsListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ReservationsClient. */
 public final class ReservationsClientImpl implements ReservationsClient {
-    private final ClientLogger logger = new ClientLogger(ReservationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ReservationsService service;
 
@@ -58,7 +55,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
-    private interface ReservationsService {
+    public interface ReservationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/reservations")
         @ExpectedResponses({200})
@@ -126,7 +123,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationInner>> listByBillingAccountSinglePageAsync(
@@ -183,7 +181,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationInner>> listByBillingAccountSinglePageAsync(
@@ -241,7 +240,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationInner> listByBillingAccountAsync(
@@ -259,7 +259,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationInner> listByBillingAccountAsync(String billingAccountName) {
@@ -287,7 +288,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationInner> listByBillingAccountAsync(
@@ -311,7 +313,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationInner> listByBillingAccount(String billingAccountName) {
@@ -337,7 +340,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationInner> listByBillingAccount(
@@ -365,7 +369,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationInner>> listByBillingProfileSinglePageAsync(
@@ -433,7 +438,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationInner>> listByBillingProfileSinglePageAsync(
@@ -498,7 +504,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationInner> listByBillingProfileAsync(
@@ -523,7 +530,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationInner> listByBillingProfileAsync(
@@ -554,7 +562,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationInner> listByBillingProfileAsync(
@@ -580,7 +589,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationInner> listByBillingProfile(String billingAccountName, String billingProfileName) {
@@ -608,7 +618,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationInner> listByBillingProfile(
@@ -627,11 +638,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationInner>> listByBillingAccountNextSinglePageAsync(String nextLink) {
@@ -663,12 +676,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationInner>> listByBillingAccountNextSinglePageAsync(
@@ -700,11 +715,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationInner>> listByBillingProfileNextSinglePageAsync(String nextLink) {
@@ -736,12 +753,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationInner>> listByBillingProfileNextSinglePageAsync(

@@ -50,7 +50,7 @@ public final class ServiceTagsClientImpl implements ServiceTagsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ServiceTagsService {
+    public interface ServiceTagsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/serviceTags")
         @ExpectedResponses({200})
@@ -93,7 +93,7 @@ public final class ServiceTagsClientImpl implements ServiceTagsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -139,7 +139,7 @@ public final class ServiceTagsClientImpl implements ServiceTagsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -159,31 +159,7 @@ public final class ServiceTagsClientImpl implements ServiceTagsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceTagsListResultInner> listAsync(String location) {
-        return listWithResponseAsync(location)
-            .flatMap(
-                (Response<ServiceTagsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a list of service tag information resources.
-     *
-     * @param location The location that will be used as a reference for version (not as a filter based on location, you
-     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
-     *     subscription belongs to).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceTagsListResultInner list(String location) {
-        return listAsync(location).block();
+        return listWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -201,5 +177,21 @@ public final class ServiceTagsClientImpl implements ServiceTagsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceTagsListResultInner> listWithResponse(String location, Context context) {
         return listWithResponseAsync(location, context).block();
+    }
+
+    /**
+     * Gets a list of service tag information resources.
+     *
+     * @param location The location that will be used as a reference for version (not as a filter based on location, you
+     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
+     *     subscription belongs to).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service tag information resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceTagsListResultInner list(String location) {
+        return listWithResponse(location, Context.NONE).getValue();
     }
 }

@@ -9,20 +9,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The gallery artifact version source. */
 @Fluent
-public final class GalleryArtifactVersionSource {
+public class GalleryArtifactVersionSource {
     /*
-     * The id of the gallery artifact version source. Can specify a disk uri,
-     * snapshot uri, user image or storage account resource.
+     * The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user image or storage
+     * account resource.
      */
     @JsonProperty(value = "id")
     private String id;
 
-    /*
-     * The uri of the gallery artifact version source. Currently used to
-     * specify vhd/blob source.
-     */
-    @JsonProperty(value = "uri")
-    private String uri;
+    /** Creates an instance of GalleryArtifactVersionSource class. */
+    public GalleryArtifactVersionSource() {
+    }
 
     /**
      * Get the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user
@@ -43,26 +40,6 @@ public final class GalleryArtifactVersionSource {
      */
     public GalleryArtifactVersionSource withId(String id) {
         this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the uri property: The uri of the gallery artifact version source. Currently used to specify vhd/blob source.
-     *
-     * @return the uri value.
-     */
-    public String uri() {
-        return this.uri;
-    }
-
-    /**
-     * Set the uri property: The uri of the gallery artifact version source. Currently used to specify vhd/blob source.
-     *
-     * @param uri the uri value to set.
-     * @return the GalleryArtifactVersionSource object itself.
-     */
-    public GalleryArtifactVersionSource withUri(String uri) {
-        this.uri = uri;
         return this;
     }
 

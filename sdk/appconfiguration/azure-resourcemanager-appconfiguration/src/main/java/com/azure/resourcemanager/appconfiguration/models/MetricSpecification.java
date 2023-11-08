@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifications of the Metrics for Azure Monitoring. */
 @Fluent
 public final class MetricSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);
-
     /*
      * Name of the metric
      */
@@ -40,8 +36,7 @@ public final class MetricSpecification {
     private String unit;
 
     /*
-     * Only provide one value for this field. Valid values: Average, Minimum,
-     * Maximum, Total, Count.
+     * Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
      */
     @JsonProperty(value = "aggregationType")
     private String aggregationType;
@@ -59,11 +54,14 @@ public final class MetricSpecification {
     private List<MetricDimension> dimensions;
 
     /*
-     * Optional. If set to true, then zero will be returned for time duration
-     * where no metric is emitted/published.
+     * Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
      */
     @JsonProperty(value = "fillGapWithZero")
     private Boolean fillGapWithZero;
+
+    /** Creates an instance of MetricSpecification class. */
+    public MetricSpecification() {
+    }
 
     /**
      * Get the name property: Name of the metric.

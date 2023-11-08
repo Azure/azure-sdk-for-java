@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.msi.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** System Assigned Identity properties. The properties associated with the system assigned identity. */
+/**
+ * System Assigned Identity properties.
+ *
+ * <p>The properties associated with the system assigned identity.
+ */
 @Immutable
 public final class SystemAssignedIdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemAssignedIdentityProperties.class);
-
     /*
      * The id of the tenant which the identity belongs to.
      */
@@ -22,25 +22,26 @@ public final class SystemAssignedIdentityProperties {
     private UUID tenantId;
 
     /*
-     * The id of the service principal object associated with the created
-     * identity.
+     * The id of the service principal object associated with the created identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
 
     /*
-     * The id of the app associated with the identity. This is a random
-     * generated UUID by MSI.
+     * The id of the app associated with the identity. This is a random generated UUID by MSI.
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID clientId;
 
     /*
-     * The ManagedServiceIdentity DataPlane URL that can be queried to obtain
-     * the identity credentials.
+     * The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials.
      */
     @JsonProperty(value = "clientSecretUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String clientSecretUrl;
+
+    /** Creates an instance of SystemAssignedIdentityProperties class. */
+    public SystemAssignedIdentityProperties() {
+    }
 
     /**
      * Get the tenantId property: The id of the tenant which the identity belongs to.

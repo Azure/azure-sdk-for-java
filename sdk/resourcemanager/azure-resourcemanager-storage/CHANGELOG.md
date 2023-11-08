@@ -1,14 +1,164 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.33.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported `allowCrossTenantReplication` and `defaultToOAuthAuthentication` for `StorageAccount` in create and update.
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.30.0 (2023-08-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-01-01`.
+
+## 2.29.0 (2023-07-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.28.0 (2023-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.27.0 (2023-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.25.0 (2023-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.23.0 (2023-01-27)
+
+### Features Added
+
+- Supported enabling last access time tracking policy for `BlobServiceProperties`.
 
 ### Bugs Fixed
 
+- Fixed a bug that `StorageAccount.infrastructureEncryptionEnabled()` always returns `false`.
+- Fixed a bug that `PolicyRule`s returned by `ManagementPolicy::rules()` don't support all base blob actions.
+
+## 2.22.0 (2022-12-23)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-09-01`.
+
+## 2.21.0 (2022-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.20.0 (2022-10-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.19.0 (2022-09-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.18.0 (2022-08-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-05-01`.
+
+## 2.17.0 (2022-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.16.0 (2022-06-24)
+
+### Features Added
+
+- Supported toggling blob versioning in `BlobServiceProperties`.
+- Supported `containerDeleteRetentionPolicy` in `BlobServiceProperties`.
+
+## 2.15.0 (2022-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.14.0 (2022-04-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-09-01`.
 
 ## 2.13.0 (2022-03-11)
 

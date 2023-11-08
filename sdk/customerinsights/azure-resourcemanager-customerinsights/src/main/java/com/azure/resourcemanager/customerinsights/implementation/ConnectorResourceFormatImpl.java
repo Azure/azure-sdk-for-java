@@ -80,6 +80,10 @@ public final class ConnectorResourceFormatImpl
         return this.innerModel().isInternal();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConnectorResourceFormatInner innerModel() {
         return this.innerObject;
     }

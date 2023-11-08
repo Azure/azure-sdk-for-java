@@ -8,10 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PipelineReferenceType. */
+/** Pipeline reference type. */
 public final class PipelineReferenceType extends ExpandableStringEnum<PipelineReferenceType> {
     /** Static value PipelineReference for PipelineReferenceType. */
     public static final PipelineReferenceType PIPELINE_REFERENCE = fromString("PipelineReference");
+
+    /**
+     * Creates a new instance of PipelineReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PipelineReferenceType() {}
 
     /**
      * Creates or finds a PipelineReferenceType from its string representation.
@@ -24,7 +32,11 @@ public final class PipelineReferenceType extends ExpandableStringEnum<PipelineRe
         return fromString(name, PipelineReferenceType.class);
     }
 
-    /** @return known PipelineReferenceType values. */
+    /**
+     * Gets known PipelineReferenceType values.
+     *
+     * @return known PipelineReferenceType values.
+     */
     public static Collection<PipelineReferenceType> values() {
         return values(PipelineReferenceType.class);
     }

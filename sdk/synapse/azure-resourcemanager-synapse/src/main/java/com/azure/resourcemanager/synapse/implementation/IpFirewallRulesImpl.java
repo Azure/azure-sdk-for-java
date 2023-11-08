@@ -16,10 +16,9 @@ import com.azure.resourcemanager.synapse.models.IpFirewallRuleInfo;
 import com.azure.resourcemanager.synapse.models.IpFirewallRules;
 import com.azure.resourcemanager.synapse.models.ReplaceAllFirewallRulesOperationResponse;
 import com.azure.resourcemanager.synapse.models.ReplaceAllIpFirewallRulesRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IpFirewallRulesImpl implements IpFirewallRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpFirewallRulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IpFirewallRulesImpl.class);
 
     private final IpFirewallRulesClient innerClient;
 
@@ -44,16 +43,18 @@ public final class IpFirewallRulesImpl implements IpFirewallRules {
         return Utils.mapPage(inner, inner1 -> new IpFirewallRuleInfoImpl(inner1, this.manager()));
     }
 
-    public Object delete(String resourceGroupName, String workspaceName, String ruleName) {
-        return this.serviceClient().delete(resourceGroupName, workspaceName, ruleName);
+    public IpFirewallRuleInfo delete(String resourceGroupName, String workspaceName, String ruleName) {
+        IpFirewallRuleInfoInner inner = this.serviceClient().delete(resourceGroupName, workspaceName, ruleName);
+        if (inner != null) {
+            return new IpFirewallRuleInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Object delete(String resourceGroupName, String workspaceName, String ruleName, Context context) {
-        return this.serviceClient().delete(resourceGroupName, workspaceName, ruleName, context);
-    }
-
-    public IpFirewallRuleInfo get(String resourceGroupName, String workspaceName, String ruleName) {
-        IpFirewallRuleInfoInner inner = this.serviceClient().get(resourceGroupName, workspaceName, ruleName);
+    public IpFirewallRuleInfo delete(String resourceGroupName, String workspaceName, String ruleName, Context context) {
+        IpFirewallRuleInfoInner inner =
+            this.serviceClient().delete(resourceGroupName, workspaceName, ruleName, context);
         if (inner != null) {
             return new IpFirewallRuleInfoImpl(inner, this.manager());
         } else {
@@ -71,6 +72,15 @@ public final class IpFirewallRulesImpl implements IpFirewallRules {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IpFirewallRuleInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IpFirewallRuleInfo get(String resourceGroupName, String workspaceName, String ruleName) {
+        IpFirewallRuleInfoInner inner = this.serviceClient().get(resourceGroupName, workspaceName, ruleName);
+        if (inner != null) {
+            return new IpFirewallRuleInfoImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -101,7 +111,7 @@ public final class IpFirewallRulesImpl implements IpFirewallRules {
     public IpFirewallRuleInfo getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,14 +119,14 @@ public final class IpFirewallRulesImpl implements IpFirewallRules {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String ruleName = Utils.getValueFromIdByName(id, "firewallRules");
         if (ruleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
@@ -127,7 +137,7 @@ public final class IpFirewallRulesImpl implements IpFirewallRules {
     public Response<IpFirewallRuleInfo> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,14 +145,14 @@ public final class IpFirewallRulesImpl implements IpFirewallRules {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String ruleName = Utils.getValueFromIdByName(id, "firewallRules");
         if (ruleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
@@ -150,10 +160,10 @@ public final class IpFirewallRulesImpl implements IpFirewallRules {
         return this.getWithResponse(resourceGroupName, workspaceName, ruleName, context);
     }
 
-    public Object deleteById(String id) {
+    public IpFirewallRuleInfo deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,14 +171,14 @@ public final class IpFirewallRulesImpl implements IpFirewallRules {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String ruleName = Utils.getValueFromIdByName(id, "firewallRules");
         if (ruleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
@@ -176,10 +186,10 @@ public final class IpFirewallRulesImpl implements IpFirewallRules {
         return this.delete(resourceGroupName, workspaceName, ruleName, Context.NONE);
     }
 
-    public Object deleteByIdWithResponse(String id, Context context) {
+    public IpFirewallRuleInfo deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,14 +197,14 @@ public final class IpFirewallRulesImpl implements IpFirewallRules {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String ruleName = Utils.getValueFromIdByName(id, "firewallRules");
         if (ruleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));

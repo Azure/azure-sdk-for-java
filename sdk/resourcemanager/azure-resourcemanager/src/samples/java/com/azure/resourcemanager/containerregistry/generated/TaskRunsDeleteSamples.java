@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TaskRuns Delete. */
 public final class TaskRunsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsDelete.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsDelete.json
      */
     /**
      * Sample code: TaskRuns_Delete.
@@ -22,6 +20,6 @@ public final class TaskRunsDeleteSamples {
             .manager()
             .serviceClient()
             .getTaskRuns()
-            .delete("myResourceGroup", "myRegistry", "myRun", Context.NONE);
+            .delete("myResourceGroup", "myRegistry", "myRun", com.azure.core.util.Context.NONE);
     }
 }

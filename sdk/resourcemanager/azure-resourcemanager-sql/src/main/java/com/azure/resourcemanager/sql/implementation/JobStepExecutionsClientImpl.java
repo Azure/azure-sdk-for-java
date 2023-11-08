@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -24,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.JobStepExecutionsClient;
 import com.azure.resourcemanager.sql.fluent.models.JobExecutionInner;
 import com.azure.resourcemanager.sql.models.JobExecutionListResult;
@@ -34,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobStepExecutionsClient. */
 public final class JobStepExecutionsClientImpl implements JobStepExecutionsClient {
-    private final ClientLogger logger = new ClientLogger(JobStepExecutionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobStepExecutionsService service;
 
@@ -59,8 +57,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
-    private interface JobStepExecutionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+    public interface JobStepExecutionsService {
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps")
@@ -78,13 +76,14 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
             @QueryParam("endTimeMin") OffsetDateTime endTimeMin,
             @QueryParam("endTimeMax") OffsetDateTime endTimeMax,
             @QueryParam("isActive") Boolean isActive,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Long skip,
+            @QueryParam("$top") Long top,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}")
@@ -100,14 +99,18 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
             @PathParam("stepName") String stepName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByJobExecutionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -129,7 +132,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionSinglePageAsync(
@@ -143,8 +146,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Integer skip,
-        Integer top) {
+        Long skip,
+        Long top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -173,7 +176,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -193,7 +196,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                             skip,
                             top,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<JobExecutionInner>>map(
                 res ->
@@ -204,7 +208,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -227,7 +231,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionSinglePageAsync(
@@ -241,8 +245,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Integer skip,
-        Integer top,
+        Long skip,
+        Long top,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -272,7 +276,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByJobExecution(
@@ -290,7 +294,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                 skip,
                 top,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -322,7 +327,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobExecutionInner> listByJobExecutionAsync(
@@ -336,8 +341,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Integer skip,
-        Integer top) {
+        Long skip,
+        Long top) {
         return new PagedFlux<>(
             () ->
                 listByJobExecutionSinglePageAsync(
@@ -368,7 +373,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobExecutionInner> listByJobExecutionAsync(
@@ -378,8 +383,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         final OffsetDateTime endTimeMin = null;
         final OffsetDateTime endTimeMax = null;
         final Boolean isActive = null;
-        final Integer skip = null;
-        final Integer top = null;
+        final Long skip = null;
+        final Long top = null;
         return new PagedFlux<>(
             () ->
                 listByJobExecutionSinglePageAsync(
@@ -418,7 +423,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobExecutionInner> listByJobExecutionAsync(
@@ -432,8 +437,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Integer skip,
-        Integer top,
+        Long skip,
+        Long top,
         Context context) {
         return new PagedFlux<>(
             () ->
@@ -463,6 +468,46 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
      * @param jobExecutionId The id of the job execution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<JobExecutionInner> listByJobExecution(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
+        final OffsetDateTime createTimeMin = null;
+        final OffsetDateTime createTimeMax = null;
+        final OffsetDateTime endTimeMin = null;
+        final OffsetDateTime endTimeMax = null;
+        final Boolean isActive = null;
+        final Long skip = null;
+        final Long top = null;
+        return new PagedIterable<>(
+            listByJobExecutionAsync(
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                jobName,
+                jobExecutionId,
+                createTimeMin,
+                createTimeMax,
+                endTimeMin,
+                endTimeMax,
+                isActive,
+                skip,
+                top));
+    }
+
+    /**
+     * Lists the step executions of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The id of the job execution.
      * @param createTimeMin If specified, only job executions created at or after the specified time are included.
      * @param createTimeMax If specified, only job executions created before the specified time are included.
      * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
@@ -474,7 +519,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobExecutionInner> listByJobExecution(
@@ -488,8 +533,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         OffsetDateTime endTimeMin,
         OffsetDateTime endTimeMax,
         Boolean isActive,
-        Integer skip,
-        Integer top,
+        Long skip,
+        Long top,
         Context context) {
         return new PagedIterable<>(
             listByJobExecutionAsync(
@@ -509,46 +554,6 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
     }
 
     /**
-     * Lists the step executions of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The id of the job execution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobExecutionInner> listByJobExecution(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
-        final OffsetDateTime createTimeMin = null;
-        final OffsetDateTime createTimeMax = null;
-        final OffsetDateTime endTimeMin = null;
-        final OffsetDateTime endTimeMax = null;
-        final Boolean isActive = null;
-        final Integer skip = null;
-        final Integer top = null;
-        return new PagedIterable<>(
-            listByJobExecutionAsync(
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobExecutionId,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top));
-    }
-
-    /**
      * Gets a step execution of a job execution.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -561,7 +566,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a step execution of a job execution.
+     * @return a step execution of a job execution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobExecutionInner>> getWithResponseAsync(
@@ -602,7 +607,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -616,9 +621,10 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                             jobExecutionId,
                             stepName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -635,7 +641,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a step execution of a job execution.
+     * @return a step execution of a job execution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobExecutionInner>> getWithResponseAsync(
@@ -677,7 +683,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -689,7 +695,8 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                 jobExecutionId,
                 stepName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -706,7 +713,7 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a step execution of a job execution.
+     * @return a step execution of a job execution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobExecutionInner> getAsync(
@@ -717,14 +724,37 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         UUID jobExecutionId,
         String stepName) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, stepName)
-            .flatMap(
-                (Response<JobExecutionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a step execution of a job execution.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobExecutionId The unique id of the job execution.
+     * @param stepName The name of the step.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a step execution of a job execution along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<JobExecutionInner> getWithResponse(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        UUID jobExecutionId,
+        String stepName,
+        Context context) {
+        return getWithResponseAsync(
+                resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, stepName, context)
+            .block();
     }
 
     /**
@@ -750,55 +780,36 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         String jobName,
         UUID jobExecutionId,
         String stepName) {
-        return getAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, stepName).block();
-    }
-
-    /**
-     * Gets a step execution of a job execution.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobExecutionId The unique id of the job execution.
-     * @param stepName The name of the step.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a step execution of a job execution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobExecutionInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        String stepName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, stepName, context)
-            .block();
+        return getWithResponse(
+                resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, stepName, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByJobExecutionNext(nextLink, context))
+            .withContext(
+                context -> service.listByJobExecutionNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<JobExecutionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -808,18 +819,19 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByJobExecutionNextSinglePageAsync(
@@ -827,9 +839,16 @@ public final class JobStepExecutionsClientImpl implements JobStepExecutionsClien
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByJobExecutionNext(nextLink, context)
+            .listByJobExecutionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

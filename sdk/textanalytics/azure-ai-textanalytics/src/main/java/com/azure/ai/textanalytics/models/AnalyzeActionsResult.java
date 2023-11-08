@@ -8,19 +8,21 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link AnalyzeActionsResult} model.
+ * The {@code AnalyzeActionsResult} model.
  */
 @Immutable
 public final class AnalyzeActionsResult {
     private IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults;
     private IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesResults;
     private IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults;
+    private IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults;
     private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults;
     private IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults;
-    private IterableStream<ExtractSummaryActionResult> extractSummaryResults;
     private IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults;
-    private IterableStream<SingleCategoryClassifyActionResult> singleCategoryClassifyResults;
-    private IterableStream<MultiCategoryClassifyActionResult> multiCategoryClassifyResults;
+    private IterableStream<SingleLabelClassifyActionResult> singleLabelClassifyResults;
+    private IterableStream<MultiLabelClassifyActionResult> multiLabelClassifyResults;
+    private IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults;
+    private IterableStream<ExtractiveSummaryActionResult> extractiveSummaryResults;
 
     static {
         AnalyzeActionsResultPropertiesHelper.setAccessor(
@@ -45,6 +47,13 @@ public final class AnalyzeActionsResult {
                 }
 
                 @Override
+                public void setAnalyzeHealthcareEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults) {
+                    analyzeActionsResult.setAnalyzeHealthcareEntitiesActionResults(
+                        analyzeHealthcareEntitiesActionResults);
+                }
+
+                @Override
                 public void setExtractKeyPhrasesResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults) {
                     analyzeActionsResult.setExtractKeyPhrasesResults(extractKeyPhrasesResults);
@@ -57,12 +66,6 @@ public final class AnalyzeActionsResult {
                 }
 
                 @Override
-                public void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<ExtractSummaryActionResult> extractSummaryResult) {
-                    analyzeActionsResult.setExtractSummaryResults(extractSummaryResult);
-                }
-
-                @Override
                 public void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults) {
                     analyzeActionsResult.setRecognizeCustomEntitiesResults(recognizeCustomEntitiesResults);
@@ -70,16 +73,34 @@ public final class AnalyzeActionsResult {
 
                 @Override
                 public void setSingleCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<SingleCategoryClassifyActionResult> singleCategoryClassifyResults) {
-                    analyzeActionsResult.setSingleCategoryClassifyResults(singleCategoryClassifyResults);
+                    IterableStream<SingleLabelClassifyActionResult> singleCategoryClassifyResults) {
+                    analyzeActionsResult.setSingleLabelClassifyResults(singleCategoryClassifyResults);
                 }
 
                 @Override
                 public void setMultiCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<MultiCategoryClassifyActionResult> multiCategoryClassifyResults) {
-                    analyzeActionsResult.setMultiCategoryClassifyResults(multiCategoryClassifyResults);
+                    IterableStream<MultiLabelClassifyActionResult> multiCategoryClassifyResults) {
+                    analyzeActionsResult.setMultiLabelClassifyResults(multiCategoryClassifyResults);
+                }
+
+                @Override
+                public void setAbstractiveSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults) {
+                    analyzeActionsResult.setAbstractiveSummaryResults(abstractiveSummaryResults);
+                }
+
+                @Override
+                public void setExtractiveSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<ExtractiveSummaryActionResult> extractiveSummaryResults) {
+                    analyzeActionsResult.setExtractiveSummaryResults(extractiveSummaryResults);
                 }
             });
+    }
+
+    /**
+     * Constructs a {@code AnalyzeActionsResult} model.
+     */
+    public AnalyzeActionsResult() {
     }
 
     /**
@@ -113,6 +134,16 @@ public final class AnalyzeActionsResult {
     }
 
     /**
+     * Gets the {@code analyzeHealthcareEntitiesActionResults} property: The Healthcare entities actions results
+     * property.
+     *
+     * @return The analyzeHealthcareEntitiesActionResults value.
+     */
+    public IterableStream<AnalyzeHealthcareEntitiesActionResult> getAnalyzeHealthcareEntitiesResults() {
+        return this.analyzeHealthcareEntitiesActionResults;
+    }
+
+    /**
      * Gets the {@code extractKeyPhrasesResults} property: The key phrases extraction actions results property.
      *
      * @return The extractKeyPhrasesResults value.
@@ -131,15 +162,6 @@ public final class AnalyzeActionsResult {
     }
 
     /**
-     * Gets the {@code extractSummaryResults} property: the extractive summarization actions results property.
-     *
-     * @return the extractSummaryResults value.
-     */
-    public IterableStream<ExtractSummaryActionResult> getExtractSummaryResults() {
-        return extractSummaryResults;
-    }
-
-    /**
      * Gets the {@code recognizeCustomEntitiesResults} property: the custom recognize entities actions results property.
      *
      * @return the recognizeCustomEntitiesResults value.
@@ -149,23 +171,42 @@ public final class AnalyzeActionsResult {
     }
 
     /**
-     * Gets the {@code singleCategoryClassifyResults} property: the custom classify document
-     * single category actions results property.
+     * Gets the {@code singleLabelClassifyResults} property: the custom classify document
+     * single label classify actions results property.
      *
-     * @return the singleCategoryClassifyResults value.
+     * @return the singleLabelClassifyResults value.
      */
-    public IterableStream<SingleCategoryClassifyActionResult> getSingleCategoryClassifyResults() {
-        return singleCategoryClassifyResults;
+    public IterableStream<SingleLabelClassifyActionResult> getSingleLabelClassifyResults() {
+        return singleLabelClassifyResults;
     }
 
     /**
-     * Gets the {@code multiCategoryClassifyResults} property: the custom classify document
-     * multiple categories actions results property.
+     * Gets the {@code multiLabelClassifyResults} property: the custom classify document
+     * multiple label classify actions results property.
      *
-     * @return the multiCategoryClassifyResults value.
+     * @return the multiLabelClassifyResults value.
      */
-    public IterableStream<MultiCategoryClassifyActionResult> getMultiCategoryClassifyResults() {
-        return multiCategoryClassifyResults;
+    public IterableStream<MultiLabelClassifyActionResult> getMultiLabelClassifyResults() {
+        return multiLabelClassifyResults;
+    }
+
+
+    /**
+     * Gets the {@code abstractiveSummaryResults} property: the abstractive summarization actions results property.
+     *
+     * @return the abstractiveSummaryResults value.
+     */
+    public IterableStream<AbstractiveSummaryActionResult> getAbstractiveSummaryResults() {
+        return abstractiveSummaryResults;
+    }
+
+    /**
+     * Gets the {@code extractiveSummaryResults} property: the extractive summarization actions results property.
+     *
+     * @return the extractiveSummaryResults value.
+     */
+    public IterableStream<ExtractiveSummaryActionResult> getExtractiveSummaryResults() {
+        return extractiveSummaryResults;
     }
 
     private void setRecognizeEntitiesResults(
@@ -183,6 +224,11 @@ public final class AnalyzeActionsResult {
         this.recognizePiiEntitiesResults = recognizePiiEntitiesResults;
     }
 
+    private void setAnalyzeHealthcareEntitiesActionResults(
+        IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults) {
+        this.analyzeHealthcareEntitiesActionResults = analyzeHealthcareEntitiesActionResults;
+    }
+
     private void setExtractKeyPhrasesResults(IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults) {
         this.extractKeyPhrasesResults = extractKeyPhrasesResults;
     }
@@ -191,22 +237,27 @@ public final class AnalyzeActionsResult {
         this.analyzeSentimentResults = analyzeSentimentResults;
     }
 
-    private void setExtractSummaryResults(IterableStream<ExtractSummaryActionResult> extractSummaryResults) {
-        this.extractSummaryResults = extractSummaryResults;
-    }
-
     private void setRecognizeCustomEntitiesResults(
         IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults) {
         this.recognizeCustomEntitiesResults = recognizeCustomEntitiesResults;
     }
 
-    private void setSingleCategoryClassifyResults(
-        IterableStream<SingleCategoryClassifyActionResult> singleCategoryClassifyResults) {
-        this.singleCategoryClassifyResults = singleCategoryClassifyResults;
+    private void setSingleLabelClassifyResults(
+        IterableStream<SingleLabelClassifyActionResult> singleLabelClassifyResults) {
+        this.singleLabelClassifyResults = singleLabelClassifyResults;
     }
 
-    private void setMultiCategoryClassifyResults(
-        IterableStream<MultiCategoryClassifyActionResult> multiCategoryClassifyResults) {
-        this.multiCategoryClassifyResults = multiCategoryClassifyResults;
+    private void setMultiLabelClassifyResults(
+        IterableStream<MultiLabelClassifyActionResult> multiLabelClassifyResults) {
+        this.multiLabelClassifyResults = multiLabelClassifyResults;
+    }
+
+    private void setAbstractiveSummaryResults(
+        IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryResults) {
+        this.abstractiveSummaryResults = abstractiveSummaryResults;
+    }
+
+    private void setExtractiveSummaryResults(IterableStream<ExtractiveSummaryActionResult> extractiveSummaryResults) {
+        this.extractiveSummaryResults = extractiveSummaryResults;
     }
 }

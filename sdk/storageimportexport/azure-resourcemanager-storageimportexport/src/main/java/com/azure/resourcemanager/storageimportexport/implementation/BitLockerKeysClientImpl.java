@@ -24,17 +24,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageimportexport.fluent.BitLockerKeysClient;
 import com.azure.resourcemanager.storageimportexport.fluent.models.DriveBitLockerKeyInner;
-import com.azure.resourcemanager.storageimportexport.models.ErrorResponseException;
+import com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException;
 import com.azure.resourcemanager.storageimportexport.models.GetBitLockerKeysResponse;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BitLockerKeysClient. */
 public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
-    private final ClientLogger logger = new ClientLogger(BitLockerKeysClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BitLockerKeysService service;
 
@@ -58,13 +55,13 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageImportExportB")
-    private interface BitLockerKeysService {
+    public interface BitLockerKeysService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs"
                 + "/{jobName}/listBitLockerKeys")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<GetBitLockerKeysResponse>> list(
             @HostParam("$host") String endpoint,
             @PathParam("jobName") String jobName,
@@ -83,9 +80,9 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return getBitLockerKeys response.
+     * @return getBitLockerKeys response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DriveBitLockerKeyInner>> listSinglePageAsync(String jobName, String resourceGroupName) {
@@ -137,9 +134,9 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
      *     subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return getBitLockerKeys response.
+     * @return getBitLockerKeys response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DriveBitLockerKeyInner>> listSinglePageAsync(
@@ -188,9 +185,9 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return getBitLockerKeys response.
+     * @return getBitLockerKeys response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DriveBitLockerKeyInner> listAsync(String jobName, String resourceGroupName) {
@@ -205,9 +202,9 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
      *     subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return getBitLockerKeys response.
+     * @return getBitLockerKeys response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DriveBitLockerKeyInner> listAsync(String jobName, String resourceGroupName, Context context) {
@@ -221,9 +218,9 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return getBitLockerKeys response.
+     * @return getBitLockerKeys response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DriveBitLockerKeyInner> list(String jobName, String resourceGroupName) {
@@ -238,9 +235,9 @@ public final class BitLockerKeysClientImpl implements BitLockerKeysClient {
      *     subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return getBitLockerKeys response.
+     * @return getBitLockerKeys response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DriveBitLockerKeyInner> list(String jobName, String resourceGroupName, Context context) {

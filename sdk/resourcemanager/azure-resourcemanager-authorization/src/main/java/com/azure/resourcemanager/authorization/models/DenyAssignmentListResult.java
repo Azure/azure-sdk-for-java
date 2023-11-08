@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.DenyAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Deny assignment list operation result. */
 @Fluent
 public final class DenyAssignmentListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DenyAssignmentListResult.class);
-
     /*
      * Deny assignment list.
      */
@@ -27,6 +23,10 @@ public final class DenyAssignmentListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of DenyAssignmentListResult class. */
+    public DenyAssignmentListResult() {
+    }
 
     /**
      * Get the value property: Deny assignment list.

@@ -17,6 +17,10 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private StaticSitesWorkflowPreviewProperties innerProperties;
 
+    /** Creates an instance of StaticSitesWorkflowPreviewInner class. */
+    public StaticSitesWorkflowPreviewInner() {
+    }
+
     /**
      * Get the innerProperties property: StaticSitesWorkflowPreview resource specific properties.
      *

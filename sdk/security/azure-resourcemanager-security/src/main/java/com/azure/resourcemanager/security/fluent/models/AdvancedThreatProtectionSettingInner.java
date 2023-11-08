@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Advanced Threat Protection resource. */
-@JsonFlatten
 @Fluent
-public class AdvancedThreatProtectionSettingInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvancedThreatProtectionSettingInner.class);
-
+public final class AdvancedThreatProtectionSettingInner extends ProxyResource {
     /*
-     * Indicates whether Advanced Threat Protection is enabled.
+     * The Advanced Threat Protection settings.
      */
-    @JsonProperty(value = "properties.isEnabled")
-    private Boolean isEnabled;
+    @JsonProperty(value = "properties")
+    private AdvancedThreatProtectionProperties innerProperties;
+
+    /** Creates an instance of AdvancedThreatProtectionSettingInner class. */
+    public AdvancedThreatProtectionSettingInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The Advanced Threat Protection settings.
+     *
+     * @return the innerProperties value.
+     */
+    private AdvancedThreatProtectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the isEnabled property: Indicates whether Advanced Threat Protection is enabled.
@@ -29,7 +36,7 @@ public class AdvancedThreatProtectionSettingInner extends ProxyResource {
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
-        return this.isEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
     }
 
     /**
@@ -39,7 +46,10 @@ public class AdvancedThreatProtectionSettingInner extends ProxyResource {
      * @return the AdvancedThreatProtectionSettingInner object itself.
      */
     public AdvancedThreatProtectionSettingInner withIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdvancedThreatProtectionProperties();
+        }
+        this.innerProperties().withIsEnabled(isEnabled);
         return this;
     }
 
@@ -49,5 +59,8 @@ public class AdvancedThreatProtectionSettingInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

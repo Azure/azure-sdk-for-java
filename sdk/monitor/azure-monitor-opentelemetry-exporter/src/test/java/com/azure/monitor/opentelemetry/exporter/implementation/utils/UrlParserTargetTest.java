@@ -1,23 +1,5 @@
-/*
- * ApplicationInsights-Java
- * Copyright (c) Microsoft Corporation
- * All rights reserved.
- *
- * MIT License
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the ""Software""), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify, merge,
- * publish, distribute, sublicense, and/or sell copies of the Software, and to permit
- * persons to whom the Software is furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
- * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
- * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
@@ -31,145 +13,220 @@ public class UrlParserTargetTest {
 
     @Test
     public void testGetTargetFromUrl() {
-        assertThat(UrlParser.getTargetFromUrl("https://localhost")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/path")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/path/")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/more/path")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/more/path/")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/path")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/path/")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/more/path")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/more/path/")).isEqualTo("localhost");
 
-        assertThat(UrlParser.getTargetFromUrl("https://localhost?")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/?")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/path?")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/path/?")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/more/path?")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/more/path/?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/path?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/path/?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/more/path?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/more/path/?")).isEqualTo("localhost");
 
-        assertThat(UrlParser.getTargetFromUrl("https://localhost?query")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/?query")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/path?query")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/path/?query")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/more/path?query"))
-            .isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/more/path/?query"))
+        assertThat(UrlParser.getTarget("https://localhost?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/path?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/path/?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/more/path?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/more/path/?query")).isEqualTo("localhost");
+
+        assertThat(UrlParser.getTarget("https://localhost#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/path#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/path/#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/more/path#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/more/path/#")).isEqualTo("localhost");
+
+        assertThat(UrlParser.getTarget("https://localhost#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/path#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/path/#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/more/path#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost/more/path/#fragment")).isEqualTo("localhost");
+    }
+
+    @Test
+    public void testGetTargetFromHttpsUrlWithDefaultPort() {
+        assertThat(UrlParser.getTarget("https://localhost:443")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/path")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/path/")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/more/path")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/more/path/")).isEqualTo("localhost");
+
+        assertThat(UrlParser.getTarget("https://localhost:443?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/path?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/path/?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/more/path?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/more/path/?")).isEqualTo("localhost");
+
+        assertThat(UrlParser.getTarget("https://localhost:443?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/path?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/path/?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/more/path?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/more/path/?query"))
             .isEqualTo("localhost");
 
-        assertThat(UrlParser.getTargetFromUrl("https://localhost#")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/#")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/path#")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/path/#")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/more/path#")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/more/path/#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/path#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/path/#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/more/path#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/more/path/#")).isEqualTo("localhost");
 
-        assertThat(UrlParser.getTargetFromUrl("https://localhost#fragment")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/#fragment")).isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/path#fragment"))
+        assertThat(UrlParser.getTarget("https://localhost:443#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/path#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/path/#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("https://localhost:443/more/path#fragment"))
             .isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/path/#fragment"))
+        assertThat(UrlParser.getTarget("https://localhost:443/more/path/#fragment"))
             .isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/more/path#fragment"))
+    }
+
+    @Test
+    public void testGetTargetFromHttpUrlWithDefaultPort() {
+        assertThat(UrlParser.getTarget("http://localhost:80")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/path")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/path/")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/more/path")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/more/path/")).isEqualTo("localhost");
+
+        assertThat(UrlParser.getTarget("http://localhost:80?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/path?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/path/?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/more/path?")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/more/path/?")).isEqualTo("localhost");
+
+        assertThat(UrlParser.getTarget("http://localhost:80?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/path?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/path/?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/more/path?query")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/more/path/?query")).isEqualTo("localhost");
+
+        assertThat(UrlParser.getTarget("http://localhost:80#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/path#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/path/#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/more/path#")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/more/path/#")).isEqualTo("localhost");
+
+        assertThat(UrlParser.getTarget("http://localhost:80#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/path#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/path/#fragment")).isEqualTo("localhost");
+        assertThat(UrlParser.getTarget("http://localhost:80/more/path#fragment"))
             .isEqualTo("localhost");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost/more/path/#fragment"))
+        assertThat(UrlParser.getTarget("http://localhost:80/more/path/#fragment"))
             .isEqualTo("localhost");
     }
 
     @Test
     public void testGetTargetFromUrlWithPort() {
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080")).isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/")).isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/path"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/path/"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/more/path"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/more/path/"))
+        assertThat(UrlParser.getTarget("https://localhost:8080")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/path")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/path/")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/more/path")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/more/path/"))
             .isEqualTo("localhost:8080");
 
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080?")).isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/?")).isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/path?"))
+        assertThat(UrlParser.getTarget("https://localhost:8080?")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/?")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/path?")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/path/?")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/more/path?"))
             .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/path/?"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/more/path?"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/more/path/?"))
+        assertThat(UrlParser.getTarget("https://localhost:8080/more/path/?"))
             .isEqualTo("localhost:8080");
 
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080?query"))
+        assertThat(UrlParser.getTarget("https://localhost:8080?query")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/?query")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/path?query"))
             .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/?query"))
+        assertThat(UrlParser.getTarget("https://localhost:8080/path/?query"))
             .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/path?query"))
+        assertThat(UrlParser.getTarget("https://localhost:8080/more/path?query"))
             .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/path/?query"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/more/path?query"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/more/path/?query"))
+        assertThat(UrlParser.getTarget("https://localhost:8080/more/path/?query"))
             .isEqualTo("localhost:8080");
 
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080#")).isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/#")).isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/path#"))
+        assertThat(UrlParser.getTarget("https://localhost:8080#")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/#")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/path#")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/path/#")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/more/path#"))
             .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/path/#"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/more/path#"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/more/path/#"))
+        assertThat(UrlParser.getTarget("https://localhost:8080/more/path/#"))
             .isEqualTo("localhost:8080");
 
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080#fragment"))
+        assertThat(UrlParser.getTarget("https://localhost:8080#fragment")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/#fragment")).isEqualTo("localhost:8080");
+        assertThat(UrlParser.getTarget("https://localhost:8080/path#fragment"))
             .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/#fragment"))
+        assertThat(UrlParser.getTarget("https://localhost:8080/path/#fragment"))
             .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/path#fragment"))
+        assertThat(UrlParser.getTarget("https://localhost:8080/more/path#fragment"))
             .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/path/#fragment"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/more/path#fragment"))
-            .isEqualTo("localhost:8080");
-        assertThat(UrlParser.getTargetFromUrl("https://localhost:8080/more/path/#fragment"))
+        assertThat(UrlParser.getTarget("https://localhost:8080/more/path/#fragment"))
             .isEqualTo("localhost:8080");
     }
 
     @Test
     public void testGetTargetFromUrlWithNoAuthority() {
-        assertThat(UrlParser.getTargetFromUrl("https:")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/path")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/path/")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/more/path")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/more/path/")).isNull();
+        assertThat(UrlParser.getTarget("https:")).isNull();
+        assertThat(UrlParser.getTarget("https:/")).isNull();
+        assertThat(UrlParser.getTarget("https:/path")).isNull();
+        assertThat(UrlParser.getTarget("https:/path/")).isNull();
+        assertThat(UrlParser.getTarget("https:/more/path")).isNull();
+        assertThat(UrlParser.getTarget("https:/more/path/")).isNull();
 
-        assertThat(UrlParser.getTargetFromUrl("https:?")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/?")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/path?")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/path/?")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/more/path?")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/more/path/?")).isNull();
+        assertThat(UrlParser.getTarget("https:?")).isNull();
+        assertThat(UrlParser.getTarget("https:/?")).isNull();
+        assertThat(UrlParser.getTarget("https:/path?")).isNull();
+        assertThat(UrlParser.getTarget("https:/path/?")).isNull();
+        assertThat(UrlParser.getTarget("https:/more/path?")).isNull();
+        assertThat(UrlParser.getTarget("https:/more/path/?")).isNull();
 
-        assertThat(UrlParser.getTargetFromUrl("https:?query")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/?query")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/path?query")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/path/?query")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/more/path?query")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/more/path/?query")).isNull();
+        assertThat(UrlParser.getTarget("https:?query")).isNull();
+        assertThat(UrlParser.getTarget("https:/?query")).isNull();
+        assertThat(UrlParser.getTarget("https:/path?query")).isNull();
+        assertThat(UrlParser.getTarget("https:/path/?query")).isNull();
+        assertThat(UrlParser.getTarget("https:/more/path?query")).isNull();
+        assertThat(UrlParser.getTarget("https:/more/path/?query")).isNull();
 
-        assertThat(UrlParser.getTargetFromUrl("https:#")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/#")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/path#")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/path/#")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/more/path#")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/more/path/#")).isNull();
+        assertThat(UrlParser.getTarget("https:#")).isNull();
+        assertThat(UrlParser.getTarget("https:/#")).isNull();
+        assertThat(UrlParser.getTarget("https:/path#")).isNull();
+        assertThat(UrlParser.getTarget("https:/path/#")).isNull();
+        assertThat(UrlParser.getTarget("https:/more/path#")).isNull();
+        assertThat(UrlParser.getTarget("https:/more/path/#")).isNull();
 
-        assertThat(UrlParser.getTargetFromUrl("https:#fragment")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/#fragment")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/path#fragment")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/path/#fragment")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/more/path#fragment")).isNull();
-        assertThat(UrlParser.getTargetFromUrl("https:/more/path/#fragment")).isNull();
+        assertThat(UrlParser.getTarget("https:#fragment")).isNull();
+        assertThat(UrlParser.getTarget("https:/#fragment")).isNull();
+        assertThat(UrlParser.getTarget("https:/path#fragment")).isNull();
+        assertThat(UrlParser.getTarget("https:/path/#fragment")).isNull();
+        assertThat(UrlParser.getTarget("https:/more/path#fragment")).isNull();
+        assertThat(UrlParser.getTarget("https:/more/path/#fragment")).isNull();
+    }
+
+    @Test
+    public void testGetTargetFromMalformedUrl() {
+        assertThat(UrlParser.getTarget("")).isNull();
+        assertThat(UrlParser.getTarget("http:")).isNull();
+        assertThat(UrlParser.getTarget("http:/")).isNull();
+        assertThat(UrlParser.getTarget("http//")).isNull();
+        assertThat(UrlParser.getTarget("http:localhost/path")).isNull();
+        assertThat(UrlParser.getTarget("http:/localhost/path")).isNull();
+        assertThat(UrlParser.getTarget("http//localhost/path")).isNull();
     }
 }

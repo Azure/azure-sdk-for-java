@@ -5,42 +5,40 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.FailoverGroupUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** A failover group update request. */
-@JsonFlatten
 @Fluent
-public class FailoverGroupUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverGroupUpdate.class);
+public final class FailoverGroupUpdate {
+    /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private FailoverGroupUpdateProperties innerProperties;
 
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Read-write endpoint of the failover group instance.
-     */
-    @JsonProperty(value = "properties.readWriteEndpoint")
-    private FailoverGroupReadWriteEndpoint readWriteEndpoint;
+    /** Creates an instance of FailoverGroupUpdate class. */
+    public FailoverGroupUpdate() {
+    }
 
-    /*
-     * Read-only endpoint of the failover group instance.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.readOnlyEndpoint")
-    private FailoverGroupReadOnlyEndpoint readOnlyEndpoint;
-
-    /*
-     * List of databases in the failover group.
-     */
-    @JsonProperty(value = "properties.databases")
-    private List<String> databases;
+    private FailoverGroupUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -68,7 +66,7 @@ public class FailoverGroupUpdate {
      * @return the readWriteEndpoint value.
      */
     public FailoverGroupReadWriteEndpoint readWriteEndpoint() {
-        return this.readWriteEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().readWriteEndpoint();
     }
 
     /**
@@ -78,7 +76,10 @@ public class FailoverGroupUpdate {
      * @return the FailoverGroupUpdate object itself.
      */
     public FailoverGroupUpdate withReadWriteEndpoint(FailoverGroupReadWriteEndpoint readWriteEndpoint) {
-        this.readWriteEndpoint = readWriteEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupUpdateProperties();
+        }
+        this.innerProperties().withReadWriteEndpoint(readWriteEndpoint);
         return this;
     }
 
@@ -88,7 +89,7 @@ public class FailoverGroupUpdate {
      * @return the readOnlyEndpoint value.
      */
     public FailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
-        return this.readOnlyEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().readOnlyEndpoint();
     }
 
     /**
@@ -98,7 +99,10 @@ public class FailoverGroupUpdate {
      * @return the FailoverGroupUpdate object itself.
      */
     public FailoverGroupUpdate withReadOnlyEndpoint(FailoverGroupReadOnlyEndpoint readOnlyEndpoint) {
-        this.readOnlyEndpoint = readOnlyEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupUpdateProperties();
+        }
+        this.innerProperties().withReadOnlyEndpoint(readOnlyEndpoint);
         return this;
     }
 
@@ -108,7 +112,7 @@ public class FailoverGroupUpdate {
      * @return the databases value.
      */
     public List<String> databases() {
-        return this.databases;
+        return this.innerProperties() == null ? null : this.innerProperties().databases();
     }
 
     /**
@@ -118,7 +122,10 @@ public class FailoverGroupUpdate {
      * @return the FailoverGroupUpdate object itself.
      */
     public FailoverGroupUpdate withDatabases(List<String> databases) {
-        this.databases = databases;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupUpdateProperties();
+        }
+        this.innerProperties().withDatabases(databases);
         return this;
     }
 
@@ -128,11 +135,8 @@ public class FailoverGroupUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (readWriteEndpoint() != null) {
-            readWriteEndpoint().validate();
-        }
-        if (readOnlyEndpoint() != null) {
-            readOnlyEndpoint().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

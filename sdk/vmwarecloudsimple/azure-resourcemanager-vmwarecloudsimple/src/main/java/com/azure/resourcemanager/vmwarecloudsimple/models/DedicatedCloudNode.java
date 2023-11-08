@@ -7,6 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.DedicatedCloudNodeInner;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
@@ -80,14 +81,14 @@ public interface DedicatedCloudNode {
      *
      * @return the created value.
      */
-    Object created();
+    OffsetDateTime created();
 
     /**
      * Gets the nodesCount property: count of nodes to create.
      *
      * @return the nodesCount value.
      */
-    Integer nodesCount();
+    int nodesCount();
 
     /**
      * Gets the placementGroupId property: Placement Group id, e.g. "n1".
@@ -146,18 +147,18 @@ public interface DedicatedCloudNode {
     String vmwareClusterName();
 
     /**
-     * Gets the idPropertiesSkuDescriptionId property: SKU's id.
+     * Gets the idPropertiesId property: SKU's id.
      *
-     * @return the idPropertiesSkuDescriptionId value.
+     * @return the idPropertiesId value.
      */
-    String idPropertiesSkuDescriptionId();
+    String idPropertiesId();
 
     /**
-     * Gets the namePropertiesSkuDescriptionName property: SKU's name.
+     * Gets the namePropertiesName property: SKU's name.
      *
-     * @return the namePropertiesSkuDescriptionName value.
+     * @return the namePropertiesName value.
      */
-    String namePropertiesSkuDescriptionName();
+    String namePropertiesName();
 
     /**
      * Gets the region of the resource.
@@ -172,6 +173,13 @@ public interface DedicatedCloudNode {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.vmwarecloudsimple.fluent.models.DedicatedCloudNodeInner object.
@@ -231,8 +239,9 @@ public interface DedicatedCloudNode {
                 DefinitionStages.WithNodesCount,
                 DefinitionStages.WithPlacementGroupId,
                 DefinitionStages.WithPurchaseId,
-                DefinitionStages.WithIdPropertiesSkuDescriptionId,
-                DefinitionStages.WithNamePropertiesSkuDescriptionName {
+                DefinitionStages.WithIdPropertiesId,
+                DefinitionStages.WithNamePropertiesName,
+                DefinitionStages.WithReferer {
             /**
              * Executes the create request.
              *
@@ -286,7 +295,7 @@ public interface DedicatedCloudNode {
              * @param nodesCount count of nodes to create.
              * @return the next definition stage.
              */
-            WithCreate withNodesCount(Integer nodesCount);
+            WithCreate withNodesCount(int nodesCount);
         }
         /** The stage of the DedicatedCloudNode definition allowing to specify placementGroupId. */
         interface WithPlacementGroupId {
@@ -308,25 +317,35 @@ public interface DedicatedCloudNode {
              */
             WithCreate withPurchaseId(UUID purchaseId);
         }
-        /** The stage of the DedicatedCloudNode definition allowing to specify idPropertiesSkuDescriptionId. */
-        interface WithIdPropertiesSkuDescriptionId {
+        /** The stage of the DedicatedCloudNode definition allowing to specify idPropertiesId. */
+        interface WithIdPropertiesId {
             /**
-             * Specifies the idPropertiesSkuDescriptionId property: SKU's id.
+             * Specifies the idPropertiesId property: SKU's id.
              *
-             * @param idPropertiesSkuDescriptionId SKU's id.
+             * @param idPropertiesId SKU's id.
              * @return the next definition stage.
              */
-            WithCreate withIdPropertiesSkuDescriptionId(String idPropertiesSkuDescriptionId);
+            WithCreate withIdPropertiesId(String idPropertiesId);
         }
-        /** The stage of the DedicatedCloudNode definition allowing to specify namePropertiesSkuDescriptionName. */
-        interface WithNamePropertiesSkuDescriptionName {
+        /** The stage of the DedicatedCloudNode definition allowing to specify namePropertiesName. */
+        interface WithNamePropertiesName {
             /**
-             * Specifies the namePropertiesSkuDescriptionName property: SKU's name.
+             * Specifies the namePropertiesName property: SKU's name.
              *
-             * @param namePropertiesSkuDescriptionName SKU's name.
+             * @param namePropertiesName SKU's name.
              * @return the next definition stage.
              */
-            WithCreate withNamePropertiesSkuDescriptionName(String namePropertiesSkuDescriptionName);
+            WithCreate withNamePropertiesName(String namePropertiesName);
+        }
+        /** The stage of the DedicatedCloudNode definition allowing to specify referer. */
+        interface WithReferer {
+            /**
+             * Specifies the referer property: referer url.
+             *
+             * @param referer referer url.
+             * @return the next definition stage.
+             */
+            WithCreate withReferer(String referer);
         }
     }
     /**

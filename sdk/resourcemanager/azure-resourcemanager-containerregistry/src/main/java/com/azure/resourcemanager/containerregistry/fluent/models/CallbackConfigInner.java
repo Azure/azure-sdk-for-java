@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** The configuration of service URI and custom headers for the webhook. */
 @Fluent
 public final class CallbackConfigInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CallbackConfigInner.class);
-
     /*
      * The service URI for the webhook to post notifications.
      */
@@ -28,6 +25,10 @@ public final class CallbackConfigInner {
     @JsonProperty(value = "customHeaders")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customHeaders;
+
+    /** Creates an instance of CallbackConfigInner class. */
+    public CallbackConfigInner() {
+    }
 
     /**
      * Get the serviceUri property: The service URI for the webhook to post notifications.
@@ -76,9 +77,11 @@ public final class CallbackConfigInner {
      */
     public void validate() {
         if (serviceUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property serviceUri in model CallbackConfigInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CallbackConfigInner.class);
 }

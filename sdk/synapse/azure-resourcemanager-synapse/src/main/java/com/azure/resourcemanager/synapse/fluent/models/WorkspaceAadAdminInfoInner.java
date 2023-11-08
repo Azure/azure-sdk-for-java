@@ -6,20 +6,20 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Workspace active directory administrator. */
 @Fluent
 public final class WorkspaceAadAdminInfoInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceAadAdminInfoInner.class);
-
     /*
      * Workspace active directory administrator properties
      */
     @JsonProperty(value = "properties")
     private AadAdminProperties innerProperties;
+
+    /** Creates an instance of WorkspaceAadAdminInfoInner class. */
+    public WorkspaceAadAdminInfoInner() {
+    }
 
     /**
      * Get the innerProperties property: Workspace active directory administrator properties.

@@ -6,27 +6,27 @@ package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The encryption configuration for the account. */
 @Fluent
 public final class EncryptionConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionConfig.class);
-
     /*
-     * The type of encryption configuration being used. Currently the only
-     * supported types are 'UserManaged' and 'ServiceManaged'.
+     * The type of encryption configuration being used. Currently the only supported types are 'UserManaged' and
+     * 'ServiceManaged'.
      */
     @JsonProperty(value = "type", required = true)
     private EncryptionConfigType type;
 
     /*
-     * The Key Vault information for connecting to user managed encryption
-     * keys.
+     * The Key Vault information for connecting to user managed encryption keys.
      */
     @JsonProperty(value = "keyVaultMetaInfo")
     private KeyVaultMetaInfo keyVaultMetaInfo;
+
+    /** Creates an instance of EncryptionConfig class. */
+    public EncryptionConfig() {
+    }
 
     /**
      * Get the type property: The type of encryption configuration being used. Currently the only supported types are
@@ -77,7 +77,7 @@ public final class EncryptionConfig {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model EncryptionConfig"));
         }
@@ -85,4 +85,6 @@ public final class EncryptionConfig {
             keyVaultMetaInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptionConfig.class);
 }

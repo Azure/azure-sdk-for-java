@@ -6,23 +6,23 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AzurePlan;
 import com.azure.resourcemanager.billing.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A partner's customer. */
 @Fluent
 public final class CustomerInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerInner.class);
-
     /*
      * The customer.
      */
     @JsonProperty(value = "properties")
     private CustomerProperties innerProperties;
+
+    /** Creates an instance of CustomerInner class. */
+    public CustomerInner() {
+    }
 
     /**
      * Get the innerProperties property: The customer.

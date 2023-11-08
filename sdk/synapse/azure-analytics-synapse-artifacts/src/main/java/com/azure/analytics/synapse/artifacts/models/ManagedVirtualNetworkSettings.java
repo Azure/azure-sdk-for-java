@@ -29,6 +29,9 @@ public final class ManagedVirtualNetworkSettings {
     @JsonProperty(value = "allowedAadTenantIdsForLinking")
     private List<String> allowedAadTenantIdsForLinking;
 
+    /** Creates an instance of ManagedVirtualNetworkSettings class. */
+    public ManagedVirtualNetworkSettings() {}
+
     /**
      * Get the preventDataExfiltration property: Prevent Data Exfiltration.
      *

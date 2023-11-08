@@ -12,22 +12,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualMachineInstallPatchesParameters {
     /*
-     * Specifies the maximum amount of time that the operation will run. It
-     * must be an ISO 8601-compliant duration string such as PT4H (4 hours)
+     * Specifies the maximum amount of time that the operation will run. It must be an ISO 8601-compliant duration
+     * string such as PT4H (4 hours)
      */
     @JsonProperty(value = "maximumDuration")
     private String maximumDuration;
 
     /*
-     * Defines when it is acceptable to reboot a VM during a software update
-     * operation.
+     * Defines when it is acceptable to reboot a VM during a software update operation.
      */
     @JsonProperty(value = "rebootSetting", required = true)
     private VMGuestPatchRebootSetting rebootSetting;
 
     /*
-     * Input for InstallPatches on a Windows VM, as directly received by the
-     * API
+     * Input for InstallPatches on a Windows VM, as directly received by the API
      */
     @JsonProperty(value = "windowsParameters")
     private WindowsParameters windowsParameters;
@@ -37,6 +35,10 @@ public final class VirtualMachineInstallPatchesParameters {
      */
     @JsonProperty(value = "linuxParameters")
     private LinuxParameters linuxParameters;
+
+    /** Creates an instance of VirtualMachineInstallPatchesParameters class. */
+    public VirtualMachineInstallPatchesParameters() {
+    }
 
     /**
      * Get the maximumDuration property: Specifies the maximum amount of time that the operation will run. It must be an

@@ -14,6 +14,15 @@ public final class EncryptionProtectorName extends ExpandableStringEnum<Encrypti
     public static final EncryptionProtectorName CURRENT = fromString("current");
 
     /**
+     * Creates a new instance of EncryptionProtectorName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionProtectorName() {
+    }
+
+    /**
      * Creates or finds a EncryptionProtectorName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class EncryptionProtectorName extends ExpandableStringEnum<Encrypti
         return fromString(name, EncryptionProtectorName.class);
     }
 
-    /** @return known EncryptionProtectorName values. */
+    /**
+     * Gets known EncryptionProtectorName values.
+     *
+     * @return known EncryptionProtectorName values.
+     */
     public static Collection<EncryptionProtectorName> values() {
         return values(EncryptionProtectorName.class);
     }

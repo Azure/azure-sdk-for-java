@@ -57,16 +57,15 @@ public interface Site {
     SystemData systemData();
 
     /**
-     * Gets the provisioningState property: The provisioning state of the site resource. **TODO**: Confirm if this is
-     * needed.
+     * Gets the provisioningState property: The provisioning state of the site resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
-     * Gets the networkFunctions property: An array of ids of the network functions deployed on the site, maintained by
-     * the user.
+     * Gets the networkFunctions property: An array of IDs of the network functions deployed in the site. Deleting the
+     * site will delete any network functions that are deployed in the site.
      *
      * @return the networkFunctions value.
      */
@@ -87,6 +86,13 @@ public interface Site {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner object.
      *
      * @return the inner object.
@@ -100,11 +106,13 @@ public interface Site {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The Site definition stages. */
     interface DefinitionStages {
         /** The first stage of the Site definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Site definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -123,6 +131,7 @@ public interface Site {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Site definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -134,11 +143,12 @@ public interface Site {
              */
             WithCreate withExistingMobileNetwork(String resourceGroupName, String mobileNetworkName);
         }
+
         /**
          * The stage of the Site definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithNetworkFunctions {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              *
@@ -154,6 +164,7 @@ public interface Site {
              */
             Site create(Context context);
         }
+
         /** The stage of the Site definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -164,19 +175,8 @@ public interface Site {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the Site definition allowing to specify networkFunctions. */
-        interface WithNetworkFunctions {
-            /**
-             * Specifies the networkFunctions property: An array of ids of the network functions deployed on the site,
-             * maintained by the user..
-             *
-             * @param networkFunctions An array of ids of the network functions deployed on the site, maintained by the
-             *     user.
-             * @return the next definition stage.
-             */
-            WithCreate withNetworkFunctions(List<SubResource> networkFunctions);
-        }
     }
+
     /**
      * Begins update for the Site resource.
      *
@@ -201,6 +201,7 @@ public interface Site {
          */
         Site apply(Context context);
     }
+
     /** The Site update stages. */
     interface UpdateStages {
         /** The stage of the Site update allowing to specify tags. */
@@ -214,6 +215,7 @@ public interface Site {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -228,4 +230,25 @@ public interface Site {
      * @return the refreshed resource.
      */
     Site refresh(Context context);
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deletePacketCore(SiteDeletePacketCore parameters);
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     *
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deletePacketCore(SiteDeletePacketCore parameters, Context context);
 }

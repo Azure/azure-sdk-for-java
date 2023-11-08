@@ -5,28 +5,28 @@
 package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ID of the subscriptions that is being enabled. */
 @Immutable
 public final class EnabledSubscriptionIdInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnabledSubscriptionIdInner.class);
-
     /*
      * The ID of the subscriptions that is being enabled
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private String value;
+    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
+    private String subscriptionId;
+
+    /** Creates an instance of EnabledSubscriptionIdInner class. */
+    public EnabledSubscriptionIdInner() {
+    }
 
     /**
-     * Get the value property: The ID of the subscriptions that is being enabled.
+     * Get the subscriptionId property: The ID of the subscriptions that is being enabled.
      *
-     * @return the value value.
+     * @return the subscriptionId value.
      */
-    public String value() {
-        return this.value;
+    public String subscriptionId() {
+        return this.subscriptionId;
     }
 
     /**

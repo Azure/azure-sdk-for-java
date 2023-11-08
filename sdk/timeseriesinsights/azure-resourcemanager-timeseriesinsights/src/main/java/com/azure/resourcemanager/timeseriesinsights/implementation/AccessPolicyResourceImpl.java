@@ -48,6 +48,10 @@ public final class AccessPolicyResourceImpl
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AccessPolicyResourceInner innerModel() {
         return this.innerObject;
     }

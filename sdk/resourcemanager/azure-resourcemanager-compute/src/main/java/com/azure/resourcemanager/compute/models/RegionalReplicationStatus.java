@@ -34,6 +34,10 @@ public final class RegionalReplicationStatus {
     @JsonProperty(value = "progress", access = JsonProperty.Access.WRITE_ONLY)
     private Integer progress;
 
+    /** Creates an instance of RegionalReplicationStatus class. */
+    public RegionalReplicationStatus() {
+    }
+
     /**
      * Get the region property: The region to which the gallery image version is being replicated to.
      *

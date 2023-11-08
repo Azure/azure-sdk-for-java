@@ -6,14 +6,14 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Map;
 
 /** The core properties of ARM resources. */
 @Fluent
 public class ArmResourceProperties extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmResourceProperties.class);
+    /** Creates an instance of ArmResourceProperties class. */
+    public ArmResourceProperties() {
+    }
 
     /** {@inheritDoc} */
     @Override

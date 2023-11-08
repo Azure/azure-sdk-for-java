@@ -4,12 +4,27 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BastionHosts Delete. */
 public final class BastionHostsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionHostDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/BastionHostDeveloperDelete.json
+     */
+    /**
+     * Sample code: Delete Developer Bastion Host.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void deleteDeveloperBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getBastionHosts()
+            .delete("rg2", "bastionhostdeveloper", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/BastionHostDelete.json
      */
     /**
      * Sample code: Delete Bastion Host.
@@ -17,6 +32,11 @@ public final class BastionHostsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getBastionHosts().delete("rg1", "bastionhosttenant", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getBastionHosts()
+            .delete("rg1", "bastionhosttenant", com.azure.core.util.Context.NONE);
     }
 }

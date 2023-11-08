@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of runs. */
 @Fluent
 public final class RunListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunListResult.class);
-
     /*
      * The collection value.
      */

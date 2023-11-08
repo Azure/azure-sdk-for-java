@@ -22,9 +22,10 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 The following sections provide several code snippets covering some of the most common configuration service tasks, including:
 
 - [Broadcasting a message][broadcast_sample]
+- [Broadcasting a message with filter][broadcast_with_filter_sample]
 - [Send a message to a user or connection][direct_sample]
 - [Manage groups][manage_group_sample]
-- [A simple chat client][simple_chat_client]
+- [A simple chat client][simple_chat_sample]
 - [More advanced samples][advanced_samples]
 
 ## Troubleshooting
@@ -45,6 +46,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/README.md#next-steps
 
 [broadcast_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/BroadcastingSample.java
+[broadcast_with_filter_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/BroadcastingWithFilterSample.java
 [direct_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/DirectMessageSample.java
 [manage_group_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/ManagingGroupsSample.java
 [simple_chat_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/SimpleChatClient.java

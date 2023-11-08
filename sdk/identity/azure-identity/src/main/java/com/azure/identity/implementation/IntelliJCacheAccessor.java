@@ -8,9 +8,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.implementation.intellij.IntelliJKdbxDatabase;
+import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.aad.msal4jextensions.persistence.CacheFileAccessor;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Crypt32Util;
@@ -44,6 +46,7 @@ import java.util.Map;
  */
 public class IntelliJCacheAccessor {
     private static final ClientLogger LOGGER = new ClientLogger(IntelliJCacheAccessor.class);
+    public static final String INTELLIJ_TOOLKIT_CACHE = "azure-toolkit.cache";
     private final String keePassDatabasePath;
     private static final byte[] CRYPTO_KEY = new byte[] {0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
         0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
@@ -64,6 +67,63 @@ public class IntelliJCacheAccessor {
     private List<String> getAzureToolsForIntelliJPluginConfigPaths() {
         return Arrays.asList(Paths.get(System.getProperty("user.home"), "AzureToolsForIntelliJ").toString(),
             Paths.get(System.getProperty("user.home"), ".AzureToolsForIntelliJ").toString());
+    }
+
+    public String getIntelliJCredentialsFromIdentityMsalCache() {
+        if (Platform.isMac()) {
+            try {
+                KeyChainAccessor accessor = new KeyChainAccessor(null, "Microsoft.Developer.IdentityService", "azure-toolkit.cache");
+                String jsonCred = new String(accessor.read(), StandardCharsets.UTF_8);
+                return parseRefreshTokenFromJson(jsonCred);
+            } catch (Exception | Error e) {
+                LOGGER.verbose("IntelliJCredential => Refresh Token Cache Unavailable: " + e.getMessage());
+            }
+
+        } else if (Platform.isLinux()) {
+            try {
+                LinuxKeyRingAccessor accessor = new LinuxKeyRingAccessor(
+                    "com.intellij.credentialStore.Credential",
+                    "service", "Microsoft.Developer.IdentityService",
+                    "account", "azure-toolkit.cache");
+
+                String jsonCred = new String(accessor.read(), StandardCharsets.UTF_8);
+
+                return parseRefreshTokenFromJson(jsonCred);
+            } catch (Exception | Error e) {
+                LOGGER.verbose("IntelliJCredential => Refresh Token Cache Unavailable: " + e.getMessage());
+            }
+
+        } else if (Platform.isWindows()) {
+
+            try {
+                CacheFileAccessor cacheFileAccessor = new CacheFileAccessor(PersistentTokenCacheImpl.DEFAULT_CACHE_FILE_PATH + File.separator + INTELLIJ_TOOLKIT_CACHE);
+                String data = new String(cacheFileAccessor.read(), StandardCharsets.UTF_8);
+                return parseRefreshTokenFromJson(data);
+            } catch (Exception | Error e) {
+                LOGGER.verbose("IntelliJCredential => Refresh Token Cache Unavailable: " + e.getMessage());
+            }
+
+        } else {
+            LOGGER.verbose(String.format("OS %s Platform not supported.", Platform.getOSType()));
+        }
+        return null;
+    }
+
+    private String parseRefreshTokenFromJson(String jsonString) {
+        try {
+            JsonNode jsonNode =  DEFAULT_MAPPER.readTree(jsonString);
+            TreeNode refreshTokenNode =  jsonNode.get("RefreshToken");
+            TreeNode baseNode = refreshTokenNode.get(refreshTokenNode.fieldNames().next());
+            TreeNode refreshToken = baseNode.get("secret");
+            String tokenString = refreshToken.toString();
+            if (tokenString.startsWith("\"")) {
+                return tokenString.substring(1, tokenString.length() - 1);
+            }
+            return tokenString;
+        } catch (Exception e) {
+            LOGGER.verbose("IntelliJCredential => Refresh Token not found: " + e.getMessage());
+            return null;
+        }
     }
 
     /**
@@ -248,7 +308,12 @@ public class IntelliJCacheAccessor {
             return null;
         }
 
-        IntelliJAuthMethodDetails authMethodDetails = parseAuthMethodDetails(authFile);
+        IntelliJAuthMethodDetails authMethodDetails;
+        try {
+            authMethodDetails = parseAuthMethodDetails(authFile);
+        } catch (IOException exception) {
+            throw new CredentialUnavailableException("Error Parsing Authentication Method details.", exception);
+        }
 
         String authType = authMethodDetails.getAuthMethod();
         if (CoreUtils.isNullOrEmpty(authType)) {

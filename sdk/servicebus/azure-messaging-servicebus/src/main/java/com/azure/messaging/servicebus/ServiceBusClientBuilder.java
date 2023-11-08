@@ -3,9 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
@@ -16,7 +16,6 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
@@ -33,15 +32,21 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.Meter;
+import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
+import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
-import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.apache.qpid.proton.engine.SslDomain;
@@ -50,133 +55,389 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.ServiceLoader;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.messaging.servicebus.ReceiverOptions.createNonSessionOptions;
+import static com.azure.messaging.servicebus.ReceiverOptions.createUnnamedSessionOptions;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 
 /**
- * The builder to create Service Bus clients:
+ * <p>This class provides a fluent builder API to aid the instantiation of clients to send and receive messages to/from
+ * Service Bus entities.</p>
  *
- * <p><strong>Instantiate a synchronous sender</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.sender.sync.client.instantiation -->
+ * <p>
+ * <strong>Credentials are required</strong> to perform operations against Azure Service Bus. They can be set by using
+ * one of the following methods:
+ *
+ * <ul>
+ *     <li>{@link #connectionString(String)} with a connection string to the Service Bus <i>namespace</i>.</li>
+ *     <li>{@link #credential(String, TokenCredential)}, {@link #credential(String, AzureSasCredential)}, and
+ *     {@link #credential(String, AzureNamedKeyCredential)} overloads can be used with the respective credentials
+ *     that has access to the fully-qualified Service Bus namespace.</li>
+ *     <li>{@link #credential(TokenCredential)}, {@link #credential(AzureSasCredential)}, and
+ *     {@link #credential(AzureNamedKeyCredential)} overloads can be used with its respective credentials.
+ *     {@link #fullyQualifiedNamespace(String)} <b>must be</b> set.</li>
+ * </ul>
+ *
+ * <p>The credential used in the following samples is {@code DefaultAzureCredential} for authentication. It is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we recommend
+ * using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.  You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <h2>Clients and sub-builders</h2>
+ *
+ * <p>{@link ServiceBusClientBuilder} can instantiate several clients.  The client to instantiate depends on whether
+ * users are publishing or receiving messages and if the entity has
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a> enabled.
+ * </p>
+ *
+ * <ul>
+ *     <li><strong>Sending messages</strong>: Use the {@link #sender() sender()} sub-builder to create
+ *     {@link ServiceBusSenderAsyncClient} and {@link ServiceBusSenderClient}.</li>
+ *
+ *     <li><strong>Receiving messages</strong>: Use the {@link #receiver() receiver()} sub-builder to create
+ *     {@link ServiceBusReceiverAsyncClient} and {@link ServiceBusReceiverAsyncClient}.</li>
+ *
+ *     <li><strong>Receiving messages from a session-enabled Service Bus entity</strong>: Use the
+ *     {@link #sessionReceiver() sessionReceiver()} sub-builder to create {@link ServiceBusSessionReceiverAsyncClient}
+ *     and {@link ServiceBusSessionReceiverClient}.</li>
+ *
+ *     <li><strong>Receiving messages using a callback-based processor</strong>: Use the
+ *     {@link #processor() processor()} sub-builder to create {@link ServiceBusProcessorClient}.</li>
+ *
+ *     <li><strong>Receiving messages from a session-enabled Service Bus entity using a callback-based processor
+ *     </strong>: Use the {@link #sessionProcessor() sessionProcessor()} sub-builder to create
+ *     {@link ServiceBusProcessorClient}.</li>
+ * </ul>
+ *
+ * <h2>Sending messages</h2>
+ *
+ * <p><strong>Sample: Instantiate a synchronous sender and send a message</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous client {@link ServiceBusSenderClient}
+ * and sending a message.  The  {@code fullyQualifiedNamespace} is the Service Bus namespace's host name.  It is listed
+ * under the "Essentials" panel after navigating to the Service Bus namespace via Azure Portal. The credential used is
+ * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
+ * chooses the credential to used based on its running environment.  When performance is important, consider using
+ * {@link com.azure.messaging.servicebus.ServiceBusMessageBatch} to publish multiple messages at once.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
- * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
- * ServiceBusSenderClient sender = builder
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sender&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.sender.sync.client.instantiation -->
  *
- * <p><strong>Instantiate an asynchronous receiver</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.receiver.async.client.instantiation -->
+ * sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;Foo bar&quot;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
+ *
+ * <h2>Consuming messages</h2>
+ *
+ * <p>There are multiple clients for consuming messages from a Service Bus entity (that is not have
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a>
+ * enabled).</p>
+ *
+ * <p><strong>Sample: Instantiate an asynchronous receiver</strong></p>
+ *
+ * <p>The code example below demonstrates creating an async receiver.  The credential used is
+ * {@code DefaultAzureCredential} for authentication. It is appropriate for most scenarios, including local development
+ * and production environments.  {@link ServiceBusReceiveMode#PEEK_LOCK} and
+ * {@link ServiceBusReceiverClientBuilder#disableAutoComplete() disableAutoComplete()} are <strong>strongly</strong>
+ * recommended so users have control over message settlement.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
- * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
- * ServiceBusReceiverAsyncClient receiver = builder
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
+ * ServiceBusReceiverAsyncClient asyncReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .receiver&#40;&#41;
- *     .disableAutoComplete&#40;&#41; &#47;&#47; Allows user to take control of settling a message.
- *     .topicName&#40;topicName&#41;
- *     .subscriptionName&#40;subscriptionName&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.receiver.async.client.instantiation -->
- *
- * <p><strong>Instantiate an asynchronous session receiver</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.session.receiver.async.client.instantiation -->
- * <pre>
- * &#47;&#47; Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
- * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
- *     .sessionReceiver&#40;&#41;
- *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
- *     .topicName&#40;topicName&#41;
- *     .subscriptionName&#40;subscriptionName&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
- * &#47;&#47; Receiving messages from the first available sessions. It waits up to the AmqpRetryOptions.getTryTimeout&#40;&#41;.
- * &#47;&#47; If no session is available within that operation timeout, it completes with an error. Otherwise, a receiver
- * &#47;&#47; is returned when a lock on the session is acquired.
- * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
- *
- * Flux.usingWhen&#40;receiverMono,
- *     receiver -&gt; receiver.receiveMessages&#40;&#41;,
- *     receiver -&gt; Mono.fromRunnable&#40;receiver::close&#41;&#41;
- *     .subscribe&#40;message -&gt; System.out.println&#40;message.getBody&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+ * &#47;&#47; When users are done with the receiver, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
+ * asyncReceiver.close&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.session.receiver.async.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  *
- * <p><strong>Instantiate the processor</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.processor.client.instantiation -->
+ * <p><strong>Sample: Instantiate {@link ServiceBusProcessorClient}</strong></p>
+ *
+ * <p>The code example below demonstrates creating a processor client.  The processor client is recommended for most
+ * production scenarios because it offers connection recovery. The credential used is {@code DefaultAzureCredential}
+ * for authentication. It is appropriate for most scenarios, including local development and production environments.
+ * {@link ServiceBusReceiveMode#PEEK_LOCK} and
+ * {@link ServiceBusProcessorClientBuilder#disableAutoComplete() disableAutoComplete()} are <strong>strongly</strong>
+ * recommended so users have control over message settlement.
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
- * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
- * ServiceBusProcessorClient processor = builder
+ * &#47;&#47; Function that gets called whenever a message is received.
+ * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
+ *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+ *     &#47;&#47; Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
+ *     &#47;&#47; handling message reaches desired state such that it doesn't require Service Bus to redeliver
+ *     &#47;&#47; the same message, then context.complete&#40;&#41; should be called otherwise context.abandon&#40;&#41;.
+ *     final boolean success = Math.random&#40;&#41; &lt; 0.5;
+ *     if &#40;success&#41; &#123;
+ *         try &#123;
+ *             context.complete&#40;&#41;;
+ *         &#125; catch &#40;RuntimeException error&#41; &#123;
+ *             System.out.printf&#40;&quot;Completion of the message %s failed.%n Error: %s%n&quot;,
+ *                 message.getMessageId&#40;&#41;, error&#41;;
+ *         &#125;
+ *     &#125; else &#123;
+ *         try &#123;
+ *             context.abandon&#40;&#41;;
+ *         &#125; catch &#40;RuntimeException error&#41; &#123;
+ *             System.out.printf&#40;&quot;Abandoning of the message %s failed.%nError: %s%n&quot;,
+ *                 message.getMessageId&#40;&#41;, error&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;;
+ *
+ * &#47;&#47; Sample code that gets called if there's an error
+ * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
+ *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+ *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+ *             exception.getReason&#40;&#41;&#41;;
+ *     &#125; else &#123;
+ *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+ *     &#125;
+ * &#125;;
+ *
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .processor&#40;&#41;
  *     .queueName&#40;queueName&#41;
- *     .processMessage&#40;System.out::println&#41;
- *     .processError&#40;context -&gt; System.err.println&#40;context.getErrorSource&#40;&#41;&#41;&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+ *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
+ *     .processMessage&#40;processMessage&#41;
+ *     .processError&#40;processError&#41;
+ *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
+ *
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
+ * processorClient.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * processorClient.stop&#40;&#41;;
+ * processorClient.close&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.processor.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
+ *
+ * <h2>Consuming messages from a session-enabled Service Bus entity</h2>
+ *
+ * <p>Service Bus supports joint and ordered handling of unbounded sequences of messages through
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a>.
+ * Sessions can be used as a first in, first out (FIFO) processing of messages.  Queues and topics/subscriptions
+ * support Service Bus sessions, however, it must be
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/enable-message-sessions">enabled at the time of
+ * entity creation</a>.</p>
+ *
+ * <p><strong>Sample: Sending a message to a session-enabled queue</strong></p>
+ *
+ * <p>The snippet below demonstrates sending a message to a
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a>
+ * enabled queue.  Setting {@link ServiceBusMessage#setMessageId(String)} property to "greetings" will send the message
+ * to a Service Bus session with an id of "greetings".</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session -->
+ * <pre>
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .sender&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .buildClient&#40;&#41;;
+ *
+ * &#47;&#47; Setting sessionId publishes that message to a specific session, in this case, &quot;greeting&quot;.
+ * ServiceBusMessage message = new ServiceBusMessage&#40;&quot;Hello world&quot;&#41;
+ *     .setSessionId&#40;&quot;greetings&quot;&#41;;
+ *
+ * sender.sendMessage&#40;message&#41;;
+ *
+ * &#47;&#47; Dispose of the sender.
+ * sender.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session -->
+ *
+ * <p><strong>Sample: Receive messages from first available session</strong></p>
+ *
+ * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder}
+ * and build the session receiver client. Use
+ * {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession() acceptNextSession()} to find the first available
+ * session to process messages from.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
+ * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
+ *     .sessionReceiver&#40;&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; Creates a client to receive messages from the first available session. It waits until
+ * &#47;&#47; AmqpRetryOptions.getTryTimeout&#40;&#41; elapses. If no session is available within that operation timeout, it
+ * &#47;&#47; completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
+ * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
+ *
+ * Flux&lt;Void&gt; receiveMessagesFlux = Flux.usingWhen&#40;receiverMono,
+ *     receiver -&gt; receiver.receiveMessages&#40;&#41;.flatMap&#40;message -&gt; &#123;
+ *         System.out.println&#40;&quot;Received message: &quot; + message.getBody&#40;&#41;&#41;;
+ *
+ *         &#47;&#47; Explicitly settle the message via complete, abandon, defer, dead-letter, etc.
+ *         if &#40;isMessageProcessed&#41; &#123;
+ *             return receiver.complete&#40;message&#41;;
+ *         &#125; else &#123;
+ *             return receiver.abandon&#40;message&#41;;
+ *         &#125;
+ *     &#125;&#41;,
+ *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
+ *         &#47;&#47; Dispose of the receiver and sessionReceiver when done receiving messages.
+ *         receiver.close&#40;&#41;;
+ *         sessionReceiver.close&#40;&#41;;
+ *     &#125;&#41;&#41;;
+ *
+ * &#47;&#47; This is a non-blocking call that moves onto the next line of code after setting up and starting the receive
+ * &#47;&#47; operation. Customers can keep a reference to `subscription` and dispose of it when they want to stop
+ * &#47;&#47; receiving messages.
+ * Disposable subscription = receiveMessagesFlux.subscribe&#40;unused -&gt; &#123;
+ * &#125;, error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
 
+ * <p><strong>Sample: Process messages from all sessions</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation the {@link ServiceBusProcessorClient} that processes all
+ * available sessions in the queue.  {@link ServiceBusSessionProcessorClientBuilder#maxConcurrentSessions(int)}
+ * indicates how many sessions the processor will process at the same time.  The credential used is
+ * {@code DefaultAzureCredential} for authentication. It is appropriate for most scenarios, including local development
+ * and production environments.  {@link ServiceBusReceiveMode#PEEK_LOCK} and
+ * {@link ServiceBusProcessorClientBuilder#disableAutoComplete() disableAutoComplete()} are <strong>strongly</strong>
+ * recommended so users have control over message settlement.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
+ * <pre>
+ * &#47;&#47; Function that gets called whenever a message is received.
+ * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
+ *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+ *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
+ *         message.getSessionId&#40;&#41;, message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;;
+ * &#125;;
+ *
+ * Consumer&lt;ServiceBusErrorContext&gt; onError = context -&gt; &#123;
+ *     System.out.printf&#40;&quot;Error when receiving messages from namespace: '%s'. Entity: '%s'%n&quot;,
+ *         context.getFullyQualifiedNamespace&#40;&#41;, context.getEntityPath&#40;&#41;&#41;;
+ *
+ *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+ *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
+ *             exception.getReason&#40;&#41;&#41;;
+ *     &#125; else &#123;
+ *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, context.getException&#40;&#41;&#41;;
+ *     &#125;
+ * &#125;;
+ *
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
+ *     .sessionProcessor&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .maxConcurrentSessions&#40;2&#41;
+ *     .processMessage&#40;onMessage&#41;
+ *     .processError&#40;onError&#41;
+ *     .buildProcessorClient&#40;&#41;;
+ *
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
+ * sessionProcessor.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * sessionProcessor.stop&#40;&#41;;
+ * sessionProcessor.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
+ *
+ * <h2>Connection sharing</h2>
+ *
+ * <p>The creation of a connection to Service Bus requires resources. If your architecture allows, an application
+ * should share connection between clients which can be achieved by sharing the top level builder as shown below.</p>
+ *
  * <p><strong>Sharing a connection between clients</strong></p>
- * The creation of physical connection to Service Bus requires resources. If your architecture allows, an application
- * should share connection between clients which can be achieved by sharing the top level builder as shown below.
  *
  * <!-- src_embed com.azure.messaging.servicebus.connection.sharing -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
- * &#47;&#47; Create shared builder.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; Any clients created from this builder will share the underlying connection.
  * ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;;
+ *
  * &#47;&#47; Create receiver and sender which will share the connection.
  * ServiceBusReceiverClient receiver = sharedConnectionBuilder
  *     .receiver&#40;&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
  * ServiceBusSenderClient sender = sharedConnectionBuilder
  *     .sender&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
+ *
+ * &#47;&#47; Use the clients and finally close them.
+ * try &#123;
+ *     sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;payload&quot;&#41;&#41;;
+ *     receiver.receiveMessages&#40;1&#41;;
+ * &#125; finally &#123;
+ *     &#47;&#47; Clients should be long-lived objects as they require resources
+ *     &#47;&#47; and time to establish a connection to the service.
+ *     sender.close&#40;&#41;;
+ *     receiver.close&#40;&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.connection.sharing -->
  *
- * <p><strong>Clients for sending messages</strong></p>
- * <ul>
- * <li>{@link ServiceBusSenderAsyncClient}</li>
- * <li>{@link ServiceBusSenderClient}</li>
- * </ul>
- *
- * <p><strong>Clients for receiving messages</strong></p>
- * <ul>
- * <li>{@link ServiceBusReceiverAsyncClient}</li>
- * <li>{@link ServiceBusReceiverClient}</li>
- * </ul>
- *
- * <p><strong>Clients for receiving messages from a session-enabled Service Bus entity</strong></p>
- * <ul>
- * <li>{@link ServiceBusSessionReceiverAsyncClient}</li>
- * <li>{@link ServiceBusSessionReceiverClient}</li>
- * </ul>
- *
- * <p><strong>Client for receiving messages using a callback-based processor</strong></p>
- * <ul>
- * <li>{@link ServiceBusProcessorClient}</li>
- * </ul>
  */
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
     ServiceBusSenderClient.class, ServiceBusReceiverClient.class, ServiceBusProcessorClient.class},
@@ -202,14 +463,12 @@ public final class ServiceBusClientBuilder implements
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
-    private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
+    private static final String LIBRARY_NAME;
+    private static final String LIBRARY_VERSION;
     private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
-
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
     private final Object connectionLock = new Object();
-    private final ClientLogger logger = new ClientLogger(ServiceBusClientBuilder.class);
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
-    private final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
     private ClientOptions clientOptions;
     private Configuration configuration;
     private ServiceBusConnectionProcessor sharedConnection;
@@ -222,11 +481,18 @@ public final class ServiceBusClientBuilder implements
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private SslDomain.VerifyMode verifyMode;
     private boolean crossEntityTransactions;
+    private URL customEndpointAddress;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
      */
     private final AtomicInteger openClients = new AtomicInteger();
+
+    static {
+        final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
+        LIBRARY_NAME = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        LIBRARY_VERSION = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+    }
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
@@ -260,7 +526,7 @@ public final class ServiceBusClientBuilder implements
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
         return this;
@@ -268,10 +534,38 @@ public final class ServiceBusClientBuilder implements
 
     private String getAndValidateFullyQualifiedNamespace() {
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
         return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Sets a custom endpoint address when connecting to the Service Bus service. This can be useful when your network
+     * does not allow connecting to the standard Azure Service Bus endpoint address, but does allow connecting through
+     * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
+     * <p>
+     * If no port is specified, the default port for the {@link #transportType(AmqpTransportType) transport type} is
+     * used.
+     *
+     * @param customEndpointAddress The custom endpoint address.
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     * @throws IllegalArgumentException if {@code customEndpointAddress} cannot be parsed into a valid {@link URL}.
+     */
+    public ServiceBusClientBuilder customEndpointAddress(String customEndpointAddress) {
+        if (customEndpointAddress == null) {
+            this.customEndpointAddress = null;
+            return this;
+        }
+
+        try {
+            this.customEndpointAddress = new URL(customEndpointAddress);
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(String.format("(%s) : is not a valid URL,", customEndpointAddress), e));
+        }
+
+        return this;
     }
 
     /**
@@ -287,7 +581,7 @@ public final class ServiceBusClientBuilder implements
         try {
             tokenCredential = getTokenCredential(properties);
         } catch (Exception e) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
         }
 
@@ -295,7 +589,7 @@ public final class ServiceBusClientBuilder implements
 
         String entityPath = properties.getEntityPath();
         if (!CoreUtils.isNullOrEmpty(entityPath)) {
-            logger.atInfo()
+            LOGGER.atInfo()
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("Setting entity from connection string.");
             this.connectionStringEntityName = entityPath;
@@ -382,7 +676,7 @@ public final class ServiceBusClientBuilder implements
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
@@ -425,7 +719,7 @@ public final class ServiceBusClientBuilder implements
             "'fullyQualifiedNamespace' cannot be null.");
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
@@ -473,7 +767,7 @@ public final class ServiceBusClientBuilder implements
         Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
@@ -610,12 +904,21 @@ public final class ServiceBusClientBuilder implements
     }
 
     /**
+     * A new instance of {@link ServiceBusRuleManagerBuilder} used to configure a Service Bus rule manager instance.
+     *
+     * @return A new instance of {@link ServiceBusRuleManagerBuilder}.
+     */
+    public ServiceBusRuleManagerBuilder ruleManager() {
+        return new ServiceBusRuleManagerBuilder();
+    }
+
+    /**
      * Called when a child client is closed. Disposes of the shared connection if there are no more clients.
      */
     void onClientClose() {
         synchronized (connectionLock) {
             final int numberOfOpenClients = openClients.decrementAndGet();
-            logger.atInfo()
+            LOGGER.atInfo()
                 .addKeyValue("numberOfOpenClients", numberOfOpenClients)
                 .log("Closing a dependent client.");
 
@@ -624,18 +927,18 @@ public final class ServiceBusClientBuilder implements
             }
 
             if (numberOfOpenClients < 0) {
-                logger.atWarning()
+                LOGGER.atWarning()
                     .addKeyValue("numberOfOpenClients", numberOfOpenClients)
                     .log("There should not be less than 0 clients.");
             }
 
-            logger.info("No more open clients, closing shared connection.");
+            LOGGER.info("No more open clients, closing shared connection.");
 
             if (sharedConnection != null) {
                 sharedConnection.dispose();
                 sharedConnection = null;
             } else {
-                logger.warning("Shared ServiceBusConnectionProcessor was already disposed.");
+                LOGGER.warning("Shared ServiceBusConnectionProcessor was already disposed.");
             }
         }
     }
@@ -646,7 +949,7 @@ public final class ServiceBusClientBuilder implements
         }
 
         if (scheduler == null) {
-            scheduler = Schedulers.elastic();
+            scheduler = Schedulers.boundedElastic();
         }
 
         synchronized (connectionLock) {
@@ -672,7 +975,7 @@ public final class ServiceBusClientBuilder implements
         }
 
         final int numberOfOpenClients = openClients.incrementAndGet();
-        logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
+        LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
 
         return sharedConnection;
     }
@@ -680,7 +983,7 @@ public final class ServiceBusClientBuilder implements
     private ConnectionOptions getConnectionOptions() {
         configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
         if (credentials == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
                 + "They can be set using: connectionString(String), connectionString(String, String), "
                 + "or credentials(String, String, TokenCredential)"
             ));
@@ -690,12 +993,13 @@ public final class ServiceBusClientBuilder implements
         // is not AMQP_WEB_SOCKETS.
         if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()
             && transport != AmqpTransportType.AMQP_WEB_SOCKETS) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Cannot use a proxy when TransportType is not AMQP."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Cannot use a proxy when TransportType is not AMQP Web Sockets. "
+                    + "Use the setter 'transportType(AmqpTransportType.AMQP_WEB_SOCKETS)' to enable Web Sockets mode."));
         }
 
         if (proxyOptions == null) {
-            proxyOptions = getDefaultProxyConfiguration(configuration);
+            proxyOptions = ProxyOptions.fromConfiguration(configuration);
         }
 
         final CbsAuthorizationType authorizationType = credentials instanceof ServiceBusSharedKeyCredential
@@ -707,54 +1011,16 @@ public final class ServiceBusClientBuilder implements
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
-        final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
-        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
-            ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-            options, verificationMode, product, clientVersion);
-    }
-
-    private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
-        ProxyAuthenticationType authentication = ProxyAuthenticationType.NONE;
-        if (proxyOptions != null) {
-            authentication = proxyOptions.getAuthentication();
-        }
-
-        String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
-
-        if (CoreUtils.isNullOrEmpty(proxyAddress)) {
-            return ProxyOptions.SYSTEM_DEFAULTS;
-        }
-
-        return getProxyOptions(authentication, proxyAddress, configuration,
-            Boolean.parseBoolean(configuration.get("java.net.useSystemProxies")));
-    }
-
-    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress,
-        Configuration configuration, boolean useSystemProxies) {
-        String host;
-        int port;
-        if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
-            final String[] hostPort = proxyAddress.split(":");
-            host = hostPort[0];
-            port = Integer.parseInt(hostPort[1]);
-            final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
-            final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
-            final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
-            return new ProxyOptions(authentication, proxy, username, password);
-        } else if (useSystemProxies) {
-            // java.net.useSystemProxies needs to be set to true in this scenario.
-            // If it is set to false 'ProxyOptions' in azure-core will return null.
-            com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
-                .fromConfiguration(configuration);
-            return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
-                coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
+        if (customEndpointAddress == null) {
+            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
+                ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
+                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION);
         } else {
-            logger.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
-                + "set or was false.");
-            return ProxyOptions.SYSTEM_DEFAULTS;
+            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
+                ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
+                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
+                customEndpointAddress.getPort());
         }
     }
 
@@ -762,7 +1028,7 @@ public final class ServiceBusClientBuilder implements
         return item == null || item.isEmpty();
     }
 
-    private static MessagingEntityType validateEntityPaths(ClientLogger logger, String connectionStringEntityName,
+    private static MessagingEntityType validateEntityPaths(String connectionStringEntityName,
         String topicName, String queueName) {
 
         final boolean hasTopicName = !isNullOrEmpty(topicName);
@@ -772,14 +1038,14 @@ public final class ServiceBusClientBuilder implements
         final MessagingEntityType entityType;
 
         if (!hasConnectionStringEntity && !hasQueueName && !hasTopicName) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalStateException(
                 "Cannot build client without setting either a queueName or topicName."));
         } else if (hasQueueName && hasTopicName) {
-            throw logger.logExceptionAsError(new IllegalStateException(String.format(
+            throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalStateException(String.format(
                 "Cannot build client with both queueName (%s) and topicName (%s) set.", queueName, topicName)));
         } else if (hasQueueName) {
             if (hasConnectionStringEntity && !queueName.equals(connectionStringEntityName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalStateException(String.format(
                     "queueName (%s) is different than the connectionString's EntityPath (%s).",
                     queueName, connectionStringEntityName)));
             }
@@ -787,7 +1053,7 @@ public final class ServiceBusClientBuilder implements
             entityType = MessagingEntityType.QUEUE;
         } else if (hasTopicName) {
             if (hasConnectionStringEntity && !topicName.equals(connectionStringEntityName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalStateException(String.format(
                     "topicName (%s) is different than the connectionString's EntityPath (%s).",
                     topicName, connectionStringEntityName)));
             }
@@ -801,7 +1067,7 @@ public final class ServiceBusClientBuilder implements
         return entityType;
     }
 
-    private static String getEntityPath(ClientLogger logger, MessagingEntityType entityType, String queueName,
+    private static String getEntityPath(MessagingEntityType entityType, String queueName,
         String topicName, String subscriptionName, SubQueue subQueue) {
 
         String entityPath;
@@ -811,7 +1077,7 @@ public final class ServiceBusClientBuilder implements
                 break;
             case SUBSCRIPTION:
                 if (isNullOrEmpty(subscriptionName)) {
-                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                    throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalStateException(String.format(
                         "topicName (%s) must have a subscriptionName associated with it.", topicName)));
                 }
 
@@ -819,7 +1085,7 @@ public final class ServiceBusClientBuilder implements
                     subscriptionName);
                 break;
             default:
-                throw logger.logExceptionAsError(
+                throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Unknown entity type: " + entityType));
         }
 
@@ -837,7 +1103,7 @@ public final class ServiceBusClientBuilder implements
                 entityPath += DEAD_LETTER_QUEUE_NAME_SUFFIX;
                 break;
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unsupported value of subqueue type: "
+                throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalArgumentException("Unsupported value of subqueue type: "
                     + subQueue));
         }
 
@@ -896,7 +1162,7 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
 
             final String entityName;
@@ -911,12 +1177,23 @@ public final class ServiceBusClientBuilder implements
                     entityName = connectionStringEntityName;
                     break;
                 default:
-                    throw logger.logExceptionAsError(
+                    throw LOGGER.logExceptionAsError(
                         new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
+            final ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(
+                createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityName);
+
             return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null);
+                instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null, clientIdentifier);
         }
 
         /**
@@ -953,6 +1230,7 @@ public final class ServiceBusClientBuilder implements
      * <p><strong>Instantiate a session-enabled processor client</strong></p>
      * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
      * <pre>
+     * &#47;&#47; Function that gets called whenever a message is received.
      * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
      *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
      *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
@@ -965,6 +1243,7 @@ public final class ServiceBusClientBuilder implements
      *
      *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
      *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
+     *
      *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
      *             exception.getReason&#40;&#41;&#41;;
      *     &#125; else &#123;
@@ -972,19 +1251,27 @@ public final class ServiceBusClientBuilder implements
      *     &#125;
      * &#125;;
      *
-     * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
+     * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
      *
+     * &#47;&#47; Create the processor client via the builder and its sub-builder
+     * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
      * ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder&#40;&#41;
-     *     .connectionString&#40;connectionString&#41;
+     *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
      *     .sessionProcessor&#40;&#41;
-     *     .queueName&#40;queueName&#41;
+     *     .queueName&#40;sessionEnabledQueueName&#41;
+     *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+     *     .disableAutoComplete&#40;&#41;
      *     .maxConcurrentSessions&#40;2&#41;
      *     .processMessage&#40;onMessage&#41;
      *     .processError&#40;onError&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
-     * &#47;&#47; Start the processor in the background
+     * &#47;&#47; Starts the processor in the background. Control returns immediately.
      * sessionProcessor.start&#40;&#41;;
+     *
+     * &#47;&#47; Stop processor and dispose when done processing messages.
+     * sessionProcessor.stop&#40;&#41;;
+     * sessionProcessor.close&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
      *
@@ -999,8 +1286,7 @@ public final class ServiceBusClientBuilder implements
         private ServiceBusSessionProcessorClientBuilder() {
             sessionReceiverClientBuilder = new ServiceBusSessionReceiverClientBuilder();
             processorClientOptions = new ServiceBusProcessorClientOptions()
-                .setMaxConcurrentCalls(1)
-                .setTracerProvider(tracerProvider);
+                .setMaxConcurrentCalls(1);
             sessionReceiverClientBuilder.maxConcurrentSessions(1);
         }
 
@@ -1022,6 +1308,26 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
+         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
+         * After this time has elapsed, the processor will close the session and attempt to process another session.
+         * <p>After the processor delivers a message to the {@link #processMessage(Consumer)} handler, if the processor
+         * is unable to receive the next message from the session because there is no next message in the session or 
+         * processing the current message takes longer than the {@code sessionIdleTimeout} then the session will time
+         * out.  To avoid inadvertently losing sessions, choose a {@code sessionIdleTimeout} greater than the 
+         * processing time of a message.</p>
+         * 
+         * <p>If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.</p>
+         * @param sessionIdleTimeout Session idle timeout.
+         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+        public ServiceBusSessionProcessorClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
+            validateAndThrow(sessionIdleTimeout);
+            sessionReceiverClientBuilder.sessionIdleTimeout(sessionIdleTimeout);
+            return this;
+        }
+
+        /**
          * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
          *
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
@@ -1031,7 +1337,7 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSessionProcessorClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
             if (maxConcurrentSessions < 1) {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("'maxConcurrentSessions' cannot be less than 1"));
             }
             sessionReceiverClientBuilder.maxConcurrentSessions(maxConcurrentSessions);
@@ -1153,7 +1459,7 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSessionProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
             if (maxConcurrentCalls < 1) {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
             }
             processorClientOptions.setMaxConcurrentCalls(maxConcurrentCalls);
@@ -1215,6 +1521,7 @@ public final class ServiceBusClientBuilder implements
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
+        private Duration sessionIdleTimeout = null;
         private SubQueue subQueue = SubQueue.NONE;
 
         private ServiceBusSessionReceiverClientBuilder() {
@@ -1251,6 +1558,21 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
+         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
+         * After this time has elapsed, the processor will close the session and attempt to process another session.
+         * If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.
+         *
+         * @param sessionIdleTimeout Session idle timeout.
+         * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+        ServiceBusSessionReceiverClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
+            validateAndThrow(sessionIdleTimeout);
+            this.sessionIdleTimeout = sessionIdleTimeout;
+            return this;
+        }
+
+        /**
          * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
          *
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
@@ -1260,7 +1582,7 @@ public final class ServiceBusClientBuilder implements
          */
         ServiceBusSessionReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
             if (maxConcurrentSessions < 1) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "maxConcurrentSessions cannot be less than 1."));
             }
 
@@ -1368,13 +1690,13 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         ServiceBusReceiverAsyncClient buildAsyncClientForProcessor() {
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+            final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
                 subQueue);
 
             if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
-                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                LOGGER.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
             }
 
@@ -1383,16 +1705,28 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewDuration, enableAutoComplete, null,
-                maxConcurrentSessions);
+
+            final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
+                maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
+
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
+            final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
+                createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(),
+                entityPath, subscriptionName, ReceiverKind.PROCESSOR);
 
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                connectionProcessor, tracerProvider, messageSerializer, receiverOptions);
+                connectionProcessor, messageSerializer, receiverOptions, clientIdentifier, instrumentation.getTracer());
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
+                instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
         }
 
         /**
@@ -1410,7 +1744,7 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverAsyncClient buildAsyncClient() {
-            return buildAsyncClient(true);
+            return buildAsyncClient(true, false);
         }
 
         /**
@@ -1428,23 +1762,23 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSessionReceiverClient buildClient() {
             final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusSessionReceiverClient(buildAsyncClient(false),
+            return new ServiceBusSessionReceiverClient(buildAsyncClient(false, true),
                 isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
-        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean syncConsumer) {
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+            final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
                 SubQueue.NONE);
 
             if (!isAutoCompleteAllowed && enableAutoComplete) {
-                logger.warning(
+                LOGGER.warning(
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
             } else if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
-                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                LOGGER.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
             }
 
@@ -1453,12 +1787,23 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
+            final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
+                maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
 
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
+            final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
+                createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName,
+                ReceiverKind.ASYNC_RECEIVER);
             return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-                entityPath, entityType, receiverOptions, connectionProcessor, tracerProvider, messageSerializer,
-                ServiceBusClientBuilder.this::onClientClose);
+                entityPath, entityType, receiverOptions, connectionProcessor, instrumentation, messageSerializer,
+                ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
 
@@ -1470,42 +1815,113 @@ public final class ServiceBusClientBuilder implements
      * {@link #processError(Consumer)} are necessary. By default, a {@link ServiceBusProcessorClient} is configured
      * with auto-completion and auto-lock renewal capabilities.
      *
-     * <p><strong>Sample code to instantiate a processor client</strong></p>
-     * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#instantiation -->
+     * <p><strong>Sample code to instantiate a processor client and receive in PeekLock mode</strong></p>
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
      * <pre>
-     * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
-     *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
-     *     System.out.printf&#40;&quot;Processing message. Sequence #: %s. Contents: %s%n&quot;,
-     *         message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;;
-     * &#125;;
-     *
-     * Consumer&lt;ServiceBusErrorContext&gt; onError = context -&gt; &#123;
-     *     System.out.printf&#40;&quot;Error when receiving messages from namespace: '%s'. Entity: '%s'%n&quot;,
-     *         context.getFullyQualifiedNamespace&#40;&#41;, context.getEntityPath&#40;&#41;&#41;;
-     *
-     *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
-     *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
-     *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
-     *             exception.getReason&#40;&#41;&#41;;
+     * &#47;&#47; Function that gets called whenever a message is received.
+     * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
+     *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+     *     &#47;&#47; Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
+     *     &#47;&#47; handling message reaches desired state such that it doesn't require Service Bus to redeliver
+     *     &#47;&#47; the same message, then context.complete&#40;&#41; should be called otherwise context.abandon&#40;&#41;.
+     *     final boolean success = Math.random&#40;&#41; &lt; 0.5;
+     *     if &#40;success&#41; &#123;
+     *         try &#123;
+     *             context.complete&#40;&#41;;
+     *         &#125; catch &#40;RuntimeException error&#41; &#123;
+     *             System.out.printf&#40;&quot;Completion of the message %s failed.%n Error: %s%n&quot;,
+     *                 message.getMessageId&#40;&#41;, error&#41;;
+     *         &#125;
      *     &#125; else &#123;
-     *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, context.getException&#40;&#41;&#41;;
+     *         try &#123;
+     *             context.abandon&#40;&#41;;
+     *         &#125; catch &#40;RuntimeException error&#41; &#123;
+     *             System.out.printf&#40;&quot;Abandoning of the message %s failed.%nError: %s%n&quot;,
+     *                 message.getMessageId&#40;&#41;, error&#41;;
+     *         &#125;
      *     &#125;
      * &#125;;
      *
-     * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
+     * &#47;&#47; Sample code that gets called if there's an error
+     * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
+     *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+     *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
      *
-     * ServiceBusProcessorClient processor = new ServiceBusClientBuilder&#40;&#41;
-     *     .connectionString&#40;connectionString&#41;
+     *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+     *             exception.getReason&#40;&#41;&#41;;
+     *     &#125; else &#123;
+     *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;;
+     *
+     * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; Create the processor client via the builder and its sub-builder
+     * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+     * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
+     *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
      *     .processor&#40;&#41;
      *     .queueName&#40;queueName&#41;
-     *     .processMessage&#40;onMessage&#41;
-     *     .processError&#40;onError&#41;
+     *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+     *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
+     *     .processMessage&#40;processMessage&#41;
+     *     .processError&#40;processError&#41;
+     *     .disableAutoComplete&#40;&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
-     * &#47;&#47; Start the processor in the background
-     * processor.start&#40;&#41;;
+     * &#47;&#47; Starts the processor in the background. Control returns immediately.
+     * processorClient.start&#40;&#41;;
+     *
+     * &#47;&#47; Stop processor and dispose when done processing messages.
+     * processorClient.stop&#40;&#41;;
+     * processorClient.close&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#instantiation -->
+     * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
+     * <p><strong>Sample code to instantiate a processor client and receive in ReceiveAndDelete mode</strong></p>
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
+     * <pre>
+     * &#47;&#47; Function that gets called whenever a message is received.
+     * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
+     *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+     *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
+     *         message.getSessionId&#40;&#41;, message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;;
+     * &#125;;
+     *
+     * &#47;&#47; Sample code that gets called if there's an error
+     * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
+     *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+     *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+     *             exception.getReason&#40;&#41;&#41;;
+     *     &#125; else &#123;
+     *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;;
+     *
+     * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; Create the processor client via the builder and its sub-builder
+     * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+     * &#47;&#47; 'disableAutoComplete&#40;&#41;' will opt in to manual settlement &#40;e.g. complete, abandon&#41;.
+     * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
+     *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
+     *     .processor&#40;&#41;
+     *     .queueName&#40;queueName&#41;
+     *     .receiveMode&#40;ServiceBusReceiveMode.RECEIVE_AND_DELETE&#41;
+     *     .processMessage&#40;processMessage&#41;
+     *     .processError&#40;processError&#41;
+     *     .disableAutoComplete&#40;&#41;
+     *     .buildProcessorClient&#40;&#41;;
+     *
+     * &#47;&#47; Starts the processor in the background. Control returns immediately.
+     * processorClient.start&#40;&#41;;
+     *
+     * &#47;&#47; Stop processor and dispose when done processing messages.
+     * processorClient.stop&#40;&#41;;
+     * processorClient.close&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
      *
      * @see ServiceBusProcessorClient
      */
@@ -1518,8 +1934,7 @@ public final class ServiceBusClientBuilder implements
         private ServiceBusProcessorClientBuilder() {
             serviceBusReceiverClientBuilder = new ServiceBusReceiverClientBuilder();
             processorClientOptions = new ServiceBusProcessorClientOptions()
-                .setMaxConcurrentCalls(1)
-                .setTracerProvider(tracerProvider);
+                .setMaxConcurrentCalls(1);
         }
 
         /**
@@ -1650,7 +2065,7 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
             if (maxConcurrentCalls < 1) {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
             }
             processorClientOptions.setMaxConcurrentCalls(maxConcurrentCalls);
@@ -1712,7 +2127,6 @@ public final class ServiceBusClientBuilder implements
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
-
         private ServiceBusReceiverClientBuilder() {
         }
 
@@ -1844,7 +2258,7 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
-            return buildAsyncClient(true);
+            return buildAsyncClient(true, ReceiverKind.ASYNC_RECEIVER);
         }
 
         /**
@@ -1862,23 +2276,27 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusReceiverClient buildClient() {
             final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusReceiverClient(buildAsyncClient(false),
+            return new ServiceBusReceiverClient(buildAsyncClient(false, ReceiverKind.SYNC_RECEIVER),
                 isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
-        ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+        ServiceBusReceiverAsyncClient buildAsyncClientForProcessor() {
+            return buildAsyncClient(true, ReceiverKind.PROCESSOR);
+        }
+
+        ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, ReceiverKind receiverKind) {
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+            final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
                 subQueue);
 
             if (!isAutoCompleteAllowed && enableAutoComplete) {
-                logger.warning(
+                LOGGER.warning(
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
             } else if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
-                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                LOGGER.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
             }
 
@@ -1887,26 +2305,117 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
+            final ReceiverOptions receiverOptions = createNonSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
+            final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
+                createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+                instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
+        }
+    }
+
+    /**
+     * Builder for creating {@link ServiceBusRuleManagerAsyncClient}  to manage Service Bus subscription rules.
+     *
+     * @see ServiceBusRuleManagerAsyncClient
+     */
+    @ServiceClientBuilder(serviceClients = {ServiceBusRuleManagerAsyncClient.class, ServiceBusRuleManagerClient.class})
+    public final class ServiceBusRuleManagerBuilder {
+        private String subscriptionName;
+        private String topicName;
+
+        private ServiceBusRuleManagerBuilder() {
+        }
+
+        /**
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
+         *
+         * @param topicName Name of the topic.
+         *
+         * @return The modified {@link ServiceBusRuleManagerBuilder} object.
+         * @see #subscriptionName A subscription name should be set as well.
+         */
+        public ServiceBusRuleManagerBuilder topicName(String topicName) {
+            this.topicName = topicName;
+            return this;
+        }
+
+        /**
+         * Sets the name of the subscription in the topic to manage its rules. <b>{@link #topicName(String)} must also be set.
+         * </b>
+         * @param subscriptionName Name of the subscription.
+         *
+         * @return The modified {@link ServiceBusRuleManagerBuilder} object.
+         * @see #topicName A topic name should be set as well.
+         */
+        public ServiceBusRuleManagerBuilder subscriptionName(String subscriptionName) {
+            this.subscriptionName = subscriptionName;
+            return this;
+        }
+
+        /**
+         * Creates an <b>asynchronous</b> {@link ServiceBusRuleManagerAsyncClient} for managing rules of the specific subscription.
+         *
+         * @return A new {@link ServiceBusRuleManagerAsyncClient} that manages rules for specific subscription.
+         * @throws IllegalStateException if {@code topicName} or {@code subscriptionName} is null or empty. It is also
+         * thrown if the Service Bus {@link #connectionString(String) connectionString} contains an {@code EntityPath}
+         * that does not match one set in {@link #topicName(String) topicName}.
+         */
+        public ServiceBusRuleManagerAsyncClient buildAsyncClient() {
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
+                null);
+            final String entityPath = getEntityPath(entityType, null, topicName, subscriptionName,
+                null);
+            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+
+            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionProcessor,
+                ServiceBusClientBuilder.this::onClientClose);
+        }
+
+        /**
+         * Creates a <b>synchronous</b> {@link ServiceBusRuleManagerClient} for managing rules of the specific subscription.
+         *
+         * @return A new {@link ServiceBusRuleManagerClient} that manages rules for specific subscription.
+         * @throws IllegalStateException if {@code topicName} or {@code subscriptionName} is null or empty. It is also
+         * thrown if the Service Bus {@link #connectionString(String) connectionString} contains an {@code EntityPath}
+         * that does not match one set in {@link #topicName(String) topicName}.
+         */
+        public ServiceBusRuleManagerClient buildClient() {
+            return new ServiceBusRuleManagerClient(buildAsyncClient(), MessageUtils.getTotalTimeout(retryOptions));
         }
     }
 
     private void validateAndThrow(int prefetchCount) {
         if (prefetchCount < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "prefetchCount (%s) cannot be less than 0.", prefetchCount)));
         }
     }
 
     private void validateAndThrow(Duration maxLockRenewalDuration) {
         if (maxLockRenewalDuration != null && maxLockRenewalDuration.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxLockRenewalDuration' cannot be negative."));
         }
+    }
+
+    private Meter createMeter() {
+        return MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
+                clientOptions == null ? null : clientOptions.getMetricsOptions());
+    }
+
+    private Tracer createTracer() {
+        return TracerProvider.getDefaultProvider().createTracer(LIBRARY_NAME, LIBRARY_VERSION,
+            AZ_TRACING_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
     }
 }

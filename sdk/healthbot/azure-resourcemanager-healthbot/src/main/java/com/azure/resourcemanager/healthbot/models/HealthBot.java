@@ -54,7 +54,7 @@ public interface HealthBot {
     Sku sku();
 
     /**
-     * Gets the properties property: The set of properties specific to Healthbot resource.
+     * Gets the properties property: HealthBotProperties The set of properties specific to Healthbot resource.
      *
      * @return the properties value.
      */
@@ -73,6 +73,13 @@ public interface HealthBot {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.healthbot.fluent.models.HealthBotInner object.
@@ -165,9 +172,10 @@ public interface HealthBot {
         /** The stage of the HealthBot definition allowing to specify properties. */
         interface WithProperties {
             /**
-             * Specifies the properties property: The set of properties specific to Healthbot resource..
+             * Specifies the properties property: HealthBotProperties The set of properties specific to Healthbot
+             * resource..
              *
-             * @param properties The set of properties specific to Healthbot resource.
+             * @param properties HealthBotProperties The set of properties specific to Healthbot resource.
              * @return the next definition stage.
              */
             WithCreate withProperties(HealthBotProperties properties);

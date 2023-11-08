@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** licenseUnitsDetail. */
 @Fluent
 public final class MicrosoftGraphLicenseUnitsDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphLicenseUnitsDetail.class);
-
     /*
      * The number of units that are enabled.
      */
@@ -40,6 +37,10 @@ public final class MicrosoftGraphLicenseUnitsDetail {
      * licenseUnitsDetail
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphLicenseUnitsDetail class. */
+    public MicrosoftGraphLicenseUnitsDetail() {
+    }
 
     /**
      * Get the enabled property: The number of units that are enabled.

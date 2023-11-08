@@ -4,44 +4,35 @@
 
 package com.azure.resourcemanager.sql.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Defines values for StorageKeyType. */
-public enum StorageKeyType {
-    /** Enum value StorageAccessKey. */
-    STORAGE_ACCESS_KEY("StorageAccessKey"),
+/** Storage key type: StorageAccessKey or SharedAccessKey. */
+public final class StorageKeyType extends ExpandableStringEnum<StorageKeyType> {
+    /** Static value SharedAccessKey for StorageKeyType. */
+    public static final StorageKeyType SHARED_ACCESS_KEY = fromString("SharedAccessKey");
 
-    /** Enum value SharedAccessKey. */
-    SHARED_ACCESS_KEY("SharedAccessKey");
+    /** Static value StorageAccessKey for StorageKeyType. */
+    public static final StorageKeyType STORAGE_ACCESS_KEY = fromString("StorageAccessKey");
 
-    /** The actual serialized value for a StorageKeyType instance. */
-    private final String value;
-
-    StorageKeyType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a StorageKeyType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding StorageKeyType.
+     */
+    @JsonCreator
+    public static StorageKeyType fromString(String name) {
+        return fromString(name, StorageKeyType.class);
     }
 
     /**
-     * Parses a serialized value to a StorageKeyType instance.
+     * Gets known StorageKeyType values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed StorageKeyType object, or null if unable to parse.
+     * @return known StorageKeyType values.
      */
-    @JsonCreator
-    public static StorageKeyType fromString(String value) {
-        StorageKeyType[] items = StorageKeyType.values();
-        for (StorageKeyType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<StorageKeyType> values() {
+        return values(StorageKeyType.class);
     }
 }

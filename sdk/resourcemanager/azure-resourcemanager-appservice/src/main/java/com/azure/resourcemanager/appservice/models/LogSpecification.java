@@ -34,6 +34,10 @@ public final class LogSpecification {
     @JsonProperty(value = "logFilterPattern")
     private String logFilterPattern;
 
+    /** Creates an instance of LogSpecification class. */
+    public LogSpecification() {
+    }
+
     /**
      * Get the name property: The name property.
      *

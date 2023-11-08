@@ -59,6 +59,13 @@ public interface ExpressRouteAuthorization {
     String expressRouteId();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.ExpressRouteAuthorizationInner object.
      *
      * @return the inner object.
@@ -69,11 +76,13 @@ public interface ExpressRouteAuthorization {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ExpressRouteAuthorization definition stages. */
     interface DefinitionStages {
         /** The first stage of the ExpressRouteAuthorization definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ExpressRouteAuthorization definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -85,6 +94,7 @@ public interface ExpressRouteAuthorization {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the ExpressRouteAuthorization definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -106,6 +116,7 @@ public interface ExpressRouteAuthorization {
             ExpressRouteAuthorization create(Context context);
         }
     }
+
     /**
      * Begins update for the ExpressRouteAuthorization resource.
      *
@@ -130,9 +141,11 @@ public interface ExpressRouteAuthorization {
          */
         ExpressRouteAuthorization apply(Context context);
     }
+
     /** The ExpressRouteAuthorization update stages. */
     interface UpdateStages {
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -28,6 +28,10 @@ public final class FailActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private FailActivityTypeProperties innerTypeProperties = new FailActivityTypeProperties();
 
+    /** Creates an instance of FailActivity class. */
+    public FailActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Fail activity properties.
      *
@@ -48,6 +52,20 @@ public final class FailActivity extends ControlActivity {
     @Override
     public FailActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FailActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FailActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

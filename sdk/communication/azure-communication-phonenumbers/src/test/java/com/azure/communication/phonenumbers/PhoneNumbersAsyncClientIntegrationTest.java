@@ -2,28 +2,41 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
+import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
+import com.azure.communication.phonenumbers.models.BillingFrequency;
+import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
+import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
+import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
+import com.azure.communication.phonenumbers.models.PhoneNumberError;
+import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
+import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
+import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
-import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
+
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -34,13 +47,13 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     public void getPurchasedPhoneNumber(HttpClient httpClient) {
         String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumber").getPurchasedPhoneNumber(phoneNumber)
-            )
-            .assertNext((PurchasedPhoneNumber number) -> {
-                assertEquals(phoneNumber, number.getPhoneNumber());
-                assertEquals(COUNTRY_CODE, number.getCountryCode());
-            })
-            .verifyComplete();
+                this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumber")
+                        .getPurchasedPhoneNumber(phoneNumber))
+                .assertNext((PurchasedPhoneNumber number) -> {
+                    assertEquals(phoneNumber, number.getPhoneNumber());
+                    assertEquals(COUNTRY_CODE, number.getCountryCode());
+                })
+                .verifyComplete();
     }
 
     @ParameterizedTest
@@ -48,13 +61,13 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     public void getPurchasedPhoneNumberWithAAD(HttpClient httpClient) {
         String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         StepVerifier.create(
-            this.getClientWithManagedIdentity(httpClient, "getPurchasedPhoneNumberWithAAD").getPurchasedPhoneNumber(phoneNumber)
-            )
-            .assertNext((PurchasedPhoneNumber number) -> {
-                assertEquals(phoneNumber, number.getPhoneNumber());
-                assertEquals(COUNTRY_CODE, number.getCountryCode());
-            })
-            .verifyComplete();
+                this.getClientWithManagedIdentity(httpClient, "getPurchasedPhoneNumberWithAAD")
+                        .getPurchasedPhoneNumber(phoneNumber))
+                .assertNext((PurchasedPhoneNumber number) -> {
+                    assertEquals(phoneNumber, number.getPhoneNumber());
+                    assertEquals(COUNTRY_CODE, number.getCountryCode());
+                })
+                .verifyComplete();
     }
 
     @ParameterizedTest
@@ -62,120 +75,126 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     public void getPurchasedPhoneNumberWithResponse(HttpClient httpClient) {
         String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponse").getPurchasedPhoneNumberWithResponse(phoneNumber)
-        )
-        .assertNext((Response<PurchasedPhoneNumber> response) -> {
-            assertEquals(200, response.getStatusCode());
-            assertEquals(phoneNumber, response.getValue().getPhoneNumber());
-            assertEquals(COUNTRY_CODE, response.getValue().getCountryCode());
-        })
-            .verifyComplete();
+                this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponse")
+                        .getPurchasedPhoneNumberWithResponse(phoneNumber))
+                .assertNext((Response<PurchasedPhoneNumber> response) -> {
+                    assertEquals(200, response.getStatusCode());
+                    assertEquals(phoneNumber, response.getValue().getPhoneNumber());
+                    assertEquals(COUNTRY_CODE, response.getValue().getCountryCode());
+                })
+                .verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listPurchasedPhoneNumbers(HttpClient httpClient) {
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "listPurchasedPhoneNumbers").listPurchasedPhoneNumbers().next()
-        )
-        .assertNext((PurchasedPhoneNumber number) -> {
-            assertNotNull(number.getPhoneNumber());
-            assertEquals(COUNTRY_CODE, number.getCountryCode());
+                this.getClientWithConnectionString(httpClient, "listPurchasedPhoneNumbers").listPurchasedPhoneNumbers()
+                        .next())
+                .assertNext((PurchasedPhoneNumber number) -> {
+                    assertNotNull(number.getPhoneNumber());
+                    assertEquals(COUNTRY_CODE, number.getCountryCode());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
+    public void beginSearchAvailablePhoneNumbers(HttpClient httpClient) {
+        PhoneNumbersAsyncClient client =
+            this.getClientWithConnectionString(httpClient, "beginSearchAvailablePhoneNumbers");
+        StepVerifier.create(
+            beginSearchAvailablePhoneNumbersHelper(client, true).last()
+                .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
+                    return result.getFinalResult();
+                }))
+            .assertNext((PhoneNumberSearchResult searchResult) -> {
+                assertEquals(searchResult.getPhoneNumbers().size(), 1);
+                assertNotNull(searchResult.getSearchId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
+    public void beginSearchAvailablePhoneNumbersWithoutOptions(HttpClient httpClient) {
+        PhoneNumbersAsyncClient client =
+            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberForCapabilities");
+        StepVerifier.create(
+            beginSearchAvailablePhoneNumbersHelper(client, false).last()
+                .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
+                    return result.getFinalResult();
+                }))
+        .assertNext((PhoneNumberSearchResult searchResult) -> {
+            assertEquals(searchResult.getPhoneNumbers().size(), 1);
+            assertNotNull(searchResult.getSearchId());
         })
             .verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST",
-        matches = "(?i)(true)")
-    public void beginSearchAvailablePhoneNumbers(HttpClient httpClient) {
-        StepVerifier.create(
-            beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbers", true).last()
-            .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
-                return result.getFinalResult();
-            })
-        ).assertNext((PhoneNumberSearchResult searchResult) -> {
-            assertEquals(searchResult.getPhoneNumbers().size(), 1);
-            assertNotNull(searchResult.getSearchId());
-        })
-        .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST",
-        matches = "(?i)(true)")
-    public void beginSearchAvailablePhoneNumbersWithoutOptions(HttpClient httpClient) {
-        StepVerifier.create(
-            beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbersWithoutOptions", false).last()
-            .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
-                return result.getFinalResult();
-            })
-        ).assertNext((PhoneNumberSearchResult searchResult) -> {
-            assertEquals(searchResult.getPhoneNumbers().size(), 1);
-            assertNotNull(searchResult.getSearchId());
-        })
-        .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)")
+    @DisabledIfEnvironmentVariable(named = "SKIP_LIVE_TEST", matches = "(?i)(true)")
     public void beginPurchaseandReleasePhoneNumbers(HttpClient httpClient) {
+        PhoneNumbersAsyncClient client =
+            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberForCapabilities");
         StepVerifier.create(
-            beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbers", true).last()
-            .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
-                return result.getFinalResult()
-                .flatMap((PhoneNumberSearchResult searchResult) -> {
-                    String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
-                    return beginPurchasePhoneNumbersHelper(httpClient, searchResult.getSearchId(), "beginPurchasePhoneNumbers").last()
-                    .flatMap((AsyncPollResponse<PhoneNumberOperation, PurchasePhoneNumbersResult> purchaseResult)  -> {
-                        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseResult.getStatus());
-                        return beginReleasePhoneNumberHelper(httpClient, phoneNumber, "beginReleasePhoneNumber").last();
-                    });
-                });
-            })
-        ).assertNext((AsyncPollResponse<PhoneNumberOperation, ReleasePhoneNumberResult> releaseResult)  -> {
+            beginSearchAvailablePhoneNumbersHelper(client, true).last()
+                .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
+                    return result.getFinalResult()
+                        .flatMap((PhoneNumberSearchResult searchResult) -> {
+                            String phoneNumber = searchResult.getPhoneNumbers().get(0);
+                            return beginPurchasePhoneNumbersHelper(client, searchResult.getSearchId()
+                            ).last()
+                                .flatMap((
+                                    AsyncPollResponse<PhoneNumberOperation, PurchasePhoneNumbersResult> purchaseResult) -> {
+                                    assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                                        purchaseResult.getStatus());
+                                    return beginReleasePhoneNumberHelper(client, phoneNumber
+                                    ).last();
+                                });
+                        });
+                }))
+        .assertNext((AsyncPollResponse<PhoneNumberOperation, ReleasePhoneNumberResult> releaseResult) -> {
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, releaseResult.getStatus());
 
         })
-        .verifyComplete();
+            .verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST",
-        matches = "(?i)(true)")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS",
-        matches = "(?i)(true)")
+    @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
+    @DisabledIfEnvironmentVariable(named = "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS", matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
-
+        String phoneNumber = getTestPhoneNumber();
+        PhoneNumbersAsyncClient client =
+            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberForCapabilities");
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberForCapabilities").getPurchasedPhoneNumberWithResponse(phoneNumber)
+            client.getPurchasedPhoneNumberWithResponse(phoneNumber)
                 .flatMap(responseAcquiredPhone -> {
                     PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
-                    capabilities.setCalling(responseAcquiredPhone.getValue().getCapabilities().getCalling() == PhoneNumberCapabilityType.INBOUND ? PhoneNumberCapabilityType.OUTBOUND : PhoneNumberCapabilityType.INBOUND);
-                    capabilities.setSms(responseAcquiredPhone.getValue().getCapabilities().getSms() == PhoneNumberCapabilityType.INBOUND_OUTBOUND ? PhoneNumberCapabilityType.OUTBOUND : PhoneNumberCapabilityType.INBOUND_OUTBOUND);
-                    return beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities", capabilities)
+                    capabilities.setCalling(responseAcquiredPhone.getValue().getCapabilities()
+                        .getCalling() == PhoneNumberCapabilityType.INBOUND
+                        ? PhoneNumberCapabilityType.OUTBOUND
+                        : PhoneNumberCapabilityType.INBOUND);
+                    capabilities.setSms(responseAcquiredPhone.getValue().getCapabilities()
+                        .getSms() == PhoneNumberCapabilityType.INBOUND_OUTBOUND
+                        ? PhoneNumberCapabilityType.OUTBOUND
+                        : PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+                    return beginUpdatePhoneNumberCapabilitiesHelper(client, phoneNumber, capabilities)
                         .last()
                         .flatMap((AsyncPollResponse<PhoneNumberOperation, PurchasedPhoneNumber> result) -> {
-                            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
-                            assertEquals(PhoneNumberOperationStatus.SUCCEEDED, result.getValue().getStatus());
+                            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                                result.getStatus());
+                            assertEquals(PhoneNumberOperationStatus.SUCCEEDED,
+                                result.getValue().getStatus());
                             return result.getFinalResult();
                         });
-
-                })
-        ).assertNext((PurchasedPhoneNumber acquiredPhoneNumber) -> {
-            assertNotNull(acquiredPhoneNumber);
-        })
+                }))
+        .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -183,88 +202,331 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberNullNumber(HttpClient httpClient) {
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberNullNumber").getPurchasedPhoneNumber(null)
-            )
-            .verifyError();
+                this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberNullNumber")
+                        .getPurchasedPhoneNumber(null))
+                .verifyError();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithResponseNullNumber(HttpClient httpClient) {
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponseNullNumber").getPurchasedPhoneNumberWithResponse(null)
-            )
-            .verifyError();
+                this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponseNullNumber")
+                        .getPurchasedPhoneNumberWithResponse(null))
+                .verifyError();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginSearchAvailablePhoneNumbersNullCountryCode(HttpClient httpClient) {
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "beginSearchAvailablePhoneNumbersNullCountryCode")
-                .beginSearchAvailablePhoneNumbers(null, PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, null, null)
-            )
-            .verifyError();
+                this.getClientWithConnectionString(httpClient, "beginSearchAvailablePhoneNumbersNullCountryCode")
+                        .beginSearchAvailablePhoneNumbers(null, PhoneNumberType.TOLL_FREE,
+                                PhoneNumberAssignmentType.APPLICATION, null, null))
+                .verifyError();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void beginUpdatePhoneNumberCapabilitiesNullPhoneNumber(HttpClient httpClient) {
         StepVerifier.create(
-            this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesNullPhoneNumber")
-                .beginUpdatePhoneNumberCapabilities(null, new PhoneNumberCapabilities())
+                this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesNullPhoneNumber")
+                        .beginUpdatePhoneNumberCapabilities(null, new PhoneNumberCapabilities()))
+                .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginUpdatePhoneNumberCapabilitiesUnauthorizedPhoneNumber(HttpClient httpClient) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesUnauthorizedPhoneNumber")
+                .beginUpdatePhoneNumberCapabilities("+14255555111", capabilities)
             )
             .verifyError();
     }
 
-    private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName, boolean withOptions) {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginUpdatePhoneNumberCapabilitiesInvalidPhoneNumber(HttpClient httpClient) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesInvalidPhoneNumber")
+                .beginUpdatePhoneNumberCapabilities("invalid-phone-number", capabilities)
+            )
+            .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodesWithAAD(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
+                        .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
+                .expectAccessibleContext();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodesWithAAD(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).blockFirst();
+        StepVerifier.create(
+                this.getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes")
+                        .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
+                                locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName())
+                        .next())
+                .assertNext((PhoneNumberAreaCode areaCodes) -> {
+                    assertNotNull(areaCodes);
+                    assertNotNull(areaCodes.getAreaCode());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getCountriesWithAAD(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithManagedIdentity(httpClient, "listAvailableCountries").listAvailableCountries().next())
+                .assertNext((PhoneNumberCountry country) -> {
+                    assertNotNull(country);
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithAAD(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+                        .listAvailableLocalities("US", null).next())
+                .assertNext((PhoneNumberLocality locality) -> {
+                    assertNotNull(locality);
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesAdministrativeDivisionWithAAD(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).blockFirst();
+        StepVerifier.create(
+                this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+                        .listAvailableLocalities("US", locality.getAdministrativeDivision().getAbbreviatedName()).next())
+                .assertNext((PhoneNumberLocality localityWithAD) -> {
+                    assertNotNull(localityWithAD);
+                    assertEquals(localityWithAD.getAdministrativeDivision().getAbbreviatedName(), locality.getAdministrativeDivision().getAbbreviatedName());
+                    assertEquals(localityWithAD.getAdministrativeDivision().getLocalizedName(), locality.getAdministrativeDivision().getLocalizedName());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getOfferingsWithAAD(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithManagedIdentity(httpClient, "listAvailableOfferings")
+                        .listAvailableOfferings("US", null, null).next())
+                .assertNext((PhoneNumberOffering offering) -> {
+                    assertNotNull(offering);
+                    offering.getCost().getBillingFrequency();
+                    assertNotNull(BillingFrequency.values());
+                    assertNotNull(offering.getCost().getCurrencyCode());
+                    assertNotNull(offering.getCost().getAmount());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodes(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
+                        .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
+                .expectAccessibleContext();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodesWrongCountryCode(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
+                        .listAvailableTollFreeAreaCodes("XX", PhoneNumberAssignmentType.APPLICATION).next())
+                .expectError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodes(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).blockFirst();
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
+                        .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
+                                locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName())
+                        .next())
+                .assertNext((PhoneNumberAreaCode areaCodes) -> {
+                    assertNotNull(areaCodes);
+                    assertNotNull(areaCodes.getAreaCode());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodesWronglocality(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
+                        .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
+                                "XX", "XX")
+                        .next())
+                .expectError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getCountries(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableCountries").listAvailableCountries()
+                        .next())
+                .assertNext((PhoneNumberCountry country) -> {
+                    assertNotNull(country);
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalities(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                        .listAvailableLocalities("US", null).next())
+                .assertNext((PhoneNumberLocality locality) -> {
+                    assertNotNull(locality);
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesAdministrativeDivision(HttpClient httpClient) {
+        PhoneNumberAdministrativeDivision localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).blockFirst().getAdministrativeDivision();
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                        .listAvailableLocalities("US", localityAdministraiveDivision.getAbbreviatedName()).next())
+                .assertNext((PhoneNumberLocality locality) -> {
+                    assertNotNull(locality);
+                    assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(),
+                            localityAdministraiveDivision.getAbbreviatedName());
+                    assertEquals(locality.getAdministrativeDivision().getLocalizedName(),
+                            localityAdministraiveDivision.getLocalizedName());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesInvalidAdministrativeDivision(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                        .listAvailableLocalities("US", "null").next())
+                .expectError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getOfferings(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableOfferings")
+                        .listAvailableOfferings("US", null, null).next())
+                .assertNext((PhoneNumberOffering offering) -> {
+                    assertNotNull(offering);
+                    offering.getCost().getBillingFrequency();
+                    assertNotNull(BillingFrequency.values());
+                    assertNotNull(offering.getCost().getCurrencyCode());
+                    assertNotNull(offering.getCost().getAmount());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void convertCommunicationError(HttpClient httpClient) {
+        List<PhoneNumberError> details = new ArrayList<PhoneNumberError>();
+        CommunicationError communicationError = new CommunicationError();
+        communicationError.setCode("500");
+        communicationError.setMessage("Communication Error");
+
+        PhoneNumberError phoneNumberError = new PhoneNumberError(
+            communicationError.getMessage(),
+            communicationError.getCode(),
+            communicationError.getTarget(),
+            details
+        );
+        PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
+        assertEquals(phoneNumberError.getCode(), error.getCode());
+        assertEquals(phoneNumberError.getMessage(), error.getMessage());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void convertCommunicationErrorWithNull(HttpClient httpClient) {
+        CommunicationError communicationError = null;
+        PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
+        assertEquals(null, error);
+    }
+
+    private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(
+        PhoneNumbersAsyncClient client, boolean withOptions) {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
         capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
 
         if (withOptions) {
-            return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginSearchAvailablePhoneNumbers(
-                COUNTRY_CODE,
-                PhoneNumberType.TOLL_FREE,
-                PhoneNumberAssignmentType.APPLICATION,
-                capabilities,
-                searchOptions
-                ));
+            return setPollInterval(client
+                    .beginSearchAvailablePhoneNumbers(
+                            COUNTRY_CODE,
+                            PhoneNumberType.TOLL_FREE,
+                            PhoneNumberAssignmentType.APPLICATION,
+                            capabilities,
+                            searchOptions));
         }
-        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginSearchAvailablePhoneNumbers(
-                COUNTRY_CODE,
-                PhoneNumberType.TOLL_FREE,
-                PhoneNumberAssignmentType.APPLICATION,
-                capabilities
-                ));
+        return setPollInterval(client
+                .beginSearchAvailablePhoneNumbers(
+                        COUNTRY_CODE,
+                        PhoneNumberType.TOLL_FREE,
+                        PhoneNumberAssignmentType.APPLICATION,
+                        capabilities));
     }
 
-    private PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbersHelper(HttpClient httpClient, String searchId, String testName) {
-        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginPurchasePhoneNumbers(searchId));
+    private PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbersHelper(
+        PhoneNumbersAsyncClient client, String searchId) {
+        return setPollInterval(client
+                .beginPurchasePhoneNumbers(searchId));
     }
 
-    private PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumberHelper(HttpClient httpClient, String phoneNumber, String testName) {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            phoneNumber = "+REDACTED";
-        }
-        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginReleasePhoneNumber(phoneNumber));
+    private PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumberHelper(
+        PhoneNumbersAsyncClient client, String phoneNumber) {
+        return setPollInterval(client
+                .beginReleasePhoneNumber(phoneNumber));
     }
 
-    private PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(HttpClient httpClient, String phoneNumber, String testName, PhoneNumberCapabilities capabilities) {
+    private PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilitiesHelper(
+        PhoneNumbersAsyncClient client, String phoneNumber, PhoneNumberCapabilities capabilities) {
 
-        return setPollInterval(this.getClientWithConnectionString(httpClient, testName)
-            .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));
+        return setPollInterval(client
+                .beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities));
     }
 
     private <T, U> PollerFlux<T, U> setPollInterval(PollerFlux<T, U> pollerFlux) {
         return interceptorManager.isPlaybackMode()
-            ? pollerFlux.setPollInterval(Duration.ofMillis(1))
-            : pollerFlux.setPollInterval(Duration.ofSeconds(1));
+                ? pollerFlux.setPollInterval(Duration.ofMillis(1))
+                : pollerFlux.setPollInterval(Duration.ofSeconds(1));
     }
 
     private PhoneNumbersAsyncClient getClientWithConnectionString(HttpClient httpClient, String testName) {

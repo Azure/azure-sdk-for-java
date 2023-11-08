@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolWorkloadGroupsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolWorkloadGroupsClient. */
 public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGroupsClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolWorkloadGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolWorkloadGroupsService service;
 
@@ -67,7 +64,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolWorkloadGroupsService {
+    public interface SqlPoolWorkloadGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -147,7 +144,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Get a Sql pool's workload group.
+     * Sql pool's workload group
+     *
+     * <p>Get a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -207,7 +206,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Get a Sql pool's workload group.
+     * Sql pool's workload group
+     *
+     * <p>Get a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -265,7 +266,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Get a Sql pool's workload group.
+     * Sql pool's workload group
+     *
+     * <p>Get a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -280,36 +283,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     private Mono<WorkloadGroupInner> getAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName)
-            .flatMap(
-                (Response<WorkloadGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a Sql pool's workload group.
+     * Sql pool's workload group
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's workload group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadGroupInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName).block();
-    }
-
-    /**
-     * Get a Sql pool's workload group.
+     * <p>Get a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -328,7 +308,30 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Create Or Update a Sql pool's workload group.
+     * Sql pool's workload group
+     *
+     * <p>Get a Sql pool's workload group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param workloadGroupName The name of the workload group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Sql pool's workload group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkloadGroupInner get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Create Or Update workload group
+     *
+     * <p>Create Or Update a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -400,7 +403,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Create Or Update a Sql pool's workload group.
+     * Create Or Update workload group
+     *
+     * <p>Create Or Update a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -471,7 +476,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Create Or Update a Sql pool's workload group.
+     * Create Or Update workload group
+     *
+     * <p>Create Or Update a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -481,8 +488,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdateAsync(
@@ -505,7 +511,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Create Or Update a Sql pool's workload group.
+     * Create Or Update workload group
+     *
+     * <p>Create Or Update a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -516,8 +524,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdateAsync(
@@ -538,7 +545,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Create Or Update a Sql pool's workload group.
+     * Create Or Update workload group
+     *
+     * <p>Create Or Update a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -548,8 +557,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
@@ -558,12 +566,15 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         String sqlPoolName,
         String workloadGroupName,
         WorkloadGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Create Or Update a Sql pool's workload group.
+     * Create Or Update workload group
+     *
+     * <p>Create Or Update a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -574,8 +585,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
@@ -585,13 +595,16 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         String workloadGroupName,
         WorkloadGroupInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Create Or Update a Sql pool's workload group.
+     * Create Or Update workload group
+     *
+     * <p>Create Or Update a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -616,7 +629,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Create Or Update a Sql pool's workload group.
+     * Create Or Update workload group
+     *
+     * <p>Create Or Update a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -644,7 +659,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Create Or Update a Sql pool's workload group.
+     * Create Or Update workload group
+     *
+     * <p>Create Or Update a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -668,7 +685,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Create Or Update a Sql pool's workload group.
+     * Create Or Update workload group
+     *
+     * <p>Create Or Update a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -695,7 +714,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Remove Sql pool's workload group.
+     * Remove workload group
+     *
+     * <p>Remove Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -753,7 +774,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Remove Sql pool's workload group.
+     * Remove workload group
+     *
+     * <p>Remove Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -809,7 +832,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Remove Sql pool's workload group.
+     * Remove workload group
+     *
+     * <p>Remove Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -818,7 +843,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -832,7 +857,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Remove Sql pool's workload group.
+     * Remove workload group
+     *
+     * <p>Remove Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -842,7 +869,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -856,7 +883,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Remove Sql pool's workload group.
+     * Remove workload group
+     *
+     * <p>Remove Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -865,16 +894,18 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName).getSyncPoller();
     }
 
     /**
-     * Remove Sql pool's workload group.
+     * Remove workload group
+     *
+     * <p>Remove Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -884,17 +915,20 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context)
             .getSyncPoller();
     }
 
     /**
-     * Remove Sql pool's workload group.
+     * Remove workload group
+     *
+     * <p>Remove Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -914,7 +948,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Remove Sql pool's workload group.
+     * Remove workload group
+     *
+     * <p>Remove Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -935,7 +971,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Remove Sql pool's workload group.
+     * Remove workload group
+     *
+     * <p>Remove Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -951,7 +989,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Remove Sql pool's workload group.
+     * Remove workload group
+     *
+     * <p>Remove Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -969,7 +1009,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Get list of Sql pool's workload groups.
+     * Sql pool's workload groups
+     *
+     * <p>Get list of Sql pool's workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1033,7 +1075,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Get list of Sql pool's workload groups.
+     * Sql pool's workload groups
+     *
+     * <p>Get list of Sql pool's workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1095,7 +1139,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Get list of Sql pool's workload groups.
+     * Sql pool's workload groups
+     *
+     * <p>Get list of Sql pool's workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1103,7 +1149,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload groups.
+     * @return list of Sql pool's workload groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadGroupInner> listAsync(
@@ -1114,7 +1160,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Get list of Sql pool's workload groups.
+     * Sql pool's workload groups
+     *
+     * <p>Get list of Sql pool's workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1123,7 +1171,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload groups.
+     * @return list of Sql pool's workload groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkloadGroupInner> listAsync(
@@ -1134,7 +1182,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Get list of Sql pool's workload groups.
+     * Sql pool's workload groups
+     *
+     * <p>Get list of Sql pool's workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1142,7 +1192,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload groups.
+     * @return list of Sql pool's workload groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadGroupInner> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
@@ -1150,7 +1200,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     }
 
     /**
-     * Get list of Sql pool's workload groups.
+     * Sql pool's workload groups
+     *
+     * <p>Get list of Sql pool's workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1159,7 +1211,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload groups.
+     * @return list of Sql pool's workload groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadGroupInner> list(
@@ -1170,7 +1222,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1205,7 +1258,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

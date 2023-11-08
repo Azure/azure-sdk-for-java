@@ -24,6 +24,10 @@ public final class NetworkInterfaceListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of NetworkInterfaceListResult class. */
+    public NetworkInterfaceListResult() {
+    }
+
     /**
      * Get the value property: A list of network interfaces in a resource group.
      *

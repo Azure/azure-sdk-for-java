@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.fluent.models.RelationshipLinkResourceFormatInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of list relationship link operation. */
 @Fluent
 public final class RelationshipLinkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationshipLinkListResult.class);
-
     /*
      * Results of the list operation.
      */
@@ -27,6 +23,10 @@ public final class RelationshipLinkListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of RelationshipLinkListResult class. */
+    public RelationshipLinkListResult() {
+    }
 
     /**
      * Get the value property: Results of the list operation.

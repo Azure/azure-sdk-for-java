@@ -4,21 +4,22 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.resourcemanager.monitor.MonitorManager;
+import com.azure.resourcemanager.monitor.fluent.models.ActivityLogAlertResourceInner;
+import com.azure.resourcemanager.monitor.models.ActionList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionGroup;
-import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition;
-import com.azure.resourcemanager.monitor.fluent.models.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import reactor.core.publisher.Mono;
 
 /** Implementation for ActivityLogAlert. */
 class ActivityLogAlertImpl
@@ -36,7 +37,11 @@ class ActivityLogAlertImpl
         this.conditions = new TreeMap<>();
         if (innerModel.condition() != null && innerModel.condition().allOf() != null) {
             for (ActivityLogAlertLeafCondition aac : innerModel.condition().allOf()) {
-                this.conditions.put(aac.field(), aac.equals());
+                // May contain conditions with null fields and equals, not sure why.
+                // https://github.com/Azure/azure-sdk-for-java/issues/30684
+                if (aac.field() != null && aac.equals() != null) {
+                    this.conditions.put(aac.field(), aac.equals());
+                }
             }
         }
     }
@@ -140,7 +145,7 @@ class ActivityLogAlertImpl
     @Override
     public ActivityLogAlertImpl withActionGroups(String... actionGroupId) {
         if (this.innerModel().actions() == null) {
-            this.innerModel().withActions(new ActivityLogAlertActionList());
+            this.innerModel().withActions(new ActionList());
             this.innerModel().actions().withActionGroups(new ArrayList<ActivityLogAlertActionGroup>());
         }
         this.innerModel().actions().actionGroups().clear();

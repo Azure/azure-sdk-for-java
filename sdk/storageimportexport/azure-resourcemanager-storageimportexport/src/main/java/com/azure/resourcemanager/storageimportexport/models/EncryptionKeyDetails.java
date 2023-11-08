@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the encryption key properties. */
 @Fluent
 public final class EncryptionKeyDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionKeyDetails.class);
-
     /*
      * The type of kek encryption key
      */
@@ -31,6 +27,10 @@ public final class EncryptionKeyDetails {
      */
     @JsonProperty(value = "kekVaultResourceID")
     private String kekVaultResourceId;
+
+    /** Creates an instance of EncryptionKeyDetails class. */
+    public EncryptionKeyDetails() {
+    }
 
     /**
      * Get the kekType property: The type of kek encryption key.

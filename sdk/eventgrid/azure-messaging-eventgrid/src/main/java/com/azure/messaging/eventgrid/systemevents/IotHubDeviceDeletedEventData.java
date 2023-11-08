@@ -4,11 +4,14 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /** Event data for Microsoft.Devices.DeviceDeleted event. */
-@Immutable
+@Fluent
 public final class IotHubDeviceDeletedEventData extends DeviceLifeCycleEventProperties {
+    /** Creates an instance of IotHubDeviceDeletedEventData class. */
+    public IotHubDeviceDeletedEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public IotHubDeviceDeletedEventData setDeviceId(String deviceId) {

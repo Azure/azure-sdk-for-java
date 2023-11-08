@@ -30,8 +30,7 @@ public final class AzureFirewallNatRule {
     private List<String> sourceAddresses;
 
     /*
-     * List of destination IP addresses for this rule. Supports IP ranges,
-     * prefixes, and service tags.
+     * List of destination IP addresses for this rule. Supports IP ranges, prefixes, and service tags.
      */
     @JsonProperty(value = "destinationAddresses")
     private List<String> destinationAddresses;
@@ -71,6 +70,10 @@ public final class AzureFirewallNatRule {
      */
     @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
+
+    /** Creates an instance of AzureFirewallNatRule class. */
+    public AzureFirewallNatRule() {
+    }
 
     /**
      * Get the name property: Name of the NAT rule.

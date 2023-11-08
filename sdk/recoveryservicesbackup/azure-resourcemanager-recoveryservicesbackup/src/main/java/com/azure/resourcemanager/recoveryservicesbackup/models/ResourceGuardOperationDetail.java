@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceGuardOperationDetail model. */
 @Fluent
 public final class ResourceGuardOperationDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardOperationDetail.class);
-
     /*
      * The vaultCriticalOperation property.
      */
@@ -25,6 +21,10 @@ public final class ResourceGuardOperationDetail {
      */
     @JsonProperty(value = "defaultResourceRequest")
     private String defaultResourceRequest;
+
+    /** Creates an instance of ResourceGuardOperationDetail class. */
+    public ResourceGuardOperationDetail() {
+    }
 
     /**
      * Get the vaultCriticalOperation property: The vaultCriticalOperation property.

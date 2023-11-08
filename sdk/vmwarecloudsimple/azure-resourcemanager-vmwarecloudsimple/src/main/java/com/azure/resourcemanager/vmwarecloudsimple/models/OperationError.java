@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation error model. */
 @Fluent
 public final class OperationError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationError.class);
-
     /*
      * Error's code
      */
@@ -25,6 +21,10 @@ public final class OperationError {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of OperationError class. */
+    public OperationError() {
+    }
 
     /**
      * Get the code property: Error's code.

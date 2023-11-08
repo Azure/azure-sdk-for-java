@@ -35,6 +35,15 @@ public final class VMGuestPatchClassificationWindows extends ExpandableStringEnu
     public static final VMGuestPatchClassificationWindows UPDATES = fromString("Updates");
 
     /**
+     * Creates a new instance of VMGuestPatchClassificationWindows value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMGuestPatchClassificationWindows() {
+    }
+
+    /**
      * Creates or finds a VMGuestPatchClassificationWindows from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class VMGuestPatchClassificationWindows extends ExpandableStringEnu
         return fromString(name, VMGuestPatchClassificationWindows.class);
     }
 
-    /** @return known VMGuestPatchClassificationWindows values. */
+    /**
+     * Gets known VMGuestPatchClassificationWindows values.
+     *
+     * @return known VMGuestPatchClassificationWindows values.
+     */
     public static Collection<VMGuestPatchClassificationWindows> values() {
         return values(VMGuestPatchClassificationWindows.class);
     }

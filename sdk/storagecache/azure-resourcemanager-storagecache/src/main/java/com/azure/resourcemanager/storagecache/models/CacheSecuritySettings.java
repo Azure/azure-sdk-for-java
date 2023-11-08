@@ -17,6 +17,10 @@ public final class CacheSecuritySettings {
     @JsonProperty(value = "accessPolicies")
     private List<NfsAccessPolicy> accessPolicies;
 
+    /** Creates an instance of CacheSecuritySettings class. */
+    public CacheSecuritySettings() {
+    }
+
     /**
      * Get the accessPolicies property: NFS access policies defined for this cache.
      *

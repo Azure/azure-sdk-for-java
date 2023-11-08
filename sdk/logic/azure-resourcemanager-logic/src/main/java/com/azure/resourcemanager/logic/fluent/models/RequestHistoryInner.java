@@ -6,22 +6,22 @@ package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.RequestHistoryProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The request history. */
 @Fluent
 public final class RequestHistoryInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestHistoryInner.class);
-
     /*
      * The request history properties.
      */
     @JsonProperty(value = "properties")
     private RequestHistoryProperties properties;
+
+    /** Creates an instance of RequestHistoryInner class. */
+    public RequestHistoryInner() {
+    }
 
     /**
      * Get the properties property: The request history properties.

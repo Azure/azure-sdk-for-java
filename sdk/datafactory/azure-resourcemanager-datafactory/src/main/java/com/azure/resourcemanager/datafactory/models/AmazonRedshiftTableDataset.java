@@ -23,6 +23,10 @@ public final class AmazonRedshiftTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AmazonRedshiftTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AmazonRedshiftTableDataset class. */
+    public AmazonRedshiftTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Amazon Redshift table dataset properties.
      *

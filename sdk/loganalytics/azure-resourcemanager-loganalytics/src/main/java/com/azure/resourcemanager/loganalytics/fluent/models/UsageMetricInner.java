@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.MetricName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A metric describing the usage of a resource. */
 @Fluent
 public final class UsageMetricInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageMetricInner.class);
-
     /*
      * The name of the metric.
      */
@@ -47,11 +43,14 @@ public final class UsageMetricInner {
     private OffsetDateTime nextResetTime;
 
     /*
-     * The quota period that determines the length of time between value
-     * resets.
+     * The quota period that determines the length of time between value resets.
      */
     @JsonProperty(value = "quotaPeriod")
     private String quotaPeriod;
+
+    /** Creates an instance of UsageMetricInner class. */
+    public UsageMetricInner() {
+    }
 
     /**
      * Get the name property: The name of the metric.

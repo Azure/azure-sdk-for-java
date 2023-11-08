@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceProvisioningState. */
+/** The provisioned state of the resource. */
 public final class ResourceProvisioningState extends ExpandableStringEnum<ResourceProvisioningState> {
     /** Static value Running for ResourceProvisioningState. */
     public static final ResourceProvisioningState RUNNING = fromString("Running");
@@ -32,6 +32,15 @@ public final class ResourceProvisioningState extends ExpandableStringEnum<Resour
     public static final ResourceProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of ResourceProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ResourceProvisioningState from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class ResourceProvisioningState extends ExpandableStringEnum<Resour
         return fromString(name, ResourceProvisioningState.class);
     }
 
-    /** @return known ResourceProvisioningState values. */
+    /**
+     * Gets known ResourceProvisioningState values.
+     *
+     * @return known ResourceProvisioningState values.
+     */
     public static Collection<ResourceProvisioningState> values() {
         return values(ResourceProvisioningState.class);
     }

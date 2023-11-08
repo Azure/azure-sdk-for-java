@@ -12,22 +12,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FusionTemplateSourceSubType {
     /*
-     * The name of source subtype under a source signal consumed in Fusion
-     * detection.
+     * The name of source subtype under a source signal consumed in Fusion detection.
      */
     @JsonProperty(value = "sourceSubTypeName", required = true)
     private String sourceSubTypeName;
 
     /*
-     * The display name of source subtype under a source signal consumed in
-     * Fusion detection.
+     * The display name of source subtype under a source signal consumed in Fusion detection.
      */
     @JsonProperty(value = "sourceSubTypeDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceSubTypeDisplayName;
 
     /*
-     * Severity configuration available for a source subtype consumed in fusion
-     * detection.
+     * Severity configuration available for a source subtype consumed in fusion detection.
      */
     @JsonProperty(value = "severityFilter", required = true)
     private FusionTemplateSubTypeSeverityFilter severityFilter;

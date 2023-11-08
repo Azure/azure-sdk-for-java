@@ -113,6 +113,10 @@ public final class MetricSpecification {
     @JsonProperty(value = "supportedAggregationTypes")
     private List<String> supportedAggregationTypes;
 
+    /** Creates an instance of MetricSpecification class. */
+    public MetricSpecification() {
+    }
+
     /**
      * Get the name property: The name property.
      *

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the parameters for RequestBody match conditions. */
 @Fluent
 public final class RequestBodyMatchConditionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestBodyMatchConditionParameters.class);
-
     /*
      * The typeName property.
      */
@@ -157,10 +154,12 @@ public final class RequestBodyMatchConditionParameters {
      */
     public void validate() {
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operator in model RequestBodyMatchConditionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RequestBodyMatchConditionParameters.class);
 }

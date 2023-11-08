@@ -12,11 +12,14 @@ import java.time.Duration;
 @Fluent
 public final class BackendReconnectProperties {
     /*
-     * Duration in ISO8601 format after which reconnect will be initiated.
-     * Minimum duration of the Reconnect is PT2M.
+     * Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of the Reconnect is PT2M.
      */
     @JsonProperty(value = "after")
     private Duration after;
+
+    /** Creates an instance of BackendReconnectProperties class. */
+    public BackendReconnectProperties() {
+    }
 
     /**
      * Get the after property: Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of

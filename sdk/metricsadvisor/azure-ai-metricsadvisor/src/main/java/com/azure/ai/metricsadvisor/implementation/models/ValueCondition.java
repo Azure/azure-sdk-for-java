@@ -46,13 +46,15 @@ public final class ValueCondition {
     private UUID metricId;
 
     /*
-     * trigger alert when the corresponding point is missing in the other
-     * metric
+     * trigger alert when the corresponding point is missing in the other metric
      *
      * should be specified only when using other metric to filter
      */
     @JsonProperty(value = "triggerForMissing")
     private Boolean triggerForMissing;
+
+    /** Creates an instance of ValueCondition class. */
+    public ValueCondition() {}
 
     /**
      * Get the lower property: lower bound

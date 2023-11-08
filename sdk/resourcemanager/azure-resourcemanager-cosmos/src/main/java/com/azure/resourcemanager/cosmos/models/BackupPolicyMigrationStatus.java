@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupPolicyMigrationStatus. */
+/** Describes the status of migration between backup policy types. */
 public final class BackupPolicyMigrationStatus extends ExpandableStringEnum<BackupPolicyMigrationStatus> {
     /** Static value Invalid for BackupPolicyMigrationStatus. */
     public static final BackupPolicyMigrationStatus INVALID = fromString("Invalid");
@@ -23,6 +23,15 @@ public final class BackupPolicyMigrationStatus extends ExpandableStringEnum<Back
     public static final BackupPolicyMigrationStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of BackupPolicyMigrationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupPolicyMigrationStatus() {
+    }
+
+    /**
      * Creates or finds a BackupPolicyMigrationStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class BackupPolicyMigrationStatus extends ExpandableStringEnum<Back
         return fromString(name, BackupPolicyMigrationStatus.class);
     }
 
-    /** @return known BackupPolicyMigrationStatus values. */
+    /**
+     * Gets known BackupPolicyMigrationStatus values.
+     *
+     * @return known BackupPolicyMigrationStatus values.
+     */
     public static Collection<BackupPolicyMigrationStatus> values() {
         return values(BackupPolicyMigrationStatus.class);
     }

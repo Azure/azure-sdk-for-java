@@ -5,7 +5,6 @@ package com.azure.identity.implementation;
 
 import com.azure.identity.SharedTokenCacheCredential;
 
-import java.io.InputStream;
 import java.time.Duration;
 import java.util.function.Supplier;
 
@@ -15,14 +14,14 @@ import java.util.function.Supplier;
  * @see IdentityClient
  */
 public final class IdentityClientBuilder {
-    private IdentityClientOptions identityClientOptions;
+    private IdentityClientOptions identityClientOptions = new IdentityClientOptions();
     private String tenantId;
     private String clientId;
     private String resourceId;
     private String clientSecret;
     private String clientAssertionPath;
     private String certificatePath;
-    private InputStream certificate;
+    private byte[] certificate;
     private String certificatePassword;
     private boolean sharedTokenCacheCred;
     private Duration clientAssertionTimeout;
@@ -55,7 +54,7 @@ public final class IdentityClientBuilder {
 
     /**
      * Sets the client secret for the client.
-     * @param clientSecret the secret value of the AAD application.
+     * @param clientSecret the secret value of the Microsoft Entra application.
      * @return the IdentityClientBuilder itself
      */
     public IdentityClientBuilder clientSecret(String clientSecret) {
@@ -102,7 +101,7 @@ public final class IdentityClientBuilder {
      * @param certificate the PEM/PFX certificate
      * @return the IdentityClientBuilder itself
      */
-    public IdentityClientBuilder certificate(InputStream certificate) {
+    public IdentityClientBuilder certificate(byte[] certificate) {
         this.certificate = certificate;
         return this;
     }
@@ -156,6 +155,12 @@ public final class IdentityClientBuilder {
      */
     public IdentityClient build() {
         return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
+            clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
+            identityClientOptions);
+    }
+
+    public IdentitySyncClient buildSyncClient() {
+        return new IdentitySyncClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
             clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
             identityClientOptions);
     }

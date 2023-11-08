@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DataMaskingFunction;
 import com.azure.resourcemanager.synapse.models.DataMaskingRuleState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a Sql pool data masking rule. */
 @Fluent
 public final class DataMaskingRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMaskingRuleProperties.class);
-
     /*
      * The rule Id.
      */
@@ -29,11 +26,9 @@ public final class DataMaskingRuleProperties {
     private String aliasName;
 
     /*
-     * The rule state. Used to delete a rule. To delete an existing rule,
-     * specify the schemaName, tableName, columnName, maskingFunction, and
-     * specify ruleState as disabled. However, if the rule doesn't already
-     * exist, the rule will be created with ruleState set to enabled,
-     * regardless of the provided value of ruleState.
+     * The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName,
+     * columnName, maskingFunction, and specify ruleState as disabled. However, if the rule doesn't already exist, the
+     * rule will be created with ruleState set to enabled, regardless of the provided value of ruleState.
      */
     @JsonProperty(value = "ruleState")
     private DataMaskingRuleState ruleState;
@@ -63,42 +58,43 @@ public final class DataMaskingRuleProperties {
     private DataMaskingFunction maskingFunction;
 
     /*
-     * The numberFrom property of the masking rule. Required if maskingFunction
-     * is set to Number, otherwise this parameter will be ignored.
+     * The numberFrom property of the masking rule. Required if maskingFunction is set to Number, otherwise this
+     * parameter will be ignored.
      */
     @JsonProperty(value = "numberFrom")
     private String numberFrom;
 
     /*
-     * The numberTo property of the data masking rule. Required if
-     * maskingFunction is set to Number, otherwise this parameter will be
-     * ignored.
+     * The numberTo property of the data masking rule. Required if maskingFunction is set to Number, otherwise this
+     * parameter will be ignored.
      */
     @JsonProperty(value = "numberTo")
     private String numberTo;
 
     /*
-     * If maskingFunction is set to Text, the number of characters to show
-     * unmasked in the beginning of the string. Otherwise, this parameter will
-     * be ignored.
+     * If maskingFunction is set to Text, the number of characters to show unmasked in the beginning of the string.
+     * Otherwise, this parameter will be ignored.
      */
     @JsonProperty(value = "prefixSize")
     private String prefixSize;
 
     /*
-     * If maskingFunction is set to Text, the number of characters to show
-     * unmasked at the end of the string. Otherwise, this parameter will be
-     * ignored.
+     * If maskingFunction is set to Text, the number of characters to show unmasked at the end of the string.
+     * Otherwise, this parameter will be ignored.
      */
     @JsonProperty(value = "suffixSize")
     private String suffixSize;
 
     /*
-     * If maskingFunction is set to Text, the character to use for masking the
-     * unexposed part of the string. Otherwise, this parameter will be ignored.
+     * If maskingFunction is set to Text, the character to use for masking the unexposed part of the string. Otherwise,
+     * this parameter will be ignored.
      */
     @JsonProperty(value = "replacementString")
     private String replacementString;
+
+    /** Creates an instance of DataMaskingRuleProperties class. */
+    public DataMaskingRuleProperties() {
+    }
 
     /**
      * Get the id property: The rule Id.
@@ -352,28 +348,30 @@ public final class DataMaskingRuleProperties {
      */
     public void validate() {
         if (schemaName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schemaName in model DataMaskingRuleProperties"));
         }
         if (tableName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tableName in model DataMaskingRuleProperties"));
         }
         if (columnName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property columnName in model DataMaskingRuleProperties"));
         }
         if (maskingFunction() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property maskingFunction in model DataMaskingRuleProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataMaskingRuleProperties.class);
 }

@@ -59,11 +59,39 @@ public interface DesktopVirtualizationApiClient {
     WorkspacesClient getWorkspaces();
 
     /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
      * Gets the ScalingPlansClient object to access its operations.
      *
      * @return the ScalingPlansClient object.
      */
     ScalingPlansClient getScalingPlans();
+
+    /**
+     * Gets the ScalingPlanPooledSchedulesClient object to access its operations.
+     *
+     * @return the ScalingPlanPooledSchedulesClient object.
+     */
+    ScalingPlanPooledSchedulesClient getScalingPlanPooledSchedules();
+
+    /**
+     * Gets the ScalingPlanPersonalSchedulesClient object to access its operations.
+     *
+     * @return the ScalingPlanPersonalSchedulesClient object.
+     */
+    ScalingPlanPersonalSchedulesClient getScalingPlanPersonalSchedules();
 
     /**
      * Gets the ApplicationGroupsClient object to access its operations.
@@ -127,18 +155,4 @@ public interface DesktopVirtualizationApiClient {
      * @return the MsixImagesClient object.
      */
     MsixImagesClient getMsixImages();
-
-    /**
-     * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
-     * @return the PrivateEndpointConnectionsClient object.
-     */
-    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
-
-    /**
-     * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
-     * @return the PrivateLinkResourcesClient object.
-     */
-    PrivateLinkResourcesClient getPrivateLinkResources();
 }

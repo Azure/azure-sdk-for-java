@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+    <resetJUL>true</resetJUL>
+  </contextListener>
+
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="console"/>
+  </root>
+  <logger name="com.azure.spring" level="debug"/>
+  <logger name="com.azure.security.keyvault.secrets" level="debug"/>
+  <logger name="com.azure.security.keyvault.certificates" level="debug"/>
+  <logger name="com.azure.data.appconfiguration" level="debug"/>
+</configuration>

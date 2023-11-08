@@ -7,7 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for VirtualMachineStatus. */
+/** The status of Virtual machine. */
 public enum VirtualMachineStatus {
     /** Enum value running. */
     RUNNING("running"),
@@ -42,6 +42,9 @@ public enum VirtualMachineStatus {
      */
     @JsonCreator
     public static VirtualMachineStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         VirtualMachineStatus[] items = VirtualMachineStatus.values();
         for (VirtualMachineStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum VirtualMachineStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

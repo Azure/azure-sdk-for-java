@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 /**
  * The Azure Key Vault variant of the KeyManagerFactory.
+ *
+ * @see KeyManagerFactorySpi
  */
 public final class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
 
@@ -26,6 +28,12 @@ public final class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
      */
     private final List<KeyManager> keyManagers = new ArrayList<>();
 
+    /**
+     * Engine init.
+     *
+     * @param keystore the keystore
+     * @param password the password
+     */
     @Override
     protected void engineInit(KeyStore keystore, char[] password) {
         LOGGER.entering(
@@ -37,10 +45,20 @@ public final class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
         keyManagers.add(manager);
     }
 
+    /**
+     * Engine init.
+     *
+     * @param spec the spec
+     */
     @Override
     protected void engineInit(ManagerFactoryParameters spec) {
     }
 
+    /**
+     * Get key managers.
+     *
+     * @return keyManagers the key keyManagers
+     */
     @Override
     protected KeyManager[] engineGetKeyManagers() {
         LOGGER.exiting("KeyVaultKeyManagerFactory", "engineGetKeyManagers", keyManagers);

@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectedItemResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of ProtectedItem resources. */
 @Fluent
 public final class ProtectedItemResourceList extends ResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectedItemResourceList.class);
-
     /*
      * List of resources.
      */
     @JsonProperty(value = "value")
     private List<ProtectedItemResourceInner> value;
+
+    /** Creates an instance of ProtectedItemResourceList class. */
+    public ProtectedItemResourceList() {
+    }
 
     /**
      * Get the value property: List of resources.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** teamsAppInstallation. */
 @Fluent
 public class MicrosoftGraphTeamsAppInstallation extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTeamsAppInstallation.class);
-
     /*
      * teamsApp
      */
@@ -34,6 +31,10 @@ public class MicrosoftGraphTeamsAppInstallation extends MicrosoftGraphEntity {
      * teamsAppInstallation
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTeamsAppInstallation class. */
+    public MicrosoftGraphTeamsAppInstallation() {
+    }
 
     /**
      * Get the teamsApp property: teamsApp.

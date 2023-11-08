@@ -5,35 +5,45 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The object that represents the operation. */
+/** Localized display information for this particular operation. */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
-     * Service provider: Microsoft.CostManagement.
+     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+     * Compute".
      */
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
-     * Resource on which the operation is performed: Dimensions, Query.
+     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+     * Schedule Collections".
      */
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
-     * Operation type: Read, write, delete, etc.
+     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+     * Machine", "Restart Virtual Machine".
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
+    /*
+     * The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+     */
+    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
+    private String description;
+
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
+
     /**
-     * Get the provider property: Service provider: Microsoft.CostManagement.
+     * Get the provider property: The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring
+     * Insights" or "Microsoft Compute".
      *
      * @return the provider value.
      */
@@ -42,7 +52,8 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the resource property: Resource on which the operation is performed: Dimensions, Query.
+     * Get the resource property: The localized friendly name of the resource type related to this operation. E.g.
+     * "Virtual Machines" or "Job Schedule Collections".
      *
      * @return the resource value.
      */
@@ -51,12 +62,23 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the operation property: Operation type: Read, write, delete, etc.
+     * Get the operation property: The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
+     * "Create or Update Virtual Machine", "Restart Virtual Machine".
      *
      * @return the operation value.
      */
     public String operation() {
         return this.operation;
+    }
+
+    /**
+     * Get the description property: The short, localized friendly description of the operation; suitable for tool tips
+     * and detailed views.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
     }
 
     /**

@@ -24,6 +24,10 @@ public final class ResourceNavigationLinksListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ResourceNavigationLinksListResultInner class. */
+    public ResourceNavigationLinksListResultInner() {
+    }
+
     /**
      * Get the value property: The resource navigation links in a subnet.
      *

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos DB SQL database. */
 @Fluent
 public final class GremlinDatabaseGetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinDatabaseGetProperties.class);
-
     /*
      * The resource property.
      */
@@ -27,6 +23,10 @@ public final class GremlinDatabaseGetProperties {
      */
     @JsonProperty(value = "options")
     private GremlinDatabaseGetPropertiesOptions options;
+
+    /** Creates an instance of GremlinDatabaseGetProperties class. */
+    public GremlinDatabaseGetProperties() {
+    }
 
     /**
      * Get the resource property: The resource property.

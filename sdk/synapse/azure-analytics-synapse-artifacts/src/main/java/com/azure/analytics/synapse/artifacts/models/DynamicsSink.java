@@ -21,19 +21,21 @@ public final class DynamicsSink extends CopySink {
     private DynamicsSinkWriteBehavior writeBehavior;
 
     /*
-     * The flag indicating whether ignore null values from input dataset
-     * (except key fields) during write operation. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * The flag indicating whether ignore null values from input dataset (except key fields) during write operation.
+     * Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
     /*
-     * The logical name of the alternate key which will be used when upserting
-     * records. Type: string (or Expression with resultType string).
+     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
+
+    /** Creates an instance of DynamicsSink class. */
+    public DynamicsSink() {}
 
     /**
      * Get the writeBehavior property: The write behavior for the operation.
@@ -96,6 +98,41 @@ public final class DynamicsSink extends CopySink {
      */
     public DynamicsSink setAlternateKeyName(Object alternateKeyName) {
         this.alternateKeyName = alternateKeyName;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

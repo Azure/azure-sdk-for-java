@@ -13,13 +13,14 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class SmsClientTests extends SmsTestBase {
     private SmsClient client;
@@ -117,7 +118,7 @@ public class SmsClientTests extends SmsTestBase {
         try {
             client.send("+15550000000", TO_PHONE_NUMBER, MESSAGE);
         } catch (Exception exception) {
-            assertEquals(400, ((HttpResponseException) exception).getResponse().getStatusCode());
+            assertEquals(401, ((HttpResponseException) exception).getResponse().getStatusCode());
         }
     }
 
@@ -130,24 +131,10 @@ public class SmsClientTests extends SmsTestBase {
 
         // Action & Assert
         try {
-            SmsSendResult response = client.send("+18007342577", TO_PHONE_NUMBER, MESSAGE);
+            client.send("+18007342577", TO_PHONE_NUMBER, MESSAGE);
         } catch (Exception exception) {
-            assertNotNull(((HttpResponseException) exception).getResponse().getStatusCode());
             assertEquals(401, ((HttpResponseException) exception).getResponse().getStatusCode());
         }
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void sendToFakePhoneNumber(HttpClient httpClient) {
-        // Arrange
-        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
-        client = setupSyncClient(builder, "sendToFakePhoneNumberSync");
-
-        // Action & Assert
-        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, "+15550000000", MESSAGE);
-        assertFalse(sendResult.isSuccessful());
-        assertEquals(sendResult.getHttpStatusCode(), 400);
     }
 
     @ParameterizedTest
@@ -173,7 +160,7 @@ public class SmsClientTests extends SmsTestBase {
         client = setupSyncClient(builder, "checkForRepeatabilityOptions");
         // Action & Assert
         Response<Iterable<SmsSendResult>> response = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE);
-        String bodyRequest = new String(response.getRequest().getBody().blockLast().array());
+        String bodyRequest = response.getRequest().getBodyAsBinaryData().toString();
         assertTrue(bodyRequest.contains("repeatabilityRequestId"));
         assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
     }

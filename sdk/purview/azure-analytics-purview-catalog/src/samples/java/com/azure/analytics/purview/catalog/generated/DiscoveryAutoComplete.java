@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryAutoComplete {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.discoveryautocomplete.discoveryautocomplete
         DiscoveryClient discoveryClient =
                 new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.discoveryautocomplete.discoveryautocomplete
         BinaryData autoCompleteRequest =
                 BinaryData.fromString(
                         "{\"filter\":{\"and\":[{\"entityType\":\"azure_blob_path\",\"includeSubTypes\":false}]},\"keywords\":\"exa\",\"limit\":10}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = discoveryClient.autoCompleteWithResponse(autoCompleteRequest, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.discoveryautocomplete.discoveryautocomplete
+        // END:com.azure.analytics.purview.catalog.generated.discoveryautocomplete.discoveryautocomplete
     }
 }

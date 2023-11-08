@@ -34,6 +34,10 @@ public final class CsmOperationDisplay {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of CsmOperationDisplay class. */
+    public CsmOperationDisplay() {
+    }
+
     /**
      * Get the provider property: The provider property.
      *

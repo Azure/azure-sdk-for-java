@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.CreateOrUpdateVirtualNetworkRuleProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to create a new virtual network rule. */
-@JsonFlatten
 @Fluent
-public class CreateOrUpdateVirtualNetworkRuleParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateOrUpdateVirtualNetworkRuleParameters.class);
-
+public final class CreateOrUpdateVirtualNetworkRuleParameters {
     /*
-     * The resource identifier for the subnet.
+     * The virtual network rule properties to use when creating a new virtual network rule.
      */
-    @JsonProperty(value = "properties.subnetId", required = true)
-    private String subnetId;
+    @JsonProperty(value = "properties", required = true)
+    private CreateOrUpdateVirtualNetworkRuleProperties innerProperties =
+        new CreateOrUpdateVirtualNetworkRuleProperties();
+
+    /** Creates an instance of CreateOrUpdateVirtualNetworkRuleParameters class. */
+    public CreateOrUpdateVirtualNetworkRuleParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: The virtual network rule properties to use when creating a new virtual network
+     * rule.
+     *
+     * @return the innerProperties value.
+     */
+    private CreateOrUpdateVirtualNetworkRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the subnetId property: The resource identifier for the subnet.
@@ -28,7 +39,7 @@ public class CreateOrUpdateVirtualNetworkRuleParameters {
      * @return the subnetId value.
      */
     public String subnetId() {
-        return this.subnetId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
     }
 
     /**
@@ -38,7 +49,10 @@ public class CreateOrUpdateVirtualNetworkRuleParameters {
      * @return the CreateOrUpdateVirtualNetworkRuleParameters object itself.
      */
     public CreateOrUpdateVirtualNetworkRuleParameters withSubnetId(String subnetId) {
-        this.subnetId = subnetId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateVirtualNetworkRuleProperties();
+        }
+        this.innerProperties().withSubnetId(subnetId);
         return this;
     }
 
@@ -48,11 +62,16 @@ public class CreateOrUpdateVirtualNetworkRuleParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (subnetId() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property subnetId in model CreateOrUpdateVirtualNetworkRuleParameters"));
+                        "Missing required property innerProperties in model"
+                            + " CreateOrUpdateVirtualNetworkRuleParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateOrUpdateVirtualNetworkRuleParameters.class);
 }

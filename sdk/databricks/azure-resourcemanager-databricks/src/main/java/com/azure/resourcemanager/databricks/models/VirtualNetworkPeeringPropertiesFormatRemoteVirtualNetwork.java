@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,15 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork.class);
-
     /*
      * The Id of the remote virtual network.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork class. */
+    public VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork() {
+    }
 
     /**
      * Get the id property: The Id of the remote virtual network.

@@ -5,10 +5,8 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -16,7 +14,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -34,6 +31,7 @@ import static org.mockito.Mockito.when;
 public class ServiceBusSenderClientTest {
     private static final String NAMESPACE = "my-namespace";
     private static final String ENTITY_NAME = "my-servicebus-entity";
+    private static final String CLIENT_IDENTIFIER = "my-client-identifier";
 
     @Mock
     private ServiceBusSenderAsyncClient asyncSender;
@@ -46,21 +44,12 @@ public class ServiceBusSenderClientTest {
     private static final String TEST_CONTENTS = "My message for service bus queue!";
     private static final BinaryData TEST_CONTENTS_BINARY = BinaryData.fromString(TEST_CONTENTS);
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
         when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
         when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
         sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
     }
 
@@ -74,6 +63,7 @@ public class ServiceBusSenderClientTest {
     void verifyProperties() {
         Assertions.assertEquals(ENTITY_NAME, sender.getEntityPath());
         Assertions.assertEquals(NAMESPACE, sender.getFullyQualifiedNamespace());
+        Assertions.assertEquals(CLIENT_IDENTIFIER, sender.getIdentifier());
     }
 
     /**
@@ -91,7 +81,7 @@ public class ServiceBusSenderClientTest {
     void createBatchDefault() {
         // Arrange
         ServiceBusMessageBatch batch =  new ServiceBusMessageBatch(MAX_MESSAGE_LENGTH_BYTES, null, null,
-            null, null, null);
+            null);
         when(asyncSender.createMessageBatch()).thenReturn(Mono.just(batch));
 
         //Act
@@ -131,7 +121,7 @@ public class ServiceBusSenderClientTest {
 
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(batchSize, null, null,
-            null, null, null);
+            null);
         when(asyncSender.createMessageBatch(options)).thenReturn(Mono.just(batch));
 
         // Act

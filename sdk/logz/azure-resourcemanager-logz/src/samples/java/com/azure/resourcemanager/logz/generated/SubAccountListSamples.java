@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SubAccount List. */
 public final class SubAccountListSamples {
     /*
@@ -17,6 +15,6 @@ public final class SubAccountListSamples {
      * @param manager Entry point to LogzManager.
      */
     public static void subAccountList(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager.subAccounts().list("myResourceGroup", "myMonitor", Context.NONE);
+        manager.subAccounts().list("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

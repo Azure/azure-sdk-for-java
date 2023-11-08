@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ConfigurationAssignments list. */
 @Fluent
 public final class ListConfigurationAssignmentsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListConfigurationAssignmentsResult.class);
-
     /*
      * The list of configuration Assignments
      */
     @JsonProperty(value = "value")
     private List<ConfigurationAssignmentInner> value;
+
+    /** Creates an instance of ListConfigurationAssignmentsResult class. */
+    public ListConfigurationAssignmentsResult() {
+    }
 
     /**
      * Get the value property: The list of configuration Assignments.

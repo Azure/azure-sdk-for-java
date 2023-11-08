@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An API key used for authenticating with a configuration store endpoint. */
 @Immutable
 public final class ApiKeyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiKeyInner.class);
-
     /*
      * The key ID.
      */
@@ -34,8 +30,7 @@ public final class ApiKeyInner {
     private String value;
 
     /*
-     * A connection string that can be used by supporting clients for
-     * authentication.
+     * A connection string that can be used by supporting clients for authentication.
      */
     @JsonProperty(value = "connectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String connectionString;
@@ -51,6 +46,10 @@ public final class ApiKeyInner {
      */
     @JsonProperty(value = "readOnly", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean readOnly;
+
+    /** Creates an instance of ApiKeyInner class. */
+    public ApiKeyInner() {
+    }
 
     /**
      * Get the id property: The key ID.

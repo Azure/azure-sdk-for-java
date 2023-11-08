@@ -13,10 +13,8 @@ import java.util.List;
 @Fluent
 public final class NetworkRuleSet {
     /*
-     * Specifies whether traffic is bypassed for Logging/Metrics/AzureServices.
-     * Possible values are any combination of Logging|Metrics|AzureServices
-     * (For example, "Logging, Metrics"), or None to bypass none of those
-     * traffics.
+     * Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values are any combination of
+     * Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None to bypass none of those traffics.
      */
     @JsonProperty(value = "bypass")
     private Bypass bypass;
@@ -44,6 +42,10 @@ public final class NetworkRuleSet {
      */
     @JsonProperty(value = "defaultAction", required = true)
     private DefaultAction defaultAction;
+
+    /** Creates an instance of NetworkRuleSet class. */
+    public NetworkRuleSet() {
+    }
 
     /**
      * Get the bypass property: Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values

@@ -77,6 +77,10 @@ public final class BastionActiveSessionInner {
     @JsonProperty(value = "sessionDurationInMins", access = JsonProperty.Access.WRITE_ONLY)
     private Float sessionDurationInMins;
 
+    /** Creates an instance of BastionActiveSessionInner class. */
+    public BastionActiveSessionInner() {
+    }
+
     /**
      * Get the sessionId property: A unique id for the session.
      *

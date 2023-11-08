@@ -22,6 +22,10 @@ public final class ResourceMetricAvailability {
     @JsonProperty(value = "retention", access = JsonProperty.Access.WRITE_ONLY)
     private String retention;
 
+    /** Creates an instance of ResourceMetricAvailability class. */
+    public ResourceMetricAvailability() {
+    }
+
     /**
      * Get the timeGrain property: Time grain .
      *

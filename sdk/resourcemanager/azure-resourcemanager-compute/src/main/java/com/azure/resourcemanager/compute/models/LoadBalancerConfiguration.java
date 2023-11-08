@@ -29,6 +29,10 @@ public final class LoadBalancerConfiguration {
     @JsonProperty(value = "properties", required = true)
     private LoadBalancerConfigurationProperties properties;
 
+    /** Creates an instance of LoadBalancerConfiguration class. */
+    public LoadBalancerConfiguration() {
+    }
+
     /**
      * Get the id property: Resource Id.
      *

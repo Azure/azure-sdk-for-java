@@ -32,6 +32,9 @@ public final class NotebookLanguageInfo {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of NotebookLanguageInfo class. */
+    public NotebookLanguageInfo() {}
+
     /**
      * Get the name property: The programming language which this kernel runs.
      *

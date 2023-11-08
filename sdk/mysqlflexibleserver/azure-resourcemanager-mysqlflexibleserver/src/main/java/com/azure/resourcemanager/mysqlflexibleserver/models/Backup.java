@@ -29,6 +29,10 @@ public final class Backup {
     @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
 
+    /** Creates an instance of Backup class. */
+    public Backup() {
+    }
+
     /**
      * Get the backupRetentionDays property: Backup retention days for the server.
      *

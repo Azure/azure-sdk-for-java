@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the operating system settings for the AzureBareMetal instance. */
+/** Specifies the operating system settings for the Azure Bare Metal instance. */
 @Fluent
 public final class OSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
-
     /*
-     * Specifies the host OS name of the AzureBareMetal instance.
+     * Specifies the host OS name of the Azure Bare Metal instance.
      */
     @JsonProperty(value = "computerName")
     private String computerName;
@@ -38,8 +34,12 @@ public final class OSProfile {
     @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
 
+    /** Creates an instance of OSProfile class. */
+    public OSProfile() {
+    }
+
     /**
-     * Get the computerName property: Specifies the host OS name of the AzureBareMetal instance.
+     * Get the computerName property: Specifies the host OS name of the Azure Bare Metal instance.
      *
      * @return the computerName value.
      */
@@ -48,7 +48,7 @@ public final class OSProfile {
     }
 
     /**
-     * Set the computerName property: Specifies the host OS name of the AzureBareMetal instance.
+     * Set the computerName property: Specifies the host OS name of the Azure Bare Metal instance.
      *
      * @param computerName the computerName value to set.
      * @return the OSProfile object itself.

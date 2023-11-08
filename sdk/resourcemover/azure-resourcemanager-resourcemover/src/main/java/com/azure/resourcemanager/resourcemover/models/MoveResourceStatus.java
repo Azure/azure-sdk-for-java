@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the move resource status. */
 @Fluent
 public class MoveResourceStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveResourceStatus.class);
-
     /*
      * Defines the MoveResource states.
      */
@@ -31,6 +27,10 @@ public class MoveResourceStatus {
      */
     @JsonProperty(value = "errors")
     private MoveResourceError errors;
+
+    /** Creates an instance of MoveResourceStatus class. */
+    public MoveResourceStatus() {
+    }
 
     /**
      * Get the moveState property: Defines the MoveResource states.

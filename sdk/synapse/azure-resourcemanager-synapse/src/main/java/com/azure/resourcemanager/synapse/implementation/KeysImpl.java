@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.KeysClient;
 import com.azure.resourcemanager.synapse.fluent.models.KeyInner;
 import com.azure.resourcemanager.synapse.models.Key;
 import com.azure.resourcemanager.synapse.models.Keys;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KeysImpl implements Keys {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeysImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeysImpl.class);
 
     private final KeysClient innerClient;
 
@@ -37,15 +36,6 @@ public final class KeysImpl implements Keys {
         return Utils.mapPage(inner, inner1 -> new KeyImpl(inner1, this.manager()));
     }
 
-    public Key get(String resourceGroupName, String workspaceName, String keyName) {
-        KeyInner inner = this.serviceClient().get(resourceGroupName, workspaceName, keyName);
-        if (inner != null) {
-            return new KeyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Key> getWithResponse(
         String resourceGroupName, String workspaceName, String keyName, Context context) {
         Response<KeyInner> inner =
@@ -61,8 +51,8 @@ public final class KeysImpl implements Keys {
         }
     }
 
-    public Key delete(String resourceGroupName, String workspaceName, String keyName) {
-        KeyInner inner = this.serviceClient().delete(resourceGroupName, workspaceName, keyName);
+    public Key get(String resourceGroupName, String workspaceName, String keyName) {
+        KeyInner inner = this.serviceClient().get(resourceGroupName, workspaceName, keyName);
         if (inner != null) {
             return new KeyImpl(inner, this.manager());
         } else {
@@ -85,10 +75,19 @@ public final class KeysImpl implements Keys {
         }
     }
 
+    public Key delete(String resourceGroupName, String workspaceName, String keyName) {
+        KeyInner inner = this.serviceClient().delete(resourceGroupName, workspaceName, keyName);
+        if (inner != null) {
+            return new KeyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Key getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -96,14 +95,14 @@ public final class KeysImpl implements Keys {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String keyName = Utils.getValueFromIdByName(id, "keys");
         if (keyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'keys'.", id)));
@@ -114,7 +113,7 @@ public final class KeysImpl implements Keys {
     public Response<Key> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,14 +121,14 @@ public final class KeysImpl implements Keys {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String keyName = Utils.getValueFromIdByName(id, "keys");
         if (keyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'keys'.", id)));
@@ -140,7 +139,7 @@ public final class KeysImpl implements Keys {
     public Key deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,14 +147,14 @@ public final class KeysImpl implements Keys {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String keyName = Utils.getValueFromIdByName(id, "keys");
         if (keyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'keys'.", id)));
@@ -166,7 +165,7 @@ public final class KeysImpl implements Keys {
     public Response<Key> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -174,14 +173,14 @@ public final class KeysImpl implements Keys {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String keyName = Utils.getValueFromIdByName(id, "keys");
         if (keyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'keys'.", id)));

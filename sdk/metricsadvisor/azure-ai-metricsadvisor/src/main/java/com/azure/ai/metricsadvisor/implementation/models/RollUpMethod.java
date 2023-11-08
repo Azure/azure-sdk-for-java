@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RollUpMethod. */
+/** roll up method. */
 public final class RollUpMethod extends ExpandableStringEnum<RollUpMethod> {
     /** Static value None for RollUpMethod. */
     public static final RollUpMethod NONE = fromString("None");
@@ -29,6 +29,14 @@ public final class RollUpMethod extends ExpandableStringEnum<RollUpMethod> {
     public static final RollUpMethod COUNT = fromString("Count");
 
     /**
+     * Creates a new instance of RollUpMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RollUpMethod() {}
+
+    /**
      * Creates or finds a RollUpMethod from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +47,11 @@ public final class RollUpMethod extends ExpandableStringEnum<RollUpMethod> {
         return fromString(name, RollUpMethod.class);
     }
 
-    /** @return known RollUpMethod values. */
+    /**
+     * Gets known RollUpMethod values.
+     *
+     * @return known RollUpMethod values.
+     */
     public static Collection<RollUpMethod> values() {
         return values(RollUpMethod.class);
     }

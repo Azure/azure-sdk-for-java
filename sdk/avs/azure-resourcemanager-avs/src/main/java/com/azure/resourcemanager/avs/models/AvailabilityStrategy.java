@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AvailabilityStrategy. */
+/** The availability strategy for the private cloud. */
 public final class AvailabilityStrategy extends ExpandableStringEnum<AvailabilityStrategy> {
     /** Static value SingleZone for AvailabilityStrategy. */
     public static final AvailabilityStrategy SINGLE_ZONE = fromString("SingleZone");
 
     /** Static value DualZone for AvailabilityStrategy. */
     public static final AvailabilityStrategy DUAL_ZONE = fromString("DualZone");
+
+    /**
+     * Creates a new instance of AvailabilityStrategy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AvailabilityStrategy() {
+    }
 
     /**
      * Creates or finds a AvailabilityStrategy from its string representation.
@@ -27,7 +36,11 @@ public final class AvailabilityStrategy extends ExpandableStringEnum<Availabilit
         return fromString(name, AvailabilityStrategy.class);
     }
 
-    /** @return known AvailabilityStrategy values. */
+    /**
+     * Gets known AvailabilityStrategy values.
+     *
+     * @return known AvailabilityStrategy values.
+     */
     public static Collection<AvailabilityStrategy> values() {
         return values(AvailabilityStrategy.class);
     }

@@ -17,20 +17,9 @@ import com.azure.resourcemanager.eventgrid.models.PartnerDestinationUpdateParame
 /** An instance of this class provides access to all the operations defined in PartnerDestinationsClient. */
 public interface PartnerDestinationsClient {
     /**
-     * Get properties of a partner destination.
+     * Get a partner destination.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerDestinationName Name of the partner destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner destination.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerDestinationInner getByResourceGroup(String resourceGroupName, String partnerDestinationName);
-
-    /**
-     * Get properties of a partner destination.
+     * <p>Get properties of a partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -45,7 +34,62 @@ public interface PartnerDestinationsClient {
         String resourceGroupName, String partnerDestinationName, Context context);
 
     /**
-     * Asynchronously creates a new partner destination with the specified parameters.
+     * Get a partner destination.
+     *
+     * <p>Get properties of a partner destination.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a partner destination.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PartnerDestinationInner getByResourceGroup(String resourceGroupName, String partnerDestinationName);
+
+    /**
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestination Partner destination create information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdate(
+        String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination);
+
+    /**
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestination Partner destination create information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationInner partnerDestination,
+        Context context);
+
+    /**
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -60,7 +104,9 @@ public interface PartnerDestinationsClient {
         String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination);
 
     /**
-     * Asynchronously creates a new partner destination with the specified parameters.
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -69,17 +115,19 @@ public interface PartnerDestinationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination along with {@link Response}.
+     * @return event Grid Partner Destination.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerDestinationInner> createOrUpdateWithResponse(
+    PartnerDestinationInner createOrUpdate(
         String resourceGroupName,
         String partnerDestinationName,
         PartnerDestinationInner partnerDestination,
         Context context);
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -92,7 +140,9 @@ public interface PartnerDestinationsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerDestinationName);
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -107,7 +157,9 @@ public interface PartnerDestinationsClient {
         String resourceGroupName, String partnerDestinationName, Context context);
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -119,7 +171,9 @@ public interface PartnerDestinationsClient {
     void delete(String resourceGroupName, String partnerDestinationName);
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -132,7 +186,9 @@ public interface PartnerDestinationsClient {
     void delete(String resourceGroupName, String partnerDestinationName, Context context);
 
     /**
-     * Asynchronously updates a partner destination with the specified parameters.
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -140,16 +196,18 @@ public interface PartnerDestinationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerDestinationInner update(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdate(
         String resourceGroupName,
         String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters);
 
     /**
-     * Asynchronously updates a partner destination with the specified parameters.
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -158,17 +216,59 @@ public interface PartnerDestinationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerDestinationInner> updateWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdate(
         String resourceGroupName,
         String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
         Context context);
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestinationUpdateParameters Partner destination update information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PartnerDestinationInner update(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters);
+
+    /**
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestinationUpdateParameters Partner destination update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PartnerDestinationInner update(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
+        Context context);
+
+    /**
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -178,7 +278,9 @@ public interface PartnerDestinationsClient {
     PagedIterable<PartnerDestinationInner> list();
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -198,7 +300,9 @@ public interface PartnerDestinationsClient {
     PagedIterable<PartnerDestinationInner> list(String filter, Integer top, Context context);
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +314,9 @@ public interface PartnerDestinationsClient {
     PagedIterable<PartnerDestinationInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -232,20 +338,9 @@ public interface PartnerDestinationsClient {
         String resourceGroupName, String filter, Integer top, Context context);
 
     /**
-     * Activate a newly created partner destination.
+     * Activate a partner destination.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerDestinationName Name of the partner destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerDestinationInner activate(String resourceGroupName, String partnerDestinationName);
-
-    /**
-     * Activate a newly created partner destination.
+     * <p>Activate a newly created partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -258,4 +353,19 @@ public interface PartnerDestinationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PartnerDestinationInner> activateWithResponse(
         String resourceGroupName, String partnerDestinationName, Context context);
+
+    /**
+     * Activate a partner destination.
+     *
+     * <p>Activate a newly created partner destination.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PartnerDestinationInner activate(String resourceGroupName, String partnerDestinationName);
 }

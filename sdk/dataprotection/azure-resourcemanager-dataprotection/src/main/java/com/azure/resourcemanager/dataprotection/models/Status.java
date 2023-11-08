@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Status. */
+/** Specifies the protection status of the resource. */
 public final class Status extends ExpandableStringEnum<Status> {
     /** Static value ConfiguringProtection for Status. */
     public static final Status CONFIGURING_PROTECTION = fromString("ConfiguringProtection");
@@ -29,6 +29,15 @@ public final class Status extends ExpandableStringEnum<Status> {
     public static final Status SOFT_DELETING = fromString("SoftDeleting");
 
     /**
+     * Creates a new instance of Status value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Status() {
+    }
+
+    /**
      * Creates or finds a Status from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class Status extends ExpandableStringEnum<Status> {
         return fromString(name, Status.class);
     }
 
-    /** @return known Status values. */
+    /**
+     * Gets known Status values.
+     *
+     * @return known Status values.
+     */
     public static Collection<Status> values() {
         return values(Status.class);
     }

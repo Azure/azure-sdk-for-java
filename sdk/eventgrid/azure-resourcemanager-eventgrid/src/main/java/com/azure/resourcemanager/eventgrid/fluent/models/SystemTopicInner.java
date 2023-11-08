@@ -33,6 +33,10 @@ public final class SystemTopicInner extends Resource {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
+    /** Creates an instance of SystemTopicInner class. */
+    public SystemTopicInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the system topic.
      *

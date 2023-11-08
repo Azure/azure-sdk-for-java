@@ -36,8 +36,6 @@
 ### DiskPoolZones_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DiskPoolZones List. */
 public final class DiskPoolZonesListSamples {
     /*
@@ -49,7 +47,7 @@ public final class DiskPoolZonesListSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listDiskPoolZones(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPoolZones().list("eastus", Context.NONE);
+        manager.diskPoolZones().list("eastus", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -112,8 +110,6 @@ public final class DiskPoolsCreateOrUpdateSamples {
 ### DiskPools_Deallocate
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools Deallocate. */
 public final class DiskPoolsDeallocateSamples {
     /*
@@ -125,7 +121,7 @@ public final class DiskPoolsDeallocateSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void deallocateDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().deallocate("myResourceGroup", "myDiskPool", Context.NONE);
+        manager.diskPools().deallocate("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -133,8 +129,6 @@ public final class DiskPoolsDeallocateSamples {
 ### DiskPools_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools Delete. */
 public final class DiskPoolsDeleteSamples {
     /*
@@ -146,7 +140,7 @@ public final class DiskPoolsDeleteSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void deleteDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().delete("myResourceGroup", "myDiskPool", Context.NONE);
+        manager.diskPools().delete("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -154,8 +148,6 @@ public final class DiskPoolsDeleteSamples {
 ### DiskPools_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools GetByResourceGroup. */
 public final class DiskPoolsGetByResourceGroupSamples {
     /*
@@ -167,7 +159,9 @@ public final class DiskPoolsGetByResourceGroupSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void getDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().getByResourceGroupWithResponse("myResourceGroup", "myDiskPool", Context.NONE);
+        manager
+            .diskPools()
+            .getByResourceGroupWithResponse("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -175,8 +169,6 @@ public final class DiskPoolsGetByResourceGroupSamples {
 ### DiskPools_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools List. */
 public final class DiskPoolsListSamples {
     /*
@@ -188,7 +180,7 @@ public final class DiskPoolsListSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listDiskPoolsBySubscription(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().list(Context.NONE);
+        manager.diskPools().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -196,8 +188,6 @@ public final class DiskPoolsListSamples {
 ### DiskPools_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools ListByResourceGroup. */
 public final class DiskPoolsListByResourceGroupSamples {
     /*
@@ -209,7 +199,7 @@ public final class DiskPoolsListByResourceGroupSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listDiskPools(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().listByResourceGroup("myResourceGroup", Context.NONE);
+        manager.diskPools().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -217,8 +207,6 @@ public final class DiskPoolsListByResourceGroupSamples {
 ### DiskPools_ListOutboundNetworkDependenciesEndpoints
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools ListOutboundNetworkDependenciesEndpoints. */
 public final class DiskPoolsListOutboundNetworkDependenciesEndpointsSamples {
     /*
@@ -233,7 +221,8 @@ public final class DiskPoolsListOutboundNetworkDependenciesEndpointsSamples {
         com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
         manager
             .diskPools()
-            .listOutboundNetworkDependenciesEndpoints("Sample-WestUSResourceGroup", "SampleAse", Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints(
+                "Sample-WestUSResourceGroup", "SampleAse", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -241,8 +230,6 @@ public final class DiskPoolsListOutboundNetworkDependenciesEndpointsSamples {
 ### DiskPools_Start
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools Start. */
 public final class DiskPoolsStartSamples {
     /*
@@ -254,7 +241,7 @@ public final class DiskPoolsStartSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void startDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().start("myResourceGroup", "myDiskPool", Context.NONE);
+        manager.diskPools().start("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -262,7 +249,6 @@ public final class DiskPoolsStartSamples {
 ### DiskPools_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagepool.fluent.models.Sku;
 import com.azure.resourcemanager.storagepool.models.Disk;
 import com.azure.resourcemanager.storagepool.models.DiskPool;
@@ -284,7 +270,7 @@ public final class DiskPoolsUpdateSamples {
         DiskPool resource =
             manager
                 .diskPools()
-                .getByResourceGroupWithResponse("myResourceGroup", "myDiskPool", Context.NONE)
+                .getByResourceGroupWithResponse("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -318,8 +304,6 @@ public final class DiskPoolsUpdateSamples {
 ### DiskPools_Upgrade
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools Upgrade. */
 public final class DiskPoolsUpgradeSamples {
     /*
@@ -331,7 +315,7 @@ public final class DiskPoolsUpgradeSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void upgradeDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().upgrade("myResourceGroup", "myDiskPool", Context.NONE);
+        manager.diskPools().upgrade("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -375,8 +359,6 @@ public final class IscsiTargetsCreateOrUpdateSamples {
 ### IscsiTargets_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IscsiTargets Delete. */
 public final class IscsiTargetsDeleteSamples {
     /*
@@ -388,7 +370,9 @@ public final class IscsiTargetsDeleteSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void deleteISCSITarget(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.iscsiTargets().delete("myResourceGroup", "myDiskPool", "myIscsiTarget", Context.NONE);
+        manager
+            .iscsiTargets()
+            .delete("myResourceGroup", "myDiskPool", "myIscsiTarget", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -396,8 +380,6 @@ public final class IscsiTargetsDeleteSamples {
 ### IscsiTargets_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IscsiTargets Get. */
 public final class IscsiTargetsGetSamples {
     /*
@@ -409,7 +391,9 @@ public final class IscsiTargetsGetSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void getISCSITarget(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.iscsiTargets().getWithResponse("myResourceGroup", "myDiskPool", "myIscsiTarget", Context.NONE);
+        manager
+            .iscsiTargets()
+            .getWithResponse("myResourceGroup", "myDiskPool", "myIscsiTarget", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -417,8 +401,6 @@ public final class IscsiTargetsGetSamples {
 ### IscsiTargets_ListByDiskPool
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for IscsiTargets ListByDiskPool. */
 public final class IscsiTargetsListByDiskPoolSamples {
     /*
@@ -430,7 +412,7 @@ public final class IscsiTargetsListByDiskPoolSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listDiskPoolsByResourceGroup(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.iscsiTargets().listByDiskPool("myResourceGroup", "myDiskPool", Context.NONE);
+        manager.iscsiTargets().listByDiskPool("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -438,7 +420,6 @@ public final class IscsiTargetsListByDiskPoolSamples {
 ### IscsiTargets_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagepool.models.Acl;
 import com.azure.resourcemanager.storagepool.models.IscsiLun;
 import com.azure.resourcemanager.storagepool.models.IscsiTarget;
@@ -458,7 +439,7 @@ public final class IscsiTargetsUpdateSamples {
         IscsiTarget resource =
             manager
                 .iscsiTargets()
-                .getWithResponse("myResourceGroup", "myDiskPool", "myIscsiTarget", Context.NONE)
+                .getWithResponse("myResourceGroup", "myDiskPool", "myIscsiTarget", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -483,8 +464,6 @@ public final class IscsiTargetsUpdateSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -496,7 +475,7 @@ public final class OperationsListSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listOperations(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -504,8 +483,6 @@ public final class OperationsListSamples {
 ### ResourceSkus_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ResourceSkus List. */
 public final class ResourceSkusListSamples {
     /*
@@ -517,7 +494,7 @@ public final class ResourceSkusListSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listDiskPoolSkus(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.resourceSkus().list("eastus", Context.NONE);
+        manager.resourceSkus().list("eastus", com.azure.core.util.Context.NONE);
     }
 }
 ```

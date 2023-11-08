@@ -23,6 +23,15 @@ public final class DeploymentStatus extends ExpandableStringEnum<DeploymentStatu
     public static final DeploymentStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of DeploymentStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentStatus() {
+    }
+
+    /**
      * Creates or finds a DeploymentStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class DeploymentStatus extends ExpandableStringEnum<DeploymentStatu
         return fromString(name, DeploymentStatus.class);
     }
 
-    /** @return known DeploymentStatus values. */
+    /**
+     * Gets known DeploymentStatus values.
+     *
+     * @return known DeploymentStatus values.
+     */
     public static Collection<DeploymentStatus> values() {
         return values(DeploymentStatus.class);
     }

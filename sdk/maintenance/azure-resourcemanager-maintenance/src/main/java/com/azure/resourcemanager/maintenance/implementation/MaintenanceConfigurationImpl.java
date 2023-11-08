@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationInner;
+import com.azure.resourcemanager.maintenance.models.InputPatchConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.Visibility;
@@ -45,6 +46,10 @@ public final class MaintenanceConfigurationImpl
         }
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String namespace() {
         return this.innerModel().namespace();
     }
@@ -64,6 +69,10 @@ public final class MaintenanceConfigurationImpl
 
     public Visibility visibility() {
         return this.innerModel().visibility();
+    }
+
+    public InputPatchConfiguration installPatches() {
+        return this.innerModel().installPatches();
     }
 
     public String startDateTime() {
@@ -86,16 +95,16 @@ public final class MaintenanceConfigurationImpl
         return this.innerModel().recurEvery();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public MaintenanceConfigurationInner innerModel() {
@@ -226,6 +235,11 @@ public final class MaintenanceConfigurationImpl
 
     public MaintenanceConfigurationImpl withVisibility(Visibility visibility) {
         this.innerModel().withVisibility(visibility);
+        return this;
+    }
+
+    public MaintenanceConfigurationImpl withInstallPatches(InputPatchConfiguration installPatches) {
+        this.innerModel().withInstallPatches(installPatches);
         return this;
     }
 

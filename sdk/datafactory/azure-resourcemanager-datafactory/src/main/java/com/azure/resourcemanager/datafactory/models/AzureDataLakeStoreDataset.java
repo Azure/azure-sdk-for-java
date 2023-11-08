@@ -23,6 +23,10 @@ public final class AzureDataLakeStoreDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AzureDataLakeStoreDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of AzureDataLakeStoreDataset class. */
+    public AzureDataLakeStoreDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Data Lake Store dataset properties.
      *

@@ -11,19 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of PartnerDestinations. */
 public interface PartnerDestinations {
     /**
-     * Get properties of a partner destination.
+     * Get a partner destination.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerDestinationName Name of the partner destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner destination.
-     */
-    PartnerDestination getByResourceGroup(String resourceGroupName, String partnerDestinationName);
-
-    /**
-     * Get properties of a partner destination.
+     * <p>Get properties of a partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -37,7 +27,23 @@ public interface PartnerDestinations {
         String resourceGroupName, String partnerDestinationName, Context context);
 
     /**
-     * Delete existing partner destination.
+     * Get a partner destination.
+     *
+     * <p>Get properties of a partner destination.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a partner destination.
+     */
+    PartnerDestination getByResourceGroup(String resourceGroupName, String partnerDestinationName);
+
+    /**
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -48,7 +54,9 @@ public interface PartnerDestinations {
     void deleteByResourceGroup(String resourceGroupName, String partnerDestinationName);
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -60,7 +68,9 @@ public interface PartnerDestinations {
     void delete(String resourceGroupName, String partnerDestinationName, Context context);
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -69,7 +79,9 @@ public interface PartnerDestinations {
     PagedIterable<PartnerDestination> list();
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -88,7 +100,9 @@ public interface PartnerDestinations {
     PagedIterable<PartnerDestination> list(String filter, Integer top, Context context);
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +113,9 @@ public interface PartnerDestinations {
     PagedIterable<PartnerDestination> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -120,19 +136,9 @@ public interface PartnerDestinations {
         String resourceGroupName, String filter, Integer top, Context context);
 
     /**
-     * Activate a newly created partner destination.
+     * Activate a partner destination.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerDestinationName Name of the partner destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination.
-     */
-    PartnerDestination activate(String resourceGroupName, String partnerDestinationName);
-
-    /**
-     * Activate a newly created partner destination.
+     * <p>Activate a newly created partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -146,7 +152,23 @@ public interface PartnerDestinations {
         String resourceGroupName, String partnerDestinationName, Context context);
 
     /**
-     * Get properties of a partner destination.
+     * Activate a partner destination.
+     *
+     * <p>Activate a newly created partner destination.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Destination.
+     */
+    PartnerDestination activate(String resourceGroupName, String partnerDestinationName);
+
+    /**
+     * Get a partner destination.
+     *
+     * <p>Get properties of a partner destination.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,7 +179,9 @@ public interface PartnerDestinations {
     PartnerDestination getById(String id);
 
     /**
-     * Get properties of a partner destination.
+     * Get a partner destination.
+     *
+     * <p>Get properties of a partner destination.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -169,7 +193,9 @@ public interface PartnerDestinations {
     Response<PartnerDestination> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,7 +205,9 @@ public interface PartnerDestinations {
     void deleteById(String id);
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

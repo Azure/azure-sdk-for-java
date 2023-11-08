@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,9 +16,6 @@ import java.util.List;
 @Fluent
 public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
     extends MigrateMySqlAzureDbForMySqlSyncTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.class);
-
     /*
      * Error message
      */
@@ -32,6 +27,10 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
      */
     @JsonProperty(value = "events")
     private List<SyncMigrationDatabaseErrorEvent> events;
+
+    /** Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError class. */
+    public MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError() {
+    }
 
     /**
      * Get the errorMessage property: Error message.

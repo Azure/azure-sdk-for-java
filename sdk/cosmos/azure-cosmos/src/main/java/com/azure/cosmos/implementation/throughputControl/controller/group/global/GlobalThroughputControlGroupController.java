@@ -120,7 +120,7 @@ public class GlobalThroughputControlGroupController extends ThroughputGroupContr
                 }
             })
             .onErrorResume(throwable -> {
-                logger.warn("Calculate throughput task failed ", throwable);
+                logger.warn("Calculate throughput task failed with reason {}", throwable.getMessage());
                 return Mono.empty();
             })
             .then()

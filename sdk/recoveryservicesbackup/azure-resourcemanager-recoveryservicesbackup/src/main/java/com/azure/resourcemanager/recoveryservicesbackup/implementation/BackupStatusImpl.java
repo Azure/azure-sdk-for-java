@@ -13,10 +13,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupStat
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupStatusImpl implements BackupStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupStatusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupStatusImpl.class);
 
     private final BackupStatusClient innerClient;
 
@@ -29,15 +28,6 @@ public final class BackupStatusImpl implements BackupStatus {
         this.serviceManager = serviceManager;
     }
 
-    public BackupStatusResponse get(String azureRegion, BackupStatusRequest parameters) {
-        BackupStatusResponseInner inner = this.serviceClient().get(azureRegion, parameters);
-        if (inner != null) {
-            return new BackupStatusResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BackupStatusResponse> getWithResponse(
         String azureRegion, BackupStatusRequest parameters, Context context) {
         Response<BackupStatusResponseInner> inner =
@@ -48,6 +38,15 @@ public final class BackupStatusImpl implements BackupStatus {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BackupStatusResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BackupStatusResponse get(String azureRegion, BackupStatusRequest parameters) {
+        BackupStatusResponseInner inner = this.serviceClient().get(azureRegion, parameters);
+        if (inner != null) {
+            return new BackupStatusResponseImpl(inner, this.manager());
         } else {
             return null;
         }

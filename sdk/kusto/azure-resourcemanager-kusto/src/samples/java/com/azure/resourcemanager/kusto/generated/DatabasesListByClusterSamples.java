@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Databases ListByCluster. */
 public final class DatabasesListByClusterSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabasesListByCluster.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasesListByCluster.json
      */
     /**
      * Sample code: KustoDatabasesListByCluster.
@@ -17,6 +15,6 @@ public final class DatabasesListByClusterSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasesListByCluster(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.databases().listByCluster("kustorptest", "kustoCluster", Context.NONE);
+        manager.databases().listByCluster("kustorptest", "kustoCluster", null, null, com.azure.core.util.Context.NONE);
     }
 }

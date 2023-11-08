@@ -28,6 +28,10 @@ public final class BackendUpdateParameterProperties extends BackendBaseParameter
     @JsonProperty(value = "protocol")
     private BackendProtocol protocol;
 
+    /** Creates an instance of BackendUpdateParameterProperties class. */
+    public BackendUpdateParameterProperties() {
+    }
+
     /**
      * Get the url property: Runtime Url of the Backend.
      *

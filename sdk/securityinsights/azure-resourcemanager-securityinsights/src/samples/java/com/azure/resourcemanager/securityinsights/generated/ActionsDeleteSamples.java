@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Actions Delete. */
 public final class ActionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/actions/DeleteActionOfAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/actions/DeleteActionOfAlertRule.json
      */
     /**
      * Sample code: Delete an action of alert rule.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a response to source upload request. */
 @Fluent
 public final class SourceUploadDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceUploadDefinitionInner.class);
-
     /*
      * The URL where the client can upload the source.
      */
@@ -21,11 +17,14 @@ public final class SourceUploadDefinitionInner {
     private String uploadUrl;
 
     /*
-     * The relative path to the source. This is used to submit the subsequent
-     * queue build request.
+     * The relative path to the source. This is used to submit the subsequent queue build request.
      */
     @JsonProperty(value = "relativePath")
     private String relativePath;
+
+    /** Creates an instance of SourceUploadDefinitionInner class. */
+    public SourceUploadDefinitionInner() {
+    }
 
     /**
      * Get the uploadUrl property: The URL where the client can upload the source.

@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.models.Cache;
 import com.azure.resourcemanager.storagecache.models.CacheActiveDirectorySettings;
 import com.azure.resourcemanager.storagecache.models.CacheDirectorySettings;
 import com.azure.resourcemanager.storagecache.models.CacheNetworkSettings;
 import com.azure.resourcemanager.storagecache.models.CacheSecuritySettings;
+import com.azure.resourcemanager.storagecache.models.CacheUpgradeSettings;
 import com.azure.resourcemanager.storagecache.models.CacheUsernameDownloadSettings;
 import com.azure.resourcemanager.storagecache.models.CacheUsernameDownloadSettingsCredentials;
 import com.azure.resourcemanager.storagecache.models.NfsAccessPolicy;
@@ -17,6 +17,7 @@ import com.azure.resourcemanager.storagecache.models.NfsAccessRule;
 import com.azure.resourcemanager.storagecache.models.NfsAccessRuleAccess;
 import com.azure.resourcemanager.storagecache.models.NfsAccessRuleScope;
 import com.azure.resourcemanager.storagecache.models.UsernameSource;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,7 @@ import java.util.Map;
 /** Samples for Caches Update. */
 public final class CachesUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_Update_ldap_only.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/Caches_Update_ldap_only.json
      */
     /**
      * Sample code: Caches_Update_ldap_only.
@@ -32,10 +33,18 @@ public final class CachesUpdateSamples {
      * @param manager Entry point to StorageCacheManager.
      */
     public static void cachesUpdateLdapOnly(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        Cache resource = manager.caches().getByResourceGroupWithResponse("scgroup", "sc1", Context.NONE).getValue();
+        Cache resource =
+            manager
+                .caches()
+                .getByResourceGroupWithResponse("scgroup", "sc1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withTags(mapOf("Dept", "Contoso"))
+            .withUpgradeSettings(
+                new CacheUpgradeSettings()
+                    .withUpgradeScheduleEnabled(true)
+                    .withScheduledTime(OffsetDateTime.parse("2022-04-26T18:25:43.511Z")))
             .withNetworkSettings(
                 new CacheNetworkSettings()
                     .withMtu(1500)
@@ -96,12 +105,12 @@ public final class CachesUpdateSamples {
                             .withCredentials(
                                 new CacheUsernameDownloadSettingsCredentials()
                                     .withBindDn("cn=ldapadmin,dc=contosoad,dc=contoso,dc=local")
-                                    .withBindPassword("<bindPassword>"))))
+                                    .withBindPassword("fakeTokenPlaceholder"))))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_Update.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/Caches_Update.json
      */
     /**
      * Sample code: Caches_Update.
@@ -109,10 +118,18 @@ public final class CachesUpdateSamples {
      * @param manager Entry point to StorageCacheManager.
      */
     public static void cachesUpdate(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        Cache resource = manager.caches().getByResourceGroupWithResponse("scgroup", "sc1", Context.NONE).getValue();
+        Cache resource =
+            manager
+                .caches()
+                .getByResourceGroupWithResponse("scgroup", "sc1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withTags(mapOf("Dept", "Contoso"))
+            .withUpgradeSettings(
+                new CacheUpgradeSettings()
+                    .withUpgradeScheduleEnabled(true)
+                    .withScheduledTime(OffsetDateTime.parse("2022-04-26T18:25:43.511Z")))
             .withNetworkSettings(
                 new CacheNetworkSettings()
                     .withMtu(1500)

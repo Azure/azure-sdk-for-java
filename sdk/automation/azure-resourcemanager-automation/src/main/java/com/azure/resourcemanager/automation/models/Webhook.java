@@ -111,6 +111,13 @@ public interface Webhook {
     String description();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.WebhookInner object.
      *
      * @return the inner object.

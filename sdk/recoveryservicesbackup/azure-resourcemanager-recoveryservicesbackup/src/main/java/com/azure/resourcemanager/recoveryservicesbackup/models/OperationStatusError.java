@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error information associated with operation status call. */
 @Fluent
 public final class OperationStatusError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusError.class);
-
     /*
      * Error code of the operation failure.
      */
@@ -25,6 +21,10 @@ public final class OperationStatusError {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of OperationStatusError class. */
+    public OperationStatusError() {
+    }
 
     /**
      * Get the code property: Error code of the operation failure.

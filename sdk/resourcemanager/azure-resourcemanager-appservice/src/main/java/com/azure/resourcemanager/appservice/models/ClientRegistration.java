@@ -22,6 +22,10 @@ public final class ClientRegistration {
     @JsonProperty(value = "clientSecretSettingName")
     private String clientSecretSettingName;
 
+    /** Creates an instance of ClientRegistration class. */
+    public ClientRegistration() {
+    }
+
     /**
      * Get the clientId property: The Client ID of the app used for login.
      *

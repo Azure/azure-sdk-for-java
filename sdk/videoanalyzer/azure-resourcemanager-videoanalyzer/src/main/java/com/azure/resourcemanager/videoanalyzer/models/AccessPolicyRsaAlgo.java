@@ -30,7 +30,11 @@ public final class AccessPolicyRsaAlgo extends ExpandableStringEnum<AccessPolicy
         return fromString(name, AccessPolicyRsaAlgo.class);
     }
 
-    /** @return known AccessPolicyRsaAlgo values. */
+    /**
+     * Gets known AccessPolicyRsaAlgo values.
+     *
+     * @return known AccessPolicyRsaAlgo values.
+     */
     public static Collection<AccessPolicyRsaAlgo> values() {
         return values(AccessPolicyRsaAlgo.class);
     }

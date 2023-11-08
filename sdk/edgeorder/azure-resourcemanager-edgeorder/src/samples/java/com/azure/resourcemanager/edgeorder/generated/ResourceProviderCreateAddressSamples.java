@@ -28,7 +28,7 @@ public final class ResourceProviderCreateAddressSamples {
             .withContactDetails(
                 new ContactDetails()
                     .withContactName("Petr Cech")
-                    .withPhone("1234567890")
+                    .withPhone("fakePhoneNumberPlaceholder")
                     .withPhoneExtension("")
                     .withEmailList(Arrays.asList("testemail@microsoft.com")))
             .withShippingAddress(

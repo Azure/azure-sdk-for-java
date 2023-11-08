@@ -24,9 +24,9 @@ public enum KnownLinuxVirtualMachineImage {
      * @deprecated use OPENSUSE_LEAP_15.
      */
     @Deprecated
-    OPENSUSE_LEAP_15_1("SUSE", "openSUSE-Leap", "15-2"),
+    OPENSUSE_LEAP_15_1("SUSE", "openSUSE-Leap-15-3", "gen1"),
     /** OpenSUSE-Leap 15. */
-    OPENSUSE_LEAP_15("SUSE", "openSUSE-Leap", "15-2"),
+    OPENSUSE_LEAP_15("SUSE", "openSUSE-Leap-15-3", "gen1"),
 
     /**
      * SLES 15-SP1-gen1.
@@ -41,7 +41,15 @@ public enum KnownLinuxVirtualMachineImage {
     REDHAT_RHEL_8_2("RedHat", "RHEL", "8.2"),
 
     /** Oracle Linux 8.1. */
-    ORACLE_LINUX_8_1("Oracle", "Oracle-Linux", "81");
+    ORACLE_LINUX_8_1("Oracle", "Oracle-Linux", "81"),
+
+
+    /** UbuntuServer 18.04LTS Gen2. */
+    UBUNTU_SERVER_18_04_LTS_GEN2("Canonical", "UbuntuServer", "18_04-lts-gen2"),
+    /** UbuntuServer 20.04LTS. */
+    UBUNTU_SERVER_20_04_LTS("Canonical", "0001-com-ubuntu-server-focal", "20_04-lts"),
+    /** UbuntuServer 20.04LTS Gen2. */
+    UBUNTU_SERVER_20_04_LTS_GEN2("Canonical", "0001-com-ubuntu-server-focal", "20_04-lts-gen2");
 
     private final String publisher;
     private final String offer;

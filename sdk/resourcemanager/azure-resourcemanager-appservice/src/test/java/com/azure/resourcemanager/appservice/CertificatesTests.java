@@ -8,6 +8,8 @@ import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.core.management.Region;
 import java.io.File;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -51,5 +53,6 @@ public class CertificatesTests extends AppServiceTest {
     @Test
     public void canListCertificate() {
         PagedIterable<AppServiceCertificate> certificates = appServiceManager.certificates().list();
+        Assertions.assertNotNull(certificates.stream().collect(Collectors.toList()));
     }
 }

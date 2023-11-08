@@ -27,6 +27,9 @@ public enum ConfigReferenceSource {
      */
     @JsonCreator
     public static ConfigReferenceSource fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ConfigReferenceSource[] items = ConfigReferenceSource.values();
         for (ConfigReferenceSource item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum ConfigReferenceSource {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

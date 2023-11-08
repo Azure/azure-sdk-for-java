@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Edifact one way agreement. */
 @Fluent
 public final class EdifactOneWayAgreement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactOneWayAgreement.class);
-
     /*
      * The sender business identity
      */
@@ -31,6 +28,10 @@ public final class EdifactOneWayAgreement {
      */
     @JsonProperty(value = "protocolSettings", required = true)
     private EdifactProtocolSettings protocolSettings;
+
+    /** Creates an instance of EdifactOneWayAgreement class. */
+    public EdifactOneWayAgreement() {
+    }
 
     /**
      * Get the senderBusinessIdentity property: The sender business identity.
@@ -99,7 +100,7 @@ public final class EdifactOneWayAgreement {
      */
     public void validate() {
         if (senderBusinessIdentity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property senderBusinessIdentity in model EdifactOneWayAgreement"));
@@ -107,7 +108,7 @@ public final class EdifactOneWayAgreement {
             senderBusinessIdentity().validate();
         }
         if (receiverBusinessIdentity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property receiverBusinessIdentity in model EdifactOneWayAgreement"));
@@ -115,7 +116,7 @@ public final class EdifactOneWayAgreement {
             receiverBusinessIdentity().validate();
         }
         if (protocolSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocolSettings in model EdifactOneWayAgreement"));
@@ -123,4 +124,6 @@ public final class EdifactOneWayAgreement {
             protocolSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EdifactOneWayAgreement.class);
 }

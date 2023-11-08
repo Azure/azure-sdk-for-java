@@ -5,33 +5,26 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.costmanagement.models.CostManagementProxyResource;
 import com.azure.resourcemanager.costmanagement.models.ExportDefinition;
 import com.azure.resourcemanager.costmanagement.models.ExportDeliveryInfo;
 import com.azure.resourcemanager.costmanagement.models.ExportSchedule;
 import com.azure.resourcemanager.costmanagement.models.FormatType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
-/** A export resource. */
+/** An export resource. */
 @Fluent
-public final class ExportInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportInner.class);
-
+public final class ExportInner extends CostManagementProxyResource {
     /*
      * The properties of the export.
      */
     @JsonProperty(value = "properties")
     private ExportProperties innerProperties;
 
-    /*
-     * eTag of the resource. To handle concurrent update scenario, this field
-     * will be used to determine whether the user is updating the latest
-     * version or not.
-     */
-    @JsonProperty(value = "eTag")
-    private String etag;
+    /** Creates an instance of ExportInner class. */
+    public ExportInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the export.
@@ -42,25 +35,10 @@ public final class ExportInner extends ProxyResource {
         return this.innerProperties;
     }
 
-    /**
-     * Get the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @param etag the etag value to set.
-     * @return the ExportInner object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public ExportInner withEtag(String etag) {
-        this.etag = etag;
+        super.withEtag(etag);
         return this;
     }
 
@@ -88,7 +66,7 @@ public final class ExportInner extends ProxyResource {
     }
 
     /**
-     * Get the format property: The format of the export being delivered.
+     * Get the format property: The format of the export being delivered. Currently only 'Csv' is supported.
      *
      * @return the format value.
      */
@@ -97,7 +75,7 @@ public final class ExportInner extends ProxyResource {
     }
 
     /**
-     * Set the format property: The format of the export being delivered.
+     * Set the format property: The format of the export being delivered. Currently only 'Csv' is supported.
      *
      * @param format the format value to set.
      * @return the ExportInner object itself.
@@ -134,7 +112,7 @@ public final class ExportInner extends ProxyResource {
     }
 
     /**
-     * Get the definition property: Has definition for the export.
+     * Get the definition property: Has the definition for the export.
      *
      * @return the definition value.
      */
@@ -143,7 +121,7 @@ public final class ExportInner extends ProxyResource {
     }
 
     /**
-     * Set the definition property: Has definition for the export.
+     * Set the definition property: Has the definition for the export.
      *
      * @param definition the definition value to set.
      * @return the ExportInner object itself.
@@ -157,11 +135,73 @@ public final class ExportInner extends ProxyResource {
     }
 
     /**
+     * Get the runHistory property: If requested, has the most recent run history for the export.
+     *
+     * @return the runHistory value.
+     */
+    public ExportExecutionListResultInner runHistory() {
+        return this.innerProperties() == null ? null : this.innerProperties().runHistory();
+    }
+
+    /**
+     * Set the runHistory property: If requested, has the most recent run history for the export.
+     *
+     * @param runHistory the runHistory value to set.
+     * @return the ExportInner object itself.
+     */
+    public ExportInner withRunHistory(ExportExecutionListResultInner runHistory) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportProperties();
+        }
+        this.innerProperties().withRunHistory(runHistory);
+        return this;
+    }
+
+    /**
+     * Get the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
+     * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
+     * Agreement commerce scopes.
+     *
+     * @return the partitionData value.
+     */
+    public Boolean partitionData() {
+        return this.innerProperties() == null ? null : this.innerProperties().partitionData();
+    }
+
+    /**
+     * Set the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
+     * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
+     * Agreement commerce scopes.
+     *
+     * @param partitionData the partitionData value to set.
+     * @return the ExportInner object itself.
+     */
+    public ExportInner withPartitionData(Boolean partitionData) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportProperties();
+        }
+        this.innerProperties().withPartitionData(partitionData);
+        return this;
+    }
+
+    /**
+     * Get the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next run
+     * time.
+     *
+     * @return the nextRunTimeEstimate value.
+     */
+    public OffsetDateTime nextRunTimeEstimate() {
+        return this.innerProperties() == null ? null : this.innerProperties().nextRunTimeEstimate();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

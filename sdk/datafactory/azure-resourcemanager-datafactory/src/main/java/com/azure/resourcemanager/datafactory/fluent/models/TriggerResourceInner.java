@@ -37,6 +37,10 @@ public final class TriggerResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of TriggerResourceInner class. */
+    public TriggerResourceInner() {
+    }
+
     /**
      * Get the properties property: Properties of the trigger.
      *

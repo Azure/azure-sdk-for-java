@@ -1,0 +1,10 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "azure-data-appconfiguration.properties"
+      }
+    ]
+  },
+  "bundles": []
+}

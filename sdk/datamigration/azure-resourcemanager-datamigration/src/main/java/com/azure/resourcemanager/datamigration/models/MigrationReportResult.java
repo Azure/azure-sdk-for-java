@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Migration validation report result, contains the url for downloading the generated report. */
 @Immutable
 public final class MigrationReportResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrationReportResult.class);
-
     /*
      * Migration validation result identifier
      */
@@ -25,6 +21,10 @@ public final class MigrationReportResult {
      */
     @JsonProperty(value = "reportUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String reportUrl;
+
+    /** Creates an instance of MigrationReportResult class. */
+    public MigrationReportResult() {
+    }
 
     /**
      * Get the id property: Migration validation result identifier.

@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExtendedLocationType. */
+/** The type of the extended location. */
 public final class ExtendedLocationType extends ExpandableStringEnum<ExtendedLocationType> {
     /** Static value EdgeZone for ExtendedLocationType. */
     public static final ExtendedLocationType EDGE_ZONE = fromString("EdgeZone");
+
+    /**
+     * Creates a new instance of ExtendedLocationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExtendedLocationType() {
+    }
 
     /**
      * Creates or finds a ExtendedLocationType from its string representation.
@@ -24,7 +33,11 @@ public final class ExtendedLocationType extends ExpandableStringEnum<ExtendedLoc
         return fromString(name, ExtendedLocationType.class);
     }
 
-    /** @return known ExtendedLocationType values. */
+    /**
+     * Gets known ExtendedLocationType values.
+     *
+     * @return known ExtendedLocationType values.
+     */
     public static Collection<ExtendedLocationType> values() {
         return values(ExtendedLocationType.class);
     }

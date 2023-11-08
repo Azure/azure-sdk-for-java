@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Vault Job specific error information. */
 @Fluent
 public final class VaultJobErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultJobErrorInfo.class);
-
     /*
      * Error code.
      */
@@ -32,6 +28,10 @@ public final class VaultJobErrorInfo {
      */
     @JsonProperty(value = "recommendations")
     private List<String> recommendations;
+
+    /** Creates an instance of VaultJobErrorInfo class. */
+    public VaultJobErrorInfo() {
+    }
 
     /**
      * Get the errorCode property: Error code.

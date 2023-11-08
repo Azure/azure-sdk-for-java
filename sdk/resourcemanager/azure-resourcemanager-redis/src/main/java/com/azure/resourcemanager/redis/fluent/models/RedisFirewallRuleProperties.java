@@ -23,6 +23,10 @@ public final class RedisFirewallRuleProperties {
     @JsonProperty(value = "endIP", required = true)
     private String endIp;
 
+    /** Creates an instance of RedisFirewallRuleProperties class. */
+    public RedisFirewallRuleProperties() {
+    }
+
     /**
      * Get the startIp property: lowest IP address included in the range.
      *

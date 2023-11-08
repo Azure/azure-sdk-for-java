@@ -18,8 +18,8 @@ public final class ManagementPolicyRule {
     private Boolean enabled;
 
     /*
-     * A rule name can contain any combination of alpha numeric characters.
-     * Rule name is case-sensitive. It must be unique within a policy.
+     * A rule name can contain any combination of alpha numeric characters. Rule name is case-sensitive. It must be
+     * unique within a policy.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -35,6 +35,10 @@ public final class ManagementPolicyRule {
      */
     @JsonProperty(value = "definition", required = true)
     private ManagementPolicyDefinition definition;
+
+    /** Creates an instance of ManagementPolicyRule class. */
+    public ManagementPolicyRule() {
+    }
 
     /**
      * Get the enabled property: Rule is enabled if set to true.

@@ -17,6 +17,15 @@ public final class LegacyPeeringsKind extends ExpandableStringEnum<LegacyPeering
     public static final LegacyPeeringsKind EXCHANGE = fromString("Exchange");
 
     /**
+     * Creates a new instance of LegacyPeeringsKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LegacyPeeringsKind() {
+    }
+
+    /**
      * Creates or finds a LegacyPeeringsKind from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class LegacyPeeringsKind extends ExpandableStringEnum<LegacyPeering
         return fromString(name, LegacyPeeringsKind.class);
     }
 
-    /** @return known LegacyPeeringsKind values. */
+    /**
+     * Gets known LegacyPeeringsKind values.
+     *
+     * @return known LegacyPeeringsKind values.
+     */
     public static Collection<LegacyPeeringsKind> values() {
         return values(LegacyPeeringsKind.class);
     }

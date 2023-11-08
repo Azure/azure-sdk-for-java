@@ -4,11 +4,10 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.storage.blob.APISpec;
+import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import reactor.core.publisher.Flux;
@@ -16,11 +15,10 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 
-class DownloadResponseMockFlux {
+public class DownloadResponseMockFlux {
     static final int DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK = 0; // Data emitted in one chunk
     static final int DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK = 1; // Data emitted in multiple chunks
     static final int DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES = 2; // Stream failures successfully handled
@@ -36,47 +34,42 @@ class DownloadResponseMockFlux {
 
     private int tryNumber;
     private DownloadRetryOptions options;
-    private boolean subscribed = false; // Only used for multiple subscription test.
+    private boolean subscribed = false; //// Only used for multiple subscription test.
 
-    DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
+    public DownloadResponseMockFlux(int scenario, BlobTestBase testBase) {
         this.scenario = scenario;
 
-        switch (this.scenario) {
-            case DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
-                this.scenarioData = apiSpec.getRandomData(512 * 1024);
-                break;
-            case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
-            case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
-            case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
-            case DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA:
-                // Even when testing error cases, the service attempts to return some data.
-            case DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
-            case DR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
-            case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
-            case DR_TEST_SCENARIO_TIMEOUT:
-                this.scenarioData = apiSpec.getRandomData(1024);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid download resource test scenario.");
+        if (scenario == DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK) {
+            this.scenarioData = testBase.getRandomData(512 * 1024);
+        } else if (scenario == DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK
+                || scenario == DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES
+                || scenario == DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION
+                || scenario == DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA
+                || scenario == DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED
+                || scenario == DR_TEST_SCENARIO_NON_RETRYABLE_ERROR
+                || scenario == DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE
+                || scenario == DR_TEST_SCENARIO_TIMEOUT) {
+            this.scenarioData = testBase.getRandomData(1024);
+        } else {
+            throw new IllegalArgumentException("Invalid download resource test scenario.");
         }
     }
 
     /*
     For internal construction on NO_MULTIPLE_SUBSCRIPTION test
-     */
-    DownloadResponseMockFlux(int scenario, int tryNumber, ByteBuffer scenarioData,
-        DownloadRetryOptions options) {
+    */
+    public DownloadResponseMockFlux(int scenario, int tryNumber, ByteBuffer scenarioData, DownloadRetryOptions options) {
         this.scenario = scenario;
         this.tryNumber = tryNumber;
         this.scenarioData = scenarioData;
         this.options = options;
     }
 
-    ByteBuffer getScenarioData() {
+    public ByteBuffer getScenarioData() {
         return this.scenarioData;
     }
 
-    int getTryNumber() {
+    public int getTryNumber() {
         return this.tryNumber;
     }
 
@@ -86,11 +79,10 @@ class DownloadResponseMockFlux {
                 return Flux.just(scenarioData.duplicate());
 
             case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
-                return Flux.range(0, 4).map(i -> {
+                return Flux.range(0, 4).map(it -> {
                     ByteBuffer toSend = this.scenarioData.duplicate();
-                    toSend.position(i * 256);
-                    toSend.limit((i + 1) * 256);
-
+                    toSend.position(it * 256);
+                    toSend.limit((it + 1) * 256);
                     return toSend;
                 });
 
@@ -146,8 +138,7 @@ class DownloadResponseMockFlux {
                  * We return a retryable error here so we have to invoke the getter, which will throw an error in
                  * this case.
                  */
-                return (this.tryNumber == 1)
-                    ? Flux.error(new IOException())
+                return (this.tryNumber == 1) ? Flux.error(new IOException())
                     : Flux.error(new IllegalArgumentException("Retried after getter error."));
 
             case DR_TEST_SCENARIO_TIMEOUT:
@@ -158,12 +149,11 @@ class DownloadResponseMockFlux {
         }
     }
 
-    HttpPipelinePolicy asPolicy() {
+    public HttpPipelinePolicy asPolicy() {
         return (context, next) -> {
             tryNumber++;
             HttpHeader rangeHeader = context.getHttpRequest().getHeaders().get("x-ms-range");
-            String eTag = context.getHttpRequest().getHeaders().getValue("if-match");
-            long offset = 0;
+            long offset = 0L;
             Long count = null;
             if (rangeHeader != null) {
                 String[] ranges = rangeHeader.getValue().replace("bytes=", "").split("-");
@@ -181,10 +171,10 @@ class DownloadResponseMockFlux {
                     return getDownloadStream(finalOffset, finalCount);
                 }
             };
-            long contentUpperBound = finalCount == null
-                ? this.scenarioData.remaining() - 1 : finalOffset + finalCount - 1;
-            response.addHeader("Content-Range", String.format("%d-%d/%d",
-                finalOffset, contentUpperBound, this.scenarioData.remaining()));
+            Long contentUpperBound = finalCount == null
+                ? scenarioData.remaining() - 1 : finalOffset + finalCount - 1;
+            response.getHeaders().set(HttpHeaderName.CONTENT_RANGE, String.format("%d-%d/%d", finalOffset,
+                contentUpperBound, scenarioData.remaining()));
 
             switch (scenario) {
                 case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
@@ -192,54 +182,17 @@ class DownloadResponseMockFlux {
                         case 1:
                             return Mono.just(response);
                         case 2:
-                    /*
-                     This validates that we don't retry in the getter even if it's a retryable error from the
-                     service.
-                     */
-                            throw new BlobStorageException("Message", new HttpResponse(null) {
-                                @Override
-                                public int getStatusCode() {
-                                    return 500;
-                                }
-
-                                @Override
-                                public String getHeaderValue(String s) {
-                                    return null;
-                                }
-
-                                @Override
-                                public HttpHeaders getHeaders() {
-                                    return null;
-                                }
-
-                                @Override
-                                public Flux<ByteBuffer> getBody() {
-                                    return null;
-                                }
-
-                                @Override
-                                public Mono<byte[]> getBodyAsByteArray() {
-                                    return null;
-                                }
-
-                                @Override
-                                public Mono<String> getBodyAsString() {
-                                    return null;
-                                }
-
-                                @Override
-                                public Mono<String> getBodyAsString(Charset charset) {
-                                    return null;
-                                }
-                            }, null);
+                            /*
+                             This validates that we don't retry in the getter even if it's a retryable error from the
+                             service.
+                             */
+                            throw new BlobStorageException("Message", new MockHttpResponse(null, 500), null);
                         default:
                             throw new IllegalArgumentException("Retried after error in getter");
                     }
                 case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
                     // Construct a new flux each time to mimic getting a new download stream.
-                    // Construct a new flux each time to mimic getting a new download stream.
-                    DownloadResponseMockFlux nextFlux = new DownloadResponseMockFlux(this.scenario, this.tryNumber,
-                        this.scenarioData, this.options);
+                    DownloadResponseMockFlux nextFlux = new DownloadResponseMockFlux(scenario, tryNumber, scenarioData, options);
                     MockHttpResponse newResponse = new MockHttpResponse(null, 200) {
                         @Override
                         public Flux<ByteBuffer> getBody() {

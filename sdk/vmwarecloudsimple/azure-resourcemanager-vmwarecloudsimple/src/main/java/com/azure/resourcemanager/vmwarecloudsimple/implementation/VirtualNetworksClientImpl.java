@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.VirtualNetworksClient;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualNetworkListResponse;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualNetworksClient. */
 public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
-    private final ClientLogger logger = new ClientLogger(VirtualNetworksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VirtualNetworksService service;
 
@@ -58,7 +55,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "VMwareCloudSimpleVir")
-    private interface VirtualNetworksService {
+    public interface VirtualNetworksService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds"
@@ -103,7 +100,9 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Return list of virtual networks in location for private cloud.
+     * Implements list available virtual networks within a subscription method
+     *
+     * <p>Return list of virtual networks in location for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -111,7 +110,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual networks.
+     * @return list of virtual networks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listSinglePageAsync(
@@ -165,7 +164,9 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Return list of virtual networks in location for private cloud.
+     * Implements list available virtual networks within a subscription method
+     *
+     * <p>Return list of virtual networks in location for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -174,7 +175,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual networks.
+     * @return list of virtual networks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listSinglePageAsync(
@@ -225,7 +226,9 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Return list of virtual networks in location for private cloud.
+     * Implements list available virtual networks within a subscription method
+     *
+     * <p>Return list of virtual networks in location for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -233,7 +236,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual networks.
+     * @return list of virtual networks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualNetworkInner> listAsync(String regionId, String pcName, String resourcePoolName) {
@@ -243,7 +246,9 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Return list of virtual networks in location for private cloud.
+     * Implements list available virtual networks within a subscription method
+     *
+     * <p>Return list of virtual networks in location for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -252,7 +257,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual networks.
+     * @return list of virtual networks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualNetworkInner> listAsync(
@@ -263,7 +268,9 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Return list of virtual networks in location for private cloud.
+     * Implements list available virtual networks within a subscription method
+     *
+     * <p>Return list of virtual networks in location for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -271,7 +278,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual networks.
+     * @return list of virtual networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> list(String regionId, String pcName, String resourcePoolName) {
@@ -279,7 +286,9 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Return list of virtual networks in location for private cloud.
+     * Implements list available virtual networks within a subscription method
+     *
+     * <p>Return list of virtual networks in location for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -288,7 +297,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual networks.
+     * @return list of virtual networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> list(
@@ -297,7 +306,9 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Return virtual network by its name.
+     * Implements virtual network GET method
+     *
+     * <p>Return virtual network by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -305,7 +316,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network model.
+     * @return virtual network model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualNetworkInner>> getWithResponseAsync(
@@ -350,7 +361,9 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Return virtual network by its name.
+     * Implements virtual network GET method
+     *
+     * <p>Return virtual network by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -359,7 +372,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network model.
+     * @return virtual network model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualNetworkInner>> getWithResponseAsync(
@@ -401,7 +414,9 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Return virtual network by its name.
+     * Implements virtual network GET method
+     *
+     * <p>Return virtual network by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -409,23 +424,38 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network model.
+     * @return virtual network model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualNetworkInner> getAsync(String regionId, String pcName, String virtualNetworkName) {
         return getWithResponseAsync(regionId, pcName, virtualNetworkName)
-            .flatMap(
-                (Response<VirtualNetworkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Return virtual network by its name.
+     * Implements virtual network GET method
+     *
+     * <p>Return virtual network by its name.
+     *
+     * @param regionId The region Id (westus, eastus).
+     * @param pcName The private cloud name.
+     * @param virtualNetworkName virtual network id (vsphereId).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual network model along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<VirtualNetworkInner> getWithResponse(
+        String regionId, String pcName, String virtualNetworkName, Context context) {
+        return getWithResponseAsync(regionId, pcName, virtualNetworkName, context).block();
+    }
+
+    /**
+     * Implements virtual network GET method
+     *
+     * <p>Return virtual network by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -437,35 +467,18 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner get(String regionId, String pcName, String virtualNetworkName) {
-        return getAsync(regionId, pcName, virtualNetworkName).block();
-    }
-
-    /**
-     * Return virtual network by its name.
-     *
-     * @param regionId The region Id (westus, eastus).
-     * @param pcName The private cloud name.
-     * @param virtualNetworkName virtual network id (vsphereId).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualNetworkInner> getWithResponse(
-        String regionId, String pcName, String virtualNetworkName, Context context) {
-        return getWithResponseAsync(regionId, pcName, virtualNetworkName, context).block();
+        return getWithResponse(regionId, pcName, virtualNetworkName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual networks.
+     * @return list of virtual networks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listNextSinglePageAsync(String nextLink) {
@@ -496,12 +509,13 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual networks.
+     * @return list of virtual networks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listNextSinglePageAsync(String nextLink, Context context) {

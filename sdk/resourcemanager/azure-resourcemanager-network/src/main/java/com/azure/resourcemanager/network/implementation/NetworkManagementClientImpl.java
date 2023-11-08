@@ -34,8 +34,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.network.fluent.AdminRuleCollectionsClient;
+import com.azure.resourcemanager.network.fluent.AdminRulesClient;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewayPrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewayPrivateLinkResourcesClient;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewayWafDynamicManifestsClient;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewayWafDynamicManifestsDefaultsClient;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
 import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsClient;
 import com.azure.resourcemanager.network.fluent.AvailableDelegationsClient;
@@ -47,7 +51,9 @@ import com.azure.resourcemanager.network.fluent.AzureFirewallFqdnTagsClient;
 import com.azure.resourcemanager.network.fluent.AzureFirewallsClient;
 import com.azure.resourcemanager.network.fluent.BastionHostsClient;
 import com.azure.resourcemanager.network.fluent.BgpServiceCommunitiesClient;
+import com.azure.resourcemanager.network.fluent.ConfigurationPolicyGroupsClient;
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
+import com.azure.resourcemanager.network.fluent.ConnectivityConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.CustomIpPrefixesClient;
 import com.azure.resourcemanager.network.fluent.DdosCustomPoliciesClient;
 import com.azure.resourcemanager.network.fluent.DdosProtectionPlansClient;
@@ -62,8 +68,10 @@ import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeri
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteGatewaysClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteLinksClient;
+import com.azure.resourcemanager.network.fluent.ExpressRoutePortAuthorizationsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRoutePortsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRoutePortsLocationsClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteProviderPortsLocationsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteServiceProvidersClient;
 import com.azure.resourcemanager.network.fluent.FirewallPoliciesClient;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyIdpsSignaturesClient;
@@ -85,15 +93,21 @@ import com.azure.resourcemanager.network.fluent.LoadBalancerOutboundRulesClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerProbesClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.LocalNetworkGatewaysClient;
+import com.azure.resourcemanager.network.fluent.ManagementGroupNetworkManagerConnectionsClient;
 import com.azure.resourcemanager.network.fluent.NatGatewaysClient;
 import com.azure.resourcemanager.network.fluent.NatRulesClient;
+import com.azure.resourcemanager.network.fluent.NetworkGroupsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceLoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceTapConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
 import com.azure.resourcemanager.network.fluent.NetworkManagementClient;
+import com.azure.resourcemanager.network.fluent.NetworkManagerCommitsClient;
+import com.azure.resourcemanager.network.fluent.NetworkManagerDeploymentStatusOperationsClient;
+import com.azure.resourcemanager.network.fluent.NetworkManagersClient;
 import com.azure.resourcemanager.network.fluent.NetworkProfilesClient;
 import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupsClient;
+import com.azure.resourcemanager.network.fluent.NetworkVirtualApplianceConnectionsClient;
 import com.azure.resourcemanager.network.fluent.NetworkVirtualAppliancesClient;
 import com.azure.resourcemanager.network.fluent.NetworkWatchersClient;
 import com.azure.resourcemanager.network.fluent.OperationsClient;
@@ -108,9 +122,12 @@ import com.azure.resourcemanager.network.fluent.PublicIpPrefixesClient;
 import com.azure.resourcemanager.network.fluent.ResourceNavigationLinksClient;
 import com.azure.resourcemanager.network.fluent.RouteFilterRulesClient;
 import com.azure.resourcemanager.network.fluent.RouteFiltersClient;
+import com.azure.resourcemanager.network.fluent.RouteMapsClient;
 import com.azure.resourcemanager.network.fluent.RouteTablesClient;
 import com.azure.resourcemanager.network.fluent.RoutesClient;
 import com.azure.resourcemanager.network.fluent.RoutingIntentsClient;
+import com.azure.resourcemanager.network.fluent.ScopeConnectionsClient;
+import com.azure.resourcemanager.network.fluent.SecurityAdminConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.SecurityPartnerProvidersClient;
 import com.azure.resourcemanager.network.fluent.SecurityRulesClient;
 import com.azure.resourcemanager.network.fluent.ServiceAssociationLinksClient;
@@ -118,8 +135,11 @@ import com.azure.resourcemanager.network.fluent.ServiceEndpointPoliciesClient;
 import com.azure.resourcemanager.network.fluent.ServiceEndpointPolicyDefinitionsClient;
 import com.azure.resourcemanager.network.fluent.ServiceTagInformationsClient;
 import com.azure.resourcemanager.network.fluent.ServiceTagsClient;
+import com.azure.resourcemanager.network.fluent.StaticMembersClient;
 import com.azure.resourcemanager.network.fluent.SubnetsClient;
+import com.azure.resourcemanager.network.fluent.SubscriptionNetworkManagerConnectionsClient;
 import com.azure.resourcemanager.network.fluent.UsagesClient;
+import com.azure.resourcemanager.network.fluent.VipSwapsClient;
 import com.azure.resourcemanager.network.fluent.VirtualApplianceSitesClient;
 import com.azure.resourcemanager.network.fluent.VirtualApplianceSkusClient;
 import com.azure.resourcemanager.network.fluent.VirtualHubBgpConnectionsClient;
@@ -146,16 +166,23 @@ import com.azure.resourcemanager.network.fluent.VpnSitesClient;
 import com.azure.resourcemanager.network.fluent.VpnSitesConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.WebApplicationFirewallPoliciesClient;
 import com.azure.resourcemanager.network.fluent.WebCategoriesClient;
+import com.azure.resourcemanager.network.fluent.models.ActiveConnectivityConfigurationsListResultInner;
+import com.azure.resourcemanager.network.fluent.models.ActiveSecurityAdminRulesListResultInner;
 import com.azure.resourcemanager.network.fluent.models.BastionActiveSessionInner;
 import com.azure.resourcemanager.network.fluent.models.BastionSessionStateInner;
 import com.azure.resourcemanager.network.fluent.models.BastionShareableLinkInner;
 import com.azure.resourcemanager.network.fluent.models.DnsNameAvailabilityResultInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteProviderPortInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkManagerEffectiveConnectivityConfigurationListResultInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkManagerEffectiveSecurityAdminRulesListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualWanSecurityProvidersInner;
 import com.azure.resourcemanager.network.fluent.models.VpnProfileResponseInner;
+import com.azure.resourcemanager.network.models.ActiveConfigurationParameter;
 import com.azure.resourcemanager.network.models.BastionActiveSessionListResult;
 import com.azure.resourcemanager.network.models.BastionSessionDeleteResult;
 import com.azure.resourcemanager.network.models.BastionShareableLinkListRequest;
 import com.azure.resourcemanager.network.models.BastionShareableLinkListResult;
+import com.azure.resourcemanager.network.models.QueryRequestOptions;
 import com.azure.resourcemanager.network.models.SessionIds;
 import com.azure.resourcemanager.network.models.VirtualWanVpnProfileParameters;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
@@ -268,6 +295,30 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public ApplicationGatewayPrivateEndpointConnectionsClient getApplicationGatewayPrivateEndpointConnections() {
         return this.applicationGatewayPrivateEndpointConnections;
+    }
+
+    /** The ApplicationGatewayWafDynamicManifestsDefaultsClient object to access its operations. */
+    private final ApplicationGatewayWafDynamicManifestsDefaultsClient applicationGatewayWafDynamicManifestsDefaults;
+
+    /**
+     * Gets the ApplicationGatewayWafDynamicManifestsDefaultsClient object to access its operations.
+     *
+     * @return the ApplicationGatewayWafDynamicManifestsDefaultsClient object.
+     */
+    public ApplicationGatewayWafDynamicManifestsDefaultsClient getApplicationGatewayWafDynamicManifestsDefaults() {
+        return this.applicationGatewayWafDynamicManifestsDefaults;
+    }
+
+    /** The ApplicationGatewayWafDynamicManifestsClient object to access its operations. */
+    private final ApplicationGatewayWafDynamicManifestsClient applicationGatewayWafDynamicManifests;
+
+    /**
+     * Gets the ApplicationGatewayWafDynamicManifestsClient object to access its operations.
+     *
+     * @return the ApplicationGatewayWafDynamicManifestsClient object.
+     */
+    public ApplicationGatewayWafDynamicManifestsClient getApplicationGatewayWafDynamicManifests() {
+        return this.applicationGatewayWafDynamicManifests;
     }
 
     /** The ApplicationSecurityGroupsClient object to access its operations. */
@@ -388,6 +439,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public PublicIpAddressesClient getPublicIpAddresses() {
         return this.publicIpAddresses;
+    }
+
+    /** The VipSwapsClient object to access its operations. */
+    private final VipSwapsClient vipSwaps;
+
+    /**
+     * Gets the VipSwapsClient object to access its operations.
+     *
+     * @return the VipSwapsClient object.
+     */
+    public VipSwapsClient getVipSwaps() {
+        return this.vipSwaps;
     }
 
     /** The CustomIpPrefixesClient object to access its operations. */
@@ -580,6 +643,30 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public ExpressRouteLinksClient getExpressRouteLinks() {
         return this.expressRouteLinks;
+    }
+
+    /** The ExpressRoutePortAuthorizationsClient object to access its operations. */
+    private final ExpressRoutePortAuthorizationsClient expressRoutePortAuthorizations;
+
+    /**
+     * Gets the ExpressRoutePortAuthorizationsClient object to access its operations.
+     *
+     * @return the ExpressRoutePortAuthorizationsClient object.
+     */
+    public ExpressRoutePortAuthorizationsClient getExpressRoutePortAuthorizations() {
+        return this.expressRoutePortAuthorizations;
+    }
+
+    /** The ExpressRouteProviderPortsLocationsClient object to access its operations. */
+    private final ExpressRouteProviderPortsLocationsClient expressRouteProviderPortsLocations;
+
+    /**
+     * Gets the ExpressRouteProviderPortsLocationsClient object to access its operations.
+     *
+     * @return the ExpressRouteProviderPortsLocationsClient object.
+     */
+    public ExpressRouteProviderPortsLocationsClient getExpressRouteProviderPortsLocations() {
+        return this.expressRouteProviderPortsLocations;
     }
 
     /** The FirewallPoliciesClient object to access its operations. */
@@ -808,6 +895,150 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public NetworkInterfaceTapConfigurationsClient getNetworkInterfaceTapConfigurations() {
         return this.networkInterfaceTapConfigurations;
+    }
+
+    /** The NetworkManagersClient object to access its operations. */
+    private final NetworkManagersClient networkManagers;
+
+    /**
+     * Gets the NetworkManagersClient object to access its operations.
+     *
+     * @return the NetworkManagersClient object.
+     */
+    public NetworkManagersClient getNetworkManagers() {
+        return this.networkManagers;
+    }
+
+    /** The NetworkManagerCommitsClient object to access its operations. */
+    private final NetworkManagerCommitsClient networkManagerCommits;
+
+    /**
+     * Gets the NetworkManagerCommitsClient object to access its operations.
+     *
+     * @return the NetworkManagerCommitsClient object.
+     */
+    public NetworkManagerCommitsClient getNetworkManagerCommits() {
+        return this.networkManagerCommits;
+    }
+
+    /** The NetworkManagerDeploymentStatusOperationsClient object to access its operations. */
+    private final NetworkManagerDeploymentStatusOperationsClient networkManagerDeploymentStatusOperations;
+
+    /**
+     * Gets the NetworkManagerDeploymentStatusOperationsClient object to access its operations.
+     *
+     * @return the NetworkManagerDeploymentStatusOperationsClient object.
+     */
+    public NetworkManagerDeploymentStatusOperationsClient getNetworkManagerDeploymentStatusOperations() {
+        return this.networkManagerDeploymentStatusOperations;
+    }
+
+    /** The SubscriptionNetworkManagerConnectionsClient object to access its operations. */
+    private final SubscriptionNetworkManagerConnectionsClient subscriptionNetworkManagerConnections;
+
+    /**
+     * Gets the SubscriptionNetworkManagerConnectionsClient object to access its operations.
+     *
+     * @return the SubscriptionNetworkManagerConnectionsClient object.
+     */
+    public SubscriptionNetworkManagerConnectionsClient getSubscriptionNetworkManagerConnections() {
+        return this.subscriptionNetworkManagerConnections;
+    }
+
+    /** The ManagementGroupNetworkManagerConnectionsClient object to access its operations. */
+    private final ManagementGroupNetworkManagerConnectionsClient managementGroupNetworkManagerConnections;
+
+    /**
+     * Gets the ManagementGroupNetworkManagerConnectionsClient object to access its operations.
+     *
+     * @return the ManagementGroupNetworkManagerConnectionsClient object.
+     */
+    public ManagementGroupNetworkManagerConnectionsClient getManagementGroupNetworkManagerConnections() {
+        return this.managementGroupNetworkManagerConnections;
+    }
+
+    /** The ConnectivityConfigurationsClient object to access its operations. */
+    private final ConnectivityConfigurationsClient connectivityConfigurations;
+
+    /**
+     * Gets the ConnectivityConfigurationsClient object to access its operations.
+     *
+     * @return the ConnectivityConfigurationsClient object.
+     */
+    public ConnectivityConfigurationsClient getConnectivityConfigurations() {
+        return this.connectivityConfigurations;
+    }
+
+    /** The NetworkGroupsClient object to access its operations. */
+    private final NetworkGroupsClient networkGroups;
+
+    /**
+     * Gets the NetworkGroupsClient object to access its operations.
+     *
+     * @return the NetworkGroupsClient object.
+     */
+    public NetworkGroupsClient getNetworkGroups() {
+        return this.networkGroups;
+    }
+
+    /** The StaticMembersClient object to access its operations. */
+    private final StaticMembersClient staticMembers;
+
+    /**
+     * Gets the StaticMembersClient object to access its operations.
+     *
+     * @return the StaticMembersClient object.
+     */
+    public StaticMembersClient getStaticMembers() {
+        return this.staticMembers;
+    }
+
+    /** The ScopeConnectionsClient object to access its operations. */
+    private final ScopeConnectionsClient scopeConnections;
+
+    /**
+     * Gets the ScopeConnectionsClient object to access its operations.
+     *
+     * @return the ScopeConnectionsClient object.
+     */
+    public ScopeConnectionsClient getScopeConnections() {
+        return this.scopeConnections;
+    }
+
+    /** The SecurityAdminConfigurationsClient object to access its operations. */
+    private final SecurityAdminConfigurationsClient securityAdminConfigurations;
+
+    /**
+     * Gets the SecurityAdminConfigurationsClient object to access its operations.
+     *
+     * @return the SecurityAdminConfigurationsClient object.
+     */
+    public SecurityAdminConfigurationsClient getSecurityAdminConfigurations() {
+        return this.securityAdminConfigurations;
+    }
+
+    /** The AdminRuleCollectionsClient object to access its operations. */
+    private final AdminRuleCollectionsClient adminRuleCollections;
+
+    /**
+     * Gets the AdminRuleCollectionsClient object to access its operations.
+     *
+     * @return the AdminRuleCollectionsClient object.
+     */
+    public AdminRuleCollectionsClient getAdminRuleCollections() {
+        return this.adminRuleCollections;
+    }
+
+    /** The AdminRulesClient object to access its operations. */
+    private final AdminRulesClient adminRules;
+
+    /**
+     * Gets the AdminRulesClient object to access its operations.
+     *
+     * @return the AdminRulesClient object.
+     */
+    public AdminRulesClient getAdminRules() {
+        return this.adminRules;
     }
 
     /** The NetworkProfilesClient object to access its operations. */
@@ -1362,6 +1593,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.vpnServerConfigurations;
     }
 
+    /** The ConfigurationPolicyGroupsClient object to access its operations. */
+    private final ConfigurationPolicyGroupsClient configurationPolicyGroups;
+
+    /**
+     * Gets the ConfigurationPolicyGroupsClient object to access its operations.
+     *
+     * @return the ConfigurationPolicyGroupsClient object.
+     */
+    public ConfigurationPolicyGroupsClient getConfigurationPolicyGroups() {
+        return this.configurationPolicyGroups;
+    }
+
     /** The VirtualHubsClient object to access its operations. */
     private final VirtualHubsClient virtualHubs;
 
@@ -1372,6 +1615,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public VirtualHubsClient getVirtualHubs() {
         return this.virtualHubs;
+    }
+
+    /** The RouteMapsClient object to access its operations. */
+    private final RouteMapsClient routeMaps;
+
+    /**
+     * Gets the RouteMapsClient object to access its operations.
+     *
+     * @return the RouteMapsClient object.
+     */
+    public RouteMapsClient getRouteMaps() {
+        return this.routeMaps;
     }
 
     /** The HubVirtualNetworkConnectionsClient object to access its operations. */
@@ -1508,6 +1763,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.expressRouteConnections;
     }
 
+    /** The NetworkVirtualApplianceConnectionsClient object to access its operations. */
+    private final NetworkVirtualApplianceConnectionsClient networkVirtualApplianceConnections;
+
+    /**
+     * Gets the NetworkVirtualApplianceConnectionsClient object to access its operations.
+     *
+     * @return the NetworkVirtualApplianceConnectionsClient object.
+     */
+    public NetworkVirtualApplianceConnectionsClient getNetworkVirtualApplianceConnections() {
+        return this.networkVirtualApplianceConnections;
+    }
+
     /** The VirtualHubBgpConnectionsClient object to access its operations. */
     private final VirtualHubBgpConnectionsClient virtualHubBgpConnections;
 
@@ -1596,6 +1863,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.applicationGatewayPrivateLinkResources = new ApplicationGatewayPrivateLinkResourcesClientImpl(this);
         this.applicationGatewayPrivateEndpointConnections =
             new ApplicationGatewayPrivateEndpointConnectionsClientImpl(this);
+        this.applicationGatewayWafDynamicManifestsDefaults =
+            new ApplicationGatewayWafDynamicManifestsDefaultsClientImpl(this);
+        this.applicationGatewayWafDynamicManifests = new ApplicationGatewayWafDynamicManifestsClientImpl(this);
         this.applicationSecurityGroups = new ApplicationSecurityGroupsClientImpl(this);
         this.availableDelegations = new AvailableDelegationsClientImpl(this);
         this.availableResourceGroupDelegations = new AvailableResourceGroupDelegationsClientImpl(this);
@@ -1606,6 +1876,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.bastionHosts = new BastionHostsClientImpl(this);
         this.networkInterfaces = new NetworkInterfacesClientImpl(this);
         this.publicIpAddresses = new PublicIpAddressesClientImpl(this);
+        this.vipSwaps = new VipSwapsClientImpl(this);
         this.customIpPrefixes = new CustomIpPrefixesClientImpl(this);
         this.ddosCustomPolicies = new DdosCustomPoliciesClientImpl(this);
         this.ddosProtectionPlans = new DdosProtectionPlansClientImpl(this);
@@ -1622,6 +1893,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.expressRoutePortsLocations = new ExpressRoutePortsLocationsClientImpl(this);
         this.expressRoutePorts = new ExpressRoutePortsClientImpl(this);
         this.expressRouteLinks = new ExpressRouteLinksClientImpl(this);
+        this.expressRoutePortAuthorizations = new ExpressRoutePortAuthorizationsClientImpl(this);
+        this.expressRouteProviderPortsLocations = new ExpressRouteProviderPortsLocationsClientImpl(this);
         this.firewallPolicies = new FirewallPoliciesClientImpl(this);
         this.firewallPolicyRuleCollectionGroups = new FirewallPolicyRuleCollectionGroupsClientImpl(this);
         this.firewallPolicyIdpsSignatures = new FirewallPolicyIdpsSignaturesClientImpl(this);
@@ -1641,6 +1914,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.networkInterfaceIpConfigurations = new NetworkInterfaceIpConfigurationsClientImpl(this);
         this.networkInterfaceLoadBalancers = new NetworkInterfaceLoadBalancersClientImpl(this);
         this.networkInterfaceTapConfigurations = new NetworkInterfaceTapConfigurationsClientImpl(this);
+        this.networkManagers = new NetworkManagersClientImpl(this);
+        this.networkManagerCommits = new NetworkManagerCommitsClientImpl(this);
+        this.networkManagerDeploymentStatusOperations = new NetworkManagerDeploymentStatusOperationsClientImpl(this);
+        this.subscriptionNetworkManagerConnections = new SubscriptionNetworkManagerConnectionsClientImpl(this);
+        this.managementGroupNetworkManagerConnections = new ManagementGroupNetworkManagerConnectionsClientImpl(this);
+        this.connectivityConfigurations = new ConnectivityConfigurationsClientImpl(this);
+        this.networkGroups = new NetworkGroupsClientImpl(this);
+        this.staticMembers = new StaticMembersClientImpl(this);
+        this.scopeConnections = new ScopeConnectionsClientImpl(this);
+        this.securityAdminConfigurations = new SecurityAdminConfigurationsClientImpl(this);
+        this.adminRuleCollections = new AdminRuleCollectionsClientImpl(this);
+        this.adminRules = new AdminRulesClientImpl(this);
         this.networkProfiles = new NetworkProfilesClientImpl(this);
         this.networkSecurityGroups = new NetworkSecurityGroupsClientImpl(this);
         this.securityRules = new SecurityRulesClientImpl(this);
@@ -1687,7 +1972,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.vpnSiteLinks = new VpnSiteLinksClientImpl(this);
         this.vpnSitesConfigurations = new VpnSitesConfigurationsClientImpl(this);
         this.vpnServerConfigurations = new VpnServerConfigurationsClientImpl(this);
+        this.configurationPolicyGroups = new ConfigurationPolicyGroupsClientImpl(this);
         this.virtualHubs = new VirtualHubsClientImpl(this);
+        this.routeMaps = new RouteMapsClientImpl(this);
         this.hubVirtualNetworkConnections = new HubVirtualNetworkConnectionsClientImpl(this);
         this.vpnGateways = new VpnGatewaysClientImpl(this);
         this.vpnLinkConnections = new VpnLinkConnectionsClientImpl(this);
@@ -1700,6 +1987,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.virtualHubRouteTableV2S = new VirtualHubRouteTableV2SClientImpl(this);
         this.expressRouteGateways = new ExpressRouteGatewaysClientImpl(this);
         this.expressRouteConnections = new ExpressRouteConnectionsClientImpl(this);
+        this.networkVirtualApplianceConnections = new NetworkVirtualApplianceConnectionsClientImpl(this);
         this.virtualHubBgpConnections = new VirtualHubBgpConnectionsClientImpl(this);
         this.virtualHubIpConfigurations = new VirtualHubIpConfigurationsClientImpl(this);
         this.hubRouteTables = new HubRouteTablesClientImpl(this);
@@ -1715,11 +2003,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface NetworkManagementClientService {
+    public interface NetworkManagementClientService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/bastionHosts/{bastionHostName}/createShareableLinks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/createShareableLinks")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> putBastionShareableLink(
@@ -1734,8 +2021,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/bastionHosts/{bastionHostName}/deleteShareableLinks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/deleteShareableLinks")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteBastionShareableLink(
@@ -1750,8 +2036,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/bastionHosts/{bastionHostName}/getShareableLinks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/getShareableLinks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BastionShareableLinkListResult>> getBastionShareableLink(
@@ -1766,8 +2051,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/bastionHosts/{bastionHostName}/getActiveSessions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/getActiveSessions")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> getActiveSessions(
@@ -1781,8 +2065,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/bastionHosts/{bastionHostName}/disconnectActiveSessions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/disconnectActiveSessions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BastionSessionDeleteResult>> disconnectActiveSessions(
@@ -1810,9 +2093,86 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteProviderPorts/{providerport}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ExpressRouteProviderPortInner>> expressRouteProviderPort(
+            @HostParam("$host") String endpoint,
+            @PathParam("providerport") String providerport,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/listActiveConnectivityConfigurations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ActiveConnectivityConfigurationsListResultInner>> listActiveConnectivityConfigurations(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkManagerName") String networkManagerName,
+            @QueryParam("$top") Integer top,
+            @BodyParam("application/json") ActiveConfigurationParameter parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/listActiveSecurityAdminRules")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ActiveSecurityAdminRulesListResultInner>> listActiveSecurityAdminRules(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkManagerName") String networkManagerName,
+            @QueryParam("$top") Integer top,
+            @BodyParam("application/json") ActiveConfigurationParameter parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/listNetworkManagerEffectiveConnectivityConfigurations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkManagerEffectiveConnectivityConfigurationListResultInner>>
+            listNetworkManagerEffectiveConnectivityConfigurations(
+                @HostParam("$host") String endpoint,
+                @PathParam("subscriptionId") String subscriptionId,
+                @PathParam("resourceGroupName") String resourceGroupName,
+                @PathParam("virtualNetworkName") String virtualNetworkName,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("$top") Integer top,
+                @BodyParam("application/json") QueryRequestOptions parameters,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/listNetworkManagerEffectiveSecurityAdminRules")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkManagerEffectiveSecurityAdminRulesListResultInner>>
+            listNetworkManagerEffectiveSecurityAdminRules(
+                @HostParam("$host") String endpoint,
+                @PathParam("subscriptionId") String subscriptionId,
+                @PathParam("resourceGroupName") String resourceGroupName,
+                @PathParam("virtualNetworkName") String virtualNetworkName,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("$top") Integer top,
+                @BodyParam("application/json") QueryRequestOptions parameters,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
-                + "/{virtualWANName}/supportedSecurityProviders")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/supportedSecurityProviders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualWanSecurityProvidersInner>> supportedSecurityProviders(
@@ -1826,8 +2186,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
-                + "/{virtualWANName}/GenerateVpnProfile")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/GenerateVpnProfile")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> generatevirtualwanvpnserverconfigurationvpnprofile(
@@ -1918,7 +2277,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1998,7 +2357,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2147,7 +2506,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2202,7 +2561,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -2271,7 +2630,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
-        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest).getSyncPoller();
+        return this
+            .beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest)
+            .getSyncPoller();
     }
 
     /**
@@ -2289,7 +2650,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
-        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest, context)
+        return this
+            .beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest, context)
             .getSyncPoller();
     }
 
@@ -2402,7 +2764,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2467,7 +2829,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -2596,7 +2958,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2668,7 +3030,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2812,7 +3174,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             sessionIds.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2877,7 +3239,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             sessionIds.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3007,7 +3369,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3056,7 +3418,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3078,30 +3440,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel) {
         return checkDnsNameAvailabilityWithResponseAsync(location, domainNameLabel)
-            .flatMap(
-                (Response<DnsNameAvailabilityResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     *
-     * @param location The location of the domain name.
-     * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
-     *     ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckDnsNameAvailability API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location, String domainNameLabel) {
-        return checkDnsNameAvailabilityAsync(location, domainNameLabel).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3120,6 +3459,884 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     public Response<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityWithResponse(
         String location, String domainNameLabel, Context context) {
         return checkDnsNameAvailabilityWithResponseAsync(location, domainNameLabel, context).block();
+    }
+
+    /**
+     * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
+     *
+     * @param location The location of the domain name.
+     * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
+     *     ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the CheckDnsNameAvailability API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location, String domainNameLabel) {
+        return checkDnsNameAvailabilityWithResponse(location, domainNameLabel, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieves detail of a provider port.
+     *
+     * @param providerport The name of the provider port.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteProviderPort resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExpressRouteProviderPortInner>> expressRouteProviderPortWithResponseAsync(
+        String providerport) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (providerport == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerport is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2023-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .expressRouteProviderPort(
+                            this.getEndpoint(), providerport, apiVersion, this.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves detail of a provider port.
+     *
+     * @param providerport The name of the provider port.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteProviderPort resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ExpressRouteProviderPortInner>> expressRouteProviderPortWithResponseAsync(
+        String providerport, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (providerport == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerport is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2023-05-01";
+        final String accept = "application/json";
+        context = this.mergeContext(context);
+        return service
+            .expressRouteProviderPort(
+                this.getEndpoint(), providerport, apiVersion, this.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * Retrieves detail of a provider port.
+     *
+     * @param providerport The name of the provider port.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteProviderPort resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExpressRouteProviderPortInner> expressRouteProviderPortAsync(String providerport) {
+        return expressRouteProviderPortWithResponseAsync(providerport).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves detail of a provider port.
+     *
+     * @param providerport The name of the provider port.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteProviderPort resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ExpressRouteProviderPortInner> expressRouteProviderPortWithResponse(
+        String providerport, Context context) {
+        return expressRouteProviderPortWithResponseAsync(providerport, context).block();
+    }
+
+    /**
+     * Retrieves detail of a provider port.
+     *
+     * @param providerport The name of the provider port.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteProviderPort resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRouteProviderPortInner expressRouteProviderPort(String providerport) {
+        return expressRouteProviderPortWithResponse(providerport, Context.NONE).getValue();
+    }
+
+    /**
+     * Lists active connectivity configurations in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active connectivity configurations along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ActiveConnectivityConfigurationsListResultInner>>
+        listActiveConnectivityConfigurationsWithResponseAsync(
+            String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkManagerName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listActiveConnectivityConfigurations(
+                            this.getEndpoint(),
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            resourceGroupName,
+                            networkManagerName,
+                            top,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists active connectivity configurations in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active connectivity configurations along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ActiveConnectivityConfigurationsListResultInner>>
+        listActiveConnectivityConfigurationsWithResponseAsync(
+            String resourceGroupName,
+            String networkManagerName,
+            ActiveConfigurationParameter parameters,
+            Integer top,
+            Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkManagerName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01";
+        final String accept = "application/json";
+        context = this.mergeContext(context);
+        return service
+            .listActiveConnectivityConfigurations(
+                this.getEndpoint(),
+                apiVersion,
+                this.getSubscriptionId(),
+                resourceGroupName,
+                networkManagerName,
+                top,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Lists active connectivity configurations in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active connectivity configurations on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ActiveConnectivityConfigurationsListResultInner> listActiveConnectivityConfigurationsAsync(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters) {
+        final Integer top = null;
+        return listActiveConnectivityConfigurationsWithResponseAsync(
+                resourceGroupName, networkManagerName, parameters, top)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists active connectivity configurations in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active connectivity configurations along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ActiveConnectivityConfigurationsListResultInner> listActiveConnectivityConfigurationsWithResponse(
+        String resourceGroupName,
+        String networkManagerName,
+        ActiveConfigurationParameter parameters,
+        Integer top,
+        Context context) {
+        return listActiveConnectivityConfigurationsWithResponseAsync(
+                resourceGroupName, networkManagerName, parameters, top, context)
+            .block();
+    }
+
+    /**
+     * Lists active connectivity configurations in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active connectivity configurations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActiveConnectivityConfigurationsListResultInner listActiveConnectivityConfigurations(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters) {
+        final Integer top = null;
+        return listActiveConnectivityConfigurationsWithResponse(
+                resourceGroupName, networkManagerName, parameters, top, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Lists active security admin rules in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active security admin rules along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ActiveSecurityAdminRulesListResultInner>> listActiveSecurityAdminRulesWithResponseAsync(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkManagerName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listActiveSecurityAdminRules(
+                            this.getEndpoint(),
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            resourceGroupName,
+                            networkManagerName,
+                            top,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists active security admin rules in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active security admin rules along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ActiveSecurityAdminRulesListResultInner>> listActiveSecurityAdminRulesWithResponseAsync(
+        String resourceGroupName,
+        String networkManagerName,
+        ActiveConfigurationParameter parameters,
+        Integer top,
+        Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkManagerName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01";
+        final String accept = "application/json";
+        context = this.mergeContext(context);
+        return service
+            .listActiveSecurityAdminRules(
+                this.getEndpoint(),
+                apiVersion,
+                this.getSubscriptionId(),
+                resourceGroupName,
+                networkManagerName,
+                top,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Lists active security admin rules in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active security admin rules on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ActiveSecurityAdminRulesListResultInner> listActiveSecurityAdminRulesAsync(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters) {
+        final Integer top = null;
+        return listActiveSecurityAdminRulesWithResponseAsync(resourceGroupName, networkManagerName, parameters, top)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists active security admin rules in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active security admin rules along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ActiveSecurityAdminRulesListResultInner> listActiveSecurityAdminRulesWithResponse(
+        String resourceGroupName,
+        String networkManagerName,
+        ActiveConfigurationParameter parameters,
+        Integer top,
+        Context context) {
+        return listActiveSecurityAdminRulesWithResponseAsync(
+                resourceGroupName, networkManagerName, parameters, top, context)
+            .block();
+    }
+
+    /**
+     * Lists active security admin rules in a network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active security admin rules.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActiveSecurityAdminRulesListResultInner listActiveSecurityAdminRules(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters) {
+        final Integer top = null;
+        return listActiveSecurityAdminRulesWithResponse(
+                resourceGroupName, networkManagerName, parameters, top, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * List all effective connectivity configurations applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration along with {@link
+     *     Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<NetworkManagerEffectiveConnectivityConfigurationListResultInner>>
+        listNetworkManagerEffectiveConnectivityConfigurationsWithResponseAsync(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters, Integer top) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listNetworkManagerEffectiveConnectivityConfigurations(
+                            this.getEndpoint(),
+                            this.getSubscriptionId(),
+                            resourceGroupName,
+                            virtualNetworkName,
+                            apiVersion,
+                            top,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
+    }
+
+    /**
+     * List all effective connectivity configurations applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration along with {@link
+     *     Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NetworkManagerEffectiveConnectivityConfigurationListResultInner>>
+        listNetworkManagerEffectiveConnectivityConfigurationsWithResponseAsync(
+            String resourceGroupName,
+            String virtualNetworkName,
+            QueryRequestOptions parameters,
+            Integer top,
+            Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01";
+        final String accept = "application/json";
+        context = this.mergeContext(context);
+        return service
+            .listNetworkManagerEffectiveConnectivityConfigurations(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                resourceGroupName,
+                virtualNetworkName,
+                apiVersion,
+                top,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * List all effective connectivity configurations applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NetworkManagerEffectiveConnectivityConfigurationListResultInner>
+        listNetworkManagerEffectiveConnectivityConfigurationsAsync(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters) {
+        final Integer top = null;
+        return listNetworkManagerEffectiveConnectivityConfigurationsWithResponseAsync(
+                resourceGroupName, virtualNetworkName, parameters, top)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all effective connectivity configurations applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NetworkManagerEffectiveConnectivityConfigurationListResultInner>
+        listNetworkManagerEffectiveConnectivityConfigurationsWithResponse(
+            String resourceGroupName,
+            String virtualNetworkName,
+            QueryRequestOptions parameters,
+            Integer top,
+            Context context) {
+        return listNetworkManagerEffectiveConnectivityConfigurationsWithResponseAsync(
+                resourceGroupName, virtualNetworkName, parameters, top, context)
+            .block();
+    }
+
+    /**
+     * List all effective connectivity configurations applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkManagerEffectiveConnectivityConfigurationListResultInner
+        listNetworkManagerEffectiveConnectivityConfigurations(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters) {
+        final Integer top = null;
+        return listNetworkManagerEffectiveConnectivityConfigurationsWithResponse(
+                resourceGroupName, virtualNetworkName, parameters, top, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * List all effective security admin rules applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<NetworkManagerEffectiveSecurityAdminRulesListResultInner>>
+        listNetworkManagerEffectiveSecurityAdminRulesWithResponseAsync(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters, Integer top) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listNetworkManagerEffectiveSecurityAdminRules(
+                            this.getEndpoint(),
+                            this.getSubscriptionId(),
+                            resourceGroupName,
+                            virtualNetworkName,
+                            apiVersion,
+                            top,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
+    }
+
+    /**
+     * List all effective security admin rules applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NetworkManagerEffectiveSecurityAdminRulesListResultInner>>
+        listNetworkManagerEffectiveSecurityAdminRulesWithResponseAsync(
+            String resourceGroupName,
+            String virtualNetworkName,
+            QueryRequestOptions parameters,
+            Integer top,
+            Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-05-01";
+        final String accept = "application/json";
+        context = this.mergeContext(context);
+        return service
+            .listNetworkManagerEffectiveSecurityAdminRules(
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                resourceGroupName,
+                virtualNetworkName,
+                apiVersion,
+                top,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * List all effective security admin rules applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NetworkManagerEffectiveSecurityAdminRulesListResultInner>
+        listNetworkManagerEffectiveSecurityAdminRulesAsync(
+            String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters) {
+        final Integer top = null;
+        return listNetworkManagerEffectiveSecurityAdminRulesWithResponseAsync(
+                resourceGroupName, virtualNetworkName, parameters, top)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all effective security admin rules applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
+     *     server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NetworkManagerEffectiveSecurityAdminRulesListResultInner>
+        listNetworkManagerEffectiveSecurityAdminRulesWithResponse(
+            String resourceGroupName,
+            String virtualNetworkName,
+            QueryRequestOptions parameters,
+            Integer top,
+            Context context) {
+        return listNetworkManagerEffectiveSecurityAdminRulesWithResponseAsync(
+                resourceGroupName, virtualNetworkName, parameters, top, context)
+            .block();
+    }
+
+    /**
+     * List all effective security admin rules applied on a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkManagerEffectiveSecurityAdminRulesListResultInner listNetworkManagerEffectiveSecurityAdminRules(
+        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters) {
+        final Integer top = null;
+        return listNetworkManagerEffectiveSecurityAdminRulesWithResponse(
+                resourceGroupName, virtualNetworkName, parameters, top, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3151,7 +4368,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3198,7 +4415,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3226,30 +4443,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     public Mono<VirtualWanSecurityProvidersInner> supportedSecurityProvidersAsync(
         String resourceGroupName, String virtualWanName) {
         return supportedSecurityProvidersWithResponseAsync(resourceGroupName, virtualWanName)
-            .flatMap(
-                (Response<VirtualWanSecurityProvidersInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gives the supported security providers for the virtual wan.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SecurityProviders.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualWanSecurityProvidersInner supportedSecurityProviders(
-        String resourceGroupName, String virtualWanName) {
-        return supportedSecurityProvidersAsync(resourceGroupName, virtualWanName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3267,6 +4461,22 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     public Response<VirtualWanSecurityProvidersInner> supportedSecurityProvidersWithResponse(
         String resourceGroupName, String virtualWanName, Context context) {
         return supportedSecurityProvidersWithResponseAsync(resourceGroupName, virtualWanName, context).block();
+    }
+
+    /**
+     * Gives the supported security providers for the virtual wan.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of SecurityProviders.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualWanSecurityProvidersInner supportedSecurityProviders(
+        String resourceGroupName, String virtualWanName) {
+        return supportedSecurityProvidersWithResponse(resourceGroupName, virtualWanName, Context.NONE).getValue();
     }
 
     /**
@@ -3307,7 +4517,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3367,7 +4577,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3455,7 +4665,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
             String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
-        return beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
+        return this
+            .beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
                 resourceGroupName, virtualWanName, vpnClientParams)
             .getSyncPoller();
     }
@@ -3480,7 +4691,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             String virtualWanName,
             VirtualWanVpnProfileParameters vpnClientParams,
             Context context) {
-        return beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
+        return this
+            .beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
                 resourceGroupName, virtualWanName, vpnClientParams, context)
             .getSyncPoller();
     }
@@ -3578,7 +4790,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3612,7 +4825,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3648,7 +4862,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3682,7 +4897,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3718,7 +4934,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3751,7 +4968,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3786,7 +5004,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3820,7 +5039,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

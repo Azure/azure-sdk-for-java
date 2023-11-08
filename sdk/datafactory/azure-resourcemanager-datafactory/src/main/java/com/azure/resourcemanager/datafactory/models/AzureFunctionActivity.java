@@ -23,6 +23,10 @@ public final class AzureFunctionActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureFunctionActivityTypeProperties innerTypeProperties = new AzureFunctionActivityTypeProperties();
 
+    /** Creates an instance of AzureFunctionActivity class. */
+    public AzureFunctionActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Function activity properties.
      *
@@ -57,6 +61,20 @@ public final class AzureFunctionActivity extends ExecutionActivity {
     @Override
     public AzureFunctionActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFunctionActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFunctionActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

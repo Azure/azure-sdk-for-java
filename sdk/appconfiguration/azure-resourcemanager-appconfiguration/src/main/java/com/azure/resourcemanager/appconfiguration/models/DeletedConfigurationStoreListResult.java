@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.fluent.models.DeletedConfigurationStoreInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of deleted configuration stores. */
 @Fluent
 public final class DeletedConfigurationStoreListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedConfigurationStoreListResult.class);
-
     /*
      * The list of deleted configuration store.
      */
@@ -27,6 +23,10 @@ public final class DeletedConfigurationStoreListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of DeletedConfigurationStoreListResult class. */
+    public DeletedConfigurationStoreListResult() {
+    }
 
     /**
      * Get the value property: The list of deleted configuration store.

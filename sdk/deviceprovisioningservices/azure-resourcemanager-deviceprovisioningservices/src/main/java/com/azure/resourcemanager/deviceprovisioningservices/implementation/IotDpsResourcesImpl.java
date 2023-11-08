@@ -28,13 +28,12 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateEndpoi
 import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateLinkResources;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ProvisioningServiceDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.SharedAccessSignatureAuthorizationRule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class IotDpsResourcesImpl implements IotDpsResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotDpsResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IotDpsResourcesImpl.class);
 
     private final IotDpsResourcesClient innerClient;
 
@@ -361,7 +360,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     public ProvisioningServiceDescription getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -369,7 +368,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -383,7 +382,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     public Response<ProvisioningServiceDescription> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -391,7 +390,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -405,7 +404,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     public PrivateEndpointConnection getPrivateEndpointConnectionById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -413,7 +412,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String resourceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -423,7 +422,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String privateEndpointConnectionName = Utils.getValueFromIdByName(id, "privateEndpointConnections");
         if (privateEndpointConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -441,7 +440,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -449,7 +448,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String resourceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -459,7 +458,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String privateEndpointConnectionName = Utils.getValueFromIdByName(id, "privateEndpointConnections");
         if (privateEndpointConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -475,7 +474,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -483,7 +482,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -497,7 +496,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -505,7 +504,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -519,7 +518,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     public PrivateEndpointConnection deletePrivateEndpointConnectionById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -527,7 +526,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String resourceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -537,7 +536,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String privateEndpointConnectionName = Utils.getValueFromIdByName(id, "privateEndpointConnections");
         if (privateEndpointConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -553,7 +552,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
     public PrivateEndpointConnection deletePrivateEndpointConnectionByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -561,7 +560,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String resourceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -571,7 +570,7 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
         String privateEndpointConnectionName = Utils.getValueFromIdByName(id, "privateEndpointConnections");
         if (privateEndpointConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

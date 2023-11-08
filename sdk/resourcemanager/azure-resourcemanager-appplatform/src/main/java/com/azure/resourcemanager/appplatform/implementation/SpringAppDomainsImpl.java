@@ -9,6 +9,7 @@ import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.appplatform.fluent.models.CustomDomainResourceInner;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
+import com.azure.resourcemanager.appplatform.models.CustomDomainValidatePayload;
 import com.azure.resourcemanager.appplatform.models.CustomDomainValidateResult;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDomain;
@@ -105,7 +106,7 @@ public class SpringAppDomainsImpl
     @Override
     public Mono<CustomDomainValidateResult> validateAsync(String domain) {
         return manager().serviceClient().getApps().validateDomainAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), domain);
+            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), new CustomDomainValidatePayload().withName(domain));
     }
 
     SpringAppDomain prepareCreateOrUpdate(String name, CustomDomainProperties properties) {

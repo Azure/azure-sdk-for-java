@@ -39,6 +39,10 @@ public final class VirtualMachineScaleSetInstanceViewInner {
     @JsonProperty(value = "orchestrationServices", access = JsonProperty.Access.WRITE_ONLY)
     private List<OrchestrationServiceSummary> orchestrationServices;
 
+    /** Creates an instance of VirtualMachineScaleSetInstanceViewInner class. */
+    public VirtualMachineScaleSetInstanceViewInner() {
+    }
+
     /**
      * Get the virtualMachine property: The instance view status summary for the virtual machine scale set.
      *

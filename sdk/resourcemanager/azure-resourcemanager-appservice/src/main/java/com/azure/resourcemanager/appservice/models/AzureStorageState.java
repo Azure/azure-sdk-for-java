@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AzureStorageState. */
+/** State of the storage account. */
 public enum AzureStorageState {
     /** Enum value Ok. */
     OK("Ok"),
@@ -36,6 +36,9 @@ public enum AzureStorageState {
      */
     @JsonCreator
     public static AzureStorageState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AzureStorageState[] items = AzureStorageState.values();
         for (AzureStorageState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum AzureStorageState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

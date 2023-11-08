@@ -7,9 +7,18 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchClient;
+import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.implementation.converters.AnalyzeRequestConverter;
+import com.azure.search.documents.implementation.util.MappingUtils;
+import com.azure.search.documents.implementation.util.Utility;
+import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
+import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
@@ -25,6 +34,9 @@ import com.azure.search.documents.indexes.models.SynonymMap;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Objects;
+
+import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearchClientBuilder;
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
@@ -34,19 +46,45 @@ import java.util.List;
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
 public final class SearchIndexClient {
-    private final SearchIndexAsyncClient asyncClient;
+    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexClient.class);
 
-    SearchIndexClient(SearchIndexAsyncClient searchIndexAsyncClient) {
-        this.asyncClient = searchIndexAsyncClient;
+    /**
+     * Search REST API Version
+     */
+    private final SearchServiceVersion serviceVersion;
+
+    /**
+     * The endpoint for the Azure Cognitive Search service.
+     */
+    private final String endpoint;
+
+    /**
+     * The underlying AutoRest client used to interact with the Search service
+     */
+    private final SearchServiceClientImpl restClient;
+
+    private final JsonSerializer serializer;
+
+    /**
+     * The pipeline that powers this client.
+     */
+    private final HttpPipeline httpPipeline;
+
+    SearchIndexClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline,
+                           JsonSerializer serializer) {
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.httpPipeline = httpPipeline;
+        this.serializer = serializer;
+        this.restClient = new SearchServiceClientImpl(httpPipeline, endpoint, serviceVersion.getVersion());
     }
-
     /**
      * Gets the {@link HttpPipeline} powering this client.
      *
      * @return the pipeline.
      */
     HttpPipeline getHttpPipeline() {
-        return this.asyncClient.getHttpPipeline();
+        return this.httpPipeline;
     }
 
     /**
@@ -55,7 +93,7 @@ public final class SearchIndexClient {
      * @return the endpoint value.
      */
     public String getEndpoint() {
-        return this.asyncClient.getEndpoint();
+        return this.endpoint;
     }
 
     /**
@@ -66,7 +104,7 @@ public final class SearchIndexClient {
      * @return a {@link SearchClient} created from the service client configuration
      */
     public SearchClient getSearchClient(String indexName) {
-        return asyncClient.getSearchClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName, endpoint, serviceVersion, httpPipeline, serializer).buildClient();
     }
 
     /**
@@ -83,7 +121,7 @@ public final class SearchIndexClient {
      *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
      * &#41;;
      * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * SearchIndex indexFromService = searchIndexClient.createIndex&#40;searchIndex&#41;;
+     * SearchIndex indexFromService = SEARCH_INDEX_CLIENT.createIndex&#40;searchIndex&#41;;
      * System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
      *     indexFromService.getETag&#40;&#41;&#41;;
      * </pre>
@@ -113,7 +151,7 @@ public final class SearchIndexClient {
      * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
      *
      * Response&lt;SearchIndex&gt; indexFromServiceResponse =
-     *     searchIndexClient.createIndexWithResponse&#40;searchIndex, new Context&#40;key1, value1&#41;&#41;;
+     *     SEARCH_INDEX_CLIENT.createIndexWithResponse&#40;searchIndex, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %s. The index name is %s.%n&quot;,
      *     indexFromServiceResponse.getStatusCode&#40;&#41;, indexFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
      * </pre>
@@ -125,7 +163,10 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> createIndexWithResponse(SearchIndex index, Context context) {
-        return asyncClient.createIndexWithResponse(index, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> {
+            Objects.requireNonNull(index, "'Index' cannot be null");
+            return restClient.getIndexes().createWithResponse(index, null, Utility.enableSyncRestProxy(context));
+        });
     }
 
     /**
@@ -138,7 +179,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getIndex#String -->
      * <pre>
      * SearchIndex indexFromService =
-     *     searchIndexClient.getIndex&#40;&quot;searchIndex&quot;&#41;;
+     *     SEARCH_INDEX_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;;
      * System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
      *     indexFromService.getETag&#40;&#41;&#41;;
      * </pre>
@@ -162,7 +203,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getIndexWithResponse#String-Context -->
      * <pre>
      * Response&lt;SearchIndex&gt; indexFromServiceResponse =
-     *     searchIndexClient.getIndexWithResponse&#40;&quot;searchIndex&quot;, new Context&#40;key1, value1&#41;&#41;;
+     *     SEARCH_INDEX_CLIENT.getIndexWithResponse&#40;&quot;searchIndex&quot;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;The status code of the response is %s. The index name is %s.%n&quot;,
      *     indexFromServiceResponse.getStatusCode&#40;&#41;, indexFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
@@ -175,8 +216,11 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> getIndexWithResponse(String indexName, Context context) {
-        return asyncClient.getIndexWithResponse(indexName, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
+            .getWithResponse(indexName, null, Utility.enableSyncRestProxy(context)));
     }
+
+
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
@@ -187,7 +231,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getIndexStatistics#String -->
      * <pre>
-     * SearchIndexStatistics statistics = searchIndexClient.getIndexStatistics&#40;&quot;searchIndex&quot;&#41;;
+     * SearchIndexStatistics statistics = SEARCH_INDEX_CLIENT.getIndexStatistics&#40;&quot;searchIndex&quot;&#41;;
      * System.out.printf&#40;&quot;There are %d documents and storage size of %d available in 'searchIndex'.%n&quot;,
      *     statistics.getDocumentCount&#40;&#41;, statistics.getStorageSize&#40;&#41;&#41;;
      * </pre>
@@ -210,8 +254,8 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getIndexStatisticsWithResponse#String-Context -->
      * <pre>
-     * Response&lt;SearchIndexStatistics&gt; statistics = searchIndexClient.getIndexStatisticsWithResponse&#40;&quot;searchIndex&quot;,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchIndexStatistics&gt; statistics = SEARCH_INDEX_CLIENT.getIndexStatisticsWithResponse&#40;&quot;searchIndex&quot;,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %s.%n&quot;
      *         + &quot;There are %d documents and storage size of %d available in 'searchIndex'.%n&quot;,
      *     statistics.getStatusCode&#40;&#41;, statistics.getValue&#40;&#41;.getDocumentCount&#40;&#41;,
@@ -225,7 +269,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexStatistics> getIndexStatisticsWithResponse(String indexName, Context context) {
-        return asyncClient.getIndexStatisticsWithResponse(indexName, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
+            .getStatisticsWithResponse(indexName, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -237,7 +282,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listIndexes -->
      * <pre>
-     * PagedIterable&lt;SearchIndex&gt; indexes = searchIndexClient.listIndexes&#40;&#41;;
+     * PagedIterable&lt;SearchIndex&gt; indexes = SEARCH_INDEX_CLIENT.listIndexes&#40;&#41;;
      * for &#40;SearchIndex index: indexes&#41; &#123;
      *     System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, index.getName&#40;&#41;,
      *         index.getETag&#40;&#41;&#41;;
@@ -261,7 +306,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listIndexesWithResponse#Context -->
      * <pre>
-     * PagedIterable&lt;SearchIndex&gt; indexes = searchIndexClient.listIndexes&#40;new Context&#40;key1, value1&#41;&#41;;
+     * PagedIterable&lt;SearchIndex&gt; indexes = SEARCH_INDEX_CLIENT.listIndexes&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is&quot;
      *     + indexes.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
      * for &#40;SearchIndex index: indexes&#41; &#123;
@@ -275,7 +320,16 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndex> listIndexes(Context context) {
-        return new PagedIterable<>(asyncClient.listIndexes(context));
+        try {
+            return new PagedIterable<>(() -> this.listIndexesWithResponse(null, context));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
+    }
+
+    private PagedResponse<SearchIndex> listIndexesWithResponse(String select, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
+            .listSinglePage(select, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -287,7 +341,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listIndexNames -->
      * <pre>
-     * PagedIterable&lt;String&gt; indexes = searchIndexClient.listIndexNames&#40;&#41;;
+     * PagedIterable&lt;String&gt; indexes = SEARCH_INDEX_CLIENT.listIndexNames&#40;&#41;;
      * for &#40;String indexName: indexes&#41; &#123;
      *     System.out.printf&#40;&quot;The index name is %s.%n&quot;, indexName&#41;;
      * &#125;
@@ -310,7 +364,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listIndexNames#Context -->
      * <pre>
-     * PagedIterable&lt;String&gt; indexes = searchIndexClient.listIndexNames&#40;new Context&#40;key1, value1&#41;&#41;;
+     * PagedIterable&lt;String&gt; indexes = SEARCH_INDEX_CLIENT.listIndexNames&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is&quot;
      *     + indexes.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
      * for &#40;String indexName: indexes&#41; &#123;
@@ -324,7 +378,11 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listIndexNames(Context context) {
-        return new PagedIterable<>(asyncClient.listIndexNames(context));
+        try {
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingSearchIndexNames(this.listIndexesWithResponse("name", context)));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -336,10 +394,10 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndex#SearchIndex -->
      * <pre>
-     * SearchIndex indexFromService = searchIndexClient.getIndex&#40;&quot;searchIndex&quot;&#41;;
+     * SearchIndex indexFromService = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;;
      * indexFromService.setSuggesters&#40;Collections.singletonList&#40;new SearchSuggester&#40;&quot;sg&quot;,
      *     Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;&#41;&#41;;
-     * SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndex&#40;indexFromService&#41;;
+     * SearchIndex updatedIndex = SEARCH_INDEX_CLIENT.createOrUpdateIndex&#40;indexFromService&#41;;
      * System.out.printf&#40;&quot;The index name is %s. The suggester name of index is %s.%n&quot;, updatedIndex.getName&#40;&#41;,
      *     updatedIndex.getSuggesters&#40;&#41;.get&#40;0&#41;.getName&#40;&#41;&#41;;
      * </pre>
@@ -362,11 +420,11 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context -->
      * <pre>
-     * SearchIndex indexFromService = searchIndexClient.getIndex&#40;&quot;searchIndex&quot;&#41;;
+     * SearchIndex indexFromService = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;;
      * indexFromService.setSuggesters&#40;Collections.singletonList&#40;new SearchSuggester&#40;&quot;sg&quot;,
      *     Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;&#41;&#41;;
-     * Response&lt;SearchIndex&gt; updatedIndexResponse = searchIndexClient.createOrUpdateIndexWithResponse&#40;indexFromService, true,
-     *     false, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchIndex&gt; updatedIndexResponse = SEARCH_INDEX_CLIENT.createOrUpdateIndexWithResponse&#40;indexFromService, true,
+     *     false, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the normal response is %s.%n&quot;
      *         + &quot;The index name is %s. The ETag of index is %s.%n&quot;, updatedIndexResponse.getStatusCode&#40;&#41;,
      *     updatedIndexResponse.getValue&#40;&#41;.getName&#40;&#41;, updatedIndexResponse.getValue&#40;&#41;.getETag&#40;&#41;&#41;;
@@ -386,7 +444,12 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
         boolean onlyIfUnchanged, Context context) {
-        return asyncClient.createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> {
+            Objects.requireNonNull(index, "'Index' cannot null.");
+            String ifMatch = onlyIfUnchanged ? index.getETag() : null;
+            return restClient.getIndexes().createOrUpdateWithResponse(index.getName(), index, allowIndexDowntime,
+                ifMatch, null, null, Utility.enableSyncRestProxy(context));
+        });
     }
 
     /**
@@ -398,7 +461,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String -->
      * <pre>
-     * searchIndexClient.deleteIndex&#40;&quot;searchIndex&quot;&#41;;
+     * SEARCH_INDEX_CLIENT.deleteIndex&#40;&quot;searchIndex&quot;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String -->
      *
@@ -406,7 +469,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndex(String indexName) {
-        asyncClient.deleteIndexWithResponse(indexName, null, Context.NONE).block();
+        Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
+            .deleteWithResponse(indexName, null, null, null, Utility.enableSyncRestProxy(Context.NONE)));
     }
 
     /**
@@ -418,9 +482,9 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteIndexWithResponse#SearchIndex-boolean-Context -->
      * <pre>
-     * SearchIndex indexFromService = searchIndexClient.getIndex&#40;&quot;searchIndex&quot;&#41;;
-     * Response&lt;Void&gt; deleteResponse = searchIndexClient.deleteIndexWithResponse&#40;indexFromService, true,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     * SearchIndex indexFromService = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;;
+     * Response&lt;Void&gt; deleteResponse = SEARCH_INDEX_CLIENT.deleteIndexWithResponse&#40;indexFromService, true,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteIndexWithResponse#SearchIndex-boolean-Context -->
@@ -433,8 +497,11 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged, Context context) {
-        String etag = onlyIfUnchanged ? index.getETag() : null;
-        return asyncClient.deleteIndexWithResponse(index.getName(), etag, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> {
+            String etag = onlyIfUnchanged ? index.getETag() : null;
+            return restClient.getIndexes()
+                .deleteWithResponse(index.getName(), etag, null, null, Utility.enableSyncRestProxy(context));
+        });
     }
 
     /**
@@ -446,7 +513,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions -->
      * <pre>
-     * PagedIterable&lt;AnalyzedTokenInfo&gt; tokenInfos = searchIndexClient.analyzeText&#40;&quot;searchIndex&quot;,
+     * PagedIterable&lt;AnalyzedTokenInfo&gt; tokenInfos = SEARCH_INDEX_CLIENT.analyzeText&#40;&quot;searchIndex&quot;,
      *     new AnalyzeTextOptions&#40;&quot;The quick brown fox&quot;, LexicalTokenizerName.CLASSIC&#41;&#41;;
      * for &#40;AnalyzedTokenInfo tokenInfo : tokenInfos&#41; &#123;
      *     System.out.printf&#40;&quot;The token emitted by the analyzer is %s.%n&quot;, tokenInfo.getToken&#40;&#41;&#41;;
@@ -473,8 +540,8 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions-Context -->
      * <pre>
-     * PagedIterable&lt;AnalyzedTokenInfo&gt; tokenInfos = searchIndexClient.analyzeText&#40;&quot;searchIndex&quot;,
-     *     new AnalyzeTextOptions&#40;&quot;The quick brown fox&quot;, LexicalTokenizerName.CLASSIC&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * PagedIterable&lt;AnalyzedTokenInfo&gt; tokenInfos = SEARCH_INDEX_CLIENT.analyzeText&#40;&quot;searchIndex&quot;,
+     *     new AnalyzeTextOptions&#40;&quot;The quick brown fox&quot;, LexicalTokenizerName.CLASSIC&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot;
      *     + tokenInfos.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
      * for &#40;AnalyzedTokenInfo tokenInfo : tokenInfos&#41; &#123;
@@ -492,7 +559,17 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions,
         Context context) {
-        return new PagedIterable<>(asyncClient.analyzeText(indexName, analyzeTextOptions, context));
+        try {
+            return new PagedIterable<>(() -> analyzeTextWithResponse(indexName, analyzeTextOptions, context));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
+    }
+
+    private PagedResponse<AnalyzedTokenInfo> analyzeTextWithResponse(String indexName,
+                                                                           AnalyzeTextOptions analyzeTextOptions, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingTokenInfo(restClient.getIndexes()
+            .analyzeWithResponse(indexName, AnalyzeRequestConverter.map(analyzeTextOptions), null, Utility.enableSyncRestProxy(context))));
     }
 
     /**
@@ -506,7 +583,7 @@ public final class SearchIndexClient {
      * <pre>
      * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMap&quot;,
      *     &quot;United States, United States of America, USA&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
-     * SynonymMap synonymMapFromService = searchIndexClient.createSynonymMap&#40;synonymMap&#41;;
+     * SynonymMap synonymMapFromService = SEARCH_INDEX_CLIENT.createSynonymMap&#40;synonymMap&#41;;
      * System.out.printf&#40;&quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;,
      *     synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;;
      * </pre>
@@ -531,8 +608,8 @@ public final class SearchIndexClient {
      * <pre>
      * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMap&quot;,
      *     &quot;United States, United States of America, USA&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
-     * Response&lt;SynonymMap&gt; synonymMapFromService = searchIndexClient.createSynonymMapWithResponse&#40;synonymMap,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SynonymMap&gt; synonymMapFromService = SEARCH_INDEX_CLIENT.createSynonymMapWithResponse&#40;synonymMap,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;
      *         + &quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;, synonymMapFromService.getStatusCode&#40;&#41;,
      *     synonymMapFromService.getValue&#40;&#41;.getName&#40;&#41;, synonymMapFromService.getValue&#40;&#41;.getETag&#40;&#41;&#41;;
@@ -545,7 +622,11 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap, Context context) {
-        return asyncClient.createSynonymMapWithResponse(synonymMap, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> {
+            Objects.requireNonNull(synonymMap, "'synonymMap' cannot be null.");
+            return restClient.getSynonymMaps()
+                .createWithResponse(synonymMap, null, Utility.enableSyncRestProxy(context));
+        });
     }
 
     /**
@@ -558,7 +639,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getSynonymMap#String -->
      * <pre>
      * SynonymMap synonymMapFromService =
-     *     searchIndexClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;;
+     *     SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMap&quot;&#41;;
      * System.out.printf&#40;&quot;The synonym map is %s. The ETag of synonym map is %s.%n&quot;, synonymMapFromService.getName&#40;&#41;,
      *     synonymMapFromService.getETag&#40;&#41;&#41;;
      * </pre>
@@ -582,7 +663,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getSynonymMapWithResponse#String-Context -->
      * <pre>
      * Response&lt;SynonymMap&gt; synonymMapFromService =
-     *     searchIndexClient.getSynonymMapWithResponse&#40;&quot;synonymMap&quot;, new Context&#40;key1, value1&#41;&#41;;
+     *     SEARCH_INDEX_CLIENT.getSynonymMapWithResponse&#40;&quot;synonymMap&quot;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;
      *         + &quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;, synonymMapFromService.getStatusCode&#40;&#41;,
      *     synonymMapFromService.getValue&#40;&#41;.getName&#40;&#41;, synonymMapFromService.getValue&#40;&#41;.getETag&#40;&#41;&#41;;
@@ -595,7 +676,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> getSynonymMapWithResponse(String synonymMapName, Context context) {
-        return asyncClient.getSynonymMapWithResponse(synonymMapName, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
+            .getWithResponse(synonymMapName, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -607,7 +689,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps -->
      * <pre>
-     * PagedIterable&lt;SynonymMap&gt; synonymMaps = searchIndexClient.listSynonymMaps&#40;&#41;;
+     * PagedIterable&lt;SynonymMap&gt; synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMaps&#40;&#41;;
      * for &#40;SynonymMap synonymMap: synonymMaps&#41; &#123;
      *     System.out.printf&#40;&quot;The synonymMap name is %s. The ETag of synonymMap is %s.%n&quot;, synonymMap.getName&#40;&#41;,
      *         synonymMap.getETag&#40;&#41;&#41;;
@@ -631,7 +713,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapsWithResponse#Context -->
      * <pre>
-     * PagedIterable&lt;SynonymMap&gt; synonymMaps = searchIndexClient.listSynonymMaps&#40;new Context&#40;key1, value1&#41;&#41;;
+     * PagedIterable&lt;SynonymMap&gt; synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMaps&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is&quot;
      *     + synonymMaps.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
      * for &#40;SynonymMap index: synonymMaps&#41; &#123;
@@ -645,7 +727,16 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynonymMap> listSynonymMaps(Context context) {
-        return new PagedIterable<>(asyncClient.listSynonymMaps(context));
+        try {
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingSynonymMap(listSynonymMapsWithResponse(null, context)));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
+    }
+
+    private Response<ListSynonymMapsResult> listSynonymMapsWithResponse(String select, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
+            .listWithResponse(select, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -657,7 +748,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNames -->
      * <pre>
-     * PagedIterable&lt;String&gt; synonymMaps = searchIndexClient.listSynonymMapNames&#40;&#41;;
+     * PagedIterable&lt;String&gt; synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMapNames&#40;&#41;;
      * for &#40;String synonymMap: synonymMaps&#41; &#123;
      *     System.out.printf&#40;&quot;The synonymMap name is %s.%n&quot;, synonymMap&#41;;
      * &#125;
@@ -680,7 +771,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNamesWithResponse#Context -->
      * <pre>
-     * PagedIterable&lt;String&gt; synonymMaps = searchIndexClient.listIndexNames&#40;new Context&#40;key1, value1&#41;&#41;;
+     * PagedIterable&lt;String&gt; synonymMaps = SEARCH_INDEX_CLIENT.listIndexNames&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is&quot;
      *     + synonymMaps.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
      * for &#40;String synonymMapNames: synonymMaps&#41; &#123;
@@ -694,7 +785,11 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSynonymMapNames(Context context) {
-        return new PagedIterable<>(asyncClient.listSynonymMapNames(context));
+        try {
+            return new PagedIterable<>(() -> MappingUtils.mappingPagingSynonymMapNames(listSynonymMapsWithResponse("name", context)));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -706,9 +801,9 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMap#SynonymMap -->
      * <pre>
-     * SynonymMap synonymMap = searchIndexClient.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
+     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
      * synonymMap.setSynonyms&#40;&quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
-     * SynonymMap updatedSynonymMap = searchIndexClient.createOrUpdateSynonymMap&#40;synonymMap&#41;;
+     * SynonymMap updatedSynonymMap = SEARCH_INDEX_CLIENT.createOrUpdateSynonymMap&#40;synonymMap&#41;;
      * System.out.printf&#40;&quot;The synonym map name is %s. The synonyms are %s.%n&quot;, updatedSynonymMap.getName&#40;&#41;,
      *     updatedSynonymMap.getSynonyms&#40;&#41;&#41;;
      * </pre>
@@ -731,11 +826,11 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context -->
      * <pre>
-     * SynonymMap synonymMap = searchIndexClient.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
+     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
      * synonymMap.setSynonyms&#40;&quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
      * Response&lt;SynonymMap&gt; updatedSynonymMap =
-     *     searchIndexClient.createOrUpdateSynonymMapWithResponse&#40;synonymMap, true,
-     *         new Context&#40;key1, value1&#41;&#41;;
+     *     SEARCH_INDEX_CLIENT.createOrUpdateSynonymMapWithResponse&#40;synonymMap, true,
+     *         new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the normal response is %s.%n&quot;
      *         + &quot;The synonym map name is %s. The synonyms are %s.%n&quot;, updatedSynonymMap.getStatusCode&#40;&#41;,
      *     updatedSynonymMap.getValue&#40;&#41;.getName&#40;&#41;, updatedSynonymMap.getValue&#40;&#41;.getSynonyms&#40;&#41;&#41;;
@@ -751,8 +846,12 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
         boolean onlyIfUnchanged, Context context) {
-        return asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, context)
-            .block();
+        return Utility.executeRestCallWithExceptionHandling(() -> {
+            Objects.requireNonNull(synonymMap, "'synonymMap' cannot be null.");
+            String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
+            return restClient.getSynonymMaps()
+                .createOrUpdateWithResponse(synonymMap.getName(), synonymMap, ifMatch, null, null, Utility.enableSyncRestProxy(context));
+        });
     }
 
     /**
@@ -764,7 +863,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMap#String -->
      * <pre>
-     * searchIndexClient.deleteSynonymMap&#40;&quot;synonymMap&quot;&#41;;
+     * SEARCH_INDEX_CLIENT.deleteSynonymMap&#40;&quot;synonymMap&quot;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMap#String -->
      *
@@ -772,7 +871,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSynonymMap(String synonymMapName) {
-        asyncClient.deleteSynonymMapWithResponse(synonymMapName, null, Context.NONE).block();
+        Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
+            .deleteWithResponse(synonymMapName, null, null, null, Utility.enableSyncRestProxy(Context.NONE)));
     }
 
     /**
@@ -784,9 +884,9 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SynonymMap-boolean-Context -->
      * <pre>
-     * SynonymMap synonymMap = searchIndexClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;;
-     * Response&lt;Void&gt; response = searchIndexClient.deleteSynonymMapWithResponse&#40;synonymMap, true,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMap&quot;&#41;;
+     * Response&lt;Void&gt; response = SEARCH_INDEX_CLIENT.deleteSynonymMapWithResponse&#40;synonymMap, true,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is&quot; + response.getStatusCode&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SynonymMap-boolean-Context -->
@@ -801,7 +901,8 @@ public final class SearchIndexClient {
     public Response<Void> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
         Context context) {
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
-        return asyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), etag, context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
+            .deleteWithResponse(synonymMap.getName(), etag, null, null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -813,7 +914,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getServiceStatistics -->
      * <pre>
-     * SearchServiceStatistics serviceStatistics = searchIndexClient.getServiceStatistics&#40;&#41;;
+     * SearchServiceStatistics serviceStatistics = SEARCH_INDEX_CLIENT.getServiceStatistics&#40;&#41;;
      * System.out.printf&#40;&quot;There are %s search indexes in your service.%n&quot;,
      *     serviceStatistics.getCounters&#40;&#41;.getIndexCounter&#40;&#41;&#41;;
      * </pre>
@@ -836,7 +937,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getServiceStatisticsWithResponse#Context -->
      * <pre>
      * Response&lt;SearchServiceStatistics&gt; serviceStatistics =
-     *     searchIndexClient.getServiceStatisticsWithResponse&#40;new Context&#40;key1, value1&#41;&#41;;
+     *     SEARCH_INDEX_CLIENT.getServiceStatisticsWithResponse&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %s.%nThere are %s search indexes in your service.%n&quot;,
      *     serviceStatistics.getStatusCode&#40;&#41;,
      *     serviceStatistics.getValue&#40;&#41;.getCounters&#40;&#41;.getIndexCounter&#40;&#41;&#41;;
@@ -848,7 +949,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(Context context) {
-        return asyncClient.getServiceStatisticsWithResponse(context).block();
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getServiceStatisticsWithResponse(null, Utility.enableSyncRestProxy(context)));
     }
 
     /**
@@ -873,7 +974,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias -->
      * <pre>
-     * SearchAlias searchAlias = searchIndexClient.createAlias&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createAlias&#40;new SearchAlias&#40;&quot;my-alias&quot;,
      *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;;
      * System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
      *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
@@ -896,8 +997,8 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context -->
      * <pre>
-     * Response&lt;SearchAlias&gt; response = searchIndexClient.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
-     *         Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     *         Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
      *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
@@ -909,7 +1010,11 @@ public final class SearchIndexClient {
      * @return the created alias.
      */
     public Response<SearchAlias> createAliasWithResponse(SearchAlias alias, Context context) {
-        return asyncClient.createAliasWithResponse(alias, context).block();
+        try {
+            return restClient.getAliases().createWithResponse(alias, null, Utility.enableSyncRestProxy(context));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -921,13 +1026,13 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias -->
      * <pre>
-     * SearchAlias searchAlias = searchIndexClient.createOrUpdateAlias&#40;
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias&#40;
      *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
      *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
      *
-     * searchAlias = searchIndexClient.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
+     * searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
      *     Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Updated alias '%s' to aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
@@ -951,15 +1056,15 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context -->
      * <pre>
-     * Response&lt;SearchAlias&gt; response = searchIndexClient.createOrUpdateAliasWithResponse&#40;
-     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, false, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse&#40;
+     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, false, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
      *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
      *
-     * response = searchIndexClient.createOrUpdateAliasWithResponse&#40;
+     * response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse&#40;
      *     new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;
-     *         .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true, new Context&#40;key1, value1&#41;&#41;;
+     *         .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response status code %d. Updated alias '%s' that aliases index '%s'.&quot;,
      *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
@@ -973,8 +1078,12 @@ public final class SearchIndexClient {
      */
     public Response<SearchAlias> createOrUpdateAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged,
         Context context) {
-        return asyncClient.createOrUpdateAliasWithResponse(alias, onlyIfUnchanged ? alias.getETag() : null, context)
-            .block();
+        try {
+            return restClient.getAliases().createOrUpdateWithResponse(alias.getName(), alias, onlyIfUnchanged ? alias.getETag() : null, null, null,
+                Utility.enableSyncRestProxy(context));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -986,7 +1095,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAlias#String -->
      * <pre>
-     * SearchAlias searchAlias = searchIndexClient.getAlias&#40;&quot;my-alias&quot;&#41;;
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;;
      *
      * System.out.printf&#40;&quot;Retrieved alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
      *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
@@ -1009,7 +1118,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context -->
      * <pre>
-     * Response&lt;SearchAlias&gt; response = searchIndexClient.getAliasWithResponse&#40;&quot;my-alias&quot;, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.getAliasWithResponse&#40;&quot;my-alias&quot;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response status code %d. Retrieved alias '%s' that aliases index '%s'.&quot;,
      *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
@@ -1021,7 +1130,11 @@ public final class SearchIndexClient {
      * @return the retrieved alias.
      */
     public Response<SearchAlias> getAliasWithResponse(String aliasName, Context context) {
-        return asyncClient.getAliasWithResponse(aliasName, context).block();
+        try {
+            return restClient.getAliases().getWithResponse(aliasName, null, Utility.enableSyncRestProxy(context));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -1033,7 +1146,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
      * <pre>
-     * searchIndexClient.deleteAlias&#40;&quot;my-alias&quot;&#41;;
+     * SEARCH_INDEX_CLIENT.deleteAlias&#40;&quot;my-alias&quot;&#41;;
      *
      * System.out.println&#40;&quot;Deleted alias 'my-alias'.&quot;&#41;;
      * </pre>
@@ -1042,7 +1155,7 @@ public final class SearchIndexClient {
      * @param aliasName name of the alias to delete.
      */
     public void deleteAlias(String aliasName) {
-        asyncClient.deleteAliasWithResponse(aliasName, null, Context.NONE).block();
+        deleteAliasWithResponse(aliasName, null, Context.NONE);
     }
 
     /**
@@ -1054,10 +1167,10 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
      * <pre>
-     * SearchAlias searchAlias = searchIndexClient.getAlias&#40;&quot;my-alias&quot;&#41;;
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;;
      *
-     * Response&lt;Void&gt; response = searchIndexClient.deleteAliasWithResponse&#40;searchAlias, true,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;Void&gt; response = SEARCH_INDEX_CLIENT.deleteAliasWithResponse&#40;searchAlias, true,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response status code %d. Deleted alias 'my-alias'.&quot;, response.getStatusCode&#40;&#41;&#41;;
      * </pre>
@@ -1069,8 +1182,15 @@ public final class SearchIndexClient {
      * @return a response indicating the alias has been deleted.
      */
     public Response<Void> deleteAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged, Context context) {
-        return asyncClient.deleteAliasWithResponse(alias.getName(), onlyIfUnchanged ? alias.getETag() : null, context)
-            .block();
+        return deleteAliasWithResponse(alias.getName(), onlyIfUnchanged ? alias.getETag() : null, context);
+    }
+
+    Response<Void> deleteAliasWithResponse(String aliasName, String eTag, Context context) {
+        try {
+            return restClient.getAliases().deleteWithResponse(aliasName, eTag, null, null, Utility.enableSyncRestProxy(context));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -1082,7 +1202,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listAliases -->
      * <pre>
-     * searchIndexClient.listAliases&#40;&#41;
+     * SEARCH_INDEX_CLIENT.listAliases&#40;&#41;
      *     .forEach&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
      *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
@@ -1103,7 +1223,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context -->
      * <pre>
-     * searchIndexClient.listAliases&#40;new Context&#40;key1, value1&#41;&#41;
+     * SEARCH_INDEX_CLIENT.listAliases&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;
      *     .forEach&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
      *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
@@ -1113,6 +1233,10 @@ public final class SearchIndexClient {
      * @return a list of aliases in the service.
      */
     public PagedIterable<SearchAlias> listAliases(Context context) {
-        return new PagedIterable<>(asyncClient.listAliases(context));
+        try {
+            return new PagedIterable<>(() -> restClient.getAliases().listSinglePage(null, Utility.enableSyncRestProxy(context)));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 }

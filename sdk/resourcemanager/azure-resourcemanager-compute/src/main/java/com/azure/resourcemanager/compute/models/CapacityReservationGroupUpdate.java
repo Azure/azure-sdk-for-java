@@ -19,6 +19,10 @@ public final class CapacityReservationGroupUpdate extends UpdateResource {
     @JsonProperty(value = "properties")
     private CapacityReservationGroupProperties innerProperties;
 
+    /** Creates an instance of CapacityReservationGroupUpdate class. */
+    public CapacityReservationGroupUpdate() {
+    }
+
     /**
      * Get the innerProperties property: capacity reservation group Properties.
      *

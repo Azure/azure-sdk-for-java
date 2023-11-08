@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** An on-premises file system dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,29 +19,25 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class FileShareDataset extends Dataset {
     /*
-     * The path of the on-premises file system. Type: string (or Expression
-     * with resultType string).
+     * The path of the on-premises file system. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
 
     /*
-     * The name of the on-premises file system. Type: string (or Expression
-     * with resultType string).
+     * The name of the on-premises file system. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.fileName")
     private Object fileName;
 
     /*
-     * The start of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
@@ -51,9 +49,8 @@ public class FileShareDataset extends Dataset {
     private DatasetStorageFormat format;
 
     /*
-     * Specify a filter to be used to select a subset of files in the
-     * folderPath rather than all files. Type: string (or Expression with
-     * resultType string).
+     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.fileFilter")
     private Object fileFilter;
@@ -63,6 +60,9 @@ public class FileShareDataset extends Dataset {
      */
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
+
+    /** Creates an instance of FileShareDataset class. */
+    public FileShareDataset() {}
 
     /**
      * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
@@ -211,6 +211,55 @@ public class FileShareDataset extends Dataset {
      */
     public FileShareDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileShareDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileShareDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileShareDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileShareDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileShareDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileShareDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileShareDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

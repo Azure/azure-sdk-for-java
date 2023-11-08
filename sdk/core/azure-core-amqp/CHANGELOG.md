@@ -1,6 +1,6 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.9.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,300 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.8.12 (2023-11-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+
+## 2.9.0-beta.6 (2023-11-01)
+
+### Bugs Fixed
+
+- Fixes the ReactorReceiver to probe the monitoring meter only once to see if tracking message sequence number is needed.
+- Fixes the MessageFlux to not use the doOnEach side effect operator for reacting to endpoint active and terminal states.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.44.1`.
+
+## 2.8.11 (2023-10-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to `1.44.1`.
+
+## 2.8.10 (2023-10-06)
+
+### Bugs Fixed
+
+- Fixes the potential NullPointerException in ReactorSession if the thread constructing ReactorSession ever happens to run the disposeWork (cleanup phase) synchronously. ([36916](https://github.com/Azure/azure-sdk-for-java/issues/36916))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to `1.44.0`.
+
+## 2.8.9 (2023-09-07)
+
+### Bugs Fixed
+
+- Fixes the NullPointerException in RequestResponseChannel when the thread constructing RequestResponseChannel happens to run the cleanup phase synchronously. ([36607](https://github.com/Azure/azure-sdk-for-java/issues/36607))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+
+## 2.9.0-beta.5 (2023-08-11)
+
+### Features Added
+
+- Update ReceiverUnsettledDeliveries::sendDisposition(,) API to return DeliveryNotOnLinkException if the link is closed (hence delivery map cleared) or the DeliveryMap has no matching delivery. This simplifies the implementation of disposition attempt on management channel.
+- Adding support to turn off retry in MessageFlux hence propagating error or completion event from the first receiver to downstream, this allows using MessageFlux in the cases that need proper credit accounting but not rolling to another receiver.
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`
+
+## 2.8.8 (2023-08-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
+
+## 2.9.0-beta.4 (2023-07-18)
+
+### Bugs Fixed
+
+- Removing the unnecessary scheduling to Scheduler while waiting for receiver link activation, reducing the subscription count to receiver link endpoint states, addressing subscription leak when switching to the new receiver link.
+
+### Features Added
+
+- Adding common ReceiversPumpingScheduler for internal message pumping by the *ReactorReceiver types.
+
+### Other Changes
+
+- Beta baselined to 2.9.0-beta.2.
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
+## 2.8.7 (2023-07-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
+## 2.9.0-beta.3 (2023-07-06)
+
+### Other Changes
+
+- This version is the same as June-2023 2.8.6 version, except the azure-core is updated to 1.41.0. I.e., this version is not baselined to 2.9.0-beta.2.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
+## 2.9.0-beta.2 (2023-06-13)
+
+### Features Added
+
+- Prefetch reliability redesign. Adds MessageFlux, new credit accounting, better connection caching that removes thread hopping, handling of disposition ack on arrival thread, and reduces the Reactor operator queues in the async pipelines.
+
+## 2.8.6 (2023-06-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
+
+## 2.8.5 (2023-05-04)
+
+### Bugs Fixed
+
+- Addressing the overhead of batch send allocating byte array equal to the max message size. ([34426](https://github.com/Azure/azure-sdk-for-java/issues/34426))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to `1.39.0`.
+
+## 2.8.4 (2023-04-07)
+
+### Bugs Fixed
+
+- Addressing IllegalStateException due to double free of Connection reference by the Transport.
+- Fixes bug where `Message.messageId` and `Message.groupId` are not set on the uber message when sending a collection of messages.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
+
+## 2.8.3 (2023-03-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to `1.37.0`.
+
+## 2.8.2 (2023-02-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+
+## 2.9.0-beta.1 (2023-01-30)
+
+### Features Added
+
+- Added ReactorConnectionCache to simplify the Amqp Connection recovery ([#33224](https://github.com/Azure/azure-sdk-for-java/issues/33224))
+
+## 2.8.1 (2023-01-05)
+
+### Bugs Fixed
+
+- Removing inactive session when it has timed out, so `ReactorConnection.getSession(String)` does not return the same session.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
+
+## 2.8.0 (2022-11-04)
+
+### Bugs Fixed
+
+- Updating the host value for the Websocket upgrade request to match with the HTTP host ([31825](https://github.com/Azure/azure-sdk-for-java/issues/31825))
+- Enabling HTTP Proxy for custom endpoint and updating Proxy CONNECT request to use the actual front-end host ([31826](https://github.com/Azure/azure-sdk-for-java/issues/31826))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to `1.34.0`.
+
+## 2.7.2 (2022-10-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+- Upgraded Reactor from `3.4.22` to `3.4.23`.
+
+## 2.7.1 (2022-09-01)
+
+### Features Added
+
+- Added AMQP-level metrics to reporting number of sent batches, duration of network call, number of received message and consumer lag as well as 
+  error counters. Metrics are off by default and can be enabled with [azure-core-metrics-opentelemetry](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/README.md)
+  plugin. ([#30583](https://github.com/Azure/azure-sdk-for-java/pull/30583))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.21` to `3.4.22`.
+
+## 2.7.0 (2022-08-05)
+
+### Features Added
+
+- Added `AmqpClientOptions` to enable set identifier for AMQP client and link. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.19` to `3.4.21`.
+
+## 2.6.0 (2022-06-30)
+
+### Features Added
+
+ - Added `AmqpMessageConstant` `MESSAGE_STATE_ANNOTATION_NAME("x-opt-message-state")`.
+
+### Bugs Fixed
+
+- Ensure ReactorReceiver EndpointStates terminates if there is no remote-close acknowledgment ([#29212](https://github.com/Azure/azure-sdk-for-java/issues/29212))
+- Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582)) 
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+
+## 2.5.2 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 2.5.1 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+
+- Added "entityPath" context to logger for ReceiveLinkHandlers, SendLinkHandler, LinkHandler, and ReactorReceiver. 
+
+## 2.5.0 (2022-05-06)
+
+### Features Added
+
+- Added `ProxyOptions.fromConfiguration(Configuration)` to enable creation of `ProxyOptions` from an environment 
+  configuration.
+
+### Bugs Fixed
+
+- Fixed proxy authentication type not being read from configuration. ([#28073](https://github.com/Azure/azure-sdk-for-java/issues/28073))
+- Updated ProxyOptions.SYSTEM_DEFAULTS to use `ProxyAuthenticationType.NONE`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
+
+## 2.4.2 (2022-04-01)
+
+### Bugs Fixed
+
+- Fixed an issue where error from one receiver bypassed to parent connection that resulted in taking down rest of the 
+  receivers. ([#27716](https://github.com/Azure/azure-sdk-for-java/issues/27716))
+- Downgraded the level of a log entry in RequestResponseChannel from error to warn, the sender and receiver often 
+  recover from this error, but due to the log level, it generates false alerts in monitoring systems. ([26968](https://github.com/Azure/azure-sdk-for-java/issues/26968))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
 
 ## 2.4.1 (2022-03-16)
 
@@ -298,7 +592,7 @@
 - Update qpid-proton-j-extensions dependency
 - Shorten tracing span names
 - Fixes AMQP link handlers not to close associated sessions when they are closed.
-- Move to use Schedulers.single() because pushing to Qpid's reactor is not thread-safe.
+- Move to use Schedulers.single() because pushing to qpid-proton-j reactor is not thread-safe.
 
 ## 1.0.0-beta.8 (2019-12-03)
 

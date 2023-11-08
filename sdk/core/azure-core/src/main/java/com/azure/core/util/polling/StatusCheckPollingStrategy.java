@@ -58,8 +58,8 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, value, retryAfter))
-                .switchIfEmpty(Mono.defer(() -> Mono.just(new PollResponse<>(
-                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null, retryAfter))));
+                .switchIfEmpty(Mono.fromSupplier(() -> new PollResponse<>(
+                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null, retryAfter)));
         } else {
             return Mono.error(new AzureException("Operation failed or cancelled: " + response.getStatusCode()));
         }

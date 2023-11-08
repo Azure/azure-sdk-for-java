@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphDeviceManagementExchangeAccessState. */
+/** deviceManagementExchangeAccessState. */
 public final class MicrosoftGraphDeviceManagementExchangeAccessState
     extends ExpandableStringEnum<MicrosoftGraphDeviceManagementExchangeAccessState> {
     /** Static value none for MicrosoftGraphDeviceManagementExchangeAccessState. */
@@ -27,6 +27,15 @@ public final class MicrosoftGraphDeviceManagementExchangeAccessState
     public static final MicrosoftGraphDeviceManagementExchangeAccessState QUARANTINED = fromString("quarantined");
 
     /**
+     * Creates a new instance of MicrosoftGraphDeviceManagementExchangeAccessState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphDeviceManagementExchangeAccessState() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphDeviceManagementExchangeAccessState from its string representation.
      *
      * @param name a name to look for.
@@ -37,7 +46,11 @@ public final class MicrosoftGraphDeviceManagementExchangeAccessState
         return fromString(name, MicrosoftGraphDeviceManagementExchangeAccessState.class);
     }
 
-    /** @return known MicrosoftGraphDeviceManagementExchangeAccessState values. */
+    /**
+     * Gets known MicrosoftGraphDeviceManagementExchangeAccessState values.
+     *
+     * @return known MicrosoftGraphDeviceManagementExchangeAccessState values.
+     */
     public static Collection<MicrosoftGraphDeviceManagementExchangeAccessState> values() {
         return values(MicrosoftGraphDeviceManagementExchangeAccessState.class);
     }

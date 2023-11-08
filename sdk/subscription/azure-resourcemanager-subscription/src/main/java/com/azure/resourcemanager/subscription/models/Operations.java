@@ -12,20 +12,20 @@ public interface Operations {
     /**
      * Lists all of the available Microsoft.Subscription API operations.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list operations along with {@link Response}.
+     */
+    Response<OperationListResult> listWithResponse(Context context);
+
+    /**
+     * Lists all of the available Microsoft.Subscription API operations.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list operations.
      */
     OperationListResult list();
-
-    /**
-     * Lists all of the available Microsoft.Subscription API operations.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list operations.
-     */
-    Response<OperationListResult> listWithResponse(Context context);
 }

@@ -50,6 +50,10 @@ public final class BandwidthScheduleImpl
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public BandwidthScheduleInner innerModel() {
         return this.innerObject;
     }

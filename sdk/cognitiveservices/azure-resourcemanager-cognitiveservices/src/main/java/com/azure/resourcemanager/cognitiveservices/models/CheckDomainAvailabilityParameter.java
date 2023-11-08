@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Check Domain availability parameter. */
 @Fluent
 public final class CheckDomainAvailabilityParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckDomainAvailabilityParameter.class);
-
     /*
      * The subdomain name to use.
      */
@@ -31,6 +28,10 @@ public final class CheckDomainAvailabilityParameter {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /** Creates an instance of CheckDomainAvailabilityParameter class. */
+    public CheckDomainAvailabilityParameter() {
+    }
 
     /**
      * Get the subdomainName property: The subdomain name to use.
@@ -99,16 +100,18 @@ public final class CheckDomainAvailabilityParameter {
      */
     public void validate() {
         if (subdomainName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subdomainName in model CheckDomainAvailabilityParameter"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property type in model CheckDomainAvailabilityParameter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckDomainAvailabilityParameter.class);
 }

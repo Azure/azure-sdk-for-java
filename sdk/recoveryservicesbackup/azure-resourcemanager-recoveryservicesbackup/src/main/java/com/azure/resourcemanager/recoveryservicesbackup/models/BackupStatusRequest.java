@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** BackupStatus request. */
 @Fluent
 public final class BackupStatusRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupStatusRequest.class);
-
     /*
      * Container Type - VM, SQLPaaS, DPM, AzureFileShare...
      */
@@ -31,6 +27,10 @@ public final class BackupStatusRequest {
      */
     @JsonProperty(value = "poLogicalName")
     private String poLogicalName;
+
+    /** Creates an instance of BackupStatusRequest class. */
+    public BackupStatusRequest() {
+    }
 
     /**
      * Get the resourceType property: Container Type - VM, SQLPaaS, DPM, AzureFileShare...

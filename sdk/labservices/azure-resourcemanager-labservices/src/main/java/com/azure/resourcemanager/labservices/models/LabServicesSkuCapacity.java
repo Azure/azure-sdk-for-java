@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The scale out/in options of the SKU. */
 @Immutable
 public final class LabServicesSkuCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabServicesSkuCapacity.class);
-
     /*
      * The default capacity for this resource.
      */

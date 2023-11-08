@@ -33,6 +33,9 @@ public final class ActivityDependency {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ActivityDependency class. */
+    public ActivityDependency() {}
+
     /**
      * Get the activity property: Activity name.
      *

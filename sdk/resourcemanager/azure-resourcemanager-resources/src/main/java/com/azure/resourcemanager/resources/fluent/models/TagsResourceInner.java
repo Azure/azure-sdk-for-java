@@ -19,6 +19,10 @@ public final class TagsResourceInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private Tags properties;
 
+    /** Creates an instance of TagsResourceInner class. */
+    public TagsResourceInner() {
+    }
+
     /**
      * Get the properties property: The set of tags.
      *

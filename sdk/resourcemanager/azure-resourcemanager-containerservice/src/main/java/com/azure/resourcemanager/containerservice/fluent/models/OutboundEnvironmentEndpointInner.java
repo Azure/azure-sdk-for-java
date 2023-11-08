@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class OutboundEnvironmentEndpointInner {
     /*
-     * The category of endpoints accessed by the AKS agent node, e.g.
-     * azure-resource-management, apiserver, etc.
+     * The category of endpoints accessed by the AKS agent node, e.g. azure-resource-management, apiserver, etc.
      */
     @JsonProperty(value = "category")
     private String category;
@@ -24,6 +23,10 @@ public final class OutboundEnvironmentEndpointInner {
      */
     @JsonProperty(value = "endpoints")
     private List<EndpointDependency> endpoints;
+
+    /** Creates an instance of OutboundEnvironmentEndpointInner class. */
+    public OutboundEnvironmentEndpointInner() {
+    }
 
     /**
      * Get the category property: The category of endpoints accessed by the AKS agent node, e.g.

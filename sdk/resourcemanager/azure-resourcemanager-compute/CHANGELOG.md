@@ -1,6 +1,212 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.33.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Features Added
+
+- Supported `listByVirtualMachineScaleSet` for `VirtualMachines`.
+
+### Bugs Fixed
+
+- Fixed a bug that `VirtualMachineCustomImages.getById()` returns `HyperVGenerationTypes.V1` for all instances. ([#36619](https://github.com/Azure/azure-sdk-for-java/issues/36619))
+
+## 2.30.0 (2023-08-25)
+
+### Features Added
+
+- Supported updating delete options for OS disk, data disks and network interfaces attached to `VirtualMachine`.
+
+### Bugs Fixed
+
+- Fixed bug that create proximity placement group with `VirtualMachineScaleSet` fails. ([#36417](https://github.com/Azure/azure-sdk-for-java/issues/36417))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-07-01`.
+
+## 2.29.0 (2023-07-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.28.0 (2023-06-25)
+
+### Features Added
+
+- Supported `withLogicalSectorSizeInBytes` in `Disk`.
+- Supported `PREMIUM_V2_LRS` in `DiskSkuTypes`.
+
+## 2.27.0 (2023-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.26.0 (2023-04-21)
+
+### Features Added
+
+- Supported `timeCreated()` in `VirtualMachineScaleSetVM` and `VirtualMachine`.
+
+### Breaking Changes
+
+- Changed type from `ApiEntityReference` to `DiskRestorePointAttributes` of `diskRestorePoint` property in `RestorePointSourceVMDataDisk` and `RestorePointSourceVmosDisk` class.
+- Removed some setters in `RestorePointSourceMetadata`, `RestorePointSourceVmosDisk`, `RestorePointSourceVmosDisk` class. It should not affect customer, as these properties are read-only.
+- Removed `id` property from classes. It should not affect customer, as these properties does not exist in runtime.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-03-01`.
+
+## 2.25.0 (2023-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.24.0 (2023-02-17)
+
+### Bugs Fixed
+
+- Fixed wrong javadocs of `withSsh()` in `VirtualMachine` and `VirtualMachineScaleSet`.
+- Fixed a bug that scaling up scale sets results in outdated models for existing VMs.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+## 2.22.0 (2022-12-23)
+
+### Features Added
+
+- Supported `withHibernationSupport` method in `Disk` to support hibernation for the OS on the disk.
+
+## 2.21.0 (2022-11-24)
+
+### Features Added
+
+- Supported `withCopyStart` method in `Snapshot` for copying incremental snapshot from incremental snapshot.
+- Supported `awaitCopyStartCompletion` and `awaitCopyStartCompletionAsync` method in `Snapshot`.
+- Supported `copyCompletionPercent` and `copyCompletionError` method in `Snapshot` for retrieving `CopyStart` progress.
+- Supported `withTrustedLaunch`, `withSecureBoot` and `withVTpm` methods in `VirtualMachine`.
+- Supported `UBUNTU_SERVER_18_04_LTS_GEN2`, `UBUNTU_SERVER_20_04_LTS` and `UBUNTU_SERVER_20_04_LTS_GEN2` in `KnownLinuxVirtualMachineImage`.
+- Supported `WINDOWS_SERVER_2019_DATACENTER_GEN2`, `WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS_GEN2`, 
+  `WINDOWS_SERVER_2016_DATACENTER_GEN2` and `WINDOWS_DESKTOP_10_21H2_PRO_GEN2` in `KnownWindowsVirtualMachineImage`.
+- Supported `withTrustedLaunch` and `withHyperVGeneration` methods in `GalleryImage`.
+
+### Breaking Changes
+
+- Property `uri` removed from class `GalleryArtifactVersionSource`. This property was non-functional.
+- Type of property `GalleryImageVersionStorageProfile.source` changed to the class `GalleryArtifactVersionFullSource`, a subclass of `GalleryArtifactVersionSource`.
+- Type of property `GalleryOSDiskImage.source` changed to the class `GalleryDiskImageSource`, a subclass of `GalleryArtifactVersionSource`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated Gallery to `2022-03-03`.
+
+## 2.20.0 (2022-10-26)
+
+### Bugs Fixed
+
+- Fixed bug where `getInstanceView()` in `VirtualMachineExtension` throws NPE if the VM is in deallocated state.
+
+## 2.19.0 (2022-09-23)
+
+### Breaking Changes
+
+- Property `protectedSettingsFromKeyVault` in `VirtualMachineExtensionUpdate` changed from `Object` to `KeyVaultSecretReference`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-08-01`.
+
+## 2.18.0 (2022-08-26)
+
+### Bugs Fixed
+
+- Fixed bug where `withDataFromDisk(Disk managedDisk)` in `Snapshot` mistakenly used SKU from Disk. ([#29811](https://github.com/Azure/azure-sdk-for-java/issues/29811))
+
+## 2.17.0 (2022-07-25)
+
+### Breaking Changes
+
+- Property `protectedSettings` in `CloudServiceExtensionProperties` changed from `String` to `Object`.
+- Property `settings` in `CloudServiceExtensionProperties` changed from `String` to `Object`.
+- Property `communityGalleryInfo` in `SharingProfile` changed from `Object` to `CommunityGalleryInfo`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-04-04`.
+
+## 2.16.0 (2022-06-24)
+
+### Features Added
+
+- Supported swapping OS disk in `VirtualMachine`.
+
+### Breaking Changes
+
+- Provisioning state in gallery changed to `GalleryProvisioningState`.
+- User assigned identity in virtual machine scale set changed to `VirtualMachineIdentityUserAssignedIdentities`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-02`.
+
+## 2.15.0 (2022-05-25)
+
+### Features Added
+
+- Supported `DiskEncryptionSet` for disk encryption set.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-01`.
+
+## 2.14.0 (2022-04-11)
 
 ### Features Added
 

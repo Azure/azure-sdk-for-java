@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about target workload during restore operation. */
 @Fluent
 public final class TargetRestoreInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetRestoreInfo.class);
-
     /*
      * Can Overwrite if Target DataBase already exists
      */
@@ -27,8 +23,7 @@ public final class TargetRestoreInfo {
     private String containerId;
 
     /*
-     * Database name InstanceName/DataBaseName for SQL or System/DbName for SAP
-     * Hana
+     * Database name InstanceName/DataBaseName for SQL or System/DbName for SAP Hana
      */
     @JsonProperty(value = "databaseName")
     private String databaseName;
@@ -38,6 +33,10 @@ public final class TargetRestoreInfo {
      */
     @JsonProperty(value = "targetDirectoryForFileRestore")
     private String targetDirectoryForFileRestore;
+
+    /** Creates an instance of TargetRestoreInfo class. */
+    public TargetRestoreInfo() {
+    }
 
     /**
      * Get the overwriteOption property: Can Overwrite if Target DataBase already exists.

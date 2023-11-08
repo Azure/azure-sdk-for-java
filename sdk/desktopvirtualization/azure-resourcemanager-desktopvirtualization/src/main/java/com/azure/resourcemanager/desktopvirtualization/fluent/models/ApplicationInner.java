@@ -10,14 +10,11 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema for Application properties. */
 @Fluent
 public final class ApplicationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
@@ -29,6 +26,10 @@ public final class ApplicationInner extends ProxyResource {
      */
     @JsonProperty(value = "properties", required = true)
     private ApplicationProperties innerProperties = new ApplicationProperties();
+
+    /** Creates an instance of ApplicationInner class. */
+    public ApplicationInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -339,7 +340,7 @@ public final class ApplicationInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model ApplicationInner"));
@@ -347,4 +348,6 @@ public final class ApplicationInner extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationInner.class);
 }

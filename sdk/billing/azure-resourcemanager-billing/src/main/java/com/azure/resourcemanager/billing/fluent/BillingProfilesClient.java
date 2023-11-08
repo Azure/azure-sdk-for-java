@@ -23,7 +23,7 @@ public interface BillingProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing profiles.
+     * @return the list of billing profiles as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingProfileInner> listByBillingAccount(String billingAccountName);
@@ -38,10 +38,27 @@ public interface BillingProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing profiles.
+     * @return the list of billing profiles as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingProfileInner> listByBillingAccount(String billingAccountName, String expand, Context context);
+
+    /**
+     * Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft
+     * Customer Agreement or Microsoft Partner Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param expand May be used to expand the invoice sections.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a billing profile by its ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BillingProfileInner> getWithResponse(
+        String billingAccountName, String billingProfileName, String expand, Context context);
 
     /**
      * Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft
@@ -58,23 +75,6 @@ public interface BillingProfilesClient {
     BillingProfileInner get(String billingAccountName, String billingProfileName);
 
     /**
-     * Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft
-     * Customer Agreement or Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param expand May be used to expand the invoice sections.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing profile by its ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BillingProfileInner> getWithResponse(
-        String billingAccountName, String billingProfileName, String expand, Context context);
-
-    /**
      * Creates or updates a billing profile. The operation is supported for billing accounts with agreement type
      * Microsoft Customer Agreement or Microsoft Partner Agreement.
      *
@@ -84,7 +84,7 @@ public interface BillingProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing profile.
+     * @return the {@link SyncPoller} for polling of a billing profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BillingProfileInner>, BillingProfileInner> beginCreateOrUpdate(
@@ -101,7 +101,7 @@ public interface BillingProfilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing profile.
+     * @return the {@link SyncPoller} for polling of a billing profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BillingProfileInner>, BillingProfileInner> beginCreateOrUpdate(

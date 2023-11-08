@@ -25,6 +25,10 @@ public final class HostnameBindingCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of HostnameBindingCollection class. */
+    public HostnameBindingCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SKU that defines the tier and kind of the peering. */
 @Fluent
 public final class PeeringSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringSku.class);
-
     /*
      * The name of the peering SKU.
      */
@@ -37,6 +33,10 @@ public final class PeeringSku {
      */
     @JsonProperty(value = "size")
     private Size size;
+
+    /** Creates an instance of PeeringSku class. */
+    public PeeringSku() {
+    }
 
     /**
      * Get the name property: The name of the peering SKU.

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The API backend service. */
 @Fluent
 public final class ApiResourceBackendService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiResourceBackendService.class);
-
     /*
      * The service URL.
      */
     @JsonProperty(value = "serviceUrl")
     private String serviceUrl;
+
+    /** Creates an instance of ApiResourceBackendService class. */
+    public ApiResourceBackendService() {
+    }
 
     /**
      * Get the serviceUrl property: The service URL.

@@ -10,10 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databox.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.databox.models.MitigateJobRequest;
 import com.azure.resourcemanager.databox.models.ResourceProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 
@@ -25,13 +24,13 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         this.serviceManager = serviceManager;
     }
 
-    public void mitigate(String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest) {
-        this.serviceClient().mitigate(jobName, resourceGroupName, mitigateJobRequest);
-    }
-
     public Response<Void> mitigateWithResponse(
         String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest, Context context) {
         return this.serviceClient().mitigateWithResponse(jobName, resourceGroupName, mitigateJobRequest, context);
+    }
+
+    public void mitigate(String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest) {
+        this.serviceClient().mitigate(jobName, resourceGroupName, mitigateJobRequest);
     }
 
     private ResourceProvidersClient serviceClient() {

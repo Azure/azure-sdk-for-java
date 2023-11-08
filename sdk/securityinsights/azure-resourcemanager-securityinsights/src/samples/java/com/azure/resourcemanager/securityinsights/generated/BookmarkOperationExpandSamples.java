@@ -12,7 +12,7 @@ import java.util.UUID;
 /** Samples for BookmarkOperation Expand. */
 public final class BookmarkOperationExpandSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/bookmarks/expand/PostExpandBookmark.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/expand/PostExpandBookmark.json
      */
     /**
      * Sample code: Expand an bookmark.

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.mariadb.fluent.RecoverableServersClient;
 import com.azure.resourcemanager.mariadb.fluent.models.RecoverableServerResourceInner;
 import com.azure.resourcemanager.mariadb.models.RecoverableServerResource;
 import com.azure.resourcemanager.mariadb.models.RecoverableServers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecoverableServersImpl implements RecoverableServers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableServersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecoverableServersImpl.class);
 
     private final RecoverableServersClient innerClient;
 
@@ -25,15 +24,6 @@ public final class RecoverableServersImpl implements RecoverableServers {
         RecoverableServersClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public RecoverableServerResource get(String resourceGroupName, String serverName) {
-        RecoverableServerResourceInner inner = this.serviceClient().get(resourceGroupName, serverName);
-        if (inner != null) {
-            return new RecoverableServerResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<RecoverableServerResource> getWithResponse(
@@ -46,6 +36,15 @@ public final class RecoverableServersImpl implements RecoverableServers {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RecoverableServerResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RecoverableServerResource get(String resourceGroupName, String serverName) {
+        RecoverableServerResourceInner inner = this.serviceClient().get(resourceGroupName, serverName);
+        if (inner != null) {
+            return new RecoverableServerResourceImpl(inner, this.manager());
         } else {
             return null;
         }

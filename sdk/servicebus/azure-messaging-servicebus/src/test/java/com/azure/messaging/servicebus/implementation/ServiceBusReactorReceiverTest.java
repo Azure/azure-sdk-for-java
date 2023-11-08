@@ -4,7 +4,9 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpConnection;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -16,9 +18,7 @@ import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -52,13 +52,13 @@ class ServiceBusReactorReceiverTest {
     private static final String ENTITY_PATH = "queue-name";
     private static final String LINK_NAME = "a-link-name";
     private static final String CONNECTION_ID = "a-connection-id";
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReactorReceiver.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorReceiver.class);
     private final EmitterProcessor<EndpointState> endpointStates = EmitterProcessor.create();
     private final FluxSink<EndpointState> endpointStatesSink = endpointStates.sink();
 
     private final EmitterProcessor<Delivery> deliveryProcessor = EmitterProcessor.create();
-    private final FluxSink<Delivery> deliverySink = deliveryProcessor.sink();
 
     @Mock
     private Receiver receiver;
@@ -68,8 +68,7 @@ class ServiceBusReactorReceiverTest {
     private ReactorProvider reactorProvider;
     @Mock
     private ReactorDispatcher reactorDispatcher;
-    @Mock
-    private AmqpRetryPolicy retryPolicy;
+    private final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
     @Mock
     private ReceiveLinkHandler receiveLinkHandler;
     @Mock
@@ -78,31 +77,21 @@ class ServiceBusReactorReceiverTest {
     private ServiceBusReactorReceiver reactorReceiver;
     private AutoCloseable openMocks;
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(60));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     @BeforeEach
     void setup(TestInfo testInfo) throws IOException {
-        logger.info("[{}] Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
         openMocks = MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
 
         doAnswer(invocation -> {
-            logger.info("Running work on dispatcher.");
+            LOGGER.info("Running work on dispatcher.");
             return null;
         }).when(reactorDispatcher).invoke(any());
 
         doAnswer(invocation -> {
-            logger.info("Running work on dispatcher.");
+            LOGGER.info("Running work on dispatcher.");
             return null;
         }).when(reactorDispatcher).invoke(any(), any());
 
@@ -116,12 +105,12 @@ class ServiceBusReactorReceiverTest {
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
 
         reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, receiveLinkHandler,
-            tokenManager, reactorProvider, Duration.ofSeconds(20), retryPolicy);
+            tokenManager, reactorProvider, retryPolicy);
     }
 
     @AfterEach
     void teardown(TestInfo testInfo) throws Exception {
-        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
 
         openMocks.close();
         Mockito.framework().clearInlineMock(this);
@@ -145,7 +134,8 @@ class ServiceBusReactorReceiverTest {
         StepVerifier.create(reactorReceiver.getSessionId())
             .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
             .expectNext(actualSession)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -163,7 +153,8 @@ class ServiceBusReactorReceiverTest {
         // Act & Assert
         StepVerifier.create(reactorReceiver.getSessionId())
             .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -186,6 +177,7 @@ class ServiceBusReactorReceiverTest {
         StepVerifier.create(reactorReceiver.getSessionLockedUntil())
             .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
             .expectNext(lockedUntil)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 }

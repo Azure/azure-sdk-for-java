@@ -94,21 +94,7 @@ public interface WorkbooksClient {
      * Get a single workbook by its resourceName.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
-     *     request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook by its resourceName.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkbookInner getByResourceGroup(String resourceGroupName, String resourceName);
-
-    /**
-     * Get a single workbook by its resourceName.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
+     * @param resourceName The name of the resource.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
      *     false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
@@ -123,23 +109,24 @@ public interface WorkbooksClient {
         String resourceGroupName, String resourceName, Boolean canFetchContent, Context context);
 
     /**
-     * Delete a workbook.
+     * Get a single workbook by its resourceName.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
+     * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single workbook by its resourceName.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName);
+    WorkbookInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Delete a workbook.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
+     * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
@@ -151,25 +138,23 @@ public interface WorkbooksClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Create a new workbook.
+     * Delete a workbook.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param workbookProperties Properties that need to be specified to create a new workbook.
+     * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights workbook definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkbookInner createOrUpdate(String resourceGroupName, String resourceName, WorkbookInner workbookProperties);
+    void delete(String resourceGroupName, String resourceName);
 
     /**
      * Create a new workbook.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
+     * @param resourceName The name of the resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param context The context to associate with this operation.
@@ -177,7 +162,7 @@ public interface WorkbooksClient {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights workbook definition along with {@link Response}.
+     * @return a workbook definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkbookInner> createOrUpdateWithResponse(
@@ -188,24 +173,25 @@ public interface WorkbooksClient {
         Context context);
 
     /**
-     * Updates a workbook that has already been added.
+     * Create a new workbook.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
+     * @param resourceName The name of the resource.
+     * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights workbook definition.
+     * @return a workbook definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkbookInner update(String resourceGroupName, String resourceName);
+    WorkbookInner createOrUpdate(String resourceGroupName, String resourceName, WorkbookInner workbookProperties);
 
     /**
      * Updates a workbook that has already been added.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
+     * @param resourceName The name of the resource.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param workbookUpdateParameters Properties that need to be specified to create a new workbook.
      * @param context The context to associate with this operation.
@@ -213,7 +199,7 @@ public interface WorkbooksClient {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights workbook definition along with {@link Response}.
+     * @return a workbook definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkbookInner> updateWithResponse(
@@ -224,10 +210,24 @@ public interface WorkbooksClient {
         Context context);
 
     /**
+     * Updates a workbook that has already been added.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
+     *     request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workbook definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkbookInner update(String resourceGroupName, String resourceName);
+
+    /**
      * Get the revisions for the workbook defined by its resourceName.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
+     * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
@@ -242,7 +242,7 @@ public interface WorkbooksClient {
      * Get the revisions for the workbook defined by its resourceName.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
+     * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
@@ -258,22 +258,7 @@ public interface WorkbooksClient {
      * Get a single workbook revision defined by its revisionId.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param revisionId The id of the workbook's revision.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
-     *     request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook revision defined by its revisionId.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkbookInner revisionGet(String resourceGroupName, String resourceName, String revisionId);
-
-    /**
-     * Get a single workbook revision defined by its revisionId.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
+     * @param resourceName The name of the resource.
      * @param revisionId The id of the workbook's revision.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,4 +270,19 @@ public interface WorkbooksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkbookInner> revisionGetWithResponse(
         String resourceGroupName, String resourceName, String revisionId, Context context);
+
+    /**
+     * Get a single workbook revision defined by its revisionId.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource.
+     * @param revisionId The id of the workbook's revision.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
+     *     request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single workbook revision defined by its revisionId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkbookInner revisionGet(String resourceGroupName, String resourceName, String revisionId);
 }

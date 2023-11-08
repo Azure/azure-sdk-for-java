@@ -5,40 +5,34 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Localized display information for this particular operation. */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
-     * The localized friendly form of the resource provider name, e.g.
-     * "Microsoft Monitoring Insights" or "Microsoft Compute".
+     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+     * Compute".
      */
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
-     * The localized friendly name of the resource type related to this
-     * operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+     * Schedule Collections".
      */
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
-     * The concise, localized friendly name for the operation; suitable for
-     * dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual
-     * Machine".
+     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+     * Machine", "Restart Virtual Machine".
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
-     * The short, localized friendly description of the operation; suitable for
-     * tool tips and detailed views.
+     * The short, localized friendly description of the operation; suitable for tool tips and detailed views.
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ValidationStatus. */
+/** Current status of the validation. */
 public final class ValidationStatus extends ExpandableStringEnum<ValidationStatus> {
     /** Static value Default for ValidationStatus. */
     public static final ValidationStatus DEFAULT = fromString("Default");
@@ -35,6 +35,15 @@ public final class ValidationStatus extends ExpandableStringEnum<ValidationStatu
     public static final ValidationStatus STOPPED = fromString("Stopped");
 
     /**
+     * Creates a new instance of ValidationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ValidationStatus() {
+    }
+
+    /**
      * Creates or finds a ValidationStatus from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class ValidationStatus extends ExpandableStringEnum<ValidationStatu
         return fromString(name, ValidationStatus.class);
     }
 
-    /** @return known ValidationStatus values. */
+    /**
+     * Gets known ValidationStatus values.
+     *
+     * @return known ValidationStatus values.
+     */
     public static Collection<ValidationStatus> values() {
         return values(ValidationStatus.class);
     }

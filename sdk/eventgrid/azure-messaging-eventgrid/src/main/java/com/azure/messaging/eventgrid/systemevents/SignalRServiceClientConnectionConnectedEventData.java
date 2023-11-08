@@ -35,6 +35,9 @@ public final class SignalRServiceClientConnectionConnectedEventData {
     @JsonProperty(value = "userId")
     private String userId;
 
+    /** Creates an instance of SignalRServiceClientConnectionConnectedEventData class. */
+    public SignalRServiceClientConnectionConnectedEventData() {}
+
     /**
      * Get the timestamp property: The time at which the event occurred.
      *

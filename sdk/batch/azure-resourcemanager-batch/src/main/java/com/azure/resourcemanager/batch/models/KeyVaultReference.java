@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class KeyVaultReference {
     /*
-     * The resource ID of the Azure key vault associated with the Batch
-     * account.
+     * The resource ID of the Azure key vault associated with the Batch account.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
@@ -23,6 +22,10 @@ public final class KeyVaultReference {
      */
     @JsonProperty(value = "url", required = true)
     private String url;
+
+    /** Creates an instance of KeyVaultReference class. */
+    public KeyVaultReference() {
+    }
 
     /**
      * Get the id property: The resource ID of the Azure key vault associated with the Batch account.

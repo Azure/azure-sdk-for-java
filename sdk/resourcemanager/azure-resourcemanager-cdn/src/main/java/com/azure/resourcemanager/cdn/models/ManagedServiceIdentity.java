@@ -6,46 +6,71 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
+import java.util.UUID;
 
-/** Managed service identity. */
+/** Managed service identity (system assigned and/or user assigned identities). */
 @Fluent
-public class ManagedServiceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedServiceIdentity.class);
+public final class ManagedServiceIdentity {
+    /*
+     * The service principal ID of the system assigned identity. This property will only be provided for a system
+     * assigned identity.
+     */
+    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
+    private UUID principalId;
 
     /*
-     * Type of managed service identity.
+     * The tenant ID of the system assigned identity. This property will only be provided for a system assigned
+     * identity.
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
+    private UUID tenantId;
+
+    /*
+     * Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+     */
+    @JsonProperty(value = "type", required = true)
     private ManagedServiceIdentityType type;
 
     /*
-     * Tenant of managed service identity.
-     */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
-
-    /*
-     * Principal Id of managed service identity.
-     */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
-    private String principalId;
-
-    /*
-     * The list of user assigned identities associated with the resource. The
-     * user identity dictionary key references will be ARM resource ids in the
-     * form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
+     * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys
+     * will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
+    /** Creates an instance of ManagedServiceIdentity class. */
+    public ManagedServiceIdentity() {
+    }
+
     /**
-     * Get the type property: Type of managed service identity.
+     * Get the principalId property: The service principal ID of the system assigned identity. This property will only
+     * be provided for a system assigned identity.
+     *
+     * @return the principalId value.
+     */
+    public UUID principalId() {
+        return this.principalId;
+    }
+
+    /**
+     * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided for
+     * a system assigned identity.
+     *
+     * @return the tenantId value.
+     */
+    public UUID tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Get the type property: Type of managed service identity (where both SystemAssigned and UserAssigned types are
+     * allowed).
      *
      * @return the type value.
      */
@@ -54,7 +79,8 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Set the type property: Type of managed service identity.
+     * Set the type property: Type of managed service identity (where both SystemAssigned and UserAssigned types are
+     * allowed).
      *
      * @param type the type value to set.
      * @return the ManagedServiceIdentity object itself.
@@ -65,27 +91,10 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Get the tenantId property: Tenant of managed service identity.
-     *
-     * @return the tenantId value.
-     */
-    public String tenantId() {
-        return this.tenantId;
-    }
-
-    /**
-     * Get the principalId property: Principal Id of managed service identity.
-     *
-     * @return the principalId value.
-     */
-    public String principalId() {
-        return this.principalId;
-    }
-
-    /**
-     * Get the userAssignedIdentities property: The list of user assigned identities associated with the resource. The
-     * user identity dictionary key references will be ARM resource ids in the form:
+     * Get the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
      *
      * @return the userAssignedIdentities value.
      */
@@ -94,9 +103,10 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user assigned identities associated with the resource. The
-     * user identity dictionary key references will be ARM resource ids in the form:
+     * Set the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
      *
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedServiceIdentity object itself.
@@ -112,6 +122,11 @@ public class ManagedServiceIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (type() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model ManagedServiceIdentity"));
+        }
         if (userAssignedIdentities() != null) {
             userAssignedIdentities()
                 .values()
@@ -123,4 +138,6 @@ public class ManagedServiceIdentity {
                     });
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedServiceIdentity.class);
 }

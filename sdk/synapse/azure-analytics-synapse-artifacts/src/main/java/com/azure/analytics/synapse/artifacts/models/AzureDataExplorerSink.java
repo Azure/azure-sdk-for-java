@@ -15,25 +15,25 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureDataExplorerSink extends CopySink {
     /*
-     * A name of a pre-created csv mapping that was defined on the target Kusto
-     * table. Type: string.
+     * A name of a pre-created csv mapping that was defined on the target Kusto table. Type: string.
      */
     @JsonProperty(value = "ingestionMappingName")
     private Object ingestionMappingName;
 
     /*
-     * An explicit column mapping description provided in a json format. Type:
-     * string.
+     * An explicit column mapping description provided in a json format. Type: string.
      */
     @JsonProperty(value = "ingestionMappingAsJson")
     private Object ingestionMappingAsJson;
 
     /*
-     * If set to true, any aggregation will be skipped. Default is false. Type:
-     * boolean.
+     * If set to true, any aggregation will be skipped. Default is false. Type: boolean.
      */
     @JsonProperty(value = "flushImmediately")
     private Object flushImmediately;
+
+    /** Creates an instance of AzureDataExplorerSink class. */
+    public AzureDataExplorerSink() {}
 
     /**
      * Get the ingestionMappingName property: A name of a pre-created csv mapping that was defined on the target Kusto
@@ -98,6 +98,41 @@ public final class AzureDataExplorerSink extends CopySink {
      */
     public AzureDataExplorerSink setFlushImmediately(Object flushImmediately) {
         this.flushImmediately = flushImmediately;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

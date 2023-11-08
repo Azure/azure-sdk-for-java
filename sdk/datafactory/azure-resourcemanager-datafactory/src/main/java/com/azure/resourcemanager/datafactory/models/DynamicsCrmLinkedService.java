@@ -24,6 +24,10 @@ public final class DynamicsCrmLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private DynamicsCrmLinkedServiceTypeProperties innerTypeProperties = new DynamicsCrmLinkedServiceTypeProperties();
 
+    /** Creates an instance of DynamicsCrmLinkedService class. */
+    public DynamicsCrmLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Dynamics CRM linked service properties.
      *
@@ -348,22 +352,22 @@ public final class DynamicsCrmLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
-    public DynamicsCrmLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public DynamicsCrmLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new DynamicsCrmLinkedServiceTypeProperties();
         }

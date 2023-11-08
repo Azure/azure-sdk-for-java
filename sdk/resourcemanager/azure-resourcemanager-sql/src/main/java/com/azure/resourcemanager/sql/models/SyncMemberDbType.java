@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SyncMemberDbType. */
+/** Type of the sync agent linked database. */
 public final class SyncMemberDbType extends ExpandableStringEnum<SyncMemberDbType> {
     /** Static value AzureSqlDatabase for SyncMemberDbType. */
     public static final SyncMemberDbType AZURE_SQL_DATABASE = fromString("AzureSqlDatabase");
@@ -27,7 +27,11 @@ public final class SyncMemberDbType extends ExpandableStringEnum<SyncMemberDbTyp
         return fromString(name, SyncMemberDbType.class);
     }
 
-    /** @return known SyncMemberDbType values. */
+    /**
+     * Gets known SyncMemberDbType values.
+     *
+     * @return known SyncMemberDbType values.
+     */
     public static Collection<SyncMemberDbType> values() {
         return values(SyncMemberDbType.class);
     }

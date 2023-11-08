@@ -5,23 +5,21 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of available operation display property service specification metrics. */
 @Fluent
 public final class AvailableOperationDisplayPropertyServiceSpecificationMetricsList {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(AvailableOperationDisplayPropertyServiceSpecificationMetricsList.class);
-
     /*
      * Metric specifications of operation
      */
     @JsonProperty(value = "metricSpecifications")
     private List<AvailableOperationDisplayPropertyServiceSpecificationMetricsItem> metricSpecifications;
+
+    /** Creates an instance of AvailableOperationDisplayPropertyServiceSpecificationMetricsList class. */
+    public AvailableOperationDisplayPropertyServiceSpecificationMetricsList() {
+    }
 
     /**
      * Get the metricSpecifications property: Metric specifications of operation.

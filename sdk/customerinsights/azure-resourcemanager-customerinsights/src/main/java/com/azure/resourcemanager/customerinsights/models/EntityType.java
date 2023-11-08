@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for EntityType. */
+/** Type of source entity. */
 public enum EntityType {
     /** Enum value None. */
     NONE("None"),
@@ -36,6 +36,9 @@ public enum EntityType {
      */
     @JsonCreator
     public static EntityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EntityType[] items = EntityType.values();
         for (EntityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum EntityType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

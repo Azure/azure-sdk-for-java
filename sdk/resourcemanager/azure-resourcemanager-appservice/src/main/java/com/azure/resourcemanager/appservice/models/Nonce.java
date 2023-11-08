@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Nonce {
     /*
-     * <code>false</code> if the nonce should not be validated while completing
-     * the login flow; otherwise, <code>true</code>.
+     * <code>false</code> if the nonce should not be validated while completing the login flow; otherwise,
+     * <code>true</code>.
      */
     @JsonProperty(value = "validateNonce")
     private Boolean validateNonce;
@@ -22,6 +22,10 @@ public final class Nonce {
      */
     @JsonProperty(value = "nonceExpirationInterval")
     private String nonceExpirationInterval;
+
+    /** Creates an instance of Nonce class. */
+    public Nonce() {
+    }
 
     /**
      * Get the validateNonce property: &lt;code&gt;false&lt;/code&gt; if the nonce should not be validated while

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** onenoteResource. */
 @Fluent
 public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEntityBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenoteResource.class);
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * The content stream
@@ -37,6 +36,10 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOnenoteResource class. */
+    public MicrosoftGraphOnenoteResource() {
+    }
+
     /**
      * Get the content property: The content stream.
      *
@@ -44,7 +47,7 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
      */
     public byte[] content() {
         if (this.content == null) {
-            return null;
+            return EMPTY_BYTE_ARRAY;
         }
         return this.content.decodedBytes();
     }

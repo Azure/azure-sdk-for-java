@@ -14,10 +14,9 @@ import com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyRe
 import com.azure.resourcemanager.timeseriesinsights.models.AccessPolicies;
 import com.azure.resourcemanager.timeseriesinsights.models.AccessPolicyListResponse;
 import com.azure.resourcemanager.timeseriesinsights.models.AccessPolicyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccessPoliciesImpl implements AccessPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccessPoliciesImpl.class);
 
     private final AccessPoliciesClient innerClient;
 
@@ -28,16 +27,6 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public AccessPolicyResource get(String resourceGroupName, String environmentName, String accessPolicyName) {
-        AccessPolicyResourceInner inner =
-            this.serviceClient().get(resourceGroupName, environmentName, accessPolicyName);
-        if (inner != null) {
-            return new AccessPolicyResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AccessPolicyResource> getWithResponse(
@@ -55,8 +44,14 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
     }
 
-    public void delete(String resourceGroupName, String environmentName, String accessPolicyName) {
-        this.serviceClient().delete(resourceGroupName, environmentName, accessPolicyName);
+    public AccessPolicyResource get(String resourceGroupName, String environmentName, String accessPolicyName) {
+        AccessPolicyResourceInner inner =
+            this.serviceClient().get(resourceGroupName, environmentName, accessPolicyName);
+        if (inner != null) {
+            return new AccessPolicyResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -64,14 +59,8 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, accessPolicyName, context);
     }
 
-    public AccessPolicyListResponse listByEnvironment(String resourceGroupName, String environmentName) {
-        AccessPolicyListResponseInner inner =
-            this.serviceClient().listByEnvironment(resourceGroupName, environmentName);
-        if (inner != null) {
-            return new AccessPolicyListResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String environmentName, String accessPolicyName) {
+        this.serviceClient().delete(resourceGroupName, environmentName, accessPolicyName);
     }
 
     public Response<AccessPolicyListResponse> listByEnvironmentWithResponse(
@@ -89,10 +78,20 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
     }
 
+    public AccessPolicyListResponse listByEnvironment(String resourceGroupName, String environmentName) {
+        AccessPolicyListResponseInner inner =
+            this.serviceClient().listByEnvironment(resourceGroupName, environmentName);
+        if (inner != null) {
+            return new AccessPolicyListResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public AccessPolicyResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -100,14 +99,14 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String environmentName = Utils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
         String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +118,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
     public Response<AccessPolicyResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -127,14 +126,14 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String environmentName = Utils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
         String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,7 +145,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,26 +153,26 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String environmentName = Utils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
         String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, environmentName, accessPolicyName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, environmentName, accessPolicyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,14 +180,14 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String environmentName = Utils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
         String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

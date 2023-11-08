@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ShareErrorCode. */
+/** Error codes returned by the service. */
 public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     /** Static value AccountAlreadyExists for ShareErrorCode. */
     public static final ShareErrorCode ACCOUNT_ALREADY_EXISTS = fromString("AccountAlreadyExists");
@@ -215,6 +215,14 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     public static final ShareErrorCode FEATURE_VERSION_MISMATCH = fromString("FeatureVersionMismatch");
 
     /**
+     * Creates a new instance of ShareErrorCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ShareErrorCode() {}
+
+    /**
      * Creates or finds a ShareErrorCode from its string representation.
      *
      * @param name a name to look for.
@@ -225,7 +233,11 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
         return fromString(name, ShareErrorCode.class);
     }
 
-    /** @return known ShareErrorCode values. */
+    /**
+     * Gets known ShareErrorCode values.
+     *
+     * @return known ShareErrorCode values.
+     */
     public static Collection<ShareErrorCode> values() {
         return values(ShareErrorCode.class);
     }

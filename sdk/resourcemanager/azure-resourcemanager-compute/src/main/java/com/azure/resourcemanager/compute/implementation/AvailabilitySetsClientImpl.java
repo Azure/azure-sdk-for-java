@@ -69,11 +69,10 @@ public final class AvailabilitySetsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface AvailabilitySetsService {
+    public interface AvailabilitySetsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/availabilitySets/{availabilitySetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetInner>> createOrUpdate(
@@ -88,8 +87,7 @@ public final class AvailabilitySetsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/availabilitySets/{availabilitySetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetInner>> update(
@@ -104,8 +102,7 @@ public final class AvailabilitySetsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/availabilitySets/{availabilitySetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Void>> delete(
@@ -119,8 +116,7 @@ public final class AvailabilitySetsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/availabilitySets/{availabilitySetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetInner>> getByResourceGroup(
@@ -146,8 +142,7 @@ public final class AvailabilitySetsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/availabilitySets")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetListResult>> listByResourceGroup(
@@ -160,8 +155,7 @@ public final class AvailabilitySetsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/availabilitySets/{availabilitySetName}/vmSizes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/vmSizes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<VirtualMachineSizeListResult>> listAvailableSizes(
@@ -234,7 +228,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -293,7 +287,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -324,31 +318,7 @@ public final class AvailabilitySetsClientImpl
     public Mono<AvailabilitySetInner> createOrUpdateAsync(
         String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, availabilitySetName, parameters)
-            .flatMap(
-                (Response<AvailabilitySetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or update an availability set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Create Availability Set operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailabilitySetInner createOrUpdate(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, availabilitySetName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -368,6 +338,23 @@ public final class AvailabilitySetsClientImpl
     public Response<AvailabilitySetInner> createOrUpdateWithResponse(
         String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, availabilitySetName, parameters, context).block();
+    }
+
+    /**
+     * Create or update an availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the Create Availability Set operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AvailabilitySetInner createOrUpdate(
+        String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, availabilitySetName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -410,7 +397,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -469,7 +456,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -500,31 +487,7 @@ public final class AvailabilitySetsClientImpl
     public Mono<AvailabilitySetInner> updateAsync(
         String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, availabilitySetName, parameters)
-            .flatMap(
-                (Response<AvailabilitySetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update an availability set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName The name of the availability set.
-     * @param parameters Parameters supplied to the Update Availability Set operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailabilitySetInner update(
-        String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters) {
-        return updateAsync(resourceGroupName, availabilitySetName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -544,6 +507,23 @@ public final class AvailabilitySetsClientImpl
     public Response<AvailabilitySetInner> updateWithResponse(
         String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, availabilitySetName, parameters, context).block();
+    }
+
+    /**
+     * Update an availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @param parameters Parameters supplied to the Update Availability Set operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AvailabilitySetInner update(
+        String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters) {
+        return updateWithResponse(resourceGroupName, availabilitySetName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -578,7 +558,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -629,7 +609,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -655,22 +635,7 @@ public final class AvailabilitySetsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String availabilitySetName) {
-        return deleteWithResponseAsync(resourceGroupName, availabilitySetName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete an availability set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String availabilitySetName) {
-        deleteAsync(resourceGroupName, availabilitySetName).block();
+        return deleteWithResponseAsync(resourceGroupName, availabilitySetName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -687,6 +652,20 @@ public final class AvailabilitySetsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String availabilitySetName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, availabilitySetName, context).block();
+    }
+
+    /**
+     * Delete an availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String availabilitySetName) {
+        deleteWithResponse(resourceGroupName, availabilitySetName, Context.NONE);
     }
 
     /**
@@ -723,7 +702,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -775,7 +754,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -803,29 +782,7 @@ public final class AvailabilitySetsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailabilitySetInner> getByResourceGroupAsync(String resourceGroupName, String availabilitySetName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, availabilitySetName)
-            .flatMap(
-                (Response<AvailabilitySetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Retrieves information about an availability set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param availabilitySetName The name of the availability set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailabilitySetInner getByResourceGroup(String resourceGroupName, String availabilitySetName) {
-        return getByResourceGroupAsync(resourceGroupName, availabilitySetName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -844,6 +801,21 @@ public final class AvailabilitySetsClientImpl
     public Response<AvailabilitySetInner> getByResourceGroupWithResponse(
         String resourceGroupName, String availabilitySetName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, availabilitySetName, context).block();
+    }
+
+    /**
+     * Retrieves information about an availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AvailabilitySetInner getByResourceGroup(String resourceGroupName, String availabilitySetName) {
+        return getByResourceGroupWithResponse(resourceGroupName, availabilitySetName, Context.NONE).getValue();
     }
 
     /**
@@ -870,7 +842,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -920,7 +892,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1038,7 +1010,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1093,7 +1065,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1211,7 +1183,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1268,7 +1240,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1360,7 +1332,8 @@ public final class AvailabilitySetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1397,7 +1370,8 @@ public final class AvailabilitySetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1435,7 +1409,8 @@ public final class AvailabilitySetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1471,7 +1446,8 @@ public final class AvailabilitySetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

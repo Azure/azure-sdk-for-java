@@ -16,6 +16,9 @@ public final class DynamicExecutorAllocation {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of DynamicExecutorAllocation class. */
+    public DynamicExecutorAllocation() {}
+
     /**
      * Get the enabled property: Indicates whether Dynamic Executor Allocation is enabled or not.
      *

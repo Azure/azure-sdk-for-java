@@ -12,19 +12,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MongoDbAtlasLinkedServiceTypeProperties {
     /*
-     * The MongoDB Atlas connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The MongoDB Atlas connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the MongoDB Atlas database that you want to access. Type:
-     * string (or Expression with resultType string).
+     * The name of the MongoDB Atlas database that you want to access. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "database", required = true)
     private Object database;
+
+    /*
+     * The driver version that you want to choose. Allowed value are v1 and v2. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "driverVersion")
+    private Object driverVersion;
+
+    /** Creates an instance of MongoDbAtlasLinkedServiceTypeProperties class. */
+    public MongoDbAtlasLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or
@@ -67,6 +77,28 @@ public final class MongoDbAtlasLinkedServiceTypeProperties {
      */
     public MongoDbAtlasLinkedServiceTypeProperties withDatabase(Object database) {
         this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the driverVersion value.
+     */
+    public Object driverVersion() {
+        return this.driverVersion;
+    }
+
+    /**
+     * Set the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param driverVersion the driverVersion value to set.
+     * @return the MongoDbAtlasLinkedServiceTypeProperties object itself.
+     */
+    public MongoDbAtlasLinkedServiceTypeProperties withDriverVersion(Object driverVersion) {
+        this.driverVersion = driverVersion;
         return this;
     }
 

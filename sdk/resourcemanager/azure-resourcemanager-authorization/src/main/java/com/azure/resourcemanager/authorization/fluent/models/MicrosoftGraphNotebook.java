@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** notebook. */
 @Fluent
 public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHierarchyModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphNotebook.class);
-
     /*
      * Indicates whether this is the user's default notebook. Read-only.
      */
@@ -27,8 +24,8 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
     private Boolean isDefault;
 
     /*
-     * Indicates whether the notebook is shared. If true, the contents of the
-     * notebook can be seen by people other than the owner. Read-only.
+     * Indicates whether the notebook is shared. If true, the contents of the notebook can be seen by people other than
+     * the owner. Read-only.
      */
     @JsonProperty(value = "isShared")
     private Boolean isShared;
@@ -40,21 +37,20 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
     private MicrosoftGraphNotebookLinks links;
 
     /*
-     * The URL for the sectionGroups navigation property, which returns all the
-     * section groups in the notebook. Read-only.
+     * The URL for the sectionGroups navigation property, which returns all the section groups in the notebook.
+     * Read-only.
      */
     @JsonProperty(value = "sectionGroupsUrl")
     private String sectionGroupsUrl;
 
     /*
-     * The URL for the sections navigation property, which returns all the
-     * sections in the notebook. Read-only.
+     * The URL for the sections navigation property, which returns all the sections in the notebook. Read-only.
      */
     @JsonProperty(value = "sectionsUrl")
     private String sectionsUrl;
 
     /*
-     * The userRole property.
+     * onenoteUserRole
      */
     @JsonProperty(value = "userRole")
     private MicrosoftGraphOnenoteUserRole userRole;
@@ -75,6 +71,10 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
      * notebook
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphNotebook class. */
+    public MicrosoftGraphNotebook() {
+    }
 
     /**
      * Get the isDefault property: Indicates whether this is the user's default notebook. Read-only.
@@ -183,7 +183,7 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
     }
 
     /**
-     * Get the userRole property: The userRole property.
+     * Get the userRole property: onenoteUserRole.
      *
      * @return the userRole value.
      */
@@ -192,7 +192,7 @@ public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHie
     }
 
     /**
-     * Set the userRole property: The userRole property.
+     * Set the userRole property: onenoteUserRole.
      *
      * @param userRole the userRole value to set.
      * @return the MicrosoftGraphNotebook object itself.

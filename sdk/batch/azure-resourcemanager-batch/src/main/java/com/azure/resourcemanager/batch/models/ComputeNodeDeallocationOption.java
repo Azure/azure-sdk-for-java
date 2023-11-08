@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ComputeNodeDeallocationOption. */
+/** Determines what to do with a node and its running task(s) after it has been selected for deallocation. */
 public enum ComputeNodeDeallocationOption {
     /** Enum value Requeue. */
     REQUEUE("Requeue"),
@@ -36,6 +36,9 @@ public enum ComputeNodeDeallocationOption {
      */
     @JsonCreator
     public static ComputeNodeDeallocationOption fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ComputeNodeDeallocationOption[] items = ComputeNodeDeallocationOption.values();
         for (ComputeNodeDeallocationOption item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum ComputeNodeDeallocationOption {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

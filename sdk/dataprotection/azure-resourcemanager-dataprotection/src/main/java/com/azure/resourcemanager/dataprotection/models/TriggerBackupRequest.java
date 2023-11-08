@@ -6,24 +6,31 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** TriggerBackupRequest Trigger backup request. */
+/**
+ * TriggerBackupRequest
+ *
+ * <p>Trigger backup request.
+ */
 @Fluent
 public final class TriggerBackupRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerBackupRequest.class);
-
     /*
-     * AdHocBackupRuleOptions Name for the Rule of the Policy which needs to be
-     * applied for this backup
+     * AdHocBackupRuleOptions
+     *
+     * Name for the Rule of the Policy which needs to be applied for this backup
      */
     @JsonProperty(value = "backupRuleOptions", required = true)
     private AdHocBackupRuleOptions backupRuleOptions;
 
+    /** Creates an instance of TriggerBackupRequest class. */
+    public TriggerBackupRequest() {
+    }
+
     /**
-     * Get the backupRuleOptions property: AdHocBackupRuleOptions Name for the Rule of the Policy which needs to be
-     * applied for this backup.
+     * Get the backupRuleOptions property: AdHocBackupRuleOptions
+     *
+     * <p>Name for the Rule of the Policy which needs to be applied for this backup.
      *
      * @return the backupRuleOptions value.
      */
@@ -32,8 +39,9 @@ public final class TriggerBackupRequest {
     }
 
     /**
-     * Set the backupRuleOptions property: AdHocBackupRuleOptions Name for the Rule of the Policy which needs to be
-     * applied for this backup.
+     * Set the backupRuleOptions property: AdHocBackupRuleOptions
+     *
+     * <p>Name for the Rule of the Policy which needs to be applied for this backup.
      *
      * @param backupRuleOptions the backupRuleOptions value to set.
      * @return the TriggerBackupRequest object itself.
@@ -50,7 +58,7 @@ public final class TriggerBackupRequest {
      */
     public void validate() {
         if (backupRuleOptions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property backupRuleOptions in model TriggerBackupRequest"));
@@ -58,4 +66,6 @@ public final class TriggerBackupRequest {
             backupRuleOptions().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TriggerBackupRequest.class);
 }

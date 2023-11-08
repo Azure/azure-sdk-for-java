@@ -7,7 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for GuestOSType. */
+/** The Guest OS type. */
 public enum GuestOSType {
     /** Enum value linux. */
     LINUX("linux"),
@@ -33,6 +33,9 @@ public enum GuestOSType {
      */
     @JsonCreator
     public static GuestOSType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         GuestOSType[] items = GuestOSType.values();
         for (GuestOSType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum GuestOSType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

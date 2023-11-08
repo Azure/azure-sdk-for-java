@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class CosmosDbSqlApiSink extends CopySink {
     /*
-     * Describes how to write data to Azure Cosmos DB. Type: string (or
-     * Expression with resultType string). Allowed values: insert and upsert.
+     * Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed
+     * values: insert and upsert.
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
+
+    /** Creates an instance of CosmosDbSqlApiSink class. */
+    public CosmosDbSqlApiSink() {}
 
     /**
      * Get the writeBehavior property: Describes how to write data to Azure Cosmos DB. Type: string (or Expression with
@@ -40,6 +43,41 @@ public final class CosmosDbSqlApiSink extends CopySink {
      */
     public CosmosDbSqlApiSink setWriteBehavior(Object writeBehavior) {
         this.writeBehavior = writeBehavior;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbSqlApiSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbSqlApiSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbSqlApiSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbSqlApiSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbSqlApiSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

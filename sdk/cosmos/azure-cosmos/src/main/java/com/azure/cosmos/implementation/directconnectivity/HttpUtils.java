@@ -90,4 +90,12 @@ public class HttpUtils {
         }
         return result;
     }
+
+    public static Map<String, String> unescape(Map<String, String> headers) {
+        if (headers != null) {
+            headers.computeIfPresent(HttpConstants.HttpHeaders.OWNER_FULL_NAME,
+                (ownerKey, ownerValue) -> HttpUtils.urlDecode(ownerValue));
+        }
+        return headers;
+    }
 }

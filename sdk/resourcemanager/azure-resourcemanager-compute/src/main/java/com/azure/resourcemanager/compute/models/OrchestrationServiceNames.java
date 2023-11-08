@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrchestrationServiceNames. */
+/** The name of the service. */
 public final class OrchestrationServiceNames extends ExpandableStringEnum<OrchestrationServiceNames> {
     /** Static value AutomaticRepairs for OrchestrationServiceNames. */
     public static final OrchestrationServiceNames AUTOMATIC_REPAIRS = fromString("AutomaticRepairs");
+
+    /**
+     * Creates a new instance of OrchestrationServiceNames value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrchestrationServiceNames() {
+    }
 
     /**
      * Creates or finds a OrchestrationServiceNames from its string representation.
@@ -24,7 +33,11 @@ public final class OrchestrationServiceNames extends ExpandableStringEnum<Orches
         return fromString(name, OrchestrationServiceNames.class);
     }
 
-    /** @return known OrchestrationServiceNames values. */
+    /**
+     * Gets known OrchestrationServiceNames values.
+     *
+     * @return known OrchestrationServiceNames values.
+     */
     public static Collection<OrchestrationServiceNames> values() {
         return values(OrchestrationServiceNames.class);
     }

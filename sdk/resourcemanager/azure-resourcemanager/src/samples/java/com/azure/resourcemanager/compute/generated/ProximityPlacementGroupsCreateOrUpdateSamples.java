@@ -4,14 +4,15 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
+import com.azure.resourcemanager.compute.models.ProximityPlacementGroupPropertiesIntent;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
+import java.util.Arrays;
 
 /** Samples for ProximityPlacementGroups CreateOrUpdate. */
 public final class ProximityPlacementGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateOrUpdateAProximityPlacementGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a proximity placement group.
@@ -29,7 +30,11 @@ public final class ProximityPlacementGroupsCreateOrUpdateSamples {
                 "myProximityPlacementGroup",
                 new ProximityPlacementGroupInner()
                     .withLocation("westus")
-                    .withProximityPlacementGroupType(ProximityPlacementGroupType.STANDARD),
-                Context.NONE);
+                    .withZones(Arrays.asList("1"))
+                    .withProximityPlacementGroupType(ProximityPlacementGroupType.STANDARD)
+                    .withIntent(
+                        new ProximityPlacementGroupPropertiesIntent()
+                            .withVmSizes(Arrays.asList("Basic_A0", "Basic_A2"))),
+                com.azure.core.util.Context.NONE);
     }
 }

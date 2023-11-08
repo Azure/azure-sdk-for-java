@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnectionOperation Get. */
 public final class PrivateEndpointConnectionOperationGetSamples {
     /*
@@ -20,6 +18,7 @@ public final class PrivateEndpointConnectionOperationGetSamples {
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .privateEndpointConnectionOperations()
-            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "connection", null, Context.NONE);
+            .getWithResponse(
+                "exampleResourceGroup", "exampleFactoryName", "connection", null, com.azure.core.util.Context.NONE);
     }
 }

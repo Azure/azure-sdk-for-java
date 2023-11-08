@@ -21,6 +21,10 @@ public final class ContentKeyPolicyWidevineConfiguration extends ContentKeyPolic
     @JsonProperty(value = "widevineTemplate", required = true)
     private String widevineTemplate;
 
+    /** Creates an instance of ContentKeyPolicyWidevineConfiguration class. */
+    public ContentKeyPolicyWidevineConfiguration() {
+    }
+
     /**
      * Get the widevineTemplate property: The Widevine template.
      *

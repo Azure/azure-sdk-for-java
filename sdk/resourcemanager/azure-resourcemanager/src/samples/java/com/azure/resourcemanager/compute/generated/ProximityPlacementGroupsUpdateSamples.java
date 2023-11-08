@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupUpdate;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,14 +11,14 @@ import java.util.Map;
 /** Samples for ProximityPlacementGroups Update. */
 public final class ProximityPlacementGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/PatchAProximityPlacementGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Patch.json
      */
     /**
-     * Sample code: Create a proximity placement group.
+     * Sample code: Update a proximity placement group.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createAProximityPlacementGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void updateAProximityPlacementGroup(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
@@ -29,7 +28,7 @@ public final class ProximityPlacementGroupsUpdateSamples {
                 "myResourceGroup",
                 "myProximityPlacementGroup",
                 new ProximityPlacementGroupUpdate().withTags(mapOf("additionalProp1", "string")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

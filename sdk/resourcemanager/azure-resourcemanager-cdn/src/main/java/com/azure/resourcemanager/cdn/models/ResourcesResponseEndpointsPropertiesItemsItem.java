@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourcesResponseEndpointsPropertiesItemsItem model. */
 @Fluent
 public final class ResourcesResponseEndpointsPropertiesItemsItem {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ResourcesResponseEndpointsPropertiesItemsItem.class);
-
     /*
      * The id property.
      */
@@ -38,6 +33,10 @@ public final class ResourcesResponseEndpointsPropertiesItemsItem {
      */
     @JsonProperty(value = "history")
     private Boolean history;
+
+    /** Creates an instance of ResourcesResponseEndpointsPropertiesItemsItem class. */
+    public ResourcesResponseEndpointsPropertiesItemsItem() {
+    }
 
     /**
      * Get the id property: The id property.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EntityMappingType. */
+/** The V3 type of the mapped entity. */
 public final class EntityMappingType extends ExpandableStringEnum<EntityMappingType> {
     /** Static value Account for EntityMappingType. */
     public static final EntityMappingType ACCOUNT = fromString("Account");
@@ -75,7 +75,11 @@ public final class EntityMappingType extends ExpandableStringEnum<EntityMappingT
         return fromString(name, EntityMappingType.class);
     }
 
-    /** @return known EntityMappingType values. */
+    /**
+     * Gets known EntityMappingType values.
+     *
+     * @return known EntityMappingType values.
+     */
     public static Collection<EntityMappingType> values() {
         return values(EntityMappingType.class);
     }

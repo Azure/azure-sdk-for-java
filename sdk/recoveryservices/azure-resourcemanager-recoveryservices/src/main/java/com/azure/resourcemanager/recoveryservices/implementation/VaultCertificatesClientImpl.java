@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.fluent.VaultCertificatesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultCertificateResponseInner;
 import com.azure.resourcemanager.recoveryservices.models.CertificateRequest;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VaultCertificatesClient. */
 public final class VaultCertificatesClientImpl implements VaultCertificatesClient {
-    private final ClientLogger logger = new ClientLogger(VaultCertificatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VaultCertificatesService service;
 
@@ -55,11 +52,10 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesMana")
-    private interface VaultCertificatesService {
+    public interface VaultCertificatesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/certificates/{certificateName}")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/certificates/{certificateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultCertificateResponseInner>> create(
@@ -77,14 +73,15 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
     /**
      * Uploads a certificate for a resource.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param certificateName Certificate friendly name.
      * @param certificateRequest Input parameters for uploading the vault certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
+     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultCertificateResponseInner>> createWithResponseAsync(
@@ -133,13 +130,13 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
                             certificateRequest,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Uploads a certificate for a resource.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param certificateName Certificate friendly name.
      * @param certificateRequest Input parameters for uploading the vault certificate.
@@ -147,7 +144,8 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
+     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultCertificateResponseInner>> createWithResponseAsync(
@@ -203,33 +201,52 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
     /**
      * Uploads a certificate for a resource.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param certificateName Certificate friendly name.
      * @param certificateRequest Input parameters for uploading the vault certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
+     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VaultCertificateResponseInner> createAsync(
         String resourceGroupName, String vaultName, String certificateName, CertificateRequest certificateRequest) {
         return createWithResponseAsync(resourceGroupName, vaultName, certificateName, certificateRequest)
-            .flatMap(
-                (Response<VaultCertificateResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Uploads a certificate for a resource.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param certificateName Certificate friendly name.
+     * @param certificateRequest Input parameters for uploading the vault certificate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault
+     *     along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<VaultCertificateResponseInner> createWithResponse(
+        String resourceGroupName,
+        String vaultName,
+        String certificateName,
+        CertificateRequest certificateRequest,
+        Context context) {
+        return createWithResponseAsync(resourceGroupName, vaultName, certificateName, certificateRequest, context)
+            .block();
+    }
+
+    /**
+     * Uploads a certificate for a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param certificateName Certificate friendly name.
      * @param certificateRequest Input parameters for uploading the vault certificate.
@@ -241,30 +258,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultCertificateResponseInner create(
         String resourceGroupName, String vaultName, String certificateName, CertificateRequest certificateRequest) {
-        return createAsync(resourceGroupName, vaultName, certificateName, certificateRequest).block();
-    }
-
-    /**
-     * Uploads a certificate for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param certificateName Certificate friendly name.
-     * @param certificateRequest Input parameters for uploading the vault certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VaultCertificateResponseInner> createWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String certificateName,
-        CertificateRequest certificateRequest,
-        Context context) {
-        return createWithResponseAsync(resourceGroupName, vaultName, certificateName, certificateRequest, context)
-            .block();
+        return createWithResponse(resourceGroupName, vaultName, certificateName, certificateRequest, Context.NONE)
+            .getValue();
     }
 }

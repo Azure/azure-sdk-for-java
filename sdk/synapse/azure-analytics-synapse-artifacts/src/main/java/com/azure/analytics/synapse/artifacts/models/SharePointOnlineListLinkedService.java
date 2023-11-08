@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** SharePoint Online List linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,43 +19,42 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class SharePointOnlineListLinkedService extends LinkedService {
     /*
-     * The URL of the SharePoint Online site. For example,
-     * https://contoso.sharepoint.com/sites/siteName. Type: string (or
-     * Expression with resultType string).
+     * The URL of the SharePoint Online site. For example, https://contoso.sharepoint.com/sites/siteName. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.siteUrl", required = true)
     private Object siteUrl;
 
     /*
-     * The tenant ID under which your application resides. You can find it from
-     * Azure portal Active Directory overview page. Type: string (or Expression
-     * with resultType string).
+     * The tenant ID under which your application resides. You can find it from Azure portal Active Directory overview
+     * page. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tenantId", required = true)
     private Object tenantId;
 
     /*
-     * The application (client) ID of your application registered in Azure
-     * Active Directory. Make sure to grant SharePoint site permission to this
-     * application. Type: string (or Expression with resultType string).
+     * The application (client) ID of your application registered in Azure Active Directory. Make sure to grant
+     * SharePoint site permission to this application. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId", required = true)
     private Object servicePrincipalId;
 
     /*
-     * The client secret of your application registered in Azure Active
-     * Directory. Type: string (or Expression with resultType string).
+     * The client secret of your application registered in Azure Active Directory. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalKey", required = true)
     private SecretBase servicePrincipalKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of SharePointOnlineListLinkedService class. */
+    public SharePointOnlineListLinkedService() {}
 
     /**
      * Get the siteUrl property: The URL of the SharePoint Online site. For example,
@@ -164,6 +165,34 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      */
     public SharePointOnlineListLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SharePointOnlineListLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SharePointOnlineListLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SharePointOnlineListLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SharePointOnlineListLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

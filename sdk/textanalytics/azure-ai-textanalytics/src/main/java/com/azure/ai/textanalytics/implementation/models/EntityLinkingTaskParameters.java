@@ -5,71 +5,28 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
-/** The EntityLinkingTaskParameters model. */
+/** Supported parameters for an Entity Linking task. */
 @Fluent
-public final class EntityLinkingTaskParameters {
+public final class EntityLinkingTaskParameters extends PreBuiltTaskParameters {
     /*
-     * The model-version property.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
+     * Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
-    @JsonProperty(value = "model-version")
-    private String modelVersion;
-
-    /*
-     * The loggingOptOut property.
-     */
-    @JsonProperty(value = "loggingOptOut")
-    private Boolean loggingOptOut;
-
-    /*
-     * The stringIndexType property.
-     */
-    @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
-    /**
-     * Get the modelVersion property: The model-version property.
-     *
-     * @return the modelVersion value.
-     */
-    public String getModelVersion() {
-        return this.modelVersion;
-    }
+    /** Creates an instance of EntityLinkingTaskParameters class. */
+    public EntityLinkingTaskParameters() {}
 
     /**
-     * Set the modelVersion property: The model-version property.
-     *
-     * @param modelVersion the modelVersion value to set.
-     * @return the EntityLinkingTaskParameters object itself.
-     */
-    public EntityLinkingTaskParameters setModelVersion(String modelVersion) {
-        this.modelVersion = modelVersion;
-        return this;
-    }
-
-    /**
-     * Get the loggingOptOut property: The loggingOptOut property.
-     *
-     * @return the loggingOptOut value.
-     */
-    public Boolean isLoggingOptOut() {
-        return this.loggingOptOut;
-    }
-
-    /**
-     * Set the loggingOptOut property: The loggingOptOut property.
-     *
-     * @param loggingOptOut the loggingOptOut value to set.
-     * @return the EntityLinkingTaskParameters object itself.
-     */
-    public EntityLinkingTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
-        this.loggingOptOut = loggingOptOut;
-        return this;
-    }
-
-    /**
-     * Get the stringIndexType property: The stringIndexType property.
+     * Get the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
+     * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     * https://aka.ms/text-analytics-offsets.
      *
      * @return the stringIndexType value.
      */
@@ -78,7 +35,9 @@ public final class EntityLinkingTaskParameters {
     }
 
     /**
-     * Set the stringIndexType property: The stringIndexType property.
+     * Set the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
+     * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     * https://aka.ms/text-analytics-offsets.
      *
      * @param stringIndexType the stringIndexType value to set.
      * @return the EntityLinkingTaskParameters object itself.
@@ -86,5 +45,62 @@ public final class EntityLinkingTaskParameters {
     public EntityLinkingTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingTaskParameters setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
+        return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("loggingOptOut", isLoggingOptOut());
+        jsonWriter.writeStringField("modelVersion", getModelVersion());
+        jsonWriter.writeStringField("stringIndexType", Objects.toString(this.stringIndexType, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityLinkingTaskParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityLinkingTaskParameters if the JsonReader was pointing to an instance of it, or null
+     *     if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityLinkingTaskParameters.
+     */
+    public static EntityLinkingTaskParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    EntityLinkingTaskParameters deserializedEntityLinkingTaskParameters =
+                            new EntityLinkingTaskParameters();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("loggingOptOut".equals(fieldName)) {
+                            deserializedEntityLinkingTaskParameters.setLoggingOptOut(
+                                    reader.getNullable(JsonReader::getBoolean));
+                        } else if ("modelVersion".equals(fieldName)) {
+                            deserializedEntityLinkingTaskParameters.setModelVersion(reader.getString());
+                        } else if ("stringIndexType".equals(fieldName)) {
+                            deserializedEntityLinkingTaskParameters.stringIndexType =
+                                    StringIndexType.fromString(reader.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedEntityLinkingTaskParameters;
+                });
     }
 }

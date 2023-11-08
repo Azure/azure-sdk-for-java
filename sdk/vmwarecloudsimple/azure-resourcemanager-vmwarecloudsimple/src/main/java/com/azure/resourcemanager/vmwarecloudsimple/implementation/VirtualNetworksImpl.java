@@ -13,10 +13,9 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.VirtualNetworksClient;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualNetwork;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualNetworks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualNetworksImpl implements VirtualNetworks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworksImpl.class);
 
     private final VirtualNetworksClient innerClient;
 
@@ -41,15 +40,6 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
         return Utils.mapPage(inner, inner1 -> new VirtualNetworkImpl(inner1, this.manager()));
     }
 
-    public VirtualNetwork get(String regionId, String pcName, String virtualNetworkName) {
-        VirtualNetworkInner inner = this.serviceClient().get(regionId, pcName, virtualNetworkName);
-        if (inner != null) {
-            return new VirtualNetworkImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VirtualNetwork> getWithResponse(
         String regionId, String pcName, String virtualNetworkName, Context context) {
         Response<VirtualNetworkInner> inner =
@@ -60,6 +50,15 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VirtualNetworkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VirtualNetwork get(String regionId, String pcName, String virtualNetworkName) {
+        VirtualNetworkInner inner = this.serviceClient().get(regionId, pcName, virtualNetworkName);
+        if (inner != null) {
+            return new VirtualNetworkImpl(inner, this.manager());
         } else {
             return null;
         }

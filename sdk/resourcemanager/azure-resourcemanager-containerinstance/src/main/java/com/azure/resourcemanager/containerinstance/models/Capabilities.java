@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The regional capabilities. */
 @Immutable
 public final class Capabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Capabilities.class);
-
     /*
      * The resource type that this capability describes.
      */
@@ -49,6 +45,10 @@ public final class Capabilities {
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilitiesCapabilities capabilities;
+
+    /** Creates an instance of Capabilities class. */
+    public Capabilities() {
+    }
 
     /**
      * Get the resourceType property: The resource type that this capability describes.

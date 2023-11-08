@@ -19,8 +19,8 @@ public final class RenamedSubscriptionIdImpl implements RenamedSubscriptionId {
         this.serviceManager = serviceManager;
     }
 
-    public String value() {
-        return this.innerModel().value();
+    public String subscriptionId() {
+        return this.innerModel().subscriptionId();
     }
 
     public RenamedSubscriptionIdInner innerModel() {

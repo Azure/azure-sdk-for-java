@@ -16,7 +16,7 @@ public interface Views {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing views.
+     * @return result of listing views as paginated response with {@link PagedIterable}.
      */
     PagedIterable<View> list();
 
@@ -27,7 +27,7 @@ public interface Views {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing views.
+     * @return result of listing views as paginated response with {@link PagedIterable}.
      */
     PagedIterable<View> list(Context context);
 
@@ -52,7 +52,7 @@ public interface Views {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing views.
+     * @return result of listing views as paginated response with {@link PagedIterable}.
      */
     PagedIterable<View> listByScope(String scope);
 
@@ -78,9 +78,21 @@ public interface Views {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing views.
+     * @return result of listing views as paginated response with {@link PagedIterable}.
      */
     PagedIterable<View> listByScope(String scope, Context context);
+
+    /**
+     * Gets the view by view name.
+     *
+     * @param viewName View name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the view by view name along with {@link Response}.
+     */
+    Response<View> getWithResponse(String viewName, Context context);
 
     /**
      * Gets the view by view name.
@@ -94,16 +106,18 @@ public interface Views {
     View get(String viewName);
 
     /**
-     * Gets the view by view name.
+     * The operation to create or update a view. Update operation requires latest eTag to be set in the request. You may
+     * obtain the latest eTag by performing a get operation. Create operation does not require eTag.
      *
      * @param viewName View name.
+     * @param parameters Parameters supplied to the CreateOrUpdate View operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view by view name.
+     * @return states and configurations of Cost Analysis along with {@link Response}.
      */
-    Response<View> getWithResponse(String viewName, Context context);
+    Response<View> createOrUpdateWithResponse(String viewName, ViewInner parameters, Context context);
 
     /**
      * The operation to create or update a view. Update operation requires latest eTag to be set in the request. You may
@@ -119,18 +133,16 @@ public interface Views {
     View createOrUpdate(String viewName, ViewInner parameters);
 
     /**
-     * The operation to create or update a view. Update operation requires latest eTag to be set in the request. You may
-     * obtain the latest eTag by performing a get operation. Create operation does not require eTag.
+     * The operation to delete a view.
      *
      * @param viewName View name.
-     * @param parameters Parameters supplied to the CreateOrUpdate View operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return states and configurations of Cost Analysis.
+     * @return the {@link Response}.
      */
-    Response<View> createOrUpdateWithResponse(String viewName, ViewInner parameters, Context context);
+    Response<Void> deleteWithResponse(String viewName, Context context);
 
     /**
      * The operation to delete a view.
@@ -143,16 +155,31 @@ public interface Views {
     void delete(String viewName);
 
     /**
-     * The operation to delete a view.
+     * Gets the view for the defined scope by view name.
      *
+     * @param scope The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for
+     *     subscription scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+     *     scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
+     *     scope,
+     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     *     EnrollmentAccount scope,
+     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     *     BillingProfile scope,
+     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     *     InvoiceSection scope, 'providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management
+     *     Group scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for
+     *     External Billing Account scope and
+     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
+     *     Subscription scope.
      * @param viewName View name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the view for the defined scope by view name along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String viewName, Context context);
+    Response<View> getByScopeWithResponse(String scope, String viewName, Context context);
 
     /**
      * Gets the view for the defined scope by view name.
@@ -181,7 +208,7 @@ public interface Views {
     View getByScope(String scope, String viewName);
 
     /**
-     * Gets the view for the defined scope by view name.
+     * The operation to delete a view.
      *
      * @param scope The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for
      *     subscription scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -203,9 +230,9 @@ public interface Views {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view for the defined scope by view name.
+     * @return the {@link Response}.
      */
-    Response<View> getByScopeWithResponse(String scope, String viewName, Context context);
+    Response<Void> deleteByScopeWithResponse(String scope, String viewName, Context context);
 
     /**
      * The operation to delete a view.
@@ -233,40 +260,13 @@ public interface Views {
     void deleteByScope(String scope, String viewName);
 
     /**
-     * The operation to delete a view.
-     *
-     * @param scope The scope associated with view operations. This includes 'subscriptions/{subscriptionId}' for
-     *     subscription scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
-     *     EnrollmentAccount scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope,
-     *     'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-     *     InvoiceSection scope, 'providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management
-     *     Group scope, 'providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for
-     *     External Billing Account scope and
-     *     'providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for External
-     *     Subscription scope.
-     * @param viewName View name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteByScopeWithResponse(String scope, String viewName, Context context);
-
-    /**
      * Gets the view for the defined scope by view name.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view for the defined scope by view name.
+     * @return the view for the defined scope by view name along with {@link Response}.
      */
     View getById(String id);
 
@@ -278,7 +278,7 @@ public interface Views {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view for the defined scope by view name.
+     * @return the view for the defined scope by view name along with {@link Response}.
      */
     Response<View> getByIdWithResponse(String id, Context context);
 
@@ -300,7 +300,7 @@ public interface Views {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

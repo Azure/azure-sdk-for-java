@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Put Job parameters. */
 @Fluent
 public final class PutJobParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PutJobParameters.class);
-
     /*
      * Specifies the supported Azure location where the job should be created
      */
@@ -31,6 +27,10 @@ public final class PutJobParameters {
      */
     @JsonProperty(value = "properties")
     private JobDetails properties;
+
+    /** Creates an instance of PutJobParameters class. */
+    public PutJobParameters() {
+    }
 
     /**
      * Get the location property: Specifies the supported Azure location where the job should be created.

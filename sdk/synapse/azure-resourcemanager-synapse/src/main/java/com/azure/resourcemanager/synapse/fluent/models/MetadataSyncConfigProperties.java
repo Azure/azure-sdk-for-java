@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Metadata Sync Config properties. */
 @Fluent
 public final class MetadataSyncConfigProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataSyncConfigProperties.class);
-
     /*
      * Indicates whether the metadata sync is enabled or disabled
      */
@@ -25,6 +21,10 @@ public final class MetadataSyncConfigProperties {
      */
     @JsonProperty(value = "syncIntervalInMinutes")
     private Integer syncIntervalInMinutes;
+
+    /** Creates an instance of MetadataSyncConfigProperties class. */
+    public MetadataSyncConfigProperties() {
+    }
 
     /**
      * Get the enabled property: Indicates whether the metadata sync is enabled or disabled.

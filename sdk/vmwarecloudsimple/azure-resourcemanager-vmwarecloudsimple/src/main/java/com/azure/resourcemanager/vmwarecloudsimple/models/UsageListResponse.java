@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.UsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of usages. */
 @Fluent
 public final class UsageListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageListResponse.class);
-
     /*
      * Link for next list of DedicatedCloudNode
      */
@@ -27,6 +23,10 @@ public final class UsageListResponse {
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<UsageInner> value;
+
+    /** Creates an instance of UsageListResponse class. */
+    public UsageListResponse() {
+    }
 
     /**
      * Get the nextLink property: Link for next list of DedicatedCloudNode.

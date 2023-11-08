@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RulesEngineMatchVariable. */
+/** Match Variable. */
 public final class RulesEngineMatchVariable extends ExpandableStringEnum<RulesEngineMatchVariable> {
     /** Static value IsMobile for RulesEngineMatchVariable. */
     public static final RulesEngineMatchVariable IS_MOBILE = fromString("IsMobile");
@@ -47,6 +47,15 @@ public final class RulesEngineMatchVariable extends ExpandableStringEnum<RulesEn
     public static final RulesEngineMatchVariable REQUEST_SCHEME = fromString("RequestScheme");
 
     /**
+     * Creates a new instance of RulesEngineMatchVariable value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RulesEngineMatchVariable() {
+    }
+
+    /**
      * Creates or finds a RulesEngineMatchVariable from its string representation.
      *
      * @param name a name to look for.
@@ -57,7 +66,11 @@ public final class RulesEngineMatchVariable extends ExpandableStringEnum<RulesEn
         return fromString(name, RulesEngineMatchVariable.class);
     }
 
-    /** @return known RulesEngineMatchVariable values. */
+    /**
+     * Gets known RulesEngineMatchVariable values.
+     *
+     * @return known RulesEngineMatchVariable values.
+     */
     public static Collection<RulesEngineMatchVariable> values() {
         return values(RulesEngineMatchVariable.class);
     }

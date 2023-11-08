@@ -26,6 +26,15 @@ public final class LogRanking extends ExpandableStringEnum<LogRanking> {
     public static final LogRanking COUNTRY_OR_REGION = fromString("countryOrRegion");
 
     /**
+     * Creates a new instance of LogRanking value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogRanking() {
+    }
+
+    /**
      * Creates or finds a LogRanking from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class LogRanking extends ExpandableStringEnum<LogRanking> {
         return fromString(name, LogRanking.class);
     }
 
-    /** @return known LogRanking values. */
+    /**
+     * Gets known LogRanking values.
+     *
+     * @return known LogRanking values.
+     */
     public static Collection<LogRanking> values() {
         return values(LogRanking.class);
     }

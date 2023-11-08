@@ -7,7 +7,7 @@ package com.azure.resourcemanager.logic.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AgreementType. */
+/** The agreement type. */
 public enum AgreementType {
     /** Enum value NotSpecified. */
     NOT_SPECIFIED("NotSpecified"),
@@ -36,6 +36,9 @@ public enum AgreementType {
      */
     @JsonCreator
     public static AgreementType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AgreementType[] items = AgreementType.values();
         for (AgreementType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum AgreementType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

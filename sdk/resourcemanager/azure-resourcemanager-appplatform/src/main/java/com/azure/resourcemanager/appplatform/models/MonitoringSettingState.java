@@ -33,7 +33,11 @@ public final class MonitoringSettingState extends ExpandableStringEnum<Monitorin
         return fromString(name, MonitoringSettingState.class);
     }
 
-    /** @return known MonitoringSettingState values. */
+    /**
+     * Gets known MonitoringSettingState values.
+     *
+     * @return known MonitoringSettingState values.
+     */
     public static Collection<MonitoringSettingState> values() {
         return values(MonitoringSettingState.class);
     }

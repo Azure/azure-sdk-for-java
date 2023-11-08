@@ -71,11 +71,10 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ApplicationGatewayPrivateEndpointConnectionsService {
+    public interface ApplicationGatewayPrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -90,8 +89,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -107,8 +105,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateEndpointConnections/{connectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationGatewayPrivateEndpointConnectionInner>> get(
@@ -123,8 +120,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/applicationGateways/{applicationGatewayName}/privateEndpointConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationGatewayPrivateEndpointConnectionListResult>> list(
@@ -185,7 +181,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -242,7 +238,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -316,7 +312,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String applicationGatewayName, String connectionName) {
-        return beginDeleteAsync(resourceGroupName, applicationGatewayName, connectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, applicationGatewayName, connectionName).getSyncPoller();
     }
 
     /**
@@ -334,7 +330,9 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String applicationGatewayName, String connectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, applicationGatewayName, connectionName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, applicationGatewayName, connectionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -455,7 +453,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -524,7 +522,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -632,7 +630,9 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             String applicationGatewayName,
             String connectionName,
             ApplicationGatewayPrivateEndpointConnectionInner parameters) {
-        return beginUpdateAsync(resourceGroupName, applicationGatewayName, connectionName, parameters).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, applicationGatewayName, connectionName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -658,7 +658,8 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             String connectionName,
             ApplicationGatewayPrivateEndpointConnectionInner parameters,
             Context context) {
-        return beginUpdateAsync(resourceGroupName, applicationGatewayName, connectionName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, applicationGatewayName, connectionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -793,7 +794,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -851,7 +852,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -882,31 +883,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
     public Mono<ApplicationGatewayPrivateEndpointConnectionInner> getAsync(
         String resourceGroupName, String applicationGatewayName, String connectionName) {
         return getWithResponseAsync(resourceGroupName, applicationGatewayName, connectionName)
-            .flatMap(
-                (Response<ApplicationGatewayPrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified private endpoint connection on application gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName The name of the application gateway private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection on application gateway.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationGatewayPrivateEndpointConnectionInner get(
-        String resourceGroupName, String applicationGatewayName, String connectionName) {
-        return getAsync(resourceGroupName, applicationGatewayName, connectionName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -925,6 +902,23 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
     public Response<ApplicationGatewayPrivateEndpointConnectionInner> getWithResponse(
         String resourceGroupName, String applicationGatewayName, String connectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, applicationGatewayName, connectionName, context).block();
+    }
+
+    /**
+     * Gets the specified private endpoint connection on application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param connectionName The name of the application gateway private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection on application gateway.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationGatewayPrivateEndpointConnectionInner get(
+        String resourceGroupName, String applicationGatewayName, String connectionName) {
+        return getWithResponse(resourceGroupName, applicationGatewayName, connectionName, Context.NONE).getValue();
     }
 
     /**
@@ -962,7 +956,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1024,7 +1018,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1124,7 +1118,8 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1161,7 +1156,8 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

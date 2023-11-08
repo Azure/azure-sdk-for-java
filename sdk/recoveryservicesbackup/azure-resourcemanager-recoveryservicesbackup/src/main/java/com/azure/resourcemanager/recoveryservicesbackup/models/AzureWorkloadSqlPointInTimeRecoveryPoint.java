@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("AzureWorkloadSQLPointInTimeRecoveryPoint")
 @Fluent
 public final class AzureWorkloadSqlPointInTimeRecoveryPoint extends AzureWorkloadSqlRecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadSqlPointInTimeRecoveryPoint.class);
-
     /*
      * List of log ranges
      */
     @JsonProperty(value = "timeRanges")
     private List<PointInTimeRange> timeRanges;
+
+    /** Creates an instance of AzureWorkloadSqlPointInTimeRecoveryPoint class. */
+    public AzureWorkloadSqlPointInTimeRecoveryPoint() {
+    }
 
     /**
      * Get the timeRanges property: List of log ranges.
@@ -82,6 +82,14 @@ public final class AzureWorkloadSqlPointInTimeRecoveryPoint extends AzureWorkloa
     public AzureWorkloadSqlPointInTimeRecoveryPoint withRecoveryPointMoveReadinessInfo(
         Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
         super.withRecoveryPointMoveReadinessInfo(recoveryPointMoveReadinessInfo);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSqlPointInTimeRecoveryPoint withRecoveryPointProperties(
+        RecoveryPointProperties recoveryPointProperties) {
+        super.withRecoveryPointProperties(recoveryPointProperties);
         return this;
     }
 

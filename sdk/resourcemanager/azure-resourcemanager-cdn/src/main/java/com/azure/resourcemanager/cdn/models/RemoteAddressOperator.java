@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RemoteAddressOperator. */
+/** Describes operator to be matched. */
 public final class RemoteAddressOperator extends ExpandableStringEnum<RemoteAddressOperator> {
     /** Static value Any for RemoteAddressOperator. */
     public static final RemoteAddressOperator ANY = fromString("Any");
@@ -18,6 +18,15 @@ public final class RemoteAddressOperator extends ExpandableStringEnum<RemoteAddr
 
     /** Static value GeoMatch for RemoteAddressOperator. */
     public static final RemoteAddressOperator GEO_MATCH = fromString("GeoMatch");
+
+    /**
+     * Creates a new instance of RemoteAddressOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RemoteAddressOperator() {
+    }
 
     /**
      * Creates or finds a RemoteAddressOperator from its string representation.
@@ -30,7 +39,11 @@ public final class RemoteAddressOperator extends ExpandableStringEnum<RemoteAddr
         return fromString(name, RemoteAddressOperator.class);
     }
 
-    /** @return known RemoteAddressOperator values. */
+    /**
+     * Gets known RemoteAddressOperator values.
+     *
+     * @return known RemoteAddressOperator values.
+     */
     public static Collection<RemoteAddressOperator> values() {
         return values(RemoteAddressOperator.class);
     }

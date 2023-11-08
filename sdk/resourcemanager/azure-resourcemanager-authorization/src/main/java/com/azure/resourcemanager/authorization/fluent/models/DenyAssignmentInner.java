@@ -5,18 +5,15 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.DenyAssignmentPermission;
 import com.azure.resourcemanager.authorization.models.Principal;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Deny Assignment. */
 @Fluent
 public final class DenyAssignmentInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DenyAssignmentInner.class);
-
     /*
      * The deny assignment ID.
      */
@@ -40,6 +37,10 @@ public final class DenyAssignmentInner {
      */
     @JsonProperty(value = "properties")
     private DenyAssignmentProperties innerProperties;
+
+    /** Creates an instance of DenyAssignmentInner class. */
+    public DenyAssignmentInner() {
+    }
 
     /**
      * Get the id property: The deny assignment ID.
@@ -263,6 +264,92 @@ public final class DenyAssignmentInner {
         }
         this.innerProperties().withIsSystemProtected(isSystemProtected);
         return this;
+    }
+
+    /**
+     * Get the condition property: The conditions on the deny assignment. This limits the resources it can be assigned
+     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * StringEqualsIgnoreCase 'foo_storage_container'.
+     *
+     * @return the condition value.
+     */
+    public String condition() {
+        return this.innerProperties() == null ? null : this.innerProperties().condition();
+    }
+
+    /**
+     * Set the condition property: The conditions on the deny assignment. This limits the resources it can be assigned
+     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * StringEqualsIgnoreCase 'foo_storage_container'.
+     *
+     * @param condition the condition value to set.
+     * @return the DenyAssignmentInner object itself.
+     */
+    public DenyAssignmentInner withCondition(String condition) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DenyAssignmentProperties();
+        }
+        this.innerProperties().withCondition(condition);
+        return this;
+    }
+
+    /**
+     * Get the conditionVersion property: Version of the condition.
+     *
+     * @return the conditionVersion value.
+     */
+    public String conditionVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().conditionVersion();
+    }
+
+    /**
+     * Set the conditionVersion property: Version of the condition.
+     *
+     * @param conditionVersion the conditionVersion value to set.
+     * @return the DenyAssignmentInner object itself.
+     */
+    public DenyAssignmentInner withConditionVersion(String conditionVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DenyAssignmentProperties();
+        }
+        this.innerProperties().withConditionVersion(conditionVersion);
+        return this;
+    }
+
+    /**
+     * Get the createdOn property: Time it was created.
+     *
+     * @return the createdOn value.
+     */
+    public OffsetDateTime createdOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdOn();
+    }
+
+    /**
+     * Get the updatedOn property: Time it was updated.
+     *
+     * @return the updatedOn value.
+     */
+    public OffsetDateTime updatedOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().updatedOn();
+    }
+
+    /**
+     * Get the createdBy property: Id of the user who created the assignment.
+     *
+     * @return the createdBy value.
+     */
+    public String createdBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdBy();
+    }
+
+    /**
+     * Get the updatedBy property: Id of the user who updated the assignment.
+     *
+     * @return the updatedBy value.
+     */
+    public String updatedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().updatedBy();
     }
 
     /**

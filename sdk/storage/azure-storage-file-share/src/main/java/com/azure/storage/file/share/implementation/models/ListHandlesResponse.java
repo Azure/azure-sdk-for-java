@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.file.share.models.HandleItem;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -38,6 +37,9 @@ public final class ListHandlesResponse {
      */
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
+
+    /** Creates an instance of ListHandlesResponse class. */
+    public ListHandlesResponse() {}
 
     /**
      * Get the handleList property: The HandleList property.

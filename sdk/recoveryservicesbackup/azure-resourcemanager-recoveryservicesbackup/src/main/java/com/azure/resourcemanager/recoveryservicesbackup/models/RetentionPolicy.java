@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,7 +22,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class RetentionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionPolicy.class);
+    /** Creates an instance of RetentionPolicy class. */
+    public RetentionPolicy() {
+    }
 
     /**
      * Validates the instance.

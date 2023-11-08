@@ -15,20 +15,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class CommonDataServiceForAppsSource extends CopySource {
     /*
-     * FetchXML is a proprietary query language that is used in Microsoft
-     * Common Data Service for Apps (online & on-premises). Type: string (or
-     * Expression with resultType string).
+     * FetchXML is a proprietary query language that is used in Microsoft Common Data Service for Apps (online &
+     * on-premises). Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
+
+    /** Creates an instance of CommonDataServiceForAppsSource class. */
+    public CommonDataServiceForAppsSource() {}
 
     /**
      * Get the query property: FetchXML is a proprietary query language that is used in Microsoft Common Data Service
@@ -71,6 +72,27 @@ public final class CommonDataServiceForAppsSource extends CopySource {
      */
     public CommonDataServiceForAppsSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.deploymentmanager.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RestAuthLocation. */
+/** The location of the authentication key/value pair in the request. */
 public enum RestAuthLocation {
     /** Enum value Query. */
     QUERY("Query"),
@@ -30,6 +30,9 @@ public enum RestAuthLocation {
      */
     @JsonCreator
     public static RestAuthLocation fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RestAuthLocation[] items = RestAuthLocation.values();
         for (RestAuthLocation item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum RestAuthLocation {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

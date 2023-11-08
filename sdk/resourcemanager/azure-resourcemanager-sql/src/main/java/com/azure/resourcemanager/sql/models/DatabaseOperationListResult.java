@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseOperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list database operations request. */
 @Immutable
 public final class DatabaseOperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseOperationListResult.class);
-
     /*
      * Array of results.
      */
@@ -27,6 +23,10 @@ public final class DatabaseOperationListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of DatabaseOperationListResult class. */
+    public DatabaseOperationListResult() {
+    }
 
     /**
      * Get the value property: Array of results.

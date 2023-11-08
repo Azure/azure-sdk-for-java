@@ -21,7 +21,9 @@ public class ThroughputControlGroupFactory {
             targetContainer,
             groupConfig.getTargetThroughput(),
             groupConfig.getTargetThroughputThreshold(),
-            groupConfig.isDefault());
+            groupConfig.getPriorityLevel(),
+            groupConfig.isDefault(),
+            groupConfig.continueOnInitError());
     }
 
     public static GlobalThroughputControlGroup createThroughputGlobalControlGroup(
@@ -38,7 +40,9 @@ public class ThroughputControlGroupFactory {
                 targetContainer,
                 groupConfig.getTargetThroughput(),
                 groupConfig.getTargetThroughputThreshold(),
+                groupConfig.getPriorityLevel(),
                 groupConfig.isDefault(),
+                groupConfig.continueOnInitError(),
                 BridgeInternal.getControlContainerFromThroughputGlobalControlConfig(globalControlConfig),
                 globalControlConfig.getControlItemRenewInterval(),
                 globalControlConfig.getControlItemExpireInterval());

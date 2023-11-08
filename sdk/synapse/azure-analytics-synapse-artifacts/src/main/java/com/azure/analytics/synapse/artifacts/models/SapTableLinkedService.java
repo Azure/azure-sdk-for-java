@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** SAP Table Linked Service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,45 +19,41 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class SapTableLinkedService extends LinkedService {
     /*
-     * Host name of the SAP instance where the table is located. Type: string
-     * (or Expression with resultType string).
+     * Host name of the SAP instance where the table is located. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.server")
     private Object server;
 
     /*
-     * System number of the SAP system where the table is located. (Usually a
-     * two-digit decimal number represented as a string.) Type: string (or
-     * Expression with resultType string).
+     * System number of the SAP system where the table is located. (Usually a two-digit decimal number represented as a
+     * string.) Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.systemNumber")
     private Object systemNumber;
 
     /*
-     * Client ID of the client on the SAP system where the table is located.
-     * (Usually a three-digit decimal number represented as a string) Type:
-     * string (or Expression with resultType string).
+     * Client ID of the client on the SAP system where the table is located. (Usually a three-digit decimal number
+     * represented as a string) Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.clientId")
     private Object clientId;
 
     /*
-     * Language of the SAP system where the table is located. The default value
-     * is EN. Type: string (or Expression with resultType string).
+     * Language of the SAP system where the table is located. The default value is EN. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.language")
     private Object language;
 
     /*
-     * SystemID of the SAP system where the table is located. Type: string (or
-     * Expression with resultType string).
+     * SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.systemId")
     private Object systemId;
 
     /*
-     * Username to access the SAP server where the table is located. Type:
-     * string (or Expression with resultType string).
+     * Username to access the SAP server where the table is located. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -67,69 +65,67 @@ public class SapTableLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The hostname of the SAP Message Server. Type: string (or Expression with
-     * resultType string).
+     * The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.messageServer")
     private Object messageServer;
 
     /*
-     * The service name or port number of the Message Server. Type: string (or
-     * Expression with resultType string).
+     * The service name or port number of the Message Server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.messageServerService")
     private Object messageServerService;
 
     /*
-     * SNC activation indicator to access the SAP server where the table is
-     * located. Must be either 0 (off) or 1 (on). Type: string (or Expression
-     * with resultType string).
+     * SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on).
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.sncMode")
     private Object sncMode;
 
     /*
-     * Initiator's SNC name to access the SAP server where the table is
-     * located. Type: string (or Expression with resultType string).
+     * Initiator's SNC name to access the SAP server where the table is located. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.sncMyName")
     private Object sncMyName;
 
     /*
-     * Communication partner's SNC name to access the SAP server where the
-     * table is located. Type: string (or Expression with resultType string).
+     * Communication partner's SNC name to access the SAP server where the table is located. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.sncPartnerName")
     private Object sncPartnerName;
 
     /*
-     * External security product's library to access the SAP server where the
-     * table is located. Type: string (or Expression with resultType string).
+     * External security product's library to access the SAP server where the table is located. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.sncLibraryPath")
     private Object sncLibraryPath;
 
     /*
-     * SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type:
-     * string (or Expression with resultType string).
+     * SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.sncQop")
     private Object sncQop;
 
     /*
-     * The Logon Group for the SAP System. Type: string (or Expression with
-     * resultType string).
+     * The Logon Group for the SAP System. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.logonGroup")
     private Object logonGroup;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of SapTableLinkedService class. */
+    public SapTableLinkedService() {}
 
     /**
      * Get the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
@@ -478,6 +474,34 @@ public class SapTableLinkedService extends LinkedService {
      */
     public SapTableLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapTableLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapTableLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapTableLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SapTableLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

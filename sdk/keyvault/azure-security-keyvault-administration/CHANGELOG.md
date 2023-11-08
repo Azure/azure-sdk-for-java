@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.6 (Unreleased)
+## 4.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,198 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.4.1 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+## 4.4.0 (2023-09-25)
+
+### Other Changes
+- Explicitly added a `values()` method to all `ExpandableStringEnum` models:
+    - `KeyVaultDataAction`
+    - `KeyVaultRoleDefinitionType`
+    - `KeyVaultRoleScope`
+    - `KeyVaultRoleType`
+    - `KeyVaultSettingType`
+  Functionality remains the same as the aforementioned method simply calls the implementation in the parent class.
+- Migrate test recordings to assets repo.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-json` from `1.0.1` to version `1.1.0`.
+
+## 4.3.5 (2023-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+## 4.3.4 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+
+## 4.3.3 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 4.3.2 (2023-05-23)
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 4.3.1 (2023-04-20)
+
+### Other Changes
+
+- Test proxy server migration.
+- Made all logger instances static.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
+## 4.3.0 (2023-03-18)
+
+### Features Added
+- Added support for service version `7.4`.
+- Added `KeyVaultSettingsClient` and `KeyVaultSettingsAsyncClient` to get and update Managed HSM settings.
+
+### Breaking Changes
+> These changes do not impact the API of stable versions such as `4.2.4`. Only code written against a beta version such as `4.3.0-beta.1` may be affected.
+- Removed support for service version `7.4-preview.1`.
+- Removed `KeyVaultSetting.asString()`, as well as the `KeyVaultSetting(String, String, KeyVaultSettingType)` constructor.
+
+### Other Changes
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 4.2.4 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
+## 4.2.3 (2023-01-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+
+## 4.3.0-beta.1 (2022-11-11)
+
+### Features Added
+- Added `KeyVaultSettingsClient` and `KeyVaultSettingsAsyncClient` to get and update Managed HSM settings.
+- Added support for service version `7.4-preview.1`.
+
+## 4.2.2 (2022-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+
+## 4.2.1 (2022-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+
+## 4.2.0 (2022-09-20)
+
+### Breaking Changes
+- Made it so that we verify that the challenge resource matches the vault domain by default. This should affect few customers who can use the `disableChallengeResourceVerification()` method in client builders to disable this functionality. See https://aka.ms/azsdk/blog/vault-uri for more information.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+
+## 4.1.5 (2022-08-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.31.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.4`.
+
+## 4.1.4 (2022-07-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.30.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.3`.
+
+## 4.1.3 (2022-06-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.29.1`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.2`.
+
+## 4.1.2 (2022-05-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.28.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.0`.
+
+## 4.1.1 (2022-04-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.27.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.11.9`.
+
+## 4.1.0 (2022-03-31)
+
+### Features Added
+- Added support for service version `7.3`.
+- Added the following values to `KeyVaultDataAction`:
+  - `WRITE_ROLE_DEFINITION`
+  - `DELETE_ROLE_DEFINITION`
+  - `RELEASE_KEY`
+  - `DOWNLOAD_HSM_SECURITY_DOMAIN_STATUS`
+  - `RANDOM_NUMBERS_GENERATE`
+- Implemented new traits (micro-interfaces) in `KeyVaultAccessControlClientBuilder` and `KeyVaultBackupClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
 
 ## 4.0.8 (2022-03-17)
 

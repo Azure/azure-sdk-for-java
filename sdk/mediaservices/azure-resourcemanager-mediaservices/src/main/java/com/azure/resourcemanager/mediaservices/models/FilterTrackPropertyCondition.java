@@ -29,6 +29,10 @@ public final class FilterTrackPropertyCondition {
     @JsonProperty(value = "operation", required = true)
     private FilterTrackPropertyCompareOperation operation;
 
+    /** Creates an instance of FilterTrackPropertyCondition class. */
+    public FilterTrackPropertyCondition() {
+    }
+
     /**
      * Get the property property: The track property type.
      *

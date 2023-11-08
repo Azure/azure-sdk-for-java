@@ -12,10 +12,9 @@ import com.azure.resourcemanager.peering.fluent.models.PeeringInner;
 import com.azure.resourcemanager.peering.models.LegacyPeerings;
 import com.azure.resourcemanager.peering.models.LegacyPeeringsKind;
 import com.azure.resourcemanager.peering.models.Peering;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LegacyPeeringsImpl implements LegacyPeerings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyPeeringsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LegacyPeeringsImpl.class);
 
     private final LegacyPeeringsClient innerClient;
 

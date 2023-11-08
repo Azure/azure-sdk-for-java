@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Container group diagnostic information. */
 @Fluent
 public final class ContainerGroupDiagnostics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupDiagnostics.class);
-
     /*
      * Container group log analytics information.
      */
     @JsonProperty(value = "logAnalytics")
     private LogAnalytics logAnalytics;
+
+    /** Creates an instance of ContainerGroupDiagnostics class. */
+    public ContainerGroupDiagnostics() {
+    }
 
     /**
      * Get the logAnalytics property: Container group log analytics information.

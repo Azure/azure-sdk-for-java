@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.LibrariesClient;
 import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
 import com.azure.resourcemanager.synapse.models.Libraries;
 import com.azure.resourcemanager.synapse.models.LibraryResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LibrariesImpl implements Libraries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LibrariesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LibrariesImpl.class);
 
     private final LibrariesClient innerClient;
 
@@ -24,15 +23,6 @@ public final class LibrariesImpl implements Libraries {
     public LibrariesImpl(LibrariesClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public LibraryResource get(String resourceGroupName, String libraryName, String workspaceName) {
-        LibraryResourceInner inner = this.serviceClient().get(resourceGroupName, libraryName, workspaceName);
-        if (inner != null) {
-            return new LibraryResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<LibraryResource> getWithResponse(
@@ -45,6 +35,15 @@ public final class LibrariesImpl implements Libraries {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LibraryResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LibraryResource get(String resourceGroupName, String libraryName, String workspaceName) {
+        LibraryResourceInner inner = this.serviceClient().get(resourceGroupName, libraryName, workspaceName);
+        if (inner != null) {
+            return new LibraryResourceImpl(inner, this.manager());
         } else {
             return null;
         }

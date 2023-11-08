@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.resources.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import java.io.IOException;
 
 /** Samples for Deployments CalculateTemplateHash. */
 public final class DeploymentsCalculateTemplateHashSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/CalculateTemplateHash.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/CalculateTemplateHash.json
      */
     /**
      * Sample code: Calculate template hash.
@@ -33,6 +32,6 @@ public final class DeploymentsCalculateTemplateHashSamples {
                             + " US\",\"vmSize\":\"Large\"}},\"string\":\"string\"}}",
                         Object.class,
                         SerializerEncoding.JSON),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

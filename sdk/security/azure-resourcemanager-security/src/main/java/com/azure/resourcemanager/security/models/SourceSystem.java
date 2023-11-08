@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SourceSystem. */
+/** The source type of the machine group. */
 public final class SourceSystem extends ExpandableStringEnum<SourceSystem> {
     /** Static value Azure_AppLocker for SourceSystem. */
     public static final SourceSystem AZURE_APP_LOCKER = fromString("Azure_AppLocker");
@@ -26,6 +26,15 @@ public final class SourceSystem extends ExpandableStringEnum<SourceSystem> {
     public static final SourceSystem NONE = fromString("None");
 
     /**
+     * Creates a new instance of SourceSystem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SourceSystem() {
+    }
+
+    /**
      * Creates or finds a SourceSystem from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class SourceSystem extends ExpandableStringEnum<SourceSystem> {
         return fromString(name, SourceSystem.class);
     }
 
-    /** @return known SourceSystem values. */
+    /**
+     * Gets known SourceSystem values.
+     *
+     * @return known SourceSystem values.
+     */
     public static Collection<SourceSystem> values() {
         return values(SourceSystem.class);
     }

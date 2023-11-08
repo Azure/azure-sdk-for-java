@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IdentityProperties model. */
 @Fluent
 public final class IdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProperties.class);
-
     /*
      * The identity ID.
      */
@@ -27,10 +23,14 @@ public final class IdentityProperties {
     private String tenantId;
 
     /*
-     * Identity type
+     * Specifies the identity type of the Datadog Monitor. At this time the only allowed value is 'SystemAssigned'.
      */
     @JsonProperty(value = "type")
     private ManagedIdentityTypes type;
+
+    /** Creates an instance of IdentityProperties class. */
+    public IdentityProperties() {
+    }
 
     /**
      * Get the principalId property: The identity ID.
@@ -51,7 +51,8 @@ public final class IdentityProperties {
     }
 
     /**
-     * Get the type property: Identity type.
+     * Get the type property: Specifies the identity type of the Datadog Monitor. At this time the only allowed value is
+     * 'SystemAssigned'.
      *
      * @return the type value.
      */
@@ -60,7 +61,8 @@ public final class IdentityProperties {
     }
 
     /**
-     * Set the type property: Identity type.
+     * Set the type property: Specifies the identity type of the Datadog Monitor. At this time the only allowed value is
+     * 'SystemAssigned'.
      *
      * @param type the type value to set.
      * @return the IdentityProperties object itself.

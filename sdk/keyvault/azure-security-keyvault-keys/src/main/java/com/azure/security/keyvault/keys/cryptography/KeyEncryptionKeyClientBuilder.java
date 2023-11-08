@@ -58,7 +58,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     TokenCredentialTrait<KeyEncryptionKeyClientBuilder>,
     HttpTrait<KeyEncryptionKeyClientBuilder>,
     ConfigurationTrait<KeyEncryptionKeyClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
+
     private final CryptographyClientBuilder builder;
 
     /**
@@ -87,7 +88,29 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     @Override
     public KeyEncryptionKey buildKeyEncryptionKey(String keyId) {
-        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(keyId).block());
+        builder.keyIdentifier(keyId);
+
+        if (Strings.isNullOrEmpty(keyId)) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
+                    + "client."));
+        }
+
+        CryptographyServiceVersion serviceVersion =
+            builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
+
+        if (builder.getPipeline() != null) {
+            return new KeyEncryptionKeyClient(keyId, builder.getPipeline(), serviceVersion);
+        }
+
+        if (builder.getCredential() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Azure Key Vault credentials cannot be null and are required to build a key encryption key client."));
+        }
+
+        HttpPipeline pipeline = builder.setupPipeline();
+
+        return new KeyEncryptionKeyClient(keyId, pipeline, serviceVersion);
     }
 
     /**
@@ -104,7 +127,15 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @throws IllegalStateException If {{@code key} is not set.
      */
     public KeyEncryptionKey buildKeyEncryptionKey(JsonWebKey key) {
-        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(key).block());
+        if (key == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
+        } else if (key.getId() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JSON Web Key's id property is not configured."));
+        }
+
+        return new KeyEncryptionKeyClient(key);
     }
 
     /**
@@ -118,6 +149,10 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * {@link KeyEncryptionKeyClientBuilder#credential(TokenCredential) Azure Key Vault credentials} and
      * {@code keyId} are required to build the {@link KeyEncryptionKeyAsyncClient async client}.</p>
      *
+     * @param keyId The Azure Key Vault key identifier of the JSON Web Key stored in the key vault. You should validate
+     * that this URL references a valid Key Vault or Managed HSM resource. Refer to the following
+     * <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
+     *
      * @return A {@link KeyEncryptionKeyAsyncClient} with the options set from the builder.
      *
      * @throws IllegalStateException If {@link KeyEncryptionKeyClientBuilder#credential(TokenCredential)} is
@@ -130,7 +165,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         builder.keyIdentifier(keyId);
 
         if (Strings.isNullOrEmpty(keyId)) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
                     + "client."));
         }
@@ -142,7 +177,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         }
 
         if (builder.getCredential() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "Azure Key Vault credentials cannot be null and are required to build a key encryption key client."));
         }
 
@@ -167,10 +202,10 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(JsonWebKey key) {
         if (key == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
         } else if (key.getId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "JSON Web Key's id property is not configured."));
         }
 
@@ -191,7 +226,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     @Override
     public KeyEncryptionKeyClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         builder.credential(credential);
@@ -212,6 +247,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
      * and from the service.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -232,6 +268,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param policy A {@link HttpPipelinePolicy pipeline policy}.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
@@ -239,7 +276,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     @Override
     public KeyEncryptionKeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
         builder.addPolicy(policy);
@@ -258,6 +295,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param client The {@link HttpClient} to use for requests.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -278,6 +316,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -351,6 +390,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -374,12 +414,26 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
-     * @see HttpClientOptions
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
+     *
+     * @see HttpClientOptions
      */
     @Override
     public KeyEncryptionKeyClientBuilder clientOptions(ClientOptions clientOptions) {
         builder.clientOptions(clientOptions);
+
+        return this;
+    }
+
+    /**
+     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
+     * verification is performed by default.
+     *
+     * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
+     */
+    public KeyEncryptionKeyClientBuilder disableChallengeResourceVerification() {
+        builder.disableChallengeResourceVerification();
 
         return this;
     }

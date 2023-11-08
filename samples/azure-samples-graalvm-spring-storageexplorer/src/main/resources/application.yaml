@@ -1,0 +1,20 @@
+azure:
+  storage:
+    blob:
+      container-name: ${azure_blob_storage_container_name}
+      connection-string: ${azure_blob_storage_connection_string}
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  thymeleaf: # Thymeleaf
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: classpath:/templates/
+    suffix: .html
+  resources: # Static resources
+    static-locations: file:src/main/resources/static/
+    cache:
+      period: 0

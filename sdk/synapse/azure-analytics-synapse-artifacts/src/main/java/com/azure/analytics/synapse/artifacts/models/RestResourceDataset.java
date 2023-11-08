@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** A Rest service dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,39 +19,41 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class RestResourceDataset extends Dataset {
     /*
-     * The relative URL to the resource that the RESTful API provides. Type:
-     * string (or Expression with resultType string).
+     * The relative URL to the resource that the RESTful API provides. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.relativeUrl")
     private Object relativeUrl;
 
     /*
-     * The HTTP method used to call the RESTful API. The default is GET. Type:
-     * string (or Expression with resultType string).
+     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.requestMethod")
     private Object requestMethod;
 
     /*
-     * The HTTP request body to the RESTful API if requestMethod is POST. Type:
-     * string (or Expression with resultType string).
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.requestBody")
     private Object requestBody;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type:
-     * string (or Expression with resultType string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.additionalHeaders")
     private Object additionalHeaders;
 
     /*
-     * The pagination rules to compose next page requests. Type: string (or
-     * Expression with resultType string).
+     * The pagination rules to compose next page requests. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.paginationRules")
     private Object paginationRules;
+
+    /** Creates an instance of RestResourceDataset class. */
+    public RestResourceDataset() {}
 
     /**
      * Get the relativeUrl property: The relative URL to the resource that the RESTful API provides. Type: string (or
@@ -158,6 +162,55 @@ public class RestResourceDataset extends Dataset {
      */
     public RestResourceDataset setPaginationRules(Object paginationRules) {
         this.paginationRules = paginationRules;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestResourceDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestResourceDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestResourceDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestResourceDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestResourceDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

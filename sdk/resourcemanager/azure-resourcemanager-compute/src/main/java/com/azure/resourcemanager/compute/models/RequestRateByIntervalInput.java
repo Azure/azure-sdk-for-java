@@ -18,6 +18,10 @@ public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
     @JsonProperty(value = "intervalLength", required = true)
     private IntervalInMins intervalLength;
 
+    /** Creates an instance of RequestRateByIntervalInput class. */
+    public RequestRateByIntervalInput() {
+    }
+
     /**
      * Get the intervalLength property: Interval value in minutes used to create LogAnalytics call rate logs.
      *

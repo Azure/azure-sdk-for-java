@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Links to product icons. */
 @Fluent
 public final class IconUris {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IconUris.class);
-
     /*
      * URI to large icon.
      */
@@ -43,6 +39,10 @@ public final class IconUris {
      */
     @JsonProperty(value = "hero")
     private String hero;
+
+    /** Creates an instance of IconUris class. */
+    public IconUris() {
+    }
 
     /**
      * Get the large property: URI to large icon.

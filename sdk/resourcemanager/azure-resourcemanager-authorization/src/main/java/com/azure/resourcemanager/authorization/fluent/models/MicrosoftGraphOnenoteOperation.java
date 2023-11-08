@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** onenoteOperation. */
 @Fluent
 public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenoteOperation.class);
-
     /*
      * onenoteOperationError
      */
@@ -26,8 +23,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
     private MicrosoftGraphOnenoteOperationError error;
 
     /*
-     * The operation percent complete if the operation is still in running
-     * status
+     * The operation percent complete if the operation is still in running status
      */
     @JsonProperty(value = "percentComplete")
     private String percentComplete;
@@ -39,8 +35,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
     private String resourceId;
 
     /*
-     * The resource URI for the object. For example, the resource URI for a
-     * copied page or section.
+     * The resource URI for the object. For example, the resource URI for a copied page or section.
      */
     @JsonProperty(value = "resourceLocation")
     private String resourceLocation;
@@ -49,6 +44,10 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
      * onenoteOperation
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnenoteOperation class. */
+    public MicrosoftGraphOnenoteOperation() {
+    }
 
     /**
      * Get the error property: onenoteOperationError.

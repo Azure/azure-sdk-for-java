@@ -16,6 +16,10 @@ public final class FrontEndConfiguration {
     @JsonProperty(value = "kind")
     private FrontEndServiceType kind;
 
+    /** Creates an instance of FrontEndConfiguration class. */
+    public FrontEndConfiguration() {
+    }
+
     /**
      * Get the kind property: The kind property.
      *

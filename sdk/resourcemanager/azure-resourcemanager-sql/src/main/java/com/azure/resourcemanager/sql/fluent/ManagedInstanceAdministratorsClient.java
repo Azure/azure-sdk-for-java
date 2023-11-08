@@ -13,14 +13,14 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceAdministratorInner;
+import com.azure.resourcemanager.sql.models.AdministratorName;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagedInstanceAdministratorsClient. */
-public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete<Void> {
+public interface ManagedInstanceAdministratorsClient {
     /**
      * Gets a list of managed instance administrators.
      *
@@ -30,7 +30,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceAdministratorInner> listByInstanceAsync(
@@ -45,7 +45,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceAdministratorInner> listByInstance(
@@ -61,7 +61,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceAdministratorInner> listByInstance(
@@ -73,14 +73,15 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
+     * @return a managed instance administrator along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedInstanceAdministratorInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName);
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName);
 
     /**
      * Gets a managed instance administrator.
@@ -88,13 +89,15 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
+     * @return a managed instance administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceAdministratorInner> getAsync(String resourceGroupName, String managedInstanceName);
+    Mono<ManagedInstanceAdministratorInner> getAsync(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName);
 
     /**
      * Gets a managed instance administrator.
@@ -102,29 +105,32 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceAdministratorInner get(String resourceGroupName, String managedInstanceName);
-
-    /**
-     * Gets a managed instance administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
+     * @return a managed instance administrator along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedInstanceAdministratorInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, Context context);
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context);
+
+    /**
+     * Gets a managed instance administrator.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance administrator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceAdministratorInner get(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName);
 
     /**
      * Creates or updates a managed instance administrator.
@@ -132,15 +138,20 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return an Azure SQL managed instance administrator along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters);
+        String resourceGroupName,
+        String managedInstanceName,
+        AdministratorName administratorName,
+        ManagedInstanceAdministratorInner parameters);
 
     /**
      * Creates or updates a managed instance administrator.
@@ -148,16 +159,20 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner>
         beginCreateOrUpdateAsync(
-            String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters);
+            String resourceGroupName,
+            String managedInstanceName,
+            AdministratorName administratorName,
+            ManagedInstanceAdministratorInner parameters);
 
     /**
      * Creates or updates a managed instance administrator.
@@ -165,15 +180,19 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner> beginCreateOrUpdate(
-        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters);
+        String resourceGroupName,
+        String managedInstanceName,
+        AdministratorName administratorName,
+        ManagedInstanceAdministratorInner parameters);
 
     /**
      * Creates or updates a managed instance administrator.
@@ -181,17 +200,19 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner> beginCreateOrUpdate(
         String resourceGroupName,
         String managedInstanceName,
+        AdministratorName administratorName,
         ManagedInstanceAdministratorInner parameters,
         Context context);
 
@@ -201,15 +222,19 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return an Azure SQL managed instance administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceAdministratorInner> createOrUpdateAsync(
-        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters);
+        String resourceGroupName,
+        String managedInstanceName,
+        AdministratorName administratorName,
+        ManagedInstanceAdministratorInner parameters);
 
     /**
      * Creates or updates a managed instance administrator.
@@ -217,7 +242,8 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -225,7 +251,10 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagedInstanceAdministratorInner createOrUpdate(
-        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters);
+        String resourceGroupName,
+        String managedInstanceName,
+        AdministratorName administratorName,
+        ManagedInstanceAdministratorInner parameters);
 
     /**
      * Creates or updates a managed instance administrator.
@@ -233,7 +262,8 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -244,6 +274,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
     ManagedInstanceAdministratorInner createOrUpdate(
         String resourceGroupName,
         String managedInstanceName,
+        AdministratorName administratorName,
         ManagedInstanceAdministratorInner parameters,
         Context context);
 
@@ -253,13 +284,15 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String managedInstanceName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName);
 
     /**
      * Deletes a managed instance administrator.
@@ -267,13 +300,15 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName);
 
     /**
      * Deletes a managed instance administrator.
@@ -281,29 +316,15 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName);
-
-    /**
-     * Deletes a managed instance administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String managedInstanceName, Context context);
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName);
 
     /**
      * Deletes a managed instance administrator.
@@ -311,13 +332,16 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context);
 
     /**
      * Deletes a managed instance administrator.
@@ -325,12 +349,28 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName, AdministratorName administratorName);
+
+    /**
+     * Deletes a managed instance administrator.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String managedInstanceName);
+    void delete(String resourceGroupName, String managedInstanceName, AdministratorName administratorName);
 
     /**
      * Deletes a managed instance administrator.
@@ -338,11 +378,13 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String managedInstanceName, Context context);
+    void delete(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context);
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.datafactory.models.AzureBlobStorageLinkedService;
 import com.azure.resourcemanager.datafactory.models.AzureBlobStorageLocation;
@@ -100,7 +99,7 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                                             .withAnnotations(Arrays.asList())
                                             .withConnectionString(
                                                 "DefaultEndpointsProtocol=https;AccountName=<storageName>;EndpointSuffix=core.windows.net;")
-                                            .withEncryptedCredential("<credential>"))))
+                                            .withEncryptedCredential("fakeTokenPlaceholder"))))
                     .withDebugSettings(
                         new DataFlowDebugPackageDebugSettings()
                             .withSourceSettings(
@@ -123,9 +122,10 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                                         Object.class,
                                         SerializerEncoding.JSON)))
                     .withAdditionalProperties(mapOf()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

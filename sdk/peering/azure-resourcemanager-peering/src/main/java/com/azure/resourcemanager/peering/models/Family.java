@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Family. */
+/** The family of the peering SKU. */
 public final class Family extends ExpandableStringEnum<Family> {
     /** Static value Direct for Family. */
     public static final Family DIRECT = fromString("Direct");
 
     /** Static value Exchange for Family. */
     public static final Family EXCHANGE = fromString("Exchange");
+
+    /**
+     * Creates a new instance of Family value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Family() {
+    }
 
     /**
      * Creates or finds a Family from its string representation.
@@ -27,7 +36,11 @@ public final class Family extends ExpandableStringEnum<Family> {
         return fromString(name, Family.class);
     }
 
-    /** @return known Family values. */
+    /**
+     * Gets known Family values.
+     *
+     * @return known Family values.
+     */
     public static Collection<Family> values() {
         return values(Family.class);
     }

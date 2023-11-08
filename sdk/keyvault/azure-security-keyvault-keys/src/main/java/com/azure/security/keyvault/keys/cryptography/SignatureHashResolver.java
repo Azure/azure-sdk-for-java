@@ -16,7 +16,6 @@ class SignatureHashResolver {
         DEFAULT.put(SignatureAlgorithm.ES256, HashAlgorithm.SHA_256);
         DEFAULT.put(SignatureAlgorithm.ES256K, HashAlgorithm.SHA_256);
         DEFAULT.put(SignatureAlgorithm.ES384, HashAlgorithm.SHA_384);
-
         DEFAULT.put(SignatureAlgorithm.ES512, HashAlgorithm.SHA_512);
         DEFAULT.put(SignatureAlgorithm.RS256, HashAlgorithm.SHA_256);
         DEFAULT.put(SignatureAlgorithm.RS384, HashAlgorithm.SHA_384);

@@ -26,6 +26,9 @@ public final class ParquetSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private ParquetWriteSettings formatSettings;
 
+    /** Creates an instance of ParquetSink class. */
+    public ParquetSink() {}
+
     /**
      * Get the storeSettings property: Parquet store settings.
      *
@@ -63,6 +66,41 @@ public final class ParquetSink extends CopySink {
      */
     public ParquetSink setFormatSettings(ParquetWriteSettings formatSettings) {
         this.formatSettings = formatSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ParquetSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ParquetSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ParquetSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ParquetSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ParquetSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

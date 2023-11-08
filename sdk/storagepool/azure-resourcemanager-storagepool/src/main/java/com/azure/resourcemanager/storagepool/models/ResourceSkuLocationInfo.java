@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Zone and capability info for resource sku. */
 @Immutable
 public final class ResourceSkuLocationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuLocationInfo.class);
-
     /*
      * Location of the SKU
      */
@@ -32,6 +28,10 @@ public final class ResourceSkuLocationInfo {
      */
     @JsonProperty(value = "zoneDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuZoneDetails> zoneDetails;
+
+    /** Creates an instance of ResourceSkuLocationInfo class. */
+    public ResourceSkuLocationInfo() {
+    }
 
     /**
      * Get the location property: Location of the SKU.

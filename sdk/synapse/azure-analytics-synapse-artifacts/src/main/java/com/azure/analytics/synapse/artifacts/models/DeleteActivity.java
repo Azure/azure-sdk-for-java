@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Delete activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,9 +18,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class DeleteActivity extends ExecutionActivity {
     /*
-     * If true, files or sub-folders under current folder path will be deleted
-     * recursively. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.recursive")
     private Object recursive;
@@ -31,15 +31,14 @@ public class DeleteActivity extends ExecutionActivity {
     private Integer maxConcurrentConnections;
 
     /*
-     * Whether to record detailed logs of delete-activity execution. Default
-     * value is false. Type: boolean (or Expression with resultType boolean).
+     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.enableLogging")
     private Object enableLogging;
 
     /*
-     * Log storage settings customer need to provide when enableLogging is
-     * true.
+     * Log storage settings customer need to provide when enableLogging is true.
      */
     @JsonProperty(value = "typeProperties.logStorageSettings")
     private LogStorageSettings logStorageSettings;
@@ -55,6 +54,9 @@ public class DeleteActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.storeSettings")
     private StoreReadSettings storeSettings;
+
+    /** Creates an instance of DeleteActivity class. */
+    public DeleteActivity() {}
 
     /**
      * Get the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
@@ -179,6 +181,62 @@ public class DeleteActivity extends ExecutionActivity {
      */
     public DeleteActivity setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeleteActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

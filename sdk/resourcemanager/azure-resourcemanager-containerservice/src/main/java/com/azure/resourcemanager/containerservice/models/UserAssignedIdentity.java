@@ -28,6 +28,10 @@ public class UserAssignedIdentity {
     @JsonProperty(value = "objectId")
     private String objectId;
 
+    /** Creates an instance of UserAssignedIdentity class. */
+    public UserAssignedIdentity() {
+    }
+
     /**
      * Get the resourceId property: The resource ID of the user assigned identity.
      *

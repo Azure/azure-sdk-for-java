@@ -1,18 +1,308 @@
 # Release History
 
-## 4.0.0-beta.5 (Unreleased)
+## 4.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
-- Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
-- Renamed method `beginCopyModel` to `beginCopyModelTo`
-- Removed `modelId` as a required parameter from `beginBuildModel`, `beginCreateComposedModel` and `getCopyAuthorization`
-and moved to `BuildModelOptions`, `CreateComposedModelOptions` and `CopyAuthorizationOptions` respectively
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.1.2 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 4.1.1 (2023-09-13)
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 4.1.0 (2023-08-10)
+
+### Features Added
+- Added class `DocumentAnalysisFeature`, added properties `Barcodes`, `KeyValuePairs`, and `Languages` as add-on capabilities.
+- Added class `ContentSource` as a base class to `BlobContentSource` and `BlobFileListContentSource`
+- In `DocumentModelAdministrationClient`, added a new overload to `beginBuildDocumentModel` that takes a `ContentSource` object. 
+It can be used to build a document model from alternative content sources.
+- Added property `serviceVersion` to classes `AnalyzeResult`, `DocumentModelDetails`, `DocumentModelSummary`, `OperationDetails`, and `OperationSummary`.
+
+### Breaking Changes
+- `DocumentAnalysisClient` and `DocumentModelAdministrationClient` now target service API version `2023-07-31` by default. Version `2023-02-28-preview` is not supported anymore.
+- In class `ResourceDetails`, renamed property `customNeuralDocumentModelBuilds` to `neuralDocumentModelQuota`.
+- In class `DocumentClassifierDetails`, renamed property `apiVersion` to `serviceVersion`.
+
+### Bugs Fixed
+- `DocumentStyle` now correctly returns values for `font`, `similarFontFamily`, `backgroundColor`. 
+
+## 4.0.9 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+
+## 4.0.8 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 4.1.0-beta.2 (2023-05-10)
+### Bugs Fixed
+- Document Table cell now returns correct values for bounding boxes.
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+
+## 4.0.7 (2023-05-10)
+
+### Bugs Fixed
+- Document Table cell now returns correct values for bounding boxes.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+
+## 4.0.6 (2023-04-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+
+## 4.1.0-beta.1 (2023-04-12)
+### Features Added
+- Added support for analyzing new document types
+- Added support for AzureBlobList source type when building document models
+- Added support for building, getting, listing and deleting classifiers
+- Added support for queryFields premium feature when performing analysis operations
+- Added model `QuotaDetails` and property `customNeuralDocumentModelBuilds` on `ResourceDetails`
+- Added property `expiresOn` to `DocumentModelDetails` and `DocumentModelSummary`
+- Added properties on `DocumentStyle` : `similarFontFamily`, `fontStyle`, `fontWeight`, `color`, `backgroundColor`
+- Added property `commonName` to `DocumentKeyValuePair`.
+- Added support for ParagraphRole `formulaBlock`
+- Added support for `code` property on `CurrencyValue`
+- Added properties `unit`, `cityDistrict`, `stateDistrict`, `suburb`, `house`, and `level` to `AddressValue`
+- Added method `isValueBoolean` to model `DocumentField`
+- Added support for `DocumentFieldType.BOOLEAN`
+- Added DocumentAnalysisFeature enum with optional document analysis feature to enable
+- Added properties `annotations`, `images`, `formulas`, and `barcodes` to `DocumentPage`.
+- Added models `DocumentAnnotation`, `DocumentImage`, `DocumentFormula`, and `DocumentBarcode`
+
+### Other Changes
+#### Known Bug
+- `com.azure.core.exception.HttpResponseException: Deserialization Failed` error when using the `beginClassifyDocument` 
+method on DocumentAnalysisAsyncClient and DocumentAnalysisClient.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
+## 4.0.5 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 4.0.4 (2023-02-09)
+
+### Other Changes
+- Method `beginAnalyzeDocument` requires the document length to be specified and not null when 
+analyzing a document.
+
+#### Dependency Updates
+- Upgraded `azure-core` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` to version `1.13.0`.
+
+## 4.0.3 (2023-01-09)
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+
+## 4.0.2 (2022-11-10)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+
+## 4.0.1 (2022-10-12)
+
+### Bugs Fixed
+- Fixed bug when deserializing properties on DocumentField.
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.33.0`.
+- Upgraded `azure-core-http-netty` to `1.12.6`.
+
+## 4.0.0 (2022-09-08)
+This version of the SDK defaults 2022-08-31 going forward.
+
+### Features Added
+- Added a method `getWords()` on model `DocumentLine`.
+- Added `TypedDocumentField<T>` model for strongly typed representation of `Fields` on analyzed documents.
+`DocumentField` extends from `TypedDocumentField<T>`.
+- Added interfaces from `com.azure.core.client.traits` to `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`
+
+### Breaking Changes
+- Removed property `kind` from model `DocumentPage`
+- Removed model `DocumentPageKind`, `DocumentEntity`, `DocumentFootnote`, and `DocumentCaption`.
+- Renamed models:
+  - `ModelOperationDetails` to `OperationDetails`
+  - `ModelOperationSummary` to `OperationSummary` 
+  - `ModelOperationKind` to `OperationKind`
+  - `ModelOperationStatus` to `OperationStatus` 
+  - `DocumentOperationKind` to `OperationKind`
+  - `BuildModelOptions` to `BuildDocumentModelOptions`
+  - `ComposeModelOptions` to `ComposeDocumentModelOptions`
+  - `DocumentOperationResult` to `OperationResult`
+  - `CopyAuthorization` to `DocumentModelCopyAuthorization`
+  - `LengthUnit` to `DocumentPageLengthUnit`
+  - `SelectionMarkState` to `DocumentSelectionMarkState`
+- Renamed properties `documentModelCount` and `documentModelLimit` to `customDocumentModelCount` 
+and `customDocumentModelLimit` on model `ResourceDetails`.
+- Renamed clients methods:
+  - `getModel` to `getDocumentModel`
+  - `listModels` to `listDocumentModels`
+  - `deleteModel` to `deleteDocumentModel`
+  - `beginBuildModel` to `beginBuildDocumentModel`
+  - `beginComposeModel` to `beginComposeDocumentModel`
+- Renamed property `DocumentFieldType.INTEGER` to `DocumentFieldType.LONG`
+- Renamed method `getValueInteger` to `getValueLong` and `getValueFloat` to `getValueLong` on `DocumentField` model
+- Renamed properties on model `DocumentAnalysisAudience`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.32.0`.
+- Upgraded `azure-core-http-netty` to `1.12.5`.
+
+## 3.1.14 (2022-08-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.31.0`.
+- Upgraded `azure-core-http-netty` to `1.12.4`.
+
+## 4.0.0-beta.6 (2022-08-10)
+
+### Features Added
+- Add a constructor to create an instance of `CopyAuthorization` model.
+- Added BinaryData support to document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
+- Added support for V2.1 & V2.0 APIs by adding FormRecognizerClient and FormTrainingClient.
+
+### Breaking Changes
+- Renamed `beginCreateComposedModel` method to `beginComposeModel` on DocumentModelAdministrationClient and DocumentModelAdministrationAsyncClient.
+- Renamed `CreateComposedModelOptions` model to `ComposeModelOptions`
+- Renamed `DocumentModelInfo` model to `DocumentModelDetails`
+- Renamed `ModelOperation` model to `ModelOperationDetails`
+- Renamed `ModelOperationInfo` model to `ModelOperationSummary`
+- Renamed `getAccountProperties` method to `getResourceDetails`
+- Renamed `AccountProperties` model to `ResourceDetails`
+- Renamed `state` property on model `DocumentSelectionMark` to `documentSelectionMarkState`
+- Renamed `getValue*` accessor methods on `DocumentField` to `getValueAs*`
+- Renamed `DocTypeInfo` model to `DocumentTypeDetails`
+- Renamed `docTypes` property on `DocumentModelDetails` model to `documentTypes`
+- Removed models `DocumentModelOperationException`, `DocumentModelOperationError` and `DocumentModelOperationInnerError`.
+- Renamed `trainingFilesUrl` to `blobContainerUrl` in `beginBuildModel` method
+- Changed method `beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions)` to `beginBuildModel(String, DocumentModelBuildMode, String, BuildModelOptions)`
+- Removed `prefix` property on model `BuildModelOptions`
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.31.0`.
+- Upgraded `azure-core-http-netty` to `1.12.4`.
+
+## 3.1.13 (2022-07-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.30.0`.
+- Upgraded `azure-core-http-netty` to `1.12.3`.
+
+## 3.1.12 (2022-06-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.29.1`.
+- Upgraded `azure-core-http-netty` to `1.12.2`.
+
+## 4.0.0-beta.5 (2022-06-07)
+
+### Features Added
+- Added support for address type field value.
+- Added support for vertex coordinates with model `Point` to represent polygon vertices in `boundingPolygon` property.
+- Added `paragraphs` property on `AnalyzeResult`.
+- Added a new `DocumentParagraph` model to represent document paragraphs.
+- Added `kind` property on `DocumentPage` to represent the document page kind.
+
+### Breaking Changes
+- Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
+- Renamed method `beginCopyModel` to `beginCopyModelTo`
+- Renamed property `boundingBox` in model `BoundingRegion`, `DocumentLine`, `DocumentWord`, and `DocumentSelectionMark`
+to `boundingPolygon`.
+- Removed `entities` property on model `AnalyzeResult`
+- Renamed `code` property on `DocumentLanguage` model to `locale`
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.29.1`.
+- Upgraded `azure-core-http-netty` to `1.12.2`.
+
+## 3.1.11 (2022-05-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+
+## 3.1.10 (2022-04-08)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
 
 ## 3.1.9 (2022-03-08)
 ### Bug Fixes

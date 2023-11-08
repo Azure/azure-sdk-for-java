@@ -7,7 +7,7 @@ package com.azure.resourcemanager.logic.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for EdifactDecimalIndicator. */
+/** The edifact decimal indicator. */
 public enum EdifactDecimalIndicator {
     /** Enum value NotSpecified. */
     NOT_SPECIFIED("NotSpecified"),
@@ -33,6 +33,9 @@ public enum EdifactDecimalIndicator {
      */
     @JsonCreator
     public static EdifactDecimalIndicator fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EdifactDecimalIndicator[] items = EdifactDecimalIndicator.values();
         for (EdifactDecimalIndicator item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum EdifactDecimalIndicator {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

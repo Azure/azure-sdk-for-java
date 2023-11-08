@@ -54,15 +54,13 @@ public final class CodelessConnectorPollingAuthProperties {
     private String authorizationEndpoint;
 
     /*
-     * The query parameters used in authorization request, used in Oauth 2.0
-     * flow
+     * The query parameters used in authorization request, used in Oauth 2.0 flow
      */
     @JsonProperty(value = "authorizationEndpointQueryParameters")
     private Object authorizationEndpointQueryParameters;
 
     /*
-     * The redirect endpoint where we will get the authorization code, used in
-     * Oauth 2.0 flow
+     * The redirect endpoint where we will get the authorization code, used in Oauth 2.0 flow
      */
     @JsonProperty(value = "redirectionEndpoint")
     private String redirectionEndpoint;
@@ -80,8 +78,7 @@ public final class CodelessConnectorPollingAuthProperties {
     private Object tokenEndpointQueryParameters;
 
     /*
-     * Marks if we should send the client secret in header or payload, used in
-     * Oauth 2.0 flow
+     * Marks if we should send the client secret in header or payload, used in Oauth 2.0 flow
      */
     @JsonProperty(value = "isClientSecretInHeader")
     private Boolean isClientSecretInHeader;

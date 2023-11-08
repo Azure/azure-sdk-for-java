@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.VendorSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for list vendor sku API service call. */
 @Fluent
 public final class VendorSkuListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorSkuListResult.class);
-
     /*
      * A list of vendor skus offered by the vendor.
      */
@@ -27,6 +23,10 @@ public final class VendorSkuListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of VendorSkuListResult class. */
+    public VendorSkuListResult() {
+    }
 
     /**
      * Get the value property: A list of vendor skus offered by the vendor.

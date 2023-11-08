@@ -62,8 +62,8 @@ public interface PacketCoreDataPlane {
     ProvisioningState provisioningState();
 
     /**
-     * Gets the userPlaneAccessInterface property: The user plane interface on the access network. In 5G networks this
-     * is called as N3 interface whereas in 4G networks this is called the S1-U interface.
+     * Gets the userPlaneAccessInterface property: The user plane interface on the access network. For 5G networks, this
+     * is the N3 interface. For 4G networks, this is the S1-U interface.
      *
      * @return the userPlaneAccessInterface value.
      */
@@ -84,6 +84,13 @@ public interface PacketCoreDataPlane {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreDataPlaneInner object.
      *
      * @return the inner object.
@@ -98,11 +105,13 @@ public interface PacketCoreDataPlane {
             DefinitionStages.WithUserPlaneAccessInterface,
             DefinitionStages.WithCreate {
     }
+
     /** The PacketCoreDataPlane definition stages. */
     interface DefinitionStages {
         /** The first stage of the PacketCoreDataPlane definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the PacketCoreDataPlane definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -121,6 +130,7 @@ public interface PacketCoreDataPlane {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the PacketCoreDataPlane definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -133,18 +143,20 @@ public interface PacketCoreDataPlane {
             WithUserPlaneAccessInterface withExistingPacketCoreControlPlane(
                 String resourceGroupName, String packetCoreControlPlaneName);
         }
+
         /** The stage of the PacketCoreDataPlane definition allowing to specify userPlaneAccessInterface. */
         interface WithUserPlaneAccessInterface {
             /**
-             * Specifies the userPlaneAccessInterface property: The user plane interface on the access network. In 5G
-             * networks this is called as N3 interface whereas in 4G networks this is called the S1-U interface..
+             * Specifies the userPlaneAccessInterface property: The user plane interface on the access network. For 5G
+             * networks, this is the N3 interface. For 4G networks, this is the S1-U interface..
              *
-             * @param userPlaneAccessInterface The user plane interface on the access network. In 5G networks this is
-             *     called as N3 interface whereas in 4G networks this is called the S1-U interface.
+             * @param userPlaneAccessInterface The user plane interface on the access network. For 5G networks, this is
+             *     the N3 interface. For 4G networks, this is the S1-U interface.
              * @return the next definition stage.
              */
             WithCreate withUserPlaneAccessInterface(InterfaceProperties userPlaneAccessInterface);
         }
+
         /**
          * The stage of the PacketCoreDataPlane definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -165,6 +177,7 @@ public interface PacketCoreDataPlane {
              */
             PacketCoreDataPlane create(Context context);
         }
+
         /** The stage of the PacketCoreDataPlane definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -176,6 +189,7 @@ public interface PacketCoreDataPlane {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the PacketCoreDataPlane resource.
      *
@@ -200,6 +214,7 @@ public interface PacketCoreDataPlane {
          */
         PacketCoreDataPlane apply(Context context);
     }
+
     /** The PacketCoreDataPlane update stages. */
     interface UpdateStages {
         /** The stage of the PacketCoreDataPlane update allowing to specify tags. */
@@ -213,6 +228,7 @@ public interface PacketCoreDataPlane {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

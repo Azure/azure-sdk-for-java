@@ -4,11 +4,11 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Compute Operation value. */
-@Fluent
+@Immutable
 public final class ComputeOperationValueInner {
     /*
      * The origin of the compute operation.
@@ -27,6 +27,10 @@ public final class ComputeOperationValueInner {
      */
     @JsonProperty(value = "display")
     private ComputeOperationValueDisplay innerDisplay;
+
+    /** Creates an instance of ComputeOperationValueInner class. */
+    public ComputeOperationValueInner() {
+    }
 
     /**
      * Get the origin property: The origin of the compute operation.

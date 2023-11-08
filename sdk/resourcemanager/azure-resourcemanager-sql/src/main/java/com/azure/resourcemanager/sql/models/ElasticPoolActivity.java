@@ -8,12 +8,13 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
-import com.azure.resourcemanager.sql.fluent.models.ElasticPoolActivityInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolOperationInner;
+
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL ElasticPool's Activity. */
 @Fluent
-public interface ElasticPoolActivity extends HasInnerModel<ElasticPoolActivityInner>, HasResourceGroup, HasName, HasId {
+public interface ElasticPoolActivity extends HasInnerModel<ElasticPoolOperationInner>, HasResourceGroup, HasName, HasId {
     /** @return the time the operation finished (ISO8601 format) */
     OffsetDateTime endTime();
 
@@ -35,21 +36,6 @@ public interface ElasticPoolActivity extends HasInnerModel<ElasticPoolActivityIn
     /** @return the percentage complete if available */
     int percentComplete();
 
-    /** @return the requested max DTU per database if available */
-    int requestedDatabaseDtuMax();
-
-    /** @return the requested min DTU per database if available */
-    int requestedDatabaseDtuMin();
-
-    /** @return the requested DTU for the pool if available */
-    int requestedDtu();
-
-    /** @return the requested name for the Elastic Pool if available */
-    String requestedElasticPoolName();
-
-    /** @return the requested storage limit for the pool in GB if available */
-    long requestedStorageLimitInGB();
-
     /** @return the name of the Elastic Pool */
     String elasticPoolName();
 
@@ -61,19 +47,4 @@ public interface ElasticPoolActivity extends HasInnerModel<ElasticPoolActivityIn
 
     /** @return the current state of the operation */
     String state();
-
-    /** @return the geo-location where the resource lives. */
-    String location();
-
-    /** @return the requested storage limit in MB. */
-    int requestedStorageLimitInMB();
-
-    /** @return he requested per database DTU guarantee. */
-    int requestedDatabaseDtuGuarantee();
-
-    /** @return the requested per database DTU cap. */
-    int requestedDatabaseDtuCap();
-
-    /** @return the requested DTU guarantee. */
-    int requestedDtuGuarantee();
 }

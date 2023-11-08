@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SqlConnectionInfo")
 @Fluent
 public final class SqlConnectionInfo extends ConnectionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlConnectionInfo.class);
-
     /*
-     * Data source in the format
-     * Protocol:MachineName\SQLServerInstanceName,PortNumber
+     * Data source in the format Protocol:MachineName\SQLServerInstanceName,PortNumber
      */
     @JsonProperty(value = "dataSource", required = true)
     private String dataSource;
@@ -54,6 +50,10 @@ public final class SqlConnectionInfo extends ConnectionInfo {
      */
     @JsonProperty(value = "platform")
     private SqlSourcePlatform platform;
+
+    /** Creates an instance of SqlConnectionInfo class. */
+    public SqlConnectionInfo() {
+    }
 
     /**
      * Get the dataSource property: Data source in the format Protocol:MachineName\SQLServerInstanceName,PortNumber.
@@ -198,9 +198,11 @@ public final class SqlConnectionInfo extends ConnectionInfo {
     public void validate() {
         super.validate();
         if (dataSource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataSource in model SqlConnectionInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlConnectionInfo.class);
 }

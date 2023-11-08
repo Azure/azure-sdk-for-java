@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,27 +16,22 @@ import java.util.Map;
 /** domainState. */
 @Fluent
 public final class MicrosoftGraphDomainState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDomainState.class);
-
     /*
-     * Timestamp for when the last activity occurred. The value is updated when
-     * an operation is scheduled, the asynchronous task starts, and when the
-     * operation completes.
+     * Timestamp for when the last activity occurred. The value is updated when an operation is scheduled, the
+     * asynchronous task starts, and when the operation completes.
      */
     @JsonProperty(value = "lastActionDateTime")
     private OffsetDateTime lastActionDateTime;
 
     /*
-     * Type of asynchronous operation. The values can be ForceDelete or
-     * Verification
+     * Type of asynchronous operation. The values can be ForceDelete or Verification
      */
     @JsonProperty(value = "operation")
     private String operation;
 
     /*
-     * Current status of the operation.  Scheduled - Operation has been
-     * scheduled but has not started.  InProgress - Task has started and is in
-     * progress.  Failed - Operation has failed.
+     * Current status of the operation.  Scheduled - Operation has been scheduled but has not started.  InProgress -
+     * Task has started and is in progress.  Failed - Operation has failed.
      */
     @JsonProperty(value = "status")
     private String status;
@@ -46,6 +40,10 @@ public final class MicrosoftGraphDomainState {
      * domainState
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDomainState class. */
+    public MicrosoftGraphDomainState() {
+    }
 
     /**
      * Get the lastActionDateTime property: Timestamp for when the last activity occurred. The value is updated when an

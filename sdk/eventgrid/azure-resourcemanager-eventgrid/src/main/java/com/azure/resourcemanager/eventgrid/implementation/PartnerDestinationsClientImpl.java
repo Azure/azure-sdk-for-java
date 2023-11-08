@@ -66,11 +66,10 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface PartnerDestinationsService {
+    public interface PartnerDestinationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerDestinations/{partnerDestinationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerDestinationInner>> getByResourceGroup(
@@ -84,11 +83,10 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerDestinations/{partnerDestinationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerDestinationInner>> createOrUpdate(
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -98,10 +96,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerDestinations/{partnerDestinationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -110,15 +107,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerDestinationName") String partnerDestinationName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerDestinations/{partnerDestinationName}")
-        @ExpectedResponses({200, 201})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}")
+        @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerDestinationInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -143,8 +140,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerDestinations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerDestinationsListResult>> listByResourceGroup(
@@ -159,8 +155,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerDestinations/{partnerDestinationName}/activate")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerDestinations/{partnerDestinationName}/activate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerDestinationInner>> activate(
@@ -194,7 +189,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Get properties of a partner destination.
+     * Get a partner destination.
+     *
+     * <p>Get properties of a partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -244,7 +241,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Get properties of a partner destination.
+     * Get a partner destination.
+     *
+     * <p>Get properties of a partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -292,7 +291,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Get properties of a partner destination.
+     * Get a partner destination.
+     *
+     * <p>Get properties of a partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -305,33 +306,13 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     private Mono<PartnerDestinationInner> getByResourceGroupAsync(
         String resourceGroupName, String partnerDestinationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerDestinationName)
-            .flatMap(
-                (Response<PartnerDestinationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get properties of a partner destination.
+     * Get a partner destination.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerDestinationName Name of the partner destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner destination.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerDestinationInner getByResourceGroup(String resourceGroupName, String partnerDestinationName) {
-        return getByResourceGroupAsync(resourceGroupName, partnerDestinationName).block();
-    }
-
-    /**
-     * Get properties of a partner destination.
+     * <p>Get properties of a partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -348,7 +329,26 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Asynchronously creates a new partner destination with the specified parameters.
+     * Get a partner destination.
+     *
+     * <p>Get properties of a partner destination.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a partner destination.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PartnerDestinationInner getByResourceGroup(String resourceGroupName, String partnerDestinationName) {
+        return getByResourceGroupWithResponse(resourceGroupName, partnerDestinationName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -359,7 +359,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerDestinationInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -406,7 +406,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Asynchronously creates a new partner destination with the specified parameters.
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -418,7 +420,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @return event Grid Partner Destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerDestinationInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String partnerDestinationName,
         PartnerDestinationInner partnerDestination,
@@ -465,7 +467,116 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Asynchronously creates a new partner destination with the specified parameters.
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestination Partner destination create information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestination);
+        return this
+            .client
+            .<PartnerDestinationInner, PartnerDestinationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerDestinationInner.class,
+                PartnerDestinationInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestination Partner destination create information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationInner partnerDestination,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestination, context);
+        return this
+            .client
+            .<PartnerDestinationInner, PartnerDestinationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerDestinationInner.class,
+                PartnerDestinationInner.class,
+                context);
+    }
+
+    /**
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestination Partner destination create information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdate(
+        String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestination Partner destination create information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationInner partnerDestination,
+        Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -478,19 +589,40 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerDestinationInner> createOrUpdateAsync(
         String resourceGroupName, String partnerDestinationName, PartnerDestinationInner partnerDestination) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestination)
-            .flatMap(
-                (Response<PartnerDestinationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Asynchronously creates a new partner destination with the specified parameters.
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestination Partner destination create information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Destination on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PartnerDestinationInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationInner partnerDestination,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -507,7 +639,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Asynchronously creates a new partner destination with the specified parameters.
+     * Create a partner destination.
+     *
+     * <p>Asynchronously creates a new partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -516,20 +650,21 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination along with {@link Response}.
+     * @return event Grid Partner Destination.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PartnerDestinationInner> createOrUpdateWithResponse(
+    public PartnerDestinationInner createOrUpdate(
         String resourceGroupName,
         String partnerDestinationName,
         PartnerDestinationInner partnerDestination,
         Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestination, context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestination, context).block();
     }
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -562,6 +697,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
                 .error(
                     new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -572,12 +708,15 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
                             resourceGroupName,
                             partnerDestinationName,
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -611,6 +750,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
                 .error(
                     new IllegalArgumentException("Parameter partnerDestinationName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -619,11 +759,14 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
                 resourceGroupName,
                 partnerDestinationName,
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -643,7 +786,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -665,7 +810,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -676,11 +823,13 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerDestinationName) {
-        return beginDeleteAsync(resourceGroupName, partnerDestinationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, partnerDestinationName).getSyncPoller();
     }
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -693,11 +842,13 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String partnerDestinationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, partnerDestinationName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, partnerDestinationName, context).getSyncPoller();
     }
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -714,7 +865,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -732,7 +885,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -746,7 +901,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Delete existing partner destination.
+     * Delete a partner destination.
+     *
+     * <p>Delete existing partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -761,7 +918,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Asynchronously updates a partner destination with the specified parameters.
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -769,10 +928,10 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return event Grid Partner Destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerDestinationInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
@@ -823,7 +982,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Asynchronously updates a partner destination with the specified parameters.
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -832,10 +993,10 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return event Grid Partner Destination along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerDestinationInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
@@ -884,7 +1045,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Asynchronously updates a partner destination with the specified parameters.
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -892,26 +1055,159 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdateAsync(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters);
+        return this
+            .client
+            .<PartnerDestinationInner, PartnerDestinationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerDestinationInner.class,
+                PartnerDestinationInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestinationUpdateParameters Partner destination update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdateAsync(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context);
+        return this
+            .client
+            .<PartnerDestinationInner, PartnerDestinationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerDestinationInner.class,
+                PartnerDestinationInner.class,
+                context);
+    }
+
+    /**
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestinationUpdateParameters Partner destination update information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdate(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
+        return this
+            .beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestinationUpdateParameters Partner destination update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PartnerDestinationInner>, PartnerDestinationInner> beginUpdate(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
+        Context context) {
+        return this
+            .beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestinationUpdateParameters Partner destination update information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Destination on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerDestinationInner> updateAsync(
         String resourceGroupName,
         String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters) {
-        return updateWithResponseAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters)
-            .flatMap(
-                (Response<PartnerDestinationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Asynchronously updates a partner destination with the specified parameters.
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @param partnerDestinationUpdateParameters Partner destination update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Destination on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PartnerDestinationInner> updateAsync(
+        String resourceGroupName,
+        String partnerDestinationName,
+        PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -919,7 +1215,7 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return event Grid Partner Destination.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerDestinationInner update(
@@ -930,7 +1226,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Asynchronously updates a partner destination with the specified parameters.
+     * Update a partner destination.
+     *
+     * <p>Asynchronously updates a partner destination with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -939,21 +1237,22 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return event Grid Partner Destination.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PartnerDestinationInner> updateWithResponse(
+    public PartnerDestinationInner update(
         String resourceGroupName,
         String partnerDestinationName,
         PartnerDestinationUpdateParameters partnerDestinationUpdateParameters,
         Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context)
+        return updateAsync(resourceGroupName, partnerDestinationName, partnerDestinationUpdateParameters, context)
             .block();
     }
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1009,7 +1308,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1064,7 +1365,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1086,7 +1389,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1101,7 +1406,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1125,7 +1432,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1139,7 +1448,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under an Azure subscription.
+     * List partner destinations under an Azure subscription.
+     *
+     * <p>List all the partner destinations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1161,7 +1472,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1224,7 +1537,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1285,7 +1600,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1310,7 +1627,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1328,7 +1647,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1354,7 +1675,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1370,7 +1693,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * List all the partner destinations under a resource group.
+     * List partner destinations under a resource group.
+     *
+     * <p>List all the partner destinations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1394,7 +1719,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Activate a newly created partner destination.
+     * Activate a partner destination.
+     *
+     * <p>Activate a newly created partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -1444,7 +1771,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Activate a newly created partner destination.
+     * Activate a partner destination.
+     *
+     * <p>Activate a newly created partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -1492,7 +1821,9 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
-     * Activate a newly created partner destination.
+     * Activate a partner destination.
+     *
+     * <p>Activate a newly created partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -1504,33 +1835,13 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerDestinationInner> activateAsync(String resourceGroupName, String partnerDestinationName) {
         return activateWithResponseAsync(resourceGroupName, partnerDestinationName)
-            .flatMap(
-                (Response<PartnerDestinationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Activate a newly created partner destination.
+     * Activate a partner destination.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerDestinationName Name of the partner destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Destination.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerDestinationInner activate(String resourceGroupName, String partnerDestinationName) {
-        return activateAsync(resourceGroupName, partnerDestinationName).block();
-    }
-
-    /**
-     * Activate a newly created partner destination.
+     * <p>Activate a newly created partner destination.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerDestinationName Name of the partner destination.
@@ -1547,9 +1858,27 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     }
 
     /**
+     * Activate a partner destination.
+     *
+     * <p>Activate a newly created partner destination.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerDestinationName Name of the partner destination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Destination.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PartnerDestinationInner activate(String resourceGroupName, String partnerDestinationName) {
+        return activateWithResponse(resourceGroupName, partnerDestinationName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1586,7 +1915,8 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1624,7 +1954,8 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1661,7 +1992,8 @@ public final class PartnerDestinationsClientImpl implements PartnerDestinationsC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

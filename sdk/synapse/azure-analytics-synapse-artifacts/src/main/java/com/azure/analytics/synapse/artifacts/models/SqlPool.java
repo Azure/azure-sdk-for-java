@@ -8,13 +8,20 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** SQL pool A SQL Analytics pool. */
+/**
+ * SQL pool
+ *
+ * <p>A SQL Analytics pool.
+ */
 @JsonFlatten
 @Fluent
 public class SqlPool extends TrackedResource {
     /*
-     * Sku SQL pool SKU
+     * Sku
+     *
+     * SQL pool SKU
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -66,18 +73,15 @@ public class SqlPool extends TrackedResource {
      *
      * Default: regular sql pool creation.
      *
-     * PointInTimeRestore: Creates a sql pool by restoring a point in time
-     * backup of an existing sql pool. sourceDatabaseId must be specified as
-     * the resource ID of the existing sql pool, and restorePointInTime must be
+     * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
      * specified.
      *
-     * Recovery: Creates a sql pool by a geo-replicated backup.
-     * sourceDatabaseId  must be specified as the recoverableDatabaseId to
-     * restore.
+     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the
+     * recoverableDatabaseId to restore.
      *
-     * Restore: Creates a sql pool by restoring a backup of a deleted sql
-     * pool. SourceDatabaseId should be the sql pool's original resource ID.
-     * SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
+     * Restore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      */
     @JsonProperty(value = "properties.createMode")
     private CreateMode createMode;
@@ -88,8 +92,13 @@ public class SqlPool extends TrackedResource {
     @JsonProperty(value = "properties.creationDate")
     private OffsetDateTime creationDate;
 
+    /** Creates an instance of SqlPool class. */
+    public SqlPool() {}
+
     /**
-     * Get the sku property: Sku SQL pool SKU.
+     * Get the sku property: Sku
+     *
+     * <p>SQL pool SKU.
      *
      * @return the sku value.
      */
@@ -98,7 +107,9 @@ public class SqlPool extends TrackedResource {
     }
 
     /**
-     * Set the sku property: Sku SQL pool SKU.
+     * Set the sku property: Sku
+     *
+     * <p>SQL pool SKU.
      *
      * @param sku the sku value to set.
      * @return the SqlPool object itself.
@@ -309,6 +320,20 @@ public class SqlPool extends TrackedResource {
      */
     public SqlPool setCreationDate(OffsetDateTime creationDate) {
         this.creationDate = creationDate;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlPool setTags(Map<String, String> tags) {
+        super.setTags(tags);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlPool setLocation(String location) {
+        super.setLocation(location);
         return this;
     }
 }

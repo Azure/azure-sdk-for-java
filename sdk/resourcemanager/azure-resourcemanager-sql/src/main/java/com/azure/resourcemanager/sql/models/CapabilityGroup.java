@@ -38,7 +38,11 @@ public final class CapabilityGroup extends ExpandableStringEnum<CapabilityGroup>
         return fromString(name, CapabilityGroup.class);
     }
 
-    /** @return known CapabilityGroup values. */
+    /**
+     * Gets known CapabilityGroup values.
+     *
+     * @return known CapabilityGroup values.
+     */
     public static Collection<CapabilityGroup> values() {
         return values(CapabilityGroup.class);
     }

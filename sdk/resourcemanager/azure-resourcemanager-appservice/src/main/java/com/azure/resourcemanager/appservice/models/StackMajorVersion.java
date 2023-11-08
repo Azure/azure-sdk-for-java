@@ -26,8 +26,7 @@ public final class StackMajorVersion {
     private String runtimeVersion;
 
     /*
-     * <code>true</code> if this is the default major version; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if this is the default major version; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isDefault")
     private Boolean isDefault;
@@ -39,29 +38,25 @@ public final class StackMajorVersion {
     private List<StackMinorVersion> minorVersions;
 
     /*
-     * <code>true</code> if this supports Application Insights; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if this supports Application Insights; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "applicationInsights")
     private Boolean applicationInsights;
 
     /*
-     * <code>true</code> if this stack is in Preview, otherwise
-     * <code>false</code>.
+     * <code>true</code> if this stack is in Preview, otherwise <code>false</code>.
      */
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
     /*
-     * <code>true</code> if this stack has been deprecated, otherwise
-     * <code>false</code>.
+     * <code>true</code> if this stack has been deprecated, otherwise <code>false</code>.
      */
     @JsonProperty(value = "isDeprecated")
     private Boolean isDeprecated;
 
     /*
-     * <code>true</code> if this stack should be hidden for new customers on
-     * portal, otherwise <code>false</code>.
+     * <code>true</code> if this stack should be hidden for new customers on portal, otherwise <code>false</code>.
      */
     @JsonProperty(value = "isHidden")
     private Boolean isHidden;
@@ -70,8 +65,7 @@ public final class StackMajorVersion {
      * <appSettings>
      * <appSetting name="FUNCTIONS_WORKER_RUNTIME" value="dotnet" />
      * </appSettings>
-     * Example: All the function apps need AppSetting:
-     * "FUNCTIONS_WORKER_RUNTIME" to be set stack name
+     * Example: All the function apps need AppSetting: "FUNCTIONS_WORKER_RUNTIME" to be set stack name
      */
     @JsonProperty(value = "appSettingsDictionary")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -81,12 +75,15 @@ public final class StackMajorVersion {
      * <siteConfigProperties>
      * <siteConfigProperty name="Use32BitWorkerProcess" value="false" />
      * </siteConfigProperties>
-     * Example: All Linux Function Apps, need Use32BitWorkerProcess to be set
-     * to 0
+     * Example: All Linux Function Apps, need Use32BitWorkerProcess to be set to 0
      */
     @JsonProperty(value = "siteConfigPropertiesDictionary")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> siteConfigPropertiesDictionary;
+
+    /** Creates an instance of StackMajorVersion class. */
+    public StackMajorVersion() {
+    }
 
     /**
      * Get the displayVersion property: Application stack major version (display only).

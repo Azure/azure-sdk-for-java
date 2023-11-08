@@ -23,6 +23,10 @@ public final class PrestoObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private PrestoDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of PrestoObjectDataset class. */
+    public PrestoObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

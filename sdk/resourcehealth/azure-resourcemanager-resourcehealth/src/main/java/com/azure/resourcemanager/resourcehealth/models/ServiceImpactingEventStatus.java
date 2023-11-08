@@ -16,6 +16,10 @@ public final class ServiceImpactingEventStatus {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of ServiceImpactingEventStatus class. */
+    public ServiceImpactingEventStatus() {
+    }
+
     /**
      * Get the value property: Current status of the event.
      *

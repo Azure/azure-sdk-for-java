@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
@@ -20,37 +19,14 @@ import java.util.Map;
 /** Samples for VirtualMachineExtensions CreateOrUpdate. */
 public final class VirtualMachineExtensionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineExtensions_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineExtensions_CreateOrUpdate_MinimumSet_Gen.
+     * Sample code: VirtualMachineExtension_CreateOrUpdate_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineExtensionsCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineExtensions()
-            .createOrUpdate(
-                "rgcompute",
-                "aaaa",
-                "aaaaaaaaaaaaaaaaaaaaaaaa",
-                new VirtualMachineExtensionInner().withLocation("westus"),
-                Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void virtualMachineExtensionsCreateOrUpdateMaximumSetGen(
+    public static void virtualMachineExtensionCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
         azure
             .virtualMachines()
@@ -63,7 +39,7 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
                 "aaaaaaaaaaaaa",
                 new VirtualMachineExtensionInner()
                     .withLocation("westus")
-                    .withTags(mapOf("key9183", "aa"))
+                    .withTags(mapOf("key9183", "fakeTokenPlaceholder"))
                     .withForceUpdateTag("a")
                     .withPublisher("extPublisher")
                     .withTypePropertiesType("extType")
@@ -87,7 +63,7 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
                                 Arrays
                                     .asList(
                                         new InstanceViewStatus()
-                                            .withCode("aaaaaaaaaaaaaaaaaaaaaaa")
+                                            .withCode("fakeTokenPlaceholder")
                                             .withLevel(StatusLevelTypes.INFO)
                                             .withDisplayStatus("aaaaaa")
                                             .withMessage("a")
@@ -96,13 +72,36 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
                                 Arrays
                                     .asList(
                                         new InstanceViewStatus()
-                                            .withCode("aaaaaaaaaaaaaaaaaaaaaaa")
+                                            .withCode("fakeTokenPlaceholder")
                                             .withLevel(StatusLevelTypes.INFO)
                                             .withDisplayStatus("aaaaaa")
                                             .withMessage("a")
                                             .withTime(OffsetDateTime.parse("2021-11-30T12:58:26.522Z")))))
                     .withSuppressFailures(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: VirtualMachineExtension_CreateOrUpdate_MinimumSet_Gen.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void virtualMachineExtensionCreateOrUpdateMinimumSetGen(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensions()
+            .createOrUpdate(
+                "rgcompute",
+                "myVM",
+                "myVMExtension",
+                new VirtualMachineExtensionInner().withLocation("westus"),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

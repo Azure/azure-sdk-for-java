@@ -5,51 +5,29 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A managed instance key. */
-@JsonFlatten
 @Fluent
-public class ManagedInstanceKeyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceKeyInner.class);
-
+public final class ManagedInstanceKeyInner extends ProxyResource {
     /*
-     * Kind of encryption protector. This is metadata used for the Azure portal
-     * experience.
+     * Kind of encryption protector. This is metadata used for the Azure portal experience.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
-     * The key type like 'ServiceManaged', 'AzureKeyVault'.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.serverKeyType")
-    private ServerKeyType serverKeyType;
+    @JsonProperty(value = "properties")
+    private ManagedInstanceKeyProperties innerProperties;
 
-    /*
-     * The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI
-     * is required.
-     */
-    @JsonProperty(value = "properties.uri")
-    private String uri;
-
-    /*
-     * Thumbprint of the key.
-     */
-    @JsonProperty(value = "properties.thumbprint", access = JsonProperty.Access.WRITE_ONLY)
-    private String thumbprint;
-
-    /*
-     * The key creation date.
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
+    /** Creates an instance of ManagedInstanceKeyInner class. */
+    public ManagedInstanceKeyInner() {
+    }
 
     /**
      * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
@@ -61,12 +39,21 @@ public class ManagedInstanceKeyInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ManagedInstanceKeyProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the serverKeyType property: The key type like 'ServiceManaged', 'AzureKeyVault'.
      *
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
-        return this.serverKeyType;
+        return this.innerProperties() == null ? null : this.innerProperties().serverKeyType();
     }
 
     /**
@@ -76,7 +63,10 @@ public class ManagedInstanceKeyInner extends ProxyResource {
      * @return the ManagedInstanceKeyInner object itself.
      */
     public ManagedInstanceKeyInner withServerKeyType(ServerKeyType serverKeyType) {
-        this.serverKeyType = serverKeyType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceKeyProperties();
+        }
+        this.innerProperties().withServerKeyType(serverKeyType);
         return this;
     }
 
@@ -86,7 +76,7 @@ public class ManagedInstanceKeyInner extends ProxyResource {
      * @return the uri value.
      */
     public String uri() {
-        return this.uri;
+        return this.innerProperties() == null ? null : this.innerProperties().uri();
     }
 
     /**
@@ -96,7 +86,10 @@ public class ManagedInstanceKeyInner extends ProxyResource {
      * @return the ManagedInstanceKeyInner object itself.
      */
     public ManagedInstanceKeyInner withUri(String uri) {
-        this.uri = uri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceKeyProperties();
+        }
+        this.innerProperties().withUri(uri);
         return this;
     }
 
@@ -106,7 +99,7 @@ public class ManagedInstanceKeyInner extends ProxyResource {
      * @return the thumbprint value.
      */
     public String thumbprint() {
-        return this.thumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
     }
 
     /**
@@ -115,7 +108,16 @@ public class ManagedInstanceKeyInner extends ProxyResource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
+    }
+
+    /**
+     * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
+     *
+     * @return the autoRotationEnabled value.
+     */
+    public Boolean autoRotationEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoRotationEnabled();
     }
 
     /**
@@ -124,5 +126,8 @@ public class ManagedInstanceKeyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

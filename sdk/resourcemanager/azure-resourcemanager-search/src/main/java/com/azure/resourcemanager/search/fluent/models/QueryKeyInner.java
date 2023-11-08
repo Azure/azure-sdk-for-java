@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.search.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes an API key for a given Azure Cognitive Search service that has permissions for query operations only. */
+/** Describes an API key for a given search service that has permissions for query operations only. */
 @Immutable
 public final class QueryKeyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryKeyInner.class);
-
     /*
      * The name of the query API key; may be empty.
      */
@@ -25,6 +21,10 @@ public final class QueryKeyInner {
      */
     @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
     private String key;
+
+    /** Creates an instance of QueryKeyInner class. */
+    public QueryKeyInner() {
+    }
 
     /**
      * Get the name property: The name of the query API key; may be empty.

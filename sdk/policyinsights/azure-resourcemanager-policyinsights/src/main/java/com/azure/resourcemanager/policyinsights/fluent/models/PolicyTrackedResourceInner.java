@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.models.PolicyDetails;
 import com.azure.resourcemanager.policyinsights.models.TrackedResourceModificationDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Policy tracked resource record. */
 @Immutable
 public final class PolicyTrackedResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyTrackedResourceInner.class);
-
     /*
      * The ID of the policy tracked resource.
      */
@@ -30,15 +26,13 @@ public final class PolicyTrackedResourceInner {
     private PolicyDetails policyDetails;
 
     /*
-     * The details of the policy triggered deployment that created the tracked
-     * resource.
+     * The details of the policy triggered deployment that created the tracked resource.
      */
     @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private TrackedResourceModificationDetails createdBy;
 
     /*
-     * The details of the policy triggered deployment that modified the tracked
-     * resource.
+     * The details of the policy triggered deployment that modified the tracked resource.
      */
     @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private TrackedResourceModificationDetails lastModifiedBy;
@@ -48,6 +42,10 @@ public final class PolicyTrackedResourceInner {
      */
     @JsonProperty(value = "lastUpdateUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdateUtc;
+
+    /** Creates an instance of PolicyTrackedResourceInner class. */
+    public PolicyTrackedResourceInner() {
+    }
 
     /**
      * Get the trackedResourceId property: The ID of the policy tracked resource.

@@ -4,76 +4,69 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.Sku;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** A restorable dropped database. */
-@JsonFlatten
-@Immutable
-public class RestorableDroppedDatabaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDroppedDatabaseInner.class);
+/** A restorable dropped database resource. */
+@Fluent
+public final class RestorableDroppedDatabaseInner extends ProxyResource {
+    /*
+     * The name and tier of the SKU.
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
 
     /*
-     * The geo-location where the resource lives
+     * Resource location.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "location")
     private String location;
 
     /*
-     * The name of the database
+     * Resource tags.
      */
-    @JsonProperty(value = "properties.databaseName", access = JsonProperty.Access.WRITE_ONLY)
-    private String databaseName;
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
 
     /*
-     * The edition of the database
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.edition", access = JsonProperty.Access.WRITE_ONLY)
-    private String edition;
+    @JsonProperty(value = "properties")
+    private RestorableDroppedDatabaseProperties innerProperties;
 
-    /*
-     * The max size in bytes of the database
-     */
-    @JsonProperty(value = "properties.maxSizeBytes", access = JsonProperty.Access.WRITE_ONLY)
-    private String maxSizeBytes;
-
-    /*
-     * The service level objective name of the database
-     */
-    @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceLevelObjective;
-
-    /*
-     * The elastic pool name of the database
-     */
-    @JsonProperty(value = "properties.elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
-    private String elasticPoolName;
-
-    /*
-     * The creation date of the database (ISO8601 format)
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
-
-    /*
-     * The deletion date of the database (ISO8601 format)
-     */
-    @JsonProperty(value = "properties.deletionDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime deletionDate;
-
-    /*
-     * The earliest restore date of the database (ISO8601 format)
-     */
-    @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime earliestRestoreDate;
+    /** Creates an instance of RestorableDroppedDatabaseInner class. */
+    public RestorableDroppedDatabaseInner() {
+    }
 
     /**
-     * Get the location property: The geo-location where the resource lives.
+     * Get the sku property: The name and tier of the SKU.
+     *
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The name and tier of the SKU.
+     *
+     * @param sku the sku value to set.
+     * @return the RestorableDroppedDatabaseInner object itself.
+     */
+    public RestorableDroppedDatabaseInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the location property: Resource location.
      *
      * @return the location value.
      */
@@ -82,48 +75,61 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
     }
 
     /**
+     * Set the location property: Resource location.
+     *
+     * @param location the location value to set.
+     * @return the RestorableDroppedDatabaseInner object itself.
+     */
+    public RestorableDroppedDatabaseInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the RestorableDroppedDatabaseInner object itself.
+     */
+    public RestorableDroppedDatabaseInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private RestorableDroppedDatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the databaseName property: The name of the database.
      *
      * @return the databaseName value.
      */
     public String databaseName() {
-        return this.databaseName;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
     }
 
     /**
-     * Get the edition property: The edition of the database.
-     *
-     * @return the edition value.
-     */
-    public String edition() {
-        return this.edition;
-    }
-
-    /**
-     * Get the maxSizeBytes property: The max size in bytes of the database.
+     * Get the maxSizeBytes property: The max size of the database expressed in bytes.
      *
      * @return the maxSizeBytes value.
      */
-    public String maxSizeBytes() {
-        return this.maxSizeBytes;
-    }
-
-    /**
-     * Get the serviceLevelObjective property: The service level objective name of the database.
-     *
-     * @return the serviceLevelObjective value.
-     */
-    public String serviceLevelObjective() {
-        return this.serviceLevelObjective;
-    }
-
-    /**
-     * Get the elasticPoolName property: The elastic pool name of the database.
-     *
-     * @return the elasticPoolName value.
-     */
-    public String elasticPoolName() {
-        return this.elasticPoolName;
+    public Long maxSizeBytes() {
+        return this.innerProperties() == null ? null : this.innerProperties().maxSizeBytes();
     }
 
     /**
@@ -132,7 +138,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -141,7 +147,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
-        return this.deletionDate;
+        return this.innerProperties() == null ? null : this.innerProperties().deletionDate();
     }
 
     /**
@@ -150,7 +156,16 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
-        return this.earliestRestoreDate;
+        return this.innerProperties() == null ? null : this.innerProperties().earliestRestoreDate();
+    }
+
+    /**
+     * Get the backupStorageRedundancy property: The storage account type used to store backups for this database.
+     *
+     * @return the backupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy backupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().backupStorageRedundancy();
     }
 
     /**
@@ -159,5 +174,11 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

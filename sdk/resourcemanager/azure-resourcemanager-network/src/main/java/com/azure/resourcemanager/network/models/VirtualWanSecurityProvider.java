@@ -28,6 +28,10 @@ public final class VirtualWanSecurityProvider {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualWanSecurityProviderType type;
 
+    /** Creates an instance of VirtualWanSecurityProvider class. */
+    public VirtualWanSecurityProvider() {
+    }
+
     /**
      * Get the name property: Name of the security provider.
      *

@@ -33,9 +33,9 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.AzureQueueStorageImplBuilder;
 import com.azure.storage.queue.implementation.util.BuilderHelper;
+import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
 import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -159,6 +159,7 @@ public final class QueueServiceClientBuilder implements
     private QueueMessageEncoding messageEncoding = QueueMessageEncoding.NONE;
     private Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
     private Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
+    private QueueAudience audience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueServiceClient QueueServiceClients}
@@ -193,20 +194,11 @@ public final class QueueServiceClientBuilder implements
                     + "but not both.")
             );
         }
-
+        if (processMessageDecodingErrorHandler != null) {
+            LOGGER.warning("Please use processMessageDecodingErrorAsyncHandler for QueueAsyncClient.");
+        }
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
-
-        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .buildClient();
-
-        return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion,
+        return new QueueServiceAsyncClient(createAzureQueueStorageImpl(serviceVersion), accountName, serviceVersion,
             messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
@@ -229,7 +221,18 @@ public final class QueueServiceClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public QueueServiceClient buildClient() {
-        return new QueueServiceClient(buildAsyncClient());
+        if (processMessageDecodingErrorAsyncHandler != null && processMessageDecodingErrorHandler != null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Either processMessageDecodingError or processMessageDecodingAsyncError should be specified"
+                    + "but not both.")
+            );
+        }
+        if (processMessageDecodingErrorAsyncHandler != null) {
+            LOGGER.warning("Please use processMessageDecodingErrorHandler for QueueClient.");
+        }
+        QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
+        return new QueueServiceClient(createAzureQueueStorageImpl(serviceVersion), accountName, serviceVersion,
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
 
@@ -567,6 +570,9 @@ public final class QueueServiceClientBuilder implements
      * <p>
      * The handler will be shared by all queue clients that are created from {@link QueueServiceClient} or
      * {@link QueueServiceAsyncClient} built by this builder.
+     * <p>
+     * It is recommended that this handler should be used for the asynchronous {@link QueueAsyncClient}.
+     * </p>
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.queue.QueueServiceClientBuilder#processMessageDecodingErrorAsyncHandler -->
@@ -619,7 +625,7 @@ public final class QueueServiceClientBuilder implements
      * but there's another producer that is not encoding messages in expected way.
      * I.e. the queue contains messages with different encoding.
      * <p>
-     * {@link QueueMessageDecodingError} contains {@link QueueAsyncClient} for the queue that has received
+     * {@link QueueMessageDecodingError} contains {@link QueueClient} for the queue that has received
      * the message as well as {@link QueueMessageDecodingError#getQueueMessageItem()} or
      * {@link QueueMessageDecodingError#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
      * so that body can be inspected as has been received from the queue.
@@ -629,6 +635,9 @@ public final class QueueServiceClientBuilder implements
      * <p>
      * The handler will be shared by all queue clients that are created from {@link QueueServiceClient} or
      * {@link QueueServiceAsyncClient} built by this builder.
+     * <p>
+     * It is recommended that this handler should be used for the synchronous {@link QueueClient}.
+     * </p>
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.queue.QueueServiceClientBuilder#processMessageDecodingErrorHandler -->
@@ -684,6 +693,30 @@ public final class QueueServiceClientBuilder implements
      */
     public QueueServiceClientBuilder serviceVersion(QueueServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    private AzureQueueStorageImpl createAzureQueueStorageImpl(QueueServiceVersion version) {
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+
+        return new AzureQueueStorageImplBuilder()
+            .url(endpoint)
+            .pipeline(pipeline)
+            .version(version.getVersion())
+            .buildClient();
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link QueueAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated QueueServiceClientBuilder object
+     */
+    public QueueServiceClientBuilder audience(QueueAudience audience) {
+        this.audience = audience;
         return this;
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource of an Azure Cosmos DB SQL database event. */
 @Fluent
 public final class RestorableSqlDatabasePropertiesResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableSqlDatabasePropertiesResource.class);
-
     /*
      * A system generated property. A unique identifier.
      */
@@ -49,6 +45,10 @@ public final class RestorableSqlDatabasePropertiesResource {
      */
     @JsonProperty(value = "database")
     private RestorableSqlDatabasePropertiesResourceDatabase database;
+
+    /** Creates an instance of RestorableSqlDatabasePropertiesResource class. */
+    public RestorableSqlDatabasePropertiesResource() {
+    }
 
     /**
      * Get the rid property: A system generated property. A unique identifier.

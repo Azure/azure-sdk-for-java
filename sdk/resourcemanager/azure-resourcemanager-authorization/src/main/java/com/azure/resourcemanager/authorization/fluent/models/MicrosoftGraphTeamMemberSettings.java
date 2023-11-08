@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** teamMemberSettings. */
 @Fluent
 public final class MicrosoftGraphTeamMemberSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTeamMemberSettings.class);
-
     /*
      * If set to true, members can add and remove apps.
      */
@@ -58,6 +55,10 @@ public final class MicrosoftGraphTeamMemberSettings {
      * teamMemberSettings
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTeamMemberSettings class. */
+    public MicrosoftGraphTeamMemberSettings() {
+    }
 
     /**
      * Get the allowAddRemoveApps property: If set to true, members can add and remove apps.

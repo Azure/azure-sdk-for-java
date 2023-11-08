@@ -28,6 +28,10 @@ public final class DataFlowDebugCommandRequest {
     @JsonProperty(value = "commandPayload")
     private DataFlowDebugCommandPayload commandPayload;
 
+    /** Creates an instance of DataFlowDebugCommandRequest class. */
+    public DataFlowDebugCommandRequest() {
+    }
+
     /**
      * Get the sessionId property: The ID of data flow debug session.
      *

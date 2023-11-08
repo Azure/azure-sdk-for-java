@@ -15,6 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 
+import java.util.List;
+
 /** A representation of the Azure SQL Database threat detection policy. */
 @Fluent
 public interface SqlDatabaseThreatDetectionPolicy
@@ -34,11 +36,25 @@ public interface SqlDatabaseThreatDetectionPolicy
     /** @return the state of the policy. */
     SecurityAlertPolicyState currentState();
 
-    /** @return the semicolon-separated list of alerts that are disabled */
+    /**
+     * @return the semicolon-separated list of alerts that are disabled
+     * @deprecated use {@link SqlDatabaseThreatDetectionPolicy#disabledAlertList()}
+     */
+    @Deprecated
     String disabledAlerts();
 
-    /** @return the semicolon-separated list of e-mail addresses to which the alert is sent */
+    /** @return a list of disabled alerts */
+    List<String> disabledAlertList();
+
+    /**
+     * @return the semicolon-separated list of e-mail addresses to which the alert is sent
+     * @deprecated use {@link SqlDatabaseThreatDetectionPolicy#emailAddressList()}
+     */
+    @Deprecated
     String emailAddresses();
+
+    /** @return a list of e-mail addresses to which the alert is sent */
+    List<String> emailAddressList();
 
     /** @return true if the alert is sent to the account administrators */
     boolean emailAccountAdmins();
@@ -112,13 +128,6 @@ public interface SqlDatabaseThreatDetectionPolicy
             /**
              * Sets the security alert policy state to "New".
              *
-             * @return the next stage of the definition.
-             */
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageEndpoint withPolicyNew();
-
-            /**
-             * Sets the security alert policy state to "New".
-             *
              * @return the next stage of the definition
              */
             SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate withDefaultSecurityAlertPolicy();
@@ -160,8 +169,20 @@ public interface SqlDatabaseThreatDetectionPolicy
              *     no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly;
              *     Usage_Anomaly.
              * @return the next stage of the definition
+             * @deprecated use {@link SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate#withAlertsFilter(List)}
              */
+            @Deprecated
             SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate withAlertsFilter(String alertsFilter);
+
+            /**
+             * Sets the security alert policy alerts to be disabled.
+             *
+             * @param alertsFilter the list of alerts that are disabled, or empty string to disable
+             *     no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly;
+             *     Usage_Anomaly.
+             * @return the next stage of the definition
+             */
+            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate withAlertsFilter(List<String> alertsFilter);
         }
 
         /** The SQL database threat detection policy definition to set the security alert policy email addresses. */
@@ -171,8 +192,18 @@ public interface SqlDatabaseThreatDetectionPolicy
              *
              * @param addresses the semicolon-separated list of e-mail addresses to which the alert is sent to
              * @return the next stage of the definition
+             * @deprecated use {@link WithEmailAddresses#withEmailAddresses(List)}
              */
+            @Deprecated
             SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate withEmailAddresses(String addresses);
+
+            /**
+             * Sets the security alert policy email addresses.
+             *
+             * @param addresses the list of e-mail addresses to which the alert is sent to
+             * @return the next stage of the definition
+             */
+            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate withEmailAddresses(List<String> addresses);
         }
 
         /**
@@ -255,13 +286,6 @@ public interface SqlDatabaseThreatDetectionPolicy
              * @return the next stage of the definition
              */
             SqlDatabaseThreatDetectionPolicy.Update withPolicyDisabled();
-
-            /**
-             * Updates the security alert policy state to "New".
-             *
-             * @return the next stage of the definition.
-             */
-            SqlDatabaseThreatDetectionPolicy.Update withPolicyNew();
 
             /**
              * Updates the security alert policy state to "New".

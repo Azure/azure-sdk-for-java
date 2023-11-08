@@ -24,25 +24,22 @@ public class WebActivity extends ExecutionActivity {
     private WebActivityMethod method;
 
     /*
-     * Web activity target endpoint and path. Type: string (or Expression with
-     * resultType string).
+     * Web activity target endpoint and path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to
-     * set the language and type on a request: "headers" : { "Accept-Language":
-     * "en-us", "Content-Type": "application/json" }. Type: string (or
-     * Expression with resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
+     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.headers")
     private Object headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for
-     * POST/PUT method, not allowed for GET method Type: string (or Expression
-     * with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
+     * method Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.body")
     private Object body;
@@ -70,6 +67,9 @@ public class WebActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.connectVia")
     private IntegrationRuntimeReference connectVia;
+
+    /** Creates an instance of WebActivity class. */
+    public WebActivity() {}
 
     /**
      * Get the method property: Rest API method for target endpoint.
@@ -234,6 +234,62 @@ public class WebActivity extends ExecutionActivity {
      */
     public WebActivity setConnectVia(IntegrationRuntimeReference connectVia) {
         this.connectVia = connectVia;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

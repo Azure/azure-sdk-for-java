@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.UpdateTrustedIdProviderProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to update a trusted identity provider while updating a Data Lake Store account. */
-@JsonFlatten
 @Fluent
-public class UpdateTrustedIdProviderWithAccountParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UpdateTrustedIdProviderWithAccountParameters.class);
-
+public final class UpdateTrustedIdProviderWithAccountParameters {
     /*
      * The unique name of the trusted identity provider to update.
      */
@@ -24,10 +19,14 @@ public class UpdateTrustedIdProviderWithAccountParameters {
     private String name;
 
     /*
-     * The URL of this trusted identity provider.
+     * The trusted identity provider properties to use when updating a trusted identity provider.
      */
-    @JsonProperty(value = "properties.idProvider")
-    private String idProvider;
+    @JsonProperty(value = "properties")
+    private UpdateTrustedIdProviderProperties innerProperties;
+
+    /** Creates an instance of UpdateTrustedIdProviderWithAccountParameters class. */
+    public UpdateTrustedIdProviderWithAccountParameters() {
+    }
 
     /**
      * Get the name property: The unique name of the trusted identity provider to update.
@@ -50,12 +49,22 @@ public class UpdateTrustedIdProviderWithAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The trusted identity provider properties to use when updating a trusted
+     * identity provider.
+     *
+     * @return the innerProperties value.
+     */
+    private UpdateTrustedIdProviderProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the idProvider property: The URL of this trusted identity provider.
      *
      * @return the idProvider value.
      */
     public String idProvider() {
-        return this.idProvider;
+        return this.innerProperties() == null ? null : this.innerProperties().idProvider();
     }
 
     /**
@@ -65,7 +74,10 @@ public class UpdateTrustedIdProviderWithAccountParameters {
      * @return the UpdateTrustedIdProviderWithAccountParameters object itself.
      */
     public UpdateTrustedIdProviderWithAccountParameters withIdProvider(String idProvider) {
-        this.idProvider = idProvider;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateTrustedIdProviderProperties();
+        }
+        this.innerProperties().withIdProvider(idProvider);
         return this;
     }
 
@@ -76,10 +88,15 @@ public class UpdateTrustedIdProviderWithAccountParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model UpdateTrustedIdProviderWithAccountParameters"));
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UpdateTrustedIdProviderWithAccountParameters.class);
 }

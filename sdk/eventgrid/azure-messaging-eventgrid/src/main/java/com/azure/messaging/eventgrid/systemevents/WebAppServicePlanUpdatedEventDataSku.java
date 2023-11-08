@@ -40,6 +40,9 @@ public final class WebAppServicePlanUpdatedEventDataSku {
     @JsonProperty(value = "Capacity")
     private String capacity;
 
+    /** Creates an instance of WebAppServicePlanUpdatedEventDataSku class. */
+    public WebAppServicePlanUpdatedEventDataSku() {}
+
     /**
      * Get the name property: name of app service plan sku.
      *

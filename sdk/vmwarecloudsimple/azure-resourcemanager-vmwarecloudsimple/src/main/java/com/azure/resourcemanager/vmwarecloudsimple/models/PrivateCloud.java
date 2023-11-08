@@ -203,7 +203,7 @@ public interface PrivateCloud {
     List<VirtualNetwork> virtualNetworks();
 
     /**
-     * Gets the vrOpsEnabled property: Is Vrops enabled/disabled.
+     * Gets the vrOpsEnabled property: Is vRealize Operations Manager enabled/disabled.
      *
      * @return the vrOpsEnabled value.
      */

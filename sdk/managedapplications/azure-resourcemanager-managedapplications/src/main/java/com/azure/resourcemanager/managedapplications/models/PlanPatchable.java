@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Plan for the managed application. */
 @Fluent
 public final class PlanPatchable {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PlanPatchable.class);
-
     /*
      * The plan name.
      */
@@ -43,6 +39,10 @@ public final class PlanPatchable {
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /** Creates an instance of PlanPatchable class. */
+    public PlanPatchable() {
+    }
 
     /**
      * Get the name property: The plan name.

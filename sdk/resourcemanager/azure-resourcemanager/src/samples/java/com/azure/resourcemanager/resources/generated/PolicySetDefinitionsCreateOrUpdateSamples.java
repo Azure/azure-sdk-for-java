@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluent.models.PolicySetDefinitionInner;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
@@ -88,7 +87,7 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
                                     .withDescription(
                                         "Policies that help enforce resource organization standards within a"
                                             + " subscription."))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -153,9 +152,10 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
                                             "suffix",
                                             new ParameterValuesValue().withValue("-LC")))
                                     .withPolicyDefinitionReferenceId("Resource_Naming"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

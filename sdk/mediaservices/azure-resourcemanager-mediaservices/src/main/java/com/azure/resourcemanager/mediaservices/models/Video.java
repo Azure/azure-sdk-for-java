@@ -26,18 +26,16 @@ import java.time.Duration;
 @Fluent
 public class Video extends Codec {
     /*
-     * The distance between two key frames. The value should be non-zero in the
-     * range [0.5, 20] seconds, specified in ISO 8601 format. The default is 2
-     * seconds(PT2S). Note that this setting is ignored if
-     * VideoSyncMode.Passthrough is set, where the KeyFrameInterval value will
-     * follow the input source setting.
+     * The distance between two key frames. The value should be non-zero in the range [0.5, 20] seconds, specified in
+     * ISO 8601 format. The default is 2 seconds(PT2S). Note that this setting is ignored if VideoSyncMode.Passthrough
+     * is set, where the KeyFrameInterval value will follow the input source setting.
      */
     @JsonProperty(value = "keyFrameInterval")
     private Duration keyFrameInterval;
 
     /*
-     * The resizing mode - how the input video will be resized to fit the
-     * desired output resolution(s). Default is AutoSize
+     * The resizing mode - how the input video will be resized to fit the desired output resolution(s). Default is
+     * AutoSize
      */
     @JsonProperty(value = "stretchMode")
     private StretchMode stretchMode;
@@ -47,6 +45,10 @@ public class Video extends Codec {
      */
     @JsonProperty(value = "syncMode")
     private VideoSyncMode syncMode;
+
+    /** Creates an instance of Video class. */
+    public Video() {
+    }
 
     /**
      * Get the keyFrameInterval property: The distance between two key frames. The value should be non-zero in the range

@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -176,7 +177,7 @@ public class EventGridSubscriber {
         if (eventType == null) {
             return null;
         } else {
-            return eventType.toLowerCase();
+            return eventType.toLowerCase(Locale.ROOT);
         }
     }
 }

@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +16,6 @@ import java.util.Map;
 /** workbookNamedItem. */
 @Fluent
 public final class MicrosoftGraphWorkbookNamedItem extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookNamedItem.class);
-
     /*
      * Represents the comment associated with this name.
      */
@@ -31,15 +29,14 @@ public final class MicrosoftGraphWorkbookNamedItem extends MicrosoftGraphEntity 
     private String name;
 
     /*
-     * Indicates whether the name is scoped to the workbook or to a specific
-     * worksheet. Read-only.
+     * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
      */
     @JsonProperty(value = "scope")
     private String scope;
 
     /*
-     * Indicates what type of reference is associated with the name. The
-     * possible values are: String, Integer, Double, Boolean, Range. Read-only.
+     * Indicates what type of reference is associated with the name. The possible values are: String, Integer, Double,
+     * Boolean, Range. Read-only.
      */
     @JsonProperty(value = "type")
     private String type;
@@ -48,6 +45,7 @@ public final class MicrosoftGraphWorkbookNamedItem extends MicrosoftGraphEntity 
      * Json
      */
     @JsonProperty(value = "value")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> value;
 
     /*
@@ -66,6 +64,10 @@ public final class MicrosoftGraphWorkbookNamedItem extends MicrosoftGraphEntity 
      * workbookNamedItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookNamedItem class. */
+    public MicrosoftGraphWorkbookNamedItem() {
+    }
 
     /**
      * Get the comment property: Represents the comment associated with this name.

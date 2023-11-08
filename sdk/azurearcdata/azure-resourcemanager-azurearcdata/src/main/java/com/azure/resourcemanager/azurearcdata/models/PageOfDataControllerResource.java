@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurearcdata.fluent.models.DataControllerResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PageOfDataControllerResource model. */
 @Fluent
 public final class PageOfDataControllerResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PageOfDataControllerResource.class);
-
     /*
      * The value property.
      */
@@ -27,6 +23,10 @@ public final class PageOfDataControllerResource {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PageOfDataControllerResource class. */
+    public PageOfDataControllerResource() {
+    }
 
     /**
      * Get the value property: The value property.

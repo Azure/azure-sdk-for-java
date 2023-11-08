@@ -35,6 +35,10 @@ public final class CertificateDescriptionImpl
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CertificateDescriptionInner innerModel() {
         return this.innerObject;
     }

@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.CreateOrUpdateTrustedIdProviderProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to create a new trusted identity provider while creating a new Data Lake Store account. */
-@JsonFlatten
 @Fluent
-public class CreateTrustedIdProviderWithAccountParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CreateTrustedIdProviderWithAccountParameters.class);
-
+public final class CreateTrustedIdProviderWithAccountParameters {
     /*
      * The unique name of the trusted identity provider to create.
      */
@@ -24,10 +19,14 @@ public class CreateTrustedIdProviderWithAccountParameters {
     private String name;
 
     /*
-     * The URL of this trusted identity provider.
+     * The trusted identity provider properties to use when creating a new trusted identity provider.
      */
-    @JsonProperty(value = "properties.idProvider", required = true)
-    private String idProvider;
+    @JsonProperty(value = "properties", required = true)
+    private CreateOrUpdateTrustedIdProviderProperties innerProperties = new CreateOrUpdateTrustedIdProviderProperties();
+
+    /** Creates an instance of CreateTrustedIdProviderWithAccountParameters class. */
+    public CreateTrustedIdProviderWithAccountParameters() {
+    }
 
     /**
      * Get the name property: The unique name of the trusted identity provider to create.
@@ -50,12 +49,22 @@ public class CreateTrustedIdProviderWithAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The trusted identity provider properties to use when creating a new trusted
+     * identity provider.
+     *
+     * @return the innerProperties value.
+     */
+    private CreateOrUpdateTrustedIdProviderProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the idProvider property: The URL of this trusted identity provider.
      *
      * @return the idProvider value.
      */
     public String idProvider() {
-        return this.idProvider;
+        return this.innerProperties() == null ? null : this.innerProperties().idProvider();
     }
 
     /**
@@ -65,7 +74,10 @@ public class CreateTrustedIdProviderWithAccountParameters {
      * @return the CreateTrustedIdProviderWithAccountParameters object itself.
      */
     public CreateTrustedIdProviderWithAccountParameters withIdProvider(String idProvider) {
-        this.idProvider = idProvider;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateTrustedIdProviderProperties();
+        }
+        this.innerProperties().withIdProvider(idProvider);
         return this;
     }
 
@@ -76,16 +88,21 @@ public class CreateTrustedIdProviderWithAccountParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model CreateTrustedIdProviderWithAccountParameters"));
         }
-        if (idProvider() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property idProvider in model CreateTrustedIdProviderWithAccountParameters"));
+                        "Missing required property innerProperties in model"
+                            + " CreateTrustedIdProviderWithAccountParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateTrustedIdProviderWithAccountParameters.class);
 }

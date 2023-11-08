@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 /** Samples for EntitiesGetTimeline List. */
 public final class EntitiesGetTimelineListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/entities/timeline/PostTimelineEntity.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/entities/timeline/PostTimelineEntity.json
      */
     /**
      * Sample code: Entity timeline.

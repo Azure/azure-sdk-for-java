@@ -35,6 +35,10 @@ public final class Dependency {
     @JsonProperty(value = "resourceName")
     private String resourceName;
 
+    /** Creates an instance of Dependency class. */
+    public Dependency() {
+    }
+
     /**
      * Get the dependsOn property: The list of dependencies.
      *

@@ -14,10 +14,10 @@ import java.util.Objects;
  * Used internally to encapsulate a physical address information in the Azure Cosmos DB database service.
  */
 public class AddressInformation {
-    private Protocol protocol;
-    private boolean isPublic;
-    private boolean isPrimary;
-    private Uri physicalUri;
+    private final Protocol protocol;
+    private final boolean isPublic;
+    private final boolean isPrimary;
+    private final Uri physicalUri;
 
     public AddressInformation(boolean isPublic, boolean isPrimary, String physicalUri, Protocol protocol) {
         Objects.requireNonNull(protocol);
@@ -25,6 +25,7 @@ public class AddressInformation {
         this.isPublic = isPublic;
         this.isPrimary = isPrimary;
         this.physicalUri = new Uri(normalizePhysicalUri(physicalUri));
+        this.physicalUri.setPrimary(this.isPrimary);
     }
 
     public AddressInformation(boolean isPublic, boolean isPrimary, String physicalUri, String protocolScheme) {

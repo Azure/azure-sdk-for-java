@@ -6,16 +6,12 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Detailed information of a specific step run. */
 @Fluent
 public final class StepOperationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StepOperationInfo.class);
-
     /*
      * The name of the ARM deployment initiated as part of the step.
      */
@@ -51,6 +47,10 @@ public final class StepOperationInfo {
      */
     @JsonProperty(value = "error")
     private ManagementError error;
+
+    /** Creates an instance of StepOperationInfo class. */
+    public StepOperationInfo() {
+    }
 
     /**
      * Get the deploymentName property: The name of the ARM deployment initiated as part of the step.

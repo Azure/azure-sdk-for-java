@@ -29,6 +29,9 @@ public final class ManagedIdentity {
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
+    /** Creates an instance of ManagedIdentity class. */
+    public ManagedIdentity() {}
+
     /**
      * Get the principalId property: The principal ID of the workspace managed identity.
      *

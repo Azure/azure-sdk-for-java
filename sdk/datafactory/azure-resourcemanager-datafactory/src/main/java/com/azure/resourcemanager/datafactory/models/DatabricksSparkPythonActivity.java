@@ -25,6 +25,10 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
     private DatabricksSparkPythonActivityTypeProperties innerTypeProperties =
         new DatabricksSparkPythonActivityTypeProperties();
 
+    /** Creates an instance of DatabricksSparkPythonActivity class. */
+    public DatabricksSparkPythonActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Databricks SparkPython activity properties.
      *
@@ -59,6 +63,20 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
     @Override
     public DatabricksSparkPythonActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

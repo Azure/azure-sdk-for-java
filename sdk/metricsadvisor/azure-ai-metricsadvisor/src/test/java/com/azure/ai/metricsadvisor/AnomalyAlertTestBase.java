@@ -4,14 +4,16 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertSnoozeCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
+import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -22,12 +24,36 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationClientTestBase {
 
-    static final String DETECTION_CONFIGURATION_ID = "efaee305-f049-43ec-9f9b-76026d55c14a";
-    static final String ALERT_HOOK_ID = "14b69527-cc37-45ba-8863-4f9857ccacca";
+    static final String DETECTION_CONFIGURATION_ID = "78f3a4e7-fe53-4a05-9f4d-d724ab6c23a7";
+    static final String ALERT_HOOK_ID = "ad2639d2-84dd-4b12-9635-82b8ff14e832";
 
     @Override
     protected void beforeTest() {
     }
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
+    public abstract void getAnomalyAlertValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
+    public abstract void createAnomalyAlertConfiguration(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
+    public abstract void testListAnomalyAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
+    public abstract void updateAnomalyAlertRemoveHooks(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
+    public abstract void updateAnomalyAlertHappyPath(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
+    public abstract void deleteAnomalyAlertWithResponse(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     void listAnomalyAlertRunner(Consumer<List<AnomalyAlertConfiguration>> testRunner) {
         // create anomaly alert
@@ -46,7 +72,7 @@ public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationC
         return new AnomalyAlertConfiguration("test_alert_configuration")
             .setDescription("testing_alert_configuration_description")
             .addMetricAlertConfiguration(metricAnomalyAlertConfiguration)
-            .setHookIdsToAlert(new ArrayList<String>() {{ add(ALERT_HOOK_ID); }});
+            .setHookIdsToAlert(Collections.emptyList());
     }
 
     void validateAnomalyAlertResult(AnomalyAlertConfiguration expectedAnomalyAlertConfiguration,

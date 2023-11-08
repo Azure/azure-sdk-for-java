@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Locale;
 
 /**
- * The {@link TextAnalyticsResult} model.
+ * The {@code TextAnalyticsResult} model.
  */
 @Immutable
 public class TextAnalyticsResult {
@@ -20,7 +20,7 @@ public class TextAnalyticsResult {
     private final boolean isError;
 
     /**
-     * Create a {@link TextAnalyticsResult} model that maintains document id, information about the document
+     * Create a {@code TextAnalyticsResult} model that maintains document id, information about the document
      * payload, and document error.
      *
      * @param id Unique, non-empty document identifier.

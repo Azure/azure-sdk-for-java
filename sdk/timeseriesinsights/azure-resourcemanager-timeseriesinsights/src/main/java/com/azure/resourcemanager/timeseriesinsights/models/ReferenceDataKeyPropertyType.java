@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReferenceDataKeyPropertyType. */
+/** The type of the key property. */
 public final class ReferenceDataKeyPropertyType extends ExpandableStringEnum<ReferenceDataKeyPropertyType> {
     /** Static value String for ReferenceDataKeyPropertyType. */
     public static final ReferenceDataKeyPropertyType STRING = fromString("String");
@@ -23,6 +23,15 @@ public final class ReferenceDataKeyPropertyType extends ExpandableStringEnum<Ref
     public static final ReferenceDataKeyPropertyType DATE_TIME = fromString("DateTime");
 
     /**
+     * Creates a new instance of ReferenceDataKeyPropertyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReferenceDataKeyPropertyType() {
+    }
+
+    /**
      * Creates or finds a ReferenceDataKeyPropertyType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ReferenceDataKeyPropertyType extends ExpandableStringEnum<Ref
         return fromString(name, ReferenceDataKeyPropertyType.class);
     }
 
-    /** @return known ReferenceDataKeyPropertyType values. */
+    /**
+     * Gets known ReferenceDataKeyPropertyType values.
+     *
+     * @return known ReferenceDataKeyPropertyType values.
+     */
     public static Collection<ReferenceDataKeyPropertyType> values() {
         return values(ReferenceDataKeyPropertyType.class);
     }

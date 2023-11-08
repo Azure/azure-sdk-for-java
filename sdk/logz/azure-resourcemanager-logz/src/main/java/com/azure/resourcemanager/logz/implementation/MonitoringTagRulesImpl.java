@@ -36,6 +36,10 @@ public final class MonitoringTagRulesImpl
         return this.innerModel().properties();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public MonitoringTagRulesInner innerModel() {
         return this.innerObject;
     }

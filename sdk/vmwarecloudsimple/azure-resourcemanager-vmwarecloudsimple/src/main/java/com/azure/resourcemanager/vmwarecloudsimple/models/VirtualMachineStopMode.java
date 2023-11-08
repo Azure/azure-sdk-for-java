@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** List of virtual machine stop modes. */
 @Fluent
 public final class VirtualMachineStopMode {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineStopMode.class);
-
     /*
-     * mode indicates a type of stop operation - reboot, suspend, shutdown or
-     * power-off
+     * mode indicates a type of stop operation - reboot, suspend, shutdown or power-off
      */
     @JsonProperty(value = "mode")
     private StopMode mode;
+
+    /** Creates an instance of VirtualMachineStopMode class. */
+    public VirtualMachineStopMode() {
+    }
 
     /**
      * Get the mode property: mode indicates a type of stop operation - reboot, suspend, shutdown or power-off.

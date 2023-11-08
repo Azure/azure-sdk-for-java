@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,11 +14,8 @@ import java.util.Map;
 /** Properties of Cognitive Services account. */
 @Fluent
 public final class AccountProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountProperties.class);
-
     /*
-     * Gets the status of the cognitive services account at the time the
-     * operation was called.
+     * Gets the status of the cognitive services account at the time the operation was called.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -38,9 +33,8 @@ public final class AccountProperties {
     private String internalId;
 
     /*
-     * Gets the capabilities of the cognitive services account. Each item
-     * indicates the capability of a specific feature. The values are read-only
-     * and for reference only.
+     * Gets the capabilities of the cognitive services account. Each item indicates the capability of a specific
+     * feature. The values are read-only and for reference only.
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
@@ -70,8 +64,7 @@ public final class AccountProperties {
     private String customSubDomainName;
 
     /*
-     * A collection of rules governing the accessibility from specific network
-     * locations.
+     * A collection of rules governing the accessibility from specific network locations.
      */
     @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkAcls;
@@ -89,15 +82,13 @@ public final class AccountProperties {
     private List<UserOwnedStorage> userOwnedStorage;
 
     /*
-     * The private endpoint connection associated with the Cognitive Services
-     * account.
+     * The private endpoint connection associated with the Cognitive Services account.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
-     * Whether or not public endpoint access is allowed for this account. Value
-     * is optional but if passed in, must be 'Enabled' or 'Disabled'
+     * Whether or not public endpoint access is allowed for this account.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
@@ -119,6 +110,12 @@ public final class AccountProperties {
      */
     @JsonProperty(value = "callRateLimit", access = JsonProperty.Access.WRITE_ONLY)
     private CallRateLimit callRateLimit;
+
+    /*
+     * The flag to enable dynamic throttling.
+     */
+    @JsonProperty(value = "dynamicThrottlingEnabled")
+    private Boolean dynamicThrottlingEnabled;
 
     /*
      * The quotaLimit property.
@@ -156,6 +153,40 @@ public final class AccountProperties {
      */
     @JsonProperty(value = "restore")
     private Boolean restore;
+
+    /*
+     * The deletion date, only available for deleted account.
+     */
+    @JsonProperty(value = "deletionDate", access = JsonProperty.Access.WRITE_ONLY)
+    private String deletionDate;
+
+    /*
+     * The scheduled purge date, only available for deleted account.
+     */
+    @JsonProperty(value = "scheduledPurgeDate", access = JsonProperty.Access.WRITE_ONLY)
+    private String scheduledPurgeDate;
+
+    /*
+     * The multiregion settings of Cognitive Services account.
+     */
+    @JsonProperty(value = "locations")
+    private MultiRegionSettings locations;
+
+    /*
+     * The commitment plan associations of Cognitive Services account.
+     */
+    @JsonProperty(value = "commitmentPlanAssociations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<CommitmentPlanAssociation> commitmentPlanAssociations;
+
+    /*
+     * The abuse penalty.
+     */
+    @JsonProperty(value = "abusePenalty", access = JsonProperty.Access.WRITE_ONLY)
+    private AbusePenalty abusePenalty;
+
+    /** Creates an instance of AccountProperties class. */
+    public AccountProperties() {
+    }
 
     /**
      * Get the provisioningState property: Gets the status of the cognitive services account at the time the operation
@@ -324,8 +355,7 @@ public final class AccountProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this account. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this account.
      *
      * @return the publicNetworkAccess value.
      */
@@ -334,8 +364,7 @@ public final class AccountProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this account. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this account.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AccountProperties object itself.
@@ -381,6 +410,26 @@ public final class AccountProperties {
      */
     public CallRateLimit callRateLimit() {
         return this.callRateLimit;
+    }
+
+    /**
+     * Get the dynamicThrottlingEnabled property: The flag to enable dynamic throttling.
+     *
+     * @return the dynamicThrottlingEnabled value.
+     */
+    public Boolean dynamicThrottlingEnabled() {
+        return this.dynamicThrottlingEnabled;
+    }
+
+    /**
+     * Set the dynamicThrottlingEnabled property: The flag to enable dynamic throttling.
+     *
+     * @param dynamicThrottlingEnabled the dynamicThrottlingEnabled value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withDynamicThrottlingEnabled(Boolean dynamicThrottlingEnabled) {
+        this.dynamicThrottlingEnabled = dynamicThrottlingEnabled;
+        return this;
     }
 
     /**
@@ -482,6 +531,62 @@ public final class AccountProperties {
     }
 
     /**
+     * Get the deletionDate property: The deletion date, only available for deleted account.
+     *
+     * @return the deletionDate value.
+     */
+    public String deletionDate() {
+        return this.deletionDate;
+    }
+
+    /**
+     * Get the scheduledPurgeDate property: The scheduled purge date, only available for deleted account.
+     *
+     * @return the scheduledPurgeDate value.
+     */
+    public String scheduledPurgeDate() {
+        return this.scheduledPurgeDate;
+    }
+
+    /**
+     * Get the locations property: The multiregion settings of Cognitive Services account.
+     *
+     * @return the locations value.
+     */
+    public MultiRegionSettings locations() {
+        return this.locations;
+    }
+
+    /**
+     * Set the locations property: The multiregion settings of Cognitive Services account.
+     *
+     * @param locations the locations value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withLocations(MultiRegionSettings locations) {
+        this.locations = locations;
+        return this;
+    }
+
+    /**
+     * Get the commitmentPlanAssociations property: The commitment plan associations of Cognitive Services account.
+     *
+     * @return the commitmentPlanAssociations value.
+     */
+    public List<CommitmentPlanAssociation> commitmentPlanAssociations() {
+        return this.commitmentPlanAssociations;
+    }
+
+    /**
+     * Get the abusePenalty property: The abuse penalty.
+     *
+     * @return the abusePenalty value.
+     */
+    public AbusePenalty abusePenalty() {
+        return this.abusePenalty;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -513,6 +618,15 @@ public final class AccountProperties {
         }
         if (quotaLimit() != null) {
             quotaLimit().validate();
+        }
+        if (locations() != null) {
+            locations().validate();
+        }
+        if (commitmentPlanAssociations() != null) {
+            commitmentPlanAssociations().forEach(e -> e.validate());
+        }
+        if (abusePenalty() != null) {
+            abusePenalty().validate();
         }
     }
 }

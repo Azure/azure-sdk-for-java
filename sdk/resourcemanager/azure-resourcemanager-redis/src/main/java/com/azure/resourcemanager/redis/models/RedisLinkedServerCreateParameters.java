@@ -18,6 +18,10 @@ public final class RedisLinkedServerCreateParameters {
     @JsonProperty(value = "properties", required = true)
     private RedisLinkedServerCreateProperties innerProperties = new RedisLinkedServerCreateProperties();
 
+    /** Creates an instance of RedisLinkedServerCreateParameters class. */
+    public RedisLinkedServerCreateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties required to create a linked server.
      *
@@ -94,6 +98,26 @@ public final class RedisLinkedServerCreateParameters {
         }
         this.innerProperties().withServerRole(serverRole);
         return this;
+    }
+
+    /**
+     * Get the geoReplicatedPrimaryHostname property: The unchanging DNS name which will always point to current
+     * geo-primary cache among the linked redis caches for seamless Geo Failover experience.
+     *
+     * @return the geoReplicatedPrimaryHostname value.
+     */
+    public String geoReplicatedPrimaryHostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoReplicatedPrimaryHostname();
+    }
+
+    /**
+     * Get the primaryHostname property: The changing DNS name that resolves to the current geo-primary cache among the
+     * linked redis caches before or after the Geo Failover.
+     *
+     * @return the primaryHostname value.
+     */
+    public String primaryHostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().primaryHostname();
     }
 
     /**

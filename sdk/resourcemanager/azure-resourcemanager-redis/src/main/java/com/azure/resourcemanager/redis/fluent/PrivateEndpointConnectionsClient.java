@@ -23,7 +23,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * List all the private endpoint connections associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,7 +37,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * List all the private endpoint connections associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,7 +51,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * List all the private endpoint connections associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +66,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -83,7 +83,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -100,23 +100,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String cacheName, String privateEndpointConnectionName);
-
-    /**
-     * Gets the specified private endpoint connection associated with the redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -131,9 +115,25 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName, String cacheName, String privateEndpointConnectionName, Context context);
 
     /**
+     * Gets the specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection associated with the redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner get(
+        String resourceGroupName, String cacheName, String privateEndpointConnectionName);
+
+    /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -154,7 +154,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -174,7 +174,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -194,7 +194,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -216,7 +216,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -236,7 +236,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -256,7 +256,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -278,7 +278,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -294,7 +294,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -309,21 +309,7 @@ public interface PrivateEndpointConnectionsClient {
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param cacheName The name of the Redis cache.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String cacheName, String privateEndpointConnectionName);
-
-    /**
-     * Deletes the specified private endpoint connection associated with the redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -336,4 +322,18 @@ public interface PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String cacheName, String privateEndpointConnectionName, Context context);
+
+    /**
+     * Deletes the specified private endpoint connection associated with the redis cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName The name of the Redis cache.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String cacheName, String privateEndpointConnectionName);
 }

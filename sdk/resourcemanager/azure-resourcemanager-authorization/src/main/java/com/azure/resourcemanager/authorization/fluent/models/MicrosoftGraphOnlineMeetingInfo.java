@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** onlineMeetingInfo. */
 @Fluent
 public final class MicrosoftGraphOnlineMeetingInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnlineMeetingInfo.class);
-
     /*
      * The ID of the conference.
      */
@@ -26,9 +23,8 @@ public final class MicrosoftGraphOnlineMeetingInfo {
     private String conferenceId;
 
     /*
-     * The external link that launches the online meeting. This is a URL that
-     * clients will launch into a browser and will redirect the user to join
-     * the meeting.
+     * The external link that launches the online meeting. This is a URL that clients will launch into a browser and
+     * will redirect the user to join the meeting.
      */
     @JsonProperty(value = "joinUrl")
     private String joinUrl;
@@ -61,6 +57,10 @@ public final class MicrosoftGraphOnlineMeetingInfo {
      * onlineMeetingInfo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnlineMeetingInfo class. */
+    public MicrosoftGraphOnlineMeetingInfo() {
+    }
 
     /**
      * Get the conferenceId property: The ID of the conference.

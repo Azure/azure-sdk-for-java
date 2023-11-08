@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** informationalUrl. */
 @Fluent
 public final class MicrosoftGraphInformationalUrl {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphInformationalUrl.class);
-
     /*
      * CDN URL to the application's logo, Read-only.
      */
@@ -25,29 +22,25 @@ public final class MicrosoftGraphInformationalUrl {
     private String logoUrl;
 
     /*
-     * Link to the application's marketing page. For example,
-     * https://www.contoso.com/app/marketing
+     * Link to the application's marketing page. For example, https://www.contoso.com/app/marketing
      */
     @JsonProperty(value = "marketingUrl")
     private String marketingUrl;
 
     /*
-     * Link to the application's privacy statement. For example,
-     * https://www.contoso.com/app/privacy
+     * Link to the application's privacy statement. For example, https://www.contoso.com/app/privacy
      */
     @JsonProperty(value = "privacyStatementUrl")
     private String privacyStatementUrl;
 
     /*
-     * Link to the application's support page. For example,
-     * https://www.contoso.com/app/support
+     * Link to the application's support page. For example, https://www.contoso.com/app/support
      */
     @JsonProperty(value = "supportUrl")
     private String supportUrl;
 
     /*
-     * Link to the application's terms of service statement. For example,
-     * https://www.contoso.com/app/termsofservice
+     * Link to the application's terms of service statement. For example, https://www.contoso.com/app/termsofservice
      */
     @JsonProperty(value = "termsOfServiceUrl")
     private String termsOfServiceUrl;
@@ -56,6 +49,10 @@ public final class MicrosoftGraphInformationalUrl {
      * informationalUrl
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphInformationalUrl class. */
+    public MicrosoftGraphInformationalUrl() {
+    }
 
     /**
      * Get the logoUrl property: CDN URL to the application's logo, Read-only.

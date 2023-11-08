@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LinkedServiceEntityStatus. */
+/** The provisioning state of the linked service. */
 public final class LinkedServiceEntityStatus extends ExpandableStringEnum<LinkedServiceEntityStatus> {
     /** Static value Succeeded for LinkedServiceEntityStatus. */
     public static final LinkedServiceEntityStatus SUCCEEDED = fromString("Succeeded");
@@ -23,6 +23,15 @@ public final class LinkedServiceEntityStatus extends ExpandableStringEnum<Linked
     public static final LinkedServiceEntityStatus UPDATING = fromString("Updating");
 
     /**
+     * Creates a new instance of LinkedServiceEntityStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LinkedServiceEntityStatus() {
+    }
+
+    /**
      * Creates or finds a LinkedServiceEntityStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class LinkedServiceEntityStatus extends ExpandableStringEnum<Linked
         return fromString(name, LinkedServiceEntityStatus.class);
     }
 
-    /** @return known LinkedServiceEntityStatus values. */
+    /**
+     * Gets known LinkedServiceEntityStatus values.
+     *
+     * @return known LinkedServiceEntityStatus values.
+     */
     public static Collection<LinkedServiceEntityStatus> values() {
         return values(LinkedServiceEntityStatus.class);
     }

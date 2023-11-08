@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProviderOperationsMetadata Get. */
 public final class ProviderOperationsMetadataGetSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-01-01-preview/examples/GetProviderOperationsRP.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/GetProviderOperationsRP.json
      */
     /**
      * Sample code: List provider operations metadata for resource provider.
@@ -24,6 +22,6 @@ public final class ProviderOperationsMetadataGetSamples {
             .manager()
             .roleServiceClient()
             .getProviderOperationsMetadatas()
-            .getWithResponse("resourceProviderNamespace", null, Context.NONE);
+            .getWithResponse("resourceProviderNamespace", null, com.azure.core.util.Context.NONE);
     }
 }

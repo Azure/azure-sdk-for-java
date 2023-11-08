@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List operation response, that contains the database accounts and their properties. */
 @Immutable
 public final class DatabaseAccountsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountsListResult.class);
-
     /*
      * List of database account and their properties.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DatabaseAccountGetResultsInner> value;
+
+    /** Creates an instance of DatabaseAccountsListResult class. */
+    public DatabaseAccountsListResult() {
+    }
 
     /**
      * Get the value property: List of database account and their properties.

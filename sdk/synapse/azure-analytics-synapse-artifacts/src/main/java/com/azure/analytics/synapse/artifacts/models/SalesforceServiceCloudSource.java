@@ -21,18 +21,21 @@ public final class SalesforceServiceCloudSource extends CopySource {
     private Object query;
 
     /*
-     * The read behavior for the operation. Default is Query.
+     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "readBehavior")
-    private SalesforceSourceReadBehavior readBehavior;
+    private Object readBehavior;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
+
+    /** Creates an instance of SalesforceServiceCloudSource class. */
+    public SalesforceServiceCloudSource() {}
 
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
@@ -55,21 +58,23 @@ public final class SalesforceServiceCloudSource extends CopySource {
     }
 
     /**
-     * Get the readBehavior property: The read behavior for the operation. Default is Query.
+     * Get the readBehavior property: The read behavior for the operation. Default is Query. Allowed values:
+     * Query/QueryAll. Type: string (or Expression with resultType string).
      *
      * @return the readBehavior value.
      */
-    public SalesforceSourceReadBehavior getReadBehavior() {
+    public Object getReadBehavior() {
         return this.readBehavior;
     }
 
     /**
-     * Set the readBehavior property: The read behavior for the operation. Default is Query.
+     * Set the readBehavior property: The read behavior for the operation. Default is Query. Allowed values:
+     * Query/QueryAll. Type: string (or Expression with resultType string).
      *
      * @param readBehavior the readBehavior value to set.
      * @return the SalesforceServiceCloudSource object itself.
      */
-    public SalesforceServiceCloudSource setReadBehavior(SalesforceSourceReadBehavior readBehavior) {
+    public SalesforceServiceCloudSource setReadBehavior(Object readBehavior) {
         this.readBehavior = readBehavior;
         return this;
     }
@@ -93,6 +98,27 @@ public final class SalesforceServiceCloudSource extends CopySource {
      */
     public SalesforceServiceCloudSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkGatewayInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of NSX Gateways. */
 @Immutable
 public final class WorkloadNetworkGatewayList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkGatewayList.class);
-
     /*
      * The items on the page
      */
@@ -27,6 +23,10 @@ public final class WorkloadNetworkGatewayList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of WorkloadNetworkGatewayList class. */
+    public WorkloadNetworkGatewayList() {
+    }
 
     /**
      * Get the value property: The items on the page.

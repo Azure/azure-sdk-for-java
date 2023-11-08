@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AllowedCopyScope. */
+/** Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet. */
 public final class AllowedCopyScope extends ExpandableStringEnum<AllowedCopyScope> {
     /** Static value PrivateLink for AllowedCopyScope. */
     public static final AllowedCopyScope PRIVATE_LINK = fromString("PrivateLink");
 
     /** Static value AAD for AllowedCopyScope. */
     public static final AllowedCopyScope AAD = fromString("AAD");
+
+    /**
+     * Creates a new instance of AllowedCopyScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AllowedCopyScope() {
+    }
 
     /**
      * Creates or finds a AllowedCopyScope from its string representation.
@@ -27,7 +36,11 @@ public final class AllowedCopyScope extends ExpandableStringEnum<AllowedCopyScop
         return fromString(name, AllowedCopyScope.class);
     }
 
-    /** @return known AllowedCopyScope values. */
+    /**
+     * Gets known AllowedCopyScope values.
+     *
+     * @return known AllowedCopyScope values.
+     */
     public static Collection<AllowedCopyScope> values() {
         return values(AllowedCopyScope.class);
     }

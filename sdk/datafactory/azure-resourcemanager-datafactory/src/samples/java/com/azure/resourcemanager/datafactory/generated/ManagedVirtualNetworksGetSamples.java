@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedVirtualNetworks Get. */
 public final class ManagedVirtualNetworksGetSamples {
     /*
@@ -20,6 +18,10 @@ public final class ManagedVirtualNetworksGetSamples {
         manager
             .managedVirtualNetworks()
             .getWithResponse(
-                "exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName", null, Context.NONE);
+                "exampleResourceGroup",
+                "exampleFactoryName",
+                "exampleManagedVirtualNetworkName",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedClusterSkuName. */
+/** The name of a managed cluster SKU. */
 public final class ManagedClusterSkuName extends ExpandableStringEnum<ManagedClusterSkuName> {
-    /** Static value Basic for ManagedClusterSkuName. */
-    public static final ManagedClusterSkuName BASIC = fromString("Basic");
+    /** Static value Base for ManagedClusterSkuName. */
+    public static final ManagedClusterSkuName BASE = fromString("Base");
+
+    /**
+     * Creates a new instance of ManagedClusterSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedClusterSkuName() {
+    }
 
     /**
      * Creates or finds a ManagedClusterSkuName from its string representation.
@@ -24,7 +33,11 @@ public final class ManagedClusterSkuName extends ExpandableStringEnum<ManagedClu
         return fromString(name, ManagedClusterSkuName.class);
     }
 
-    /** @return known ManagedClusterSkuName values. */
+    /**
+     * Gets known ManagedClusterSkuName values.
+     *
+     * @return known ManagedClusterSkuName values.
+     */
     public static Collection<ManagedClusterSkuName> values() {
         return values(ManagedClusterSkuName.class);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details related to the IPv4 address configuration. */
 @Immutable
 public final class Ipv4Config {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Ipv4Config.class);
-
     /*
      * The IPv4 address of the network adapter.
      */
@@ -31,6 +27,10 @@ public final class Ipv4Config {
      */
     @JsonProperty(value = "gateway", access = JsonProperty.Access.WRITE_ONLY)
     private String gateway;
+
+    /** Creates an instance of Ipv4Config class. */
+    public Ipv4Config() {
+    }
 
     /**
      * Get the ipAddress property: The IPv4 address of the network adapter.

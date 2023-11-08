@@ -7,15 +7,11 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema for ApplicationGroup properties. */
 @Fluent
 public final class ApplicationGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGroupProperties.class);
-
     /*
      * ObjectId of ApplicationGroup. (internal use)
      */
@@ -53,16 +49,20 @@ public final class ApplicationGroupProperties {
     private ApplicationGroupType applicationGroupType;
 
     /*
-     * The registration info of HostPool.
-     */
-    @JsonProperty(value = "migrationRequest")
-    private MigrationRequestProperties migrationRequest;
-
-    /*
      * Is cloud pc resource.
      */
     @JsonProperty(value = "cloudPcResource", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean cloudPcResource;
+
+    /*
+     * Boolean representing whether the applicationGroup is show in the feed.
+     */
+    @JsonProperty(value = "showInFeed")
+    private Boolean showInFeed;
+
+    /** Creates an instance of ApplicationGroupProperties class. */
+    public ApplicationGroupProperties() {
+    }
 
     /**
      * Get the objectId property: ObjectId of ApplicationGroup. (internal use).
@@ -163,26 +163,6 @@ public final class ApplicationGroupProperties {
     }
 
     /**
-     * Get the migrationRequest property: The registration info of HostPool.
-     *
-     * @return the migrationRequest value.
-     */
-    public MigrationRequestProperties migrationRequest() {
-        return this.migrationRequest;
-    }
-
-    /**
-     * Set the migrationRequest property: The registration info of HostPool.
-     *
-     * @param migrationRequest the migrationRequest value to set.
-     * @return the ApplicationGroupProperties object itself.
-     */
-    public ApplicationGroupProperties withMigrationRequest(MigrationRequestProperties migrationRequest) {
-        this.migrationRequest = migrationRequest;
-        return this;
-    }
-
-    /**
      * Get the cloudPcResource property: Is cloud pc resource.
      *
      * @return the cloudPcResource value.
@@ -192,25 +172,44 @@ public final class ApplicationGroupProperties {
     }
 
     /**
+     * Get the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @return the showInFeed value.
+     */
+    public Boolean showInFeed() {
+        return this.showInFeed;
+    }
+
+    /**
+     * Set the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @param showInFeed the showInFeed value to set.
+     * @return the ApplicationGroupProperties object itself.
+     */
+    public ApplicationGroupProperties withShowInFeed(Boolean showInFeed) {
+        this.showInFeed = showInFeed;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hostPoolArmPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property hostPoolArmPath in model ApplicationGroupProperties"));
         }
         if (applicationGroupType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property applicationGroupType in model ApplicationGroupProperties"));
         }
-        if (migrationRequest() != null) {
-            migrationRequest().validate();
-        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGroupProperties.class);
 }

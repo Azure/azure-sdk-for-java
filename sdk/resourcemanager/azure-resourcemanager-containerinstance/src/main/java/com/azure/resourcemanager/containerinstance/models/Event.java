@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A container group or container instance event. */
 @Immutable
 public final class Event {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Event.class);
-
     /*
      * The count of the event.
      */
@@ -50,6 +46,10 @@ public final class Event {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of Event class. */
+    public Event() {
+    }
 
     /**
      * Get the count property: The count of the event.

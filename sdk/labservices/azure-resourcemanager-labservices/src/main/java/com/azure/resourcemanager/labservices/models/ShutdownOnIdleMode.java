@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ShutdownOnIdleMode. */
+/** Defines whether to shut down VM on idle and the criteria for idle detection. */
 public enum ShutdownOnIdleMode {
     /** Enum value None. */
     NONE("None"),
@@ -33,6 +33,9 @@ public enum ShutdownOnIdleMode {
      */
     @JsonCreator
     public static ShutdownOnIdleMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ShutdownOnIdleMode[] items = ShutdownOnIdleMode.values();
         for (ShutdownOnIdleMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ShutdownOnIdleMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

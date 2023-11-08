@@ -5,46 +5,61 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.servicebus.models.Action;
 import com.azure.resourcemanager.servicebus.models.CorrelationFilter;
 import com.azure.resourcemanager.servicebus.models.FilterType;
 import com.azure.resourcemanager.servicebus.models.SqlFilter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of Rule Resource. */
-@JsonFlatten
 @Fluent
-public class RuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleInner.class);
+public final class RuleInner extends ProxyResource {
+    /*
+     * Properties of Rule resource
+     */
+    @JsonProperty(value = "properties")
+    private Ruleproperties innerProperties;
 
     /*
-     * Represents the filter actions which are allowed for the transformation
-     * of a message that have been matched by a filter expression.
+     * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "properties.action")
-    private Action action;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * Filter type that is evaluated against a BrokeredMessage.
+     * The geo-location where the resource lives
      */
-    @JsonProperty(value = "properties.filterType")
-    private FilterType filterType;
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
 
-    /*
-     * Properties of sqlFilter
+    /**
+     * Get the innerProperties property: Properties of Rule resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sqlFilter")
-    private SqlFilter sqlFilter;
+    private Ruleproperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Properties of correlationFilter
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.correlationFilter")
-    private CorrelationFilter correlationFilter;
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
 
     /**
      * Get the action property: Represents the filter actions which are allowed for the transformation of a message that
@@ -53,7 +68,7 @@ public class RuleInner extends ProxyResource {
      * @return the action value.
      */
     public Action action() {
-        return this.action;
+        return this.innerProperties() == null ? null : this.innerProperties().action();
     }
 
     /**
@@ -64,7 +79,10 @@ public class RuleInner extends ProxyResource {
      * @return the RuleInner object itself.
      */
     public RuleInner withAction(Action action) {
-        this.action = action;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Ruleproperties();
+        }
+        this.innerProperties().withAction(action);
         return this;
     }
 
@@ -74,7 +92,7 @@ public class RuleInner extends ProxyResource {
      * @return the filterType value.
      */
     public FilterType filterType() {
-        return this.filterType;
+        return this.innerProperties() == null ? null : this.innerProperties().filterType();
     }
 
     /**
@@ -84,7 +102,10 @@ public class RuleInner extends ProxyResource {
      * @return the RuleInner object itself.
      */
     public RuleInner withFilterType(FilterType filterType) {
-        this.filterType = filterType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Ruleproperties();
+        }
+        this.innerProperties().withFilterType(filterType);
         return this;
     }
 
@@ -94,7 +115,7 @@ public class RuleInner extends ProxyResource {
      * @return the sqlFilter value.
      */
     public SqlFilter sqlFilter() {
-        return this.sqlFilter;
+        return this.innerProperties() == null ? null : this.innerProperties().sqlFilter();
     }
 
     /**
@@ -104,7 +125,10 @@ public class RuleInner extends ProxyResource {
      * @return the RuleInner object itself.
      */
     public RuleInner withSqlFilter(SqlFilter sqlFilter) {
-        this.sqlFilter = sqlFilter;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Ruleproperties();
+        }
+        this.innerProperties().withSqlFilter(sqlFilter);
         return this;
     }
 
@@ -114,7 +138,7 @@ public class RuleInner extends ProxyResource {
      * @return the correlationFilter value.
      */
     public CorrelationFilter correlationFilter() {
-        return this.correlationFilter;
+        return this.innerProperties() == null ? null : this.innerProperties().correlationFilter();
     }
 
     /**
@@ -124,7 +148,10 @@ public class RuleInner extends ProxyResource {
      * @return the RuleInner object itself.
      */
     public RuleInner withCorrelationFilter(CorrelationFilter correlationFilter) {
-        this.correlationFilter = correlationFilter;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Ruleproperties();
+        }
+        this.innerProperties().withCorrelationFilter(correlationFilter);
         return this;
     }
 
@@ -134,14 +161,8 @@ public class RuleInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (action() != null) {
-            action().validate();
-        }
-        if (sqlFilter() != null) {
-            sqlFilter().validate();
-        }
-        if (correlationFilter() != null) {
-            correlationFilter().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

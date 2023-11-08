@@ -10,22 +10,24 @@ import com.azure.core.util.Context;
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * List all operations provided by Microsoft.Datadog for the 2021-03-01 api version.
+     * List all operations provided by Microsoft.Datadog for the 2023-01-01 api version.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list the Microsoft.
+     * @return result of GET request to list the Microsoft.Datadog operations as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<OperationResult> list();
 
     /**
-     * List all operations provided by Microsoft.Datadog for the 2021-03-01 api version.
+     * List all operations provided by Microsoft.Datadog for the 2023-01-01 api version.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list the Microsoft.
+     * @return result of GET request to list the Microsoft.Datadog operations as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<OperationResult> list(Context context);
 }

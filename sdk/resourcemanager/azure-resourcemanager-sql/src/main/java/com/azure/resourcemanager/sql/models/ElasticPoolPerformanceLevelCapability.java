@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Elastic Pool performance level capability. */
 @Fluent
 public final class ElasticPoolPerformanceLevelCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolPerformanceLevelCapability.class);
-
     /*
      * The performance level for the pool.
      */
@@ -70,6 +66,12 @@ public final class ElasticPoolPerformanceLevelCapability {
     private Boolean zoneRedundant;
 
     /*
+     * List of supported maintenance configurations
+     */
+    @JsonProperty(value = "supportedMaintenanceConfigurations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations;
+
+    /*
      * The status of the capability.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
@@ -80,6 +82,10 @@ public final class ElasticPoolPerformanceLevelCapability {
      */
     @JsonProperty(value = "reason")
     private String reason;
+
+    /** Creates an instance of ElasticPoolPerformanceLevelCapability class. */
+    public ElasticPoolPerformanceLevelCapability() {
+    }
 
     /**
      * Get the performanceLevel property: The performance level for the pool.
@@ -164,6 +170,15 @@ public final class ElasticPoolPerformanceLevelCapability {
     }
 
     /**
+     * Get the supportedMaintenanceConfigurations property: List of supported maintenance configurations.
+     *
+     * @return the supportedMaintenanceConfigurations value.
+     */
+    public List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations() {
+        return this.supportedMaintenanceConfigurations;
+    }
+
+    /**
      * Get the status property: The status of the capability.
      *
      * @return the status value.
@@ -218,6 +233,9 @@ public final class ElasticPoolPerformanceLevelCapability {
         }
         if (supportedPerDatabaseMaxPerformanceLevels() != null) {
             supportedPerDatabaseMaxPerformanceLevels().forEach(e -> e.validate());
+        }
+        if (supportedMaintenanceConfigurations() != null) {
+            supportedMaintenanceConfigurations().forEach(e -> e.validate());
         }
     }
 }

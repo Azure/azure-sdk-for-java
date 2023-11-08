@@ -12,10 +12,9 @@ import com.azure.resourcemanager.automation.fluent.KeysClient;
 import com.azure.resourcemanager.automation.fluent.models.KeyListResultInner;
 import com.azure.resourcemanager.automation.models.KeyListResult;
 import com.azure.resourcemanager.automation.models.Keys;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KeysImpl implements Keys {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeysImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeysImpl.class);
 
     private final KeysClient innerClient;
 

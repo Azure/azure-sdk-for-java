@@ -18,14 +18,13 @@ public final class CacheNetworkSettings {
     private Integer mtu;
 
     /*
-     * Array of additional IP addresses used by this Cache.
+     * Array of additional IP addresses used by this cache.
      */
     @JsonProperty(value = "utilityAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> utilityAddresses;
 
     /*
-     * DNS servers for the cache to use.  It will be set from the network
-     * configuration if no value is provided.
+     * DNS servers for the cache to use.  It will be set from the network configuration if no value is provided.
      */
     @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
@@ -37,11 +36,14 @@ public final class CacheNetworkSettings {
     private String dnsSearchDomain;
 
     /*
-     * NTP server IP Address or FQDN for the cache to use. The default is
-     * time.windows.com.
+     * NTP server IP Address or FQDN for the cache to use. The default is time.windows.com.
      */
     @JsonProperty(value = "ntpServer")
     private String ntpServer;
+
+    /** Creates an instance of CacheNetworkSettings class. */
+    public CacheNetworkSettings() {
+    }
 
     /**
      * Get the mtu property: The IPv4 maximum transmission unit configured for the subnet.
@@ -64,7 +66,7 @@ public final class CacheNetworkSettings {
     }
 
     /**
-     * Get the utilityAddresses property: Array of additional IP addresses used by this Cache.
+     * Get the utilityAddresses property: Array of additional IP addresses used by this cache.
      *
      * @return the utilityAddresses value.
      */

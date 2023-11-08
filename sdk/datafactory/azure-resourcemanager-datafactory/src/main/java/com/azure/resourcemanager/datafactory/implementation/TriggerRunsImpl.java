@@ -27,17 +27,13 @@ public final class TriggerRunsImpl implements TriggerRuns {
         this.serviceManager = serviceManager;
     }
 
-    public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
-        this.serviceClient().rerun(resourceGroupName, factoryName, triggerName, runId);
-    }
-
     public Response<Void> rerunWithResponse(
         String resourceGroupName, String factoryName, String triggerName, String runId, Context context) {
         return this.serviceClient().rerunWithResponse(resourceGroupName, factoryName, triggerName, runId, context);
     }
 
-    public void cancel(String resourceGroupName, String factoryName, String triggerName, String runId) {
-        this.serviceClient().cancel(resourceGroupName, factoryName, triggerName, runId);
+    public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        this.serviceClient().rerun(resourceGroupName, factoryName, triggerName, runId);
     }
 
     public Response<Void> cancelWithResponse(
@@ -45,15 +41,8 @@ public final class TriggerRunsImpl implements TriggerRuns {
         return this.serviceClient().cancelWithResponse(resourceGroupName, factoryName, triggerName, runId, context);
     }
 
-    public TriggerRunsQueryResponse queryByFactory(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
-        TriggerRunsQueryResponseInner inner =
-            this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
-        if (inner != null) {
-            return new TriggerRunsQueryResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void cancel(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        this.serviceClient().cancel(resourceGroupName, factoryName, triggerName, runId);
     }
 
     public Response<TriggerRunsQueryResponse> queryByFactoryWithResponse(
@@ -66,6 +55,17 @@ public final class TriggerRunsImpl implements TriggerRuns {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TriggerRunsQueryResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TriggerRunsQueryResponse queryByFactory(
+        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
+        TriggerRunsQueryResponseInner inner =
+            this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
+        if (inner != null) {
+            return new TriggerRunsQueryResponseImpl(inner, this.manager());
         } else {
             return null;
         }

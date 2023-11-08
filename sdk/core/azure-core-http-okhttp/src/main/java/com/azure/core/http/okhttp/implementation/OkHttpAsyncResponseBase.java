@@ -3,6 +3,7 @@
 
 package com.azure.core.http.okhttp.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -20,10 +21,12 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
 
-    OkHttpAsyncResponseBase(Response response, HttpRequest request) {
+    OkHttpAsyncResponseBase(Response response, HttpRequest request, boolean eagerlyConvertHeaders) {
         super(request);
         this.statusCode = response.code();
-        this.headers = fromOkHttpHeaders(response.headers());
+        this.headers = eagerlyConvertHeaders
+            ? fromOkHttpHeaders(response.headers())
+            : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers());
     }
 
     @Override
@@ -32,8 +35,13 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
     }
 
     @Override
+    @Deprecated
     public final String getHeaderValue(String name) {
         return this.headers.getValue(name);
+    }
+
+    public final String getHeaderValue(HttpHeaderName headerName) {
+        return this.headers.getValue(headerName);
     }
 
     @Override
@@ -57,7 +65,8 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
      * @param okHttpHeaders okhttp headers
      * @return azure-core HttpHeaders
      */
-    private static HttpHeaders fromOkHttpHeaders(Headers okHttpHeaders) {
+    @SuppressWarnings("deprecation")
+    static HttpHeaders fromOkHttpHeaders(Headers okHttpHeaders) {
         /*
          * While OkHttp's Headers class offers a method which converts the headers into a Map<String, List<String>>,
          * which matches one of the setters in our HttpHeaders, the method implicitly lower cases header names while
@@ -65,9 +74,14 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
          * case-insensitive per their definition RFC but this could cause issues when/if the headers are used in
          * serialization or deserialization as casing may matter.
          */
-        HttpHeaders azureHeaders = new HttpHeaders();
+        HttpHeaders azureHeaders = new HttpHeaders((int) (okHttpHeaders.size() / 0.75F));
 
-        okHttpHeaders.names().forEach(name -> azureHeaders.set(name, okHttpHeaders.values(name)));
+        // Use OkHttp's Headers forEach instead of the previous names and values approach.
+        // forEach allows for a single iteration over the internal array of header values whereas names and values
+        // will iterate over the internal array of header values for each name. With the new approach use azure-core
+        // HttpHeaders add method.
+        // Overall, this is much better performing as almost all headers will have a single value.
+        okHttpHeaders.forEach(nameValuePair -> azureHeaders.add(nameValuePair.getFirst(), nameValuePair.getSecond()));
 
         return azureHeaders;
     }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Map a field of profile to its corresponding StrongId in Related Profile. */
 @Fluent
 public final class RelationshipTypeFieldMapping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationshipTypeFieldMapping.class);
-
     /*
      * Specifies the fieldName in profile.
      */
@@ -25,6 +22,10 @@ public final class RelationshipTypeFieldMapping {
      */
     @JsonProperty(value = "relatedProfileKeyProperty", required = true)
     private String relatedProfileKeyProperty;
+
+    /** Creates an instance of RelationshipTypeFieldMapping class. */
+    public RelationshipTypeFieldMapping() {
+    }
 
     /**
      * Get the profileFieldName property: Specifies the fieldName in profile.
@@ -73,16 +74,18 @@ public final class RelationshipTypeFieldMapping {
      */
     public void validate() {
         if (profileFieldName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property profileFieldName in model RelationshipTypeFieldMapping"));
         }
         if (relatedProfileKeyProperty() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property relatedProfileKeyProperty in model RelationshipTypeFieldMapping"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RelationshipTypeFieldMapping.class);
 }

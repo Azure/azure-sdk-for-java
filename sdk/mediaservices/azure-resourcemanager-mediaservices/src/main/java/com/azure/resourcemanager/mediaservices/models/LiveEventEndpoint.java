@@ -22,6 +22,10 @@ public final class LiveEventEndpoint {
     @JsonProperty(value = "url")
     private String url;
 
+    /** Creates an instance of LiveEventEndpoint class. */
+    public LiveEventEndpoint() {
+    }
+
     /**
      * Get the protocol property: The endpoint protocol.
      *

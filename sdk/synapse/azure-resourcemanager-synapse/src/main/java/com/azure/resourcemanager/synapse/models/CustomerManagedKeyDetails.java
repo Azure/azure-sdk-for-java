@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the customer managed key associated with the workspace. */
 @Fluent
 public final class CustomerManagedKeyDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerManagedKeyDetails.class);
-
     /*
      * The customer managed key status on the workspace
      */
@@ -31,6 +27,10 @@ public final class CustomerManagedKeyDetails {
      */
     @JsonProperty(value = "kekIdentity")
     private KekIdentityProperties kekIdentity;
+
+    /** Creates an instance of CustomerManagedKeyDetails class. */
+    public CustomerManagedKeyDetails() {
+    }
 
     /**
      * Get the status property: The customer managed key status on the workspace.

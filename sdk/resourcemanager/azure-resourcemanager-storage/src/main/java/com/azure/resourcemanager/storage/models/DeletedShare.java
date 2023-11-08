@@ -18,11 +18,14 @@ public final class DeletedShare {
     private String deletedShareName;
 
     /*
-     * Required. Identify the version of the deleted share that will be
-     * restored.
+     * Required. Identify the version of the deleted share that will be restored.
      */
     @JsonProperty(value = "deletedShareVersion", required = true)
     private String deletedShareVersion;
+
+    /** Creates an instance of DeletedShare class. */
+    public DeletedShare() {
+    }
 
     /**
      * Get the deletedShareName property: Required. Identify the name of the deleted share that will be restored.

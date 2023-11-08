@@ -22,15 +22,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupRequestResource;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupsClient. */
 public final class BackupsClientImpl implements BackupsClient {
-    private final ClientLogger logger = new ClientLogger(BackupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupsService service;
 
@@ -53,12 +50,10 @@ public final class BackupsClientImpl implements BackupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupsService {
+    public interface BackupsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems"
-                + "/{protectedItemName}/backup")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/backup")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> trigger(
@@ -253,32 +248,7 @@ public final class BackupsClientImpl implements BackupsClient {
         BackupRequestResource parameters) {
         return triggerWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call GetProtectedItemOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backup item.
-     * @param containerName Container name associated with the backup item.
-     * @param protectedItemName Backup item for which backup needs to be triggered.
-     * @param parameters resource backup request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        BackupRequestResource parameters) {
-        triggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -309,5 +279,31 @@ public final class BackupsClientImpl implements BackupsClient {
         return triggerWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, context)
             .block();
+    }
+
+    /**
+     * Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
+     * operation, call GetProtectedItemOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backup item.
+     * @param containerName Container name associated with the backup item.
+     * @param protectedItemName Backup item for which backup needs to be triggered.
+     * @param parameters resource backup request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void trigger(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        BackupRequestResource parameters) {
+        triggerWithResponse(
+            vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, Context.NONE);
     }
 }

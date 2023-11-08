@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.fluent.models.AccountProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,7 +13,11 @@ import java.util.Map;
 /** The account update properties. */
 @Fluent
 public final class AccountUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountUpdateParameters.class);
+    /*
+     * Identity related info to add/remove userAssignedIdentities.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /*
      * The account properties.
@@ -29,6 +31,30 @@ public final class AccountUpdateParameters {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of AccountUpdateParameters class. */
+    public AccountUpdateParameters() {
+    }
+
+    /**
+     * Get the identity property: Identity related info to add/remove userAssignedIdentities.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity related info to add/remove userAssignedIdentities.
+     *
+     * @param identity the identity value to set.
+     * @return the AccountUpdateParameters object itself.
+     */
+    public AccountUpdateParameters withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the properties property: The account properties.
@@ -76,6 +102,9 @@ public final class AccountUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (properties() != null) {
             properties().validate();
         }

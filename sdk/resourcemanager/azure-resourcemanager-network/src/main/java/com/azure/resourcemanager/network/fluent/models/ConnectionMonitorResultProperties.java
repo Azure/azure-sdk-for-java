@@ -44,6 +44,10 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
     @JsonProperty(value = "connectionMonitorType", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectionMonitorType connectionMonitorType;
 
+    /** Creates an instance of ConnectionMonitorResultProperties class. */
+    public ConnectionMonitorResultProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the connection monitor.
      *

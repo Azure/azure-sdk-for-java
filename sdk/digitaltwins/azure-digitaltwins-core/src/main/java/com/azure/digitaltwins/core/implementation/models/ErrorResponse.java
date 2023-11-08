@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error response. */
@@ -13,8 +14,18 @@ public final class ErrorResponse {
     /*
      * The error details.
      */
-    @JsonProperty(value = "error")
+    @JsonProperty(value = "error", required = true)
     private Error error;
+
+    /**
+     * Creates an instance of ErrorResponse class.
+     *
+     * @param error the error value to set.
+     */
+    @JsonCreator
+    public ErrorResponse(@JsonProperty(value = "error", required = true) Error error) {
+        this.error = error;
+    }
 
     /**
      * Get the error property: The error details.
@@ -26,23 +37,14 @@ public final class ErrorResponse {
     }
 
     /**
-     * Set the error property: The error details.
-     *
-     * @param error the error value to set.
-     * @return the ErrorResponse object itself.
-     */
-    public ErrorResponse setError(Error error) {
-        this.error = error;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (getError() != null) {
+        if (getError() == null) {
+            throw new IllegalArgumentException("Missing required property error in model ErrorResponse");
+        } else {
             getError().validate();
         }
     }

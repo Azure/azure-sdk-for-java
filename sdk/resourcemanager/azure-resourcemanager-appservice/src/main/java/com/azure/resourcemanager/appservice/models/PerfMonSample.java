@@ -29,6 +29,10 @@ public final class PerfMonSample {
     @JsonProperty(value = "value")
     private Double value;
 
+    /** Creates an instance of PerfMonSample class. */
+    public PerfMonSample() {
+    }
+
     /**
      * Get the time property: Point in time for which counter was measured.
      *

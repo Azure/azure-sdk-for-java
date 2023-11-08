@@ -8,13 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NodeSizeFamily. */
+/** The kind of nodes that the Big Data pool provides. */
 public final class NodeSizeFamily extends ExpandableStringEnum<NodeSizeFamily> {
     /** Static value None for NodeSizeFamily. */
     public static final NodeSizeFamily NONE = fromString("None");
 
     /** Static value MemoryOptimized for NodeSizeFamily. */
     public static final NodeSizeFamily MEMORY_OPTIMIZED = fromString("MemoryOptimized");
+
+    /**
+     * Creates a new instance of NodeSizeFamily value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NodeSizeFamily() {}
 
     /**
      * Creates or finds a NodeSizeFamily from its string representation.
@@ -27,7 +35,11 @@ public final class NodeSizeFamily extends ExpandableStringEnum<NodeSizeFamily> {
         return fromString(name, NodeSizeFamily.class);
     }
 
-    /** @return known NodeSizeFamily values. */
+    /**
+     * Gets known NodeSizeFamily values.
+     *
+     * @return known NodeSizeFamily values.
+     */
     public static Collection<NodeSizeFamily> values() {
         return values(NodeSizeFamily.class);
     }

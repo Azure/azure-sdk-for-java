@@ -13,10 +13,9 @@ import com.azure.resourcemanager.customerinsights.fluent.HubsClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.HubInner;
 import com.azure.resourcemanager.customerinsights.models.Hub;
 import com.azure.resourcemanager.customerinsights.models.Hubs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class HubsImpl implements Hubs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HubsImpl.class);
 
     private final HubsClient innerClient;
 
@@ -36,15 +35,6 @@ public final class HubsImpl implements Hubs {
         this.serviceClient().delete(resourceGroupName, hubName, context);
     }
 
-    public Hub getByResourceGroup(String resourceGroupName, String hubName) {
-        HubInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, hubName);
-        if (inner != null) {
-            return new HubImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Hub> getByResourceGroupWithResponse(String resourceGroupName, String hubName, Context context) {
         Response<HubInner> inner =
             this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, hubName, context);
@@ -54,6 +44,15 @@ public final class HubsImpl implements Hubs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new HubImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Hub getByResourceGroup(String resourceGroupName, String hubName) {
+        HubInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, hubName);
+        if (inner != null) {
+            return new HubImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -82,7 +81,7 @@ public final class HubsImpl implements Hubs {
     public Hub getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,7 +89,7 @@ public final class HubsImpl implements Hubs {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
@@ -101,7 +100,7 @@ public final class HubsImpl implements Hubs {
     public Response<Hub> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +108,7 @@ public final class HubsImpl implements Hubs {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
@@ -120,7 +119,7 @@ public final class HubsImpl implements Hubs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +127,7 @@ public final class HubsImpl implements Hubs {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
@@ -139,7 +138,7 @@ public final class HubsImpl implements Hubs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,7 +146,7 @@ public final class HubsImpl implements Hubs {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));

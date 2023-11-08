@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Shipping address where customer wishes to receive the device. */
 @Fluent
 public final class ShippingAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShippingAddress.class);
-
     /*
      * Street Address line 1.
      */
@@ -73,6 +70,22 @@ public final class ShippingAddress {
      */
     @JsonProperty(value = "addressType")
     private AddressType addressType;
+
+    /*
+     * Flag to indicate if customer has chosen to skip default address validation
+     */
+    @JsonProperty(value = "skipAddressValidation")
+    private Boolean skipAddressValidation;
+
+    /*
+     * Tax Identification Number
+     */
+    @JsonProperty(value = "taxIdentificationNumber")
+    private String taxIdentificationNumber;
+
+    /** Creates an instance of ShippingAddress class. */
+    public ShippingAddress() {
+    }
 
     /**
      * Get the streetAddress1 property: Street Address line 1.
@@ -275,20 +288,64 @@ public final class ShippingAddress {
     }
 
     /**
+     * Get the skipAddressValidation property: Flag to indicate if customer has chosen to skip default address
+     * validation.
+     *
+     * @return the skipAddressValidation value.
+     */
+    public Boolean skipAddressValidation() {
+        return this.skipAddressValidation;
+    }
+
+    /**
+     * Set the skipAddressValidation property: Flag to indicate if customer has chosen to skip default address
+     * validation.
+     *
+     * @param skipAddressValidation the skipAddressValidation value to set.
+     * @return the ShippingAddress object itself.
+     */
+    public ShippingAddress withSkipAddressValidation(Boolean skipAddressValidation) {
+        this.skipAddressValidation = skipAddressValidation;
+        return this;
+    }
+
+    /**
+     * Get the taxIdentificationNumber property: Tax Identification Number.
+     *
+     * @return the taxIdentificationNumber value.
+     */
+    public String taxIdentificationNumber() {
+        return this.taxIdentificationNumber;
+    }
+
+    /**
+     * Set the taxIdentificationNumber property: Tax Identification Number.
+     *
+     * @param taxIdentificationNumber the taxIdentificationNumber value to set.
+     * @return the ShippingAddress object itself.
+     */
+    public ShippingAddress withTaxIdentificationNumber(String taxIdentificationNumber) {
+        this.taxIdentificationNumber = taxIdentificationNumber;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (streetAddress1() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property streetAddress1 in model ShippingAddress"));
         }
         if (country() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property country in model ShippingAddress"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ShippingAddress.class);
 }

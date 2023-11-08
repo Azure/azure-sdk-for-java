@@ -8,6 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * Defines values for TextAnalyticsErrorCode.
@@ -82,6 +83,15 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
     public static final TextAnalyticsErrorCode INVALID_COUNTRY_HINT = fromString("InvalidCountryHint");
 
     /**
+     * Creates a new instance of {@code TextAnalyticsErrorCode} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TextAnalyticsErrorCode() {
+    }
+
+    /**
      * Creates or finds a TextAnalyticsErrorCode from its string representation.
      *
      * @param name The string name to look for.
@@ -90,5 +100,14 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
     @JsonCreator
     public static TextAnalyticsErrorCode fromString(String name) {
         return fromString(name, TextAnalyticsErrorCode.class);
+    }
+
+    /**
+     * All known TextAnalyticsErrorCode values.
+     *
+     * @return known TextAnalyticsErrorCode values.
+     */
+    public static Collection<TextAnalyticsErrorCode> values() {
+        return values(TextAnalyticsErrorCode.class);
     }
 }

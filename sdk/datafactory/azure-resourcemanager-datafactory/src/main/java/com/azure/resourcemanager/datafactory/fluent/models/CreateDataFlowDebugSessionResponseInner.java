@@ -22,6 +22,10 @@ public final class CreateDataFlowDebugSessionResponseInner {
     @JsonProperty(value = "sessionId")
     private String sessionId;
 
+    /** Creates an instance of CreateDataFlowDebugSessionResponseInner class. */
+    public CreateDataFlowDebugSessionResponseInner() {
+    }
+
     /**
      * Get the status property: The state of the debug session.
      *

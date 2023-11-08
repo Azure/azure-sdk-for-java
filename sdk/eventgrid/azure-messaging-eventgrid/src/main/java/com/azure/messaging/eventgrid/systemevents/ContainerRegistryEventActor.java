@@ -13,11 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ContainerRegistryEventActor {
     /*
-     * The subject or username associated with the request context that
-     * generated the event.
+     * The subject or username associated with the request context that generated the event.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of ContainerRegistryEventActor class. */
+    public ContainerRegistryEventActor() {}
 
     /**
      * Get the name property: The subject or username associated with the request context that generated the event.

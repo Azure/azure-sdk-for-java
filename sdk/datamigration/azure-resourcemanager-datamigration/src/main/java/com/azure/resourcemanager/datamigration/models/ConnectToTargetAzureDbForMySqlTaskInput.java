@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for the task that validates connection to Azure Database for MySQL and target server requirements. */
 @Fluent
 public final class ConnectToTargetAzureDbForMySqlTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToTargetAzureDbForMySqlTaskInput.class);
-
     /*
      * Connection information for source MySQL server
      */
@@ -25,6 +22,10 @@ public final class ConnectToTargetAzureDbForMySqlTaskInput {
      */
     @JsonProperty(value = "targetConnectionInfo", required = true)
     private MySqlConnectionInfo targetConnectionInfo;
+
+    /** Creates an instance of ConnectToTargetAzureDbForMySqlTaskInput class. */
+    public ConnectToTargetAzureDbForMySqlTaskInput() {
+    }
 
     /**
      * Get the sourceConnectionInfo property: Connection information for source MySQL server.
@@ -73,7 +74,7 @@ public final class ConnectToTargetAzureDbForMySqlTaskInput {
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model"
@@ -82,7 +83,7 @@ public final class ConnectToTargetAzureDbForMySqlTaskInput {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model"
@@ -91,4 +92,6 @@ public final class ConnectToTargetAzureDbForMySqlTaskInput {
             targetConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectToTargetAzureDbForMySqlTaskInput.class);
 }

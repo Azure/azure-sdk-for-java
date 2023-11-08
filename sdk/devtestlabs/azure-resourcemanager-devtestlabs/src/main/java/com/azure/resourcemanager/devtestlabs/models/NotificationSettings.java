@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Notification settings for a schedule. */
 @Fluent
 public final class NotificationSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationSettings.class);
-
     /*
      * If notifications are enabled for this schedule (i.e. Enabled, Disabled).
      */
@@ -33,18 +29,20 @@ public final class NotificationSettings {
     private String webhookUrl;
 
     /*
-     * The email recipient to send notifications to (can be a list of
-     * semi-colon separated email addresses).
+     * The email recipient to send notifications to (can be a list of semi-colon separated email addresses).
      */
     @JsonProperty(value = "emailRecipient")
     private String emailRecipient;
 
     /*
-     * The locale to use when sending a notification (fallback for unsupported
-     * languages is EN).
+     * The locale to use when sending a notification (fallback for unsupported languages is EN).
      */
     @JsonProperty(value = "notificationLocale")
     private String notificationLocale;
+
+    /** Creates an instance of NotificationSettings class. */
+    public NotificationSettings() {
+    }
 
     /**
      * Get the status property: If notifications are enabled for this schedule (i.e. Enabled, Disabled).

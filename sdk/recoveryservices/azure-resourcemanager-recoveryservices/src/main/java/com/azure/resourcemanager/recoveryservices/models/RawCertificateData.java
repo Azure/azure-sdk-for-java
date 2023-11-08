@@ -6,15 +6,11 @@ package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Raw certificate data. */
 @Fluent
 public final class RawCertificateData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RawCertificateData.class);
-
     /*
      * Specifies the authentication type.
      */
@@ -26,6 +22,10 @@ public final class RawCertificateData {
      */
     @JsonProperty(value = "certificate")
     private byte[] certificate;
+
+    /** Creates an instance of RawCertificateData class. */
+    public RawCertificateData() {
+    }
 
     /**
      * Get the authType property: Specifies the authentication type.

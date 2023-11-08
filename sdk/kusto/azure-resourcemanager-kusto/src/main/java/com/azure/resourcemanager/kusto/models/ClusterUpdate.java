@@ -6,10 +6,8 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterProperties;
 import com.azure.resourcemanager.kusto.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** Class representing an update to a Kusto cluster. */
 @Fluent
 public final class ClusterUpdate extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpdate.class);
-
     /*
      * Resource tags.
      */
@@ -40,6 +36,12 @@ public final class ClusterUpdate extends ProxyResource {
     private AzureSku sku;
 
     /*
+     * The availability zones of the cluster.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /*
      * The identity of the cluster, if configured.
      */
     @JsonProperty(value = "identity")
@@ -50,6 +52,10 @@ public final class ClusterUpdate extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
+
+    /** Creates an instance of ClusterUpdate class. */
+    public ClusterUpdate() {
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -108,6 +114,26 @@ public final class ClusterUpdate extends ProxyResource {
      */
     public ClusterUpdate withSku(AzureSku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the zones property: The availability zones of the cluster.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: The availability zones of the cluster.
+     *
+     * @param zones the zones value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 
@@ -356,6 +382,20 @@ public final class ClusterUpdate extends ProxyResource {
     }
 
     /**
+     * Set the languageExtensions property: List of the cluster's language extensions.
+     *
+     * @param languageExtensions the languageExtensions value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withLanguageExtensions(LanguageExtensionsList languageExtensions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withLanguageExtensions(languageExtensions);
+        return this;
+    }
+
+    /**
      * Get the enableDoubleEncryption property: A boolean value that indicates if double encryption is enabled.
      *
      * @return the enableDoubleEncryption value.
@@ -600,6 +640,15 @@ public final class ClusterUpdate extends ProxyResource {
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the migrationCluster property: Properties of the peer cluster involved in a migration to/from this cluster.
+     *
+     * @return the migrationCluster value.
+     */
+    public MigrationClusterProperties migrationCluster() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrationCluster();
     }
 
     /**

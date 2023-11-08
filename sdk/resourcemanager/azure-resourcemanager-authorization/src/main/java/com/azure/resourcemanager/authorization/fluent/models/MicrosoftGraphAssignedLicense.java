@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,11 +17,8 @@ import java.util.UUID;
 /** assignedLicense. */
 @Fluent
 public final class MicrosoftGraphAssignedLicense {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphAssignedLicense.class);
-
     /*
-     * A collection of the unique identifiers for plans that have been
-     * disabled.
+     * A collection of the unique identifiers for plans that have been disabled.
      */
     @JsonProperty(value = "disabledPlans")
     private List<UUID> disabledPlans;
@@ -37,6 +33,10 @@ public final class MicrosoftGraphAssignedLicense {
      * assignedLicense
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAssignedLicense class. */
+    public MicrosoftGraphAssignedLicense() {
+    }
 
     /**
      * Get the disabledPlans property: A collection of the unique identifiers for plans that have been disabled.

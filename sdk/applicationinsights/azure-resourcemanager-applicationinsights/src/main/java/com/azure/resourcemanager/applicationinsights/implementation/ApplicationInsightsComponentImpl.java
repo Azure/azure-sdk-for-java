@@ -177,6 +177,10 @@ public final class ApplicationInsightsComponentImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ApplicationInsightsComponentInner innerModel() {
         return this.innerObject;
     }
@@ -277,12 +281,12 @@ public final class ApplicationInsightsComponentImpl
         return this;
     }
 
-    public ComponentPurgeResponse purge(ComponentPurgeBody body) {
-        return serviceManager.components().purge(resourceGroupName, resourceName, body);
-    }
-
     public Response<ComponentPurgeResponse> purgeWithResponse(ComponentPurgeBody body, Context context) {
         return serviceManager.components().purgeWithResponse(resourceGroupName, resourceName, body, context);
+    }
+
+    public ComponentPurgeResponse purge(ComponentPurgeBody body) {
+        return serviceManager.components().purge(resourceGroupName, resourceName, body);
     }
 
     public ApplicationInsightsComponentImpl withRegion(Region location) {

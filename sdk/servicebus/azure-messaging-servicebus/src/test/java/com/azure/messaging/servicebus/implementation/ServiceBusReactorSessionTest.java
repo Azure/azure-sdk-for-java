@@ -32,9 +32,7 @@ import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -67,7 +65,7 @@ import static org.mockito.Mockito.when;
  * Test for {@link ServiceBusReactorSession}.
  */
 public class ServiceBusReactorSessionTest {
-    private final ClientLogger logger = new ClientLogger(ServiceBusReactorSessionTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorSessionTest.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setTryTimeout(Duration.ofSeconds(5))
         .setMode(AmqpRetryMode.FIXED)
@@ -82,6 +80,7 @@ public class ServiceBusReactorSessionTest {
     private static final String ENTITY_PATH = "entityPath";
     private static final String VIA_ENTITY_PATH = "viaEntityPath";
     private static final String VIA_ENTITY_PATH_SENDER_LINK_NAME = "VIA-" + VIA_ENTITY_PATH;
+    private static final String CLIENT_IDENTIFIER = "clientIdentifier";
 
     @Mock
     private Reactor reactor;
@@ -124,19 +123,9 @@ public class ServiceBusReactorSessionTest {
 
     private ServiceBusReactorSession serviceBusReactorSession;
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(60));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     @BeforeEach
     void setup(TestInfo testInfo) {
-        logger.info("[{}] Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
@@ -205,7 +194,7 @@ public class ServiceBusReactorSessionTest {
 
     @AfterEach
     void teardown(TestInfo testInfo) {
-        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
 
         Mockito.framework().clearInlineMock(this);
     }
@@ -220,7 +209,7 @@ public class ServiceBusReactorSessionTest {
 
         // Act
         serviceBusReactorSession.createProducer(VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH,
-            retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH)
+            retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH, CLIENT_IDENTIFIER)
             .subscribe();
 
         // Assert
@@ -250,8 +239,9 @@ public class ServiceBusReactorSessionTest {
 
         // Act
         StepVerifier.create(serviceBusReactorSession.createProducer(VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH,
-            retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH))
-            .verifyError(RuntimeException.class);
+            retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH, CLIENT_IDENTIFIER))
+            .expectError(RuntimeException.class)
+            .verify(Duration.ofSeconds(60));
 
         // Assert
         verify(tokenManagerEntity).authorize();

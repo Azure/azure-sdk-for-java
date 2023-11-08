@@ -5,62 +5,52 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
 import com.azure.resourcemanager.labservices.models.LabPlanNetworkProfile;
 import com.azure.resourcemanager.labservices.models.SupportInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Lab plan resource properties for updates. */
 @Fluent
 public class LabPlanUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabPlanUpdateProperties.class);
-
     /*
-     * The default lab connection profile. This can be changed on a lab
-     * resource and only provides a default profile.
+     * The default lab connection profile. This can be changed on a lab resource and only provides a default profile.
      */
     @JsonProperty(value = "defaultConnectionProfile")
     private ConnectionProfile defaultConnectionProfile;
 
     /*
-     * The default lab shutdown profile. This can be changed on a lab resource
-     * and only provides a default profile.
+     * The default lab shutdown profile. This can be changed on a lab resource and only provides a default profile.
      */
     @JsonProperty(value = "defaultAutoShutdownProfile")
     private AutoShutdownProfile defaultAutoShutdownProfile;
 
     /*
-     * The lab plan network profile. To enforce lab network policies they must
-     * be defined here and cannot be changed when there are existing labs
-     * associated with this lab plan.
+     * The lab plan network profile. To enforce lab network policies they must be defined here and cannot be changed
+     * when there are existing labs associated with this lab plan.
      */
     @JsonProperty(value = "defaultNetworkProfile")
     private LabPlanNetworkProfile defaultNetworkProfile;
 
     /*
-     * The allowed regions for the lab creator to use when creating labs using
-     * this lab plan.
+     * The allowed regions for the lab creator to use when creating labs using this lab plan.
      */
     @JsonProperty(value = "allowedRegions")
     private List<String> allowedRegions;
 
     /*
-     * Resource ID of the Shared Image Gallery attached to this lab plan. When
-     * saving a lab template virtual machine image it will be persisted in this
-     * gallery. Shared images from the gallery can be made available to use
-     * when creating new labs.
+     * Resource ID of the Shared Image Gallery attached to this lab plan. When saving a lab template virtual machine
+     * image it will be persisted in this gallery. Shared images from the gallery can be made available to use when
+     * creating new labs.
      */
     @JsonProperty(value = "sharedGalleryId")
     private String sharedGalleryId;
 
     /*
-     * Support contact information and instructions for users of the lab plan.
-     * This information is displayed to lab owners and virtual machine users
-     * for all labs in the lab plan.
+     * Support contact information and instructions for users of the lab plan. This information is displayed to lab
+     * owners and virtual machine users for all labs in the lab plan.
      */
     @JsonProperty(value = "supportInfo")
     private SupportInfo supportInfo;

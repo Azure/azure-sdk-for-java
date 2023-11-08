@@ -5,21 +5,23 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The resource tags. */
 @Fluent
 public final class ResourceTags {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceTags.class);
-
     /*
      * Gets or sets the tags, a dictionary of descriptors arm object
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of ResourceTags class. */
+    public ResourceTags() {
+    }
 
     /**
      * Get the tags property: Gets or sets the tags, a dictionary of descriptors arm object.

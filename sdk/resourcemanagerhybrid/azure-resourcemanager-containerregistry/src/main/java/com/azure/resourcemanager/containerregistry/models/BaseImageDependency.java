@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties that describe a base image dependency. */
 @Fluent
 public final class BaseImageDependency {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaseImageDependency.class);
-
     /*
      * The type of the base image dependency.
      */

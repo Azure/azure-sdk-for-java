@@ -38,6 +38,10 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
     @JsonProperty(value = "customerAdminGroupId")
     private String customerAdminGroupId;
 
+    /** Creates an instance of OpenShiftManagedClusterAadIdentityProvider class. */
+    public OpenShiftManagedClusterAadIdentityProvider() {
+    }
+
     /**
      * Get the clientId property: The clientId password associated with the provider.
      *

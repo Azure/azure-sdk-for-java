@@ -7,7 +7,6 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,13 +16,15 @@ import java.util.List;
  */
 @Fluent
 public final class EventCategoryCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventCategoryCollection.class);
-
     /*
      * the list that includes the Azure event categories.
      */
     @JsonProperty(value = "value", required = true)
     private List<LocalizableStringInner> value;
+
+    /** Creates an instance of EventCategoryCollection class. */
+    public EventCategoryCollection() {
+    }
 
     /**
      * Get the value property: the list that includes the Azure event categories.
@@ -52,11 +53,13 @@ public final class EventCategoryCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model EventCategoryCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventCategoryCollection.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the Machine Extension Instance View. */
 @Fluent
 public final class MachineExtensionInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineExtensionInstanceView.class);
-
     /*
      * The machine extension name.
      */
@@ -21,8 +17,7 @@ public final class MachineExtensionInstanceView {
     private String name;
 
     /*
-     * Specifies the type of the extension; an example is
-     * "CustomScriptExtension".
+     * Specifies the type of the extension; an example is "CustomScriptExtension".
      */
     @JsonProperty(value = "type")
     private String type;
@@ -38,6 +33,10 @@ public final class MachineExtensionInstanceView {
      */
     @JsonProperty(value = "status")
     private MachineExtensionInstanceViewStatus status;
+
+    /** Creates an instance of MachineExtensionInstanceView class. */
+    public MachineExtensionInstanceView() {
+    }
 
     /**
      * Get the name property: The machine extension name.

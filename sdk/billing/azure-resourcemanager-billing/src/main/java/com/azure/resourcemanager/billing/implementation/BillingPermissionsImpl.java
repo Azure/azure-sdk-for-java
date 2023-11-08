@@ -11,10 +11,9 @@ import com.azure.resourcemanager.billing.fluent.BillingPermissionsClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingPermissionsPropertiesInner;
 import com.azure.resourcemanager.billing.models.BillingPermissions;
 import com.azure.resourcemanager.billing.models.BillingPermissionsProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingPermissionsImpl implements BillingPermissions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPermissionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingPermissionsImpl.class);
 
     private final BillingPermissionsClient innerClient;
 

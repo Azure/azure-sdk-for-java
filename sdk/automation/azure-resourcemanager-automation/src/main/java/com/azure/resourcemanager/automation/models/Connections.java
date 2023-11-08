@@ -32,7 +32,7 @@ public interface Connections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String connectionName, Context context);
@@ -60,7 +60,7 @@ public interface Connections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection.
+     * @return definition of the connection along with {@link Response}.
      */
     Response<Connection> getWithResponse(
         String resourceGroupName, String automationAccountName, String connectionName, Context context);
@@ -73,7 +73,7 @@ public interface Connections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection operation.
+     * @return the response model for the list connection operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Connection> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -86,7 +86,7 @@ public interface Connections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection operation.
+     * @return the response model for the list connection operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Connection> listByAutomationAccount(
         String resourceGroupName, String automationAccountName, Context context);
@@ -98,7 +98,7 @@ public interface Connections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection.
+     * @return definition of the connection along with {@link Response}.
      */
     Connection getById(String id);
 
@@ -110,7 +110,7 @@ public interface Connections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection.
+     * @return definition of the connection along with {@link Response}.
      */
     Response<Connection> getByIdWithResponse(String id, Context context);
 
@@ -132,7 +132,7 @@ public interface Connections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

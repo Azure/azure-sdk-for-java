@@ -3,7 +3,10 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 /**
  * It defines a way to perform operations with {@link Lease}.
@@ -17,6 +20,35 @@ public interface LeaseManager {
      * @return the lease.
      */
     Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken);
+
+    /**
+     * Checks whether the lease exists and creates it if it does not exist.
+     *
+     * @param leaseToken the lease token to work with.
+     * @param continuationToken the continuation token if it exists.
+     * @param properties the properties.
+     * @return the lease.
+     */
+    Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken, Map<String, String> properties);
+
+    /**
+     * Checks whether the lease exists and creates it if it does not exist.
+     *
+     * @param feedRange the epk range for the lease.
+     * @param continuationToken the continuation token if it exists.
+     * @return the lease.
+     */
+    Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken);
+
+    /**
+     * Checks whether the lease exists and creates it if it does not exist.
+     *
+     * @param feedRange the epk range for the lease.
+     * @param continuationToken the continuation token if it exists.
+     * @param properties the properties.
+     * @return the lease.
+     */
+    Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken, Map<String, String> properties);
 
     /**
      * Deletes the lease.

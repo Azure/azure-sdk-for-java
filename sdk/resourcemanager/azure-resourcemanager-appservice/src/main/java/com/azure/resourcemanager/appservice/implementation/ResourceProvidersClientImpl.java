@@ -39,6 +39,7 @@ import com.azure.resourcemanager.appservice.fluent.models.ResourceNameAvailabili
 import com.azure.resourcemanager.appservice.fluent.models.SkuInfosInner;
 import com.azure.resourcemanager.appservice.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.models.UserInner;
+import com.azure.resourcemanager.appservice.fluent.models.ValidateRequestInner;
 import com.azure.resourcemanager.appservice.fluent.models.ValidateResponseInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetValidationFailureDetailsInner;
 import com.azure.resourcemanager.appservice.models.BillingMeterCollection;
@@ -51,7 +52,6 @@ import com.azure.resourcemanager.appservice.models.PremierAddOnOfferCollection;
 import com.azure.resourcemanager.appservice.models.ResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.appservice.models.SourceControlCollection;
-import com.azure.resourcemanager.appservice.models.ValidateRequest;
 import com.azure.resourcemanager.appservice.models.VnetParameters;
 import reactor.core.publisher.Mono;
 
@@ -80,7 +80,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Web/publishingUsers/web")
         @ExpectedResponses({200})
@@ -167,6 +167,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         Mono<Response<CustomHostnameSitesCollection>> listCustomHostnameSites(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("hostname") String hostname,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -265,7 +266,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ValidateRequest validateRequest,
+            @BodyParam("application/json") ValidateRequestInner validateRequest,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -344,7 +345,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets publishing user.
+     * Gets publishing user
+     *
+     * <p>Description for Gets publishing user.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -368,7 +371,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets publishing user.
+     * Gets publishing user
+     *
+     * <p>Description for Gets publishing user.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -391,7 +396,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets publishing user.
+     * Gets publishing user
+     *
+     * <p>Description for Gets publishing user.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -399,31 +406,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserInner> getPublishingUserAsync() {
-        return getPublishingUserWithResponseAsync()
-            .flatMap(
-                (Response<UserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getPublishingUserWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Gets publishing user.
+     * Gets publishing user
      *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user credentials used for publishing activity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserInner getPublishingUser() {
-        return getPublishingUserAsync().block();
-    }
-
-    /**
-     * Description for Gets publishing user.
+     * <p>Description for Gets publishing user.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -437,7 +426,23 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Updates publishing user.
+     * Gets publishing user
+     *
+     * <p>Description for Gets publishing user.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user credentials used for publishing activity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UserInner getPublishingUser() {
+        return getPublishingUserWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * Updates publishing user
+     *
+     * <p>Description for Updates publishing user.
      *
      * @param userDetails Details of publishing user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -470,7 +475,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Updates publishing user.
+     * Updates publishing user
+     *
+     * <p>Description for Updates publishing user.
      *
      * @param userDetails Details of publishing user.
      * @param context The context to associate with this operation.
@@ -500,7 +507,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Updates publishing user.
+     * Updates publishing user
+     *
+     * <p>Description for Updates publishing user.
      *
      * @param userDetails Details of publishing user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -510,33 +519,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserInner> updatePublishingUserAsync(UserInner userDetails) {
-        return updatePublishingUserWithResponseAsync(userDetails)
-            .flatMap(
-                (Response<UserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return updatePublishingUserWithResponseAsync(userDetails).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Updates publishing user.
+     * Updates publishing user
      *
-     * @param userDetails Details of publishing user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user credentials used for publishing activity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserInner updatePublishingUser(UserInner userDetails) {
-        return updatePublishingUserAsync(userDetails).block();
-    }
-
-    /**
-     * Description for Updates publishing user.
+     * <p>Description for Updates publishing user.
      *
      * @param userDetails Details of publishing user.
      * @param context The context to associate with this operation.
@@ -551,7 +540,25 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets the source controls available for Azure websites.
+     * Updates publishing user
+     *
+     * <p>Description for Updates publishing user.
+     *
+     * @param userDetails Details of publishing user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user credentials used for publishing activity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UserInner updatePublishingUser(UserInner userDetails) {
+        return updatePublishingUserWithResponse(userDetails, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the source controls available for Azure websites.
+     *
+     * <p>Description for Gets the source controls available for Azure websites.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -583,7 +590,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets the source controls available for Azure websites.
+     * Gets the source controls available for Azure websites.
+     *
+     * <p>Description for Gets the source controls available for Azure websites.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -615,7 +624,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets the source controls available for Azure websites.
+     * Gets the source controls available for Azure websites.
+     *
+     * <p>Description for Gets the source controls available for Azure websites.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -628,7 +639,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets the source controls available for Azure websites.
+     * Gets the source controls available for Azure websites.
+     *
+     * <p>Description for Gets the source controls available for Azure websites.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -644,7 +657,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets the source controls available for Azure websites.
+     * Gets the source controls available for Azure websites.
+     *
+     * <p>Description for Gets the source controls available for Azure websites.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -656,7 +671,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets the source controls available for Azure websites.
+     * Gets the source controls available for Azure websites.
+     *
+     * <p>Description for Gets the source controls available for Azure websites.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -670,7 +687,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets source control token.
+     * Gets source control token
+     *
+     * <p>Description for Gets source control token.
      *
      * @param sourceControlType Type of source control.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -701,7 +720,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets source control token.
+     * Gets source control token
+     *
+     * <p>Description for Gets source control token.
      *
      * @param sourceControlType Type of source control.
      * @param context The context to associate with this operation.
@@ -731,7 +752,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets source control token.
+     * Gets source control token
+     *
+     * <p>Description for Gets source control token.
      *
      * @param sourceControlType Type of source control.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -741,33 +764,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SourceControlInner> getSourceControlAsync(String sourceControlType) {
-        return getSourceControlWithResponseAsync(sourceControlType)
-            .flatMap(
-                (Response<SourceControlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getSourceControlWithResponseAsync(sourceControlType).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Gets source control token.
+     * Gets source control token
      *
-     * @param sourceControlType Type of source control.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source control OAuth token.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlInner getSourceControl(String sourceControlType) {
-        return getSourceControlAsync(sourceControlType).block();
-    }
-
-    /**
-     * Description for Gets source control token.
+     * <p>Description for Gets source control token.
      *
      * @param sourceControlType Type of source control.
      * @param context The context to associate with this operation.
@@ -782,7 +785,25 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Updates source control token.
+     * Gets source control token
+     *
+     * <p>Description for Gets source control token.
+     *
+     * @param sourceControlType Type of source control.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the source control OAuth token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlInner getSourceControl(String sourceControlType) {
+        return getSourceControlWithResponse(sourceControlType, Context.NONE).getValue();
+    }
+
+    /**
+     * Updates source control token
+     *
+     * <p>Description for Updates source control token.
      *
      * @param sourceControlType Type of source control.
      * @param requestMessage Source control token information.
@@ -825,7 +846,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Updates source control token.
+     * Updates source control token
+     *
+     * <p>Description for Updates source control token.
      *
      * @param sourceControlType Type of source control.
      * @param requestMessage Source control token information.
@@ -866,7 +889,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Updates source control token.
+     * Updates source control token
+     *
+     * <p>Description for Updates source control token.
      *
      * @param sourceControlType Type of source control.
      * @param requestMessage Source control token information.
@@ -879,33 +904,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public Mono<SourceControlInner> updateSourceControlAsync(
         String sourceControlType, SourceControlInner requestMessage) {
         return updateSourceControlWithResponseAsync(sourceControlType, requestMessage)
-            .flatMap(
-                (Response<SourceControlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Updates source control token.
+     * Updates source control token
      *
-     * @param sourceControlType Type of source control.
-     * @param requestMessage Source control token information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source control OAuth token.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlInner updateSourceControl(String sourceControlType, SourceControlInner requestMessage) {
-        return updateSourceControlAsync(sourceControlType, requestMessage).block();
-    }
-
-    /**
-     * Description for Updates source control token.
+     * <p>Description for Updates source control token.
      *
      * @param sourceControlType Type of source control.
      * @param requestMessage Source control token information.
@@ -922,7 +927,26 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets a list of meters for a given location.
+     * Updates source control token
+     *
+     * <p>Description for Updates source control token.
+     *
+     * @param sourceControlType Type of source control.
+     * @param requestMessage Source control token information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the source control OAuth token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlInner updateSourceControl(String sourceControlType, SourceControlInner requestMessage) {
+        return updateSourceControlWithResponse(sourceControlType, requestMessage, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets a list of meters for a given location.
+     *
+     * <p>Description for Gets a list of meters for a given location.
      *
      * @param billingLocation Azure Location of billable resource.
      * @param osType App Service OS type meters used for.
@@ -971,7 +995,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets a list of meters for a given location.
+     * Gets a list of meters for a given location.
+     *
+     * <p>Description for Gets a list of meters for a given location.
      *
      * @param billingLocation Azure Location of billable resource.
      * @param osType App Service OS type meters used for.
@@ -1019,7 +1045,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets a list of meters for a given location.
+     * Gets a list of meters for a given location.
+     *
+     * <p>Description for Gets a list of meters for a given location.
      *
      * @param billingLocation Azure Location of billable resource.
      * @param osType App Service OS type meters used for.
@@ -1036,7 +1064,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets a list of meters for a given location.
+     * Gets a list of meters for a given location.
+     *
+     * <p>Description for Gets a list of meters for a given location.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1052,7 +1082,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets a list of meters for a given location.
+     * Gets a list of meters for a given location.
+     *
+     * <p>Description for Gets a list of meters for a given location.
      *
      * @param billingLocation Azure Location of billable resource.
      * @param osType App Service OS type meters used for.
@@ -1070,7 +1102,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets a list of meters for a given location.
+     * Gets a list of meters for a given location.
+     *
+     * <p>Description for Gets a list of meters for a given location.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1084,7 +1118,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets a list of meters for a given location.
+     * Gets a list of meters for a given location.
+     *
+     * <p>Description for Gets a list of meters for a given location.
      *
      * @param billingLocation Azure Location of billable resource.
      * @param osType App Service OS type meters used for.
@@ -1100,7 +1136,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Check if a resource name is available.
+     * Check if a resource name is available.
+     *
+     * <p>Description for Check if a resource name is available.
      *
      * @param request Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1145,7 +1183,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Check if a resource name is available.
+     * Check if a resource name is available.
+     *
+     * <p>Description for Check if a resource name is available.
      *
      * @param request Name availability request.
      * @param context The context to associate with this operation.
@@ -1188,7 +1228,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Check if a resource name is available.
+     * Check if a resource name is available.
+     *
+     * <p>Description for Check if a resource name is available.
      *
      * @param request Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1198,33 +1240,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(ResourceNameAvailabilityRequest request) {
-        return checkNameAvailabilityWithResponseAsync(request)
-            .flatMap(
-                (Response<ResourceNameAvailabilityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return checkNameAvailabilityWithResponseAsync(request).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Check if a resource name is available.
+     * Check if a resource name is available.
      *
-     * @param request Name availability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceNameAvailabilityInner checkNameAvailability(ResourceNameAvailabilityRequest request) {
-        return checkNameAvailabilityAsync(request).block();
-    }
-
-    /**
-     * Description for Check if a resource name is available.
+     * <p>Description for Check if a resource name is available.
      *
      * @param request Name availability request.
      * @param context The context to associate with this operation.
@@ -1240,15 +1262,33 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Check if a resource name is available.
+     *
+     * <p>Description for Check if a resource name is available.
+     *
+     * @param request Name availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceNameAvailabilityInner checkNameAvailability(ResourceNameAvailabilityRequest request) {
+        return checkNameAvailabilityWithResponse(request, Context.NONE).getValue();
+    }
+
+    /**
      * Get custom hostnames under this subscription.
      *
+     * @param hostname Specific hostname.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom hostnames under this subscription along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync() {
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync(String hostname) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1269,6 +1309,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                         .listCustomHostnameSites(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
+                            hostname,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -1287,6 +1328,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get custom hostnames under this subscription.
      *
+     * @param hostname Specific hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1295,7 +1337,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync(Context context) {
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync(
+        String hostname, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1314,6 +1357,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .listCustomHostnameSites(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
+                hostname,
                 this.client.getApiVersion(),
                 accept,
                 context)
@@ -1331,20 +1375,38 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get custom hostnames under this subscription.
      *
+     * @param hostname Specific hostname.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync() {
+    public PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(String hostname) {
         return new PagedFlux<>(
-            () -> listCustomHostnameSitesSinglePageAsync(),
+            () -> listCustomHostnameSitesSinglePageAsync(hostname),
             nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get custom hostnames under this subscription.
      *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync() {
+        final String hostname = null;
+        return new PagedFlux<>(
+            () -> listCustomHostnameSitesSinglePageAsync(hostname),
+            nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @param hostname Specific hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1352,9 +1414,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(Context context) {
+    private PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(String hostname, Context context) {
         return new PagedFlux<>(
-            () -> listCustomHostnameSitesSinglePageAsync(context),
+            () -> listCustomHostnameSitesSinglePageAsync(hostname, context),
             nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink, context));
     }
 
@@ -1367,12 +1429,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites() {
-        return new PagedIterable<>(listCustomHostnameSitesAsync());
+        final String hostname = null;
+        return new PagedIterable<>(listCustomHostnameSitesAsync(hostname));
     }
 
     /**
      * Get custom hostnames under this subscription.
      *
+     * @param hostname Specific hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1380,12 +1444,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return custom hostnames under this subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(Context context) {
-        return new PagedIterable<>(listCustomHostnameSitesAsync(context));
+    public PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(String hostname, Context context) {
+        return new PagedIterable<>(listCustomHostnameSitesAsync(hostname, context));
     }
 
     /**
-     * Description for Gets list of available geo regions plus ministamps.
+     * Gets list of available geo regions plus ministamps
+     *
+     * <p>Description for Gets list of available geo regions plus ministamps.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1421,7 +1487,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets list of available geo regions plus ministamps.
+     * Gets list of available geo regions plus ministamps
+     *
+     * <p>Description for Gets list of available geo regions plus ministamps.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1457,7 +1525,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Gets list of available geo regions plus ministamps.
+     * Gets list of available geo regions plus ministamps
+     *
+     * <p>Description for Gets list of available geo regions plus ministamps.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1466,32 +1536,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentLocationsInner> getSubscriptionDeploymentLocationsAsync() {
-        return getSubscriptionDeploymentLocationsWithResponseAsync()
-            .flatMap(
-                (Response<DeploymentLocationsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getSubscriptionDeploymentLocationsWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Gets list of available geo regions plus ministamps.
+     * Gets list of available geo regions plus ministamps
      *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available locations (regions or App Service Environments) for deployment of App Service
-     *     resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentLocationsInner getSubscriptionDeploymentLocations() {
-        return getSubscriptionDeploymentLocationsAsync().block();
-    }
-
-    /**
-     * Description for Gets list of available geo regions plus ministamps.
+     * <p>Description for Gets list of available geo regions plus ministamps.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1506,7 +1557,24 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Get a list of available geographical regions.
+     * Gets list of available geo regions plus ministamps
+     *
+     * <p>Description for Gets list of available geo regions plus ministamps.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of available locations (regions or App Service Environments) for deployment of App Service
+     *     resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentLocationsInner getSubscriptionDeploymentLocations() {
+        return getSubscriptionDeploymentLocationsWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * Get a list of available geographical regions.
+     *
+     * <p>Description for Get a list of available geographical regions.
      *
      * @param sku Name of SKU used to filter the regions.
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
@@ -1564,7 +1632,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Get a list of available geographical regions.
+     * Get a list of available geographical regions.
+     *
+     * <p>Description for Get a list of available geographical regions.
      *
      * @param sku Name of SKU used to filter the regions.
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
@@ -1624,7 +1694,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Get a list of available geographical regions.
+     * Get a list of available geographical regions.
+     *
+     * <p>Description for Get a list of available geographical regions.
      *
      * @param sku Name of SKU used to filter the regions.
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
@@ -1649,7 +1721,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Get a list of available geographical regions.
+     * Get a list of available geographical regions.
+     *
+     * <p>Description for Get a list of available geographical regions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1669,7 +1743,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Get a list of available geographical regions.
+     * Get a list of available geographical regions.
+     *
+     * <p>Description for Get a list of available geographical regions.
      *
      * @param sku Name of SKU used to filter the regions.
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
@@ -1699,7 +1775,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Get a list of available geographical regions.
+     * Get a list of available geographical regions.
+     *
+     * <p>Description for Get a list of available geographical regions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1716,7 +1794,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Get a list of available geographical regions.
+     * Get a list of available geographical regions.
+     *
+     * <p>Description for Get a list of available geographical regions.
      *
      * @param sku Name of SKU used to filter the regions.
      * @param linuxWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
@@ -1743,7 +1823,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all apps that are assigned to a hostname.
+     * List all apps that are assigned to a hostname.
+     *
+     * <p>Description for List all apps that are assigned to a hostname.
      *
      * @param nameIdentifier Hostname information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1796,7 +1878,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all apps that are assigned to a hostname.
+     * List all apps that are assigned to a hostname.
+     *
+     * <p>Description for List all apps that are assigned to a hostname.
      *
      * @param nameIdentifier Hostname information.
      * @param context The context to associate with this operation.
@@ -1847,7 +1931,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all apps that are assigned to a hostname.
+     * List all apps that are assigned to a hostname.
+     *
+     * <p>Description for List all apps that are assigned to a hostname.
      *
      * @param nameIdentifier Hostname information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1863,7 +1949,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all apps that are assigned to a hostname.
+     * List all apps that are assigned to a hostname.
+     *
+     * <p>Description for List all apps that are assigned to a hostname.
      *
      * @param nameIdentifier Hostname information.
      * @param context The context to associate with this operation.
@@ -1881,7 +1969,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all apps that are assigned to a hostname.
+     * List all apps that are assigned to a hostname.
+     *
+     * <p>Description for List all apps that are assigned to a hostname.
      *
      * @param nameIdentifier Hostname information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1895,7 +1985,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all apps that are assigned to a hostname.
+     * List all apps that are assigned to a hostname.
+     *
+     * <p>Description for List all apps that are assigned to a hostname.
      *
      * @param nameIdentifier Hostname information.
      * @param context The context to associate with this operation.
@@ -1911,7 +2003,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all premier add-on offers.
+     * List all premier add-on offers.
+     *
+     * <p>Description for List all premier add-on offers.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1956,7 +2050,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all premier add-on offers.
+     * List all premier add-on offers.
+     *
+     * <p>Description for List all premier add-on offers.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2000,7 +2096,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all premier add-on offers.
+     * List all premier add-on offers.
+     *
+     * <p>Description for List all premier add-on offers.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2014,7 +2112,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all premier add-on offers.
+     * List all premier add-on offers.
+     *
+     * <p>Description for List all premier add-on offers.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2030,7 +2130,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all premier add-on offers.
+     * List all premier add-on offers.
+     *
+     * <p>Description for List all premier add-on offers.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2042,7 +2144,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all premier add-on offers.
+     * List all premier add-on offers.
+     *
+     * <p>Description for List all premier add-on offers.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2056,7 +2160,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all SKUs.
+     * List all SKUs.
+     *
+     * <p>Description for List all SKUs.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2091,7 +2197,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all SKUs.
+     * List all SKUs.
+     *
+     * <p>Description for List all SKUs.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2125,7 +2233,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for List all SKUs.
+     * List all SKUs.
+     *
+     * <p>Description for List all SKUs.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2133,31 +2243,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SkuInfosInner> listSkusAsync() {
-        return listSkusWithResponseAsync()
-            .flatMap(
-                (Response<SkuInfosInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listSkusWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for List all SKUs.
+     * List all SKUs.
      *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of SKU information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SkuInfosInner listSkus() {
-        return listSkusAsync().block();
-    }
-
-    /**
-     * Description for List all SKUs.
+     * <p>Description for List all SKUs.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2171,7 +2263,24 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
+     * List all SKUs.
+     *
+     * <p>Description for List all SKUs.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of SKU information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SkuInfosInner listSkus() {
+        return listSkusWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * Verifies if this VNET is compatible with an App Service Environment by analyzing the Network Security Group
+     * rules.
+     *
+     * <p>Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      *
      * @param parameters VNET information.
@@ -2217,7 +2326,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
+     * Verifies if this VNET is compatible with an App Service Environment by analyzing the Network Security Group
+     * rules.
+     *
+     * <p>Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      *
      * @param parameters VNET information.
@@ -2261,7 +2373,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
+     * Verifies if this VNET is compatible with an App Service Environment by analyzing the Network Security Group
+     * rules.
+     *
+     * <p>Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      *
      * @param parameters VNET information.
@@ -2273,33 +2388,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VnetValidationFailureDetailsInner> verifyHostingEnvironmentVnetAsync(VnetParameters parameters) {
         return verifyHostingEnvironmentVnetWithResponseAsync(parameters)
-            .flatMap(
-                (Response<VnetValidationFailureDetailsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
-     * Security Group rules.
+     * Verifies if this VNET is compatible with an App Service Environment by analyzing the Network Security Group
+     * rules.
      *
-     * @param parameters VNET information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class that describes the reason for a validation failure.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VnetValidationFailureDetailsInner verifyHostingEnvironmentVnet(VnetParameters parameters) {
-        return verifyHostingEnvironmentVnetAsync(parameters).block();
-    }
-
-    /**
-     * Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
+     * <p>Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
      * Security Group rules.
      *
      * @param parameters VNET information.
@@ -2316,7 +2412,27 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Move resources between resource groups.
+     * Verifies if this VNET is compatible with an App Service Environment by analyzing the Network Security Group
+     * rules.
+     *
+     * <p>Description for Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
+     * Security Group rules.
+     *
+     * @param parameters VNET information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a class that describes the reason for a validation failure.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VnetValidationFailureDetailsInner verifyHostingEnvironmentVnet(VnetParameters parameters) {
+        return verifyHostingEnvironmentVnetWithResponse(parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Move resources between resource groups.
+     *
+     * <p>Description for Move resources between resource groups.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object that represents the resource to move.
@@ -2367,7 +2483,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Move resources between resource groups.
+     * Move resources between resource groups.
+     *
+     * <p>Description for Move resources between resource groups.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object that represents the resource to move.
@@ -2416,7 +2534,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Move resources between resource groups.
+     * Move resources between resource groups.
+     *
+     * <p>Description for Move resources between resource groups.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object that represents the resource to move.
@@ -2427,26 +2547,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> moveAsync(String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope) {
-        return moveWithResponseAsync(resourceGroupName, moveResourceEnvelope)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return moveWithResponseAsync(resourceGroupName, moveResourceEnvelope).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Description for Move resources between resource groups.
+     * Move resources between resource groups.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param moveResourceEnvelope Object that represents the resource to move.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void move(String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope) {
-        moveAsync(resourceGroupName, moveResourceEnvelope).block();
-    }
-
-    /**
-     * Description for Move resources between resource groups.
+     * <p>Description for Move resources between resource groups.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object that represents the resource to move.
@@ -2463,7 +2570,25 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Validate if a resource can be created.
+     * Move resources between resource groups.
+     *
+     * <p>Description for Move resources between resource groups.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param moveResourceEnvelope Object that represents the resource to move.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void move(String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope) {
+        moveWithResponse(resourceGroupName, moveResourceEnvelope, Context.NONE);
+    }
+
+    /**
+     * Validate if a resource can be created.
+     *
+     * <p>Description for Validate if a resource can be created.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param validateRequest Request with the resources to validate.
@@ -2475,7 +2600,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ValidateResponseInner>> validateWithResponseAsync(
-        String resourceGroupName, ValidateRequest validateRequest) {
+        String resourceGroupName, ValidateRequestInner validateRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2515,7 +2640,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Validate if a resource can be created.
+     * Validate if a resource can be created.
+     *
+     * <p>Description for Validate if a resource can be created.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param validateRequest Request with the resources to validate.
@@ -2528,7 +2655,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidateResponseInner>> validateWithResponseAsync(
-        String resourceGroupName, ValidateRequest validateRequest, Context context) {
+        String resourceGroupName, ValidateRequestInner validateRequest, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2565,7 +2692,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Validate if a resource can be created.
+     * Validate if a resource can be created.
+     *
+     * <p>Description for Validate if a resource can be created.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param validateRequest Request with the resources to validate.
@@ -2575,35 +2704,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return describes the result of resource validation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequest validateRequest) {
+    public Mono<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequestInner validateRequest) {
         return validateWithResponseAsync(resourceGroupName, validateRequest)
-            .flatMap(
-                (Response<ValidateResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Validate if a resource can be created.
+     * Validate if a resource can be created.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param validateRequest Request with the resources to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of resource validation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateResponseInner validate(String resourceGroupName, ValidateRequest validateRequest) {
-        return validateAsync(resourceGroupName, validateRequest).block();
-    }
-
-    /**
-     * Description for Validate if a resource can be created.
+     * <p>Description for Validate if a resource can be created.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param validateRequest Request with the resources to validate.
@@ -2615,12 +2724,31 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateResponseInner> validateWithResponse(
-        String resourceGroupName, ValidateRequest validateRequest, Context context) {
+        String resourceGroupName, ValidateRequestInner validateRequest, Context context) {
         return validateWithResponseAsync(resourceGroupName, validateRequest, context).block();
     }
 
     /**
-     * Description for Validate whether a resource can be moved.
+     * Validate if a resource can be created.
+     *
+     * <p>Description for Validate if a resource can be created.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param validateRequest Request with the resources to validate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the result of resource validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ValidateResponseInner validate(String resourceGroupName, ValidateRequestInner validateRequest) {
+        return validateWithResponse(resourceGroupName, validateRequest, Context.NONE).getValue();
+    }
+
+    /**
+     * Validate whether a resource can be moved.
+     *
+     * <p>Description for Validate whether a resource can be moved.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object that represents the resource to move.
@@ -2671,7 +2799,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Validate whether a resource can be moved.
+     * Validate whether a resource can be moved.
+     *
+     * <p>Description for Validate whether a resource can be moved.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object that represents the resource to move.
@@ -2720,7 +2850,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * Description for Validate whether a resource can be moved.
+     * Validate whether a resource can be moved.
+     *
+     * <p>Description for Validate whether a resource can be moved.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object that represents the resource to move.
@@ -2731,26 +2863,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateMoveAsync(String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope) {
-        return validateMoveWithResponseAsync(resourceGroupName, moveResourceEnvelope)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return validateMoveWithResponseAsync(resourceGroupName, moveResourceEnvelope).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Description for Validate whether a resource can be moved.
+     * Validate whether a resource can be moved.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param moveResourceEnvelope Object that represents the resource to move.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void validateMove(String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope) {
-        validateMoveAsync(resourceGroupName, moveResourceEnvelope).block();
-    }
-
-    /**
-     * Description for Validate whether a resource can be moved.
+     * <p>Description for Validate whether a resource can be moved.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param moveResourceEnvelope Object that represents the resource to move.
@@ -2767,9 +2886,26 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Validate whether a resource can be moved.
+     *
+     * <p>Description for Validate whether a resource can be moved.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param moveResourceEnvelope Object that represents the resource to move.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void validateMove(String resourceGroupName, CsmMoveResourceEnvelope moveResourceEnvelope) {
+        validateMoveWithResponse(resourceGroupName, moveResourceEnvelope, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2805,7 +2941,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2842,7 +2979,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2877,7 +3015,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2914,7 +3053,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2951,7 +3091,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -2989,7 +3130,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3025,7 +3167,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3062,7 +3205,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3102,7 +3246,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3139,7 +3284,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3176,7 +3322,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

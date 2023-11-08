@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -28,22 +29,18 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceAdministratorsClient;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceAdministratorInner;
+import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagedInstanceAdministratorsClient. */
-public final class ManagedInstanceAdministratorsClientImpl
-    implements InnerSupportsDelete<Void>, ManagedInstanceAdministratorsClient {
-    private final ClientLogger logger = new ClientLogger(ManagedInstanceAdministratorsClientImpl.class);
-
+public final class ManagedInstanceAdministratorsClientImpl implements ManagedInstanceAdministratorsClient {
     /** The proxy service used to perform REST calls. */
     private final ManagedInstanceAdministratorsService service;
 
@@ -71,8 +68,8 @@ public final class ManagedInstanceAdministratorsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
-    private interface ManagedInstanceAdministratorsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+    public interface ManagedInstanceAdministratorsService {
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/administrators")
@@ -84,9 +81,10 @@ public final class ManagedInstanceAdministratorsClientImpl
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/administrators/{administratorName}")
@@ -96,12 +94,13 @@ public final class ManagedInstanceAdministratorsClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("administratorName") String administratorName,
+            @PathParam("administratorName") AdministratorName administratorName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/administrators/{administratorName}")
@@ -111,10 +110,11 @@ public final class ManagedInstanceAdministratorsClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("administratorName") String administratorName,
+            @PathParam("administratorName") AdministratorName administratorName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ManagedInstanceAdministratorInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -127,17 +127,20 @@ public final class ManagedInstanceAdministratorsClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("administratorName") String administratorName,
+            @PathParam("administratorName") AdministratorName administratorName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceAdministratorListResult>> listByInstanceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -149,7 +152,8 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedInstanceAdministratorInner>> listByInstanceSinglePageAsync(
@@ -174,7 +178,7 @@ public final class ManagedInstanceAdministratorsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -184,7 +188,8 @@ public final class ManagedInstanceAdministratorsClientImpl
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<ManagedInstanceAdministratorInner>>map(
                 res ->
@@ -195,7 +200,7 @@ public final class ManagedInstanceAdministratorsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -208,7 +213,8 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedInstanceAdministratorInner>> listByInstanceSinglePageAsync(
@@ -233,7 +239,7 @@ public final class ManagedInstanceAdministratorsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByInstance(
@@ -241,7 +247,8 @@ public final class ManagedInstanceAdministratorsClientImpl
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -263,7 +270,7 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceAdministratorInner> listByInstanceAsync(
@@ -283,7 +290,7 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagedInstanceAdministratorInner> listByInstanceAsync(
@@ -302,7 +309,7 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceAdministratorInner> listByInstance(
@@ -320,7 +327,7 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceAdministratorInner> listByInstance(
@@ -334,14 +341,15 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
+     * @return a managed instance administrator along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstanceAdministratorInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName) {
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -356,14 +364,17 @@ public final class ManagedInstanceAdministratorsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
+        if (administratorName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String administratorName = "ActiveDirectory";
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -374,9 +385,10 @@ public final class ManagedInstanceAdministratorsClientImpl
                             managedInstanceName,
                             administratorName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -385,15 +397,16 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
+     * @return a managed instance administrator along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedInstanceAdministratorInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -408,14 +421,17 @@ public final class ManagedInstanceAdministratorsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
+        if (administratorName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String administratorName = "ActiveDirectory";
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -424,7 +440,8 @@ public final class ManagedInstanceAdministratorsClientImpl
                 managedInstanceName,
                 administratorName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -434,22 +451,17 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
+     * @return a managed instance administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceAdministratorInner> getAsync(String resourceGroupName, String managedInstanceName) {
-        return getWithResponseAsync(resourceGroupName, managedInstanceName)
-            .flatMap(
-                (Response<ManagedInstanceAdministratorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<ManagedInstanceAdministratorInner> getAsync(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName) {
+        return getWithResponseAsync(resourceGroupName, managedInstanceName, administratorName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -458,32 +470,35 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceAdministratorInner get(String resourceGroupName, String managedInstanceName) {
-        return getAsync(resourceGroupName, managedInstanceName).block();
-    }
-
-    /**
-     * Gets a managed instance administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
+     * @return a managed instance administrator along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstanceAdministratorInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, managedInstanceName, context).block();
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context) {
+        return getWithResponseAsync(resourceGroupName, managedInstanceName, administratorName, context).block();
+    }
+
+    /**
+     * Gets a managed instance administrator.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance administrator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedInstanceAdministratorInner get(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName) {
+        return getWithResponse(resourceGroupName, managedInstanceName, administratorName, Context.NONE).getValue();
     }
 
     /**
@@ -492,15 +507,20 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return an Azure SQL managed instance administrator along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
+        String resourceGroupName,
+        String managedInstanceName,
+        AdministratorName administratorName,
+        ManagedInstanceAdministratorInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -514,6 +534,10 @@ public final class ManagedInstanceAdministratorsClientImpl
         if (managedInstanceName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (administratorName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -526,8 +550,7 @@ public final class ManagedInstanceAdministratorsClientImpl
         } else {
             parameters.validate();
         }
-        final String administratorName = "ActiveDirectory";
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -538,10 +561,11 @@ public final class ManagedInstanceAdministratorsClientImpl
                             managedInstanceName,
                             administratorName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -550,17 +574,20 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return an Azure SQL managed instance administrator along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String managedInstanceName,
+        AdministratorName administratorName,
         ManagedInstanceAdministratorInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -577,6 +604,10 @@ public final class ManagedInstanceAdministratorsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
+        if (administratorName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
@@ -588,8 +619,7 @@ public final class ManagedInstanceAdministratorsClientImpl
         } else {
             parameters.validate();
         }
-        final String administratorName = "ActiveDirectory";
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -598,8 +628,9 @@ public final class ManagedInstanceAdministratorsClientImpl
                 managedInstanceName,
                 administratorName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -609,18 +640,22 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner>
         beginCreateOrUpdateAsync(
-            String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
+            String resourceGroupName,
+            String managedInstanceName,
+            AdministratorName administratorName,
+            ManagedInstanceAdministratorInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
+            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, administratorName, parameters);
         return this
             .client
             .<ManagedInstanceAdministratorInner, ManagedInstanceAdministratorInner>getLroResult(
@@ -637,23 +672,26 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
             String managedInstanceName,
+            AdministratorName administratorName,
             ManagedInstanceAdministratorInner parameters,
             Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters, context);
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, managedInstanceName, administratorName, parameters, context);
         return this
             .client
             .<ManagedInstanceAdministratorInner, ManagedInstanceAdministratorInner>getLroResult(
@@ -670,40 +708,22 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner>
-        beginCreateOrUpdate(
-            String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a managed instance administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner>
         beginCreateOrUpdate(
             String resourceGroupName,
             String managedInstanceName,
-            ManagedInstanceAdministratorInner parameters,
-            Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters, context).getSyncPoller();
+            AdministratorName administratorName,
+            ManagedInstanceAdministratorInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, administratorName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -712,16 +732,46 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance administrator.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String managedInstanceName,
+            AdministratorName administratorName,
+            ManagedInstanceAdministratorInner parameters,
+            Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, administratorName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a managed instance administrator.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL managed instance administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceAdministratorInner> createOrUpdateAsync(
-        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters)
+        String resourceGroupName,
+        String managedInstanceName,
+        AdministratorName administratorName,
+        ManagedInstanceAdministratorInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, administratorName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -732,20 +782,22 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return an Azure SQL managed instance administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedInstanceAdministratorInner> createOrUpdateAsync(
         String resourceGroupName,
         String managedInstanceName,
+        AdministratorName administratorName,
         ManagedInstanceAdministratorInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters, context)
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, administratorName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -756,7 +808,8 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -764,8 +817,11 @@ public final class ManagedInstanceAdministratorsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceAdministratorInner createOrUpdate(
-        String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).block();
+        String resourceGroupName,
+        String managedInstanceName,
+        AdministratorName administratorName,
+        ManagedInstanceAdministratorInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, managedInstanceName, administratorName, parameters).block();
     }
 
     /**
@@ -774,7 +830,8 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param administratorName The administratorName parameter.
+     * @param parameters The requested administrator parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -785,9 +842,11 @@ public final class ManagedInstanceAdministratorsClientImpl
     public ManagedInstanceAdministratorInner createOrUpdate(
         String resourceGroupName,
         String managedInstanceName,
+        AdministratorName administratorName,
         ManagedInstanceAdministratorInner parameters,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, managedInstanceName, parameters, context).block();
+        return createOrUpdateAsync(resourceGroupName, managedInstanceName, administratorName, parameters, context)
+            .block();
     }
 
     /**
@@ -796,14 +855,15 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String managedInstanceName) {
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -818,14 +878,16 @@ public final class ManagedInstanceAdministratorsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
+        if (administratorName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String administratorName = "ActiveDirectory";
-        final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -836,9 +898,9 @@ public final class ManagedInstanceAdministratorsClientImpl
                             managedInstanceName,
                             administratorName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -847,15 +909,16 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -870,14 +933,16 @@ public final class ManagedInstanceAdministratorsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
+        if (administratorName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String administratorName = "ActiveDirectory";
-        final String apiVersion = "2017-03-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -886,7 +951,7 @@ public final class ManagedInstanceAdministratorsClientImpl
                 managedInstanceName,
                 administratorName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -896,14 +961,17 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, managedInstanceName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, managedInstanceName, administratorName);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -916,18 +984,19 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, managedInstanceName, context);
+            deleteWithResponseAsync(resourceGroupName, managedInstanceName, administratorName, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -939,32 +1008,16 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName).getSyncPoller();
-    }
-
-    /**
-     * Deletes a managed instance administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, context).getSyncPoller();
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName) {
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, administratorName).getSyncPoller();
     }
 
     /**
@@ -973,14 +1026,35 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context) {
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, administratorName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a managed instance administrator.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName)
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName) {
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, administratorName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -991,15 +1065,17 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, context)
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context) {
+        return beginDeleteAsync(resourceGroupName, managedInstanceName, administratorName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1010,13 +1086,14 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String managedInstanceName) {
-        deleteAsync(resourceGroupName, managedInstanceName).block();
+    public void delete(String resourceGroupName, String managedInstanceName, AdministratorName administratorName) {
+        deleteAsync(resourceGroupName, managedInstanceName, administratorName).block();
     }
 
     /**
@@ -1025,32 +1102,43 @@ public final class ManagedInstanceAdministratorsClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param administratorName The administratorName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String managedInstanceName, Context context) {
-        deleteAsync(resourceGroupName, managedInstanceName, context).block();
+    public void delete(
+        String resourceGroupName, String managedInstanceName, AdministratorName administratorName, Context context) {
+        deleteAsync(resourceGroupName, managedInstanceName, administratorName, context).block();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedInstanceAdministratorInner>> listByInstanceNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByInstanceNext(nextLink, context))
+            .withContext(context -> service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ManagedInstanceAdministratorInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1060,18 +1148,20 @@ public final class ManagedInstanceAdministratorsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedInstanceAdministratorInner>> listByInstanceNextSinglePageAsync(
@@ -1079,9 +1169,16 @@ public final class ManagedInstanceAdministratorsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByInstanceNext(nextLink, context)
+            .listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

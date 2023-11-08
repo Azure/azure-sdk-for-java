@@ -8,12 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionUserConfiguration;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
 import com.azure.resourcemanager.hybridnetwork.models.SkuType;
 import com.azure.resourcemanager.hybridnetwork.models.VendorProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +19,6 @@ import java.util.Map;
 /** Network function resource response. */
 @Fluent
 public final class NetworkFunctionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionInner.class);
-
     /*
      * Network function properties.
      */
@@ -40,6 +36,10 @@ public final class NetworkFunctionInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of NetworkFunctionInner class. */
+    public NetworkFunctionInner() {
+    }
 
     /**
      * Get the innerProperties property: Network function properties.

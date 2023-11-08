@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BackupResourceEncryptionConfig model. */
 @Fluent
 public class BackupResourceEncryptionConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceEncryptionConfig.class);
-
     /*
      * Encryption At Rest Type
      */
@@ -43,6 +39,10 @@ public class BackupResourceEncryptionConfig {
      */
     @JsonProperty(value = "infrastructureEncryptionState")
     private InfrastructureEncryptionState infrastructureEncryptionState;
+
+    /** Creates an instance of BackupResourceEncryptionConfig class. */
+    public BackupResourceEncryptionConfig() {
+    }
 
     /**
      * Get the encryptionAtRestType property: Encryption At Rest Type.

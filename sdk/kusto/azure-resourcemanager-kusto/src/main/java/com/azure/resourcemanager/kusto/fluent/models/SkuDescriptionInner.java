@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.SkuLocationInfoItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Kusto SKU description of given resource type. */
 @Immutable
 public final class SkuDescriptionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuDescriptionInner.class);
-
     /*
      * The resource type
      */
@@ -51,6 +47,10 @@ public final class SkuDescriptionInner {
      */
     @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> restrictions;
+
+    /** Creates an instance of SkuDescriptionInner class. */
+    public SkuDescriptionInner() {
+    }
 
     /**
      * Get the resourceType property: The resource type.

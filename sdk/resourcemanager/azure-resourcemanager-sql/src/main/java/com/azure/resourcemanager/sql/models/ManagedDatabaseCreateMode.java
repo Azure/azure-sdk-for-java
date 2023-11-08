@@ -8,7 +8,15 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedDatabaseCreateMode. */
+/**
+ * Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an
+ * existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified.
+ * RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and
+ * StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup.
+ * RecoverableDatabaseId must be specified as the recoverable database resource ID to restore.
+ * RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
+ * (longTermRetentionBackupResourceId required).
+ */
 public final class ManagedDatabaseCreateMode extends ExpandableStringEnum<ManagedDatabaseCreateMode> {
     /** Static value Default for ManagedDatabaseCreateMode. */
     public static final ManagedDatabaseCreateMode DEFAULT = fromString("Default");
@@ -37,7 +45,11 @@ public final class ManagedDatabaseCreateMode extends ExpandableStringEnum<Manage
         return fromString(name, ManagedDatabaseCreateMode.class);
     }
 
-    /** @return known ManagedDatabaseCreateMode values. */
+    /**
+     * Gets known ManagedDatabaseCreateMode values.
+     *
+     * @return known ManagedDatabaseCreateMode values.
+     */
     public static Collection<ManagedDatabaseCreateMode> values() {
         return values(ManagedDatabaseCreateMode.class);
     }

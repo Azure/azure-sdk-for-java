@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.BatchConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collection of batch configurations. */
 @Fluent
 public final class BatchConfigurationCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchConfigurationCollection.class);
-
     /*
      * The value property.
      */
     @JsonProperty(value = "value")
     private List<BatchConfigurationInner> value;
+
+    /** Creates an instance of BatchConfigurationCollection class. */
+    public BatchConfigurationCollection() {
+    }
 
     /**
      * Get the value property: The value property.

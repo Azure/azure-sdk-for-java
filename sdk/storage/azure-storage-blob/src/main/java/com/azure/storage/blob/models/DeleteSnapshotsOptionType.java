@@ -30,6 +30,9 @@ public enum DeleteSnapshotsOptionType {
      */
     @JsonCreator
     public static DeleteSnapshotsOptionType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DeleteSnapshotsOptionType[] items = DeleteSnapshotsOptionType.values();
         for (DeleteSnapshotsOptionType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum DeleteSnapshotsOptionType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -25,9 +25,9 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector resource format.
+     * @return the {@link SyncPoller} for polling of the connector resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectorResourceFormatInner>, ConnectorResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName, String hubName, String connectorName, ConnectorResourceFormatInner parameters);
 
@@ -42,9 +42,9 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector resource format.
+     * @return the {@link SyncPoller} for polling of the connector resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectorResourceFormatInner>, ConnectorResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hubName,
@@ -88,6 +88,22 @@ public interface ConnectorsClient {
         String connectorName,
         ConnectorResourceFormatInner parameters,
         Context context);
+
+    /**
+     * Gets a connector in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param connectorName The name of the connector.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a connector in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConnectorResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String connectorName, Context context);
 
     /**
      * Gets a connector in the hub.
@@ -104,22 +120,6 @@ public interface ConnectorsClient {
     ConnectorResourceFormatInner get(String resourceGroupName, String hubName, String connectorName);
 
     /**
-     * Gets a connector in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param connectorName The name of the connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector in the hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectorResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String connectorName, Context context);
-
-    /**
      * Deletes a connector in the hub.
      *
      * @param resourceGroupName The name of the resource group.
@@ -128,9 +128,9 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String connectorName);
 
     /**
@@ -143,9 +143,9 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hubName, String connectorName, Context context);
 
@@ -184,7 +184,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connectors in the specified hub.
+     * @return all the connectors in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectorResourceFormatInner> listByHub(String resourceGroupName, String hubName);
@@ -198,7 +198,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connectors in the specified hub.
+     * @return all the connectors in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectorResourceFormatInner> listByHub(String resourceGroupName, String hubName, Context context);

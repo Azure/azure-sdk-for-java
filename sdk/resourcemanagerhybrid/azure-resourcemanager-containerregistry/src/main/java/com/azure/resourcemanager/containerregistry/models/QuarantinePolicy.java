@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The quarantine policy for a container registry. */
 @Fluent
 public final class QuarantinePolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuarantinePolicy.class);
-
     /*
      * The value that indicates whether the policy is enabled or not.
      */

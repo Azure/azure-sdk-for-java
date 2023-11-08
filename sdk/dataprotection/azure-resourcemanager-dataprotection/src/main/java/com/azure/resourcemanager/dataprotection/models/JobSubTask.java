@@ -6,7 +6,6 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Details of Job's Sub Task. */
 @Fluent
 public final class JobSubTask {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobSubTask.class);
-
     /*
      * Additional details of Sub Tasks
      */
@@ -46,6 +43,10 @@ public final class JobSubTask {
      */
     @JsonProperty(value = "taskStatus", required = true)
     private String taskStatus;
+
+    /** Creates an instance of JobSubTask class. */
+    public JobSubTask() {
+    }
 
     /**
      * Get the additionalDetails property: Additional details of Sub Tasks.
@@ -143,14 +144,16 @@ public final class JobSubTask {
      */
     public void validate() {
         if (taskName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property taskName in model JobSubTask"));
         }
         if (taskStatus() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property taskStatus in model JobSubTask"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JobSubTask.class);
 }

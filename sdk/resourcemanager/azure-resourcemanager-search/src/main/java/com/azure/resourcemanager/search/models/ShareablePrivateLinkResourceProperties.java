@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Describes the properties of a resource type that has been onboarded to private link service, supported by Azure
- * Cognitive Search.
+ * Describes the properties of a resource type that has been onboarded to private link service and that's supported by
+ * search.
  */
 @Immutable
 public final class ShareablePrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShareablePrivateLinkResourceProperties.class);
-
     /*
-     * The resource provider type for the resource that has been onboarded to
-     * private link service, supported by Azure Cognitive Search.
+     * The resource provider type for the resource that has been onboarded to private link service and that's supported
+     * by search.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
-     * The resource provider group id for the resource that has been onboarded
-     * to private link service, supported by Azure Cognitive Search.
+     * The resource provider group id for the resource that has been onboarded to private link service and that's
+     * supported by search.
      */
     @JsonProperty(value = "groupId", access = JsonProperty.Access.WRITE_ONLY)
     private String groupId;
 
     /*
-     * The description of the resource type that has been onboarded to private
-     * link service, supported by Azure Cognitive Search.
+     * The description of the resource type that has been onboarded to private link service and that's supported by
+     * search.
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
+    /** Creates an instance of ShareablePrivateLinkResourceProperties class. */
+    public ShareablePrivateLinkResourceProperties() {
+    }
+
     /**
      * Get the type property: The resource provider type for the resource that has been onboarded to private link
-     * service, supported by Azure Cognitive Search.
+     * service and that's supported by search.
      *
      * @return the type value.
      */
@@ -50,7 +50,7 @@ public final class ShareablePrivateLinkResourceProperties {
 
     /**
      * Get the groupId property: The resource provider group id for the resource that has been onboarded to private link
-     * service, supported by Azure Cognitive Search.
+     * service and that's supported by search.
      *
      * @return the groupId value.
      */
@@ -60,7 +60,7 @@ public final class ShareablePrivateLinkResourceProperties {
 
     /**
      * Get the description property: The description of the resource type that has been onboarded to private link
-     * service, supported by Azure Cognitive Search.
+     * service and that's supported by search.
      *
      * @return the description value.
      */

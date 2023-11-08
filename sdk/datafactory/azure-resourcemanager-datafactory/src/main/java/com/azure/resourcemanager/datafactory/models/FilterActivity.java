@@ -23,6 +23,10 @@ public final class FilterActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private FilterActivityTypeProperties innerTypeProperties = new FilterActivityTypeProperties();
 
+    /** Creates an instance of FilterActivity class. */
+    public FilterActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Filter activity properties.
      *
@@ -43,6 +47,20 @@ public final class FilterActivity extends ControlActivity {
     @Override
     public FilterActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FilterActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FilterActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

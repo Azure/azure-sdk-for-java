@@ -4,6 +4,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -46,6 +47,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -539,8 +541,9 @@ class VirtualMachineScaleSetVMImpl
     public Mono<VirtualMachineScaleSetVM> refreshAsync() {
         return this
             .client
-            .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(),
+            .getWithResponseAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(),
                 InstanceViewTypes.INSTANCE_VIEW)
+            .map(Response::getValue)
             .map(
                 vmInner -> {
                     this.setInner(vmInner);
@@ -587,6 +590,11 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration() {
         return this.innerModel().networkProfileConfiguration();
+    }
+
+    @Override
+    public OffsetDateTime timeCreated() {
+        return this.innerModel().timeCreated();
     }
 
     private void clearCachedRelatedResources() {

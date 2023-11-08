@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigurationCollectionItemProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Software update configuration collection item properties. */
-@JsonFlatten
 @Fluent
-public class SoftwareUpdateConfigurationCollectionItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareUpdateConfigurationCollectionItem.class);
-
+public final class SoftwareUpdateConfigurationCollectionItem {
     /*
      * Name of the software update configuration.
      */
@@ -30,56 +26,11 @@ public class SoftwareUpdateConfigurationCollectionItem {
     private String id;
 
     /*
-     * Update specific properties of the software update configuration.
+     * Software update configuration properties.
      */
-    @JsonProperty(value = "properties.updateConfiguration")
-    private UpdateConfiguration updateConfiguration;
-
-    /*
-     * Pre and Post Tasks defined
-     */
-    @JsonProperty(value = "properties.tasks")
-    private SoftwareUpdateConfigurationTasks tasks;
-
-    /*
-     * execution frequency of the schedule associated with the software update
-     * configuration
-     */
-    @JsonProperty(value = "properties.frequency")
-    private ScheduleFrequency frequency;
-
-    /*
-     * the start time of the update.
-     */
-    @JsonProperty(value = "properties.startTime")
-    private OffsetDateTime startTime;
-
-    /*
-     * Creation time of the software update configuration, which only appears
-     * in the response.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * Last time software update configuration was modified, which only appears
-     * in the response.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Provisioning state for the software update configuration, which only
-     * appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * ext run time of the update.
-     */
-    @JsonProperty(value = "properties.nextRun")
-    private OffsetDateTime nextRun;
+    @JsonProperty(value = "properties", required = true)
+    private SoftwareUpdateConfigurationCollectionItemProperties innerProperties =
+        new SoftwareUpdateConfigurationCollectionItemProperties();
 
     /**
      * Get the name property: Name of the software update configuration.
@@ -100,12 +51,21 @@ public class SoftwareUpdateConfigurationCollectionItem {
     }
 
     /**
+     * Get the innerProperties property: Software update configuration properties.
+     *
+     * @return the innerProperties value.
+     */
+    private SoftwareUpdateConfigurationCollectionItemProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the updateConfiguration property: Update specific properties of the software update configuration.
      *
      * @return the updateConfiguration value.
      */
     public UpdateConfiguration updateConfiguration() {
-        return this.updateConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().updateConfiguration();
     }
 
     /**
@@ -115,7 +75,10 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the SoftwareUpdateConfigurationCollectionItem object itself.
      */
     public SoftwareUpdateConfigurationCollectionItem withUpdateConfiguration(UpdateConfiguration updateConfiguration) {
-        this.updateConfiguration = updateConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationCollectionItemProperties();
+        }
+        this.innerProperties().withUpdateConfiguration(updateConfiguration);
         return this;
     }
 
@@ -125,7 +88,7 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the tasks value.
      */
     public SoftwareUpdateConfigurationTasks tasks() {
-        return this.tasks;
+        return this.innerProperties() == null ? null : this.innerProperties().tasks();
     }
 
     /**
@@ -135,7 +98,10 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the SoftwareUpdateConfigurationCollectionItem object itself.
      */
     public SoftwareUpdateConfigurationCollectionItem withTasks(SoftwareUpdateConfigurationTasks tasks) {
-        this.tasks = tasks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationCollectionItemProperties();
+        }
+        this.innerProperties().withTasks(tasks);
         return this;
     }
 
@@ -146,7 +112,7 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
-        return this.frequency;
+        return this.innerProperties() == null ? null : this.innerProperties().frequency();
     }
 
     /**
@@ -157,7 +123,10 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the SoftwareUpdateConfigurationCollectionItem object itself.
      */
     public SoftwareUpdateConfigurationCollectionItem withFrequency(ScheduleFrequency frequency) {
-        this.frequency = frequency;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationCollectionItemProperties();
+        }
+        this.innerProperties().withFrequency(frequency);
         return this;
     }
 
@@ -167,7 +136,7 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -177,7 +146,10 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the SoftwareUpdateConfigurationCollectionItem object itself.
      */
     public SoftwareUpdateConfigurationCollectionItem withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationCollectionItemProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -188,7 +160,7 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -198,7 +170,7 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -208,7 +180,7 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -217,7 +189,7 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the nextRun value.
      */
     public OffsetDateTime nextRun() {
-        return this.nextRun;
+        return this.innerProperties() == null ? null : this.innerProperties().nextRun();
     }
 
     /**
@@ -227,7 +199,10 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @return the SoftwareUpdateConfigurationCollectionItem object itself.
      */
     public SoftwareUpdateConfigurationCollectionItem withNextRun(OffsetDateTime nextRun) {
-        this.nextRun = nextRun;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SoftwareUpdateConfigurationCollectionItemProperties();
+        }
+        this.innerProperties().withNextRun(nextRun);
         return this;
     }
 
@@ -237,11 +212,16 @@ public class SoftwareUpdateConfigurationCollectionItem {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (updateConfiguration() != null) {
-            updateConfiguration().validate();
-        }
-        if (tasks() != null) {
-            tasks().validate();
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model"
+                            + " SoftwareUpdateConfigurationCollectionItem"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SoftwareUpdateConfigurationCollectionItem.class);
 }

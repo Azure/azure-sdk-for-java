@@ -19,6 +19,10 @@ public final class AddressResponseInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private AddressResponseProperties innerProperties;
 
+    /** Creates an instance of AddressResponseInner class. */
+    public AddressResponseInner() {
+    }
+
     /**
      * Get the innerProperties property: AddressResponse resource specific properties.
      *

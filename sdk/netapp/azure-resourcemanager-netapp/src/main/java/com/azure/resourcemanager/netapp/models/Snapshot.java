@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
 import java.time.OffsetDateTime;
@@ -40,14 +41,25 @@ public interface Snapshot {
     String location();
 
     /**
-     * Gets the snapshotId property: snapshotId UUID v4 used to identify the Snapshot.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the snapshotId property: snapshotId
+     *
+     * <p>UUID v4 used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
     String snapshotId();
 
     /**
-     * Gets the created property: name The creation date of the snapshot.
+     * Gets the created property: name
+     *
+     * <p>The creation date of the snapshot.
      *
      * @return the created value.
      */
@@ -88,11 +100,13 @@ public interface Snapshot {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The Snapshot definition stages. */
     interface DefinitionStages {
         /** The first stage of the Snapshot definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Snapshot definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -111,12 +125,13 @@ public interface Snapshot {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Snapshot definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, accountName, poolName, volumeName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @param poolName The name of the capacity pool.
              * @param volumeName The name of the volume.
@@ -125,6 +140,7 @@ public interface Snapshot {
             WithCreate withExistingVolume(
                 String resourceGroupName, String accountName, String poolName, String volumeName);
         }
+
         /**
          * The stage of the Snapshot definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -146,6 +162,7 @@ public interface Snapshot {
             Snapshot create(Context context);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -162,7 +179,9 @@ public interface Snapshot {
     Snapshot refresh(Context context);
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param body Restore payload supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +191,9 @@ public interface Snapshot {
     void restoreFiles(SnapshotRestoreFiles body);
 
     /**
-     * Restore the specified files from the specified snapshot to the active filesystem.
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
      *
      * @param body Restore payload supplied in the body of the operation.
      * @param context The context to associate with this operation.

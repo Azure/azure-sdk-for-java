@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/qumulo/ci.yml
+      - sdk/qumulo/azure-resourcemanager-qumulo/
+    exclude:
+      - sdk/qumulo/pom.xml
+      - sdk/qumulo/azure-resourcemanager-qumulo/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/qumulo/ci.yml
+      - sdk/qumulo/azure-resourcemanager-qumulo/
+    exclude:
+      - sdk/qumulo/pom.xml
+      - sdk/qumulo/azure-resourcemanager-qumulo/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerqumulo
+    displayName: azure-resourcemanager-qumulo
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: qumulo
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-qumulo
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerqumulo
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerqumulo }}

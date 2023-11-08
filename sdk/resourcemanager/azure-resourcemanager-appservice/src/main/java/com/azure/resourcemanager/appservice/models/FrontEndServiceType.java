@@ -30,6 +30,9 @@ public enum FrontEndServiceType {
      */
     @JsonCreator
     public static FrontEndServiceType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FrontEndServiceType[] items = FrontEndServiceType.values();
         for (FrontEndServiceType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum FrontEndServiceType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.fluent.models.PredictionResourceFormatInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of list predictions operation. */
 @Fluent
 public final class PredictionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PredictionListResult.class);
-
     /*
      * Results of the list operation.
      */
@@ -27,6 +23,10 @@ public final class PredictionListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PredictionListResult class. */
+    public PredictionListResult() {
+    }
 
     /**
      * Get the value property: Results of the list operation.

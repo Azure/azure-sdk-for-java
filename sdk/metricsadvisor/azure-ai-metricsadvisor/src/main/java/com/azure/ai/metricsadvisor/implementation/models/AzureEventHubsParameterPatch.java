@@ -22,6 +22,9 @@ public final class AzureEventHubsParameterPatch {
     @JsonProperty(value = "consumerGroup")
     private String consumerGroup;
 
+    /** Creates an instance of AzureEventHubsParameterPatch class. */
+    public AzureEventHubsParameterPatch() {}
+
     /**
      * Get the connectionString property: The connection string of this Azure Event Hubs.
      *

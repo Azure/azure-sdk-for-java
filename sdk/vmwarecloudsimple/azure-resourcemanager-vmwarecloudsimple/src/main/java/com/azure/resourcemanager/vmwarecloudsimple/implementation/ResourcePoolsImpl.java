@@ -13,10 +13,9 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.ResourcePoolsClient;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.ResourcePoolInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.ResourcePool;
 import com.azure.resourcemanager.vmwarecloudsimple.models.ResourcePools;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourcePoolsImpl implements ResourcePools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcePoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourcePoolsImpl.class);
 
     private final ResourcePoolsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class ResourcePoolsImpl implements ResourcePools {
         return Utils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
     }
 
-    public ResourcePool get(String regionId, String pcName, String resourcePoolName) {
-        ResourcePoolInner inner = this.serviceClient().get(regionId, pcName, resourcePoolName);
-        if (inner != null) {
-            return new ResourcePoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ResourcePool> getWithResponse(
         String regionId, String pcName, String resourcePoolName, Context context) {
         Response<ResourcePoolInner> inner =
@@ -58,6 +48,15 @@ public final class ResourcePoolsImpl implements ResourcePools {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ResourcePoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ResourcePool get(String regionId, String pcName, String resourcePoolName) {
+        ResourcePoolInner inner = this.serviceClient().get(regionId, pcName, resourcePoolName);
+        if (inner != null) {
+            return new ResourcePoolImpl(inner, this.manager());
         } else {
             return null;
         }

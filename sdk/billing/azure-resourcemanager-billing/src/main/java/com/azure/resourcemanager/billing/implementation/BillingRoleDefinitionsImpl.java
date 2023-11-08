@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.BillingRoleDefinitionsClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingRoleDefinitionInner;
 import com.azure.resourcemanager.billing.models.BillingRoleDefinition;
 import com.azure.resourcemanager.billing.models.BillingRoleDefinitions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingRoleDefinitionsImpl implements BillingRoleDefinitions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingRoleDefinitionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingRoleDefinitionsImpl.class);
 
     private final BillingRoleDefinitionsClient innerClient;
 
@@ -26,16 +25,6 @@ public final class BillingRoleDefinitionsImpl implements BillingRoleDefinitions 
         BillingRoleDefinitionsClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public BillingRoleDefinition getByBillingAccount(String billingAccountName, String billingRoleDefinitionName) {
-        BillingRoleDefinitionInner inner =
-            this.serviceClient().getByBillingAccount(billingAccountName, billingRoleDefinitionName);
-        if (inner != null) {
-            return new BillingRoleDefinitionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<BillingRoleDefinition> getByBillingAccountWithResponse(
@@ -55,16 +44,9 @@ public final class BillingRoleDefinitionsImpl implements BillingRoleDefinitions 
         }
     }
 
-    public BillingRoleDefinition getByInvoiceSection(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String billingRoleDefinitionName) {
+    public BillingRoleDefinition getByBillingAccount(String billingAccountName, String billingRoleDefinitionName) {
         BillingRoleDefinitionInner inner =
-            this
-                .serviceClient()
-                .getByInvoiceSection(
-                    billingAccountName, billingProfileName, invoiceSectionName, billingRoleDefinitionName);
+            this.serviceClient().getByBillingAccount(billingAccountName, billingRoleDefinitionName);
         if (inner != null) {
             return new BillingRoleDefinitionImpl(inner, this.manager());
         } else {
@@ -94,10 +76,16 @@ public final class BillingRoleDefinitionsImpl implements BillingRoleDefinitions 
         }
     }
 
-    public BillingRoleDefinition getByBillingProfile(
-        String billingAccountName, String billingProfileName, String billingRoleDefinitionName) {
+    public BillingRoleDefinition getByInvoiceSection(
+        String billingAccountName,
+        String billingProfileName,
+        String invoiceSectionName,
+        String billingRoleDefinitionName) {
         BillingRoleDefinitionInner inner =
-            this.serviceClient().getByBillingProfile(billingAccountName, billingProfileName, billingRoleDefinitionName);
+            this
+                .serviceClient()
+                .getByInvoiceSection(
+                    billingAccountName, billingProfileName, invoiceSectionName, billingRoleDefinitionName);
         if (inner != null) {
             return new BillingRoleDefinitionImpl(inner, this.manager());
         } else {
@@ -118,6 +106,17 @@ public final class BillingRoleDefinitionsImpl implements BillingRoleDefinitions 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BillingRoleDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BillingRoleDefinition getByBillingProfile(
+        String billingAccountName, String billingProfileName, String billingRoleDefinitionName) {
+        BillingRoleDefinitionInner inner =
+            this.serviceClient().getByBillingProfile(billingAccountName, billingProfileName, billingRoleDefinitionName);
+        if (inner != null) {
+            return new BillingRoleDefinitionImpl(inner, this.manager());
         } else {
             return null;
         }

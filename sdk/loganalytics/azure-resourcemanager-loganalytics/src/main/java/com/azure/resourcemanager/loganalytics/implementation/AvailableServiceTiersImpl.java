@@ -12,13 +12,12 @@ import com.azure.resourcemanager.loganalytics.fluent.AvailableServiceTiersClient
 import com.azure.resourcemanager.loganalytics.fluent.models.AvailableServiceTierInner;
 import com.azure.resourcemanager.loganalytics.models.AvailableServiceTier;
 import com.azure.resourcemanager.loganalytics.models.AvailableServiceTiers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class AvailableServiceTiersImpl implements AvailableServiceTiers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableServiceTiersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableServiceTiersImpl.class);
 
     private final AvailableServiceTiersClient innerClient;
 
@@ -29,20 +28,6 @@ public final class AvailableServiceTiersImpl implements AvailableServiceTiers {
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public List<AvailableServiceTier> listByWorkspace(String resourceGroupName, String workspaceName) {
-        List<AvailableServiceTierInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AvailableServiceTierImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     public Response<List<AvailableServiceTier>> listByWorkspaceWithResponse(
@@ -61,6 +46,20 @@ public final class AvailableServiceTiersImpl implements AvailableServiceTiers {
                     .collect(Collectors.toList()));
         } else {
             return null;
+        }
+    }
+
+    public List<AvailableServiceTier> listByWorkspace(String resourceGroupName, String workspaceName) {
+        List<AvailableServiceTierInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new AvailableServiceTierImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
         }
     }
 

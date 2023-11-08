@@ -34,15 +34,14 @@ public final class IntegrationRuntimeSsisCatalogInfo {
     private SecureString catalogAdminPassword;
 
     /*
-     * The pricing tier for the catalog database. The valid values could be
-     * found in https://azure.microsoft.com/en-us/pricing/details/sql-database/
+     * The pricing tier for the catalog database. The valid values could be found in
+     * https://azure.microsoft.com/en-us/pricing/details/sql-database/
      */
     @JsonProperty(value = "catalogPricingTier")
     private IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier;
 
     /*
-     * The dual standby pair name of Azure-SSIS Integration Runtimes to support
-     * SSISDB failover.
+     * The dual standby pair name of Azure-SSIS Integration Runtimes to support SSISDB failover.
      */
     @JsonProperty(value = "dualStandbyPairName")
     private String dualStandbyPairName;
@@ -51,6 +50,10 @@ public final class IntegrationRuntimeSsisCatalogInfo {
      * Catalog information for managed dedicated integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntimeSsisCatalogInfo class. */
+    public IntegrationRuntimeSsisCatalogInfo() {
+    }
 
     /**
      * Get the catalogServerEndpoint property: The catalog database server URL.

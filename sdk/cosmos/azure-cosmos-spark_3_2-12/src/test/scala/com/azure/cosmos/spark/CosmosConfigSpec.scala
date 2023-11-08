@@ -2,21 +2,28 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.management.AzureEnvironment
+import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.Increment
 import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
 import org.apache.spark.sql.types.{NumericType, StructType}
 
 import java.text.SimpleDateFormat
-import java.time.Instant
+import java.time.{Duration, Instant}
 import java.util.UUID
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 class CosmosConfigSpec extends UnitSpec {
-  //scalastyle:off multiple.string.literals
+//scalastyle:off multiple.string.literals
 
   private val sampleProdEndpoint = "https://boson-test.documents.azure.com:443/"
   private val defaultPatchOperationType = CosmosPatchOperationTypes.Replace
+  private val testAccountTenantId = UUID.randomUUID().toString
+  private val testAccountSubscriptionId = UUID.randomUUID().toString
+  private val testAccountResourceGroupName = "test-resourceGroup"
+  private val testServicePrincipalClientId = UUID.randomUUID().toString
+  private val testServicePrincipalClientSecret = "test-secret"
 
   "Config Parser" should "parse account credentials" in {
     val userConfig = Map(
@@ -30,14 +37,70 @@ class CosmosConfigSpec extends UnitSpec {
     val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
 
     endpointConfig.endpoint shouldEqual sampleProdEndpoint
-    endpointConfig.key shouldEqual "xyz"
+    endpointConfig.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual "xyz"
     endpointConfig.applicationName.get shouldEqual "myapp"
     endpointConfig.useGatewayMode shouldEqual true
     endpointConfig.preferredRegionsList.isDefined shouldEqual true
     endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("west us", "eastus1")
   }
 
-  "Config Parser" should "parse account credentials with spark.cosmos.preferredRegions" in {
+  "Config Parser" should "parse default account AAD authentication credentials" in {
+
+      for (authType <- Array("ServicePrinciple", "ServicePrincipal")) {
+          val userConfig = Map(
+              "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+              "spark.cosmos.auth.type" -> authType,
+              "spark.cosmos.account.subscriptionId" -> testAccountSubscriptionId,
+              "spark.cosmos.account.tenantId" -> testAccountTenantId,
+              "spark.cosmos.account.resourceGroupName" -> testAccountResourceGroupName,
+              "spark.cosmos.auth.aad.clientId" -> testServicePrincipalClientId,
+              "spark.cosmos.auth.aad.clientSecret" -> testServicePrincipalClientSecret
+          )
+
+          val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+          endpointConfig.endpoint shouldEqual sampleProdEndpoint
+
+          val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosAadAuthConfig]
+          endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
+          aadAuthConfig.tenantId shouldEqual testAccountTenantId
+          endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
+          aadAuthConfig.clientId shouldEqual testServicePrincipalClientId
+          aadAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
+          endpointConfig.azureEnvironment shouldEqual AzureEnvironment.AZURE
+          endpointConfig.accountName shouldEqual "boson-test"
+      }
+  }
+
+  "Config Parser" should "parse account AAD authentication credentials" in {
+      for (authType <- Array("ServicePrinciple", "ServicePrincipal")) {
+          val userConfig = Map(
+              "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+              "spark.cosmos.auth.type" -> authType,
+              "spark.cosmos.account.subscriptionId" -> testAccountSubscriptionId,
+              "spark.cosmos.account.tenantId" -> testAccountTenantId,
+              "spark.cosmos.account.resourceGroupName" -> testAccountResourceGroupName,
+              "spark.cosmos.account.azureEnvironment" -> "AzureUsGovernment",
+              "spark.cosmos.auth.aad.clientId" -> testServicePrincipalClientId,
+              "spark.cosmos.auth.aad.clientSecret" -> testServicePrincipalClientSecret,
+          )
+
+          val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+          endpointConfig.endpoint shouldEqual sampleProdEndpoint
+
+          val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosAadAuthConfig]
+          endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
+          aadAuthConfig.tenantId shouldEqual testAccountTenantId
+          endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
+          aadAuthConfig.clientId shouldEqual testServicePrincipalClientId
+          aadAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
+          endpointConfig.azureEnvironment shouldEqual AzureEnvironment.AZURE_US_GOVERNMENT
+          endpointConfig.accountName shouldEqual "boson-test"
+      }
+  }
+
+    "Config Parser" should "parse account credentials with spark.cosmos.preferredRegions" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
       "spark.cosmos.accountKey" -> "xyz",
@@ -49,7 +112,7 @@ class CosmosConfigSpec extends UnitSpec {
     val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
 
     endpointConfig.endpoint shouldEqual sampleProdEndpoint
-    endpointConfig.key shouldEqual "xyz"
+    endpointConfig.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual "xyz"
     endpointConfig.applicationName.get shouldEqual "myapp"
     endpointConfig.useGatewayMode shouldEqual true
     endpointConfig.preferredRegionsList.isDefined shouldEqual true
@@ -245,11 +308,13 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
+    config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe null
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
-      "spark.cosmos.read.maxItemCount" -> "1000"
+      "spark.cosmos.read.maxItemCount" -> "1000",
+      "spark.cosmos.read.maxIntegratedCacheStalenessInMS" -> "1000"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
@@ -259,6 +324,7 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
+    config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe Duration.ofMillis(1000)
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
@@ -538,7 +604,22 @@ class CosmosConfigSpec extends UnitSpec {
     config.maxItemCountPerTrigger.get shouldEqual 54
   }
 
-  it should "parse change feed config with PIT start mode" in {
+  it should "parse change feed config for all versions and deletes with incorrect casing" in {
+    val changeFeedConfig = Map(
+      "spark.cosmos.changeFeed.mode" -> "AllVersionsANDDELETES",
+      "spark.cosmos.changeFeed.STARTfrom" -> "NOW",
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54"
+    )
+
+    val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
+
+    config.changeFeedMode shouldEqual ChangeFeedModes.AllVersionsAndDeletes
+    config.startFrom shouldEqual ChangeFeedStartFromModes.Now
+    config.startFromPointInTime shouldEqual None
+    config.maxItemCountPerTrigger.get shouldEqual 54
+  }
+
+  it should "parse change feed config (incremental) with PIT start mode" in {
     val changeFeedConfig = Map(
       "spark.cosmos.changeFeed.mode" -> "incremental",
       "spark.cosmos.changeFeed.STARTfrom" -> "2019-12-31T10:45:10Z",
@@ -548,6 +629,24 @@ class CosmosConfigSpec extends UnitSpec {
     val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
 
     config.changeFeedMode shouldEqual ChangeFeedModes.Incremental
+    config.startFrom shouldEqual ChangeFeedStartFromModes.PointInTime
+    Instant.from(config.startFromPointInTime.get) shouldEqual
+      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
+        .parse("2019-12-31T10:45:10Z")
+        .toInstant
+    config.maxItemCountPerTrigger.get shouldEqual 54
+  }
+
+  it should "parse change feed config (latestversion) with PIT start mode" in {
+    val changeFeedConfig = Map(
+      "spark.cosmos.changeFeed.mode" -> "latestversion",
+      "spark.cosmos.changeFeed.STARTfrom" -> "2019-12-31T10:45:10Z",
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "54"
+    )
+
+    val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
+
+    config.changeFeedMode shouldEqual ChangeFeedModes.LatestVersion
     config.startFrom shouldEqual ChangeFeedStartFromModes.PointInTime
     Instant.from(config.startFromPointInTime.get) shouldEqual
       new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
@@ -569,7 +668,7 @@ class CosmosConfigSpec extends UnitSpec {
     } catch {
       case e: Exception => e.getMessage shouldEqual
         "invalid configuration for spark.cosmos.changeFeed.mode:Whatever. Config description: " +
-          "ChangeFeed mode (Incremental or FullFidelity)"
+          "ChangeFeed mode (Incremental/LatestVersion or FullFidelity/AllVersionsAndDeletes)"
     }
   }
 
@@ -627,6 +726,31 @@ class CosmosConfigSpec extends UnitSpec {
         config.operationType shouldEqual defaultPatchOperationType
       }
     )
+  }
+
+  "Customizing MaxBulKPayloadSizeInBytes" should "be possible" in {
+    val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
+    var userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemOverwrite",
+      "spark.cosmos.write.bulk.enabled" -> "True",
+    )
+    var writeConfig: CosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
+    writeConfig should not be null
+    writeConfig.maxMicroBatchPayloadSizeInBytes should not be null
+    writeConfig.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
+    writeConfig.maxMicroBatchPayloadSizeInBytes.get shouldEqual BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES
+
+    userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemOverwrite",
+      "spark.cosmos.write.bulk.enabled" -> "True",
+      "spark.cosmos.write.bulk.targetedPayloadSizeInBytes" -> "1000000",
+    )
+
+    writeConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
+    writeConfig should not be null
+    writeConfig.maxMicroBatchPayloadSizeInBytes should not be null
+    writeConfig.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
+    writeConfig.maxMicroBatchPayloadSizeInBytes.get shouldEqual 1000000
   }
 
   "Config Parser" should "validate default operation types for patch configs" in {
@@ -749,14 +873,14 @@ class CosmosConfigSpec extends UnitSpec {
              isValid,
              field.name,
              configString,
-             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath)))
+             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath, false)))
         } else {
           testParameters +=
            PatchColumnConfigParameterTest(
              isValid,
              field.name,
              configString,
-             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath)),
+             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath, false)),
              Some(errorMessage))
         }
 
@@ -805,8 +929,10 @@ class CosmosConfigSpec extends UnitSpec {
     val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
 
     val overrideConfig = Map(
-      "longTypeColumn" -> CosmosPatchColumnConfig("longTypeColumn", CosmosPatchOperationTypes.Increment, "/longTypeColumn"),
-      "stringTypeColumn" -> CosmosPatchColumnConfig("stringTypeColumn", CosmosPatchOperationTypes.Add, "/newPath")
+      "longTypeColumn" -> CosmosPatchColumnConfig(
+        "longTypeColumn", CosmosPatchOperationTypes.Increment, "/longTypeColumn", false),
+      "stringTypeColumn" -> CosmosPatchColumnConfig(
+        "stringTypeColumn", CosmosPatchOperationTypes.Add, "/newPath", false)
     )
 
     var aggregratedConfigString = "["
@@ -855,7 +981,7 @@ class CosmosConfigSpec extends UnitSpec {
     val testParameters = new ListBuffer[PatchColumnConfigParameterTest]
     CosmosPatchOperationTypes.values.foreach(operationType => {
 
-      val columnConfig = CosmosPatchColumnConfig("dummyColumn", operationType, "/dummyColumn")
+      val columnConfig = CosmosPatchColumnConfig("dummyColumn", operationType, "/dummyColumn", false)
       operationType match {
         case CosmosPatchOperationTypes.Remove | CosmosPatchOperationTypes.None =>
           testParameters +=
@@ -895,6 +1021,131 @@ class CosmosConfigSpec extends UnitSpec {
           }
       }
     })
+  }
+
+  "Default patchBulkUpdate config" should "be valid" in {
+      val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
+      val userConfig = Map(
+          "spark.cosmos.write.strategy" -> "ItemBulkUpdate",
+      )
+      val writeConfig: CosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
+      writeConfig should not be null
+      writeConfig.patchConfigs.isDefined shouldEqual true
+      val patchConfigs = writeConfig.patchConfigs.get
+
+      patchConfigs.filter.isDefined shouldEqual false
+
+      patchConfigs.columnConfigsMap.size shouldEqual 0
+  }
+
+  it should "validate column configs for patchBulkUpdate configs" in {
+      val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
+      val testParameters = new ListBuffer[PatchColumnConfigParameterTest]
+
+      testParameters +=
+          PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = "")
+      testParameters +=
+          PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = "[]")
+      testParameters +=
+          PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = " [  ] ")
+      testParameters +=
+          PatchColumnConfigParameterTest(
+              isValid = false,
+              columnName = "",
+              overrideConfigsString = "[",
+              errorMessage = Some("invalid configuration for spark.cosmos.write.bulkUpdate.columnConfigs:["))
+      testParameters +=
+          PatchColumnConfigParameterTest(
+              isValid = false,
+              columnName = "",
+              overrideConfigsString = "[col(column.path.random]",
+              errorMessage = Some("invalid configuration for spark.cosmos.write.bulkUpdate.columnConfigs:[col(column.path.random]"))
+
+      // Add other test cases which will covered different columns combined with different match pattern (different cases of all the key words)
+      val columnKeyWords = new ListBuffer[String]
+      CosmosPatchTestHelper.getAllPermutationsOfKeyWord("col", "", columnKeyWords)
+      val columnKeyWordRandom = new Random()
+
+      val pathKeyWords = new ListBuffer[String]
+      CosmosPatchTestHelper.getAllPermutationsOfKeyWord("path", "", pathKeyWords)
+      val pathKeyWordRandom = new Random()
+
+      val usePathKeyword = new Random()
+      val useRawJson = new Random()
+
+      schema.fields.foreach(field => {
+          var isValid = true
+          var errorMessage = ""
+          var mappingPath = s"/${field.name}"
+          var configString = "["
+          val columnKeyWord = columnKeyWords(columnKeyWordRandom.nextInt(columnKeyWords.size))
+          configString += s"$columnKeyWord(${field.name})"
+
+          if (usePathKeyword.nextBoolean()) {
+              val pathKeyWord = pathKeyWords(pathKeyWordRandom.nextInt(pathKeyWords.size))
+              mappingPath = s"$mappingPath-1"
+              configString += s".$pathKeyWord(${mappingPath})"
+          }
+
+          if (useRawJson.nextBoolean()) {
+              configString += s".rawJson"
+          }
+
+          configString += "]"
+
+          if (isValid) {
+              testParameters +=
+                  PatchColumnConfigParameterTest(
+                      isValid,
+                      field.name,
+                      configString,
+                      Some(CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, mappingPath, false)))
+          } else {
+              testParameters +=
+                  PatchColumnConfigParameterTest(
+                      isValid,
+                      field.name,
+                      configString,
+                      Some(CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, mappingPath, false)),
+                      Some(errorMessage))
+          }
+      })
+
+      testParameters.foreach(testParameter => {
+
+          val userConfig = Map(
+              "spark.cosmos.write.strategy" -> "ItemBulkUpdate",
+              "spark.cosmos.write.bulkUpdate.columnConfigs" -> s"${testParameter.overrideConfigsString}"
+          )
+
+          testParameter.isValid match {
+              case true =>
+                  val writeConfig: CosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
+                  writeConfig.patchConfigs.isDefined shouldEqual true
+
+                  val patchConfigs = writeConfig.patchConfigs.get
+                  patchConfigs.filter.isDefined shouldEqual false
+
+                  patchConfigs.columnConfigsMap.values.foreach(
+                      config => {
+                          if (testParameter.columnName == config.columnName && testParameter.overrideColumnConfig.isDefined) {
+                              config.mappingPath shouldEqual testParameter.overrideColumnConfig.get.mappingPath
+                              config.operationType shouldEqual testParameter.overrideColumnConfig.get.operationType
+                          } else {
+                              config.mappingPath shouldEqual s"/${config.columnName}"
+                              config.operationType shouldEqual defaultPatchOperationType
+                          }
+                      }
+                  )
+              case _ =>
+                  try {
+                      CosmosWriteConfig.parseWriteConfig(userConfig, schema)
+                      fail(s"The test should have failed due to ${testParameter.errorMessage.get}")
+                  } catch {
+                      case e: Exception => e.getMessage should startWith(testParameter.errorMessage.get)
+                  }
+          }
+      })
   }
 
   private case class PatchColumnConfigParameterTest

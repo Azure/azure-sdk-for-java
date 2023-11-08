@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The private link scope resource reference. */
 @Fluent
 public final class PrivateLinkScopedResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkScopedResource.class);
-
     /*
      * The full resource Id of the private link scope resource.
      */
@@ -25,6 +21,10 @@ public final class PrivateLinkScopedResource {
      */
     @JsonProperty(value = "scopeId")
     private String scopeId;
+
+    /** Creates an instance of PrivateLinkScopedResource class. */
+    public PrivateLinkScopedResource() {
+    }
 
     /**
      * Get the resourceId property: The full resource Id of the private link scope resource.

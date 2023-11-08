@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Products ListByInvoiceSection. */
 public final class ProductsListByInvoiceSectionSamples {
     /*
@@ -20,6 +18,10 @@ public final class ProductsListByInvoiceSectionSamples {
         manager
             .products()
             .listByInvoiceSection(
-                "{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", null, Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "{invoiceSectionName}",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

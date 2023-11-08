@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Symmetric key for authentication. */
 @Fluent
 public final class SymmetricKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SymmetricKey.class);
-
     /*
      * Connection string based on the symmetric key.
      */
     @JsonProperty(value = "connectionString")
     private AsymmetricEncryptedSecret connectionString;
+
+    /** Creates an instance of SymmetricKey class. */
+    public SymmetricKey() {
+    }
 
     /**
      * Get the connectionString property: Connection string based on the symmetric key.

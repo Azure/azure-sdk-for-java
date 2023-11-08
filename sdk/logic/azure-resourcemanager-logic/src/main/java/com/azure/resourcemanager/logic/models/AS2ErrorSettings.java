@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AS2 agreement error settings. */
 @Fluent
 public final class AS2ErrorSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2ErrorSettings.class);
-
     /*
      * The value indicating whether to suspend duplicate message.
      */
@@ -25,6 +21,10 @@ public final class AS2ErrorSettings {
      */
     @JsonProperty(value = "resendIfMDNNotReceived", required = true)
     private boolean resendIfMdnNotReceived;
+
+    /** Creates an instance of AS2ErrorSettings class. */
+    public AS2ErrorSettings() {
+    }
 
     /**
      * Get the suspendDuplicateMessage property: The value indicating whether to suspend duplicate message.

@@ -29,6 +29,9 @@ public final class RedisPatchingCompletedEventData {
     @JsonProperty(value = "status")
     private String status;
 
+    /** Creates an instance of RedisPatchingCompletedEventData class. */
+    public RedisPatchingCompletedEventData() {}
+
     /**
      * Get the timestamp property: The time at which the event occurred.
      *

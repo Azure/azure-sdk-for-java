@@ -27,12 +27,17 @@ public interface Forecasts {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
+     * @param filter May be used to filter forecasts by properties/usageDate (Utc time), properties/chargeType or
+     *     properties/grain. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
+     *     'ne', 'or', or 'not'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast along with {@link Response}.
      */
-    QueryResult usage(String scope, ForecastDefinition parameters);
+    Response<ForecastResult> usageWithResponse(
+        String scope, ForecastDefinition parameters, String filter, Context context);
 
     /**
      * Lists the forecast charges for scope defined.
@@ -52,36 +57,12 @@ public interface Forecasts {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
-     * @param filter May be used to filter forecasts by properties/usageDate (Utc time), properties/chargeType or
-     *     properties/grain. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
-     *     'ne', 'or', or 'not'.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast.
      */
-    Response<QueryResult> usageWithResponse(
-        String scope, ForecastDefinition parameters, String filter, Context context);
-
-    /**
-     * Lists the forecast charges for external cloud provider type defined.
-     *
-     * @param externalCloudProviderType The external cloud provider type associated with dimension/query operations.
-     *     This includes 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated
-     *     account.
-     * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
-     *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
-     * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
-     */
-    QueryResult externalCloudProviderUsage(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters);
+    ForecastResult usage(String scope, ForecastDefinition parameters);
 
     /**
      * Lists the forecast charges for external cloud provider type defined.
@@ -99,12 +80,31 @@ public interface Forecasts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast along with {@link Response}.
      */
-    Response<QueryResult> externalCloudProviderUsageWithResponse(
+    Response<ForecastResult> externalCloudProviderUsageWithResponse(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters,
         String filter,
         Context context);
+
+    /**
+     * Lists the forecast charges for external cloud provider type defined.
+     *
+     * @param externalCloudProviderType The external cloud provider type associated with dimension/query operations.
+     *     This includes 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated
+     *     account.
+     * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
+     *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
+     * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of forecast.
+     */
+    ForecastResult externalCloudProviderUsage(
+        ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId,
+        ForecastDefinition parameters);
 }

@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Azure ML Service linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,55 +19,60 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureMLServiceLinkedService extends LinkedService {
     /*
-     * Azure ML Service workspace subscription ID. Type: string (or Expression
-     * with resultType string).
+     * Azure ML Service workspace subscription ID. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.subscriptionId", required = true)
     private Object subscriptionId;
 
     /*
-     * Azure ML Service workspace resource group name. Type: string (or
-     * Expression with resultType string).
+     * Azure ML Service workspace resource group name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.resourceGroupName", required = true)
     private Object resourceGroupName;
 
     /*
-     * Azure ML Service workspace name. Type: string (or Expression with
-     * resultType string).
+     * Azure ML Service workspace name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.mlWorkspaceName", required = true)
     private Object mlWorkspaceName;
 
     /*
-     * The ID of the service principal used to authenticate against the
-     * endpoint of a published Azure ML Service pipeline. Type: string (or
-     * Expression with resultType string).
+     * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.authentication")
+    private Object authentication;
+
+    /*
+     * The ID of the service principal used to authenticate against the endpoint of a published Azure ML Service
+     * pipeline. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against the
-     * endpoint of a published Azure ML Service pipeline.
+     * The key of the service principal used to authenticate against the endpoint of a published Azure ML Service
+     * pipeline.
      */
     @JsonProperty(value = "typeProperties.servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of AzureMLServiceLinkedService class. */
+    public AzureMLServiceLinkedService() {}
 
     /**
      * Get the subscriptionId property: Azure ML Service workspace subscription ID. Type: string (or Expression with
@@ -130,6 +137,28 @@ public class AzureMLServiceLinkedService extends LinkedService {
      */
     public AzureMLServiceLinkedService setMlWorkspaceName(Object mlWorkspaceName) {
         this.mlWorkspaceName = mlWorkspaceName;
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Type of authentication (Required to specify MSI) used to connect to AzureML.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the authentication value.
+     */
+    public Object getAuthentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Type of authentication (Required to specify MSI) used to connect to AzureML.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param authentication the authentication value to set.
+     * @return the AzureMLServiceLinkedService object itself.
+     */
+    public AzureMLServiceLinkedService setAuthentication(Object authentication) {
+        this.authentication = authentication;
         return this;
     }
 
@@ -218,6 +247,34 @@ public class AzureMLServiceLinkedService extends LinkedService {
      */
     public AzureMLServiceLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLServiceLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLServiceLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLServiceLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLServiceLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

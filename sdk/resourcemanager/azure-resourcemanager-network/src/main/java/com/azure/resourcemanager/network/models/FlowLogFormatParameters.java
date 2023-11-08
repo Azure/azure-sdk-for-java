@@ -22,6 +22,10 @@ public final class FlowLogFormatParameters {
     @JsonProperty(value = "version")
     private Integer version;
 
+    /** Creates an instance of FlowLogFormatParameters class. */
+    public FlowLogFormatParameters() {
+    }
+
     /**
      * Get the type property: The file type of flow log.
      *

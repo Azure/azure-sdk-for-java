@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.AzureSku;
 import com.azure.resourcemanager.synapse.models.KustoPool;
 import com.azure.resourcemanager.synapse.models.SkuName;
@@ -24,14 +23,14 @@ public final class KustoPoolsUpdateSamples {
         KustoPool resource =
             manager
                 .kustoPools()
-                .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE)
+                .getWithResponse(
+                    "synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
             .withSku(new AzureSku().withName(SkuName.STORAGE_OPTIMIZED).withCapacity(2).withSize(SkuSize.MEDIUM))
             .withEnableStreamingIngest(true)
             .withEnablePurge(true)
-            .withWorkspaceUid("11111111-2222-3333-444444444444")
             .apply();
     }
 }

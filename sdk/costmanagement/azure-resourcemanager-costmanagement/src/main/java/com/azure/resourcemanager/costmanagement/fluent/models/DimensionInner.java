@@ -5,35 +5,27 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.resourcemanager.costmanagement.models.CostManagementResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The Dimension model. */
+/** List of Dimension. */
 @Fluent
-public final class DimensionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DimensionInner.class);
-
+public final class DimensionInner extends CostManagementResource {
     /*
-     * The properties property.
+     * Dimension properties.
      */
     @JsonProperty(value = "properties")
     private DimensionProperties innerProperties;
 
-    /*
-     * Resource tags.
-     */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    /** Creates an instance of DimensionInner class. */
+    public DimensionInner() {
+    }
 
     /**
-     * Get the innerProperties property: The properties property.
+     * Get the innerProperties property: Dimension properties.
      *
      * @return the innerProperties value.
      */
@@ -41,13 +33,18 @@ public final class DimensionInner extends ProxyResource {
         return this.innerProperties;
     }
 
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
+    /** {@inheritDoc} */
+    @Override
+    public DimensionInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DimensionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
@@ -78,7 +75,7 @@ public final class DimensionInner extends ProxyResource {
     }
 
     /**
-     * Get the data property: The data property.
+     * Get the data property: Dimension data.
      *
      * @return the data value.
      */
@@ -87,7 +84,7 @@ public final class DimensionInner extends ProxyResource {
     }
 
     /**
-     * Set the data property: The data property.
+     * Set the data property: Dimension data.
      *
      * @param data the data value to set.
      * @return the DimensionInner object itself.
@@ -150,7 +147,9 @@ public final class DimensionInner extends ProxyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

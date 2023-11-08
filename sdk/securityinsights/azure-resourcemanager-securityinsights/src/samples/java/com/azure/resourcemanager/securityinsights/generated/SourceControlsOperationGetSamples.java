@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SourceControlsOperation Get. */
 public final class SourceControlsOperationGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/sourcecontrols/GetSourceControlById.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/sourcecontrols/GetSourceControlById.json
      */
     /**
      * Sample code: Get a source control.

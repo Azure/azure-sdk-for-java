@@ -60,11 +60,10 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ExpressRouteConnectionsService {
+    public interface ExpressRouteConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections/{connectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections/{connectionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -80,8 +79,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections/{connectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections/{connectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExpressRouteConnectionInner>> get(
@@ -96,8 +94,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections/{connectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections/{connectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -112,8 +109,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExpressRouteConnectionListInner>> list(
@@ -176,7 +172,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         } else {
             putExpressRouteConnectionParameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -247,7 +243,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         } else {
             putExpressRouteConnectionParameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -350,7 +346,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         String expressRouteGatewayName,
         String connectionName,
         ExpressRouteConnectionInner putExpressRouteConnectionParameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, expressRouteGatewayName, connectionName, putExpressRouteConnectionParameters)
             .getSyncPoller();
     }
@@ -375,7 +372,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         String connectionName,
         ExpressRouteConnectionInner putExpressRouteConnectionParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 expressRouteGatewayName,
                 connectionName,
@@ -529,7 +527,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -587,7 +585,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -617,31 +615,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
     public Mono<ExpressRouteConnectionInner> getAsync(
         String resourceGroupName, String expressRouteGatewayName, String connectionName) {
         return getWithResponseAsync(resourceGroupName, expressRouteGatewayName, connectionName)
-            .flatMap(
-                (Response<ExpressRouteConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified ExpressRouteConnection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
-     * @param connectionName The name of the ExpressRoute connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ExpressRouteConnection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRouteConnectionInner get(
-        String resourceGroupName, String expressRouteGatewayName, String connectionName) {
-        return getAsync(resourceGroupName, expressRouteGatewayName, connectionName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -660,6 +634,23 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
     public Response<ExpressRouteConnectionInner> getWithResponse(
         String resourceGroupName, String expressRouteGatewayName, String connectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, expressRouteGatewayName, connectionName, context).block();
+    }
+
+    /**
+     * Gets the specified ExpressRouteConnection.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param connectionName The name of the ExpressRoute connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified ExpressRouteConnection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRouteConnectionInner get(
+        String resourceGroupName, String expressRouteGatewayName, String connectionName) {
+        return getWithResponse(resourceGroupName, expressRouteGatewayName, connectionName, Context.NONE).getValue();
     }
 
     /**
@@ -700,7 +691,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -757,7 +748,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -831,7 +822,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String expressRouteGatewayName, String connectionName) {
-        return beginDeleteAsync(resourceGroupName, expressRouteGatewayName, connectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, expressRouteGatewayName, connectionName).getSyncPoller();
     }
 
     /**
@@ -849,7 +840,9 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String expressRouteGatewayName, String connectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, expressRouteGatewayName, connectionName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, expressRouteGatewayName, connectionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -956,7 +949,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1008,7 +1001,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1035,29 +1028,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteConnectionListInner> listAsync(String resourceGroupName, String expressRouteGatewayName) {
         return listWithResponseAsync(resourceGroupName, expressRouteGatewayName)
-            .flatMap(
-                (Response<ExpressRouteConnectionListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Lists ExpressRouteConnections.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteConnection list.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRouteConnectionListInner list(String resourceGroupName, String expressRouteGatewayName) {
-        return listAsync(resourceGroupName, expressRouteGatewayName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1075,5 +1046,20 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
     public Response<ExpressRouteConnectionListInner> listWithResponse(
         String resourceGroupName, String expressRouteGatewayName, Context context) {
         return listWithResponseAsync(resourceGroupName, expressRouteGatewayName, context).block();
+    }
+
+    /**
+     * Lists ExpressRouteConnections.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteConnection list.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRouteConnectionListInner list(String resourceGroupName, String expressRouteGatewayName) {
+        return listWithResponse(resourceGroupName, expressRouteGatewayName, Context.NONE).getValue();
     }
 }

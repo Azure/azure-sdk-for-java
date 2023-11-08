@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains the localized display information for this particular operation or action. */
 @Fluent
 public final class Display {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Display.class);
-
     /*
      * The localized, friendly version of the resource provider name.
      */
@@ -21,27 +17,28 @@ public final class Display {
     private String provider;
 
     /*
-     * The localized, friendly version of the resource type related to this
-     * action or operation; the resource type should match the public
-     * documentation for the resource provider.
+     * The localized, friendly version of the resource type related to this action or operation; the resource type
+     * should match the public documentation for the resource provider.
      */
     @JsonProperty(value = "resource")
     private String resource;
 
     /*
-     * The localized, friendly name for the operation. Use the name as it will
-     * displayed to the user.
+     * The localized, friendly name for the operation. Use the name as it will displayed to the user.
      */
     @JsonProperty(value = "operation")
     private String operation;
 
     /*
-     * The localized, friendly description for the operation. The description
-     * will be displayed to the user. It should be thorough and concise for
-     * used in both tooltips and detailed views.
+     * The localized, friendly description for the operation. The description will be displayed to the user. It should
+     * be thorough and concise for used in both tooltips and detailed views.
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of Display class. */
+    public Display() {
+    }
 
     /**
      * Get the provider property: The localized, friendly version of the resource provider name.

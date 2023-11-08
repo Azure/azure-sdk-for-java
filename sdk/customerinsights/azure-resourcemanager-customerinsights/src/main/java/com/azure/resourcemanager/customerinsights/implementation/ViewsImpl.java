@@ -13,10 +13,9 @@ import com.azure.resourcemanager.customerinsights.fluent.ViewsClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.ViewResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.ViewResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.Views;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ViewsImpl implements Views {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ViewsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ViewsImpl.class);
 
     private final ViewsClient innerClient;
 
@@ -41,15 +40,6 @@ public final class ViewsImpl implements Views {
         return Utils.mapPage(inner, inner1 -> new ViewResourceFormatImpl(inner1, this.manager()));
     }
 
-    public ViewResourceFormat get(String resourceGroupName, String hubName, String viewName, String userId) {
-        ViewResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, viewName, userId);
-        if (inner != null) {
-            return new ViewResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ViewResourceFormat> getWithResponse(
         String resourceGroupName, String hubName, String viewName, String userId, Context context) {
         Response<ViewResourceFormatInner> inner =
@@ -65,13 +55,22 @@ public final class ViewsImpl implements Views {
         }
     }
 
-    public void delete(String resourceGroupName, String hubName, String viewName, String userId) {
-        this.serviceClient().delete(resourceGroupName, hubName, viewName, userId);
+    public ViewResourceFormat get(String resourceGroupName, String hubName, String viewName, String userId) {
+        ViewResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, viewName, userId);
+        if (inner != null) {
+            return new ViewResourceFormatImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String hubName, String viewName, String userId, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, hubName, viewName, userId, context);
+    }
+
+    public void delete(String resourceGroupName, String hubName, String viewName, String userId) {
+        this.serviceClient().delete(resourceGroupName, hubName, viewName, userId);
     }
 
     private ViewsClient serviceClient() {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SyncConflictResolutionPolicy. */
+/** Conflict resolution policy of the sync group. */
 public final class SyncConflictResolutionPolicy extends ExpandableStringEnum<SyncConflictResolutionPolicy> {
     /** Static value HubWin for SyncConflictResolutionPolicy. */
     public static final SyncConflictResolutionPolicy HUB_WIN = fromString("HubWin");
@@ -27,7 +27,11 @@ public final class SyncConflictResolutionPolicy extends ExpandableStringEnum<Syn
         return fromString(name, SyncConflictResolutionPolicy.class);
     }
 
-    /** @return known SyncConflictResolutionPolicy values. */
+    /**
+     * Gets known SyncConflictResolutionPolicy values.
+     *
+     * @return known SyncConflictResolutionPolicy values.
+     */
     public static Collection<SyncConflictResolutionPolicy> values() {
         return values(SyncConflictResolutionPolicy.class);
     }

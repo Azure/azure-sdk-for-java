@@ -11,19 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of PartnerTopics. */
 public interface PartnerTopics {
     /**
-     * Get properties of a partner topic.
+     * Get a partner topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner topic.
-     */
-    PartnerTopic getByResourceGroup(String resourceGroupName, String partnerTopicName);
-
-    /**
-     * Get properties of a partner topic.
+     * <p>Get properties of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -37,7 +27,23 @@ public interface PartnerTopics {
         String resourceGroupName, String partnerTopicName, Context context);
 
     /**
-     * Delete existing partner topic.
+     * Get a partner topic.
+     *
+     * <p>Get properties of a partner topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a partner topic.
+     */
+    PartnerTopic getByResourceGroup(String resourceGroupName, String partnerTopicName);
+
+    /**
+     * Delete a partner topic.
+     *
+     * <p>Delete existing partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -48,7 +54,9 @@ public interface PartnerTopics {
     void deleteByResourceGroup(String resourceGroupName, String partnerTopicName);
 
     /**
-     * Delete existing partner topic.
+     * Delete a partner topic.
+     *
+     * <p>Delete existing partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -60,7 +68,9 @@ public interface PartnerTopics {
     void delete(String resourceGroupName, String partnerTopicName, Context context);
 
     /**
-     * List all the partner topics under an Azure subscription.
+     * List partner topics under an Azure subscription.
+     *
+     * <p>List all the partner topics under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -69,7 +79,9 @@ public interface PartnerTopics {
     PagedIterable<PartnerTopic> list();
 
     /**
-     * List all the partner topics under an Azure subscription.
+     * List partner topics under an Azure subscription.
+     *
+     * <p>List all the partner topics under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -88,7 +100,9 @@ public interface PartnerTopics {
     PagedIterable<PartnerTopic> list(String filter, Integer top, Context context);
 
     /**
-     * List all the partner topics under a resource group.
+     * List partner topics under a resource group.
+     *
+     * <p>List all the partner topics under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +113,9 @@ public interface PartnerTopics {
     PagedIterable<PartnerTopic> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the partner topics under a resource group.
+     * List partner topics under a resource group.
+     *
+     * <p>List all the partner topics under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -120,19 +136,9 @@ public interface PartnerTopics {
         String resourceGroupName, String filter, Integer top, Context context);
 
     /**
-     * Activate a newly created partner topic.
+     * Activate a partner topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Topic.
-     */
-    PartnerTopic activate(String resourceGroupName, String partnerTopicName);
-
-    /**
-     * Activate a newly created partner topic.
+     * <p>Activate a newly created partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -145,7 +151,9 @@ public interface PartnerTopics {
     Response<PartnerTopic> activateWithResponse(String resourceGroupName, String partnerTopicName, Context context);
 
     /**
-     * Deactivate specific partner topic.
+     * Activate a partner topic.
+     *
+     * <p>Activate a newly created partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -154,10 +162,12 @@ public interface PartnerTopics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Grid Partner Topic.
      */
-    PartnerTopic deactivate(String resourceGroupName, String partnerTopicName);
+    PartnerTopic activate(String resourceGroupName, String partnerTopicName);
 
     /**
-     * Deactivate specific partner topic.
+     * Deactivate a partner topic.
+     *
+     * <p>Deactivate specific partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -170,7 +180,23 @@ public interface PartnerTopics {
     Response<PartnerTopic> deactivateWithResponse(String resourceGroupName, String partnerTopicName, Context context);
 
     /**
-     * Get properties of a partner topic.
+     * Deactivate a partner topic.
+     *
+     * <p>Deactivate specific partner topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Topic.
+     */
+    PartnerTopic deactivate(String resourceGroupName, String partnerTopicName);
+
+    /**
+     * Get a partner topic.
+     *
+     * <p>Get properties of a partner topic.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +207,9 @@ public interface PartnerTopics {
     PartnerTopic getById(String id);
 
     /**
-     * Get properties of a partner topic.
+     * Get a partner topic.
+     *
+     * <p>Get properties of a partner topic.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -193,7 +221,9 @@ public interface PartnerTopics {
     Response<PartnerTopic> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete existing partner topic.
+     * Delete a partner topic.
+     *
+     * <p>Delete existing partner topic.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,7 +233,9 @@ public interface PartnerTopics {
     void deleteById(String id);
 
     /**
-     * Delete existing partner topic.
+     * Delete a partner topic.
+     *
+     * <p>Delete existing partner topic.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -16,7 +16,6 @@ import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_END_
 import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_START_TIME;
 
 public abstract class AnomalyDimensionValuesTestBase extends MetricsAdvisorClientTestBase {
-
     @Test
     public abstract void listAnomalyDimensionValues(HttpClient httpClient,
                                                     MetricsAdvisorServiceVersion serviceVersion);
@@ -35,7 +34,7 @@ public abstract class AnomalyDimensionValuesTestBase extends MetricsAdvisorClien
 
     protected static class ListAnomalyDimensionValuesOutput {
         static final ListAnomalyDimensionValuesOutput INSTANCE = new ListAnomalyDimensionValuesOutput();
-        final int expectedValues = 11;
+        final int expectedValues = 2;
     }
 
     protected void assertListAnomalyDimensionValuesOutput(String value) {

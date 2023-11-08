@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for ScalingPlans Create. */
 public final class ScalingPlansCreateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_Create.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlan_Create.json
      */
     /**
      * Sample code: ScalingPlans_Create.
@@ -31,10 +31,10 @@ public final class ScalingPlansCreateSamples {
             .define("scalingPlan1")
             .withRegion("centralus")
             .withExistingResourceGroup("resourceGroup1")
+            .withTimeZone("Central Standard Time")
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .withDescription("Description of Scaling Plan")
             .withFriendlyName("Scaling Plan 1")
-            .withTimeZone("Central Standard Time")
             .withHostPoolType(ScalingHostPoolType.POOLED)
             .withExclusionTag("value")
             .withSchedules(
@@ -75,6 +75,7 @@ public final class ScalingPlansCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -6,15 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for the task that validates connection to Azure Database for PostgreSQL and target server requirements. */
 @Fluent
 public final class ConnectToTargetAzureDbForPostgreSqlSyncTaskInput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConnectToTargetAzureDbForPostgreSqlSyncTaskInput.class);
-
     /*
      * Connection information for source PostgreSQL server
      */
@@ -26,6 +22,10 @@ public final class ConnectToTargetAzureDbForPostgreSqlSyncTaskInput {
      */
     @JsonProperty(value = "targetConnectionInfo", required = true)
     private PostgreSqlConnectionInfo targetConnectionInfo;
+
+    /** Creates an instance of ConnectToTargetAzureDbForPostgreSqlSyncTaskInput class. */
+    public ConnectToTargetAzureDbForPostgreSqlSyncTaskInput() {
+    }
 
     /**
      * Get the sourceConnectionInfo property: Connection information for source PostgreSQL server.
@@ -76,7 +76,7 @@ public final class ConnectToTargetAzureDbForPostgreSqlSyncTaskInput {
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model"
@@ -85,7 +85,7 @@ public final class ConnectToTargetAzureDbForPostgreSqlSyncTaskInput {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model"
@@ -94,4 +94,6 @@ public final class ConnectToTargetAzureDbForPostgreSqlSyncTaskInput {
             targetConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectToTargetAzureDbForPostgreSqlSyncTaskInput.class);
 }

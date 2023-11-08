@@ -14,6 +14,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
+import com.azure.resourcemanager.network.fluent.models.IpPrefixesListInner;
+import com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -148,19 +150,6 @@ public interface AzureFirewallsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Firewall.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureFirewallInner getByResourceGroup(String resourceGroupName, String azureFirewallName);
-
-    /**
-     * Gets the specified Azure Firewall.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -170,6 +159,19 @@ public interface AzureFirewallsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AzureFirewallInner> getByResourceGroupWithResponse(
         String resourceGroupName, String azureFirewallName, Context context);
+
+    /**
+     * Gets the specified Azure Firewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure Firewall.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureFirewallInner getByResourceGroup(String resourceGroupName, String azureFirewallName);
 
     /**
      * Creates or updates the specified Azure Firewall.
@@ -451,4 +453,212 @@ public interface AzureFirewallsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureFirewallInner> list(Context context);
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> listLearnedPrefixesWithResponseAsync(
+        String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<IpPrefixesListInner>, IpPrefixesListInner> beginListLearnedPrefixesAsync(
+        String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<IpPrefixesListInner>, IpPrefixesListInner> beginListLearnedPrefixes(
+        String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<IpPrefixesListInner>, IpPrefixesListInner> beginListLearnedPrefixes(
+        String resourceGroupName, String azureFirewallName, Context context);
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<IpPrefixesListInner> listLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IpPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of SNAT IP Prefixes learnt by firewall to not SNAT.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IpPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName, Context context);
+
+    /**
+     * Runs a packet capture on AzureFirewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> packetCaptureWithResponseAsync(
+        String resourceGroupName, String azureFirewallName, FirewallPacketCaptureParameters parameters);
+
+    /**
+     * Runs a packet capture on AzureFirewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginPacketCaptureAsync(
+        String resourceGroupName, String azureFirewallName, FirewallPacketCaptureParameters parameters);
+
+    /**
+     * Runs a packet capture on AzureFirewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPacketCapture(
+        String resourceGroupName, String azureFirewallName, FirewallPacketCaptureParameters parameters);
+
+    /**
+     * Runs a packet capture on AzureFirewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPacketCapture(
+        String resourceGroupName,
+        String azureFirewallName,
+        FirewallPacketCaptureParameters parameters,
+        Context context);
+
+    /**
+     * Runs a packet capture on AzureFirewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> packetCaptureAsync(
+        String resourceGroupName, String azureFirewallName, FirewallPacketCaptureParameters parameters);
+
+    /**
+     * Runs a packet capture on AzureFirewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void packetCapture(String resourceGroupName, String azureFirewallName, FirewallPacketCaptureParameters parameters);
+
+    /**
+     * Runs a packet capture on AzureFirewall.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void packetCapture(
+        String resourceGroupName,
+        String azureFirewallName,
+        FirewallPacketCaptureParameters parameters,
+        Context context);
 }

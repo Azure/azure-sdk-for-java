@@ -6,20 +6,20 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A workspace key. */
 @Fluent
 public final class KeyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyInner.class);
-
     /*
      * Keys resource properties
      */
     @JsonProperty(value = "properties")
     private KeyProperties innerProperties;
+
+    /** Creates an instance of KeyInner class. */
+    public KeyInner() {
+    }
 
     /**
      * Get the innerProperties property: Keys resource properties.

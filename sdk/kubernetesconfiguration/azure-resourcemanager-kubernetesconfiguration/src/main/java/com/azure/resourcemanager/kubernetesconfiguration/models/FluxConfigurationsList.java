@@ -27,6 +27,10 @@ public final class FluxConfigurationsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of FluxConfigurationsList class. */
+    public FluxConfigurationsList() {
+    }
+
     /**
      * Get the value property: List of Flux Configurations within a Kubernetes cluster.
      *

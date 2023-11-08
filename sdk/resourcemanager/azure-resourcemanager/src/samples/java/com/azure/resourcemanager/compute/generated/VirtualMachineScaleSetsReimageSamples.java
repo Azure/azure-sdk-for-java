@@ -4,39 +4,38 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetReimageParameters;
 import java.util.Arrays;
 
 /** Samples for VirtualMachineScaleSets Reimage. */
 public final class VirtualMachineScaleSetsReimageSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_Reimage_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reimage_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Reimage_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Reimage_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsReimageMinimumSetGen(
+    public static void virtualMachineScaleSetReimageMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .reimage("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, Context.NONE);
+            .reimage("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_Reimage_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reimage_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Reimage_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Reimage_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsReimageMaximumSetGen(
+    public static void virtualMachineScaleSetReimageMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -49,6 +48,6 @@ public final class VirtualMachineScaleSetsReimageSamples {
                 new VirtualMachineScaleSetReimageParameters()
                     .withTempDisk(true)
                     .withInstanceIds(Arrays.asList("aaaaaaaaaa")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

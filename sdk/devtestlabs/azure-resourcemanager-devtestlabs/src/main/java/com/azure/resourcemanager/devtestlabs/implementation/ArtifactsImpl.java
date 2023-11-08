@@ -16,10 +16,9 @@ import com.azure.resourcemanager.devtestlabs.models.ArmTemplateInfo;
 import com.azure.resourcemanager.devtestlabs.models.Artifact;
 import com.azure.resourcemanager.devtestlabs.models.Artifacts;
 import com.azure.resourcemanager.devtestlabs.models.GenerateArmTemplateRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ArtifactsImpl implements Artifacts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArtifactsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ArtifactsImpl.class);
 
     private final ArtifactsClient innerClient;
 
@@ -52,15 +51,6 @@ public final class ArtifactsImpl implements Artifacts {
         return Utils.mapPage(inner, inner1 -> new ArtifactImpl(inner1, this.manager()));
     }
 
-    public Artifact get(String resourceGroupName, String labName, String artifactSourceName, String name) {
-        ArtifactInner inner = this.serviceClient().get(resourceGroupName, labName, artifactSourceName, name);
-        if (inner != null) {
-            return new ArtifactImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Artifact> getWithResponse(
         String resourceGroupName,
         String labName,
@@ -81,18 +71,10 @@ public final class ArtifactsImpl implements Artifacts {
         }
     }
 
-    public ArmTemplateInfo generateArmTemplate(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        GenerateArmTemplateRequest generateArmTemplateRequest) {
-        ArmTemplateInfoInner inner =
-            this
-                .serviceClient()
-                .generateArmTemplate(resourceGroupName, labName, artifactSourceName, name, generateArmTemplateRequest);
+    public Artifact get(String resourceGroupName, String labName, String artifactSourceName, String name) {
+        ArtifactInner inner = this.serviceClient().get(resourceGroupName, labName, artifactSourceName, name);
         if (inner != null) {
-            return new ArmTemplateInfoImpl(inner, this.manager());
+            return new ArtifactImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -116,6 +98,23 @@ public final class ArtifactsImpl implements Artifacts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ArmTemplateInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ArmTemplateInfo generateArmTemplate(
+        String resourceGroupName,
+        String labName,
+        String artifactSourceName,
+        String name,
+        GenerateArmTemplateRequest generateArmTemplateRequest) {
+        ArmTemplateInfoInner inner =
+            this
+                .serviceClient()
+                .generateArmTemplate(resourceGroupName, labName, artifactSourceName, name, generateArmTemplateRequest);
+        if (inner != null) {
+            return new ArmTemplateInfoImpl(inner, this.manager());
         } else {
             return null;
         }

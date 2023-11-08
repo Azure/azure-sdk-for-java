@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,12 +15,9 @@ import java.util.Map;
 /** chatMessageMention. */
 @Fluent
 public final class MicrosoftGraphChatMessageMention {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphChatMessageMention.class);
-
     /*
-     * Index of an entity being mentioned in the specified chatMessage. Matches
-     * the {index} value in the corresponding <at id='{index}'> tag in the
-     * message body.
+     * Index of an entity being mentioned in the specified chatMessage. Matches the {index} value in the corresponding
+     * <at id='{index}'> tag in the message body.
      */
     @JsonProperty(value = "id")
     private Integer id;
@@ -33,8 +29,7 @@ public final class MicrosoftGraphChatMessageMention {
     private MicrosoftGraphIdentitySet mentioned;
 
     /*
-     * String used to represent the mention. For example, a user's display
-     * name, a team name.
+     * String used to represent the mention. For example, a user's display name, a team name.
      */
     @JsonProperty(value = "mentionText")
     private String mentionText;
@@ -43,6 +38,10 @@ public final class MicrosoftGraphChatMessageMention {
      * chatMessageMention
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphChatMessageMention class. */
+    public MicrosoftGraphChatMessageMention() {
+    }
 
     /**
      * Get the id property: Index of an entity being mentioned in the specified chatMessage. Matches the {index} value

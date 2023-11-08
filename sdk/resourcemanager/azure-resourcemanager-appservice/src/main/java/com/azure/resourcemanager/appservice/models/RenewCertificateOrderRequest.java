@@ -17,6 +17,10 @@ public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private RenewCertificateOrderRequestProperties innerProperties;
 
+    /** Creates an instance of RenewCertificateOrderRequest class. */
+    public RenewCertificateOrderRequest() {
+    }
+
     /**
      * Get the innerProperties property: RenewCertificateOrderRequest resource specific properties.
      *

@@ -8,20 +8,21 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.AssemblyProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The assembly definition. */
 @Fluent
 public final class AssemblyDefinitionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssemblyDefinitionInner.class);
-
     /*
      * The assembly properties.
      */
     @JsonProperty(value = "properties", required = true)
     private AssemblyProperties properties;
+
+    /** Creates an instance of AssemblyDefinitionInner class. */
+    public AssemblyDefinitionInner() {
+    }
 
     /**
      * Get the properties property: The assembly properties.
@@ -64,7 +65,7 @@ public final class AssemblyDefinitionInner extends Resource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model AssemblyDefinitionInner"));
@@ -72,4 +73,6 @@ public final class AssemblyDefinitionInner extends Resource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AssemblyDefinitionInner.class);
 }

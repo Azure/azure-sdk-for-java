@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Connection string for the Cosmos DB account. */
 @Immutable
 public final class DatabaseAccountConnectionString {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountConnectionString.class);
-
     /*
      * Value of the connection string
      */
@@ -25,6 +21,22 @@ public final class DatabaseAccountConnectionString {
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
+
+    /*
+     * Kind of the connection string key
+     */
+    @JsonProperty(value = "keyKind", access = JsonProperty.Access.WRITE_ONLY)
+    private Kind keyKind;
+
+    /*
+     * Type of the connection string
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private Type type;
+
+    /** Creates an instance of DatabaseAccountConnectionString class. */
+    public DatabaseAccountConnectionString() {
+    }
 
     /**
      * Get the connectionString property: Value of the connection string.
@@ -42,6 +54,24 @@ public final class DatabaseAccountConnectionString {
      */
     public String description() {
         return this.description;
+    }
+
+    /**
+     * Get the keyKind property: Kind of the connection string key.
+     *
+     * @return the keyKind value.
+     */
+    public Kind keyKind() {
+        return this.keyKind;
+    }
+
+    /**
+     * Get the type property: Type of the connection string.
+     *
+     * @return the type value.
+     */
+    public Type type() {
+        return this.type;
     }
 
     /**

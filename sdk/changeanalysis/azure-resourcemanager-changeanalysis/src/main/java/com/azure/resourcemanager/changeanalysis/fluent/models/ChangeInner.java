@@ -6,21 +6,21 @@ package com.azure.resourcemanager.changeanalysis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.changeanalysis.models.ChangeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The detected change. */
 @Fluent
 public final class ChangeInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChangeInner.class);
-
     /*
      * The properties of a change.
      */
     @JsonProperty(value = "properties")
     private ChangeProperties properties;
+
+    /** Creates an instance of ChangeInner class. */
+    public ChangeInner() {
+    }
 
     /**
      * Get the properties property: The properties of a change.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The reference to the key vault key. */
 @Fluent
 public final class KeyVaultKeyReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultKeyReference.class);
-
     /*
      * The key vault reference.
      */
@@ -31,6 +28,10 @@ public final class KeyVaultKeyReference {
      */
     @JsonProperty(value = "keyVersion")
     private String keyVersion;
+
+    /** Creates an instance of KeyVaultKeyReference class. */
+    public KeyVaultKeyReference() {
+    }
 
     /**
      * Get the keyVault property: The key vault reference.
@@ -99,16 +100,18 @@ public final class KeyVaultKeyReference {
      */
     public void validate() {
         if (keyVault() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyVault in model KeyVaultKeyReference"));
         } else {
             keyVault().validate();
         }
         if (keyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyName in model KeyVaultKeyReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultKeyReference.class);
 }

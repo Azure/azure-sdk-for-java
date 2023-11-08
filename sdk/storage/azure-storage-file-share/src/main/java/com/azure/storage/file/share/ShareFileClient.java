@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
@@ -33,15 +34,19 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
+import com.azure.storage.file.share.options.ShareFileSeekableByteChannelReadOptions;
+import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
@@ -128,7 +133,8 @@ public class ShareFileClient {
      * @throws ShareStorageException If a storage service error occurred.
      */
     public final StorageFileInputStream openInputStream(ShareFileRange range) {
-        return new StorageFileInputStream(shareFileAsyncClient, range.getStart(), range.getEnd());
+        return new StorageFileInputStream(shareFileAsyncClient, range.getStart(),
+            range.getEnd() == null ? null : (range.getEnd() - range.getStart() + 1));
     }
 
     /**
@@ -152,6 +158,41 @@ public class ShareFileClient {
      */
     public final StorageFileOutputStream getFileOutputStream(long offset) {
         return new StorageFileOutputStream(shareFileAsyncClient, offset);
+    }
+
+    /**
+     * Creates and opens a {@link SeekableByteChannel} to write data to the file.
+     * @param options Options for opening the channel.
+     * @return The opened channel.
+     */
+    public SeekableByteChannel getFileSeekableByteChannelWrite(ShareFileSeekableByteChannelWriteOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        if (options.isOverwriteMode()) {
+            Objects.requireNonNull(options.getFileSizeInBytes(), "'options.getFileSize()' cannot return null.");
+            create(options.getFileSizeInBytes());
+        }
+
+        int chunkSize = options.getChunkSizeInBytes() != null
+            ? options.getChunkSizeInBytes().intValue() : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
+        return new StorageSeekableByteChannel(chunkSize,
+            new StorageSeekableByteChannelShareFileWriteBehavior(this, options.getRequestConditions(),
+                options.getFileLastWrittenMode()), 0L);
+    }
+
+    /**
+     * Creates and opens a {@link SeekableByteChannel} to read data from the file.
+     * @param options Options for opening the channel.
+     * @return The opened channel.
+     */
+    public SeekableByteChannel getFileSeekableByteChannelRead(ShareFileSeekableByteChannelReadOptions options) {
+        ShareRequestConditions conditions = options != null ? options.getRequestConditions() : null;
+        Long configuredChunkSize = options != null ? options.getChunkSizeInBytes() : null;
+        int chunkSize = configuredChunkSize != null
+            ? configuredChunkSize.intValue()
+            : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
+        return new StorageSeekableByteChannel(chunkSize,
+            new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), 0L);
     }
 
     /**
@@ -369,7 +410,8 @@ public class ShareFileClient {
      */
     public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
         Duration pollInterval) {
-        return this.beginCopy(sourceUrl, null, null, null, null, null, metadata, pollInterval, null);
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setMetadata(metadata);
+        return this.beginCopy(sourceUrl, options, pollInterval);
     }
 
     /**
@@ -424,9 +466,71 @@ public class ShareFileClient {
         String filePermission, PermissionCopyModeType filePermissionCopyMode, Boolean ignoreReadOnly,
         Boolean setArchiveAttribute, Map<String, String> metadata, Duration pollInterval,
         ShareRequestConditions destinationRequestConditions) {
-        return shareFileAsyncClient.beginCopy(sourceUrl, smbProperties, filePermission, filePermissionCopyMode,
-            ignoreReadOnly, setArchiveAttribute, metadata, pollInterval, destinationRequestConditions)
-                .getSyncPoller();
+        ShareFileCopyOptions options = new ShareFileCopyOptions()
+            .setSmbProperties(smbProperties)
+            .setFilePermission(filePermission)
+            .setPermissionCopyModeType(filePermissionCopyMode)
+            .setIgnoreReadOnly(ignoreReadOnly)
+            .setArchiveAttribute(setArchiveAttribute)
+            .setMetadata(metadata)
+            .setDestinationRequestConditions(destinationRequestConditions);
+
+        return beginCopy(sourceUrl, options, pollInterval);
+    }
+
+    /**
+     * Copies a blob or file to a destination file within the storage account.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.beginCopy#String-Duration-ShareFileCopyOptions -->
+     * <pre>
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
+     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
+     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
+     * String filePermission = &quot;filePermission&quot;;
+     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
+     * boolean ignoreReadOnly = false; &#47;&#47; Default value
+     * boolean setArchiveAttribute = true; &#47;&#47; Default value
+     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * CopyableFileSmbPropertiesList list = new CopyableFileSmbPropertiesList&#40;&#41;.setCreatedOn&#40;true&#41;.setLastWrittenOn&#40;true&#41;;
+     * &#47;&#47; NOTE: FileSmbProperties and CopyableFileSmbPropertiesList should never be both set
+     *
+     * ShareFileCopyOptions options = new ShareFileCopyOptions&#40;&#41;
+     *     .setSmbProperties&#40;smbProperties&#41;
+     *     .setFilePermission&#40;filePermission&#41;
+     *     .setIgnoreReadOnly&#40;ignoreReadOnly&#41;
+     *     .setArchiveAttribute&#40;setArchiveAttribute&#41;
+     *     .setDestinationRequestConditions&#40;requestConditions&#41;
+     *     .setSmbPropertiesToCopy&#40;list&#41;
+     *     .setPermissionCopyModeType&#40;PermissionCopyModeType.SOURCE&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;;
+     *
+     * SyncPoller&lt;ShareFileCopyInfo, Void&gt; poller = fileClient.beginCopy&#40;
+     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, options, Duration.ofSeconds&#40;2&#41;&#41;;
+     *
+     * final PollResponse&lt;ShareFileCopyInfo&gt; pollResponse = poller.poll&#40;&#41;;
+     * final ShareFileCopyInfo value = pollResponse.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Copy source: %s. Status: %s.%n&quot;, value.getCopySourceUrl&#40;&#41;, value.getCopyStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.beginCopy#String-Duration-ShareFileCopyOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
+     *
+     * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
+     * @param options {@link ShareFileCopyOptions}
+     * @return A {@link SyncPoller} to poll the progress of copy operation.
+     * @see <a href="https://docs.microsoft.com/dotnet/csharp/language-reference/">C# identifiers</a>
+     */
+    public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options, Duration pollInterval) {
+        return shareFileAsyncClient.beginCopy(sourceUrl, options, pollInterval).getSyncPoller();
     }
 
     /**
@@ -884,6 +988,66 @@ public class ShareFileClient {
     }
 
     /**
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExists -->
+     * <pre>
+     * boolean result = fileClient.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;File deleted: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     * @return {@code true} if the file is successfully deleted, {@code false} if the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean deleteIfExists() {
+        return deleteIfExistsWithResponse(null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->
+     * <pre>
+     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Response&lt;Boolean&gt; response = fileClient.deleteIfExistsWithResponse&#40;requestConditions, Duration.ofSeconds&#40;1&#41;,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the file
+     * was successfully deleted. If status code is 404, the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Duration timeout,
+        Context context) {
+        Mono<Response<Boolean>> response = shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
      * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
      * date, is server encrypted, and eTag.
      *
@@ -1309,8 +1473,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the
-     * ShareFileRangeWriteType is set to clear, the value of this header must be set to zero.
+     * @param length Specifies the number of bytes being transmitted in the request body. Value must be greater than or
+     * equal to 1.
      * @return The {@link ShareFileUploadInfo file upload info}
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
@@ -1347,7 +1511,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param length Specifies the number of bytes being transmitted in the request body. Value must be greater than or
+     * equal to 1.
      * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
@@ -1392,7 +1557,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param length Specifies the number of bytes being transmitted in the request body. Value must be greater than or
+     * equal to 1.
      * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @param requestConditions {@link ShareRequestConditions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -1437,7 +1603,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param length Specifies the number of bytes being transmitted in the request body. Value must be greater than or
+     * equal to 1.
      * @param transferOptions {@link ParallelTransferOptions} for file transfer.
      * @return The {@link ShareFileUploadInfo file upload info}
      */
@@ -1499,7 +1666,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param length Specifies the number of bytes being transmitted in the request body. Value must be greater than or
+     * equal to 1.
      * @return The {@link ShareFileUploadInfo file upload info}
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)

@@ -24,6 +24,10 @@ public final class ManagementLockListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ManagementLockListResult class. */
+    public ManagementLockListResult() {
+    }
+
     /**
      * Get the value property: The list of locks.
      *

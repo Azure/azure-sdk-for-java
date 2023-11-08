@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Azure ML Update Resource management activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,26 +18,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /*
-     * Name of the Trained Model module in the Web Service experiment to be
-     * updated. Type: string (or Expression with resultType string).
+     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.trainedModelName", required = true)
     private Object trainedModelName;
 
     /*
-     * Name of Azure Storage linked service holding the .ilearner file that
-     * will be uploaded by the update operation.
+     * Name of Azure Storage linked service holding the .ilearner file that will be uploaded by the update operation.
      */
     @JsonProperty(value = "typeProperties.trainedModelLinkedServiceName", required = true)
     private LinkedServiceReference trainedModelLinkedServiceName;
 
     /*
-     * The relative file path in trainedModelLinkedService to represent the
-     * .ilearner file that will be uploaded by the update operation.  Type:
-     * string (or Expression with resultType string).
+     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the
+     * update operation.  Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.trainedModelFilePath", required = true)
     private Object trainedModelFilePath;
+
+    /** Creates an instance of AzureMLUpdateResourceActivity class. */
+    public AzureMLUpdateResourceActivity() {}
 
     /**
      * Get the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
@@ -104,6 +106,62 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      */
     public AzureMLUpdateResourceActivity setTrainedModelFilePath(Object trainedModelFilePath) {
         this.trainedModelFilePath = trainedModelFilePath;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

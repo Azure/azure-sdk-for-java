@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.resourcemover.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 
 /** Defines the move collection errors. */
-@Immutable
+@Fluent
 public final class MoveCollectionPropertiesErrors extends MoveResourceError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveCollectionPropertiesErrors.class);
+    /** Creates an instance of MoveCollectionPropertiesErrors class. */
+    public MoveCollectionPropertiesErrors() {
+    }
 
     /** {@inheritDoc} */
     @Override

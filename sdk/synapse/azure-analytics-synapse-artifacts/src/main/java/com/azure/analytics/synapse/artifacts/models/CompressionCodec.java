@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CompressionCodec. */
+/** All available compressionCodec values. */
 public final class CompressionCodec extends ExpandableStringEnum<CompressionCodec> {
     /** Static value none for CompressionCodec. */
     public static final CompressionCodec NONE = fromString("none");
@@ -41,6 +41,14 @@ public final class CompressionCodec extends ExpandableStringEnum<CompressionCode
     public static final CompressionCodec TAR_GZIP = fromString("tarGZip");
 
     /**
+     * Creates a new instance of CompressionCodec value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CompressionCodec() {}
+
+    /**
      * Creates or finds a CompressionCodec from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +59,11 @@ public final class CompressionCodec extends ExpandableStringEnum<CompressionCode
         return fromString(name, CompressionCodec.class);
     }
 
-    /** @return known CompressionCodec values. */
+    /**
+     * Gets known CompressionCodec values.
+     *
+     * @return known CompressionCodec values.
+     */
     public static Collection<CompressionCodec> values() {
         return values(CompressionCodec.class);
     }

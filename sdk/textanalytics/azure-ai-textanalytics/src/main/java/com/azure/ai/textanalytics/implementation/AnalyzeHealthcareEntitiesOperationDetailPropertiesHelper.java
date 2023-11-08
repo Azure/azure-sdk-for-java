@@ -19,6 +19,7 @@ public final class AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper {
      */
     public interface AnalyzeHealthcareEntitiesOperationDetailAccessor {
         void setOperationId(AnalyzeHealthcareEntitiesOperationDetail operationDetail, String operationId);
+        void setDisplayName(AnalyzeHealthcareEntitiesOperationDetail operationDetail, String name);
         void setCreatedAt(AnalyzeHealthcareEntitiesOperationDetail operationDetail, OffsetDateTime createdAt);
         void setExpiresAt(AnalyzeHealthcareEntitiesOperationDetail operationDetail, OffsetDateTime expiresAt);
         void setLastModifiedAt(AnalyzeHealthcareEntitiesOperationDetail operationDetail,
@@ -37,6 +38,10 @@ public final class AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper {
 
     public static void setOperationId(AnalyzeHealthcareEntitiesOperationDetail operationDetail, String operationId) {
         accessor.setOperationId(operationDetail, operationId);
+    }
+
+    public static void setDisplayName(AnalyzeHealthcareEntitiesOperationDetail operationDetail, String name) {
+        accessor.setDisplayName(operationDetail, name);
     }
 
     public static void setCreatedAt(AnalyzeHealthcareEntitiesOperationDetail operationDetail,

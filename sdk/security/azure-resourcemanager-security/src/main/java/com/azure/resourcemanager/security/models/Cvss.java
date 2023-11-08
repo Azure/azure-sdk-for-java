@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** CVSS details. */
 @Immutable
 public final class Cvss {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Cvss.class);
-
     /*
      * CVSS base
      */
     @JsonProperty(value = "base", access = JsonProperty.Access.WRITE_ONLY)
     private Float base;
+
+    /** Creates an instance of Cvss class. */
+    public Cvss() {
+    }
 
     /**
      * Get the base property: CVSS base.

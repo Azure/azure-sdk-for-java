@@ -17,6 +17,10 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private RelayServiceConnectionEntityProperties innerProperties;
 
+    /** Creates an instance of RelayServiceConnectionEntityInner class. */
+    public RelayServiceConnectionEntityInner() {
+    }
+
     /**
      * Get the innerProperties property: RelayServiceConnectionEntity resource specific properties.
      *

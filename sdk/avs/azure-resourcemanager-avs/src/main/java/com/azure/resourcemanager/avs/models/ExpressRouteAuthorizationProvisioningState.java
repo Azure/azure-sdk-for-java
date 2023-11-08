@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteAuthorizationProvisioningState. */
+/** The state of the ExpressRoute Circuit Authorization provisioning. */
 public final class ExpressRouteAuthorizationProvisioningState
     extends ExpandableStringEnum<ExpressRouteAuthorizationProvisioningState> {
     /** Static value Succeeded for ExpressRouteAuthorizationProvisioningState. */
@@ -19,6 +19,18 @@ public final class ExpressRouteAuthorizationProvisioningState
 
     /** Static value Updating for ExpressRouteAuthorizationProvisioningState. */
     public static final ExpressRouteAuthorizationProvisioningState UPDATING = fromString("Updating");
+
+    /** Static value Canceled for ExpressRouteAuthorizationProvisioningState. */
+    public static final ExpressRouteAuthorizationProvisioningState CANCELED = fromString("Canceled");
+
+    /**
+     * Creates a new instance of ExpressRouteAuthorizationProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteAuthorizationProvisioningState() {
+    }
 
     /**
      * Creates or finds a ExpressRouteAuthorizationProvisioningState from its string representation.
@@ -31,7 +43,11 @@ public final class ExpressRouteAuthorizationProvisioningState
         return fromString(name, ExpressRouteAuthorizationProvisioningState.class);
     }
 
-    /** @return known ExpressRouteAuthorizationProvisioningState values. */
+    /**
+     * Gets known ExpressRouteAuthorizationProvisioningState values.
+     *
+     * @return known ExpressRouteAuthorizationProvisioningState values.
+     */
     public static Collection<ExpressRouteAuthorizationProvisioningState> values() {
         return values(ExpressRouteAuthorizationProvisioningState.class);
     }

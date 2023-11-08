@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The sensitivity label. */
 @Fluent
 public final class SensitivityLabel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SensitivityLabel.class);
-
     /*
      * The name of the sensitivity label.
      */
@@ -43,6 +39,10 @@ public final class SensitivityLabel {
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
+
+    /** Creates an instance of SensitivityLabel class. */
+    public SensitivityLabel() {
+    }
 
     /**
      * Get the displayName property: The name of the sensitivity label.

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContain
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProtectionContainersImpl implements ProtectionContainers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionContainersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProtectionContainersImpl.class);
 
     private final ProtectionContainersClient innerClient;
 
@@ -26,17 +25,6 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ProtectionContainerResource get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName) {
-        ProtectionContainerResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName);
-        if (inner != null) {
-            return new ProtectionContainerResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ProtectionContainerResource> getWithResponse(
@@ -54,8 +42,15 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
         }
     }
 
-    public void unregister(String vaultName, String resourceGroupName, String fabricName, String containerName) {
-        this.serviceClient().unregister(vaultName, resourceGroupName, fabricName, containerName);
+    public ProtectionContainerResource get(
+        String vaultName, String resourceGroupName, String fabricName, String containerName) {
+        ProtectionContainerResourceInner inner =
+            this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName);
+        if (inner != null) {
+            return new ProtectionContainerResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> unregisterWithResponse(
@@ -65,8 +60,8 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
             .unregisterWithResponse(vaultName, resourceGroupName, fabricName, containerName, context);
     }
 
-    public void inquire(String vaultName, String resourceGroupName, String fabricName, String containerName) {
-        this.serviceClient().inquire(vaultName, resourceGroupName, fabricName, containerName);
+    public void unregister(String vaultName, String resourceGroupName, String fabricName, String containerName) {
+        this.serviceClient().unregister(vaultName, resourceGroupName, fabricName, containerName);
     }
 
     public Response<Void> inquireWithResponse(
@@ -81,8 +76,8 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
             .inquireWithResponse(vaultName, resourceGroupName, fabricName, containerName, filter, context);
     }
 
-    public void refresh(String vaultName, String resourceGroupName, String fabricName) {
-        this.serviceClient().refresh(vaultName, resourceGroupName, fabricName);
+    public void inquire(String vaultName, String resourceGroupName, String fabricName, String containerName) {
+        this.serviceClient().inquire(vaultName, resourceGroupName, fabricName, containerName);
     }
 
     public Response<Void> refreshWithResponse(
@@ -90,17 +85,21 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
         return this.serviceClient().refreshWithResponse(vaultName, resourceGroupName, fabricName, filter, context);
     }
 
+    public void refresh(String vaultName, String resourceGroupName, String fabricName) {
+        this.serviceClient().refresh(vaultName, resourceGroupName, fabricName);
+    }
+
     public ProtectionContainerResource getById(String id) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,14 +107,14 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
         }
         String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
         String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,14 +128,14 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
     public Response<ProtectionContainerResource> getByIdWithResponse(String id, Context context) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,14 +143,14 @@ public final class ProtectionContainersImpl implements ProtectionContainers {
         }
         String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
         String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

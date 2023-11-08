@@ -36,6 +36,9 @@ public final class StaticWebsite {
     @JsonProperty(value = "DefaultIndexDocumentPath")
     private String defaultIndexDocumentPath;
 
+    /** Creates an instance of StaticWebsite class. */
+    public StaticWebsite() {}
+
     /**
      * Get the enabled property: Indicates whether this account is hosting a static website.
      *

@@ -19,6 +19,10 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private MSDeployStatusProperties innerProperties;
 
+    /** Creates an instance of MSDeployStatusInner class. */
+    public MSDeployStatusInner() {
+    }
+
     /**
      * Get the innerProperties property: MSDeployStatus resource specific properties.
      *

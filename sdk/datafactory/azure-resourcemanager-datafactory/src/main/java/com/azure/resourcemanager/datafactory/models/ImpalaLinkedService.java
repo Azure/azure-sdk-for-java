@@ -24,6 +24,10 @@ public final class ImpalaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ImpalaLinkedServiceTypeProperties innerTypeProperties = new ImpalaLinkedServiceTypeProperties();
 
+    /** Creates an instance of ImpalaLinkedService class. */
+    public ImpalaLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Impala server linked service properties.
      *
@@ -309,22 +313,22 @@ public final class ImpalaLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ImpalaLinkedService object itself.
      */
-    public ImpalaLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public ImpalaLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new ImpalaLinkedServiceTypeProperties();
         }

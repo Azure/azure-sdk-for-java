@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupUsageSummar
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupWorkloadItemsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BmsPrepareDataMoveOperationResultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.DeletedProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.FeatureSupportsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
@@ -77,15 +79,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the RecoveryServicesBackupClientImpl type. */
 @ServiceClient(builder = RecoveryServicesBackupClientBuilder.class)
 public final class RecoveryServicesBackupClientImpl implements RecoveryServicesBackupClient {
-    private final ClientLogger logger = new ClientLogger(RecoveryServicesBackupClientImpl.class);
-
     /** The subscription Id. */
     private final String subscriptionId;
 
@@ -698,6 +697,18 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         return this.backupProtectionContainers;
     }
 
+    /** The DeletedProtectionContainersClient object to access its operations. */
+    private final DeletedProtectionContainersClient deletedProtectionContainers;
+
+    /**
+     * Gets the DeletedProtectionContainersClient object to access its operations.
+     *
+     * @return the DeletedProtectionContainersClient object.
+     */
+    public DeletedProtectionContainersClient getDeletedProtectionContainers() {
+        return this.deletedProtectionContainers;
+    }
+
     /** The SecurityPINsClient object to access its operations. */
     private final SecurityPINsClient securityPINs;
 
@@ -768,7 +779,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-12-01";
+        this.apiVersion = "2023-04-01";
         this.backupResourceStorageConfigsNonCrrs = new BackupResourceStorageConfigsNonCrrsClientImpl(this);
         this.protectionIntents = new ProtectionIntentsClientImpl(this);
         this.backupStatus = new BackupStatusClientImpl(this);
@@ -815,6 +826,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.protectionPolicyOperationStatuses = new ProtectionPolicyOperationStatusesClientImpl(this);
         this.backupProtectableItems = new BackupProtectableItemsClientImpl(this);
         this.backupProtectionContainers = new BackupProtectionContainersClientImpl(this);
+        this.deletedProtectionContainers = new DeletedProtectionContainersClientImpl(this);
         this.securityPINs = new SecurityPINsClientImpl(this);
         this.recoveryPointsRecommendedForMoves = new RecoveryPointsRecommendedForMovesClientImpl(this);
         this.resourceGuardProxies = new ResourceGuardProxiesClientImpl(this);
@@ -837,10 +849,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -904,7 +913,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -963,4 +972,6 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RecoveryServicesBackupClientImpl.class);
 }

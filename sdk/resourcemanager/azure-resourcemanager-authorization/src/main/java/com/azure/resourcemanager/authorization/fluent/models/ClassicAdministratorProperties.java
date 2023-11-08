@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Classic Administrator properties. */
 @Fluent
 public final class ClassicAdministratorProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClassicAdministratorProperties.class);
-
     /*
      * The email address of the administrator.
      */
@@ -25,6 +21,10 @@ public final class ClassicAdministratorProperties {
      */
     @JsonProperty(value = "role")
     private String role;
+
+    /** Creates an instance of ClassicAdministratorProperties class. */
+    public ClassicAdministratorProperties() {
+    }
 
     /**
      * Get the emailAddress property: The email address of the administrator.

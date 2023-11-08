@@ -19,8 +19,8 @@ import java.util.Map;
 @Fluent
 public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /*
-     * The URI of the Python file to be executed. DBFS paths are supported.
-     * Type: string (or Expression with resultType string).
+     * The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.pythonFile", required = true)
     private Object pythonFile;
@@ -32,11 +32,13 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     private List<Object> parameters;
 
     /*
-     * A list of libraries to be installed on the cluster that will execute the
-     * job.
+     * A list of libraries to be installed on the cluster that will execute the job.
      */
     @JsonProperty(value = "typeProperties.libraries")
     private List<Map<String, Object>> libraries;
+
+    /** Creates an instance of DatabricksSparkPythonActivity class. */
+    public DatabricksSparkPythonActivity() {}
 
     /**
      * Get the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
@@ -97,6 +99,62 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
      */
     public DatabricksSparkPythonActivity setLibraries(List<Map<String, Object>> libraries) {
         this.libraries = libraries;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

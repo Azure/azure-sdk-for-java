@@ -26,6 +26,9 @@ public final class BinarySource extends CopySource {
     @JsonProperty(value = "formatSettings")
     private BinaryReadSettings formatSettings;
 
+    /** Creates an instance of BinarySource class. */
+    public BinarySource() {}
+
     /**
      * Get the storeSettings property: Binary store settings.
      *
@@ -63,6 +66,27 @@ public final class BinarySource extends CopySource {
      */
     public BinarySource setFormatSettings(BinaryReadSettings formatSettings) {
         this.formatSettings = formatSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BinarySource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BinarySource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BinarySource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

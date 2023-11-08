@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KeyType. */
+/** The type of access key. */
 public final class KeyType extends ExpandableStringEnum<KeyType> {
     /** Static value Primary for KeyType. */
     public static final KeyType PRIMARY = fromString("Primary");
@@ -18,6 +18,15 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
 
     /** Static value Salt for KeyType. */
     public static final KeyType SALT = fromString("Salt");
+
+    /**
+     * Creates a new instance of KeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyType() {
+    }
 
     /**
      * Creates or finds a KeyType from its string representation.
@@ -30,7 +39,11 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
         return fromString(name, KeyType.class);
     }
 
-    /** @return known KeyType values. */
+    /**
+     * Gets known KeyType values.
+     *
+     * @return known KeyType values.
+     */
     public static Collection<KeyType> values() {
         return values(KeyType.class);
     }

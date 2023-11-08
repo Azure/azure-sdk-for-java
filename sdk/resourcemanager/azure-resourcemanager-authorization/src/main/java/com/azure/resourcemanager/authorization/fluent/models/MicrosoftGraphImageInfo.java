@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,12 +15,9 @@ import java.util.Map;
 /** imageInfo. */
 @Fluent
 public final class MicrosoftGraphImageInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphImageInfo.class);
-
     /*
-     * Optional; parameter used to indicate the server is able to render image
-     * dynamically in response to parameterization. For example – a high
-     * contrast image
+     * Optional; parameter used to indicate the server is able to render image dynamically in response to
+     * parameterization. For example – a high contrast image
      */
     @JsonProperty(value = "addImageQuery")
     private Boolean addImageQuery;
@@ -39,8 +35,7 @@ public final class MicrosoftGraphImageInfo {
     private String alternativeText;
 
     /*
-     * Optional; URI that points to an icon which represents the application
-     * used to generate the activity
+     * Optional; URI that points to an icon which represents the application used to generate the activity
      */
     @JsonProperty(value = "iconUrl")
     private String iconUrl;
@@ -49,6 +44,10 @@ public final class MicrosoftGraphImageInfo {
      * imageInfo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphImageInfo class. */
+    public MicrosoftGraphImageInfo() {
+    }
 
     /**
      * Get the addImageQuery property: Optional; parameter used to indicate the server is able to render image

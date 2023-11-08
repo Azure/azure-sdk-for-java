@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AttestationServiceStatus. */
+/** Status of attestation service. */
 public final class AttestationServiceStatus extends ExpandableStringEnum<AttestationServiceStatus> {
     /** Static value Ready for AttestationServiceStatus. */
     public static final AttestationServiceStatus READY = fromString("Ready");
@@ -18,6 +18,15 @@ public final class AttestationServiceStatus extends ExpandableStringEnum<Attesta
 
     /** Static value Error for AttestationServiceStatus. */
     public static final AttestationServiceStatus ERROR = fromString("Error");
+
+    /**
+     * Creates a new instance of AttestationServiceStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AttestationServiceStatus() {
+    }
 
     /**
      * Creates or finds a AttestationServiceStatus from its string representation.
@@ -30,7 +39,11 @@ public final class AttestationServiceStatus extends ExpandableStringEnum<Attesta
         return fromString(name, AttestationServiceStatus.class);
     }
 
-    /** @return known AttestationServiceStatus values. */
+    /**
+     * Gets known AttestationServiceStatus values.
+     *
+     * @return known AttestationServiceStatus values.
+     */
     public static Collection<AttestationServiceStatus> values() {
         return values(AttestationServiceStatus.class);
     }

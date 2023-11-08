@@ -23,6 +23,10 @@ public final class CustomDnsConfigPropertiesFormat {
     @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;
 
+    /** Creates an instance of CustomDnsConfigPropertiesFormat class. */
+    public CustomDnsConfigPropertiesFormat() {
+    }
+
     /**
      * Get the fqdn property: Fqdn that resolves to private endpoint ip address.
      *

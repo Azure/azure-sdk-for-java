@@ -21,6 +21,10 @@ public final class DataPolicyManifestInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DataPolicyManifestProperties innerProperties;
 
+    /** Creates an instance of DataPolicyManifestInner class. */
+    public DataPolicyManifestInner() {
+    }
+
     /**
      * Get the innerProperties property: The data policy manifest properties.
      *

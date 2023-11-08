@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.synapse.models.CheckNameResult;
 import com.azure.resourcemanager.synapse.models.DatabaseCheckNameRequest;
 import com.azure.resourcemanager.synapse.models.KustoPoolChildResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KustoPoolChildResourcesImpl implements KustoPoolChildResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolChildResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KustoPoolChildResourcesImpl.class);
 
     private final KustoPoolChildResourcesClient innerClient;
 
@@ -26,17 +25,6 @@ public final class KustoPoolChildResourcesImpl implements KustoPoolChildResource
         KustoPoolChildResourcesClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CheckNameResult checkNameAvailability(
-        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(workspaceName, kustoPoolName, resourceGroupName, resourceName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
@@ -56,6 +44,17 @@ public final class KustoPoolChildResourcesImpl implements KustoPoolChildResource
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CheckNameResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CheckNameResult checkNameAvailability(
+        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(workspaceName, kustoPoolName, resourceGroupName, resourceName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
         } else {
             return null;
         }

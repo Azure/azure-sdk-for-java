@@ -19,8 +19,8 @@ import java.util.Map;
 @Fluent
 public final class DiskEncryptionSetInner extends Resource {
     /*
-     * The managed identity for the disk encryption set. It should be given
-     * permission on the key vault before it can be used to encrypt disks.
+     * The managed identity for the disk encryption set. It should be given permission on the key vault before it can
+     * be used to encrypt disks.
      */
     @JsonProperty(value = "identity")
     private EncryptionSetIdentity identity;
@@ -30,6 +30,10 @@ public final class DiskEncryptionSetInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private EncryptionSetProperties innerProperties;
+
+    /** Creates an instance of DiskEncryptionSetInner class. */
+    public DiskEncryptionSetInner() {
+    }
 
     /**
      * Get the identity property: The managed identity for the disk encryption set. It should be given permission on the
@@ -183,6 +187,31 @@ public final class DiskEncryptionSetInner extends Resource {
      */
     public ApiError autoKeyRotationError() {
         return this.innerProperties() == null ? null : this.innerProperties().autoKeyRotationError();
+    }
+
+    /**
+     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @return the federatedClientId value.
+     */
+    public String federatedClientId() {
+        return this.innerProperties() == null ? null : this.innerProperties().federatedClientId();
+    }
+
+    /**
+     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the DiskEncryptionSetInner object itself.
+     */
+    public DiskEncryptionSetInner withFederatedClientId(String federatedClientId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EncryptionSetProperties();
+        }
+        this.innerProperties().withFederatedClientId(federatedClientId);
+        return this;
     }
 
     /**

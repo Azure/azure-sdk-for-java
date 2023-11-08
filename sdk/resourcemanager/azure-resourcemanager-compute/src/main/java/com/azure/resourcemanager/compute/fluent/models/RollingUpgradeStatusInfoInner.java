@@ -22,6 +22,10 @@ public final class RollingUpgradeStatusInfoInner extends Resource {
     @JsonProperty(value = "properties")
     private RollingUpgradeStatusInfoProperties innerProperties;
 
+    /** Creates an instance of RollingUpgradeStatusInfoInner class. */
+    public RollingUpgradeStatusInfoInner() {
+    }
+
     /**
      * Get the innerProperties property: The status of the latest virtual machine scale set rolling upgrade.
      *

@@ -27,8 +27,11 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
@@ -51,7 +54,7 @@ import java.util.Map;
  * <!-- src_embed com.azure.security.keyvault.administration.keyVaultBackupClient.instantiation -->
  * <pre>
  * KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myaccount.managedhsm.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -60,7 +63,7 @@ import java.util.Map;
  * <!-- src_embed com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.instantiation -->
  * <pre>
  * KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = new KeyVaultBackupClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myaccount.managedhsm.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -75,11 +78,16 @@ public final class KeyVaultBackupClientBuilder implements
     HttpTrait<KeyVaultBackupClientBuilder>,
     ConfigurationTrait<KeyVaultBackupClientBuilder> {
     // This is the properties file name.
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultBackupClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private final ClientLogger logger = new ClientLogger(KeyVaultBackupClientBuilder.class);
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
     private final Map<String, String> properties;
@@ -94,6 +102,7 @@ public final class KeyVaultBackupClientBuilder implements
     private Configuration configuration;
     private ClientOptions clientOptions;
     private KeyVaultAdministrationServiceVersion serviceVersion;
+    private boolean disableChallengeResourceVerification = false;
 
     /**
      * Creates a {@link KeyVaultBackupClientBuilder} instance that is able to configure and construct instances of
@@ -120,8 +129,14 @@ public final class KeyVaultBackupClientBuilder implements
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public KeyVaultBackupClient buildClient() {
-        return new KeyVaultBackupClient(buildAsyncClient());
+    public KeyVaultBackupClient  buildClient() {
+        Configuration buildConfiguration = validateEndpointAndGetBuildConfiguration();
+        serviceVersion = getServiceVersion();
+        if (pipeline != null) {
+            return new KeyVaultBackupClient(vaultUrl, pipeline, serviceVersion);
+        }
+        HttpPipeline buildPipeline = getPipeline(buildConfiguration);
+        return new KeyVaultBackupClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
     /**
@@ -139,6 +154,16 @@ public final class KeyVaultBackupClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyVaultBackupAsyncClient buildAsyncClient() {
+        Configuration buildConfiguration = validateEndpointAndGetBuildConfiguration();
+        serviceVersion = getServiceVersion();
+        if (pipeline != null) {
+            return new KeyVaultBackupAsyncClient(vaultUrl, pipeline, serviceVersion);
+        }
+        HttpPipeline buildPipeline = getPipeline(buildConfiguration);
+        return new KeyVaultBackupAsyncClient(vaultUrl, buildPipeline, serviceVersion);
+    }
+
+    private Configuration validateEndpointAndGetBuildConfiguration() {
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone()
             : configuration;
@@ -146,16 +171,17 @@ public final class KeyVaultBackupClientBuilder implements
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw logger.logExceptionAsError(
-                new IllegalStateException(
-                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
+        return buildConfiguration;
+    }
 
-        serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+    private KeyVaultAdministrationServiceVersion getServiceVersion() {
+        return serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+    }
 
-        if (pipeline != null) {
-            return new KeyVaultBackupAsyncClient(vaultUrl, pipeline, serviceVersion);
-        }
+    private HttpPipeline getPipeline(Configuration buildConfiguration) {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -165,15 +191,15 @@ public final class KeyVaultBackupClientBuilder implements
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
+        ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
+
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));
 
-        if (clientOptions != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+        localClientOptions.getHeaders().forEach(header ->
+            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         // Add per call additional policies.
         policies.addAll(perCallPolicies);
@@ -182,7 +208,7 @@ public final class KeyVaultBackupClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -190,16 +216,22 @@ public final class KeyVaultBackupClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        HttpPipeline buildPipeline = new HttpPipelineBuilder()
+        TracingOptions tracingOptions = localClientOptions.getTracingOptions();
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .tracer(tracer)
             .build();
-
-        return new KeyVaultBackupAsyncClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
     /**
-     * Sets the URL to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal.
+     * Sets the URL to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal. You should
+     * validate that this URL references a valid Key Vault or Managed HSM resource.
+     * Refer to the following  <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * @param vaultUrl The vault URL is used as destination on Azure to send requests to.
      *
@@ -210,13 +242,13 @@ public final class KeyVaultBackupClientBuilder implements
      */
     public KeyVaultBackupClientBuilder vaultUrl(String vaultUrl) {
         if (vaultUrl == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'vaultUrl' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'vaultUrl' cannot be null."));
         }
 
         try {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
         }
 
@@ -237,7 +269,7 @@ public final class KeyVaultBackupClientBuilder implements
     @Override
     public KeyVaultBackupClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         this.credential = credential;
@@ -285,7 +317,7 @@ public final class KeyVaultBackupClientBuilder implements
     @Override
     public KeyVaultBackupClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -433,6 +465,18 @@ public final class KeyVaultBackupClientBuilder implements
      */
     public KeyVaultBackupClientBuilder serviceVersion(KeyVaultAdministrationServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+
+        return this;
+    }
+
+    /**
+     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
+     * verification is performed by default.
+     *
+     * @return The updated {@link KeyVaultBackupClientBuilder} object.
+     */
+    public KeyVaultBackupClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
 
         return this;
     }

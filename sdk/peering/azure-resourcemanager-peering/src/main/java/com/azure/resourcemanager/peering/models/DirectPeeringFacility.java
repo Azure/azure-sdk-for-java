@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties that define a direct peering facility. */
 @Fluent
 public final class DirectPeeringFacility {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectPeeringFacility.class);
-
     /*
      * The address of the direct peering facility.
      */
@@ -37,6 +33,10 @@ public final class DirectPeeringFacility {
      */
     @JsonProperty(value = "peeringDBFacilityLink")
     private String peeringDBFacilityLink;
+
+    /** Creates an instance of DirectPeeringFacility class. */
+    public DirectPeeringFacility() {
+    }
 
     /**
      * Get the address property: The address of the direct peering facility.

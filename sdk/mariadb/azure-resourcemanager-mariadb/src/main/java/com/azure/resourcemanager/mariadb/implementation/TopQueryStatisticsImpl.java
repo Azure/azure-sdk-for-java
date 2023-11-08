@@ -14,10 +14,9 @@ import com.azure.resourcemanager.mariadb.fluent.models.QueryStatisticInner;
 import com.azure.resourcemanager.mariadb.models.QueryStatistic;
 import com.azure.resourcemanager.mariadb.models.TopQueryStatistics;
 import com.azure.resourcemanager.mariadb.models.TopQueryStatisticsInput;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TopQueryStatisticsImpl implements TopQueryStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopQueryStatisticsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TopQueryStatisticsImpl.class);
 
     private final TopQueryStatisticsClient innerClient;
 
@@ -27,15 +26,6 @@ public final class TopQueryStatisticsImpl implements TopQueryStatistics {
         TopQueryStatisticsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public QueryStatistic get(String resourceGroupName, String serverName, String queryStatisticId) {
-        QueryStatisticInner inner = this.serviceClient().get(resourceGroupName, serverName, queryStatisticId);
-        if (inner != null) {
-            return new QueryStatisticImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<QueryStatistic> getWithResponse(
@@ -48,6 +38,15 @@ public final class TopQueryStatisticsImpl implements TopQueryStatistics {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new QueryStatisticImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public QueryStatistic get(String resourceGroupName, String serverName, String queryStatisticId) {
+        QueryStatisticInner inner = this.serviceClient().get(resourceGroupName, serverName, queryStatisticId);
+        if (inner != null) {
+            return new QueryStatisticImpl(inner, this.manager());
         } else {
             return null;
         }

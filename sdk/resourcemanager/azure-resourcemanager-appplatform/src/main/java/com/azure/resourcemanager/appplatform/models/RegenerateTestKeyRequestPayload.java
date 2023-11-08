@@ -6,14 +6,11 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Regenerate test key request payload. */
 @Fluent
 public final class RegenerateTestKeyRequestPayload {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateTestKeyRequestPayload.class);
-
     /*
      * Type of the test key
      */
@@ -47,10 +44,12 @@ public final class RegenerateTestKeyRequestPayload {
      */
     public void validate() {
         if (keyType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyType in model RegenerateTestKeyRequestPayload"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegenerateTestKeyRequestPayload.class);
 }

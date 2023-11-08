@@ -30,6 +30,10 @@ public final class ChannelInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of ChannelInner class. */
+    public ChannelInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Channel.
      *

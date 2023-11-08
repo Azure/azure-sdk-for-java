@@ -23,6 +23,9 @@ public final class CommunicationIdentityAccessToken {
     @JsonProperty(value = "expiresOn", required = true)
     private OffsetDateTime expiresOn;
 
+    /** Creates an instance of CommunicationIdentityAccessToken class. */
+    public CommunicationIdentityAccessToken() {}
+
     /**
      * Get the token property: The access token issued for the identity.
      *

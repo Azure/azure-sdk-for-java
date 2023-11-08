@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Profile for how to handle shutting down virtual machines. */
 @Fluent
 public final class AutoShutdownProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoShutdownProfile.class);
-
     /*
      * Whether shutdown on disconnect is enabled
      */
@@ -22,8 +18,7 @@ public final class AutoShutdownProfile {
     private EnableState shutdownOnDisconnect;
 
     /*
-     * Whether a VM will get shutdown when it hasn't been connected to after a
-     * period of time.
+     * Whether a VM will get shutdown when it hasn't been connected to after a period of time.
      */
     @JsonProperty(value = "shutdownWhenNotConnected")
     private EnableState shutdownWhenNotConnected;
@@ -35,22 +30,20 @@ public final class AutoShutdownProfile {
     private ShutdownOnIdleMode shutdownOnIdle;
 
     /*
-     * The amount of time a VM will stay running after a user disconnects if
-     * this behavior is enabled.
+     * The amount of time a VM will stay running after a user disconnects if this behavior is enabled.
      */
     @JsonProperty(value = "disconnectDelay")
     private Duration disconnectDelay;
 
     /*
-     * The amount of time a VM will stay running before it is shutdown if no
-     * connection is made and this behavior is enabled.
+     * The amount of time a VM will stay running before it is shutdown if no connection is made and this behavior is
+     * enabled.
      */
     @JsonProperty(value = "noConnectDelay")
     private Duration noConnectDelay;
 
     /*
-     * The amount of time a VM will idle before it is shutdown if this behavior
-     * is enabled.
+     * The amount of time a VM will idle before it is shutdown if this behavior is enabled.
      */
     @JsonProperty(value = "idleDelay")
     private Duration idleDelay;

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.generated;
 /** Samples for Actions CreateOrUpdate. */
 public final class ActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/actions/CreateActionOfAlertRule.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/actions/CreateActionOfAlertRule.json
      */
     /**
      * Sample code: Creates or updates an action of alert rule.

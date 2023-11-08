@@ -12,12 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ImageDataDisk extends ImageDisk {
     /*
-     * Specifies the logical unit number of the data disk. This value is used
-     * to identify data disks within the VM and therefore must be unique for
-     * each data disk attached to a VM.
+     * Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
+     * therefore must be unique for each data disk attached to a VM.
      */
     @JsonProperty(value = "lun", required = true)
     private int lun;
+
+    /** Creates an instance of ImageDataDisk class. */
+    public ImageDataDisk() {
+    }
 
     /**
      * Get the lun property: Specifies the logical unit number of the data disk. This value is used to identify data

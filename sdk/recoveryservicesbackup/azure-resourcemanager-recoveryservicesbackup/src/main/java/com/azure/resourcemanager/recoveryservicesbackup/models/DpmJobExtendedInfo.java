@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Additional information on the DPM workload-specific job. */
 @Fluent
 public final class DpmJobExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DpmJobExtendedInfo.class);
-
     /*
      * List of tasks associated with this job.
      */
@@ -35,6 +31,10 @@ public final class DpmJobExtendedInfo {
      */
     @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
+
+    /** Creates an instance of DpmJobExtendedInfo class. */
+    public DpmJobExtendedInfo() {
+    }
 
     /**
      * Get the tasksList property: List of tasks associated with this job.

@@ -7,6 +7,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.util.Collection;
+
 /**
  * Gets the entity category inferred by the text analytics service's named entity recognition model.
  * The list of available categories is described at
@@ -85,13 +87,31 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
     public static final EntityCategory QUANTITY = fromString("Quantity");
 
     /**
-     * Creates or finds a {@link EntityCategory} from its string representation.
+     * Creates a new instance of {@code EntityCategory} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityCategory() {
+    }
+
+    /**
+     * Creates or finds a {@code EntityCategory} from its string representation.
      *
      * @param name The string name to look for.
-     * @return The corresponding {@link EntityCategory}.
+     * @return The corresponding {@code EntityCategory}.
      */
     @JsonCreator
     public static EntityCategory fromString(String name) {
         return fromString(name, EntityCategory.class);
+    }
+
+    /**
+     * All known EntityCategory values.
+     *
+     * @return known EntityCategory values.
+     */
+    public static Collection<EntityCategory> values() {
+        return values(EntityCategory.class);
     }
 }

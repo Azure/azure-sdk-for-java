@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The filter expression to be used in the export. */
 @Fluent
 public final class QueryFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryFilter.class);
-
     /*
      * The logical "AND" expression. Must have at least 2 items.
      */
@@ -38,6 +34,10 @@ public final class QueryFilter {
      */
     @JsonProperty(value = "tags")
     private QueryComparisonExpression tags;
+
+    /** Creates an instance of QueryFilter class. */
+    public QueryFilter() {
+    }
 
     /**
      * Get the and property: The logical "AND" expression. Must have at least 2 items.

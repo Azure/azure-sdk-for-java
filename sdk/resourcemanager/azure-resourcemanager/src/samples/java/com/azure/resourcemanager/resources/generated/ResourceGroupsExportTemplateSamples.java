@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.models.ExportTemplateRequest;
 import java.util.Arrays;
 
 /** Samples for ResourceGroups ExportTemplate. */
 public final class ResourceGroupsExportTemplateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/ExportResourceGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/ExportResourceGroup.json
      */
     /**
      * Sample code: Export a resource group.
@@ -29,11 +28,11 @@ public final class ResourceGroupsExportTemplateSamples {
                 new ExportTemplateRequest()
                     .withResources(Arrays.asList("*"))
                     .withOptions("IncludeParameterDefaultValue,IncludeComments"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/ExportResourceGroupWithFiltering.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/ExportResourceGroupWithFiltering.json
      */
     /**
      * Sample code: Export a resource group with filtering.
@@ -54,6 +53,6 @@ public final class ResourceGroupsExportTemplateSamples {
                             .asList(
                                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/My.RP/myResourceType/myFirstResource"))
                     .withOptions("SkipResourceNameParameterization"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,42 +5,31 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A recoverable database. */
-@JsonFlatten
+/** A recoverable database resource. */
 @Immutable
-public class RecoverableDatabaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableDatabaseInner.class);
-
+public final class RecoverableDatabaseInner extends ProxyResource {
     /*
-     * The edition of the database
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.edition", access = JsonProperty.Access.WRITE_ONLY)
-    private String edition;
+    @JsonProperty(value = "properties")
+    private RecoverableDatabaseProperties innerProperties;
 
-    /*
-     * The service level objective name of the database
-     */
-    @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceLevelObjective;
+    /** Creates an instance of RecoverableDatabaseInner class. */
+    public RecoverableDatabaseInner() {
+    }
 
-    /*
-     * The elastic pool name of the database
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
-    private String elasticPoolName;
-
-    /*
-     * The last available backup date of the database (ISO8601 format)
-     */
-    @JsonProperty(value = "properties.lastAvailableBackupDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastAvailableBackupDate;
+    private RecoverableDatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the edition property: The edition of the database.
@@ -48,7 +37,7 @@ public class RecoverableDatabaseInner extends ProxyResource {
      * @return the edition value.
      */
     public String edition() {
-        return this.edition;
+        return this.innerProperties() == null ? null : this.innerProperties().edition();
     }
 
     /**
@@ -57,7 +46,7 @@ public class RecoverableDatabaseInner extends ProxyResource {
      * @return the serviceLevelObjective value.
      */
     public String serviceLevelObjective() {
-        return this.serviceLevelObjective;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceLevelObjective();
     }
 
     /**
@@ -66,16 +55,16 @@ public class RecoverableDatabaseInner extends ProxyResource {
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
-        return this.elasticPoolName;
+        return this.innerProperties() == null ? null : this.innerProperties().elasticPoolName();
     }
 
     /**
-     * Get the lastAvailableBackupDate property: The last available backup date of the database (ISO8601 format).
+     * Get the lastAvailableBackupDate property: The last available backup date.
      *
      * @return the lastAvailableBackupDate value.
      */
     public OffsetDateTime lastAvailableBackupDate() {
-        return this.lastAvailableBackupDate;
+        return this.innerProperties() == null ? null : this.innerProperties().lastAvailableBackupDate();
     }
 
     /**
@@ -84,5 +73,8 @@ public class RecoverableDatabaseInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

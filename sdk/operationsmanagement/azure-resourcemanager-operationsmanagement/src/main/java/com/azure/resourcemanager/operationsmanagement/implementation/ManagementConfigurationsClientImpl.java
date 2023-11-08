@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.operationsmanagement.fluent.ManagementConfigurationsClient;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementConfigurationInner;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementConfigurationPropertiesListInner;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagementConfigurationsClient. */
 public final class ManagementConfigurationsClientImpl implements ManagementConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(ManagementConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ManagementConfigurationsService service;
 
@@ -58,7 +55,7 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationsManagement")
-    private interface ManagementConfigurationsService {
+    public interface ManagementConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.OperationsManagement/ManagementConfigurations")
         @ExpectedResponses({200})
@@ -118,11 +115,14 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Retrieves the ManagementConfigurations list.
+     * Retrieves the ManagementConfigurations list for the subscription
+     *
+     * <p>Retrieves the ManagementConfigurations list.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ManagementConfiguration response.
+     * @return the list of ManagementConfiguration response along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementConfigurationPropertiesListInner>> listBySubscriptionWithResponseAsync() {
@@ -153,13 +153,16 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Retrieves the ManagementConfigurations list.
+     * Retrieves the ManagementConfigurations list for the subscription
+     *
+     * <p>Retrieves the ManagementConfigurations list.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ManagementConfiguration response.
+     * @return the list of ManagementConfiguration response along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementConfigurationPropertiesListInner>> listBySubscriptionWithResponseAsync(
@@ -188,45 +191,29 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Retrieves the ManagementConfigurations list.
+     * Retrieves the ManagementConfigurations list for the subscription
+     *
+     * <p>Retrieves the ManagementConfigurations list.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ManagementConfiguration response.
+     * @return the list of ManagementConfiguration response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagementConfigurationPropertiesListInner> listBySubscriptionAsync() {
-        return listBySubscriptionWithResponseAsync()
-            .flatMap(
-                (Response<ManagementConfigurationPropertiesListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listBySubscriptionWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Retrieves the ManagementConfigurations list.
+     * Retrieves the ManagementConfigurations list for the subscription
      *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ManagementConfiguration response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementConfigurationPropertiesListInner listBySubscription() {
-        return listBySubscriptionAsync().block();
-    }
-
-    /**
-     * Retrieves the ManagementConfigurations list.
+     * <p>Retrieves the ManagementConfigurations list.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ManagementConfiguration response.
+     * @return the list of ManagementConfiguration response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementConfigurationPropertiesListInner> listBySubscriptionWithResponse(Context context) {
@@ -234,7 +221,23 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Creates or updates the ManagementConfiguration.
+     * Retrieves the ManagementConfigurations list for the subscription
+     *
+     * <p>Retrieves the ManagementConfigurations list.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of ManagementConfiguration response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagementConfigurationPropertiesListInner listBySubscription() {
+        return listBySubscriptionWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * Create/Update ManagementConfiguration.
+     *
+     * <p>Creates or updates the ManagementConfiguration.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
@@ -242,7 +245,7 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -292,7 +295,9 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Creates or updates the ManagementConfiguration.
+     * Create/Update ManagementConfiguration.
+     *
+     * <p>Creates or updates the ManagementConfiguration.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
@@ -301,7 +306,7 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -351,7 +356,9 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Creates or updates the ManagementConfiguration.
+     * Create/Update ManagementConfiguration.
+     *
+     * <p>Creates or updates the ManagementConfiguration.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
@@ -359,41 +366,19 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagementConfigurationInner> createOrUpdateAsync(
         String resourceGroupName, String managementConfigurationName, ManagementConfigurationInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, managementConfigurationName, parameters)
-            .flatMap(
-                (Response<ManagementConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Creates or updates the ManagementConfiguration.
+     * Create/Update ManagementConfiguration.
      *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param managementConfigurationName User Management Configuration Name.
-     * @param parameters The parameters required to create OMS Solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementConfigurationInner createOrUpdate(
-        String resourceGroupName, String managementConfigurationName, ManagementConfigurationInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, managementConfigurationName, parameters).block();
-    }
-
-    /**
-     * Creates or updates the ManagementConfiguration.
+     * <p>Creates or updates the ManagementConfiguration.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
@@ -402,7 +387,7 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementConfigurationInner> createOrUpdateWithResponse(
@@ -415,14 +400,36 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Deletes the ManagementConfiguration in the subscription.
+     * Create/Update ManagementConfiguration.
+     *
+     * <p>Creates or updates the ManagementConfiguration.
+     *
+     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @param managementConfigurationName User Management Configuration Name.
+     * @param parameters The parameters required to create OMS Solution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the container for solution.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagementConfigurationInner createOrUpdate(
+        String resourceGroupName, String managementConfigurationName, ManagementConfigurationInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, managementConfigurationName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Deletes the ManagementConfiguration
+     *
+     * <p>Deletes the ManagementConfiguration in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String managementConfigurationName) {
@@ -465,7 +472,9 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Deletes the ManagementConfiguration in the subscription.
+     * Deletes the ManagementConfiguration
+     *
+     * <p>Deletes the ManagementConfiguration in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
@@ -473,7 +482,7 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -514,23 +523,45 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Deletes the ManagementConfiguration in the subscription.
+     * Deletes the ManagementConfiguration
+     *
+     * <p>Deletes the ManagementConfiguration in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String managementConfigurationName) {
-        return deleteWithResponseAsync(resourceGroupName, managementConfigurationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, managementConfigurationName).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Deletes the ManagementConfiguration in the subscription.
+     * Deletes the ManagementConfiguration
+     *
+     * <p>Deletes the ManagementConfiguration in the subscription.
+     *
+     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @param managementConfigurationName User Management Configuration Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String managementConfigurationName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, managementConfigurationName, context).block();
+    }
+
+    /**
+     * Deletes the ManagementConfiguration
+     *
+     * <p>Deletes the ManagementConfiguration in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
@@ -540,35 +571,20 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managementConfigurationName) {
-        deleteAsync(resourceGroupName, managementConfigurationName).block();
+        deleteWithResponse(resourceGroupName, managementConfigurationName, Context.NONE);
     }
 
     /**
-     * Deletes the ManagementConfiguration in the subscription.
+     * Retrieve ManagementConfiguration.
      *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param managementConfigurationName User Management Configuration Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String managementConfigurationName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, managementConfigurationName, context).block();
-    }
-
-    /**
-     * Retrieves the user ManagementConfiguration.
+     * <p>Retrieves the user ManagementConfiguration.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementConfigurationInner>> getByResourceGroupWithResponseAsync(
@@ -612,7 +628,9 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Retrieves the user ManagementConfiguration.
+     * Retrieve ManagementConfiguration.
+     *
+     * <p>Retrieves the user ManagementConfiguration.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
@@ -620,7 +638,7 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementConfigurationInner>> getByResourceGroupWithResponseAsync(
@@ -661,31 +679,47 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     }
 
     /**
-     * Retrieves the user ManagementConfiguration.
+     * Retrieve ManagementConfiguration.
+     *
+     * <p>Retrieves the user ManagementConfiguration.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagementConfigurationInner> getByResourceGroupAsync(
         String resourceGroupName, String managementConfigurationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, managementConfigurationName)
-            .flatMap(
-                (Response<ManagementConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Retrieves the user ManagementConfiguration.
+     * Retrieve ManagementConfiguration.
+     *
+     * <p>Retrieves the user ManagementConfiguration.
+     *
+     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @param managementConfigurationName User Management Configuration Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the container for solution along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ManagementConfigurationInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String managementConfigurationName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, managementConfigurationName, context).block();
+    }
+
+    /**
+     * Retrieve ManagementConfiguration.
+     *
+     * <p>Retrieves the user ManagementConfiguration.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
@@ -697,23 +731,6 @@ public final class ManagementConfigurationsClientImpl implements ManagementConfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagementConfigurationInner getByResourceGroup(
         String resourceGroupName, String managementConfigurationName) {
-        return getByResourceGroupAsync(resourceGroupName, managementConfigurationName).block();
-    }
-
-    /**
-     * Retrieves the user ManagementConfiguration.
-     *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param managementConfigurationName User Management Configuration Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementConfigurationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String managementConfigurationName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, managementConfigurationName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, Context.NONE).getValue();
     }
 }

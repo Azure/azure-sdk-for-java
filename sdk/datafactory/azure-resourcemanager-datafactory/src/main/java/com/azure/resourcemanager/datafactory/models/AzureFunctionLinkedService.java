@@ -25,6 +25,10 @@ public final class AzureFunctionLinkedService extends LinkedService {
     private AzureFunctionLinkedServiceTypeProperties innerTypeProperties =
         new AzureFunctionLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureFunctionLinkedService class. */
+    public AzureFunctionLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Function linked service properties.
      *
@@ -112,22 +116,22 @@ public final class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
-    public AzureFunctionLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureFunctionLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureFunctionLinkedServiceTypeProperties();
         }

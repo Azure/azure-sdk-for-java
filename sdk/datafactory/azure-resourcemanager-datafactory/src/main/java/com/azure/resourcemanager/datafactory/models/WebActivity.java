@@ -23,6 +23,10 @@ public final class WebActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private WebActivityTypeProperties innerTypeProperties = new WebActivityTypeProperties();
 
+    /** Creates an instance of WebActivity class. */
+    public WebActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Web activity properties.
      *
@@ -57,6 +61,20 @@ public final class WebActivity extends ExecutionActivity {
     @Override
     public WebActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

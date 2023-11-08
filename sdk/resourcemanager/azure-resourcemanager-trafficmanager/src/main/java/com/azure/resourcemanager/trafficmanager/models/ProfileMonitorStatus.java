@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProfileMonitorStatus. */
+/** The profile-level monitoring status of the Traffic Manager profile. */
 public final class ProfileMonitorStatus extends ExpandableStringEnum<ProfileMonitorStatus> {
     /** Static value CheckingEndpoints for ProfileMonitorStatus. */
     public static final ProfileMonitorStatus CHECKING_ENDPOINTS = fromString("CheckingEndpoints");
@@ -26,6 +26,15 @@ public final class ProfileMonitorStatus extends ExpandableStringEnum<ProfileMoni
     public static final ProfileMonitorStatus INACTIVE = fromString("Inactive");
 
     /**
+     * Creates a new instance of ProfileMonitorStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProfileMonitorStatus() {
+    }
+
+    /**
      * Creates or finds a ProfileMonitorStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class ProfileMonitorStatus extends ExpandableStringEnum<ProfileMoni
         return fromString(name, ProfileMonitorStatus.class);
     }
 
-    /** @return known ProfileMonitorStatus values. */
+    /**
+     * Gets known ProfileMonitorStatus values.
+     *
+     * @return known ProfileMonitorStatus values.
+     */
     public static Collection<ProfileMonitorStatus> values() {
         return values(ProfileMonitorStatus.class);
     }

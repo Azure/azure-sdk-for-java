@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.PolicyAssignmentUpdate;
 import com.azure.resourcemanager.resources.models.ResourceIdentityType;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.resources.models.ResourceIdentityType;
 /** Samples for PolicyAssignments UpdateById. */
 public final class PolicyAssignmentsUpdateByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/updatePolicyAssignmentWithIdentityById.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/updatePolicyAssignmentWithIdentityById.json
      */
     /**
      * Sample code: Update policy assignment with a managed identity by ID.
@@ -31,6 +30,6 @@ public final class PolicyAssignmentsUpdateByIdSamples {
                 new PolicyAssignmentUpdate()
                     .withLocation("eastus")
                     .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

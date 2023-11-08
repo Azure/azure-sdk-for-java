@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Base class for get security pin request body. */
 @Fluent
 public final class SecurityPinBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPinBase.class);
-
     /*
      * ResourceGuard Operation Requests
      */
     @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
+
+    /** Creates an instance of SecurityPinBase class. */
+    public SecurityPinBase() {
+    }
 
     /**
      * Get the resourceGuardOperationRequests property: ResourceGuard Operation Requests.

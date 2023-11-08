@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Set workload type to optimize storage for SQL Server. */
 @Fluent
 public final class SqlWorkloadTypeUpdateSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlWorkloadTypeUpdateSettings.class);
-
     /*
      * SQL Server workload type.
      */
     @JsonProperty(value = "sqlWorkloadType")
     private SqlWorkloadType sqlWorkloadType;
+
+    /** Creates an instance of SqlWorkloadTypeUpdateSettings class. */
+    public SqlWorkloadTypeUpdateSettings() {
+    }
 
     /**
      * Get the sqlWorkloadType property: SQL Server workload type.

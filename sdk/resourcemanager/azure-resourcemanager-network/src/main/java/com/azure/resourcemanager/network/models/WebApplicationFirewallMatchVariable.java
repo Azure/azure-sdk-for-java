@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebApplicationFirewallMatchVariable. */
+/** Match Variable. */
 public final class WebApplicationFirewallMatchVariable
     extends ExpandableStringEnum<WebApplicationFirewallMatchVariable> {
     /** Static value RemoteAddr for WebApplicationFirewallMatchVariable. */
@@ -36,6 +36,15 @@ public final class WebApplicationFirewallMatchVariable
     public static final WebApplicationFirewallMatchVariable REQUEST_COOKIES = fromString("RequestCookies");
 
     /**
+     * Creates a new instance of WebApplicationFirewallMatchVariable value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebApplicationFirewallMatchVariable() {
+    }
+
+    /**
      * Creates or finds a WebApplicationFirewallMatchVariable from its string representation.
      *
      * @param name a name to look for.
@@ -46,7 +55,11 @@ public final class WebApplicationFirewallMatchVariable
         return fromString(name, WebApplicationFirewallMatchVariable.class);
     }
 
-    /** @return known WebApplicationFirewallMatchVariable values. */
+    /**
+     * Gets known WebApplicationFirewallMatchVariable values.
+     *
+     * @return known WebApplicationFirewallMatchVariable values.
+     */
     public static Collection<WebApplicationFirewallMatchVariable> values() {
         return values(WebApplicationFirewallMatchVariable.class);
     }

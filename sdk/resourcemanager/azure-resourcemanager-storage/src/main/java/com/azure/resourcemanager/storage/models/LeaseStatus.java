@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LeaseStatus. */
+/** The lease status of the container. */
 public final class LeaseStatus extends ExpandableStringEnum<LeaseStatus> {
     /** Static value Locked for LeaseStatus. */
     public static final LeaseStatus LOCKED = fromString("Locked");
 
     /** Static value Unlocked for LeaseStatus. */
     public static final LeaseStatus UNLOCKED = fromString("Unlocked");
+
+    /**
+     * Creates a new instance of LeaseStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LeaseStatus() {
+    }
 
     /**
      * Creates or finds a LeaseStatus from its string representation.
@@ -27,7 +36,11 @@ public final class LeaseStatus extends ExpandableStringEnum<LeaseStatus> {
         return fromString(name, LeaseStatus.class);
     }
 
-    /** @return known LeaseStatus values. */
+    /**
+     * Gets known LeaseStatus values.
+     *
+     * @return known LeaseStatus values.
+     */
     public static Collection<LeaseStatus> values() {
         return values(LeaseStatus.class);
     }

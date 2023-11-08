@@ -4,23 +4,24 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.extractContinuationTokensFromChangeFeedStateJson
-import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.streaming.{ReadAllAvailable, ReadLimit, ReadMaxFiles, ReadMaxRows}
-import reactor.core.scala.publisher.SFlux
 import reactor.core.scala.publisher.SMono.PimpJMono
+import reactor.core.scala.publisher.{SFlux, SMono}
 
 import java.time.Duration
 import java.util
-import java.util.concurrent.{ConcurrentHashMap, ConcurrentMap}
 import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.{ConcurrentHashMap, ConcurrentMap}
 import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -36,7 +37,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     partitionMetadata: Array[PartitionMetadata],
     defaultMinimalPartitionCount: Int,
     defaultMaxPartitionSizeInMB: Int,
-    readLimit: ReadLimit
+    readLimit: ReadLimit,
+    isChangeFeed: Boolean
   ): Array[CosmosInputPartition] = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
@@ -46,7 +48,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         partitionMetadata,
         defaultMinimalPartitionCount,
         defaultMaxPartitionSizeInMB,
-        readLimit))
+        readLimit,
+        isChangeFeed))
   }
 
   private[this] def createInputPartitionsImpl
@@ -56,7 +59,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     partitionMetadata: Array[PartitionMetadata],
     defaultMinimalPartitionCount: Int,
     defaultMaxPartitionSizeInMB: Int,
-    readLimit: ReadLimit
+    readLimit: ReadLimit,
+    isChangeFeed: Boolean
   ): Array[CosmosInputPartition] = {
     assertOnSparkDriver()
     //scalastyle:off multiple.string.literals
@@ -65,30 +69,74 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     require(defaultMinimalPartitionCount >= 1, "Argument 'defaultMinimalPartitionCount' must at least be 1")
     //scalastyle:on multiple.string.literals
 
-    val planningInfo = this.getPartitionPlanningInfo(partitionMetadata, readLimit)
+    val inputPartitions = if (!isChangeFeed && cosmosPartitioningConfig.partitioningStrategy == PartitioningStrategies.Restrictive) {
+      partitionMetadata.map(metadata => CosmosInputPartition(metadata.feedRange, None))
+    } else {
+      val planningInfo = this.getPartitionPlanningInfo(partitionMetadata, readLimit)
 
-    cosmosPartitioningConfig.partitioningStrategy match {
-      case PartitioningStrategies.Restrictive =>
-        applyRestrictiveStrategy(planningInfo)
-      case PartitioningStrategies.Custom =>
-        applyCustomStrategy(
-          container,
-          planningInfo,
-          cosmosPartitioningConfig.targetedPartitionCount.get)
-      case PartitioningStrategies.Default =>
-        applyStorageAlignedStrategy(
-          container,
-          planningInfo,
-          1 / defaultMaxPartitionSizeInMB.toDouble,
-          defaultMinimalPartitionCount
-        )
-      case PartitioningStrategies.Aggressive =>
-        applyStorageAlignedStrategy(
-          container,
-          planningInfo,
-          5 / defaultMaxPartitionSizeInMB.toDouble,
-          defaultMinimalPartitionCount
-        )
+      cosmosPartitioningConfig.partitioningStrategy match {
+        case PartitioningStrategies.Restrictive =>
+          applyRestrictiveStrategy(planningInfo)
+        case PartitioningStrategies.Custom =>
+          applyCustomStrategy(
+            container,
+            planningInfo,
+            cosmosPartitioningConfig.targetedPartitionCount.get)
+        case PartitioningStrategies.Default =>
+          applyStorageAlignedStrategy(
+            container,
+            planningInfo,
+            1 / defaultMaxPartitionSizeInMB.toDouble,
+            defaultMinimalPartitionCount
+          )
+        case PartitioningStrategies.Aggressive =>
+          applyStorageAlignedStrategy(
+            container,
+            planningInfo,
+            5 / defaultMaxPartitionSizeInMB.toDouble,
+            defaultMinimalPartitionCount
+          )
+      }
+    }
+
+    cosmosPartitioningConfig.feedRangeFiler match {
+      case Some(epkRangesInScope) => {
+        val overlappingPartitions = inputPartitions
+          .filter(inputPartition => {
+            epkRangesInScope.exists(epk => SparkBridgeImplementationInternal.doRangesOverlap(
+              epk,
+              inputPartition.feedRange))
+          })
+
+        val returnValue = new ArrayBuffer[CosmosInputPartition]()
+
+        overlappingPartitions.foreach(inputPartition => {
+          val overlappingEpkRanges = epkRangesInScope.filter(epk => SparkBridgeImplementationInternal.doRangesOverlap(
+            epk,
+            inputPartition.feedRange))
+
+          overlappingEpkRanges.foreach(overlappingRange => {
+            val finalRange = new NormalizedRange(
+              if (overlappingRange.min.compareTo(inputPartition.feedRange.min) > 0) {
+                overlappingRange.min
+              } else {
+                inputPartition.feedRange.min
+              },
+              if (overlappingRange.max.compareTo(inputPartition.feedRange.max) < 0) {
+                overlappingRange.max
+              } else {
+                inputPartition.feedRange.max
+              }
+            )
+
+            returnValue += new CosmosInputPartition(
+              finalRange, inputPartition.endLsn, inputPartition.continuationState)
+          })
+        })
+
+        returnValue.toArray
+      }
+      case None => inputPartitions
     }
   }
 
@@ -121,11 +169,12 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   (
     container: CosmosAsyncContainer,
     changeFeedConfig: CosmosChangeFeedConfig,
+    partitioningConfig: CosmosPartitioningConfig,
     streamId: Option[String]
   ): String = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
-      createInitialOffsetImpl(container, changeFeedConfig, streamId)
+      createInitialOffsetImpl(container, changeFeedConfig, partitioningConfig, streamId)
     )
   }
 
@@ -134,6 +183,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   (
     container: CosmosAsyncContainer,
     changeFeedConfig: CosmosChangeFeedConfig,
+    partitioningConfig: CosmosPartitioningConfig,
     streamId: Option[String]
   ): String = {
 
@@ -142,6 +192,16 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
     ContainerFeedRangesCache
       .getFeedRanges(container)
+      .map(feedRangeList =>
+        partitioningConfig.feedRangeFiler match {
+          case Some(epkRangesInScope) => feedRangeList
+            .filter(feedRange => {
+              epkRangesInScope.exists(epk => SparkBridgeImplementationInternal.doRangesOverlap(
+                epk,
+                SparkBridgeImplementationInternal.toNormalizedRange(feedRange)))
+            })
+          case None => feedRangeList
+        })
       .flatMapMany(feedRanges => SFlux.fromIterable(feedRanges))
       .flatMap(feedRange => {
         val requestOptions = changeFeedConfig.toRequestOptions(feedRange)
@@ -179,13 +239,13 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     val offsetJsonBase64 = SparkBridgeImplementationInternal
       .mergeChangeFeedContinuations(lastContinuationTokens.values().asScala)
 
-    if (isDebugLogEnabled) {
+    //if (isDebugLogEnabled) {
       val offsetJson = SparkBridgeImplementationInternal.changeFeedContinuationToJson(offsetJsonBase64)
       // scala style rule flaky - even complaining on partial log messages
       // scalastyle:off multiple.string.literals
-      logDebug(s"Initial offset of stream ${streamId.getOrElse("null")}: '$offsetJson'.")
+      logInfo(s"Initial offset of stream ${streamId.getOrElse("null")}: '$offsetJson'.")
       // scalastyle:on multiple.string.literals
-    }
+    //}
     offsetJsonBase64
   }
   // scalastyle:on method.length
@@ -198,7 +258,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     readLimit: ReadLimit,
     maxStaleness: Duration,
     clientConfiguration: CosmosClientConfiguration,
-    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+    cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
     containerConfig: CosmosContainerConfig,
     partitioningConfig: CosmosPartitioningConfig,
     defaultParallelism: Int,
@@ -212,7 +272,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         readLimit,
         maxStaleness,
         clientConfiguration,
-        cosmosClientStateHandle,
+        cosmosClientStateHandles,
         containerConfig,
         partitioningConfig,
         defaultParallelism,
@@ -230,7 +290,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     readLimit: ReadLimit,
     maxStaleness: Duration,
     clientConfiguration: CosmosClientConfiguration,
-    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+    cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
     containerConfig: CosmosContainerConfig,
     partitioningConfig: CosmosPartitioningConfig,
     defaultParallelism: Int,
@@ -239,11 +299,13 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     assertOnSparkDriver()
     assertNotNull(startOffset, "startOffset")
 
-    val latestPartitionMetadata = CosmosPartitionPlanner.getPartitionMetadata(
+    val latestPartitionMetadata = CosmosPartitionPlanner.getFilteredPartitionMetadata(
       userConfig,
       clientConfiguration,
-      Some(cosmosClientStateHandle),
+      Some(cosmosClientStateHandles),
       containerConfig,
+      partitioningConfig,
+      true,
       Some(maxStaleness)
     )
 
@@ -259,7 +321,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       orderedMetadataWithStartLsn,
       defaultMinPartitionCount,
       defaultMaxPartitionSizeInMB,
-      readLimit
+      readLimit,
+      true
     )
 
     if (isDebugLogEnabled) {
@@ -333,25 +396,39 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         Some(range)
       })
 
+    val result = new ArrayBuffer[PartitionMetadata]
     orderedRanges
-      .map(range => {
-        while (!SparkBridgeImplementationInternal.doRangesOverlap(range, startTokens(startTokensIndex)._1)) {
+      .foreach(range => {
+        val initialStartTokensIndex = startTokensIndex
+        val initialLatestTokensIndex = latestTokensIndex
+        while (startTokensIndex < startTokens.length &&
+          !SparkBridgeImplementationInternal.doRangesOverlap(range, startTokens(startTokensIndex)._1)) {
+
           startTokensIndex += 1
-          if (startTokensIndex >= startTokens.length) {
-            throw new IllegalStateException(s"No overlapping start token found for range '$range'.")
-          }
         }
 
-        while (!SparkBridgeImplementationInternal.doRangesOverlap(range, latestTokens(latestTokensIndex).feedRange)) {
+        while (startTokensIndex < startTokens.length &&
+          latestTokensIndex < latestTokens.length &&
+          !SparkBridgeImplementationInternal.doRangesOverlap(range, latestTokens(latestTokensIndex).feedRange)) {
+
           latestTokensIndex += 1
-          if (latestTokensIndex >= latestTokens.length) {
-            throw new IllegalStateException(s"No overlapping latest token found for range '$range'.")
-          }
         }
 
-        val startLsn: Long = startTokens(startTokensIndex)._2
-        latestTokens(latestTokensIndex).cloneForSubRange(range, startLsn)
+        if (startTokensIndex < startTokens.length &&
+          latestTokensIndex < latestTokens.length) {
+
+          val startLsn: Long = startTokens(startTokensIndex)._2
+          val newToken = latestTokens(latestTokensIndex).cloneForSubRange(range, startLsn)
+          result.append(newToken)
+        } else {
+          startTokensIndex = initialStartTokensIndex
+          latestTokensIndex = initialLatestTokensIndex
+        }
       })
+
+    assert(result.size > 0)
+
+    result.toArray
   }
   // scalastyle:on method.length
 
@@ -363,6 +440,13 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       CosmosInputPartition(
         info.feedRange,
         info.endLsn))
+  }
+
+  private[this] def applyRestrictiveQueryStrategy
+  (
+    ranges: Array[NormalizedRange]
+  ): Array[CosmosInputPartition] = {
+    ranges.map(range => CosmosInputPartition(range, None))
   }
 
   private[this] def applyStorageAlignedStrategy(
@@ -473,17 +557,18 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       // Update endLsn - which depends on read limit
       .map(metadata => {
         val endLsn = readLimit match {
-          case _: ReadAllAvailable => metadata.latestLsn
+          case _: ReadAllAvailable => metadata.getAndValidateLatestLsn
           case maxRowsLimit: ReadMaxRows =>
             if (totalWeightedLsnGap.get <= maxRowsLimit.maxRows) {
+              val effectiveLatestLsn = metadata.getAndValidateLatestLsn
               if (isDebugLogEnabled) {
                 val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs " +
                   s"per LSN: ${metadata.getAvgItemsPerLsn} documentCount ${metadata.documentCount} firstLsn " +
                   s"${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn ${metadata.startLsn} weightedGap " +
-                  s"${metadata.getWeightedLsnGap} effectiveEndLsn ${metadata.latestLsn} maxRows ${maxRowsLimit.maxRows}"
+                  s"${metadata.getWeightedLsnGap} effectiveEndLsn $effectiveLatestLsn maxRows ${maxRowsLimit.maxRows}"
                 logDebug(calculateDebugLine)
               }
-              metadata.latestLsn
+              effectiveLatestLsn
             } else {
               // the weight of this feedRange compared to other feedRanges
               val feedRangeWeightFactor = metadata.getWeightedLsnGap.toDouble / totalWeightedLsnGap.get
@@ -491,11 +576,15 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
               val allowedRate = (feedRangeWeightFactor * maxRowsLimit.maxRows() / metadata.getAvgItemsPerLsn)
                 .toLong
                 .max(1)
-              val effectiveEndLsn = math.min(metadata.latestLsn, metadata.startLsn + allowedRate)
+              val effectiveLatestLsn = metadata.getAndValidateLatestLsn
+              val effectiveEndLsn = math.min(
+                effectiveLatestLsn,
+                metadata.startLsn + allowedRate)
               if (isDebugLogEnabled) {
                 val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs/LSN: " +
                   s"${metadata.getAvgItemsPerLsn} feedRangeWeightFactor $feedRangeWeightFactor documentCount " +
-                  s"${metadata.documentCount} firstLsn ${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn " +
+                  s"${metadata.documentCount} firstLsn ${metadata.firstLsn} latestLsn ${metadata.latestLsn} " +
+                  s"effectiveLatestLsn $effectiveLatestLsn startLsn " +
                   s"${metadata.startLsn} allowedRate  $allowedRate weightedGap ${metadata.getWeightedLsnGap} " +
                   s"effectiveEndLsn $effectiveEndLsn maxRows $maxRowsLimit.maxRows"
                 logDebug(calculateDebugLine)
@@ -514,7 +603,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       storageSizeInMB: Double,
       metadata: PartitionMetadata): Double = {
 
-    val effectiveEndLsn = metadata.endLsn.getOrElse(metadata.latestLsn)
+    val effectiveLatestLsn = metadata.getAndValidateLatestLsn
+    val effectiveEndLsn = metadata.endLsn.getOrElse(effectiveLatestLsn)
     if (metadata.startLsn <= 0 || storageSizeInMB == 0) {
       // No progress has been made so far - use one Spark partition per GB
       1
@@ -525,7 +615,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     } else {
       // Use weight factor based on progress. This estimate assumes equal distribution of storage
       // size per LSN - which is a "good enough" simplification
-      (effectiveEndLsn - metadata.startLsn) / metadata.latestLsn.toDouble
+      (effectiveEndLsn - metadata.startLsn) / effectiveLatestLsn.toDouble
     }
   }
 
@@ -533,20 +623,39 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   (
     userConfig: Map[String, String],
     cosmosClientConfig: CosmosClientConfiguration,
-    cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+    cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
     cosmosContainerConfig: CosmosContainerConfig
   ) = {
 
     assertNotNull(cosmosClientConfig, "cosmosClientConfig")
     assertNotNull(cosmosContainerConfig, "cosmosContainerConfig")
-    Loan(CosmosClientCache.apply(
-      cosmosClientConfig,
-      cosmosClientStateHandle,
-      "CosmosPartitionPlanner.getFeedRanges(database " +
-        s"${cosmosContainerConfig.database}, container ${cosmosContainerConfig.container})"
-    ))
-      .to(clientCacheItem => {
-        val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, clientCacheItem.client)
+
+    val cosmosClientMetadataCache =
+      cosmosClientStateHandles match {
+        case None => None
+        case _ => Some(cosmosClientStateHandles.get.value.cosmosClientMetadataCaches)
+      }
+
+    val calledFrom = s"CosmosPartitionPlanner.getFeedRanges(database ${cosmosContainerConfig.database}, container ${cosmosContainerConfig.container})"
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache.apply(
+          cosmosClientConfig,
+          cosmosClientMetadataCache,
+          calledFrom)),
+        ThroughputControlHelper.getThroughputControlClientCacheItem(
+          userConfig,
+          calledFrom,
+          cosmosClientStateHandles,
+          cosmosClientConfig.sparkEnvironmentInfo)
+      ))
+      .to(clientCacheItems => {
+        val container =
+          ThroughputControlHelper.getContainer(
+            userConfig,
+            cosmosContainerConfig,
+            clientCacheItems(0).get,
+            clientCacheItems(1))
         SparkUtils.safeOpenConnectionInitCaches(container, (msg, e) => logWarning(msg, e))
 
         ContainerFeedRangesCache
@@ -557,24 +666,34 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       })
   }
 
-  def getPartitionMetadata(
+  def getFilteredPartitionMetadata(
                             userConfig: Map[String, String],
                             cosmosClientConfig: CosmosClientConfiguration,
-                            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+                            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
                             cosmosContainerConfig: CosmosContainerConfig,
+                            partitionConfig: CosmosPartitioningConfig,
+                            isChangeFeed: Boolean,
                             maxStaleness: Option[Duration] = None
                           ): Array[PartitionMetadata] = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
       getPartitionMetadataImpl(
-        userConfig, cosmosClientConfig, cosmosClientStateHandle, cosmosContainerConfig, maxStaleness))
+        userConfig,
+        cosmosClientConfig,
+        cosmosClientStateHandles,
+        cosmosContainerConfig,
+        partitionConfig,
+        isChangeFeed,
+        maxStaleness))
   }
 
   private[this] def getPartitionMetadataImpl(
       userConfig: Map[String, String],
       cosmosClientConfig: CosmosClientConfiguration,
-      cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+      cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
       cosmosContainerConfig: CosmosContainerConfig,
+      partitionConfig: CosmosPartitioningConfig,
+      isChangeFeed: Boolean,
       maxStaleness: Option[Duration] = None
   ): Array[PartitionMetadata] = {
 
@@ -583,21 +702,51 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       .getFeedRanges(
         userConfig,
         cosmosClientConfig,
-        cosmosClientStateHandle,
+        cosmosClientStateHandles,
         cosmosContainerConfig)
+      .map(feedRangeList =>
+        partitionConfig.feedRangeFiler match {
+          case Some(epkRangesInScope) => feedRangeList
+            .filter(feedRange => {
+              epkRangesInScope.exists(epk => SparkBridgeImplementationInternal.doRangesOverlap(
+                epk,
+                feedRange))
+            })
+          case None => feedRangeList
+        })
       .flatMap(feedRanges => {
         SFlux
           .fromArray(feedRanges)
           .flatMap(
             normalizedRange =>
-              PartitionMetadataCache.apply(
-                userConfig,
-                cosmosClientConfig,
-                cosmosClientStateHandle,
-                cosmosContainerConfig,
-                normalizedRange,
-                maxStaleness
-            ))
+              // for change feed we always need min and max LSN - even with `Restrictive` partitioning strategy
+              // for query we need metadata for any partitioning strategy but `Restrictive`
+              if (isChangeFeed || partitionConfig.partitioningStrategy != PartitioningStrategies.Restrictive) {
+                PartitionMetadataCache.apply(
+                  userConfig,
+                  cosmosClientConfig,
+                  cosmosClientStateHandles,
+                  cosmosContainerConfig,
+                  normalizedRange,
+                  maxStaleness
+                )
+              } else {
+                SMono.just(new PartitionMetadata(
+                  userConfig,
+                  cosmosClientConfig,
+                  cosmosClientStateHandles,
+                  cosmosContainerConfig,
+                  normalizedRange,
+                  0,
+                  0,
+                  None,
+                  0,
+                  0,
+                  None,
+                  new AtomicLong(0),
+                  new AtomicLong(0)
+                ))
+              })
           .collectSeq()
       })
       .block()

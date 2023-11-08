@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,205 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0 (2023-10-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 1.3.10 (2023-09-19)
+
+### Features Added
+
+- Add support for protobuf schema format.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 1.3.9 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+## 1.3.8 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+
+## 1.3.7 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 1.3.6 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 1.3.5 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
+## 1.3.4 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 1.3.3 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
+## 1.4.0-beta.2 (2023-02-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.36.0`.
+- Update `azure-core-http-netty` dependency to `1.13.0`.
+
+## 1.4.0-beta.1 (2023-01-26)
+
+### Features Added
+
+- Added additional `SchemaFormat`s, `SchemaFormat.JSON`, and `SchemaFormat.CUSTOM`.
+- Added new service version, `SchemaRegistryVersion.V2022_10`.
+- Updated the latest service version to `SchemaRegistryVersion.V2022_10`.
+
+## 1.3.2 (2023-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.35.0`.
+- Update `azure-core-http-netty` dependency to `1.12.8`.
+
+## 1.3.1 (2022-11-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.34.0`.
+- Update `azure-core-http-netty` dependency to `1.12.7`.
+
+## 1.3.0 (2022-10-11)
+
+### Features Added
+
+- Added `getVersion` to `SchemaProperties`.
+- Added the following methods in `SchemaRegistryAsyncClient`:
+  - `Mono<SchemaRegistrySchema> getSchema(String groupName, String schemaName, int schemaVersion)`
+  - `Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion)`
+- Added the following methods in `SchemaRegistryClient`:
+    - `SchemaRegistrySchema getSchema(String groupName, String schemaName, int schemaVersion)`
+    - `Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion, Context context)`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.33.0`.
+- Update `azure-core-http-netty` dependency to `1.12.6`.
+
+## 1.2.4 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.32.0`.
+- Update `azure-core-http-netty` dependency to `1.12.5`.
+
+## 1.2.3 (2022-08-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.31.0`.
+- Update `azure-core-http-netty` dependency to `1.12.4`.
+
+## 1.2.2 (2022-07-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.30.0`.
+- Update `azure-core-http-netty` dependency to `1.12.3`.
+
+## 1.2.1 (2022-06-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.29.1`.
+- Update `azure-core-http-netty` dependency to `1.12.2`.
+
+## 1.2.0 (2022-05-13)
+
+### Features Added
+
+- Added `SchemaProperties.getGroupName()`.
+- Added `SchemaProperties.getName()`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.28.0`.
+- Update `azure-core-http-netty` dependency to `1.12.0`.
+
+## 1.1.1 (2022-04-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.27.0`.
+- Update `azure-core-http-netty` dependency to `1.11.9`.
 
 ## 1.1.0 (2022-03-15)
 

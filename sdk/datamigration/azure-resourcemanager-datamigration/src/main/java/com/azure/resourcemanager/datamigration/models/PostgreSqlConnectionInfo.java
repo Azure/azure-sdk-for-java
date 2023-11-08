@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("PostgreSqlConnectionInfo")
 @Fluent
 public final class PostgreSqlConnectionInfo extends ConnectionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PostgreSqlConnectionInfo.class);
-
     /*
      * Name of the server
      */
@@ -35,6 +32,10 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
      */
     @JsonProperty(value = "port", required = true)
     private int port;
+
+    /** Creates an instance of PostgreSqlConnectionInfo class. */
+    public PostgreSqlConnectionInfo() {
+    }
 
     /**
      * Get the serverName property: Name of the server.
@@ -119,10 +120,12 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
     public void validate() {
         super.validate();
         if (serverName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serverName in model PostgreSqlConnectionInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PostgreSqlConnectionInfo.class);
 }

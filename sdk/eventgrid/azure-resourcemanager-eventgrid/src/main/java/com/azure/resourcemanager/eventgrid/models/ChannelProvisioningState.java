@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ChannelProvisioningState. */
+/** Provisioning state of the channel. */
 public final class ChannelProvisioningState extends ExpandableStringEnum<ChannelProvisioningState> {
     /** Static value Creating for ChannelProvisioningState. */
     public static final ChannelProvisioningState CREATING = fromString("Creating");
@@ -28,6 +28,23 @@ public final class ChannelProvisioningState extends ExpandableStringEnum<Channel
     /** Static value Failed for ChannelProvisioningState. */
     public static final ChannelProvisioningState FAILED = fromString("Failed");
 
+    /** Static value IdleDueToMirroredPartnerTopicDeletion for ChannelProvisioningState. */
+    public static final ChannelProvisioningState IDLE_DUE_TO_MIRRORED_PARTNER_TOPIC_DELETION =
+        fromString("IdleDueToMirroredPartnerTopicDeletion");
+
+    /** Static value IdleDueToMirroredPartnerDestinationDeletion for ChannelProvisioningState. */
+    public static final ChannelProvisioningState IDLE_DUE_TO_MIRRORED_PARTNER_DESTINATION_DELETION =
+        fromString("IdleDueToMirroredPartnerDestinationDeletion");
+
+    /**
+     * Creates a new instance of ChannelProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ChannelProvisioningState() {
+    }
+
     /**
      * Creates or finds a ChannelProvisioningState from its string representation.
      *
@@ -39,7 +56,11 @@ public final class ChannelProvisioningState extends ExpandableStringEnum<Channel
         return fromString(name, ChannelProvisioningState.class);
     }
 
-    /** @return known ChannelProvisioningState values. */
+    /**
+     * Gets known ChannelProvisioningState values.
+     *
+     * @return known ChannelProvisioningState values.
+     */
     public static Collection<ChannelProvisioningState> values() {
         return values(ChannelProvisioningState.class);
     }

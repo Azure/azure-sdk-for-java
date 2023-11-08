@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("Windows")
 @Fluent
 public final class MabContainer extends ProtectionContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MabContainer.class);
-
     /*
      * Can the container be registered one more time.
      */
@@ -60,6 +56,10 @@ public final class MabContainer extends ProtectionContainer {
      */
     @JsonProperty(value = "containerHealthState")
     private String containerHealthState;
+
+    /** Creates an instance of MabContainer class. */
+    public MabContainer() {
+    }
 
     /**
      * Get the canReRegister property: Can the container be registered one more time.

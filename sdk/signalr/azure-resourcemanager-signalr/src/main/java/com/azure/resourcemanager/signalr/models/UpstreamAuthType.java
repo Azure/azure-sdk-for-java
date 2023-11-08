@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UpstreamAuthType. */
+/** Upstream auth type enum. */
 public final class UpstreamAuthType extends ExpandableStringEnum<UpstreamAuthType> {
     /** Static value None for UpstreamAuthType. */
     public static final UpstreamAuthType NONE = fromString("None");
 
     /** Static value ManagedIdentity for UpstreamAuthType. */
     public static final UpstreamAuthType MANAGED_IDENTITY = fromString("ManagedIdentity");
+
+    /**
+     * Creates a new instance of UpstreamAuthType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UpstreamAuthType() {
+    }
 
     /**
      * Creates or finds a UpstreamAuthType from its string representation.
@@ -27,7 +36,11 @@ public final class UpstreamAuthType extends ExpandableStringEnum<UpstreamAuthTyp
         return fromString(name, UpstreamAuthType.class);
     }
 
-    /** @return known UpstreamAuthType values. */
+    /**
+     * Gets known UpstreamAuthType values.
+     *
+     * @return known UpstreamAuthType values.
+     */
     public static Collection<UpstreamAuthType> values() {
         return values(UpstreamAuthType.class);
     }

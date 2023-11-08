@@ -30,7 +30,11 @@ public final class Variant extends ExpandableStringEnum<Variant> {
         return fromString(name, Variant.class);
     }
 
-    /** @return known Variant values. */
+    /**
+     * Gets known Variant values.
+     *
+     * @return known Variant values.
+     */
     public static Collection<Variant> values() {
         return values(Variant.class);
     }

@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 
 /** Information of user assigned identity used by this add-on. */
 @Fluent
-public class ManagedClusterAddonProfileIdentity extends UserAssignedIdentity {
+public final class ManagedClusterAddonProfileIdentity extends UserAssignedIdentity {
+    /** Creates an instance of ManagedClusterAddonProfileIdentity class. */
+    public ManagedClusterAddonProfileIdentity() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ManagedClusterAddonProfileIdentity withResourceId(String resourceId) {

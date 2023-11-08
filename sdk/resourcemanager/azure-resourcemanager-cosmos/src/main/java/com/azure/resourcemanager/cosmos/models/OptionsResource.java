@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB options resource object. */
 @Fluent
 public class OptionsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OptionsResource.class);
-
     /*
-     * Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
-     * ThroughputSetting resource when retrieving offer details.
+     * Value of the Cosmos DB resource throughput or autoscaleSettings. Use the ThroughputSetting resource when
+     * retrieving offer details.
      */
     @JsonProperty(value = "throughput")
     private Integer throughput;
@@ -26,6 +22,10 @@ public class OptionsResource {
      */
     @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettings autoscaleSettings;
+
+    /** Creates an instance of OptionsResource class. */
+    public OptionsResource() {
+    }
 
     /**
      * Get the throughput property: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the

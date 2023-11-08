@@ -13,10 +13,9 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.DedicatedCloudServices
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.DedicatedCloudServiceInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudService;
 import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DedicatedCloudServicesImpl implements DedicatedCloudServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCloudServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DedicatedCloudServicesImpl.class);
 
     private final DedicatedCloudServicesClient innerClient;
 
@@ -51,16 +50,6 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
         return Utils.mapPage(inner, inner1 -> new DedicatedCloudServiceImpl(inner1, this.manager()));
     }
 
-    public DedicatedCloudService getByResourceGroup(String resourceGroupName, String dedicatedCloudServiceName) {
-        DedicatedCloudServiceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCloudServiceName);
-        if (inner != null) {
-            return new DedicatedCloudServiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DedicatedCloudService> getByResourceGroupWithResponse(
         String resourceGroupName, String dedicatedCloudServiceName, Context context) {
         Response<DedicatedCloudServiceInner> inner =
@@ -71,6 +60,16 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DedicatedCloudServiceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DedicatedCloudService getByResourceGroup(String resourceGroupName, String dedicatedCloudServiceName) {
+        DedicatedCloudServiceInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCloudServiceName);
+        if (inner != null) {
+            return new DedicatedCloudServiceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -87,7 +86,7 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
     public DedicatedCloudService getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -95,7 +94,7 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
         }
         String dedicatedCloudServiceName = Utils.getValueFromIdByName(id, "dedicatedCloudServices");
         if (dedicatedCloudServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +110,7 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
     public Response<DedicatedCloudService> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +118,7 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
         }
         String dedicatedCloudServiceName = Utils.getValueFromIdByName(id, "dedicatedCloudServices");
         if (dedicatedCloudServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -133,7 +132,7 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +140,7 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
         }
         String dedicatedCloudServiceName = Utils.getValueFromIdByName(id, "dedicatedCloudServices");
         if (dedicatedCloudServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,7 +154,7 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,7 +162,7 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
         }
         String dedicatedCloudServiceName = Utils.getValueFromIdByName(id, "dedicatedCloudServices");
         if (dedicatedCloudServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

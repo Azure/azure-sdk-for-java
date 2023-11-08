@@ -23,6 +23,10 @@ public final class AllowedPrincipals {
     @JsonProperty(value = "identities")
     private List<String> identities;
 
+    /** Creates an instance of AllowedPrincipals class. */
+    public AllowedPrincipals() {
+    }
+
     /**
      * Get the groups property: The list of the allowed groups.
      *

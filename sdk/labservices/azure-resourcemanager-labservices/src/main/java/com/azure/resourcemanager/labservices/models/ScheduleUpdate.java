@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.models.ScheduleUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Schedule for automatically turning virtual machines in a lab on and off at specified times. Used for updates. */
 @Fluent
 public final class ScheduleUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleUpdate.class);
-
     /*
      * Schedule resource properties
      */

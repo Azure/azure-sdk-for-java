@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class WebApplicationFirewallCustomRule {
     /*
-     * The name of the resource that is unique within a policy. This name can
-     * be used to access the resource.
+     * The name of the resource that is unique within a policy. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -26,11 +25,28 @@ public final class WebApplicationFirewallCustomRule {
     private String etag;
 
     /*
-     * Priority of the rule. Rules with a lower value will be evaluated before
-     * rules with a higher value.
+     * Priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.
      */
     @JsonProperty(value = "priority", required = true)
     private int priority;
+
+    /*
+     * Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
+     */
+    @JsonProperty(value = "state")
+    private WebApplicationFirewallState state;
+
+    /*
+     * Duration over which Rate Limit policy will be applied. Applies only when ruleType is RateLimitRule.
+     */
+    @JsonProperty(value = "rateLimitDuration")
+    private ApplicationGatewayFirewallRateLimitDuration rateLimitDuration;
+
+    /*
+     * Rate Limit threshold to apply in case ruleType is RateLimitRule. Must be greater than or equal to 1
+     */
+    @JsonProperty(value = "rateLimitThreshold")
+    private Integer rateLimitThreshold;
 
     /*
      * The rule type.
@@ -45,10 +61,20 @@ public final class WebApplicationFirewallCustomRule {
     private List<MatchCondition> matchConditions;
 
     /*
+     * List of user session identifier group by clauses.
+     */
+    @JsonProperty(value = "groupByUserSession")
+    private List<GroupByUserSession> groupByUserSession;
+
+    /*
      * Type of Actions.
      */
     @JsonProperty(value = "action", required = true)
     private WebApplicationFirewallAction action;
+
+    /** Creates an instance of WebApplicationFirewallCustomRule class. */
+    public WebApplicationFirewallCustomRule() {
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a policy. This name can be used to access
@@ -104,6 +130,73 @@ public final class WebApplicationFirewallCustomRule {
     }
 
     /**
+     * Get the state property: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not
+     * specified.
+     *
+     * @return the state value.
+     */
+    public WebApplicationFirewallState state() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not
+     * specified.
+     *
+     * @param state the state value to set.
+     * @return the WebApplicationFirewallCustomRule object itself.
+     */
+    public WebApplicationFirewallCustomRule withState(WebApplicationFirewallState state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
+     * Get the rateLimitDuration property: Duration over which Rate Limit policy will be applied. Applies only when
+     * ruleType is RateLimitRule.
+     *
+     * @return the rateLimitDuration value.
+     */
+    public ApplicationGatewayFirewallRateLimitDuration rateLimitDuration() {
+        return this.rateLimitDuration;
+    }
+
+    /**
+     * Set the rateLimitDuration property: Duration over which Rate Limit policy will be applied. Applies only when
+     * ruleType is RateLimitRule.
+     *
+     * @param rateLimitDuration the rateLimitDuration value to set.
+     * @return the WebApplicationFirewallCustomRule object itself.
+     */
+    public WebApplicationFirewallCustomRule withRateLimitDuration(
+        ApplicationGatewayFirewallRateLimitDuration rateLimitDuration) {
+        this.rateLimitDuration = rateLimitDuration;
+        return this;
+    }
+
+    /**
+     * Get the rateLimitThreshold property: Rate Limit threshold to apply in case ruleType is RateLimitRule. Must be
+     * greater than or equal to 1.
+     *
+     * @return the rateLimitThreshold value.
+     */
+    public Integer rateLimitThreshold() {
+        return this.rateLimitThreshold;
+    }
+
+    /**
+     * Set the rateLimitThreshold property: Rate Limit threshold to apply in case ruleType is RateLimitRule. Must be
+     * greater than or equal to 1.
+     *
+     * @param rateLimitThreshold the rateLimitThreshold value to set.
+     * @return the WebApplicationFirewallCustomRule object itself.
+     */
+    public WebApplicationFirewallCustomRule withRateLimitThreshold(Integer rateLimitThreshold) {
+        this.rateLimitThreshold = rateLimitThreshold;
+        return this;
+    }
+
+    /**
      * Get the ruleType property: The rule type.
      *
      * @return the ruleType value.
@@ -140,6 +233,26 @@ public final class WebApplicationFirewallCustomRule {
      */
     public WebApplicationFirewallCustomRule withMatchConditions(List<MatchCondition> matchConditions) {
         this.matchConditions = matchConditions;
+        return this;
+    }
+
+    /**
+     * Get the groupByUserSession property: List of user session identifier group by clauses.
+     *
+     * @return the groupByUserSession value.
+     */
+    public List<GroupByUserSession> groupByUserSession() {
+        return this.groupByUserSession;
+    }
+
+    /**
+     * Set the groupByUserSession property: List of user session identifier group by clauses.
+     *
+     * @param groupByUserSession the groupByUserSession value to set.
+     * @return the WebApplicationFirewallCustomRule object itself.
+     */
+    public WebApplicationFirewallCustomRule withGroupByUserSession(List<GroupByUserSession> groupByUserSession) {
+        this.groupByUserSession = groupByUserSession;
         return this;
     }
 
@@ -182,6 +295,9 @@ public final class WebApplicationFirewallCustomRule {
                         "Missing required property matchConditions in model WebApplicationFirewallCustomRule"));
         } else {
             matchConditions().forEach(e -> e.validate());
+        }
+        if (groupByUserSession() != null) {
+            groupByUserSession().forEach(e -> e.validate());
         }
         if (action() == null) {
             throw LOGGER

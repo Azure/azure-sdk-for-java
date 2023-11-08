@@ -95,7 +95,7 @@ public final class ManageVirtualMachineExtension {
         final String windowsVMAccessExtensionName = "VMAccessAgent";
         final String windowsVMAccessExtensionPublisherName = "Microsoft.Compute";
         final String windowsVMAccessExtensionTypeName = "VMAccessAgent";
-        final String windowsVMAccessExtensionVersionName = "2.3";
+        final String windowsVMAccessExtensionVersionName = "2.4";
         try {
 
 
@@ -234,8 +234,8 @@ public final class ManageVirtualMachineExtension {
                         .withPublisher(windowsVMAccessExtensionPublisherName)
                         .withType(windowsVMAccessExtensionTypeName)
                         .withVersion(windowsVMAccessExtensionVersionName)
-                        .withProtectedSetting("username", secondWindowsUserName)
-                        .withProtectedSetting("password", secondWindowsUserPassword)
+                        .withPublicSetting("UserName", secondWindowsUserName)
+                        .withProtectedSetting("Password", secondWindowsUserPassword)
                         .attach()
                     .apply();
 
@@ -246,8 +246,8 @@ public final class ManageVirtualMachineExtension {
 
             windowsVM.update()
                     .updateExtension(windowsVMAccessExtensionName)
-                        .withProtectedSetting("username", thirdWindowsUserName)
-                        .withProtectedSetting("password", thirdWindowsUserPassword)
+                        .withPublicSetting("UserName", thirdWindowsUserName)
+                        .withProtectedSetting("Password", thirdWindowsUserPassword)
                         .parent()
                     .apply();
 
@@ -258,8 +258,8 @@ public final class ManageVirtualMachineExtension {
 
             windowsVM.update()
                     .updateExtension(windowsVMAccessExtensionName)
-                        .withProtectedSetting("username", firstWindowsUserName)
-                        .withProtectedSetting("password", firstWindowsUserNewPassword)
+                        .withPublicSetting("UserName", firstWindowsUserName)
+                        .withProtectedSetting("Password", firstWindowsUserNewPassword)
                         .parent()
                     .apply();
 

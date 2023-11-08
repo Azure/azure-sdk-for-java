@@ -11,10 +11,9 @@ import com.azure.resourcemanager.maintenance.fluent.ApplyUpdateForResourceGroups
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdate;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdateForResourceGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApplyUpdateForResourceGroupsImpl implements ApplyUpdateForResourceGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplyUpdateForResourceGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplyUpdateForResourceGroupsImpl.class);
 
     private final ApplyUpdateForResourceGroupsClient innerClient;
 

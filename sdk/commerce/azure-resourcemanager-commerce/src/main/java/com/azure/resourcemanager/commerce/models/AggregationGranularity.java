@@ -30,6 +30,9 @@ public enum AggregationGranularity {
      */
     @JsonCreator
     public static AggregationGranularity fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AggregationGranularity[] items = AggregationGranularity.values();
         for (AggregationGranularity item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum AggregationGranularity {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

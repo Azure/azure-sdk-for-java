@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.CloudLinksClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CloudLinksClient. */
 public final class CloudLinksClientImpl implements CloudLinksClient {
-    private final ClientLogger logger = new ClientLogger(CloudLinksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CloudLinksService service;
 
@@ -66,11 +63,10 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientCloudLinks")
-    private interface CloudLinksService {
+    public interface CloudLinksService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/cloudLinks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CloudLinkList>> list(
@@ -84,8 +80,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/cloudLinks/{cloudLinkName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks/{cloudLinkName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CloudLinkInner>> get(
@@ -100,8 +95,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/cloudLinks/{cloudLinkName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks/{cloudLinkName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -117,8 +111,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-                + "/{privateCloudName}/cloudLinks/{cloudLinkName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks/{cloudLinkName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -150,7 +143,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of cloud links.
+     * @return a paged list of cloud links along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudLinkInner>> listSinglePageAsync(String resourceGroupName, String privateCloudName) {
@@ -208,7 +201,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of cloud links.
+     * @return a paged list of cloud links along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudLinkInner>> listSinglePageAsync(
@@ -263,7 +256,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of cloud links.
+     * @return a paged list of cloud links as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudLinkInner> listAsync(String resourceGroupName, String privateCloudName) {
@@ -281,7 +274,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of cloud links.
+     * @return a paged list of cloud links as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudLinkInner> listAsync(String resourceGroupName, String privateCloudName, Context context) {
@@ -298,7 +291,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of cloud links.
+     * @return a paged list of cloud links as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudLinkInner> list(String resourceGroupName, String privateCloudName) {
@@ -314,7 +307,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of cloud links.
+     * @return a paged list of cloud links as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudLinkInner> list(String resourceGroupName, String privateCloudName, Context context) {
@@ -330,7 +323,8 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an cloud link by name in a private cloud.
+     * @return an cloud link by name in a private cloud along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CloudLinkInner>> getWithResponseAsync(
@@ -385,7 +379,8 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an cloud link by name in a private cloud.
+     * @return an cloud link by name in a private cloud along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CloudLinkInner>> getWithResponseAsync(
@@ -436,19 +431,30 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an cloud link by name in a private cloud.
+     * @return an cloud link by name in a private cloud on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudLinkInner> getAsync(String resourceGroupName, String privateCloudName, String cloudLinkName) {
         return getWithResponseAsync(resourceGroupName, privateCloudName, cloudLinkName)
-            .flatMap(
-                (Response<CloudLinkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get an cloud link by name in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param cloudLinkName Name of the cloud link resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an cloud link by name in a private cloud along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CloudLinkInner> getWithResponse(
+        String resourceGroupName, String privateCloudName, String cloudLinkName, Context context) {
+        return getWithResponseAsync(resourceGroupName, privateCloudName, cloudLinkName, context).block();
     }
 
     /**
@@ -464,25 +470,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudLinkInner get(String resourceGroupName, String privateCloudName, String cloudLinkName) {
-        return getAsync(resourceGroupName, privateCloudName, cloudLinkName).block();
-    }
-
-    /**
-     * Get an cloud link by name in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param cloudLinkName Name of the cloud link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an cloud link by name in a private cloud.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CloudLinkInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String cloudLinkName, Context context) {
-        return getWithResponseAsync(resourceGroupName, privateCloudName, cloudLinkName, context).block();
+        return getWithResponse(resourceGroupName, privateCloudName, cloudLinkName, Context.NONE).getValue();
     }
 
     /**
@@ -495,7 +483,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cloud link resource.
+     * @return a cloud link resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -557,7 +545,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cloud link resource.
+     * @return a cloud link resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -619,7 +607,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cloud link resource.
+     * @return the {@link PollerFlux} for polling of a cloud link resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudLinkInner>, CloudLinkInner> beginCreateOrUpdateAsync(
@@ -629,7 +617,11 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
         return this
             .client
             .<CloudLinkInner, CloudLinkInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CloudLinkInner.class, CloudLinkInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                CloudLinkInner.class,
+                CloudLinkInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -643,7 +635,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cloud link resource.
+     * @return the {@link PollerFlux} for polling of a cloud link resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudLinkInner>, CloudLinkInner> beginCreateOrUpdateAsync(
@@ -671,12 +663,14 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cloud link resource.
+     * @return the {@link SyncPoller} for polling of a cloud link resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudLinkInner>, CloudLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String cloudLinkName, CloudLinkInner cloudLink) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, cloudLinkName, cloudLink).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, cloudLinkName, cloudLink)
+            .getSyncPoller();
     }
 
     /**
@@ -690,7 +684,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cloud link resource.
+     * @return the {@link SyncPoller} for polling of a cloud link resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudLinkInner>, CloudLinkInner> beginCreateOrUpdate(
@@ -699,7 +693,8 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
         String cloudLinkName,
         CloudLinkInner cloudLink,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, cloudLinkName, cloudLink, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, cloudLinkName, cloudLink, context)
             .getSyncPoller();
     }
 
@@ -713,7 +708,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cloud link resource.
+     * @return a cloud link resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudLinkInner> createOrUpdateAsync(
@@ -734,7 +729,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cloud link resource.
+     * @return a cloud link resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudLinkInner> createOrUpdateAsync(
@@ -798,7 +793,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -853,7 +848,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -904,7 +899,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -913,7 +908,8 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
             deleteWithResponseAsync(resourceGroupName, privateCloudName, cloudLinkName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -926,7 +922,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -948,12 +944,12 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String cloudLinkName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, cloudLinkName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, cloudLinkName).getSyncPoller();
     }
 
     /**
@@ -966,12 +962,12 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String cloudLinkName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, cloudLinkName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, cloudLinkName, context).getSyncPoller();
     }
 
     /**
@@ -983,7 +979,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName, String cloudLinkName) {
@@ -1002,7 +998,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1046,11 +1042,12 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of cloud links.
+     * @return a paged list of cloud links along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudLinkInner>> listNextSinglePageAsync(String nextLink) {
@@ -1081,12 +1078,13 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of cloud links.
+     * @return a paged list of cloud links along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudLinkInner>> listNextSinglePageAsync(String nextLink, Context context) {

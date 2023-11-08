@@ -6,7 +6,7 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +14,6 @@ import java.util.Map;
 /** Describes a profile type participating in an interaction. */
 @Fluent
 public final class Participant {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Participant.class);
-
     /*
      * Profile type name.
      */
@@ -38,12 +36,14 @@ public final class Participant {
      * Localized display name.
      */
     @JsonProperty(value = "displayName")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Localized descriptions.
      */
     @JsonProperty(value = "description")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
     /*
@@ -51,6 +51,10 @@ public final class Participant {
      */
     @JsonProperty(value = "role")
     private String role;
+
+    /** Creates an instance of Participant class. */
+    public Participant() {
+    }
 
     /**
      * Get the profileTypeName property: Profile type name.
@@ -180,12 +184,12 @@ public final class Participant {
      */
     public void validate() {
         if (profileTypeName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property profileTypeName in model Participant"));
         }
         if (participantPropertyReferences() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property participantPropertyReferences in model Participant"));
@@ -193,9 +197,11 @@ public final class Participant {
             participantPropertyReferences().forEach(e -> e.validate());
         }
         if (participantName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property participantName in model Participant"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Participant.class);
 }

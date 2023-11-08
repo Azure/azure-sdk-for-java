@@ -17,11 +17,13 @@ public final class UserProperty {
     private String name;
 
     /*
-     * User property value. Type: string (or Expression with resultType
-     * string).
+     * User property value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value", required = true)
     private Object value;
+
+    /** Creates an instance of UserProperty class. */
+    public UserProperty() {}
 
     /**
      * Get the name property: User property name.

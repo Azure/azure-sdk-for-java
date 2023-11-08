@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.redis.models.ErrorDetail;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.redis.models.OperationStatusResult;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,6 +22,10 @@ public final class OperationStatusInner extends OperationStatusResult {
     @JsonProperty(value = "properties")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
+
+    /** Creates an instance of OperationStatusInner class. */
+    public OperationStatusInner() {
+    }
 
     /**
      * Get the properties property: Additional properties from RP, only when operation is successful.
@@ -94,7 +98,7 @@ public final class OperationStatusInner extends OperationStatusResult {
 
     /** {@inheritDoc} */
     @Override
-    public OperationStatusInner withError(ErrorDetail error) {
+    public OperationStatusInner withError(ManagementError error) {
         super.withError(error);
         return this;
     }

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphBodyType. */
+/** bodyType. */
 public final class MicrosoftGraphBodyType extends ExpandableStringEnum<MicrosoftGraphBodyType> {
     /** Static value text for MicrosoftGraphBodyType. */
     public static final MicrosoftGraphBodyType TEXT = fromString("text");
 
     /** Static value html for MicrosoftGraphBodyType. */
     public static final MicrosoftGraphBodyType HTML = fromString("html");
+
+    /**
+     * Creates a new instance of MicrosoftGraphBodyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphBodyType() {
+    }
 
     /**
      * Creates or finds a MicrosoftGraphBodyType from its string representation.
@@ -27,7 +36,11 @@ public final class MicrosoftGraphBodyType extends ExpandableStringEnum<Microsoft
         return fromString(name, MicrosoftGraphBodyType.class);
     }
 
-    /** @return known MicrosoftGraphBodyType values. */
+    /**
+     * Gets known MicrosoftGraphBodyType values.
+     *
+     * @return known MicrosoftGraphBodyType values.
+     */
     public static Collection<MicrosoftGraphBodyType> values() {
         return values(MicrosoftGraphBodyType.class);
     }

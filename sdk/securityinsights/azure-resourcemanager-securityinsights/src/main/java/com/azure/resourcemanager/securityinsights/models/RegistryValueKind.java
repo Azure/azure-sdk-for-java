@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RegistryValueKind. */
+/**
+ * Specifies the data types to use when storing values in the registry, or identifies the data type of a value in the
+ * registry.
+ */
 public final class RegistryValueKind extends ExpandableStringEnum<RegistryValueKind> {
     /** Static value None for RegistryValueKind. */
     public static final RegistryValueKind NONE = fromString("None");
@@ -45,7 +48,11 @@ public final class RegistryValueKind extends ExpandableStringEnum<RegistryValueK
         return fromString(name, RegistryValueKind.class);
     }
 
-    /** @return known RegistryValueKind values. */
+    /**
+     * Gets known RegistryValueKind values.
+     *
+     * @return known RegistryValueKind values.
+     */
     public static Collection<RegistryValueKind> values() {
         return values(RegistryValueKind.class);
     }

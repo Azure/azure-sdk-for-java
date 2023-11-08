@@ -14,26 +14,35 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.metrics.TestCounter;
+import com.azure.core.test.utils.metrics.TestMeasurement;
+import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.SpanKind;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
+import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -52,27 +61,40 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.TRACEPARENT_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -85,8 +107,12 @@ class EventHubProducerAsyncClientTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
-    private static final String ENTITY_PATH = HOSTNAME + ".servicebus.windows.net";
-
+    private static final String CLIENT_IDENTIFIER = "my-client-identifier";
+    private static final String ENTITY_PATH = HOSTNAME + Configuration.getGlobalConfiguration()
+        .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
+    private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsProducerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     @Mock
     private AmqpSendLink sendLink;
     @Mock
@@ -110,7 +136,6 @@ class EventHubProducerAsyncClientTest {
     @Captor
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
-    private final ClientLogger logger = new ClientLogger(EventHubProducerAsyncClient.class);
     private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setDelay(Duration.ofMillis(500))
@@ -120,25 +145,13 @@ class EventHubProducerAsyncClientTest {
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private EventHubProducerAsyncClient producer;
     private EventHubConnectionProcessor connectionProcessor;
-    private TracerProvider tracerProvider;
     private ConnectionOptions connectionOptions;
-    private final Scheduler testScheduler = Schedulers.newElastic("test");
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
+    private final Scheduler testScheduler = Schedulers.newBoundedElastic(10, 10, "test");
 
     @BeforeEach
     void setup(TestInfo testInfo) {
         MockitoAnnotations.initMocks(this);
 
-        tracerProvider = new TracerProvider(Collections.emptyList());
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
             AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, testScheduler,
@@ -154,7 +167,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 "event-hub-path", connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, testScheduler, false, onClientClosed);
+            messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
         when(sendLink2.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -186,13 +199,14 @@ class EventHubProducerAsyncClientTest {
         final SendOptions options = new SendOptions();
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         // Act
         StepVerifier.create(producer.send(testData, options))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -213,14 +227,15 @@ class EventHubProducerAsyncClientTest {
         final SendOptions options = new SendOptions();
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         // Act
         StepVerifier.create(producer.send(testData, options))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink, times(1)).send(any(Message.class));
@@ -239,7 +254,7 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         final Mono<Instant> saveAction = Mono.delay(Duration.ofMillis(500))
             .then(Mono.fromCallable(() -> {
-                logger.info("This is saved.");
+                LOGGER.info("This is saved.");
                 return Instant.now();
             }));
         final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
@@ -247,11 +262,11 @@ class EventHubProducerAsyncClientTest {
         final Semaphore semaphore = new Semaphore(1);
         // In our actual client builder, we allow this.
         final EventHubProducerAsyncClient flexibleProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, testScheduler,
-            false, onClientClosed);
+            connectionProcessor, retryOptions, messageSerializer, testScheduler,
+            false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.send(any(Message.class))).thenReturn(Mono.<Void>empty().publishOn(Schedulers.single()));
@@ -261,13 +276,13 @@ class EventHubProducerAsyncClientTest {
         final Mono<Instant> sendMono = flexibleProducer.send(testData, options).thenReturn(Instant.now());
 
         sendMono.subscribe(e -> {
-            logger.info("Saving message: {}", e);
+            LOGGER.info("Saving message: {}", e);
 
             // This block here should throw an IllegalStateException if we aren't publishing correctly.
             final Instant result = saveAction.block(Duration.ofSeconds(3));
 
             Assertions.assertNotNull(result);
-            logger.info("Message saved: {}", result);
+            LOGGER.info("Message saved: {}", result);
             semaphore.release();
         });
 
@@ -294,7 +309,7 @@ class EventHubProducerAsyncClientTest {
             new EventData(TEST_CONTENTS.getBytes(UTF_8)));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
@@ -315,61 +330,173 @@ class EventHubProducerAsyncClientTest {
      * Verifies start and end span invoked when sending a single message.
      */
     @Test
+    @SuppressWarnings("unchecked")
     void sendStartSpanSingleMessage() {
+        final Flux<EventData> testData = Flux.just(
+            new EventData(TEST_CONTENTS.getBytes(UTF_8)));
+        final SendOptions sendOptions = new SendOptions();
+
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        final List<Tracer> tracers = Collections.singletonList(tracer1);
-        TracerProvider tracerProvider = new TracerProvider(tracers);
-        final Flux<EventData> testData = Flux.just(
-            new EventData(TEST_CONTENTS.getBytes(UTF_8)),
-            new EventData(TEST_CONTENTS.getBytes(UTF_8)));
-
-        final String partitionId = "my-partition-id";
-        final SendOptions sendOptions = new SendOptions()
-            .setPartitionId(partitionId);
+        when(tracer1.isEnabled()).thenReturn(true);
+        final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
-            false, onClientClosed);
+            connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
-        when(connection.createSendLink(
-            argThat(name -> name.endsWith(partitionId)), argThat(name -> name.endsWith(partitionId)), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
-
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(EVENT_HUB_NAME);
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
-        when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.message"), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value");
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, 0);
+                return invocation.getArgument(2, Context.class)
+                    .addData(SPAN_CONTEXT_KEY, "span");
+            });
+
+        when(tracer1.start(eq("EventHubs.send"), any(), any(Context.class))).thenAnswer(
+            invocation -> {
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 1);
+                return invocation.getArgument(2, Context.class)
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "trace-context");
             }
         );
 
-        when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
-            invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
-            }
-        );
+        doAnswer(invocation -> {
+            BiConsumer<String, String> injectContext = invocation.getArgument(0, BiConsumer.class);
+            injectContext.accept("traceparent", "diag-id");
+            return null;
+        }).when(tracer1).injectContext(any(), any(Context.class));
 
-        when(tracer1.getSharedSpanBuilder(eq("EventHubs.send"), any())).thenAnswer(
+        // Act
+        StepVerifier.create(asyncProducer.send(testData, sendOptions))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        //Assert
+        verify(tracer1, times(1))
+            .start(eq("EventHubs.send"), any(), any(Context.class));
+        verify(tracer1, times(1))
+            .start(eq("EventHubs.message"), any(), any(Context.class));
+        verify(tracer1, times(2)).end(isNull(), isNull(), any());
+        verify(tracer1, times(1)).injectContext(any(), any());
+
+        verifyNoInteractions(onClientClosed);
+        assertEquals(2, testData.blockFirst().getProperties().size());
+        assertEquals("diag-id", testData.blockFirst().getProperties().get(DIAGNOSTIC_ID_KEY));
+        assertEquals("diag-id", testData.blockFirst().getProperties().get(TRACEPARENT_KEY));
+    }
+
+    /**
+     * Does not attempt to modify unmodifiable properties
+     */
+    @Test
+    void sendSingleWithUnmodifiableProperties() {
+        final Flux<EventData> testData = Flux.just(fakeReceivedMessage());
+
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        when(tracer1.isEnabled()).thenReturn(true);
+        final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        when(tracer1.start(eq("EventHubs.message"), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_BUILDER_KEY, "value");
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, 0);
+                return invocation.getArgument(2, Context.class)
+                    .addData(SPAN_CONTEXT_KEY, "span");
+            });
+
+        when(tracer1.start(eq("EventHubs.send"), any(), any(Context.class))).thenAnswer(
+            invocation -> {
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 1);
+                return invocation.getArgument(2, Context.class)
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "trace-context");
             }
         );
 
         // Act
-        StepVerifier.create(asyncProducer.send(testData, sendOptions))
-            .verifyComplete();
+        StepVerifier.create(asyncProducer.send(testData))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
-        // Assert
+        //Assert
         verify(tracer1, times(1))
-            .start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
-        verify(tracer1, times(2))
-            .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(3)).end(eq("success"), isNull(), any());
+            .start(eq("EventHubs.send"), any(), any(Context.class));
+        verify(tracer1, times(1))
+            .start(eq("EventHubs.message"), any(), any(Context.class));
+        verify(tracer1, times(1)).end(eq("failed to inject context into EventData"), isNull(), any());
+        verify(tracer1, times(1)).end(isNull(), isNull(), any());
+        verify(tracer1, never()).injectContext(any(), any());
+
+        verifyNoInteractions(onClientClosed);
+        assertEquals(1, testData.blockFirst().getProperties().size());
+    }
+
+    /**
+     * Verifies tracing for getEventHubsProperties and getPartitionProperties
+     */
+    @Test
+    void startSpanForGetProperties() {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        when(tracer1.isEnabled()).thenReturn(true);
+        final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+
+        EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
+        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
+            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false);
+        EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
+        when(connection.getManagementNode()).thenReturn(Mono.just(managementNode));
+        when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
+        when(managementNode.getPartitionProperties(anyString())).thenReturn(Mono.just(partitionProperties));
+
+        when(tracer1.start(eq("EventHubs.getPartitionProperties"), any(), any(Context.class))).thenAnswer(
+            invocation -> {
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 0);
+                return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "getPartitionProperties");
+            }
+        );
+        when(tracer1.start(eq("EventHubs.getEventHubProperties"), any(), any(Context.class))).thenAnswer(
+            invocation -> {
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 0);
+                return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "getEventHubProperties");
+            }
+        );
+
+        // Act
+        StepVerifier.create(asyncProducer.getEventHubProperties())
+            .consumeNextWith(p -> assertSame(ehProperties, p))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        StepVerifier.create(asyncProducer.getPartitionProperties("0"))
+            .consumeNextWith(p -> assertSame(partitionProperties, p))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        //Assert
+        verify(tracer1, times(1))
+            .start(eq("EventHubs.getPartitionProperties"), any(), any(Context.class));
+        verify(tracer1, times(1))
+            .start(eq("EventHubs.getEventHubProperties"), any(), any(Context.class));
+        verify(tracer1, times(2)).end(isNull(), isNull(), any());
 
         verifyNoInteractions(onClientClosed);
     }
@@ -379,44 +506,38 @@ class EventHubProducerAsyncClientTest {
      * message.
      */
     @Test
+    @SuppressWarnings("unchecked")
     void sendMessageRetrySpanTest() {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        final List<Tracer> tracers = Collections.singletonList(tracer1);
-        TracerProvider tracerProvider = new TracerProvider(tracers);
-
+        when(tracer1.isEnabled()).thenReturn(true);
+        final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         final String failureKey = "fail";
-        final EventData testData = new EventData("test");
+        final EventData testData = new EventData("test")
+            .addContext(SPAN_CONTEXT_KEY, "span-context");
         testData.getProperties().put(failureKey, "true");
 
-        when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
+        when(tracer1.start(eq("EventHubs.send"), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value").addData(HOST_NAME_KEY, "value2");
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 1);
+                return invocation.getArgument(2, Context.class)
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "trace-context");
             }
         );
 
-        when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
+        when(tracer1.extractContext(any())).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
-            }
-        );
-
-        when(tracer1.getSharedSpanBuilder(eq("EventHubs.send"), any())).thenAnswer(
-            invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_BUILDER_KEY, "value");
+                Function<String, String> getter = invocation.getArgument(0, Function.class);
+                assertEquals("traceparent", getter.apply("traceparent"));
+                return new Context(SPAN_CONTEXT_KEY, "span-context");
             }
         );
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
@@ -429,16 +550,15 @@ class EventHubProducerAsyncClientTest {
             .thenReturn(Mono.error(error))
             .thenReturn(Mono.empty());
 
-        StepVerifier.create(producer.send(testData)).verifyComplete();
+        producer.send(testData).block();
+        assertFalse(testData.getProperties().containsKey(DIAGNOSTIC_ID_KEY));
 
         //Assert
-        verify(tracer1, times(1))
-            .start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
-        verify(tracer1, times(1))
-            .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(1)).addLink(any());
-        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
-
+        verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), any(Context.class));
+        verify(tracer1, never()).start(eq("EventHubs.message"), any(), any(Context.class));
+        verify(tracer1, times(1)).end(isNull(), isNull(), any());
+        verify(tracer1, never()).extractContext(any());
+        verify(tracer1, never()).injectContext(any(), any());
         verifyNoMoreInteractions(onClientClosed);
     }
 
@@ -453,7 +573,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(link));
 
         // We believe 20 events is enough for that EventDataBatch to be greater than max size.
@@ -464,8 +584,9 @@ class EventHubProducerAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(producer.send(testData))
-            .verifyErrorMatches(error -> error instanceof AmqpException
-                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+            .expectErrorMatches(error -> error instanceof AmqpException
+                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED)
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, times(0)).send(any(Message.class));
     }
@@ -487,7 +608,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -502,14 +623,16 @@ class EventHubProducerAsyncClientTest {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, times(2)).getLinkSize();
     }
@@ -519,14 +642,15 @@ class EventHubProducerAsyncClientTest {
      * EventDataBatch}.
      */
     @Test
+    @SuppressWarnings("unchecked")
     void startMessageSpansOnCreateBatch() {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
-        final List<Tracer> tracers = Collections.singletonList(tracer1);
-        TracerProvider tracerProvider = new TracerProvider(tracers);
+        when(tracer1.isEnabled()).thenReturn(true);
+        final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
-            false, onClientClosed);
+            connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
         final AmqpSendLink link = mock(AmqpSendLink.class);
 
         when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -534,30 +658,58 @@ class EventHubProducerAsyncClientTest {
         when(link.getEntityPath()).thenReturn(ENTITY_PATH);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
-            .thenReturn(Mono.just(link));
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
-        when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
+        final AtomicReference<Integer> eventInd = new AtomicReference<>(0);
+
+        when(tracer1.start(eq("EventHubs.message"), any(), any(Context.class))).thenAnswer(
             invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
-                assertEquals(passed.getData(ENTITY_PATH_KEY).get(), ENTITY_PATH);
-                assertEquals(passed.getData(HOST_NAME_KEY).get(), HOSTNAME);
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, 0);
+                return invocation.getArgument(2, Context.class)
+                    .addData(SPAN_CONTEXT_KEY, "span");
+            });
 
-                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+        when(tracer1.start(eq("EventHubs.send"), any(), any(Context.class))).thenAnswer(
+            invocation -> {
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 2);
+                return invocation.getArgument(2, Context.class)
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "trace-context");
             }
         );
 
-        // Act & Assert
-        StepVerifier.create(asyncProducer.createBatch())
-            .assertNext(batch -> {
-                Assertions.assertTrue(batch.tryAdd(new EventData("Hello World".getBytes(UTF_8))));
-            })
-            .verifyComplete();
+        doAnswer(invocation -> {
+            BiConsumer<String, String> injectContext = invocation.getArgument(0, BiConsumer.class);
+            injectContext.accept("traceparent", String.valueOf(eventInd.get()));
+            return null;
+        }).when(tracer1).injectContext(any(), any(Context.class));
 
-        verify(tracer1, times(1))
-            .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
+        // Act & Assert
+        StepVerifier.create(asyncProducer.createBatch()
+                .flatMap(batch -> {
+                    final EventData data0 = new EventData("Hello World".getBytes(UTF_8));
+                    Assertions.assertTrue(batch.tryAdd(data0));
+                    assertEquals("0", data0.getProperties().get(DIAGNOSTIC_ID_KEY));
+
+                    eventInd.set(1);
+                    final EventData data1 = new EventData("Hello World".getBytes(UTF_8));
+                    Assertions.assertTrue(batch.tryAdd(data1));
+                    assertEquals("1", data1.getProperties().get(DIAGNOSTIC_ID_KEY));
+                    return asyncProducer.send(batch);
+                }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        verify(tracer1, times(2))
+            .start(eq("EventHubs.message"), any(), any(Context.class));
+        verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), any(Context.class));
+        verify(tracer1, times(2)).start(eq("EventHubs.message"), any(), any(Context.class));
+        verify(tracer1, times(3)).end(isNull(), isNull(), any());
+        verify(tracer1, times(2)).injectContext(any(), any());
 
         verifyNoInteractions(onClientClosed);
     }
@@ -577,7 +729,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -590,7 +742,8 @@ class EventHubProducerAsyncClientTest {
                 Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -606,7 +759,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -615,7 +768,7 @@ class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
             .expectError(IllegalArgumentException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -636,7 +789,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -653,14 +806,16 @@ class EventHubProducerAsyncClientTest {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -670,10 +825,12 @@ class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions();
 
         StepVerifier.create(producer.send(event, null))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send((EventData) null, sendOptions))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -683,10 +840,12 @@ class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions();
 
         StepVerifier.create(producer.send(event, null))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send((Iterable<EventData>) null, sendOptions))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -696,10 +855,12 @@ class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions();
 
         StepVerifier.create(producer.send(event, null))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send((Flux<EventData>) null, sendOptions))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -711,7 +872,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(link));
 
         final String originalKey = "some-key";
@@ -723,7 +884,8 @@ class EventHubProducerAsyncClientTest {
                 options.setPartitionKey("something-else");
                 Assertions.assertEquals(originalKey, batch.getPartitionKey());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -739,7 +901,7 @@ class EventHubProducerAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -754,16 +916,227 @@ class EventHubProducerAsyncClientTest {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, times(2)).getLinkSize();
+    }
+
+    @Test
+    void sendsAnEventDataBatchWithMetrics() {
+        String eventHub1 = EVENT_HUB_NAME + "1";
+        String eventHub2 = EVENT_HUB_NAME + "2";
+
+        when(connection.createSendLink(eq(eventHub1), eq(eventHub1), any(), any())).thenReturn(Mono.just(sendLink));
+        when(connection.createSendLink(eq(eventHub2), eq(eventHub2), any(), any())).thenReturn(Mono.just(sendLink2));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(eventHub1);
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        when(sendLink2.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink2.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink2.getEntityPath()).thenReturn(eventHub1);
+        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
+
+        TestMeter meter = new TestMeter();
+        EventHubsProducerInstrumentation instrumentation1 = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, eventHub1);
+        EventHubProducerAsyncClient producer1 = new EventHubProducerAsyncClient(HOSTNAME, eventHub1,
+            connectionProcessor, retryOptions,
+            messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation1);
+
+        EventHubsProducerInstrumentation instrumentation2 = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, eventHub2);
+        EventHubProducerAsyncClient producer2 = new EventHubProducerAsyncClient(HOSTNAME, eventHub2,
+            connectionProcessor, retryOptions,
+            messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation2);
+
+        StepVerifier.create(producer1.createBatch()
+            .flatMap(batch -> {
+                batch.tryAdd(new EventData("1"));
+                return producer1.send(batch);
+            })
+            .then(producer2.createBatch().
+                flatMap(batch -> {
+                    batch.tryAdd(new EventData("2"));
+                    batch.tryAdd(new EventData("3"));
+                    return producer2.send(batch);
+                })))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        TestCounter eventCounter = meter.getCounters().get("messaging.eventhubs.events.sent");
+        assertNotNull(eventCounter);
+
+        List<TestMeasurement<Long>> measurements = eventCounter.getMeasurements();
+        assertEquals(2, measurements.size());
+
+        assertEquals(1, measurements.get(0).getValue());
+        assertEquals(2, measurements.get(1).getValue());
+        assertAttributes(eventHub1, null, "ok", measurements.get(0).getAttributes());
+        assertAttributes(eventHub2, null, "ok", measurements.get(1).getAttributes());
+    }
+
+
+    @Test
+    void sendsAnEventDataBatchWithMetricsFailure() {
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), any())).thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.error(new RuntimeException("foo")));
+
+        TestMeter meter = new TestMeter();
+        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
+
+        EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, retryOptions,
+            messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+
+        StepVerifier.create(producer.send(new EventData("1")))
+            .expectErrorMessage("foo")
+            .verify(DEFAULT_TIMEOUT);
+
+        TestCounter eventCounter = meter.getCounters().get("messaging.eventhubs.events.sent");
+        assertNotNull(eventCounter);
+
+        List<TestMeasurement<Long>> measurements = eventCounter.getMeasurements();
+        assertEquals(1, measurements.size());
+
+        assertEquals(1, measurements.get(0).getValue());
+        assertAttributes(EVENT_HUB_NAME, null, "error", measurements.get(0).getAttributes());
+    }
+
+    @Test
+    void sendsAnEventDataBatchWithMetricsPartitionId() {
+        String partitionId = "1";
+        String entityPath = EVENT_HUB_NAME + "/Partitions/" + partitionId;
+        when(connection.createSendLink(eq(entityPath), eq(entityPath), any(), any())).thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(entityPath);
+        when(sendLink.getLinkName()).thenReturn(entityPath);
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        TestMeter meter = new TestMeter();
+        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
+        EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+
+        SendOptions options = new SendOptions().setPartitionId(partitionId);
+        StepVerifier.create(producer.send(new EventData("1"), options))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        TestCounter eventCounter = meter.getCounters().get("messaging.eventhubs.events.sent");
+        assertNotNull(eventCounter);
+
+        List<TestMeasurement<Long>> measurements = eventCounter.getMeasurements();
+        assertEquals(1, measurements.size());
+
+        assertEquals(1, measurements.get(0).getValue());
+        assertAttributes(EVENT_HUB_NAME, partitionId, "ok", measurements.get(0).getAttributes());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void sendsAnEventDataBatchWithMetricsAndTraces() {
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), any())).thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.getLinkName()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        TestMeter meter = new TestMeter();
+        Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
+        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer, meter, HOSTNAME, EVENT_HUB_NAME);
+        EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+
+        final AtomicReference<Integer> eventInd = new AtomicReference<>(0);
+
+        when(tracer.start(eq("EventHubs.message"), any(), any(Context.class))).thenAnswer(
+            invocation -> {
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.PRODUCER, 0);
+                return invocation.getArgument(2, Context.class)
+                    .addData(SPAN_CONTEXT_KEY, "span");
+            });
+
+        when(tracer.start(eq("EventHubs.send"), any(), any(Context.class))).thenAnswer(
+            invocation -> {
+                assertStartOptions(invocation.getArgument(1, StartSpanOptions.class), SpanKind.CLIENT, 1);
+                return invocation.getArgument(2, Context.class)
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "parent span");
+            }
+        );
+
+        doAnswer(invocation -> {
+            BiConsumer<String, String> injectContext = invocation.getArgument(0, BiConsumer.class);
+            injectContext.accept("traceparent", String.valueOf(eventInd.get()));
+            return null;
+        }).when(tracer).injectContext(any(), any(Context.class));
+
+        StepVerifier.create(producer.send(new EventData("1")))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        TestCounter eventCounter = meter.getCounters().get("messaging.eventhubs.events.sent");
+        assertNotNull(eventCounter);
+
+        List<TestMeasurement<Long>> measurements = eventCounter.getMeasurements();
+        assertEquals(1, measurements.size());
+
+        assertEquals(1, measurements.get(0).getValue());
+        assertAttributes(EVENT_HUB_NAME, null, "ok", measurements.get(0).getAttributes());
+
+        assertEquals("parent span", measurements.get(0).getContext().getData(PARENT_TRACE_CONTEXT_KEY).get());
+    }
+
+    @Test
+    void sendsAnEventDataBatchWithDisabledMetrics() {
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), any())).thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.getLinkName()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        TestMeter meter = new TestMeter(false);
+        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
+        EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+
+        StepVerifier.create(producer.send(new EventData("1")))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        assertFalse(meter.getCounters().containsKey("messaging.eventhubs.events.sent"));
+    }
+
+    @Test
+    void sendsAnEventDataBatchWithNullMeterDoesNotThrow() {
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), any())).thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.getLinkName()).thenReturn(EVENT_HUB_NAME);
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+
+        EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
+
+        StepVerifier.create(producer.send(new EventData("1")))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -788,7 +1161,7 @@ class EventHubProducerAsyncClientTest {
         when(sendLink3.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(anyString(), anyString(), any())).thenAnswer(mock -> {
+        when(connection.createSendLink(anyString(), anyString(), any(), anyString())).thenAnswer(mock -> {
             final String entityPath = mock.getArgument(1, String.class);
 
             if (EVENT_HUB_NAME.equals(entityPath)) {
@@ -805,13 +1178,16 @@ class EventHubProducerAsyncClientTest {
 
         // Act
         StepVerifier.create(producer.send(testData, new SendOptions()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send(testData, new SendOptions().setPartitionId(partitionId1)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send(testData, new SendOptions().setPartitionId(partitionId2)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -831,8 +1207,8 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
-            true, onClientClosed);
+            hubConnection, retryOptions, messageSerializer, Schedulers.parallel(),
+            true, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         // Act
         sharedProducer.close();
@@ -850,8 +1226,8 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
-            false, onClientClosed);
+            hubConnection, retryOptions, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         // Act
         dedicatedProducer.close();
@@ -869,8 +1245,8 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
-            false, onClientClosed);
+            hubConnection, retryOptions, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         // Act
         dedicatedProducer.close();
@@ -906,7 +1282,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(EVENT_HUB_NAME, connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
@@ -917,32 +1293,34 @@ class EventHubProducerAsyncClientTest {
         final EventData testData2 = new EventData("test");
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
         when(connection2.getEndpointStates()).thenReturn(connectionState2);
-        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
 
         final DirectProcessor<AmqpEndpointState> connectionState3 = DirectProcessor.create();
         when(connection3.getEndpointStates()).thenReturn(connectionState3);
-        when(connection3.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection3.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink3));
         when(sendLink3.send(anyList())).thenReturn(Mono.empty());
 
         // Act
         StepVerifier.create(producer.send(testData))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Send in an error signal like a server busy condition.
         endpointSink.error(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
             new AmqpErrorContext("test-namespace")));
 
         StepVerifier.create(producer.send(testData2))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -981,7 +1359,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 EVENT_HUB_NAME, connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
@@ -992,13 +1370,13 @@ class EventHubProducerAsyncClientTest {
         final EventData testData2 = new EventData("test");
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
         when(connection2.getEndpointStates()).thenReturn(connectionState2);
-        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
 
@@ -1007,7 +1385,8 @@ class EventHubProducerAsyncClientTest {
 
         // Act
         StepVerifier.create(producer.send(testData))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Send in an error signal like authorization failure.
         endpointSink.error(nonTransientError);
@@ -1057,7 +1436,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 EVENT_HUB_NAME, connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
@@ -1071,34 +1450,35 @@ class EventHubProducerAsyncClientTest {
         testData2.getProperties().put(failureKey, "true");
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         // Send a transient error, and close the original link, if we get a message that contains the "failureKey".
         // This simulates when a link is closed.
-        when(sendLink.send(argThat((Message message) -> {
-            return message.getApplicationProperties().getValue().containsKey(failureKey);
-        }))).thenAnswer(mock -> {
-            final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
-                new AmqpErrorContext("test-namespace"));
+        when(sendLink.send(argThat((Message message) -> message.getApplicationProperties().getValue().containsKey(failureKey))))
+            .thenAnswer(mock -> {
+                final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
+                    new AmqpErrorContext("test-namespace"));
 
-            endpointSink.error(error);
-            return Mono.error(error);
-        });
+                endpointSink.error(error);
+                return Mono.error(error);
+            });
 
         final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
         when(connection2.getEndpointStates()).thenReturn(connectionState2);
-        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
+        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink2));
         when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
 
         // Act
         StepVerifier.create(producer.send(testData))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send(testData2))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -1109,6 +1489,41 @@ class EventHubProducerAsyncClientTest {
         verifyNoInteractions(sendLink3);
 
         verifyNoInteractions(onClientClosed);
+    }
+
+    private void assertAttributes(String entityName, String entityPath, String status, Map<String, Object> attributes) {
+        assertEquals(entityPath == null ? 3 : 4, attributes.size());
+        assertEquals(HOSTNAME, attributes.get("hostName"));
+        assertEquals(entityName, attributes.get("entityName"));
+        assertEquals(entityPath, attributes.get("partitionId"));
+        assertEquals(status, attributes.get("status"));
+    }
+
+    private EventData fakeReceivedMessage() {
+        Message receivedMessage = Proton.message();
+        receivedMessage.setApplicationProperties(new ApplicationProperties(Collections.singletonMap("foo", "bar")));
+
+        Map<Symbol, Object> annotations = new HashMap<>();
+        annotations.put(Symbol.getSymbol(OFFSET_ANNOTATION_NAME.getValue()), Instant.now().toEpochMilli());
+        annotations.put(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Instant.now());
+        annotations.put(Symbol.getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), 100L);
+        receivedMessage.setMessageAnnotations(new MessageAnnotations(annotations));
+        receivedMessage.setBody(new Data(new Binary(new byte[5])));
+
+        EventHubMessageSerializer serializer = new EventHubMessageSerializer();
+        return serializer.deserialize(receivedMessage, EventData.class);
+    }
+
+    private void assertStartOptions(StartSpanOptions startOpts, SpanKind kind, int linkCount) {
+        assertEquals(kind, startOpts.getSpanKind());
+        assertEquals(EVENT_HUB_NAME, startOpts.getAttributes().get(ENTITY_PATH_KEY));
+        assertEquals(HOSTNAME, startOpts.getAttributes().get(HOST_NAME_KEY));
+
+        if (linkCount == 0) {
+            assertNull(startOpts.getLinks());
+        } else {
+            assertEquals(linkCount, startOpts.getLinks().size());
+        }
     }
 
     private static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec "

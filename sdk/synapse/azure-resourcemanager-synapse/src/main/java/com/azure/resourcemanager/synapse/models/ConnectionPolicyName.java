@@ -14,6 +14,15 @@ public final class ConnectionPolicyName extends ExpandableStringEnum<ConnectionP
     public static final ConnectionPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of ConnectionPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionPolicyName() {
+    }
+
+    /**
      * Creates or finds a ConnectionPolicyName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class ConnectionPolicyName extends ExpandableStringEnum<ConnectionP
         return fromString(name, ConnectionPolicyName.class);
     }
 
-    /** @return known ConnectionPolicyName values. */
+    /**
+     * Gets known ConnectionPolicyName values.
+     *
+     * @return known ConnectionPolicyName values.
+     */
     public static Collection<ConnectionPolicyName> values() {
         return values(ConnectionPolicyName.class);
     }

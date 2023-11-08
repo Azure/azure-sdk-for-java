@@ -25,9 +25,9 @@ public interface RelationshipsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relationship resource format.
+     * @return the {@link SyncPoller} for polling of the relationship resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RelationshipResourceFormatInner>, RelationshipResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName, String hubName, String relationshipName, RelationshipResourceFormatInner parameters);
 
@@ -42,9 +42,9 @@ public interface RelationshipsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relationship resource format.
+     * @return the {@link SyncPoller} for polling of the relationship resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RelationshipResourceFormatInner>, RelationshipResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hubName,
@@ -88,6 +88,22 @@ public interface RelationshipsClient {
         String relationshipName,
         RelationshipResourceFormatInner parameters,
         Context context);
+
+    /**
+     * Gets information about the specified relationship.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param relationshipName The name of the relationship.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified relationship along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RelationshipResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String relationshipName, Context context);
 
     /**
      * Gets information about the specified relationship.
@@ -104,22 +120,6 @@ public interface RelationshipsClient {
     RelationshipResourceFormatInner get(String resourceGroupName, String hubName, String relationshipName);
 
     /**
-     * Gets information about the specified relationship.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param relationshipName The name of the relationship.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified relationship.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RelationshipResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String relationshipName, Context context);
-
-    /**
      * Deletes a relationship within a hub.
      *
      * @param resourceGroupName The name of the resource group.
@@ -128,9 +128,9 @@ public interface RelationshipsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String relationshipName);
 
     /**
@@ -143,9 +143,9 @@ public interface RelationshipsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hubName, String relationshipName, Context context);
 
@@ -184,7 +184,7 @@ public interface RelationshipsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all relationships in the hub.
+     * @return all relationships in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RelationshipResourceFormatInner> listByHub(String resourceGroupName, String hubName);
@@ -198,7 +198,7 @@ public interface RelationshipsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all relationships in the hub.
+     * @return all relationships in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RelationshipResourceFormatInner> listByHub(String resourceGroupName, String hubName, Context context);

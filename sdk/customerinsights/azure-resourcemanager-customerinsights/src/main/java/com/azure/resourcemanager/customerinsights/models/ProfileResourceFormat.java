@@ -35,53 +35,11 @@ public interface ProfileResourceFormat {
     String type();
 
     /**
-     * Gets the attributes property: The attributes for the Type.
+     * Gets the strongIds property: The strong IDs.
      *
-     * @return the attributes value.
+     * @return the strongIds value.
      */
-    Map<String, List<String>> attributes();
-
-    /**
-     * Gets the description property: Localized descriptions for the property.
-     *
-     * @return the description value.
-     */
-    Map<String, String> description();
-
-    /**
-     * Gets the displayName property: Localized display names for the property.
-     *
-     * @return the displayName value.
-     */
-    Map<String, String> displayName();
-
-    /**
-     * Gets the localizedAttributes property: Any custom localized attributes for the Type.
-     *
-     * @return the localizedAttributes value.
-     */
-    Map<String, Map<String, String>> localizedAttributes();
-
-    /**
-     * Gets the smallImage property: Small Image associated with the Property or EntityType.
-     *
-     * @return the smallImage value.
-     */
-    String smallImage();
-
-    /**
-     * Gets the mediumImage property: Medium Image associated with the Property or EntityType.
-     *
-     * @return the mediumImage value.
-     */
-    String mediumImage();
-
-    /**
-     * Gets the largeImage property: Large Image associated with the Property or EntityType.
-     *
-     * @return the largeImage value.
-     */
-    String largeImage();
+    List<StrongId> strongIds();
 
     /**
      * Gets the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the
@@ -156,11 +114,60 @@ public interface ProfileResourceFormat {
     String typeName();
 
     /**
-     * Gets the strongIds property: The strong IDs.
+     * Gets the attributes property: The attributes for the Type.
      *
-     * @return the strongIds value.
+     * @return the attributes value.
      */
-    List<StrongId> strongIds();
+    Map<String, List<String>> attributes();
+
+    /**
+     * Gets the description property: Localized descriptions for the property.
+     *
+     * @return the description value.
+     */
+    Map<String, String> description();
+
+    /**
+     * Gets the displayName property: Localized display names for the property.
+     *
+     * @return the displayName value.
+     */
+    Map<String, String> displayName();
+
+    /**
+     * Gets the localizedAttributes property: Any custom localized attributes for the Type.
+     *
+     * @return the localizedAttributes value.
+     */
+    Map<String, Map<String, String>> localizedAttributes();
+
+    /**
+     * Gets the smallImage property: Small Image associated with the Property or EntityType.
+     *
+     * @return the smallImage value.
+     */
+    String smallImage();
+
+    /**
+     * Gets the mediumImage property: Medium Image associated with the Property or EntityType.
+     *
+     * @return the mediumImage value.
+     */
+    String mediumImage();
+
+    /**
+     * Gets the largeImage property: Large Image associated with the Property or EntityType.
+     *
+     * @return the largeImage value.
+     */
+    String largeImage();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.customerinsights.fluent.models.ProfileResourceFormatInner object.
@@ -194,13 +201,7 @@ public interface ProfileResourceFormat {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithAttributes,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithLocalizedAttributes,
-                DefinitionStages.WithSmallImage,
-                DefinitionStages.WithMediumImage,
-                DefinitionStages.WithLargeImage,
+            extends DefinitionStages.WithStrongIds,
                 DefinitionStages.WithApiEntitySetName,
                 DefinitionStages.WithEntityType,
                 DefinitionStages.WithFields,
@@ -208,7 +209,13 @@ public interface ProfileResourceFormat {
                 DefinitionStages.WithSchemaItemTypeLink,
                 DefinitionStages.WithTimestampFieldName,
                 DefinitionStages.WithTypeName,
-                DefinitionStages.WithStrongIds {
+                DefinitionStages.WithAttributes,
+                DefinitionStages.WithDescription,
+                DefinitionStages.WithDisplayName,
+                DefinitionStages.WithLocalizedAttributes,
+                DefinitionStages.WithSmallImage,
+                DefinitionStages.WithMediumImage,
+                DefinitionStages.WithLargeImage {
             /**
              * Executes the create request.
              *
@@ -224,75 +231,15 @@ public interface ProfileResourceFormat {
              */
             ProfileResourceFormat create(Context context);
         }
-        /** The stage of the ProfileResourceFormat definition allowing to specify attributes. */
-        interface WithAttributes {
+        /** The stage of the ProfileResourceFormat definition allowing to specify strongIds. */
+        interface WithStrongIds {
             /**
-             * Specifies the attributes property: The attributes for the Type..
+             * Specifies the strongIds property: The strong IDs..
              *
-             * @param attributes The attributes for the Type.
+             * @param strongIds The strong IDs.
              * @return the next definition stage.
              */
-            WithCreate withAttributes(Map<String, List<String>> attributes);
-        }
-        /** The stage of the ProfileResourceFormat definition allowing to specify description. */
-        interface WithDescription {
-            /**
-             * Specifies the description property: Localized descriptions for the property..
-             *
-             * @param description Localized descriptions for the property.
-             * @return the next definition stage.
-             */
-            WithCreate withDescription(Map<String, String> description);
-        }
-        /** The stage of the ProfileResourceFormat definition allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: Localized display names for the property..
-             *
-             * @param displayName Localized display names for the property.
-             * @return the next definition stage.
-             */
-            WithCreate withDisplayName(Map<String, String> displayName);
-        }
-        /** The stage of the ProfileResourceFormat definition allowing to specify localizedAttributes. */
-        interface WithLocalizedAttributes {
-            /**
-             * Specifies the localizedAttributes property: Any custom localized attributes for the Type..
-             *
-             * @param localizedAttributes Any custom localized attributes for the Type.
-             * @return the next definition stage.
-             */
-            WithCreate withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes);
-        }
-        /** The stage of the ProfileResourceFormat definition allowing to specify smallImage. */
-        interface WithSmallImage {
-            /**
-             * Specifies the smallImage property: Small Image associated with the Property or EntityType..
-             *
-             * @param smallImage Small Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            WithCreate withSmallImage(String smallImage);
-        }
-        /** The stage of the ProfileResourceFormat definition allowing to specify mediumImage. */
-        interface WithMediumImage {
-            /**
-             * Specifies the mediumImage property: Medium Image associated with the Property or EntityType..
-             *
-             * @param mediumImage Medium Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            WithCreate withMediumImage(String mediumImage);
-        }
-        /** The stage of the ProfileResourceFormat definition allowing to specify largeImage. */
-        interface WithLargeImage {
-            /**
-             * Specifies the largeImage property: Large Image associated with the Property or EntityType..
-             *
-             * @param largeImage Large Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            WithCreate withLargeImage(String largeImage);
+            WithCreate withStrongIds(List<StrongId> strongIds);
         }
         /** The stage of the ProfileResourceFormat definition allowing to specify apiEntitySetName. */
         interface WithApiEntitySetName {
@@ -369,15 +316,75 @@ public interface ProfileResourceFormat {
              */
             WithCreate withTypeName(String typeName);
         }
-        /** The stage of the ProfileResourceFormat definition allowing to specify strongIds. */
-        interface WithStrongIds {
+        /** The stage of the ProfileResourceFormat definition allowing to specify attributes. */
+        interface WithAttributes {
             /**
-             * Specifies the strongIds property: The strong IDs..
+             * Specifies the attributes property: The attributes for the Type..
              *
-             * @param strongIds The strong IDs.
+             * @param attributes The attributes for the Type.
              * @return the next definition stage.
              */
-            WithCreate withStrongIds(List<StrongId> strongIds);
+            WithCreate withAttributes(Map<String, List<String>> attributes);
+        }
+        /** The stage of the ProfileResourceFormat definition allowing to specify description. */
+        interface WithDescription {
+            /**
+             * Specifies the description property: Localized descriptions for the property..
+             *
+             * @param description Localized descriptions for the property.
+             * @return the next definition stage.
+             */
+            WithCreate withDescription(Map<String, String> description);
+        }
+        /** The stage of the ProfileResourceFormat definition allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: Localized display names for the property..
+             *
+             * @param displayName Localized display names for the property.
+             * @return the next definition stage.
+             */
+            WithCreate withDisplayName(Map<String, String> displayName);
+        }
+        /** The stage of the ProfileResourceFormat definition allowing to specify localizedAttributes. */
+        interface WithLocalizedAttributes {
+            /**
+             * Specifies the localizedAttributes property: Any custom localized attributes for the Type..
+             *
+             * @param localizedAttributes Any custom localized attributes for the Type.
+             * @return the next definition stage.
+             */
+            WithCreate withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes);
+        }
+        /** The stage of the ProfileResourceFormat definition allowing to specify smallImage. */
+        interface WithSmallImage {
+            /**
+             * Specifies the smallImage property: Small Image associated with the Property or EntityType..
+             *
+             * @param smallImage Small Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            WithCreate withSmallImage(String smallImage);
+        }
+        /** The stage of the ProfileResourceFormat definition allowing to specify mediumImage. */
+        interface WithMediumImage {
+            /**
+             * Specifies the mediumImage property: Medium Image associated with the Property or EntityType..
+             *
+             * @param mediumImage Medium Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            WithCreate withMediumImage(String mediumImage);
+        }
+        /** The stage of the ProfileResourceFormat definition allowing to specify largeImage. */
+        interface WithLargeImage {
+            /**
+             * Specifies the largeImage property: Large Image associated with the Property or EntityType..
+             *
+             * @param largeImage Large Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            WithCreate withLargeImage(String largeImage);
         }
     }
     /**
@@ -389,13 +396,7 @@ public interface ProfileResourceFormat {
 
     /** The template for ProfileResourceFormat update. */
     interface Update
-        extends UpdateStages.WithAttributes,
-            UpdateStages.WithDescription,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithLocalizedAttributes,
-            UpdateStages.WithSmallImage,
-            UpdateStages.WithMediumImage,
-            UpdateStages.WithLargeImage,
+        extends UpdateStages.WithStrongIds,
             UpdateStages.WithApiEntitySetName,
             UpdateStages.WithEntityType,
             UpdateStages.WithFields,
@@ -403,7 +404,13 @@ public interface ProfileResourceFormat {
             UpdateStages.WithSchemaItemTypeLink,
             UpdateStages.WithTimestampFieldName,
             UpdateStages.WithTypeName,
-            UpdateStages.WithStrongIds {
+            UpdateStages.WithAttributes,
+            UpdateStages.WithDescription,
+            UpdateStages.WithDisplayName,
+            UpdateStages.WithLocalizedAttributes,
+            UpdateStages.WithSmallImage,
+            UpdateStages.WithMediumImage,
+            UpdateStages.WithLargeImage {
         /**
          * Executes the update request.
          *
@@ -421,75 +428,15 @@ public interface ProfileResourceFormat {
     }
     /** The ProfileResourceFormat update stages. */
     interface UpdateStages {
-        /** The stage of the ProfileResourceFormat update allowing to specify attributes. */
-        interface WithAttributes {
+        /** The stage of the ProfileResourceFormat update allowing to specify strongIds. */
+        interface WithStrongIds {
             /**
-             * Specifies the attributes property: The attributes for the Type..
+             * Specifies the strongIds property: The strong IDs..
              *
-             * @param attributes The attributes for the Type.
+             * @param strongIds The strong IDs.
              * @return the next definition stage.
              */
-            Update withAttributes(Map<String, List<String>> attributes);
-        }
-        /** The stage of the ProfileResourceFormat update allowing to specify description. */
-        interface WithDescription {
-            /**
-             * Specifies the description property: Localized descriptions for the property..
-             *
-             * @param description Localized descriptions for the property.
-             * @return the next definition stage.
-             */
-            Update withDescription(Map<String, String> description);
-        }
-        /** The stage of the ProfileResourceFormat update allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: Localized display names for the property..
-             *
-             * @param displayName Localized display names for the property.
-             * @return the next definition stage.
-             */
-            Update withDisplayName(Map<String, String> displayName);
-        }
-        /** The stage of the ProfileResourceFormat update allowing to specify localizedAttributes. */
-        interface WithLocalizedAttributes {
-            /**
-             * Specifies the localizedAttributes property: Any custom localized attributes for the Type..
-             *
-             * @param localizedAttributes Any custom localized attributes for the Type.
-             * @return the next definition stage.
-             */
-            Update withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes);
-        }
-        /** The stage of the ProfileResourceFormat update allowing to specify smallImage. */
-        interface WithSmallImage {
-            /**
-             * Specifies the smallImage property: Small Image associated with the Property or EntityType..
-             *
-             * @param smallImage Small Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            Update withSmallImage(String smallImage);
-        }
-        /** The stage of the ProfileResourceFormat update allowing to specify mediumImage. */
-        interface WithMediumImage {
-            /**
-             * Specifies the mediumImage property: Medium Image associated with the Property or EntityType..
-             *
-             * @param mediumImage Medium Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            Update withMediumImage(String mediumImage);
-        }
-        /** The stage of the ProfileResourceFormat update allowing to specify largeImage. */
-        interface WithLargeImage {
-            /**
-             * Specifies the largeImage property: Large Image associated with the Property or EntityType..
-             *
-             * @param largeImage Large Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            Update withLargeImage(String largeImage);
+            Update withStrongIds(List<StrongId> strongIds);
         }
         /** The stage of the ProfileResourceFormat update allowing to specify apiEntitySetName. */
         interface WithApiEntitySetName {
@@ -566,15 +513,75 @@ public interface ProfileResourceFormat {
              */
             Update withTypeName(String typeName);
         }
-        /** The stage of the ProfileResourceFormat update allowing to specify strongIds. */
-        interface WithStrongIds {
+        /** The stage of the ProfileResourceFormat update allowing to specify attributes. */
+        interface WithAttributes {
             /**
-             * Specifies the strongIds property: The strong IDs..
+             * Specifies the attributes property: The attributes for the Type..
              *
-             * @param strongIds The strong IDs.
+             * @param attributes The attributes for the Type.
              * @return the next definition stage.
              */
-            Update withStrongIds(List<StrongId> strongIds);
+            Update withAttributes(Map<String, List<String>> attributes);
+        }
+        /** The stage of the ProfileResourceFormat update allowing to specify description. */
+        interface WithDescription {
+            /**
+             * Specifies the description property: Localized descriptions for the property..
+             *
+             * @param description Localized descriptions for the property.
+             * @return the next definition stage.
+             */
+            Update withDescription(Map<String, String> description);
+        }
+        /** The stage of the ProfileResourceFormat update allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: Localized display names for the property..
+             *
+             * @param displayName Localized display names for the property.
+             * @return the next definition stage.
+             */
+            Update withDisplayName(Map<String, String> displayName);
+        }
+        /** The stage of the ProfileResourceFormat update allowing to specify localizedAttributes. */
+        interface WithLocalizedAttributes {
+            /**
+             * Specifies the localizedAttributes property: Any custom localized attributes for the Type..
+             *
+             * @param localizedAttributes Any custom localized attributes for the Type.
+             * @return the next definition stage.
+             */
+            Update withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes);
+        }
+        /** The stage of the ProfileResourceFormat update allowing to specify smallImage. */
+        interface WithSmallImage {
+            /**
+             * Specifies the smallImage property: Small Image associated with the Property or EntityType..
+             *
+             * @param smallImage Small Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            Update withSmallImage(String smallImage);
+        }
+        /** The stage of the ProfileResourceFormat update allowing to specify mediumImage. */
+        interface WithMediumImage {
+            /**
+             * Specifies the mediumImage property: Medium Image associated with the Property or EntityType..
+             *
+             * @param mediumImage Medium Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            Update withMediumImage(String mediumImage);
+        }
+        /** The stage of the ProfileResourceFormat update allowing to specify largeImage. */
+        interface WithLargeImage {
+            /**
+             * Specifies the largeImage property: Large Image associated with the Property or EntityType..
+             *
+             * @param largeImage Large Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            Update withLargeImage(String largeImage);
         }
     }
     /**
@@ -596,21 +603,21 @@ public interface ProfileResourceFormat {
      * Gets the KPIs that enrich the profile Type identified by the supplied name. Enrichment happens through
      * participants of the Interaction on an Interaction KPI and through Relationships for Profile KPIs.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the KPIs that enrich the profile Type identified by the supplied name.
+     * @return the KPIs that enrich the profile Type identified by the supplied name along with {@link Response}.
      */
-    List<KpiDefinition> getEnrichingKpis();
+    Response<List<KpiDefinition>> getEnrichingKpisWithResponse(Context context);
 
     /**
      * Gets the KPIs that enrich the profile Type identified by the supplied name. Enrichment happens through
      * participants of the Interaction on an Interaction KPI and through Relationships for Profile KPIs.
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the KPIs that enrich the profile Type identified by the supplied name.
      */
-    Response<List<KpiDefinition>> getEnrichingKpisWithResponse(Context context);
+    List<KpiDefinition> getEnrichingKpis();
 }

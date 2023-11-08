@@ -17,7 +17,8 @@ public interface BillingPermissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<BillingPermissionsProperties> listByCustomer(String billingAccountName, String customerName);
 
@@ -30,7 +31,8 @@ public interface BillingPermissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<BillingPermissionsProperties> listByCustomer(
         String billingAccountName, String customerName, Context context);
@@ -42,7 +44,8 @@ public interface BillingPermissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<BillingPermissionsProperties> listByBillingAccount(String billingAccountName);
 
@@ -54,7 +57,8 @@ public interface BillingPermissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<BillingPermissionsProperties> listByBillingAccount(String billingAccountName, Context context);
 
@@ -67,7 +71,8 @@ public interface BillingPermissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<BillingPermissionsProperties> listByInvoiceSections(
         String billingAccountName, String billingProfileName, String invoiceSectionName);
@@ -82,7 +87,8 @@ public interface BillingPermissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<BillingPermissionsProperties> listByInvoiceSections(
         String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);
@@ -95,7 +101,8 @@ public interface BillingPermissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<BillingPermissionsProperties> listByBillingProfile(
         String billingAccountName, String billingProfileName);
@@ -109,7 +116,8 @@ public interface BillingPermissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<BillingPermissionsProperties> listByBillingProfile(
         String billingAccountName, String billingProfileName, Context context);

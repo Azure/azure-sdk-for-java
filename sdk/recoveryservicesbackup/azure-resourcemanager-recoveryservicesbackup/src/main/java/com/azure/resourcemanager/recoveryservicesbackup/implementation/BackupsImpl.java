@@ -10,10 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Backups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupsImpl implements Backups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupsImpl.class);
 
     private final BackupsClient innerClient;
 
@@ -24,18 +23,6 @@ public final class BackupsImpl implements Backups {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        BackupRequestResource parameters) {
-        this
-            .serviceClient()
-            .trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters);
     }
 
     public Response<Void> triggerWithResponse(
@@ -50,6 +37,18 @@ public final class BackupsImpl implements Backups {
             .serviceClient()
             .triggerWithResponse(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, context);
+    }
+
+    public void trigger(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        BackupRequestResource parameters) {
+        this
+            .serviceClient()
+            .trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters);
     }
 
     private BackupsClient serviceClient() {

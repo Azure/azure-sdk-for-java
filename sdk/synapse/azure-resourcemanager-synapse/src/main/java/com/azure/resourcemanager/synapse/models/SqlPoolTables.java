@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of SqlPoolTables. */
 public interface SqlPoolTables {
     /**
-     * Gets tables of a given schema in a SQL pool.
+     * Gets tables of a given schema in a SQL pool
+     *
+     * <p>Gets tables of a given schema in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -20,13 +22,15 @@ public interface SqlPoolTables {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tables of a given schema in a SQL pool.
+     * @return tables of a given schema in a SQL pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlPoolTable> listBySchema(
         String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName);
 
     /**
-     * Gets tables of a given schema in a SQL pool.
+     * Gets tables of a given schema in a SQL pool
+     *
+     * <p>Gets tables of a given schema in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -37,7 +41,7 @@ public interface SqlPoolTables {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tables of a given schema in a SQL pool.
+     * @return tables of a given schema in a SQL pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlPoolTable> listBySchema(
         String resourceGroupName,
@@ -46,22 +50,6 @@ public interface SqlPoolTables {
         String schemaName,
         String filter,
         Context context);
-
-    /**
-     * Get Sql pool table.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql pool table.
-     */
-    SqlPoolTable get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName);
 
     /**
      * Get Sql pool table.
@@ -84,4 +72,20 @@ public interface SqlPoolTables {
         String schemaName,
         String tableName,
         Context context);
+
+    /**
+     * Get Sql pool table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param schemaName The name of the schema.
+     * @param tableName The name of the table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql pool table.
+     */
+    SqlPoolTable get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName);
 }

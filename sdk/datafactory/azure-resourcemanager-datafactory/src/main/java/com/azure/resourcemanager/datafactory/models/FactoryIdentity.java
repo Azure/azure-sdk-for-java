@@ -13,7 +13,7 @@ import java.util.UUID;
 
 /** Identity properties of the factory resource. */
 @Fluent
-public class FactoryIdentity {
+public final class FactoryIdentity {
     /*
      * The identity type.
      */
@@ -38,6 +38,10 @@ public class FactoryIdentity {
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> userAssignedIdentities;
+
+    /** Creates an instance of FactoryIdentity class. */
+    public FactoryIdentity() {
+    }
 
     /**
      * Get the type property: The identity type.

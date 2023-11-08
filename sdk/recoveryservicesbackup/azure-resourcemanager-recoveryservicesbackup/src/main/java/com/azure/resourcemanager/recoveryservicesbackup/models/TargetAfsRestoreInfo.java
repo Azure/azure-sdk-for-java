@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Target Azure File Share Info. */
 @Fluent
 public final class TargetAfsRestoreInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetAfsRestoreInfo.class);
-
     /*
      * File share name
      */
@@ -25,6 +21,10 @@ public final class TargetAfsRestoreInfo {
      */
     @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
+
+    /** Creates an instance of TargetAfsRestoreInfo class. */
+    public TargetAfsRestoreInfo() {
+    }
 
     /**
      * Get the name property: File share name.

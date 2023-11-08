@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CookiesOperator. */
+/** Describes operator to be matched. */
 public final class CookiesOperator extends ExpandableStringEnum<CookiesOperator> {
     /** Static value Any for CookiesOperator. */
     public static final CookiesOperator ANY = fromString("Any");
@@ -41,6 +41,15 @@ public final class CookiesOperator extends ExpandableStringEnum<CookiesOperator>
     public static final CookiesOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of CookiesOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CookiesOperator() {
+    }
+
+    /**
      * Creates or finds a CookiesOperator from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class CookiesOperator extends ExpandableStringEnum<CookiesOperator>
         return fromString(name, CookiesOperator.class);
     }
 
-    /** @return known CookiesOperator values. */
+    /**
+     * Gets known CookiesOperator values.
+     *
+     * @return known CookiesOperator values.
+     */
     public static Collection<CookiesOperator> values() {
         return values(CookiesOperator.class);
     }

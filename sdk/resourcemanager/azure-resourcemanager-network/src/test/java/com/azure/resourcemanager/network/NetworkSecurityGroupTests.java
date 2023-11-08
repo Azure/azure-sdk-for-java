@@ -112,6 +112,20 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
         Assertions.assertEquals(new HashSet<>(Arrays.asList(asg.id(), asg5.id())), nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds());
         Assertions.assertEquals(new HashSet<>(Arrays.asList(asg3.id(), asg6.id())), nsg.securityRules().get("rule3").destinationApplicationSecurityGroupIds());
 
+        nsg.update()
+            .updateRule("rule2")
+                .fromAddress("Internet")
+                .parent()
+            .updateRule("rule3")
+                .toAddress("Storage.WestUS")
+                .parent()
+            .apply();
+
+        Assertions.assertEquals(0, nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().size());
+        Assertions.assertEquals("Internet", nsg.securityRules().get("rule2").sourceAddressPrefix());
+        Assertions.assertEquals(0, nsg.securityRules().get("rule3").destinationApplicationSecurityGroupIds().size());
+        Assertions.assertEquals("Storage.WestUS", nsg.securityRules().get("rule3").destinationAddressPrefix());
+
         networkManager.networkSecurityGroups().deleteById(nsg.id());
     }
 }

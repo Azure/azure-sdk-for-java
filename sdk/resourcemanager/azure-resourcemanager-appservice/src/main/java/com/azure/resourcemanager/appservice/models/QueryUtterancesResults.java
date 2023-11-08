@@ -23,6 +23,10 @@ public final class QueryUtterancesResults {
     @JsonProperty(value = "results")
     private List<QueryUtterancesResult> results;
 
+    /** Creates an instance of QueryUtterancesResults class. */
+    public QueryUtterancesResults() {
+    }
+
     /**
      * Get the query property: Search Query.
      *

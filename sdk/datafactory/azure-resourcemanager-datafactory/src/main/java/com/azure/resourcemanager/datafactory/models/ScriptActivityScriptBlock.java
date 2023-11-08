@@ -30,6 +30,10 @@ public final class ScriptActivityScriptBlock {
     @JsonProperty(value = "parameters")
     private List<ScriptActivityParameter> parameters;
 
+    /** Creates an instance of ScriptActivityScriptBlock class. */
+    public ScriptActivityScriptBlock() {
+    }
+
     /**
      * Get the text property: The query text. Type: string (or Expression with resultType string).
      *

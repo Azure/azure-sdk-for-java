@@ -24,18 +24,27 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
+import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-import reactor.test.StepVerifier;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -43,6 +52,7 @@ import java.util.stream.IntStream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Test base for running integration tests.
@@ -61,16 +71,15 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
-    private static final String EVENT_HUB_CONNECTION_STRING_WITH_SAS = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS";
 
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
-    private static final Object LOCK = new Object();
+    private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     private static Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
-
-    private String testName;
+    private List<Closeable> toClose = new ArrayList<>();
+    protected String testName;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -79,12 +88,10 @@ public abstract class IntegrationTestBase extends TestBase {
     @BeforeAll
     public static void beforeAll() {
         scheduler = Schedulers.newParallel("eh-integration");
-        StepVerifier.setDefaultTimeout(TIMEOUT);
     }
 
     @AfterAll
     public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
         scheduler.dispose();
     }
 
@@ -94,8 +101,18 @@ public abstract class IntegrationTestBase extends TestBase {
 
         testName = testInfo.getDisplayName();
         skipIfNotRecordMode();
-
+        toClose = new ArrayList<>();
         beforeTest();
+    }
+
+    protected <T extends Closeable> T toClose(T closeable) {
+        toClose.add(closeable);
+        return closeable;
+    }
+
+    protected Disposable toClose(Disposable closeable) {
+        toClose.add(() -> closeable.dispose());
+        return closeable;
     }
 
     // These are overridden because we don't use the Interceptor Manager.
@@ -104,6 +121,9 @@ public abstract class IntegrationTestBase extends TestBase {
     public void teardownTest(TestInfo testInfo) {
         System.out.printf("----- [%s]: Performing test clean-up. -----%n", testInfo.getDisplayName());
         afterTest();
+
+        logger.info("Disposing of subscriptions, consumers and clients.");
+        dispose();
 
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
@@ -128,17 +148,55 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     static String getConnectionString(boolean withSas) {
+        String connectionString = GLOBAL_CONFIGURATION.get(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
         if (withSas) {
-            return System.getenv(EVENT_HUB_CONNECTION_STRING_WITH_SAS);
+            String shareAccessSignatureFormat = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
+            String connectionStringWithSasAndEntityFormat = "Endpoint=%s;SharedAccessSignature=%s;EntityPath=%s";
+            String connectionStringWithSasFormat = "Endpoint=%s;SharedAccessSignature=%s";
+
+            ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+            URI endpoint = properties.getEndpoint();
+            String entityPath = properties.getEntityPath();
+            String resourceUrl = entityPath == null || entityPath.trim().length() == 0
+                ? endpoint.toString() : endpoint.toString() +  entityPath;
+
+            String utf8Encoding = UTF_8.name();
+            OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofHours(2L));
+            String expiresOnEpochSeconds = Long.toString(expiresOn.toEpochSecond());
+
+            try {
+                String audienceUri = URLEncoder.encode(resourceUrl, utf8Encoding);
+                String secretToSign = audienceUri + "\n" + expiresOnEpochSeconds;
+                byte[] sasKeyBytes = properties.getSharedAccessKey().getBytes(utf8Encoding);
+
+                Mac hmacsha256 = Mac.getInstance("HMACSHA256");
+                hmacsha256.init(new SecretKeySpec(sasKeyBytes, "HMACSHA256"));
+
+                byte[] signatureBytes = hmacsha256.doFinal(secretToSign.getBytes(utf8Encoding));
+                String signature = Base64.getEncoder().encodeToString(signatureBytes);
+
+                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat,
+                    audienceUri,
+                    URLEncoder.encode(signature, utf8Encoding),
+                    URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
+                    URLEncoder.encode(properties.getSharedAccessKeyName(), utf8Encoding));
+
+                if (entityPath == null) {
+                    return String.format(connectionStringWithSasFormat, endpoint, signatureValue);
+                }
+                return String.format(connectionStringWithSasAndEntityFormat, endpoint, signatureValue, entityPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
+        return connectionString;
     }
 
     /**
      * Gets the configured ProxyConfiguration from environment variables.
      */
     protected ProxyOptions getProxyConfiguration() {
-        final String address = System.getenv(Configuration.PROPERTY_HTTP_PROXY);
+        final String address = GLOBAL_CONFIGURATION.get(Configuration.PROPERTY_HTTP_PROXY);
 
         if (address == null) {
             return null;
@@ -155,15 +213,15 @@ public abstract class IntegrationTestBase extends TestBase {
         final int port = Integer.parseInt(host[1]);
         final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(hostname, port));
 
-        final String username = System.getenv(PROXY_USERNAME);
+        final String username = GLOBAL_CONFIGURATION.get(PROXY_USERNAME);
 
         if (username == null) {
             logger.info("Environment variable '{}' is not set. No authentication used.");
             return new ProxyOptions(ProxyAuthenticationType.NONE, proxy, null, null);
         }
 
-        final String password = System.getenv(PROXY_PASSWORD);
-        final String authentication = System.getenv(PROXY_AUTHENTICATION_TYPE);
+        final String password = GLOBAL_CONFIGURATION.get(PROXY_PASSWORD);
+        final String authentication = GLOBAL_CONFIGURATION.get(PROXY_AUTHENTICATION_TYPE);
 
         final ProxyAuthenticationType authenticationType = CoreUtils.isNullOrEmpty(authentication)
             ? ProxyAuthenticationType.NONE
@@ -173,11 +231,11 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected static String getFullyQualifiedDomainName() {
-        return System.getenv(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
+        return GLOBAL_CONFIGURATION.get(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
     }
 
     protected static String getEventHubName() {
-        return System.getenv(AZURE_EVENTHUBS_EVENT_HUB_NAME);
+        return GLOBAL_CONFIGURATION.get(AZURE_EVENTHUBS_EVENT_HUB_NAME);
     }
 
     /**
@@ -201,16 +259,17 @@ public abstract class IntegrationTestBase extends TestBase {
             .scheduler(scheduler);
 
         if (useCredentials) {
-            final String fqdn = getFullyQualifiedDomainName();
-            final String eventHubName = getEventHubName();
+            final ConnectionStringProperties properties = getConnectionStringProperties();
+            final String fqdn = properties.getEndpoint().getHost();
+            final String eventHubName = properties.getEntityPath();
 
             Assumptions.assumeTrue(fqdn != null && !fqdn.isEmpty(), AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
             Assumptions.assumeTrue(eventHubName != null && !eventHubName.isEmpty(), AZURE_EVENTHUBS_EVENT_HUB_NAME + " variable needs to be set when using credentials.");
 
             final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-                .clientId(System.getenv("AZURE_CLIENT_ID"))
-                .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
-                .tenantId(System.getenv("AZURE_TENANT_ID"))
+                .clientId(GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID"))
+                .clientSecret(GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET"))
+                .tenantId(GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID"))
                 .build();
 
             return builder.credential(fqdn, eventHubName, clientSecretCredential);
@@ -230,44 +289,38 @@ public abstract class IntegrationTestBase extends TestBase {
     /**
      * Gets or creates the integration test data.
      */
-    protected static Map<String, IntegrationTestEventData> getTestData() {
+    protected synchronized Map<String, IntegrationTestEventData> getTestData() {
         if (testEventData != null) {
             return testEventData;
         }
 
-        synchronized (LOCK) {
-            if (testEventData != null) {
-                return testEventData;
+        System.out.println("--> Adding events to Event Hubs.");
+        final Map<String, IntegrationTestEventData> integrationData = new HashMap<>();
+
+        try (EventHubProducerClient producer = new EventHubClientBuilder()
+            .connectionString(getConnectionString())
+            .buildProducerClient()) {
+
+            producer.getPartitionIds().forEach(partitionId -> {
+                System.out.printf("--> Adding events to partition: %s%n", partitionId);
+                final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
+                final String messageId = UUID.randomUUID().toString();
+                final int numberOfEvents = 15;
+                final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId);
+                final SendOptions options = new SendOptions().setPartitionId(partitionId);
+
+                producer.send(events, options);
+
+                integrationData.put(partitionId,
+                    new IntegrationTestEventData(partitionId, partitionProperties, messageId, events));
+            });
+
+            if (integrationData.size() != NUMBER_OF_PARTITIONS) {
+                System.out.printf("--> WARNING: Number of partitions is different. Expected: %s. Actual %s%n",
+                    NUMBER_OF_PARTITIONS, integrationData.size());
             }
 
-            System.out.println("--> Adding events to Event Hubs.");
-            final Map<String, IntegrationTestEventData> integrationData = new HashMap<>();
-
-            try (EventHubProducerClient producer = new EventHubClientBuilder()
-                .connectionString(getConnectionString())
-                .buildProducerClient()) {
-
-                producer.getPartitionIds().forEach(partitionId -> {
-                    System.out.printf("--> Adding events to partition: %s%n", partitionId);
-                    final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
-                    final String messageId = UUID.randomUUID().toString();
-                    final int numberOfEvents = 15;
-                    final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId);
-                    final SendOptions options = new SendOptions().setPartitionId(partitionId);
-
-                    producer.send(events, options);
-
-                    integrationData.put(partitionId,
-                        new IntegrationTestEventData(partitionId, partitionProperties, messageId, events));
-                });
-
-                if (integrationData.size() != NUMBER_OF_PARTITIONS) {
-                    System.out.printf("--> WARNING: Number of partitions is different. Expected: %s. Actual %s%n",
-                        NUMBER_OF_PARTITIONS, integrationData.size());
-                }
-
-                testEventData = Collections.unmodifiableMap(integrationData);
-            }
+            testEventData = Collections.unmodifiableMap(integrationData);
         }
 
         Assertions.assertNotNull(testEventData, "'testEventData' should have been set.");
@@ -298,7 +351,15 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
+    /**
+     * Disposes of registered with {@code toClose} method resources.
+     */
+    protected void dispose() {
+        dispose(toClose.toArray(new Closeable[0]));
+        toClose.clear();
+    }
+
     private void skipIfNotRecordMode() {
-        Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK);
+        Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK, "Is not in RECORD/LIVE mode.");
     }
 }

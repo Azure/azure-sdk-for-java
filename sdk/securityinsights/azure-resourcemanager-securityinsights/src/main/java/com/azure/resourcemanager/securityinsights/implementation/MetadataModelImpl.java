@@ -145,6 +145,10 @@ public final class MetadataModelImpl implements MetadataModel, MetadataModel.Def
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public MetadataModelInner innerModel() {
         return this.innerObject;
     }

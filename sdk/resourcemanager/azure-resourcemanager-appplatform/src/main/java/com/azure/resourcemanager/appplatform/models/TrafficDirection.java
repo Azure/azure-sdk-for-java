@@ -27,7 +27,11 @@ public final class TrafficDirection extends ExpandableStringEnum<TrafficDirectio
         return fromString(name, TrafficDirection.class);
     }
 
-    /** @return known TrafficDirection values. */
+    /**
+     * Gets known TrafficDirection values.
+     *
+     * @return known TrafficDirection values.
+     */
     public static Collection<TrafficDirection> values() {
         return values(TrafficDirection.class);
     }

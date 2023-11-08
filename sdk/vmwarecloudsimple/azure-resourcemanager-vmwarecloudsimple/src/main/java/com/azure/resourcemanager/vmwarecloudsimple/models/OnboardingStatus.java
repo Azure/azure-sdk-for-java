@@ -7,7 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for OnboardingStatus. */
+/** indicates whether account onboarded or not in a given region. */
 public enum OnboardingStatus {
     /** Enum value notOnBoarded. */
     NOT_ON_BOARDED("notOnBoarded"),
@@ -36,6 +36,9 @@ public enum OnboardingStatus {
      */
     @JsonCreator
     public static OnboardingStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         OnboardingStatus[] items = OnboardingStatus.values();
         for (OnboardingStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum OnboardingStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

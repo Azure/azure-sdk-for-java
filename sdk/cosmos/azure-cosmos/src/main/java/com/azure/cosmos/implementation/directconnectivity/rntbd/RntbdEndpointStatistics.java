@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
+import com.azure.cosmos.implementation.directconnectivity.RntbdConnectionStateListenerMetricsDiagnostics;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -11,7 +12,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicLong;
 
 @JsonSerialize(using = RntbdEndpointStatistics.RntbdEndpointStatsJsonSerializer.class)
 public class RntbdEndpointStatistics implements Serializable {
@@ -57,6 +57,21 @@ public class RntbdEndpointStatistics implements Serializable {
         return this;
     }
 
+    RntbdEndpointStatistics connectionStateListenerMetrics(RntbdConnectionStateListenerMetrics metrics) {
+        this.connectionStateListenerMetrics = new RntbdConnectionStateListenerMetricsDiagnostics(metrics.getLastCallTimestamp(), metrics.getLastActionableContext());
+        return this;
+    }
+
+    RntbdEndpointStatistics lastFaultInjectionId(String lastFaultInjectionId) {
+        this.lastFaultInjectionId = lastFaultInjectionId;
+        return this;
+    }
+
+    RntbdEndpointStatistics lastFaultInjectionTimestamp(Instant lastFaultInjectionTimestamp) {
+        this.lastFaultInjectionTimestamp = lastFaultInjectionTimestamp;
+        return this;
+    }
+
     private int availableChannels;
     private int acquiredChannels;
     private int executorTaskQueueSize;
@@ -65,9 +80,20 @@ public class RntbdEndpointStatistics implements Serializable {
     private long lastSuccessfulRequestNanoTime;
     private long lastRequestNanoTime;
     private Instant createdTime;
+    private RntbdConnectionStateListenerMetricsDiagnostics connectionStateListenerMetrics;
+    private String lastFaultInjectionId;
+    private Instant lastFaultInjectionTimestamp;
 
     private final static Instant referenceInstant = Instant.now();
     private final static long referenceNanoTime = System.nanoTime();
+
+    public int getAvailableChannels() { return this.availableChannels; }
+
+    public int getAcquiredChannels() { return this.acquiredChannels; }
+
+    public int getInflightRequests() { return this.inflightRequests; }
+
+    public int getExecutorTaskQueueSize() { return this.executorTaskQueueSize; }
 
     public static class RntbdEndpointStatsJsonSerializer extends com.fasterxml.jackson.databind.JsonSerializer<RntbdEndpointStatistics> {
         @Override
@@ -83,6 +109,12 @@ public class RntbdEndpointStatistics implements Serializable {
             writer.writeStringField("lastRequestTime", toInstantString(stats.lastRequestNanoTime));
             writer.writeStringField("createdTime", toInstantString(stats.createdTime));
             writer.writeBooleanField("isClosed", stats.closed);
+            this.writeNonNullStringField(writer, "lastFaultInjectionId", stats.lastFaultInjectionId);
+            this.writeNonNullInstantField(writer, "lastFaultInjectionTimestamp", stats.lastFaultInjectionTimestamp);
+            if (stats.connectionStateListenerMetrics != null)
+            {
+                writer.writeObjectField("cerMetrics", stats.connectionStateListenerMetrics);
+            }
             writer.writeEndObject();
         }
 
@@ -93,6 +125,22 @@ public class RntbdEndpointStatistics implements Serializable {
         private String toInstantString(long nanoTime) {
             Instant time = Instant.ofEpochMilli(referenceInstant.plusNanos(nanoTime - referenceNanoTime).toEpochMilli());
             return DiagnosticsInstantSerializer.fromInstant(time);
+        }
+
+        private void writeNonNullInstantField(JsonGenerator jsonGenerator, String fieldName, Instant value) throws IOException {
+            if (value == null) {
+                return;
+            }
+
+            jsonGenerator.writeStringField(fieldName, value.toString());
+        }
+
+        private void writeNonNullStringField(JsonGenerator jsonGenerator, String fieldName, String value) throws IOException {
+            if (value == null) {
+                return;
+            }
+
+            jsonGenerator.writeStringField(fieldName, value);
         }
     }
 }

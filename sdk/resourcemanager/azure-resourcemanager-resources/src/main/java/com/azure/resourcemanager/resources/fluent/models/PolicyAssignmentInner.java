@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.NonComplianceMessage;
+import com.azure.resourcemanager.resources.models.OverrideModel;
 import com.azure.resourcemanager.resources.models.ParameterValuesValue;
+import com.azure.resourcemanager.resources.models.ResourceSelector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +27,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     private PolicyAssignmentProperties innerProperties;
 
     /*
-     * The location of the policy assignment. Only required when utilizing
-     * managed identity.
+     * The location of the policy assignment. Only required when utilizing managed identity.
      */
     @JsonProperty(value = "location")
     private String location;
@@ -42,6 +43,10 @@ public final class PolicyAssignmentInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of PolicyAssignmentInner class. */
+    public PolicyAssignmentInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties for the policy assignment.
@@ -297,6 +302,52 @@ public final class PolicyAssignmentInner extends ProxyResource {
             this.innerProperties = new PolicyAssignmentProperties();
         }
         this.innerProperties().withNonComplianceMessages(nonComplianceMessages);
+        return this;
+    }
+
+    /**
+     * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
+     *
+     * @return the resourceSelectors value.
+     */
+    public List<ResourceSelector> resourceSelectors() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceSelectors();
+    }
+
+    /**
+     * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
+     *
+     * @param resourceSelectors the resourceSelectors value to set.
+     * @return the PolicyAssignmentInner object itself.
+     */
+    public PolicyAssignmentInner withResourceSelectors(List<ResourceSelector> resourceSelectors) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withResourceSelectors(resourceSelectors);
+        return this;
+    }
+
+    /**
+     * Get the overrides property: The policy property value override.
+     *
+     * @return the overrides value.
+     */
+    public List<OverrideModel> overrides() {
+        return this.innerProperties() == null ? null : this.innerProperties().overrides();
+    }
+
+    /**
+     * Set the overrides property: The policy property value override.
+     *
+     * @param overrides the overrides value to set.
+     * @return the PolicyAssignmentInner object itself.
+     */
+    public PolicyAssignmentInner withOverrides(List<OverrideModel> overrides) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withOverrides(overrides);
         return this;
     }
 

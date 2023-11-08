@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Statistical information about the number of recommendations per device, per recommendation type. */
 @Immutable
 public final class IoTSecurityDeviceRecommendation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTSecurityDeviceRecommendation.class);
-
     /*
      * Display name of the recommendation.
      */
@@ -31,6 +27,10 @@ public final class IoTSecurityDeviceRecommendation {
      */
     @JsonProperty(value = "devicesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long devicesCount;
+
+    /** Creates an instance of IoTSecurityDeviceRecommendation class. */
+    public IoTSecurityDeviceRecommendation() {
+    }
 
     /**
      * Get the recommendationDisplayName property: Display name of the recommendation.

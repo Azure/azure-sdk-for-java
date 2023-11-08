@@ -25,6 +25,10 @@ public final class AmazonRedshiftLinkedService extends LinkedService {
     private AmazonRedshiftLinkedServiceTypeProperties innerTypeProperties =
         new AmazonRedshiftLinkedServiceTypeProperties();
 
+    /** Creates an instance of AmazonRedshiftLinkedService class. */
+    public AmazonRedshiftLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Amazon Redshift linked service properties.
      *
@@ -187,22 +191,22 @@ public final class AmazonRedshiftLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonRedshiftLinkedService object itself.
      */
-    public AmazonRedshiftLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AmazonRedshiftLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AmazonRedshiftLinkedServiceTypeProperties();
         }

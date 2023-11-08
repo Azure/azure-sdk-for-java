@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Definition of what monitoring data to collect and where that data should be sent. */
 @Fluent
 public class DataCollectionRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCollectionRule.class);
-
     /*
      * Description of the data collection rule.
      */
@@ -22,16 +20,34 @@ public class DataCollectionRule {
     private String description;
 
     /*
-     * The immutable ID of this data collection rule. This property is
-     * READ-ONLY.
+     * The immutable ID of this data collection rule. This property is READ-ONLY.
      */
     @JsonProperty(value = "immutableId", access = JsonProperty.Access.WRITE_ONLY)
     private String immutableId;
 
     /*
+     * The resource ID of the data collection endpoint that this rule can be used with.
+     */
+    @JsonProperty(value = "dataCollectionEndpointId")
+    private String dataCollectionEndpointId;
+
+    /*
+     * Metadata about the resource
+     */
+    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
+    private DataCollectionRuleMetadata metadata;
+
+    /*
+     * Declaration of custom streams used in this rule.
+     */
+    @JsonProperty(value = "streamDeclarations")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, StreamDeclaration> streamDeclarations;
+
+    /*
      * The specification of data sources.
-     * This property is optional and can be omitted if the rule is meant to be
-     * used via direct calls to the provisioned endpoint.
+     * This property is optional and can be omitted if the rule is meant to be used via direct calls to the provisioned
+     * endpoint.
      */
     @JsonProperty(value = "dataSources")
     private DataCollectionRuleDataSources dataSources;
@@ -53,6 +69,10 @@ public class DataCollectionRule {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KnownDataCollectionRuleProvisioningState provisioningState;
+
+    /** Creates an instance of DataCollectionRule class. */
+    public DataCollectionRule() {
+    }
 
     /**
      * Get the description property: Description of the data collection rule.
@@ -81,6 +101,57 @@ public class DataCollectionRule {
      */
     public String immutableId() {
         return this.immutableId;
+    }
+
+    /**
+     * Get the dataCollectionEndpointId property: The resource ID of the data collection endpoint that this rule can be
+     * used with.
+     *
+     * @return the dataCollectionEndpointId value.
+     */
+    public String dataCollectionEndpointId() {
+        return this.dataCollectionEndpointId;
+    }
+
+    /**
+     * Set the dataCollectionEndpointId property: The resource ID of the data collection endpoint that this rule can be
+     * used with.
+     *
+     * @param dataCollectionEndpointId the dataCollectionEndpointId value to set.
+     * @return the DataCollectionRule object itself.
+     */
+    public DataCollectionRule withDataCollectionEndpointId(String dataCollectionEndpointId) {
+        this.dataCollectionEndpointId = dataCollectionEndpointId;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Metadata about the resource.
+     *
+     * @return the metadata value.
+     */
+    public DataCollectionRuleMetadata metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Get the streamDeclarations property: Declaration of custom streams used in this rule.
+     *
+     * @return the streamDeclarations value.
+     */
+    public Map<String, StreamDeclaration> streamDeclarations() {
+        return this.streamDeclarations;
+    }
+
+    /**
+     * Set the streamDeclarations property: Declaration of custom streams used in this rule.
+     *
+     * @param streamDeclarations the streamDeclarations value to set.
+     * @return the DataCollectionRule object itself.
+     */
+    public DataCollectionRule withStreamDeclarations(Map<String, StreamDeclaration> streamDeclarations) {
+        this.streamDeclarations = streamDeclarations;
+        return this;
     }
 
     /**
@@ -160,6 +231,19 @@ public class DataCollectionRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (metadata() != null) {
+            metadata().validate();
+        }
+        if (streamDeclarations() != null) {
+            streamDeclarations()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
         if (dataSources() != null) {
             dataSources().validate();
         }

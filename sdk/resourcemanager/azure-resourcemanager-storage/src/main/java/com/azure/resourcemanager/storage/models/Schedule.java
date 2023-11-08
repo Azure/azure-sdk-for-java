@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Schedule. */
+/** This is a required field. This field is used to schedule an inventory formation. */
 public final class Schedule extends ExpandableStringEnum<Schedule> {
     /** Static value Daily for Schedule. */
     public static final Schedule DAILY = fromString("Daily");
 
     /** Static value Weekly for Schedule. */
     public static final Schedule WEEKLY = fromString("Weekly");
+
+    /**
+     * Creates a new instance of Schedule value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Schedule() {
+    }
 
     /**
      * Creates or finds a Schedule from its string representation.
@@ -27,7 +36,11 @@ public final class Schedule extends ExpandableStringEnum<Schedule> {
         return fromString(name, Schedule.class);
     }
 
-    /** @return known Schedule values. */
+    /**
+     * Gets known Schedule values.
+     *
+     * @return known Schedule values.
+     */
     public static Collection<Schedule> values() {
         return values(Schedule.class);
     }

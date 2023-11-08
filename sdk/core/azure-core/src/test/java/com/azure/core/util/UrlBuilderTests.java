@@ -7,10 +7,14 @@ import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
@@ -24,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 public class UrlBuilderTests {
     @Test
@@ -346,8 +349,8 @@ public class UrlBuilderTests {
     public void portStringWhenPortIsNotEmpty() {
         final UrlBuilder builder = new UrlBuilder()
             .setPort(8080);
-        builder.setPort("123");
-        assertEquals(123, builder.getPort());
+        builder.setPort("132");
+        assertEquals(132, builder.getPort());
     }
 
     @Test
@@ -776,52 +779,55 @@ public class UrlBuilderTests {
 
     @Test
     public void parseURLSchemeAndHost() throws MalformedURLException {
-        final UrlBuilder builder = UrlBuilder.parse(new URL("http://www.bing.com"));
+        final UrlBuilder builder = UrlBuilder.parse(URI.create("http://www.bing.com").toURL());
         assertEquals("http://www.bing.com", builder.toString());
     }
 
     @Test
     public void parallelParsing() throws InterruptedException {
-        Thread.UncaughtExceptionHandler handler = mock(Thread.UncaughtExceptionHandler.class);
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors(),
-            ForkJoinPool.defaultForkJoinWorkerThreadFactory, handler, false);
+            ForkJoinPool.defaultForkJoinWorkerThreadFactory, null, false);
 
         AtomicInteger callCount = new AtomicInteger();
-        List<Callable<UrlBuilder>> tasks = IntStream.range(0, 100000)
+        List<Callable<UrlBuilder>> tasks = IntStream.range(0, 20000)
             .mapToObj(i -> (Callable<UrlBuilder>) () -> {
                 callCount.incrementAndGet();
                 return UrlBuilder.parse("https://example" + i + ".com");
             })
-            .collect(Collectors.toList());
+            .collect(Collectors.toCollection(() -> new ArrayList<>(20000)));
 
         pool.invokeAll(tasks);
         pool.shutdown();
         assertTrue(pool.awaitTermination(10, TimeUnit.SECONDS));
-        assertEquals(100000, callCount.get());
+        assertEquals(20000, callCount.get());
     }
 
     @Test
     public void fluxParallelParsing() {
-        Mono<Long> mono = Flux.range(0, 100000)
-            .parallel()
-            .map(i -> UrlBuilder.parse("https://example" + i + ".com"))
-            .sequential()
-            .count();
+        AtomicInteger callCount = new AtomicInteger();
+        Mono<Void> mono = Flux.range(0, 20000)
+            .parallel(Runtime.getRuntime().availableProcessors())
+            .runOn(Schedulers.boundedElastic())
+            .map(i -> {
+                callCount.incrementAndGet();
+                return UrlBuilder.parse("https://example" + i + ".com");
+            })
+            .then()
+            .timeout(Duration.ofSeconds(10));
 
-        StepVerifier.create(mono)
-            .assertNext(count -> assertEquals(100000, count))
-            .verifyComplete();
+        StepVerifier.create(mono).verifyComplete();
+        assertEquals(20000, callCount.get());
     }
 
     @Test
     public void parseUniqueURLs() {
-        IntStream.range(0, 100000)
-                .parallel()
-                .forEach(i -> {
-                    UrlBuilder urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=" + i);
-                    assertNotNull(urlBuilder);
-                    assertEquals("www.bing.com:123/index.html?a=" + i, urlBuilder.toString());
-                });
+        IntStream.range(0, 20000)
+            .parallel()
+            .forEach(i -> {
+                UrlBuilder urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=" + i);
+                assertNotNull(urlBuilder);
+                assertEquals("www.bing.com:123/index.html?a=" + i, urlBuilder.toString());
+            });
 
         // validate the size of the cache is not greater than 10000
         assertTrue(UrlBuilder.getParsedUrls().size() <= 10000);

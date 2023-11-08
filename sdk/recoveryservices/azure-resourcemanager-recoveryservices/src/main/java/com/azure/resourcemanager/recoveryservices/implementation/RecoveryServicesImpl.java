@@ -8,35 +8,27 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.RecoveryServicesClient;
+import com.azure.resourcemanager.recoveryservices.fluent.models.CapabilitiesResponseInner;
 import com.azure.resourcemanager.recoveryservices.fluent.models.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.recoveryservices.models.CapabilitiesResponse;
 import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.recoveryservices.models.RecoveryServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.recoveryservices.models.ResourceCapabilities;
 
 public final class RecoveryServicesImpl implements RecoveryServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecoveryServicesImpl.class);
 
     private final RecoveryServicesClient innerClient;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public RecoveryServicesImpl(RecoveryServicesClient innerClient, RecoveryServicesManager serviceManager) {
+    public RecoveryServicesImpl(
+        RecoveryServicesClient innerClient,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CheckNameAvailabilityResult checkNameAvailability(
-        String resourceGroupName, String location, CheckNameAvailabilityParameters input) {
-        CheckNameAvailabilityResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, location, input);
-        if (inner != null) {
-            return new CheckNameAvailabilityResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
@@ -54,11 +46,46 @@ public final class RecoveryServicesImpl implements RecoveryServices {
         }
     }
 
+    public CheckNameAvailabilityResult checkNameAvailability(
+        String resourceGroupName, String location, CheckNameAvailabilityParameters input) {
+        CheckNameAvailabilityResultInner inner =
+            this.serviceClient().checkNameAvailability(resourceGroupName, location, input);
+        if (inner != null) {
+            return new CheckNameAvailabilityResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<CapabilitiesResponse> capabilitiesWithResponse(
+        String location, ResourceCapabilities input, Context context) {
+        Response<CapabilitiesResponseInner> inner =
+            this.serviceClient().capabilitiesWithResponse(location, input, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new CapabilitiesResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CapabilitiesResponse capabilities(String location, ResourceCapabilities input) {
+        CapabilitiesResponseInner inner = this.serviceClient().capabilities(location, input);
+        if (inner != null) {
+            return new CapabilitiesResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     private RecoveryServicesClient serviceClient() {
         return this.innerClient;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }

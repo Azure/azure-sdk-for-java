@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Collection of links of directoryObject. */
 @Fluent
 public final class CollectionOfLinksOfDirectoryObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CollectionOfLinksOfDirectoryObject.class);
-
     /*
      * The value property.
      */
@@ -35,6 +32,10 @@ public final class CollectionOfLinksOfDirectoryObject {
      * Collection of links of directoryObject
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of CollectionOfLinksOfDirectoryObject class. */
+    public CollectionOfLinksOfDirectoryObject() {
+    }
 
     /**
      * Get the value property: The value property.

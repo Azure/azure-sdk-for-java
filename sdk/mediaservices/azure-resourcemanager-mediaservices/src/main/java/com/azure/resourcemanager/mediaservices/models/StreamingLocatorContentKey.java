@@ -49,6 +49,10 @@ public final class StreamingLocatorContentKey {
     @JsonProperty(value = "tracks", access = JsonProperty.Access.WRITE_ONLY)
     private List<TrackSelection> tracks;
 
+    /** Creates an instance of StreamingLocatorContentKey class. */
+    public StreamingLocatorContentKey() {
+    }
+
     /**
      * Get the id property: ID of Content Key.
      *

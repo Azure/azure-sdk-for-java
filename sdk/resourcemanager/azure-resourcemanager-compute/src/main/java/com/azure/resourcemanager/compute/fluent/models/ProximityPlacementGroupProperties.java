@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.ProximityPlacementGroupPropertiesIntent;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,30 +16,26 @@ import java.util.List;
 @Fluent
 public final class ProximityPlacementGroupProperties {
     /*
-     * Specifies the type of the proximity placement group. <br><br> Possible
-     * values are: <br><br> **Standard** : Co-locate resources within an Azure
-     * region or Availability Zone. <br><br> **Ultra** : For future use.
+     * Specifies the type of the proximity placement group. Possible values are: **Standard** : Co-locate resources
+     * within an Azure region or Availability Zone. **Ultra** : For future use.
      */
     @JsonProperty(value = "proximityPlacementGroupType")
     private ProximityPlacementGroupType proximityPlacementGroupType;
 
     /*
-     * A list of references to all virtual machines in the proximity placement
-     * group.
+     * A list of references to all virtual machines in the proximity placement group.
      */
     @JsonProperty(value = "virtualMachines", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceWithColocationStatus> virtualMachines;
 
     /*
-     * A list of references to all virtual machine scale sets in the proximity
-     * placement group.
+     * A list of references to all virtual machine scale sets in the proximity placement group.
      */
     @JsonProperty(value = "virtualMachineScaleSets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceWithColocationStatus> virtualMachineScaleSets;
 
     /*
-     * A list of references to all availability sets in the proximity placement
-     * group.
+     * A list of references to all availability sets in the proximity placement group.
      */
     @JsonProperty(value = "availabilitySets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceWithColocationStatus> availabilitySets;
@@ -49,10 +46,20 @@ public final class ProximityPlacementGroupProperties {
     @JsonProperty(value = "colocationStatus")
     private InstanceViewStatus colocationStatus;
 
+    /*
+     * Specifies the user intent of the proximity placement group.
+     */
+    @JsonProperty(value = "intent")
+    private ProximityPlacementGroupPropertiesIntent intent;
+
+    /** Creates an instance of ProximityPlacementGroupProperties class. */
+    public ProximityPlacementGroupProperties() {
+    }
+
     /**
-     * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure
-     * region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For future use.
+     * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group. Possible
+     * values are: **Standard** : Co-locate resources within an Azure region or Availability Zone. **Ultra** : For
+     * future use.
      *
      * @return the proximityPlacementGroupType value.
      */
@@ -61,9 +68,9 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
-     * Set the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure
-     * region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For future use.
+     * Set the proximityPlacementGroupType property: Specifies the type of the proximity placement group. Possible
+     * values are: **Standard** : Co-locate resources within an Azure region or Availability Zone. **Ultra** : For
+     * future use.
      *
      * @param proximityPlacementGroupType the proximityPlacementGroupType value to set.
      * @return the ProximityPlacementGroupProperties object itself.
@@ -124,6 +131,26 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
+     * Get the intent property: Specifies the user intent of the proximity placement group.
+     *
+     * @return the intent value.
+     */
+    public ProximityPlacementGroupPropertiesIntent intent() {
+        return this.intent;
+    }
+
+    /**
+     * Set the intent property: Specifies the user intent of the proximity placement group.
+     *
+     * @param intent the intent value to set.
+     * @return the ProximityPlacementGroupProperties object itself.
+     */
+    public ProximityPlacementGroupProperties withIntent(ProximityPlacementGroupPropertiesIntent intent) {
+        this.intent = intent;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -140,6 +167,9 @@ public final class ProximityPlacementGroupProperties {
         }
         if (colocationStatus() != null) {
             colocationStatus().validate();
+        }
+        if (intent() != null) {
+            intent().validate();
         }
     }
 }

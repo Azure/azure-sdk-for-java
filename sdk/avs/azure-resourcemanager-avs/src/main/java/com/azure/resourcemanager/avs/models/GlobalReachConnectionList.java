@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.GlobalReachConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A paged list of global reach connections. */
 @Immutable
 public final class GlobalReachConnectionList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GlobalReachConnectionList.class);
-
     /*
      * The items on a page
      */
@@ -27,6 +23,10 @@ public final class GlobalReachConnectionList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of GlobalReachConnectionList class. */
+    public GlobalReachConnectionList() {
+    }
 
     /**
      * Get the value property: The items on a page.

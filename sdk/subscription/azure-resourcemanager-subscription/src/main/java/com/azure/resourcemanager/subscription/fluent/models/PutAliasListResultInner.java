@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of aliases. */
 @Immutable
 public final class PutAliasListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PutAliasListResultInner.class);
-
     /*
      * The list of alias.
      */
@@ -26,6 +22,10 @@ public final class PutAliasListResultInner {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of PutAliasListResultInner class. */
+    public PutAliasListResultInner() {
+    }
 
     /**
      * Get the value property: The list of alias.

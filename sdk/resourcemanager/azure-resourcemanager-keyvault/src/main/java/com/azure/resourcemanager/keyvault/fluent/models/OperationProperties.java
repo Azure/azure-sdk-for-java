@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.keyvault.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.models.ServiceSpecification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of operation, include metric specifications. */
 @Fluent
 public final class OperationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationProperties.class);
-
     /*
      * One property of operation, include metric specifications.
      */
     @JsonProperty(value = "serviceSpecification")
     private ServiceSpecification serviceSpecification;
+
+    /** Creates an instance of OperationProperties class. */
+    public OperationProperties() {
+    }
 
     /**
      * Get the serviceSpecification property: One property of operation, include metric specifications.

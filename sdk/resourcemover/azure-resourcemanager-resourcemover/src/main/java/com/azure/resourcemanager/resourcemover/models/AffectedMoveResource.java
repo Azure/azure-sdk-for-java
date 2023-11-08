@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The RP custom operation error info. */
 @Immutable
 public final class AffectedMoveResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AffectedMoveResource.class);
-
     /*
      * The affected move resource id.
      */
@@ -32,6 +28,10 @@ public final class AffectedMoveResource {
      */
     @JsonProperty(value = "moveResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<AffectedMoveResource> moveResources;
+
+    /** Creates an instance of AffectedMoveResource class. */
+    public AffectedMoveResource() {
+    }
 
     /**
      * Get the id property: The affected move resource id.

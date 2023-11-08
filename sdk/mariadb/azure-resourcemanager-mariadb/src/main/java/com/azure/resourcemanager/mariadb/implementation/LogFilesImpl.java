@@ -11,10 +11,9 @@ import com.azure.resourcemanager.mariadb.fluent.LogFilesClient;
 import com.azure.resourcemanager.mariadb.fluent.models.LogFileInner;
 import com.azure.resourcemanager.mariadb.models.LogFile;
 import com.azure.resourcemanager.mariadb.models.LogFiles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LogFilesImpl implements LogFiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogFilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LogFilesImpl.class);
 
     private final LogFilesClient innerClient;
 

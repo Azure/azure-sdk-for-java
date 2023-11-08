@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ARM Usage Name. */
 @Fluent
 public final class Name {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Name.class);
-
     /*
      * Usage name value
      */
@@ -25,6 +21,10 @@ public final class Name {
      */
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
+
+    /** Creates an instance of Name class. */
+    public Name() {
+    }
 
     /**
      * Get the value property: Usage name value.

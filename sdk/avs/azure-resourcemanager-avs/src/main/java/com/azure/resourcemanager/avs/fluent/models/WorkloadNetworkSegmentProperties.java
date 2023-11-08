@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.SegmentStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentPortVif;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentProvisioningState;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentSubnet;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NSX Segment Properties. */
 @Fluent
 public final class WorkloadNetworkSegmentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkSegmentProperties.class);
-
     /*
      * Display name of the segment.
      */
@@ -60,6 +56,10 @@ public final class WorkloadNetworkSegmentProperties {
      */
     @JsonProperty(value = "revision")
     private Long revision;
+
+    /** Creates an instance of WorkloadNetworkSegmentProperties class. */
+    public WorkloadNetworkSegmentProperties() {
+    }
 
     /**
      * Get the displayName property: Display name of the segment.

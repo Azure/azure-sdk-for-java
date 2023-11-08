@@ -115,6 +115,10 @@ public final class ConnectedClusterImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConnectedClusterInner innerModel() {
         return this.innerObject;
     }
@@ -213,15 +217,15 @@ public final class ConnectedClusterImpl
         return this;
     }
 
-    public CredentialResults listClusterUserCredential(ListClusterUserCredentialProperties properties) {
-        return serviceManager.connectedClusters().listClusterUserCredential(resourceGroupName, clusterName, properties);
-    }
-
     public Response<CredentialResults> listClusterUserCredentialWithResponse(
         ListClusterUserCredentialProperties properties, Context context) {
         return serviceManager
             .connectedClusters()
             .listClusterUserCredentialWithResponse(resourceGroupName, clusterName, properties, context);
+    }
+
+    public CredentialResults listClusterUserCredential(ListClusterUserCredentialProperties properties) {
+        return serviceManager.connectedClusters().listClusterUserCredential(resourceGroupName, clusterName, properties);
     }
 
     public ConnectedClusterImpl withRegion(Region location) {

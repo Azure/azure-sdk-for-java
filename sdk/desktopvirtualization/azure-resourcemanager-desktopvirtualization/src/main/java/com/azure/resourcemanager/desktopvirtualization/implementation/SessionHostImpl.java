@@ -74,6 +74,10 @@ public final class SessionHostImpl implements SessionHost {
         return this.innerModel().assignedUser();
     }
 
+    public String friendlyName() {
+        return this.innerModel().friendlyName();
+    }
+
     public Status status() {
         return this.innerModel().status();
     }

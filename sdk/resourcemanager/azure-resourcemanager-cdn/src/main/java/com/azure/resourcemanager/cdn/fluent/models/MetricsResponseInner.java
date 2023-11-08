@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cdn.models.MetricsResponseGranularity;
+import com.azure.resourcemanager.cdn.models.MetricsGranularity;
 import com.azure.resourcemanager.cdn.models.MetricsResponseSeriesItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** Metrics Response. */
 @Fluent
 public final class MetricsResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricsResponseInner.class);
-
     /*
      * The dateTimeBegin property.
      */
@@ -34,13 +30,17 @@ public final class MetricsResponseInner {
      * The granularity property.
      */
     @JsonProperty(value = "granularity")
-    private MetricsResponseGranularity granularity;
+    private MetricsGranularity granularity;
 
     /*
      * The series property.
      */
     @JsonProperty(value = "series")
     private List<MetricsResponseSeriesItem> series;
+
+    /** Creates an instance of MetricsResponseInner class. */
+    public MetricsResponseInner() {
+    }
 
     /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
@@ -87,7 +87,7 @@ public final class MetricsResponseInner {
      *
      * @return the granularity value.
      */
-    public MetricsResponseGranularity granularity() {
+    public MetricsGranularity granularity() {
         return this.granularity;
     }
 
@@ -97,7 +97,7 @@ public final class MetricsResponseInner {
      * @param granularity the granularity value to set.
      * @return the MetricsResponseInner object itself.
      */
-    public MetricsResponseInner withGranularity(MetricsResponseGranularity granularity) {
+    public MetricsResponseInner withGranularity(MetricsGranularity granularity) {
         this.granularity = granularity;
         return this;
     }

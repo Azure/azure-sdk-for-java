@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SparkConfigurationsOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.SparkConfigurationResourceInner;
 import com.azure.resourcemanager.synapse.models.SparkConfigurationListResponse;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SparkConfigurationsOperationsClient. */
 public final class SparkConfigurationsOperationsClientImpl implements SparkConfigurationsOperationsClient {
-    private final ClientLogger logger = new ClientLogger(SparkConfigurationsOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SparkConfigurationsOperationsService service;
 
@@ -62,7 +59,7 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SparkConfigurationsOperationsService {
+    public interface SparkConfigurationsOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -90,7 +87,9 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
     }
 
     /**
-     * List sparkConfigurations in a workspace.
+     * List the sparkConfigurations in a workspace.
+     *
+     * <p>List sparkConfigurations in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -149,7 +148,9 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
     }
 
     /**
-     * List sparkConfigurations in a workspace.
+     * List the sparkConfigurations in a workspace.
+     *
+     * <p>List sparkConfigurations in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -206,14 +207,16 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
     }
 
     /**
-     * List sparkConfigurations in a workspace.
+     * List the sparkConfigurations in a workspace.
+     *
+     * <p>List sparkConfigurations in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SparkConfiguration resources.
+     * @return a list of SparkConfiguration resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SparkConfigurationResourceInner> listByWorkspaceAsync(
@@ -224,7 +227,9 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
     }
 
     /**
-     * List sparkConfigurations in a workspace.
+     * List the sparkConfigurations in a workspace.
+     *
+     * <p>List sparkConfigurations in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -232,7 +237,7 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SparkConfiguration resources.
+     * @return a list of SparkConfiguration resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SparkConfigurationResourceInner> listByWorkspaceAsync(
@@ -243,14 +248,16 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
     }
 
     /**
-     * List sparkConfigurations in a workspace.
+     * List the sparkConfigurations in a workspace.
+     *
+     * <p>List sparkConfigurations in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SparkConfiguration resources.
+     * @return a list of SparkConfiguration resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SparkConfigurationResourceInner> listByWorkspace(
@@ -259,7 +266,9 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
     }
 
     /**
-     * List sparkConfigurations in a workspace.
+     * List the sparkConfigurations in a workspace.
+     *
+     * <p>List sparkConfigurations in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -267,7 +276,7 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SparkConfiguration resources.
+     * @return a list of SparkConfiguration resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SparkConfigurationResourceInner> listByWorkspace(
@@ -278,7 +287,8 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -314,7 +324,8 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

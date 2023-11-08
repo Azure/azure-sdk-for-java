@@ -5,13 +5,11 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.models.CreateMode;
 import com.azure.resourcemanager.appconfiguration.models.EncryptionProperties;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpointConnectionReference;
 import com.azure.resourcemanager.appconfiguration.models.ProvisioningState;
 import com.azure.resourcemanager.appconfiguration.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,8 +17,6 @@ import java.util.List;
 /** The properties of a configuration store. */
 @Fluent
 public final class ConfigurationStoreProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationStoreProperties.class);
-
     /*
      * The provisioning state of the configuration store.
      */
@@ -46,15 +42,13 @@ public final class ConfigurationStoreProperties {
     private EncryptionProperties encryption;
 
     /*
-     * The list of private endpoint connections that are set up for this
-     * resource.
+     * The list of private endpoint connections that are set up for this resource.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionReference> privateEndpointConnections;
 
     /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
@@ -66,15 +60,13 @@ public final class ConfigurationStoreProperties {
     private Boolean disableLocalAuth;
 
     /*
-     * The amount of time in days that the configuration store will be retained
-     * when it is soft deleted.
+     * The amount of time in days that the configuration store will be retained when it is soft deleted.
      */
     @JsonProperty(value = "softDeleteRetentionInDays")
     private Integer softDeleteRetentionInDays;
 
     /*
-     * Property specifying whether protection against purge is enabled for this
-     * configuration store.
+     * Property specifying whether protection against purge is enabled for this configuration store.
      */
     @JsonProperty(value = "enablePurgeProtection")
     private Boolean enablePurgeProtection;
@@ -84,6 +76,10 @@ public final class ConfigurationStoreProperties {
      */
     @JsonProperty(value = "createMode")
     private CreateMode createMode;
+
+    /** Creates an instance of ConfigurationStoreProperties class. */
+    public ConfigurationStoreProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the configuration store.

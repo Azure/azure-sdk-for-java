@@ -30,6 +30,7 @@ public class RxDocumentServiceResponse {
     private final Map<String, String> headersMap;
     private final StoreResponse storeResponse;
     private RequestTimeline gatewayHttpRequestTimeline;
+    private CosmosDiagnostics cosmosDiagnostics;
 
     public RxDocumentServiceResponse(DiagnosticsClientContext diagnosticsClientContext, StoreResponse response) {
         String[] headerNames = response.getResponseHeaderNames();
@@ -53,6 +54,20 @@ public class RxDocumentServiceResponse {
                                      RequestTimeline gatewayHttpRequestTimeline) {
         this(diagnosticsClientContext, response);
         this.gatewayHttpRequestTimeline = gatewayHttpRequestTimeline;
+    }
+
+    RxDocumentServiceResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
+        StoreResponse mappedStoreResponse = this
+            .storeResponse
+            .withRemappedStatusCode(newStatusCode, additionalRequestCharge);
+
+        RxDocumentServiceResponse result = new RxDocumentServiceResponse(
+            this.diagnosticsClientContext, mappedStoreResponse, this.gatewayHttpRequestTimeline);
+        if (this.cosmosDiagnostics != null) {
+            result.setCosmosDiagnostics(this.cosmosDiagnostics);
+        }
+
+        return result;
     }
 
     private static <T> String getResourceKey(Class<T> c) {
@@ -209,10 +224,11 @@ public class RxDocumentServiceResponse {
     }
 
     public CosmosDiagnostics getCosmosDiagnostics() {
-        if (this.storeResponse == null) {
-            return null;
-        }
-        return this.storeResponse.getCosmosDiagnostics();
+        return this.cosmosDiagnostics;
+    }
+
+    public void setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+        this.cosmosDiagnostics = cosmosDiagnostics;
     }
 
     public DiagnosticsClientContext getDiagnosticsClientContext() {

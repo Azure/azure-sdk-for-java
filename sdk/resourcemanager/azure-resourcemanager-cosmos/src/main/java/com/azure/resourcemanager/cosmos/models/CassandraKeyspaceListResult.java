@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.CassandraKeyspaceGetResultsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List operation response, that contains the Cassandra keyspaces and their properties. */
 @Immutable
 public final class CassandraKeyspaceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraKeyspaceListResult.class);
-
     /*
      * List of Cassandra keyspaces and their properties.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CassandraKeyspaceGetResultsInner> value;
+
+    /** Creates an instance of CassandraKeyspaceListResult class. */
+    public CassandraKeyspaceListResult() {
+    }
 
     /**
      * Get the value property: List of Cassandra keyspaces and their properties.

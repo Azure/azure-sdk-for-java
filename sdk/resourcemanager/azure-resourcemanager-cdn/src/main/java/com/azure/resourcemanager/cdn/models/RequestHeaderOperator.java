@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RequestHeaderOperator. */
+/** Describes operator to be matched. */
 public final class RequestHeaderOperator extends ExpandableStringEnum<RequestHeaderOperator> {
     /** Static value Any for RequestHeaderOperator. */
     public static final RequestHeaderOperator ANY = fromString("Any");
@@ -41,6 +41,15 @@ public final class RequestHeaderOperator extends ExpandableStringEnum<RequestHea
     public static final RequestHeaderOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of RequestHeaderOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestHeaderOperator() {
+    }
+
+    /**
      * Creates or finds a RequestHeaderOperator from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class RequestHeaderOperator extends ExpandableStringEnum<RequestHea
         return fromString(name, RequestHeaderOperator.class);
     }
 
-    /** @return known RequestHeaderOperator values. */
+    /**
+     * Gets known RequestHeaderOperator values.
+     *
+     * @return known RequestHeaderOperator values.
+     */
     public static Collection<RequestHeaderOperator> values() {
         return values(RequestHeaderOperator.class);
     }

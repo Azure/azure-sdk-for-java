@@ -3,6 +3,7 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -256,8 +257,9 @@ public class PagedFluxTest {
     }
 
     private PagedFlux<Integer> getIntegerPagedFlux(int noOfPages) {
-        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
-            .set("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders()
+            .set(HttpHeaderName.fromString("header1"), "value1")
+            .set(HttpHeaderName.fromString("header2"), "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         String deserializedHeaders = "header1,value1,header2,value2";
@@ -276,8 +278,9 @@ public class PagedFluxTest {
     }
 
     private PagedFlux<Integer> getIntegerPagedFluxSinglePage() {
-        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
-            .set("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders()
+            .set(HttpHeaderName.fromString("header1"), "value1")
+            .set(HttpHeaderName.fromString("header2"), "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         String deserializedHeaders = "header1,value1,header2,value2";
@@ -465,7 +468,7 @@ public class PagedFluxTest {
 
         @Override
         public Flux<PagedResponse<String>> get(String token, Integer pageSize) {
-            return Flux.defer(() -> {
+            return Mono.fromSupplier(() -> {
                 String nextContinuationToken;
                 if (token == null) {
                     nextContinuationToken = "1";
@@ -477,8 +480,8 @@ public class PagedFluxTest {
 
                 PagedResponse<String> page = PAGE_CREATOR.apply(nextContinuationToken, pageValue[0]);
                 pageValue[0] = NEXT_PAGE_VALUE.apply(pageValue[0]);
-                return Flux.just(page);
-            });
+                return page;
+            }).flux();
         }
     }
 
@@ -521,7 +524,7 @@ public class PagedFluxTest {
 
         @Override
         public Flux<ContinuablePage<C, String>> get(C token, Integer pageSize) {
-            return Flux.defer(() -> {
+            return Mono.fromSupplier(() -> {
                 C nextContinuationToken;
                 if (token == null) {
                     nextContinuationToken = initialToken;
@@ -533,8 +536,8 @@ public class PagedFluxTest {
 
                 ContinuablePage<C, String> page = pageCreator.apply(nextContinuationToken, pageValue[0]);
                 pageValue[0] = NEXT_PAGE_VALUE.apply(pageValue[0]);
-                return Flux.just(page);
-            });
+                return page;
+            }).flux();
         }
     }
 

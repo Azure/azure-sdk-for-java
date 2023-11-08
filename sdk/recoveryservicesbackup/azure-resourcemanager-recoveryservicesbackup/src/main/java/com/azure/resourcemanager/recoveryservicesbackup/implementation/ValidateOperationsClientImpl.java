@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationsClient;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ValidateOperationsClient. */
 public final class ValidateOperationsClientImpl implements ValidateOperationsClient {
-    private final ClientLogger logger = new ClientLogger(ValidateOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ValidateOperationsService service;
 
@@ -59,11 +56,10 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ValidateOperationsService {
+    public interface ValidateOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupTriggerValidateOperation")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupTriggerValidateOperation")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> trigger(
@@ -248,7 +244,7 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(
         String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
-        return beginTriggerAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
+        return this.beginTriggerAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -267,7 +263,7 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(
         String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context) {
-        return beginTriggerAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
+        return this.beginTriggerAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**

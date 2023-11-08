@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.models.PerformanceTierServiceLevelObjectives;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Performance tier properties. */
 @Fluent
 public final class PerformanceTierPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceTierPropertiesInner.class);
-
     /*
      * ID of the performance tier.
      */
@@ -63,6 +59,10 @@ public final class PerformanceTierPropertiesInner {
      */
     @JsonProperty(value = "serviceLevelObjectives")
     private List<PerformanceTierServiceLevelObjectives> serviceLevelObjectives;
+
+    /** Creates an instance of PerformanceTierPropertiesInner class. */
+    public PerformanceTierPropertiesInner() {
+    }
 
     /**
      * Get the id property: ID of the performance tier.

@@ -25,8 +25,7 @@ public class HDInsightPigActivity extends ExecutionActivity {
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
-     * User specified arguments to HDInsightActivity. Type: array (or
-     * Expression with resultType array).
+     * User specified arguments to HDInsightActivity. Type: array (or Expression with resultType array).
      */
     @JsonProperty(value = "typeProperties.arguments")
     private Object arguments;
@@ -54,6 +53,9 @@ public class HDInsightPigActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.defines")
     private Map<String, Object> defines;
+
+    /** Creates an instance of HDInsightPigActivity class. */
+    public HDInsightPigActivity() {}
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.
@@ -174,6 +176,62 @@ public class HDInsightPigActivity extends ExecutionActivity {
      */
     public HDInsightPigActivity setDefines(Map<String, Object> defines) {
         this.defines = defines;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightPigActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

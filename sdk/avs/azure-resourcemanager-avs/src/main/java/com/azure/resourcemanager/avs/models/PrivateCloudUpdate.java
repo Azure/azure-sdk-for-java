@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.PrivateCloudUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** An update to a private cloud resource. */
 @Fluent
 public final class PrivateCloudUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateCloudUpdate.class);
-
     /*
      * Resource tags
      */
@@ -36,6 +32,10 @@ public final class PrivateCloudUpdate {
      */
     @JsonProperty(value = "identity")
     private PrivateCloudIdentity identity;
+
+    /** Creates an instance of PrivateCloudUpdate class. */
+    public PrivateCloudUpdate() {
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -198,6 +198,33 @@ public final class PrivateCloudUpdate {
             this.innerProperties = new PrivateCloudUpdateProperties();
         }
         this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @return the extendedNetworkBlocks value.
+     */
+    public List<String> extendedNetworkBlocks() {
+        return this.innerProperties() == null ? null : this.innerProperties().extendedNetworkBlocks();
+    }
+
+    /**
+     * Set the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @param extendedNetworkBlocks the extendedNetworkBlocks value to set.
+     * @return the PrivateCloudUpdate object itself.
+     */
+    public PrivateCloudUpdate withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudUpdateProperties();
+        }
+        this.innerProperties().withExtendedNetworkBlocks(extendedNetworkBlocks);
         return this;
     }
 

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HanaInstancePowerStateEnum. */
+/** Resource power state. */
 public final class HanaInstancePowerStateEnum extends ExpandableStringEnum<HanaInstancePowerStateEnum> {
     /** Static value starting for HanaInstancePowerStateEnum. */
     public static final HanaInstancePowerStateEnum STARTING = fromString("starting");
@@ -29,6 +29,15 @@ public final class HanaInstancePowerStateEnum extends ExpandableStringEnum<HanaI
     public static final HanaInstancePowerStateEnum UNKNOWN = fromString("unknown");
 
     /**
+     * Creates a new instance of HanaInstancePowerStateEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HanaInstancePowerStateEnum() {
+    }
+
+    /**
      * Creates or finds a HanaInstancePowerStateEnum from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class HanaInstancePowerStateEnum extends ExpandableStringEnum<HanaI
         return fromString(name, HanaInstancePowerStateEnum.class);
     }
 
-    /** @return known HanaInstancePowerStateEnum values. */
+    /**
+     * Gets known HanaInstancePowerStateEnum values.
+     *
+     * @return known HanaInstancePowerStateEnum values.
+     */
     public static Collection<HanaInstancePowerStateEnum> values() {
         return values(HanaInstancePowerStateEnum.class);
     }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cosmos.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.cosmos.fluent.CassandraClustersClient;
 import com.azure.resourcemanager.cosmos.fluent.CassandraDataCentersClient;
@@ -33,12 +32,18 @@ import com.azure.resourcemanager.cosmos.fluent.PercentilesClient;
 import com.azure.resourcemanager.cosmos.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cosmos.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableDatabaseAccountsClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableGremlinDatabasesClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableGremlinGraphsClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableGremlinResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbCollectionsClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbDatabasesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableSqlContainersClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableSqlDatabasesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableSqlResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableTableResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.RestorableTablesClient;
+import com.azure.resourcemanager.cosmos.fluent.ServicesClient;
 import com.azure.resourcemanager.cosmos.fluent.SqlResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.TableResourcesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
@@ -47,8 +52,6 @@ import java.time.Duration;
 /** Initializes a new instance of the CosmosDBManagementClientImpl type. */
 @ServiceClient(builder = CosmosDBManagementClientBuilder.class)
 public final class CosmosDBManagementClientImpl extends AzureServiceClient implements CosmosDBManagementClient {
-    private final ClientLogger logger = new ClientLogger(CosmosDBManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -349,6 +352,30 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         return this.locations;
     }
 
+    /** The CassandraClustersClient object to access its operations. */
+    private final CassandraClustersClient cassandraClusters;
+
+    /**
+     * Gets the CassandraClustersClient object to access its operations.
+     *
+     * @return the CassandraClustersClient object.
+     */
+    public CassandraClustersClient getCassandraClusters() {
+        return this.cassandraClusters;
+    }
+
+    /** The CassandraDataCentersClient object to access its operations. */
+    private final CassandraDataCentersClient cassandraDataCenters;
+
+    /**
+     * Gets the CassandraDataCentersClient object to access its operations.
+     *
+     * @return the CassandraDataCentersClient object.
+     */
+    public CassandraDataCentersClient getCassandraDataCenters() {
+        return this.cassandraDataCenters;
+    }
+
     /** The NotebookWorkspacesClient object to access its operations. */
     private final NotebookWorkspacesClient notebookWorkspaces;
 
@@ -469,28 +496,76 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         return this.restorableMongodbResources;
     }
 
-    /** The CassandraClustersClient object to access its operations. */
-    private final CassandraClustersClient cassandraClusters;
+    /** The RestorableGremlinDatabasesClient object to access its operations. */
+    private final RestorableGremlinDatabasesClient restorableGremlinDatabases;
 
     /**
-     * Gets the CassandraClustersClient object to access its operations.
+     * Gets the RestorableGremlinDatabasesClient object to access its operations.
      *
-     * @return the CassandraClustersClient object.
+     * @return the RestorableGremlinDatabasesClient object.
      */
-    public CassandraClustersClient getCassandraClusters() {
-        return this.cassandraClusters;
+    public RestorableGremlinDatabasesClient getRestorableGremlinDatabases() {
+        return this.restorableGremlinDatabases;
     }
 
-    /** The CassandraDataCentersClient object to access its operations. */
-    private final CassandraDataCentersClient cassandraDataCenters;
+    /** The RestorableGremlinGraphsClient object to access its operations. */
+    private final RestorableGremlinGraphsClient restorableGremlinGraphs;
 
     /**
-     * Gets the CassandraDataCentersClient object to access its operations.
+     * Gets the RestorableGremlinGraphsClient object to access its operations.
      *
-     * @return the CassandraDataCentersClient object.
+     * @return the RestorableGremlinGraphsClient object.
      */
-    public CassandraDataCentersClient getCassandraDataCenters() {
-        return this.cassandraDataCenters;
+    public RestorableGremlinGraphsClient getRestorableGremlinGraphs() {
+        return this.restorableGremlinGraphs;
+    }
+
+    /** The RestorableGremlinResourcesClient object to access its operations. */
+    private final RestorableGremlinResourcesClient restorableGremlinResources;
+
+    /**
+     * Gets the RestorableGremlinResourcesClient object to access its operations.
+     *
+     * @return the RestorableGremlinResourcesClient object.
+     */
+    public RestorableGremlinResourcesClient getRestorableGremlinResources() {
+        return this.restorableGremlinResources;
+    }
+
+    /** The RestorableTablesClient object to access its operations. */
+    private final RestorableTablesClient restorableTables;
+
+    /**
+     * Gets the RestorableTablesClient object to access its operations.
+     *
+     * @return the RestorableTablesClient object.
+     */
+    public RestorableTablesClient getRestorableTables() {
+        return this.restorableTables;
+    }
+
+    /** The RestorableTableResourcesClient object to access its operations. */
+    private final RestorableTableResourcesClient restorableTableResources;
+
+    /**
+     * Gets the RestorableTableResourcesClient object to access its operations.
+     *
+     * @return the RestorableTableResourcesClient object.
+     */
+    public RestorableTableResourcesClient getRestorableTableResources() {
+        return this.restorableTableResources;
+    }
+
+    /** The ServicesClient object to access its operations. */
+    private final ServicesClient services;
+
+    /**
+     * Gets the ServicesClient object to access its operations.
+     *
+     * @return the ServicesClient object.
+     */
+    public ServicesClient getServices() {
+        return this.services;
     }
 
     /**
@@ -516,7 +591,7 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-10-15";
+        this.apiVersion = "2023-04-15";
         this.databaseAccounts = new DatabaseAccountsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
@@ -536,6 +611,8 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.cassandraResources = new CassandraResourcesClientImpl(this);
         this.gremlinResources = new GremlinResourcesClientImpl(this);
         this.locations = new LocationsClientImpl(this);
+        this.cassandraClusters = new CassandraClustersClientImpl(this);
+        this.cassandraDataCenters = new CassandraDataCentersClientImpl(this);
         this.notebookWorkspaces = new NotebookWorkspacesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
@@ -546,7 +623,11 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.restorableMongodbDatabases = new RestorableMongodbDatabasesClientImpl(this);
         this.restorableMongodbCollections = new RestorableMongodbCollectionsClientImpl(this);
         this.restorableMongodbResources = new RestorableMongodbResourcesClientImpl(this);
-        this.cassandraClusters = new CassandraClustersClientImpl(this);
-        this.cassandraDataCenters = new CassandraDataCentersClientImpl(this);
+        this.restorableGremlinDatabases = new RestorableGremlinDatabasesClientImpl(this);
+        this.restorableGremlinGraphs = new RestorableGremlinGraphsClientImpl(this);
+        this.restorableGremlinResources = new RestorableGremlinResourcesClientImpl(this);
+        this.restorableTables = new RestorableTablesClientImpl(this);
+        this.restorableTableResources = new RestorableTableResourcesClientImpl(this);
+        this.services = new ServicesClientImpl(this);
     }
 }

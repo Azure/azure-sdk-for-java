@@ -12,30 +12,31 @@ import java.util.List;
 @Fluent
 public final class ImageStorageProfile {
     /*
-     * Specifies information about the operating system disk used by the
-     * virtual machine. <br><br> For more information about disks, see [About
-     * disks and VHDs for Azure virtual
+     * Specifies information about the operating system disk used by the virtual machine. <br><br> For more information
+     * about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "osDisk")
     private ImageOSDisk osDisk;
 
     /*
-     * Specifies the parameters that are used to add a data disk to a virtual
-     * machine. <br><br> For more information about disks, see [About disks and
-     * VHDs for Azure virtual
+     * Specifies the parameters that are used to add a data disk to a virtual machine. <br><br> For more information
+     * about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "dataDisks")
     private List<ImageDataDisk> dataDisks;
 
     /*
-     * Specifies whether an image is zone resilient or not. Default is false.
-     * Zone resilient images can be created only in regions that provide Zone
-     * Redundant Storage (ZRS).
+     * Specifies whether an image is zone resilient or not. Default is false. Zone resilient images can be created only
+     * in regions that provide Zone Redundant Storage (ZRS).
      */
     @JsonProperty(value = "zoneResilient")
     private Boolean zoneResilient;
+
+    /** Creates an instance of ImageStorageProfile class. */
+    public ImageStorageProfile() {
+    }
 
     /**
      * Get the osDisk property: Specifies information about the operating system disk used by the virtual machine.

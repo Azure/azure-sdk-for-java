@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Set the access level and network port settings for SQL Server. */
 @Fluent
 public final class SqlConnectivityUpdateSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlConnectivityUpdateSettings.class);
-
     /*
      * SQL Server connectivity option.
      */
@@ -37,6 +33,10 @@ public final class SqlConnectivityUpdateSettings {
      */
     @JsonProperty(value = "sqlAuthUpdatePassword")
     private String sqlAuthUpdatePassword;
+
+    /** Creates an instance of SqlConnectivityUpdateSettings class. */
+    public SqlConnectivityUpdateSettings() {
+    }
 
     /**
      * Get the connectivityType property: SQL Server connectivity option.

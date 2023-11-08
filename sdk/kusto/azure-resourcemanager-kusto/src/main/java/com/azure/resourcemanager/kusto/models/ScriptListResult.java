@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.ScriptInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list Kusto database script operation response. */
 @Fluent
 public final class ScriptListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptListResult.class);
-
     /*
      * The list of Kusto scripts.
      */
     @JsonProperty(value = "value")
     private List<ScriptInner> value;
+
+    /** Creates an instance of ScriptListResult class. */
+    public ScriptListResult() {
+    }
 
     /**
      * Get the value property: The list of Kusto scripts.

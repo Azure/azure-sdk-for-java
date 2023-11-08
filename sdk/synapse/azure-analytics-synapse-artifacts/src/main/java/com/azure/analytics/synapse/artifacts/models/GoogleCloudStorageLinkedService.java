@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for Google Cloud Storage. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,36 +19,35 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class GoogleCloudStorageLinkedService extends LinkedService {
     /*
-     * The access key identifier of the Google Cloud Storage Identity and
-     * Access Management (IAM) user. Type: string (or Expression with
-     * resultType string).
+     * The access key identifier of the Google Cloud Storage Identity and Access Management (IAM) user. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.accessKeyId")
     private Object accessKeyId;
 
     /*
-     * The secret access key of the Google Cloud Storage Identity and Access
-     * Management (IAM) user.
+     * The secret access key of the Google Cloud Storage Identity and Access Management (IAM) user.
      */
     @JsonProperty(value = "typeProperties.secretAccessKey")
     private SecretBase secretAccessKey;
 
     /*
-     * This value specifies the endpoint to access with the Google Cloud
-     * Storage Connector. This is an optional property; change it only if you
-     * want to try a different service endpoint or want to switch between https
-     * and http. Type: string (or Expression with resultType string).
+     * This value specifies the endpoint to access with the Google Cloud Storage Connector. This is an optional
+     * property; change it only if you want to try a different service endpoint or want to switch between https and
+     * http. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.serviceUrl")
     private Object serviceUrl;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of GoogleCloudStorageLinkedService class. */
+    public GoogleCloudStorageLinkedService() {}
 
     /**
      * Get the accessKeyId property: The access key identifier of the Google Cloud Storage Identity and Access
@@ -135,6 +136,34 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      */
     public GoogleCloudStorageLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleCloudStorageLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleCloudStorageLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleCloudStorageLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleCloudStorageLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

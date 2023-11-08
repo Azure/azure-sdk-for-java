@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** The properties of the feedback queue for cloud-to-device messages. */
 @Fluent
 public final class FeedbackProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FeedbackProperties.class);
-
     /*
      * The lock duration for the feedback queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
@@ -23,20 +19,22 @@ public final class FeedbackProperties {
     private Duration lockDurationAsIso8601;
 
     /*
-     * The period of time for which a message is available to consume before it
-     * is expired by the IoT hub. See:
+     * The period of time for which a message is available to consume before it is expired by the IoT hub. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      */
     @JsonProperty(value = "ttlAsIso8601")
     private Duration ttlAsIso8601;
 
     /*
-     * The number of times the IoT hub attempts to deliver a message on the
-     * feedback queue. See:
+     * The number of times the IoT hub attempts to deliver a message on the feedback queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      */
     @JsonProperty(value = "maxDeliveryCount")
     private Integer maxDeliveryCount;
+
+    /** Creates an instance of FeedbackProperties class. */
+    public FeedbackProperties() {
+    }
 
     /**
      * Get the lockDurationAsIso8601 property: The lock duration for the feedback queue. See:

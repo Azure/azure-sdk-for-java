@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRule;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
@@ -34,7 +33,7 @@ import java.util.Map;
 /** Samples for AzureFirewalls CreateOrUpdate. */
 public final class AzureFirewallsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallPutWithIpGroups.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/AzureFirewallPutWithIpGroups.json
      */
     /**
      * Sample code: Create Azure Firewall With IpGroups.
@@ -52,7 +51,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                 "azurefirewall",
                 new AzureFirewallInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withZones(Arrays.asList())
                     .withApplicationRuleCollections(
                         Arrays
@@ -150,11 +149,11 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_VNET)
                             .withTier(AzureFirewallSkuTier.STANDARD)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallPutWithZones.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/AzureFirewallPutWithZones.json
      */
     /**
      * Sample code: Create Azure Firewall With Zones.
@@ -172,7 +171,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                 "azurefirewall",
                 new AzureFirewallInner()
                     .withLocation("West US 2")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withZones(Arrays.asList("1", "2", "3"))
                     .withApplicationRuleCollections(
                         Arrays
@@ -270,11 +269,11 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_VNET)
                             .withTier(AzureFirewallSkuTier.STANDARD)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/AzureFirewallPut.json
      */
     /**
      * Sample code: Create Azure Firewall.
@@ -292,7 +291,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                 "azurefirewall",
                 new AzureFirewallInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withZones(Arrays.asList())
                     .withApplicationRuleCollections(
                         Arrays
@@ -390,11 +389,11 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_VNET)
                             .withTier(AzureFirewallSkuTier.STANDARD)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallPutWithAdditionalProperties.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/AzureFirewallPutWithAdditionalProperties.json
      */
     /**
      * Sample code: Create Azure Firewall With Additional Properties.
@@ -413,7 +412,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                 "azurefirewall",
                 new AzureFirewallInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withZones(Arrays.asList())
                     .withApplicationRuleCollections(
                         Arrays
@@ -511,12 +510,12 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_VNET)
                             .withTier(AzureFirewallSkuTier.STANDARD))
-                    .withAdditionalProperties(mapOf("key1", "value1", "key2", "value2")),
-                Context.NONE);
+                    .withAdditionalProperties(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallPutInHub.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/AzureFirewallPutInHub.json
      */
     /**
      * Sample code: Create Azure Firewall in virtual Hub.
@@ -534,7 +533,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                 "azurefirewall",
                 new AzureFirewallInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withZones(Arrays.asList())
                     .withThreatIntelMode(AzureFirewallThreatIntelMode.ALERT)
                     .withVirtualHub(
@@ -552,11 +551,11 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_HUB)
                             .withTier(AzureFirewallSkuTier.STANDARD)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallPutWithMgmtSubnet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/AzureFirewallPutWithMgmtSubnet.json
      */
     /**
      * Sample code: Create Azure Firewall With management subnet.
@@ -574,7 +573,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                 "azurefirewall",
                 new AzureFirewallInner()
                     .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withZones(Arrays.asList())
                     .withApplicationRuleCollections(
                         Arrays
@@ -683,9 +682,10 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         new AzureFirewallSku()
                             .withName(AzureFirewallSkuName.AZFW_VNET)
                             .withTier(AzureFirewallSkuTier.STANDARD)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

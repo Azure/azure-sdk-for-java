@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** freeBusyError. */
 @Fluent
 public final class MicrosoftGraphFreeBusyError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphFreeBusyError.class);
-
     /*
      * Describes the error.
      */
@@ -25,8 +22,7 @@ public final class MicrosoftGraphFreeBusyError {
     private String message;
 
     /*
-     * The response code from querying for the availability of the user,
-     * distribution list, or resource.
+     * The response code from querying for the availability of the user, distribution list, or resource.
      */
     @JsonProperty(value = "responseCode")
     private String responseCode;
@@ -35,6 +31,10 @@ public final class MicrosoftGraphFreeBusyError {
      * freeBusyError
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphFreeBusyError class. */
+    public MicrosoftGraphFreeBusyError() {
+    }
 
     /**
      * Get the message property: Describes the error.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DenyAssignments ListByResourceGroup. */
 public final class DenyAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-07-01-preview/examples/GetDenyAssignmentsForResourceGroup.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/GetDenyAssignmentsForResourceGroup.json
      */
     /**
      * Sample code: List deny assignments for resource group.
@@ -23,6 +21,6 @@ public final class DenyAssignmentsListByResourceGroupSamples {
             .manager()
             .roleServiceClient()
             .getDenyAssignments()
-            .listByResourceGroup("rgname", null, Context.NONE);
+            .listByResourceGroup("rgname", null, com.azure.core.util.Context.NONE);
     }
 }

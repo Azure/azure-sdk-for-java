@@ -35,7 +35,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a resource.
+     * @return deny assignments for a resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DenyAssignmentInner> listForResourceAsync(
@@ -57,7 +57,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a resource.
+     * @return deny assignments for a resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DenyAssignmentInner> listForResourceAsync(
@@ -78,7 +78,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a resource.
+     * @return deny assignments for a resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DenyAssignmentInner> listForResource(
@@ -108,7 +108,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a resource.
+     * @return deny assignments for a resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DenyAssignmentInner> listForResource(
@@ -135,7 +135,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a resource group.
+     * @return deny assignments for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DenyAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter);
@@ -147,7 +147,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a resource group.
+     * @return deny assignments for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DenyAssignmentInner> listByResourceGroupAsync(String resourceGroupName);
@@ -159,7 +159,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a resource group.
+     * @return deny assignments for a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DenyAssignmentInner> listByResourceGroup(String resourceGroupName);
@@ -180,7 +180,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a resource group.
+     * @return deny assignments for a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DenyAssignmentInner> listByResourceGroup(String resourceGroupName, String filter, Context context);
@@ -199,7 +199,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deny assignments for the subscription.
+     * @return all deny assignments for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DenyAssignmentInner> listAsync(String filter);
@@ -209,7 +209,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deny assignments for the subscription.
+     * @return all deny assignments for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DenyAssignmentInner> listAsync();
@@ -219,7 +219,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deny assignments for the subscription.
+     * @return all deny assignments for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DenyAssignmentInner> list();
@@ -239,7 +239,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deny assignments for the subscription.
+     * @return all deny assignments for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DenyAssignmentInner> list(String filter, Context context);
@@ -252,7 +252,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deny assignment.
+     * @return the specified deny assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DenyAssignmentInner>> getWithResponseAsync(String scope, String denyAssignmentId);
@@ -265,10 +265,24 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deny assignment.
+     * @return the specified deny assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DenyAssignmentInner> getAsync(String scope, String denyAssignmentId);
+
+    /**
+     * Get the specified deny assignment.
+     *
+     * @param scope The scope of the deny assignment.
+     * @param denyAssignmentId The ID of the deny assignment to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified deny assignment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DenyAssignmentInner> getWithResponse(String scope, String denyAssignmentId, Context context);
 
     /**
      * Get the specified deny assignment.
@@ -284,20 +298,6 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
     DenyAssignmentInner get(String scope, String denyAssignmentId);
 
     /**
-     * Get the specified deny assignment.
-     *
-     * @param scope The scope of the deny assignment.
-     * @param denyAssignmentId The ID of the deny assignment to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deny assignment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DenyAssignmentInner> getWithResponse(String scope, String denyAssignmentId, Context context);
-
-    /**
      * Gets a deny assignment by ID.
      *
      * @param denyAssignmentId The fully qualified deny assignment ID. For example, use the format,
@@ -307,7 +307,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deny assignment by ID.
+     * @return a deny assignment by ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DenyAssignmentInner>> getByIdWithResponseAsync(String denyAssignmentId);
@@ -322,10 +322,26 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deny assignment by ID.
+     * @return a deny assignment by ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DenyAssignmentInner> getByIdAsync(String denyAssignmentId);
+
+    /**
+     * Gets a deny assignment by ID.
+     *
+     * @param denyAssignmentId The fully qualified deny assignment ID. For example, use the format,
+     *     /subscriptions/{guid}/providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId} for subscription
+     *     level deny assignments, or /providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId} for tenant
+     *     level deny assignments.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deny assignment by ID along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DenyAssignmentInner> getByIdWithResponse(String denyAssignmentId, Context context);
 
     /**
      * Gets a deny assignment by ID.
@@ -343,22 +359,6 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
     DenyAssignmentInner getById(String denyAssignmentId);
 
     /**
-     * Gets a deny assignment by ID.
-     *
-     * @param denyAssignmentId The fully qualified deny assignment ID. For example, use the format,
-     *     /subscriptions/{guid}/providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId} for subscription
-     *     level deny assignments, or /providers/Microsoft.Authorization/denyAssignments/{denyAssignmentId} for tenant
-     *     level deny assignments.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deny assignment by ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DenyAssignmentInner> getByIdWithResponse(String denyAssignmentId, Context context);
-
-    /**
      * Gets deny assignments for a scope.
      *
      * @param scope The scope of the deny assignments.
@@ -373,7 +373,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a scope.
+     * @return deny assignments for a scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DenyAssignmentInner> listForScopeAsync(String scope, String filter);
@@ -385,7 +385,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a scope.
+     * @return deny assignments for a scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DenyAssignmentInner> listForScopeAsync(String scope);
@@ -397,7 +397,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a scope.
+     * @return deny assignments for a scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DenyAssignmentInner> listForScope(String scope);
@@ -418,7 +418,7 @@ public interface DenyAssignmentsClient extends InnerSupportsListing<DenyAssignme
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deny assignments for a scope.
+     * @return deny assignments for a scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DenyAssignmentInner> listForScope(String scope, String filter, Context context);

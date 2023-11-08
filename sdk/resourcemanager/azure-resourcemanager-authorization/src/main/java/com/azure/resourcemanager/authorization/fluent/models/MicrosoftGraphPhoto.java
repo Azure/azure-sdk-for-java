@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** photo. */
 @Fluent
 public final class MicrosoftGraphPhoto {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPhoto.class);
-
     /*
      * Camera manufacturer. Read-only.
      */
@@ -32,8 +29,7 @@ public final class MicrosoftGraphPhoto {
     private String cameraModel;
 
     /*
-     * The denominator for the exposure time fraction from the camera.
-     * Read-only.
+     * The denominator for the exposure time fraction from the camera. Read-only.
      */
     @JsonProperty(value = "exposureDenominator")
     private Double exposureDenominator;
@@ -78,6 +74,10 @@ public final class MicrosoftGraphPhoto {
      * photo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPhoto class. */
+    public MicrosoftGraphPhoto() {
+    }
 
     /**
      * Get the cameraMake property: Camera manufacturer. Read-only.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ResourceMoveDetails will be returned in response to GetResource call from ARM. */
 @Fluent
 public final class ResourceMoveDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMoveDetails.class);
-
     /*
      * CorrelationId of latest ResourceMove operation attempted
      */
@@ -21,15 +17,13 @@ public final class ResourceMoveDetails {
     private String operationId;
 
     /*
-     * Start time in UTC of latest ResourceMove operation attempted. ISO 8601
-     * format.
+     * Start time in UTC of latest ResourceMove operation attempted. ISO 8601 format.
      */
     @JsonProperty(value = "startTimeUtc")
     private String startTimeUtc;
 
     /*
-     * Completion time in UTC of latest ResourceMove operation attempted. ISO
-     * 8601 format.
+     * Completion time in UTC of latest ResourceMove operation attempted. ISO 8601 format.
      */
     @JsonProperty(value = "completionTimeUtc")
     private String completionTimeUtc;
@@ -41,11 +35,14 @@ public final class ResourceMoveDetails {
     private String sourceResourcePath;
 
     /*
-     * ARM resource path of target resource used in latest ResourceMove
-     * operation
+     * ARM resource path of target resource used in latest ResourceMove operation
      */
     @JsonProperty(value = "targetResourcePath")
     private String targetResourcePath;
+
+    /** Creates an instance of ResourceMoveDetails class. */
+    public ResourceMoveDetails() {
+    }
 
     /**
      * Get the operationId property: CorrelationId of latest ResourceMove operation attempted.

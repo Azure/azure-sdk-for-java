@@ -14,10 +14,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerIn
 import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParameter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Server;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Servers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServersImpl implements Servers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServersImpl.class);
 
     private final ServersClient innerClient;
 
@@ -38,15 +37,6 @@ public final class ServersImpl implements Servers {
         this.serviceClient().delete(resourceGroupName, serverName, context);
     }
 
-    public Server getByResourceGroup(String resourceGroupName, String serverName) {
-        ServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, serverName);
-        if (inner != null) {
-            return new ServerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Server> getByResourceGroupWithResponse(
         String resourceGroupName, String serverName, Context context) {
         Response<ServerInner> inner =
@@ -57,6 +47,15 @@ public final class ServersImpl implements Servers {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ServerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Server getByResourceGroup(String resourceGroupName, String serverName) {
+        ServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, serverName);
+        if (inner != null) {
+            return new ServerImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -80,10 +79,6 @@ public final class ServersImpl implements Servers {
     public PagedIterable<Server> list(Context context) {
         PagedIterable<ServerInner> inner = this.serviceClient().list(context);
         return Utils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
-    }
-
-    public void restart(String resourceGroupName, String serverName, RestartParameter parameters) {
-        this.serviceClient().restart(resourceGroupName, serverName, parameters);
     }
 
     public void restart(String resourceGroupName, String serverName) {
@@ -113,7 +108,7 @@ public final class ServersImpl implements Servers {
     public Server getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -121,7 +116,7 @@ public final class ServersImpl implements Servers {
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -133,7 +128,7 @@ public final class ServersImpl implements Servers {
     public Response<Server> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +136,7 @@ public final class ServersImpl implements Servers {
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,7 +148,7 @@ public final class ServersImpl implements Servers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,7 +156,7 @@ public final class ServersImpl implements Servers {
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -173,7 +168,7 @@ public final class ServersImpl implements Servers {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,7 +176,7 @@ public final class ServersImpl implements Servers {
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

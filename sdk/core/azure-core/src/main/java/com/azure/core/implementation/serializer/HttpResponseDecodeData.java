@@ -4,11 +4,13 @@
 package com.azure.core.implementation.serializer;
 
 import com.azure.core.annotation.HeaderCollection;
-
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.http.UnexpectedExceptionInformation;
+import com.azure.core.implementation.http.rest.SwaggerMethodParser;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Type;
@@ -18,17 +20,17 @@ import java.lang.reflect.Type;
  */
 public interface HttpResponseDecodeData {
     /**
-     * Get the type of the entity to deserialize the body.
+     * Gets the generic return type of the response.
      *
-     * @return the return type
+     * @return The generic return type.
      */
     Type getReturnType();
 
     /**
      * Get the type of the entity to be used to deserialize 'Matching' headers.
-     *
+     * <p>
      * The 'header entity' is optional and client can choose it when a strongly typed model is needed for headers.
-     *
+     * <p>
      * 'Matching' headers are the HTTP response headers those with:
      * 1. header names same as name of a properties in the 'header entity'.
      * 2. header names start with value of {@link HeaderCollection} annotation applied to the properties in the 'header
@@ -63,7 +65,7 @@ public interface HttpResponseDecodeData {
 
     /**
      * Get the type of the 'entity' in HTTP response content.
-     *
+     * <p>
      * When this method return non-null {@code java.lang.reflect.Type} then the raw HTTP response
      * content will need to parsed to this {@code java.lang.reflect.Type} then converted to actual
      * {@code returnType}.
@@ -84,4 +86,77 @@ public interface HttpResponseDecodeData {
     default UnexpectedExceptionInformation getUnexpectedException(int code) {
         return new UnexpectedExceptionInformation(HttpResponseException.class);
     }
+
+    /**
+     * Whether the {@link #getReturnType() returnType} is a decode-able type.
+     * <p>
+     * Types that aren't decode-able are the following (including sub-types):
+     * <ul>
+     * <li>BinaryData</li>
+     * <li>byte[]</li>
+     * <li>ByteBuffer</li>
+     * <li>InputStream</li>
+     * <li>Void</li>
+     * <li>void</li>
+     * </ul>
+     *
+     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
+     * cracked open and their generic types are inspected for being one of the types above.
+     *
+     * @return Whether the return type is decode-able.
+     */
+    default boolean isReturnTypeDecodeable() {
+        return SwaggerMethodParser.isReturnTypeDecodeable(SwaggerMethodParser.unwrapReturnType(getReturnType()));
+    }
+
+    /**
+     * Whether the network response body should be eagerly read based on its {@link #getReturnType() returnType}.
+     * <p>
+     * The following types, including subtypes, aren't eagerly read from the network:
+     * <ul>
+     * <li>BinaryData</li>
+     * <li>byte[]</li>
+     * <li>ByteBuffer</li>
+     * <li>InputStream</li>
+     * <li>Void</li>
+     * <li>void</li>
+     * </ul>
+     *
+     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
+     * cracked open and their generic types are inspected for being one of the types above.
+     *
+     * @return Whether the network response body should be eagerly read.
+     */
+    default boolean isResponseEagerlyRead() {
+        return SwaggerMethodParser.isResponseEagerlyRead(SwaggerMethodParser.unwrapReturnType(getReturnType()));
+    }
+
+    /**
+     * Whether the network response body will be ignored based on its {@link #getReturnType() returnType}.
+     * <p>
+     * The following types, including subtypes, ignored the network response body:
+     * <ul>
+     * <li>Void</li>
+     * <li>void</li>
+     * </ul>
+     *
+     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
+     * cracked open and their generic types are inspected for being one of the types above.
+     *
+     * @return Whether the network response body will be ignored.
+     */
+    default boolean isResponseBodyIgnored() {
+        return SwaggerMethodParser.isResponseBodyIgnored(SwaggerMethodParser.unwrapReturnType(getReturnType()));
+
+    }
+
+    /**
+     * Whether the return type contains strongly-typed headers.
+     * <p>
+     * If the response contains strongly-typed headers this is an indication to the HttpClient that the headers should
+     * be eagerly converted from the header format used by the HttpClient implementation to Azure Core HttpHeaders.
+     *
+     * @return Whether the return type contains strongly-typed headers.
+     */
+    boolean isHeadersEagerlyConverted();
 }

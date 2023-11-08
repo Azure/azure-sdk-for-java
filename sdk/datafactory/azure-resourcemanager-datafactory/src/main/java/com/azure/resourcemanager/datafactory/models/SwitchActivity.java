@@ -26,6 +26,10 @@ public final class SwitchActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private SwitchActivityTypeProperties innerTypeProperties = new SwitchActivityTypeProperties();
 
+    /** Creates an instance of SwitchActivity class. */
+    public SwitchActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Switch activity properties.
      *
@@ -46,6 +50,20 @@ public final class SwitchActivity extends ControlActivity {
     @Override
     public SwitchActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SwitchActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SwitchActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

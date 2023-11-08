@@ -32,6 +32,10 @@ public final class UpgradeNotificationInner {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> upsellNotification;
 
+    /** Creates an instance of UpgradeNotificationInner class. */
+    public UpgradeNotificationInner() {
+    }
+
     /**
      * Get the name property: Name of upgrade notification.
      *

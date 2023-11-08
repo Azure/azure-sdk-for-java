@@ -7,14 +7,11 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.models.IpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ip configurations for the private link service. */
 @Fluent
 public final class IpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfiguration.class);
-
     /*
      * The private link IP configuration id.
      */
@@ -38,6 +35,10 @@ public final class IpConfiguration {
      */
     @JsonProperty(value = "properties")
     private IpConfigurationProperties innerProperties;
+
+    /** Creates an instance of IpConfiguration class. */
+    public IpConfiguration() {
+    }
 
     /**
      * Get the id property: The private link IP configuration id.
@@ -195,7 +196,7 @@ public final class IpConfiguration {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model IpConfiguration"));
         }
@@ -203,4 +204,6 @@ public final class IpConfiguration {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IpConfiguration.class);
 }

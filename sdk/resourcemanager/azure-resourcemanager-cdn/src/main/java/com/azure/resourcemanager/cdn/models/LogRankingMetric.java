@@ -29,6 +29,15 @@ public final class LogRankingMetric extends ExpandableStringEnum<LogRankingMetri
     public static final LogRankingMetric ERROR_COUNT = fromString("errorCount");
 
     /**
+     * Creates a new instance of LogRankingMetric value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogRankingMetric() {
+    }
+
+    /**
      * Creates or finds a LogRankingMetric from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class LogRankingMetric extends ExpandableStringEnum<LogRankingMetri
         return fromString(name, LogRankingMetric.class);
     }
 
-    /** @return known LogRankingMetric values. */
+    /**
+     * Gets known LogRankingMetric values.
+     *
+     * @return known LogRankingMetric values.
+     */
     public static Collection<LogRankingMetric> values() {
         return values(LogRankingMetric.class);
     }

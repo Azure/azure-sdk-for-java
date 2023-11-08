@@ -37,6 +37,11 @@ public class PoolUpdatePropertiesParameter {
      * location. For Certificates with visibility of 'remoteUser', a 'certs'
      * directory is created in the user's home directory (e.g.,
      * /home/{user-name}/certs) and Certificates are placed in that directory.
+     *
+     * Warning: This property is deprecated and will be removed after February,
+     * 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+     * instead.
      */
     @JsonProperty(value = "certificateReferences", required = true)
     private List<CertificateReference> certificateReferences;
@@ -66,6 +71,15 @@ public class PoolUpdatePropertiesParameter {
     private List<MetadataItem> metadata;
 
     /**
+     * The desired node communication mode for the pool.
+     * This setting replaces any existing targetNodeCommunication setting on
+     * the Pool. If omitted, the existing setting is default. Possible values
+     * include: 'default', 'classic', 'simplified'.
+     */
+    @JsonProperty(value = "targetNodeCommunicationMode")
+    private NodeCommunicationMode targetNodeCommunicationMode;
+
+    /**
      * Get if this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is removed from the Pool.
      *
      * @return the startTask value
@@ -87,6 +101,7 @@ public class PoolUpdatePropertiesParameter {
 
     /**
      * Get this list replaces any existing Certificate references configured on the Pool. If you specify an empty collection, any existing Certificate references are removed from the Pool. For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @return the certificateReferences value
      */
@@ -96,6 +111,7 @@ public class PoolUpdatePropertiesParameter {
 
     /**
      * Set this list replaces any existing Certificate references configured on the Pool. If you specify an empty collection, any existing Certificate references are removed from the Pool. For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @param certificateReferences the certificateReferences value to set
      * @return the PoolUpdatePropertiesParameter object itself.
@@ -142,6 +158,26 @@ public class PoolUpdatePropertiesParameter {
      */
     public PoolUpdatePropertiesParameter withMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get this setting replaces any existing targetNodeCommunication setting on the Pool. If omitted, the existing setting is default. Possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @return the targetNodeCommunicationMode value
+     */
+    public NodeCommunicationMode targetNodeCommunicationMode() {
+        return this.targetNodeCommunicationMode;
+    }
+
+    /**
+     * Set this setting replaces any existing targetNodeCommunication setting on the Pool. If omitted, the existing setting is default. Possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set
+     * @return the PoolUpdatePropertiesParameter object itself.
+     */
+    public PoolUpdatePropertiesParameter withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
+        this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;
     }
 

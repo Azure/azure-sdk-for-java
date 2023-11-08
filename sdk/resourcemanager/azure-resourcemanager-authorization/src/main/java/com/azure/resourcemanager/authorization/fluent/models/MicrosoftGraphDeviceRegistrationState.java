@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphDeviceRegistrationState. */
+/** deviceRegistrationState. */
 public final class MicrosoftGraphDeviceRegistrationState
     extends ExpandableStringEnum<MicrosoftGraphDeviceRegistrationState> {
     /** Static value notRegistered for MicrosoftGraphDeviceRegistrationState. */
@@ -37,6 +37,15 @@ public final class MicrosoftGraphDeviceRegistrationState
     public static final MicrosoftGraphDeviceRegistrationState UNKNOWN = fromString("unknown");
 
     /**
+     * Creates a new instance of MicrosoftGraphDeviceRegistrationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphDeviceRegistrationState() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphDeviceRegistrationState from its string representation.
      *
      * @param name a name to look for.
@@ -47,7 +56,11 @@ public final class MicrosoftGraphDeviceRegistrationState
         return fromString(name, MicrosoftGraphDeviceRegistrationState.class);
     }
 
-    /** @return known MicrosoftGraphDeviceRegistrationState values. */
+    /**
+     * Gets known MicrosoftGraphDeviceRegistrationState values.
+     *
+     * @return known MicrosoftGraphDeviceRegistrationState values.
+     */
     public static Collection<MicrosoftGraphDeviceRegistrationState> values() {
         return values(MicrosoftGraphDeviceRegistrationState.class);
     }

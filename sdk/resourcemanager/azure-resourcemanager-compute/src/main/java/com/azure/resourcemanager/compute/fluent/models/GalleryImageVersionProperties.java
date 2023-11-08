@@ -6,9 +6,10 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.models.GalleryImageVersionPropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingProfile;
+import com.azure.resourcemanager.compute.models.GalleryImageVersionSafetyProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
+import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,11 +23,12 @@ public final class GalleryImageVersionProperties {
     private GalleryImageVersionPublishingProfile publishingProfile;
 
     /*
-     * The current state of the gallery image version. The provisioning state,
-     * which only appears in the response.
+     * The current state of the gallery or gallery artifact.
+     *
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private GalleryImageVersionPropertiesProvisioningState provisioningState;
+    private GalleryProvisioningState provisioningState;
 
     /*
      * This is the storage profile of a Gallery Image Version.
@@ -35,10 +37,20 @@ public final class GalleryImageVersionProperties {
     private GalleryImageVersionStorageProfile storageProfile;
 
     /*
+     * This is the safety profile of the Gallery Image Version.
+     */
+    @JsonProperty(value = "safetyProfile")
+    private GalleryImageVersionSafetyProfile safetyProfile;
+
+    /*
      * This is the replication status of the gallery image version.
      */
     @JsonProperty(value = "replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationStatus replicationStatus;
+
+    /** Creates an instance of GalleryImageVersionProperties class. */
+    public GalleryImageVersionProperties() {
+    }
 
     /**
      * Get the publishingProfile property: The publishing profile of a gallery image Version.
@@ -61,12 +73,13 @@ public final class GalleryImageVersionProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image version. The provisioning state, which
-     * only appears in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact.
+     *
+     * <p>The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryImageVersionPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -87,6 +100,26 @@ public final class GalleryImageVersionProperties {
      */
     public GalleryImageVersionProperties withStorageProfile(GalleryImageVersionStorageProfile storageProfile) {
         this.storageProfile = storageProfile;
+        return this;
+    }
+
+    /**
+     * Get the safetyProfile property: This is the safety profile of the Gallery Image Version.
+     *
+     * @return the safetyProfile value.
+     */
+    public GalleryImageVersionSafetyProfile safetyProfile() {
+        return this.safetyProfile;
+    }
+
+    /**
+     * Set the safetyProfile property: This is the safety profile of the Gallery Image Version.
+     *
+     * @param safetyProfile the safetyProfile value to set.
+     * @return the GalleryImageVersionProperties object itself.
+     */
+    public GalleryImageVersionProperties withSafetyProfile(GalleryImageVersionSafetyProfile safetyProfile) {
+        this.safetyProfile = safetyProfile;
         return this;
     }
 
@@ -115,6 +148,9 @@ public final class GalleryImageVersionProperties {
                         "Missing required property storageProfile in model GalleryImageVersionProperties"));
         } else {
             storageProfile().validate();
+        }
+        if (safetyProfile() != null) {
+            safetyProfile().validate();
         }
         if (replicationStatus() != null) {
             replicationStatus().validate();

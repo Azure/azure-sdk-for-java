@@ -23,6 +23,10 @@ public final class HttpDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private HttpDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of HttpDataset class. */
+    public HttpDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

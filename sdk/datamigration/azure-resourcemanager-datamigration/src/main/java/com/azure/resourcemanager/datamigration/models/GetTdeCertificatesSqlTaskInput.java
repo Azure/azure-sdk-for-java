@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for the task that gets TDE certificates in Base64 encoded format. */
 @Fluent
 public final class GetTdeCertificatesSqlTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetTdeCertificatesSqlTaskInput.class);
-
     /*
      * Connection information for SQL Server
      */
@@ -22,18 +19,20 @@ public final class GetTdeCertificatesSqlTaskInput {
     private SqlConnectionInfo connectionInfo;
 
     /*
-     * Backup file share information for file share to be used for temporarily
-     * storing files.
+     * Backup file share information for file share to be used for temporarily storing files.
      */
     @JsonProperty(value = "backupFileShare", required = true)
     private FileShare backupFileShare;
 
     /*
-     * List containing certificate names and corresponding password to use for
-     * encrypting the exported certificate.
+     * List containing certificate names and corresponding password to use for encrypting the exported certificate.
      */
     @JsonProperty(value = "selectedCertificates", required = true)
     private List<SelectedCertificateInput> selectedCertificates;
+
+    /** Creates an instance of GetTdeCertificatesSqlTaskInput class. */
+    public GetTdeCertificatesSqlTaskInput() {
+    }
 
     /**
      * Get the connectionInfo property: Connection information for SQL Server.
@@ -107,7 +106,7 @@ public final class GetTdeCertificatesSqlTaskInput {
      */
     public void validate() {
         if (connectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionInfo in model GetTdeCertificatesSqlTaskInput"));
@@ -115,7 +114,7 @@ public final class GetTdeCertificatesSqlTaskInput {
             connectionInfo().validate();
         }
         if (backupFileShare() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property backupFileShare in model GetTdeCertificatesSqlTaskInput"));
@@ -123,7 +122,7 @@ public final class GetTdeCertificatesSqlTaskInput {
             backupFileShare().validate();
         }
         if (selectedCertificates() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedCertificates in model GetTdeCertificatesSqlTaskInput"));
@@ -131,4 +130,6 @@ public final class GetTdeCertificatesSqlTaskInput {
             selectedCertificates().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GetTdeCertificatesSqlTaskInput.class);
 }

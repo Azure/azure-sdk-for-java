@@ -12,39 +12,40 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
 
     private final String userId;
     private final boolean isAnonymous;
-    private CommunicationCloudEnvironment cloudEnvironment = CommunicationCloudEnvironment.PUBLIC;
+    private boolean rawIdSet = false;
 
-    private String rawId;
+    private CommunicationCloudEnvironment cloudEnvironment = CommunicationCloudEnvironment.PUBLIC;
 
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      *
-     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
+     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the Azure AD object id of the user.
      * @param isAnonymous set this to true if the user is anonymous,
      *                    for example when joining a meeting with a share link
      * @throws IllegalArgumentException thrown if userId parameter fail the validation.
-    */
+     */
     public MicrosoftTeamsUserIdentifier(String userId, boolean isAnonymous) {
         if (CoreUtils.isNullOrEmpty(userId)) {
             throw new IllegalArgumentException("The initialization parameter [userId] cannot be null or empty.");
         }
         this.userId = userId;
         this.isAnonymous = isAnonymous;
+        generateRawId();
     }
 
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      *
-     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
+     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the Azure AD object id of the user.
      * @throws IllegalArgumentException thrown if userId parameter fail the validation.
-    */
+     */
     public MicrosoftTeamsUserIdentifier(String userId) {
         this(userId, false);
     }
 
     /**
      * Get Teams User Id
-     * @return userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
+     * @return userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the Azure AD object id of the user.
      */
     public String getUserId() {
         return this.userId;
@@ -58,17 +59,8 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     }
 
     /**
-     * Set cloud environment of the Teams user identifier
-     * @param cloudEnvironment the cloud environment in which this identifier is created
-     * @return this object
-     */
-    public MicrosoftTeamsUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment cloudEnvironment) {
-        this.cloudEnvironment = cloudEnvironment;
-        return this;
-    }
-
-    /**
      * Get cloud environment of the Teams user identifier
+     *
      * @return cloud environment in which this identifier is created
      */
     public CommunicationCloudEnvironment getCloudEnvironment() {
@@ -76,20 +68,28 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     }
 
     /**
-     * Get full id of the identifier. This id is optional.
-     * @return full id of the identifier
+     * Set cloud environment of the Teams user identifier
+     *
+     * @param cloudEnvironment the cloud environment in which this identifier is created
+     * @return this object
      */
-    public String getRawId() {
-        return rawId;
+    public MicrosoftTeamsUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment cloudEnvironment) {
+        this.cloudEnvironment = cloudEnvironment;
+        generateRawId();
+        return this;
     }
 
     /**
      * Set full id of the identifier
+     * RawId is the encoded format for identifiers to store in databases or as stable keys in general.
+     *
      * @param rawId full id of the identifier
-     * @return CommunicationIdentifier object itself
+     * @return MicrosoftTeamsUserIdentifier object itself
      */
+    @Override
     public MicrosoftTeamsUserIdentifier setRawId(String rawId) {
-        this.rawId = rawId;
+        super.setRawId(rawId);
+        rawIdSet = true;
         return this;
     }
 
@@ -104,10 +104,6 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
         }
 
         MicrosoftTeamsUserIdentifier thatId = (MicrosoftTeamsUserIdentifier) that;
-        if (!thatId.getUserId().equals(this.getUserId())
-            || thatId.isAnonymous != this.isAnonymous) {
-            return false;
-        }
 
         if (cloudEnvironment != null && !cloudEnvironment.equals(thatId.cloudEnvironment)) {
             return false;
@@ -122,10 +118,22 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
             || thatId.getRawId().equals(this.getRawId());
     }
 
-
     @Override
     public int hashCode() {
-        return userId.hashCode();
+        return getRawId().hashCode();
     }
 
+    private void generateRawId() {
+        if (!rawIdSet) {
+            if (this.isAnonymous) {
+                super.setRawId("8:teamsvisitor:" + this.userId);
+            } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
+                super.setRawId("8:dod:" + this.userId);
+            } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
+                super.setRawId("8:gcch:" + this.userId);
+            } else {
+                super.setRawId("8:orgid:" + this.userId);
+            }
+        }
+    }
 }

@@ -22,11 +22,17 @@ import java.util.UUID;
  * By default, clients are built with a policy that adds a per request generated {@code x-ms-client-request-id}. This
  * will show how to leverage {@link Context} to set a application passed {@code x-ms-client-request-id} per API call.
  */
+@SuppressWarnings("unused")
 public class PerCallRequestIdExample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     private static final String INDEX_NAME = "hotels-sample-index";
+
+    public static void main(String[] args) {
+        synchronousApiCall();
+        asynchronousApiCall();
+    }
 
     /**
      * This example shows how to pass {@code x-ms-client-request-id} when using a synchronous client.
@@ -54,7 +60,7 @@ public class PerCallRequestIdExample {
         Response<IndexDocumentsResult> response = client.mergeOrUploadDocumentsWithResponse(hotels, null, context);
         System.out.printf("Indexed %s documents%n", response.getValue().getResults().size());
 
-        // Print out verification of 'x-ms-client-request-id' returned in the service response.
+        // Print out verification of 'x-ms-client-request-id' returned by the service response.
         System.out.printf("Received response with returned 'x-ms-client-request-id': %s%n",
             response.getHeaders().get("x-ms-client-request-id"));
     }
@@ -62,7 +68,8 @@ public class PerCallRequestIdExample {
     /**
      * This examples shows how to pass {@code x-ms-client-request-id} when using an asynchronous client.
      * <p>
-     * Asynchronous clients are able to accept {@link Context} in all APIs using Reactor's {@code subscriberContext}.
+     * Asynchronous clients are able to accept {@link Context} in all APIs using Reactor's 
+     * {@link Mono#contextWrite(ContextView)} or {@link Flux#contextWrite(ContextView)}
      */
     private static void asynchronousApiCall() {
         SearchAsyncClient client = createBuilder().buildAsyncClient();
@@ -76,7 +83,7 @@ public class PerCallRequestIdExample {
         HttpHeaders headers = new HttpHeaders();
         headers.set("x-ms-client-request-id", UUID.randomUUID().toString());
 
-        reactor.util.context.Context subscriberContext = reactor.util.context.Context.of(
+        reactor.util.context.Context context = reactor.util.context.Context.of(
             AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
 
         // Print out expected 'x-ms-client-request-id' header value.
@@ -84,11 +91,11 @@ public class PerCallRequestIdExample {
 
         // Perform index operations on a list of documents
         client.mergeDocumentsWithResponse(hotels, null)
-            .subscriberContext(subscriberContext)
+            .contextWrite(context)
             .doOnSuccess(response -> {
                 System.out.printf("Indexed %s documents%n", response.getValue().getResults().size());
 
-                // Print out verification of 'x-ms-client-request-id' returned in the service response.
+                // Print out verification of 'x-ms-client-request-id' returned by the service response.
                 System.out.printf("Received response with returned 'x-ms-client-request-id': %s%n",
                     response.getHeaders().get("x-ms-client-request-id"));
             }).block();

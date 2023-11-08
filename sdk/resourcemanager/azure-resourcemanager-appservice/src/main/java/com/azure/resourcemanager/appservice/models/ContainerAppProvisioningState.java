@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContainerAppProvisioningState. */
+/** Provisioning state of the Container App. */
 public final class ContainerAppProvisioningState extends ExpandableStringEnum<ContainerAppProvisioningState> {
     /** Static value InProgress for ContainerAppProvisioningState. */
     public static final ContainerAppProvisioningState IN_PROGRESS = fromString("InProgress");
@@ -23,6 +23,15 @@ public final class ContainerAppProvisioningState extends ExpandableStringEnum<Co
     public static final ContainerAppProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of ContainerAppProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContainerAppProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ContainerAppProvisioningState from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ContainerAppProvisioningState extends ExpandableStringEnum<Co
         return fromString(name, ContainerAppProvisioningState.class);
     }
 
-    /** @return known ContainerAppProvisioningState values. */
+    /**
+     * Gets known ContainerAppProvisioningState values.
+     *
+     * @return known ContainerAppProvisioningState values.
+     */
     public static Collection<ContainerAppProvisioningState> values() {
         return values(ContainerAppProvisioningState.class);
     }

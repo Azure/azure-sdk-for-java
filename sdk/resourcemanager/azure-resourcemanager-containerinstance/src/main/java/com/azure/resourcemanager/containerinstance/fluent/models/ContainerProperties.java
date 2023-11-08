@@ -11,16 +11,14 @@ import com.azure.resourcemanager.containerinstance.models.ContainerProbe;
 import com.azure.resourcemanager.containerinstance.models.ContainerPropertiesInstanceView;
 import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequirements;
+import com.azure.resourcemanager.containerinstance.models.SecurityContextDefinition;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The container instance properties. */
 @Fluent
 public final class ContainerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerProperties.class);
-
     /*
      * The name of the image used to create the container instance.
      */
@@ -74,6 +72,16 @@ public final class ContainerProperties {
      */
     @JsonProperty(value = "readinessProbe")
     private ContainerProbe readinessProbe;
+
+    /*
+     * The container security properties.
+     */
+    @JsonProperty(value = "securityContext")
+    private SecurityContextDefinition securityContext;
+
+    /** Creates an instance of ContainerProperties class. */
+    public ContainerProperties() {
+    }
 
     /**
      * Get the image property: The name of the image used to create the container instance.
@@ -245,13 +253,33 @@ public final class ContainerProperties {
     }
 
     /**
+     * Get the securityContext property: The container security properties.
+     *
+     * @return the securityContext value.
+     */
+    public SecurityContextDefinition securityContext() {
+        return this.securityContext;
+    }
+
+    /**
+     * Set the securityContext property: The container security properties.
+     *
+     * @param securityContext the securityContext value to set.
+     * @return the ContainerProperties object itself.
+     */
+    public ContainerProperties withSecurityContext(SecurityContextDefinition securityContext) {
+        this.securityContext = securityContext;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (image() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property image in model ContainerProperties"));
         }
@@ -265,7 +293,7 @@ public final class ContainerProperties {
             instanceView().validate();
         }
         if (resources() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property resources in model ContainerProperties"));
         } else {
@@ -280,5 +308,10 @@ public final class ContainerProperties {
         if (readinessProbe() != null) {
             readinessProbe().validate();
         }
+        if (securityContext() != null) {
+            securityContext().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerProperties.class);
 }

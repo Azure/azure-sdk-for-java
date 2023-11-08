@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VisibilityParameterEnum. */
+/** Should this parameter be visible to arm and passed in the parameters argument when executing. */
 public final class VisibilityParameterEnum extends ExpandableStringEnum<VisibilityParameterEnum> {
     /** Static value Visible for VisibilityParameterEnum. */
     public static final VisibilityParameterEnum VISIBLE = fromString("Visible");
 
     /** Static value Hidden for VisibilityParameterEnum. */
     public static final VisibilityParameterEnum HIDDEN = fromString("Hidden");
+
+    /**
+     * Creates a new instance of VisibilityParameterEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VisibilityParameterEnum() {
+    }
 
     /**
      * Creates or finds a VisibilityParameterEnum from its string representation.
@@ -27,7 +36,11 @@ public final class VisibilityParameterEnum extends ExpandableStringEnum<Visibili
         return fromString(name, VisibilityParameterEnum.class);
     }
 
-    /** @return known VisibilityParameterEnum values. */
+    /**
+     * Gets known VisibilityParameterEnum values.
+     *
+     * @return known VisibilityParameterEnum values.
+     */
     public static Collection<VisibilityParameterEnum> values() {
         return values(VisibilityParameterEnum.class);
     }

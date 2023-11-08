@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** settings for security policy patterns to match. */
 @Fluent
 public final class SecurityPolicyWebApplicationFirewallAssociation {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SecurityPolicyWebApplicationFirewallAssociation.class);
-
     /*
      * List of domains.
      */
@@ -27,6 +22,10 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
      */
     @JsonProperty(value = "patternsToMatch")
     private List<String> patternsToMatch;
+
+    /** Creates an instance of SecurityPolicyWebApplicationFirewallAssociation class. */
+    public SecurityPolicyWebApplicationFirewallAssociation() {
+    }
 
     /**
      * Get the domains property: List of domains.

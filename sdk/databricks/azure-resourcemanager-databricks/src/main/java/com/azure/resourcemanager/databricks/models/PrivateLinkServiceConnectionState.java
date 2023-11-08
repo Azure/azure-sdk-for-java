@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The current state of a private endpoint connection. */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionState.class);
-
     /*
      * The status of a private endpoint connection
      */
@@ -29,8 +26,12 @@ public final class PrivateLinkServiceConnectionState {
     /*
      * Actions required for a private endpoint connection
      */
-    @JsonProperty(value = "actionRequired")
-    private String actionRequired;
+    @JsonProperty(value = "actionsRequired")
+    private String actionsRequired;
+
+    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    public PrivateLinkServiceConnectionState() {
+    }
 
     /**
      * Get the status property: The status of a private endpoint connection.
@@ -73,22 +74,22 @@ public final class PrivateLinkServiceConnectionState {
     }
 
     /**
-     * Get the actionRequired property: Actions required for a private endpoint connection.
+     * Get the actionsRequired property: Actions required for a private endpoint connection.
      *
-     * @return the actionRequired value.
+     * @return the actionsRequired value.
      */
-    public String actionRequired() {
-        return this.actionRequired;
+    public String actionsRequired() {
+        return this.actionsRequired;
     }
 
     /**
-     * Set the actionRequired property: Actions required for a private endpoint connection.
+     * Set the actionsRequired property: Actions required for a private endpoint connection.
      *
-     * @param actionRequired the actionRequired value to set.
+     * @param actionsRequired the actionsRequired value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
-    public PrivateLinkServiceConnectionState withActionRequired(String actionRequired) {
-        this.actionRequired = actionRequired;
+    public PrivateLinkServiceConnectionState withActionsRequired(String actionsRequired) {
+        this.actionsRequired = actionsRequired;
         return this;
     }
 
@@ -99,10 +100,12 @@ public final class PrivateLinkServiceConnectionState {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model PrivateLinkServiceConnectionState"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkServiceConnectionState.class);
 }

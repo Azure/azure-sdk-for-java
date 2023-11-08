@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -27,8 +25,6 @@ import java.time.OffsetDateTime;
 })
 @Fluent
 public class DigitalTwinsEndpointResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DigitalTwinsEndpointResourceProperties.class);
-
     /*
      * The provisioning state.
      */
@@ -42,18 +38,15 @@ public class DigitalTwinsEndpointResourceProperties {
     private OffsetDateTime createdTime;
 
     /*
-     * Specifies the authentication type being used for connecting to the
-     * endpoint. Defaults to 'KeyBased'. If 'KeyBased' is selected, a
-     * connection string must be specified (at least the primary connection
-     * string). If 'IdentityBased' is select, the endpointUri and entityPath
-     * properties must be specified.
+     * Specifies the authentication type being used for connecting to the endpoint. Defaults to 'KeyBased'. If
+     * 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If
+     * 'IdentityBased' is select, the endpointUri and entityPath properties must be specified.
      */
     @JsonProperty(value = "authenticationType")
     private AuthenticationType authenticationType;
 
     /*
-     * Dead letter storage secret for key-based authentication. Will be
-     * obfuscated during read.
+     * Dead letter storage secret for key-based authentication. Will be obfuscated during read.
      */
     @JsonProperty(value = "deadLetterSecret")
     private String deadLetterSecret;
@@ -63,6 +56,16 @@ public class DigitalTwinsEndpointResourceProperties {
      */
     @JsonProperty(value = "deadLetterUri")
     private String deadLetterUri;
+
+    /*
+     * Managed identity properties for the endpoint.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedIdentityReference identity;
+
+    /** Creates an instance of DigitalTwinsEndpointResourceProperties class. */
+    public DigitalTwinsEndpointResourceProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state.
@@ -149,10 +152,33 @@ public class DigitalTwinsEndpointResourceProperties {
     }
 
     /**
+     * Get the identity property: Managed identity properties for the endpoint.
+     *
+     * @return the identity value.
+     */
+    public ManagedIdentityReference identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identity properties for the endpoint.
+     *
+     * @param identity the identity value to set.
+     * @return the DigitalTwinsEndpointResourceProperties object itself.
+     */
+    public DigitalTwinsEndpointResourceProperties withIdentity(ManagedIdentityReference identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 }

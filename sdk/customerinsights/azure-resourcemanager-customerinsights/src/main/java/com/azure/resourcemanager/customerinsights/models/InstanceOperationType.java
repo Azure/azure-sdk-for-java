@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for InstanceOperationType. */
+/** Determines whether this link is supposed to create or delete instances if Link is NOT Reference Only. */
 public enum InstanceOperationType {
     /** Enum value Upsert. */
     UPSERT("Upsert"),
@@ -30,6 +30,9 @@ public enum InstanceOperationType {
      */
     @JsonCreator
     public static InstanceOperationType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         InstanceOperationType[] items = InstanceOperationType.values();
         for (InstanceOperationType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum InstanceOperationType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

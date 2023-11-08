@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.models.FeatureValidationResponseBaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import java.util.List;
 @JsonTypeName("FeatureValidationResponse")
 @Fluent
 public final class FeatureValidationResponse extends FeatureValidationResponseBaseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FeatureValidationResponse.class);
-
     /*
      * backup support feature type.
      */
@@ -31,6 +27,10 @@ public final class FeatureValidationResponse extends FeatureValidationResponseBa
      */
     @JsonProperty(value = "features")
     private List<SupportedFeature> features;
+
+    /** Creates an instance of FeatureValidationResponse class. */
+    public FeatureValidationResponse() {
+    }
 
     /**
      * Get the featureType property: backup support feature type.

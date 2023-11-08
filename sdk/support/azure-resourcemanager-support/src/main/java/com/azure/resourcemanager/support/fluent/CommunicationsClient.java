@@ -23,6 +23,22 @@ public interface CommunicationsClient {
      *
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
+        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
+
+    /**
+     * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
+     * a new communication to the support ticket.
+     *
+     * @param supportTicketName Support ticket name.
+     * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -31,22 +47,6 @@ public interface CommunicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     CheckNameAvailabilityOutputInner checkNameAvailability(
         String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput);
-
-    /**
-     * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
-     * a new communication to the support ticket.
-     *
-     * @param supportTicketName Support ticket name.
-     * @param checkNameAvailabilityInput Input to check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
 
     /**
      * Lists all communications (attachments not included) for a support ticket. &lt;br/&gt;&lt;/br&gt; You can also
@@ -60,7 +60,7 @@ public interface CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CommunicationDetailsInner> list(String supportTicketName);
@@ -83,11 +83,26 @@ public interface CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CommunicationDetailsInner> list(
         String supportTicketName, Integer top, String filter, Context context);
+
+    /**
+     * Returns communication details for a support ticket.
+     *
+     * @param supportTicketName Support ticket name.
+     * @param communicationName Communication name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that represents a Communication resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CommunicationDetailsInner> getWithResponse(
+        String supportTicketName, String communicationName, Context context);
 
     /**
      * Returns communication details for a support ticket.
@@ -103,21 +118,6 @@ public interface CommunicationsClient {
     CommunicationDetailsInner get(String supportTicketName, String communicationName);
 
     /**
-     * Returns communication details for a support ticket.
-     *
-     * @param supportTicketName Support ticket name.
-     * @param communicationName Communication name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunicationDetailsInner> getWithResponse(
-        String supportTicketName, String communicationName, Context context);
-
-    /**
      * Adds a new customer communication to an Azure support ticket.
      *
      * @param supportTicketName Support ticket name.
@@ -126,9 +126,9 @@ public interface CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return the {@link SyncPoller} for polling of object that represents a Communication resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreate(
         String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters);
 
@@ -142,9 +142,9 @@ public interface CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return the {@link SyncPoller} for polling of object that represents a Communication resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreate(
         String supportTicketName,
         String communicationName,

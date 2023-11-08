@@ -6,14 +6,15 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** PolicyInfo Policy Info in backupInstance. */
+/**
+ * PolicyInfo
+ *
+ * <p>Policy Info in backupInstance.
+ */
 @Fluent
 public final class PolicyInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyInfo.class);
-
     /*
      * The policyId property.
      */
@@ -31,6 +32,10 @@ public final class PolicyInfo {
      */
     @JsonProperty(value = "policyParameters")
     private PolicyParameters policyParameters;
+
+    /** Creates an instance of PolicyInfo class. */
+    public PolicyInfo() {
+    }
 
     /**
      * Get the policyId property: The policyId property.
@@ -88,7 +93,7 @@ public final class PolicyInfo {
      */
     public void validate() {
         if (policyId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property policyId in model PolicyInfo"));
         }
@@ -96,4 +101,6 @@ public final class PolicyInfo {
             policyParameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PolicyInfo.class);
 }

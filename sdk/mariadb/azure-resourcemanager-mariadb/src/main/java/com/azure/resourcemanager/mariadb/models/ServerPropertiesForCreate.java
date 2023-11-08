@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -27,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForCreate.class);
-
     /*
      * Server version.
      */
@@ -48,8 +44,8 @@ public class ServerPropertiesForCreate {
     private MinimalTlsVersionEnum minimalTlsVersion;
 
     /*
-     * Whether or not public network access is allowed for this server. Value
-     * is optional but if passed in, must be 'Enabled' or 'Disabled'
+     * Whether or not public network access is allowed for this server. Value is optional but if passed in, must be
+     * 'Enabled' or 'Disabled'
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccessEnum publicNetworkAccess;
@@ -59,6 +55,10 @@ public class ServerPropertiesForCreate {
      */
     @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
+
+    /** Creates an instance of ServerPropertiesForCreate class. */
+    public ServerPropertiesForCreate() {
+    }
 
     /**
      * Get the version property: Server version.

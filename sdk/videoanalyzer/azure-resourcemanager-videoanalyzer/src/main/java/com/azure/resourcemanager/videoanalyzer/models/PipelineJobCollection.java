@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.PipelineJobInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collection of PipelineJob items. */
 @Fluent
 public final class PipelineJobCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineJobCollection.class);
-
     /*
      * A collection of PipelineJob items.
      */

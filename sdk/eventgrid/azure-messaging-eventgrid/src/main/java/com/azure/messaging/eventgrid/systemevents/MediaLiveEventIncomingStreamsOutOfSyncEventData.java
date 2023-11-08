@@ -49,6 +49,9 @@ public final class MediaLiveEventIncomingStreamsOutOfSyncEventData {
     @JsonProperty(value = "timescaleOfMaxLastTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String timescaleOfMaxLastTimestamp;
 
+    /** Creates an instance of MediaLiveEventIncomingStreamsOutOfSyncEventData class. */
+    public MediaLiveEventIncomingStreamsOutOfSyncEventData() {}
+
     /**
      * Get the minLastTimestamp property: Gets the minimum last timestamp received.
      *

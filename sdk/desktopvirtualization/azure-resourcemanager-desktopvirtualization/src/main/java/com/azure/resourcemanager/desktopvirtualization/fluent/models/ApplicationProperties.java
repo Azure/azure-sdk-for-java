@@ -9,14 +9,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema for Application properties. */
 @Fluent
 public final class ApplicationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationProperties.class);
-
     /*
      * ObjectId of Application. (internal use)
      */
@@ -60,9 +57,8 @@ public final class ApplicationProperties {
     private RemoteApplicationType applicationType;
 
     /*
-     * Specifies whether this published application can be launched with
-     * command line arguments provided by the client, command line arguments
-     * specified at publish time, or no command line arguments at all.
+     * Specifies whether this published application can be launched with command line arguments provided by the client,
+     * command line arguments specified at publish time, or no command line arguments at all.
      */
     @JsonProperty(value = "commandLineSetting", required = true)
     private CommandLineSetting commandLineSetting;
@@ -74,8 +70,7 @@ public final class ApplicationProperties {
     private String commandLineArguments;
 
     /*
-     * Specifies whether to show the RemoteApp program in the RD Web Access
-     * server.
+     * Specifies whether to show the RemoteApp program in the RD Web Access server.
      */
     @JsonProperty(value = "showInPortal")
     private Boolean showInPortal;
@@ -103,6 +98,10 @@ public final class ApplicationProperties {
      */
     @JsonProperty(value = "iconContent", access = JsonProperty.Access.WRITE_ONLY)
     private byte[] iconContent;
+
+    /** Creates an instance of ApplicationProperties class. */
+    public ApplicationProperties() {
+    }
 
     /**
      * Get the objectId property: ObjectId of Application. (internal use).
@@ -362,10 +361,12 @@ public final class ApplicationProperties {
      */
     public void validate() {
         if (commandLineSetting() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property commandLineSetting in model ApplicationProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationProperties.class);
 }

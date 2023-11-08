@@ -79,7 +79,9 @@ public class CreateClients {
     public RemoteRenderingClient createClientWithDeviceCode() {
         // BEGIN: readme-sample-createClientWithDeviceCode
         DeviceCodeCredential credential = new DeviceCodeCredentialBuilder()
-            .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> { logger.info(deviceCodeInfo.getMessage()); })
+            .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> {
+                logger.info(deviceCodeInfo.getMessage());
+            })
             .clientId(environment.getClientId())
             .tenantId(environment.getTenantId())
             .authorityHost("https://login.microsoftonline.com/" + environment.getTenantId())

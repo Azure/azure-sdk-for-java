@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphTeamVisibilityType. */
+/** teamVisibilityType. */
 public final class MicrosoftGraphTeamVisibilityType extends ExpandableStringEnum<MicrosoftGraphTeamVisibilityType> {
     /** Static value private for MicrosoftGraphTeamVisibilityType. */
     public static final MicrosoftGraphTeamVisibilityType PRIVATE = fromString("private");
@@ -23,6 +23,15 @@ public final class MicrosoftGraphTeamVisibilityType extends ExpandableStringEnum
     public static final MicrosoftGraphTeamVisibilityType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphTeamVisibilityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphTeamVisibilityType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphTeamVisibilityType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class MicrosoftGraphTeamVisibilityType extends ExpandableStringEnum
         return fromString(name, MicrosoftGraphTeamVisibilityType.class);
     }
 
-    /** @return known MicrosoftGraphTeamVisibilityType values. */
+    /**
+     * Gets known MicrosoftGraphTeamVisibilityType values.
+     *
+     * @return known MicrosoftGraphTeamVisibilityType values.
+     */
     public static Collection<MicrosoftGraphTeamVisibilityType> values() {
         return values(MicrosoftGraphTeamVisibilityType.class);
     }

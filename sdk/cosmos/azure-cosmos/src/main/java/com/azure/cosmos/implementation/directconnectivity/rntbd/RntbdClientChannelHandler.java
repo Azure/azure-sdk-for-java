@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -13,7 +14,6 @@ import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslHandler;
-import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +28,21 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
     private static final Logger logger = LoggerFactory.getLogger(RntbdClientChannelHandler.class);
     private final ChannelHealthChecker healthChecker;
     private final Config config;
+    private final RntbdConnectionStateListener connectionStateListener;
+    private final RntbdServerErrorInjector serverErrorInjector;
 
-    RntbdClientChannelHandler(final Config config, final ChannelHealthChecker healthChecker) {
+    RntbdClientChannelHandler(
+        final Config config,
+        final ChannelHealthChecker healthChecker,
+        final RntbdConnectionStateListener connectionStateListener,
+        final RntbdServerErrorInjector serverErrorInjector) {
         checkNotNull(healthChecker, "expected non-null healthChecker");
         checkNotNull(config, "expected non-null config");
+
         this.healthChecker = healthChecker;
         this.config = config;
+        this.connectionStateListener = connectionStateListener;
+        this.serverErrorInjector = serverErrorInjector;
     }
 
     /**
@@ -70,7 +79,9 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
      */
     @Override
     public void channelReleased(final Channel channel) {
-        logger.debug("{} CHANNEL RELEASED", channel);
+        if (logger.isDebugEnabled()) {
+            logger.debug("{} CHANNEL RELEASED", channel);
+        }
     }
 
     /**
@@ -98,8 +109,12 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
 
         final RntbdRequestManager requestManager = new RntbdRequestManager(
             this.healthChecker,
-            this.config.maxRequestsPerChannel());
-        final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
+            this.config.maxRequestsPerChannel(),
+            this.connectionStateListener,
+            this.config.idleConnectionTimerResolutionInNanos(),
+            this.serverErrorInjector,
+            this.config.tcpNetworkRequestTimeoutInNanos());
+
         final ChannelPipeline pipeline = channel.pipeline();
 
         pipeline.addFirst(
@@ -113,16 +128,11 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             pipeline.addFirst(new LoggingHandler(this.config.wireLogLevel()));
         }
 
-        pipeline.addFirst(
-            // TODO (DANOBLE) Log an issue with netty
-            // Initialize sslHandler with jdkCompatibilityMode = true for openssl context.
-            new SslHandler(this.config.sslContext().newEngine(channel.alloc())),
-            new IdleStateHandler(
-                idleConnectionTimerResolutionInNanos,
-                idleConnectionTimerResolutionInNanos,
-                0,
-                TimeUnit.NANOSECONDS));
+        // Initialize sslHandler with jdkCompatibilityMode = true for openssl context.
+        SslHandler sslHandler = new SslHandler(this.config.sslContext().newEngine(channel.alloc()));
+        sslHandler.setHandshakeTimeout(config.sslHandshakeTimeoutInMillis(), TimeUnit.MILLISECONDS);
 
+        pipeline.addFirst(SslHandler.class.toString(), sslHandler);
         channel.attr(REQUEST_MANAGER).set(requestManager);
     }
 }

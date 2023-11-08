@@ -5,25 +5,19 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Custom Parameters used for Cluster Creation. */
 @Fluent
 public final class WorkspaceCustomParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceCustomParameters.class);
-
     /*
-     * The ID of a Azure Machine Learning workspace to link with Databricks
-     * workspace
+     * The ID of a Azure Machine Learning workspace to link with Databricks workspace
      */
     @JsonProperty(value = "amlWorkspaceId")
     private WorkspaceCustomStringParameter amlWorkspaceId;
 
     /*
-     * The ID of a Virtual Network where this Databricks Cluster should be
-     * created
+     * The ID of a Virtual Network where this Databricks Cluster should be created
      */
     @JsonProperty(value = "customVirtualNetworkId")
     private WorkspaceCustomStringParameter customVirtualNetworkId;
@@ -47,22 +41,19 @@ public final class WorkspaceCustomParameters {
     private WorkspaceCustomBooleanParameter enableNoPublicIp;
 
     /*
-     * Name of the outbound Load Balancer Backend Pool for Secure Cluster
-     * Connectivity (No Public IP).
+     * Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP).
      */
     @JsonProperty(value = "loadBalancerBackendPoolName")
     private WorkspaceCustomStringParameter loadBalancerBackendPoolName;
 
     /*
-     * Resource URI of Outbound Load balancer for Secure Cluster Connectivity
-     * (No Public IP) workspace.
+     * Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace.
      */
     @JsonProperty(value = "loadBalancerId")
     private WorkspaceCustomStringParameter loadBalancerId;
 
     /*
-     * Name of the NAT gateway for Secure Cluster Connectivity (No Public IP)
-     * workspace subnets.
+     * Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets.
      */
     @JsonProperty(value = "natGatewayName")
     private WorkspaceCustomStringParameter natGatewayName;
@@ -74,23 +65,20 @@ public final class WorkspaceCustomParameters {
     private WorkspaceCustomStringParameter publicIpName;
 
     /*
-     * Prepare the workspace for encryption. Enables the Managed Identity for
-     * managed storage account.
+     * Prepare the workspace for encryption. Enables the Managed Identity for managed storage account.
      */
     @JsonProperty(value = "prepareEncryption")
     private WorkspaceCustomBooleanParameter prepareEncryption;
 
     /*
-     * Contains the encryption details for Customer-Managed Key (CMK) enabled
-     * workspace.
+     * Contains the encryption details for Customer-Managed Key (CMK) enabled workspace.
      */
     @JsonProperty(value = "encryption")
     private WorkspaceEncryptionParameter encryption;
 
     /*
-     * A boolean indicating whether or not the DBFS root file system will be
-     * enabled with secondary layer of encryption with platform managed keys
-     * for data at rest.
+     * A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption
+     * with platform managed keys for data at rest.
      */
     @JsonProperty(value = "requireInfrastructureEncryption")
     private WorkspaceCustomBooleanParameter requireInfrastructureEncryption;
@@ -102,25 +90,27 @@ public final class WorkspaceCustomParameters {
     private WorkspaceCustomStringParameter storageAccountName;
 
     /*
-     * Storage account SKU name, ex: Standard_GRS, Standard_LRS. Refer
-     * https://aka.ms/storageskus for valid inputs.
+     * Storage account SKU name, ex: Standard_GRS, Standard_LRS. Refer https://aka.ms/storageskus for valid inputs.
      */
     @JsonProperty(value = "storageAccountSkuName")
     private WorkspaceCustomStringParameter storageAccountSkuName;
 
     /*
-     * Address prefix for Managed virtual network. Default value for this input
-     * is 10.139.
+     * Address prefix for Managed virtual network. Default value for this input is 10.139.
      */
     @JsonProperty(value = "vnetAddressPrefix")
     private WorkspaceCustomStringParameter vnetAddressPrefix;
 
     /*
-     * Tags applied to resources under Managed resource group. These can be
-     * updated by updating tags at workspace level.
+     * Tags applied to resources under Managed resource group. These can be updated by updating tags at workspace
+     * level.
      */
     @JsonProperty(value = "resourceTags", access = JsonProperty.Access.WRITE_ONLY)
     private WorkspaceCustomObjectParameter resourceTags;
+
+    /** Creates an instance of WorkspaceCustomParameters class. */
+    public WorkspaceCustomParameters() {
+    }
 
     /**
      * Get the amlWorkspaceId property: The ID of a Azure Machine Learning workspace to link with Databricks workspace.

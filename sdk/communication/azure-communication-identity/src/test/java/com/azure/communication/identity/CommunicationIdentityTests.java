@@ -5,366 +5,539 @@ package com.azure.communication.identity;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Arrays;
+import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
 
+import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.TokenCustomExpirationTimeHelper.assertTokenExpirationWithinAllowedDeviation;
+import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
+    private static final String TEST_SUFFIX = "Sync";
+    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
     private CommunicationIdentityClient client;
+    private CommunicationIdentityClientBuilder builder;
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createIdentityClientUsingManagedIdentity(HttpClient httpClient) {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "createIdentityClientUsingManagedIdentitySync");
-        assertNotNull(client);
-
-        // Action & Assert
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        assertFalse(communicationUser.getId().isEmpty());
+    @Override
+    public void beforeTest() {
+        super.beforeTest();
+        builder = createClientBuilder(buildSyncAssertingClient(httpClient));
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createIdentityClientUsingConnectionString(HttpClient httpClient) {
+    @Test
+    public void createIdentityClientUsingConnectionString() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
+        CommunicationIdentityClientBuilder builder = createClientBuilderUsingConnectionString(buildSyncAssertingClient(httpClient));
         client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
         assertNotNull(client);
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        assertFalse(communicationUser.getId().isEmpty());
+        verifyUserNotEmpty(communicationUser);
     }
 
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUser(HttpClient httpClient) {
+    @Test
+    public void createUser() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "createUserSync");
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        assertFalse(communicationUser.getId().isEmpty());
+        verifyUserNotEmpty(communicationUser);
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserWithResponse(HttpClient httpClient) {
+    @Test
+    public void createUserWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "createUserWithResponseSync");
 
         // Action & Assert
         Response<CommunicationUserIdentifier> response = client.createUserWithResponse(Context.NONE);
-        assertNotNull(response.getValue().getId());
-        assertFalse(response.getValue().getId().isEmpty());
         assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
+        verifyUserNotEmpty(response.getValue());
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserAndToken(HttpClient httpClient) {
+    @Test
+    public void createUserWithResponseNullContext() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenSync");
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        client = setupClient(builder, "createUserWithResponseSync");
+
+        // Action & Assert
+        Response<CommunicationUserIdentifier> response = client.createUserWithResponse(null);
+        assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
+        verifyUserNotEmpty(response.getValue());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
+    public void createUserAndToken(String testName, List<CommunicationTokenScope> scopes) {
+        // Arrange
+        client = setupClient(builder, "createUserAndTokenWith" + testName + TEST_SUFFIX);
 
         // Action & Assert
         CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes);
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserAndTokenWithResponse(HttpClient httpClient) {
+    @Test
+    public void createUserAndTokenWithoutScopes() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenWithResponseSync");
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        client = setupClient(builder, "createUserAndTokenSync");
+
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response =
-            client.createUserAndTokenWithResponse(scopes, Context.NONE);
-        CommunicationUserIdentifierAndToken result = response.getValue();
-        assertEquals(201, response.getStatusCode());
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        assertThrows(NullPointerException.class, () -> client.createUserAndToken(null));
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserAndTokenWithResponseNullContext(HttpClient httpClient) {
+    @Test
+    public void createUserAndTokenWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "createUserAndTokenWithResponseSync");
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response =
-            client.createUserAndTokenWithResponse(scopes, null);
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, Context.NONE);
         CommunicationUserIdentifierAndToken result = response.getValue();
-        assertEquals(201, response.getStatusCode());
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void deleteUser(HttpClient httpClient) {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    public void createUserAndTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenWithValidCustomExpiration " + testName + TEST_SUFFIX);
+
+        // Action & Assert
+        CommunicationUserIdentifierAndToken result = client.createUserAndToken(SCOPES, tokenExpiresIn);
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    public void createUserAndTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        client = setupClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration " + testName + TEST_SUFFIX);
+
+        // Action & Assert
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn, Context.NONE);
+        CommunicationUserIdentifierAndToken result = response.getValue();
+        assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    public void createUserAndTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        client = setupClient(builder, "createUserAndTokenWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+
+        // Action & Assert
+        try {
+            client.createUserAndToken(SCOPES, tokenExpiresIn);
+        } catch (Exception exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().contains("400"));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    public void createUserAndTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        client = setupClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+
+        // Action & Assert
+        try {
+            client.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn, Context.NONE);
+        } catch (Exception exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().contains("400"));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void createUserAndTokenWithOverFlownExpiration() {
+        // Arrange
+        client = setupClient(builder, "createUserAndTokenWithOverFlownExpiration " + TEST_SUFFIX);
+        Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
+
+        // Action & Assert
+        try {
+            client.createUserAndToken(SCOPES, tokenExpiresIn);
+        } catch (IllegalArgumentException exception) {
+            assertNotNull(exception.getMessage());
+            assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, exception.getMessage());
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void createUserAndTokenWithResponseWithOverFlownExpiration() {
+        // Arrange
+        client = setupClient(builder, "createUserAndTokenWithResponseWithOverFlownExpiration " + TEST_SUFFIX);
+        Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
+
+        // Action & Assert
+        try {
+            client.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn, Context.NONE);
+        } catch (IllegalArgumentException exception) {
+            assertNotNull(exception.getMessage());
+            assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, exception.getMessage());
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void createUserAndTokenWithResponseNullContext() {
+        // Arrange
+        client = setupClient(builder, "createUserAndTokenWithResponseSync");
+
+        // Action & Assert
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, null);
+        CommunicationUserIdentifierAndToken result = response.getValue();
+        assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
+    }
+
+    @Test
+    public void deleteUser() {
+        // Arrange
         client = setupClient(builder, "deleteUserSync");
-
-        // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
+
+        // Action & Assert
         client.deleteUser(communicationUser);
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void deleteUserWithResponse(HttpClient httpClient) {
+    @Test
+    public void deleteUserWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "deleteUserWithResponseSync");
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        CommunicationUserIdentifier communicationUser = client.createUser();
         Response<Void> response = client.deleteUserWithResponse(communicationUser, Context.NONE);
         assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void deleteUserWithResponseWithNullContext(HttpClient httpClient) {
+    @Test
+    public void deleteUserWithResponseWithNullContext() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "deleteUserWithResponseSync");
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        CommunicationUserIdentifier communicationUser = client.createUser();
         Response<Void> response = client.deleteUserWithResponse(communicationUser, null);
         assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void revokeToken(HttpClient httpClient) {
+    @Test
+    public void revokeToken() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "revokeTokenSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.getToken(communicationUser, scopes);
+        verifyUserNotEmpty(communicationUser);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
+        verifyTokenNotEmpty(issuedToken);
 
         // Action & Assert
         client.revokeTokens(communicationUser);
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void revokeTokenWithResponse(HttpClient httpClient) {
+    @Test
+    public void revokeTokenWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "revokeTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.getToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
+        verifyTokenNotEmpty(issuedToken);
 
         // Action & Assert
         Response<Void> response = client.revokeTokensWithResponse(communicationUser, Context.NONE);
         assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void revokeTokenWithResponseNullContext(HttpClient httpClient) {
+    @Test
+    public void revokeTokenWithResponseNullContext() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "revokeTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.getToken(communicationUser, scopes);
+        verifyUserNotEmpty(communicationUser);
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES);
+        verifyTokenNotEmpty(issuedToken);
 
         // Action & Assert
         Response<Void> response = client.revokeTokensWithResponse(communicationUser, null);
         assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getToken(HttpClient httpClient) {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
+    public void getToken(String testName, List<CommunicationTokenScope> scopes) {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenWith" + testName + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
+
+        // Action & Assert
+        AccessToken issuedToken = client.getToken(communicationUser, scopes);
+        verifyTokenNotEmpty(issuedToken);
+    }
+
+    @Test
+    public void getTokenWithoutUser() {
+        // Arrange
+        client = setupClient(builder, "getTokenSync");
+
+        // Action & Assert
+        assertThrows(NullPointerException.class, () -> client.getToken(null, SCOPES));
+    }
+
+    @Test
+    public void getTokenWithoutScopes() {
+        // Arrange
         client = setupClient(builder, "getTokenSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
-        verifyTokenNotEmpty(issuedToken);
+        assertThrows(NullPointerException.class, () -> client.getToken(communicationUser, null));
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenWithResponse(HttpClient httpClient) {
+    @Test
+    public void getTokenWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "getTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, Context.NONE);
+        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, SCOPES, Context.NONE);
+        assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
+        verifyTokenNotEmpty(issuedTokenResponse.getValue());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    public void getTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        client = setupClient(builder, "getTokenWithValidCustomExpiration " + testName + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
+
+        // Action & Assert
+        AccessToken issuedToken = client.getToken(communicationUser, SCOPES, tokenExpiresIn);
+        verifyTokenNotEmpty(issuedToken);
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    public void getTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        client = setupClient(builder, "getTokenWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
+
+        // Action & Assert
+        try {
+            client.getToken(communicationUser, SCOPES, tokenExpiresIn);
+        } catch (Exception exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().contains("400"));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    public void getTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        client = setupClient(builder, "getTokenWithResponseWithValidCustomExpiration " + testName + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
+
+        // Action & Assert
+        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn, Context.NONE);
+        assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
+        verifyTokenNotEmpty(issuedTokenResponse.getValue());
+        assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedTokenResponse.getValue().getExpiresAt());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    public void getTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
+        // Arrange
+        client = setupClient(builder, "getTokenWithResponseWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
+
+        // Action & Assert
+        try {
+            client.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn, Context.NONE);
+        } catch (Exception exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().contains("400"));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void getTokenWithOverflownExpiration() {
+        // Arrange
+        client = setupClient(builder, "getTokenWithOverflownExpiration " + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
+        Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
+
+        // Action & Assert
+        try {
+            client.getToken(communicationUser, SCOPES, tokenExpiresIn);
+        } catch (IllegalArgumentException exception) {
+            assertNotNull(exception.getMessage());
+            assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, exception.getMessage());
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void getTokenWithResponseWithOverflownExpiration() {
+        // Arrange
+        client = setupClient(builder, "getTokenWithResponseWithOverflownExpiration " + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
+        Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
+
+        // Action & Assert
+        try {
+            client.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn, Context.NONE);
+        } catch (IllegalArgumentException exception) {
+            assertNotNull(exception.getMessage());
+            assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, exception.getMessage());
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void getTokenWithResponseNullContext() {
+        // Arrange
+        client = setupClient(builder, "getTokenWithResponseSync");
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        verifyUserNotEmpty(communicationUser);
+
+        // Action & Assert
+        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, SCOPES, null);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenWithResponseNullContext(HttpClient httpClient) {
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
+    public void getTokenForTeamsUserWithValidParams(GetTokenForTeamsUserOptions options) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenWithResponseSync");
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        client = setupClient(builder, "getTokenForTeamsUserWithValidParamsSync");
 
         // Action & Assert
-        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, null);
-        assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
-        verifyTokenNotEmpty(issuedTokenResponse.getValue());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createUserWithResponseUsingManagedIdentity(HttpClient httpClient) {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "createUserWithResponseUsingManagedIdentitySync");
-
-        // Action & Assert
-        Response<CommunicationUserIdentifier> response = client.createUserWithResponse(Context.NONE);
-        assertNotNull(response.getValue().getId());
-        assertFalse(response.getValue().getId().isEmpty());
-        assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void deleteUserUsingManagedIdentity(HttpClient httpClient) {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "deleteUserUsingManagedIdentitySync");
-
-        // Action & Assert
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        client.deleteUser(communicationUser);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void deleteUserWithResponseUsingManagedIdentity(HttpClient httpClient) {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "deleteUserWithResponseUsingManagedIdentitySync");
-
-        // Action & Assert
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        Response<Void> response = client.deleteUserWithResponse(communicationUser, Context.NONE);
-        assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void revokeTokenUsingManagedIdentity(HttpClient httpClient) {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "revokeTokenUsingManagedIdentitySync");
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.getToken(communicationUser, scopes);
-
-        // Action & Assert
-        client.revokeTokens(communicationUser);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void revokeTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "revokeTokenWithResponseUsingManagedIdentitySync");
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        client.getToken(communicationUser, scopes);
-
-        // Action & Assert
-        Response<Void> response = client.revokeTokensWithResponse(communicationUser, Context.NONE);
-        assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenUsingManagedIdentity(HttpClient httpClient) {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "getTokenUsingManagedIdentitySync");
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-
-        // Action & Assert
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
+        AccessToken issuedToken = client.getTokenForTeamsUser(options);
         verifyTokenNotEmpty(issuedToken);
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
+    public void getTokenForTeamsUserWithValidParamsWithResponse(GetTokenForTeamsUserOptions options) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "getTokenWithResponseUsingManagedIdentitySync");
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        client = setupClient(builder, "getTokenForTeamsUserWithValidParamsWithResponseSync");
 
         // Action & Assert
-        Response<AccessToken> response = client.getTokenWithResponse(communicationUser, scopes, Context.NONE);
+        Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(options, Context.NONE);
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(response.getValue());
     }
 
-    private CommunicationIdentityClient setupClient(CommunicationIdentityClientBuilder builder, String testName) {
-        return addLoggingPolicy(builder, testName).buildClient();
+    @ParameterizedTest
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
+    public void getTokenForTeamsUserWithValidParamsWithResponseNullContext(GetTokenForTeamsUserOptions options) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+        // Arrange
+        client = setupClient(builder, "getTokenForTeamsUserWithValidParamsWithResponseSync");
+
+        // Action & Assert
+        Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(options, null);
+        assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
+        verifyTokenNotEmpty(response.getValue());
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithEmptyToken(HttpClient httpClient) {
+
+    @ParameterizedTest(name = "when {1} is null")
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getNullParams")
+    public void getTokenForTeamsUserWithNullParams(GetTokenForTeamsUserOptions options, String exceptionMessage) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenForTeamsUserWithEmptyTokenSync");
+        client = setupClient(builder, "getTokenForTeamsUserWithNullSync: when " + exceptionMessage + " is null");
+
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser("");
+            AccessToken issuedToken = client.getTokenForTeamsUser(options);
+        } catch (Exception exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().contains(exceptionMessage));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getInvalidTokens")
+    public void getTokenForTeamsUserWithInvalidToken(String testName, GetTokenForTeamsUserOptions options) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+        // Arrange
+        client = setupClient(builder, testName + TEST_SUFFIX);
+
+        // Action & Assert
+        try {
+            AccessToken issuedToken = client.getTokenForTeamsUser(options);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("401"));
@@ -373,138 +546,43 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         fail("An exception should have been thrown.");
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithNull(HttpClient httpClient) {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getInvalidAppIds")
+    public void getTokenForTeamsUserWithInvalidAppId(String testName, GetTokenForTeamsUserOptions options) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenForTeamsUserWithNullSync");
+        client = setupClient(builder, testName + TEST_SUFFIX);
+
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser(null);
+            AccessToken issuedToken = client.getTokenForTeamsUser(options);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
-            assertTrue(exception.getMessage().contains("token"));
+            assertTrue(exception.getMessage().contains("400"));
             return;
         }
         fail("An exception should have been thrown.");
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithInvalidToken(HttpClient httpClient) {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getInvalidUserIds")
+    public void getTokenForTeamsUserWithInvalidUserId(String testName, GetTokenForTeamsUserOptions options) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenForTeamsUserWithInvalidTokenSync");
+        client = setupClient(builder, testName + TEST_SUFFIX);
+
         // Action & Assert
         try {
-            AccessToken issuedToken = client.getTokenForTeamsUser("invalid");
+            AccessToken issuedToken = client.getTokenForTeamsUser(options);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
-            assertTrue(exception.getMessage().contains("401"));
+            assertTrue(exception.getMessage().contains("400"));
             return;
         }
         fail("An exception should have been thrown.");
     }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithExpiredToken(HttpClient httpClient) {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenForTeamsUserWithExpiredTokenSync");
-        // Action & Assert
-        try {
-            AccessToken issuedToken = client.getTokenForTeamsUser(COMMUNICATION_EXPIRED_TEAMS_TOKEN);
-        } catch (Exception exception) {
-            assertNotNull(exception.getMessage());
-            assertTrue(exception.getMessage().contains("401"));
-            return;
-        }
-        fail("An exception should have been thrown.");
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithValidToken(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenForTeamsUserWithValidTokenSync");
-        // Action & Assert
-        try {
-            String teamsUserAadToken = generateTeamsUserAadToken();
-            AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken);
-            verifyTokenNotEmpty(issuedToken);
-        } catch (Exception exception) {
-            fail("Could not generate teams token");
-        }
-
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithValidTokenWithResponse(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenForTeamsUserWithValidTokenWithResponseSync");
-        // Action & Assert
-        try {
-            String teamsUserAadToken = generateTeamsUserAadToken();
-            Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(teamsUserAadToken, Context.NONE);
-            assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
-            verifyTokenNotEmpty(response.getValue());
-        } catch (Exception exception) {
-            fail("Could not generate teams token");
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserUsingManagedIdentity(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "getTokenForTeamsUserUsingManagedIdentitySync");
-        // Action & Assert
-        try {
-            String teamsUserAadToken = generateTeamsUserAadToken();
-            AccessToken issuedToken = client.getTokenForTeamsUser(teamsUserAadToken);
-            verifyTokenNotEmpty(issuedToken);
-        } catch (Exception e) {
-            fail("Could not generate teams token");
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithResponseUsingManagedIdentity(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "getTokenForTeamsUserWithResponseUsingManagedIdentitySync");
-        // Action & Assert
-        try {
-            String teamsUserAadToken = generateTeamsUserAadToken();
-            Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(teamsUserAadToken, Context.NONE);
-            assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
-            verifyTokenNotEmpty(response.getValue());
-        } catch (Exception e) {
-            fail("Could not generate teams token");
-        }
-    }
-
 }

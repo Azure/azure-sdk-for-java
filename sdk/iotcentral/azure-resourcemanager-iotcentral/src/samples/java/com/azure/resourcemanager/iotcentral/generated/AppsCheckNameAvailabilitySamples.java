@@ -10,7 +10,7 @@ import com.azure.resourcemanager.iotcentral.models.OperationInputs;
 /** Samples for Apps CheckNameAvailability. */
 public final class AppsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_CheckNameAvailability.json
+     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_CheckNameAvailability.json
      */
     /**
      * Sample code: Apps_CheckNameAvailability.

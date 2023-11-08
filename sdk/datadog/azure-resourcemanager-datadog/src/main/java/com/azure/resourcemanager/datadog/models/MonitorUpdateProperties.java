@@ -5,20 +5,27 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The set of properties that can be update in a PATCH request to a monitor resource. */
 @Fluent
 public final class MonitorUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorUpdateProperties.class);
-
     /*
      * Flag specifying if the resource monitoring is enabled or disabled.
      */
     @JsonProperty(value = "monitoringStatus")
     private MonitoringStatus monitoringStatus;
+
+    /*
+     * The new cloud security posture management value of the monitor resource. This collects configuration information
+     * for all resources in a subscription and track conformance to industry benchmarks.
+     */
+    @JsonProperty(value = "cspm")
+    private Boolean cspm;
+
+    /** Creates an instance of MonitorUpdateProperties class. */
+    public MonitorUpdateProperties() {
+    }
 
     /**
      * Get the monitoringStatus property: Flag specifying if the resource monitoring is enabled or disabled.
@@ -37,6 +44,28 @@ public final class MonitorUpdateProperties {
      */
     public MonitorUpdateProperties withMonitoringStatus(MonitoringStatus monitoringStatus) {
         this.monitoringStatus = monitoringStatus;
+        return this;
+    }
+
+    /**
+     * Get the cspm property: The new cloud security posture management value of the monitor resource. This collects
+     * configuration information for all resources in a subscription and track conformance to industry benchmarks.
+     *
+     * @return the cspm value.
+     */
+    public Boolean cspm() {
+        return this.cspm;
+    }
+
+    /**
+     * Set the cspm property: The new cloud security posture management value of the monitor resource. This collects
+     * configuration information for all resources in a subscription and track conformance to industry benchmarks.
+     *
+     * @param cspm the cspm value to set.
+     * @return the MonitorUpdateProperties object itself.
+     */
+    public MonitorUpdateProperties withCspm(Boolean cspm) {
+        this.cspm = cspm;
         return this;
     }
 

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SelfHostedIntegrationRunt
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeNodes;
 import com.azure.resourcemanager.synapse.models.SelfHostedIntegrationRuntimeNode;
 import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeNodeRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNodes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeNodesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeNodesImpl.class);
 
     private final IntegrationRuntimeNodesClient innerClient;
 
@@ -26,17 +25,6 @@ public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNode
         IntegrationRuntimeNodesClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public SelfHostedIntegrationRuntimeNode get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName) {
-        SelfHostedIntegrationRuntimeNodeInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName, nodeName);
-        if (inner != null) {
-            return new SelfHostedIntegrationRuntimeNodeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SelfHostedIntegrationRuntimeNode> getWithResponse(
@@ -60,21 +48,10 @@ public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNode
         }
     }
 
-    public SelfHostedIntegrationRuntimeNode update(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest) {
+    public SelfHostedIntegrationRuntimeNode get(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName) {
         SelfHostedIntegrationRuntimeNodeInner inner =
-            this
-                .serviceClient()
-                .update(
-                    resourceGroupName,
-                    workspaceName,
-                    integrationRuntimeName,
-                    nodeName,
-                    updateIntegrationRuntimeNodeRequest);
+            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName, nodeName);
         if (inner != null) {
             return new SelfHostedIntegrationRuntimeNodeImpl(inner, this.manager());
         } else {
@@ -110,8 +87,26 @@ public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNode
         }
     }
 
-    public void delete(String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, integrationRuntimeName, nodeName);
+    public SelfHostedIntegrationRuntimeNode update(
+        String resourceGroupName,
+        String workspaceName,
+        String integrationRuntimeName,
+        String nodeName,
+        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest) {
+        SelfHostedIntegrationRuntimeNodeInner inner =
+            this
+                .serviceClient()
+                .update(
+                    resourceGroupName,
+                    workspaceName,
+                    integrationRuntimeName,
+                    nodeName,
+                    updateIntegrationRuntimeNodeRequest);
+        if (inner != null) {
+            return new SelfHostedIntegrationRuntimeNodeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -123,6 +118,10 @@ public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNode
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, nodeName, context);
+    }
+
+    public void delete(String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, integrationRuntimeName, nodeName);
     }
 
     private IntegrationRuntimeNodesClient serviceClient() {

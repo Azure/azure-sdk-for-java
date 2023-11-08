@@ -24,6 +24,10 @@ public final class VirtualNetworkPeeringListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VirtualNetworkPeeringListResult class. */
+    public VirtualNetworkPeeringListResult() {
+    }
+
     /**
      * Get the value property: The peerings in a virtual network.
      *

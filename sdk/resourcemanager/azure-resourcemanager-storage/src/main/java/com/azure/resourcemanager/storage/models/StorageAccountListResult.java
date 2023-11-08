@@ -19,12 +19,15 @@ public final class StorageAccountListResult {
     private List<StorageAccountInner> value;
 
     /*
-     * Request URL that can be used to query next page of storage accounts.
-     * Returned when total number of requested storage accounts exceed maximum
-     * page size.
+     * Request URL that can be used to query next page of storage accounts. Returned when total number of requested
+     * storage accounts exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of StorageAccountListResult class. */
+    public StorageAccountListResult() {
+    }
 
     /**
      * Get the value property: Gets the list of storage accounts and their properties.

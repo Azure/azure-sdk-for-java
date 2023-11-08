@@ -19,17 +19,20 @@ public final class DeploymentLocationsInner {
     private List<GeoRegionInner> locations;
 
     /*
-     * Available App Service Environments with full descriptions of the
-     * environments.
+     * Available App Service Environments with full descriptions of the environments.
      */
     @JsonProperty(value = "hostingEnvironments")
-    private List<AppServiceEnvironment> hostingEnvironments;
+    private List<AppServiceEnvironmentInner> hostingEnvironments;
 
     /*
      * Available App Service Environments with basic information.
      */
     @JsonProperty(value = "hostingEnvironmentDeploymentInfos")
     private List<HostingEnvironmentDeploymentInfo> hostingEnvironmentDeploymentInfos;
+
+    /** Creates an instance of DeploymentLocationsInner class. */
+    public DeploymentLocationsInner() {
+    }
 
     /**
      * Get the locations property: Available regions.
@@ -57,7 +60,7 @@ public final class DeploymentLocationsInner {
      *
      * @return the hostingEnvironments value.
      */
-    public List<AppServiceEnvironment> hostingEnvironments() {
+    public List<AppServiceEnvironmentInner> hostingEnvironments() {
         return this.hostingEnvironments;
     }
 
@@ -68,7 +71,7 @@ public final class DeploymentLocationsInner {
      * @param hostingEnvironments the hostingEnvironments value to set.
      * @return the DeploymentLocationsInner object itself.
      */
-    public DeploymentLocationsInner withHostingEnvironments(List<AppServiceEnvironment> hostingEnvironments) {
+    public DeploymentLocationsInner withHostingEnvironments(List<AppServiceEnvironmentInner> hostingEnvironments) {
         this.hostingEnvironments = hostingEnvironments;
         return this;
     }

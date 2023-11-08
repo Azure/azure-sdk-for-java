@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabasePrincipalType. */
+/** Database principal type. */
 public final class DatabasePrincipalType extends ExpandableStringEnum<DatabasePrincipalType> {
     /** Static value App for DatabasePrincipalType. */
     public static final DatabasePrincipalType APP = fromString("App");
@@ -18,6 +18,15 @@ public final class DatabasePrincipalType extends ExpandableStringEnum<DatabasePr
 
     /** Static value User for DatabasePrincipalType. */
     public static final DatabasePrincipalType USER = fromString("User");
+
+    /**
+     * Creates a new instance of DatabasePrincipalType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabasePrincipalType() {
+    }
 
     /**
      * Creates or finds a DatabasePrincipalType from its string representation.
@@ -30,7 +39,11 @@ public final class DatabasePrincipalType extends ExpandableStringEnum<DatabasePr
         return fromString(name, DatabasePrincipalType.class);
     }
 
-    /** @return known DatabasePrincipalType values. */
+    /**
+     * Gets known DatabasePrincipalType values.
+     *
+     * @return known DatabasePrincipalType values.
+     */
     public static Collection<DatabasePrincipalType> values() {
         return values(DatabasePrincipalType.class);
     }

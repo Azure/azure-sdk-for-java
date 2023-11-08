@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** WebHook activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -23,33 +24,29 @@ public class WebHookActivity extends ControlActivity {
     private WebHookActivityMethod method;
 
     /*
-     * WebHook activity target endpoint and path. Type: string (or Expression
-     * with resultType string).
+     * WebHook activity target endpoint and path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
-     * The timeout within which the webhook should be called back. If there is
-     * no value specified, it defaults to 10 minutes. Type: string. Pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The timeout within which the webhook should be called back. If there is no value specified, it defaults to 10
+     * minutes. Type: string. Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "typeProperties.timeout")
     private String timeout;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to
-     * set the language and type on a request: "headers" : { "Accept-Language":
-     * "en-us", "Content-Type": "application/json" }. Type: string (or
-     * Expression with resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
+     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.headers")
     private Object headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for
-     * POST/PUT method, not allowed for GET method Type: string (or Expression
-     * with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
+     * method Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.body")
     private Object body;
@@ -61,13 +58,15 @@ public class WebHookActivity extends ControlActivity {
     private WebActivityAuthentication authentication;
 
     /*
-     * When set to true, statusCode, output and error in callback request body
-     * will be consumed by activity. The activity can be marked as failed by
-     * setting statusCode >= 400 in callback request. Default is false. Type:
+     * When set to true, statusCode, output and error in callback request body will be consumed by activity. The
+     * activity can be marked as failed by setting statusCode >= 400 in callback request. Default is false. Type:
      * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.reportStatusOnCallBack")
     private Object reportStatusOnCallBack;
+
+    /** Creates an instance of WebHookActivity class. */
+    public WebHookActivity() {}
 
     /**
      * Get the method property: Rest API method for target endpoint.
@@ -222,6 +221,48 @@ public class WebHookActivity extends ControlActivity {
      */
     public WebHookActivity setReportStatusOnCallBack(Object reportStatusOnCallBack) {
         this.reportStatusOnCallBack = reportStatusOnCallBack;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebHookActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebHookActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebHookActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebHookActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebHookActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebHookActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

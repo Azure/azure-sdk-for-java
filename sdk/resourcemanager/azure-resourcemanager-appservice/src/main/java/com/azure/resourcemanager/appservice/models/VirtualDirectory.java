@@ -22,6 +22,10 @@ public final class VirtualDirectory {
     @JsonProperty(value = "physicalPath")
     private String physicalPath;
 
+    /** Creates an instance of VirtualDirectory class. */
+    public VirtualDirectory() {
+    }
+
     /**
      * Get the virtualPath property: Path to virtual application.
      *

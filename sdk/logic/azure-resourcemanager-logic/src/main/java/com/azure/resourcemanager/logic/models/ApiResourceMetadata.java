@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The api resource metadata. */
 @Fluent
 public final class ApiResourceMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiResourceMetadata.class);
-
     /*
      * The source.
      */
@@ -37,6 +34,7 @@ public final class ApiResourceMetadata {
      * The tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -74,6 +72,10 @@ public final class ApiResourceMetadata {
      */
     @JsonProperty(value = "deploymentParameters")
     private ApiDeploymentParameterMetadataSet deploymentParameters;
+
+    /** Creates an instance of ApiResourceMetadata class. */
+    public ApiResourceMetadata() {
+    }
 
     /**
      * Get the source property: The source.

@@ -20,11 +20,14 @@ public final class PrivateDnsZoneGroupPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * A collection of private dns zone configurations of the private dns zone
-     * group.
+     * A collection of private dns zone configurations of the private dns zone group.
      */
     @JsonProperty(value = "privateDnsZoneConfigs")
     private List<PrivateDnsZoneConfig> privateDnsZoneConfigs;
+
+    /** Creates an instance of PrivateDnsZoneGroupPropertiesFormat class. */
+    public PrivateDnsZoneGroupPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the private dns zone group resource.

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.storageimportexport.fluent.JobsClient;
 import com.azure.resourcemanager.storageimportexport.fluent.models.JobResponseInner;
 import com.azure.resourcemanager.storageimportexport.models.JobResponse;
 import com.azure.resourcemanager.storageimportexport.models.Jobs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobsImpl implements Jobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobsImpl.class);
 
     private final JobsClient innerClient;
 
@@ -51,15 +50,6 @@ public final class JobsImpl implements Jobs {
         return Utils.mapPage(inner, inner1 -> new JobResponseImpl(inner1, this.manager()));
     }
 
-    public JobResponse getByResourceGroup(String resourceGroupName, String jobName) {
-        JobResponseInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, jobName);
-        if (inner != null) {
-            return new JobResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<JobResponse> getByResourceGroupWithResponse(
         String resourceGroupName, String jobName, Context context) {
         Response<JobResponseInner> inner =
@@ -75,18 +65,27 @@ public final class JobsImpl implements Jobs {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String jobName) {
-        this.serviceClient().delete(resourceGroupName, jobName);
+    public JobResponse getByResourceGroup(String resourceGroupName, String jobName) {
+        JobResponseInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, jobName);
+        if (inner != null) {
+            return new JobResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String jobName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String jobName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, jobName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String jobName) {
+        this.serviceClient().delete(resourceGroupName, jobName);
     }
 
     public JobResponse getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -105,7 +104,7 @@ public final class JobsImpl implements Jobs {
     public Response<JobResponse> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,7 +112,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -124,7 +123,7 @@ public final class JobsImpl implements Jobs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,18 +131,18 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, jobName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, jobName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,12 +150,12 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, jobName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, jobName, context);
     }
 
     private JobsClient serviceClient() {

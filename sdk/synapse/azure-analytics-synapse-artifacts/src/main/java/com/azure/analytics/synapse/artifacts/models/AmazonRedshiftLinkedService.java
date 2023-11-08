@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for Amazon Redshift. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,15 +19,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AmazonRedshiftLinkedService extends LinkedService {
     /*
-     * The name of the Amazon Redshift server. Type: string (or Expression with
-     * resultType string).
+     * The name of the Amazon Redshift server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.server", required = true)
     private Object server;
 
     /*
-     * The username of the Amazon Redshift source. Type: string (or Expression
-     * with resultType string).
+     * The username of the Amazon Redshift source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private Object username;
@@ -37,27 +37,27 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The database name of the Amazon Redshift source. Type: string (or
-     * Expression with resultType string).
+     * The database name of the Amazon Redshift source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
     /*
-     * The TCP port number that the Amazon Redshift server uses to listen for
-     * client connections. The default value is 5439. Type: integer (or
-     * Expression with resultType integer).
+     * The TCP port number that the Amazon Redshift server uses to listen for client connections. The default value is
+     * 5439. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "typeProperties.port")
     private Object port;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of AmazonRedshiftLinkedService class. */
+    public AmazonRedshiftLinkedService() {}
 
     /**
      * Get the server property: The name of the Amazon Redshift server. Type: string (or Expression with resultType
@@ -186,6 +186,34 @@ public class AmazonRedshiftLinkedService extends LinkedService {
      */
     public AmazonRedshiftLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonRedshiftLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

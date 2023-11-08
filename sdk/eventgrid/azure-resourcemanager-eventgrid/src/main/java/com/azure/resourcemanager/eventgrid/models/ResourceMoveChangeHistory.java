@@ -29,6 +29,10 @@ public final class ResourceMoveChangeHistory {
     @JsonProperty(value = "changedTimeUtc")
     private OffsetDateTime changedTimeUtc;
 
+    /** Creates an instance of ResourceMoveChangeHistory class. */
+    public ResourceMoveChangeHistory() {
+    }
+
     /**
      * Get the azureSubscriptionId property: Azure subscription ID of the resource.
      *

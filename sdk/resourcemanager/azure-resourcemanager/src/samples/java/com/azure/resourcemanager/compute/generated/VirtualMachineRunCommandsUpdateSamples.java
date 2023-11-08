@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
+import com.azure.resourcemanager.compute.models.RunCommandManagedIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandScriptSource;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
+import java.util.Arrays;
 
 /** Samples for VirtualMachineRunCommands Update. */
 public final class VirtualMachineRunCommandsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/UpdateRunCommand.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/runCommandExamples/VirtualMachineRunCommand_Update.json
      */
     /**
      * Sample code: Update a run command.
@@ -30,7 +32,22 @@ public final class VirtualMachineRunCommandsUpdateSamples {
                 "myRunCommand",
                 new VirtualMachineRunCommandUpdate()
                     .withSource(
-                        new VirtualMachineRunCommandScriptSource().withScript("Write-Host Script Source Updated!")),
-                Context.NONE);
+                        new VirtualMachineRunCommandScriptSource()
+                            .withScript("Write-Host Hello World! ; Remove-Item C:\test\testFile.txt"))
+                    .withParameters(
+                        Arrays
+                            .asList(
+                                new RunCommandInputParameter().withName("param1").withValue("value1"),
+                                new RunCommandInputParameter().withName("param2").withValue("value2")))
+                    .withAsyncExecution(false)
+                    .withRunAsUser("user1")
+                    .withRunAsPassword("fakeTokenPlaceholder")
+                    .withTimeoutInSeconds(3600)
+                    .withOutputBlobUri(
+                        "https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/outputUri")
+                    .withErrorBlobUri("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt")
+                    .withErrorBlobManagedIdentity(
+                        new RunCommandManagedIdentity().withObjectId("4231e4d2-33e4-4e23-96b2-17888afa6072")),
+                com.azure.core.util.Context.NONE);
     }
 }

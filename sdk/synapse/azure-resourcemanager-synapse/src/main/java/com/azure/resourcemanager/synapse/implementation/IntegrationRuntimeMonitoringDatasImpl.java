@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeMonitoringData
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeMonitoringDataInner;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeMonitoringData;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeMonitoringDatas;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeMonitoringDatasImpl implements IntegrationRuntimeMonitoringDatas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeMonitoringDatasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeMonitoringDatasImpl.class);
 
     private final IntegrationRuntimeMonitoringDatasClient innerClient;
 
@@ -28,17 +27,6 @@ public final class IntegrationRuntimeMonitoringDatasImpl implements IntegrationR
         this.serviceManager = serviceManager;
     }
 
-    public IntegrationRuntimeMonitoringData list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeMonitoringDataInner inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeMonitoringDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeMonitoringData> listWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         Response<IntegrationRuntimeMonitoringDataInner> inner =
@@ -49,6 +37,17 @@ public final class IntegrationRuntimeMonitoringDatasImpl implements IntegrationR
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeMonitoringDataImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeMonitoringData list(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeMonitoringDataInner inner =
+            this.serviceClient().list(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeMonitoringDataImpl(inner, this.manager());
         } else {
             return null;
         }

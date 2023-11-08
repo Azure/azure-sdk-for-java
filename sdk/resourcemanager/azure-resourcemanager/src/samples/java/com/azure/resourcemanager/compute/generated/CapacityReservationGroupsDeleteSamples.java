@@ -4,43 +4,41 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CapacityReservationGroups Delete. */
 public final class CapacityReservationGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CapacityReservationGroups_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/capacityReservationExamples/CapacityReservationGroup_Delete_MinimumSet_Gen.json
      */
     /**
-     * Sample code: CapacityReservationGroups_Delete_MinimumSet_Gen.
+     * Sample code: CapacityReservationGroup_Delete_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void capacityReservationGroupsDeleteMinimumSetGen(
+    public static void capacityReservationGroupDeleteMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getCapacityReservationGroups()
-            .deleteWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .deleteWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CapacityReservationGroups_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/capacityReservationExamples/CapacityReservationGroup_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: CapacityReservationGroups_Delete_MaximumSet_Gen.
+     * Sample code: CapacityReservationGroup_Delete_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void capacityReservationGroupsDeleteMaximumSetGen(
+    public static void capacityReservationGroupDeleteMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getCapacityReservationGroups()
-            .deleteWithResponse("rgcompute", "a", Context.NONE);
+            .deleteWithResponse("rgcompute", "a", com.azure.core.util.Context.NONE);
     }
 }

@@ -2,7 +2,7 @@
 
 Azure Resource Manager Automanage client library for Java.
 
-This package contains Microsoft Azure SDK for Automanage Management SDK. Automanage Client. Package tag package-2021-04-30-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Automanage Management SDK. Automanage Client. Package tag package-2022-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -76,6 +76,94 @@ See [API design][design] for general introduction on design and key concepts on 
 
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/automanage/azure-resourcemanager-automanage/SAMPLE.md)
 
+### Create Custom Configuration Profile
+
+```java
+Map<String, String> tags = Map.of("environment", "prod");
+
+String configuration = "{" +
+        "\"Antimalware/Enable\":false," +
+        "\"AzureSecurityCenter/Enable\":true," +
+        "\"Backup/Enable\":false," +
+        "\"BootDiagnostics/Enable\":true," +
+        "\"ChangeTrackingAndInventory/Enable\":true," +
+        "\"GuestConfiguration/Enable\":true," +
+        "\"LogAnalytics/Enable\":true," +
+        "\"UpdateManagement/Enable\":true," +
+        "\"VMInsights/Enable\":true" +
+        "}";
+
+client
+        .configurationProfiles()
+        .define("configurationProfileName")
+        .withRegion("East US")
+        .withExistingResourceGroup("resourceGroup")
+        .withTags(tags)
+        .withProperties(
+            new ConfigurationProfileProperties()
+                .withConfiguration(
+                    SerializerFactory
+                        .createDefaultManagementSerializerAdapter()
+                        .deserialize(
+                            configuration,
+                            Object.class,
+                            SerializerEncoding.JSON)))
+        .create();
+```
+
+### Delete Custom Configuration Profile by Resource ID
+
+```java
+client.configurationProfiles().deleteById("<resource ID>");
+```
+
+### Delete Custom Configuration Profile by Resource Group 
+
+```java
+client.configurationProfiles().deleteByResourceGroup("resourceGroup", "configurationProfileName");
+```
+
+### Get Custom Configuration Profile by Resource ID
+
+```java
+ConfigurationProfile profile = client.configurationProfiles().getById("<resource ID>");
+System.out.println(profile.innerModel().properties().configuration());
+```
+
+### Create Best Practices Production Profile Assignment 
+
+```java
+String configProfile = "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction";
+client
+    .configurationProfileAssignments()
+    .define("default") // name must be default
+    .withExistingVirtualMachine("resourceGroup", "vmName")
+    .withProperties(
+        new ConfigurationProfileAssignmentProperties()
+            .withConfigurationProfile("configurationProfileName"))
+    .create();
+```
+
+### Create Custom Profile Assignment 
+
+```java
+String configProfile = "/subscriptions/<subscription ID>/resourceGroups/resourceGroup/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName";
+
+client
+    .configurationProfileAssignments()
+    .define("default") // name must be default
+    .withExistingVirtualMachine("resourceGroup", "vmName")
+    .withProperties(
+        new ConfigurationProfileAssignmentProperties()
+            .withConfigurationProfile("configurationProfileName"))
+    .create();
+```
+
+### Get Profile Assignment 
+
+```java 
+ConfigurationProfileAssignment assignment = client.configurationProfileAssignments().get("resourceGroup", "default", "vmName"); // name must be default
+```
 
 ## Troubleshooting
 

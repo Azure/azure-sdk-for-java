@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AliasPathTokenType. */
+/** The type of the token that the alias path is referring to. */
 public final class AliasPathTokenType extends ExpandableStringEnum<AliasPathTokenType> {
     /** Static value NotSpecified for AliasPathTokenType. */
     public static final AliasPathTokenType NOT_SPECIFIED = fromString("NotSpecified");
@@ -35,6 +35,15 @@ public final class AliasPathTokenType extends ExpandableStringEnum<AliasPathToke
     public static final AliasPathTokenType BOOLEAN = fromString("Boolean");
 
     /**
+     * Creates a new instance of AliasPathTokenType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AliasPathTokenType() {
+    }
+
+    /**
      * Creates or finds a AliasPathTokenType from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class AliasPathTokenType extends ExpandableStringEnum<AliasPathToke
         return fromString(name, AliasPathTokenType.class);
     }
 
-    /** @return known AliasPathTokenType values. */
+    /**
+     * Gets known AliasPathTokenType values.
+     *
+     * @return known AliasPathTokenType values.
+     */
     public static Collection<AliasPathTokenType> values() {
         return values(AliasPathTokenType.class);
     }

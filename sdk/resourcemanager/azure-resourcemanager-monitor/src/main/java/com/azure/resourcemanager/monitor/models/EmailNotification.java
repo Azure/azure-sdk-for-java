@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Email notification of an autoscale event. */
 @Fluent
 public final class EmailNotification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EmailNotification.class);
-
     /*
      * a value indicating whether to send email to subscription administrator.
      */
@@ -22,18 +18,20 @@ public final class EmailNotification {
     private Boolean sendToSubscriptionAdministrator;
 
     /*
-     * a value indicating whether to send email to subscription
-     * co-administrators.
+     * a value indicating whether to send email to subscription co-administrators.
      */
     @JsonProperty(value = "sendToSubscriptionCoAdministrators")
     private Boolean sendToSubscriptionCoAdministrators;
 
     /*
-     * the custom e-mails list. This value can be null or empty, in which case
-     * this attribute will be ignored.
+     * the custom e-mails list. This value can be null or empty, in which case this attribute will be ignored.
      */
     @JsonProperty(value = "customEmails")
     private List<String> customEmails;
+
+    /** Creates an instance of EmailNotification class. */
+    public EmailNotification() {
+    }
 
     /**
      * Get the sendToSubscriptionAdministrator property: a value indicating whether to send email to subscription

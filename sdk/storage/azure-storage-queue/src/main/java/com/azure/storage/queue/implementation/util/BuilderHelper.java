@@ -23,7 +23,10 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
@@ -35,6 +38,7 @@ import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
+import com.azure.storage.queue.models.QueueAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,16 +47,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+
 /**
  * This class provides helper methods for common builder patterns.
  */
 public final class BuilderHelper {
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-storage-queue.properties");
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
-    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-storage-queue.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
 
     /**
      * Determines whether or not the passed authority is IP style, that is it is of the format
@@ -94,8 +102,7 @@ public final class BuilderHelper {
                     parts.setQueueName(pathPieces[1]);
                 }
 
-                parts.setEndpoint(String.format("%s://%s/%s", url.getProtocol(), url.getAuthority(),
-                    parts.getAccountName()));
+                parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority() + "/" + parts.getAccountName());
             } else {
                 // URL is using a pattern of http://accountName.queue.core.windows.net/queueName
                 String host = url.getHost();
@@ -117,7 +124,7 @@ public final class BuilderHelper {
                     parts.setQueueName(pathSegments[1]);
                 }
 
-                parts.setEndpoint(String.format("%s://%s", url.getProtocol(), url.getAuthority()));
+                parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority());
             }
 
             // Attempt to get the SAS token from the URL passed
@@ -150,6 +157,7 @@ public final class BuilderHelper {
      * @param perCallPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per call.
      * @param perRetryPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
      * @param configuration Configuration store contain environment settings.
+     * @param audience {@link QueueAudience} used to determine the audience of the path.
      * @param logger {@link ClientLogger} used to log any exception.
      * @return A new {@link HttpPipeline} from the passed values.
      */
@@ -159,7 +167,7 @@ public final class BuilderHelper {
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions,
         HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
-        Configuration configuration, ClientLogger logger) {
+        Configuration configuration, QueueAudience audience, ClientLogger logger) {
 
         CredentialValidator.validateSingleCredentialIsPresent(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
@@ -178,9 +186,8 @@ public final class BuilderHelper {
 
         // We need to place this policy right before the credential policy since headers may affect the string to sign
         // of the request.
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());
@@ -190,7 +197,9 @@ public final class BuilderHelper {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
+            String scope = audience != null ? ((audience.toString().endsWith("/")
+                ? audience + ".default" : audience + "/.default")) : Constants.STORAGE_SCOPE;
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, scope);
         } else if (azureSasCredential != null) {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
         } else if (sasToken != null) {
@@ -216,6 +225,8 @@ public final class BuilderHelper {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .clientOptions(clientOptions)
+            .tracer(createTracer(clientOptions))
             .build();
     }
 
@@ -242,9 +253,7 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions,
         ClientOptions clientOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
-
-        String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
-            : logOptions.getApplicationId();
+        String applicationId = CoreUtils.getApplicationId(clientOptions, logOptions);
         return new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, configuration);
     }
 
@@ -275,6 +284,11 @@ public final class BuilderHelper {
         }
     }
 
+    private static Tracer createTracer(ClientOptions clientOptions) {
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        return TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, STORAGE_TRACING_NAMESPACE_VALUE, tracingOptions);
+    }
 
     public static class QueueUrlParts {
         private String scheme;

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
@@ -41,6 +42,10 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of VirtualNetworkGatewayConnectionInner class. */
+    public VirtualNetworkGatewayConnectionInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the virtual network gateway connection.
@@ -457,6 +462,32 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
+     * Get the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     *
+     * @return the gatewayCustomBgpIpAddresses value.
+     */
+    public List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().gatewayCustomBgpIpAddresses();
+    }
+
+    /**
+     * Set the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     *
+     * @param gatewayCustomBgpIpAddresses the gatewayCustomBgpIpAddresses value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withGatewayCustomBgpIpAddresses(
+        List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayConnectionPropertiesFormatInner();
+        }
+        this.innerProperties().withGatewayCustomBgpIpAddresses(gatewayCustomBgpIpAddresses);
+        return this;
+    }
+
+    /**
      * Get the useLocalAzureIpAddress property: Use private local Azure IP for the connection.
      *
      * @return the useLocalAzureIpAddress value.
@@ -588,6 +619,31 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
             this.innerProperties = new VirtualNetworkGatewayConnectionPropertiesFormatInner();
         }
         this.innerProperties().withExpressRouteGatewayBypass(expressRouteGatewayBypass);
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @return the enablePrivateLinkFastPath value.
+     */
+    public Boolean enablePrivateLinkFastPath() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePrivateLinkFastPath();
+    }
+
+    /**
+     * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withEnablePrivateLinkFastPath(Boolean enablePrivateLinkFastPath) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayConnectionPropertiesFormatInner();
+        }
+        this.innerProperties().withEnablePrivateLinkFastPath(enablePrivateLinkFastPath);
         return this;
     }
 

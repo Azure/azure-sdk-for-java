@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.AfdOriginGroupsClient;
@@ -46,8 +45,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AfdOriginGroupsClient. */
 public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
-    private final ClientLogger logger = new ClientLogger(AfdOriginGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AfdOriginGroupsService service;
 
@@ -71,11 +68,10 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientA")
-    private interface AfdOriginGroupsService {
+    public interface AfdOriginGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AfdOriginGroupListResult>> listByProfile(
@@ -89,8 +85,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AfdOriginGroupInner>> get(
@@ -105,8 +100,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -122,8 +116,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -139,8 +132,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -155,8 +147,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/usages")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<UsagesListResult>> listResourceUsage(
@@ -503,31 +494,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdOriginGroupInner> getAsync(String resourceGroupName, String profileName, String originGroupName) {
         return getWithResponseAsync(resourceGroupName, profileName, originGroupName)
-            .flatMap(
-                (Response<AfdOriginGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an existing origin group within a profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within a profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AfdOriginGroupInner get(String resourceGroupName, String profileName, String originGroupName) {
-        return getAsync(resourceGroupName, profileName, originGroupName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -550,6 +517,23 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     }
 
     /**
+     * Gets an existing origin group within a profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param originGroupName Name of the origin group which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing origin group within a profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AfdOriginGroupInner get(String resourceGroupName, String profileName, String originGroupName) {
+        return getWithResponse(resourceGroupName, profileName, originGroupName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates a new origin group within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
@@ -561,7 +545,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
+     *     served from Azure Front Door along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -625,7 +609,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
+     *     served from Azure Front Door along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -689,7 +673,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of aFDOrigin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     *     origins when the content cannot be served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginCreateAsync(
@@ -719,7 +703,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of aFDOrigin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     *     origins when the content cannot be served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginCreateAsync(
@@ -749,12 +733,12 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of aFDOrigin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     *     origins when the content cannot be served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginCreate(
         String resourceGroupName, String profileName, String originGroupName, AfdOriginGroupInner originGroup) {
-        return beginCreateAsync(resourceGroupName, profileName, originGroupName, originGroup).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, profileName, originGroupName, originGroup).getSyncPoller();
     }
 
     /**
@@ -770,7 +754,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of aFDOrigin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     *     origins when the content cannot be served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginCreate(
@@ -779,7 +763,9 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
         String originGroupName,
         AfdOriginGroupInner originGroup,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, originGroupName, originGroup, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, originGroupName, originGroup, context)
+            .getSyncPoller();
     }
 
     /**
@@ -794,7 +780,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN on successful completion of {@link Mono}.
+     *     served from Azure Front Door on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdOriginGroupInner> createAsync(
@@ -817,7 +803,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN on successful completion of {@link Mono}.
+     *     served from Azure Front Door on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AfdOriginGroupInner> createAsync(
@@ -843,7 +829,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AfdOriginGroupInner create(
@@ -864,7 +850,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AfdOriginGroupInner create(
@@ -888,7 +874,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
+     *     served from Azure Front Door along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -958,7 +944,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
+     *     served from Azure Front Door along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1025,7 +1011,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of aFDOrigin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     *     origins when the content cannot be served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginUpdateAsync(
@@ -1058,7 +1044,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of aFDOrigin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     *     origins when the content cannot be served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginUpdateAsync(
@@ -1089,7 +1075,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of aFDOrigin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     *     origins when the content cannot be served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginUpdate(
@@ -1097,7 +1083,8 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
         String profileName,
         String originGroupName,
         AfdOriginGroupUpdateParameters originGroupUpdateProperties) {
-        return beginUpdateAsync(resourceGroupName, profileName, originGroupName, originGroupUpdateProperties)
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, originGroupName, originGroupUpdateProperties)
             .getSyncPoller();
     }
 
@@ -1114,7 +1101,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of aFDOrigin group comprising of origins is used for load balancing to
-     *     origins when the content cannot be served from CDN.
+     *     origins when the content cannot be served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginUpdate(
@@ -1123,7 +1110,8 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
         String originGroupName,
         AfdOriginGroupUpdateParameters originGroupUpdateProperties,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, profileName, originGroupName, originGroupUpdateProperties, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, originGroupName, originGroupUpdateProperties, context)
             .getSyncPoller();
     }
 
@@ -1139,7 +1127,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN on successful completion of {@link Mono}.
+     *     served from Azure Front Door on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdOriginGroupInner> updateAsync(
@@ -1165,7 +1153,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN on successful completion of {@link Mono}.
+     *     served from Azure Front Door on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AfdOriginGroupInner> updateAsync(
@@ -1191,7 +1179,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AfdOriginGroupInner update(
@@ -1215,7 +1203,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AfdOriginGroupInner update(
@@ -1398,7 +1386,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String originGroupName) {
-        return beginDeleteAsync(resourceGroupName, profileName, originGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, originGroupName).getSyncPoller();
     }
 
     /**
@@ -1417,7 +1405,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String originGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, originGroupName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, originGroupName, context).getSyncPoller();
     }
 
     /**
@@ -1494,7 +1482,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1559,7 +1547,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1622,7 +1610,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1642,7 +1630,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1663,7 +1651,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1681,7 +1669,7 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door profile..
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1702,7 +1690,8 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1738,7 +1727,8 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1776,7 +1766,8 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1812,7 +1803,8 @@ public final class AfdOriginGroupsClientImpl implements AfdOriginGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -5,43 +5,32 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** An Azure SQL managed instance administrator. */
-@JsonFlatten
 @Fluent
-public class ManagedInstanceAdministratorInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceAdministratorInner.class);
-
+public final class ManagedInstanceAdministratorInner extends ProxyResource {
     /*
-     * Type of the managed instance administrator.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.administratorType")
-    private ManagedInstanceAdministratorType administratorType;
+    @JsonProperty(value = "properties")
+    private ManagedInstanceAdministratorProperties innerProperties;
 
-    /*
-     * Login name of the managed instance administrator.
-     */
-    @JsonProperty(value = "properties.login")
-    private String login;
+    /** Creates an instance of ManagedInstanceAdministratorInner class. */
+    public ManagedInstanceAdministratorInner() {
+    }
 
-    /*
-     * SID (object ID) of the managed instance administrator.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sid")
-    private UUID sid;
-
-    /*
-     * Tenant ID of the managed instance administrator.
-     */
-    @JsonProperty(value = "properties.tenantId")
-    private UUID tenantId;
+    private ManagedInstanceAdministratorProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the administratorType property: Type of the managed instance administrator.
@@ -49,7 +38,7 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
      * @return the administratorType value.
      */
     public ManagedInstanceAdministratorType administratorType() {
-        return this.administratorType;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorType();
     }
 
     /**
@@ -59,7 +48,10 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
      * @return the ManagedInstanceAdministratorInner object itself.
      */
     public ManagedInstanceAdministratorInner withAdministratorType(ManagedInstanceAdministratorType administratorType) {
-        this.administratorType = administratorType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceAdministratorProperties();
+        }
+        this.innerProperties().withAdministratorType(administratorType);
         return this;
     }
 
@@ -69,7 +61,7 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
      * @return the login value.
      */
     public String login() {
-        return this.login;
+        return this.innerProperties() == null ? null : this.innerProperties().login();
     }
 
     /**
@@ -79,7 +71,10 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
      * @return the ManagedInstanceAdministratorInner object itself.
      */
     public ManagedInstanceAdministratorInner withLogin(String login) {
-        this.login = login;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceAdministratorProperties();
+        }
+        this.innerProperties().withLogin(login);
         return this;
     }
 
@@ -89,7 +84,7 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
      * @return the sid value.
      */
     public UUID sid() {
-        return this.sid;
+        return this.innerProperties() == null ? null : this.innerProperties().sid();
     }
 
     /**
@@ -99,7 +94,10 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
      * @return the ManagedInstanceAdministratorInner object itself.
      */
     public ManagedInstanceAdministratorInner withSid(UUID sid) {
-        this.sid = sid;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceAdministratorProperties();
+        }
+        this.innerProperties().withSid(sid);
         return this;
     }
 
@@ -109,7 +107,7 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
      * @return the tenantId value.
      */
     public UUID tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -119,7 +117,10 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
      * @return the ManagedInstanceAdministratorInner object itself.
      */
     public ManagedInstanceAdministratorInner withTenantId(UUID tenantId) {
-        this.tenantId = tenantId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceAdministratorProperties();
+        }
+        this.innerProperties().withTenantId(tenantId);
         return this;
     }
 
@@ -129,5 +130,8 @@ public class ManagedInstanceAdministratorInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

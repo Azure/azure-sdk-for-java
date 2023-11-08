@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Factories GetByResourceGroup. */
 public final class FactoriesGetByResourceGroupSamples {
     /*
@@ -19,6 +17,7 @@ public final class FactoriesGetByResourceGroupSamples {
     public static void factoriesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .factories()
-            .getByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName", null, Context.NONE);
+            .getByResourceGroupWithResponse(
+                "exampleResourceGroup", "exampleFactoryName", null, com.azure.core.util.Context.NONE);
     }
 }

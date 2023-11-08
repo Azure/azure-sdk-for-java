@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HostnameOperator. */
+/** Describes operator to be matched. */
 public final class HostnameOperator extends ExpandableStringEnum<HostnameOperator> {
     /** Static value Any for HostnameOperator. */
     public static final HostnameOperator ANY = fromString("Any");
@@ -41,6 +41,15 @@ public final class HostnameOperator extends ExpandableStringEnum<HostnameOperato
     public static final HostnameOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of HostnameOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HostnameOperator() {
+    }
+
+    /**
      * Creates or finds a HostnameOperator from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class HostnameOperator extends ExpandableStringEnum<HostnameOperato
         return fromString(name, HostnameOperator.class);
     }
 
-    /** @return known HostnameOperator values. */
+    /**
+     * Gets known HostnameOperator values.
+     *
+     * @return known HostnameOperator values.
+     */
     public static Collection<HostnameOperator> values() {
         return values(HostnameOperator.class);
     }

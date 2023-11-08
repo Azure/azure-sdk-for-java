@@ -10,6 +10,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,7 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
 
     protected static class CreateEmailHookInput {
         static final CreateEmailHookInput INSTANCE = new CreateEmailHookInput();
-        String name = UUID.randomUUID().toString();
+        String name = CoreUtils.randomUuid().toString();
         String email1 = "simpleuser0@hotmail.com";
         String email2 = "simpleuser1@hotmail.com";
         String description = "alert_us!";
@@ -65,15 +66,15 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
         String endpoint = "https://httpbin.org/post";
         String description = "alert_us!";
         String externalLink = "https://github.com/Azure/azure-sdk-for-java/wiki";
-        String userName = "test";
-        String password = "testpwd!@#";
+        String username = "username";
+        String fakePasswordPlaceholder = "fakePasswordPlaceholder";
         HttpHeaders httpHeaders = new HttpHeaders()
             .put("x-contoso-id", "123")
             .put("x-contoso-name", "contoso");
         WebNotificationHook hook = new WebNotificationHook(name, endpoint)
             .setDescription(description)
             .setExternalLink(externalLink)
-            .setUserCredentials(userName, password)
+            .setUserCredentials(username, fakePasswordPlaceholder)
             .setHttpHeaders(httpHeaders);
     }
 
@@ -104,11 +105,11 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
 
     protected static class ListHookInput {
         static final ListHookInput INSTANCE = new ListHookInput();
-        EmailNotificationHook emailHook = new EmailNotificationHook("java_test_" + UUID.randomUUID().toString())
+        EmailNotificationHook emailHook = new EmailNotificationHook("java_test_" + UUID.randomUUID())
             .setEmailsToAlert(new ArrayList<String>() {{
                     add("simpleuser0@hotmail.com");
                 }});
-        WebNotificationHook webHook = new WebNotificationHook("java_test_" + UUID.randomUUID().toString(),
+        WebNotificationHook webHook = new WebNotificationHook("java_test_" + UUID.randomUUID(),
             "https://httpbin.org/post");
         int pageSize = 1;
     }

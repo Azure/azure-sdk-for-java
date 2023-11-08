@@ -6,16 +6,12 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Base class for restore request. Workload-specific restore requests are derived from this class. */
 @Fluent
 public final class RestoreRequestResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreRequestResource.class);
-
     /*
      * RestoreRequestResource properties
      */
@@ -27,6 +23,10 @@ public final class RestoreRequestResource extends Resource {
      */
     @JsonProperty(value = "eTag")
     private String etag;
+
+    /** Creates an instance of RestoreRequestResource class. */
+    public RestoreRequestResource() {
+    }
 
     /**
      * Get the properties property: RestoreRequestResource properties.

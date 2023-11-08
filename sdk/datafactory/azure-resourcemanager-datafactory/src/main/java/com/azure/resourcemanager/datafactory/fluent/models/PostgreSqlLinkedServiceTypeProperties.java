@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PostgreSqlLinkedServiceTypeProperties {
     /*
-     * The connection string.
+     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
@@ -25,15 +25,19 @@ public final class PostgreSqlLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of PostgreSqlLinkedServiceTypeProperties class. */
+    public PostgreSqlLinkedServiceTypeProperties() {
+    }
 
     /**
-     * Get the connectionString property: The connection string.
+     * Get the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      *
      * @return the connectionString value.
      */
@@ -42,7 +46,8 @@ public final class PostgreSqlLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the connectionString property: The connection string.
+     * Set the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      *
      * @param connectionString the connectionString value to set.
      * @return the PostgreSqlLinkedServiceTypeProperties object itself.
@@ -74,22 +79,22 @@ public final class PostgreSqlLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PostgreSqlLinkedServiceTypeProperties object itself.
      */
-    public PostgreSqlLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public PostgreSqlLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

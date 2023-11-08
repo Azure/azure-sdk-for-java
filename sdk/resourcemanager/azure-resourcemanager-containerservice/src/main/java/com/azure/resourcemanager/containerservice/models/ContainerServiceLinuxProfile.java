@@ -23,6 +23,10 @@ public final class ContainerServiceLinuxProfile {
     @JsonProperty(value = "ssh", required = true)
     private ContainerServiceSshConfiguration ssh;
 
+    /** Creates an instance of ContainerServiceLinuxProfile class. */
+    public ContainerServiceLinuxProfile() {
+    }
+
     /**
      * Get the adminUsername property: The administrator username to use for Linux VMs.
      *

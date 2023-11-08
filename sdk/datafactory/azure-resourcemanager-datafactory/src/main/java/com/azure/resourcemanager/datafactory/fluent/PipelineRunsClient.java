@@ -20,21 +20,6 @@ public interface PipelineRunsClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the pipeline run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list pipeline runs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineRunsQueryResponseInner queryByFactory(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters);
-
-    /**
-     * Query pipeline runs in the factory based on input filter conditions.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the pipeline run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,18 +31,19 @@ public interface PipelineRunsClient {
         String resourceGroupName, String factoryName, RunFilterParameters filterParameters, Context context);
 
     /**
-     * Get a pipeline run by its run ID.
+     * Query pipeline runs in the factory based on input filter conditions.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param runId The pipeline run identifier.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline run by its run ID.
+     * @return a list pipeline runs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineRunInner get(String resourceGroupName, String factoryName, String runId);
+    PipelineRunsQueryResponseInner queryByFactory(
+        String resourceGroupName, String factoryName, RunFilterParameters filterParameters);
 
     /**
      * Get a pipeline run by its run ID.
@@ -76,7 +62,7 @@ public interface PipelineRunsClient {
         String resourceGroupName, String factoryName, String runId, Context context);
 
     /**
-     * Cancel a pipeline run by its run ID.
+     * Get a pipeline run by its run ID.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -84,9 +70,10 @@ public interface PipelineRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pipeline run by its run ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String resourceGroupName, String factoryName, String runId);
+    PipelineRunInner get(String resourceGroupName, String factoryName, String runId);
 
     /**
      * Cancel a pipeline run by its run ID.
@@ -104,4 +91,17 @@ public interface PipelineRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelWithResponse(
         String resourceGroupName, String factoryName, String runId, Boolean isRecursive, Context context);
+
+    /**
+     * Cancel a pipeline run by its run ID.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancel(String resourceGroupName, String factoryName, String runId);
 }

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResolutionType. */
+/** Defines the resolution type. */
 public final class ResolutionType extends ExpandableStringEnum<ResolutionType> {
     /** Static value Manual for ResolutionType. */
     public static final ResolutionType MANUAL = fromString("Manual");
 
     /** Static value Automatic for ResolutionType. */
     public static final ResolutionType AUTOMATIC = fromString("Automatic");
+
+    /**
+     * Creates a new instance of ResolutionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResolutionType() {
+    }
 
     /**
      * Creates or finds a ResolutionType from its string representation.
@@ -27,7 +36,11 @@ public final class ResolutionType extends ExpandableStringEnum<ResolutionType> {
         return fromString(name, ResolutionType.class);
     }
 
-    /** @return known ResolutionType values. */
+    /**
+     * Gets known ResolutionType values.
+     *
+     * @return known ResolutionType values.
+     */
     public static Collection<ResolutionType> values() {
         return values(ResolutionType.class);
     }

@@ -27,29 +27,25 @@ public final class StorageAccountCreateParameters {
     private Kind kind;
 
     /*
-     * Required. Gets or sets the location of the resource. This will be one of
-     * the supported and registered Azure Geo Regions (e.g. West US, East US,
-     * Southeast Asia, etc.). The geo region of a resource cannot be changed
-     * once it is created, but if an identical geo region is specified on
-     * update, the request will succeed.
+     * Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo
+     * Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is
+     * created, but if an identical geo region is specified on update, the request will succeed.
      */
     @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
-     * Optional. Set the extended location of the resource. If not set, the
-     * storage account will be created in Azure main region. Otherwise it will
-     * be created in the specified extended location
+     * Optional. Set the extended location of the resource. If not set, the storage account will be created in Azure
+     * main region. Otherwise it will be created in the specified extended location
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
-     * Gets or sets a list of key value pairs that describe the resource. These
-     * tags can be used for viewing and grouping this resource (across resource
-     * groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key with a length no greater than 128 characters and a value
-     * with a length no greater than 256 characters.
+     * Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and
+     * grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag
+     * must have a key with a length no greater than 128 characters and a value with a length no greater than 256
+     * characters.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -66,6 +62,10 @@ public final class StorageAccountCreateParameters {
      */
     @JsonProperty(value = "properties")
     private StorageAccountPropertiesCreateParameters innerProperties;
+
+    /** Creates an instance of StorageAccountCreateParameters class. */
+    public StorageAccountCreateParameters() {
+    }
 
     /**
      * Get the sku property: Required. Gets or sets the SKU name.
@@ -380,8 +380,9 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @return the accessTier value.
      */
@@ -390,8 +391,9 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountCreateParameters object itself.
@@ -576,7 +578,7 @@ public final class StorageAccountCreateParameters {
 
     /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
-     * account. The default interpretation is true for this property.
+     * account. The default interpretation is false for this property.
      *
      * @return the allowBlobPublicAccess value.
      */
@@ -586,7 +588,7 @@ public final class StorageAccountCreateParameters {
 
     /**
      * Set the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
-     * account. The default interpretation is true for this property.
+     * account. The default interpretation is false for this property.
      *
      * @param allowBlobPublicAccess the allowBlobPublicAccess value to set.
      * @return the StorageAccountCreateParameters object itself.
@@ -675,8 +677,10 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
+     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. Set this
+     * property to true for new or existing accounts only if object replication policies will involve storage accounts
+     * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
+     * by default.
      *
      * @return the allowCrossTenantReplication value.
      */
@@ -685,8 +689,10 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
+     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. Set this
+     * property to true for new or existing accounts only if object replication policies will involve storage accounts
+     * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
+     * by default.
      *
      * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
      * @return the StorageAccountCreateParameters object itself.
@@ -749,6 +755,33 @@ public final class StorageAccountCreateParameters {
             this.innerProperties = new StorageAccountPropertiesCreateParameters();
         }
         this.innerProperties().withImmutableStorageWithVersioning(immutableStorageWithVersioning);
+        return this;
+    }
+
+    /**
+     * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @return the dnsEndpointType value.
+     */
+    public DnsEndpointType dnsEndpointType() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsEndpointType();
+    }
+
+    /**
+     * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @param dnsEndpointType the dnsEndpointType value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withDnsEndpointType(DnsEndpointType dnsEndpointType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withDnsEndpointType(dnsEndpointType);
         return this;
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,13 +16,10 @@ import java.util.Map;
 /** calendarPermission. */
 @Fluent
 public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphCalendarPermission.class);
-
     /*
-     * List of allowed sharing or delegating permission levels for the
-     * calendar. Possible values are: none, freeBusyRead, limitedRead, read,
-     * write, delegateWithoutPrivateEventAccess,
-     * delegateWithPrivateEventAccess, custom.
+     * List of allowed sharing or delegating permission levels for the calendar. Possible values are: none,
+     * freeBusyRead, limitedRead, read, write, delegateWithoutPrivateEventAccess, delegateWithPrivateEventAccess,
+     * custom.
      */
     @JsonProperty(value = "allowedRoles")
     private List<MicrosoftGraphCalendarRoleType> allowedRoles;
@@ -35,24 +31,21 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
     private MicrosoftGraphEmailAddress emailAddress;
 
     /*
-     * True if the user in context (sharee or delegate) is inside the same
-     * organization as the calendar owner.
+     * True if the user in context (sharee or delegate) is inside the same organization as the calendar owner.
      */
     @JsonProperty(value = "isInsideOrganization")
     private Boolean isInsideOrganization;
 
     /*
-     * True if the user can be removed from the list of sharees or delegates
-     * for the specified calendar, false otherwise. The 'My organization' user
-     * determines the permissions other people within your organization have to
-     * the given calendar. You cannot remove 'My organization' as a sharee to a
-     * calendar.
+     * True if the user can be removed from the list of sharees or delegates for the specified calendar, false
+     * otherwise. The 'My organization' user determines the permissions other people within your organization have to
+     * the given calendar. You cannot remove 'My organization' as a sharee to a calendar.
      */
     @JsonProperty(value = "isRemovable")
     private Boolean isRemovable;
 
     /*
-     * The role property.
+     * calendarRoleType
      */
     @JsonProperty(value = "role")
     private MicrosoftGraphCalendarRoleType role;
@@ -61,6 +54,10 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
      * calendarPermission
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphCalendarPermission class. */
+    public MicrosoftGraphCalendarPermission() {
+    }
 
     /**
      * Get the allowedRoles property: List of allowed sharing or delegating permission levels for the calendar. Possible
@@ -153,7 +150,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
     }
 
     /**
-     * Get the role property: The role property.
+     * Get the role property: calendarRoleType.
      *
      * @return the role value.
      */
@@ -162,7 +159,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
     }
 
     /**
-     * Set the role property: The role property.
+     * Set the role property: calendarRoleType.
      *
      * @param role the role value to set.
      * @return the MicrosoftGraphCalendarPermission object itself.

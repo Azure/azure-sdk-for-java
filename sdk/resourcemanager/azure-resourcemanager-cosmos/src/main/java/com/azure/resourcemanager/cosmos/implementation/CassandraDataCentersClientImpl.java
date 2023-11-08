@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.CassandraDataCentersClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CassandraDataCentersClient. */
 public final class CassandraDataCentersClientImpl implements CassandraDataCentersClient {
-    private final ClientLogger logger = new ClientLogger(CassandraDataCentersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CassandraDataCentersService service;
 
@@ -68,11 +65,10 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface CassandraDataCentersService {
+    public interface CassandraDataCentersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/cassandraClusters/{clusterName}/dataCenters")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListDataCenters>> list(
@@ -86,8 +82,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataCenterResourceInner>> get(
@@ -102,8 +97,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -118,8 +112,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createUpdate(
@@ -135,8 +128,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -159,7 +151,8 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed Cassandra data centers and their properties.
+     * @return list of managed Cassandra data centers and their properties along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCenterResourceInner>> listSinglePageAsync(
@@ -212,7 +205,8 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed Cassandra data centers and their properties.
+     * @return list of managed Cassandra data centers and their properties along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCenterResourceInner>> listSinglePageAsync(
@@ -261,7 +255,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed Cassandra data centers and their properties.
+     * @return list of managed Cassandra data centers and their properties as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCenterResourceInner> listAsync(String resourceGroupName, String clusterName) {
@@ -277,7 +271,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed Cassandra data centers and their properties.
+     * @return list of managed Cassandra data centers and their properties as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataCenterResourceInner> listAsync(
@@ -293,7 +287,8 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed Cassandra data centers and their properties.
+     * @return list of managed Cassandra data centers and their properties as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCenterResourceInner> list(String resourceGroupName, String clusterName) {
@@ -309,7 +304,8 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed Cassandra data centers and their properties.
+     * @return list of managed Cassandra data centers and their properties as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCenterResourceInner> list(String resourceGroupName, String clusterName, Context context) {
@@ -325,7 +321,8 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a managed Cassandra data center.
+     * @return the properties of a managed Cassandra data center along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataCenterResourceInner>> getWithResponseAsync(
@@ -379,7 +376,8 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a managed Cassandra data center.
+     * @return the properties of a managed Cassandra data center along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataCenterResourceInner>> getWithResponseAsync(
@@ -429,19 +427,30 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a managed Cassandra data center.
+     * @return the properties of a managed Cassandra data center on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCenterResourceInner> getAsync(String resourceGroupName, String clusterName, String dataCenterName) {
         return getWithResponseAsync(resourceGroupName, clusterName, dataCenterName)
-            .flatMap(
-                (Response<DataCenterResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the properties of a managed Cassandra data center.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param dataCenterName Data center name in a managed Cassandra cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a managed Cassandra data center along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataCenterResourceInner> getWithResponse(
+        String resourceGroupName, String clusterName, String dataCenterName, Context context) {
+        return getWithResponseAsync(resourceGroupName, clusterName, dataCenterName, context).block();
     }
 
     /**
@@ -457,25 +466,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataCenterResourceInner get(String resourceGroupName, String clusterName, String dataCenterName) {
-        return getAsync(resourceGroupName, clusterName, dataCenterName).block();
-    }
-
-    /**
-     * Get the properties of a managed Cassandra data center.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName Managed Cassandra cluster name.
-     * @param dataCenterName Data center name in a managed Cassandra cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a managed Cassandra data center.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataCenterResourceInner> getWithResponse(
-        String resourceGroupName, String clusterName, String dataCenterName, Context context) {
-        return getWithResponseAsync(resourceGroupName, clusterName, dataCenterName, context).block();
+        return getWithResponse(resourceGroupName, clusterName, dataCenterName, Context.NONE).getValue();
     }
 
     /**
@@ -487,7 +478,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -541,7 +532,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -591,7 +582,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -613,7 +604,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -635,12 +626,12 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String dataCenterName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, dataCenterName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, dataCenterName).getSyncPoller();
     }
 
     /**
@@ -653,12 +644,12 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String dataCenterName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, dataCenterName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, dataCenterName, context).getSyncPoller();
     }
 
     /**
@@ -670,7 +661,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String dataCenterName) {
@@ -689,7 +680,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -741,7 +732,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return a managed Cassandra data center along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(
@@ -803,7 +794,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return a managed Cassandra data center along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(
@@ -865,7 +856,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return the {@link PollerFlux} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdateAsync(
@@ -894,7 +885,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return the {@link PollerFlux} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdateAsync(
@@ -927,12 +918,12 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return the {@link SyncPoller} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdate(
         String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
-        return beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).getSyncPoller();
+        return this.beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).getSyncPoller();
     }
 
     /**
@@ -947,7 +938,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return the {@link SyncPoller} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdate(
@@ -956,7 +947,9 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
         String dataCenterName,
         DataCenterResourceInner body,
         Context context) {
-        return beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context).getSyncPoller();
+        return this
+            .beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context)
+            .getSyncPoller();
     }
 
     /**
@@ -970,7 +963,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return a managed Cassandra data center on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCenterResourceInner> createUpdateAsync(
@@ -992,7 +985,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return a managed Cassandra data center on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataCenterResourceInner> createUpdateAsync(
@@ -1059,7 +1052,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return a managed Cassandra data center along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1120,7 +1113,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return a managed Cassandra data center along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1181,7 +1174,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return the {@link PollerFlux} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdateAsync(
@@ -1209,7 +1202,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return the {@link PollerFlux} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdateAsync(
@@ -1241,12 +1234,12 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return the {@link SyncPoller} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdate(
         String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
-        return beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).getSyncPoller();
     }
 
     /**
@@ -1260,7 +1253,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return the {@link SyncPoller} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdate(
@@ -1269,7 +1262,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
         String dataCenterName,
         DataCenterResourceInner body,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context).getSyncPoller();
     }
 
     /**
@@ -1282,7 +1275,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return a managed Cassandra data center on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCenterResourceInner> updateAsync(
@@ -1303,7 +1296,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Cassandra data center.
+     * @return a managed Cassandra data center on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataCenterResourceInner> updateAsync(

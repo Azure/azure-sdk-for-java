@@ -5,6 +5,7 @@
 package com.azure.ai.anomalydetector.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -21,7 +22,17 @@ public final class TimeSeriesPoint {
      * The measurement of that point, should be float.
      */
     @JsonProperty(value = "value", required = true)
-    private float value;
+    private double value;
+
+    /**
+     * Creates an instance of TimeSeriesPoint class.
+     *
+     * @param value the value value to set.
+     */
+    @JsonCreator
+    public TimeSeriesPoint(@JsonProperty(value = "value", required = true) double value) {
+        this.value = value;
+    }
 
     /**
      * Get the timestamp property: Optional argument, timestamp of a data point (ISO8601 format).
@@ -48,18 +59,7 @@ public final class TimeSeriesPoint {
      *
      * @return the value value.
      */
-    public float getValue() {
+    public double getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The measurement of that point, should be float.
-     *
-     * @param value the value value to set.
-     * @return the TimeSeriesPoint object itself.
-     */
-    public TimeSeriesPoint setValue(float value) {
-        this.value = value;
-        return this;
     }
 }

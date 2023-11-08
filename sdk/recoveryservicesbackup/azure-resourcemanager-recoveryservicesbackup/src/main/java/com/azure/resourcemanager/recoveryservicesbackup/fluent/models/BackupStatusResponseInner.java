@@ -5,17 +5,14 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.recoveryservicesbackup.models.AcquireStorageAccountLock;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FabricName;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** BackupStatus response. */
 @Fluent
 public final class BackupStatusResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupStatusResponseInner.class);
-
     /*
      * Specifies whether the container is registered or not
      */
@@ -35,15 +32,13 @@ public final class BackupStatusResponseInner {
     private FabricName fabricName;
 
     /*
-     * Specifies the product specific container name. E.g.
-     * iaasvmcontainer;iaasvmcontainer;csname;vmname.
+     * Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;csname;vmname.
      */
     @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
-     * Specifies the product specific ds name. E.g.
-     * vm;iaasvmcontainer;csname;vmname.
+     * Specifies the product specific ds name. E.g. vm;iaasvmcontainer;csname;vmname.
      */
     @JsonProperty(value = "protectedItemName")
     private String protectedItemName;
@@ -71,6 +66,22 @@ public final class BackupStatusResponseInner {
      */
     @JsonProperty(value = "registrationStatus")
     private String registrationStatus;
+
+    /*
+     * Number of protected items
+     */
+    @JsonProperty(value = "protectedItemsCount")
+    private Integer protectedItemsCount;
+
+    /*
+     * Specifies whether the storage account lock has been acquired or not
+     */
+    @JsonProperty(value = "acquireStorageAccountLock")
+    private AcquireStorageAccountLock acquireStorageAccountLock;
+
+    /** Creates an instance of BackupStatusResponseInner class. */
+    public BackupStatusResponseInner() {
+    }
 
     /**
      * Get the protectionStatus property: Specifies whether the container is registered or not.
@@ -253,6 +264,47 @@ public final class BackupStatusResponseInner {
      */
     public BackupStatusResponseInner withRegistrationStatus(String registrationStatus) {
         this.registrationStatus = registrationStatus;
+        return this;
+    }
+
+    /**
+     * Get the protectedItemsCount property: Number of protected items.
+     *
+     * @return the protectedItemsCount value.
+     */
+    public Integer protectedItemsCount() {
+        return this.protectedItemsCount;
+    }
+
+    /**
+     * Set the protectedItemsCount property: Number of protected items.
+     *
+     * @param protectedItemsCount the protectedItemsCount value to set.
+     * @return the BackupStatusResponseInner object itself.
+     */
+    public BackupStatusResponseInner withProtectedItemsCount(Integer protectedItemsCount) {
+        this.protectedItemsCount = protectedItemsCount;
+        return this;
+    }
+
+    /**
+     * Get the acquireStorageAccountLock property: Specifies whether the storage account lock has been acquired or not.
+     *
+     * @return the acquireStorageAccountLock value.
+     */
+    public AcquireStorageAccountLock acquireStorageAccountLock() {
+        return this.acquireStorageAccountLock;
+    }
+
+    /**
+     * Set the acquireStorageAccountLock property: Specifies whether the storage account lock has been acquired or not.
+     *
+     * @param acquireStorageAccountLock the acquireStorageAccountLock value to set.
+     * @return the BackupStatusResponseInner object itself.
+     */
+    public BackupStatusResponseInner withAcquireStorageAccountLock(
+        AcquireStorageAccountLock acquireStorageAccountLock) {
+        this.acquireStorageAccountLock = acquireStorageAccountLock;
         return this;
     }
 

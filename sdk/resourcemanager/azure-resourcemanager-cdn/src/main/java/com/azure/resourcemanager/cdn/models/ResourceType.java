@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceType. */
+/** Type of CDN resource used in CheckNameAvailability. */
 public final class ResourceType extends ExpandableStringEnum<ResourceType> {
     /** Static value Microsoft.Cdn/Profiles/Endpoints for ResourceType. */
     public static final ResourceType MICROSOFT_CDN_PROFILES_ENDPOINTS = fromString("Microsoft.Cdn/Profiles/Endpoints");
@@ -16,6 +16,15 @@ public final class ResourceType extends ExpandableStringEnum<ResourceType> {
     /** Static value Microsoft.Cdn/Profiles/AfdEndpoints for ResourceType. */
     public static final ResourceType MICROSOFT_CDN_PROFILES_AFD_ENDPOINTS =
         fromString("Microsoft.Cdn/Profiles/AfdEndpoints");
+
+    /**
+     * Creates a new instance of ResourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceType() {
+    }
 
     /**
      * Creates or finds a ResourceType from its string representation.
@@ -28,7 +37,11 @@ public final class ResourceType extends ExpandableStringEnum<ResourceType> {
         return fromString(name, ResourceType.class);
     }
 
-    /** @return known ResourceType values. */
+    /**
+     * Gets known ResourceType values.
+     *
+     * @return known ResourceType values.
+     */
     public static Collection<ResourceType> values() {
         return values(ResourceType.class);
     }

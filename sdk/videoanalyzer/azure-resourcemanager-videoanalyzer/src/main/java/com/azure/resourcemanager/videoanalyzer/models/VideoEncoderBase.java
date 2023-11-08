@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,8 +23,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.VideoEncoderH264", value = VideoEncoderH264.class)})
 @Fluent
 public class VideoEncoderBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoEncoderBase.class);
-
     /*
      * The maximum bitrate, in kilobits per second or Kbps, at which video
      * should be encoded. If omitted, encoder sets it automatically to try and

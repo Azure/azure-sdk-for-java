@@ -12,15 +12,15 @@ import java.util.List;
 @Immutable
 public final class PrivateLinkResourceProperties {
     /*
-     * The group id of the private link resource. The group id is used to
-     * establish the private link connection.
+     * The group id of the private link resource.
+     *
+     * The group id is used to establish the private link connection.
      */
     @JsonProperty(value = "groupId", access = JsonProperty.Access.WRITE_ONLY)
     private String groupId;
 
     /*
-     * The list of required members that are used to establish the private link
-     * connection.
+     * The list of required members that are used to establish the private link connection.
      */
     @JsonProperty(value = "requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredMembers;
@@ -31,9 +31,14 @@ public final class PrivateLinkResourceProperties {
     @JsonProperty(value = "requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredZoneNames;
 
+    /** Creates an instance of PrivateLinkResourceProperties class. */
+    public PrivateLinkResourceProperties() {
+    }
+
     /**
-     * Get the groupId property: The group id of the private link resource. The group id is used to establish the
-     * private link connection.
+     * Get the groupId property: The group id of the private link resource.
+     *
+     * <p>The group id is used to establish the private link connection.
      *
      * @return the groupId value.
      */

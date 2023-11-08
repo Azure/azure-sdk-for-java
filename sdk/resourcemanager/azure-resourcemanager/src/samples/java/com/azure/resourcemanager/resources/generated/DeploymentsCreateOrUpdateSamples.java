@@ -4,21 +4,19 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentProperties;
 import com.azure.resourcemanager.resources.models.OnErrorDeployment;
 import com.azure.resourcemanager.resources.models.OnErrorDeploymentType;
 import com.azure.resourcemanager.resources.models.TemplateLink;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for Deployments CreateOrUpdate. */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PutDeploymentResourceGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentResourceGroup.json
      */
     /**
      * Sample code: Create a deployment that will deploy a template with a uri and queryString.
@@ -26,7 +24,7 @@ public final class DeploymentsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADeploymentThatWillDeployATemplateWithAUriAndQueryString(
-        com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .genericResources()
             .manager()
@@ -43,16 +41,13 @@ public final class DeploymentsCreateOrUpdateSamples {
                                     .withUri("https://example.com/exampleTemplate.json")
                                     .withQueryString(
                                         "sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=xxxxxxxx0xxxxxxxxxxxxx%2bxxxxxxxxxxxxxxxxxxxx%3d"))
-                            .withParameters(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                            .withParameters(mapOf())
                             .withMode(DeploymentMode.INCREMENTAL)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
      */
     /**
      * Sample code: Create a deployment that will deploy a templateSpec with the given resourceId.
@@ -60,7 +55,7 @@ public final class DeploymentsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADeploymentThatWillDeployATemplateSpecWithTheGivenResourceId(
-        com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .genericResources()
             .manager()
@@ -76,16 +71,13 @@ public final class DeploymentsCreateOrUpdateSamples {
                                 new TemplateLink()
                                     .withId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"))
-                            .withParameters(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                            .withParameters(mapOf())
                             .withMode(DeploymentMode.INCREMENTAL)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
      */
     /**
      * Sample code: Create a deployment that will redeploy another deployment on failure.
@@ -93,7 +85,7 @@ public final class DeploymentsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADeploymentThatWillRedeployAnotherDeploymentOnFailure(
-        com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .genericResources()
             .manager()
@@ -106,20 +98,17 @@ public final class DeploymentsCreateOrUpdateSamples {
                     .withProperties(
                         new DeploymentProperties()
                             .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                            .withParameters(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                            .withParameters(mapOf())
                             .withMode(DeploymentMode.COMPLETE)
                             .withOnErrorDeployment(
                                 new OnErrorDeployment()
                                     .withType(OnErrorDeploymentType.SPECIFIC_DEPLOYMENT)
                                     .withDeploymentName("name-of-deployment-to-use"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
      */
     /**
      * Sample code: Create a deployment that will redeploy the last successful deployment on failure.
@@ -127,7 +116,7 @@ public final class DeploymentsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADeploymentThatWillRedeployTheLastSuccessfulDeploymentOnFailure(
-        com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .genericResources()
             .manager()
@@ -140,13 +129,22 @@ public final class DeploymentsCreateOrUpdateSamples {
                     .withProperties(
                         new DeploymentProperties()
                             .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                            .withParameters(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                            .withParameters(mapOf())
                             .withMode(DeploymentMode.COMPLETE)
                             .withOnErrorDeployment(
                                 new OnErrorDeployment().withType(OnErrorDeploymentType.LAST_SUCCESSFUL))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -15,6 +15,20 @@ public interface Workspaces {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the workspace along with {@link Response}.
+     */
+    Response<Workspace> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName, Context context);
+
+    /**
+     * Gets the workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
@@ -22,20 +36,6 @@ public interface Workspaces {
      * @return the workspace.
      */
     Workspace getByResourceGroup(String resourceGroupName, String workspaceName);
-
-    /**
-     * Gets the workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace.
-     */
-    Response<Workspace> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName, Context context);
 
     /**
      * Deletes the workspace.
@@ -70,7 +70,7 @@ public interface Workspaces {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the workspaces within a resource group.
+     * @return all the workspaces within a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Workspace> listByResourceGroup(String resourceGroupName);
 
@@ -83,7 +83,7 @@ public interface Workspaces {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the workspaces within a resource group.
+     * @return all the workspaces within a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Workspace> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -93,7 +93,7 @@ public interface Workspaces {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the workspaces within a subscription.
+     * @return all the workspaces within a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Workspace> list();
 
@@ -105,7 +105,7 @@ public interface Workspaces {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the workspaces within a subscription.
+     * @return all the workspaces within a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Workspace> list(Context context);
 
@@ -117,7 +117,7 @@ public interface Workspaces {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace.
+     * @return the workspace along with {@link Response}.
      */
     Workspace getById(String id);
 
@@ -130,7 +130,7 @@ public interface Workspaces {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace.
+     * @return the workspace along with {@link Response}.
      */
     Response<Workspace> getByIdWithResponse(String id, Context context);
 

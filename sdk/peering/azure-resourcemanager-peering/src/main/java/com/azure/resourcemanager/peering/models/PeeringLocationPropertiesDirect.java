@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties that define a direct peering location. */
 @Fluent
 public final class PeeringLocationPropertiesDirect {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringLocationPropertiesDirect.class);
-
     /*
      * The list of direct peering facilities at the peering location.
      */
@@ -26,6 +22,10 @@ public final class PeeringLocationPropertiesDirect {
      */
     @JsonProperty(value = "bandwidthOffers")
     private List<PeeringBandwidthOffer> bandwidthOffers;
+
+    /** Creates an instance of PeeringLocationPropertiesDirect class. */
+    public PeeringLocationPropertiesDirect() {
+    }
 
     /**
      * Get the peeringFacilities property: The list of direct peering facilities at the peering location.

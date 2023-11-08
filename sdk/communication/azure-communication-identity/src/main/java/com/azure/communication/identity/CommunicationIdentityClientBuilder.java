@@ -6,7 +6,6 @@ package com.azure.communication.identity;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
-import com.azure.communication.identity.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -42,7 +41,43 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * CommunicationIdentityClientBuilder that creates CommunicationIdentityAsyncClient and CommunicationIdentityClient.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
+ * CommunicationIdentityClient CommunicationIdentityClients} and {@link CommunicationIdentityAsyncClient CommunicationIdentityAsyncClients}, call {@link
+ * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
+ * the desired client.
+ *
+ * <p><strong>Instantiating an asynchronous Azure Communication Service Identity Client</strong></p>
+ *
+ * <!-- src_embed readme-sample-createCommunicationIdentityAsyncClient -->
+ * <pre>
+ * &#47;&#47; You can find your endpoint and access key from your resource in the Azure Portal
+ * String endpoint = &quot;https:&#47;&#47;&lt;RESOURCE_NAME&gt;.communication.azure.com&quot;;
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;&quot;&lt;access-key&gt;&quot;&#41;;
+ *
+ * CommunicationIdentityAsyncClient communicationIdentityAsyncClient = new CommunicationIdentityClientBuilder&#40;&#41;
+ *         .endpoint&#40;endpoint&#41;
+ *         .credential&#40;keyCredential&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createCommunicationIdentityAsyncClient -->
+ *
+ * <p><strong>Instantiating a synchronous Azure Communication Service Identity Client</strong></p>
+ *
+ * <!-- src_embed readme-sample-createCommunicationIdentityClient -->
+ * <pre>
+ * &#47;&#47; You can find your endpoint and access key from your resource in the Azure Portal
+ * String endpoint = &quot;https:&#47;&#47;&lt;RESOURCE_NAME&gt;.communication.azure.com&quot;;
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;&quot;&lt;access-key&gt;&quot;&#41;;
+ *
+ * CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;keyCredential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createCommunicationIdentityClient -->
+ *
+ * @see CommunicationIdentityAsyncClient
+ * @see CommunicationIdentityClient
  */
 @ServiceClientBuilder(serviceClients = {CommunicationIdentityClient.class, CommunicationIdentityAsyncClient.class})
 public final class CommunicationIdentityClientBuilder implements
@@ -341,12 +376,7 @@ public final class CommunicationIdentityClientBuilder implements
 
         CommunicationIdentityServiceVersion apiVersion = serviceVersion != null ? serviceVersion : CommunicationIdentityServiceVersion.getLatest();
 
-        CommunicationIdentityClientImplBuilder clientBuilder = new CommunicationIdentityClientImplBuilder();
-        clientBuilder.endpoint(endpoint)
-            .apiVersion(apiVersion.getVersion())
-            .pipeline(builderPipeline);
-
-        return clientBuilder.buildClient();
+        return new CommunicationIdentityClientImpl(builderPipeline, endpoint, apiVersion.getVersion());
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {

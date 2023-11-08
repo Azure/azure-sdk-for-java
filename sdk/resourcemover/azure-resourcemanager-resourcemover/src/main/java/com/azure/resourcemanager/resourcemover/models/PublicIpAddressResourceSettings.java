@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.Map;
 
 /** Defines the public IP address resource settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("Microsoft.Network/publicIPAddresses")
 @Fluent
 public final class PublicIpAddressResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressResourceSettings.class);
+    /*
+     * Gets or sets the Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
 
     /*
      * Gets or sets the domain name label.
@@ -47,6 +52,30 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
      */
     @JsonProperty(value = "zones")
     private String zones;
+
+    /** Creates an instance of PublicIpAddressResourceSettings class. */
+    public PublicIpAddressResourceSettings() {
+    }
+
+    /**
+     * Get the tags property: Gets or sets the Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Gets or sets the Resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the PublicIpAddressResourceSettings object itself.
+     */
+    public PublicIpAddressResourceSettings withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
 
     /**
      * Get the domainNameLabel property: Gets or sets the domain name label.
@@ -152,6 +181,13 @@ public final class PublicIpAddressResourceSettings extends ResourceSettings {
     @Override
     public PublicIpAddressResourceSettings withTargetResourceName(String targetResourceName) {
         super.withTargetResourceName(targetResourceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PublicIpAddressResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
         return this;
     }
 

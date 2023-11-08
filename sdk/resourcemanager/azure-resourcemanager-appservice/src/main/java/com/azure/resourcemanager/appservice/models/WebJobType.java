@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for WebJobType. */
+/** Job type. */
 public enum WebJobType {
     /** Enum value Continuous. */
     CONTINUOUS("Continuous"),
@@ -30,6 +30,9 @@ public enum WebJobType {
      */
     @JsonCreator
     public static WebJobType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         WebJobType[] items = WebJobType.values();
         for (WebJobType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum WebJobType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

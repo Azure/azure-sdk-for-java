@@ -5,49 +5,57 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Single item in List or Get Migration Config operation. */
-@JsonFlatten
 @Fluent
-public class MigrationConfigPropertiesInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrationConfigPropertiesInner.class);
+public final class MigrationConfigPropertiesInner extends ProxyResource {
+    /*
+     * Properties required to the Create Migration Configuration
+     */
+    @JsonProperty(value = "properties")
+    private MigrationConfigPropertiesProperties innerProperties;
 
     /*
-     * Provisioning state of Migration Configuration
+     * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * Number of entities pending to be replicated.
+     * The geo-location where the resource lives
      */
-    @JsonProperty(value = "properties.pendingReplicationOperationsCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Long pendingReplicationOperationsCount;
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
 
-    /*
-     * Existing premium Namespace ARM Id name which has no entities, will be
-     * used for migration
+    /**
+     * Get the innerProperties property: Properties required to the Create Migration Configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.targetNamespace")
-    private String targetNamespace;
+    private MigrationConfigPropertiesProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Name to access Standard Namespace after migration
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.postMigrationName")
-    private String postMigrationName;
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
-    /*
-     * State in which Standard to Premium Migration is, possible values :
-     * Unknown, Reverting, Completing, Initiating, Syncing, Active
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
      */
-    @JsonProperty(value = "properties.migrationState", access = JsonProperty.Access.WRITE_ONLY)
-    private String migrationState;
+    public String location() {
+        return this.location;
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of Migration Configuration.
@@ -55,7 +63,7 @@ public class MigrationConfigPropertiesInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -64,7 +72,7 @@ public class MigrationConfigPropertiesInner extends ProxyResource {
      * @return the pendingReplicationOperationsCount value.
      */
     public Long pendingReplicationOperationsCount() {
-        return this.pendingReplicationOperationsCount;
+        return this.innerProperties() == null ? null : this.innerProperties().pendingReplicationOperationsCount();
     }
 
     /**
@@ -74,7 +82,7 @@ public class MigrationConfigPropertiesInner extends ProxyResource {
      * @return the targetNamespace value.
      */
     public String targetNamespace() {
-        return this.targetNamespace;
+        return this.innerProperties() == null ? null : this.innerProperties().targetNamespace();
     }
 
     /**
@@ -85,7 +93,10 @@ public class MigrationConfigPropertiesInner extends ProxyResource {
      * @return the MigrationConfigPropertiesInner object itself.
      */
     public MigrationConfigPropertiesInner withTargetNamespace(String targetNamespace) {
-        this.targetNamespace = targetNamespace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrationConfigPropertiesProperties();
+        }
+        this.innerProperties().withTargetNamespace(targetNamespace);
         return this;
     }
 
@@ -95,7 +106,7 @@ public class MigrationConfigPropertiesInner extends ProxyResource {
      * @return the postMigrationName value.
      */
     public String postMigrationName() {
-        return this.postMigrationName;
+        return this.innerProperties() == null ? null : this.innerProperties().postMigrationName();
     }
 
     /**
@@ -105,7 +116,10 @@ public class MigrationConfigPropertiesInner extends ProxyResource {
      * @return the MigrationConfigPropertiesInner object itself.
      */
     public MigrationConfigPropertiesInner withPostMigrationName(String postMigrationName) {
-        this.postMigrationName = postMigrationName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrationConfigPropertiesProperties();
+        }
+        this.innerProperties().withPostMigrationName(postMigrationName);
         return this;
     }
 
@@ -116,7 +130,7 @@ public class MigrationConfigPropertiesInner extends ProxyResource {
      * @return the migrationState value.
      */
     public String migrationState() {
-        return this.migrationState;
+        return this.innerProperties() == null ? null : this.innerProperties().migrationState();
     }
 
     /**
@@ -125,5 +139,8 @@ public class MigrationConfigPropertiesInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class StaticSiteTemplateOptions {
     /*
-     * URL of the template repository. The newly generated repository will be
-     * based on this one.
+     * URL of the template repository. The newly generated repository will be based on this one.
      */
     @JsonProperty(value = "templateRepositoryUrl")
     private String templateRepositoryUrl;
@@ -36,11 +35,14 @@ public final class StaticSiteTemplateOptions {
     private String description;
 
     /*
-     * Whether or not the newly generated repository is a private repository.
-     * Defaults to false (i.e. public).
+     * Whether or not the newly generated repository is a private repository. Defaults to false (i.e. public).
      */
     @JsonProperty(value = "isPrivate")
     private Boolean isPrivate;
+
+    /** Creates an instance of StaticSiteTemplateOptions class. */
+    public StaticSiteTemplateOptions() {
+    }
 
     /**
      * Get the templateRepositoryUrl property: URL of the template repository. The newly generated repository will be

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tasks Delete. */
 public final class TasksDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksDelete.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksDelete.json
      */
     /**
      * Sample code: Tasks_Delete.
@@ -22,6 +20,6 @@ public final class TasksDeleteSamples {
             .manager()
             .serviceClient()
             .getTasks()
-            .delete("myResourceGroup", "myRegistry", "myTask", Context.NONE);
+            .delete("myResourceGroup", "myRegistry", "myTask", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Policy evaluation details. */
 @Fluent
 public final class PolicyEvaluationDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyEvaluationDetails.class);
-
     /*
      * Details of the evaluated expressions.
      */
@@ -26,6 +22,10 @@ public final class PolicyEvaluationDetails {
      */
     @JsonProperty(value = "ifNotExistsDetails")
     private IfNotExistsEvaluationDetails ifNotExistsDetails;
+
+    /** Creates an instance of PolicyEvaluationDetails class. */
+    public PolicyEvaluationDetails() {
+    }
 
     /**
      * Get the evaluatedExpressions property: Details of the evaluated expressions.

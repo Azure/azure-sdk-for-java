@@ -6,15 +6,11 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema for Desktop properties. */
 @Fluent
 public final class DesktopProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DesktopProperties.class);
-
     /*
      * ObjectId of Desktop. (internal use)
      */
@@ -44,6 +40,10 @@ public final class DesktopProperties {
      */
     @JsonProperty(value = "iconContent", access = JsonProperty.Access.WRITE_ONLY)
     private byte[] iconContent;
+
+    /** Creates an instance of DesktopProperties class. */
+    public DesktopProperties() {
+    }
 
     /**
      * Get the objectId property: ObjectId of Desktop. (internal use).

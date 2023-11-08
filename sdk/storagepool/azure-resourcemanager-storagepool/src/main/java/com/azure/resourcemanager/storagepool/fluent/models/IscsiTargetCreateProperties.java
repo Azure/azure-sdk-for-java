@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.models.Acl;
 import com.azure.resourcemanager.storagepool.models.IscsiLun;
 import com.azure.resourcemanager.storagepool.models.IscsiTargetAclMode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties for iSCSI Target create or update request. */
 @Fluent
 public final class IscsiTargetCreateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IscsiTargetCreateProperties.class);
-
     /*
      * Mode for Target connectivity.
      */
@@ -25,15 +22,13 @@ public final class IscsiTargetCreateProperties {
     private IscsiTargetAclMode aclMode;
 
     /*
-     * iSCSI Target IQN (iSCSI Qualified Name); example:
-     * "iqn.2005-03.org.iscsi:server".
+     * iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
      */
     @JsonProperty(value = "targetIqn")
     private String targetIqn;
 
     /*
-     * Access Control List (ACL) for an iSCSI Target; defines LUN masking
-     * policy
+     * Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
      */
     @JsonProperty(value = "staticAcls")
     private List<Acl> staticAcls;
@@ -43,6 +38,10 @@ public final class IscsiTargetCreateProperties {
      */
     @JsonProperty(value = "luns")
     private List<IscsiLun> luns;
+
+    /** Creates an instance of IscsiTargetCreateProperties class. */
+    public IscsiTargetCreateProperties() {
+    }
 
     /**
      * Get the aclMode property: Mode for Target connectivity.
@@ -131,7 +130,7 @@ public final class IscsiTargetCreateProperties {
      */
     public void validate() {
         if (aclMode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property aclMode in model IscsiTargetCreateProperties"));
@@ -143,4 +142,6 @@ public final class IscsiTargetCreateProperties {
             luns().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetCreateProperties.class);
 }

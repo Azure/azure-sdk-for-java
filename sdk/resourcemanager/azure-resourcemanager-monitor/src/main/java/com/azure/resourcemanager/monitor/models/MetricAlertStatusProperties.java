@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -14,12 +13,11 @@ import java.util.Map;
 /** An alert status properties. */
 @Fluent
 public final class MetricAlertStatusProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertStatusProperties.class);
-
     /*
      * An object describing the type of the dimensions.
      */
     @JsonProperty(value = "dimensions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> dimensions;
 
     /*
@@ -33,6 +31,10 @@ public final class MetricAlertStatusProperties {
      */
     @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
+
+    /** Creates an instance of MetricAlertStatusProperties class. */
+    public MetricAlertStatusProperties() {
+    }
 
     /**
      * Get the dimensions property: An object describing the type of the dimensions.

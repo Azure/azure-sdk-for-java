@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The ResourceModelWithAllowedPropertySetSku model. */
 @Fluent
 public final class ResourceModelWithAllowedPropertySetSku extends Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceModelWithAllowedPropertySetSku.class);
+    /** Creates an instance of ResourceModelWithAllowedPropertySetSku class. */
+    public ResourceModelWithAllowedPropertySetSku() {
+    }
 
     /** {@inheritDoc} */
     @Override

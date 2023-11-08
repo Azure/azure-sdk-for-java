@@ -24,6 +24,10 @@ public final class ServerListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ServerListResult class. */
+    public ServerListResult() {
+    }
+
     /**
      * Get the value property: The list of servers.
      *

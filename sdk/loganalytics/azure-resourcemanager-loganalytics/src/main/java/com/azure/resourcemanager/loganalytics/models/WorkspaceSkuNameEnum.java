@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkspaceSkuNameEnum. */
+/** The name of the SKU. */
 public final class WorkspaceSkuNameEnum extends ExpandableStringEnum<WorkspaceSkuNameEnum> {
     /** Static value Free for WorkspaceSkuNameEnum. */
     public static final WorkspaceSkuNameEnum FREE = fromString("Free");
@@ -35,6 +35,15 @@ public final class WorkspaceSkuNameEnum extends ExpandableStringEnum<WorkspaceSk
     public static final WorkspaceSkuNameEnum LACLUSTER = fromString("LACluster");
 
     /**
+     * Creates a new instance of WorkspaceSkuNameEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkspaceSkuNameEnum() {
+    }
+
+    /**
      * Creates or finds a WorkspaceSkuNameEnum from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class WorkspaceSkuNameEnum extends ExpandableStringEnum<WorkspaceSk
         return fromString(name, WorkspaceSkuNameEnum.class);
     }
 
-    /** @return known WorkspaceSkuNameEnum values. */
+    /**
+     * Gets known WorkspaceSkuNameEnum values.
+     *
+     * @return known WorkspaceSkuNameEnum values.
+     */
     public static Collection<WorkspaceSkuNameEnum> values() {
         return values(WorkspaceSkuNameEnum.class);
     }

@@ -24,6 +24,10 @@ public final class FeatureOperationsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of FeatureOperationsListResult class. */
+    public FeatureOperationsListResult() {
+    }
+
     /**
      * Get the value property: The array of features.
      *

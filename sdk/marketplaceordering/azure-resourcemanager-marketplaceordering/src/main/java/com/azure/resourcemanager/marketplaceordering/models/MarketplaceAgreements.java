@@ -36,7 +36,7 @@ public interface MarketplaceAgreements {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace terms.
+     * @return marketplace terms along with {@link Response}.
      */
     Response<AgreementTerms> getWithResponse(
         OfferType offerType, String publisherId, String offerId, String planId, Context context);
@@ -69,7 +69,7 @@ public interface MarketplaceAgreements {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return terms properties for provided Publisher/Offer/Plan tuple.
+     * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response}.
      */
     Response<AgreementTerms> createWithResponse(
         OfferType offerType,
@@ -102,7 +102,7 @@ public interface MarketplaceAgreements {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return terms properties for provided Publisher/Offer/Plan tuple.
+     * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response}.
      */
     Response<AgreementTerms> signWithResponse(String publisherId, String offerId, String planId, Context context);
 
@@ -129,7 +129,7 @@ public interface MarketplaceAgreements {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return terms properties for provided Publisher/Offer/Plan tuple.
+     * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response}.
      */
     Response<AgreementTerms> cancelWithResponse(String publisherId, String offerId, String planId, Context context);
 
@@ -156,7 +156,7 @@ public interface MarketplaceAgreements {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace agreement.
+     * @return marketplace agreement along with {@link Response}.
      */
     Response<AgreementTerms> getAgreementWithResponse(
         String publisherId, String offerId, String planId, Context context);
@@ -177,7 +177,7 @@ public interface MarketplaceAgreements {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of AgreementTerms.
+     * @return array of AgreementTerms along with {@link Response}.
      */
     Response<List<AgreementTerms>> listWithResponse(Context context);
 }

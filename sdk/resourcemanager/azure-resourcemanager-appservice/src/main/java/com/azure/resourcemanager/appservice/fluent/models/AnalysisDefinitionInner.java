@@ -17,6 +17,10 @@ public final class AnalysisDefinitionInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private AnalysisDefinitionProperties innerProperties;
 
+    /** Creates an instance of AnalysisDefinitionInner class. */
+    public AnalysisDefinitionInner() {
+    }
+
     /**
      * Get the innerProperties property: AnalysisDefinition resource specific properties.
      *

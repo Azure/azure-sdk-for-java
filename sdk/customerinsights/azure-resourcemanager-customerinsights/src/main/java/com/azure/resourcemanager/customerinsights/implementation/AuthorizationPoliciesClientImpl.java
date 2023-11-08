@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.fluent.AuthorizationPoliciesClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.AuthorizationPolicyInner;
 import com.azure.resourcemanager.customerinsights.fluent.models.AuthorizationPolicyResourceFormatInner;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AuthorizationPoliciesClient. */
 public final class AuthorizationPoliciesClientImpl implements AuthorizationPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(AuthorizationPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AuthorizationPoliciesService service;
 
@@ -63,7 +60,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface AuthorizationPoliciesService {
+    public interface AuthorizationPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
@@ -165,7 +162,8 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy resource format.
+     * @return the authorization policy resource format along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthorizationPolicyResourceFormatInner>> createOrUpdateWithResponseAsync(
@@ -231,7 +229,8 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy resource format.
+     * @return the authorization policy resource format along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthorizationPolicyResourceFormatInner>> createOrUpdateWithResponseAsync(
@@ -294,7 +293,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy resource format.
+     * @return the authorization policy resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationPolicyResourceFormatInner> createOrUpdateAsync(
@@ -303,14 +302,31 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
         String authorizationPolicyName,
         AuthorizationPolicyResourceFormatInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, parameters)
-            .flatMap(
-                (Response<AuthorizationPolicyResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates an authorization policy or updates an existing authorization policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param authorizationPolicyName The name of the policy.
+     * @param parameters Parameters supplied to the CreateOrUpdate authorization policy operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization policy resource format along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AuthorizationPolicyResourceFormatInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String hubName,
+        String authorizationPolicyName,
+        AuthorizationPolicyResourceFormatInner parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, parameters, context)
+            .block();
     }
 
     /**
@@ -331,31 +347,8 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
         String hubName,
         String authorizationPolicyName,
         AuthorizationPolicyResourceFormatInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, hubName, authorizationPolicyName, parameters).block();
-    }
-
-    /**
-     * Creates an authorization policy or updates an existing authorization policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param authorizationPolicyName The name of the policy.
-     * @param parameters Parameters supplied to the CreateOrUpdate authorization policy operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy resource format.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationPolicyResourceFormatInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String authorizationPolicyName,
-        AuthorizationPolicyResourceFormatInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, parameters, context)
-            .block();
+        return createOrUpdateWithResponse(resourceGroupName, hubName, authorizationPolicyName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -367,7 +360,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization policy in the hub.
+     * @return an authorization policy in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthorizationPolicyResourceFormatInner>> getWithResponseAsync(
@@ -423,7 +416,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization policy in the hub.
+     * @return an authorization policy in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthorizationPolicyResourceFormatInner>> getWithResponseAsync(
@@ -475,20 +468,31 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization policy in the hub.
+     * @return an authorization policy in the hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationPolicyResourceFormatInner> getAsync(
         String resourceGroupName, String hubName, String authorizationPolicyName) {
         return getWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName)
-            .flatMap(
-                (Response<AuthorizationPolicyResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an authorization policy in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param authorizationPolicyName The name of the policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an authorization policy in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AuthorizationPolicyResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
+        return getWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, context).block();
     }
 
     /**
@@ -505,25 +509,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizationPolicyResourceFormatInner get(
         String resourceGroupName, String hubName, String authorizationPolicyName) {
-        return getAsync(resourceGroupName, hubName, authorizationPolicyName).block();
-    }
-
-    /**
-     * Gets an authorization policy in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param authorizationPolicyName The name of the policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization policy in the hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationPolicyResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
-        return getWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, context).block();
+        return getWithResponse(resourceGroupName, hubName, authorizationPolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -534,7 +520,8 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the authorization policies in a specified hub.
+     * @return all the authorization policies in a specified hub along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>> listByHubSinglePageAsync(
@@ -592,7 +579,8 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the authorization policies in a specified hub.
+     * @return all the authorization policies in a specified hub along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>> listByHubSinglePageAsync(
@@ -646,7 +634,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the authorization policies in a specified hub.
+     * @return all the authorization policies in a specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AuthorizationPolicyResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
@@ -664,7 +652,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the authorization policies in a specified hub.
+     * @return all the authorization policies in a specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AuthorizationPolicyResourceFormatInner> listByHubAsync(
@@ -682,7 +670,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the authorization policies in a specified hub.
+     * @return all the authorization policies in a specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizationPolicyResourceFormatInner> listByHub(String resourceGroupName, String hubName) {
@@ -698,7 +686,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the authorization policies in a specified hub.
+     * @return all the authorization policies in a specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizationPolicyResourceFormatInner> listByHub(
@@ -715,7 +703,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy.
+     * @return the authorization policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthorizationPolicyInner>> regeneratePrimaryKeyWithResponseAsync(
@@ -771,7 +759,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy.
+     * @return the authorization policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthorizationPolicyInner>> regeneratePrimaryKeyWithResponseAsync(
@@ -823,20 +811,32 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy.
+     * @return the authorization policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationPolicyInner> regeneratePrimaryKeyAsync(
         String resourceGroupName, String hubName, String authorizationPolicyName) {
         return regeneratePrimaryKeyWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName)
-            .flatMap(
-                (Response<AuthorizationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Regenerates the primary policy key of the specified authorization policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param authorizationPolicyName The name of the policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AuthorizationPolicyInner> regeneratePrimaryKeyWithResponse(
+        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
+        return regeneratePrimaryKeyWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, context)
+            .block();
     }
 
     /**
@@ -853,26 +853,8 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizationPolicyInner regeneratePrimaryKey(
         String resourceGroupName, String hubName, String authorizationPolicyName) {
-        return regeneratePrimaryKeyAsync(resourceGroupName, hubName, authorizationPolicyName).block();
-    }
-
-    /**
-     * Regenerates the primary policy key of the specified authorization policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param authorizationPolicyName The name of the policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationPolicyInner> regeneratePrimaryKeyWithResponse(
-        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
-        return regeneratePrimaryKeyWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, context)
-            .block();
+        return regeneratePrimaryKeyWithResponse(resourceGroupName, hubName, authorizationPolicyName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -884,7 +866,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy.
+     * @return the authorization policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthorizationPolicyInner>> regenerateSecondaryKeyWithResponseAsync(
@@ -940,7 +922,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy.
+     * @return the authorization policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthorizationPolicyInner>> regenerateSecondaryKeyWithResponseAsync(
@@ -992,20 +974,32 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy.
+     * @return the authorization policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationPolicyInner> regenerateSecondaryKeyAsync(
         String resourceGroupName, String hubName, String authorizationPolicyName) {
         return regenerateSecondaryKeyWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName)
-            .flatMap(
-                (Response<AuthorizationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Regenerates the secondary policy key of the specified authorization policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param authorizationPolicyName The name of the policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AuthorizationPolicyInner> regenerateSecondaryKeyWithResponse(
+        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
+        return regenerateSecondaryKeyWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, context)
+            .block();
     }
 
     /**
@@ -1022,36 +1016,20 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizationPolicyInner regenerateSecondaryKey(
         String resourceGroupName, String hubName, String authorizationPolicyName) {
-        return regenerateSecondaryKeyAsync(resourceGroupName, hubName, authorizationPolicyName).block();
-    }
-
-    /**
-     * Regenerates the secondary policy key of the specified authorization policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param authorizationPolicyName The name of the policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationPolicyInner> regenerateSecondaryKeyWithResponse(
-        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
-        return regenerateSecondaryKeyWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, context)
-            .block();
+        return regenerateSecondaryKeyWithResponse(resourceGroupName, hubName, authorizationPolicyName, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list authorization policy operation.
+     * @return the response of list authorization policy operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -1082,12 +1060,14 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list authorization policy operation.
+     * @return the response of list authorization policy operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>> listByHubNextSinglePageAsync(

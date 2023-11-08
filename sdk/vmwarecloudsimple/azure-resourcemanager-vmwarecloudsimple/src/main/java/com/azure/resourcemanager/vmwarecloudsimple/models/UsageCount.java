@@ -7,7 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for UsageCount. */
+/** The usages' unit. */
 public enum UsageCount {
     /** Enum value Count. */
     COUNT("Count"),
@@ -42,6 +42,9 @@ public enum UsageCount {
      */
     @JsonCreator
     public static UsageCount fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         UsageCount[] items = UsageCount.values();
         for (UsageCount item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum UsageCount {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

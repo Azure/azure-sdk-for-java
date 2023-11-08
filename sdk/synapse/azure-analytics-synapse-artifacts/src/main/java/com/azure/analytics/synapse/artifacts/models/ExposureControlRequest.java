@@ -22,6 +22,9 @@ public final class ExposureControlRequest {
     @JsonProperty(value = "featureType")
     private String featureType;
 
+    /** Creates an instance of ExposureControlRequest class. */
+    public ExposureControlRequest() {}
+
     /**
      * Get the featureName property: The feature name.
      *

@@ -196,14 +196,10 @@ public final class CosmosBatchResponse {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchResponseHelper.setCosmosBatchResponseAccessor(
-            new ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor() {
-                @Override
-                public List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse) {
-                    return cosmosBatchResponse.results;
-                }
-            });
+            cosmosBatchResponse -> cosmosBatchResponse.results);
     }
+
+    static { initialize(); }
 }

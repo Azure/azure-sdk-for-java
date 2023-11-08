@@ -19,15 +19,15 @@ public final class OwaspCrsExclusionEntry {
     private OwaspCrsExclusionEntryMatchVariable matchVariable;
 
     /*
-     * When matchVariable is a collection, operate on the selector to specify
-     * which elements in the collection this exclusion applies to.
+     * When matchVariable is a collection, operate on the selector to specify which elements in the collection this
+     * exclusion applies to.
      */
     @JsonProperty(value = "selectorMatchOperator", required = true)
     private OwaspCrsExclusionEntrySelectorMatchOperator selectorMatchOperator;
 
     /*
-     * When matchVariable is a collection, operator used to specify which
-     * elements in the collection this exclusion applies to.
+     * When matchVariable is a collection, operator used to specify which elements in the collection this exclusion
+     * applies to.
      */
     @JsonProperty(value = "selector", required = true)
     private String selector;
@@ -37,6 +37,10 @@ public final class OwaspCrsExclusionEntry {
      */
     @JsonProperty(value = "exclusionManagedRuleSets")
     private List<ExclusionManagedRuleSet> exclusionManagedRuleSets;
+
+    /** Creates an instance of OwaspCrsExclusionEntry class. */
+    public OwaspCrsExclusionEntry() {
+    }
 
     /**
      * Get the matchVariable property: The variable to be excluded.

@@ -12,11 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SubResourceWithColocationStatus extends SubResource {
     /*
-     * Describes colocation status of a resource in the Proximity Placement
-     * Group.
+     * Describes colocation status of a resource in the Proximity Placement Group.
      */
     @JsonProperty(value = "colocationStatus")
     private InstanceViewStatus colocationStatus;
+
+    /** Creates an instance of SubResourceWithColocationStatus class. */
+    public SubResourceWithColocationStatus() {
+    }
 
     /**
      * Get the colocationStatus property: Describes colocation status of a resource in the Proximity Placement Group.

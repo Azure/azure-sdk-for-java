@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CloudLinkStatus. */
+/** The state of the cloud link. */
 public final class CloudLinkStatus extends ExpandableStringEnum<CloudLinkStatus> {
     /** Static value Active for CloudLinkStatus. */
     public static final CloudLinkStatus ACTIVE = fromString("Active");
@@ -26,6 +26,15 @@ public final class CloudLinkStatus extends ExpandableStringEnum<CloudLinkStatus>
     public static final CloudLinkStatus DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of CloudLinkStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CloudLinkStatus() {
+    }
+
+    /**
      * Creates or finds a CloudLinkStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class CloudLinkStatus extends ExpandableStringEnum<CloudLinkStatus>
         return fromString(name, CloudLinkStatus.class);
     }
 
-    /** @return known CloudLinkStatus values. */
+    /**
+     * Gets known CloudLinkStatus values.
+     *
+     * @return known CloudLinkStatus values.
+     */
     public static Collection<CloudLinkStatus> values() {
         return values(CloudLinkStatus.class);
     }

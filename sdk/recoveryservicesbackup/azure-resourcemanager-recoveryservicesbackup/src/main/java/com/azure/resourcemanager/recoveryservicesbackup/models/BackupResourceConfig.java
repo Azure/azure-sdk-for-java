@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource storage details. */
 @Fluent
 public final class BackupResourceConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceConfig.class);
-
     /*
      * Storage type
      */
@@ -27,8 +23,7 @@ public final class BackupResourceConfig {
     private StorageType storageType;
 
     /*
-     * Locked or Unlocked. Once a machine is registered against a resource, the
-     * storageTypeState is always Locked.
+     * Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked.
      */
     @JsonProperty(value = "storageTypeState")
     private StorageTypeState storageTypeState;
@@ -50,6 +45,10 @@ public final class BackupResourceConfig {
      */
     @JsonProperty(value = "xcoolState")
     private XcoolState xcoolState;
+
+    /** Creates an instance of BackupResourceConfig class. */
+    public BackupResourceConfig() {
+    }
 
     /**
      * Get the storageModelType property: Storage type.

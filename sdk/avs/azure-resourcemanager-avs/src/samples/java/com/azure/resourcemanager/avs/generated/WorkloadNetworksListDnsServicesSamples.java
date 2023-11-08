@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks ListDnsServices. */
 public final class WorkloadNetworksListDnsServicesSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_ListDnsServices.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListDnsServices.json
      */
     /**
      * Sample code: WorkloadNetworks_ListDnsServices.
@@ -17,6 +15,6 @@ public final class WorkloadNetworksListDnsServicesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListDnsServices(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listDnsServices("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().listDnsServices("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

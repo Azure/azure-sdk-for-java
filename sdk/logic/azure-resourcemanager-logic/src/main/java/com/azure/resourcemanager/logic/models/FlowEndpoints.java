@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The flow endpoints configuration. */
 @Fluent
 public final class FlowEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowEndpoints.class);
-
     /*
      * The outgoing ip address.
      */
@@ -26,6 +22,10 @@ public final class FlowEndpoints {
      */
     @JsonProperty(value = "accessEndpointIpAddresses")
     private List<IpAddress> accessEndpointIpAddresses;
+
+    /** Creates an instance of FlowEndpoints class. */
+    public FlowEndpoints() {
+    }
 
     /**
      * Get the outgoingIpAddresses property: The outgoing ip address.

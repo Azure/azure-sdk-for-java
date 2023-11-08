@@ -8,6 +8,7 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -21,6 +22,7 @@ import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -102,6 +104,7 @@ public class TableServiceClientBuilderTest {
         TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
             .connectionString(connectionString)
             .httpClient(new TestUtils.FreshDateTestClient())
+            .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .buildAsyncClient();
 
         StepVerifier.create(tableServiceAsyncClient.getHttpPipeline().send(

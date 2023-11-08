@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,13 +16,15 @@ import java.util.Map;
 @JsonTypeName("AzureWorkloadSQLRestoreWithRehydrateRequest")
 @Fluent
 public final class AzureWorkloadSqlRestoreWithRehydrateRequest extends AzureWorkloadSqlRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadSqlRestoreWithRehydrateRequest.class);
-
     /*
      * RP Rehydration Info
      */
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
+
+    /** Creates an instance of AzureWorkloadSqlRestoreWithRehydrateRequest class. */
+    public AzureWorkloadSqlRestoreWithRehydrateRequest() {
+    }
 
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.

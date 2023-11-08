@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperationMetaLogSpecification model. */
 @Fluent
 public final class OperationMetaLogSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetaLogSpecification.class);
-
     /*
      * The name for OperationMetaLogSpecification.
      */
@@ -31,6 +27,10 @@ public final class OperationMetaLogSpecification {
      */
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
+
+    /** Creates an instance of OperationMetaLogSpecification class. */
+    public OperationMetaLogSpecification() {
+    }
 
     /**
      * Get the name property: The name for OperationMetaLogSpecification.

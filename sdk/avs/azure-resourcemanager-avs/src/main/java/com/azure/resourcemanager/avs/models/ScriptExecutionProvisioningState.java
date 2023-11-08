@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptExecutionProvisioningState. */
+/** The state of the script execution resource. */
 public final class ScriptExecutionProvisioningState extends ExpandableStringEnum<ScriptExecutionProvisioningState> {
     /** Static value Pending for ScriptExecutionProvisioningState. */
     public static final ScriptExecutionProvisioningState PENDING = fromString("Pending");
@@ -31,6 +31,18 @@ public final class ScriptExecutionProvisioningState extends ExpandableStringEnum
     /** Static value Deleting for ScriptExecutionProvisioningState. */
     public static final ScriptExecutionProvisioningState DELETING = fromString("Deleting");
 
+    /** Static value Canceled for ScriptExecutionProvisioningState. */
+    public static final ScriptExecutionProvisioningState CANCELED = fromString("Canceled");
+
+    /**
+     * Creates a new instance of ScriptExecutionProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptExecutionProvisioningState() {
+    }
+
     /**
      * Creates or finds a ScriptExecutionProvisioningState from its string representation.
      *
@@ -42,7 +54,11 @@ public final class ScriptExecutionProvisioningState extends ExpandableStringEnum
         return fromString(name, ScriptExecutionProvisioningState.class);
     }
 
-    /** @return known ScriptExecutionProvisioningState values. */
+    /**
+     * Gets known ScriptExecutionProvisioningState values.
+     *
+     * @return known ScriptExecutionProvisioningState values.
+     */
     public static Collection<ScriptExecutionProvisioningState> values() {
         return values(ScriptExecutionProvisioningState.class);
     }

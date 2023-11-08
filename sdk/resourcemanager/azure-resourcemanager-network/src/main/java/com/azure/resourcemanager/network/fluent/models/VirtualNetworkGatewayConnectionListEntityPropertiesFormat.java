@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
@@ -113,6 +114,12 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     private Boolean enableBgp;
 
     /*
+     * GatewayCustomBgpIpAddresses to be used for virtual network gateway Connection.
+     */
+    @JsonProperty(value = "gatewayCustomBgpIpAddresses")
+    private List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses;
+
+    /*
      * Enable policy-based traffic selectors.
      */
     @JsonProperty(value = "usePolicyBasedTrafficSelectors")
@@ -131,15 +138,13 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     private List<TrafficSelectorPolicy> trafficSelectorPolicies;
 
     /*
-     * The resource GUID property of the virtual network gateway connection
-     * resource.
+     * The resource GUID property of the virtual network gateway connection resource.
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
-     * The provisioning state of the virtual network gateway connection
-     * resource.
+     * The provisioning state of the virtual network gateway connection resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -149,6 +154,17 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
      */
     @JsonProperty(value = "expressRouteGatewayBypass")
     private Boolean expressRouteGatewayBypass;
+
+    /*
+     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass)
+     * must be enabled.
+     */
+    @JsonProperty(value = "enablePrivateLinkFastPath")
+    private Boolean enablePrivateLinkFastPath;
+
+    /** Creates an instance of VirtualNetworkGatewayConnectionListEntityPropertiesFormat class. */
+    public VirtualNetworkGatewayConnectionListEntityPropertiesFormat() {
+    }
 
     /**
      * Get the authorizationKey property: The authorizationKey.
@@ -413,6 +429,29 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     }
 
     /**
+     * Get the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     *
+     * @return the gatewayCustomBgpIpAddresses value.
+     */
+    public List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses() {
+        return this.gatewayCustomBgpIpAddresses;
+    }
+
+    /**
+     * Set the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     *
+     * @param gatewayCustomBgpIpAddresses the gatewayCustomBgpIpAddresses value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayConnectionListEntityPropertiesFormat withGatewayCustomBgpIpAddresses(
+        List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses) {
+        this.gatewayCustomBgpIpAddresses = gatewayCustomBgpIpAddresses;
+        return this;
+    }
+
+    /**
      * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
      *
      * @return the usePolicyBasedTrafficSelectors value.
@@ -515,6 +554,29 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     }
 
     /**
+     * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @return the enablePrivateLinkFastPath value.
+     */
+    public Boolean enablePrivateLinkFastPath() {
+        return this.enablePrivateLinkFastPath;
+    }
+
+    /**
+     * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayConnectionListEntityPropertiesFormat withEnablePrivateLinkFastPath(
+        Boolean enablePrivateLinkFastPath) {
+        this.enablePrivateLinkFastPath = enablePrivateLinkFastPath;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -544,6 +606,9 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
         }
         if (tunnelConnectionStatus() != null) {
             tunnelConnectionStatus().forEach(e -> e.validate());
+        }
+        if (gatewayCustomBgpIpAddresses() != null) {
+            gatewayCustomBgpIpAddresses().forEach(e -> e.validate());
         }
         if (ipsecPolicies() != null) {
             ipsecPolicies().forEach(e -> e.validate());

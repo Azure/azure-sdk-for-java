@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.maintenance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.models.ImpactType;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.UpdateStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Maintenance update on a resource. */
-@JsonFlatten
 @Fluent
-public class UpdateInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateInner.class);
-
+public final class UpdateInner {
     /*
      * The impact area
      */
@@ -45,17 +39,20 @@ public class UpdateInner {
     private Integer impactDurationInSec;
 
     /*
-     * Time when Azure will start force updates if not self-updated by customer
-     * before this time
+     * Time when Azure will start force updates if not self-updated by customer before this time
      */
     @JsonProperty(value = "notBefore")
     private OffsetDateTime notBefore;
 
     /*
-     * The resourceId
+     * Properties of the apply update
      */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
+    @JsonProperty(value = "properties")
+    private UpdateProperties innerProperties;
+
+    /** Creates an instance of UpdateInner class. */
+    public UpdateInner() {
+    }
 
     /**
      * Get the maintenanceScope property: The impact area.
@@ -160,12 +157,21 @@ public class UpdateInner {
     }
 
     /**
+     * Get the innerProperties property: Properties of the apply update.
+     *
+     * @return the innerProperties value.
+     */
+    private UpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the resourceId property: The resourceId.
      *
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -175,7 +181,10 @@ public class UpdateInner {
      * @return the UpdateInner object itself.
      */
     public UpdateInner withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
         return this;
     }
 
@@ -185,5 +194,8 @@ public class UpdateInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -5,11 +5,13 @@ package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpClient;
@@ -33,11 +35,13 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImplBuilder;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImplBuilder;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy;
 
@@ -48,39 +52,90 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
  * ServiceBusAdministrationClient} and {@link ServiceBusAdministrationAsyncClient}. Call
  * {@link #buildClient() buildClient()} and {@link #buildAsyncClient() buildAsyncClient()} respectively to construct an
  * instance of the desired client.
  *
- * <p><strong>Create the sync client using a connection string</strong></p>
+ * <p>
+ * <strong>Credentials are required</strong> to perform operations against Azure Service Bus. They can be set by using
+ * one of the following methods:
+ * <ul>
+ *      <li>{@link #connectionString(String)} with a Service Bus <i>namespace</i> connection string.</li>
+ *      <li>{@link #credential(String, TokenCredential)} with the fully qualified Service Bus namespace and
+ *      a set of credentials authorized to use the namespace.</li>
+ *      <li>{@link #credential(TokenCredential)} and {@link #credential(AzureSasCredential)} overloads can be used with
+ *      its respective credentials.  In addition, {@link #endpoint(String)} must be set.</li>
+ * </ul>
+ *
+ * <p>The credential used in the following samples is {@code DefaultAzureCredential} for authentication. It is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we recommend
+ * using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.  You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Create the sync client</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous administration client.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' from your configuration.
- *
  * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;
  *     .setLogLevel&#40;HttpLogDetailLevel.HEADERS&#41;;
  *
+ * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .httpLogOptions&#40;logOptions&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation -->
  *
- * <p><strong>Create the async client using Azure Identity</strong></p>
+ * <p><strong>Sample: Create the async client using Azure Identity</strong></p>
+ *
+ * <p>The follow code sample demonstrates the creation of the async administration client.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation -->
  * <pre>
  * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;&lt;&lt; Service Bus NAMESPACE connection string&gt;&gt;&quot;&#41;
- *     .credential&#40;&quot;&lt;&lt; my-sb-namespace.servicebus.windows.net &gt;&gt;&quot;, credential&#41;
+ *     .credential&#40;fullyQualifiedNamespace, new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation -->
+ *
+ * <p><strong>Sample: Create the async client</strong></p>
+ *
+ * <p>The follow code sample demonstrates the creation of the async administration client with retry options and HTTP
+ * log options configured.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.construct#retryoptions -->
+ * <pre>
+ * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * RetryOptions retryOptions = new RetryOptions&#40;new FixedDelayOptions&#40;4, Duration.ofSeconds&#40;20&#41;&#41;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, credential&#41;
+ *     .retryOptions&#40;retryOptions&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.HEADERS&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.construct#retryoptions -->
  *
  * @see ServiceBusAdministrationClient
  * @see ServiceBusAdministrationAsyncClient
@@ -89,6 +144,7 @@ import java.util.Objects;
     ServiceBusAdministrationAsyncClient.class})
 public final class ServiceBusAdministrationClientBuilder implements
     TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
+    AzureSasCredentialTrait<ServiceBusAdministrationClientBuilder>,
     ConnectionStringTrait<ServiceBusAdministrationClientBuilder>,
     HttpTrait<ServiceBusAdministrationClientBuilder>,
     ConfigurationTrait<ServiceBusAdministrationClientBuilder>,
@@ -103,7 +159,7 @@ public final class ServiceBusAdministrationClientBuilder implements
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -146,8 +202,14 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
+        final ServiceBusManagementClientImpl client = getServiceBusManagementClient();
+
+        return new ServiceBusAdministrationAsyncClient(client, serializer);
+    }
+
+    private ServiceBusManagementClientImpl getServiceBusManagementClient() {
         if (endpoint == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
 
         final ServiceBusServiceVersion apiVersion = serviceVersion == null
@@ -160,8 +222,7 @@ public final class ServiceBusAdministrationClientBuilder implements
             .endpoint(endpoint)
             .apiVersion(apiVersion.getVersion())
             .buildClient();
-
-        return new ServiceBusAdministrationAsyncClient(client, serializer);
+        return client;
     }
 
     /**
@@ -182,7 +243,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationClient buildClient() {
-        return new ServiceBusAdministrationClient(buildAsyncClient());
+        return new ServiceBusAdministrationClient(getServiceBusManagementClient(), serializer);
     }
 
     /**
@@ -226,7 +287,7 @@ public final class ServiceBusAdministrationClientBuilder implements
         try {
             url = new URL(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
         this.endpoint = url.getHost();
@@ -269,13 +330,13 @@ public final class ServiceBusAdministrationClientBuilder implements
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
         } catch (Exception e) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
         }
 
         this.endpoint = properties.getEndpoint().getHost();
         if (properties.getEntityPath() != null && !properties.getEntityPath().isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'connectionString' cannot contain an EntityPath. It should be a namespace connection string."));
         }
 
@@ -297,7 +358,7 @@ public final class ServiceBusAdministrationClientBuilder implements
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
@@ -320,6 +381,22 @@ public final class ServiceBusAdministrationClientBuilder implements
     }
 
     /**
+     * Sets the credential with Shared Access Signature for the Service Bus resource.
+     * Refer to <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas">
+     *     Service Bus access control with Shared Access Signatures</a>.
+     *
+     * @param credential {@link AzureSasCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
+     */
+    @Override
+    public ServiceBusAdministrationClientBuilder credential(AzureSasCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.tokenCredential = new ServiceBusSharedKeyCredential(credential.getSignature());
+        return this;
+    }
+
+    /**
      * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
      * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
@@ -335,7 +412,7 @@ public final class ServiceBusAdministrationClientBuilder implements
     @Override
     public ServiceBusAdministrationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = client;
@@ -406,7 +483,7 @@ public final class ServiceBusAdministrationClientBuilder implements
     @Override
     public ServiceBusAdministrationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.pipeline = pipeline;
@@ -513,6 +590,11 @@ public final class ServiceBusAdministrationClientBuilder implements
             .policies(httpPolicies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(clientOptions)
+            .tracer(createTracer())
             .build();
+    }
+    private Tracer createTracer() {
+        return TracerProvider.getDefaultProvider().createTracer(CLIENT_NAME, CLIENT_VERSION,
+            AZ_TRACING_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
     }
 }

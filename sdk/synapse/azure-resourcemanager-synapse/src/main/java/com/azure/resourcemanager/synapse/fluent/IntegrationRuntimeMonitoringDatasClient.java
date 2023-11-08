@@ -15,22 +15,9 @@ import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeMonitor
  */
 public interface IntegrationRuntimeMonitoringDatasClient {
     /**
-     * Get monitoring data for an integration runtime.
+     * Get integration runtime monitoring data
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitoring data for an integration runtime.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeMonitoringDataInner list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
-
-    /**
-     * Get monitoring data for an integration runtime.
+     * <p>Get monitoring data for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -44,4 +31,21 @@ public interface IntegrationRuntimeMonitoringDatasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeMonitoringDataInner> listWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+
+    /**
+     * Get integration runtime monitoring data
+     *
+     * <p>Get monitoring data for an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return monitoring data for an integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IntegrationRuntimeMonitoringDataInner list(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName);
 }

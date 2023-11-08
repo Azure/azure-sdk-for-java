@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** workbookChartAxes. */
 @Fluent
 public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookChartAxes.class);
-
     /*
      * workbookChartAxis
      */
@@ -40,6 +37,10 @@ public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity 
      * workbookChartAxes
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookChartAxes class. */
+    public MicrosoftGraphWorkbookChartAxes() {
+    }
 
     /**
      * Get the categoryAxis property: workbookChartAxis.

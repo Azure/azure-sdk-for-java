@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class QuickbaseLinkedServiceTypeProperties {
     /*
-     * The url to connect Quickbase source. Type: string (or Expression with
-     * resultType string).
+     * The url to connect Quickbase source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -26,12 +25,15 @@ public final class QuickbaseLinkedServiceTypeProperties {
     private SecretBase userToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of QuickbaseLinkedServiceTypeProperties class. */
+    public QuickbaseLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the url property: The url to connect Quickbase source. Type: string (or Expression with resultType string).
@@ -75,22 +77,22 @@ public final class QuickbaseLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the QuickbaseLinkedServiceTypeProperties object itself.
      */
-    public QuickbaseLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public QuickbaseLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

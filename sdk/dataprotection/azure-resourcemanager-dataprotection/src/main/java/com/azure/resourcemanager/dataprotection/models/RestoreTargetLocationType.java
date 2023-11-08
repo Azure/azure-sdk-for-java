@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RestoreTargetLocationType. */
+/**
+ * Denotes the target location where the data will be restored, string value for the enum
+ * {Microsoft.Internal.AzureBackup.DataProtection.Common.Interface.RestoreTargetLocationType}.
+ */
 public final class RestoreTargetLocationType extends ExpandableStringEnum<RestoreTargetLocationType> {
     /** Static value Invalid for RestoreTargetLocationType. */
     public static final RestoreTargetLocationType INVALID = fromString("Invalid");
@@ -18,6 +21,15 @@ public final class RestoreTargetLocationType extends ExpandableStringEnum<Restor
 
     /** Static value AzureFiles for RestoreTargetLocationType. */
     public static final RestoreTargetLocationType AZURE_FILES = fromString("AzureFiles");
+
+    /**
+     * Creates a new instance of RestoreTargetLocationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestoreTargetLocationType() {
+    }
 
     /**
      * Creates or finds a RestoreTargetLocationType from its string representation.
@@ -30,7 +42,11 @@ public final class RestoreTargetLocationType extends ExpandableStringEnum<Restor
         return fromString(name, RestoreTargetLocationType.class);
     }
 
-    /** @return known RestoreTargetLocationType values. */
+    /**
+     * Gets known RestoreTargetLocationType values.
+     *
+     * @return known RestoreTargetLocationType values.
+     */
     public static Collection<RestoreTargetLocationType> values() {
         return values(RestoreTargetLocationType.class);
     }

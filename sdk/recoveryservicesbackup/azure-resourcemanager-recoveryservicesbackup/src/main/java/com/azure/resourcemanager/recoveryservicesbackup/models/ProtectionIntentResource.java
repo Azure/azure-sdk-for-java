@@ -75,6 +75,13 @@ public interface ProtectionIntentResource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionIntentResourceInner
      * object.
      *
@@ -89,11 +96,13 @@ public interface ProtectionIntentResource {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The ProtectionIntentResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ProtectionIntentResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ProtectionIntentResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -112,6 +121,7 @@ public interface ProtectionIntentResource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ProtectionIntentResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -124,6 +134,7 @@ public interface ProtectionIntentResource {
              */
             WithCreate withExistingBackupFabric(String vaultName, String resourceGroupName, String fabricName);
         }
+
         /**
          * The stage of the ProtectionIntentResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -145,6 +156,7 @@ public interface ProtectionIntentResource {
              */
             ProtectionIntentResource create(Context context);
         }
+
         /** The stage of the ProtectionIntentResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -155,6 +167,7 @@ public interface ProtectionIntentResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ProtectionIntentResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -165,6 +178,7 @@ public interface ProtectionIntentResource {
              */
             WithCreate withProperties(ProtectionIntent properties);
         }
+
         /** The stage of the ProtectionIntentResource definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -176,6 +190,7 @@ public interface ProtectionIntentResource {
             WithCreate withEtag(String etag);
         }
     }
+
     /**
      * Begins update for the ProtectionIntentResource resource.
      *
@@ -200,6 +215,7 @@ public interface ProtectionIntentResource {
          */
         ProtectionIntentResource apply(Context context);
     }
+
     /** The ProtectionIntentResource update stages. */
     interface UpdateStages {
         /** The stage of the ProtectionIntentResource update allowing to specify tags. */
@@ -212,6 +228,7 @@ public interface ProtectionIntentResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ProtectionIntentResource update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -222,6 +239,7 @@ public interface ProtectionIntentResource {
              */
             Update withProperties(ProtectionIntent properties);
         }
+
         /** The stage of the ProtectionIntentResource update allowing to specify etag. */
         interface WithEtag {
             /**
@@ -233,6 +251,7 @@ public interface ProtectionIntentResource {
             Update withEtag(String etag);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

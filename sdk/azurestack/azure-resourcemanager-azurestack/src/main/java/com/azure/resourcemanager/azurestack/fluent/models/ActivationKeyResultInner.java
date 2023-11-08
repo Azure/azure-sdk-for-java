@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource containing the Azure Stack activation key. */
 @Fluent
 public final class ActivationKeyResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivationKeyResultInner.class);
-
     /*
      * Azure Stack activation key.
      */
     @JsonProperty(value = "activationKey")
     private String activationKey;
+
+    /** Creates an instance of ActivationKeyResultInner class. */
+    public ActivationKeyResultInner() {
+    }
 
     /**
      * Get the activationKey property: Azure Stack activation key.

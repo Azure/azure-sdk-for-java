@@ -8,8 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebApplicationFirewallTransform. */
+/** Transforms applied before matching. */
 public final class WebApplicationFirewallTransform extends ExpandableStringEnum<WebApplicationFirewallTransform> {
+    /** Static value Uppercase for WebApplicationFirewallTransform. */
+    public static final WebApplicationFirewallTransform UPPERCASE = fromString("Uppercase");
+
     /** Static value Lowercase for WebApplicationFirewallTransform. */
     public static final WebApplicationFirewallTransform LOWERCASE = fromString("Lowercase");
 
@@ -29,6 +32,15 @@ public final class WebApplicationFirewallTransform extends ExpandableStringEnum<
     public static final WebApplicationFirewallTransform HTML_ENTITY_DECODE = fromString("HtmlEntityDecode");
 
     /**
+     * Creates a new instance of WebApplicationFirewallTransform value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebApplicationFirewallTransform() {
+    }
+
+    /**
      * Creates or finds a WebApplicationFirewallTransform from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +51,11 @@ public final class WebApplicationFirewallTransform extends ExpandableStringEnum<
         return fromString(name, WebApplicationFirewallTransform.class);
     }
 
-    /** @return known WebApplicationFirewallTransform values. */
+    /**
+     * Gets known WebApplicationFirewallTransform values.
+     *
+     * @return known WebApplicationFirewallTransform values.
+     */
     public static Collection<WebApplicationFirewallTransform> values() {
         return values(WebApplicationFirewallTransform.class);
     }

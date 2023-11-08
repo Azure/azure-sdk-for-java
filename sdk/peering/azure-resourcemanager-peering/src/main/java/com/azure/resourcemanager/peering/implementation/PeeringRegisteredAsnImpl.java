@@ -39,6 +39,10 @@ public final class PeeringRegisteredAsnImpl
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PeeringRegisteredAsnInner innerModel() {
         return this.innerObject;
     }

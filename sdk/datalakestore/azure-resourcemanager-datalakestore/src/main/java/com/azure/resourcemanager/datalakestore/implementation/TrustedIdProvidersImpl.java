@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datalakestore.fluent.TrustedIdProvidersClient;
 import com.azure.resourcemanager.datalakestore.fluent.models.TrustedIdProviderInner;
 import com.azure.resourcemanager.datalakestore.models.TrustedIdProvider;
 import com.azure.resourcemanager.datalakestore.models.TrustedIdProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TrustedIdProvidersImpl implements TrustedIdProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrustedIdProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TrustedIdProvidersImpl.class);
 
     private final TrustedIdProvidersClient innerClient;
 
@@ -42,15 +41,6 @@ public final class TrustedIdProvidersImpl implements TrustedIdProviders {
         return Utils.mapPage(inner, inner1 -> new TrustedIdProviderImpl(inner1, this.manager()));
     }
 
-    public TrustedIdProvider get(String resourceGroupName, String accountName, String trustedIdProviderName) {
-        TrustedIdProviderInner inner = this.serviceClient().get(resourceGroupName, accountName, trustedIdProviderName);
-        if (inner != null) {
-            return new TrustedIdProviderImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TrustedIdProvider> getWithResponse(
         String resourceGroupName, String accountName, String trustedIdProviderName, Context context) {
         Response<TrustedIdProviderInner> inner =
@@ -66,8 +56,13 @@ public final class TrustedIdProvidersImpl implements TrustedIdProviders {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String trustedIdProviderName) {
-        this.serviceClient().delete(resourceGroupName, accountName, trustedIdProviderName);
+    public TrustedIdProvider get(String resourceGroupName, String accountName, String trustedIdProviderName) {
+        TrustedIdProviderInner inner = this.serviceClient().get(resourceGroupName, accountName, trustedIdProviderName);
+        if (inner != null) {
+            return new TrustedIdProviderImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -75,10 +70,14 @@ public final class TrustedIdProvidersImpl implements TrustedIdProviders {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, trustedIdProviderName, context);
     }
 
+    public void delete(String resourceGroupName, String accountName, String trustedIdProviderName) {
+        this.serviceClient().delete(resourceGroupName, accountName, trustedIdProviderName);
+    }
+
     public TrustedIdProvider getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -86,14 +85,14 @@ public final class TrustedIdProvidersImpl implements TrustedIdProviders {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String trustedIdProviderName = Utils.getValueFromIdByName(id, "trustedIdProviders");
         if (trustedIdProviderName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,7 +105,7 @@ public final class TrustedIdProvidersImpl implements TrustedIdProviders {
     public Response<TrustedIdProvider> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,14 +113,14 @@ public final class TrustedIdProvidersImpl implements TrustedIdProviders {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String trustedIdProviderName = Utils.getValueFromIdByName(id, "trustedIdProviders");
         if (trustedIdProviderName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +133,7 @@ public final class TrustedIdProvidersImpl implements TrustedIdProviders {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,27 +141,27 @@ public final class TrustedIdProvidersImpl implements TrustedIdProviders {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String trustedIdProviderName = Utils.getValueFromIdByName(id, "trustedIdProviders");
         if (trustedIdProviderName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'trustedIdProviders'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, trustedIdProviderName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, trustedIdProviderName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -170,14 +169,14 @@ public final class TrustedIdProvidersImpl implements TrustedIdProviders {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String trustedIdProviderName = Utils.getValueFromIdByName(id, "trustedIdProviders");
         if (trustedIdProviderName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

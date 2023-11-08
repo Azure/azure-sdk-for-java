@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
 import com.azure.resourcemanager.storage.models.ChangeFeed;
 import com.azure.resourcemanager.storage.models.CorsRule;
@@ -18,7 +17,7 @@ import java.util.Arrays;
 /** Samples for BlobServices SetServiceProperties. */
 public final class BlobServicesSetServicePropertiesSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobServicesPut.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobServicesPut.json
      */
     /**
      * Sample code: PutBlobServices.
@@ -77,11 +76,35 @@ public final class BlobServicesSetServicePropertiesSamples {
                     .withDeleteRetentionPolicy(new DeleteRetentionPolicy().withEnabled(true).withDays(300))
                     .withIsVersioningEnabled(true)
                     .withChangeFeed(new ChangeFeed().withEnabled(true).withRetentionInDays(7)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobServicesPutLastAccessTimeBasedTracking.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobServicesPutAllowPermanentDelete.json
+     */
+    /**
+     * Sample code: BlobServicesPutAllowPermanentDelete.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void blobServicesPutAllowPermanentDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .storageAccounts()
+            .manager()
+            .serviceClient()
+            .getBlobServices()
+            .setServicePropertiesWithResponse(
+                "res4410",
+                "sto8607",
+                new BlobServicePropertiesInner()
+                    .withDeleteRetentionPolicy(
+                        new DeleteRetentionPolicy().withEnabled(true).withDays(300).withAllowPermanentDelete(true))
+                    .withIsVersioningEnabled(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobServicesPutLastAccessTimeBasedTracking.json
      */
     /**
      * Sample code: BlobServicesPutLastAccessTimeBasedTracking.
@@ -105,6 +128,6 @@ public final class BlobServicesSetServicePropertiesSamples {
                             .withName(Name.ACCESS_TIME_TRACKING)
                             .withTrackingGranularityInDays(1)
                             .withBlobType(Arrays.asList("blockBlob"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

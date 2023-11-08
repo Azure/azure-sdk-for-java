@@ -4,47 +4,41 @@
 
 package com.azure.resourcemanager.security.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Collection;
 
-/** Describes an Azure resource with kind. */
-@Fluent
-public class Kind {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Kind.class);
-
-    /*
-     * Kind of the resource
-     */
-    @JsonProperty(value = "kind")
-    private String kind;
+/** The kind of alert simulation. */
+public final class Kind extends ExpandableStringEnum<Kind> {
+    /** Static value Bundles for Kind. */
+    public static final Kind BUNDLES = fromString("Bundles");
 
     /**
-     * Get the kind property: Kind of the resource.
+     * Creates a new instance of Kind value.
      *
-     * @return the kind value.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public String kind() {
-        return this.kind;
+    @Deprecated
+    public Kind() {
     }
 
     /**
-     * Set the kind property: Kind of the resource.
+     * Creates or finds a Kind from its string representation.
      *
-     * @param kind the kind value to set.
-     * @return the Kind object itself.
+     * @param name a name to look for.
+     * @return the corresponding Kind.
      */
-    public Kind withKind(String kind) {
-        this.kind = kind;
-        return this;
+    @JsonCreator
+    public static Kind fromString(String name) {
+        return fromString(name, Kind.class);
     }
 
     /**
-     * Validates the instance.
+     * Gets known Kind values.
      *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return known Kind values.
      */
-    public void validate() {
+    public static Collection<Kind> values() {
+        return values(Kind.class);
     }
 }

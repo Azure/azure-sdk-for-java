@@ -24,6 +24,10 @@ public final class BatchAccountListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of BatchAccountListResult class. */
+    public BatchAccountListResult() {
+    }
+
     /**
      * Get the value property: The collection of Batch accounts returned by the listing operation.
      *

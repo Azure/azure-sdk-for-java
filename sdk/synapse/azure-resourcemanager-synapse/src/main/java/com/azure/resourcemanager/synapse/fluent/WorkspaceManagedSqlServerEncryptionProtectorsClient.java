@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.EncryptionProtectorInner;
 import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
-import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -21,22 +20,9 @@ import reactor.core.publisher.Mono;
  */
 public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
     /**
-     * Get workspace managed sql server's encryption protector.
+     * Get workspace server's encryption protector.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param encryptionProtectorName The name of the encryption protector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's encryption protector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EncryptionProtectorInner get(
-        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName);
-
-    /**
-     * Get workspace managed sql server's encryption protector.
+     * <p>Get workspace managed sql server's encryption protector.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -55,7 +41,26 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
         Context context);
 
     /**
-     * Updates workspace managed sql server's encryption protector.
+     * Get workspace server's encryption protector.
+     *
+     * <p>Get workspace managed sql server's encryption protector.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param encryptionProtectorName The name of the encryption protector.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workspace managed sql server's encryption protector.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EncryptionProtectorInner get(
+        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName);
+
+    /**
+     * Updates workspace server's encryption protector.
+     *
+     * <p>Updates workspace managed sql server's encryption protector.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -64,7 +69,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
@@ -74,7 +79,9 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
         EncryptionProtectorInner parameters);
 
     /**
-     * Updates workspace managed sql server's encryption protector.
+     * Updates workspace server's encryption protector.
+     *
+     * <p>Updates workspace managed sql server's encryption protector.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -84,7 +91,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
@@ -95,7 +102,9 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
         Context context);
 
     /**
-     * Updates workspace managed sql server's encryption protector.
+     * Updates workspace server's encryption protector.
+     *
+     * <p>Updates workspace managed sql server's encryption protector.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -114,7 +123,9 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
         EncryptionProtectorInner parameters);
 
     /**
-     * Updates workspace managed sql server's encryption protector.
+     * Updates workspace server's encryption protector.
+     *
+     * <p>Updates workspace managed sql server's encryption protector.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -135,20 +146,25 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
         Context context);
 
     /**
-     * Get list of encryption protectors for workspace managed sql server.
+     * Get list of encryption protectors for the server.
+     *
+     * <p>Get list of encryption protectors for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of encryption protectors for workspace managed sql server.
+     * @return list of encryption protectors for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EncryptionProtectorInner> list(String resourceGroupName, String workspaceName);
 
     /**
-     * Get list of encryption protectors for workspace managed sql server.
+     * Get list of encryption protectors for the server.
+     *
+     * <p>Get list of encryption protectors for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -156,13 +172,16 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of encryption protectors for workspace managed sql server.
+     * @return list of encryption protectors for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EncryptionProtectorInner> list(String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Revalidates workspace managed sql server's existing encryption protector.
+     * Revalidates server's existing encryption protector.
+     *
+     * <p>Revalidates workspace managed sql server's existing encryption protector.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -170,14 +189,16 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevalidate(
         String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName);
 
     /**
-     * Revalidates workspace managed sql server's existing encryption protector.
+     * Revalidates server's existing encryption protector.
+     *
+     * <p>Revalidates workspace managed sql server's existing encryption protector.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -186,7 +207,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevalidate(
@@ -196,7 +217,9 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
         Context context);
 
     /**
-     * Revalidates workspace managed sql server's existing encryption protector.
+     * Revalidates server's existing encryption protector.
+     *
+     * <p>Revalidates workspace managed sql server's existing encryption protector.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -209,7 +232,9 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
     void revalidate(String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName);
 
     /**
-     * Revalidates workspace managed sql server's existing encryption protector.
+     * Revalidates server's existing encryption protector.
+     *
+     * <p>Revalidates workspace managed sql server's existing encryption protector.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

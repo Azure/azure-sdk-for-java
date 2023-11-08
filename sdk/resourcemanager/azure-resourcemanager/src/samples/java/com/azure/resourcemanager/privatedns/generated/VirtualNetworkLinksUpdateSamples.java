@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.privatedns.fluent.models.VirtualNetworkLinkInner;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkLinks Update. */
 public final class VirtualNetworkLinksUpdateSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/VirtualNetworkLinkPatch.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkPatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone Virtual Network Link.
@@ -29,9 +28,11 @@ public final class VirtualNetworkLinksUpdateSamples {
                 "resourceGroup1",
                 "privatezone1.com",
                 "virtualNetworkLink1",
-                new VirtualNetworkLinkInner().withTags(mapOf("key2", "value2")).withRegistrationEnabled(true),
+                new VirtualNetworkLinkInner()
+                    .withTags(mapOf("key2", "fakeTokenPlaceholder"))
+                    .withRegistrationEnabled(true),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

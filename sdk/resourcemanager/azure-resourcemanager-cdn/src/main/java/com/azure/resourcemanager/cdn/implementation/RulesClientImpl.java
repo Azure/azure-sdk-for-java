@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.RulesClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RulesClient. */
 public final class RulesClientImpl implements RulesClient {
-    private final ClientLogger logger = new ClientLogger(RulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RulesService service;
 
@@ -67,11 +64,10 @@ public final class RulesClientImpl implements RulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientR")
-    private interface RulesService {
+    public interface RulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/ruleSets/{ruleSetName}/rules")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RuleListResult>> listByRuleSet(
@@ -86,8 +82,7 @@ public final class RulesClientImpl implements RulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RuleInner>> get(
@@ -103,8 +98,7 @@ public final class RulesClientImpl implements RulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -121,8 +115,7 @@ public final class RulesClientImpl implements RulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -139,8 +132,7 @@ public final class RulesClientImpl implements RulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}/rules/{ruleName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -501,32 +493,7 @@ public final class RulesClientImpl implements RulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleInner> getAsync(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
         return getWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName)
-            .flatMap(
-                (Response<RuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an existing delivery rule within a rule set.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param ruleSetName Name of the rule set under the profile.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleInner get(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
-        return getAsync(resourceGroupName, profileName, ruleSetName, ruleName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -547,6 +514,24 @@ public final class RulesClientImpl implements RulesClient {
     public Response<RuleInner> getWithResponse(
         String resourceGroupName, String profileName, String ruleSetName, String ruleName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, ruleSetName, ruleName, context).block();
+    }
+
+    /**
+     * Gets an existing delivery rule within a rule set.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param ruleSetName Name of the rule set under the profile.
+     * @param ruleName Name of the delivery rule which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing delivery rule within a rule set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RuleInner get(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
+        return getWithResponse(resourceGroupName, profileName, ruleSetName, ruleName, Context.NONE).getValue();
     }
 
     /**
@@ -763,7 +748,7 @@ public final class RulesClientImpl implements RulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuleInner>, RuleInner> beginCreate(
         String resourceGroupName, String profileName, String ruleSetName, String ruleName, RuleInner rule) {
-        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule).getSyncPoller();
     }
 
     /**
@@ -790,7 +775,9 @@ public final class RulesClientImpl implements RulesClient {
         String ruleName,
         RuleInner rule,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, ruleSetName, ruleName, rule, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1120,7 +1107,8 @@ public final class RulesClientImpl implements RulesClient {
         String ruleSetName,
         String ruleName,
         RuleUpdateParameters ruleUpdateProperties) {
-        return beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties)
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties)
             .getSyncPoller();
     }
 
@@ -1148,7 +1136,8 @@ public final class RulesClientImpl implements RulesClient {
         String ruleName,
         RuleUpdateParameters ruleUpdateProperties,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties, context)
             .getSyncPoller();
     }
 
@@ -1440,7 +1429,7 @@ public final class RulesClientImpl implements RulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
-        return beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName).getSyncPoller();
     }
 
     /**
@@ -1460,7 +1449,7 @@ public final class RulesClientImpl implements RulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String ruleSetName, String ruleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, ruleSetName, ruleName, context).getSyncPoller();
     }
 
     /**
@@ -1544,7 +1533,8 @@ public final class RulesClientImpl implements RulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1580,7 +1570,8 @@ public final class RulesClientImpl implements RulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataConnectorKind. */
+/** The kind of the data connector. */
 public final class DataConnectorKind extends ExpandableStringEnum<DataConnectorKind> {
     /** Static value AzureActiveDirectory for DataConnectorKind. */
     public static final DataConnectorKind AZURE_ACTIVE_DIRECTORY = fromString("AzureActiveDirectory");
@@ -83,7 +83,11 @@ public final class DataConnectorKind extends ExpandableStringEnum<DataConnectorK
         return fromString(name, DataConnectorKind.class);
     }
 
-    /** @return known DataConnectorKind values. */
+    /**
+     * Gets known DataConnectorKind values.
+     *
+     * @return known DataConnectorKind values.
+     */
     public static Collection<DataConnectorKind> values() {
         return values(DataConnectorKind.class);
     }

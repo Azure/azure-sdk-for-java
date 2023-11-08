@@ -5,45 +5,23 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DataProtection DataProtection type volumes include an object containing details of the replication. */
+/**
+ * DataProtection
+ *
+ * <p>DataProtection type volumes include an object containing details of the replication.
+ */
 @Fluent
 public final class VolumePatchPropertiesDataProtection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumePatchPropertiesDataProtection.class);
-
-    /*
-     * Backup Properties
-     */
-    @JsonProperty(value = "backup")
-    private VolumeBackupProperties backup;
-
     /*
      * Snapshot properties.
      */
     @JsonProperty(value = "snapshot")
     private VolumeSnapshotProperties snapshot;
 
-    /**
-     * Get the backup property: Backup Properties.
-     *
-     * @return the backup value.
-     */
-    public VolumeBackupProperties backup() {
-        return this.backup;
-    }
-
-    /**
-     * Set the backup property: Backup Properties.
-     *
-     * @param backup the backup value to set.
-     * @return the VolumePatchPropertiesDataProtection object itself.
-     */
-    public VolumePatchPropertiesDataProtection withBackup(VolumeBackupProperties backup) {
-        this.backup = backup;
-        return this;
+    /** Creates an instance of VolumePatchPropertiesDataProtection class. */
+    public VolumePatchPropertiesDataProtection() {
     }
 
     /**
@@ -72,9 +50,6 @@ public final class VolumePatchPropertiesDataProtection {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (backup() != null) {
-            backup().validate();
-        }
         if (snapshot() != null) {
             snapshot().validate();
         }

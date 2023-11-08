@@ -20,6 +20,9 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
     @JsonProperty(value = "parameters")
     private ServicePrincipalInKVParamPatch parameters;
 
+    /** Creates an instance of ServicePrincipalInKVCredentialPatch class. */
+    public ServicePrincipalInKVCredentialPatch() {}
+
     /**
      * Get the parameters property: The parameters property.
      *
@@ -37,6 +40,21 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
      */
     public ServicePrincipalInKVCredentialPatch setParameters(ServicePrincipalInKVParamPatch parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServicePrincipalInKVCredentialPatch setDataSourceCredentialName(String dataSourceCredentialName) {
+        super.setDataSourceCredentialName(dataSourceCredentialName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServicePrincipalInKVCredentialPatch setDataSourceCredentialDescription(
+            String dataSourceCredentialDescription) {
+        super.setDataSourceCredentialDescription(dataSourceCredentialDescription);
         return this;
     }
 }

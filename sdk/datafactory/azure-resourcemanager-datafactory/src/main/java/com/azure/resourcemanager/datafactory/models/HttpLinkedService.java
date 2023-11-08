@@ -24,6 +24,10 @@ public final class HttpLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private HttpLinkedServiceTypeProperties innerTypeProperties = new HttpLinkedServiceTypeProperties();
 
+    /** Creates an instance of HttpLinkedService class. */
+    public HttpLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
      *
@@ -62,7 +66,7 @@ public final class HttpLinkedService extends LinkedService {
     }
 
     /**
-     * Get the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
+     * Get the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).
      *
      * @return the url value.
@@ -72,7 +76,7 @@ public final class HttpLinkedService extends LinkedService {
     }
 
     /**
-     * Set the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
+     * Set the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).
      *
      * @param url the url value to set.
@@ -240,22 +244,22 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HttpLinkedService object itself.
      */
-    public HttpLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public HttpLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
         }

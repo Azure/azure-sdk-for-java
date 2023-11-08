@@ -17,6 +17,10 @@ public final class BatchAccountRegenerateKeyParameters {
     @JsonProperty(value = "keyName", required = true)
     private AccountKeyType keyName;
 
+    /** Creates an instance of BatchAccountRegenerateKeyParameters class. */
+    public BatchAccountRegenerateKeyParameters() {
+    }
+
     /**
      * Get the keyName property: The type of account key to regenerate.
      *

@@ -15,75 +15,73 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureFileStorageReadSettings extends StoreReadSettings {
     /*
-     * If true, files under the folder path will be read recursively. Default
-     * is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;
 
     /*
-     * Azure File Storage wildcardFolderPath. Type: string (or Expression with
-     * resultType string).
+     * Azure File Storage wildcardFolderPath. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "wildcardFolderPath")
     private Object wildcardFolderPath;
 
     /*
-     * Azure File Storage wildcardFileName. Type: string (or Expression with
-     * resultType string).
+     * Azure File Storage wildcardFileName. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "wildcardFileName")
     private Object wildcardFileName;
 
     /*
-     * The prefix filter for the Azure File name starting from root path. Type:
-     * string (or Expression with resultType string).
+     * The prefix filter for the Azure File name starting from root path. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "prefix")
     private Object prefix;
 
     /*
-     * Point to a text file that lists each file (relative path to the path
-     * configured in the dataset) that you want to copy. Type: string (or
-     * Expression with resultType string).
+     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
+     * copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileListPath")
     private Object fileListPath;
 
     /*
-     * Indicates whether to enable partition discovery.
+     * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enablePartitionDiscovery")
-    private Boolean enablePartitionDiscovery;
+    private Object enablePartitionDiscovery;
 
     /*
-     * Specify the root path where partition discovery starts from. Type:
-     * string (or Expression with resultType string).
+     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
     /*
-     * Indicates whether the source files need to be deleted after copy
-     * completion. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
 
     /*
-     * The start of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
+
+    /** Creates an instance of AzureFileStorageReadSettings class. */
+    public AzureFileStorageReadSettings() {
+    }
 
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
@@ -196,21 +194,23 @@ public final class AzureFileStorageReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @return the enablePartitionDiscovery value.
      */
-    public Boolean enablePartitionDiscovery() {
+    public Object enablePartitionDiscovery() {
         return this.enablePartitionDiscovery;
     }
 
     /**
-     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the AzureFileStorageReadSettings object itself.
      */
-    public AzureFileStorageReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
+    public AzureFileStorageReadSettings withEnablePartitionDiscovery(Object enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
         return this;
     }

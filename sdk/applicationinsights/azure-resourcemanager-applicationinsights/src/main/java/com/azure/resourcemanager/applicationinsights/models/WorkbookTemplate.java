@@ -99,6 +99,13 @@ public interface WorkbookTemplate {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookTemplateInner object.
      *
      * @return the inner object.
@@ -112,11 +119,13 @@ public interface WorkbookTemplate {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The WorkbookTemplate definition stages. */
     interface DefinitionStages {
         /** The first stage of the WorkbookTemplate definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the WorkbookTemplate definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -135,6 +144,7 @@ public interface WorkbookTemplate {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the WorkbookTemplate definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -145,6 +155,7 @@ public interface WorkbookTemplate {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the WorkbookTemplate definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -171,6 +182,7 @@ public interface WorkbookTemplate {
              */
             WorkbookTemplate create(Context context);
         }
+
         /** The stage of the WorkbookTemplate definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -181,6 +193,7 @@ public interface WorkbookTemplate {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the WorkbookTemplate definition allowing to specify priority. */
         interface WithPriority {
             /**
@@ -193,6 +206,7 @@ public interface WorkbookTemplate {
              */
             WithCreate withPriority(Integer priority);
         }
+
         /** The stage of the WorkbookTemplate definition allowing to specify author. */
         interface WithAuthor {
             /**
@@ -203,6 +217,7 @@ public interface WorkbookTemplate {
              */
             WithCreate withAuthor(String author);
         }
+
         /** The stage of the WorkbookTemplate definition allowing to specify templateData. */
         interface WithTemplateData {
             /**
@@ -213,6 +228,7 @@ public interface WorkbookTemplate {
              */
             WithCreate withTemplateData(Object templateData);
         }
+
         /** The stage of the WorkbookTemplate definition allowing to specify galleries. */
         interface WithGalleries {
             /**
@@ -223,6 +239,7 @@ public interface WorkbookTemplate {
              */
             WithCreate withGalleries(List<WorkbookTemplateGallery> galleries);
         }
+
         /** The stage of the WorkbookTemplate definition allowing to specify localized. */
         interface WithLocalized {
             /**
@@ -236,6 +253,7 @@ public interface WorkbookTemplate {
             WithCreate withLocalized(Map<String, List<WorkbookTemplateLocalizedGallery>> localized);
         }
     }
+
     /**
      * Begins update for the WorkbookTemplate resource.
      *
@@ -266,6 +284,7 @@ public interface WorkbookTemplate {
          */
         WorkbookTemplate apply(Context context);
     }
+
     /** The WorkbookTemplate update stages. */
     interface UpdateStages {
         /** The stage of the WorkbookTemplate update allowing to specify tags. */
@@ -278,6 +297,7 @@ public interface WorkbookTemplate {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the WorkbookTemplate update allowing to specify priority. */
         interface WithPriority {
             /**
@@ -290,6 +310,7 @@ public interface WorkbookTemplate {
              */
             Update withPriority(Integer priority);
         }
+
         /** The stage of the WorkbookTemplate update allowing to specify author. */
         interface WithAuthor {
             /**
@@ -300,6 +321,7 @@ public interface WorkbookTemplate {
              */
             Update withAuthor(String author);
         }
+
         /** The stage of the WorkbookTemplate update allowing to specify templateData. */
         interface WithTemplateData {
             /**
@@ -310,6 +332,7 @@ public interface WorkbookTemplate {
              */
             Update withTemplateData(Object templateData);
         }
+
         /** The stage of the WorkbookTemplate update allowing to specify galleries. */
         interface WithGalleries {
             /**
@@ -320,6 +343,7 @@ public interface WorkbookTemplate {
              */
             Update withGalleries(List<WorkbookTemplateGallery> galleries);
         }
+
         /** The stage of the WorkbookTemplate update allowing to specify localized. */
         interface WithLocalized {
             /**
@@ -333,6 +357,7 @@ public interface WorkbookTemplate {
             Update withLocalized(Map<String, List<WorkbookTemplateLocalizedGallery>> localized);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

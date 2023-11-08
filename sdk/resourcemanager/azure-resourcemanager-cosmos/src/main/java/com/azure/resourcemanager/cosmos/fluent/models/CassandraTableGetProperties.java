@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos DB Cassandra table. */
 @Fluent
 public final class CassandraTableGetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraTableGetProperties.class);
-
     /*
      * The resource property.
      */
@@ -27,6 +23,10 @@ public final class CassandraTableGetProperties {
      */
     @JsonProperty(value = "options")
     private CassandraTableGetPropertiesOptions options;
+
+    /** Creates an instance of CassandraTableGetProperties class. */
+    public CassandraTableGetProperties() {
+    }
 
     /**
      * Get the resource property: The resource property.

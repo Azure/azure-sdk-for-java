@@ -65,8 +65,7 @@ public final class StampCapacityInner {
     private Boolean excludeFromCapacityAllocation;
 
     /*
-     * <code>true</code> if capacity is applicable for all apps; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if capacity is applicable for all apps; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isApplicableForAllComputeModes")
     private Boolean isApplicableForAllComputeModes;
@@ -82,6 +81,10 @@ public final class StampCapacityInner {
      */
     @JsonProperty(value = "isLinux")
     private Boolean isLinux;
+
+    /** Creates an instance of StampCapacityInner class. */
+    public StampCapacityInner() {
+    }
 
     /**
      * Get the name property: Name of the stamp.

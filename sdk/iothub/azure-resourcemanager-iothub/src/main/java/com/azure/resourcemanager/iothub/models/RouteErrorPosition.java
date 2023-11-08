@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Position where the route error happened. */
 @Fluent
 public final class RouteErrorPosition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteErrorPosition.class);
-
     /*
      * Line where the route error happened
      */
@@ -25,6 +21,10 @@ public final class RouteErrorPosition {
      */
     @JsonProperty(value = "column")
     private Integer column;
+
+    /** Creates an instance of RouteErrorPosition class. */
+    public RouteErrorPosition() {
+    }
 
     /**
      * Get the line property: Line where the route error happened.

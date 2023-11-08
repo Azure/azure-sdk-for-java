@@ -45,6 +45,13 @@ public interface Key {
     String keyVaultUrl();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.KeyInner object.
      *
      * @return the inner object.
@@ -121,7 +128,7 @@ public interface Key {
     Key.Update update();
 
     /** The template for Key update. */
-    interface Update extends UpdateStages.WithIsActiveCmk, UpdateStages.WithKeyVaultUrl {
+    interface Update extends UpdateStages.WithIsActiveCmk {
         /**
          * Executes the update request.
          *
@@ -149,16 +156,6 @@ public interface Key {
              * @return the next definition stage.
              */
             Update withIsActiveCmk(Boolean isActiveCmk);
-        }
-        /** The stage of the Key update allowing to specify keyVaultUrl. */
-        interface WithKeyVaultUrl {
-            /**
-             * Specifies the keyVaultUrl property: The Key Vault Url of the workspace key..
-             *
-             * @param keyVaultUrl The Key Vault Url of the workspace key.
-             * @return the next definition stage.
-             */
-            Update withKeyVaultUrl(String keyVaultUrl);
         }
     }
     /**

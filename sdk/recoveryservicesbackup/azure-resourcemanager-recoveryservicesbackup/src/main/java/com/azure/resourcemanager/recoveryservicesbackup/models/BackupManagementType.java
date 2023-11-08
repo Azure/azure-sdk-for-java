@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupManagementType. */
+/** Backup management type to execute the current job. */
 public final class BackupManagementType extends ExpandableStringEnum<BackupManagementType> {
     /** Static value Invalid for BackupManagementType. */
     public static final BackupManagementType INVALID = fromString("Invalid");
@@ -38,6 +38,15 @@ public final class BackupManagementType extends ExpandableStringEnum<BackupManag
     public static final BackupManagementType DEFAULT_BACKUP = fromString("DefaultBackup");
 
     /**
+     * Creates a new instance of BackupManagementType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupManagementType() {
+    }
+
+    /**
      * Creates or finds a BackupManagementType from its string representation.
      *
      * @param name a name to look for.
@@ -48,7 +57,11 @@ public final class BackupManagementType extends ExpandableStringEnum<BackupManag
         return fromString(name, BackupManagementType.class);
     }
 
-    /** @return known BackupManagementType values. */
+    /**
+     * Gets known BackupManagementType values.
+     *
+     * @return known BackupManagementType values.
+     */
     public static Collection<BackupManagementType> values() {
         return values(BackupManagementType.class);
     }

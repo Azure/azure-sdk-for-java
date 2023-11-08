@@ -165,6 +165,13 @@ public interface Account {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.purview.fluent.models.AccountInner object.
      *
      * @return the inner object.
@@ -217,7 +224,6 @@ public interface Account {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithCloudConnectors,
                 DefinitionStages.WithManagedResourceGroupName,
@@ -246,16 +252,6 @@ public interface Account {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the Account definition allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: Gets or sets the Sku..
-             *
-             * @param sku Gets or sets the Sku.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(AccountSku sku);
         }
         /** The stage of the Account definition allowing to specify identity. */
         interface WithIdentity {
@@ -308,7 +304,7 @@ public interface Account {
     Account.Update update();
 
     /** The template for Account update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          *
@@ -335,6 +331,16 @@ public interface Account {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the Account update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Identity related info to add/remove userAssignedIdentities..
+             *
+             * @param identity Identity related info to add/remove userAssignedIdentities.
+             * @return the next definition stage.
+             */
+            Update withIdentity(Identity identity);
         }
         /** The stage of the Account update allowing to specify properties. */
         interface WithProperties {
@@ -363,7 +369,22 @@ public interface Account {
     Account refresh(Context context);
 
     /**
-     * List the authorization keys associated with this account.
+     * Lists the keys asynchronous.
+     *
+     * <p>List the authorization keys associated with this account.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Account access keys along with {@link Response}.
+     */
+    Response<AccessKeys> listKeysWithResponse(Context context);
+
+    /**
+     * Lists the keys asynchronous.
+     *
+     * <p>List the authorization keys associated with this account.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -372,18 +393,23 @@ public interface Account {
     AccessKeys listKeys();
 
     /**
-     * List the authorization keys associated with this account.
+     * Add the administrator for root collection.
      *
+     * <p>Add the administrator for root collection associated with this account.
+     *
+     * @param collectionAdminUpdate The collection admin update payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Account access keys.
+     * @return the {@link Response}.
      */
-    Response<AccessKeys> listKeysWithResponse(Context context);
+    Response<Void> addRootCollectionAdminWithResponse(CollectionAdminUpdate collectionAdminUpdate, Context context);
 
     /**
-     * Add the administrator for root collection associated with this account.
+     * Add the administrator for root collection.
+     *
+     * <p>Add the administrator for root collection associated with this account.
      *
      * @param collectionAdminUpdate The collection admin update payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -391,16 +417,4 @@ public interface Account {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void addRootCollectionAdmin(CollectionAdminUpdate collectionAdminUpdate);
-
-    /**
-     * Add the administrator for root collection associated with this account.
-     *
-     * @param collectionAdminUpdate The collection admin update payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> addRootCollectionAdminWithResponse(CollectionAdminUpdate collectionAdminUpdate, Context context);
 }

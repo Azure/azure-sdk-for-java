@@ -27,6 +27,10 @@ public final class ListVirtualNetworkGatewayNatRulesResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ListVirtualNetworkGatewayNatRulesResult class. */
+    public ListVirtualNetworkGatewayNatRulesResult() {
+    }
+
     /**
      * Get the value property: List of Nat Rules.
      *

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.SecurityContactsClient;
 import com.azure.resourcemanager.security.fluent.models.SecurityContactInner;
 import com.azure.resourcemanager.security.models.SecurityContact;
 import com.azure.resourcemanager.security.models.SecurityContacts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecurityContactsImpl implements SecurityContacts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityContactsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityContactsImpl.class);
 
     private final SecurityContactsClient innerClient;
 
@@ -38,15 +37,6 @@ public final class SecurityContactsImpl implements SecurityContacts {
         return Utils.mapPage(inner, inner1 -> new SecurityContactImpl(inner1, this.manager()));
     }
 
-    public SecurityContact get(String securityContactName) {
-        SecurityContactInner inner = this.serviceClient().get(securityContactName);
-        if (inner != null) {
-            return new SecurityContactImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SecurityContact> getWithResponse(String securityContactName, Context context) {
         Response<SecurityContactInner> inner = this.serviceClient().getWithResponse(securityContactName, context);
         if (inner != null) {
@@ -60,18 +50,27 @@ public final class SecurityContactsImpl implements SecurityContacts {
         }
     }
 
-    public void delete(String securityContactName) {
-        this.serviceClient().delete(securityContactName);
+    public SecurityContact get(String securityContactName) {
+        SecurityContactInner inner = this.serviceClient().get(securityContactName);
+        if (inner != null) {
+            return new SecurityContactImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String securityContactName, Context context) {
         return this.serviceClient().deleteWithResponse(securityContactName, context);
     }
 
+    public void delete(String securityContactName) {
+        this.serviceClient().delete(securityContactName);
+    }
+
     public SecurityContact getById(String id) {
         String securityContactName = Utils.getValueFromIdByName(id, "securityContacts");
         if (securityContactName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -84,7 +83,7 @@ public final class SecurityContactsImpl implements SecurityContacts {
     public Response<SecurityContact> getByIdWithResponse(String id, Context context) {
         String securityContactName = Utils.getValueFromIdByName(id, "securityContacts");
         if (securityContactName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -97,20 +96,20 @@ public final class SecurityContactsImpl implements SecurityContacts {
     public void deleteById(String id) {
         String securityContactName = Utils.getValueFromIdByName(id, "securityContacts");
         if (securityContactName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'securityContacts'.", id)));
         }
-        this.deleteWithResponse(securityContactName, Context.NONE).getValue();
+        this.deleteWithResponse(securityContactName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String securityContactName = Utils.getValueFromIdByName(id, "securityContacts");
         if (securityContactName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

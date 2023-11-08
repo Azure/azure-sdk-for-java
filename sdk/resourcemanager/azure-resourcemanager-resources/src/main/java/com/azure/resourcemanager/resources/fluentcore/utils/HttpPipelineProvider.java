@@ -47,7 +47,7 @@ public final class HttpPipelineProvider {
      */
     public static HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
         return buildHttpPipeline(credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE),
-            null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), null, null);
+            null, null, null, null);
     }
 
     /**
@@ -67,6 +67,11 @@ public final class HttpPipelineProvider {
         TokenCredential credential, AzureProfile profile, String[] scopes, HttpLogOptions httpLogOptions,
         Configuration configuration, RetryPolicy retryPolicy, List<HttpPipelinePolicy> additionalPolicies,
         HttpClient httpClient) {
+
+        if (retryPolicy == null) {
+            retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+        }
+
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(httpLogOptions, configuration));
         policies.add(new AddHeadersFromContextPolicy());

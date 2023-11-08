@@ -93,6 +93,13 @@ public interface DatadogMonitorResource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.datadog.fluent.models.DatadogMonitorResourceInner object.
      *
      * @return the inner object.
@@ -106,11 +113,13 @@ public interface DatadogMonitorResource {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The DatadogMonitorResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the DatadogMonitorResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the DatadogMonitorResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -129,6 +138,7 @@ public interface DatadogMonitorResource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the DatadogMonitorResource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -139,6 +149,7 @@ public interface DatadogMonitorResource {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the DatadogMonitorResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -163,6 +174,7 @@ public interface DatadogMonitorResource {
              */
             DatadogMonitorResource create(Context context);
         }
+
         /** The stage of the DatadogMonitorResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -173,6 +185,7 @@ public interface DatadogMonitorResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the DatadogMonitorResource definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -183,6 +196,7 @@ public interface DatadogMonitorResource {
              */
             WithCreate withSku(ResourceSku sku);
         }
+
         /** The stage of the DatadogMonitorResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -193,6 +207,7 @@ public interface DatadogMonitorResource {
              */
             WithCreate withProperties(MonitorProperties properties);
         }
+
         /** The stage of the DatadogMonitorResource definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -204,6 +219,7 @@ public interface DatadogMonitorResource {
             WithCreate withIdentity(IdentityProperties identity);
         }
     }
+
     /**
      * Begins update for the DatadogMonitorResource resource.
      *
@@ -228,6 +244,7 @@ public interface DatadogMonitorResource {
          */
         DatadogMonitorResource apply(Context context);
     }
+
     /** The DatadogMonitorResource update stages. */
     interface UpdateStages {
         /** The stage of the DatadogMonitorResource update allowing to specify tags. */
@@ -240,6 +257,7 @@ public interface DatadogMonitorResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the DatadogMonitorResource update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -251,6 +269,7 @@ public interface DatadogMonitorResource {
              */
             Update withProperties(MonitorUpdateProperties properties);
         }
+
         /** The stage of the DatadogMonitorResource update allowing to specify sku. */
         interface WithSku {
             /**
@@ -262,6 +281,7 @@ public interface DatadogMonitorResource {
             Update withSku(ResourceSku sku);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -282,7 +302,7 @@ public interface DatadogMonitorResource {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatadogApiKey> listApiKeys();
 
@@ -293,9 +313,20 @@ public interface DatadogMonitorResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatadogApiKey> listApiKeys(Context context);
+
+    /**
+     * Get the default api key.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the default api key along with {@link Response}.
+     */
+    Response<DatadogApiKey> getDefaultKeyWithResponse(Context context);
 
     /**
      * Get the default api key.
@@ -307,15 +338,16 @@ public interface DatadogMonitorResource {
     DatadogApiKey getDefaultKey();
 
     /**
-     * Get the default api key.
+     * Set the default api key.
      *
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default api key.
+     * @return the {@link Response}.
      */
-    Response<DatadogApiKey> getDefaultKeyWithResponse(Context context);
+    Response<Void> setDefaultKeyWithResponse(DatadogApiKeyInner body, Context context);
 
     /**
      * Set the default api key.
@@ -326,23 +358,11 @@ public interface DatadogMonitorResource {
     void setDefaultKey();
 
     /**
-     * Set the default api key.
-     *
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> setDefaultKeyWithResponse(DatadogApiKeyInner body, Context context);
-
-    /**
      * List the hosts for a given monitor resource.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatadogHost> listHosts();
 
@@ -353,7 +373,7 @@ public interface DatadogMonitorResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatadogHost> listHosts(Context context);
 
@@ -362,7 +382,7 @@ public interface DatadogMonitorResource {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LinkedResource> listLinkedResources();
 
@@ -373,7 +393,7 @@ public interface DatadogMonitorResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LinkedResource> listLinkedResources(Context context);
 
@@ -382,7 +402,7 @@ public interface DatadogMonitorResource {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources();
 
@@ -393,9 +413,20 @@ public interface DatadogMonitorResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources(Context context);
+
+    /**
+     * Refresh the set password link and return a latest one.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    Response<DatadogSetPasswordLink> refreshSetPasswordLinkWithResponse(Context context);
 
     /**
      * Refresh the set password link and return a latest one.
@@ -405,15 +436,4 @@ public interface DatadogMonitorResource {
      * @return the response.
      */
     DatadogSetPasswordLink refreshSetPasswordLink();
-
-    /**
-     * Refresh the set password link and return a latest one.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<DatadogSetPasswordLink> refreshSetPasswordLinkWithResponse(Context context);
 }

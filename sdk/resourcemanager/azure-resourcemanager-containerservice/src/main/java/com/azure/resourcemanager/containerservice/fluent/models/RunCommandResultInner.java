@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.containerservice.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** run command result. */
-@Fluent
+@Immutable
 public final class RunCommandResultInner {
     /*
      * The command id.
@@ -22,6 +22,10 @@ public final class RunCommandResultInner {
      */
     @JsonProperty(value = "properties")
     private CommandResultProperties innerProperties;
+
+    /** Creates an instance of RunCommandResultInner class. */
+    public RunCommandResultInner() {
+    }
 
     /**
      * Get the id property: The command id.

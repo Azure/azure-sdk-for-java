@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NamespaceJunction {
     /*
-     * Namespace path on a Cache for a Storage Target.
+     * Namespace path on a cache for a Storage Target.
      */
     @JsonProperty(value = "namespacePath")
     private String namespacePath;
@@ -34,8 +34,12 @@ public final class NamespaceJunction {
     @JsonProperty(value = "nfsAccessPolicy")
     private String nfsAccessPolicy;
 
+    /** Creates an instance of NamespaceJunction class. */
+    public NamespaceJunction() {
+    }
+
     /**
-     * Get the namespacePath property: Namespace path on a Cache for a Storage Target.
+     * Get the namespacePath property: Namespace path on a cache for a Storage Target.
      *
      * @return the namespacePath value.
      */
@@ -44,7 +48,7 @@ public final class NamespaceJunction {
     }
 
     /**
-     * Set the namespacePath property: Namespace path on a Cache for a Storage Target.
+     * Set the namespacePath property: Namespace path on a cache for a Storage Target.
      *
      * @param namespacePath the namespacePath value to set.
      * @return the NamespaceJunction object itself.

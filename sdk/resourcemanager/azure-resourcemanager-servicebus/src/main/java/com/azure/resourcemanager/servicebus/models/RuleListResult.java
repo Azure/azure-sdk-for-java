@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.fluent.models.RuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the List rule operation. */
 @Fluent
 public final class RuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleListResult.class);
-
     /*
      * Result of the List Rules operation.
      */
@@ -23,8 +19,7 @@ public final class RuleListResult {
     private List<RuleInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of rules
+     * Link to the next set of results. Not empty if Value contains incomplete list of rules
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

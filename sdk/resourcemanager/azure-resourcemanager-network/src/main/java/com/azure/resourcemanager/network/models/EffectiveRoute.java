@@ -18,8 +18,7 @@ public final class EffectiveRoute {
     private String name;
 
     /*
-     * If true, on-premises routes are not propagated to the network interfaces
-     * in the subnet.
+     * If true, on-premises routes are not propagated to the network interfaces in the subnet.
      */
     @JsonProperty(value = "disableBgpRoutePropagation")
     private Boolean disableBgpRoutePropagation;
@@ -53,6 +52,10 @@ public final class EffectiveRoute {
      */
     @JsonProperty(value = "nextHopType")
     private RouteNextHopType nextHopType;
+
+    /** Creates an instance of EffectiveRoute class. */
+    public EffectiveRoute() {
+    }
 
     /**
      * Get the name property: The name of the user defined route. This is optional.

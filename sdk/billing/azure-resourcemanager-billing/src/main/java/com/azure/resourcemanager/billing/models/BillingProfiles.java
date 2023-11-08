@@ -19,7 +19,7 @@ public interface BillingProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing profiles.
+     * @return the list of billing profiles as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName);
 
@@ -33,9 +33,25 @@ public interface BillingProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing profiles.
+     * @return the list of billing profiles as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName, String expand, Context context);
+
+    /**
+     * Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft
+     * Customer Agreement or Microsoft Partner Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param expand May be used to expand the invoice sections.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a billing profile by its ID along with {@link Response}.
+     */
+    Response<BillingProfile> getWithResponse(
+        String billingAccountName, String billingProfileName, String expand, Context context);
 
     /**
      * Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft
@@ -49,22 +65,6 @@ public interface BillingProfiles {
      * @return a billing profile by its ID.
      */
     BillingProfile get(String billingAccountName, String billingProfileName);
-
-    /**
-     * Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft
-     * Customer Agreement or Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param expand May be used to expand the invoice sections.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing profile by its ID.
-     */
-    Response<BillingProfile> getWithResponse(
-        String billingAccountName, String billingProfileName, String expand, Context context);
 
     /**
      * Creates or updates a billing profile. The operation is supported for billing accounts with agreement type

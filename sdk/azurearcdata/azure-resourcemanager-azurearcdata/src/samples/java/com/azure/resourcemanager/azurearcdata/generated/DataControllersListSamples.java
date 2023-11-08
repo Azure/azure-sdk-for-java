@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.azurearcdata.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataControllers List. */
 public final class DataControllersListSamples {
     /*
@@ -18,6 +16,6 @@ public final class DataControllersListSamples {
      */
     public static void getsAllDataControllersInASubscription(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.dataControllers().list(Context.NONE);
+        manager.dataControllers().list(com.azure.core.util.Context.NONE);
     }
 }

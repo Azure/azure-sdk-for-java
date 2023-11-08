@@ -25,6 +25,10 @@ public final class WorkerPoolCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of WorkerPoolCollection class. */
+    public WorkerPoolCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

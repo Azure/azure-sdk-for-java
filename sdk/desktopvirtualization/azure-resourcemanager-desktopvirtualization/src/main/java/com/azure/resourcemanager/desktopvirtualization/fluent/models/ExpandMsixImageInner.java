@@ -6,10 +6,8 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageDependencies;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,13 +15,15 @@ import java.util.List;
 /** Represents the definition of contents retrieved after expanding the MSIX Image. */
 @Fluent
 public final class ExpandMsixImageInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpandMsixImageInner.class);
-
     /*
      * Detailed properties for ExpandMsixImage
      */
     @JsonProperty(value = "properties")
     private ExpandMsixImageProperties innerProperties;
+
+    /** Creates an instance of ExpandMsixImageInner class. */
+    public ExpandMsixImageInner() {
+    }
 
     /**
      * Get the innerProperties property: Detailed properties for ExpandMsixImage.

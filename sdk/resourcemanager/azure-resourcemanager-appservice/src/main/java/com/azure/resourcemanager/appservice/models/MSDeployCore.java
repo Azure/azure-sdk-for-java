@@ -31,8 +31,7 @@ public class MSDeployCore {
     private String dbType;
 
     /*
-     * URI of MSDeploy Parameters file. Must not be set if SetParameters is
-     * used.
+     * URI of MSDeploy Parameters file. Must not be set if SetParameters is used.
      */
     @JsonProperty(value = "setParametersXmlFileUri")
     private String setParametersXmlFileUri;
@@ -46,10 +45,8 @@ public class MSDeployCore {
 
     /*
      * Controls whether the MSDeploy operation skips the App_Data directory.
-     * If set to <code>true</code>, the existing App_Data directory on the
-     * destination
-     * will not be deleted, and any App_Data directory in the source will be
-     * ignored.
+     * If set to <code>true</code>, the existing App_Data directory on the destination
+     * will not be deleted, and any App_Data directory in the source will be ignored.
      * Setting is <code>false</code> by default.
      */
     @JsonProperty(value = "skipAppData")
@@ -61,6 +58,10 @@ public class MSDeployCore {
      */
     @JsonProperty(value = "appOffline")
     private Boolean appOffline;
+
+    /** Creates an instance of MSDeployCore class. */
+    public MSDeployCore() {
+    }
 
     /**
      * Get the packageUri property: Package URI.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CreatedByType. */
+/** The type of identity that created the resource. */
 public final class CreatedByType extends ExpandableStringEnum<CreatedByType> {
     /** Static value User for CreatedByType. */
     public static final CreatedByType USER = fromString("User");
@@ -23,6 +23,15 @@ public final class CreatedByType extends ExpandableStringEnum<CreatedByType> {
     public static final CreatedByType KEY = fromString("Key");
 
     /**
+     * Creates a new instance of CreatedByType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CreatedByType() {
+    }
+
+    /**
      * Creates or finds a CreatedByType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class CreatedByType extends ExpandableStringEnum<CreatedByType> {
         return fromString(name, CreatedByType.class);
     }
 
-    /** @return known CreatedByType values. */
+    /**
+     * Gets known CreatedByType values.
+     *
+     * @return known CreatedByType values.
+     */
     public static Collection<CreatedByType> values() {
         return values(CreatedByType.class);
     }

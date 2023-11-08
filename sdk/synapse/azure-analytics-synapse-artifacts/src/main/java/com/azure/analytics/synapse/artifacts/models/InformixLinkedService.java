@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Informix linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,31 +19,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class InformixLinkedService extends LinkedService {
     /*
-     * The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString", required = true)
     private Object connectionString;
 
     /*
-     * Type of authentication used to connect to the Informix as ODBC data
-     * store. Possible values are: Anonymous and Basic. Type: string (or
-     * Expression with resultType string).
+     * Type of authentication used to connect to the Informix as ODBC data store. Possible values are: Anonymous and
+     * Basic. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authenticationType")
     private Object authenticationType;
 
     /*
-     * The access credential portion of the connection string specified in
-     * driver-specific property-value format.
+     * The access credential portion of the connection string specified in driver-specific property-value format.
      */
     @JsonProperty(value = "typeProperties.credential")
     private SecretBase credential;
 
     /*
-     * User name for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -53,12 +51,14 @@ public class InformixLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of InformixLinkedService class. */
+    public InformixLinkedService() {}
 
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
@@ -187,6 +187,34 @@ public class InformixLinkedService extends LinkedService {
      */
     public InformixLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InformixLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InformixLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InformixLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InformixLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Volume details using the backup policy. */
 @Fluent
 public final class VolumeBackups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeBackups.class);
-
     /*
      * Volume name
      */
@@ -31,6 +27,10 @@ public final class VolumeBackups {
      */
     @JsonProperty(value = "policyEnabled")
     private Boolean policyEnabled;
+
+    /** Creates an instance of VolumeBackups class. */
+    public VolumeBackups() {
+    }
 
     /**
      * Get the volumeName property: Volume name.

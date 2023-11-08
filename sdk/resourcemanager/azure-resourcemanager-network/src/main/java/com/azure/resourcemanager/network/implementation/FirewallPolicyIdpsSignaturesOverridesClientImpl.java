@@ -14,6 +14,7 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
@@ -61,11 +62,10 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface FirewallPolicyIdpsSignaturesOverridesService {
+    public interface FirewallPolicyIdpsSignaturesOverridesService {
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/firewallPolicies/{firewallPolicyName}/signatureOverrides/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SignaturesOverridesInner>> patch(
@@ -73,14 +73,14 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("firewallPolicyName") String firewallPolicyName,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SignaturesOverridesInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/firewallPolicies/{firewallPolicyName}/signatureOverrides/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SignaturesOverridesInner>> put(
@@ -88,14 +88,14 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("firewallPolicyName") String firewallPolicyName,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SignaturesOverridesInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/firewallPolicies/{firewallPolicyName}/signatureOverrides/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SignaturesOverridesInner>> get(
@@ -103,13 +103,13 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("firewallPolicyName") String firewallPolicyName,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/firewallPolicies/{firewallPolicyName}/signatureOverrides")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SignaturesOverridesListInner>> list(
@@ -117,6 +117,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("firewallPolicyName") String firewallPolicyName,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -161,6 +162,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -171,6 +173,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                             resourceGroupName,
                             firewallPolicyName,
                             this.client.getSubscriptionId(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -218,6 +221,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -226,6 +230,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                 resourceGroupName,
                 firewallPolicyName,
                 this.client.getSubscriptionId(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -246,31 +251,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
     public Mono<SignaturesOverridesInner> patchAsync(
         String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters) {
         return patchWithResponseAsync(resourceGroupName, firewallPolicyName, parameters)
-            .flatMap(
-                (Response<SignaturesOverridesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Will update the status of policy's signature overrides for IDPS.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will contain all properties of the object to put.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignaturesOverridesInner patch(
-        String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters) {
-        return patchAsync(resourceGroupName, firewallPolicyName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -289,6 +270,23 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
     public Response<SignaturesOverridesInner> patchWithResponse(
         String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters, Context context) {
         return patchWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, context).block();
+    }
+
+    /**
+     * Will update the status of policy's signature overrides for IDPS.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters Will contain all properties of the object to put.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains all specific policy signatures overrides for the IDPS.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SignaturesOverridesInner patch(
+        String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters) {
+        return patchWithResponse(resourceGroupName, firewallPolicyName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -331,6 +329,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -341,6 +340,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                             resourceGroupName,
                             firewallPolicyName,
                             this.client.getSubscriptionId(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -388,6 +388,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -396,6 +397,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                 resourceGroupName,
                 firewallPolicyName,
                 this.client.getSubscriptionId(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -416,31 +418,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
     public Mono<SignaturesOverridesInner> putAsync(
         String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters) {
         return putWithResponseAsync(resourceGroupName, firewallPolicyName, parameters)
-            .flatMap(
-                (Response<SignaturesOverridesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Will override/create a new signature overrides for the policy's IDPS.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will contain all properties of the object to put.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignaturesOverridesInner put(
-        String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters) {
-        return putAsync(resourceGroupName, firewallPolicyName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -459,6 +437,23 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
     public Response<SignaturesOverridesInner> putWithResponse(
         String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters, Context context) {
         return putWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, context).block();
+    }
+
+    /**
+     * Will override/create a new signature overrides for the policy's IDPS.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters Will contain all properties of the object to put.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains all specific policy signatures overrides for the IDPS.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SignaturesOverridesInner put(
+        String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters) {
+        return putWithResponse(resourceGroupName, firewallPolicyName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -495,6 +490,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -505,6 +501,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                             resourceGroupName,
                             firewallPolicyName,
                             this.client.getSubscriptionId(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -545,6 +542,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -553,6 +551,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                 resourceGroupName,
                 firewallPolicyName,
                 this.client.getSubscriptionId(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -570,29 +569,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SignaturesOverridesInner> getAsync(String resourceGroupName, String firewallPolicyName) {
         return getWithResponseAsync(resourceGroupName, firewallPolicyName)
-            .flatMap(
-                (Response<SignaturesOverridesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns all signatures overrides for a specific policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignaturesOverridesInner get(String resourceGroupName, String firewallPolicyName) {
-        return getAsync(resourceGroupName, firewallPolicyName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -610,6 +587,21 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
     public Response<SignaturesOverridesInner> getWithResponse(
         String resourceGroupName, String firewallPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, firewallPolicyName, context).block();
+    }
+
+    /**
+     * Returns all signatures overrides for a specific policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains all specific policy signatures overrides for the IDPS.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SignaturesOverridesInner get(String resourceGroupName, String firewallPolicyName) {
+        return getWithResponse(resourceGroupName, firewallPolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -646,6 +638,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -656,6 +649,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                             resourceGroupName,
                             firewallPolicyName,
                             this.client.getSubscriptionId(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -696,6 +690,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -704,6 +699,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
                 resourceGroupName,
                 firewallPolicyName,
                 this.client.getSubscriptionId(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -721,29 +717,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SignaturesOverridesListInner> listAsync(String resourceGroupName, String firewallPolicyName) {
         return listWithResponseAsync(resourceGroupName, firewallPolicyName)
-            .flatMap(
-                (Response<SignaturesOverridesListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns all signatures overrides objects for a specific policy as a list containing a single value.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignaturesOverridesListInner list(String resourceGroupName, String firewallPolicyName) {
-        return listAsync(resourceGroupName, firewallPolicyName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -761,5 +735,20 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
     public Response<SignaturesOverridesListInner> listWithResponse(
         String resourceGroupName, String firewallPolicyName, Context context) {
         return listWithResponseAsync(resourceGroupName, firewallPolicyName, context).block();
+    }
+
+    /**
+     * Returns all signatures overrides objects for a specific policy as a list containing a single value.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an object containing an array with a single item.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SignaturesOverridesListInner list(String resourceGroupName, String firewallPolicyName) {
+        return listWithResponse(resourceGroupName, firewallPolicyName, Context.NONE).getValue();
     }
 }

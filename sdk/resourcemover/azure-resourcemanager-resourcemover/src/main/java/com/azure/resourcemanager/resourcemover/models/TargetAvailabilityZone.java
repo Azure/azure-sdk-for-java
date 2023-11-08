@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TargetAvailabilityZone. */
+/** Gets or sets the target availability zone. */
 public final class TargetAvailabilityZone extends ExpandableStringEnum<TargetAvailabilityZone> {
     /** Static value 1 for TargetAvailabilityZone. */
     public static final TargetAvailabilityZone ONE = fromString("1");
@@ -23,6 +23,15 @@ public final class TargetAvailabilityZone extends ExpandableStringEnum<TargetAva
     public static final TargetAvailabilityZone NA = fromString("NA");
 
     /**
+     * Creates a new instance of TargetAvailabilityZone value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TargetAvailabilityZone() {
+    }
+
+    /**
      * Creates or finds a TargetAvailabilityZone from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class TargetAvailabilityZone extends ExpandableStringEnum<TargetAva
         return fromString(name, TargetAvailabilityZone.class);
     }
 
-    /** @return known TargetAvailabilityZone values. */
+    /**
+     * Gets known TargetAvailabilityZone values.
+     *
+     * @return known TargetAvailabilityZone values.
+     */
     public static Collection<TargetAvailabilityZone> values() {
         return values(TargetAvailabilityZone.class);
     }

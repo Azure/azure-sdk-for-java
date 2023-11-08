@@ -6,13 +6,11 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
+import com.azure.resourcemanager.cdn.models.OriginGroupProvisioningState;
 import com.azure.resourcemanager.cdn.models.OriginGroupResourceState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -21,19 +19,15 @@ import java.util.List;
  */
 @Fluent
 public final class OriginGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginGroupInner.class);
-
     /*
      * The JSON object that contains the properties of the origin group.
      */
     @JsonProperty(value = "properties")
     private OriginGroupProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of OriginGroupInner class. */
+    public OriginGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin group.
@@ -42,15 +36,6 @@ public final class OriginGroupInner extends ProxyResource {
      */
     private OriginGroupProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -67,7 +52,7 @@ public final class OriginGroupInner extends ProxyResource {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public OriginGroupProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

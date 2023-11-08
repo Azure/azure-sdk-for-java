@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** teamGuestSettings. */
 @Fluent
 public final class MicrosoftGraphTeamGuestSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTeamGuestSettings.class);
-
     /*
      * If set to true, guests can add and update channels.
      */
@@ -34,6 +31,10 @@ public final class MicrosoftGraphTeamGuestSettings {
      * teamGuestSettings
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTeamGuestSettings class. */
+    public MicrosoftGraphTeamGuestSettings() {
+    }
 
     /**
      * Get the allowCreateUpdateChannels property: If set to true, guests can add and update channels.

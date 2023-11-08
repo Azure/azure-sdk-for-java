@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -23,12 +25,15 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.DataFactoryManagementClient;
 import com.azure.resourcemanager.datafactory.implementation.ActivityRunsImpl;
+import com.azure.resourcemanager.datafactory.implementation.ChangeDataCapturesImpl;
+import com.azure.resourcemanager.datafactory.implementation.CredentialOperationsImpl;
 import com.azure.resourcemanager.datafactory.implementation.DataFactoryManagementClientBuilder;
 import com.azure.resourcemanager.datafactory.implementation.DataFlowDebugSessionsImpl;
 import com.azure.resourcemanager.datafactory.implementation.DataFlowsImpl;
 import com.azure.resourcemanager.datafactory.implementation.DatasetsImpl;
 import com.azure.resourcemanager.datafactory.implementation.ExposureControlsImpl;
 import com.azure.resourcemanager.datafactory.implementation.FactoriesImpl;
+import com.azure.resourcemanager.datafactory.implementation.GlobalParametersImpl;
 import com.azure.resourcemanager.datafactory.implementation.IntegrationRuntimeNodesImpl;
 import com.azure.resourcemanager.datafactory.implementation.IntegrationRuntimeObjectMetadatasImpl;
 import com.azure.resourcemanager.datafactory.implementation.IntegrationRuntimesImpl;
@@ -44,11 +49,14 @@ import com.azure.resourcemanager.datafactory.implementation.PrivateLinkResources
 import com.azure.resourcemanager.datafactory.implementation.TriggerRunsImpl;
 import com.azure.resourcemanager.datafactory.implementation.TriggersImpl;
 import com.azure.resourcemanager.datafactory.models.ActivityRuns;
+import com.azure.resourcemanager.datafactory.models.ChangeDataCaptures;
+import com.azure.resourcemanager.datafactory.models.CredentialOperations;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugSessions;
 import com.azure.resourcemanager.datafactory.models.DataFlows;
 import com.azure.resourcemanager.datafactory.models.Datasets;
 import com.azure.resourcemanager.datafactory.models.ExposureControls;
 import com.azure.resourcemanager.datafactory.models.Factories;
+import com.azure.resourcemanager.datafactory.models.GlobalParameters;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeNodes;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeObjectMetadatas;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimes;
@@ -109,11 +117,17 @@ public final class DataFactoryManager {
 
     private ManagedPrivateEndpoints managedPrivateEndpoints;
 
+    private CredentialOperations credentialOperations;
+
     private PrivateEndPointConnections privateEndPointConnections;
 
     private PrivateEndpointConnectionOperations privateEndpointConnectionOperations;
 
     private PrivateLinkResources privateLinkResources;
+
+    private GlobalParameters globalParameters;
+
+    private ChangeDataCaptures changeDataCaptures;
 
     private final DataFactoryManagementClient clientObject;
 
@@ -143,6 +157,19 @@ public final class DataFactoryManager {
     }
 
     /**
+     * Creates an instance of DataFactory service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the DataFactory service API instance.
+     */
+    public static DataFactoryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new DataFactoryManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create DataFactoryManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -160,6 +187,7 @@ public final class DataFactoryManager {
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -221,6 +249,19 @@ public final class DataFactoryManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
@@ -253,7 +294,7 @@ public final class DataFactoryManager {
                 .append("-")
                 .append("com.azure.resourcemanager.datafactory")
                 .append("/")
-                .append("1.0.0-beta.13");
+                .append("1.0.0-beta.23");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -271,10 +312,15 @@ public final class DataFactoryManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -305,7 +351,11 @@ public final class DataFactoryManager {
         }
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -313,7 +363,11 @@ public final class DataFactoryManager {
         return operations;
     }
 
-    /** @return Resource collection API of Factories. */
+    /**
+     * Gets the resource collection API of Factories. It manages Factory.
+     *
+     * @return Resource collection API of Factories.
+     */
     public Factories factories() {
         if (this.factories == null) {
             this.factories = new FactoriesImpl(clientObject.getFactories(), this);
@@ -321,7 +375,11 @@ public final class DataFactoryManager {
         return factories;
     }
 
-    /** @return Resource collection API of ExposureControls. */
+    /**
+     * Gets the resource collection API of ExposureControls.
+     *
+     * @return Resource collection API of ExposureControls.
+     */
     public ExposureControls exposureControls() {
         if (this.exposureControls == null) {
             this.exposureControls = new ExposureControlsImpl(clientObject.getExposureControls(), this);
@@ -329,7 +387,11 @@ public final class DataFactoryManager {
         return exposureControls;
     }
 
-    /** @return Resource collection API of IntegrationRuntimes. */
+    /**
+     * Gets the resource collection API of IntegrationRuntimes. It manages IntegrationRuntimeResource.
+     *
+     * @return Resource collection API of IntegrationRuntimes.
+     */
     public IntegrationRuntimes integrationRuntimes() {
         if (this.integrationRuntimes == null) {
             this.integrationRuntimes = new IntegrationRuntimesImpl(clientObject.getIntegrationRuntimes(), this);
@@ -337,7 +399,11 @@ public final class DataFactoryManager {
         return integrationRuntimes;
     }
 
-    /** @return Resource collection API of IntegrationRuntimeObjectMetadatas. */
+    /**
+     * Gets the resource collection API of IntegrationRuntimeObjectMetadatas.
+     *
+     * @return Resource collection API of IntegrationRuntimeObjectMetadatas.
+     */
     public IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas() {
         if (this.integrationRuntimeObjectMetadatas == null) {
             this.integrationRuntimeObjectMetadatas =
@@ -346,7 +412,11 @@ public final class DataFactoryManager {
         return integrationRuntimeObjectMetadatas;
     }
 
-    /** @return Resource collection API of IntegrationRuntimeNodes. */
+    /**
+     * Gets the resource collection API of IntegrationRuntimeNodes.
+     *
+     * @return Resource collection API of IntegrationRuntimeNodes.
+     */
     public IntegrationRuntimeNodes integrationRuntimeNodes() {
         if (this.integrationRuntimeNodes == null) {
             this.integrationRuntimeNodes =
@@ -355,7 +425,11 @@ public final class DataFactoryManager {
         return integrationRuntimeNodes;
     }
 
-    /** @return Resource collection API of LinkedServices. */
+    /**
+     * Gets the resource collection API of LinkedServices. It manages LinkedServiceResource.
+     *
+     * @return Resource collection API of LinkedServices.
+     */
     public LinkedServices linkedServices() {
         if (this.linkedServices == null) {
             this.linkedServices = new LinkedServicesImpl(clientObject.getLinkedServices(), this);
@@ -363,7 +437,11 @@ public final class DataFactoryManager {
         return linkedServices;
     }
 
-    /** @return Resource collection API of Datasets. */
+    /**
+     * Gets the resource collection API of Datasets. It manages DatasetResource.
+     *
+     * @return Resource collection API of Datasets.
+     */
     public Datasets datasets() {
         if (this.datasets == null) {
             this.datasets = new DatasetsImpl(clientObject.getDatasets(), this);
@@ -371,7 +449,11 @@ public final class DataFactoryManager {
         return datasets;
     }
 
-    /** @return Resource collection API of Pipelines. */
+    /**
+     * Gets the resource collection API of Pipelines. It manages PipelineResource.
+     *
+     * @return Resource collection API of Pipelines.
+     */
     public Pipelines pipelines() {
         if (this.pipelines == null) {
             this.pipelines = new PipelinesImpl(clientObject.getPipelines(), this);
@@ -379,7 +461,11 @@ public final class DataFactoryManager {
         return pipelines;
     }
 
-    /** @return Resource collection API of PipelineRuns. */
+    /**
+     * Gets the resource collection API of PipelineRuns.
+     *
+     * @return Resource collection API of PipelineRuns.
+     */
     public PipelineRuns pipelineRuns() {
         if (this.pipelineRuns == null) {
             this.pipelineRuns = new PipelineRunsImpl(clientObject.getPipelineRuns(), this);
@@ -387,7 +473,11 @@ public final class DataFactoryManager {
         return pipelineRuns;
     }
 
-    /** @return Resource collection API of ActivityRuns. */
+    /**
+     * Gets the resource collection API of ActivityRuns.
+     *
+     * @return Resource collection API of ActivityRuns.
+     */
     public ActivityRuns activityRuns() {
         if (this.activityRuns == null) {
             this.activityRuns = new ActivityRunsImpl(clientObject.getActivityRuns(), this);
@@ -395,7 +485,11 @@ public final class DataFactoryManager {
         return activityRuns;
     }
 
-    /** @return Resource collection API of Triggers. */
+    /**
+     * Gets the resource collection API of Triggers. It manages TriggerResource.
+     *
+     * @return Resource collection API of Triggers.
+     */
     public Triggers triggers() {
         if (this.triggers == null) {
             this.triggers = new TriggersImpl(clientObject.getTriggers(), this);
@@ -403,7 +497,11 @@ public final class DataFactoryManager {
         return triggers;
     }
 
-    /** @return Resource collection API of TriggerRuns. */
+    /**
+     * Gets the resource collection API of TriggerRuns.
+     *
+     * @return Resource collection API of TriggerRuns.
+     */
     public TriggerRuns triggerRuns() {
         if (this.triggerRuns == null) {
             this.triggerRuns = new TriggerRunsImpl(clientObject.getTriggerRuns(), this);
@@ -411,7 +509,11 @@ public final class DataFactoryManager {
         return triggerRuns;
     }
 
-    /** @return Resource collection API of DataFlows. */
+    /**
+     * Gets the resource collection API of DataFlows. It manages DataFlowResource.
+     *
+     * @return Resource collection API of DataFlows.
+     */
     public DataFlows dataFlows() {
         if (this.dataFlows == null) {
             this.dataFlows = new DataFlowsImpl(clientObject.getDataFlows(), this);
@@ -419,7 +521,11 @@ public final class DataFactoryManager {
         return dataFlows;
     }
 
-    /** @return Resource collection API of DataFlowDebugSessions. */
+    /**
+     * Gets the resource collection API of DataFlowDebugSessions.
+     *
+     * @return Resource collection API of DataFlowDebugSessions.
+     */
     public DataFlowDebugSessions dataFlowDebugSessions() {
         if (this.dataFlowDebugSessions == null) {
             this.dataFlowDebugSessions = new DataFlowDebugSessionsImpl(clientObject.getDataFlowDebugSessions(), this);
@@ -427,7 +533,11 @@ public final class DataFactoryManager {
         return dataFlowDebugSessions;
     }
 
-    /** @return Resource collection API of ManagedVirtualNetworks. */
+    /**
+     * Gets the resource collection API of ManagedVirtualNetworks. It manages ManagedVirtualNetworkResource.
+     *
+     * @return Resource collection API of ManagedVirtualNetworks.
+     */
     public ManagedVirtualNetworks managedVirtualNetworks() {
         if (this.managedVirtualNetworks == null) {
             this.managedVirtualNetworks =
@@ -436,7 +546,11 @@ public final class DataFactoryManager {
         return managedVirtualNetworks;
     }
 
-    /** @return Resource collection API of ManagedPrivateEndpoints. */
+    /**
+     * Gets the resource collection API of ManagedPrivateEndpoints. It manages ManagedPrivateEndpointResource.
+     *
+     * @return Resource collection API of ManagedPrivateEndpoints.
+     */
     public ManagedPrivateEndpoints managedPrivateEndpoints() {
         if (this.managedPrivateEndpoints == null) {
             this.managedPrivateEndpoints =
@@ -445,7 +559,23 @@ public final class DataFactoryManager {
         return managedPrivateEndpoints;
     }
 
-    /** @return Resource collection API of PrivateEndPointConnections. */
+    /**
+     * Gets the resource collection API of CredentialOperations. It manages ManagedIdentityCredentialResource.
+     *
+     * @return Resource collection API of CredentialOperations.
+     */
+    public CredentialOperations credentialOperations() {
+        if (this.credentialOperations == null) {
+            this.credentialOperations = new CredentialOperationsImpl(clientObject.getCredentialOperations(), this);
+        }
+        return credentialOperations;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateEndPointConnections.
+     *
+     * @return Resource collection API of PrivateEndPointConnections.
+     */
     public PrivateEndPointConnections privateEndPointConnections() {
         if (this.privateEndPointConnections == null) {
             this.privateEndPointConnections =
@@ -454,7 +584,12 @@ public final class DataFactoryManager {
         return privateEndPointConnections;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnectionOperations. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnectionOperations. It manages
+     * PrivateEndpointConnectionResource.
+     *
+     * @return Resource collection API of PrivateEndpointConnectionOperations.
+     */
     public PrivateEndpointConnectionOperations privateEndpointConnectionOperations() {
         if (this.privateEndpointConnectionOperations == null) {
             this.privateEndpointConnectionOperations =
@@ -464,7 +599,11 @@ public final class DataFactoryManager {
         return privateEndpointConnectionOperations;
     }
 
-    /** @return Resource collection API of PrivateLinkResources. */
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
     public PrivateLinkResources privateLinkResources() {
         if (this.privateLinkResources == null) {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
@@ -473,8 +612,34 @@ public final class DataFactoryManager {
     }
 
     /**
-     * @return Wrapped service client DataFactoryManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets the resource collection API of GlobalParameters. It manages GlobalParameterResource.
+     *
+     * @return Resource collection API of GlobalParameters.
+     */
+    public GlobalParameters globalParameters() {
+        if (this.globalParameters == null) {
+            this.globalParameters = new GlobalParametersImpl(clientObject.getGlobalParameters(), this);
+        }
+        return globalParameters;
+    }
+
+    /**
+     * Gets the resource collection API of ChangeDataCaptures. It manages ChangeDataCaptureResource.
+     *
+     * @return Resource collection API of ChangeDataCaptures.
+     */
+    public ChangeDataCaptures changeDataCaptures() {
+        if (this.changeDataCaptures == null) {
+            this.changeDataCaptures = new ChangeDataCapturesImpl(clientObject.getChangeDataCaptures(), this);
+        }
+        return changeDataCaptures;
+    }
+
+    /**
+     * Gets wrapped service client DataFactoryManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client DataFactoryManagementClient.
      */
     public DataFactoryManagementClient serviceClient() {
         return this.clientObject;

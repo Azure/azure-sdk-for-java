@@ -72,7 +72,7 @@ public final class ChatThreadsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCh")
-    private interface ChatThreadsService {
+    public interface ChatThreadsService {
         @Get("/chat/threads/{chatThreadId}/readReceipts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)

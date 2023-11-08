@@ -7,8 +7,10 @@ package com.azure.search.documents.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * A single bucket of a simple or interval facet query result that reports the number of documents with a field
- * falling within a particular interval or having a specific value.
+ * A single bucket of a simple or interval facet query result that reports the number of documents with a field falling
+ * within a particular interval or having a specific value.
+ *
+ * @param <T> The type of the facet.
  */
 @Immutable
 public class ValueFacetResult<T> {

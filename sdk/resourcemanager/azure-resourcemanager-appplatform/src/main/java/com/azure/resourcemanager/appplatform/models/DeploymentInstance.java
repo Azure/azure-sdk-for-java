@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Deployment instance payload. */
 @Immutable
 public final class DeploymentInstance {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentInstance.class);
-
     /*
      * Name of the deployment instance
      */
@@ -43,6 +39,12 @@ public final class DeploymentInstance {
      */
     @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private String startTime;
+
+    /*
+     * Availability zone information of the deployment instance
+     */
+    @JsonProperty(value = "zone", access = JsonProperty.Access.WRITE_ONLY)
+    private String zone;
 
     /**
      * Get the name property: Name of the deployment instance.
@@ -87,6 +89,15 @@ public final class DeploymentInstance {
      */
     public String startTime() {
         return this.startTime;
+    }
+
+    /**
+     * Get the zone property: Availability zone information of the deployment instance.
+     *
+     * @return the zone value.
+     */
+    public String zone() {
+        return this.zone;
     }
 
     /**

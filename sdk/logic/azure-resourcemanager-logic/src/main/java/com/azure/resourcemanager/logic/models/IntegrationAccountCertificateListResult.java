@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountCertificateInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of integration account certificates. */
 @Fluent
 public final class IntegrationAccountCertificateListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountCertificateListResult.class);
-
     /*
      * The list of integration account certificates.
      */
@@ -27,6 +23,10 @@ public final class IntegrationAccountCertificateListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of IntegrationAccountCertificateListResult class. */
+    public IntegrationAccountCertificateListResult() {
+    }
 
     /**
      * Get the value property: The list of integration account certificates.

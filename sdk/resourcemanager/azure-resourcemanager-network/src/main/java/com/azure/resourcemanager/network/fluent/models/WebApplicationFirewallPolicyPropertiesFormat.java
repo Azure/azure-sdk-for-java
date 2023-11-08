@@ -66,6 +66,10 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
     @JsonProperty(value = "pathBasedRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> pathBasedRules;
 
+    /** Creates an instance of WebApplicationFirewallPolicyPropertiesFormat class. */
+    public WebApplicationFirewallPolicyPropertiesFormat() {
+    }
+
     /**
      * Get the policySettings property: The PolicySettings for policy.
      *

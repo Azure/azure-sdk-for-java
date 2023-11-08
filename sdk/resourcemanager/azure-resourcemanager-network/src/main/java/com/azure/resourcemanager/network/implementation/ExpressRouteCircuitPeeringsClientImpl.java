@@ -65,11 +65,10 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ExpressRouteCircuitPeeringsService {
+    public interface ExpressRouteCircuitPeeringsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteCircuits/{circuitName}/peerings/{peeringName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -84,8 +83,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteCircuits/{circuitName}/peerings/{peeringName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExpressRouteCircuitPeeringInner>> get(
@@ -100,8 +98,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteCircuits/{circuitName}/peerings/{peeringName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -117,8 +114,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteCircuits/{circuitName}/peerings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExpressRouteCircuitPeeringListResult>> list(
@@ -177,7 +173,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -232,7 +228,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -305,7 +301,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String peeringName) {
-        return beginDeleteAsync(resourceGroupName, circuitName, peeringName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, circuitName, peeringName).getSyncPoller();
     }
 
     /**
@@ -323,7 +319,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String peeringName, Context context) {
-        return beginDeleteAsync(resourceGroupName, circuitName, peeringName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, circuitName, peeringName, context).getSyncPoller();
     }
 
     /**
@@ -431,7 +427,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -487,7 +483,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -517,30 +513,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
     public Mono<ExpressRouteCircuitPeeringInner> getAsync(
         String resourceGroupName, String circuitName, String peeringName) {
         return getWithResponseAsync(resourceGroupName, circuitName, peeringName)
-            .flatMap(
-                (Response<ExpressRouteCircuitPeeringInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified peering for the express route circuit.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the express route circuit.
-     * @param peeringName The name of the peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified peering for the express route circuit.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRouteCircuitPeeringInner get(String resourceGroupName, String circuitName, String peeringName) {
-        return getAsync(resourceGroupName, circuitName, peeringName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -559,6 +532,22 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
     public Response<ExpressRouteCircuitPeeringInner> getWithResponse(
         String resourceGroupName, String circuitName, String peeringName, Context context) {
         return getWithResponseAsync(resourceGroupName, circuitName, peeringName, context).block();
+    }
+
+    /**
+     * Gets the specified peering for the express route circuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param peeringName The name of the peering.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified peering for the express route circuit.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRouteCircuitPeeringInner get(String resourceGroupName, String circuitName, String peeringName) {
+        return getWithResponse(resourceGroupName, circuitName, peeringName, Context.NONE).getValue();
     }
 
     /**
@@ -608,7 +597,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -676,7 +665,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -775,7 +764,9 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
         String circuitName,
         String peeringName,
         ExpressRouteCircuitPeeringInner peeringParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, circuitName, peeringName, peeringParameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, circuitName, peeringName, peeringParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -798,7 +789,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
         String peeringName,
         ExpressRouteCircuitPeeringInner peeringParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, circuitName, peeringName, peeringParameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, circuitName, peeringName, peeringParameters, context)
             .getSyncPoller();
     }
 
@@ -927,7 +919,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -987,7 +979,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1080,7 +1072,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1116,7 +1109,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

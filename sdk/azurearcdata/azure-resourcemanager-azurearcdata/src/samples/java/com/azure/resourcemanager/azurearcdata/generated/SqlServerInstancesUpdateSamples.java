@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.azurearcdata.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstance;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +23,7 @@ public final class SqlServerInstancesUpdateSamples {
         SqlServerInstance resource =
             manager
                 .sqlServerInstances()
-                .getByResourceGroupWithResponse("testrg", "testsqlServerInstance", Context.NONE)
+                .getByResourceGroupWithResponse("testrg", "testsqlServerInstance", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }

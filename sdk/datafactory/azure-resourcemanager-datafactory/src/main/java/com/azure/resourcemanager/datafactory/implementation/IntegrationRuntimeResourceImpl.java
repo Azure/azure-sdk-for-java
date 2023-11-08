@@ -45,6 +45,10 @@ public final class IntegrationRuntimeResourceImpl
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationRuntimeResourceInner innerModel() {
         return this.innerObject;
     }
@@ -171,20 +175,14 @@ public final class IntegrationRuntimeResourceImpl
         return this;
     }
 
-    public IntegrationRuntimeStatusResponse getStatus() {
-        return serviceManager.integrationRuntimes().getStatus(resourceGroupName, factoryName, integrationRuntimeName);
-    }
-
     public Response<IntegrationRuntimeStatusResponse> getStatusWithResponse(Context context) {
         return serviceManager
             .integrationRuntimes()
             .getStatusWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 
-    public IntegrationRuntimeConnectionInfo getConnectionInfo() {
-        return serviceManager
-            .integrationRuntimes()
-            .getConnectionInfo(resourceGroupName, factoryName, integrationRuntimeName);
+    public IntegrationRuntimeStatusResponse getStatus() {
+        return serviceManager.integrationRuntimes().getStatus(resourceGroupName, factoryName, integrationRuntimeName);
     }
 
     public Response<IntegrationRuntimeConnectionInfo> getConnectionInfoWithResponse(Context context) {
@@ -193,11 +191,10 @@ public final class IntegrationRuntimeResourceImpl
             .getConnectionInfoWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 
-    public IntegrationRuntimeAuthKeys regenerateAuthKey(
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
+    public IntegrationRuntimeConnectionInfo getConnectionInfo() {
         return serviceManager
             .integrationRuntimes()
-            .regenerateAuthKey(resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters);
+            .getConnectionInfo(resourceGroupName, factoryName, integrationRuntimeName);
     }
 
     public Response<IntegrationRuntimeAuthKeys> regenerateAuthKeyWithResponse(
@@ -208,16 +205,23 @@ public final class IntegrationRuntimeResourceImpl
                 resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters, context);
     }
 
-    public IntegrationRuntimeAuthKeys listAuthKeys() {
+    public IntegrationRuntimeAuthKeys regenerateAuthKey(
+        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
         return serviceManager
             .integrationRuntimes()
-            .listAuthKeys(resourceGroupName, factoryName, integrationRuntimeName);
+            .regenerateAuthKey(resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters);
     }
 
     public Response<IntegrationRuntimeAuthKeys> listAuthKeysWithResponse(Context context) {
         return serviceManager
             .integrationRuntimes()
             .listAuthKeysWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
+    }
+
+    public IntegrationRuntimeAuthKeys listAuthKeys() {
+        return serviceManager
+            .integrationRuntimes()
+            .listAuthKeys(resourceGroupName, factoryName, integrationRuntimeName);
     }
 
     public IntegrationRuntimeStatusResponse start() {
@@ -238,20 +242,14 @@ public final class IntegrationRuntimeResourceImpl
         serviceManager.integrationRuntimes().stop(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 
-    public void syncCredentials() {
-        serviceManager.integrationRuntimes().syncCredentials(resourceGroupName, factoryName, integrationRuntimeName);
-    }
-
     public Response<Void> syncCredentialsWithResponse(Context context) {
         return serviceManager
             .integrationRuntimes()
             .syncCredentialsWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 
-    public IntegrationRuntimeMonitoringData getMonitoringData() {
-        return serviceManager
-            .integrationRuntimes()
-            .getMonitoringData(resourceGroupName, factoryName, integrationRuntimeName);
+    public void syncCredentials() {
+        serviceManager.integrationRuntimes().syncCredentials(resourceGroupName, factoryName, integrationRuntimeName);
     }
 
     public Response<IntegrationRuntimeMonitoringData> getMonitoringDataWithResponse(Context context) {
@@ -260,8 +258,10 @@ public final class IntegrationRuntimeResourceImpl
             .getMonitoringDataWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 
-    public void upgrade() {
-        serviceManager.integrationRuntimes().upgrade(resourceGroupName, factoryName, integrationRuntimeName);
+    public IntegrationRuntimeMonitoringData getMonitoringData() {
+        return serviceManager
+            .integrationRuntimes()
+            .getMonitoringData(resourceGroupName, factoryName, integrationRuntimeName);
     }
 
     public Response<Void> upgradeWithResponse(Context context) {
@@ -270,10 +270,8 @@ public final class IntegrationRuntimeResourceImpl
             .upgradeWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 
-    public void removeLinks(LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest) {
-        serviceManager
-            .integrationRuntimes()
-            .removeLinks(resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest);
+    public void upgrade() {
+        serviceManager.integrationRuntimes().upgrade(resourceGroupName, factoryName, integrationRuntimeName);
     }
 
     public Response<Void> removeLinksWithResponse(
@@ -284,12 +282,10 @@ public final class IntegrationRuntimeResourceImpl
                 resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest, context);
     }
 
-    public IntegrationRuntimeStatusResponse createLinkedIntegrationRuntime(
-        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest) {
-        return serviceManager
+    public void removeLinks(LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest) {
+        serviceManager
             .integrationRuntimes()
-            .createLinkedIntegrationRuntime(
-                resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest);
+            .removeLinks(resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest);
     }
 
     public Response<IntegrationRuntimeStatusResponse> createLinkedIntegrationRuntimeWithResponse(
@@ -298,6 +294,14 @@ public final class IntegrationRuntimeResourceImpl
             .integrationRuntimes()
             .createLinkedIntegrationRuntimeWithResponse(
                 resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest, context);
+    }
+
+    public IntegrationRuntimeStatusResponse createLinkedIntegrationRuntime(
+        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest) {
+        return serviceManager
+            .integrationRuntimes()
+            .createLinkedIntegrationRuntime(
+                resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest);
     }
 
     public IntegrationRuntimeResourceImpl withProperties(IntegrationRuntime properties) {

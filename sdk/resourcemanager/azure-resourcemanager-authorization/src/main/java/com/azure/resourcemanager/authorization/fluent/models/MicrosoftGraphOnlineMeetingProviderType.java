@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphOnlineMeetingProviderType. */
+/** onlineMeetingProviderType. */
 public final class MicrosoftGraphOnlineMeetingProviderType
     extends ExpandableStringEnum<MicrosoftGraphOnlineMeetingProviderType> {
     /** Static value unknown for MicrosoftGraphOnlineMeetingProviderType. */
@@ -24,6 +24,15 @@ public final class MicrosoftGraphOnlineMeetingProviderType
     public static final MicrosoftGraphOnlineMeetingProviderType TEAMS_FOR_BUSINESS = fromString("teamsForBusiness");
 
     /**
+     * Creates a new instance of MicrosoftGraphOnlineMeetingProviderType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphOnlineMeetingProviderType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphOnlineMeetingProviderType from its string representation.
      *
      * @param name a name to look for.
@@ -34,7 +43,11 @@ public final class MicrosoftGraphOnlineMeetingProviderType
         return fromString(name, MicrosoftGraphOnlineMeetingProviderType.class);
     }
 
-    /** @return known MicrosoftGraphOnlineMeetingProviderType values. */
+    /**
+     * Gets known MicrosoftGraphOnlineMeetingProviderType values.
+     *
+     * @return known MicrosoftGraphOnlineMeetingProviderType values.
+     */
     public static Collection<MicrosoftGraphOnlineMeetingProviderType> values() {
         return values(MicrosoftGraphOnlineMeetingProviderType.class);
     }

@@ -9,7 +9,6 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.fluent.models.DiskPoolCreateProperties;
 import com.azure.resourcemanager.storagepool.fluent.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Request payload for create or update Disk Pool request. */
 @Fluent
 public final class DiskPoolCreate extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolCreate.class);
-
     /*
      * Determines the SKU of the Disk Pool
      */
@@ -32,8 +29,7 @@ public final class DiskPoolCreate extends Resource {
     private DiskPoolCreateProperties innerProperties = new DiskPoolCreateProperties();
 
     /*
-     * Azure resource id. Indicates if this resource is managed by another
-     * Azure resource.
+     * Azure resource id. Indicates if this resource is managed by another Azure resource.
      */
     @JsonProperty(value = "managedBy")
     private String managedBy;
@@ -43,6 +39,10 @@ public final class DiskPoolCreate extends Resource {
      */
     @JsonProperty(value = "managedByExtended")
     private List<String> managedByExtended;
+
+    /** Creates an instance of DiskPoolCreate class. */
+    public DiskPoolCreate() {
+    }
 
     /**
      * Get the sku property: Determines the SKU of the Disk Pool.
@@ -226,18 +226,20 @@ public final class DiskPoolCreate extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model DiskPoolCreate"));
         } else {
             sku().validate();
         }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model DiskPoolCreate"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiskPoolCreate.class);
 }

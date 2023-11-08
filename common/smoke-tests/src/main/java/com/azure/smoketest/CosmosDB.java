@@ -63,7 +63,7 @@
 //         itemResponseMono.doOnError(throwable -> LOGGER.info("CREATE item 1", throwable))
 //             .mergeWith(itemResponseMono1)
 //             .doOnComplete(() -> LOGGER.info("Items created"))
-//             .publishOn(Schedulers.elastic())
+//             .publishOn(Schedulers.boundedElastic())
 //             .blockLast();
 
 
@@ -83,7 +83,7 @@
 //         TestObject properties = null;
 //         //CREATE item sync
 //             properties = container.createItem(replaceObject)
-//                              .publishOn(Schedulers.elastic())
+//                              .publishOn(Schedulers.boundedElastic())
 //                              .block()
 //                              .getResource();
 
@@ -105,7 +105,7 @@
 //                                        .createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME,
 //                                                                                                  "/country")))
 //             .doOnSuccess(cosmosContainerResponse -> LOGGER.info("Container: " + cosmosContainerResponse.getContainer().getId()))
-//             .publishOn(Schedulers.elastic())
+//             .publishOn(Schedulers.boundedElastic())
 //             .block();
 //     }
 
@@ -122,7 +122,7 @@
 //         CosmosContinuablePagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
 
 //         queryFlux.byPage()
-//                  .publishOn(Schedulers.elastic())
+//                  .publishOn(Schedulers.boundedElastic())
 //                  .toIterable()
 //                  .forEach(cosmosItemFeedResponse -> {
 //                      cosmosItemFeedResponse.getResults().forEach(item -> {

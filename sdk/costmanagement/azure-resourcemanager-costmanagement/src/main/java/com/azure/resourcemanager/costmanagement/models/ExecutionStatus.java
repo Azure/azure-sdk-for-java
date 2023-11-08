@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExecutionStatus. */
+/** The last known status of the export run. */
 public final class ExecutionStatus extends ExpandableStringEnum<ExecutionStatus> {
     /** Static value Queued for ExecutionStatus. */
     public static final ExecutionStatus QUEUED = fromString("Queued");
@@ -32,6 +32,15 @@ public final class ExecutionStatus extends ExpandableStringEnum<ExecutionStatus>
     public static final ExecutionStatus DATA_NOT_AVAILABLE = fromString("DataNotAvailable");
 
     /**
+     * Creates a new instance of ExecutionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExecutionStatus() {
+    }
+
+    /**
      * Creates or finds a ExecutionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class ExecutionStatus extends ExpandableStringEnum<ExecutionStatus>
         return fromString(name, ExecutionStatus.class);
     }
 
-    /** @return known ExecutionStatus values. */
+    /**
+     * Gets known ExecutionStatus values.
+     *
+     * @return known ExecutionStatus values.
+     */
     public static Collection<ExecutionStatus> values() {
         return values(ExecutionStatus.class);
     }

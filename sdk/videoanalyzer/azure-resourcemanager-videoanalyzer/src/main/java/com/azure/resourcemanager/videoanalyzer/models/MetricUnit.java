@@ -30,7 +30,11 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
         return fromString(name, MetricUnit.class);
     }
 
-    /** @return known MetricUnit values. */
+    /**
+     * Gets known MetricUnit values.
+     *
+     * @return known MetricUnit values.
+     */
     public static Collection<MetricUnit> values() {
         return values(MetricUnit.class);
     }

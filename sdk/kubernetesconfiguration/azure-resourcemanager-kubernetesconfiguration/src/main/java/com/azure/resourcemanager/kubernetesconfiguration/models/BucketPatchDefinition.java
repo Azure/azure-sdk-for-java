@@ -7,7 +7,7 @@ package com.azure.resourcemanager.kubernetesconfiguration.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters to reconcile to the GitRepository source kind type. */
+/** Parameters to reconcile to the Bucket source kind type. */
 @Fluent
 public final class BucketPatchDefinition {
     /*
@@ -17,29 +17,25 @@ public final class BucketPatchDefinition {
     private String url;
 
     /*
-     * The bucket name to sync from the url endpoint for the flux
-     * configuration.
+     * The bucket name to sync from the url endpoint for the flux configuration.
      */
     @JsonProperty(value = "bucketName")
     private String bucketName;
 
     /*
-     * Specify whether to use insecure communication when puling data from the
-     * S3 bucket.
+     * Specify whether to use insecure communication when puling data from the S3 bucket.
      */
     @JsonProperty(value = "insecure")
     private Boolean insecure;
 
     /*
-     * The maximum time to attempt to reconcile the cluster git repository
-     * source with the remote.
+     * The maximum time to attempt to reconcile the cluster bucket source with the remote.
      */
     @JsonProperty(value = "timeoutInSeconds")
     private Long timeoutInSeconds;
 
     /*
-     * The interval at which to re-reconcile the cluster git repository source
-     * with the remote.
+     * The interval at which to re-reconcile the cluster bucket source with the remote.
      */
     @JsonProperty(value = "syncIntervalInSeconds")
     private Long syncIntervalInSeconds;
@@ -51,12 +47,15 @@ public final class BucketPatchDefinition {
     private String accessKey;
 
     /*
-     * Name of a local secret on the Kubernetes cluster to use as the
-     * authentication secret rather than the managed or user-provided
-     * configuration secrets.
+     * Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or
+     * user-provided configuration secrets.
      */
     @JsonProperty(value = "localAuthRef")
     private String localAuthRef;
+
+    /** Creates an instance of BucketPatchDefinition class. */
+    public BucketPatchDefinition() {
+    }
 
     /**
      * Get the url property: The URL to sync for the flux configuration S3 bucket.
@@ -119,8 +118,8 @@ public final class BucketPatchDefinition {
     }
 
     /**
-     * Get the timeoutInSeconds property: The maximum time to attempt to reconcile the cluster git repository source
-     * with the remote.
+     * Get the timeoutInSeconds property: The maximum time to attempt to reconcile the cluster bucket source with the
+     * remote.
      *
      * @return the timeoutInSeconds value.
      */
@@ -129,8 +128,8 @@ public final class BucketPatchDefinition {
     }
 
     /**
-     * Set the timeoutInSeconds property: The maximum time to attempt to reconcile the cluster git repository source
-     * with the remote.
+     * Set the timeoutInSeconds property: The maximum time to attempt to reconcile the cluster bucket source with the
+     * remote.
      *
      * @param timeoutInSeconds the timeoutInSeconds value to set.
      * @return the BucketPatchDefinition object itself.
@@ -141,8 +140,8 @@ public final class BucketPatchDefinition {
     }
 
     /**
-     * Get the syncIntervalInSeconds property: The interval at which to re-reconcile the cluster git repository source
-     * with the remote.
+     * Get the syncIntervalInSeconds property: The interval at which to re-reconcile the cluster bucket source with the
+     * remote.
      *
      * @return the syncIntervalInSeconds value.
      */
@@ -151,8 +150,8 @@ public final class BucketPatchDefinition {
     }
 
     /**
-     * Set the syncIntervalInSeconds property: The interval at which to re-reconcile the cluster git repository source
-     * with the remote.
+     * Set the syncIntervalInSeconds property: The interval at which to re-reconcile the cluster bucket source with the
+     * remote.
      *
      * @param syncIntervalInSeconds the syncIntervalInSeconds value to set.
      * @return the BucketPatchDefinition object itself.

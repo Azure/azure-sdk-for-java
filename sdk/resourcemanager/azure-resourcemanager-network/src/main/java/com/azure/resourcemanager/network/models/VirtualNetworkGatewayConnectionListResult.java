@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class VirtualNetworkGatewayConnectionListResult {
     /*
-     * A list of VirtualNetworkGatewayConnection resources that exists in a
-     * resource group.
+     * A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
      */
     @JsonProperty(value = "value")
     private List<VirtualNetworkGatewayConnectionInner> value;
@@ -24,6 +23,10 @@ public final class VirtualNetworkGatewayConnectionListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of VirtualNetworkGatewayConnectionListResult class. */
+    public VirtualNetworkGatewayConnectionListResult() {
+    }
 
     /**
      * Get the value property: A list of VirtualNetworkGatewayConnection resources that exists in a resource group.

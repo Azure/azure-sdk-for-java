@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.P2SConnectionConfigurationProperties;
+import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationPolicyGroupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** P2SConnectionConfiguration Resource. */
 @Fluent
@@ -19,8 +21,7 @@ public final class P2SConnectionConfiguration extends SubResource {
     private P2SConnectionConfigurationProperties innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -30,6 +31,10 @@ public final class P2SConnectionConfiguration extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of P2SConnectionConfiguration class. */
+    public P2SConnectionConfiguration() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the P2S connection configuration.
@@ -151,6 +156,28 @@ public final class P2SConnectionConfiguration extends SubResource {
         }
         this.innerProperties().withEnableInternetSecurity(enableInternetSecurity);
         return this;
+    }
+
+    /**
+     * Get the configurationPolicyGroupAssociations property: List of Configuration Policy Groups that this
+     * P2SConnectionConfiguration is attached to.
+     *
+     * @return the configurationPolicyGroupAssociations value.
+     */
+    public List<SubResource> configurationPolicyGroupAssociations() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationPolicyGroupAssociations();
+    }
+
+    /**
+     * Get the previousConfigurationPolicyGroupAssociations property: List of previous Configuration Policy Groups that
+     * this P2SConnectionConfiguration was attached to.
+     *
+     * @return the previousConfigurationPolicyGroupAssociations value.
+     */
+    public List<VpnServerConfigurationPolicyGroupInner> previousConfigurationPolicyGroupAssociations() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().previousConfigurationPolicyGroupAssociations();
     }
 
     /**

@@ -13,14 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesGetStructDefByName {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.typesgetstructdefbyname.typesgetstructdefbyname
         TypesClient typesClient =
                 new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.typesgetstructdefbyname.typesgetstructdefbyname
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = typesClient.getStructDefByNameWithResponse("hive_order", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.typesgetstructdefbyname.typesgetstructdefbyname
+        // END:com.azure.analytics.purview.catalog.generated.typesgetstructdefbyname.typesgetstructdefbyname
     }
 }

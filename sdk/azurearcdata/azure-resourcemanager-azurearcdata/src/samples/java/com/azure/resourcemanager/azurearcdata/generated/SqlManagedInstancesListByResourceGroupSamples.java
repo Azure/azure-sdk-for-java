@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.azurearcdata.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlManagedInstances ListByResourceGroup. */
 public final class SqlManagedInstancesListByResourceGroupSamples {
     /*
@@ -18,6 +16,6 @@ public final class SqlManagedInstancesListByResourceGroupSamples {
      */
     public static void getsAllSQLInstanceInAResourceGroup(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.sqlManagedInstances().listByResourceGroup("testrg", Context.NONE);
+        manager.sqlManagedInstances().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }

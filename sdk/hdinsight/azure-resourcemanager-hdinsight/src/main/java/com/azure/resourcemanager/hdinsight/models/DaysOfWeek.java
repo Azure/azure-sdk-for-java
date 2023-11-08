@@ -32,6 +32,15 @@ public final class DaysOfWeek extends ExpandableStringEnum<DaysOfWeek> {
     public static final DaysOfWeek SUNDAY = fromString("Sunday");
 
     /**
+     * Creates a new instance of DaysOfWeek value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DaysOfWeek() {
+    }
+
+    /**
      * Creates or finds a DaysOfWeek from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class DaysOfWeek extends ExpandableStringEnum<DaysOfWeek> {
         return fromString(name, DaysOfWeek.class);
     }
 
-    /** @return known DaysOfWeek values. */
+    /**
+     * Gets known DaysOfWeek values.
+     *
+     * @return known DaysOfWeek values.
+     */
     public static Collection<DaysOfWeek> values() {
         return values(DaysOfWeek.class);
     }

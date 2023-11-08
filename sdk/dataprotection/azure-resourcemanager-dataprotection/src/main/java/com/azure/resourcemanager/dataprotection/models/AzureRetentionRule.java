@@ -6,19 +6,20 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** AzureRetentionRule Azure retention rule. */
+/**
+ * AzureRetentionRule
+ *
+ * <p>Azure retention rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureRetentionRule")
 @Fluent
 public final class AzureRetentionRule extends BasePolicyRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureRetentionRule.class);
-
     /*
      * The isDefault property.
      */
@@ -30,6 +31,10 @@ public final class AzureRetentionRule extends BasePolicyRule {
      */
     @JsonProperty(value = "lifecycles", required = true)
     private List<SourceLifeCycle> lifecycles;
+
+    /** Creates an instance of AzureRetentionRule class. */
+    public AzureRetentionRule() {
+    }
 
     /**
      * Get the isDefault property: The isDefault property.
@@ -87,11 +92,13 @@ public final class AzureRetentionRule extends BasePolicyRule {
     public void validate() {
         super.validate();
         if (lifecycles() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property lifecycles in model AzureRetentionRule"));
         } else {
             lifecycles().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureRetentionRule.class);
 }

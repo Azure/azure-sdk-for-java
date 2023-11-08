@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for StageStatus. */
+/** Holds the device erasure completion status. */
 public enum StageStatus {
     /** Enum value None. */
     NONE("None"),
@@ -34,7 +34,19 @@ public enum StageStatus {
     WAITING_FOR_CUSTOMER_ACTION("WaitingForCustomerAction"),
 
     /** Enum value SucceededWithWarnings. */
-    SUCCEEDED_WITH_WARNINGS("SucceededWithWarnings");
+    SUCCEEDED_WITH_WARNINGS("SucceededWithWarnings"),
+
+    /** Enum value WaitingForCustomerActionForKek. */
+    WAITING_FOR_CUSTOMER_ACTION_FOR_KEK("WaitingForCustomerActionForKek"),
+
+    /** Enum value WaitingForCustomerActionForCleanUp. */
+    WAITING_FOR_CUSTOMER_ACTION_FOR_CLEAN_UP("WaitingForCustomerActionForCleanUp"),
+
+    /** Enum value CustomerActionPerformedForCleanUp. */
+    CUSTOMER_ACTION_PERFORMED_FOR_CLEAN_UP("CustomerActionPerformedForCleanUp"),
+
+    /** Enum value CustomerActionPerformed. */
+    CUSTOMER_ACTION_PERFORMED("CustomerActionPerformed");
 
     /** The actual serialized value for a StageStatus instance. */
     private final String value;
@@ -51,6 +63,9 @@ public enum StageStatus {
      */
     @JsonCreator
     public static StageStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StageStatus[] items = StageStatus.values();
         for (StageStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -60,6 +75,7 @@ public enum StageStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

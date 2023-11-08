@@ -13,7 +13,7 @@ import java.util.List;
 
 /** Describes a virtual machine scale set network profile's network configurations. */
 @Fluent
-public final class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
+public final class VirtualMachineScaleSetNetworkConfiguration {
     /*
      * The network configuration name.
      */
@@ -21,11 +21,14 @@ public final class VirtualMachineScaleSetNetworkConfiguration extends SubResourc
     private String name;
 
     /*
-     * Describes a virtual machine scale set network profile's IP
-     * configuration.
+     * Describes a virtual machine scale set network profile's IP configuration.
      */
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetNetworkConfigurationProperties innerProperties;
+
+    /** Creates an instance of VirtualMachineScaleSetNetworkConfiguration class. */
+    public VirtualMachineScaleSetNetworkConfiguration() {
+    }
 
     /**
      * Get the name property: The network configuration name.
@@ -54,13 +57,6 @@ public final class VirtualMachineScaleSetNetworkConfiguration extends SubResourc
      */
     private VirtualMachineScaleSetNetworkConfigurationProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineScaleSetNetworkConfiguration withId(String id) {
-        super.withId(id);
-        return this;
     }
 
     /**
@@ -111,6 +107,31 @@ public final class VirtualMachineScaleSetNetworkConfiguration extends SubResourc
             this.innerProperties = new VirtualMachineScaleSetNetworkConfigurationProperties();
         }
         this.innerProperties().withEnableAcceleratedNetworking(enableAcceleratedNetworking);
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableTcpStateTracking();
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfiguration withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetNetworkConfigurationProperties();
+        }
+        this.innerProperties().withDisableTcpStateTracking(disableTcpStateTracking);
         return this;
     }
 
@@ -251,6 +272,54 @@ public final class VirtualMachineScaleSetNetworkConfiguration extends SubResourc
             this.innerProperties = new VirtualMachineScaleSetNetworkConfigurationProperties();
         }
         this.innerProperties().withDeleteOption(deleteOption);
+        return this;
+    }
+
+    /**
+     * Get the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     *
+     * @return the auxiliaryMode value.
+     */
+    public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().auxiliaryMode();
+    }
+
+    /**
+     * Set the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     *
+     * @param auxiliaryMode the auxiliaryMode value to set.
+     * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfiguration withAuxiliaryMode(NetworkInterfaceAuxiliaryMode auxiliaryMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetNetworkConfigurationProperties();
+        }
+        this.innerProperties().withAuxiliaryMode(auxiliaryMode);
+        return this;
+    }
+
+    /**
+     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     *
+     * @return the auxiliarySku value.
+     */
+    public NetworkInterfaceAuxiliarySku auxiliarySku() {
+        return this.innerProperties() == null ? null : this.innerProperties().auxiliarySku();
+    }
+
+    /**
+     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     *
+     * @param auxiliarySku the auxiliarySku value to set.
+     * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfiguration withAuxiliarySku(NetworkInterfaceAuxiliarySku auxiliarySku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetNetworkConfigurationProperties();
+        }
+        this.innerProperties().withAuxiliarySku(auxiliarySku);
         return this;
     }
 

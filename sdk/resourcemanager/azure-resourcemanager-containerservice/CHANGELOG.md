@@ -1,6 +1,184 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.33.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-09-01`.
+
+## 2.31.0 (2023-09-28)
+
+### Features Added
+
+- Supported specifying the resource group for agent pool nodes when creating `KubernetesCluster`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-08-01`.
+
+## 2.30.0 (2023-08-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-07-01`.
+
+## 2.29.0 (2023-07-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-06-01`.
+
+## 2.28.0 (2023-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-05-01`.
+
+## 2.27.0 (2023-05-25)
+
+### Breaking Changes
+
+- The property `dockerBridgeCidr` in class `KubernetesCluster` has no effect since 2019.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-04-01`.
+
+## 2.26.0 (2023-04-21)
+
+### Breaking Changes
+
+- Removed field `BASIC` from class `ManagedClusterSkuName`.
+- Removed field `PAID` from class `ManagedClusterSkuTier`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-03-01`.
+
+## 2.25.0 (2023-03-24)
+
+### Features Added
+- Supported FIPS-enabled OS for agent pool machines.
+
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-01-01`.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+## 2.22.0 (2022-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.21.0 (2022-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.20.0 (2022-10-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-09-01`.
+
+## 2.19.0 (2022-09-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.18.0 (2022-08-26)
+
+### Features Added
+
+- Supported `beginCreateAgentPool` in `KubernetesCluster`.
+
+### Other Changes
+
+- Deprecated method `KubernetesClusters.listKubernetesVersions`. Use `KubernetesClusters.listOrchestrators`.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-07-01`.
+
+## 2.17.0 (2022-07-25)
+
+### Breaking Changes
+
+- Replaced property `azureDefender` with `defender` of type `ManagedClusterSecurityProfileDefender` 
+  in `ManagedClusterSecurityProfile`.
+- Removed class `ManagedClusterSecurityProfileAzureDefender`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-06-01`.
+
+## 2.16.0 (2022-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.15.0 (2022-05-25)
+
+### Breaking Changes
+
+- Removed unused class `AgentPoolsUpgradeNodeImageVersionResponse` and `AgentPoolsUpgradeNodeImageVersionHeaders`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-04-01`.
+
+## 2.14.0 (2022-04-11)
 
 ### Features Added
 
@@ -8,6 +186,10 @@
 - Supported enabling Azure AD integration for `KubernetesCluster`.
 - Supported disabling local accounts for `KubernetesCluster`.
 - Supported disk encryption set for `KubernetesCluster`.
+
+### Bugs Fixed
+
+- Fixed a bug that `orchestratorVersion` not initialized in agent pool.
 
 ### Other Changes
 
@@ -17,6 +199,12 @@
 #### Dependency Updates
 
 - Updated `api-version` to `2022-02-01`.
+
+## 2.12.2 (2022-03-17)
+
+### Other Changes
+
+- Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
 
 ## 2.13.0 (2022-03-11)
 
@@ -49,12 +237,6 @@
 #### Dependency Updates
 
 - Updated `api-version` to `2022-01-01`.
-
-## 2.12.2 (2022-03-17)
-
-### Other Changes
-
-- Changed behavior that `KubernetesCluster` no longer retrieves admin and user KubeConfig during create, update, refresh.
 
 ## 2.12.1 (2022-02-22)
 

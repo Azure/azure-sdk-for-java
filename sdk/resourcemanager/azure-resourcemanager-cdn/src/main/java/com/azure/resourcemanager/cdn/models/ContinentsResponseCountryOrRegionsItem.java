@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContinentsResponseCountryOrRegionsItem model. */
 @Fluent
 public final class ContinentsResponseCountryOrRegionsItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContinentsResponseCountryOrRegionsItem.class);
-
     /*
      * The id property.
      */
@@ -25,6 +21,10 @@ public final class ContinentsResponseCountryOrRegionsItem {
      */
     @JsonProperty(value = "continentId")
     private String continentId;
+
+    /** Creates an instance of ContinentsResponseCountryOrRegionsItem class. */
+    public ContinentsResponseCountryOrRegionsItem() {
+    }
 
     /**
      * Get the id property: The id property.

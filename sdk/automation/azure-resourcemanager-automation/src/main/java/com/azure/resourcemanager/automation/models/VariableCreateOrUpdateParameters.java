@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.VariableCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the create or update variable operation. */
-@JsonFlatten
 @Fluent
-public class VariableCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VariableCreateOrUpdateParameters.class);
-
+public final class VariableCreateOrUpdateParameters {
     /*
      * Gets or sets the name of the variable.
      */
@@ -23,22 +19,10 @@ public class VariableCreateOrUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the value of the variable.
+     * Gets or sets the properties of the variable.
      */
-    @JsonProperty(value = "properties.value")
-    private String value;
-
-    /*
-     * Gets or sets the description of the variable.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Gets or sets the encrypted flag of the variable.
-     */
-    @JsonProperty(value = "properties.isEncrypted")
-    private Boolean isEncrypted;
+    @JsonProperty(value = "properties", required = true)
+    private VariableCreateOrUpdateProperties innerProperties = new VariableCreateOrUpdateProperties();
 
     /**
      * Get the name property: Gets or sets the name of the variable.
@@ -61,12 +45,21 @@ public class VariableCreateOrUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the variable.
+     *
+     * @return the innerProperties value.
+     */
+    private VariableCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the value property: Gets or sets the value of the variable.
      *
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -76,7 +69,10 @@ public class VariableCreateOrUpdateParameters {
      * @return the VariableCreateOrUpdateParameters object itself.
      */
     public VariableCreateOrUpdateParameters withValue(String value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VariableCreateOrUpdateProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -86,7 +82,7 @@ public class VariableCreateOrUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -96,7 +92,10 @@ public class VariableCreateOrUpdateParameters {
      * @return the VariableCreateOrUpdateParameters object itself.
      */
     public VariableCreateOrUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VariableCreateOrUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -106,7 +105,7 @@ public class VariableCreateOrUpdateParameters {
      * @return the isEncrypted value.
      */
     public Boolean isEncrypted() {
-        return this.isEncrypted;
+        return this.innerProperties() == null ? null : this.innerProperties().isEncrypted();
     }
 
     /**
@@ -116,7 +115,10 @@ public class VariableCreateOrUpdateParameters {
      * @return the VariableCreateOrUpdateParameters object itself.
      */
     public VariableCreateOrUpdateParameters withIsEncrypted(Boolean isEncrypted) {
-        this.isEncrypted = isEncrypted;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VariableCreateOrUpdateProperties();
+        }
+        this.innerProperties().withIsEncrypted(isEncrypted);
         return this;
     }
 
@@ -127,10 +129,20 @@ public class VariableCreateOrUpdateParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model VariableCreateOrUpdateParameters"));
         }
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model VariableCreateOrUpdateParameters"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VariableCreateOrUpdateParameters.class);
 }

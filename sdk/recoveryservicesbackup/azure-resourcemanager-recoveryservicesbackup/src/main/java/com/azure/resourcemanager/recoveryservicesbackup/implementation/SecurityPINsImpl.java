@@ -13,10 +13,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TokenInfor
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPinBase;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TokenInformation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecurityPINsImpl implements SecurityPINs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPINsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityPINsImpl.class);
 
     private final SecurityPINsClient innerClient;
 
@@ -29,15 +28,6 @@ public final class SecurityPINsImpl implements SecurityPINs {
         this.serviceManager = serviceManager;
     }
 
-    public TokenInformation get(String vaultName, String resourceGroupName) {
-        TokenInformationInner inner = this.serviceClient().get(vaultName, resourceGroupName);
-        if (inner != null) {
-            return new TokenInformationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TokenInformation> getWithResponse(
         String vaultName, String resourceGroupName, SecurityPinBase parameters, Context context) {
         Response<TokenInformationInner> inner =
@@ -48,6 +38,15 @@ public final class SecurityPINsImpl implements SecurityPINs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TokenInformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TokenInformation get(String vaultName, String resourceGroupName) {
+        TokenInformationInner inner = this.serviceClient().get(vaultName, resourceGroupName);
+        if (inner != null) {
+            return new TokenInformationImpl(inner, this.manager());
         } else {
             return null;
         }

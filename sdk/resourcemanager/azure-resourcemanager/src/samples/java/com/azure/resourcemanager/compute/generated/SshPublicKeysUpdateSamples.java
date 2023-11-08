@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.SshPublicKeyUpdateResource;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,14 +11,32 @@ import java.util.Map;
 /** Samples for SshPublicKeys Update. */
 public final class SshPublicKeysUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/sshPublicKeyExamples/SshPublicKey_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: SshPublicKeys_Update_MaximumSet_Gen.
+     * Sample code: SshPublicKey_Update_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void sshPublicKeysUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void sshPublicKeyUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .updateWithResponse(
+                "rgcompute", "aaaaaaaaaaa", new SshPublicKeyUpdateResource(), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/sshPublicKeyExamples/SshPublicKey_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: SshPublicKey_Update_MaximumSet_Gen.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void sshPublicKeyUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
@@ -28,25 +45,10 @@ public final class SshPublicKeysUpdateSamples {
             .updateWithResponse(
                 "rgcompute",
                 "aaaaaaaaaaaa",
-                new SshPublicKeyUpdateResource().withTags(mapOf("key2854", "a")).withPublicKey("{ssh-rsa public key}"),
-                Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_Update_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: SshPublicKeys_Update_MinimumSet_Gen.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void sshPublicKeysUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getSshPublicKeys()
-            .updateWithResponse("rgcompute", "aaaaaaaaaaa", new SshPublicKeyUpdateResource(), Context.NONE);
+                new SshPublicKeyUpdateResource()
+                    .withTags(mapOf("key2854", "fakeTokenPlaceholder"))
+                    .withPublicKey("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

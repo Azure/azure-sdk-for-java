@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of recommended sensitivity label update operations. */
 @Fluent
 public final class RecommendedSensitivityLabelUpdateList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedSensitivityLabelUpdateList.class);
-
     /*
      * The operations property.
      */
     @JsonProperty(value = "operations")
     private List<RecommendedSensitivityLabelUpdate> operations;
+
+    /** Creates an instance of RecommendedSensitivityLabelUpdateList class. */
+    public RecommendedSensitivityLabelUpdateList() {
+    }
 
     /**
      * Get the operations property: The operations property.

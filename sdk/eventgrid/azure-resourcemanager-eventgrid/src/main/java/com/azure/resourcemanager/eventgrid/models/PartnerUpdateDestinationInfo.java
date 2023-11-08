@@ -19,6 +19,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "WebHook", value = WebhookUpdatePartnerDestinationInfo.class)})
 @Immutable
 public class PartnerUpdateDestinationInfo {
+    /** Creates an instance of PartnerUpdateDestinationInfo class. */
+    public PartnerUpdateDestinationInfo() {
+    }
+
     /**
      * Validates the instance.
      *

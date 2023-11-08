@@ -42,6 +42,10 @@ public final class ExpressRouteCircuitInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ExpressRouteCircuitInner class. */
+    public ExpressRouteCircuitInner() {
+    }
+
     /**
      * Get the sku property: The SKU.
      *
@@ -412,6 +416,38 @@ public final class ExpressRouteCircuitInner extends Resource {
         }
         this.innerProperties().withGlobalReachEnabled(globalReachEnabled);
         return this;
+    }
+
+    /**
+     * Get the authorizationKey property: The authorizationKey.
+     *
+     * @return the authorizationKey value.
+     */
+    public String authorizationKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().authorizationKey();
+    }
+
+    /**
+     * Set the authorizationKey property: The authorizationKey.
+     *
+     * @param authorizationKey the authorizationKey value to set.
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withAuthorizationKey(String authorizationKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitPropertiesFormat();
+        }
+        this.innerProperties().withAuthorizationKey(authorizationKey);
+        return this;
+    }
+
+    /**
+     * Get the authorizationStatus property: The authorization status of the Circuit.
+     *
+     * @return the authorizationStatus value.
+     */
+    public String authorizationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().authorizationStatus();
     }
 
     /**

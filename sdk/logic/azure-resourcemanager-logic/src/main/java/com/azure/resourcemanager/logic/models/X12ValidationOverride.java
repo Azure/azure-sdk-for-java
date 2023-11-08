@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 validation override settings. */
 @Fluent
 public final class X12ValidationOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12ValidationOverride.class);
-
     /*
      * The message id on which the validation settings has to be applied.
      */
@@ -33,8 +30,7 @@ public final class X12ValidationOverride {
     private boolean validateXsdTypes;
 
     /*
-     * The value indicating whether to allow leading and trailing spaces and
-     * zeroes.
+     * The value indicating whether to allow leading and trailing spaces and zeroes.
      */
     @JsonProperty(value = "allowLeadingAndTrailingSpacesAndZeroes", required = true)
     private boolean allowLeadingAndTrailingSpacesAndZeroes;
@@ -46,8 +42,7 @@ public final class X12ValidationOverride {
     private boolean validateCharacterSet;
 
     /*
-     * The value indicating whether to trim leading and trailing spaces and
-     * zeroes.
+     * The value indicating whether to trim leading and trailing spaces and zeroes.
      */
     @JsonProperty(value = "trimLeadingAndTrailingSpacesAndZeroes", required = true)
     private boolean trimLeadingAndTrailingSpacesAndZeroes;
@@ -57,6 +52,10 @@ public final class X12ValidationOverride {
      */
     @JsonProperty(value = "trailingSeparatorPolicy", required = true)
     private TrailingSeparatorPolicy trailingSeparatorPolicy;
+
+    /** Creates an instance of X12ValidationOverride class. */
+    public X12ValidationOverride() {
+    }
 
     /**
      * Get the messageId property: The message id on which the validation settings has to be applied.
@@ -211,15 +210,17 @@ public final class X12ValidationOverride {
      */
     public void validate() {
         if (messageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property messageId in model X12ValidationOverride"));
         }
         if (trailingSeparatorPolicy() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property trailingSeparatorPolicy in model X12ValidationOverride"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12ValidationOverride.class);
 }

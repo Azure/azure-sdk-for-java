@@ -61,6 +61,27 @@ public final class KeyPermissions extends ExpandableStringEnum<KeyPermissions> {
     /** Static value purge for KeyPermissions. */
     public static final KeyPermissions PURGE = fromString("purge");
 
+    /** Static value release for KeyPermissions. */
+    public static final KeyPermissions RELEASE = fromString("release");
+
+    /** Static value rotate for KeyPermissions. */
+    public static final KeyPermissions ROTATE = fromString("rotate");
+
+    /** Static value getrotationpolicy for KeyPermissions. */
+    public static final KeyPermissions GETROTATIONPOLICY = fromString("getrotationpolicy");
+
+    /** Static value setrotationpolicy for KeyPermissions. */
+    public static final KeyPermissions SETROTATIONPOLICY = fromString("setrotationpolicy");
+
+    /**
+     * Creates a new instance of KeyPermissions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyPermissions() {
+    }
+
     /**
      * Creates or finds a KeyPermissions from its string representation.
      *
@@ -72,7 +93,11 @@ public final class KeyPermissions extends ExpandableStringEnum<KeyPermissions> {
         return fromString(name, KeyPermissions.class);
     }
 
-    /** @return known KeyPermissions values. */
+    /**
+     * Gets known KeyPermissions values.
+     *
+     * @return known KeyPermissions values.
+     */
     public static Collection<KeyPermissions> values() {
         return values(KeyPermissions.class);
     }

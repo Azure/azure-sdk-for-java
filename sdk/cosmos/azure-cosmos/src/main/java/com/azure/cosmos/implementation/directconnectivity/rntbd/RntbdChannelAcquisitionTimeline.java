@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
@@ -19,6 +18,7 @@ public class RntbdChannelAcquisitionTimeline {
     private static final Logger logger = LoggerFactory.getLogger(RntbdChannelAcquisitionTimeline.class);
     private final List<RntbdChannelAcquisitionEvent> events;
     private volatile RntbdChannelAcquisitionEvent currentEvent;
+    private volatile boolean waitForChannelInit = false;
 
     public RntbdChannelAcquisitionTimeline() {
         this.events = new ArrayList<>();
@@ -36,6 +36,9 @@ public class RntbdChannelAcquisitionTimeline {
         if (timeline != null) {
             RntbdChannelAcquisitionEvent newEvent = new RntbdChannelAcquisitionEvent(eventType, Instant.now());
             timeline.addNewEvent(newEvent, clientTelemetry);
+            if (eventType == RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE) {
+                timeline.waitForChannelInit = true;
+            }
 
             return newEvent;
         }
@@ -60,7 +63,7 @@ public class RntbdChannelAcquisitionTimeline {
     private void addNewEvent(RntbdChannelAcquisitionEvent event, ClientTelemetry clientTelemetry) {
         if (this.currentEvent != null) {
             this.currentEvent.complete(event.getCreatedTime());
-            if(clientTelemetry!= null && Configs.isClientTelemetryEnabled(clientTelemetry.isClientTelemetryEnabled())) {
+            if(clientTelemetry!= null && clientTelemetry.isClientTelemetryEnabled()) {
                 if (event.getEventType().equals(RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE)) {
                     ReportPayload reportPayload = new ReportPayload(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_NAME,
                         ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_UNIT);
@@ -85,5 +88,9 @@ public class RntbdChannelAcquisitionTimeline {
         if (timeline != null && timeline.currentEvent != null){
             RntbdChannelAcquisitionEvent.addDetail(timeline.currentEvent, detail);
         }
+    }
+
+    public boolean isWaitForChannelInit() {
+        return this.waitForChannelInit;
     }
 }

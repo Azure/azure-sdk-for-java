@@ -124,7 +124,10 @@ public class ReactorNettyClient implements HttpClient {
 
         if (this.httpClientConfig.getProxy() != null) {
             this.httpClient = this.httpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP)
-                .address(this.httpClientConfig.getProxy().getAddress()));
+                .address(this.httpClientConfig.getProxy().getAddress())
+                .username(this.httpClientConfig.getProxy().getUsername())
+                .password(userName -> this.httpClientConfig.getProxy().getPassword())
+            );
         }
 
         if (LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY).isTraceEnabled()) {
@@ -164,7 +167,7 @@ public class ReactorNettyClient implements HttpClient {
             .port(request.port())
             .responseTimeout(responseTimeout)
             .request(HttpMethod.valueOf(request.httpMethod().toString()))
-            .uri(request.uri().toString())
+            .uri(request.uri().toASCIIString())
             .send(bodySendDelegate(request))
             .responseConnection((reactorNettyResponse, reactorNettyConnection) -> {
                 HttpResponse httpResponse = new ReactorNettyHttpResponse(reactorNettyResponse,

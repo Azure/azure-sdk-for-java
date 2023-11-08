@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiRevision ListByService. */
 public final class ApiRevisionListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListApiRevisions.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListApiRevisions.json
      */
     /**
      * Sample code: ApiManagementListApiRevisions.
@@ -20,6 +18,7 @@ public final class ApiRevisionListByServiceSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .apiRevisions()
-            .listByService("rg1", "apimService1", "57d2ef278aa04f0888cba3f3", null, null, null, Context.NONE);
+            .listByService(
+                "rg1", "apimService1", "57d2ef278aa04f0888cba3f3", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

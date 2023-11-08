@@ -5,20 +5,26 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Encryption entities for databricks workspace resource. */
 @Fluent
 public final class EncryptionEntitiesDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionEntitiesDefinition.class);
-
     /*
      * Encryption properties for the databricks managed services.
      */
     @JsonProperty(value = "managedServices")
     private EncryptionV2 managedServices;
+
+    /*
+     * Encryption properties for the databricks managed disks.
+     */
+    @JsonProperty(value = "managedDisk")
+    private ManagedDiskEncryption managedDisk;
+
+    /** Creates an instance of EncryptionEntitiesDefinition class. */
+    public EncryptionEntitiesDefinition() {
+    }
 
     /**
      * Get the managedServices property: Encryption properties for the databricks managed services.
@@ -41,6 +47,26 @@ public final class EncryptionEntitiesDefinition {
     }
 
     /**
+     * Get the managedDisk property: Encryption properties for the databricks managed disks.
+     *
+     * @return the managedDisk value.
+     */
+    public ManagedDiskEncryption managedDisk() {
+        return this.managedDisk;
+    }
+
+    /**
+     * Set the managedDisk property: Encryption properties for the databricks managed disks.
+     *
+     * @param managedDisk the managedDisk value to set.
+     * @return the EncryptionEntitiesDefinition object itself.
+     */
+    public EncryptionEntitiesDefinition withManagedDisk(ManagedDiskEncryption managedDisk) {
+        this.managedDisk = managedDisk;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -48,6 +74,9 @@ public final class EncryptionEntitiesDefinition {
     public void validate() {
         if (managedServices() != null) {
             managedServices().validate();
+        }
+        if (managedDisk() != null) {
+            managedDisk().validate();
         }
     }
 }

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutoProvision. */
+/** Describes what kind of security agent provisioning action to take. */
 public final class AutoProvision extends ExpandableStringEnum<AutoProvision> {
     /** Static value On for AutoProvision. */
     public static final AutoProvision ON = fromString("On");
 
     /** Static value Off for AutoProvision. */
     public static final AutoProvision OFF = fromString("Off");
+
+    /**
+     * Creates a new instance of AutoProvision value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutoProvision() {
+    }
 
     /**
      * Creates or finds a AutoProvision from its string representation.
@@ -27,7 +36,11 @@ public final class AutoProvision extends ExpandableStringEnum<AutoProvision> {
         return fromString(name, AutoProvision.class);
     }
 
-    /** @return known AutoProvision values. */
+    /**
+     * Gets known AutoProvision values.
+     *
+     * @return known AutoProvision values.
+     */
     public static Collection<AutoProvision> values() {
         return values(AutoProvision.class);
     }

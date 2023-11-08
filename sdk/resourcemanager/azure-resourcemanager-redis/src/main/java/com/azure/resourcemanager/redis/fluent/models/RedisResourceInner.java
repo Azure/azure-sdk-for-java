@@ -15,6 +15,7 @@ import com.azure.resourcemanager.redis.models.RedisInstanceDetails;
 import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
+import com.azure.resourcemanager.redis.models.UpdateChannel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +30,7 @@ public final class RedisResourceInner extends Resource {
     private RedisPropertiesInner innerProperties = new RedisPropertiesInner();
 
     /*
-     * A list of availability zones denoting where the resource needs to come
-     * from.
+     * A list of availability zones denoting where the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -40,6 +40,10 @@ public final class RedisResourceInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
+
+    /** Creates an instance of RedisResourceInner class. */
+    public RedisResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Redis cache properties.
@@ -281,8 +285,9 @@ public final class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
-     * valid values: (4, 6).
+     * Get the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
+     * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
+     * versions: 4.0, 6.0 (latest). Default value is 'latest'.
      *
      * @return the redisVersion value.
      */
@@ -291,8 +296,9 @@ public final class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
-     * valid values: (4, 6).
+     * Set the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
+     * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
+     * versions: 4.0, 6.0 (latest). Default value is 'latest'.
      *
      * @param redisVersion the redisVersion value to set.
      * @return the RedisResourceInner object itself.
@@ -469,6 +475,33 @@ public final class RedisResourceInner extends Resource {
             this.innerProperties = new RedisPropertiesInner();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the updateChannel property: Optional: Specifies the update channel for the monthly Redis updates your Redis
+     * Cache will receive. Caches using 'Preview' update channel get latest Redis updates at least 4 weeks ahead of
+     * 'Stable' channel caches. Default value is 'Stable'.
+     *
+     * @return the updateChannel value.
+     */
+    public UpdateChannel updateChannel() {
+        return this.innerProperties() == null ? null : this.innerProperties().updateChannel();
+    }
+
+    /**
+     * Set the updateChannel property: Optional: Specifies the update channel for the monthly Redis updates your Redis
+     * Cache will receive. Caches using 'Preview' update channel get latest Redis updates at least 4 weeks ahead of
+     * 'Stable' channel caches. Default value is 'Stable'.
+     *
+     * @param updateChannel the updateChannel value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withUpdateChannel(UpdateChannel updateChannel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withUpdateChannel(updateChannel);
         return this;
     }
 

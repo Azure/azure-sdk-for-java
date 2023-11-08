@@ -8,35 +8,42 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ModelState model. */
+/** Model status. */
 @Fluent
 public final class ModelState {
     /*
-     * Epoch id
+     * This indicates the number of passes of the entire training dataset the
+     * algorithm has completed.
      */
     @JsonProperty(value = "epochIds")
     private List<Integer> epochIds;
 
     /*
-     * The trainLosses property.
+     * List of metrics used to assess how the model fits the training data for each
+     * epoch.
      */
     @JsonProperty(value = "trainLosses")
-    private List<Float> trainLosses;
+    private List<Double> trainLosses;
 
     /*
-     * The validationLosses property.
+     * List of metrics used to assess how the model fits the validation set for each
+     * epoch.
      */
     @JsonProperty(value = "validationLosses")
-    private List<Float> validationLosses;
+    private List<Double> validationLosses;
 
     /*
-     * The latenciesInSeconds property.
+     * Latency for each epoch.
      */
     @JsonProperty(value = "latenciesInSeconds")
-    private List<Float> latenciesInSeconds;
+    private List<Double> latenciesInSeconds;
+
+    /** Creates an instance of ModelState class. */
+    public ModelState() {}
 
     /**
-     * Get the epochIds property: Epoch id.
+     * Get the epochIds property: This indicates the number of passes of the entire training dataset the algorithm has
+     * completed.
      *
      * @return the epochIds value.
      */
@@ -45,7 +52,8 @@ public final class ModelState {
     }
 
     /**
-     * Set the epochIds property: Epoch id.
+     * Set the epochIds property: This indicates the number of passes of the entire training dataset the algorithm has
+     * completed.
      *
      * @param epochIds the epochIds value to set.
      * @return the ModelState object itself.
@@ -56,61 +64,63 @@ public final class ModelState {
     }
 
     /**
-     * Get the trainLosses property: The trainLosses property.
+     * Get the trainLosses property: List of metrics used to assess how the model fits the training data for each epoch.
      *
      * @return the trainLosses value.
      */
-    public List<Float> getTrainLosses() {
+    public List<Double> getTrainLosses() {
         return this.trainLosses;
     }
 
     /**
-     * Set the trainLosses property: The trainLosses property.
+     * Set the trainLosses property: List of metrics used to assess how the model fits the training data for each epoch.
      *
      * @param trainLosses the trainLosses value to set.
      * @return the ModelState object itself.
      */
-    public ModelState setTrainLosses(List<Float> trainLosses) {
+    public ModelState setTrainLosses(List<Double> trainLosses) {
         this.trainLosses = trainLosses;
         return this;
     }
 
     /**
-     * Get the validationLosses property: The validationLosses property.
+     * Get the validationLosses property: List of metrics used to assess how the model fits the validation set for each
+     * epoch.
      *
      * @return the validationLosses value.
      */
-    public List<Float> getValidationLosses() {
+    public List<Double> getValidationLosses() {
         return this.validationLosses;
     }
 
     /**
-     * Set the validationLosses property: The validationLosses property.
+     * Set the validationLosses property: List of metrics used to assess how the model fits the validation set for each
+     * epoch.
      *
      * @param validationLosses the validationLosses value to set.
      * @return the ModelState object itself.
      */
-    public ModelState setValidationLosses(List<Float> validationLosses) {
+    public ModelState setValidationLosses(List<Double> validationLosses) {
         this.validationLosses = validationLosses;
         return this;
     }
 
     /**
-     * Get the latenciesInSeconds property: The latenciesInSeconds property.
+     * Get the latenciesInSeconds property: Latency for each epoch.
      *
      * @return the latenciesInSeconds value.
      */
-    public List<Float> getLatenciesInSeconds() {
+    public List<Double> getLatenciesInSeconds() {
         return this.latenciesInSeconds;
     }
 
     /**
-     * Set the latenciesInSeconds property: The latenciesInSeconds property.
+     * Set the latenciesInSeconds property: Latency for each epoch.
      *
      * @param latenciesInSeconds the latenciesInSeconds value to set.
      * @return the ModelState object itself.
      */
-    public ModelState setLatenciesInSeconds(List<Float> latenciesInSeconds) {
+    public ModelState setLatenciesInSeconds(List<Double> latenciesInSeconds) {
         this.latenciesInSeconds = latenciesInSeconds;
         return this;
     }

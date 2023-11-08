@@ -75,6 +75,13 @@ public interface StorageInsight {
     StorageInsightStatus status();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.loganalytics.fluent.models.StorageInsightInner object.
      *
      * @return the inner object.
@@ -85,11 +92,13 @@ public interface StorageInsight {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The StorageInsight definition stages. */
     interface DefinitionStages {
         /** The first stage of the StorageInsight definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the StorageInsight definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -101,6 +110,7 @@ public interface StorageInsight {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the StorageInsight definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -126,6 +136,7 @@ public interface StorageInsight {
              */
             StorageInsight create(Context context);
         }
+
         /** The stage of the StorageInsight definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -136,6 +147,7 @@ public interface StorageInsight {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the StorageInsight definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -146,6 +158,7 @@ public interface StorageInsight {
              */
             WithCreate withEtag(String etag);
         }
+
         /** The stage of the StorageInsight definition allowing to specify containers. */
         interface WithContainers {
             /**
@@ -156,6 +169,7 @@ public interface StorageInsight {
              */
             WithCreate withContainers(List<String> containers);
         }
+
         /** The stage of the StorageInsight definition allowing to specify tables. */
         interface WithTables {
             /**
@@ -166,6 +180,7 @@ public interface StorageInsight {
              */
             WithCreate withTables(List<String> tables);
         }
+
         /** The stage of the StorageInsight definition allowing to specify storageAccount. */
         interface WithStorageAccount {
             /**
@@ -177,6 +192,7 @@ public interface StorageInsight {
             WithCreate withStorageAccount(StorageAccount storageAccount);
         }
     }
+
     /**
      * Begins update for the StorageInsight resource.
      *
@@ -206,6 +222,7 @@ public interface StorageInsight {
          */
         StorageInsight apply(Context context);
     }
+
     /** The StorageInsight update stages. */
     interface UpdateStages {
         /** The stage of the StorageInsight update allowing to specify tags. */
@@ -218,6 +235,7 @@ public interface StorageInsight {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the StorageInsight update allowing to specify etag. */
         interface WithEtag {
             /**
@@ -228,6 +246,7 @@ public interface StorageInsight {
              */
             Update withEtag(String etag);
         }
+
         /** The stage of the StorageInsight update allowing to specify containers. */
         interface WithContainers {
             /**
@@ -238,6 +257,7 @@ public interface StorageInsight {
              */
             Update withContainers(List<String> containers);
         }
+
         /** The stage of the StorageInsight update allowing to specify tables. */
         interface WithTables {
             /**
@@ -248,6 +268,7 @@ public interface StorageInsight {
              */
             Update withTables(List<String> tables);
         }
+
         /** The stage of the StorageInsight update allowing to specify storageAccount. */
         interface WithStorageAccount {
             /**
@@ -259,6 +280,7 @@ public interface StorageInsight {
             Update withStorageAccount(StorageAccount storageAccount);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

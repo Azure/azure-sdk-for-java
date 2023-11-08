@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StoredProcedureParameterType. */
+/** Stored procedure parameter type. */
 public final class StoredProcedureParameterType extends ExpandableStringEnum<StoredProcedureParameterType> {
     /** Static value String for StoredProcedureParameterType. */
     public static final StoredProcedureParameterType STRING = fromString("String");
@@ -32,6 +32,14 @@ public final class StoredProcedureParameterType extends ExpandableStringEnum<Sto
     public static final StoredProcedureParameterType DATE = fromString("Date");
 
     /**
+     * Creates a new instance of StoredProcedureParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StoredProcedureParameterType() {}
+
+    /**
      * Creates or finds a StoredProcedureParameterType from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +50,11 @@ public final class StoredProcedureParameterType extends ExpandableStringEnum<Sto
         return fromString(name, StoredProcedureParameterType.class);
     }
 
-    /** @return known StoredProcedureParameterType values. */
+    /**
+     * Gets known StoredProcedureParameterType values.
+     *
+     * @return known StoredProcedureParameterType values.
+     */
     public static Collection<StoredProcedureParameterType> values() {
         return values(StoredProcedureParameterType.class);
     }

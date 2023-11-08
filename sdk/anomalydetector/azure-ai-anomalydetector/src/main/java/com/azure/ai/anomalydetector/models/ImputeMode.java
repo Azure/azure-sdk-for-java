@@ -29,6 +29,14 @@ public final class ImputeMode extends ExpandableStringEnum<ImputeMode> {
     public static final ImputeMode NOT_FILL = fromString("notFill");
 
     /**
+     * Creates a new instance of ImputeMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImputeMode() {}
+
+    /**
      * Creates or finds a ImputeMode from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +47,11 @@ public final class ImputeMode extends ExpandableStringEnum<ImputeMode> {
         return fromString(name, ImputeMode.class);
     }
 
-    /** @return known ImputeMode values. */
+    /**
+     * Gets known ImputeMode values.
+     *
+     * @return known ImputeMode values.
+     */
     public static Collection<ImputeMode> values() {
         return values(ImputeMode.class);
     }

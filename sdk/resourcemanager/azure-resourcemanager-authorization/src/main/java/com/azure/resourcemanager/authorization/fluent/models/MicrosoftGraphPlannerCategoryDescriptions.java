@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** plannerCategoryDescriptions. */
 @Fluent
 public final class MicrosoftGraphPlannerCategoryDescriptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPlannerCategoryDescriptions.class);
-
     /*
      * The label associated with Category 1
      */
@@ -58,6 +55,10 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
      * plannerCategoryDescriptions
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerCategoryDescriptions class. */
+    public MicrosoftGraphPlannerCategoryDescriptions() {
+    }
 
     /**
      * Get the category1 property: The label associated with Category 1.

@@ -61,7 +61,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SubscriptionClientSu")
-    private interface SubscriptionsService {
+    public interface SubscriptionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/locations")
         @ExpectedResponses({200})
@@ -119,7 +119,9 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     }
 
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
+     * Gets all available geo-locations.
+     *
+     * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
@@ -162,7 +164,9 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     }
 
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
+     * Gets all available geo-locations.
+     *
+     * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
@@ -203,7 +207,9 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     }
 
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
+     * Gets all available geo-locations.
+     *
+     * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
@@ -219,7 +225,9 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     }
 
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
+     * Gets all available geo-locations.
+     *
+     * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
@@ -235,7 +243,9 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     }
 
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
+     * Gets all available geo-locations.
+     *
+     * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
@@ -253,7 +263,9 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     }
 
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
+     * Gets all available geo-locations.
+     *
+     * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
@@ -269,7 +281,9 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     }
 
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
+     * Gets all available geo-locations.
+     *
+     * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
@@ -354,29 +368,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionInner> getAsync(String subscriptionId) {
-        return getWithResponseAsync(subscriptionId)
-            .flatMap(
-                (Response<SubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets details about a specified subscription.
-     *
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionInner get(String subscriptionId) {
-        return getAsync(subscriptionId).block();
+        return getWithResponseAsync(subscriptionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -392,6 +384,20 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionInner> getWithResponse(String subscriptionId, Context context) {
         return getWithResponseAsync(subscriptionId, context).block();
+    }
+
+    /**
+     * Gets details about a specified subscription.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about a specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SubscriptionInner get(String subscriptionId) {
+        return getWithResponse(subscriptionId, Context.NONE).getValue();
     }
 
     /**
@@ -603,29 +609,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     public Mono<CheckZonePeersResultInner> checkZonePeersAsync(
         String subscriptionId, CheckZonePeersRequest parameters) {
         return checkZonePeersWithResponseAsync(subscriptionId, parameters)
-            .flatMap(
-                (Response<CheckZonePeersResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Compares a subscriptions logical zone mapping.
-     *
-     * @param subscriptionId The ID of the target subscription.
-     * @param parameters Parameters for checking zone peers.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the Check zone peers operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckZonePeersResultInner checkZonePeers(String subscriptionId, CheckZonePeersRequest parameters) {
-        return checkZonePeersAsync(subscriptionId, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -646,9 +630,25 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     }
 
     /**
+     * Compares a subscriptions logical zone mapping.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param parameters Parameters for checking zone peers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the Check zone peers operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckZonePeersResultInner checkZonePeers(String subscriptionId, CheckZonePeersRequest parameters) {
+        return checkZonePeersWithResponse(subscriptionId, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -684,7 +684,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

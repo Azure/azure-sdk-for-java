@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.kusto.fluent.ClusterPrincipalAssignmentsClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ClusterPrincipalAssignmentsClient. */
 public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrincipalAssignmentsClient {
-    private final ClientLogger logger = new ClientLogger(ClusterPrincipalAssignmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ClusterPrincipalAssignmentsService service;
 
@@ -71,11 +68,10 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface ClusterPrincipalAssignmentsService {
+    public interface ClusterPrincipalAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/checkPrincipalAssignmentNameAvailability")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/checkPrincipalAssignmentNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(
@@ -90,8 +86,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/principalAssignments/{principalAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/principalAssignments/{principalAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterPrincipalAssignmentInner>> get(
@@ -106,8 +101,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/principalAssignments/{principalAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/principalAssignments/{principalAssignmentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -123,8 +117,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/principalAssignments/{principalAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/principalAssignments/{principalAssignmentName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -139,8 +132,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/principalAssignments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/principalAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterPrincipalAssignmentListResult>> list(
@@ -156,7 +148,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Checks that the principal assignment name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the principal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,7 +208,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Checks that the principal assignment name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the principal assignment.
      * @param context The context to associate with this operation.
@@ -275,7 +267,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Checks that the principal assignment name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the principal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,39 +281,13 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
         String clusterName,
         ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, principalAssignmentName)
-            .flatMap(
-                (Response<CheckNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param principalAssignmentName The name of the principal assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        return checkNameAvailabilityAsync(resourceGroupName, clusterName, principalAssignmentName).block();
-    }
-
-    /**
-     * Checks that the principal assignment name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the principal assignment.
      * @param context The context to associate with this operation.
@@ -341,9 +307,29 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     }
 
     /**
+     * Checks that the principal assignment name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param principalAssignmentName The name of the principal assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameResultInner checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        return checkNameAvailabilityWithResponse(resourceGroupName, clusterName, principalAssignmentName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Gets a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -398,7 +384,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Gets a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
@@ -451,7 +437,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Gets a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,37 +449,13 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     private Mono<ClusterPrincipalAssignmentInner> getAsync(
         String resourceGroupName, String clusterName, String principalAssignmentName) {
         return getWithResponseAsync(resourceGroupName, clusterName, principalAssignmentName)
-            .flatMap(
-                (Response<ClusterPrincipalAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param principalAssignmentName The name of the Kusto principalAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster principalAssignment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterPrincipalAssignmentInner get(
-        String resourceGroupName, String clusterName, String principalAssignmentName) {
-        return getAsync(resourceGroupName, clusterName, principalAssignmentName).block();
-    }
-
-    /**
-     * Gets a Kusto cluster principalAssignment.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
@@ -509,9 +471,26 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     }
 
     /**
+     * Gets a Kusto cluster principalAssignment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param principalAssignmentName The name of the Kusto principalAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto cluster principalAssignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterPrincipalAssignmentInner get(
+        String resourceGroupName, String clusterName, String principalAssignmentName) {
+        return getWithResponse(resourceGroupName, clusterName, principalAssignmentName, Context.NONE).getValue();
+    }
+
+    /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -577,7 +556,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -642,7 +621,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -673,7 +652,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -708,7 +687,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -723,14 +702,15 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
         String clusterName,
         String principalAssignmentName,
         ClusterPrincipalAssignmentInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, principalAssignmentName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, principalAssignmentName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -747,14 +727,15 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
         String principalAssignmentName,
         ClusterPrincipalAssignmentInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, principalAssignmentName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, principalAssignmentName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -777,7 +758,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -802,7 +783,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -823,7 +804,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Create a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param parameters The Kusto cluster principalAssignment's parameters supplied for the operation.
@@ -847,7 +828,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -902,7 +883,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
@@ -955,7 +936,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -977,7 +958,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
@@ -1000,7 +981,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1011,13 +992,13 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String principalAssignmentName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, principalAssignmentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, principalAssignmentName).getSyncPoller();
     }
 
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
@@ -1029,13 +1010,13 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String principalAssignmentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, principalAssignmentName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, principalAssignmentName, context).getSyncPoller();
     }
 
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1053,7 +1034,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
@@ -1073,7 +1054,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1088,7 +1069,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Deletes a Kusto cluster principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
@@ -1104,7 +1085,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Lists all Kusto cluster principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1157,7 +1138,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Lists all Kusto cluster principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1208,7 +1189,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Lists all Kusto cluster principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1224,7 +1205,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Lists all Kusto cluster principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1242,7 +1223,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Lists all Kusto cluster principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1258,7 +1239,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     /**
      * Lists all Kusto cluster principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

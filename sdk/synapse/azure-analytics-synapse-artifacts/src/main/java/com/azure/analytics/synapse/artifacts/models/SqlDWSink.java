@@ -15,15 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SqlDWSink extends CopySink {
     /*
-     * SQL pre-copy script. Type: string (or Expression with resultType
-     * string).
+     * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
 
     /*
-     * Indicates to use PolyBase to copy data into SQL Data Warehouse when
-     * applicable. Type: boolean (or Expression with resultType boolean).
+     * Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "allowPolyBase")
     private Object allowPolyBase;
@@ -35,8 +34,8 @@ public final class SqlDWSink extends CopySink {
     private PolybaseSettings polyBaseSettings;
 
     /*
-     * Indicates to use Copy Command to copy data into SQL Data Warehouse.
-     * Type: boolean (or Expression with resultType boolean).
+     * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "allowCopyCommand")
     private Object allowCopyCommand;
@@ -48,12 +47,14 @@ public final class SqlDWSink extends CopySink {
     private DWCopyCommandSettings copyCommandSettings;
 
     /*
-     * The option to handle sink table, such as autoCreate. For now only
-     * 'autoCreate' value is supported. Type: string (or Expression with
-     * resultType string).
+     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "tableOption")
     private Object tableOption;
+
+    /** Creates an instance of SqlDWSink class. */
+    public SqlDWSink() {}
 
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
@@ -178,6 +179,41 @@ public final class SqlDWSink extends CopySink {
      */
     public SqlDWSink setTableOption(Object tableOption) {
         this.tableOption = tableOption;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

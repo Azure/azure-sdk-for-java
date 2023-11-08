@@ -22,16 +22,14 @@ import java.util.List;
 @Fluent
 public class PartnerDestinationInfo {
     /*
-     * Azure subscription ID of the subscriber. The partner destination
-     * associated with the channel will be
+     * Azure subscription ID of the subscriber. The partner destination associated with the channel will be
      * created under this Azure subscription.
      */
     @JsonProperty(value = "azureSubscriptionId")
     private String azureSubscriptionId;
 
     /*
-     * Azure Resource Group of the subscriber. The partner destination
-     * associated with the channel will be
+     * Azure Resource Group of the subscriber. The partner destination associated with the channel will be
      * created under this resource group.
      */
     @JsonProperty(value = "resourceGroupName")
@@ -54,6 +52,10 @@ public class PartnerDestinationInfo {
      */
     @JsonProperty(value = "resourceMoveChangeHistory")
     private List<ResourceMoveChangeHistory> resourceMoveChangeHistory;
+
+    /** Creates an instance of PartnerDestinationInfo class. */
+    public PartnerDestinationInfo() {
+    }
 
     /**
      * Get the azureSubscriptionId property: Azure subscription ID of the subscriber. The partner destination associated

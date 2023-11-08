@@ -5,12 +5,15 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -190,5 +193,30 @@ public class UploadUtils {
         public byte[] getMd5() {
             return CoreUtils.clone(md5);
         }
+    }
+
+    /**
+     * Extracts the byte buffer for upload operations.
+     *
+     * @param data the {@link Flux} of {@link ByteBuffer}, if specified.
+     * @param optionalLength length of data.
+     * @param blockSize the block size (chunk size) to transfer at a time.
+     * @param dataStream the {@link InputStream}, if specified.
+     * @return the updated {@link Flux} of {@link ByteBuffer}.
+     */
+    public static Flux<ByteBuffer> extractByteBuffer(Flux<ByteBuffer> data, Long optionalLength, Long blockSize,
+        InputStream dataStream) {
+        // no specified length: use azure.core's converter
+        if (data == null && optionalLength == null) {
+            // We can only buffer up to max int due to restrictions in ByteBuffer.
+            int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH, blockSize);
+            data = FluxUtil.toFluxByteBuffer(dataStream, chunkSize);
+            // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
+        } else if (data == null) {
+            // We can only buffer up to max int due to restrictions in ByteBuffer.
+            int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH, blockSize);
+            data = Utility.convertStreamToByteBuffer(dataStream, optionalLength, chunkSize, false);
+        }
+        return data;
     }
 }

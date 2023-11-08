@@ -1,0 +1,13 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "azure-key-vault-secrets.properties"
+      },
+      {
+        "pattern": "kvErrorStrings.properties"
+      }
+    ]
+  },
+  "bundles": []
+}

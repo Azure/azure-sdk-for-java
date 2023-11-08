@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertDetail. */
+/** Alert detail. */
 public final class AlertDetail extends ExpandableStringEnum<AlertDetail> {
     /** Static value DisplayName for AlertDetail. */
     public static final AlertDetail DISPLAY_NAME = fromString("DisplayName");
@@ -27,7 +27,11 @@ public final class AlertDetail extends ExpandableStringEnum<AlertDetail> {
         return fromString(name, AlertDetail.class);
     }
 
-    /** @return known AlertDetail values. */
+    /**
+     * Gets known AlertDetail values.
+     *
+     * @return known AlertDetail values.
+     */
     public static Collection<AlertDetail> values() {
         return values(AlertDetail.class);
     }

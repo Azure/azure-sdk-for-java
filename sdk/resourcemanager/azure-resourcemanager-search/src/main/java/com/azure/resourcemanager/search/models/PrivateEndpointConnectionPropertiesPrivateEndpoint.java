@@ -5,22 +5,20 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The private endpoint resource from Microsoft.Network provider. */
 @Fluent
 public final class PrivateEndpointConnectionPropertiesPrivateEndpoint {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionPropertiesPrivateEndpoint.class);
-
     /*
-     * The resource id of the private endpoint resource from Microsoft.Network
-     * provider.
+     * The resource id of the private endpoint resource from Microsoft.Network provider.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of PrivateEndpointConnectionPropertiesPrivateEndpoint class. */
+    public PrivateEndpointConnectionPropertiesPrivateEndpoint() {
+    }
 
     /**
      * Get the id property: The resource id of the private endpoint resource from Microsoft.Network provider.

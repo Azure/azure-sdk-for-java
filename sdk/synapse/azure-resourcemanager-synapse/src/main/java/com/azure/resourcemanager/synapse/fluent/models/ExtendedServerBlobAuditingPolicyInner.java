@@ -6,9 +6,7 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -16,13 +14,15 @@ import java.util.UUID;
 /** An extended server blob auditing policy. */
 @Fluent
 public final class ExtendedServerBlobAuditingPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedServerBlobAuditingPolicyInner.class);
-
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private ExtendedServerBlobAuditingPolicyProperties innerProperties;
+
+    /** Creates an instance of ExtendedServerBlobAuditingPolicyInner class. */
+    public ExtendedServerBlobAuditingPolicyInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

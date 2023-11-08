@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphComplianceState. */
+/** complianceState. */
 public final class MicrosoftGraphComplianceState extends ExpandableStringEnum<MicrosoftGraphComplianceState> {
     /** Static value unknown for MicrosoftGraphComplianceState. */
     public static final MicrosoftGraphComplianceState UNKNOWN = fromString("unknown");
@@ -32,6 +32,15 @@ public final class MicrosoftGraphComplianceState extends ExpandableStringEnum<Mi
     public static final MicrosoftGraphComplianceState CONFIG_MANAGER = fromString("configManager");
 
     /**
+     * Creates a new instance of MicrosoftGraphComplianceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphComplianceState() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphComplianceState from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class MicrosoftGraphComplianceState extends ExpandableStringEnum<Mi
         return fromString(name, MicrosoftGraphComplianceState.class);
     }
 
-    /** @return known MicrosoftGraphComplianceState values. */
+    /**
+     * Gets known MicrosoftGraphComplianceState values.
+     *
+     * @return known MicrosoftGraphComplianceState values.
+     */
     public static Collection<MicrosoftGraphComplianceState> values() {
         return values(MicrosoftGraphComplianceState.class);
     }

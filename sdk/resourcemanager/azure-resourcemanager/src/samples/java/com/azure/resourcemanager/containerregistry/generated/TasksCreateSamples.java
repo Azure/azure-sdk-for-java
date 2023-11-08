@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.fluent.models.TaskInner;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
@@ -34,7 +33,7 @@ import java.util.Map;
 /** Samples for Tasks Create. */
 public final class TasksCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithSystemIdentity.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithSystemIdentity.json
      */
     /**
      * Sample code: Tasks_Create_WithUserIdentities_WithSystemIdentity.
@@ -54,7 +53,7 @@ public final class TasksCreateSamples {
                 "mytTask",
                 new TaskInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withIdentity(new IdentityProperties().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
                     .withStatus(TaskStatus.ENABLED)
                     .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
@@ -92,7 +91,9 @@ public final class TasksCreateSamples {
                                                     .withRepositoryUrl("https://github.com/Azure/azure-rest-api-specs")
                                                     .withBranch("master")
                                                     .withSourceControlAuthProperties(
-                                                        new AuthInfo().withTokenType(TokenType.PAT).withToken("xxxxx")))
+                                                        new AuthInfo()
+                                                            .withTokenType(TokenType.PAT)
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger")))
                             .withBaseImageTrigger(
@@ -100,11 +101,11 @@ public final class TasksCreateSamples {
                                     .withBaseImageTriggerType(BaseImageTriggerType.RUNTIME)
                                     .withName("myBaseImageTrigger")))
                     .withIsSystemTask(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksCreate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksCreate.json
      */
     /**
      * Sample code: Tasks_Create.
@@ -123,7 +124,7 @@ public final class TasksCreateSamples {
                 "mytTask",
                 new TaskInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withIdentity(new IdentityProperties().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
                     .withStatus(TaskStatus.ENABLED)
                     .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
@@ -161,7 +162,9 @@ public final class TasksCreateSamples {
                                                     .withRepositoryUrl("https://github.com/Azure/azure-rest-api-specs")
                                                     .withBranch("master")
                                                     .withSourceControlAuthProperties(
-                                                        new AuthInfo().withTokenType(TokenType.PAT).withToken("xxxxx")))
+                                                        new AuthInfo()
+                                                            .withTokenType(TokenType.PAT)
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger")))
                             .withBaseImageTrigger(
@@ -172,11 +175,11 @@ public final class TasksCreateSamples {
                                     .withName("myBaseImageTrigger")))
                     .withLogTemplate("acr/tasks:{{.Run.OS}}")
                     .withIsSystemTask(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithSystemAndUserIdentities.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithSystemAndUserIdentities.json
      */
     /**
      * Sample code: Tasks_Create_WithSystemAndUserIdentities.
@@ -195,7 +198,7 @@ public final class TasksCreateSamples {
                 "mytTask",
                 new TaskInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withIdentity(
                         new IdentityProperties()
                             .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
@@ -239,7 +242,9 @@ public final class TasksCreateSamples {
                                                     .withRepositoryUrl("https://github.com/Azure/azure-rest-api-specs")
                                                     .withBranch("master")
                                                     .withSourceControlAuthProperties(
-                                                        new AuthInfo().withTokenType(TokenType.PAT).withToken("xxxxx")))
+                                                        new AuthInfo()
+                                                            .withTokenType(TokenType.PAT)
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger")))
                             .withBaseImageTrigger(
@@ -249,11 +254,11 @@ public final class TasksCreateSamples {
                                     .withUpdateTriggerPayloadType(UpdateTriggerPayloadType.DEFAULT)
                                     .withName("myBaseImageTrigger")))
                     .withIsSystemTask(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithUserIdentities.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/ManagedIdentity/TasksCreate_WithUserIdentities.json
      */
     /**
      * Sample code: Tasks_Create_WithUserIdentities.
@@ -272,7 +277,7 @@ public final class TasksCreateSamples {
                 "mytTask",
                 new TaskInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withIdentity(
                         new IdentityProperties()
                             .withType(ResourceIdentityType.USER_ASSIGNED)
@@ -318,7 +323,9 @@ public final class TasksCreateSamples {
                                                     .withRepositoryUrl("https://github.com/Azure/azure-rest-api-specs")
                                                     .withBranch("master")
                                                     .withSourceControlAuthProperties(
-                                                        new AuthInfo().withTokenType(TokenType.PAT).withToken("xxxxx")))
+                                                        new AuthInfo()
+                                                            .withTokenType(TokenType.PAT)
+                                                            .withToken("fakeTokenPlaceholder")))
                                             .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                             .withName("mySourceTrigger")))
                             .withBaseImageTrigger(
@@ -328,11 +335,11 @@ public final class TasksCreateSamples {
                                     .withUpdateTriggerPayloadType(UpdateTriggerPayloadType.DEFAULT)
                                     .withName("myBaseImageTrigger")))
                     .withIsSystemTask(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksCreate_QuickTask.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TasksCreate_QuickTask.json
      */
     /**
      * Sample code: Tasks_Create_QuickTask.
@@ -351,11 +358,11 @@ public final class TasksCreateSamples {
                 "quicktask",
                 new TaskInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withStatus(TaskStatus.ENABLED)
                     .withLogTemplate("acr/tasks:{{.Run.OS}}")
                     .withIsSystemTask(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

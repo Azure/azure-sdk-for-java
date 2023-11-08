@@ -9,34 +9,36 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.cdn.models.ProfileProvisioningState;
 import com.azure.resourcemanager.cdn.models.ProfileResourceState;
 import com.azure.resourcemanager.cdn.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A profile is a logical grouping of endpoints that share the same settings. */
 @Fluent
 public final class ProfileInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileInner.class);
-
     /*
-     * The pricing tier (defines Azure Front Door Standard or Premium or a CDN
-     * provider, feature list and rate) of the profile.
+     * The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature list and rate) of the
+     * profile.
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
-     * Kind of the profile. Used by portal to differentiate traditional CDN
-     * profile and new AFD profile.
+     * Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD profile.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
-     * The JSON object that contains the properties required to create a
-     * profile.
+     * Managed service identity (system assigned and/or user assigned identities).
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /*
+     * The JSON object that contains the properties required to create a profile.
      */
     @JsonProperty(value = "properties")
     private ProfileProperties innerProperties;
@@ -46,6 +48,10 @@ public final class ProfileInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ProfileInner class. */
+    public ProfileInner() {
+    }
 
     /**
      * Get the sku property: The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature
@@ -77,6 +83,26 @@ public final class ProfileInner extends Resource {
      */
     public String kind() {
         return this.kind;
+    }
+
+    /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -121,35 +147,21 @@ public final class ProfileInner extends Resource {
     }
 
     /**
-     * Get the identity property: Managed service identity.
-     *
-     * @return the identity value.
-     */
-    public ManagedServiceIdentity identity() {
-        return this.innerProperties() == null ? null : this.innerProperties().identity();
-    }
-
-    /**
-     * Set the identity property: Managed service identity.
-     *
-     * @param identity the identity value to set.
-     * @return the ProfileInner object itself.
-     */
-    public ProfileInner withIdentity(ManagedServiceIdentity identity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ProfileProperties();
-        }
-        this.innerProperties().withIdentity(identity);
-        return this;
-    }
-
-    /**
      * Get the provisioningState property: Provisioning status of the profile.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProfileProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the extendedProperties property: Key-Value pair representing additional properties for profiles.
+     *
+     * @return the extendedProperties value.
+     */
+    public Map<String, String> extendedProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().extendedProperties();
     }
 
     /**
@@ -193,14 +205,19 @@ public final class ProfileInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model ProfileInner"));
         } else {
             sku().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ProfileInner.class);
 }

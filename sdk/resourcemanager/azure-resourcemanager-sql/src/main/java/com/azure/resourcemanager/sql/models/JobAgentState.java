@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobAgentState. */
+/** The state of the job agent. */
 public final class JobAgentState extends ExpandableStringEnum<JobAgentState> {
     /** Static value Creating for JobAgentState. */
     public static final JobAgentState CREATING = fromString("Creating");
@@ -36,7 +36,11 @@ public final class JobAgentState extends ExpandableStringEnum<JobAgentState> {
         return fromString(name, JobAgentState.class);
     }
 
-    /** @return known JobAgentState values. */
+    /**
+     * Gets known JobAgentState values.
+     *
+     * @return known JobAgentState values.
+     */
     public static Collection<JobAgentState> values() {
         return values(JobAgentState.class);
     }

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines load balancer backend address pool properties. */
 @Fluent
 public final class LBBackendAddressPoolResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LBBackendAddressPoolResourceSettings.class);
-
     /*
      * Gets or sets the backend address pool name.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of LBBackendAddressPoolResourceSettings class. */
+    public LBBackendAddressPoolResourceSettings() {
+    }
 
     /**
      * Get the name property: Gets or sets the backend address pool name.

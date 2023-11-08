@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ValidationState. */
+/** The validation state of the ASN associated with the peer. */
 public final class ValidationState extends ExpandableStringEnum<ValidationState> {
     /** Static value None for ValidationState. */
     public static final ValidationState NONE = fromString("None");
@@ -23,6 +23,15 @@ public final class ValidationState extends ExpandableStringEnum<ValidationState>
     public static final ValidationState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of ValidationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ValidationState() {
+    }
+
+    /**
      * Creates or finds a ValidationState from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ValidationState extends ExpandableStringEnum<ValidationState>
         return fromString(name, ValidationState.class);
     }
 
-    /** @return known ValidationState values. */
+    /**
+     * Gets known ValidationState values.
+     *
+     * @return known ValidationState values.
+     */
     public static Collection<ValidationState> values() {
         return values(ValidationState.class);
     }

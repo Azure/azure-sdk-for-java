@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PartnerClientAuthenticationType. */
+/** Type of client authentication. */
 public final class PartnerClientAuthenticationType extends ExpandableStringEnum<PartnerClientAuthenticationType> {
     /** Static value AzureAD for PartnerClientAuthenticationType. */
     public static final PartnerClientAuthenticationType AZURE_AD = fromString("AzureAD");
+
+    /**
+     * Creates a new instance of PartnerClientAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PartnerClientAuthenticationType() {
+    }
 
     /**
      * Creates or finds a PartnerClientAuthenticationType from its string representation.
@@ -24,7 +33,11 @@ public final class PartnerClientAuthenticationType extends ExpandableStringEnum<
         return fromString(name, PartnerClientAuthenticationType.class);
     }
 
-    /** @return known PartnerClientAuthenticationType values. */
+    /**
+     * Gets known PartnerClientAuthenticationType values.
+     *
+     * @return known PartnerClientAuthenticationType values.
+     */
     public static Collection<PartnerClientAuthenticationType> values() {
         return values(PartnerClientAuthenticationType.class);
     }

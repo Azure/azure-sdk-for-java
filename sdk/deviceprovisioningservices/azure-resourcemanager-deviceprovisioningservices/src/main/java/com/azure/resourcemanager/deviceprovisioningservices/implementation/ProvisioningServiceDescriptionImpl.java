@@ -74,6 +74,10 @@ public final class ProvisioningServiceDescriptionImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ProvisioningServiceDescriptionInner innerModel() {
         return this.innerObject;
     }

@@ -17,6 +17,20 @@ public interface VirtualNetworkSubnetUsageResult {
     List<DelegatedSubnetUsage> delegatedSubnetsUsage();
 
     /**
+     * Gets the location property: location of the delegated subnet usage.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * Gets the subscriptionId property: subscriptionId of the delegated subnet usage.
+     *
+     * @return the subscriptionId value.
+     */
+    String subscriptionId();
+
+    /**
      * Gets the inner
      * com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageResultInner object.
      *

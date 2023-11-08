@@ -11,39 +11,42 @@ import com.azure.core.util.Context;
 /** Resource collection API of Users. */
 public interface Users {
     /**
-     * Returns a list of all users for a lab.
+     * Get all users for a lab.
+     *
+     * <p>Returns a list of all users for a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of users.
+     * @return paged list of users as paginated response with {@link PagedIterable}.
      */
     PagedIterable<User> listByLab(String resourceGroupName, String labName);
 
     /**
-     * Returns a list of all users for a lab.
+     * Get all users for a lab.
+     *
+     * <p>Returns a list of all users for a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of users.
+     * @return paged list of users as paginated response with {@link PagedIterable}.
      */
     PagedIterable<User> listByLab(String resourceGroupName, String labName, String filter, Context context);
 
     /**
-     * Returns the properties of a lab user.
+     * Get a lab user.
+     *
+     * <p>Returns the properties of a lab user.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -53,11 +56,12 @@ public interface Users {
     User get(String resourceGroupName, String labName, String username);
 
     /**
-     * Returns the properties of a lab user.
+     * Get a lab user.
+     *
+     * <p>Returns the properties of a lab user.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,11 +72,12 @@ public interface Users {
     Response<User> getWithResponse(String resourceGroupName, String labName, String username, Context context);
 
     /**
-     * Operation to delete a user resource.
+     * Deletes a user resource.
+     *
+     * <p>Operation to delete a user resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,11 +86,12 @@ public interface Users {
     void delete(String resourceGroupName, String labName, String username);
 
     /**
-     * Operation to delete a user resource.
+     * Deletes a user resource.
+     *
+     * <p>Operation to delete a user resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,11 +101,12 @@ public interface Users {
     void delete(String resourceGroupName, String labName, String username, Context context);
 
     /**
-     * Operation to invite a user to a lab.
+     * Invite a user to a lab.
+     *
+     * <p>Operation to invite a user to a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,11 +116,12 @@ public interface Users {
     void invite(String resourceGroupName, String labName, String username, InviteBody body);
 
     /**
-     * Operation to invite a user to a lab.
+     * Invite a user to a lab.
+     *
+     * <p>Operation to invite a user to a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
      * @param body The request body.
      * @param context The context to associate with this operation.
@@ -124,7 +132,9 @@ public interface Users {
     void invite(String resourceGroupName, String labName, String username, InviteBody body, Context context);
 
     /**
-     * Returns the properties of a lab user.
+     * Get a lab user.
+     *
+     * <p>Returns the properties of a lab user.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +145,9 @@ public interface Users {
     User getById(String id);
 
     /**
-     * Returns the properties of a lab user.
+     * Get a lab user.
+     *
+     * <p>Returns the properties of a lab user.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -147,7 +159,9 @@ public interface Users {
     Response<User> getByIdWithResponse(String id, Context context);
 
     /**
-     * Operation to delete a user resource.
+     * Deletes a user resource.
+     *
+     * <p>Operation to delete a user resource.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,7 +171,9 @@ public interface Users {
     void deleteById(String id);
 
     /**
-     * Operation to delete a user resource.
+     * Deletes a user resource.
+     *
+     * <p>Operation to delete a user resource.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

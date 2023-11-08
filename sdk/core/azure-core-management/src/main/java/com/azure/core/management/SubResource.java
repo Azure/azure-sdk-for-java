@@ -13,6 +13,12 @@ public class SubResource {
     private String id;
 
     /**
+     * Creates an instance of {@link SubResource}.
+     */
+    public SubResource() {
+    }
+
+    /**
      * Get the id value.
      *
      * @return the id value

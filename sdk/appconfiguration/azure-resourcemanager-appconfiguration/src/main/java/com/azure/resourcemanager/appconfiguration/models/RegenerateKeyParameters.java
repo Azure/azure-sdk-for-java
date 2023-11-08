@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to regenerate an API key. */
 @Fluent
 public final class RegenerateKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateKeyParameters.class);
-
     /*
      * The id of the key to regenerate.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of RegenerateKeyParameters class. */
+    public RegenerateKeyParameters() {
+    }
 
     /**
      * Get the id property: The id of the key to regenerate.

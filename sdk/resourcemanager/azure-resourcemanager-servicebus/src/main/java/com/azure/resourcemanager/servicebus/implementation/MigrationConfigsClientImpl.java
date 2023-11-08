@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicebus.fluent.MigrationConfigsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MigrationConfigsClient. */
 public final class MigrationConfigsClientImpl implements MigrationConfigsClient {
-    private final ClientLogger logger = new ClientLogger(MigrationConfigsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final MigrationConfigsService service;
 
@@ -184,7 +181,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all migrationConfigurations.
+     * @return all migrationConfigurations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MigrationConfigPropertiesInner>> listSinglePageAsync(
@@ -242,7 +239,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all migrationConfigurations.
+     * @return all migrationConfigurations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MigrationConfigPropertiesInner>> listSinglePageAsync(
@@ -296,7 +293,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all migrationConfigurations.
+     * @return all migrationConfigurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MigrationConfigPropertiesInner> listAsync(String resourceGroupName, String namespaceName) {
@@ -313,7 +310,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all migrationConfigurations.
+     * @return all migrationConfigurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MigrationConfigPropertiesInner> listAsync(
@@ -331,7 +328,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all migrationConfigurations.
+     * @return all migrationConfigurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationConfigPropertiesInner> list(String resourceGroupName, String namespaceName) {
@@ -347,7 +344,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all migrationConfigurations.
+     * @return all migrationConfigurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationConfigPropertiesInner> list(
@@ -365,7 +362,8 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return single item in List or Get Migration Config operation along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createAndStartMigrationWithResponseAsync(
@@ -429,7 +427,8 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return single item in List or Get Migration Config operation along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createAndStartMigrationWithResponseAsync(
@@ -490,9 +489,9 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return the {@link PollerFlux} for polling of single item in List or Get Migration Config operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
         beginCreateAndStartMigrationAsync(
             String resourceGroupName,
@@ -522,9 +521,9 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return the {@link PollerFlux} for polling of single item in List or Get Migration Config operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
         beginCreateAndStartMigrationAsync(
             String resourceGroupName,
@@ -555,9 +554,9 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return the {@link SyncPoller} for polling of single item in List or Get Migration Config operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
         beginCreateAndStartMigration(
             String resourceGroupName,
@@ -579,9 +578,9 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return the {@link SyncPoller} for polling of single item in List or Get Migration Config operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
         beginCreateAndStartMigration(
             String resourceGroupName,
@@ -603,7 +602,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return single item in List or Get Migration Config operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrationConfigPropertiesInner> createAndStartMigrationAsync(
@@ -627,7 +626,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return single item in List or Get Migration Config operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MigrationConfigPropertiesInner> createAndStartMigrationAsync(
@@ -694,7 +693,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -748,7 +747,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -798,13 +797,12 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
-        return deleteWithResponseAsync(resourceGroupName, namespaceName, configName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, namespaceName, configName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -832,7 +830,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -849,7 +847,8 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return single item in List or Get Migration Config operation along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MigrationConfigPropertiesInner>> getWithResponseAsync(
@@ -903,7 +902,8 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return single item in List or Get Migration Config operation along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MigrationConfigPropertiesInner>> getWithResponseAsync(
@@ -953,20 +953,13 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return single item in List or Get Migration Config operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrationConfigPropertiesInner> getAsync(
         String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
         return getWithResponseAsync(resourceGroupName, namespaceName, configName)
-            .flatMap(
-                (Response<MigrationConfigPropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -996,7 +989,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
+     * @return single item in List or Get Migration Config operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationConfigPropertiesInner> getWithResponse(
@@ -1015,7 +1008,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> completeMigrationWithResponseAsync(
@@ -1071,7 +1064,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> completeMigrationWithResponseAsync(
@@ -1123,13 +1116,13 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> completeMigrationAsync(
         String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
         return completeMigrationWithResponseAsync(resourceGroupName, namespaceName, configName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1162,7 +1155,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> completeMigrationWithResponse(
@@ -1179,7 +1172,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revertWithResponseAsync(
@@ -1233,7 +1226,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> revertWithResponseAsync(
@@ -1283,13 +1276,12 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revertAsync(
         String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
-        return revertWithResponseAsync(resourceGroupName, namespaceName, configName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return revertWithResponseAsync(resourceGroupName, namespaceName, configName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1317,7 +1309,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revertWithResponse(
@@ -1328,11 +1320,13 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the List migrationConfigurations operation.
+     * @return the result of the List migrationConfigurations operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MigrationConfigPropertiesInner>> listNextSinglePageAsync(String nextLink) {
@@ -1363,12 +1357,14 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the List migrationConfigurations operation.
+     * @return the result of the List migrationConfigurations operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MigrationConfigPropertiesInner>> listNextSinglePageAsync(

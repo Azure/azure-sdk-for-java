@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** Yearly retention schedule. */
 @Fluent
 public final class YearlyRetentionSchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(YearlyRetentionSchedule.class);
-
     /*
      * Retention schedule format for yearly retention policy.
      */
@@ -51,6 +47,10 @@ public final class YearlyRetentionSchedule {
      */
     @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
+
+    /** Creates an instance of YearlyRetentionSchedule class. */
+    public YearlyRetentionSchedule() {
+    }
 
     /**
      * Get the retentionScheduleFormatType property: Retention schedule format for yearly retention policy.

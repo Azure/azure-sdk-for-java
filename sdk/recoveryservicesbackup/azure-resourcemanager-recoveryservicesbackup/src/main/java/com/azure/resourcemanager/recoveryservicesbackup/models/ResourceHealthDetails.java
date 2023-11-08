@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Health Details for backup items. */
 @Immutable
 public class ResourceHealthDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceHealthDetails.class);
-
     /*
      * Health Code
      */
@@ -38,6 +34,10 @@ public class ResourceHealthDetails {
      */
     @JsonProperty(value = "recommendations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> recommendations;
+
+    /** Creates an instance of ResourceHealthDetails class. */
+    public ResourceHealthDetails() {
+    }
 
     /**
      * Get the code property: Health Code.

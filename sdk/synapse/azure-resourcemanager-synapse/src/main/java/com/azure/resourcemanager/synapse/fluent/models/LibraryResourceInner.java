@@ -7,25 +7,28 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.EntityResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Library response details. */
 @Fluent
 public final class LibraryResourceInner extends EntityResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LibraryResourceInner.class);
-
     /*
      * Information about a library/package created at the workspace level.
+     *
      * Library/package properties.
      */
     @JsonProperty(value = "properties", required = true)
     private LibraryInfo innerProperties = new LibraryInfo();
 
+    /** Creates an instance of LibraryResourceInner class. */
+    public LibraryResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Information about a library/package created at the workspace level.
-     * Library/package properties.
+     *
+     * <p>Library/package properties.
      *
      * @return the innerProperties value.
      */
@@ -112,20 +115,6 @@ public final class LibraryResourceInner extends EntityResource {
     }
 
     /**
-     * Set the uploadedTimestamp property: The last update time of the library.
-     *
-     * @param uploadedTimestamp the uploadedTimestamp value to set.
-     * @return the LibraryResourceInner object itself.
-     */
-    public LibraryResourceInner withUploadedTimestamp(OffsetDateTime uploadedTimestamp) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LibraryInfo();
-        }
-        this.innerProperties().withUploadedTimestamp(uploadedTimestamp);
-        return this;
-    }
-
-    /**
      * Get the type property: Type of the library.
      *
      * @return the type value.
@@ -175,7 +164,7 @@ public final class LibraryResourceInner extends EntityResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model LibraryResourceInner"));
@@ -183,4 +172,6 @@ public final class LibraryResourceInner extends EntityResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LibraryResourceInner.class);
 }

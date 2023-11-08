@@ -5,6 +5,7 @@ package com.azure.core.test.http;
 
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -12,6 +13,7 @@ import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.Form;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
+import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -27,18 +29,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient extends NoOpHttpClient {
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders()
-        .set("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
-        .set("Via", "1.1 vegur")
-        .set("Connection", "keep-alive")
-        .set("X-Processed-Time", "1.0")
-        .set("Access-Control-Allow-Credentials", "true")
-        .set("Content-Type", "application/json");
+        .set(HttpHeaderName.DATE, "Fri, 13 Oct 2017 20:33:09 GMT")
+        .set(HttpHeaderName.VIA, "1.1 vegur")
+        .set(HttpHeaderName.CONNECTION, "keep-alive")
+        .set(HttpHeaderName.fromString("X-Processed-Time"), "1.0")
+        .set(HttpHeaderName.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+        .set(HttpHeaderName.CONTENT_TYPE, "application/json");
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
@@ -47,7 +50,7 @@ public class MockHttpClient extends NoOpHttpClient {
         try {
             final URL requestUrl = request.getUrl();
             final String requestHost = requestUrl.getHost();
-            final String contentType = request.getHeaders().getValue("Content-Type");
+            final String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             if ("localhost".equalsIgnoreCase(requestHost)) {
                 final String requestPath = requestUrl.getPath();
                 final String requestPathLower = requestPath.toLowerCase();
@@ -64,9 +67,17 @@ public class MockHttpClient extends NoOpHttpClient {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
                     HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS)
-                        .set("Content-Type", ContentType.APPLICATION_OCTET_STREAM)
-                        .set("Content-Length", Integer.toString(byteCount));
-                    response = new MockHttpResponse(request, 200, newHeaders, byteCount == 0 ? null : new byte[byteCount]);
+                        .set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM)
+                        .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(byteCount));
+                    byte[] content;
+                    if (byteCount > 0) {
+                        content = new byte[byteCount];
+                        ThreadLocalRandom.current().nextBytes(content);
+                        newHeaders = newHeaders.set(HttpHeaderName.ETAG, MessageDigestUtils.md5(content));
+                    } else {
+                        content = null;
+                    }
+                    response = new MockHttpResponse(request, 200, newHeaders, content);
                 } else if (requestPathLower.startsWith("/base64urlbytes/")) {
                     final String byteCountString = requestPath.substring("/base64urlbytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
@@ -170,6 +181,11 @@ public class MockHttpClient extends NoOpHttpClient {
                     final String statusCodeString = requestPathLower.substring("/status/".length());
                     final int statusCode = Integer.parseInt(statusCodeString);
                     response = new MockHttpResponse(request, statusCode);
+                } else if (requestPathLower.startsWith("/voideagerreadoom")) {
+                    response = new MockHttpResponse(request, 200);
+                } else if (requestPathLower.startsWith("/voiderrorreturned")) {
+                    response = new MockHttpResponse(request, 400,
+                        "void exception body thrown".getBytes(StandardCharsets.UTF_8));
                 }
             } else if ("echo.org".equalsIgnoreCase(requestHost)) {
                 return FluxUtil.collectBytesInByteBufferStream(request.getBody())

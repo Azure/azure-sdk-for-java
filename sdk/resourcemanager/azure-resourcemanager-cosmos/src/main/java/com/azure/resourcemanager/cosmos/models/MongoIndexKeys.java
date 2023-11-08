@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Cosmos DB MongoDB collection resource object. */
 @Fluent
 public final class MongoIndexKeys {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoIndexKeys.class);
-
     /*
      * List of keys for each MongoDB collection in the Azure Cosmos DB service
      */
     @JsonProperty(value = "keys")
     private List<String> keys;
+
+    /** Creates an instance of MongoIndexKeys class. */
+    public MongoIndexKeys() {
+    }
 
     /**
      * Get the keys property: List of keys for each MongoDB collection in the Azure Cosmos DB service.

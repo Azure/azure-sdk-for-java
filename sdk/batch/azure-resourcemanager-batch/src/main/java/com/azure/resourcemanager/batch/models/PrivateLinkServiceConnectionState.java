@@ -26,8 +26,12 @@ public final class PrivateLinkServiceConnectionState {
     /*
      * Action required on the private connection state
      */
-    @JsonProperty(value = "actionRequired", access = JsonProperty.Access.WRITE_ONLY)
-    private String actionRequired;
+    @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
+    private String actionsRequired;
+
+    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    public PrivateLinkServiceConnectionState() {
+    }
 
     /**
      * Get the status property: The status of the Batch private endpoint connection.
@@ -70,12 +74,12 @@ public final class PrivateLinkServiceConnectionState {
     }
 
     /**
-     * Get the actionRequired property: Action required on the private connection state.
+     * Get the actionsRequired property: Action required on the private connection state.
      *
-     * @return the actionRequired value.
+     * @return the actionsRequired value.
      */
-    public String actionRequired() {
-        return this.actionRequired;
+    public String actionsRequired() {
+        return this.actionsRequired;
     }
 
     /**

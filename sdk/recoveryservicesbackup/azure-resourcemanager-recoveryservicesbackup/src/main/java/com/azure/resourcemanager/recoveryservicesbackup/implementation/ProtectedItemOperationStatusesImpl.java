@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemOper
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemOperationStatuses;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProtectedItemOperationStatusesImpl implements ProtectedItemOperationStatuses {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectedItemOperationStatusesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProtectedItemOperationStatusesImpl.class);
 
     private final ProtectedItemOperationStatusesClient innerClient;
 
@@ -26,24 +25,6 @@ public final class ProtectedItemOperationStatusesImpl implements ProtectedItemOp
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public OperationStatus get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId) {
-        OperationStatusInner inner =
-            this
-                .serviceClient()
-                .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<OperationStatus> getWithResponse(
@@ -65,6 +46,24 @@ public final class ProtectedItemOperationStatusesImpl implements ProtectedItemOp
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatus get(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        String operationId) {
+        OperationStatusInner inner =
+            this
+                .serviceClient()
+                .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId);
+        if (inner != null) {
+            return new OperationStatusImpl(inner, this.manager());
         } else {
             return null;
         }

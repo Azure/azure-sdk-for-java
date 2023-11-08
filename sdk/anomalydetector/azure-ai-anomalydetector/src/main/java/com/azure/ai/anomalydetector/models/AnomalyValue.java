@@ -4,12 +4,13 @@
 
 package com.azure.ai.anomalydetector.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AnomalyValue model. */
-@Fluent
+/** Detailed information of the anomalous timestamp. */
+@Immutable
 public final class AnomalyValue {
     /*
      * True if an anomaly is detected at the current timestamp.
@@ -18,23 +19,41 @@ public final class AnomalyValue {
     private boolean isAnomaly;
 
     /*
-     * Indicates the significance of the anomaly. The higher the severity, the
-     * more significant the anomaly.
+     * Indicates the significance of the anomaly. The higher the severity, the more
+     * significant the anomaly is.
      */
     @JsonProperty(value = "severity", required = true)
-    private float severity;
+    private double severity;
 
     /*
-     * Raw score from the model.
+     * Raw anomaly score of severity, will help indicate the degree of abnormality as
+     * well.
      */
     @JsonProperty(value = "score", required = true)
-    private float score;
+    private double score;
 
     /*
-     * The interpretation property.
+     * Interpretation of this anomalous timestamp.
      */
     @JsonProperty(value = "interpretation")
     private List<AnomalyInterpretation> interpretation;
+
+    /**
+     * Creates an instance of AnomalyValue class.
+     *
+     * @param isAnomaly the isAnomaly value to set.
+     * @param severity the severity value to set.
+     * @param score the score value to set.
+     */
+    @JsonCreator
+    private AnomalyValue(
+            @JsonProperty(value = "isAnomaly", required = true) boolean isAnomaly,
+            @JsonProperty(value = "severity", required = true) double severity,
+            @JsonProperty(value = "score", required = true) double score) {
+        this.isAnomaly = isAnomaly;
+        this.severity = severity;
+        this.score = score;
+    }
 
     /**
      * Get the isAnomaly property: True if an anomaly is detected at the current timestamp.
@@ -46,75 +65,30 @@ public final class AnomalyValue {
     }
 
     /**
-     * Set the isAnomaly property: True if an anomaly is detected at the current timestamp.
-     *
-     * @param isAnomaly the isAnomaly value to set.
-     * @return the AnomalyValue object itself.
-     */
-    public AnomalyValue setIsAnomaly(boolean isAnomaly) {
-        this.isAnomaly = isAnomaly;
-        return this;
-    }
-
-    /**
      * Get the severity property: Indicates the significance of the anomaly. The higher the severity, the more
-     * significant the anomaly.
+     * significant the anomaly is.
      *
      * @return the severity value.
      */
-    public float getSeverity() {
+    public double getSeverity() {
         return this.severity;
     }
 
     /**
-     * Set the severity property: Indicates the significance of the anomaly. The higher the severity, the more
-     * significant the anomaly.
-     *
-     * @param severity the severity value to set.
-     * @return the AnomalyValue object itself.
-     */
-    public AnomalyValue setSeverity(float severity) {
-        this.severity = severity;
-        return this;
-    }
-
-    /**
-     * Get the score property: Raw score from the model.
+     * Get the score property: Raw anomaly score of severity, will help indicate the degree of abnormality as well.
      *
      * @return the score value.
      */
-    public float getScore() {
+    public double getScore() {
         return this.score;
     }
 
     /**
-     * Set the score property: Raw score from the model.
-     *
-     * @param score the score value to set.
-     * @return the AnomalyValue object itself.
-     */
-    public AnomalyValue setScore(float score) {
-        this.score = score;
-        return this;
-    }
-
-    /**
-     * Get the interpretation property: The interpretation property.
+     * Get the interpretation property: Interpretation of this anomalous timestamp.
      *
      * @return the interpretation value.
      */
     public List<AnomalyInterpretation> getInterpretation() {
         return this.interpretation;
-    }
-
-    /**
-     * Set the interpretation property: The interpretation property.
-     *
-     * @param interpretation the interpretation value to set.
-     * @return the AnomalyValue object itself.
-     */
-    public AnomalyValue setInterpretation(List<AnomalyInterpretation> interpretation) {
-        this.interpretation = interpretation;
-        return this;
     }
 }

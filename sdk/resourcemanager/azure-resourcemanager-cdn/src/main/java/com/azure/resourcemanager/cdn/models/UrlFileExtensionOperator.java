@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UrlFileExtensionOperator. */
+/** Describes operator to be matched. */
 public final class UrlFileExtensionOperator extends ExpandableStringEnum<UrlFileExtensionOperator> {
     /** Static value Any for UrlFileExtensionOperator. */
     public static final UrlFileExtensionOperator ANY = fromString("Any");
@@ -41,6 +41,15 @@ public final class UrlFileExtensionOperator extends ExpandableStringEnum<UrlFile
     public static final UrlFileExtensionOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of UrlFileExtensionOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UrlFileExtensionOperator() {
+    }
+
+    /**
      * Creates or finds a UrlFileExtensionOperator from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class UrlFileExtensionOperator extends ExpandableStringEnum<UrlFile
         return fromString(name, UrlFileExtensionOperator.class);
     }
 
-    /** @return known UrlFileExtensionOperator values. */
+    /**
+     * Gets known UrlFileExtensionOperator values.
+     *
+     * @return known UrlFileExtensionOperator values.
+     */
     public static Collection<UrlFileExtensionOperator> values() {
         return values(UrlFileExtensionOperator.class);
     }

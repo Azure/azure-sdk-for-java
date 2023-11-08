@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecurityTypes. */
+/**
+ * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+ * The default behavior is: UefiSettings will not be enabled unless this property is set.
+ */
 public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
     /** Static value TrustedLaunch for SecurityTypes. */
     public static final SecurityTypes TRUSTED_LAUNCH = fromString("TrustedLaunch");
 
     /** Static value ConfidentialVM for SecurityTypes. */
     public static final SecurityTypes CONFIDENTIAL_VM = fromString("ConfidentialVM");
+
+    /**
+     * Creates a new instance of SecurityTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityTypes() {
+    }
 
     /**
      * Creates or finds a SecurityTypes from its string representation.
@@ -27,7 +39,11 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
         return fromString(name, SecurityTypes.class);
     }
 
-    /** @return known SecurityTypes values. */
+    /**
+     * Gets known SecurityTypes values.
+     *
+     * @return known SecurityTypes values.
+     */
     public static Collection<SecurityTypes> values() {
         return values(SecurityTypes.class);
     }

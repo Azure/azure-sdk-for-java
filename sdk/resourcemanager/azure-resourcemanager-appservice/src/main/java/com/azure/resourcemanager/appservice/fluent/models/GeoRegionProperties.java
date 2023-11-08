@@ -28,6 +28,10 @@ public final class GeoRegionProperties {
     @JsonProperty(value = "orgDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String orgDomain;
 
+    /** Creates an instance of GeoRegionProperties class. */
+    public GeoRegionProperties() {
+    }
+
     /**
      * Get the description property: Region description.
      *

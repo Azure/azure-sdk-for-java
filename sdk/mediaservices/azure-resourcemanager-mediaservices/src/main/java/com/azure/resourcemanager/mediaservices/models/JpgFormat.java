@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.JpgFormat")
 @Fluent
 public final class JpgFormat extends ImageFormat {
+    /** Creates an instance of JpgFormat class. */
+    public JpgFormat() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public JpgFormat withFilenamePattern(String filenamePattern) {

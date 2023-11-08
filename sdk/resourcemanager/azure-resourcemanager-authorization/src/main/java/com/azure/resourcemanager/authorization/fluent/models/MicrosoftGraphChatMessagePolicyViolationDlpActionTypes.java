@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphChatMessagePolicyViolationDlpActionTypes. */
+/** chatMessagePolicyViolationDlpActionTypes. */
 public final class MicrosoftGraphChatMessagePolicyViolationDlpActionTypes
     extends ExpandableStringEnum<MicrosoftGraphChatMessagePolicyViolationDlpActionTypes> {
     /** Static value none for MicrosoftGraphChatMessagePolicyViolationDlpActionTypes. */
@@ -26,6 +26,15 @@ public final class MicrosoftGraphChatMessagePolicyViolationDlpActionTypes
         fromString("blockAccessExternal");
 
     /**
+     * Creates a new instance of MicrosoftGraphChatMessagePolicyViolationDlpActionTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphChatMessagePolicyViolationDlpActionTypes() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphChatMessagePolicyViolationDlpActionTypes from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class MicrosoftGraphChatMessagePolicyViolationDlpActionTypes
         return fromString(name, MicrosoftGraphChatMessagePolicyViolationDlpActionTypes.class);
     }
 
-    /** @return known MicrosoftGraphChatMessagePolicyViolationDlpActionTypes values. */
+    /**
+     * Gets known MicrosoftGraphChatMessagePolicyViolationDlpActionTypes values.
+     *
+     * @return known MicrosoftGraphChatMessagePolicyViolationDlpActionTypes values.
+     */
     public static Collection<MicrosoftGraphChatMessagePolicyViolationDlpActionTypes> values() {
         return values(MicrosoftGraphChatMessagePolicyViolationDlpActionTypes.class);
     }

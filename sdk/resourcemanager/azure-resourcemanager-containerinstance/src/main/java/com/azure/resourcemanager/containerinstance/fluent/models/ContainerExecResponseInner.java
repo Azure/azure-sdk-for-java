@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information for the container exec command. */
 @Fluent
 public final class ContainerExecResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerExecResponseInner.class);
-
     /*
      * The uri for the exec websocket.
      */
@@ -25,6 +21,10 @@ public final class ContainerExecResponseInner {
      */
     @JsonProperty(value = "password")
     private String password;
+
+    /** Creates an instance of ContainerExecResponseInner class. */
+    public ContainerExecResponseInner() {
+    }
 
     /**
      * Get the webSocketUri property: The uri for the exec websocket.

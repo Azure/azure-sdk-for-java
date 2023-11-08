@@ -5,127 +5,33 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.KeyVaultKeyReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The integration account certificate. */
-@JsonFlatten
 @Fluent
-public class IntegrationAccountCertificateInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountCertificateInner.class);
-
+public final class IntegrationAccountCertificateInner extends Resource {
     /*
-     * The created time.
+     * The integration account certificate properties.
      */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
+    @JsonProperty(value = "properties", required = true)
+    private IntegrationAccountCertificateProperties innerProperties = new IntegrationAccountCertificateProperties();
 
-    /*
-     * The changed time.
-     */
-    @JsonProperty(value = "properties.changedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changedTime;
-
-    /*
-     * The metadata.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
-
-    /*
-     * The key details in the key vault.
-     */
-    @JsonProperty(value = "properties.key")
-    private KeyVaultKeyReference key;
-
-    /*
-     * The public certificate.
-     */
-    @JsonProperty(value = "properties.publicCertificate")
-    private String publicCertificate;
-
-    /**
-     * Get the createdTime property: The created time.
-     *
-     * @return the createdTime value.
-     */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
+    /** Creates an instance of IntegrationAccountCertificateInner class. */
+    public IntegrationAccountCertificateInner() {
     }
 
     /**
-     * Get the changedTime property: The changed time.
+     * Get the innerProperties property: The integration account certificate properties.
      *
-     * @return the changedTime value.
+     * @return the innerProperties value.
      */
-    public OffsetDateTime changedTime() {
-        return this.changedTime;
-    }
-
-    /**
-     * Get the metadata property: The metadata.
-     *
-     * @return the metadata value.
-     */
-    public Object metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata property: The metadata.
-     *
-     * @param metadata the metadata value to set.
-     * @return the IntegrationAccountCertificateInner object itself.
-     */
-    public IntegrationAccountCertificateInner withMetadata(Object metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Get the key property: The key details in the key vault.
-     *
-     * @return the key value.
-     */
-    public KeyVaultKeyReference key() {
-        return this.key;
-    }
-
-    /**
-     * Set the key property: The key details in the key vault.
-     *
-     * @param key the key value to set.
-     * @return the IntegrationAccountCertificateInner object itself.
-     */
-    public IntegrationAccountCertificateInner withKey(KeyVaultKeyReference key) {
-        this.key = key;
-        return this;
-    }
-
-    /**
-     * Get the publicCertificate property: The public certificate.
-     *
-     * @return the publicCertificate value.
-     */
-    public String publicCertificate() {
-        return this.publicCertificate;
-    }
-
-    /**
-     * Set the publicCertificate property: The public certificate.
-     *
-     * @param publicCertificate the publicCertificate value to set.
-     * @return the IntegrationAccountCertificateInner object itself.
-     */
-    public IntegrationAccountCertificateInner withPublicCertificate(String publicCertificate) {
-        this.publicCertificate = publicCertificate;
-        return this;
+    private IntegrationAccountCertificateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -143,13 +49,107 @@ public class IntegrationAccountCertificateInner extends Resource {
     }
 
     /**
+     * Get the createdTime property: The created time.
+     *
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the changedTime property: The changed time.
+     *
+     * @return the changedTime value.
+     */
+    public OffsetDateTime changedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().changedTime();
+    }
+
+    /**
+     * Get the metadata property: The metadata.
+     *
+     * @return the metadata value.
+     */
+    public Object metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Set the metadata property: The metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the IntegrationAccountCertificateInner object itself.
+     */
+    public IntegrationAccountCertificateInner withMetadata(Object metadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountCertificateProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
+        return this;
+    }
+
+    /**
+     * Get the key property: The key details in the key vault.
+     *
+     * @return the key value.
+     */
+    public KeyVaultKeyReference key() {
+        return this.innerProperties() == null ? null : this.innerProperties().key();
+    }
+
+    /**
+     * Set the key property: The key details in the key vault.
+     *
+     * @param key the key value to set.
+     * @return the IntegrationAccountCertificateInner object itself.
+     */
+    public IntegrationAccountCertificateInner withKey(KeyVaultKeyReference key) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountCertificateProperties();
+        }
+        this.innerProperties().withKey(key);
+        return this;
+    }
+
+    /**
+     * Get the publicCertificate property: The public certificate.
+     *
+     * @return the publicCertificate value.
+     */
+    public String publicCertificate() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicCertificate();
+    }
+
+    /**
+     * Set the publicCertificate property: The public certificate.
+     *
+     * @param publicCertificate the publicCertificate value to set.
+     * @return the IntegrationAccountCertificateInner object itself.
+     */
+    public IntegrationAccountCertificateInner withPublicCertificate(String publicCertificate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountCertificateProperties();
+        }
+        this.innerProperties().withPublicCertificate(publicCertificate);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (key() != null) {
-            key().validate();
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model IntegrationAccountCertificateInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountCertificateInner.class);
 }

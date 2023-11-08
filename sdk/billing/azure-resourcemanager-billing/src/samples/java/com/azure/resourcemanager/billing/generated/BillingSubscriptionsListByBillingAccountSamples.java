@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingSubscriptions ListByBillingAccount. */
 public final class BillingSubscriptionsListByBillingAccountSamples {
     /*
@@ -18,6 +16,6 @@ public final class BillingSubscriptionsListByBillingAccountSamples {
      */
     public static void billingSubscriptionsListByBillingAccount(
         com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingSubscriptions().listByBillingAccount("{billingAccountName}", Context.NONE);
+        manager.billingSubscriptions().listByBillingAccount("{billingAccountName}", com.azure.core.util.Context.NONE);
     }
 }

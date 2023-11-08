@@ -19,6 +19,10 @@ public final class MSDeployLogInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private MSDeployLogProperties innerProperties;
 
+    /** Creates an instance of MSDeployLogInner class. */
+    public MSDeployLogInner() {
+    }
+
     /**
      * Get the innerProperties property: MSDeployLog resource specific properties.
      *

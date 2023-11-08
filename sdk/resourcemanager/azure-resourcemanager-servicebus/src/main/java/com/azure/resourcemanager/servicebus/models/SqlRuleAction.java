@@ -4,18 +4,14 @@
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 
 /**
  * Represents set of actions written in SQL language-based syntax that is performed against a
  * ServiceBus.Messaging.BrokeredMessage.
  */
-@Immutable
+@Fluent
 public final class SqlRuleAction extends Action {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRuleAction.class);
-
     /** {@inheritDoc} */
     @Override
     public SqlRuleAction withSqlExpression(String sqlExpression) {

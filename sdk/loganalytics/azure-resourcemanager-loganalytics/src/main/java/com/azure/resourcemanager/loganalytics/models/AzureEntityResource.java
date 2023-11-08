@@ -6,20 +6,24 @@ package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource model definition for an Azure Resource Manager resource with an etag. */
+/**
+ * Entity Resource
+ *
+ * <p>The resource model definition for an Azure Resource Manager resource with an etag.
+ */
 @Immutable
 public class AzureEntityResource extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureEntityResource.class);
-
     /*
      * Resource Etag.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of AzureEntityResource class. */
+    public AzureEntityResource() {
+    }
 
     /**
      * Get the etag property: Resource Etag.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** User subscription quota response. */
 @Fluent
 public final class UserSubscriptionQuota {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSubscriptionQuota.class);
-
     /*
      * IotHub type id
      */
@@ -49,6 +45,10 @@ public final class UserSubscriptionQuota {
      */
     @JsonProperty(value = "name")
     private Name name;
+
+    /** Creates an instance of UserSubscriptionQuota class. */
+    public UserSubscriptionQuota() {
+    }
 
     /**
      * Get the id property: IotHub type id.

@@ -25,6 +25,10 @@ public final class ManagedVirtualNetworkListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ManagedVirtualNetworkListResponse class. */
+    public ManagedVirtualNetworkListResponse() {
+    }
+
     /**
      * Get the value property: List of managed Virtual Networks.
      *

@@ -14,6 +14,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 /** An immutable client-side representation of an Azure managed snapshot. */
 @Fluent
 public interface Snapshot
@@ -35,6 +37,23 @@ public interface Snapshot
 
     /** @return the details of the source from which snapshot is created */
     CreationSource source();
+
+    /**
+     * Gets the percentage complete for the background copy when a resource is created via the CopyStart operation.
+     * <p>For latest progress,{@link Snapshot#refresh()} or {@link Snapshot#refreshAsync()} should be called prior to this method.</p>
+     *
+     * @return the percentage complete, ranging from 0 to 100, or null if {@link Snapshot#creationMethod()} is not {@link DiskCreateOption#COPY_START}
+     */
+    Float copyCompletionPercent();
+
+    /**
+     * Gets the error details if the background copy of a resource created via the CopyStart operation fails.
+     * <p>For latest progress,{@link Snapshot#refresh()} or {@link Snapshot#refreshAsync()} should be called
+     * prior to this method. </p>
+     *
+     * @return the error details
+     */
+    CopyCompletionError copyCompletionError();
 
     /**
      * Grants access to the snapshot.
@@ -61,6 +80,27 @@ public interface Snapshot
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> revokeAccessAsync();
+
+    /**
+     * Await CopyStart completion indefinitely unless errors are encountered.
+     */
+    void awaitCopyStartCompletion();
+
+    /**
+     * Await CopyStart completion for a specified timeout.
+     *
+     * @param maxWaitTime max timeout to wait for completion
+     * @return true if CopyStart complete successfully, false if timeout
+     * @throws com.azure.core.management.exception.ManagementException if exceptions are encountered
+     */
+    Boolean awaitCopyStartCompletion(Duration maxWaitTime);
+
+    /**
+     * Await CopyStart completion in async manner.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> awaitCopyStartCompletionAsync();
 
     /** The entirety of the managed snapshot definition. */
     interface Definition
@@ -258,6 +298,24 @@ public interface Snapshot
             WithCreate withDataFromSnapshot(Snapshot snapshot);
         }
 
+        /** The stage of the managed snapshot definition allowing to set creationOption to CopyStart. */
+        interface WithCopyStart {
+            /**
+             * Specifies CopyStart for CreateOption.
+             * <p>CopyStart can be used when source and target regions are different as well as when they are the same.
+             * There are important scenarios (copying across zones, copying from main region to edge location and other way around)
+             * where it is necessary to use CopyStart within the same region. </p>
+             * <p>Note: For now, CopyStart is only supported for creating an incremental snapshot from an incremental snapshot.</p>
+             * <p>Before you can use the copied snapshot for future use (e.g. create disk), you should wait for the CopyStart
+             * completion by calling {@link Snapshot#awaitCopyStartCompletion()} or {@link Snapshot#awaitCopyStartCompletion(Duration)}
+             * to wait synchronously, or {@link Snapshot#awaitCopyStartCompletionAsync()} to wait asynchronously.</p>
+             *
+             * @see DiskCreateOption
+             * @return the next stage of the definition
+             */
+            WithCreate withCopyStart();
+        }
+
         /** The stage of the managed disk definition allowing to choose a source operating system image. */
         interface WithOSSnapshotFromImage {
             /**
@@ -357,7 +415,8 @@ public interface Snapshot
                 Resource.DefinitionWithTags<Snapshot.DefinitionStages.WithCreate>,
                 WithSize,
                 WithSku,
-                WithIncremental {
+                WithIncremental,
+                WithCopyStart {
         }
     }
 

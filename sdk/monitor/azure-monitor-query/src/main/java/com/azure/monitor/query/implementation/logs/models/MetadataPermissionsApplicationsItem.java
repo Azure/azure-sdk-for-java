@@ -4,12 +4,12 @@
 
 package com.azure.monitor.query.implementation.logs.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MetadataPermissionsApplicationsItem model. */
-@Fluent
+@Immutable
 public final class MetadataPermissionsApplicationsItem {
     /*
      * The resource ID on the permission indication.

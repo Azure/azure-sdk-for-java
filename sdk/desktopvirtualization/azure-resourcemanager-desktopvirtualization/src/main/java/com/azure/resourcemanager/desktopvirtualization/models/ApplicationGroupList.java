@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ApplicationGroupList List of ApplicationGroup definitions. */
+/**
+ * ApplicationGroupList
+ *
+ * <p>List of ApplicationGroup definitions.
+ */
 @Fluent
 public final class ApplicationGroupList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGroupList.class);
-
     /*
      * List of ApplicationGroup definitions.
      */
@@ -27,6 +27,10 @@ public final class ApplicationGroupList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ApplicationGroupList class. */
+    public ApplicationGroupList() {
+    }
 
     /**
      * Get the value property: List of ApplicationGroup definitions.

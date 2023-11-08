@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.privatedns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.privatedns.fluent.models.VirtualNetworkLinkInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list virtual network link to Private DNS zone operation. */
 @Fluent
 public final class VirtualNetworkLinkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkLinkListResult.class);
-
     /*
      * Information about the virtual network links to the Private DNS zones.
      */
@@ -27,6 +23,10 @@ public final class VirtualNetworkLinkListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of VirtualNetworkLinkListResult class. */
+    public VirtualNetworkLinkListResult() {
+    }
 
     /**
      * Get the value property: Information about the virtual network links to the Private DNS zones.

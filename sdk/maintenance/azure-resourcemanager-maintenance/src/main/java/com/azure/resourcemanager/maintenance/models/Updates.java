@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Updates. */
 public interface Updates {
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -21,7 +23,7 @@ public interface Updates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Update> listParent(
         String resourceGroupName,
@@ -32,7 +34,9 @@ public interface Updates {
         String resourceName);
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -44,7 +48,7 @@ public interface Updates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Update> listParent(
         String resourceGroupName,
@@ -56,7 +60,9 @@ public interface Updates {
         Context context);
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -65,12 +71,14 @@ public interface Updates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Update> list(String resourceGroupName, String providerName, String resourceType, String resourceName);
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -80,7 +88,7 @@ public interface Updates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Update> list(
         String resourceGroupName, String providerName, String resourceType, String resourceName, Context context);

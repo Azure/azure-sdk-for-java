@@ -1,6 +1,165 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.33.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.30.0 (2023-08-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.29.0 (2023-07-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.29.0-beta.1 (2023-07-19)
+
+- Preview release for `api-version` `2022-05-01-preview`.
+
+## 2.28.0 (2023-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.27.0 (2023-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.25.0 (2023-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.24.0 (2023-02-17)
+
+### Bugs Fixed
+
+- Fixed a bug that `Permission.dataActions()` and `Permission.notDataActions()` return wrong results.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.22.0 (2022-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.21.0 (2022-11-24)
+
+### Breaking Changes
+
+- `filter` parameters in list API from `RoleAssignmentsClient` is required to be encoded by user.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of authorization to `2022-04-01`.
+
+## 2.20.0 (2022-10-26)
+
+### Features Added
+
+- Supported description in role assignment.
+
+## 2.19.0 (2022-09-23)
+
+### Bugs Fixed
+
+- Supported delayed retry on 404 for eventual consistency, after creating AAD service principal.
+- Improved the delayed retry on 400 for service principal, when creating role assignment. Now the retry will continue for only about a minute.
+
+## 2.18.0 (2022-08-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.17.0 (2022-07-25)
+
+### Bugs Fixed
+
+- Supported delayed retry on 404 for eventual consistency, after creating AAD application.
+
+## 2.16.0 (2022-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.15.0 (2022-05-25)
+
+### Breaking Changes
+
+- Removed `DenyAssignmentsClient` as it is preview feature.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of authentication to `2020-10-01`.
+
+## 2.14.0 (2022-04-11)
 
 ### Features Added
 

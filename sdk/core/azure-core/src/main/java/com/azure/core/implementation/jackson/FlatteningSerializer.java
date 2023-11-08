@@ -309,6 +309,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
             try {
                 anyGetterWriter.getAndSerialize(value, gen, provider);
+            } catch (IOException exception) {
+                throw LOGGER.logThrowableAsError(exception);
             } catch (Exception exception) {
                 throw LOGGER.logThrowableAsError(new IOException(exception));
             }

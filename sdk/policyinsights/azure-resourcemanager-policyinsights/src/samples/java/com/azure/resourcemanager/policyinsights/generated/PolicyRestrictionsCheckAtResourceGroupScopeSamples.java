@@ -16,7 +16,7 @@ import java.util.Arrays;
 /** Samples for PolicyRestrictions CheckAtResourceGroupScope. */
 public final class PolicyRestrictionsCheckAtResourceGroupScopeSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2020-07-01/examples/PolicyRestrictions_CheckAtResourceGroupScope.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/PolicyRestrictions_CheckAtResourceGroupScope.json
      */
     /**
      * Sample code: Check policy restrictions at resource group scope.

@@ -5,6 +5,7 @@ package com.azure.security.keyvault.administration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
@@ -24,13 +25,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClientTestBase {
     private KeyVaultAccessControlClient client;
 
+    private void getClient(HttpClient httpClient, boolean forCleanup) {
+        client = getClientBuilder(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
+            .buildClient();
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .build();
+    }
+
     /**
      * Tests that existing {@link KeyVaultRoleDefinition role definitions} can be retrieved from the Key Vault.
      */
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void listRoleDefinitions(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         PagedIterable<KeyVaultRoleDefinition> roleDefinitions = client.listRoleDefinitions(KeyVaultRoleScope.GLOBAL);
 
         assertTrue(roleDefinitions.iterator().hasNext());
@@ -53,7 +66,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void setRoleDefinition(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         String roleDefinitionName = testResourceNamer.randomUuid();
 
         try {
@@ -82,7 +95,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void getRoleDefinition(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         String roleDefinitionName = testResourceNamer.randomUuid();
 
         try {
@@ -111,7 +124,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void deleteRoleDefinition(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         String roleDefinitionName = testResourceNamer.randomUuid();
 
         // Create a role definition to delete.
@@ -135,7 +148,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void deleteNonExistingRoleDefinitionDoesNotThrow(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         String roleDefinitionName = testResourceNamer.randomUuid();
         // Try to delete a non-existent role definition.
         Response<Void> deleteResponse =
@@ -151,7 +164,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void listRoleAssignments(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         PagedIterable<KeyVaultRoleAssignment> roleAssignments = client.listRoleAssignments(KeyVaultRoleScope.GLOBAL);
 
         assertTrue(roleAssignments.iterator().hasNext());
@@ -176,7 +189,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void createRoleAssignment(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         String roleDefinitionName = testResourceNamer.randomUuid();
         String roleAssignmentName = testResourceNamer.randomUuid();
 
@@ -216,7 +229,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void createExistingRoleAssignmentThrows(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         String roleDefinitionName = testResourceNamer.randomUuid();
         String roleAssignmentName = testResourceNamer.randomUuid();
 
@@ -248,7 +261,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void getRoleAssignment(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         String roleDefinitionName = testResourceNamer.randomUuid();
         String roleAssignmentName = testResourceNamer.randomUuid();
 
@@ -284,7 +297,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void deleteRoleAssignment(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         String roleDefinitionName = testResourceNamer.randomUuid();
         String roleAssignmentName = testResourceNamer.randomUuid();
 
@@ -321,7 +334,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void deleteNonExistingRoleAssignmentDoesNotThrow(HttpClient httpClient) {
-        client = getClientBuilder(httpClient, false).buildClient();
+        getClient(httpClient, false);
         String roleAssignmentName = testResourceNamer.randomUuid();
         // Try to delete a non-existent role assignment.
         Response<Void> deleteResponse =

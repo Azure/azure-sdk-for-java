@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphRecurrenceRangeType. */
+/** recurrenceRangeType. */
 public final class MicrosoftGraphRecurrenceRangeType extends ExpandableStringEnum<MicrosoftGraphRecurrenceRangeType> {
     /** Static value endDate for MicrosoftGraphRecurrenceRangeType. */
     public static final MicrosoftGraphRecurrenceRangeType END_DATE = fromString("endDate");
@@ -18,6 +18,15 @@ public final class MicrosoftGraphRecurrenceRangeType extends ExpandableStringEnu
 
     /** Static value numbered for MicrosoftGraphRecurrenceRangeType. */
     public static final MicrosoftGraphRecurrenceRangeType NUMBERED = fromString("numbered");
+
+    /**
+     * Creates a new instance of MicrosoftGraphRecurrenceRangeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphRecurrenceRangeType() {
+    }
 
     /**
      * Creates or finds a MicrosoftGraphRecurrenceRangeType from its string representation.
@@ -30,7 +39,11 @@ public final class MicrosoftGraphRecurrenceRangeType extends ExpandableStringEnu
         return fromString(name, MicrosoftGraphRecurrenceRangeType.class);
     }
 
-    /** @return known MicrosoftGraphRecurrenceRangeType values. */
+    /**
+     * Gets known MicrosoftGraphRecurrenceRangeType values.
+     *
+     * @return known MicrosoftGraphRecurrenceRangeType values.
+     */
     public static Collection<MicrosoftGraphRecurrenceRangeType> values() {
         return values(MicrosoftGraphRecurrenceRangeType.class);
     }

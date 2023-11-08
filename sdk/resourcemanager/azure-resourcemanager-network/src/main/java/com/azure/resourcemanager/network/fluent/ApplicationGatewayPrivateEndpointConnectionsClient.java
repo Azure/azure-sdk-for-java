@@ -310,21 +310,6 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection on application gateway.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayPrivateEndpointConnectionInner get(
-        String resourceGroupName, String applicationGatewayName, String connectionName);
-
-    /**
-     * Gets the specified private endpoint connection on application gateway.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param connectionName The name of the application gateway private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -334,6 +319,21 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationGatewayPrivateEndpointConnectionInner> getWithResponse(
         String resourceGroupName, String applicationGatewayName, String connectionName, Context context);
+
+    /**
+     * Gets the specified private endpoint connection on application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param connectionName The name of the application gateway private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection on application gateway.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplicationGatewayPrivateEndpointConnectionInner get(
+        String resourceGroupName, String applicationGatewayName, String connectionName);
 
     /**
      * Lists all private endpoint connections on an application gateway.

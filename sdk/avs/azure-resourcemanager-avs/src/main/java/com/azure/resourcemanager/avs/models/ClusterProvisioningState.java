@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClusterProvisioningState. */
+/** The state of the cluster provisioning. */
 public final class ClusterProvisioningState extends ExpandableStringEnum<ClusterProvisioningState> {
     /** Static value Succeeded for ClusterProvisioningState. */
     public static final ClusterProvisioningState SUCCEEDED = fromString("Succeeded");
@@ -25,6 +25,18 @@ public final class ClusterProvisioningState extends ExpandableStringEnum<Cluster
     /** Static value Updating for ClusterProvisioningState. */
     public static final ClusterProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Canceled for ClusterProvisioningState. */
+    public static final ClusterProvisioningState CANCELED = fromString("Canceled");
+
+    /**
+     * Creates a new instance of ClusterProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterProvisioningState() {
+    }
+
     /**
      * Creates or finds a ClusterProvisioningState from its string representation.
      *
@@ -36,7 +48,11 @@ public final class ClusterProvisioningState extends ExpandableStringEnum<Cluster
         return fromString(name, ClusterProvisioningState.class);
     }
 
-    /** @return known ClusterProvisioningState values. */
+    /**
+     * Gets known ClusterProvisioningState values.
+     *
+     * @return known ClusterProvisioningState values.
+     */
     public static Collection<ClusterProvisioningState> values() {
         return values(ClusterProvisioningState.class);
     }

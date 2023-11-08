@@ -80,6 +80,20 @@ public interface AzureMediaServices {
     LocationsClient getLocations();
 
     /**
+     * Gets the MediaServicesOperationStatusesClient object to access its operations.
+     *
+     * @return the MediaServicesOperationStatusesClient object.
+     */
+    MediaServicesOperationStatusesClient getMediaServicesOperationStatuses();
+
+    /**
+     * Gets the MediaServicesOperationResultsClient object to access its operations.
+     *
+     * @return the MediaServicesOperationResultsClient object.
+     */
+    MediaServicesOperationResultsClient getMediaServicesOperationResults();
+
+    /**
      * Gets the AssetsClient object to access its operations.
      *
      * @return the AssetsClient object.

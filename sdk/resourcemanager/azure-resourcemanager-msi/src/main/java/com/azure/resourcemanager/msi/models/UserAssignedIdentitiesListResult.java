@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.msi.fluent.models.IdentityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Values returned by the List operation. */
 @Fluent
 public final class UserAssignedIdentitiesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentitiesListResult.class);
-
     /*
-     * The collection of userAssignedIdentities returned by the listing
-     * operation.
+     * The collection of userAssignedIdentities returned by the listing operation.
      */
     @JsonProperty(value = "value")
     private List<IdentityInner> value;
@@ -28,6 +23,10 @@ public final class UserAssignedIdentitiesListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of UserAssignedIdentitiesListResult class. */
+    public UserAssignedIdentitiesListResult() {
+    }
 
     /**
      * Get the value property: The collection of userAssignedIdentities returned by the listing operation.

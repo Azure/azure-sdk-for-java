@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ServerGtidSetParameter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerRestartParameter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Servers;
 
@@ -36,15 +37,6 @@ public final class ServersImpl implements Servers {
         this.serviceClient().delete(resourceGroupName, serverName, context);
     }
 
-    public Server getByResourceGroup(String resourceGroupName, String serverName) {
-        ServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, serverName);
-        if (inner != null) {
-            return new ServerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Server> getByResourceGroupWithResponse(
         String resourceGroupName, String serverName, Context context) {
         Response<ServerInner> inner =
@@ -55,6 +47,15 @@ public final class ServersImpl implements Servers {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ServerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Server getByResourceGroup(String resourceGroupName, String serverName) {
+        ServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, serverName);
+        if (inner != null) {
+            return new ServerImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -111,6 +112,15 @@ public final class ServersImpl implements Servers {
 
     public void stop(String resourceGroupName, String serverName, Context context) {
         this.serviceClient().stop(resourceGroupName, serverName, context);
+    }
+
+    public void resetGtid(String resourceGroupName, String serverName, ServerGtidSetParameter parameters) {
+        this.serviceClient().resetGtid(resourceGroupName, serverName, parameters);
+    }
+
+    public void resetGtid(
+        String resourceGroupName, String serverName, ServerGtidSetParameter parameters, Context context) {
+        this.serviceClient().resetGtid(resourceGroupName, serverName, parameters, context);
     }
 
     public Server getById(String id) {

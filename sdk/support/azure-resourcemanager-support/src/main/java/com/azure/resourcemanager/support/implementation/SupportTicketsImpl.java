@@ -16,10 +16,9 @@ import com.azure.resourcemanager.support.models.CheckNameAvailabilityInput;
 import com.azure.resourcemanager.support.models.CheckNameAvailabilityOutput;
 import com.azure.resourcemanager.support.models.SupportTicketDetails;
 import com.azure.resourcemanager.support.models.SupportTickets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SupportTicketsImpl implements SupportTickets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportTicketsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SupportTicketsImpl.class);
 
     private final SupportTicketsClient innerClient;
 
@@ -29,15 +28,6 @@ public final class SupportTicketsImpl implements SupportTickets {
         SupportTicketsClient innerClient, com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CheckNameAvailabilityOutput checkNameAvailability(CheckNameAvailabilityInput checkNameAvailabilityInput) {
-        CheckNameAvailabilityOutputInner inner = this.serviceClient().checkNameAvailability(checkNameAvailabilityInput);
-        if (inner != null) {
-            return new CheckNameAvailabilityOutputImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
@@ -55,6 +45,15 @@ public final class SupportTicketsImpl implements SupportTickets {
         }
     }
 
+    public CheckNameAvailabilityOutput checkNameAvailability(CheckNameAvailabilityInput checkNameAvailabilityInput) {
+        CheckNameAvailabilityOutputInner inner = this.serviceClient().checkNameAvailability(checkNameAvailabilityInput);
+        if (inner != null) {
+            return new CheckNameAvailabilityOutputImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<SupportTicketDetails> list() {
         PagedIterable<SupportTicketDetailsInner> inner = this.serviceClient().list();
         return Utils.mapPage(inner, inner1 -> new SupportTicketDetailsImpl(inner1, this.manager()));
@@ -63,15 +62,6 @@ public final class SupportTicketsImpl implements SupportTickets {
     public PagedIterable<SupportTicketDetails> list(Integer top, String filter, Context context) {
         PagedIterable<SupportTicketDetailsInner> inner = this.serviceClient().list(top, filter, context);
         return Utils.mapPage(inner, inner1 -> new SupportTicketDetailsImpl(inner1, this.manager()));
-    }
-
-    public SupportTicketDetails get(String supportTicketName) {
-        SupportTicketDetailsInner inner = this.serviceClient().get(supportTicketName);
-        if (inner != null) {
-            return new SupportTicketDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SupportTicketDetails> getWithResponse(String supportTicketName, Context context) {
@@ -87,10 +77,19 @@ public final class SupportTicketsImpl implements SupportTickets {
         }
     }
 
+    public SupportTicketDetails get(String supportTicketName) {
+        SupportTicketDetailsInner inner = this.serviceClient().get(supportTicketName);
+        if (inner != null) {
+            return new SupportTicketDetailsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public SupportTicketDetails getById(String id) {
         String supportTicketName = Utils.getValueFromIdByName(id, "supportTickets");
         if (supportTicketName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -102,7 +101,7 @@ public final class SupportTicketsImpl implements SupportTickets {
     public Response<SupportTicketDetails> getByIdWithResponse(String id, Context context) {
         String supportTicketName = Utils.getValueFromIdByName(id, "supportTickets");
         if (supportTicketName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -33,11 +33,32 @@ public interface Dimension {
     String type();
 
     /**
+     * Gets the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
      * Gets the tags property: Resource tags.
      *
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the sku property: SKU of the resource.
+     *
+     * @return the sku value.
+     */
+    String sku();
+
+    /**
+     * Gets the etag property: ETag of the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
 
     /**
      * Gets the description property: Dimension description.
@@ -61,7 +82,7 @@ public interface Dimension {
     Boolean groupingEnabled();
 
     /**
-     * Gets the data property: The data property.
+     * Gets the data property: Dimension data.
      *
      * @return the data value.
      */

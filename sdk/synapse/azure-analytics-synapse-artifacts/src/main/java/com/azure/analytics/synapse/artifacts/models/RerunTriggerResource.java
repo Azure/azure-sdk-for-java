@@ -16,6 +16,9 @@ public final class RerunTriggerResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private RerunTumblingWindowTrigger properties;
 
+    /** Creates an instance of RerunTriggerResource class. */
+    public RerunTriggerResource() {}
+
     /**
      * Get the properties property: Properties of the rerun trigger.
      *

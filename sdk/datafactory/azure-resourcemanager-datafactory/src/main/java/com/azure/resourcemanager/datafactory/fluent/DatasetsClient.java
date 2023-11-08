@@ -47,22 +47,6 @@ public interface DatasetsClient {
      * @param factoryName The factory name.
      * @param datasetName The dataset name.
      * @param dataset Dataset resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatasetResourceInner createOrUpdate(
-        String resourceGroupName, String factoryName, String datasetName, DatasetResourceInner dataset);
-
-    /**
-     * Creates or updates a dataset.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -81,18 +65,20 @@ public interface DatasetsClient {
         Context context);
 
     /**
-     * Gets a dataset.
+     * Creates or updates a dataset.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param datasetName The dataset name.
+     * @param dataset Dataset resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return dataset resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatasetResourceInner get(String resourceGroupName, String factoryName, String datasetName);
+    DatasetResourceInner createOrUpdate(
+        String resourceGroupName, String factoryName, String datasetName, DatasetResourceInner dataset);
 
     /**
      * Gets a dataset.
@@ -113,7 +99,7 @@ public interface DatasetsClient {
         String resourceGroupName, String factoryName, String datasetName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a dataset.
+     * Gets a dataset.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -121,9 +107,10 @@ public interface DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dataset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String factoryName, String datasetName);
+    DatasetResourceInner get(String resourceGroupName, String factoryName, String datasetName);
 
     /**
      * Deletes a dataset.
@@ -140,4 +127,17 @@ public interface DatasetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String datasetName, Context context);
+
+    /**
+     * Deletes a dataset.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param datasetName The dataset name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String factoryName, String datasetName);
 }

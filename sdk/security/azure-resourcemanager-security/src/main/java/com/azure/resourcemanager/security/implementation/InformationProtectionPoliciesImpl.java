@@ -12,12 +12,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.InformationProtectionPoliciesClient;
 import com.azure.resourcemanager.security.fluent.models.InformationProtectionPolicyInner;
 import com.azure.resourcemanager.security.models.InformationProtectionPolicies;
-import com.azure.resourcemanager.security.models.InformationProtectionPoliciesInformationProtectionPolicyName;
 import com.azure.resourcemanager.security.models.InformationProtectionPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.security.models.InformationProtectionPolicyName;
 
 public final class InformationProtectionPoliciesImpl implements InformationProtectionPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InformationProtectionPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InformationProtectionPoliciesImpl.class);
 
     private final InformationProtectionPoliciesClient innerClient;
 
@@ -30,20 +29,8 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
         this.serviceManager = serviceManager;
     }
 
-    public InformationProtectionPolicy get(
-        String scope, InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName) {
-        InformationProtectionPolicyInner inner = this.serviceClient().get(scope, informationProtectionPolicyName);
-        if (inner != null) {
-            return new InformationProtectionPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<InformationProtectionPolicy> getWithResponse(
-        String scope,
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
-        Context context) {
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName, Context context) {
         Response<InformationProtectionPolicyInner> inner =
             this.serviceClient().getWithResponse(scope, informationProtectionPolicyName, context);
         if (inner != null) {
@@ -52,6 +39,16 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new InformationProtectionPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public InformationProtectionPolicy get(
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName) {
+        InformationProtectionPolicyInner inner = this.serviceClient().get(scope, informationProtectionPolicyName);
+        if (inner != null) {
+            return new InformationProtectionPolicyImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -72,26 +69,22 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-                        + "/{informationProtectionPolicyName}",
+                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
                     "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName =
-            InformationProtectionPoliciesInformationProtectionPolicyName
-                .fromString(
-                    Utils
-                        .getValueFromIdByParameterName(
-                            id,
-                            "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-                                + "/{informationProtectionPolicyName}",
-                            "informationProtectionPolicyName"));
-        if (informationProtectionPolicyName == null) {
-            throw logger
+        String informationProtectionPolicyNameLocal =
+            Utils
+                .getValueFromIdByParameterName(
+                    id,
+                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
+                    "informationProtectionPolicyName");
+        if (informationProtectionPolicyNameLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -100,6 +93,8 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
                                     + " 'informationProtectionPolicies'.",
                                 id)));
         }
+        InformationProtectionPolicyName informationProtectionPolicyName =
+            InformationProtectionPolicyName.fromString(informationProtectionPolicyNameLocal);
         return this.getWithResponse(scope, informationProtectionPolicyName, Context.NONE).getValue();
     }
 
@@ -108,26 +103,22 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-                        + "/{informationProtectionPolicyName}",
+                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
                     "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName =
-            InformationProtectionPoliciesInformationProtectionPolicyName
-                .fromString(
-                    Utils
-                        .getValueFromIdByParameterName(
-                            id,
-                            "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-                                + "/{informationProtectionPolicyName}",
-                            "informationProtectionPolicyName"));
-        if (informationProtectionPolicyName == null) {
-            throw logger
+        String informationProtectionPolicyNameLocal =
+            Utils
+                .getValueFromIdByParameterName(
+                    id,
+                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
+                    "informationProtectionPolicyName");
+        if (informationProtectionPolicyNameLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,6 +127,8 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
                                     + " 'informationProtectionPolicies'.",
                                 id)));
         }
+        InformationProtectionPolicyName informationProtectionPolicyName =
+            InformationProtectionPolicyName.fromString(informationProtectionPolicyNameLocal);
         return this.getWithResponse(scope, informationProtectionPolicyName, context);
     }
 
@@ -147,7 +140,7 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
         return this.serviceManager;
     }
 
-    public InformationProtectionPolicyImpl define(InformationProtectionPoliciesInformationProtectionPolicyName name) {
+    public InformationProtectionPolicyImpl define(InformationProtectionPolicyName name) {
         return new InformationProtectionPolicyImpl(name, this.manager());
     }
 }

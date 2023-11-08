@@ -17,13 +17,6 @@ public interface VirtualNetworkRule {
     String id();
 
     /**
-     * Gets the subnetId property: The resource identifier for the subnet.
-     *
-     * @return the subnetId value.
-     */
-    String subnetId();
-
-    /**
      * Gets the name property: The resource name.
      *
      * @return the name value.
@@ -36,6 +29,20 @@ public interface VirtualNetworkRule {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the subnetId property: The resource identifier for the subnet.
+     *
+     * @return the subnetId value.
+     */
+    String subnetId();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.datalakestore.fluent.models.VirtualNetworkRuleInner object.

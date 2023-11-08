@@ -9,12 +9,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainerRefreshOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerRefreshOperationResults;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProtectionContainerRefreshOperationResultsImpl
     implements ProtectionContainerRefreshOperationResults {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ProtectionContainerRefreshOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProtectionContainerRefreshOperationResultsImpl.class);
 
     private final ProtectionContainerRefreshOperationResultsClient innerClient;
 
@@ -27,13 +25,13 @@ public final class ProtectionContainerRefreshOperationResultsImpl
         this.serviceManager = serviceManager;
     }
 
-    public void get(String vaultName, String resourceGroupName, String fabricName, String operationId) {
-        this.serviceClient().get(vaultName, resourceGroupName, fabricName, operationId);
-    }
-
     public Response<Void> getWithResponse(
         String vaultName, String resourceGroupName, String fabricName, String operationId, Context context) {
         return this.serviceClient().getWithResponse(vaultName, resourceGroupName, fabricName, operationId, context);
+    }
+
+    public void get(String vaultName, String resourceGroupName, String fabricName, String operationId) {
+        this.serviceClient().get(vaultName, resourceGroupName, fabricName, operationId);
     }
 
     private ProtectionContainerRefreshOperationResultsClient serviceClient() {

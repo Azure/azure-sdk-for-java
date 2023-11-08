@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("OperationStatusProvisionILRExtendedInfo")
 @Fluent
 public final class OperationStatusProvisionIlrExtendedInfo extends OperationStatusExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusProvisionIlrExtendedInfo.class);
-
     /*
      * Target details for file / folder restore.
      */
     @JsonProperty(value = "recoveryTarget")
     private InstantItemRecoveryTarget recoveryTarget;
+
+    /** Creates an instance of OperationStatusProvisionIlrExtendedInfo class. */
+    public OperationStatusProvisionIlrExtendedInfo() {
+    }
 
     /**
      * Get the recoveryTarget property: Target details for file / folder restore.

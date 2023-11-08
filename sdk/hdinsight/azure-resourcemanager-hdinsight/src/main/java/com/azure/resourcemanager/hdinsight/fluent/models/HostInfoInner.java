@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The cluster host information. */
 @Fluent
 public final class HostInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostInfoInner.class);
-
     /*
      * The host name
      */
@@ -31,6 +27,10 @@ public final class HostInfoInner {
      */
     @JsonProperty(value = "effectiveDiskEncryptionKeyUrl")
     private String effectiveDiskEncryptionKeyUrl;
+
+    /** Creates an instance of HostInfoInner class. */
+    public HostInfoInner() {
+    }
 
     /**
      * Get the name property: The host name.

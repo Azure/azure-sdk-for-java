@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobType. */
+/** The type of the job. */
 public final class JobType extends ExpandableStringEnum<JobType> {
     /** Static value unknown for JobType. */
     public static final JobType UNKNOWN = fromString("unknown");
@@ -41,6 +41,15 @@ public final class JobType extends ExpandableStringEnum<JobType> {
     public static final JobType FIRMWARE_UPDATE = fromString("firmwareUpdate");
 
     /**
+     * Creates a new instance of JobType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobType() {
+    }
+
+    /**
      * Creates or finds a JobType from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class JobType extends ExpandableStringEnum<JobType> {
         return fromString(name, JobType.class);
     }
 
-    /** @return known JobType values. */
+    /**
+     * Gets known JobType values.
+     *
+     * @return known JobType values.
+     */
     public static Collection<JobType> values() {
         return values(JobType.class);
     }

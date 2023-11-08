@@ -64,6 +64,10 @@ public final class IpAllocationPropertiesFormat {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> allocationTags;
 
+    /** Creates an instance of IpAllocationPropertiesFormat class. */
+    public IpAllocationPropertiesFormat() {
+    }
+
     /**
      * Get the subnet property: The Subnet that using the prefix of this IpAllocation resource.
      *

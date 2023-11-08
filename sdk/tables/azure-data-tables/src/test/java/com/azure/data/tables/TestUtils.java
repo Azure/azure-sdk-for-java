@@ -12,7 +12,12 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -23,6 +28,8 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -37,6 +44,8 @@ public final class TestUtils {
     private TestUtils() {
     }
 
+    private static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
+
     /**
      * Gets the connection string for running tests.
      *
@@ -47,7 +56,7 @@ public final class TestUtils {
     public static String getConnectionString(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
-            : Configuration.getGlobalConfiguration().get("AZURE_TABLES_CONNECTION_STRING");
+            : Configuration.getGlobalConfiguration().get("TABLES_CONNECTION_STRING");
     }
 
     public static HttpRequest request(String url) throws MalformedURLException {
@@ -99,6 +108,7 @@ public final class TestUtils {
             return next.process();
         }
     }
+
 
     static void assertPropertiesEquals(TableServiceProperties expected,
                                        TableServiceProperties actual) {
@@ -189,7 +199,28 @@ public final class TestUtils {
 
     static boolean isCosmosTest() {
         Configuration globalConfiguration = Configuration.getGlobalConfiguration();
-        return globalConfiguration.get("AZURE_TABLES_CONNECTION_STRING") != null
-            && globalConfiguration.get("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+        return globalConfiguration.get("TABLES_CONNECTION_STRING") != null
+            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+    }
+
+    public static void addTestProxyTestSanitizersAndMatchers(InterceptorManager interceptorManager) {
+
+        if (interceptorManager.isLiveMode()) {
+            return;
+        }
+
+        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+        customSanitizers.add(new TestProxySanitizer("content-type", ".* boundary=(?<bound>.*)", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("bound"));
+        customSanitizers.add(new TestProxySanitizer(".*\\\\?(?<query>.*)", "REDACTED", TestProxySanitizerType.URL).setGroupForReplace("query"));
+        customSanitizers.add(new TestProxySanitizer("Location", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("DataServiceId", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
+        interceptorManager.addSanitizers(customSanitizers);
+
+        if (interceptorManager.isPlaybackMode()) {
+            List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
+            customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+            interceptorManager.addMatchers(customMatcher);
+        }
     }
 }

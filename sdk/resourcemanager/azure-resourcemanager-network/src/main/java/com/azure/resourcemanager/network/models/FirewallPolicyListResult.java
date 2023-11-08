@@ -24,6 +24,10 @@ public final class FirewallPolicyListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of FirewallPolicyListResult class. */
+    public FirewallPolicyListResult() {
+    }
+
     /**
      * Get the value property: List of Firewall Policies in a resource group.
      *

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.azurestack.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestack.fluent.models.CustomerSubscriptionInner;
 
@@ -32,11 +31,11 @@ public interface CustomerSubscription {
     String type();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
      *
-     * @return the systemData value.
+     * @return the etag value.
      */
-    SystemData systemData();
+    String etag();
 
     /**
      * Gets the tenantId property: Tenant Id.
@@ -44,13 +43,6 @@ public interface CustomerSubscription {
      * @return the tenantId value.
      */
     String tenantId();
-
-    /**
-     * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.CustomerSubscriptionInner object.
@@ -83,7 +75,7 @@ public interface CustomerSubscription {
          * The stage of the CustomerSubscription definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTenantId, DefinitionStages.WithEtag {
+        interface WithCreate extends DefinitionStages.WithEtag, DefinitionStages.WithTenantId {
             /**
              * Executes the create request.
              *
@@ -99,16 +91,6 @@ public interface CustomerSubscription {
              */
             CustomerSubscription create(Context context);
         }
-        /** The stage of the CustomerSubscription definition allowing to specify tenantId. */
-        interface WithTenantId {
-            /**
-             * Specifies the tenantId property: Tenant Id..
-             *
-             * @param tenantId Tenant Id.
-             * @return the next definition stage.
-             */
-            WithCreate withTenantId(String tenantId);
-        }
         /** The stage of the CustomerSubscription definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -118,6 +100,16 @@ public interface CustomerSubscription {
              * @return the next definition stage.
              */
             WithCreate withEtag(String etag);
+        }
+        /** The stage of the CustomerSubscription definition allowing to specify tenantId. */
+        interface WithTenantId {
+            /**
+             * Specifies the tenantId property: Tenant Id..
+             *
+             * @param tenantId Tenant Id.
+             * @return the next definition stage.
+             */
+            WithCreate withTenantId(String tenantId);
         }
     }
     /**

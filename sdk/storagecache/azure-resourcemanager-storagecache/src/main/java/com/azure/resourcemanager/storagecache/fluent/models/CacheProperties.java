@@ -10,12 +10,15 @@ import com.azure.resourcemanager.storagecache.models.CacheEncryptionSettings;
 import com.azure.resourcemanager.storagecache.models.CacheHealth;
 import com.azure.resourcemanager.storagecache.models.CacheNetworkSettings;
 import com.azure.resourcemanager.storagecache.models.CacheSecuritySettings;
+import com.azure.resourcemanager.storagecache.models.CacheUpgradeSettings;
 import com.azure.resourcemanager.storagecache.models.CacheUpgradeStatus;
+import com.azure.resourcemanager.storagecache.models.PrimingJob;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
+import com.azure.resourcemanager.storagecache.models.StorageTargetSpaceAllocation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the Cache. */
+/** Properties of the cache. */
 @Fluent
 public final class CacheProperties {
     /*
@@ -25,13 +28,13 @@ public final class CacheProperties {
     private Integer cacheSizeGB;
 
     /*
-     * Health of the Cache.
+     * Health of the cache.
      */
     @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private CacheHealth health;
 
     /*
-     * Array of IP addresses that can be used by clients mounting this Cache.
+     * Array of IPv4 addresses that can be used by clients mounting this cache.
      */
     @JsonProperty(value = "mountAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> mountAddresses;
@@ -44,16 +47,22 @@ public final class CacheProperties {
     private ProvisioningStateType provisioningState;
 
     /*
-     * Subnet used for the Cache.
+     * Subnet used for the cache.
      */
     @JsonProperty(value = "subnet")
     private String subnet;
 
     /*
-     * Upgrade status of the Cache.
+     * Upgrade status of the cache.
      */
     @JsonProperty(value = "upgradeStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CacheUpgradeStatus upgradeStatus;
+
+    /*
+     * Upgrade settings of the cache.
+     */
+    @JsonProperty(value = "upgradeSettings")
+    private CacheUpgradeSettings upgradeSettings;
 
     /*
      * Specifies network settings of the cache.
@@ -80,11 +89,26 @@ public final class CacheProperties {
     private CacheDirectorySettings directoryServicesSettings;
 
     /*
-     * Availability zones for resources. This field should only contain a
-     * single element in the array.
+     * Availability zones for resources. This field should only contain a single element in the array.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /*
+     * Specifies the priming jobs defined in the cache.
+     */
+    @JsonProperty(value = "primingJobs", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrimingJob> primingJobs;
+
+    /*
+     * Specifies the space allocation percentage for each storage target in the cache.
+     */
+    @JsonProperty(value = "spaceAllocation", access = JsonProperty.Access.WRITE_ONLY)
+    private List<StorageTargetSpaceAllocation> spaceAllocation;
+
+    /** Creates an instance of CacheProperties class. */
+    public CacheProperties() {
+    }
 
     /**
      * Get the cacheSizeGB property: The size of this Cache, in GB.
@@ -107,7 +131,7 @@ public final class CacheProperties {
     }
 
     /**
-     * Get the health property: Health of the Cache.
+     * Get the health property: Health of the cache.
      *
      * @return the health value.
      */
@@ -116,7 +140,7 @@ public final class CacheProperties {
     }
 
     /**
-     * Get the mountAddresses property: Array of IP addresses that can be used by clients mounting this Cache.
+     * Get the mountAddresses property: Array of IPv4 addresses that can be used by clients mounting this cache.
      *
      * @return the mountAddresses value.
      */
@@ -135,7 +159,7 @@ public final class CacheProperties {
     }
 
     /**
-     * Get the subnet property: Subnet used for the Cache.
+     * Get the subnet property: Subnet used for the cache.
      *
      * @return the subnet value.
      */
@@ -144,7 +168,7 @@ public final class CacheProperties {
     }
 
     /**
-     * Set the subnet property: Subnet used for the Cache.
+     * Set the subnet property: Subnet used for the cache.
      *
      * @param subnet the subnet value to set.
      * @return the CacheProperties object itself.
@@ -155,12 +179,32 @@ public final class CacheProperties {
     }
 
     /**
-     * Get the upgradeStatus property: Upgrade status of the Cache.
+     * Get the upgradeStatus property: Upgrade status of the cache.
      *
      * @return the upgradeStatus value.
      */
     public CacheUpgradeStatus upgradeStatus() {
         return this.upgradeStatus;
+    }
+
+    /**
+     * Get the upgradeSettings property: Upgrade settings of the cache.
+     *
+     * @return the upgradeSettings value.
+     */
+    public CacheUpgradeSettings upgradeSettings() {
+        return this.upgradeSettings;
+    }
+
+    /**
+     * Set the upgradeSettings property: Upgrade settings of the cache.
+     *
+     * @param upgradeSettings the upgradeSettings value to set.
+     * @return the CacheProperties object itself.
+     */
+    public CacheProperties withUpgradeSettings(CacheUpgradeSettings upgradeSettings) {
+        this.upgradeSettings = upgradeSettings;
+        return this;
     }
 
     /**
@@ -266,6 +310,24 @@ public final class CacheProperties {
     }
 
     /**
+     * Get the primingJobs property: Specifies the priming jobs defined in the cache.
+     *
+     * @return the primingJobs value.
+     */
+    public List<PrimingJob> primingJobs() {
+        return this.primingJobs;
+    }
+
+    /**
+     * Get the spaceAllocation property: Specifies the space allocation percentage for each storage target in the cache.
+     *
+     * @return the spaceAllocation value.
+     */
+    public List<StorageTargetSpaceAllocation> spaceAllocation() {
+        return this.spaceAllocation;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -276,6 +338,9 @@ public final class CacheProperties {
         }
         if (upgradeStatus() != null) {
             upgradeStatus().validate();
+        }
+        if (upgradeSettings() != null) {
+            upgradeSettings().validate();
         }
         if (networkSettings() != null) {
             networkSettings().validate();
@@ -288,6 +353,12 @@ public final class CacheProperties {
         }
         if (directoryServicesSettings() != null) {
             directoryServicesSettings().validate();
+        }
+        if (primingJobs() != null) {
+            primingJobs().forEach(e -> e.validate());
+        }
+        if (spaceAllocation() != null) {
+            spaceAllocation().forEach(e -> e.validate());
         }
     }
 }

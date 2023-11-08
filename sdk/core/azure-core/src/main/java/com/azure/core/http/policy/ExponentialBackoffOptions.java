@@ -20,6 +20,12 @@ public class ExponentialBackoffOptions {
     private Duration maxDelay;
 
     /**
+     * Creates a new instance of {@link ExponentialBackoffOptions}.
+     */
+    public ExponentialBackoffOptions() {
+    }
+
+    /**
      * Gets the max retry attempts that can be made.
      *
      * @return The max retry attempts that can be made.

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Windows Identity. User data customization. */
 @Fluent
 public final class CustomizationIdentityUserData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomizationIdentityUserData.class);
-
     /*
      * Is password predefined in customization policy
      */
     @JsonProperty(value = "isPasswordPredefined")
     private Boolean isPasswordPredefined;
+
+    /** Creates an instance of CustomizationIdentityUserData class. */
+    public CustomizationIdentityUserData() {
+    }
 
     /**
      * Get the isPasswordPredefined property: Is password predefined in customization policy.

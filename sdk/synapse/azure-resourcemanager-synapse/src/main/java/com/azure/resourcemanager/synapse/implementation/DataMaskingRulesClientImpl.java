@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.DataMaskingRulesClient;
 import com.azure.resourcemanager.synapse.fluent.models.DataMaskingRuleInner;
 import com.azure.resourcemanager.synapse.models.DataMaskingRuleListResult;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataMaskingRulesClient. */
 public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient {
-    private final ClientLogger logger = new ClientLogger(DataMaskingRulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataMaskingRulesService service;
 
@@ -60,7 +57,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface DataMaskingRulesService {
+    public interface DataMaskingRulesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -287,38 +284,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         DataMaskingRuleInner parameters) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, parameters)
-            .flatMap(
-                (Response<DataMaskingRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a Sql pool data masking rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters The required parameters for creating or updating a data masking rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool data masking rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataMaskingRuleInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        DataMaskingRuleInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, parameters)
-            .block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -346,6 +312,31 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, parameters, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a Sql pool data masking rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param dataMaskingRuleName The name of the data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a Sql pool data masking rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataMaskingRuleInner createOrUpdate(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String dataMaskingRuleName,
+        DataMaskingRuleInner parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -492,32 +483,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
     private Mono<DataMaskingRuleInner> getAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName)
-            .flatMap(
-                (Response<DataMaskingRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specific Sql pool data masking rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataMaskingRuleInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -542,6 +508,25 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, context)
             .block();
+    }
+
+    /**
+     * Gets the specific Sql pool data masking rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param dataMaskingRuleName The name of the data masking rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specific Sql pool data masking rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataMaskingRuleInner get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String dataMaskingRuleName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataMaskingRuleName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -673,7 +658,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool data masking rules.
+     * @return a list of Sql pool data masking rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMaskingRuleInner> listBySqlPoolAsync(
@@ -691,7 +676,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool data masking rules.
+     * @return a list of Sql pool data masking rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMaskingRuleInner> listBySqlPoolAsync(
@@ -709,7 +694,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool data masking rules.
+     * @return a list of Sql pool data masking rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMaskingRuleInner> listBySqlPool(
@@ -727,7 +712,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool data masking rules.
+     * @return a list of Sql pool data masking rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMaskingRuleInner> listBySqlPool(

@@ -20,6 +20,15 @@ public final class ProviderStackOsType extends ExpandableStringEnum<ProviderStac
     public static final ProviderStackOsType ALL = fromString("All");
 
     /**
+     * Creates a new instance of ProviderStackOsType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProviderStackOsType() {
+    }
+
+    /**
      * Creates or finds a ProviderStackOsType from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +39,11 @@ public final class ProviderStackOsType extends ExpandableStringEnum<ProviderStac
         return fromString(name, ProviderStackOsType.class);
     }
 
-    /** @return known ProviderStackOsType values. */
+    /**
+     * Gets known ProviderStackOsType values.
+     *
+     * @return known ProviderStackOsType values.
+     */
     public static Collection<ProviderStackOsType> values() {
         return values(ProviderStackOsType.class);
     }

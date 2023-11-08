@@ -8,13 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskDeleteOptionTypes. */
+/**
+ * Specifies the behavior of the managed disk when the VM gets deleted, for example whether the managed disk is deleted
+ * or detached. Supported values are: **Delete.** If this value is used, the managed disk is deleted when VM gets
+ * deleted. **Detach.** If this value is used, the managed disk is retained after VM gets deleted. Minimum api-version:
+ * 2021-03-01.
+ */
 public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDeleteOptionTypes> {
     /** Static value Delete for DiskDeleteOptionTypes. */
     public static final DiskDeleteOptionTypes DELETE = fromString("Delete");
 
     /** Static value Detach for DiskDeleteOptionTypes. */
     public static final DiskDeleteOptionTypes DETACH = fromString("Detach");
+
+    /**
+     * Creates a new instance of DiskDeleteOptionTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskDeleteOptionTypes() {
+    }
 
     /**
      * Creates or finds a DiskDeleteOptionTypes from its string representation.
@@ -27,7 +41,11 @@ public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDelete
         return fromString(name, DiskDeleteOptionTypes.class);
     }
 
-    /** @return known DiskDeleteOptionTypes values. */
+    /**
+     * Gets known DiskDeleteOptionTypes values.
+     *
+     * @return known DiskDeleteOptionTypes values.
+     */
     public static Collection<DiskDeleteOptionTypes> values() {
         return values(DiskDeleteOptionTypes.class);
     }

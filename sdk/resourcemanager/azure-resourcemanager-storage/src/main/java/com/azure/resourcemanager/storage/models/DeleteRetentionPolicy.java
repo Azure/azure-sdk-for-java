@@ -17,11 +17,23 @@ public final class DeleteRetentionPolicy {
     private Boolean enabled;
 
     /*
-     * Indicates the number of days that the deleted item should be retained.
-     * The minimum specified value can be 1 and the maximum value can be 365.
+     * Indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and
+     * the maximum value can be 365.
      */
     @JsonProperty(value = "days")
     private Integer days;
+
+    /*
+     * This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property
+     * cannot be used blob restore policy. This property only applies to blob service and does not apply to containers
+     * or file share.
+     */
+    @JsonProperty(value = "allowPermanentDelete")
+    private Boolean allowPermanentDelete;
+
+    /** Creates an instance of DeleteRetentionPolicy class. */
+    public DeleteRetentionPolicy() {
+    }
 
     /**
      * Get the enabled property: Indicates whether DeleteRetentionPolicy is enabled.
@@ -62,6 +74,30 @@ public final class DeleteRetentionPolicy {
      */
     public DeleteRetentionPolicy withDays(Integer days) {
         this.days = days;
+        return this;
+    }
+
+    /**
+     * Get the allowPermanentDelete property: This property when set to true allows deletion of the soft deleted blob
+     * versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob
+     * service and does not apply to containers or file share.
+     *
+     * @return the allowPermanentDelete value.
+     */
+    public Boolean allowPermanentDelete() {
+        return this.allowPermanentDelete;
+    }
+
+    /**
+     * Set the allowPermanentDelete property: This property when set to true allows deletion of the soft deleted blob
+     * versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob
+     * service and does not apply to containers or file share.
+     *
+     * @param allowPermanentDelete the allowPermanentDelete value to set.
+     * @return the DeleteRetentionPolicy object itself.
+     */
+    public DeleteRetentionPolicy withAllowPermanentDelete(Boolean allowPermanentDelete) {
+        this.allowPermanentDelete = allowPermanentDelete;
         return this;
     }
 

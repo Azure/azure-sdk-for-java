@@ -20,6 +20,10 @@ public final class ContinuousWebJobInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private ContinuousWebJobProperties innerProperties;
 
+    /** Creates an instance of ContinuousWebJobInner class. */
+    public ContinuousWebJobInner() {
+    }
+
     /**
      * Get the innerProperties property: ContinuousWebJob resource specific properties.
      *

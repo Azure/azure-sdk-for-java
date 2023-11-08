@@ -13,10 +13,9 @@ import com.azure.resourcemanager.storageimportexport.fluent.LocationsClient;
 import com.azure.resourcemanager.storageimportexport.fluent.models.LocationInner;
 import com.azure.resourcemanager.storageimportexport.models.Location;
 import com.azure.resourcemanager.storageimportexport.models.Locations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class LocationsImpl implements Locations {
         return Utils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
     }
 
-    public Location get(String locationName) {
-        LocationInner inner = this.serviceClient().get(locationName);
-        if (inner != null) {
-            return new LocationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Location> getWithResponse(String locationName, Context context) {
         Response<LocationInner> inner = this.serviceClient().getWithResponse(locationName, context);
         if (inner != null) {
@@ -56,6 +46,15 @@ public final class LocationsImpl implements Locations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LocationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Location get(String locationName) {
+        LocationInner inner = this.serviceClient().get(locationName);
+        if (inner != null) {
+            return new LocationImpl(inner, this.manager());
         } else {
             return null;
         }

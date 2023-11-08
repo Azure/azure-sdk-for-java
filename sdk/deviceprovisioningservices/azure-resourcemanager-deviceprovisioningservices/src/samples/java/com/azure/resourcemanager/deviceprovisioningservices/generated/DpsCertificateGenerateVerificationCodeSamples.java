@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DpsCertificate GenerateVerificationCode. */
 public final class DpsCertificateGenerateVerificationCodeSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGenerateVerificationCode.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGenerateVerificationCode.json
      */
     /**
      * Sample code: DPSGenerateVerificationCode.

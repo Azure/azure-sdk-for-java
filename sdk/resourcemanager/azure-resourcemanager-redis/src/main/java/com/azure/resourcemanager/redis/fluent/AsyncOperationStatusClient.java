@@ -44,19 +44,6 @@ public interface AsyncOperationStatusClient {
      *
      * @param location The location at which operation was triggered.
      * @param operationId The ID of asynchronous operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asynchronous operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner get(String location, String operationId);
-
-    /**
-     * For checking the ongoing status of an operation.
-     *
-     * @param location The location at which operation was triggered.
-     * @param operationId The ID of asynchronous operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,4 +52,17 @@ public interface AsyncOperationStatusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OperationStatusInner> getWithResponse(String location, String operationId, Context context);
+
+    /**
+     * For checking the ongoing status of an operation.
+     *
+     * @param location The location at which operation was triggered.
+     * @param operationId The ID of asynchronous operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return asynchronous operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusInner get(String location, String operationId);
 }

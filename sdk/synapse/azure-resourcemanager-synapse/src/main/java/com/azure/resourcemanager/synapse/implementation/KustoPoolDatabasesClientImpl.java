@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.KustoPoolDatabasesClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in KustoPoolDatabasesClient. */
 public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesClient {
-    private final ClientLogger logger = new ClientLogger(KustoPoolDatabasesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final KustoPoolDatabasesService service;
 
@@ -67,7 +64,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface KustoPoolDatabasesService {
+    public interface KustoPoolDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -280,7 +277,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto databases operation response.
+     * @return the list Kusto databases operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatabaseInner> listByKustoPoolAsync(
@@ -298,7 +295,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto databases operation response.
+     * @return the list Kusto databases operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatabaseInner> listByKustoPoolAsync(
@@ -316,7 +313,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto databases operation response.
+     * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByKustoPool(
@@ -334,7 +331,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto databases operation response.
+     * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByKustoPool(
@@ -474,32 +471,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
     private Mono<DatabaseInner> getAsync(
         String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName)
-            .flatMap(
-                (Response<DatabaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns a database.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param databaseName The name of the database in the Kusto pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner get(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
-        return getAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -519,6 +491,24 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
     public Response<DatabaseInner> getWithResponse(
         String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context).block();
+    }
+
+    /**
+     * Returns a database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param databaseName The name of the database in the Kusto pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Kusto database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabaseInner get(
+        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
+        return getWithResponse(resourceGroupName, workspaceName, kustoPoolName, databaseName, Context.NONE).getValue();
     }
 
     /**
@@ -671,7 +661,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
@@ -704,7 +694,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
@@ -735,7 +725,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
@@ -744,7 +734,8 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         String kustoPoolName,
         String databaseName,
         DatabaseInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters)
             .getSyncPoller();
     }
 
@@ -760,7 +751,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
@@ -770,7 +761,8 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         String databaseName,
         DatabaseInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context)
             .getSyncPoller();
     }
@@ -1027,7 +1019,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
@@ -1060,7 +1052,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
@@ -1090,7 +1082,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
@@ -1099,7 +1091,8 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         String kustoPoolName,
         String databaseName,
         DatabaseInner parameters) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters)
             .getSyncPoller();
     }
 
@@ -1115,7 +1108,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
@@ -1125,7 +1118,8 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
         String databaseName,
         DatabaseInner parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1355,7 +1349,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1379,7 +1373,7 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1402,12 +1396,12 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName).getSyncPoller();
     }
 
     /**
@@ -1421,12 +1415,14 @@ public final class KustoPoolDatabasesClientImpl implements KustoPoolDatabasesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, workspaceName, kustoPoolName, databaseName, context)
+            .getSyncPoller();
     }
 
     /**

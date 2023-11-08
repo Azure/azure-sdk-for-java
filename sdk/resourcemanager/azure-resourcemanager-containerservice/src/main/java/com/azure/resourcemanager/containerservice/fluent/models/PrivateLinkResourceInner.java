@@ -42,11 +42,14 @@ public final class PrivateLinkResourceInner {
     private List<String> requiredMembers;
 
     /*
-     * The private link service ID of the resource, this field is exposed only
-     * to NRP internally.
+     * The private link service ID of the resource, this field is exposed only to NRP internally.
      */
     @JsonProperty(value = "privateLinkServiceID", access = JsonProperty.Access.WRITE_ONLY)
     private String privateLinkServiceId;
+
+    /** Creates an instance of PrivateLinkResourceInner class. */
+    public PrivateLinkResourceInner() {
+    }
 
     /**
      * Get the id property: The ID of the private link resource.

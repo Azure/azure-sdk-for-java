@@ -25,6 +25,10 @@ public final class DeploymentCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DeploymentCollection class. */
+    public DeploymentCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

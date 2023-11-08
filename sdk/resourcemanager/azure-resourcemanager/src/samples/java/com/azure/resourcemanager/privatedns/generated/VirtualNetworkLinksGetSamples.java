@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkLinks Get. */
 public final class VirtualNetworkLinksGetSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/VirtualNetworkLinkGet.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkGet.json
      */
     /**
      * Sample code: GET Private DNS Zone Virtual Network Link.
@@ -22,6 +20,7 @@ public final class VirtualNetworkLinksGetSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkLinks()
-            .getWithResponse("resourceGroup1", "privatezone1.com", "virtualNetworkLink1", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", "virtualNetworkLink1", com.azure.core.util.Context.NONE);
     }
 }

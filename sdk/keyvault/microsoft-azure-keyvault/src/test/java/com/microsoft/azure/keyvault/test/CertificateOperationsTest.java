@@ -267,7 +267,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withFirstName("John")
                     .withLastName("Doe")
                     .withEmailAddress("john.doe@contoso.com")
-                    .withPhone("1234567890");
+                    .withPhone("fakePhoneNumberPlaceholder");
 
         // Construct organization details
         List<AdministratorDetails> administratorsDetails = new ArrayList<AdministratorDetails>();
@@ -370,7 +370,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withFirstName("John")
                     .withLastName("Doe")
                     .withEmailAddress("john.doe@contoso.com")
-                    .withPhone("1234567890");
+                    .withPhone("fakePhoneNumberPlaceholder");
 
         // Construct organization details
         OrganizationDetails organizationDetails = new OrganizationDetails();
@@ -551,7 +551,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
     @Test
     public void importCertificatePkcs12ForCertificateOperationsTest() throws Exception {
         String certificateContent = readCertificate("pkcs12_base64_testdata.cer");
-        String certificatePassword = "123";
+        String certificatePassword = "fakePasswordPlaceholder";
 
         // Set content type to indicate the certificate is PKCS12 format.
         SecretProperties secretProperties = new SecretProperties().withContentType(MIME_PKCS12);
@@ -615,7 +615,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
     @Test
     public void certificateUpdateForCertificateOperationsTest() throws Exception {
         String certificateContent = readCertificate("pkcs12_base64_testdata.cer");
-        String certificatePassword = "123";
+        String certificatePassword = "fakePasswordPlaceholder";
 
         // Set content type to indicate the certificate is PKCS12 format.
         SecretProperties secretProperties = new SecretProperties().withContentType(MIME_PKCS12);
@@ -668,7 +668,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
     public void listCertificatesForCertificateOperationsTest() throws Exception {
         String certificateName = "listCertificate";
         String certificateContent = readCertificate("pkcs12_base64_testdata.cer");
-        String certificatePassword = "123";
+        String certificatePassword = "fakePasswordPlaceholder";
 
         // Set content type to indicate the certificate is PKCS12 format.
         SecretProperties secretProperties = new SecretProperties();
@@ -732,7 +732,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
     public void listCertificateVersionsForCertificateOperationsTest() throws Exception {
         String certificateName = "listCertificateVersions";
         String certificateContent = readCertificate("pkcs12_base64_testdata.cer");
-        String certificatePassword = "123";
+        String certificatePassword = "fakePasswordPlaceholder";
 
         // Set content type to indicate the certificate is PKCS12 format.
         SecretProperties secretProperties = new SecretProperties();
@@ -794,7 +794,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withFirstName("John")
                     .withLastName("Doe")
                     .withEmailAddress("john.doe@contoso.com")
-                    .withPhone("1234567890");
+                    .withPhone("fakePhoneNumberPlaceholder");
 
         // Construct organization details
         OrganizationDetails organizationDetails = new OrganizationDetails();

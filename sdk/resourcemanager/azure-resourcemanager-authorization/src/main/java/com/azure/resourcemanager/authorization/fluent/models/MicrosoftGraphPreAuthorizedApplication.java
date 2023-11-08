@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** preAuthorizedApplication. */
 @Fluent
 public final class MicrosoftGraphPreAuthorizedApplication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPreAuthorizedApplication.class);
-
     /*
      * The unique identifier for the application.
      */
@@ -26,8 +23,7 @@ public final class MicrosoftGraphPreAuthorizedApplication {
     private String appId;
 
     /*
-     * The unique identifier for the oauth2PermissionScopes the application
-     * requires.
+     * The unique identifier for the oauth2PermissionScopes the application requires.
      */
     @JsonProperty(value = "delegatedPermissionIds")
     private List<String> delegatedPermissionIds;
@@ -36,6 +32,10 @@ public final class MicrosoftGraphPreAuthorizedApplication {
      * preAuthorizedApplication
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPreAuthorizedApplication class. */
+    public MicrosoftGraphPreAuthorizedApplication() {
+    }
 
     /**
      * Get the appId property: The unique identifier for the application.

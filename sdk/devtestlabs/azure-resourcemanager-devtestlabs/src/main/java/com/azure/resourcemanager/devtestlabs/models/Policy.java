@@ -126,6 +126,13 @@ public interface Policy {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.PolicyInner object.
      *
      * @return the inner object.
@@ -139,11 +146,13 @@ public interface Policy {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The Policy definition stages. */
     interface DefinitionStages {
         /** The first stage of the Policy definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Policy definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -162,6 +171,7 @@ public interface Policy {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Policy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -174,6 +184,7 @@ public interface Policy {
              */
             WithCreate withExistingPolicyset(String resourceGroupName, String labName, String policySetName);
         }
+
         /**
          * The stage of the Policy definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -201,6 +212,7 @@ public interface Policy {
              */
             Policy create(Context context);
         }
+
         /** The stage of the Policy definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -211,6 +223,7 @@ public interface Policy {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Policy definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -221,6 +234,7 @@ public interface Policy {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the Policy definition allowing to specify status. */
         interface WithStatus {
             /**
@@ -231,6 +245,7 @@ public interface Policy {
              */
             WithCreate withStatus(PolicyStatus status);
         }
+
         /** The stage of the Policy definition allowing to specify factName. */
         interface WithFactName {
             /**
@@ -242,6 +257,7 @@ public interface Policy {
              */
             WithCreate withFactName(PolicyFactName factName);
         }
+
         /** The stage of the Policy definition allowing to specify factData. */
         interface WithFactData {
             /**
@@ -252,6 +268,7 @@ public interface Policy {
              */
             WithCreate withFactData(String factData);
         }
+
         /** The stage of the Policy definition allowing to specify threshold. */
         interface WithThreshold {
             /**
@@ -264,6 +281,7 @@ public interface Policy {
              */
             WithCreate withThreshold(String threshold);
         }
+
         /** The stage of the Policy definition allowing to specify evaluatorType. */
         interface WithEvaluatorType {
             /**
@@ -276,6 +294,7 @@ public interface Policy {
             WithCreate withEvaluatorType(PolicyEvaluatorType evaluatorType);
         }
     }
+
     /**
      * Begins update for the Policy resource.
      *
@@ -300,6 +319,7 @@ public interface Policy {
          */
         Policy apply(Context context);
     }
+
     /** The Policy update stages. */
     interface UpdateStages {
         /** The stage of the Policy update allowing to specify tags. */
@@ -313,6 +333,7 @@ public interface Policy {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

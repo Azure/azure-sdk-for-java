@@ -57,11 +57,10 @@ public final class DatasetsClientImpl implements DatasetsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface DatasetsService {
+    public interface DatasetsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/datasets")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/datasets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatasetListResponse>> listByFactory(
@@ -75,8 +74,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/datasets/{datasetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/datasets/{datasetName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatasetResourceInner>> createOrUpdate(
@@ -93,8 +91,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/datasets/{datasetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/datasets/{datasetName}")
         @ExpectedResponses({200, 304})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatasetResourceInner>> get(
@@ -110,8 +107,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/datasets/{datasetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/datasets/{datasetName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -455,38 +451,6 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @param factoryName The factory name.
      * @param datasetName The dataset name.
      * @param dataset Dataset resource definition.
-     * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatasetResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String datasetName,
-        DatasetResourceInner dataset,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, datasetName, dataset, ifMatch)
-            .flatMap(
-                (Response<DatasetResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a dataset.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @param dataset Dataset resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -497,33 +461,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
         String resourceGroupName, String factoryName, String datasetName, DatasetResourceInner dataset) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, datasetName, dataset, ifMatch)
-            .flatMap(
-                (Response<DatasetResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a dataset.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @param dataset Dataset resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetResourceInner createOrUpdate(
-        String resourceGroupName, String factoryName, String datasetName, DatasetResourceInner dataset) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, factoryName, datasetName, dataset, ifMatch).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -551,6 +489,26 @@ public final class DatasetsClientImpl implements DatasetsClient {
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, datasetName, dataset, ifMatch, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a dataset.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param datasetName The dataset name.
+     * @param dataset Dataset resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dataset resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasetResourceInner createOrUpdate(
+        String resourceGroupName, String factoryName, String datasetName, DatasetResourceInner dataset) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(resourceGroupName, factoryName, datasetName, dataset, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -669,33 +627,6 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param datasetName The dataset name.
-     * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatasetResourceInner> getAsync(
-        String resourceGroupName, String factoryName, String datasetName, String ifNoneMatch) {
-        return getWithResponseAsync(resourceGroupName, factoryName, datasetName, ifNoneMatch)
-            .flatMap(
-                (Response<DatasetResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a dataset.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -705,31 +636,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
     private Mono<DatasetResourceInner> getAsync(String resourceGroupName, String factoryName, String datasetName) {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, datasetName, ifNoneMatch)
-            .flatMap(
-                (Response<DatasetResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a dataset.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetResourceInner get(String resourceGroupName, String factoryName, String datasetName) {
-        final String ifNoneMatch = null;
-        return getAsync(resourceGroupName, factoryName, datasetName, ifNoneMatch).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -750,6 +657,23 @@ public final class DatasetsClientImpl implements DatasetsClient {
     public Response<DatasetResourceInner> getWithResponse(
         String resourceGroupName, String factoryName, String datasetName, String ifNoneMatch, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, datasetName, ifNoneMatch, context).block();
+    }
+
+    /**
+     * Gets a dataset.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param datasetName The dataset name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a dataset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasetResourceInner get(String resourceGroupName, String factoryName, String datasetName) {
+        final String ifNoneMatch = null;
+        return getWithResponse(resourceGroupName, factoryName, datasetName, ifNoneMatch, Context.NONE).getValue();
     }
 
     /**
@@ -869,23 +793,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String factoryName, String datasetName) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, datasetName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a dataset.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String factoryName, String datasetName) {
-        deleteAsync(resourceGroupName, factoryName, datasetName).block();
+        return deleteWithResponseAsync(resourceGroupName, factoryName, datasetName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -907,9 +815,25 @@ public final class DatasetsClientImpl implements DatasetsClient {
     }
 
     /**
+     * Deletes a dataset.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param datasetName The dataset name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String factoryName, String datasetName) {
+        deleteWithResponse(resourceGroupName, factoryName, datasetName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -944,7 +868,8 @@ public final class DatasetsClientImpl implements DatasetsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

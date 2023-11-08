@@ -57,7 +57,9 @@ public interface BigDataPoolResourceInfo {
     String provisioningState();
 
     /**
-     * Gets the autoScale property: Spark pool auto-scaling properties Auto-scaling properties.
+     * Gets the autoScale property: Spark pool auto-scaling properties
+     *
+     * <p>Auto-scaling properties.
      *
      * @return the autoScale value.
      */
@@ -71,7 +73,9 @@ public interface BigDataPoolResourceInfo {
     OffsetDateTime creationDate();
 
     /**
-     * Gets the autoPause property: Spark pool auto-pausing properties Auto-pausing properties.
+     * Gets the autoPause property: Spark pool auto-pausing properties
+     *
+     * <p>Auto-pausing properties.
      *
      * @return the autoPause value.
      */
@@ -83,6 +87,15 @@ public interface BigDataPoolResourceInfo {
      * @return the isComputeIsolationEnabled value.
      */
     Boolean isComputeIsolationEnabled();
+
+    /**
+     * Gets the isAutotuneEnabled property: Enable Autotune
+     *
+     * <p>Whether autotune is required or not.
+     *
+     * @return the isAutotuneEnabled value.
+     */
+    Boolean isAutotuneEnabled();
 
     /**
      * Gets the sessionLevelPackagesEnabled property: Whether session level packages enabled.
@@ -120,7 +133,9 @@ public interface BigDataPoolResourceInfo {
     Integer nodeCount();
 
     /**
-     * Gets the libraryRequirements property: Spark pool library version requirements Library version requirements.
+     * Gets the libraryRequirements property: Spark pool library version requirements
+     *
+     * <p>Library version requirements.
      *
      * @return the libraryRequirements value.
      */
@@ -134,8 +149,9 @@ public interface BigDataPoolResourceInfo {
     List<LibraryInfo> customLibraries();
 
     /**
-     * Gets the sparkConfigProperties property: Spark pool Config Properties Spark configuration file to specify
-     * additional properties.
+     * Gets the sparkConfigProperties property: Spark pool Config Properties
+     *
+     * <p>Spark configuration file to specify additional properties.
      *
      * @return the sparkConfigProperties value.
      */
@@ -189,6 +205,13 @@ public interface BigDataPoolResourceInfo {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.BigDataPoolResourceInfoInner object.
@@ -248,8 +271,8 @@ public interface BigDataPoolResourceInfo {
                 DefinitionStages.WithAutoScale,
                 DefinitionStages.WithAutoPause,
                 DefinitionStages.WithIsComputeIsolationEnabled,
+                DefinitionStages.WithIsAutotuneEnabled,
                 DefinitionStages.WithSessionLevelPackagesEnabled,
-                DefinitionStages.WithCacheSize,
                 DefinitionStages.WithDynamicExecutorAllocation,
                 DefinitionStages.WithSparkEventsFolder,
                 DefinitionStages.WithNodeCount,
@@ -299,9 +322,12 @@ public interface BigDataPoolResourceInfo {
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify autoScale. */
         interface WithAutoScale {
             /**
-             * Specifies the autoScale property: Spark pool auto-scaling properties Auto-scaling properties.
+             * Specifies the autoScale property: Spark pool auto-scaling properties
              *
-             * @param autoScale Spark pool auto-scaling properties Auto-scaling properties.
+             * <p>Auto-scaling properties.
+             *
+             * @param autoScale Spark pool auto-scaling properties
+             *     <p>Auto-scaling properties.
              * @return the next definition stage.
              */
             WithCreate withAutoScale(AutoScaleProperties autoScale);
@@ -309,9 +335,12 @@ public interface BigDataPoolResourceInfo {
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify autoPause. */
         interface WithAutoPause {
             /**
-             * Specifies the autoPause property: Spark pool auto-pausing properties Auto-pausing properties.
+             * Specifies the autoPause property: Spark pool auto-pausing properties
              *
-             * @param autoPause Spark pool auto-pausing properties Auto-pausing properties.
+             * <p>Auto-pausing properties.
+             *
+             * @param autoPause Spark pool auto-pausing properties
+             *     <p>Auto-pausing properties.
              * @return the next definition stage.
              */
             WithCreate withAutoPause(AutoPauseProperties autoPause);
@@ -326,6 +355,19 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled);
         }
+        /** The stage of the BigDataPoolResourceInfo definition allowing to specify isAutotuneEnabled. */
+        interface WithIsAutotuneEnabled {
+            /**
+             * Specifies the isAutotuneEnabled property: Enable Autotune
+             *
+             * <p>Whether autotune is required or not..
+             *
+             * @param isAutotuneEnabled Enable Autotune
+             *     <p>Whether autotune is required or not.
+             * @return the next definition stage.
+             */
+            WithCreate withIsAutotuneEnabled(Boolean isAutotuneEnabled);
+        }
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify sessionLevelPackagesEnabled. */
         interface WithSessionLevelPackagesEnabled {
             /**
@@ -335,16 +377,6 @@ public interface BigDataPoolResourceInfo {
              * @return the next definition stage.
              */
             WithCreate withSessionLevelPackagesEnabled(Boolean sessionLevelPackagesEnabled);
-        }
-        /** The stage of the BigDataPoolResourceInfo definition allowing to specify cacheSize. */
-        interface WithCacheSize {
-            /**
-             * Specifies the cacheSize property: The cache size.
-             *
-             * @param cacheSize The cache size.
-             * @return the next definition stage.
-             */
-            WithCreate withCacheSize(Integer cacheSize);
         }
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify dynamicExecutorAllocation. */
         interface WithDynamicExecutorAllocation {
@@ -379,10 +411,12 @@ public interface BigDataPoolResourceInfo {
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify libraryRequirements. */
         interface WithLibraryRequirements {
             /**
-             * Specifies the libraryRequirements property: Spark pool library version requirements Library version
-             * requirements.
+             * Specifies the libraryRequirements property: Spark pool library version requirements
              *
-             * @param libraryRequirements Spark pool library version requirements Library version requirements.
+             * <p>Library version requirements.
+             *
+             * @param libraryRequirements Spark pool library version requirements
+             *     <p>Library version requirements.
              * @return the next definition stage.
              */
             WithCreate withLibraryRequirements(LibraryRequirements libraryRequirements);
@@ -401,11 +435,12 @@ public interface BigDataPoolResourceInfo {
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify sparkConfigProperties. */
         interface WithSparkConfigProperties {
             /**
-             * Specifies the sparkConfigProperties property: Spark pool Config Properties Spark configuration file to
-             * specify additional properties.
+             * Specifies the sparkConfigProperties property: Spark pool Config Properties
              *
-             * @param sparkConfigProperties Spark pool Config Properties Spark configuration file to specify additional
-             *     properties.
+             * <p>Spark configuration file to specify additional properties.
+             *
+             * @param sparkConfigProperties Spark pool Config Properties
+             *     <p>Spark configuration file to specify additional properties.
              * @return the next definition stage.
              */
             WithCreate withSparkConfigProperties(SparkConfigProperties sparkConfigProperties);

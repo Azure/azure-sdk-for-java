@@ -4,43 +4,30 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.NullOutputStream;
-import com.azure.perf.test.core.PerfStressOptions;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.perf.core.ContainerTest;
+import com.azure.storage.StoragePerfUtils;
+import com.azure.storage.blob.perf.core.AbstractDownloadTest;
 import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
 
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
+public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions> {
+    private final OutputStream devNull = new NullOutputStream();
 
-public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
-    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
-    private static final OutputStream DEV_NULL = new NullOutputStream();
+    private final int bufferSize;
+    private final byte[] buffer;
 
-    private final BlobClient blobClient;
-    private final BlobAsyncClient blobAsyncClient;
-
-    private final byte[] buffer = new byte[BUFFER_SIZE];
-
-    public DownloadBlobTest(PerfStressOptions options) {
+    public DownloadBlobTest(BlobPerfStressOptions options) {
         super(options);
-        String blobName = "downloadTest";
-        blobClient = blobContainerClient.getBlobClient(blobName);
-        blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
+
+        this.bufferSize = StoragePerfUtils.getDynamicDownloadBufferSize(options.getSize());
+        this.buffer = new byte[bufferSize];
     }
 
-    // Required resource setup goes here, upload the file to be downloaded during tests.
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
-            .then();
-    }
 
     // Perform the API call to be tested here
     @Override
     public void run() {
-        blobClient.download(DEV_NULL);
+        blobClient.download(devNull);
     }
 
 
@@ -51,7 +38,7 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
                 int readCount = 0;
                 int remaining = b.remaining();
                 while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
+                    int expectedReadCount = Math.min(remaining - readCount, bufferSize);
                     b.get(buffer, 0, expectedReadCount);
                     readCount += expectedReadCount;
                 }

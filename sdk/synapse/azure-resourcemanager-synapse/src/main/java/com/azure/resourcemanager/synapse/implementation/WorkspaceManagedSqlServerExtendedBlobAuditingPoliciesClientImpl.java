@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient;
@@ -45,9 +44,6 @@ import reactor.core.publisher.Mono;
  */
 public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientImpl
     implements WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient {
-    private final ClientLogger logger =
-        new ClientLogger(WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesService service;
 
@@ -76,7 +72,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesService {
+    public interface WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -137,7 +133,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Get a workspace SQL server's extended blob auditing policy.
+     * Get server's extended blob auditing policy.
+     *
+     * <p>Get a workspace SQL server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -194,7 +192,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Get a workspace SQL server's extended blob auditing policy.
+     * Get server's extended blob auditing policy.
+     *
+     * <p>Get a workspace SQL server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -252,7 +252,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Get a workspace SQL server's extended blob auditing policy.
+     * Get server's extended blob auditing policy.
+     *
+     * <p>Get a workspace SQL server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -266,35 +268,13 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     private Mono<ExtendedServerBlobAuditingPolicyInner> getAsync(
         String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, blobAuditingPolicyName)
-            .flatMap(
-                (Response<ExtendedServerBlobAuditingPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a workspace SQL server's extended blob auditing policy.
+     * Get server's extended blob auditing policy.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace SQL server's extended blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtendedServerBlobAuditingPolicyInner get(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
-        return getAsync(resourceGroupName, workspaceName, blobAuditingPolicyName).block();
-    }
-
-    /**
-     * Get a workspace SQL server's extended blob auditing policy.
+     * <p>Get a workspace SQL server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -315,7 +295,28 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Create or Update a workspace managed sql server's extended blob auditing policy.
+     * Get server's extended blob auditing policy.
+     *
+     * <p>Get a workspace SQL server's extended blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param blobAuditingPolicyName The name of the blob auditing policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace SQL server's extended blob auditing policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExtendedServerBlobAuditingPolicyInner get(
+        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
+        return getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or Update server's extended blob auditing policy.
+     *
+     * <p>Create or Update a workspace managed sql server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -382,7 +383,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Create or Update a workspace managed sql server's extended blob auditing policy.
+     * Create or Update server's extended blob auditing policy.
+     *
+     * <p>Create or Update a workspace managed sql server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -448,7 +451,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Create or Update a workspace managed sql server's extended blob auditing policy.
+     * Create or Update server's extended blob auditing policy.
+     *
+     * <p>Create or Update a workspace managed sql server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -457,8 +462,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
@@ -480,7 +484,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Create or Update a workspace managed sql server's extended blob auditing policy.
+     * Create or Update server's extended blob auditing policy.
+     *
+     * <p>Create or Update a workspace managed sql server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -490,8 +496,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
@@ -516,7 +521,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Create or Update a workspace managed sql server's extended blob auditing policy.
+     * Create or Update server's extended blob auditing policy.
+     *
+     * <p>Create or Update a workspace managed sql server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -525,8 +532,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
@@ -535,12 +541,15 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
             String workspaceName,
             BlobAuditingPolicyName blobAuditingPolicyName,
             ExtendedServerBlobAuditingPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Create or Update a workspace managed sql server's extended blob auditing policy.
+     * Create or Update server's extended blob auditing policy.
+     *
+     * <p>Create or Update a workspace managed sql server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -550,8 +559,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
@@ -561,12 +569,15 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
             BlobAuditingPolicyName blobAuditingPolicyName,
             ExtendedServerBlobAuditingPolicyInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Create or Update a workspace managed sql server's extended blob auditing policy.
+     * Create or Update server's extended blob auditing policy.
+     *
+     * <p>Create or Update a workspace managed sql server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -589,7 +600,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Create or Update a workspace managed sql server's extended blob auditing policy.
+     * Create or Update server's extended blob auditing policy.
+     *
+     * <p>Create or Update a workspace managed sql server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -614,7 +627,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Create or Update a workspace managed sql server's extended blob auditing policy.
+     * Create or Update server's extended blob auditing policy.
+     *
+     * <p>Create or Update a workspace managed sql server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -635,7 +650,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * Create or Update a workspace managed sql server's extended blob auditing policy.
+     * Create or Update server's extended blob auditing policy.
+     *
+     * <p>Create or Update a workspace managed sql server's extended blob auditing policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -659,7 +676,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * List workspace managed sql server's extended blob auditing policies.
+     * List server's extended blob auditing policies.
+     *
+     * <p>List workspace managed sql server's extended blob auditing policies.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -718,7 +737,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * List workspace managed sql server's extended blob auditing policies.
+     * List server's extended blob auditing policies.
+     *
+     * <p>List workspace managed sql server's extended blob auditing policies.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -775,14 +796,16 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * List workspace managed sql server's extended blob auditing policies.
+     * List server's extended blob auditing policies.
+     *
+     * <p>List workspace managed sql server's extended blob auditing policies.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
+     * @return a list of server extended auditing settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExtendedServerBlobAuditingPolicyInner> listByWorkspaceAsync(
@@ -793,7 +816,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * List workspace managed sql server's extended blob auditing policies.
+     * List server's extended blob auditing policies.
+     *
+     * <p>List workspace managed sql server's extended blob auditing policies.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -801,7 +826,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
+     * @return a list of server extended auditing settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExtendedServerBlobAuditingPolicyInner> listByWorkspaceAsync(
@@ -812,14 +837,16 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * List workspace managed sql server's extended blob auditing policies.
+     * List server's extended blob auditing policies.
+     *
+     * <p>List workspace managed sql server's extended blob auditing policies.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
+     * @return a list of server extended auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByWorkspace(
@@ -828,7 +855,9 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     }
 
     /**
-     * List workspace managed sql server's extended blob auditing policies.
+     * List server's extended blob auditing policies.
+     *
+     * <p>List workspace managed sql server's extended blob auditing policies.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -836,7 +865,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
+     * @return a list of server extended auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByWorkspace(
@@ -847,7 +876,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -884,7 +914,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -16,6 +16,10 @@ public final class ResponseMetadata {
     @JsonProperty(value = "dataSource")
     private DataSource dataSource;
 
+    /** Creates an instance of ResponseMetadata class. */
+    public ResponseMetadata() {
+    }
+
     /**
      * Get the dataSource property: Source of the Data.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HttpStatusCode. */
+/** The status code for the operation. */
 public final class HttpStatusCode extends ExpandableStringEnum<HttpStatusCode> {
     /** Static value Continue for HttpStatusCode. */
     public static final HttpStatusCode CONTINUE = fromString("Continue");
@@ -152,6 +152,15 @@ public final class HttpStatusCode extends ExpandableStringEnum<HttpStatusCode> {
     public static final HttpStatusCode HTTP_VERSION_NOT_SUPPORTED = fromString("HttpVersionNotSupported");
 
     /**
+     * Creates a new instance of HttpStatusCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HttpStatusCode() {
+    }
+
+    /**
      * Creates or finds a HttpStatusCode from its string representation.
      *
      * @param name a name to look for.
@@ -162,7 +171,11 @@ public final class HttpStatusCode extends ExpandableStringEnum<HttpStatusCode> {
         return fromString(name, HttpStatusCode.class);
     }
 
-    /** @return known HttpStatusCode values. */
+    /**
+     * Gets known HttpStatusCode values.
+     *
+     * @return known HttpStatusCode values.
+     */
     public static Collection<HttpStatusCode> values() {
         return values(HttpStatusCode.class);
     }

@@ -29,11 +29,14 @@ public final class GitHubActionConfiguration {
     private Boolean isLinux;
 
     /*
-     * Workflow option to determine whether the workflow file should be
-     * generated and written to the repository.
+     * Workflow option to determine whether the workflow file should be generated and written to the repository.
      */
     @JsonProperty(value = "generateWorkflowFile")
     private Boolean generateWorkflowFile;
+
+    /** Creates an instance of GitHubActionConfiguration class. */
+    public GitHubActionConfiguration() {
+    }
 
     /**
      * Get the codeConfiguration property: GitHub Action code configuration.

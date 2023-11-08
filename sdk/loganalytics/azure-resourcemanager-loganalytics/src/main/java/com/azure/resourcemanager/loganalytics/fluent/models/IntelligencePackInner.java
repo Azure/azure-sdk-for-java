@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Intelligence Pack containing a string name and boolean indicating if it's enabled. */
 @Fluent
 public final class IntelligencePackInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntelligencePackInner.class);
-
     /*
      * The name of the intelligence pack.
      */
@@ -31,6 +27,10 @@ public final class IntelligencePackInner {
      */
     @JsonProperty(value = "displayName")
     private String displayName;
+
+    /** Creates an instance of IntelligencePackInner class. */
+    public IntelligencePackInner() {
+    }
 
     /**
      * Get the name property: The name of the intelligence pack.

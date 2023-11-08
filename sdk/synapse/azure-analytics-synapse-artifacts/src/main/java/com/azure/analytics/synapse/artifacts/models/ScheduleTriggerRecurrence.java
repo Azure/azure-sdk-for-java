@@ -57,6 +57,9 @@ public final class ScheduleTriggerRecurrence {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ScheduleTriggerRecurrence class. */
+    public ScheduleTriggerRecurrence() {}
+
     /**
      * Get the frequency property: The frequency.
      *

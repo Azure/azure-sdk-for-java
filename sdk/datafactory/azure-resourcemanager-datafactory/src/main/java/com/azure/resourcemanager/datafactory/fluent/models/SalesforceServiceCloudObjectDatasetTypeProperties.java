@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SalesforceServiceCloudObjectDatasetTypeProperties {
     /*
-     * The Salesforce Service Cloud object API name. Type: string (or
-     * Expression with resultType string).
+     * The Salesforce Service Cloud object API name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "objectApiName")
     private Object objectApiName;
+
+    /** Creates an instance of SalesforceServiceCloudObjectDatasetTypeProperties class. */
+    public SalesforceServiceCloudObjectDatasetTypeProperties() {
+    }
 
     /**
      * Get the objectApiName property: The Salesforce Service Cloud object API name. Type: string (or Expression with

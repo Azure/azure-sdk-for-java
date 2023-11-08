@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.models.SignalRServiceUsageName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Object that describes a specific usage of the resources. */
 @Fluent
 public final class SignalRServiceUsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRServiceUsageInner.class);
-
     /*
      * Fully qualified ARM resource id
      */
@@ -28,8 +24,7 @@ public final class SignalRServiceUsageInner {
     private Long currentValue;
 
     /*
-     * The maximum permitted value for the usage quota. If there is no limit,
-     * this value will be -1.
+     * The maximum permitted value for the usage quota. If there is no limit, this value will be -1.
      */
     @JsonProperty(value = "limit")
     private Long limit;
@@ -41,11 +36,15 @@ public final class SignalRServiceUsageInner {
     private SignalRServiceUsageName name;
 
     /*
-     * Representing the units of the usage quota. Possible values are: Count,
-     * Bytes, Seconds, Percent, CountPerSecond, BytesPerSecond.
+     * Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond,
+     * BytesPerSecond.
      */
     @JsonProperty(value = "unit")
     private String unit;
+
+    /** Creates an instance of SignalRServiceUsageInner class. */
+    public SignalRServiceUsageInner() {
+    }
 
     /**
      * Get the id property: Fully qualified ARM resource id.

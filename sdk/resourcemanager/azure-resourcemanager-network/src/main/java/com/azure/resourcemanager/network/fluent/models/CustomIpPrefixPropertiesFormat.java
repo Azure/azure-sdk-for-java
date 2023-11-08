@@ -7,6 +7,8 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.CommissionedState;
+import com.azure.resourcemanager.network.models.CustomIpPrefixType;
+import com.azure.resourcemanager.network.models.Geo;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +17,13 @@ import java.util.List;
 @Fluent
 public final class CustomIpPrefixPropertiesFormat {
     /*
-     * The prefix range in CIDR notation. Should include the start address and
-     * the prefix length.
+     * The ASN for CIDR advertising. Should be an integer as string.
+     */
+    @JsonProperty(value = "asn")
+    private String asn;
+
+    /*
+     * The prefix range in CIDR notation. Should include the start address and the prefix length.
      */
     @JsonProperty(value = "cidr")
     private String cidr;
@@ -52,6 +59,30 @@ public final class CustomIpPrefixPropertiesFormat {
     private CommissionedState commissionedState;
 
     /*
+     * Whether to do express route advertise.
+     */
+    @JsonProperty(value = "expressRouteAdvertise")
+    private Boolean expressRouteAdvertise;
+
+    /*
+     * The Geo for CIDR advertising. Should be an Geo code.
+     */
+    @JsonProperty(value = "geo")
+    private Geo geo;
+
+    /*
+     * Whether to Advertise the range to Internet.
+     */
+    @JsonProperty(value = "noInternetAdvertise")
+    private Boolean noInternetAdvertise;
+
+    /*
+     * Type of custom IP prefix. Should be Singular, Parent, or Child.
+     */
+    @JsonProperty(value = "prefixType")
+    private CustomIpPrefixType prefixType;
+
+    /*
      * The list of all referenced PublicIpPrefixes.
      */
     @JsonProperty(value = "publicIpPrefixes", access = JsonProperty.Access.WRITE_ONLY)
@@ -74,6 +105,30 @@ public final class CustomIpPrefixPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of CustomIpPrefixPropertiesFormat class. */
+    public CustomIpPrefixPropertiesFormat() {
+    }
+
+    /**
+     * Get the asn property: The ASN for CIDR advertising. Should be an integer as string.
+     *
+     * @return the asn value.
+     */
+    public String asn() {
+        return this.asn;
+    }
+
+    /**
+     * Set the asn property: The ASN for CIDR advertising. Should be an integer as string.
+     *
+     * @param asn the asn value to set.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
+     */
+    public CustomIpPrefixPropertiesFormat withAsn(String asn) {
+        this.asn = asn;
+        return this;
+    }
 
     /**
      * Get the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
@@ -181,6 +236,86 @@ public final class CustomIpPrefixPropertiesFormat {
      */
     public CustomIpPrefixPropertiesFormat withCommissionedState(CommissionedState commissionedState) {
         this.commissionedState = commissionedState;
+        return this;
+    }
+
+    /**
+     * Get the expressRouteAdvertise property: Whether to do express route advertise.
+     *
+     * @return the expressRouteAdvertise value.
+     */
+    public Boolean expressRouteAdvertise() {
+        return this.expressRouteAdvertise;
+    }
+
+    /**
+     * Set the expressRouteAdvertise property: Whether to do express route advertise.
+     *
+     * @param expressRouteAdvertise the expressRouteAdvertise value to set.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
+     */
+    public CustomIpPrefixPropertiesFormat withExpressRouteAdvertise(Boolean expressRouteAdvertise) {
+        this.expressRouteAdvertise = expressRouteAdvertise;
+        return this;
+    }
+
+    /**
+     * Get the geo property: The Geo for CIDR advertising. Should be an Geo code.
+     *
+     * @return the geo value.
+     */
+    public Geo geo() {
+        return this.geo;
+    }
+
+    /**
+     * Set the geo property: The Geo for CIDR advertising. Should be an Geo code.
+     *
+     * @param geo the geo value to set.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
+     */
+    public CustomIpPrefixPropertiesFormat withGeo(Geo geo) {
+        this.geo = geo;
+        return this;
+    }
+
+    /**
+     * Get the noInternetAdvertise property: Whether to Advertise the range to Internet.
+     *
+     * @return the noInternetAdvertise value.
+     */
+    public Boolean noInternetAdvertise() {
+        return this.noInternetAdvertise;
+    }
+
+    /**
+     * Set the noInternetAdvertise property: Whether to Advertise the range to Internet.
+     *
+     * @param noInternetAdvertise the noInternetAdvertise value to set.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
+     */
+    public CustomIpPrefixPropertiesFormat withNoInternetAdvertise(Boolean noInternetAdvertise) {
+        this.noInternetAdvertise = noInternetAdvertise;
+        return this;
+    }
+
+    /**
+     * Get the prefixType property: Type of custom IP prefix. Should be Singular, Parent, or Child.
+     *
+     * @return the prefixType value.
+     */
+    public CustomIpPrefixType prefixType() {
+        return this.prefixType;
+    }
+
+    /**
+     * Set the prefixType property: Type of custom IP prefix. Should be Singular, Parent, or Child.
+     *
+     * @param prefixType the prefixType value to set.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
+     */
+    public CustomIpPrefixPropertiesFormat withPrefixType(CustomIpPrefixType prefixType) {
+        this.prefixType = prefixType;
         return this;
     }
 

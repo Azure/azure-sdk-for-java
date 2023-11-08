@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedPrivateEndpoints Delete. */
 public final class ManagedPrivateEndpointsDeleteSamples {
     /*
@@ -24,6 +22,6 @@ public final class ManagedPrivateEndpointsDeleteSamples {
                 "exampleFactoryName",
                 "exampleManagedVirtualNetworkName",
                 "exampleManagedPrivateEndpointName",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

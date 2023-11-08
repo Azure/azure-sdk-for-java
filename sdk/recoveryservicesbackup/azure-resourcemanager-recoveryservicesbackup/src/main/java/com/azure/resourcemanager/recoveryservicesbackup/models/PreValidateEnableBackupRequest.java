@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class PreValidateEnableBackupRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreValidateEnableBackupRequest.class);
-
     /*
      * ProtectedItem Type- VM, SqlDataBase, AzureFileShare etc
      */
@@ -41,6 +37,10 @@ public final class PreValidateEnableBackupRequest {
      */
     @JsonProperty(value = "properties")
     private String properties;
+
+    /** Creates an instance of PreValidateEnableBackupRequest class. */
+    public PreValidateEnableBackupRequest() {
+    }
 
     /**
      * Get the resourceType property: ProtectedItem Type- VM, SqlDataBase, AzureFileShare etc.

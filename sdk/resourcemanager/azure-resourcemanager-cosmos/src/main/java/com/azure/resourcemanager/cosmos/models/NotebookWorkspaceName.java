@@ -14,6 +14,15 @@ public final class NotebookWorkspaceName extends ExpandableStringEnum<NotebookWo
     public static final NotebookWorkspaceName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of NotebookWorkspaceName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotebookWorkspaceName() {
+    }
+
+    /**
      * Creates or finds a NotebookWorkspaceName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class NotebookWorkspaceName extends ExpandableStringEnum<NotebookWo
         return fromString(name, NotebookWorkspaceName.class);
     }
 
-    /** @return known NotebookWorkspaceName values. */
+    /**
+     * Gets known NotebookWorkspaceName values.
+     *
+     * @return known NotebookWorkspaceName values.
+     */
     public static Collection<NotebookWorkspaceName> values() {
         return values(NotebookWorkspaceName.class);
     }

@@ -23,7 +23,7 @@ public interface IntegrationAccountAgreementsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account agreements.
+     * @return a list of integration account agreements as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IntegrationAccountAgreementInner> list(String resourceGroupName, String integrationAccountName);
@@ -39,11 +39,27 @@ public interface IntegrationAccountAgreementsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account agreements.
+     * @return a list of integration account agreements as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IntegrationAccountAgreementInner> list(
         String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context);
+
+    /**
+     * Gets an integration account agreement.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param agreementName The integration account agreement name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an integration account agreement along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<IntegrationAccountAgreementInner> getWithResponse(
+        String resourceGroupName, String integrationAccountName, String agreementName, Context context);
 
     /**
      * Gets an integration account agreement.
@@ -60,20 +76,25 @@ public interface IntegrationAccountAgreementsClient {
     IntegrationAccountAgreementInner get(String resourceGroupName, String integrationAccountName, String agreementName);
 
     /**
-     * Gets an integration account agreement.
+     * Creates or updates an integration account agreement.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
+     * @param agreement The integration account agreement.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account agreement.
+     * @return the integration account agreement along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountAgreementInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String agreementName, Context context);
+    Response<IntegrationAccountAgreementInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String integrationAccountName,
+        String agreementName,
+        IntegrationAccountAgreementInner agreement,
+        Context context);
 
     /**
      * Creates or updates an integration account agreement.
@@ -95,25 +116,20 @@ public interface IntegrationAccountAgreementsClient {
         IntegrationAccountAgreementInner agreement);
 
     /**
-     * Creates or updates an integration account agreement.
+     * Deletes an integration account agreement.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
-     * @param agreement The integration account agreement.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account agreement.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountAgreementInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String agreementName,
-        IntegrationAccountAgreementInner agreement,
-        Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String integrationAccountName, String agreementName, Context context);
 
     /**
      * Deletes an integration account agreement.
@@ -129,20 +145,25 @@ public interface IntegrationAccountAgreementsClient {
     void delete(String resourceGroupName, String integrationAccountName, String agreementName);
 
     /**
-     * Deletes an integration account agreement.
+     * Get the content callback url.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
+     * @param listContentCallbackUrl The callback url parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the content callback url along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String agreementName, Context context);
+    Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(
+        String resourceGroupName,
+        String integrationAccountName,
+        String agreementName,
+        GetCallbackUrlParameters listContentCallbackUrl,
+        Context context);
 
     /**
      * Get the content callback url.
@@ -162,25 +183,4 @@ public interface IntegrationAccountAgreementsClient {
         String integrationAccountName,
         String agreementName,
         GetCallbackUrlParameters listContentCallbackUrl);
-
-    /**
-     * Get the content callback url.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param agreementName The integration account agreement name.
-     * @param listContentCallbackUrl The callback url parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String agreementName,
-        GetCallbackUrlParameters listContentCallbackUrl,
-        Context context);
 }

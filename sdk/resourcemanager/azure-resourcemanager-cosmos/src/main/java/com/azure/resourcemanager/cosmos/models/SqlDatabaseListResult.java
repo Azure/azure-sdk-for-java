@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlDatabaseGetResultsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List operation response, that contains the SQL databases and their properties. */
 @Immutable
 public final class SqlDatabaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlDatabaseListResult.class);
-
     /*
      * List of SQL databases and their properties.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlDatabaseGetResultsInner> value;
+
+    /** Creates an instance of SqlDatabaseListResult class. */
+    public SqlDatabaseListResult() {
+    }
 
     /**
      * Get the value property: List of SQL databases and their properties.

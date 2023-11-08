@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Azure Active Directory identity configuration for a resource. */
 @Fluent
-public class ResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
-
+public final class ResourceIdentity {
     /*
      * The Azure Active Directory principal id.
      */
@@ -22,9 +18,8 @@ public class ResourceIdentity {
     private UUID principalId;
 
     /*
-     * The identity type. Set this to 'SystemAssigned' in order to
-     * automatically create and assign an Azure Active Directory principal for
-     * the resource.
+     * The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
+     * Directory principal for the resource.
      */
     @JsonProperty(value = "type")
     private IdentityType type;
@@ -34,6 +29,10 @@ public class ResourceIdentity {
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
+
+    /** Creates an instance of ResourceIdentity class. */
+    public ResourceIdentity() {
+    }
 
     /**
      * Get the principalId property: The Azure Active Directory principal id.

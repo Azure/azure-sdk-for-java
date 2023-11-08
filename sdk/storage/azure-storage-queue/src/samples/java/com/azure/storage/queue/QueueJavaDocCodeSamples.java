@@ -584,4 +584,46 @@ public class QueueJavaDocCodeSamples {
         client.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.queue.QueueClient.generateSas#QueueServiceSasSignatureValues-Context
     }
+
+    /**
+     * Generates a code sample for using {@link QueueClient#createIfNotExists()} and
+     * {@link QueueClient#createIfNotExistsWithResponse(Map, Duration, Context)}
+     */
+    public void createQueueIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.queue.queueClient.createIfNotExists
+        boolean result = client.createIfNotExists();
+        System.out.println("Queue created: " + result);
+        // END: com.azure.storage.queue.queueClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context
+        Response<Boolean> response = client.createIfNotExistsWithResponse(Collections.singletonMap("queue", "metadataMap"),
+            Duration.ofSeconds(1), new Context(key1, value1));
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueClient#deleteIfExists()} and
+     * {@link QueueClient#deleteIfExistsWithResponse(Duration, Context)}
+     */
+    public void deleteQueueIfExistsCodeSnippets() {
+
+        // BEGIN: com.azure.storage.queue.queueClient.deleteIfExists
+        client.deleteIfExists();
+        System.out.println("Complete deleting the queue.");
+        // END: com.azure.storage.queue.queueClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context
+        Response<Boolean> response = client.deleteIfExistsWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context
+    }
 }

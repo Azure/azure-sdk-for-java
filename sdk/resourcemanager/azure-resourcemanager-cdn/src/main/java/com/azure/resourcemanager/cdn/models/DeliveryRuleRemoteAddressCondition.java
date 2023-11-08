@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RemoteAddress")
 @Fluent
 public final class DeliveryRuleRemoteAddressCondition extends DeliveryRuleCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryRuleRemoteAddressCondition.class);
-
     /*
      * Defines the parameters for the condition.
      */
     @JsonProperty(value = "parameters", required = true)
     private RemoteAddressMatchConditionParameters parameters;
+
+    /** Creates an instance of DeliveryRuleRemoteAddressCondition class. */
+    public DeliveryRuleRemoteAddressCondition() {
+    }
 
     /**
      * Get the parameters property: Defines the parameters for the condition.
@@ -53,7 +54,7 @@ public final class DeliveryRuleRemoteAddressCondition extends DeliveryRuleCondit
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property parameters in model DeliveryRuleRemoteAddressCondition"));
@@ -61,4 +62,6 @@ public final class DeliveryRuleRemoteAddressCondition extends DeliveryRuleCondit
             parameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeliveryRuleRemoteAddressCondition.class);
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations GetAzureAsyncHeaderResult. */
 public final class OperationsGetAzureAsyncHeaderResultSamples {
     /*
@@ -20,6 +18,9 @@ public final class OperationsGetAzureAsyncHeaderResultSamples {
         manager
             .operations()
             .getAzureAsyncHeaderResultWithResponse(
-                "resourceGroup1", "workspace1", "01234567-89ab-4def-0123-456789abcdef", Context.NONE);
+                "resourceGroup1",
+                "workspace1",
+                "01234567-89ab-4def-0123-456789abcdef",
+                com.azure.core.util.Context.NONE);
     }
 }

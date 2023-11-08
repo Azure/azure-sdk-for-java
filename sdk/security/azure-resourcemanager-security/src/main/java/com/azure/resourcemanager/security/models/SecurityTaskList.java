@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.SecurityTaskInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of security task recommendations. */
 @Immutable
 public final class SecurityTaskList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityTaskList.class);
-
     /*
      * The value property.
      */
@@ -27,6 +23,10 @@ public final class SecurityTaskList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of SecurityTaskList class. */
+    public SecurityTaskList() {
+    }
 
     /**
      * Get the value property: The value property.

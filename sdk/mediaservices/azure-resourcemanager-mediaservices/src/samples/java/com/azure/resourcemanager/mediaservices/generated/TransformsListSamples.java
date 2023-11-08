@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Transforms List. */
 public final class TransformsListSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all-filter-by-created.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-list-all-filter-by-created.json
      */
     /**
      * Sample code: Lists the Transforms filter by created.
@@ -23,14 +21,14 @@ public final class TransformsListSamples {
             .list(
                 "contosoresources",
                 "contosomedia",
-                "properties/created gt 2021-11-01T00:00:00.0000000Z and properties/created le"
-                    + " 2021-11-01T00:00:10.0000000Z",
+                "properties/created gt 2021-06-01T00:00:00.0000000Z and properties/created le"
+                    + " 2021-06-01T00:00:10.0000000Z",
                 "properties/created",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all-filter-by-name.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-list-all-filter-by-name.json
      */
     /**
      * Sample code: Lists the Transforms filter by name.
@@ -46,11 +44,11 @@ public final class TransformsListSamples {
                 "contosomedia",
                 "(name eq 'sampleEncode') or (name eq 'sampleEncodeAndVideoIndex')",
                 "name desc",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all-filter-by-lastmodified.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-list-all-filter-by-lastmodified.json
      */
     /**
      * Sample code: Lists the Transforms filter by lastmodified.
@@ -64,14 +62,14 @@ public final class TransformsListSamples {
             .list(
                 "contosoresources",
                 "contosomedia",
-                "properties/lastmodified gt 2021-11-01T00:00:00.0000000Z and properties/lastmodified le"
-                    + " 2021-11-01T00:00:10.0000000Z",
+                "properties/lastmodified gt 2021-06-01T00:00:00.0000000Z and properties/lastmodified le"
+                    + " 2021-06-01T00:00:10.0000000Z",
                 "properties/lastmodified desc",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/transforms-list-all.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Encoding/stable/2022-07-01/examples/transforms-list-all.json
      */
     /**
      * Sample code: Lists the Transforms.
@@ -79,6 +77,6 @@ public final class TransformsListSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void listsTheTransforms(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.transforms().list("contosoresources", "contosomedia", null, null, Context.NONE);
+        manager.transforms().list("contosoresources", "contosomedia", null, null, com.azure.core.util.Context.NONE);
     }
 }

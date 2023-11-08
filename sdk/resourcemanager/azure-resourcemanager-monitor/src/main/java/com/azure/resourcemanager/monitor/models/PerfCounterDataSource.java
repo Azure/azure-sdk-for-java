@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,40 +14,38 @@ import java.util.List;
  */
 @Fluent
 public final class PerfCounterDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerfCounterDataSource.class);
-
     /*
      * List of streams that this data source will be sent to.
-     * A stream indicates what schema will be used for this data and usually
-     * what table in Log Analytics the data will be sent to.
+     * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
+     * be sent to.
      */
     @JsonProperty(value = "streams")
     private List<KnownPerfCounterDataSourceStreams> streams;
 
     /*
-     * The number of seconds between consecutive counter measurements
-     * (samples).
+     * The number of seconds between consecutive counter measurements (samples).
      */
     @JsonProperty(value = "samplingFrequencyInSeconds")
     private Integer samplingFrequencyInSeconds;
 
     /*
-     * A list of specifier names of the performance counters you want to
-     * collect.
+     * A list of specifier names of the performance counters you want to collect.
      * Use a wildcard (*) to collect a counter for all instances.
-     * To get a list of performance counters on Windows, run the command
-     * 'typeperf'.
+     * To get a list of performance counters on Windows, run the command 'typeperf'.
      */
     @JsonProperty(value = "counterSpecifiers")
     private List<String> counterSpecifiers;
 
     /*
      * A friendly name for the data source.
-     * This name should be unique across all data sources (regardless of type)
-     * within the data collection rule.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of PerfCounterDataSource class. */
+    public PerfCounterDataSource() {
+    }
 
     /**
      * Get the streams property: List of streams that this data source will be sent to. A stream indicates what schema

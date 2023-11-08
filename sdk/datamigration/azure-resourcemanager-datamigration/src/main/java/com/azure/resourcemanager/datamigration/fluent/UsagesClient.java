@@ -13,26 +13,30 @@ import com.azure.resourcemanager.datamigration.fluent.models.QuotaInner;
 /** An instance of this class provides access to all the operations defined in UsagesClient. */
 public interface UsagesClient {
     /**
-     * This method returns region-specific quotas and resource usage information for the Database Migration Service.
+     * Get resource quotas and usage information
+     *
+     * <p>This method returns region-specific quotas and resource usage information for the Database Migration Service.
      *
      * @param location The Azure region of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of quota objects.
+     * @return oData page of quota objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<QuotaInner> list(String location);
 
     /**
-     * This method returns region-specific quotas and resource usage information for the Database Migration Service.
+     * Get resource quotas and usage information
+     *
+     * <p>This method returns region-specific quotas and resource usage information for the Database Migration Service.
      *
      * @param location The Azure region of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of quota objects.
+     * @return oData page of quota objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<QuotaInner> list(String location, Context context);

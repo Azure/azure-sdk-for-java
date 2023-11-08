@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.fluent.LocationsClient;
 import com.azure.resourcemanager.containerinstance.fluent.models.UsageInner;
 import com.azure.resourcemanager.containerinstance.models.CachedImages;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LocationsClient. */
 public final class LocationsClientImpl implements LocationsClient {
-    private final ClientLogger logger = new ClientLogger(LocationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LocationsService service;
 
@@ -62,7 +59,7 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerInstanceMan")
-    private interface LocationsService {
+    public interface LocationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/usages")
         @ExpectedResponses({200})
@@ -127,7 +124,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the usage for a subscription.
+     * @return the usage for a subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listUsageSinglePageAsync(String location) {
@@ -173,7 +170,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the usage for a subscription.
+     * @return the usage for a subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listUsageSinglePageAsync(String location, Context context) {
@@ -215,7 +212,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the usage for a subscription.
+     * @return the usage for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listUsageAsync(String location) {
@@ -230,7 +227,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the usage for a subscription.
+     * @return the usage for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UsageInner> listUsageAsync(String location, Context context) {
@@ -244,7 +241,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the usage for a subscription.
+     * @return the usage for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listUsage(String location) {
@@ -259,7 +256,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the usage for a subscription.
+     * @return the usage for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listUsage(String location, Context context) {
@@ -267,13 +264,16 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
+     * @return the list of cached images on specific OS type for a subscription in a region along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CachedImages>> listCachedImagesSinglePageAsync(String location) {
@@ -317,14 +317,17 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
+     * @return the list of cached images on specific OS type for a subscription in a region along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CachedImages>> listCachedImagesSinglePageAsync(String location, Context context) {
@@ -365,13 +368,16 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
+     * @return the list of cached images on specific OS type for a subscription in a region as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CachedImages> listCachedImagesAsync(String location) {
@@ -380,14 +386,17 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
+     * @return the list of cached images on specific OS type for a subscription in a region as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CachedImages> listCachedImagesAsync(String location, Context context) {
@@ -397,13 +406,16 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
+     * @return the list of cached images on specific OS type for a subscription in a region as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CachedImages> listCachedImages(String location) {
@@ -411,14 +423,17 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images on specific OS type for a subscription in a region.
+     * @return the list of cached images on specific OS type for a subscription in a region as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CachedImages> listCachedImages(String location, Context context) {
@@ -426,13 +441,16 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
+     * @return the list of CPU/memory/GPU capabilities of a region along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<Capabilities>> listCapabilitiesSinglePageAsync(String location) {
@@ -476,14 +494,17 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
+     * @return the list of CPU/memory/GPU capabilities of a region along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<Capabilities>> listCapabilitiesSinglePageAsync(String location, Context context) {
@@ -524,13 +545,15 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
+     * @return the list of CPU/memory/GPU capabilities of a region as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Capabilities> listCapabilitiesAsync(String location) {
@@ -539,14 +562,16 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
+     * @return the list of CPU/memory/GPU capabilities of a region as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<Capabilities> listCapabilitiesAsync(String location, Context context) {
@@ -556,13 +581,15 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
+     * @return the list of CPU/memory/GPU capabilities of a region as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Capabilities> listCapabilities(String location) {
@@ -570,14 +597,16 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of CPU/memory/GPU capabilities of a region.
+     * @return the list of CPU/memory/GPU capabilities of a region as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Capabilities> listCapabilities(String location, Context context) {
@@ -587,11 +616,13 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response containing cached images.
+     * @return the response containing cached images along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CachedImages>> listCachedImagesNextSinglePageAsync(String nextLink) {
@@ -622,12 +653,14 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response containing cached images.
+     * @return the response containing cached images along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CachedImages>> listCachedImagesNextSinglePageAsync(String nextLink, Context context) {
@@ -658,11 +691,13 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response containing list of capabilities.
+     * @return the response containing list of capabilities along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<Capabilities>> listCapabilitiesNextSinglePageAsync(String nextLink) {
@@ -693,12 +728,14 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response containing list of capabilities.
+     * @return the response containing list of capabilities along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<Capabilities>> listCapabilitiesNextSinglePageAsync(String nextLink, Context context) {

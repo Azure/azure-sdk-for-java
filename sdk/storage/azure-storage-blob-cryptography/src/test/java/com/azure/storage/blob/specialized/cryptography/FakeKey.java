@@ -14,8 +14,7 @@ import reactor.core.publisher.Mono;
 /**
  * Extremely basic key resolver to test client side encryption
  */
-public final class FakeKey implements AsyncKeyEncryptionKey, IKey {
-
+final class FakeKey implements AsyncKeyEncryptionKey, IKey {
     private final String keyId;
     private final byte[] randomData;
 
@@ -39,7 +38,7 @@ public final class FakeKey implements AsyncKeyEncryptionKey, IKey {
         return Mono.just(xor(encryptedKey, randomData));
     }
 
-    private byte[] xor(byte[] arr1, byte[] arr2) {
+    private static byte[] xor(byte[] arr1, byte[] arr2) {
         byte[] ret = new byte[arr1.length];
         for (int i = 0; i < arr1.length; i++) {
             ret[i] = (byte) (arr1[i] ^ arr2[i]);
@@ -102,6 +101,5 @@ public final class FakeKey implements AsyncKeyEncryptionKey, IKey {
 
     @Override
     public void close() {
-
     }
 }

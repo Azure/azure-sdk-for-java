@@ -190,8 +190,7 @@ public final class CosmosBulkItemResponse {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosBulkItemResponseHelper.setCosmosBulkItemResponseAccessor(
             new ImplementationBridgeHelpers.CosmosBulkItemResponseHelper.CosmosBulkItemResponseAccessor() {
 
@@ -207,4 +206,6 @@ public final class CosmosBulkItemResponse {
                 }
             });
     }
+
+    static { initialize(); }
 }

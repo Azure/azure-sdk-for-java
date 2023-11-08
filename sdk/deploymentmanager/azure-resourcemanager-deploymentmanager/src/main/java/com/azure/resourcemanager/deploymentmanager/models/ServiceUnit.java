@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines a service unit. */
 @Fluent
 public final class ServiceUnit extends ServiceUnitProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceUnit.class);
-
     /*
      * Name of the service unit.
      */
@@ -26,6 +22,10 @@ public final class ServiceUnit extends ServiceUnitProperties {
      */
     @JsonProperty(value = "steps")
     private List<RolloutStep> steps;
+
+    /** Creates an instance of ServiceUnit class. */
+    public ServiceUnit() {
+    }
 
     /**
      * Get the name property: Name of the service unit.

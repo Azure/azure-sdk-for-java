@@ -23,6 +23,10 @@ public final class CustomDataSourceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private Object typeProperties;
 
+    /** Creates an instance of CustomDataSourceLinkedService class. */
+    public CustomDataSourceLinkedService() {
+    }
+
     /**
      * Get the typeProperties property: Custom linked service properties.
      *

@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.JobStreamType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Definition of the job stream. */
-@JsonFlatten
 @Fluent
-public class JobStreamInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStreamInner.class);
-
+public final class JobStreamInner {
     /*
      * Gets or sets the id of the resource.
      */
@@ -28,38 +22,8 @@ public class JobStreamInner {
     /*
      * Gets or sets the id of the job stream.
      */
-    @JsonProperty(value = "properties.jobStreamId")
-    private String jobStreamId;
-
-    /*
-     * Gets or sets the creation time of the job.
-     */
-    @JsonProperty(value = "properties.time")
-    private OffsetDateTime time;
-
-    /*
-     * Gets or sets the stream type.
-     */
-    @JsonProperty(value = "properties.streamType")
-    private JobStreamType streamType;
-
-    /*
-     * Gets or sets the stream text.
-     */
-    @JsonProperty(value = "properties.streamText")
-    private String streamText;
-
-    /*
-     * Gets or sets the summary.
-     */
-    @JsonProperty(value = "properties.summary")
-    private String summary;
-
-    /*
-     * Gets or sets the values of the job stream.
-     */
-    @JsonProperty(value = "properties.value")
-    private Map<String, Object> value;
+    @JsonProperty(value = "properties")
+    private JobStreamProperties innerProperties;
 
     /**
      * Get the id property: Gets or sets the id of the resource.
@@ -82,12 +46,21 @@ public class JobStreamInner {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the id of the job stream.
+     *
+     * @return the innerProperties value.
+     */
+    private JobStreamProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the jobStreamId property: Gets or sets the id of the job stream.
      *
      * @return the jobStreamId value.
      */
     public String jobStreamId() {
-        return this.jobStreamId;
+        return this.innerProperties() == null ? null : this.innerProperties().jobStreamId();
     }
 
     /**
@@ -97,7 +70,10 @@ public class JobStreamInner {
      * @return the JobStreamInner object itself.
      */
     public JobStreamInner withJobStreamId(String jobStreamId) {
-        this.jobStreamId = jobStreamId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStreamProperties();
+        }
+        this.innerProperties().withJobStreamId(jobStreamId);
         return this;
     }
 
@@ -107,7 +83,7 @@ public class JobStreamInner {
      * @return the time value.
      */
     public OffsetDateTime time() {
-        return this.time;
+        return this.innerProperties() == null ? null : this.innerProperties().time();
     }
 
     /**
@@ -117,7 +93,10 @@ public class JobStreamInner {
      * @return the JobStreamInner object itself.
      */
     public JobStreamInner withTime(OffsetDateTime time) {
-        this.time = time;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStreamProperties();
+        }
+        this.innerProperties().withTime(time);
         return this;
     }
 
@@ -127,7 +106,7 @@ public class JobStreamInner {
      * @return the streamType value.
      */
     public JobStreamType streamType() {
-        return this.streamType;
+        return this.innerProperties() == null ? null : this.innerProperties().streamType();
     }
 
     /**
@@ -137,7 +116,10 @@ public class JobStreamInner {
      * @return the JobStreamInner object itself.
      */
     public JobStreamInner withStreamType(JobStreamType streamType) {
-        this.streamType = streamType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStreamProperties();
+        }
+        this.innerProperties().withStreamType(streamType);
         return this;
     }
 
@@ -147,7 +129,7 @@ public class JobStreamInner {
      * @return the streamText value.
      */
     public String streamText() {
-        return this.streamText;
+        return this.innerProperties() == null ? null : this.innerProperties().streamText();
     }
 
     /**
@@ -157,7 +139,10 @@ public class JobStreamInner {
      * @return the JobStreamInner object itself.
      */
     public JobStreamInner withStreamText(String streamText) {
-        this.streamText = streamText;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStreamProperties();
+        }
+        this.innerProperties().withStreamText(streamText);
         return this;
     }
 
@@ -167,7 +152,7 @@ public class JobStreamInner {
      * @return the summary value.
      */
     public String summary() {
-        return this.summary;
+        return this.innerProperties() == null ? null : this.innerProperties().summary();
     }
 
     /**
@@ -177,7 +162,10 @@ public class JobStreamInner {
      * @return the JobStreamInner object itself.
      */
     public JobStreamInner withSummary(String summary) {
-        this.summary = summary;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStreamProperties();
+        }
+        this.innerProperties().withSummary(summary);
         return this;
     }
 
@@ -187,7 +175,7 @@ public class JobStreamInner {
      * @return the value value.
      */
     public Map<String, Object> value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -197,7 +185,10 @@ public class JobStreamInner {
      * @return the JobStreamInner object itself.
      */
     public JobStreamInner withValue(Map<String, Object> value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStreamProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -207,5 +198,8 @@ public class JobStreamInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

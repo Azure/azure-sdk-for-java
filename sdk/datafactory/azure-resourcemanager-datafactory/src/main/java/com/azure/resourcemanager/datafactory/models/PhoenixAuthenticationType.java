@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PhoenixAuthenticationType. */
+/** The authentication mechanism used to connect to the Phoenix server. */
 public final class PhoenixAuthenticationType extends ExpandableStringEnum<PhoenixAuthenticationType> {
     /** Static value Anonymous for PhoenixAuthenticationType. */
     public static final PhoenixAuthenticationType ANONYMOUS = fromString("Anonymous");
@@ -21,6 +21,15 @@ public final class PhoenixAuthenticationType extends ExpandableStringEnum<Phoeni
         fromString("WindowsAzureHDInsightService");
 
     /**
+     * Creates a new instance of PhoenixAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PhoenixAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a PhoenixAuthenticationType from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class PhoenixAuthenticationType extends ExpandableStringEnum<Phoeni
         return fromString(name, PhoenixAuthenticationType.class);
     }
 
-    /** @return known PhoenixAuthenticationType values. */
+    /**
+     * Gets known PhoenixAuthenticationType values.
+     *
+     * @return known PhoenixAuthenticationType values.
+     */
     public static Collection<PhoenixAuthenticationType> values() {
         return values(PhoenixAuthenticationType.class);
     }

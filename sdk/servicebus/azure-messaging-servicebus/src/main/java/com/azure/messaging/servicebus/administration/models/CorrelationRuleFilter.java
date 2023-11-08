@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents the correlation rule filter expression. It holds a set of conditions that are matched against one or more
@@ -31,16 +32,54 @@ import java.util.Map;
  * match.
  * <p>
  * This provides an efficient shortcut for declarations of filters that deal only with correlation
- * equality. In this case the cost of the lexigraphical analysis of the expression can be avoided. Not only will
+ * equality. In this case the cost of the lexicographical analysis of the expression can be avoided. Not only will
  * correlation filters be optimized at declaration time, but they will also be optimized at runtime. Correlation filter
  * matching can be reduced to a hashtable lookup, which aggregates the complexity of the set of defined correlation
  * filters to <code>O(1)</code>.
  *
+ * <p><strong>Sample: Create a topic, subscription, and rule</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a Service Bus topic and subscription.  The subscription
+ * filters for messages with a correlation id {@code "emails"} and has a {@code "importance"} property set
+ * to {@code "high"}.  Consequently, all high importance messages will be delivered to the
+ * {@code "high-importance-subscription"} subscription. See
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/topic-filters">Topic filters</a> for additional
+ * information.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.createsubscription#string-string-string -->
+ * <pre>
+ * String topicName = &quot;my-new-topic&quot;;
+ * TopicProperties topic = client.createTopic&#40;topicName&#41;;
+ *
+ * String subscriptionName = &quot;high-importance-subscription&quot;;
+ * String ruleName = &quot;important-emails-filter&quot;;
+ * CreateSubscriptionOptions subscriptionOptions = new CreateSubscriptionOptions&#40;&#41;
+ *     .setMaxDeliveryCount&#40;15&#41;
+ *     .setLockDuration&#40;Duration.ofMinutes&#40;2&#41;&#41;;
+ *
+ * CorrelationRuleFilter ruleFilter = new CorrelationRuleFilter&#40;&#41;
+ *     .setCorrelationId&#40;&quot;emails&quot;&#41;;
+ * ruleFilter.getProperties&#40;&#41;.put&#40;&quot;importance&quot;, &quot;high&quot;&#41;;
+ *
+ * CreateRuleOptions createRuleOptions = new CreateRuleOptions&#40;&#41;
+ *     .setFilter&#40;ruleFilter&#41;;
+ *
+ * SubscriptionProperties subscription = client.createSubscription&#40;topicName, subscriptionName, ruleName,
+ *     subscriptionOptions, createRuleOptions&#41;;
+ *
+ * System.out.printf&#40;&quot;Subscription created. Name: %s. Topic name: %s. Lock Duration: %s.%n&quot;,
+ *     subscription.getSubscriptionName&#40;&#41;, subscription.getTopicName&#40;&#41;, subscription.getLockDuration&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.createsubscription#string-string-string -->
+ *
  * @see CreateRuleOptions#setFilter(RuleFilter)
  * @see RuleProperties#setFilter(RuleFilter)
+ * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/topic-filters">Service Bus: Topic filters</a>
  */
 @Fluent
 public class CorrelationRuleFilter extends RuleFilter {
+    private static final ClientLogger LOGGER = new ClientLogger(CorrelationRuleFilter.class);
+
     private final Map<String, Object> properties = new HashMap<>();
     private String correlationId;
     private String contentType;
@@ -68,11 +107,10 @@ public class CorrelationRuleFilter extends RuleFilter {
      * @throws NullPointerException If {@code correlationId} is null.
      */
     public CorrelationRuleFilter(String correlationId) {
-        final ClientLogger logger = new ClientLogger(CorrelationRuleFilter.class);
         if (correlationId == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'correlationId' cannot be null"));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'correlationId' cannot be null"));
         } else if (correlationId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'correlationId' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'correlationId' cannot be empty."));
         }
 
         this.correlationId = correlationId;
@@ -285,8 +323,45 @@ public class CorrelationRuleFilter extends RuleFilter {
         return builder.toString();
     }
 
+    /**
+     *  Compares this RuleFilter to the specified object. The result is true if and only if the argument is not null
+     *  and is a CorrelationRuleFilter object that with the same parameters as this object.
+     *
+     * @param other - the object to which the current CorrelationRuleFilter should be compared.
+     * @return True, if the passed object is a CorrelationRuleFilter with the same parameter values, False otherwise.
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof CorrelationRuleFilter)) {
+            return false;
+        }
+        CorrelationRuleFilter that = (CorrelationRuleFilter) other;
+        return Objects.equals(properties, that.properties)
+            && Objects.equals(correlationId, that.correlationId)
+            && Objects.equals(contentType, that.contentType)
+            && Objects.equals(label, that.label)
+            && Objects.equals(messageId, that.messageId)
+            && Objects.equals(replyTo, that.replyTo)
+            && Objects.equals(replyToSessionId, that.replyToSessionId)
+            && Objects.equals(sessionId, that.sessionId)
+            && Objects.equals(to, that.to);
+    }
+
+    /**
+     * Returns a hash code for this CorrelationRuleFilter.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(correlationId, messageId, sessionId);
+    }
+
     private static boolean appendPropertyExpression(boolean isFirstExpression, StringBuilder builder, String display,
-        String value) {
+                                                    String value) {
 
         if (value == null) {
             return true;

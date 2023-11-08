@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Ssis parameter. */
 @Fluent
 public final class SsisParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisParameter.class);
-
     /*
      * Parameter id.
      */
@@ -85,6 +81,10 @@ public final class SsisParameter {
      */
     @JsonProperty(value = "variable")
     private String variable;
+
+    /** Creates an instance of SsisParameter class. */
+    public SsisParameter() {
+    }
 
     /**
      * Get the id property: Parameter id.

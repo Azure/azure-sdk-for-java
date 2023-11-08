@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description about the errors happen while performing migration validation. */
 @Immutable
 public final class SchemaComparisonValidationResultType {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemaComparisonValidationResultType.class);
-
     /*
      * Name of the object that has the difference
      */
@@ -21,8 +17,7 @@ public final class SchemaComparisonValidationResultType {
     private String objectName;
 
     /*
-     * Type of the object that has the difference. e.g
-     * (Table/View/StoredProcedure)
+     * Type of the object that has the difference. e.g (Table/View/StoredProcedure)
      */
     @JsonProperty(value = "objectType", access = JsonProperty.Access.WRITE_ONLY)
     private ObjectType objectType;
@@ -32,6 +27,10 @@ public final class SchemaComparisonValidationResultType {
      */
     @JsonProperty(value = "updateAction", access = JsonProperty.Access.WRITE_ONLY)
     private UpdateActionType updateAction;
+
+    /** Creates an instance of SchemaComparisonValidationResultType class. */
+    public SchemaComparisonValidationResultType() {
+    }
 
     /**
      * Get the objectName property: Name of the object that has the difference.

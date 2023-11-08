@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UsernameSource. */
+/** This setting determines how the cache gets username and group names for clients. */
 public final class UsernameSource extends ExpandableStringEnum<UsernameSource> {
     /** Static value AD for UsernameSource. */
     public static final UsernameSource AD = fromString("AD");
@@ -23,6 +23,15 @@ public final class UsernameSource extends ExpandableStringEnum<UsernameSource> {
     public static final UsernameSource NONE = fromString("None");
 
     /**
+     * Creates a new instance of UsernameSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UsernameSource() {
+    }
+
+    /**
      * Creates or finds a UsernameSource from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class UsernameSource extends ExpandableStringEnum<UsernameSource> {
         return fromString(name, UsernameSource.class);
     }
 
-    /** @return known UsernameSource values. */
+    /**
+     * Gets known UsernameSource values.
+     *
+     * @return known UsernameSource values.
+     */
     public static Collection<UsernameSource> values() {
         return values(UsernameSource.class);
     }

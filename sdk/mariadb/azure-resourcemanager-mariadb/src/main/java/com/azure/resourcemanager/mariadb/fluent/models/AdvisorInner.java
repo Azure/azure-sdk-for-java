@@ -6,20 +6,20 @@ package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a recommendation action advisor. */
 @Fluent
 public final class AdvisorInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvisorInner.class);
-
     /*
      * The properties of a recommendation action advisor.
      */
     @JsonProperty(value = "properties")
     private Object properties;
+
+    /** Creates an instance of AdvisorInner class. */
+    public AdvisorInner() {
+    }
 
     /**
      * Get the properties property: The properties of a recommendation action advisor.

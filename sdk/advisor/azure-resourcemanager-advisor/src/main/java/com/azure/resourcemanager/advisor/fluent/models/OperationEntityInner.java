@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.advisor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.advisor.models.OperationDisplayInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The operation supported by Advisor. */
 @Fluent
 public final class OperationEntityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationEntityInner.class);
-
     /*
      * Operation name: {provider}/{resource}/{operation}.
      */
@@ -26,6 +22,10 @@ public final class OperationEntityInner {
      */
     @JsonProperty(value = "display")
     private OperationDisplayInfo display;
+
+    /** Creates an instance of OperationEntityInner class. */
+    public OperationEntityInner() {
+    }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.

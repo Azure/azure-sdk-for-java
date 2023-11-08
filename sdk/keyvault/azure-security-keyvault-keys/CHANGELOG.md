@@ -1,16 +1,235 @@
 # Release History
 
-## 4.4.0-beta.8 (Unreleased)
+## 4.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
-- Changed `getRandomBytes` operations in `KeyClient` and `KeyAsyncClient` to return `byte[]` instead of `RandomBytes`.
-- Removed the `RandomBytes` class.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.7.1 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 4.7.0 (2023-09-25)
+
+### Bugs fixed
+- Added a fallback mechanism to use service-side cryptography if not possible to perform operations locally. ([#36657](https://github.com/Azure/azure-sdk-for-java/pull/36657))
+
+### Other Changes
+- Due to internal client changes, made `KeyEncryptionKeyClient` extend `CryptographyClient`, mirroring their async counterparts. Functionality remains intact.
+- Migrate test recordings to assets repo.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 4.6.5 (2023-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+## 4.6.4 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+
+## 4.6.3 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 4.6.2 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 4.6.1 (2023-04-20)
+
+### Other Changes
+
+- Test proxy server migration.
+- Made all logger instances static.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
+## 4.6.0 (2023-03-18)
+
+### Features Added
+- Added support for service version `7.4`.
+
+### Breaking Changes
+> These changes do not impact the API of stable versions such as `4.5.4`. Only code written against a beta version such as `4.6.0-beta.1` may be affected.
+- Removed support for Octet Key Pair (OKP) operations.
+
+### Other Changes
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 4.5.4 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
+## 4.5.3 (2023-01-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+
+## 4.6.0-beta.1 (2022-11-11)
+
+### Features Added
+- Added `CreateOkpKeyOptions` to pass key options when creating an Octet Key Pair (OKP) on Managed HSM.
+- Added `createOkpKey()` and `createOkpKeyWithResponse()` to `KeyClient` and `KeyAsyncClient` to create an Octet Key Pair (OKP) on Managed HSM.
+- Added `OKP` and `OKP_HSM` to `KeyType`.
+- Added `Ed25519` to `KeyCurveName` to create an Octet Key Pair (OKP) using the Ed25519 curve.
+- Added `EDDSA` to `SignatureAlgorithm` to support signing and verifying using an Edwards Curve Digital Signature Algorithm (EdDSA) on Managed HSM.
+- Added support for service version `7.4-preview.1`.
+
+## 4.5.2 (2022-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+
+## 4.5.1 (2022-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+
+## 4.5.0 (2022-09-20)
+
+### Breaking Changes
+- Made it so that we verify that the challenge resource matches the vault domain by default. This should affect few customers who can use the `disableChallengeResourceVerification()` method in client builders to disable this functionality. See https://aka.ms/azsdk/blog/vault-uri for more information.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+
+## 4.4.6 (2022-08-17)
+
+### Bugs Fixed
+- Fixed an issue where requests sent by sync clients that should include a body could have an empty body instead. ([#30512](https://github.com/Azure/azure-sdk-for-java/pull/30512))
+
+## 4.4.5 (2022-08-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.31.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.4`.
+
+## 4.4.4 (2022-07-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.30.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.3`.
+
+## 4.4.3 (2022-06-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.29.1`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.2`.
+
+## 4.4.2 (2022-05-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.28.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.0`.
+
+## 4.4.1 (2022-04-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.27.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.11.9`.
+
+## 4.4.0 (2022-03-31)
+
+### Features Added
+- Added support for service version `7.3`.
+- Added the following APIs to `KeyClient` and `KeyAsyncClient`:
+  - `getRandomBytes` and `getRandomBytesWithResponse` which, when connected to a managed HSM, can be used to generate a byte array of a given length with random values.
+  - `releaseKey` and `releaseKeyWithResponse` which support securely releasing a key from a Managed HSM.
+  - `rotateKey` and `rotateKeyWithResponse` which allow to rotate a key on-demand in Azure Key Vault and Managed HSM.
+  - `getKeyRotationPolicy` and `getKeyRotationPolicyWithResponse` which allow to retrieve a key's automated rotation policy.
+  - `updateKeyRotationPolicy` and `updateKeyRotationPolicyWithResponse` which allow to update a key's automated rotation policy.
+  - `getCryptographyClient` and `getCryptographyAsyncClient` which provide a simple way to create a `CryptographyClient` and `CryptographyAsyncClient` respectively for a key given its name and optionally a version.
+- Additionally added the following classes to support the aforementioned APIs:
+  - `KeyRotationPolicy` which represents a key's automated rotation policy.
+      - `KeyRotationLifetimeAction` which represents an action that will be performed by Key Vault over the lifetime of a key.
+        - `KeyRotationPolicyAction`, an enum for the types of key rotation policy actions that can be executed relative to a key.
+  - `KeyReleasePolicy` which represents the policy rules under which the key can be exported.
+  - `ReleaseKeyOptions` which represents the configurable options to release a key.
+    - `KeyExportEncryptionAlgorithm`, an enum for specifying an encryption algorithm to be used during key release.
+  - `ReleaseKeyResult` which contains the value of a released key.
+- `exportable` and `releasePolicy` were added to the following classes as well:
+    - `KeyProperties`
+    - `CreateKeyOptions`
+    - `CreateEcKeyOptions`
+    - `CreateOctKeyOptions`
+    - `CreateRsaKeyOptions`
+
+  in order to specify whether the key is exportable and to associate a release policy to a given key
+- `CryptographyClientBuilder` does not require `keyIdentifier` to a include a key version. If no version is provided, cryptographic operations will be made using the latest version of the key.
+- Implemented new traits (micro-interfaces) in `KeyClientBuilder`, `CryptographyClientBuilder` and `KeyEncryptionKeyClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
+
+### Breaking Changes
+> These changes do not impact the API of stable versions such as `4.3.0`.
+> Only code written against beta version `4.4.0-beta.7` may be affected.
+- Changed `getRandomBytes` operations in `KeyClient` and `KeyAsyncClient` to return `byte[]` instead of `RandomBytes`.
+- Removed the `RandomBytes` class.
 
 ## 4.3.8 (2022-03-17)
 

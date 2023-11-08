@@ -11,10 +11,9 @@ import com.azure.resourcemanager.frontdoor.fluent.ManagedRuleSetsClient;
 import com.azure.resourcemanager.frontdoor.fluent.models.ManagedRuleSetDefinitionInner;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleSetDefinition;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleSets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ManagedRuleSetsImpl implements ManagedRuleSets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleSetsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedRuleSetsImpl.class);
 
     private final ManagedRuleSetsClient innerClient;
 

@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -23,6 +24,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.imagebuilder.fluent.ImageBuilderClient;
 import com.azure.resourcemanager.imagebuilder.fluent.OperationsClient;
+import com.azure.resourcemanager.imagebuilder.fluent.TriggersClient;
 import com.azure.resourcemanager.imagebuilder.fluent.VirtualMachineImageTemplatesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -30,15 +32,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the ImageBuilderClientImpl type. */
 @ServiceClient(builder = ImageBuilderClientBuilder.class)
 public final class ImageBuilderClientImpl implements ImageBuilderClient {
-    private final ClientLogger logger = new ClientLogger(ImageBuilderClientImpl.class);
-
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription Id forms part of
      * the URI for every service call.
@@ -127,6 +126,18 @@ public final class ImageBuilderClientImpl implements ImageBuilderClient {
         return this.virtualMachineImageTemplates;
     }
 
+    /** The TriggersClient object to access its operations. */
+    private final TriggersClient triggers;
+
+    /**
+     * Gets the TriggersClient object to access its operations.
+     *
+     * @return the TriggersClient object.
+     */
+    public TriggersClient getTriggers() {
+        return this.triggers;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -162,8 +173,9 @@ public final class ImageBuilderClientImpl implements ImageBuilderClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-10-01";
+        this.apiVersion = "2022-07-01";
         this.virtualMachineImageTemplates = new VirtualMachineImageTemplatesClientImpl(this);
+        this.triggers = new TriggersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }
 
@@ -183,10 +195,7 @@ public final class ImageBuilderClientImpl implements ImageBuilderClient {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -250,7 +259,7 @@ public final class ImageBuilderClientImpl implements ImageBuilderClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -309,4 +318,6 @@ public final class ImageBuilderClientImpl implements ImageBuilderClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageBuilderClientImpl.class);
 }

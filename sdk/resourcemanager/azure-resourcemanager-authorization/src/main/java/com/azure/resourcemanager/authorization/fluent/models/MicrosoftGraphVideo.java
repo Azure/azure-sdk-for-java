@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** video. */
 @Fluent
 public final class MicrosoftGraphVideo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphVideo.class);
-
     /*
      * Number of audio bits per sample.
      */
@@ -82,6 +79,10 @@ public final class MicrosoftGraphVideo {
      * video
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphVideo class. */
+    public MicrosoftGraphVideo() {
+    }
 
     /**
      * Get the audioBitsPerSample property: Number of audio bits per sample.

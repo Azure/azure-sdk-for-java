@@ -24,6 +24,10 @@ public final class ZohoLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ZohoLinkedServiceTypeProperties innerTypeProperties = new ZohoLinkedServiceTypeProperties();
 
+    /** Creates an instance of ZohoLinkedService class. */
+    public ZohoLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Zoho server linked service properties.
      *
@@ -209,22 +213,22 @@ public final class ZohoLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ZohoLinkedService object itself.
      */
-    public ZohoLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public ZohoLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new ZohoLinkedServiceTypeProperties();
         }

@@ -40,6 +40,10 @@ public final class StaticSiteZipDeployment {
     @JsonProperty(value = "functionLanguage")
     private String functionLanguage;
 
+    /** Creates an instance of StaticSiteZipDeployment class. */
+    public StaticSiteZipDeployment() {
+    }
+
     /**
      * Get the appZipUrl property: URL for the zipped app content.
      *

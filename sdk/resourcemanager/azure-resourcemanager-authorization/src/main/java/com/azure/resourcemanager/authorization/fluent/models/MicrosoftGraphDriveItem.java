@@ -7,10 +7,10 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import java.util.Map;
 /** driveItem. */
 @Fluent
 public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDriveItem.class);
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * audio
@@ -35,9 +35,8 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     private Base64Url content;
 
     /*
-     * An eTag for the content of the item. This eTag is not changed if only
-     * the metadata is changed. Note This property is not returned if the item
-     * is a folder. Read-only.
+     * An eTag for the content of the item. This eTag is not changed if only the metadata is changed. Note This
+     * property is not returned if the item is a folder. Read-only.
      */
     @JsonProperty(value = "cTag")
     private String cTag;
@@ -112,6 +111,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
      * root
      */
     @JsonProperty(value = "root")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> root;
 
     /*
@@ -169,8 +169,8 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     private MicrosoftGraphItemAnalytics analytics;
 
     /*
-     * Collection containing Item objects for the immediate children of Item.
-     * Only items representing folders have children. Read-only. Nullable.
+     * Collection containing Item objects for the immediate children of Item. Only items representing folders have
+     * children. Read-only. Nullable.
      */
     @JsonProperty(value = "children")
     private List<MicrosoftGraphDriveItem> children;
@@ -188,22 +188,21 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     private List<MicrosoftGraphPermission> permissions;
 
     /*
-     * The set of subscriptions on the item. Only supported on the root of a
-     * drive.
+     * The set of subscriptions on the item. Only supported on the root of a drive.
      */
     @JsonProperty(value = "subscriptions")
     private List<MicrosoftGraphSubscription> subscriptions;
 
     /*
-     * Collection containing [ThumbnailSet][] objects associated with the item.
-     * For more info, see [getting thumbnails][]. Read-only. Nullable.
+     * Collection containing [ThumbnailSet][] objects associated with the item. For more info, see [getting
+     * thumbnails][]. Read-only. Nullable.
      */
     @JsonProperty(value = "thumbnails")
     private List<MicrosoftGraphThumbnailSet> thumbnails;
 
     /*
-     * The list of previous versions of the item. For more info, see [getting
-     * previous versions][]. Read-only. Nullable.
+     * The list of previous versions of the item. For more info, see [getting previous versions][]. Read-only.
+     * Nullable.
      */
     @JsonProperty(value = "versions")
     private List<MicrosoftGraphDriveItemVersion> versions;
@@ -212,6 +211,10 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
      * driveItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDriveItem class. */
+    public MicrosoftGraphDriveItem() {
+    }
 
     /**
      * Get the audio property: audio.
@@ -240,7 +243,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
      */
     public byte[] content() {
         if (this.content == null) {
-            return null;
+            return EMPTY_BYTE_ARRAY;
         }
         return this.content.decodedBytes();
     }

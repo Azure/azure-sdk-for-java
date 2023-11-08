@@ -50,11 +50,11 @@ public class DetectLanguageBatchDocuments {
         DetectLanguageResultCollection detectedLanguageResultCollection = detectedLanguageResultResponse.getValue();
 
         // Model version
-        System.out.printf("Results of Azure Text Analytics \"Language Detection\" Model, version: %s%n", detectedLanguageResultCollection.getModelVersion());
+        System.out.printf("Results of \"Language Detection\" Model, version: %s%n", detectedLanguageResultCollection.getModelVersion());
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = detectedLanguageResultCollection.getStatistics();
-        System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+        System.out.printf("Documents statistics: document count = %d, erroneous document count = %d, transaction count = %d, valid document count = %d.%n",
             batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
         // Detected language for each document in a batch of documents

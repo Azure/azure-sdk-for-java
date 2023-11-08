@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request body for a request to Bot Service Management to check availability of a bot name. */
 @Fluent
 public final class CheckNameAvailabilityRequestBody {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityRequestBody.class);
-
     /*
      * the name of the bot for which availability needs to be checked.
      */

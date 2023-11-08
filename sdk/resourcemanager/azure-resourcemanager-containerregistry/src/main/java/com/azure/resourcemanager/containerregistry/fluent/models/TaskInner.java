@@ -7,7 +7,6 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Credentials;
 import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.TaskStatus;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
 import com.azure.resourcemanager.containerregistry.models.TriggerProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -27,8 +25,6 @@ import java.util.Map;
  */
 @Fluent
 public final class TaskInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskInner.class);
-
     /*
      * Identity for the resource.
      */
@@ -46,6 +42,10 @@ public final class TaskInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of TaskInner class. */
+    public TaskInner() {
+    }
 
     /**
      * Get the identity property: Identity for the resource.

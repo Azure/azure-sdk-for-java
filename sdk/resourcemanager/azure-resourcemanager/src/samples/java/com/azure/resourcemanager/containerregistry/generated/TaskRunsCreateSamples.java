@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.fluent.models.TaskRunInner;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.Credentials;
@@ -16,7 +15,7 @@ import java.util.Arrays;
 /** Samples for TaskRuns Create. */
 public final class TaskRunsCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsCreate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsCreate.json
      */
     /**
      * Sample code: TaskRuns_Create.
@@ -36,13 +35,13 @@ public final class TaskRunsCreateSamples {
                 new TaskRunInner()
                     .withRunRequest(
                         new EncodedTaskRunRequest()
-                            .withEncodedTaskContent("c3RlcHM6IAogIC0gY21kOiB7eyAuVmFsdWVzLmNvbW1hbmQgfX0K")
-                            .withEncodedValuesContent("Y29tbWFuZDogYmFzaCBlY2hvIHt7LlJ1bi5SZWdpc3RyeX19Cg==")
+                            .withEncodedTaskContent("fakeTokenPlaceholder")
+                            .withEncodedValuesContent("fakeTokenPlaceholder")
                             .withValues(Arrays.asList())
                             .withPlatform(
                                 new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
                             .withCredentials(new Credentials()))
                     .withForceUpdateTag("test"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

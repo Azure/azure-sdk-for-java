@@ -23,6 +23,10 @@ public final class StaticSiteFunctionOverviewArmResourceProperties {
     @JsonProperty(value = "triggerType", access = JsonProperty.Access.WRITE_ONLY)
     private TriggerTypes triggerType;
 
+    /** Creates an instance of StaticSiteFunctionOverviewArmResourceProperties class. */
+    public StaticSiteFunctionOverviewArmResourceProperties() {
+    }
+
     /**
      * Get the functionName property: The name for the function.
      *

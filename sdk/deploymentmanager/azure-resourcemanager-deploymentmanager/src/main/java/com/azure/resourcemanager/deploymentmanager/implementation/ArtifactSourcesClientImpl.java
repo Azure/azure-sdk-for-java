@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deploymentmanager.fluent.ArtifactSourcesClient;
 import com.azure.resourcemanager.deploymentmanager.fluent.models.ArtifactSourceInner;
 import java.util.List;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ArtifactSourcesClient. */
 public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
-    private final ClientLogger logger = new ClientLogger(ArtifactSourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ArtifactSourcesService service;
 
@@ -57,7 +54,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDeploymentManag")
-    private interface ArtifactSourcesService {
+    public interface ArtifactSourcesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
@@ -120,7 +117,9 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
     }
 
     /**
-     * Synchronously creates a new artifact source or updates an existing artifact source.
+     * Creates or updates an artifact source.
+     *
+     * <p>Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -128,7 +127,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource that defines the source location where the artifacts are located.
+     * @return the resource that defines the source location where the artifacts are located along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ArtifactSourceInner>> createOrUpdateWithResponseAsync(
@@ -174,7 +174,9 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
     }
 
     /**
-     * Synchronously creates a new artifact source or updates an existing artifact source.
+     * Creates or updates an artifact source.
+     *
+     * <p>Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -183,7 +185,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource that defines the source location where the artifacts are located.
+     * @return the resource that defines the source location where the artifacts are located along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ArtifactSourceInner>> createOrUpdateWithResponseAsync(
@@ -226,56 +229,51 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
     }
 
     /**
-     * Synchronously creates a new artifact source or updates an existing artifact source.
+     * Creates or updates an artifact source.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param artifactSourceName The name of the artifact source.
-     * @param artifactSourceInfo Source object that defines the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource that defines the source location where the artifacts are located.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ArtifactSourceInner> createOrUpdateAsync(
-        String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo)
-            .flatMap(
-                (Response<ArtifactSourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Synchronously creates a new artifact source or updates an existing artifact source.
+     * <p>Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource that defines the source location where the artifacts are located.
+     * @return the resource that defines the source location where the artifacts are located on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ArtifactSourceInner> createOrUpdateAsync(String resourceGroupName, String artifactSourceName) {
         final ArtifactSourceInner artifactSourceInfo = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo)
-            .flatMap(
-                (Response<ArtifactSourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Synchronously creates a new artifact source or updates an existing artifact source.
+     * Creates or updates an artifact source.
+     *
+     * <p>Synchronously creates a new artifact source or updates an existing artifact source.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param artifactSourceName The name of the artifact source.
+     * @param artifactSourceInfo Source object that defines the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource that defines the source location where the artifacts are located along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ArtifactSourceInner> createOrUpdateWithResponse(
+        String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo, context)
+            .block();
+    }
+
+    /**
+     * Creates or updates an artifact source.
+     *
+     * <p>Synchronously creates a new artifact source or updates an existing artifact source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param artifactSourceName The name of the artifact source.
@@ -287,26 +285,8 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArtifactSourceInner createOrUpdate(String resourceGroupName, String artifactSourceName) {
         final ArtifactSourceInner artifactSourceInfo = null;
-        return createOrUpdateAsync(resourceGroupName, artifactSourceName, artifactSourceInfo).block();
-    }
-
-    /**
-     * Synchronously creates a new artifact source or updates an existing artifact source.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param artifactSourceName The name of the artifact source.
-     * @param artifactSourceInfo Source object that defines the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource that defines the source location where the artifacts are located.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactSourceInner> createOrUpdateWithResponse(
-        String resourceGroupName, String artifactSourceName, ArtifactSourceInner artifactSourceInfo, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, artifactSourceName, artifactSourceInfo, context)
-            .block();
+        return createOrUpdateWithResponse(resourceGroupName, artifactSourceName, artifactSourceInfo, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -317,7 +297,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an artifact source.
+     * @return an artifact source along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ArtifactSourceInner>> getByResourceGroupWithResponseAsync(
@@ -367,7 +347,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an artifact source.
+     * @return an artifact source along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ArtifactSourceInner>> getByResourceGroupWithResponseAsync(
@@ -413,19 +393,29 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an artifact source.
+     * @return an artifact source on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ArtifactSourceInner> getByResourceGroupAsync(String resourceGroupName, String artifactSourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, artifactSourceName)
-            .flatMap(
-                (Response<ArtifactSourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an artifact source.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param artifactSourceName The name of the artifact source.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an artifact source along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ArtifactSourceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String artifactSourceName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, artifactSourceName, context).block();
     }
 
     /**
@@ -440,24 +430,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArtifactSourceInner getByResourceGroup(String resourceGroupName, String artifactSourceName) {
-        return getByResourceGroupAsync(resourceGroupName, artifactSourceName).block();
-    }
-
-    /**
-     * Gets an artifact source.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param artifactSourceName The name of the artifact source.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an artifact source.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactSourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String artifactSourceName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, artifactSourceName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, artifactSourceName, Context.NONE).getValue();
     }
 
     /**
@@ -468,7 +441,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String artifactSourceName) {
@@ -517,7 +490,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -563,12 +536,27 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String artifactSourceName) {
-        return deleteWithResponseAsync(resourceGroupName, artifactSourceName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, artifactSourceName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes an artifact source.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param artifactSourceName The name of the artifact source.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String artifactSourceName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, artifactSourceName, context).block();
     }
 
     /**
@@ -582,23 +570,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String artifactSourceName) {
-        deleteAsync(resourceGroupName, artifactSourceName).block();
-    }
-
-    /**
-     * Deletes an artifact source.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param artifactSourceName The name of the artifact source.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String artifactSourceName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, artifactSourceName, context).block();
+        deleteWithResponse(resourceGroupName, artifactSourceName, Context.NONE);
     }
 
     /**
@@ -608,7 +580,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of artifact sources.
+     * @return the list of artifact sources along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ArtifactSourceInner>>> listWithResponseAsync(String resourceGroupName) {
@@ -651,7 +623,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of artifact sources.
+     * @return the list of artifact sources along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ArtifactSourceInner>>> listWithResponseAsync(String resourceGroupName, Context context) {
@@ -690,19 +662,26 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of artifact sources.
+     * @return the list of artifact sources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ArtifactSourceInner>> listAsync(String resourceGroupName) {
-        return listWithResponseAsync(resourceGroupName)
-            .flatMap(
-                (Response<List<ArtifactSourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists the artifact sources in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of artifact sources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<ArtifactSourceInner>> listWithResponse(String resourceGroupName, Context context) {
+        return listWithResponseAsync(resourceGroupName, context).block();
     }
 
     /**
@@ -716,21 +695,6 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<ArtifactSourceInner> list(String resourceGroupName) {
-        return listAsync(resourceGroupName).block();
-    }
-
-    /**
-     * Lists the artifact sources in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of artifact sources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<ArtifactSourceInner>> listWithResponse(String resourceGroupName, Context context) {
-        return listWithResponseAsync(resourceGroupName, context).block();
+        return listWithResponse(resourceGroupName, Context.NONE).getValue();
     }
 }

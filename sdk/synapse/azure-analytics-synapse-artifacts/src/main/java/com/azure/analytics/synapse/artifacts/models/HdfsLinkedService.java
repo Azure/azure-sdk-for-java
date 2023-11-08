@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Hadoop Distributed File System (HDFS) linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,32 +19,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class HdfsLinkedService extends LinkedService {
     /*
-     * The URL of the HDFS service endpoint, e.g.
-     * http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with
+     * The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with
      * resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
-     * Type of authentication used to connect to the HDFS. Possible values are:
-     * Anonymous and Windows. Type: string (or Expression with resultType
-     * string).
+     * Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authenticationType")
     private Object authenticationType;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * User name for Windows authentication. Type: string (or Expression with
-     * resultType string).
+     * User name for Windows authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -52,6 +50,9 @@ public class HdfsLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
+
+    /** Creates an instance of HdfsLinkedService class. */
+    public HdfsLinkedService() {}
 
     /**
      * Get the url property: The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type:
@@ -158,6 +159,34 @@ public class HdfsLinkedService extends LinkedService {
      */
     public HdfsLinkedService setPassword(SecretBase password) {
         this.password = password;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HdfsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HdfsLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HdfsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HdfsLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KeySource. */
+/** The encryption keySource (provider). Possible values (case-insensitive): Default, Microsoft.Keyvault. */
 public final class KeySource extends ExpandableStringEnum<KeySource> {
     /** Static value Default for KeySource. */
     public static final KeySource DEFAULT = fromString("Default");
 
     /** Static value Microsoft.Keyvault for KeySource. */
     public static final KeySource MICROSOFT_KEYVAULT = fromString("Microsoft.Keyvault");
+
+    /**
+     * Creates a new instance of KeySource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeySource() {
+    }
 
     /**
      * Creates or finds a KeySource from its string representation.
@@ -27,7 +36,11 @@ public final class KeySource extends ExpandableStringEnum<KeySource> {
         return fromString(name, KeySource.class);
     }
 
-    /** @return known KeySource values. */
+    /**
+     * Gets known KeySource values.
+     *
+     * @return known KeySource values.
+     */
     public static Collection<KeySource> values() {
         return values(KeySource.class);
     }

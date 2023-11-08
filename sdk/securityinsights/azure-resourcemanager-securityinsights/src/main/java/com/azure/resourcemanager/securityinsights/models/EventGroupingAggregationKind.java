@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventGroupingAggregationKind. */
+/** The event grouping aggregation kinds. */
 public final class EventGroupingAggregationKind extends ExpandableStringEnum<EventGroupingAggregationKind> {
     /** Static value SingleAlert for EventGroupingAggregationKind. */
     public static final EventGroupingAggregationKind SINGLE_ALERT = fromString("SingleAlert");
@@ -27,7 +27,11 @@ public final class EventGroupingAggregationKind extends ExpandableStringEnum<Eve
         return fromString(name, EventGroupingAggregationKind.class);
     }
 
-    /** @return known EventGroupingAggregationKind values. */
+    /**
+     * Gets known EventGroupingAggregationKind values.
+     *
+     * @return known EventGroupingAggregationKind values.
+     */
     public static Collection<EventGroupingAggregationKind> values() {
         return values(EventGroupingAggregationKind.class);
     }

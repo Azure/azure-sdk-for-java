@@ -25,6 +25,10 @@ public final class CosmosDbMongoDbApiLinkedService extends LinkedService {
     private CosmosDbMongoDbApiLinkedServiceTypeProperties innerTypeProperties =
         new CosmosDbMongoDbApiLinkedServiceTypeProperties();
 
+    /** Creates an instance of CosmosDbMongoDbApiLinkedService class. */
+    public CosmosDbMongoDbApiLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: CosmosDB (MongoDB API) linked service properties.
      *

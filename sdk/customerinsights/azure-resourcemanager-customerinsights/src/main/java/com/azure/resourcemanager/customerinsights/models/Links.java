@@ -16,6 +16,21 @@ public interface Links {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param linkName The name of the link.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a link in the hub along with {@link Response}.
+     */
+    Response<LinkResourceFormat> getWithResponse(
+        String resourceGroupName, String hubName, String linkName, Context context);
+
+    /**
+     * Gets a link in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param linkName The name of the link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,7 +39,7 @@ public interface Links {
     LinkResourceFormat get(String resourceGroupName, String hubName, String linkName);
 
     /**
-     * Gets a link in the hub.
+     * Deletes a link in the hub.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
@@ -33,10 +48,9 @@ public interface Links {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link in the hub.
+     * @return the {@link Response}.
      */
-    Response<LinkResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String linkName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String linkName, Context context);
 
     /**
      * Deletes a link in the hub.
@@ -51,20 +65,6 @@ public interface Links {
     void delete(String resourceGroupName, String hubName, String linkName);
 
     /**
-     * Deletes a link in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param linkName The name of the link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String linkName, Context context);
-
-    /**
      * Gets all the links in the specified hub.
      *
      * @param resourceGroupName The name of the resource group.
@@ -72,7 +72,7 @@ public interface Links {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the links in the specified hub.
+     * @return all the links in the specified hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LinkResourceFormat> listByHub(String resourceGroupName, String hubName);
 
@@ -85,7 +85,7 @@ public interface Links {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the links in the specified hub.
+     * @return all the links in the specified hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LinkResourceFormat> listByHub(String resourceGroupName, String hubName, Context context);
 
@@ -96,7 +96,7 @@ public interface Links {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link in the hub.
+     * @return a link in the hub along with {@link Response}.
      */
     LinkResourceFormat getById(String id);
 
@@ -108,7 +108,7 @@ public interface Links {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link in the hub.
+     * @return a link in the hub along with {@link Response}.
      */
     Response<LinkResourceFormat> getByIdWithResponse(String id, Context context);
 
@@ -130,7 +130,7 @@ public interface Links {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -1,0 +1,20 @@
+{
+    "tilejson": "2.2.0",
+    "name": "microsoft.base",
+    "version": "1.0.0",
+    "attribution": "<a data-azure-maps-attribution-tileset=\"microsoft.base\">&copy;2022 TomTom</a>",
+    "scheme": "xyz",
+    "tiles": [
+        "https://atlas.microsoft.com/map/tile?api-version=2.1&tilesetId=microsoft.base&zoom={z}&x={x}&y={y}"
+    ],
+    "grids": [],
+    "data": [],
+    "minzoom": 0,
+    "maxzoom": 22,
+    "bounds": [
+        -180.0,
+        -90.0,
+        180.0,
+        90.0
+    ]
+}

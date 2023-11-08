@@ -20,14 +20,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.GatewaysClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GatewaysClient. */
 public final class GatewaysClientImpl implements GatewaysClient {
-    private final ClientLogger logger = new ClientLogger(GatewaysClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final GatewaysService service;
 
@@ -50,11 +47,10 @@ public final class GatewaysClientImpl implements GatewaysClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
-    private interface GatewaysService {
+    public interface GatewaysService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/gateways/{gatewayId}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/gateways/{gatewayId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -76,7 +72,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -103,6 +99,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
         if (gatewayId == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -113,7 +110,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                             resourceGroupName,
                             workspaceName,
                             gatewayId,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -128,7 +125,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -155,6 +152,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
         if (gatewayId == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -163,7 +161,7 @@ public final class GatewaysClientImpl implements GatewaysClient {
                 resourceGroupName,
                 workspaceName,
                 gatewayId,
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -176,12 +174,29 @@ public final class GatewaysClientImpl implements GatewaysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String gatewayId) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, gatewayId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, gatewayId).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a Log Analytics gateway.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param gatewayId The Log Analytics gateway Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String workspaceName, String gatewayId, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, gatewayId, context).block();
     }
 
     /**
@@ -196,24 +211,6 @@ public final class GatewaysClientImpl implements GatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String gatewayId) {
-        deleteAsync(resourceGroupName, workspaceName, gatewayId).block();
-    }
-
-    /**
-     * Delete a Log Analytics gateway.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param gatewayId The Log Analytics gateway Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String gatewayId, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, gatewayId, context).block();
+        deleteWithResponse(resourceGroupName, workspaceName, gatewayId, Context.NONE);
     }
 }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Azure VM workload-specific additional information for job. */
 @Fluent
 public final class AzureWorkloadJobExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadJobExtendedInfo.class);
-
     /*
      * List of tasks for this job
      */
@@ -35,6 +31,10 @@ public final class AzureWorkloadJobExtendedInfo {
      */
     @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
+
+    /** Creates an instance of AzureWorkloadJobExtendedInfo class. */
+    public AzureWorkloadJobExtendedInfo() {
+    }
 
     /**
      * Get the tasksList property: List of tasks for this job.

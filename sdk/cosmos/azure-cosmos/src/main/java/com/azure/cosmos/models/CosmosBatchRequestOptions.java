@@ -4,10 +4,13 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,6 +20,8 @@ public final class CosmosBatchRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private Map<String, String> customOptions;
+    private CosmosDiagnosticsThresholds thresholds = new CosmosDiagnosticsThresholds();
+    private List<String> excludeRegions;
 
     /**
      * Gets the consistency level required for the request.
@@ -58,15 +63,29 @@ public final class CosmosBatchRequestOptions {
         return this;
     }
 
+    /**
+     * Allows overriding the diagnostic thresholds for a specific operation.
+     * @param operationSpecificThresholds the diagnostic threshold override for this operation
+     * @return the TransactionalBatchRequestOptions.
+     */
+    public CosmosBatchRequestOptions setDiagnosticsThresholds(
+        CosmosDiagnosticsThresholds operationSpecificThresholds) {
+
+        this.thresholds = operationSpecificThresholds;
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setSessionToken(sessionToken);
+        requestOptions.setDiagnosticsThresholds(thresholds);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());
             }
         }
+        requestOptions.setExcludeRegions(excludeRegions);
 
         return requestOptions;
     }
@@ -88,6 +107,31 @@ public final class CosmosBatchRequestOptions {
     }
 
     /**
+     * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions list of regions
+     * @return the {@link CosmosBatchRequestOptions}
+     */
+    public CosmosBatchRequestOptions setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+    /**
+     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        if (this.excludeRegions == null) {
+            return null;
+        }
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+    }
+
+    /**
      * Gets the custom batch request options
      *
      * @return Map of custom request options
@@ -99,8 +143,7 @@ public final class CosmosBatchRequestOptions {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.setCosmosBatchRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor() {
                 @Override
@@ -123,7 +166,14 @@ public final class CosmosBatchRequestOptions {
                 public Map<String, String> getHeader(CosmosBatchRequestOptions cosmosItemRequestOptions) {
                     return cosmosItemRequestOptions.getHeaders();
                 }
+
+                @Override
+                public List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions) {
+                    return cosmosBatchRequestOptions.excludeRegions;
+                }
             }
         );
     }
+
+    static { initialize(); }
 }

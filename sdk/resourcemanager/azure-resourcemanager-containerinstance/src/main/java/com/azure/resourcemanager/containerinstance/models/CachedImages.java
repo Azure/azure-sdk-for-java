@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The cached image and OS type. */
 @Fluent
 public final class CachedImages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CachedImages.class);
-
     /*
      * The OS type of the cached image.
      */
@@ -25,6 +22,10 @@ public final class CachedImages {
      */
     @JsonProperty(value = "image", required = true)
     private String image;
+
+    /** Creates an instance of CachedImages class. */
+    public CachedImages() {
+    }
 
     /**
      * Get the osType property: The OS type of the cached image.
@@ -73,14 +74,16 @@ public final class CachedImages {
      */
     public void validate() {
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property osType in model CachedImages"));
         }
         if (image() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property image in model CachedImages"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CachedImages.class);
 }

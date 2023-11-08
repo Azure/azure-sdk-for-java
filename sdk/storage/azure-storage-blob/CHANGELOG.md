@@ -1,17 +1,276 @@
 # Release History
 
-## 12.16.0-beta.1 (Unreleased)
+## 12.25.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added BlobProperties.getRequestId() to access the x-ms-request-id header property.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-- Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether blob existence should
-  be checked before using chunked upload than the size used to triggered chunked upload.
+### Other Changes
+
+## 12.24.1 (2023-10-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-storage-internal-avro` from `12.9.0` to version `12.9.1`.
+- Upgraded `azure-storage-common` from `12.23.0` to version `12.23.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 12.25.0-beta.1 (2023-10-19)
+
+### Features Added
+- Added support for service versions 2023-11-03.
+- Added support for BlobAudience.
+
+## 12.24.0 (2023-09-12)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+- Added RehydratePendingToCold value to ArchiveStatus enum.
+
+## 12.23.1 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.22.0` to version `12.22.1`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-storage-internal-avro` from `12.8.0` to version `12.8.1`.
+
+## 12.24.0-beta.1 (2023-08-08)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+- Added RehydratePendingToCold value to ArchiveStatus enum.
+
+## 12.23.0 (2023-07-11)
+
+### Features Added
+- Added support for the `2023-01-03` service version.
+- Content length limit for `AppendBlobClient.appendBlock()` raised from 4 MiB to 100 MiB.
+
+## 12.22.3 (2023-06-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-storage-common` from `12.21.1` to version `12.21.2`.
+- Upgraded `azure-storage-internal-avro` from `12.7.1` to version `12.8.0-beta.2`.
+
+## 12.23.0-beta.1 (2023-05-30)
+
+### Features Added
+- Added support for 2023-01-03 service version.
+- Content length limit for `AppendBlobClient.appendBlock()` raised from 4 MiB to 100 MiB.
+
+## 12.22.2 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.21.0` to version `12.21.1`.
+- Upgraded `azure-storage-internal-avro` from `12.7.0` to version `12.7.1`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+
+## 12.22.1 (2023-05-15)
+
+### Bugs Fixed
+Fixed bug in `BlobBaseClient.downloadToFile()` and `BlobBaseClient.downloadToFileWithResponse()` where incorrect data could be written to the file in some circumstances if the SDK experienced a network error when using `azure-core-http-netty`'s `HttpClient` implementation.
+
+## 12.22.0 (2023-04-13)
+
+### Features Added
+- Added new method `StorageAccountInfo.isHierarchicalNamespaceEnabled()` to determine whether storage account has hierarchical namespace enabled.  
+- Added support for 2022-11-02 service version.
+- Added support for reading and writing a block blob via SeekableByteChannel.
+
+### Bugs Fixed
+- Fixed bug for when `FindBlobsOptions.setMaxResultsPerPage(Integer)` was set and `.byPage()` was called on `BlobServiceAsyncClient.findBlobsByTags(FindBlobsOptions)`, number of results being returned was greater than the specified max results.
+
+## 12.22.0-beta.1 (2023-03-28)
+
+### Features Added
+- Added support for 2022-11-02 service version.
+- Added support for reading and writing a block blob via SeekableByteChannel.
+
+### Bugs Fixed
+- Fixed bug for when `FindBlobsOptions.setMaxResultsPerPage(Integer)` was set and `.byPage()` was called on `BlobServiceAsyncClient.findBlobsByTags(FindBlobsOptions)`, number of results being returned was greater than the specified max results.
+
+## 12.21.1 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.20.0` to version `12.20.1`.
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+- Upgraded `azure-storage-internal-avro` from `12.6.0` to version `12.6.1`.
+
+## 12.21.0 (2023-02-21)
+
+### Features Added
+- Added `BlobDownloadHeaders.getCreationTime()` and `BlobDownloadHeaders.setCreationTime(OffsetDateTime)` to access the x-ms-creation-time property.
+- Added support for 2021-12-02 service version.
+- Added support for Blob Cold Tier `AccessTier.COLD`.
+- Added new overload `AppendBlobClient.getBlobOutputStream(boolean)` that takes in a boolean for overwrite and appends to existing data if overwrite is specified `false`, or deletes and recreates a blob if overwrite is specified `true`.
+
+### Bugs Fixed
+- Fixed bug where `BlobErrorCode.IncrementalCopyOfEarlierVersionSnapshotNotAllowed` was spelled incorrectly.
+
+## 12.21.0-beta.1 (2023-02-07)
+
+### Features Added
+- Added support for 2021-12-02 service version.
+- Added support for Blob Cold Tier `AccessTier.COLD`.
+- Fixed bug where `BlobErrorCode.IncrementalCopyOfEarlierVersionSnapshotNotAllowed` was spelled incorrectly.
+- Added new overload `AppendBlobClient.getBlobOutputStream(boolean)` that takes in a boolean for overwrite and appends to existing data if overwrite is specified `false`, or deletes and recreates a blob if overwrite is specified `true`.
+
+## 12.20.2 (2023-01-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+- Upgraded `azure-storage-common` from `12.19.1` to version `12.19.2`.
+- Upgraded `azure-storage-internal-avro` from `12.5.1` to version `12.5.2`.
+
+## 12.20.1 (2022-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+- Upgraded `azure-storage-common` from `12.19.0` to version `12.19.1`.
+- Upgraded `azure-storage-internal-avro` from `12.5.0` to version `12.5.1`.
+
+## 12.20.0 (2022-10-11)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+- Added ability to rename existing containers with `BlobContainerClient.rename()`.
+- Added new overload for `BlobClient.upload()` that takes in `InputStream` without specifying length.
+
+### Breaking Changes
+- `BlobItem.isPrefix()` now returns false if it is not a virtual directory instead of null.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-storage-common` from `12.18.1` to version `12.19.0`.
+- Upgraded `azure-storage-internal-avro` from `12.4.2` to version `12.5.0`.
+
+## 12.19.1 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+- Upgraded `azure-storage-common` from `12.18.0` to version `12.18.1`.
+- Upgraded `azure-storage-internal-avro` from `12.4.1` to version `12.4.2`.
+
+## 12.20.0-beta.1 (2022-09-06)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+- Added new overload for `BlobClient.upload()` that takes in `InputStream` without specifying length.
+
+### Breaking Changes
+- `BlobItem.isPrefix()` now returns false if it is not a virtual directory instead of null.
+
+## 12.19.0 (2022-08-12)
+
+### Features Added
+- Added `ParallelTransferOptions.getProgressListener` and `ParallelTransferOptions.setProgressListener`
+  that replaces deprecated `ParallelTransferOptions.getProgressReceiver` and `ParallelTransferOptions.setProgressReceiver`
+- `com.azure.storage.blob.ProgressReceiver` extends `com.azure.core.util.ProgressListener` for backwards compatibility.
+- Added `BlobDownloadAsyncResponse.writeValueToAsync` and `BlobDownloadAsyncResponse.close`.
+- Added `BlockBlobSimpleUploadOptions(BinaryData)` constructor, `BlockBlobStageBlockOptions`,
+  `BlockBlobAsyncClient.stageBlock(String, BinaryData)`, `BlockBlobAsyncClient.stageBlockWithResponse(BlockBlobStageBlockOptions)`,
+  `BlockBlobAsyncClient.upload(BinaryData)`, `BlockBlobAsyncClient.upload(BinaryData, boolean)`,
+  `BlockBlobClient.stageBlock(String, BinaryData)`, `BlockBlobClient.stageBlockWithResponse(BlockBlobStageBlockOptions, Duration, Context)`,
+  `BlockBlobClient.upload(BinaryData)`, `BlockBlobClient.upload(BinaryData, boolean)`
+
+### Other Changes
+- `com.azure.storage.blob.ProgressReceiver` and `com.azure.storage.blob.ProgressReporter` are deprecated
+  and replaced by `com.azure.core.util.ProgressListener` and `com.azure.core.util.ProgressReporter`.
+
+## 12.18.0 (2022-07-07)
+
+### Features Added
+- BlobOutputStream.close() will now attempt to close the stream at first attempt. Subsequent calls to close have no effect.
+- GA release for 2021-08-06 service version.
+
+## 12.18.0-beta.1 (2022-06-15)
+
+### Features Added
+- Added support for 2021-08-06 service version.
+
+## 12.17.1 (2022-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-storage-common` from `12.16.0` to version `12.16.1`.
+- Upgraded `azure-storage-internal-avro` from `12.3.0` to version `12.4.0-beta.1`.
+
+## 12.17.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
+
+### Other Changes
+- Deprecated BlobClientBase.download and BlobClientBase.downloadWithResponse that downloads entire blob into an output
+  stream. Use BlobClientBase.downloadStream and BlobClientBase.downloadStreamWithResponse instead.
+
+## 12.16.1 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-common` from `12.15.1` to version `12.15.2`.
+- Upgraded `azure-storage-internal-avro` from `12.2.1` to version `12.2.2`.
+
+## 12.17.0-beta.1 (2022-05-06)
+
+### Features Added
+- Added support for 2021-06-08 service version.
+- Added the ability to list PageRanges and PageRangesDiff by page.
+
+## 12.16.0 (2022-04-07)
+
+### Bugs Fixed
+- Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether blob existence should
+  be checked before using chunked upload than the size used to triggered chunked upload.
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+- Upgraded `azure-storage-common` from `12.15.0` to version `12.15.1`.
+- Upgraded `azure-storage-internal-avro` from `12.2.0` to version `12.2.1`.
 
 ## 12.15.0 (2022-03-09)
 
@@ -266,6 +525,35 @@ and
 - Improved performance of BlockBlobOutputStream.
 - Added overloads to BlockBlobClient.getBlobOutputStream to allow users to provide parallel transfer options, http headers, metadata, access tier, and request conditions.
 
+## 11.1.1 (2019.04.30)
+- Upgraded to version 2.1.1 of the autorest-clientime which upgrades to a more secure version of jackson and fixes a NPE on unknown host errors.
+
+## 11.0.0 (2019.03.22)
+- Upgraded to version 2.1.0 of the autorest-clientruntime which includes several important fixes to mitigate a commonly-seen "Connection reset by peer" error and other similar bugs.
+- Support for 2018-11-09 REST version. Please see our REST API documentation and blogs for information about the related added features.
+- Added appendBlockFromURL method. A block may be created with another blob as its source.
+- Added uploadPagesFromURL method. Pages may be written to with another blob as their source.
+- Fixed a bug that would set an invalid range header when downloading an empty blob.
+- Modified the LoggingFactory to redact SAS signatures on outgoing requests.
+- HTTPGetterInfo was made an internal type as it is an internal implementation detail.
+- Removed DEFAULT and NONE static variables. Empty constructors should be used instead. DEFAULT static values were error prone and unsafe to use because although the field was final, the objects were mutable, so it was possible the value could be changed accidentally and alter the behavior of the program.
+- Optimized the TransferManager download to file method to skip the initial HEAD request.
+- Added an option to configure that maximum size data that will be uploaded in a single shot via the TransferManager.
+- Added request Http Method, URL, and headers to logging messages.
+- Changed *ListingDetails to *ListDetails. These name changes are to mitigate conflicts with v8, allowing for side-by-side loading of different versions, which may help with upgrading.
+- Removed the extra quotes around etags in some responses so they are consistently now consistently formatted.
+- Moved the Generated*** types into the blob package to avoid conflicts with generated types from other services (i.e. queues and files)
+- Changed the logger name to be the name of class that uses it, which is a more conventional practice
+- Support added for SAS tokens to scope to blob snapshot.
+- Added getUserDelegationKey to ServiceURL, the result of which can be used to generate a user-delegation SAS.
+- Made the max results field on listing responses Integer instead of int as it is an optional field only returned when specified in the request.
+
+## 10.5.0 (2019.02.15)
+- Added uploadFromNonReplayableFlowable to support uploading arbitrary data sources (like network streams) to a block blob.
+
+## 10.4.0 (2019.01.11)
+- Fixed a bug that caused errors when java.io.tempdir has no trailing separator.
+- Upgrade autorest-clientruntime dependency to include some bug fixes.
 
 ## 12.2.0-beta.1 (2019-12-17)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.
@@ -403,36 +691,6 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - New underlying REST pipeline implementation, based on the new `azure-core` library.
 - Client and pipeline configuration is now available via keyword arguments at both the client level.
 - Authentication using `azure-identity` credentials.
-
-## 11.1.1 (2019.04.30)
-- Upgraded to version 2.1.1 of the autorest-clientime which upgrades to a more secure version of jackson and fixes a NPE on unkown host errors.
-
-## 11.0.0 (2019.03.22)
-- Upgraded to version 2.1.0 of the autorest-clientruntime which includes several important fixes to mitigate a commonly-seen "Connection reset by peer" error and other similar bugs.
-- Support for 2018-11-09 REST version. Please see our REST API documentation and blogs for information about the related added features.
-- Added appendBlockFromURL method. A block may be created with another blob as its source.
-- Added uploadPagesFromURL method. Pages may be written to with another blob as their source.
-- Fixed a bug that would set an invalid range header when downloading an empty blob.
-- Modified the LoggingFactory to redact SAS signatures on outgoing requests.
-- HTTPGetterInfo was made an internal type as it is an internal implementation detail.
-- Removed DEFAULT and NONE static variables. Empty constructors should be used instead. DEFAULT static values were error prone and unsafe to use because although the field was final, the objects were mutable, so it was possible the value could be changed accidentally and alter the behavior of the program.
-- Optimized the TransferManager download to file method to skip the initial HEAD request.
-- Added an option to configure that maximum size data that will be uploaded in a single shot via the TransferManager.
-- Added request Http Method, URL, and headers to logging messages.
-- Changed *ListingDetails to *ListDetails. These name changes are to mitigate conflicts with v8, allowing for side-by-side loading of different versions, which may help with upgrading.
-- Removed the extra quotes around etags in some responses so they are consistently now consistently formatted.
-- Moved the Generated*** types into the blob package to avoid conflicts with generated types from other services (i.e. queues and files)
-- Changed the logger name to be the name of class that uses it, which is a more conventional practice
-- Support added for SAS tokens to scope to blob snapshot.
-- Added getUserDelegationKey to ServiceURL, the result of which can be used to generate a user-delegation SAS.
-- Made the max results field on listing responses Integer instead of int as it is an optional field only returned when specified in the request.
-
-## 10.5.0 (2019.02.15)
-- Added uploadFromNonReplayableFlowable to support uploading arbitrary data sources (like network streams) to a block blob.
-
-## 10.4.0 (2019.01.11)
-- Fixed a bug that caused errors when java.io.tempdir has no trailing separator.
-- Upgrade autorest-clientruntime dependency to include some bug fixes.
 
 ## 10.3.0 (2018.11.19)
 - Added support for SLF4J.

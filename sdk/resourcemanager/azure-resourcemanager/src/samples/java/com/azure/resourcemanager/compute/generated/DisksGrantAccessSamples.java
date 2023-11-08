@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.AccessLevel;
+import com.azure.resourcemanager.compute.models.FileFormat;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 
 /** Samples for Disks GrantAccess. */
 public final class DisksGrantAccessSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/BeginGetAccessManagedDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/diskExamples/Disk_BeginGetAccess.json
      */
     /**
      * Sample code: Get a sas on a managed disk.
@@ -27,12 +27,15 @@ public final class DisksGrantAccessSamples {
             .grantAccess(
                 "myResourceGroup",
                 "myDisk",
-                new GrantAccessData().withAccess(AccessLevel.READ).withDurationInSeconds(300),
-                Context.NONE);
+                new GrantAccessData()
+                    .withAccess(AccessLevel.READ)
+                    .withDurationInSeconds(300)
+                    .withFileFormat(FileFormat.VHD),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/BeginGetAccessManagedDiskWithVMGuestState.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/diskExamples/Disk_BeginGetAccess_WithVMGuestState.json
      */
     /**
      * Sample code: Get sas on managed disk and VM guest state.
@@ -52,6 +55,6 @@ public final class DisksGrantAccessSamples {
                     .withAccess(AccessLevel.READ)
                     .withDurationInSeconds(300)
                     .withGetSecureVMGuestStateSas(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

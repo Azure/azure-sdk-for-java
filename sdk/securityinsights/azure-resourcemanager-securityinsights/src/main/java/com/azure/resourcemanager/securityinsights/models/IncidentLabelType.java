@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IncidentLabelType. */
+/** The type of the label. */
 public final class IncidentLabelType extends ExpandableStringEnum<IncidentLabelType> {
     /** Static value User for IncidentLabelType. */
     public static final IncidentLabelType USER = fromString("User");
@@ -27,7 +27,11 @@ public final class IncidentLabelType extends ExpandableStringEnum<IncidentLabelT
         return fromString(name, IncidentLabelType.class);
     }
 
-    /** @return known IncidentLabelType values. */
+    /**
+     * Gets known IncidentLabelType values.
+     *
+     * @return known IncidentLabelType values.
+     */
     public static Collection<IncidentLabelType> values() {
         return values(IncidentLabelType.class);
     }

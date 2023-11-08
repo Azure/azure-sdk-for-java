@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AsyncOperationStatus. */
+/** Status of an async operation. */
 public enum AsyncOperationStatus {
     /** Enum value Started. */
     STARTED("Started"),
@@ -36,6 +36,9 @@ public enum AsyncOperationStatus {
      */
     @JsonCreator
     public static AsyncOperationStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AsyncOperationStatus[] items = AsyncOperationStatus.values();
         for (AsyncOperationStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum AsyncOperationStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

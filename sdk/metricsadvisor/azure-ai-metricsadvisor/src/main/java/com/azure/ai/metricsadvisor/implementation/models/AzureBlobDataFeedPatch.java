@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The AzureBlobDataFeedPatch model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
@@ -19,6 +21,9 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
      */
     @JsonProperty(value = "dataSourceParameter")
     private AzureBlobParameterPatch dataSourceParameter;
+
+    /** Creates an instance of AzureBlobDataFeedPatch class. */
+    public AzureBlobDataFeedPatch() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
@@ -37,6 +42,153 @@ public final class AzureBlobDataFeedPatch extends DataFeedDetailPatch {
      */
     public AzureBlobDataFeedPatch setDataSourceParameter(AzureBlobParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setDataFeedName(String dataFeedName) {
+        super.setDataFeedName(dataFeedName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
+        super.setDataFeedDescription(dataFeedDescription);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setTimestampColumn(String timestampColumn) {
+        super.setTimestampColumn(timestampColumn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
+        super.setDataStartFrom(dataStartFrom);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
+        super.setStartOffsetInSeconds(startOffsetInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
+        super.setMaxConcurrency(maxConcurrency);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
+        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
+        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
+        super.setNeedRollup(needRollup);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
+        super.setRollUpMethod(rollUpMethod);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
+        super.setRollUpColumns(rollUpColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setAllUpIdentification(String allUpIdentification) {
+        super.setAllUpIdentification(allUpIdentification);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
+        super.setFillMissingPointType(fillMissingPointType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
+        super.setFillMissingPointValue(fillMissingPointValue);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setViewMode(ViewMode viewMode) {
+        super.setViewMode(viewMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setAdmins(List<String> admins) {
+        super.setAdmins(admins);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setViewers(List<String> viewers) {
+        super.setViewers(viewers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setStatus(EntityStatus status) {
+        super.setStatus(status);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
+        super.setActionLinkTemplate(actionLinkTemplate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
+        super.setAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobDataFeedPatch setCredentialId(String credentialId) {
+        super.setCredentialId(credentialId);
         return this;
     }
 }

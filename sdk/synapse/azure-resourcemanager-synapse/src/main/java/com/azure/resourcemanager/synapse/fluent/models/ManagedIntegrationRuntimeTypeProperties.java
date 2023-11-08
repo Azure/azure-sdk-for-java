@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeComputeProperties;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeSsisProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed integration runtime type properties. */
 @Fluent
 public final class ManagedIntegrationRuntimeTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntimeTypeProperties.class);
-
     /*
      * The compute resource for managed integration runtime.
      */
@@ -27,6 +23,10 @@ public final class ManagedIntegrationRuntimeTypeProperties {
      */
     @JsonProperty(value = "ssisProperties")
     private IntegrationRuntimeSsisProperties ssisProperties;
+
+    /** Creates an instance of ManagedIntegrationRuntimeTypeProperties class. */
+    public ManagedIntegrationRuntimeTypeProperties() {
+    }
 
     /**
      * Get the computeProperties property: The compute resource for managed integration runtime.

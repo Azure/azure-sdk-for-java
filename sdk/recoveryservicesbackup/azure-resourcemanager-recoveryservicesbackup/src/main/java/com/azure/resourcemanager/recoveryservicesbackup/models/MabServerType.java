@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MabServerType. */
+/** Server type of MAB container. */
 public final class MabServerType extends ExpandableStringEnum<MabServerType> {
     /** Static value Invalid for MabServerType. */
     public static final MabServerType INVALID = fromString("Invalid");
@@ -56,6 +56,15 @@ public final class MabServerType extends ExpandableStringEnum<MabServerType> {
     public static final MabServerType GENERIC_CONTAINER = fromString("GenericContainer");
 
     /**
+     * Creates a new instance of MabServerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MabServerType() {
+    }
+
+    /**
      * Creates or finds a MabServerType from its string representation.
      *
      * @param name a name to look for.
@@ -66,7 +75,11 @@ public final class MabServerType extends ExpandableStringEnum<MabServerType> {
         return fromString(name, MabServerType.class);
     }
 
-    /** @return known MabServerType values. */
+    /**
+     * Gets known MabServerType values.
+     *
+     * @return known MabServerType values.
+     */
     public static Collection<MabServerType> values() {
         return values(MabServerType.class);
     }

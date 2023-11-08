@@ -5,28 +5,28 @@
 package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ID of the canceled subscription. */
 @Immutable
 public final class CanceledSubscriptionIdInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CanceledSubscriptionIdInner.class);
-
     /*
      * The ID of the canceled subscription
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private String value;
+    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
+    private String subscriptionId;
+
+    /** Creates an instance of CanceledSubscriptionIdInner class. */
+    public CanceledSubscriptionIdInner() {
+    }
 
     /**
-     * Get the value property: The ID of the canceled subscription.
+     * Get the subscriptionId property: The ID of the canceled subscription.
      *
-     * @return the value value.
+     * @return the subscriptionId value.
      */
-    public String value() {
-        return this.value;
+    public String subscriptionId() {
+        return this.subscriptionId;
     }
 
     /**

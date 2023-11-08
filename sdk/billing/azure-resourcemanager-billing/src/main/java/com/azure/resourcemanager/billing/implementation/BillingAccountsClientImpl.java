@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.billing.fluent.BillingAccountsClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BillingAccountsClient. */
 public final class BillingAccountsClientImpl implements BillingAccountsClient {
-    private final ClientLogger logger = new ClientLogger(BillingAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BillingAccountsService service;
 
@@ -69,7 +66,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
-    private interface BillingAccountsService {
+    public interface BillingAccountsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Billing/billingAccounts")
         @ExpectedResponses({200})
@@ -148,7 +145,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingAccountInner>> listSinglePageAsync(String expand) {
@@ -182,7 +179,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingAccountInner>> listSinglePageAsync(String expand, Context context) {
@@ -215,7 +212,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingAccountInner> listAsync(String expand) {
@@ -227,7 +224,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingAccountInner> listAsync() {
@@ -243,7 +240,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingAccountInner> listAsync(String expand, Context context) {
@@ -256,7 +253,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingAccountInner> list() {
@@ -272,7 +269,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingAccountInner> list(String expand, Context context) {
@@ -287,7 +284,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account by its ID.
+     * @return a billing account by its ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingAccountInner>> getWithResponseAsync(String billingAccountName, String expand) {
@@ -319,7 +316,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account by its ID.
+     * @return a billing account by its ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingAccountInner>> getWithResponseAsync(
@@ -344,46 +341,31 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * Gets a billing account by its ID.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param expand May be used to expand the soldTo, invoice sections and billing profiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account by its ID.
+     * @return a billing account by its ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BillingAccountInner> getAsync(String billingAccountName, String expand) {
-        return getWithResponseAsync(billingAccountName, expand)
-            .flatMap(
-                (Response<BillingAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<BillingAccountInner> getAsync(String billingAccountName) {
+        final String expand = null;
+        return getWithResponseAsync(billingAccountName, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a billing account by its ID.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param expand May be used to expand the soldTo, invoice sections and billing profiles.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account by its ID.
+     * @return a billing account by its ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BillingAccountInner> getAsync(String billingAccountName) {
-        final String expand = null;
-        return getWithResponseAsync(billingAccountName, expand)
-            .flatMap(
-                (Response<BillingAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<BillingAccountInner> getWithResponse(String billingAccountName, String expand, Context context) {
+        return getWithResponseAsync(billingAccountName, expand, context).block();
     }
 
     /**
@@ -398,23 +380,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BillingAccountInner get(String billingAccountName) {
         final String expand = null;
-        return getAsync(billingAccountName, expand).block();
-    }
-
-    /**
-     * Gets a billing account by its ID.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param expand May be used to expand the soldTo, invoice sections and billing profiles.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account by its ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BillingAccountInner> getWithResponse(String billingAccountName, String expand, Context context) {
-        return getWithResponseAsync(billingAccountName, expand, context).block();
+        return getWithResponse(billingAccountName, expand, Context.NONE).getValue();
     }
 
     /**
@@ -426,7 +392,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return a billing account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -466,7 +432,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return a billing account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -501,7 +467,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return the {@link PollerFlux} for polling of a billing account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdateAsync(
@@ -514,7 +480,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
                 this.client.getHttpPipeline(),
                 BillingAccountInner.class,
                 BillingAccountInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -527,7 +493,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return the {@link PollerFlux} for polling of a billing account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdateAsync(
@@ -549,12 +515,12 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return the {@link SyncPoller} for polling of a billing account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdate(
         String billingAccountName, BillingAccountUpdateRequest parameters) {
-        return beginUpdateAsync(billingAccountName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(billingAccountName, parameters).getSyncPoller();
     }
 
     /**
@@ -567,12 +533,12 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return the {@link SyncPoller} for polling of a billing account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdate(
         String billingAccountName, BillingAccountUpdateRequest parameters, Context context) {
-        return beginUpdateAsync(billingAccountName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(billingAccountName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -584,7 +550,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return a billing account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingAccountInner> updateAsync(String billingAccountName, BillingAccountUpdateRequest parameters) {
@@ -601,7 +567,7 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return a billing account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingAccountInner> updateAsync(
@@ -653,7 +619,8 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceSectionWithCreateSubPermissionInner>>
@@ -697,7 +664,8 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceSectionWithCreateSubPermissionInner>>
@@ -737,7 +705,8 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InvoiceSectionWithCreateSubPermissionInner>
@@ -756,7 +725,8 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InvoiceSectionWithCreateSubPermissionInner>
@@ -774,7 +744,8 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InvoiceSectionWithCreateSubPermissionInner> listInvoiceSectionsByCreateSubscriptionPermission(
@@ -791,7 +762,8 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InvoiceSectionWithCreateSubPermissionInner> listInvoiceSectionsByCreateSubscriptionPermission(
@@ -802,11 +774,12 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingAccountInner>> listNextSinglePageAsync(String nextLink) {
@@ -837,12 +810,13 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingAccountInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -873,11 +847,13 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceSectionWithCreateSubPermissionInner>>
@@ -913,12 +889,14 @@ public final class BillingAccountsClientImpl implements BillingAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceSectionWithCreateSubPermissionInner>>

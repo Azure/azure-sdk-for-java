@@ -4,12 +4,15 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** Event data for Microsoft.Devices.DeviceTelemetry event. */
-@Immutable
+@Fluent
 public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventProperties {
+    /** Creates an instance of IotHubDeviceTelemetryEventData class. */
+    public IotHubDeviceTelemetryEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public IotHubDeviceTelemetryEventData setBody(Object body) {

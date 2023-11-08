@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -30,16 +28,17 @@ import java.util.Map;
     @JsonSubTypes.Type(
         name = "AzureVmWorkloadSAPHanaDatabase",
         value = AzureVmWorkloadSapHanaDatabaseProtectedItem.class),
+    @JsonSubTypes.Type(
+        name = "AzureVmWorkloadSAPHanaDBInstance",
+        value = AzureVmWorkloadSapHanaDBInstanceProtectedItem.class),
     @JsonSubTypes.Type(name = "AzureVmWorkloadSQLDatabase", value = AzureVmWorkloadSqlDatabaseProtectedItem.class)
 })
 @Fluent
 public class AzureVmWorkloadProtectedItem extends ProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadProtectedItem.class);
-
     /*
      * Friendly name of the DB represented by this backup item.
      */
-    @JsonProperty(value = "friendlyName")
+    @JsonProperty(value = "friendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String friendlyName;
 
     /*
@@ -55,8 +54,7 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
     private String parentName;
 
     /*
-     * Parent type of protected item, example: for a DB, standalone server or
-     * distributed
+     * Parent type of protected item, example: for a DB, standalone server or distributed
      */
     @JsonProperty(value = "parentType")
     private String parentType;
@@ -64,7 +62,7 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
     /*
      * Backup status of this backup item.
      */
-    @JsonProperty(value = "protectionStatus")
+    @JsonProperty(value = "protectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String protectionStatus;
 
     /*
@@ -98,8 +96,7 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
     private String protectedItemDataSourceId;
 
     /*
-     * Health status of the backup item, evaluated based on last heartbeat
-     * received
+     * Health status of the backup item, evaluated based on last heartbeat received
      */
     @JsonProperty(value = "protectedItemHealthStatus")
     private ProtectedItemHealthStatus protectedItemHealthStatus;
@@ -117,6 +114,16 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KpiResourceHealthDetails> kpisHealths;
 
+    /*
+     * List of the nodes in case of distributed container.
+     */
+    @JsonProperty(value = "nodesList")
+    private List<DistributedNodesInfo> nodesList;
+
+    /** Creates an instance of AzureVmWorkloadProtectedItem class. */
+    public AzureVmWorkloadProtectedItem() {
+    }
+
     /**
      * Get the friendlyName property: Friendly name of the DB represented by this backup item.
      *
@@ -124,17 +131,6 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
      */
     public String friendlyName() {
         return this.friendlyName;
-    }
-
-    /**
-     * Set the friendlyName property: Friendly name of the DB represented by this backup item.
-     *
-     * @param friendlyName the friendlyName value to set.
-     * @return the AzureVmWorkloadProtectedItem object itself.
-     */
-    public AzureVmWorkloadProtectedItem withFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
-        return this;
     }
 
     /**
@@ -204,17 +200,6 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
      */
     public String protectionStatus() {
         return this.protectionStatus;
-    }
-
-    /**
-     * Set the protectionStatus property: Backup status of this backup item.
-     *
-     * @param protectionStatus the protectionStatus value to set.
-     * @return the AzureVmWorkloadProtectedItem object itself.
-     */
-    public AzureVmWorkloadProtectedItem withProtectionStatus(String protectionStatus) {
-        this.protectionStatus = protectionStatus;
-        return this;
     }
 
     /**
@@ -380,17 +365,23 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
+    /**
+     * Get the nodesList property: List of the nodes in case of distributed container.
+     *
+     * @return the nodesList value.
+     */
+    public List<DistributedNodesInfo> nodesList() {
+        return this.nodesList;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
+    /**
+     * Set the nodesList property: List of the nodes in case of distributed container.
+     *
+     * @param nodesList the nodesList value to set.
+     * @return the AzureVmWorkloadProtectedItem object itself.
+     */
+    public AzureVmWorkloadProtectedItem withNodesList(List<DistributedNodesInfo> nodesList) {
+        this.nodesList = nodesList;
         return this;
     }
 
@@ -493,6 +484,13 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -516,6 +514,9 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
                             e.validate();
                         }
                     });
+        }
+        if (nodesList() != null) {
+            nodesList().forEach(e -> e.validate());
         }
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Changing set of properties depending on the entity type. */
 @Fluent
 public final class AlertEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertEntity.class);
-
     /*
      * Type of entity
      */
@@ -28,6 +25,10 @@ public final class AlertEntity {
      * Changing set of properties depending on the entity type.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of AlertEntity class. */
+    public AlertEntity() {
+    }
 
     /**
      * Get the type property: Type of entity.

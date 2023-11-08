@@ -6,16 +6,12 @@ package com.azure.resourcemanager.operationsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The container for solution. */
 @Fluent
 public final class ManagementConfigurationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementConfigurationInner.class);
-
     /*
      * Resource location
      */
@@ -23,11 +19,14 @@ public final class ManagementConfigurationInner extends ProxyResource {
     private String location;
 
     /*
-     * Properties for ManagementConfiguration object supported by the
-     * OperationsManagement resource provider.
+     * Properties for ManagementConfiguration object supported by the OperationsManagement resource provider.
      */
     @JsonProperty(value = "properties")
     private ManagementConfigurationProperties properties;
+
+    /** Creates an instance of ManagementConfigurationInner class. */
+    public ManagementConfigurationInner() {
+    }
 
     /**
      * Get the location property: Resource location.

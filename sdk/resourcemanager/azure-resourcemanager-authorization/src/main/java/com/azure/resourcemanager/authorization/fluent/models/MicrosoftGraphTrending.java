@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** trending. */
 @Fluent
 public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTrending.class);
-
     /*
      * The lastModifiedDateTime property.
      */
@@ -38,9 +35,8 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
     private MicrosoftGraphResourceVisualization resourceVisualization;
 
     /*
-     * Value indicating how much the document is currently trending. The larger
-     * the number, the more the document is currently trending around the user
-     * (the more relevant it is). Returned documents are sorted by this value.
+     * Value indicating how much the document is currently trending. The larger the number, the more the document is
+     * currently trending around the user (the more relevant it is). Returned documents are sorted by this value.
      */
     @JsonProperty(value = "weight")
     private Double weight;
@@ -55,6 +51,10 @@ public final class MicrosoftGraphTrending extends MicrosoftGraphEntity {
      * trending
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTrending class. */
+    public MicrosoftGraphTrending() {
+    }
 
     /**
      * Get the lastModifiedDateTime property: The lastModifiedDateTime property.

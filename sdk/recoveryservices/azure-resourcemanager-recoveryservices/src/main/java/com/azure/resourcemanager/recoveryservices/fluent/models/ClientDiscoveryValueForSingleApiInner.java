@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryDisplay;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryForProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Available operation details. */
 @Fluent
 public final class ClientDiscoveryValueForSingleApiInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryValueForSingleApiInner.class);
-
     /*
      * Name of the Operation.
      */
@@ -29,8 +25,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
     private ClientDiscoveryDisplay display;
 
     /*
-     * The intended executor of the operation;governs the display of the
-     * operation in the RBAC UX and the audit logs UX
+     * The intended executor of the operation;governs the display of the operation in the RBAC UX and the audit logs UX
      */
     @JsonProperty(value = "origin")
     private String origin;
@@ -40,6 +35,10 @@ public final class ClientDiscoveryValueForSingleApiInner {
      */
     @JsonProperty(value = "properties")
     private ClientDiscoveryForProperties properties;
+
+    /** Creates an instance of ClientDiscoveryValueForSingleApiInner class. */
+    public ClientDiscoveryValueForSingleApiInner() {
+    }
 
     /**
      * Get the name property: Name of the Operation.

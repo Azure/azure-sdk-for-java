@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB provisioned throughput settings object. */
 @Fluent
 public final class AutoscaleSettingsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleSettingsResource.class);
-
     /*
      * Represents maximum throughput container can scale up to.
      */
@@ -27,11 +23,14 @@ public final class AutoscaleSettingsResource {
     private AutoUpgradePolicyResource autoUpgradePolicy;
 
     /*
-     * Represents target maximum throughput container can scale up to once
-     * offer is no longer in pending state.
+     * Represents target maximum throughput container can scale up to once offer is no longer in pending state.
      */
     @JsonProperty(value = "targetMaxThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetMaxThroughput;
+
+    /** Creates an instance of AutoscaleSettingsResource class. */
+    public AutoscaleSettingsResource() {
+    }
 
     /**
      * Get the maxThroughput property: Represents maximum throughput container can scale up to.

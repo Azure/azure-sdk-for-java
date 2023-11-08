@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Google BigQuery service dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,25 +19,25 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class GoogleBigQueryObjectDataset extends Dataset {
     /*
-     * This property will be retired. Please consider using database + table
-     * properties instead.
+     * This property will be retired. Please consider using database + table properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The table name of the Google BigQuery. Type: string (or Expression with
-     * resultType string).
+     * The table name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
     /*
-     * The database name of the Google BigQuery. Type: string (or Expression
-     * with resultType string).
+     * The database name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.dataset")
     private Object dataset;
+
+    /** Creates an instance of GoogleBigQueryObjectDataset class. */
+    public GoogleBigQueryObjectDataset() {}
 
     /**
      * Get the tableName property: This property will be retired. Please consider using database + table properties
@@ -100,6 +102,55 @@ public class GoogleBigQueryObjectDataset extends Dataset {
      */
     public GoogleBigQueryObjectDataset setDataset(Object dataset) {
         this.dataset = dataset;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleBigQueryObjectDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleBigQueryObjectDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleBigQueryObjectDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleBigQueryObjectDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleBigQueryObjectDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleBigQueryObjectDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleBigQueryObjectDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

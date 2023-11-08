@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.redisenterprise.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateLinkResourceInner;
 import java.util.List;
 
@@ -29,6 +30,13 @@ public interface PrivateLinkResource {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the groupId property: The private link resource group id.

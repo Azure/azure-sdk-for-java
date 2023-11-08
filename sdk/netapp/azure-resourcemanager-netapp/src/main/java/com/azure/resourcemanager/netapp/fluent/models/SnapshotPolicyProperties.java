@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.DailySchedule;
 import com.azure.resourcemanager.netapp.models.HourlySchedule;
 import com.azure.resourcemanager.netapp.models.MonthlySchedule;
 import com.azure.resourcemanager.netapp.models.WeeklySchedule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Snapshot policy properties. */
 @Fluent
 public final class SnapshotPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotPolicyProperties.class);
-
     /*
      * Schedule for hourly snapshots
      */
@@ -53,6 +49,10 @@ public final class SnapshotPolicyProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /** Creates an instance of SnapshotPolicyProperties class. */
+    public SnapshotPolicyProperties() {
+    }
 
     /**
      * Get the hourlySchedule property: Schedule for hourly snapshots.

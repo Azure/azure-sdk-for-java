@@ -16,13 +16,15 @@ public interface VNetPeerings {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering.
+     * @return the workspace vNet Peering along with {@link Response}.
      */
-    VirtualNetworkPeering get(String resourceGroupName, String workspaceName, String peeringName);
+    Response<VirtualNetworkPeering> getWithResponse(
+        String resourceGroupName, String workspaceName, String peeringName, Context context);
 
     /**
      * Gets the workspace vNet Peering.
@@ -30,15 +32,13 @@ public interface VNetPeerings {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workspace vNet Peering.
      */
-    Response<VirtualNetworkPeering> getWithResponse(
-        String resourceGroupName, String workspaceName, String peeringName, Context context);
+    VirtualNetworkPeering get(String resourceGroupName, String workspaceName, String peeringName);
 
     /**
      * Deletes the workspace vNetPeering.
@@ -76,7 +76,7 @@ public interface VNetPeerings {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return gets all virtual network peerings under a workspace as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualNetworkPeering> listByWorkspace(String resourceGroupName, String workspaceName);
 
@@ -90,7 +90,7 @@ public interface VNetPeerings {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return gets all virtual network peerings under a workspace as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualNetworkPeering> listByWorkspace(
         String resourceGroupName, String workspaceName, Context context);
@@ -103,7 +103,7 @@ public interface VNetPeerings {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering.
+     * @return the workspace vNet Peering along with {@link Response}.
      */
     VirtualNetworkPeering getById(String id);
 
@@ -116,7 +116,7 @@ public interface VNetPeerings {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering.
+     * @return the workspace vNet Peering along with {@link Response}.
      */
     Response<VirtualNetworkPeering> getByIdWithResponse(String id, Context context);
 

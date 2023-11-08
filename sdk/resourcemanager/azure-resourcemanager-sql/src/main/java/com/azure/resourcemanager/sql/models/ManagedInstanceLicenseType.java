@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedInstanceLicenseType. */
+/**
+ * The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and
+ * 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
+ */
 public final class ManagedInstanceLicenseType extends ExpandableStringEnum<ManagedInstanceLicenseType> {
     /** Static value LicenseIncluded for ManagedInstanceLicenseType. */
     public static final ManagedInstanceLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");
@@ -27,7 +30,11 @@ public final class ManagedInstanceLicenseType extends ExpandableStringEnum<Manag
         return fromString(name, ManagedInstanceLicenseType.class);
     }
 
-    /** @return known ManagedInstanceLicenseType values. */
+    /**
+     * Gets known ManagedInstanceLicenseType values.
+     *
+     * @return known ManagedInstanceLicenseType values.
+     */
     public static Collection<ManagedInstanceLicenseType> values() {
         return values(ManagedInstanceLicenseType.class);
     }

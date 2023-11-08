@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -19,8 +17,6 @@ import java.util.Map;
 @JsonTypeName("OperationStatusJobsExtendedInfo")
 @Fluent
 public final class OperationStatusJobsExtendedInfo extends OperationStatusExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusJobsExtendedInfo.class);
-
     /*
      * IDs of the jobs created for the protected item.
      */
@@ -33,6 +29,10 @@ public final class OperationStatusJobsExtendedInfo extends OperationStatusExtend
     @JsonProperty(value = "failedJobsError")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> failedJobsError;
+
+    /** Creates an instance of OperationStatusJobsExtendedInfo class. */
+    public OperationStatusJobsExtendedInfo() {
+    }
 
     /**
      * Get the jobIds property: IDs of the jobs created for the protected item.

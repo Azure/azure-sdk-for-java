@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DnsForwardingRulesets Delete. */
 public final class DnsForwardingRulesetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_Delete.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Delete.json
      */
     /**
      * Sample code: Delete DNS forwarding ruleset.

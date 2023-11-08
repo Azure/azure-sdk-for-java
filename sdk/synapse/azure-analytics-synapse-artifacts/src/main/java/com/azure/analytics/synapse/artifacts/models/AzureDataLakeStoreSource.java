@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureDataLakeStoreSource extends CopySource {
     /*
-     * If true, files under the folder path will be read recursively. Default
-     * is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;
+
+    /** Creates an instance of AzureDataLakeStoreSource class. */
+    public AzureDataLakeStoreSource() {}
 
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
@@ -40,6 +43,27 @@ public final class AzureDataLakeStoreSource extends CopySource {
      */
     public AzureDataLakeStoreSource setRecursive(Object recursive) {
         this.recursive = recursive;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

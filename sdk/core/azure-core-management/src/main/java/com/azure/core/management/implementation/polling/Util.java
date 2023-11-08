@@ -3,6 +3,7 @@
 
 package com.azure.core.management.implementation.polling;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -15,6 +16,7 @@ import java.net.URL;
  * Utility class.
  */
 class Util {
+    static final HttpHeaderName AZURE_ASYNC_OPERATION = HttpHeaderName.fromString("Azure-AsyncOperation");
 
     /**
      * An exception thrown while parsing an invalid URL.
@@ -36,7 +38,7 @@ class Util {
      * @return the Azure-AsyncOperation header value if exists, null otherwise
      */
     static URL getAzureAsyncOperationUrl(HttpHeaders headers, ClientLogger logger) {
-        return getUrl("Azure-AsyncOperation", headers, logger, false);
+        return getUrl(AZURE_ASYNC_OPERATION, headers, logger, false);
     }
 
     /**
@@ -48,7 +50,7 @@ class Util {
      * @return the Azure-AsyncOperation header value if exists, null otherwise
      */
     static URL getAzureAsyncOperationUrl(HttpHeaders headers, ClientLogger logger, boolean ignoreException) {
-        return getUrl("Azure-AsyncOperation", headers, logger, ignoreException);
+        return getUrl(AZURE_ASYNC_OPERATION, headers, logger, ignoreException);
     }
 
     /**
@@ -59,7 +61,7 @@ class Util {
      * @return the Location header value if exists, null otherwise
      */
     static URL getLocationUrl(HttpHeaders headers, ClientLogger logger) {
-        return getUrl("Location", headers, logger, false);
+        return getUrl(HttpHeaderName.LOCATION, headers, logger, false);
     }
 
     /**
@@ -71,7 +73,7 @@ class Util {
      * @return the URL value of the given header, null if header does not exists.
      */
     static URL getLocationUrl(HttpHeaders headers, ClientLogger logger, boolean ignoreException) {
-        return getUrl("Location", headers, logger, ignoreException);
+        return getUrl(HttpHeaderName.LOCATION, headers, logger, ignoreException);
     }
 
     /**
@@ -83,7 +85,8 @@ class Util {
      * @param ignoreException whether to ignore malformed URL
      * @return the URL value of the given header, null if header does not exists.
      */
-    private static URL getUrl(String urlHeaderName, HttpHeaders headers, ClientLogger logger, boolean ignoreException) {
+    private static URL getUrl(HttpHeaderName urlHeaderName, HttpHeaders headers, ClientLogger logger,
+        boolean ignoreException) {
         String value = headers.getValue(urlHeaderName);
         if (value != null) {
             try {

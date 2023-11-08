@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,15 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ValidateCreateOrderLimit")
 @Immutable
 public final class CreateOrderLimitForSubscriptionValidationResponseProperties extends ValidationInputResponse {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(CreateOrderLimitForSubscriptionValidationResponseProperties.class);
-
     /*
      * Create order limit validation status.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
+
+    /** Creates an instance of CreateOrderLimitForSubscriptionValidationResponseProperties class. */
+    public CreateOrderLimitForSubscriptionValidationResponseProperties() {
+    }
 
     /**
      * Get the status property: Create order limit validation status.

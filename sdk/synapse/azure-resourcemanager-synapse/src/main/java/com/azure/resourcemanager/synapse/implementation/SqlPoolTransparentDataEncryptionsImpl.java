@@ -14,10 +14,9 @@ import com.azure.resourcemanager.synapse.fluent.models.TransparentDataEncryption
 import com.azure.resourcemanager.synapse.models.SqlPoolTransparentDataEncryptions;
 import com.azure.resourcemanager.synapse.models.TransparentDataEncryption;
 import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTransparentDataEncryptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolTransparentDataEncryptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolTransparentDataEncryptionsImpl.class);
 
     private final SqlPoolTransparentDataEncryptionsClient innerClient;
 
@@ -28,20 +27,6 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public TransparentDataEncryption get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName) {
-        TransparentDataEncryptionInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName);
-        if (inner != null) {
-            return new TransparentDataEncryptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<TransparentDataEncryption> getWithResponse(
@@ -65,6 +50,20 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
         }
     }
 
+    public TransparentDataEncryption get(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        TransparentDataEncryptionName transparentDataEncryptionName) {
+        TransparentDataEncryptionInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName);
+        if (inner != null) {
+            return new TransparentDataEncryptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<TransparentDataEncryption> list(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         PagedIterable<TransparentDataEncryptionInner> inner =
@@ -82,7 +81,7 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
     public TransparentDataEncryption getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,22 +89,21 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
-        TransparentDataEncryptionName transparentDataEncryptionName =
-            TransparentDataEncryptionName.fromString(Utils.getValueFromIdByName(id, "transparentDataEncryption"));
-        if (transparentDataEncryptionName == null) {
-            throw logger
+        String transparentDataEncryptionNameLocal = Utils.getValueFromIdByName(id, "transparentDataEncryption");
+        if (transparentDataEncryptionNameLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,6 +111,8 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
                                 "The resource ID '%s' is not valid. Missing path segment 'transparentDataEncryption'.",
                                 id)));
         }
+        TransparentDataEncryptionName transparentDataEncryptionName =
+            TransparentDataEncryptionName.fromString(transparentDataEncryptionNameLocal);
         return this
             .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, Context.NONE)
             .getValue();
@@ -121,7 +121,7 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
     public Response<TransparentDataEncryption> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,22 +129,21 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
-        TransparentDataEncryptionName transparentDataEncryptionName =
-            TransparentDataEncryptionName.fromString(Utils.getValueFromIdByName(id, "transparentDataEncryption"));
-        if (transparentDataEncryptionName == null) {
-            throw logger
+        String transparentDataEncryptionNameLocal = Utils.getValueFromIdByName(id, "transparentDataEncryption");
+        if (transparentDataEncryptionNameLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -152,6 +151,8 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
                                 "The resource ID '%s' is not valid. Missing path segment 'transparentDataEncryption'.",
                                 id)));
         }
+        TransparentDataEncryptionName transparentDataEncryptionName =
+            TransparentDataEncryptionName.fromString(transparentDataEncryptionNameLocal);
         return this
             .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, transparentDataEncryptionName, context);
     }

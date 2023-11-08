@@ -25,6 +25,10 @@ public final class UsageCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of UsageCollection class. */
+    public UsageCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

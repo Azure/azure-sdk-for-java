@@ -6,8 +6,10 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The properties for creating a table. */
+@JacksonXmlRootElement(localName = "TableProperties")
 @Fluent
 public final class TableProperties {
     /*
@@ -15,6 +17,9 @@ public final class TableProperties {
      */
     @JsonProperty(value = "TableName")
     private String tableName;
+
+    /** Creates an instance of TableProperties class. */
+    public TableProperties() {}
 
     /**
      * Get the tableName property: The name of the table to create.

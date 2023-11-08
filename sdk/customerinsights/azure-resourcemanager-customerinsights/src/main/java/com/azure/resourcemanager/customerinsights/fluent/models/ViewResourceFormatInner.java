@@ -5,61 +5,32 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The view resource format. */
-@JsonFlatten
 @Fluent
-public class ViewResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ViewResourceFormatInner.class);
-
+public final class ViewResourceFormatInner extends ProxyResource {
     /*
-     * Name of the view.
+     * The view in Customer 360 web application.
      */
-    @JsonProperty(value = "properties.viewName", access = JsonProperty.Access.WRITE_ONLY)
-    private String viewName;
+    @JsonProperty(value = "properties")
+    private View innerProperties;
 
-    /*
-     * the user ID.
-     */
-    @JsonProperty(value = "properties.userId")
-    private String userId;
+    /** Creates an instance of ViewResourceFormatInner class. */
+    public ViewResourceFormatInner() {
+    }
 
-    /*
-     * the hub name.
+    /**
+     * Get the innerProperties property: The view in Customer 360 web application.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
-
-    /*
-     * Localized display name for the view.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
-
-    /*
-     * View definition.
-     */
-    @JsonProperty(value = "properties.definition")
-    private String definition;
-
-    /*
-     * Date time when view was last modified.
-     */
-    @JsonProperty(value = "properties.changed", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changed;
-
-    /*
-     * Date time when view was created.
-     */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime created;
+    private View innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the viewName property: Name of the view.
@@ -67,7 +38,7 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @return the viewName value.
      */
     public String viewName() {
-        return this.viewName;
+        return this.innerProperties() == null ? null : this.innerProperties().viewName();
     }
 
     /**
@@ -76,7 +47,7 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @return the userId value.
      */
     public String userId() {
-        return this.userId;
+        return this.innerProperties() == null ? null : this.innerProperties().userId();
     }
 
     /**
@@ -86,7 +57,10 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @return the ViewResourceFormatInner object itself.
      */
     public ViewResourceFormatInner withUserId(String userId) {
-        this.userId = userId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new View();
+        }
+        this.innerProperties().withUserId(userId);
         return this;
     }
 
@@ -96,7 +70,7 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -105,7 +79,7 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -115,7 +89,10 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @return the ViewResourceFormatInner object itself.
      */
     public ViewResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new View();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -125,7 +102,7 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @return the definition value.
      */
     public String definition() {
-        return this.definition;
+        return this.innerProperties() == null ? null : this.innerProperties().definition();
     }
 
     /**
@@ -135,7 +112,10 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @return the ViewResourceFormatInner object itself.
      */
     public ViewResourceFormatInner withDefinition(String definition) {
-        this.definition = definition;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new View();
+        }
+        this.innerProperties().withDefinition(definition);
         return this;
     }
 
@@ -145,7 +125,7 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @return the changed value.
      */
     public OffsetDateTime changed() {
-        return this.changed;
+        return this.innerProperties() == null ? null : this.innerProperties().changed();
     }
 
     /**
@@ -154,7 +134,7 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @return the created value.
      */
     public OffsetDateTime created() {
-        return this.created;
+        return this.innerProperties() == null ? null : this.innerProperties().created();
     }
 
     /**
@@ -163,5 +143,8 @@ public class ViewResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

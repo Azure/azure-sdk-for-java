@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 /** The properties of a management cluster. */
 @Fluent
 public final class ManagementCluster extends CommonClusterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementCluster.class);
+    /** Creates an instance of ManagementCluster class. */
+    public ManagementCluster() {
+    }
 
     /** {@inheritDoc} */
     @Override

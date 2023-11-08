@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.models.OperationDisplayInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The operations supported by Bot Service Management. */
 @Fluent
 public final class OperationEntityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationEntityInner.class);
-
     /*
      * Operation name: {provider}/{resource}/{operation}.
      */

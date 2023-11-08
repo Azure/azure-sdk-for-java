@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Features Register. */
 public final class FeaturesRegisterSamples {
     /*
@@ -22,6 +20,6 @@ public final class FeaturesRegisterSamples {
             .manager()
             .featureClient()
             .getFeatures()
-            .registerWithResponse("Resource Provider Namespace", "feature", Context.NONE);
+            .registerWithResponse("Resource Provider Namespace", "feature", com.azure.core.util.Context.NONE);
     }
 }

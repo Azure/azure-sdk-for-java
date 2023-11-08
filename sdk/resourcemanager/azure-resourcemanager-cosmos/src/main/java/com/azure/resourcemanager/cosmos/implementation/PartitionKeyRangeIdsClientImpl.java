@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.PartitionKeyRangeIdsClient;
 import com.azure.resourcemanager.cosmos.fluent.models.PartitionMetricInner;
 import com.azure.resourcemanager.cosmos.models.PartitionMetricListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PartitionKeyRangeIdsClient. */
 public final class PartitionKeyRangeIdsClientImpl implements PartitionKeyRangeIdsClient {
-    private final ClientLogger logger = new ClientLogger(PartitionKeyRangeIdsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PartitionKeyRangeIdsService service;
 
@@ -59,12 +56,10 @@ public final class PartitionKeyRangeIdsClientImpl implements PartitionKeyRangeId
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface PartitionKeyRangeIdsService {
+    public interface PartitionKeyRangeIdsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}"
-                + "/partitionKeyRangeId/{partitionKeyRangeId}/metrics")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/partitionKeyRangeId/{partitionKeyRangeId}/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartitionMetricListResult>> listMetrics(
@@ -95,7 +90,8 @@ public final class PartitionKeyRangeIdsClientImpl implements PartitionKeyRangeId
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartitionMetricInner>> listMetricsSinglePageAsync(
@@ -176,7 +172,8 @@ public final class PartitionKeyRangeIdsClientImpl implements PartitionKeyRangeId
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartitionMetricInner>> listMetricsSinglePageAsync(
@@ -254,7 +251,7 @@ public final class PartitionKeyRangeIdsClientImpl implements PartitionKeyRangeId
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PartitionMetricInner> listMetricsAsync(
@@ -285,7 +282,7 @@ public final class PartitionKeyRangeIdsClientImpl implements PartitionKeyRangeId
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartitionMetricInner> listMetricsAsync(
@@ -316,7 +313,7 @@ public final class PartitionKeyRangeIdsClientImpl implements PartitionKeyRangeId
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionMetricInner> listMetrics(
@@ -345,7 +342,7 @@ public final class PartitionKeyRangeIdsClientImpl implements PartitionKeyRangeId
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionMetricInner> listMetrics(

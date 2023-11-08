@@ -35,6 +35,10 @@ public final class DaprComponent {
     @JsonProperty(value = "metadata")
     private List<DaprMetadata> metadata;
 
+    /** Creates an instance of DaprComponent class. */
+    public DaprComponent() {
+    }
+
     /**
      * Get the name property: Component name.
      *

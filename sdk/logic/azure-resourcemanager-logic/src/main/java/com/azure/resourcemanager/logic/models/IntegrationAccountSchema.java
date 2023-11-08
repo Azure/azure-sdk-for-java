@@ -133,6 +133,13 @@ public interface IntegrationAccountSchema {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.logic.fluent.models.IntegrationAccountSchemaInner object.
      *
      * @return the inner object.
@@ -423,23 +430,23 @@ public interface IntegrationAccountSchema {
      * Get the content callback url.
      *
      * @param listContentCallbackUrl The callback url parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the content callback url along with {@link Response}.
+     */
+    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
+        GetCallbackUrlParameters listContentCallbackUrl, Context context);
+
+    /**
+     * Get the content callback url.
+     *
+     * @param listContentCallbackUrl The callback url parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the content callback url.
      */
     WorkflowTriggerCallbackUrl listContentCallbackUrl(GetCallbackUrlParameters listContentCallbackUrl);
-
-    /**
-     * Get the content callback url.
-     *
-     * @param listContentCallbackUrl The callback url parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
-     */
-    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        GetCallbackUrlParameters listContentCallbackUrl, Context context);
 }

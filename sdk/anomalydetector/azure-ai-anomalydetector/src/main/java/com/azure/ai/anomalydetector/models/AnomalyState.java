@@ -4,34 +4,45 @@
 
 package com.azure.ai.anomalydetector.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The AnomalyState model. */
-@Fluent
+/** Anomaly status and information. */
+@Immutable
 public final class AnomalyState {
     /*
-     * timestamp
+     * The timestamp for this anomaly.
      */
     @JsonProperty(value = "timestamp", required = true)
     private OffsetDateTime timestamp;
 
     /*
-     * The value property.
+     * The detailed value of this anomalous timestamp.
      */
     @JsonProperty(value = "value")
     private AnomalyValue value;
 
     /*
-     * Error message for the current timestamp
+     * Error message for the current timestamp.
      */
     @JsonProperty(value = "errors")
     private List<ErrorResponse> errors;
 
     /**
-     * Get the timestamp property: timestamp.
+     * Creates an instance of AnomalyState class.
+     *
+     * @param timestamp the timestamp value to set.
+     */
+    @JsonCreator
+    private AnomalyState(@JsonProperty(value = "timestamp", required = true) OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    /**
+     * Get the timestamp property: The timestamp for this anomaly.
      *
      * @return the timestamp value.
      */
@@ -40,34 +51,12 @@ public final class AnomalyState {
     }
 
     /**
-     * Set the timestamp property: timestamp.
-     *
-     * @param timestamp the timestamp value to set.
-     * @return the AnomalyState object itself.
-     */
-    public AnomalyState setTimestamp(OffsetDateTime timestamp) {
-        this.timestamp = timestamp;
-        return this;
-    }
-
-    /**
-     * Get the value property: The value property.
+     * Get the value property: The detailed value of this anomalous timestamp.
      *
      * @return the value value.
      */
     public AnomalyValue getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The value property.
-     *
-     * @param value the value value to set.
-     * @return the AnomalyState object itself.
-     */
-    public AnomalyState setValue(AnomalyValue value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -77,16 +66,5 @@ public final class AnomalyState {
      */
     public List<ErrorResponse> getErrors() {
         return this.errors;
-    }
-
-    /**
-     * Set the errors property: Error message for the current timestamp.
-     *
-     * @param errors the errors value to set.
-     * @return the AnomalyState object itself.
-     */
-    public AnomalyState setErrors(List<ErrorResponse> errors) {
-        this.errors = errors;
-        return this;
     }
 }

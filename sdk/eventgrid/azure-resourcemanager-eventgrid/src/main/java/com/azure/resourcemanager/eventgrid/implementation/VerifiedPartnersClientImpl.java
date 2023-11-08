@@ -55,7 +55,7 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface VerifiedPartnersService {
+    public interface VerifiedPartnersService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.EventGrid/verifiedPartners/{verifiedPartnerName}")
         @ExpectedResponses({200})
@@ -91,7 +91,9 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     }
 
     /**
-     * Get properties of a verified partner.
+     * Get a verified partner.
+     *
+     * <p>Get properties of a verified partner.
      *
      * @param verifiedPartnerName Name of the verified partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +128,9 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     }
 
     /**
-     * Get properties of a verified partner.
+     * Get a verified partner.
+     *
+     * <p>Get properties of a verified partner.
      *
      * @param verifiedPartnerName Name of the verified partner.
      * @param context The context to associate with this operation.
@@ -154,7 +158,9 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     }
 
     /**
-     * Get properties of a verified partner.
+     * Get a verified partner.
+     *
+     * <p>Get properties of a verified partner.
      *
      * @param verifiedPartnerName Name of the verified partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,33 +170,13 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VerifiedPartnerInner> getAsync(String verifiedPartnerName) {
-        return getWithResponseAsync(verifiedPartnerName)
-            .flatMap(
-                (Response<VerifiedPartnerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(verifiedPartnerName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get properties of a verified partner.
+     * Get a verified partner.
      *
-     * @param verifiedPartnerName Name of the verified partner.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a verified partner.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VerifiedPartnerInner get(String verifiedPartnerName) {
-        return getAsync(verifiedPartnerName).block();
-    }
-
-    /**
-     * Get properties of a verified partner.
+     * <p>Get properties of a verified partner.
      *
      * @param verifiedPartnerName Name of the verified partner.
      * @param context The context to associate with this operation.
@@ -205,7 +191,25 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     }
 
     /**
-     * Get a list of all verified partners.
+     * Get a verified partner.
+     *
+     * <p>Get properties of a verified partner.
+     *
+     * @param verifiedPartnerName Name of the verified partner.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a verified partner.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VerifiedPartnerInner get(String verifiedPartnerName) {
+        return getWithResponse(verifiedPartnerName, Context.NONE).getValue();
+    }
+
+    /**
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -247,7 +251,9 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     }
 
     /**
-     * Get a list of all verified partners.
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -288,7 +294,9 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     }
 
     /**
-     * Get a list of all verified partners.
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -309,7 +317,9 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     }
 
     /**
-     * Get a list of all verified partners.
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -323,7 +333,9 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     }
 
     /**
-     * Get a list of all verified partners.
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -346,7 +358,9 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     }
 
     /**
-     * Get a list of all verified partners.
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -360,7 +374,9 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     }
 
     /**
-     * Get a list of all verified partners.
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -384,7 +400,8 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -420,7 +437,8 @@ public final class VerifiedPartnersClientImpl implements VerifiedPartnersClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies the network settings for the HANA instance disks. */
 @Fluent
 public final class NetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
-
     /*
      * Specifies the network interfaces for the HANA instance.
      */
@@ -24,8 +20,12 @@ public final class NetworkProfile {
     /*
      * Specifies the circuit id for connecting to express route.
      */
-    @JsonProperty(value = "circuitId")
+    @JsonProperty(value = "circuitId", access = JsonProperty.Access.WRITE_ONLY)
     private String circuitId;
+
+    /** Creates an instance of NetworkProfile class. */
+    public NetworkProfile() {
+    }
 
     /**
      * Get the networkInterfaces property: Specifies the network interfaces for the HANA instance.
@@ -54,17 +54,6 @@ public final class NetworkProfile {
      */
     public String circuitId() {
         return this.circuitId;
-    }
-
-    /**
-     * Set the circuitId property: Specifies the circuit id for connecting to express route.
-     *
-     * @param circuitId the circuitId value to set.
-     * @return the NetworkProfile object itself.
-     */
-    public NetworkProfile withCircuitId(String circuitId) {
-        this.circuitId = circuitId;
-        return this;
     }
 
     /**

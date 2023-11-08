@@ -46,6 +46,13 @@ public interface TriggerResource {
     String etag();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.TriggerResourceInner object.
      *
      * @return the inner object.
@@ -59,11 +66,13 @@ public interface TriggerResource {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The TriggerResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the TriggerResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the TriggerResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -75,6 +84,7 @@ public interface TriggerResource {
              */
             WithProperties withExistingFactory(String resourceGroupName, String factoryName);
         }
+
         /** The stage of the TriggerResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -85,6 +95,7 @@ public interface TriggerResource {
              */
             WithCreate withProperties(Trigger properties);
         }
+
         /**
          * The stage of the TriggerResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -105,6 +116,7 @@ public interface TriggerResource {
              */
             TriggerResource create(Context context);
         }
+
         /** The stage of the TriggerResource definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -118,6 +130,7 @@ public interface TriggerResource {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the TriggerResource resource.
      *
@@ -142,6 +155,7 @@ public interface TriggerResource {
          */
         TriggerResource apply(Context context);
     }
+
     /** The TriggerResource update stages. */
     interface UpdateStages {
         /** The stage of the TriggerResource update allowing to specify properties. */
@@ -154,6 +168,7 @@ public interface TriggerResource {
              */
             Update withProperties(Trigger properties);
         }
+
         /** The stage of the TriggerResource update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -167,6 +182,7 @@ public interface TriggerResource {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -205,15 +221,6 @@ public interface TriggerResource {
     /**
      * Get a trigger's event subscription status.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status.
-     */
-    TriggerSubscriptionOperationStatus getEventSubscriptionStatus();
-
-    /**
-     * Get a trigger's event subscription status.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,6 +228,15 @@ public interface TriggerResource {
      * @return a trigger's event subscription status along with {@link Response}.
      */
     Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(Context context);
+
+    /**
+     * Get a trigger's event subscription status.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger's event subscription status.
+     */
+    TriggerSubscriptionOperationStatus getEventSubscriptionStatus();
 
     /**
      * Unsubscribe event trigger from events.

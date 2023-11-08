@@ -26,6 +26,10 @@ public final class VirtualMachineNetworkInterfaceConfiguration {
     @JsonProperty(value = "properties")
     private VirtualMachineNetworkInterfaceConfigurationProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineNetworkInterfaceConfiguration class. */
+    public VirtualMachineNetworkInterfaceConfiguration() {
+    }
+
     /**
      * Get the name property: The network interface configuration name.
      *
@@ -126,6 +130,31 @@ public final class VirtualMachineNetworkInterfaceConfiguration {
             this.innerProperties = new VirtualMachineNetworkInterfaceConfigurationProperties();
         }
         this.innerProperties().withEnableAcceleratedNetworking(enableAcceleratedNetworking);
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableTcpStateTracking();
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
+     */
+    public VirtualMachineNetworkInterfaceConfiguration withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.innerProperties().withDisableTcpStateTracking(disableTcpStateTracking);
         return this;
     }
 
@@ -266,6 +295,54 @@ public final class VirtualMachineNetworkInterfaceConfiguration {
             this.innerProperties = new VirtualMachineNetworkInterfaceConfigurationProperties();
         }
         this.innerProperties().withDscpConfiguration(dscpConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     *
+     * @return the auxiliaryMode value.
+     */
+    public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().auxiliaryMode();
+    }
+
+    /**
+     * Set the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     *
+     * @param auxiliaryMode the auxiliaryMode value to set.
+     * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
+     */
+    public VirtualMachineNetworkInterfaceConfiguration withAuxiliaryMode(NetworkInterfaceAuxiliaryMode auxiliaryMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.innerProperties().withAuxiliaryMode(auxiliaryMode);
+        return this;
+    }
+
+    /**
+     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     *
+     * @return the auxiliarySku value.
+     */
+    public NetworkInterfaceAuxiliarySku auxiliarySku() {
+        return this.innerProperties() == null ? null : this.innerProperties().auxiliarySku();
+    }
+
+    /**
+     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     *
+     * @param auxiliarySku the auxiliarySku value to set.
+     * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
+     */
+    public VirtualMachineNetworkInterfaceConfiguration withAuxiliarySku(NetworkInterfaceAuxiliarySku auxiliarySku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.innerProperties().withAuxiliarySku(auxiliarySku);
         return this;
     }
 

@@ -5,30 +5,29 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Upstream auth settings. */
+/** Upstream auth settings. If not set, no auth is used for upstream messages. */
 @Fluent
 public final class UpstreamAuthSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpstreamAuthSettings.class);
-
     /*
-     * Gets or sets the type of auth. None or ManagedIdentity is supported now.
+     * Upstream auth type enum.
      */
     @JsonProperty(value = "type")
     private UpstreamAuthType type;
 
     /*
-     * Gets or sets the managed identity settings. It's required if the auth
-     * type is set to ManagedIdentity.
+     * Managed identity settings for upstream.
      */
     @JsonProperty(value = "managedIdentity")
     private ManagedIdentitySettings managedIdentity;
 
+    /** Creates an instance of UpstreamAuthSettings class. */
+    public UpstreamAuthSettings() {
+    }
+
     /**
-     * Get the type property: Gets or sets the type of auth. None or ManagedIdentity is supported now.
+     * Get the type property: Upstream auth type enum.
      *
      * @return the type value.
      */
@@ -37,7 +36,7 @@ public final class UpstreamAuthSettings {
     }
 
     /**
-     * Set the type property: Gets or sets the type of auth. None or ManagedIdentity is supported now.
+     * Set the type property: Upstream auth type enum.
      *
      * @param type the type value to set.
      * @return the UpstreamAuthSettings object itself.
@@ -48,8 +47,7 @@ public final class UpstreamAuthSettings {
     }
 
     /**
-     * Get the managedIdentity property: Gets or sets the managed identity settings. It's required if the auth type is
-     * set to ManagedIdentity.
+     * Get the managedIdentity property: Managed identity settings for upstream.
      *
      * @return the managedIdentity value.
      */
@@ -58,8 +56,7 @@ public final class UpstreamAuthSettings {
     }
 
     /**
-     * Set the managedIdentity property: Gets or sets the managed identity settings. It's required if the auth type is
-     * set to ManagedIdentity.
+     * Set the managedIdentity property: Managed identity settings for upstream.
      *
      * @param managedIdentity the managedIdentity value to set.
      * @return the UpstreamAuthSettings object itself.

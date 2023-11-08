@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,9 +16,6 @@ import java.util.List;
 @JsonTypeName("MigrationLevelOutput")
 @Immutable
 public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends MigrateSqlServerSqlMITaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlMITaskOutputMigrationLevel.class);
-
     /*
      * Migration start time
      */
@@ -110,6 +105,10 @@ public final class MigrateSqlServerSqlMITaskOutputMigrationLevel extends Migrate
      */
     @JsonProperty(value = "exceptionsAndWarnings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> exceptionsAndWarnings;
+
+    /** Creates an instance of MigrateSqlServerSqlMITaskOutputMigrationLevel class. */
+    public MigrateSqlServerSqlMITaskOutputMigrationLevel() {
+    }
 
     /**
      * Get the startedOn property: Migration start time.

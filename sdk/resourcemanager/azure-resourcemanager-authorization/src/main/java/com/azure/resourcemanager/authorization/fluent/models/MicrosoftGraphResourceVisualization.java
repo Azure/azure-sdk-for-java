@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,19 +15,16 @@ import java.util.Map;
 /** resourceVisualization. */
 @Fluent
 public final class MicrosoftGraphResourceVisualization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphResourceVisualization.class);
-
     /*
-     * A string describing where the item is stored. For example, the name of a
-     * SharePoint site or the user name identifying the owner of the OneDrive
-     * storing the item.
+     * A string describing where the item is stored. For example, the name of a SharePoint site or the user name
+     * identifying the owner of the OneDrive storing the item.
      */
     @JsonProperty(value = "containerDisplayName")
     private String containerDisplayName;
 
     /*
-     * Can be used for filtering by the type of container in which the file is
-     * stored. Such as Site or OneDriveBusiness.
+     * Can be used for filtering by the type of container in which the file is stored. Such as Site or
+     * OneDriveBusiness.
      */
     @JsonProperty(value = "containerType")
     private String containerType;
@@ -40,9 +36,8 @@ public final class MicrosoftGraphResourceVisualization {
     private String containerWebUrl;
 
     /*
-     * The item's media type. Can be used for filtering for a specific type of
-     * file based on supported IANA Media Mime Types. Note that not all Media
-     * Mime Types are supported.
+     * The item's media type. Can be used for filtering for a specific type of file based on supported IANA Media Mime
+     * Types. Note that not all Media Mime Types are supported.
      */
     @JsonProperty(value = "mediaType")
     private String mediaType;
@@ -66,8 +61,8 @@ public final class MicrosoftGraphResourceVisualization {
     private String title;
 
     /*
-     * The item's media type. Can be used for filtering for a specific file
-     * based on a specific type. See below for supported types.
+     * The item's media type. Can be used for filtering for a specific file based on a specific type. See below for
+     * supported types.
      */
     @JsonProperty(value = "type")
     private String type;
@@ -76,6 +71,10 @@ public final class MicrosoftGraphResourceVisualization {
      * resourceVisualization
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphResourceVisualization class. */
+    public MicrosoftGraphResourceVisualization() {
+    }
 
     /**
      * Get the containerDisplayName property: A string describing where the item is stored. For example, the name of a

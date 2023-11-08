@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphCalendarColor. */
+/** calendarColor. */
 public final class MicrosoftGraphCalendarColor extends ExpandableStringEnum<MicrosoftGraphCalendarColor> {
     /** Static value auto for MicrosoftGraphCalendarColor. */
     public static final MicrosoftGraphCalendarColor AUTO = fromString("auto");
@@ -44,6 +44,15 @@ public final class MicrosoftGraphCalendarColor extends ExpandableStringEnum<Micr
     public static final MicrosoftGraphCalendarColor MAX_COLOR = fromString("maxColor");
 
     /**
+     * Creates a new instance of MicrosoftGraphCalendarColor value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphCalendarColor() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphCalendarColor from its string representation.
      *
      * @param name a name to look for.
@@ -54,7 +63,11 @@ public final class MicrosoftGraphCalendarColor extends ExpandableStringEnum<Micr
         return fromString(name, MicrosoftGraphCalendarColor.class);
     }
 
-    /** @return known MicrosoftGraphCalendarColor values. */
+    /**
+     * Gets known MicrosoftGraphCalendarColor values.
+     *
+     * @return known MicrosoftGraphCalendarColor values.
+     */
     public static Collection<MicrosoftGraphCalendarColor> values() {
         return values(MicrosoftGraphCalendarColor.class);
     }

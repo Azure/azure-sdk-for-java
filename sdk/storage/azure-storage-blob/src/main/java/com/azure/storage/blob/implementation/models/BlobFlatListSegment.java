@@ -20,6 +20,9 @@ public final class BlobFlatListSegment {
     @JsonProperty("Blob")
     private List<BlobItemInternal> blobItems = new ArrayList<>();
 
+    /** Creates an instance of BlobFlatListSegment class. */
+    public BlobFlatListSegment() {}
+
     /**
      * Get the blobItems property: The BlobItems property.
      *

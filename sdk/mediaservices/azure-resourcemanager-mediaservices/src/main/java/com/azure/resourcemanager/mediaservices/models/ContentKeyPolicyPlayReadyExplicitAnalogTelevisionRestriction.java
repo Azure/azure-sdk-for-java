@@ -20,11 +20,14 @@ public final class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction 
     private boolean bestEffort;
 
     /*
-     * Configures the restriction control bits. Must be between 0 and 3
-     * inclusive.
+     * Configures the restriction control bits. Must be between 0 and 3 inclusive.
      */
     @JsonProperty(value = "configurationData", required = true)
     private int configurationData;
+
+    /** Creates an instance of ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction class. */
+    public ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction() {
+    }
 
     /**
      * Get the bestEffort property: Indicates whether this restriction is enforced on a Best Effort basis.

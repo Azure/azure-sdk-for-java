@@ -17,6 +17,10 @@ public final class AkamaiAccessControl {
     @JsonProperty(value = "akamaiSignatureHeaderAuthenticationKeyList")
     private List<AkamaiSignatureHeaderAuthenticationKey> akamaiSignatureHeaderAuthenticationKeyList;
 
+    /** Creates an instance of AkamaiAccessControl class. */
+    public AkamaiAccessControl() {
+    }
+
     /**
      * Get the akamaiSignatureHeaderAuthenticationKeyList property: authentication key list.
      *

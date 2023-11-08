@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Library Get. */
 public final class LibraryGetSamples {
     /*
@@ -19,6 +17,7 @@ public final class LibraryGetSamples {
     public static void getLibraryByName(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .libraries()
-            .getWithResponse("exampleResourceGroup", "exampleLibraryName.jar", "exampleWorkspace", Context.NONE);
+            .getWithResponse(
+                "exampleResourceGroup", "exampleLibraryName.jar", "exampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }

@@ -39,15 +39,6 @@ public final class TransformsImpl implements Transforms {
         return Utils.mapPage(inner, inner1 -> new TransformImpl(inner1, this.manager()));
     }
 
-    public Transform get(String resourceGroupName, String accountName, String transformName) {
-        TransformInner inner = this.serviceClient().get(resourceGroupName, accountName, transformName);
-        if (inner != null) {
-            return new TransformImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Transform> getWithResponse(
         String resourceGroupName, String accountName, String transformName, Context context) {
         Response<TransformInner> inner =
@@ -63,13 +54,22 @@ public final class TransformsImpl implements Transforms {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String transformName) {
-        this.serviceClient().delete(resourceGroupName, accountName, transformName);
+    public Transform get(String resourceGroupName, String accountName, String transformName) {
+        TransformInner inner = this.serviceClient().get(resourceGroupName, accountName, transformName);
+        if (inner != null) {
+            return new TransformImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String transformName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, transformName, context);
+    }
+
+    public void delete(String resourceGroupName, String accountName, String transformName) {
+        this.serviceClient().delete(resourceGroupName, accountName, transformName);
     }
 
     public Transform getById(String id) {

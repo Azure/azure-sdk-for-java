@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The instance view of the container instance. Only valid in response. */
 @Immutable
 public final class ContainerPropertiesInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerPropertiesInstanceView.class);
-
     /*
      * The number of times that the container instance has been restarted.
      */
@@ -38,6 +34,10 @@ public final class ContainerPropertiesInstanceView {
      */
     @JsonProperty(value = "events", access = JsonProperty.Access.WRITE_ONLY)
     private List<Event> events;
+
+    /** Creates an instance of ContainerPropertiesInstanceView class. */
+    public ContainerPropertiesInstanceView() {
+    }
 
     /**
      * Get the restartCount property: The number of times that the container instance has been restarted.

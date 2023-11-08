@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of user assigned identity. */
 @Immutable
 public final class UserAssignedIdentityProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentityProperty.class);
-
     /*
      * Get the principal id for the user assigned identity
      */
@@ -25,6 +21,10 @@ public final class UserAssignedIdentityProperty {
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
+
+    /** Creates an instance of UserAssignedIdentityProperty class. */
+    public UserAssignedIdentityProperty() {
+    }
 
     /**
      * Get the principalId property: Get the principal id for the user assigned identity.

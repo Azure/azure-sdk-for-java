@@ -67,12 +67,10 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CapacityReservationsService {
+    public interface CapacityReservationsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations"
-                + "/{capacityReservationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations/{capacityReservationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -88,9 +86,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations"
-                + "/{capacityReservationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations/{capacityReservationName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -106,9 +102,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations"
-                + "/{capacityReservationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations/{capacityReservationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -123,9 +117,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations"
-                + "/{capacityReservationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations/{capacityReservationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CapacityReservationInner>> get(
@@ -141,8 +133,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CapacityReservationListResult>> listByCapacityReservationGroup(
@@ -217,7 +208,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -290,7 +281,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -392,7 +383,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         String capacityReservationGroupName,
         String capacityReservationName,
         CapacityReservationInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, capacityReservationGroupName, capacityReservationName, parameters)
             .getSyncPoller();
     }
@@ -418,7 +410,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         String capacityReservationName,
         CapacityReservationInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, capacityReservationGroupName, capacityReservationName, parameters, context)
             .getSyncPoller();
     }
@@ -575,7 +568,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -647,7 +640,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -746,7 +739,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         String capacityReservationGroupName,
         String capacityReservationName,
         CapacityReservationUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, parameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, parameters)
             .getSyncPoller();
     }
 
@@ -770,7 +764,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         String capacityReservationName,
         CapacityReservationUpdate parameters,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, capacityReservationGroupName, capacityReservationName, parameters, context)
             .getSyncPoller();
     }
@@ -914,7 +909,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -979,7 +974,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1062,7 +1057,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
-        return beginDeleteAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName)
+        return this
+            .beginDeleteAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName)
             .getSyncPoller();
     }
 
@@ -1086,7 +1082,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         String capacityReservationGroupName,
         String capacityReservationName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, context)
             .getSyncPoller();
     }
 
@@ -1223,7 +1220,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1292,7 +1289,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1314,37 +1311,6 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
-     *     properties of the capacity reservation that is managed by the platform and can change outside of control
-     *     plane operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CapacityReservationInner> getAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationInstanceViewTypes expand) {
-        return getWithResponseAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, expand)
-            .flatMap(
-                (Response<CapacityReservationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation that retrieves information about the capacity reservation.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1355,32 +1321,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
         final CapacityReservationInstanceViewTypes expand = null;
         return getWithResponseAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, expand)
-            .flatMap(
-                (Response<CapacityReservationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation that retrieves information about the capacity reservation.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapacityReservationInner get(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
-        final CapacityReservationInstanceViewTypes expand = null;
-        return getAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, expand).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1408,6 +1349,26 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         return getWithResponseAsync(
                 resourceGroupName, capacityReservationGroupName, capacityReservationName, expand, context)
             .block();
+    }
+
+    /**
+     * The operation that retrieves information about the capacity reservation.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CapacityReservationInner get(
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
+        final CapacityReservationInstanceViewTypes expand = null;
+        return getWithResponse(
+                resourceGroupName, capacityReservationGroupName, capacityReservationName, expand, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1447,7 +1408,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1511,7 +1472,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1614,7 +1575,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1653,7 +1615,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

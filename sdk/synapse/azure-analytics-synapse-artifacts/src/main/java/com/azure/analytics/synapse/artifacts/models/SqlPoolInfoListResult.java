@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** SQL pool collection List of SQL pools. */
+/**
+ * SQL pool collection
+ *
+ * <p>List of SQL pools.
+ */
 @Fluent
 public final class SqlPoolInfoListResult {
     /*
@@ -22,6 +26,9 @@ public final class SqlPoolInfoListResult {
      */
     @JsonProperty(value = "value")
     private List<SqlPool> value;
+
+    /** Creates an instance of SqlPoolInfoListResult class. */
+    public SqlPoolInfoListResult() {}
 
     /**
      * Get the nextLink property: Link to the next page of results.

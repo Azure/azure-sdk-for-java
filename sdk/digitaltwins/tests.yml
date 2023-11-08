@@ -9,3 +9,4 @@ stages:
             safeName: azuredigitaltwinscore
       ServiceDirectory: digitaltwins
       Clouds: 'Preview'
+      Location: westus2

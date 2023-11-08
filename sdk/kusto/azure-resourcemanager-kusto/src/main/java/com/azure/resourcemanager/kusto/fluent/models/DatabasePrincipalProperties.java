@@ -9,17 +9,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class representing database principal property. */
 @Fluent
 public final class DatabasePrincipalProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasePrincipalProperties.class);
-
     /*
-     * The principal ID assigned to the database principal. It can be a user
-     * email, application ID, or security group name.
+     * The principal ID assigned to the database principal. It can be a user email, application ID, or security group
+     * name.
      */
     @JsonProperty(value = "principalId", required = true)
     private String principalId;
@@ -65,6 +62,10 @@ public final class DatabasePrincipalProperties {
      */
     @JsonProperty(value = "aadObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String aadObjectId;
+
+    /** Creates an instance of DatabasePrincipalProperties class. */
+    public DatabasePrincipalProperties() {
+    }
 
     /**
      * Get the principalId property: The principal ID assigned to the database principal. It can be a user email,
@@ -191,22 +192,24 @@ public final class DatabasePrincipalProperties {
      */
     public void validate() {
         if (principalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalId in model DatabasePrincipalProperties"));
         }
         if (role() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property role in model DatabasePrincipalProperties"));
         }
         if (principalType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalType in model DatabasePrincipalProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabasePrincipalProperties.class);
 }

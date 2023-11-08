@@ -24,10 +24,9 @@ import com.azure.resourcemanager.hdinsight.models.Locations;
 import com.azure.resourcemanager.hdinsight.models.NameAvailabilityCheckRequestParameters;
 import com.azure.resourcemanager.hdinsight.models.NameAvailabilityCheckResult;
 import com.azure.resourcemanager.hdinsight.models.UsagesListResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 
@@ -37,15 +36,6 @@ public final class LocationsImpl implements Locations {
         LocationsClient innerClient, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CapabilitiesResult getCapabilities(String location) {
-        CapabilitiesResultInner inner = this.serviceClient().getCapabilities(location);
-        if (inner != null) {
-            return new CapabilitiesResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CapabilitiesResult> getCapabilitiesWithResponse(String location, Context context) {
@@ -61,10 +51,10 @@ public final class LocationsImpl implements Locations {
         }
     }
 
-    public UsagesListResult listUsages(String location) {
-        UsagesListResultInner inner = this.serviceClient().listUsages(location);
+    public CapabilitiesResult getCapabilities(String location) {
+        CapabilitiesResultInner inner = this.serviceClient().getCapabilities(location);
         if (inner != null) {
-            return new UsagesListResultImpl(inner, this.manager());
+            return new CapabilitiesResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -83,10 +73,10 @@ public final class LocationsImpl implements Locations {
         }
     }
 
-    public BillingResponseListResult listBillingSpecs(String location) {
-        BillingResponseListResultInner inner = this.serviceClient().listBillingSpecs(location);
+    public UsagesListResult listUsages(String location) {
+        UsagesListResultInner inner = this.serviceClient().listUsages(location);
         if (inner != null) {
-            return new BillingResponseListResultImpl(inner, this.manager());
+            return new UsagesListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -106,10 +96,10 @@ public final class LocationsImpl implements Locations {
         }
     }
 
-    public AsyncOperationResult getAzureAsyncOperationStatus(String location, String operationId) {
-        AsyncOperationResultInner inner = this.serviceClient().getAzureAsyncOperationStatus(location, operationId);
+    public BillingResponseListResult listBillingSpecs(String location) {
+        BillingResponseListResultInner inner = this.serviceClient().listBillingSpecs(location);
         if (inner != null) {
-            return new AsyncOperationResultImpl(inner, this.manager());
+            return new BillingResponseListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -130,11 +120,10 @@ public final class LocationsImpl implements Locations {
         }
     }
 
-    public NameAvailabilityCheckResult checkNameAvailability(
-        String location, NameAvailabilityCheckRequestParameters parameters) {
-        NameAvailabilityCheckResultInner inner = this.serviceClient().checkNameAvailability(location, parameters);
+    public AsyncOperationResult getAzureAsyncOperationStatus(String location, String operationId) {
+        AsyncOperationResultInner inner = this.serviceClient().getAzureAsyncOperationStatus(location, operationId);
         if (inner != null) {
-            return new NameAvailabilityCheckResultImpl(inner, this.manager());
+            return new AsyncOperationResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -155,12 +144,11 @@ public final class LocationsImpl implements Locations {
         }
     }
 
-    public ClusterCreateValidationResult validateClusterCreateRequest(
-        String location, ClusterCreateRequestValidationParameters parameters) {
-        ClusterCreateValidationResultInner inner =
-            this.serviceClient().validateClusterCreateRequest(location, parameters);
+    public NameAvailabilityCheckResult checkNameAvailability(
+        String location, NameAvailabilityCheckRequestParameters parameters) {
+        NameAvailabilityCheckResultInner inner = this.serviceClient().checkNameAvailability(location, parameters);
         if (inner != null) {
-            return new ClusterCreateValidationResultImpl(inner, this.manager());
+            return new NameAvailabilityCheckResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -176,6 +164,17 @@ public final class LocationsImpl implements Locations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ClusterCreateValidationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ClusterCreateValidationResult validateClusterCreateRequest(
+        String location, ClusterCreateRequestValidationParameters parameters) {
+        ClusterCreateValidationResultInner inner =
+            this.serviceClient().validateClusterCreateRequest(location, parameters);
+        if (inner != null) {
+            return new ClusterCreateValidationResultImpl(inner, this.manager());
         } else {
             return null;
         }

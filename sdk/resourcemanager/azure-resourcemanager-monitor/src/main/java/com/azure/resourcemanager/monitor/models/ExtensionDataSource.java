@@ -6,7 +6,6 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,12 +15,10 @@ import java.util.List;
  */
 @Fluent
 public final class ExtensionDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtensionDataSource.class);
-
     /*
      * List of streams that this data source will be sent to.
-     * A stream indicates what schema will be used for this data and usually
-     * what table in Log Analytics the data will be sent to.
+     * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
+     * be sent to.
      */
     @JsonProperty(value = "streams")
     private List<KnownExtensionDataSourceStreams> streams;
@@ -46,11 +43,14 @@ public final class ExtensionDataSource {
 
     /*
      * A friendly name for the data source.
-     * This name should be unique across all data sources (regardless of type)
-     * within the data collection rule.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of ExtensionDataSource class. */
+    public ExtensionDataSource() {
+    }
 
     /**
      * Get the streams property: List of streams that this data source will be sent to. A stream indicates what schema
@@ -163,10 +163,12 @@ public final class ExtensionDataSource {
      */
     public void validate() {
         if (extensionName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property extensionName in model ExtensionDataSource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExtensionDataSource.class);
 }

@@ -5,17 +5,14 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cdn.models.OriginProvisioningState;
 import com.azure.resourcemanager.cdn.models.OriginResourceState;
 import com.azure.resourcemanager.cdn.models.PrivateEndpointStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the origin. */
 @Fluent
 public final class OriginProperties extends OriginUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginProperties.class);
-
     /*
      * Resource status of the origin.
      */
@@ -26,13 +23,17 @@ public final class OriginProperties extends OriginUpdatePropertiesParameters {
      * Provisioning status of the origin.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private OriginProvisioningState provisioningState;
 
     /*
      * The approval status for the connection to the Private Link
      */
     @JsonProperty(value = "privateEndpointStatus", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointStatus privateEndpointStatus;
+
+    /** Creates an instance of OriginProperties class. */
+    public OriginProperties() {
+    }
 
     /**
      * Get the resourceState property: Resource status of the origin.
@@ -48,7 +49,7 @@ public final class OriginProperties extends OriginUpdatePropertiesParameters {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public OriginProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

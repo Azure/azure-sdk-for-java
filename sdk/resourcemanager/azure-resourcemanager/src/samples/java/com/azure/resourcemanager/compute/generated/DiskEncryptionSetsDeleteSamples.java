@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskEncryptionSets Delete. */
 public final class DiskEncryptionSetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/DeleteADiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/diskEncryptionSetExamples/DiskEncryptionSet_Delete.json
      */
     /**
      * Sample code: Delete a disk encryption set.
@@ -22,6 +20,6 @@ public final class DiskEncryptionSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getDiskEncryptionSets()
-            .delete("myResourceGroup", "myDiskEncryptionSet", Context.NONE);
+            .delete("myResourceGroup", "myDiskEncryptionSet", com.azure.core.util.Context.NONE);
     }
 }

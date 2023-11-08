@@ -14,10 +14,9 @@ import com.azure.resourcemanager.attestation.fluent.models.AttestationProviderLi
 import com.azure.resourcemanager.attestation.models.AttestationProvider;
 import com.azure.resourcemanager.attestation.models.AttestationProviderListResult;
 import com.azure.resourcemanager.attestation.models.AttestationProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AttestationProvidersImpl implements AttestationProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttestationProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AttestationProvidersImpl.class);
 
     private final AttestationProvidersClient innerClient;
 
@@ -28,15 +27,6 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         com.azure.resourcemanager.attestation.AttestationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public AttestationProvider getByResourceGroup(String resourceGroupName, String providerName) {
-        AttestationProviderInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, providerName);
-        if (inner != null) {
-            return new AttestationProviderImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AttestationProvider> getByResourceGroupWithResponse(
@@ -54,21 +44,22 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String providerName) {
-        this.serviceClient().delete(resourceGroupName, providerName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String providerName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, providerName, context);
-    }
-
-    public AttestationProviderListResult list() {
-        AttestationProviderListResultInner inner = this.serviceClient().list();
+    public AttestationProvider getByResourceGroup(String resourceGroupName, String providerName) {
+        AttestationProviderInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, providerName);
         if (inner != null) {
-            return new AttestationProviderListResultImpl(inner, this.manager());
+            return new AttestationProviderImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String providerName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, providerName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String providerName) {
+        this.serviceClient().delete(resourceGroupName, providerName);
     }
 
     public Response<AttestationProviderListResult> listWithResponse(Context context) {
@@ -84,8 +75,8 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
     }
 
-    public AttestationProviderListResult listByResourceGroup(String resourceGroupName) {
-        AttestationProviderListResultInner inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+    public AttestationProviderListResult list() {
+        AttestationProviderListResultInner inner = this.serviceClient().list();
         if (inner != null) {
             return new AttestationProviderListResultImpl(inner, this.manager());
         } else {
@@ -108,8 +99,8 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
     }
 
-    public AttestationProviderListResult listDefault() {
-        AttestationProviderListResultInner inner = this.serviceClient().listDefault();
+    public AttestationProviderListResult listByResourceGroup(String resourceGroupName) {
+        AttestationProviderListResultInner inner = this.serviceClient().listByResourceGroup(resourceGroupName);
         if (inner != null) {
             return new AttestationProviderListResultImpl(inner, this.manager());
         } else {
@@ -130,10 +121,10 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
     }
 
-    public AttestationProvider getDefaultByLocation(String location) {
-        AttestationProviderInner inner = this.serviceClient().getDefaultByLocation(location);
+    public AttestationProviderListResult listDefault() {
+        AttestationProviderListResultInner inner = this.serviceClient().listDefault();
         if (inner != null) {
-            return new AttestationProviderImpl(inner, this.manager());
+            return new AttestationProviderListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -153,10 +144,19 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
     }
 
+    public AttestationProvider getDefaultByLocation(String location) {
+        AttestationProviderInner inner = this.serviceClient().getDefaultByLocation(location);
+        if (inner != null) {
+            return new AttestationProviderImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public AttestationProvider getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,7 +164,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
         String providerName = Utils.getValueFromIdByName(id, "attestationProviders");
         if (providerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,7 +178,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
     public Response<AttestationProvider> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -186,7 +186,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
         String providerName = Utils.getValueFromIdByName(id, "attestationProviders");
         if (providerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -200,7 +200,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -208,7 +208,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
         String providerName = Utils.getValueFromIdByName(id, "attestationProviders");
         if (providerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -216,13 +216,13 @@ public final class AttestationProvidersImpl implements AttestationProviders {
                                 "The resource ID '%s' is not valid. Missing path segment 'attestationProviders'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, providerName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, providerName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -230,7 +230,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
         String providerName = Utils.getValueFromIdByName(id, "attestationProviders");
         if (providerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -238,7 +238,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
                                 "The resource ID '%s' is not valid. Missing path segment 'attestationProviders'.",
                                 id)));
         }
-        return this.deleteWithResponse(resourceGroupName, providerName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, providerName, context);
     }
 
     private AttestationProvidersClient serviceClient() {

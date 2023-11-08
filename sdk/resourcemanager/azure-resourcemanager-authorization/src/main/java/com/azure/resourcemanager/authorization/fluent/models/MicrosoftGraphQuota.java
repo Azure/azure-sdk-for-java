@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** quota. */
 @Fluent
 public final class MicrosoftGraphQuota {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphQuota.class);
-
     /*
      * Total space consumed by files in the recycle bin, in bytes. Read-only.
      */
@@ -25,15 +22,13 @@ public final class MicrosoftGraphQuota {
     private Long deleted;
 
     /*
-     * Total space remaining before reaching the quota limit, in bytes.
-     * Read-only.
+     * Total space remaining before reaching the quota limit, in bytes. Read-only.
      */
     @JsonProperty(value = "remaining")
     private Long remaining;
 
     /*
-     * Enumeration value that indicates the state of the storage space.
-     * Read-only.
+     * Enumeration value that indicates the state of the storage space. Read-only.
      */
     @JsonProperty(value = "state")
     private String state;
@@ -60,6 +55,10 @@ public final class MicrosoftGraphQuota {
      * quota
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphQuota class. */
+    public MicrosoftGraphQuota() {
+    }
 
     /**
      * Get the deleted property: Total space consumed by files in the recycle bin, in bytes. Read-only.

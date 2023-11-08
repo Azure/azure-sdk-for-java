@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.14 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,64 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.13 (2023-10-24)
+
+### Bugs Fixed
+- [Fix null ikey for _otelresource_ custom metrics](https://github.com/Azure/azure-sdk-for-java/pull/37352)
+- [Fix no network statsbeat](https://github.com/Azure/azure-sdk-for-java/pull/37360)
+
+## 1.0.0-beta.12 (2023-10-23)
+
+### Features Added
+- [Enable Statsbeat](https://github.com/Azure/azure-sdk-for-java/pull/37032)
+
+### Other Changes
+- [Update OpenTelemetry to 1.31.0](https://github.com/Azure/azure-sdk-for-java/pull/37209)
+- [Use OpenTelemetry AutoConfigure Module](https://github.com/Azure/azure-sdk-for-java/pull/36230)
+- [Don't drop known attributes on custom metrics](https://github.com/Azure/azure-sdk-for-java/pull/37175)
+- [Remove RetryPolicy from metadata service call](https://github.com/Azure/azure-sdk-for-java/pull/37031)
+
+## 1.0.0-beta.11 (2023-07-27)
+
+### Other Changes
+- [Fix RP Attach Type](https://github.com/Azure/azure-sdk-for-java/pull/36121)
+
+## 1.0.0-beta.10 (2023-07-26)
+
+### Other Changes
+- [Update vm prefix](https://github.com/Azure/azure-sdk-for-java/pull/36059)
+- [Better log messages](https://github.com/Azure/azure-sdk-for-java/pull/36064)
+
+## 1.0.0-beta.9 (2023-07-14)
+
+### Dependency Update
+- Update OpenTelemetry Java Instrumentation to 1.28.0
+
+## 1.0.0-beta.8 (2023-02-24)
+
+### Dependency Update
+- Update OpenTelemetry Java Instrumentation to 1.23.0
+
+### Bugs Fixed
+- [Fix GlobalOpenTelemetry usage](https://github.com/Azure/azure-sdk-for-java/pull/33678)
+
+## 1.0.0-beta.7 (2023-02-09)
+
+### Enhancements
+- Updated the OpenTelemetry SDK baseline to version 1.20.0
+- Replace System.getenv usage with Azure SDK Configuration
+
+### Breaking Changes
+- Change the Exporter implementations from public to package-private
+
+## 1.0.0-beta.6 (2022-09-06)
+
+### New Features
+- Add metrics exporter.
+- Add logs exporter.
+- Add disk persistence and retries for ingestion failures.
+- Add heartbeat telemetry.
 
 ## 1.0.0-beta.5 (2021-11-12)
 

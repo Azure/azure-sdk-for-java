@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.models.ReadWriteDatabase;
 import java.time.Duration;
 
 /** Samples for Databases Update. */
 public final class DatabasesUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDatabasesUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasesUpdate.json
      */
     /**
      * Sample code: KustoDatabasesUpdate.
@@ -26,6 +25,7 @@ public final class DatabasesUpdateSamples {
                 "kustoCluster",
                 "KustoDatabase8",
                 new ReadWriteDatabase().withHotCachePeriod(Duration.parse("P1D")),
-                Context.NONE);
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

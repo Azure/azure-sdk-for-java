@@ -9,16 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentNetworkDependency;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentNetworkDependencyHealth;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentNetworkEndPointAccessibilityState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The integration service environment subnet network health. */
 @Fluent
 public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentSubnetNetworkHealthInner.class);
-
     /*
      * The outbound network dependencies.
      */
@@ -36,6 +32,10 @@ public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner {
      */
     @JsonProperty(value = "networkDependencyHealthState", required = true)
     private IntegrationServiceEnvironmentNetworkEndPointAccessibilityState networkDependencyHealthState;
+
+    /** Creates an instance of IntegrationServiceEnvironmentSubnetNetworkHealthInner class. */
+    public IntegrationServiceEnvironmentSubnetNetworkHealthInner() {
+    }
 
     /**
      * Get the outboundNetworkDependencies property: The outbound network dependencies.
@@ -113,11 +113,14 @@ public final class IntegrationServiceEnvironmentSubnetNetworkHealthInner {
             outboundNetworkHealth().validate();
         }
         if (networkDependencyHealthState() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property networkDependencyHealthState in model"
                             + " IntegrationServiceEnvironmentSubnetNetworkHealthInner"));
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(IntegrationServiceEnvironmentSubnetNetworkHealthInner.class);
 }

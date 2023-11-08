@@ -7,9 +7,12 @@ import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 
 public final class TestDataFactory {
@@ -18,11 +21,19 @@ public final class TestDataFactory {
     private final String defaultText;
     private final byte[] defaultBytes;
     private final BinaryData defaultBinaryData;
+    private final Path defaultFile;
 
     private TestDataFactory() {
         defaultText = "default";
         defaultBytes = defaultText.getBytes(StandardCharsets.UTF_8);
         defaultBinaryData = BinaryData.fromString(defaultText);
+        try {
+            defaultFile = Files.createTempFile("storage-default-file", null);
+            defaultFile.toFile().deleteOnExit();
+            Files.write(defaultFile, defaultBytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static TestDataFactory getInstance() {
@@ -59,5 +70,9 @@ public final class TestDataFactory {
 
     public Flux<ByteBuffer> getDefaultFlux() {
         return Flux.just(getDefaultData());
+    }
+
+    public Path getDefaultFile() {
+        return defaultFile;
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Custom domain of app resource payload. */
 @Fluent
 public final class CustomDomainProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainProperties.class);
-
     /*
      * The thumbprint of bound certificate.
      */
@@ -31,6 +27,12 @@ public final class CustomDomainProperties {
      */
     @JsonProperty(value = "certName")
     private String certName;
+
+    /*
+     * Provisioning state of the Domain
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private CustomDomainResourceProvisioningState provisioningState;
 
     /**
      * Get the thumbprint property: The thumbprint of bound certificate.
@@ -79,6 +81,15 @@ public final class CustomDomainProperties {
     public CustomDomainProperties withCertName(String certName) {
         this.certName = certName;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Domain.
+     *
+     * @return the provisioningState value.
+     */
+    public CustomDomainResourceProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for InboundEndpoints Delete. */
 public final class InboundEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/InboundEndpoint_Delete.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Delete.json
      */
     /**
      * Sample code: Delete inbound endpoint for DNS resolver.

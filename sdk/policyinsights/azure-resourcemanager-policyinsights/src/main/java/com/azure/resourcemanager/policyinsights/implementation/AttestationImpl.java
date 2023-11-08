@@ -76,6 +76,18 @@ public final class AttestationImpl implements Attestation, Attestation.Definitio
         return this.innerModel().lastComplianceStateChangeAt();
     }
 
+    public OffsetDateTime assessmentDate() {
+        return this.innerModel().assessmentDate();
+    }
+
+    public Object metadata() {
+        return this.innerModel().metadata();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AttestationInner innerModel() {
         return this.innerObject;
     }
@@ -199,6 +211,16 @@ public final class AttestationImpl implements Attestation, Attestation.Definitio
 
     public AttestationImpl withEvidence(List<AttestationEvidence> evidence) {
         this.innerModel().withEvidence(evidence);
+        return this;
+    }
+
+    public AttestationImpl withAssessmentDate(OffsetDateTime assessmentDate) {
+        this.innerModel().withAssessmentDate(assessmentDate);
+        return this;
+    }
+
+    public AttestationImpl withMetadata(Object metadata) {
+        this.innerModel().withMetadata(metadata);
         return this;
     }
 }

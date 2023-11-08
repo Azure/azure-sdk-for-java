@@ -23,6 +23,10 @@ public final class SparkObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private SparkDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of SparkObjectDataset class. */
+    public SparkObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

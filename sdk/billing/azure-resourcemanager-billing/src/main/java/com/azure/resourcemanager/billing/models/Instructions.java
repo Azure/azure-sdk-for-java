@@ -19,7 +19,8 @@ public interface Instructions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Instruction> listByBillingProfile(String billingAccountName, String billingProfileName);
 
@@ -32,10 +33,26 @@ public interface Instructions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Instruction> listByBillingProfile(
         String billingAccountName, String billingProfileName, Context context);
+
+    /**
+     * Get the instruction by name. These are custom billing instructions and are only applicable for certain customers.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param instructionName Instruction Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the instruction by name along with {@link Response}.
+     */
+    Response<Instruction> getWithResponse(
+        String billingAccountName, String billingProfileName, String instructionName, Context context);
 
     /**
      * Get the instruction by name. These are custom billing instructions and are only applicable for certain customers.
@@ -51,19 +68,25 @@ public interface Instructions {
     Instruction get(String billingAccountName, String billingProfileName, String instructionName);
 
     /**
-     * Get the instruction by name. These are custom billing instructions and are only applicable for certain customers.
+     * Creates or updates an instruction. These are custom billing instructions and are only applicable for certain
+     * customers.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param instructionName Instruction Name.
+     * @param parameters The new instruction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instruction by name.
+     * @return an instruction along with {@link Response}.
      */
-    Response<Instruction> getWithResponse(
-        String billingAccountName, String billingProfileName, String instructionName, Context context);
+    Response<Instruction> putWithResponse(
+        String billingAccountName,
+        String billingProfileName,
+        String instructionName,
+        InstructionInner parameters,
+        Context context);
 
     /**
      * Creates or updates an instruction. These are custom billing instructions and are only applicable for certain
@@ -80,25 +103,4 @@ public interface Instructions {
      */
     Instruction put(
         String billingAccountName, String billingProfileName, String instructionName, InstructionInner parameters);
-
-    /**
-     * Creates or updates an instruction. These are custom billing instructions and are only applicable for certain
-     * customers.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param instructionName Instruction Name.
-     * @param parameters The new instruction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instruction.
-     */
-    Response<Instruction> putWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String instructionName,
-        InstructionInner parameters,
-        Context context);
 }

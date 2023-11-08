@@ -9,15 +9,12 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthbot.models.HealthBotProperties;
 import com.azure.resourcemanager.healthbot.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** HealthBot resource definition. */
 @Fluent
 public final class HealthBotInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthBotInner.class);
-
     /*
      * SKU of the HealthBot.
      */
@@ -25,7 +22,8 @@ public final class HealthBotInner extends Resource {
     private Sku sku;
 
     /*
-     * The set of properties specific to Healthbot resource.
+     * HealthBotProperties The set of properties specific to Healthbot
+     * resource.
      */
     @JsonProperty(value = "properties")
     private HealthBotProperties properties;
@@ -51,7 +49,7 @@ public final class HealthBotInner extends Resource {
     }
 
     /**
-     * Get the properties property: The set of properties specific to Healthbot resource.
+     * Get the properties property: HealthBotProperties The set of properties specific to Healthbot resource.
      *
      * @return the properties value.
      */
@@ -60,7 +58,7 @@ public final class HealthBotInner extends Resource {
     }
 
     /**
-     * Set the properties property: The set of properties specific to Healthbot resource.
+     * Set the properties property: HealthBotProperties The set of properties specific to Healthbot resource.
      *
      * @param properties the properties value to set.
      * @return the HealthBotInner object itself.
@@ -91,7 +89,7 @@ public final class HealthBotInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model HealthBotInner"));
         } else {
@@ -101,4 +99,6 @@ public final class HealthBotInner extends Resource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HealthBotInner.class);
 }

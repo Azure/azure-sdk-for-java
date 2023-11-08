@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScmType. */
+/** SCM type. */
 public final class ScmType extends ExpandableStringEnum<ScmType> {
     /** Static value None for ScmType. */
     public static final ScmType NONE = fromString("None");
@@ -53,6 +53,15 @@ public final class ScmType extends ExpandableStringEnum<ScmType> {
     public static final ScmType VSTSRM = fromString("VSTSRM");
 
     /**
+     * Creates a new instance of ScmType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScmType() {
+    }
+
+    /**
      * Creates or finds a ScmType from its string representation.
      *
      * @param name a name to look for.
@@ -63,7 +72,11 @@ public final class ScmType extends ExpandableStringEnum<ScmType> {
         return fromString(name, ScmType.class);
     }
 
-    /** @return known ScmType values. */
+    /**
+     * Gets known ScmType values.
+     *
+     * @return known ScmType values.
+     */
     public static Collection<ScmType> values() {
         return values(ScmType.class);
     }

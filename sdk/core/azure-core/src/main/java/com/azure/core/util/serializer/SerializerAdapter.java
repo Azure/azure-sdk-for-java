@@ -206,6 +206,7 @@ public interface SerializerAdapter {
      * @return A new instance of the type that represents the deserialized header.
      * @throws IOException If an I/O error occurs.
      */
+    @SuppressWarnings("deprecation")
     default <T> T deserializeHeader(Header header, Type type) throws IOException {
         return deserialize(new HttpHeaders().add(header.getName(), header.getValue()), type);
     }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.azurearcdata.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlManagedInstances List. */
 public final class SqlManagedInstancesListSamples {
     /*
@@ -18,6 +16,6 @@ public final class SqlManagedInstancesListSamples {
      */
     public static void getsAllSQLInstanceInASubscription(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.sqlManagedInstances().list(Context.NONE);
+        manager.sqlManagedInstances().list(com.azure.core.util.Context.NONE);
     }
 }

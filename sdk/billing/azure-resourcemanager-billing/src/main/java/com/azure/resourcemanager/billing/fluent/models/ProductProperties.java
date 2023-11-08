@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.AutoRenew;
 import com.azure.resourcemanager.billing.models.BillingFrequency;
 import com.azure.resourcemanager.billing.models.ProductStatusType;
 import com.azure.resourcemanager.billing.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of a product. */
 @Fluent
 public final class ProductProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductProperties.class);
-
     /*
      * Indicates whether auto renewal is turned on or off for a product.
      */
@@ -135,15 +131,15 @@ public final class ProductProperties {
     private String billingProfileDisplayName;
 
     /*
-     * The ID of the customer for whom the product was purchased. The field is
-     * applicable only for Microsoft Partner Agreement billing account.
+     * The ID of the customer for whom the product was purchased. The field is applicable only for Microsoft Partner
+     * Agreement billing account.
      */
     @JsonProperty(value = "customerId", access = JsonProperty.Access.WRITE_ONLY)
     private String customerId;
 
     /*
-     * The name of the customer for whom the product was purchased. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
+     * The name of the customer for whom the product was purchased. The field is applicable only for Microsoft Partner
+     * Agreement billing account.
      */
     @JsonProperty(value = "customerDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String customerDisplayName;
@@ -153,6 +149,10 @@ public final class ProductProperties {
      */
     @JsonProperty(value = "reseller", access = JsonProperty.Access.WRITE_ONLY)
     private Reseller reseller;
+
+    /** Creates an instance of ProductProperties class. */
+    public ProductProperties() {
+    }
 
     /**
      * Get the autoRenew property: Indicates whether auto renewal is turned on or off for a product.

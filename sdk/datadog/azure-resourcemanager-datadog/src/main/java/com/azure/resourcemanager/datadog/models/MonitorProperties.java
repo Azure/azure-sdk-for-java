@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to the monitor resource. */
 @Fluent
 public final class MonitorProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorProperties.class);
-
     /*
      * The provisioningState property.
      */
@@ -27,20 +23,21 @@ public final class MonitorProperties {
     private MonitoringStatus monitoringStatus;
 
     /*
-     * Flag specifying the Marketplace Subscription Status of the resource. If
-     * payment is not made in time, the resource will go in Suspended state.
+     * Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the
+     * resource will go in Suspended state.
      */
     @JsonProperty(value = "marketplaceSubscriptionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private MarketplaceSubscriptionStatus marketplaceSubscriptionStatus;
 
     /*
-     * Datadog organization properties
+     * Specify the Datadog organization name. In the case of linking to existing organizations, Id, ApiKey, and
+     * Applicationkey is required as well.
      */
     @JsonProperty(value = "datadogOrganizationProperties")
     private DatadogOrganizationProperties datadogOrganizationProperties;
 
     /*
-     * User info
+     * Includes name, email and optionally, phone number. User Information can't be null.
      */
     @JsonProperty(value = "userInfo")
     private UserInfo userInfo;
@@ -56,6 +53,10 @@ public final class MonitorProperties {
      */
     @JsonProperty(value = "liftrResourcePreference", access = JsonProperty.Access.WRITE_ONLY)
     private Integer liftrResourcePreference;
+
+    /** Creates an instance of MonitorProperties class. */
+    public MonitorProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioningState property.
@@ -97,7 +98,8 @@ public final class MonitorProperties {
     }
 
     /**
-     * Get the datadogOrganizationProperties property: Datadog organization properties.
+     * Get the datadogOrganizationProperties property: Specify the Datadog organization name. In the case of linking to
+     * existing organizations, Id, ApiKey, and Applicationkey is required as well.
      *
      * @return the datadogOrganizationProperties value.
      */
@@ -106,7 +108,8 @@ public final class MonitorProperties {
     }
 
     /**
-     * Set the datadogOrganizationProperties property: Datadog organization properties.
+     * Set the datadogOrganizationProperties property: Specify the Datadog organization name. In the case of linking to
+     * existing organizations, Id, ApiKey, and Applicationkey is required as well.
      *
      * @param datadogOrganizationProperties the datadogOrganizationProperties value to set.
      * @return the MonitorProperties object itself.
@@ -118,7 +121,7 @@ public final class MonitorProperties {
     }
 
     /**
-     * Get the userInfo property: User info.
+     * Get the userInfo property: Includes name, email and optionally, phone number. User Information can't be null.
      *
      * @return the userInfo value.
      */
@@ -127,7 +130,7 @@ public final class MonitorProperties {
     }
 
     /**
-     * Set the userInfo property: User info.
+     * Set the userInfo property: Includes name, email and optionally, phone number. User Information can't be null.
      *
      * @param userInfo the userInfo value to set.
      * @return the MonitorProperties object itself.

@@ -9,7 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource used by a Cache. */
+/** Resource used by a cache. */
 @Immutable
 public class StorageTargetResource extends ProxyResource {
     /*
@@ -23,6 +23,10 @@ public class StorageTargetResource extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of StorageTargetResource class. */
+    public StorageTargetResource() {
+    }
 
     /**
      * Get the location property: Region name string.

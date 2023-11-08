@@ -6,15 +6,11 @@ package com.azure.resourcemanager.automanage.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about the resource processed by the configuration profile assignment. */
 @Immutable
 public final class ReportResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportResource.class);
-
     /*
      * Name of the resource.
      */

@@ -225,15 +225,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SettingListInner> listAsync(String resourceGroupName, String workspaceName) {
-        return listWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<SettingListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, workspaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -386,14 +378,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SettingsInner> getAsync(String resourceGroupName, String workspaceName, String settingsName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, settingsName)
-            .flatMap(
-                (Response<SettingsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -547,8 +532,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String settingsName) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, settingsName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, settingsName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -718,14 +702,7 @@ public final class ProductSettingsClientImpl implements ProductSettingsClient {
     private Mono<SettingsInner> updateAsync(
         String resourceGroupName, String workspaceName, String settingsName, SettingsInner settings) {
         return updateWithResponseAsync(resourceGroupName, workspaceName, settingsName, settings)
-            .flatMap(
-                (Response<SettingsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

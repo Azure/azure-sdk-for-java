@@ -5,20 +5,26 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Current TCP connectivity information from the Kusto cluster to a single endpoint. */
 @Fluent
 public final class EndpointDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointDetail.class);
-
     /*
      * The port an endpoint is connected to.
      */
     @JsonProperty(value = "port")
     private Integer port;
+
+    /*
+     * The ip address of the endpoint.
+     */
+    @JsonProperty(value = "ipAddress")
+    private String ipAddress;
+
+    /** Creates an instance of EndpointDetail class. */
+    public EndpointDetail() {
+    }
 
     /**
      * Get the port property: The port an endpoint is connected to.
@@ -37,6 +43,26 @@ public final class EndpointDetail {
      */
     public EndpointDetail withPort(Integer port) {
         this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the ipAddress property: The ip address of the endpoint.
+     *
+     * @return the ipAddress value.
+     */
+    public String ipAddress() {
+        return this.ipAddress;
+    }
+
+    /**
+     * Set the ipAddress property: The ip address of the endpoint.
+     *
+     * @param ipAddress the ipAddress value to set.
+     * @return the EndpointDetail object itself.
+     */
+    public EndpointDetail withIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
         return this;
     }
 

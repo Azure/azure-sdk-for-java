@@ -33,6 +33,9 @@ public enum ListSharesIncludeType {
      */
     @JsonCreator
     public static ListSharesIncludeType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ListSharesIncludeType[] items = ListSharesIncludeType.values();
         for (ListSharesIncludeType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ListSharesIncludeType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

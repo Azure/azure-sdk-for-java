@@ -13,22 +13,19 @@ import java.util.List;
 @Fluent
 public final class DeleteCertificateError {
     /*
-     * An identifier for the error. Codes are invariant and are intended to be
-     * consumed programmatically.
+     * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
      */
     @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
-     * A message describing the error, intended to be suitable for display in a
-     * user interface.
+     * A message describing the error, intended to be suitable for display in a user interface.
      */
     @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
-     * The target of the particular error. For example, the name of the
-     * property in error.
+     * The target of the particular error. For example, the name of the property in error.
      */
     @JsonProperty(value = "target")
     private String target;
@@ -38,6 +35,10 @@ public final class DeleteCertificateError {
      */
     @JsonProperty(value = "details")
     private List<DeleteCertificateError> details;
+
+    /** Creates an instance of DeleteCertificateError class. */
+    public DeleteCertificateError() {
+    }
 
     /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed

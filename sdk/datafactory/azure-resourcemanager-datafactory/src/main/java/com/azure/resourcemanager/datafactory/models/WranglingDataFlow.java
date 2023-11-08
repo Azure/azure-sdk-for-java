@@ -22,6 +22,10 @@ public final class WranglingDataFlow extends DataFlow {
     @JsonProperty(value = "typeProperties")
     private PowerQueryTypeProperties innerTypeProperties;
 
+    /** Creates an instance of WranglingDataFlow class. */
+    public WranglingDataFlow() {
+    }
+
     /**
      * Get the innerTypeProperties property: PowerQuery data flow type properties.
      *

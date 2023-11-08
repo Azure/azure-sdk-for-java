@@ -16,10 +16,9 @@ import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpoint;
 import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpoints;
 import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpointsCheckNameRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedPrivateEndpointsImpl.class);
 
     private final ManagedPrivateEndpointsClient innerClient;
 
@@ -29,17 +28,6 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         ManagedPrivateEndpointsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
@@ -62,6 +50,17 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
     }
 
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<ManagedPrivateEndpoint> list(String resourceGroupName, String clusterName) {
         PagedIterable<ManagedPrivateEndpointInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
         return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointImpl(inner1, this.manager()));
@@ -71,16 +70,6 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         PagedIterable<ManagedPrivateEndpointInner> inner =
             this.serviceClient().list(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointImpl(inner1, this.manager()));
-    }
-
-    public ManagedPrivateEndpoint get(String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
-        ManagedPrivateEndpointInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, managedPrivateEndpointName);
-        if (inner != null) {
-            return new ManagedPrivateEndpointImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ManagedPrivateEndpoint> getWithResponse(
@@ -98,6 +87,16 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
     }
 
+    public ManagedPrivateEndpoint get(String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
+        ManagedPrivateEndpointInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, managedPrivateEndpointName);
+        if (inner != null) {
+            return new ManagedPrivateEndpointImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
         this.serviceClient().delete(resourceGroupName, clusterName, managedPrivateEndpointName);
     }
@@ -110,7 +109,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     public ManagedPrivateEndpoint getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,14 +117,14 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +140,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     public Response<ManagedPrivateEndpoint> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,14 +148,14 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -170,7 +169,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,14 +177,14 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -199,7 +198,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,14 +206,14 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

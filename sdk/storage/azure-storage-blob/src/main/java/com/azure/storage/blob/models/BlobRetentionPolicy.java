@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** the retention policy which determines how long the associated data should persist. */
-@Fluent
 @JacksonXmlRootElement(localName = "RetentionPolicy")
+@Fluent
 public final class BlobRetentionPolicy {
 
     /*
@@ -19,11 +19,14 @@ public final class BlobRetentionPolicy {
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics or logging or soft-deleted
-     * data should be retained. All data older than this value will be deleted
+     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older
+     * than this value will be deleted
      */
     @JsonProperty(value = "Days")
     private Integer days;
+
+    /** Creates an instance of BlobRetentionPolicy class. */
+    public BlobRetentionPolicy() {}
 
     /**
      * Get the enabled property: Indicates whether a retention policy is enabled for the storage service.

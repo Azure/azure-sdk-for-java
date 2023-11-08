@@ -16,6 +16,21 @@ public interface Desktops {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a desktop along with {@link Response}.
+     */
+    Response<Desktop> getWithResponse(
+        String resourceGroupName, String applicationGroupName, String desktopName, Context context);
+
+    /**
+     * Get a desktop.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param desktopName The name of the desktop within the specified desktop group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,19 +39,24 @@ public interface Desktops {
     Desktop get(String resourceGroupName, String applicationGroupName, String desktopName);
 
     /**
-     * Get a desktop.
+     * Update a desktop.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
+     * @param desktop Object containing Desktop definitions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a desktop.
+     * @return schema for Desktop properties along with {@link Response}.
      */
-    Response<Desktop> getWithResponse(
-        String resourceGroupName, String applicationGroupName, String desktopName, Context context);
+    Response<Desktop> updateWithResponse(
+        String resourceGroupName,
+        String applicationGroupName,
+        String desktopName,
+        DesktopPatch desktop,
+        Context context);
 
     /**
      * Update a desktop.
@@ -52,26 +72,6 @@ public interface Desktops {
     Desktop update(String resourceGroupName, String applicationGroupName, String desktopName);
 
     /**
-     * Update a desktop.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param desktopName The name of the desktop within the specified desktop group.
-     * @param desktop Object containing Desktop definitions.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Desktop properties.
-     */
-    Response<Desktop> updateWithResponse(
-        String resourceGroupName,
-        String applicationGroupName,
-        String desktopName,
-        DesktopPatch desktop,
-        Context context);
-
-    /**
      * List desktops.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -79,7 +79,7 @@ public interface Desktops {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Desktop> list(String resourceGroupName, String applicationGroupName);
 
@@ -88,11 +88,20 @@ public interface Desktops {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Desktop> list(String resourceGroupName, String applicationGroupName, Context context);
+    PagedIterable<Desktop> list(
+        String resourceGroupName,
+        String applicationGroupName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context);
 }

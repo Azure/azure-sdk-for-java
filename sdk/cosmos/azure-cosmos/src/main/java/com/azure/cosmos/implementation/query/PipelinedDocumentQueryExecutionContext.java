@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -21,6 +22,9 @@ import java.util.function.Function;
 public class PipelinedDocumentQueryExecutionContext<T>
     extends PipelinedQueryExecutionContextBase<T> {
 
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
     private final IDocumentQueryExecutionComponent<Document> component;
 
     private PipelinedDocumentQueryExecutionContext(
@@ -37,7 +41,8 @@ public class PipelinedDocumentQueryExecutionContext<T>
     private static BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createBaseComponentFunction(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
-        PipelinedDocumentQueryParams<Document> initParams) {
+        PipelinedDocumentQueryParams<Document> initParams,
+        DocumentCollection collection) {
 
         QueryInfo queryInfo = initParams.getQueryInfo();
         CosmosQueryRequestOptions requestOptions = initParams.getCosmosQueryRequestOptions();
@@ -45,7 +50,8 @@ public class PipelinedDocumentQueryExecutionContext<T>
 
         if (queryInfo.hasOrderBy()) {
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
-                CosmosQueryRequestOptions orderByCosmosQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(requestOptions);
+                CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
+                    qryOptAccessor.clone(requestOptions);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
                 ImplementationBridgeHelpers
                     .CosmosQueryRequestOptionsHelper
@@ -54,21 +60,19 @@ public class PipelinedDocumentQueryExecutionContext<T>
 
                 documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
 
-                return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams);
+                return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
             };
         } else {
 
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
-                CosmosQueryRequestOptions parallelCosmosQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(requestOptions);
-                ImplementationBridgeHelpers
-                    .CosmosQueryRequestOptionsHelper
-                    .getCosmosQueryRequestOptionsAccessor()
-                    .setItemFactoryMethod(parallelCosmosQueryRequestOptions, null);
+                CosmosQueryRequestOptions parallelCosmosQueryRequestOptions =
+                    qryOptAccessor.clone(requestOptions);
+                qryOptAccessor.setItemFactoryMethod(parallelCosmosQueryRequestOptions, null);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
 
                 documentQueryParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);
 
-                return ParallelDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams);
+                return ParallelDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
             };
         }
 
@@ -90,13 +94,32 @@ public class PipelinedDocumentQueryExecutionContext<T>
         return createAggregateComponentFunction;
     }
 
+    private static
+        BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>>
+        createDistinctPipelineComponentFunction(
+            BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>>
+                createBaseComponent,
+            QueryInfo queryInfo) {
+
+        if (queryInfo.hasDistinct()) {
+            return
+                (continuationToken, documentQueryParams) ->
+                    DistinctDocumentQueryExecutionContext.createAsync(createBaseComponent,
+                        queryInfo.getDistinctQueryType(),
+                        continuationToken,
+                        documentQueryParams);
+        }
+        return createBaseComponent;
+    }
+
     private static BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createPipelineComponentFunction(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
-        PipelinedDocumentQueryParams<Document> initParams) {
+        PipelinedDocumentQueryParams<Document> initParams,
+        DocumentCollection collection) {
 
         BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createBaseComponentFunction = createBaseComponentFunction(
-            diagnosticsClientContext, client, initParams);
+            diagnosticsClientContext, client, initParams, collection);
         BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createDistinctComponentFunction;
 
         QueryInfo queryInfo = initParams.getQueryInfo();
@@ -140,11 +163,12 @@ public class PipelinedDocumentQueryExecutionContext<T>
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams,
         int pageSize,
-        Function<JsonNode, T> factoryMethod) {
+        Function<JsonNode, T> factoryMethod,
+        DocumentCollection collection) {
 
         // Use nested callback pattern to unwrap the continuation token and query params at each level.
         BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createPipelineComponentFunction =
-            createPipelineComponentFunction(diagnosticsClientContext, client, initParams.convertGenericType(Document.class));
+            createPipelineComponentFunction(diagnosticsClientContext, client, initParams.convertGenericType(Document.class), collection);
 
         QueryInfo queryInfo = initParams.getQueryInfo();
         CosmosQueryRequestOptions cosmosQueryRequestOptions = initParams.getCosmosQueryRequestOptions();

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.customerinsights.fluent.KpisClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.KpiResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.KpiResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.Kpis;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KpisImpl implements Kpis {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpisImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KpisImpl.class);
 
     private final KpisClient innerClient;
 
@@ -26,15 +25,6 @@ public final class KpisImpl implements Kpis {
         KpisClient innerClient, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public KpiResourceFormat get(String resourceGroupName, String hubName, String kpiName) {
-        KpiResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, kpiName);
-        if (inner != null) {
-            return new KpiResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<KpiResourceFormat> getWithResponse(
@@ -52,6 +42,15 @@ public final class KpisImpl implements Kpis {
         }
     }
 
+    public KpiResourceFormat get(String resourceGroupName, String hubName, String kpiName) {
+        KpiResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, kpiName);
+        if (inner != null) {
+            return new KpiResourceFormatImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String hubName, String kpiName) {
         this.serviceClient().delete(resourceGroupName, hubName, kpiName);
     }
@@ -60,13 +59,13 @@ public final class KpisImpl implements Kpis {
         this.serviceClient().delete(resourceGroupName, hubName, kpiName, context);
     }
 
-    public void reprocess(String resourceGroupName, String hubName, String kpiName) {
-        this.serviceClient().reprocess(resourceGroupName, hubName, kpiName);
-    }
-
     public Response<Void> reprocessWithResponse(
         String resourceGroupName, String hubName, String kpiName, Context context) {
         return this.serviceClient().reprocessWithResponse(resourceGroupName, hubName, kpiName, context);
+    }
+
+    public void reprocess(String resourceGroupName, String hubName, String kpiName) {
+        this.serviceClient().reprocess(resourceGroupName, hubName, kpiName);
     }
 
     public PagedIterable<KpiResourceFormat> listByHub(String resourceGroupName, String hubName) {
@@ -83,7 +82,7 @@ public final class KpisImpl implements Kpis {
     public KpiResourceFormat getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -91,14 +90,14 @@ public final class KpisImpl implements Kpis {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String kpiName = Utils.getValueFromIdByName(id, "kpi");
         if (kpiName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kpi'.", id)));
@@ -109,7 +108,7 @@ public final class KpisImpl implements Kpis {
     public Response<KpiResourceFormat> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,14 +116,14 @@ public final class KpisImpl implements Kpis {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String kpiName = Utils.getValueFromIdByName(id, "kpi");
         if (kpiName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kpi'.", id)));
@@ -135,7 +134,7 @@ public final class KpisImpl implements Kpis {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,14 +142,14 @@ public final class KpisImpl implements Kpis {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String kpiName = Utils.getValueFromIdByName(id, "kpi");
         if (kpiName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kpi'.", id)));
@@ -161,7 +160,7 @@ public final class KpisImpl implements Kpis {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,14 +168,14 @@ public final class KpisImpl implements Kpis {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String kpiName = Utils.getValueFromIdByName(id, "kpi");
         if (kpiName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kpi'.", id)));

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.InstanceFailoverGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of instance failover groups. */
 @Immutable
 public final class InstanceFailoverGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstanceFailoverGroupListResult.class);
-
     /*
      * Array of results.
      */
@@ -27,6 +23,10 @@ public final class InstanceFailoverGroupListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of InstanceFailoverGroupListResult class. */
+    public InstanceFailoverGroupListResult() {
+    }
 
     /**
      * Get the value property: Array of results.

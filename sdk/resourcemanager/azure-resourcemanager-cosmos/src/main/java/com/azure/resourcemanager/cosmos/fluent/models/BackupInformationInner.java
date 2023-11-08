@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ContinuousBackupInformation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Backup information of a resource. */
 @Immutable
 public final class BackupInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupInformationInner.class);
-
     /*
      * Information about the status of continuous backups.
      */
     @JsonProperty(value = "continuousBackupInformation", access = JsonProperty.Access.WRITE_ONLY)
     private ContinuousBackupInformation continuousBackupInformation;
+
+    /** Creates an instance of BackupInformationInner class. */
+    public BackupInformationInner() {
+    }
 
     /**
      * Get the continuousBackupInformation property: Information about the status of continuous backups.

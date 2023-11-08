@@ -14,7 +14,6 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -32,6 +31,7 @@ import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageConstants;
+import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +47,7 @@ final class BuilderHelper {
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
     private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.com";
+    public static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     static HttpPipeline buildPipeline(AzureNamedKeyCredential azureNamedKeyCredential,
                                       AzureSasCredential azureSasCredential, TokenCredential tokenCredential,
@@ -55,7 +56,7 @@ final class BuilderHelper {
                                       HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
                                       List<HttpPipelinePolicy> perCallAdditionalPolicies,
                                       List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration,
-                                      ClientLogger logger) {
+                                      ClientLogger logger, boolean enableTenantDiscovery) {
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
 
@@ -77,18 +78,18 @@ final class BuilderHelper {
             policies.add(new CosmosPatchTransformPolicy());
         }
 
+        ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
+
         policies.add(new UserAgentPolicy(
-            CoreUtils.getApplicationId(clientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
+            CoreUtils.getApplicationId(localClientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
         policies.add(new RequestIdPolicy());
 
-        if (clientOptions != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
 
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        localClientOptions.getHeaders().forEach(header ->
+            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
 
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
+        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         // Add per call additional policies.
         policies.addAll(perCallAdditionalPolicies);
@@ -108,7 +109,8 @@ final class BuilderHelper {
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else if (tokenCredential != null) {
-            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, StorageConstants.STORAGE_SCOPE);
+            credentialPolicy =  new TableBearerTokenChallengeAuthorizationPolicy(tokenCredential,
+                enableTenantDiscovery, StorageConstants.STORAGE_SCOPE);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("A form of authentication is required to create a client. Use a builder's "
@@ -127,6 +129,7 @@ final class BuilderHelper {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .clientOptions(localClientOptions)
             .build();
     }
 

@@ -15,6 +15,9 @@ public class KeyVaultKeysSample {
 
     private static final String AZURE_KEY_VAULT_URL = System.getenv("AZURE_KEY_VAULT_URL");
 
+    /**
+     * The method to run the Key Vault Keys sample.
+     */
     public static void runSample() {
         System.out.println("\n================================================================");
         System.out.println(" Starting Key Vault Keys Sample");

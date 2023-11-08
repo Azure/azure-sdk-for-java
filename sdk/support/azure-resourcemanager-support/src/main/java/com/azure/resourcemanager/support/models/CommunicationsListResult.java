@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.support.fluent.models.CommunicationDetailsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of Communication resources. */
 @Fluent
 public final class CommunicationsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationsListResult.class);
-
     /*
      * List of Communication resources.
      */
@@ -27,6 +23,10 @@ public final class CommunicationsListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of CommunicationsListResult class. */
+    public CommunicationsListResult() {
+    }
 
     /**
      * Get the value property: List of Communication resources.

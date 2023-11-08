@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the collection of move resources. */
 @Fluent
 public final class MoveResourceCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveResourceCollection.class);
-
     /*
      * Gets the list of move resources.
      */
@@ -29,8 +25,7 @@ public final class MoveResourceCollection {
     private String nextLink;
 
     /*
-     * Gets or sets the list of summary items and the field on which summary is
-     * done.
+     * Gets or sets the list of summary items and the field on which summary is done.
      */
     @JsonProperty(value = "summaryCollection")
     private SummaryCollection summaryCollection;
@@ -40,6 +35,10 @@ public final class MoveResourceCollection {
      */
     @JsonProperty(value = "totalCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalCount;
+
+    /** Creates an instance of MoveResourceCollection class. */
+    public MoveResourceCollection() {
+    }
 
     /**
      * Get the value property: Gets the list of move resources.

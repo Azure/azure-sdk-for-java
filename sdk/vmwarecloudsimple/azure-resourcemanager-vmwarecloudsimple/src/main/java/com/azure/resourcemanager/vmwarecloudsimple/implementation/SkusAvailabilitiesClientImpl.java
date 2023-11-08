@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.SkusAvailabilitiesClient;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.SkuAvailabilityInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.SkuAvailabilityListResponse;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SkusAvailabilitiesClient. */
 public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesClient {
-    private final ClientLogger logger = new ClientLogger(SkusAvailabilitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SkusAvailabilitiesService service;
 
@@ -58,7 +55,7 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "VMwareCloudSimpleSku")
-    private interface SkusAvailabilitiesService {
+    public interface SkusAvailabilitiesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/availabilities")
@@ -85,14 +82,16 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
     }
 
     /**
-     * Returns list of available resources in region.
+     * Implements SkuAvailability List method
+     *
+     * <p>Returns list of available resources in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param skuId sku id, if no sku is passed availability for all skus will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuAvailabilityInner>> listSinglePageAsync(String regionId, String skuId) {
@@ -137,7 +136,9 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
     }
 
     /**
-     * Returns list of available resources in region.
+     * Implements SkuAvailability List method
+     *
+     * <p>Returns list of available resources in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param skuId sku id, if no sku is passed availability for all skus will be returned.
@@ -145,7 +146,7 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuAvailabilityInner>> listSinglePageAsync(
@@ -188,14 +189,16 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
     }
 
     /**
-     * Returns list of available resources in region.
+     * Implements SkuAvailability List method
+     *
+     * <p>Returns list of available resources in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param skuId sku id, if no sku is passed availability for all skus will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SkuAvailabilityInner> listAsync(String regionId, String skuId) {
@@ -204,13 +207,15 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
     }
 
     /**
-     * Returns list of available resources in region.
+     * Implements SkuAvailability List method
+     *
+     * <p>Returns list of available resources in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SkuAvailabilityInner> listAsync(String regionId) {
@@ -220,7 +225,9 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
     }
 
     /**
-     * Returns list of available resources in region.
+     * Implements SkuAvailability List method
+     *
+     * <p>Returns list of available resources in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param skuId sku id, if no sku is passed availability for all skus will be returned.
@@ -228,7 +235,7 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SkuAvailabilityInner> listAsync(String regionId, String skuId, Context context) {
@@ -238,13 +245,15 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
     }
 
     /**
-     * Returns list of available resources in region.
+     * Implements SkuAvailability List method
+     *
+     * <p>Returns list of available resources in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuAvailabilityInner> list(String regionId) {
@@ -253,7 +262,9 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
     }
 
     /**
-     * Returns list of available resources in region.
+     * Implements SkuAvailability List method
+     *
+     * <p>Returns list of available resources in region.
      *
      * @param regionId The region Id (westus, eastus).
      * @param skuId sku id, if no sku is passed availability for all skus will be returned.
@@ -261,7 +272,7 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuAvailabilityInner> list(String regionId, String skuId, Context context) {
@@ -271,11 +282,12 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuAvailabilityInner>> listNextSinglePageAsync(String nextLink) {
@@ -306,12 +318,13 @@ public final class SkusAvailabilitiesClientImpl implements SkusAvailabilitiesCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU availabilities.
+     * @return list of SKU availabilities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuAvailabilityInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -11,10 +11,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceGuardProx
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ResourceGuardProxyBaseResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxies;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBaseResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceGuardProxiesImpl implements ResourceGuardProxies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardProxiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceGuardProxiesImpl.class);
 
     private final ResourceGuardProxiesClient innerClient;
 

@@ -47,6 +47,15 @@ public final class Month extends ExpandableStringEnum<Month> {
     public static final Month SEPTEMBER = fromString("September");
 
     /**
+     * Creates a new instance of Month value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Month() {
+    }
+
+    /**
      * Creates or finds a Month from its string representation.
      *
      * @param name a name to look for.
@@ -57,7 +66,11 @@ public final class Month extends ExpandableStringEnum<Month> {
         return fromString(name, Month.class);
     }
 
-    /** @return known Month values. */
+    /**
+     * Gets known Month values.
+     *
+     * @return known Month values.
+     */
     public static Collection<Month> values() {
         return values(Month.class);
     }

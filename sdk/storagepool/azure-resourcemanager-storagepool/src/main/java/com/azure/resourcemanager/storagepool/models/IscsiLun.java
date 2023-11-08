@@ -6,14 +6,11 @@ package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** LUN to expose the Azure Managed Disk. */
 @Fluent
 public final class IscsiLun {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IscsiLun.class);
-
     /*
      * User defined name for iSCSI LUN; example: "lun0"
      */
@@ -31,6 +28,10 @@ public final class IscsiLun {
      */
     @JsonProperty(value = "lun", access = JsonProperty.Access.WRITE_ONLY)
     private Integer lun;
+
+    /** Creates an instance of IscsiLun class. */
+    public IscsiLun() {
+    }
 
     /**
      * Get the name property: User defined name for iSCSI LUN; example: "lun0".
@@ -88,14 +89,16 @@ public final class IscsiLun {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model IscsiLun"));
         }
         if (managedDiskAzureResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property managedDiskAzureResourceId in model IscsiLun"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IscsiLun.class);
 }

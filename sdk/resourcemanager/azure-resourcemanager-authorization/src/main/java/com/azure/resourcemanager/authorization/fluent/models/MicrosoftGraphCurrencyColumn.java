@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** currencyColumn. */
 @Fluent
 public final class MicrosoftGraphCurrencyColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphCurrencyColumn.class);
-
     /*
      * Specifies the locale from which to infer the currency symbol.
      */
@@ -28,6 +25,10 @@ public final class MicrosoftGraphCurrencyColumn {
      * currencyColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphCurrencyColumn class. */
+    public MicrosoftGraphCurrencyColumn() {
+    }
 
     /**
      * Get the locale property: Specifies the locale from which to infer the currency symbol.

@@ -6,26 +6,25 @@ package com.azure.resourcemanager.search.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.search.models.PrivateEndpointConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes an existing Private Endpoint connection to the Azure Cognitive Search service. */
+/** Describes an existing private endpoint connection to the search service. */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
-
     /*
-     * Describes the properties of an existing Private Endpoint connection to
-     * the Azure Cognitive Search service.
+     * Describes the properties of an existing private endpoint connection to the search service.
      */
     @JsonProperty(value = "properties")
     private PrivateEndpointConnectionProperties properties;
 
+    /** Creates an instance of PrivateEndpointConnectionInner class. */
+    public PrivateEndpointConnectionInner() {
+    }
+
     /**
-     * Get the properties property: Describes the properties of an existing Private Endpoint connection to the Azure
-     * Cognitive Search service.
+     * Get the properties property: Describes the properties of an existing private endpoint connection to the search
+     * service.
      *
      * @return the properties value.
      */
@@ -34,8 +33,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: Describes the properties of an existing Private Endpoint connection to the Azure
-     * Cognitive Search service.
+     * Set the properties property: Describes the properties of an existing private endpoint connection to the search
+     * service.
      *
      * @param properties the properties value to set.
      * @return the PrivateEndpointConnectionInner object itself.

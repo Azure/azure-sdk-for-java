@@ -31,6 +31,14 @@ public final class VirtualNetworkSubnetUsageResultImpl implements VirtualNetwork
         }
     }
 
+    public String location() {
+        return this.innerModel().location();
+    }
+
+    public String subscriptionId() {
+        return this.innerModel().subscriptionId();
+    }
+
     public VirtualNetworkSubnetUsageResultInner innerModel() {
         return this.innerObject;
     }

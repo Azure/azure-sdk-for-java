@@ -28,9 +28,9 @@ public interface DscCompilationJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return the {@link SyncPoller} for polling of definition of the Dsc Compilation job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(
         String resourceGroupName,
         String automationAccountName,
@@ -48,9 +48,9 @@ public interface DscCompilationJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return the {@link SyncPoller} for polling of definition of the Dsc Compilation job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(
         String resourceGroupName,
         String automationAccountName,
@@ -122,7 +122,7 @@ public interface DscCompilationJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DscCompilationJobInner> getWithResponse(
@@ -136,7 +136,7 @@ public interface DscCompilationJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DscCompilationJobInner> listByAutomationAccount(
@@ -152,7 +152,7 @@ public interface DscCompilationJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DscCompilationJobInner> listByAutomationAccount(
@@ -184,7 +184,7 @@ public interface DscCompilationJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
+     * @return definition of the job stream along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobStreamInner> getStreamWithResponse(

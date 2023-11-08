@@ -17,6 +17,9 @@ public final class RootCauseList {
     @JsonProperty(value = "value", required = true)
     private List<RootCause> value;
 
+    /** Creates an instance of RootCauseList class. */
+    public RootCauseList() {}
+
     /**
      * Get the value property: The value property.
      *

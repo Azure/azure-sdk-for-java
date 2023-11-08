@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.BackupPoliciesClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupPoliciesClient. */
 public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(BackupPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupPoliciesService service;
 
@@ -68,11 +65,10 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
-    private interface BackupPoliciesService {
+    public interface BackupPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/backupPolicies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupPoliciesList>> list(
@@ -86,8 +82,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupPolicyInner>> get(
@@ -102,8 +97,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -119,8 +113,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -136,8 +129,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -151,9 +143,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List backup policies for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -202,9 +196,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List backup policies for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,9 +248,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List backup policies for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -267,9 +265,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List backup policies for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,9 +283,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List backup policies for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -298,9 +300,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>List backup policies for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,9 +318,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Get a particular backup Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -368,9 +374,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Get a particular backup Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.
@@ -420,9 +428,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Get a particular backup Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -433,36 +443,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupPolicyInner> getAsync(String resourceGroupName, String accountName, String backupPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, backupPolicyName)
-            .flatMap(
-                (Response<BackupPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupPolicyInner get(String resourceGroupName, String accountName, String backupPolicyName) {
-        return getAsync(resourceGroupName, accountName, backupPolicyName).block();
-    }
-
-    /**
-     * Get a particular backup Policy.
+     * <p>Get a particular backup Policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.
@@ -478,9 +467,29 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Get a backup Policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Get a particular backup Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a particular backup Policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupPolicyInner get(String resourceGroupName, String accountName, String backupPolicyName) {
+        return getWithResponse(resourceGroupName, accountName, backupPolicyName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -539,9 +548,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Create a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -602,9 +613,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Create a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -629,9 +642,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Create a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -658,9 +673,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Create a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -672,13 +689,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body) {
-        return beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Create a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -695,13 +714,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         String backupPolicyName,
         BackupPolicyInner body,
         Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body, context).getSyncPoller();
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Create a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -719,9 +740,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Create a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -744,9 +767,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Create a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -762,9 +787,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Create a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -785,9 +812,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -846,9 +875,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -909,9 +940,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -936,9 +969,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -965,9 +1000,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -979,13 +1016,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
-        return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -1002,13 +1041,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         String backupPolicyName,
         BackupPolicyPatch body,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body, context).getSyncPoller();
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -1026,9 +1067,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -1051,9 +1094,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -1069,9 +1114,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Patch a backup policy for Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -1092,9 +1139,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1144,9 +1193,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.
@@ -1194,9 +1245,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1216,9 +1269,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.
@@ -1239,9 +1294,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1252,13 +1309,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupPolicyName) {
-        return beginDeleteAsync(resourceGroupName, accountName, backupPolicyName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, backupPolicyName).getSyncPoller();
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.
@@ -1270,13 +1329,15 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupPolicyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, backupPolicyName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, backupPolicyName, context).getSyncPoller();
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1292,9 +1353,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.
@@ -1312,9 +1375,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1327,9 +1392,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete backup policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.

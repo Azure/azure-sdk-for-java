@@ -17,11 +17,14 @@ public final class StaticSiteResetPropertiesArmResourceProperties {
     private String repositoryToken;
 
     /*
-     * Determines whether the repository should be updated with the new
-     * properties.
+     * Determines whether the repository should be updated with the new properties.
      */
     @JsonProperty(value = "shouldUpdateRepository")
     private Boolean shouldUpdateRepository;
+
+    /** Creates an instance of StaticSiteResetPropertiesArmResourceProperties class. */
+    public StaticSiteResetPropertiesArmResourceProperties() {
+    }
 
     /**
      * Get the repositoryToken property: The token which proves admin privileges to the repository.

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Resize Cluster request parameters. */
 @Fluent
 public final class ClusterResizeParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterResizeParameters.class);
-
     /*
      * The target instance count for the operation.
      */
     @JsonProperty(value = "targetInstanceCount")
     private Integer targetInstanceCount;
+
+    /** Creates an instance of ClusterResizeParameters class. */
+    public ClusterResizeParameters() {
+    }
 
     /**
      * Get the targetInstanceCount property: The target instance count for the operation.

@@ -16,6 +16,10 @@ public final class DatasetFolder {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of DatasetFolder class. */
+    public DatasetFolder() {
+    }
+
     /**
      * Get the name property: The name of the folder that this Dataset is in.
      *

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The read scale capability. */
 @Fluent
 public final class ReadScaleCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadScaleCapability.class);
-
     /*
      * The maximum number of read scale replicas.
      */
@@ -31,6 +27,10 @@ public final class ReadScaleCapability {
      */
     @JsonProperty(value = "reason")
     private String reason;
+
+    /** Creates an instance of ReadScaleCapability class. */
+    public ReadScaleCapability() {
+    }
 
     /**
      * Get the maxNumberOfReplicas property: The maximum number of read scale replicas.

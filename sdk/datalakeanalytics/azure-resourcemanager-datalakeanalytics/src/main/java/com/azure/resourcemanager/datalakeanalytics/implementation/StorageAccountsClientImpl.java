@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakeanalytics.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.SasTokenInformationInner;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.StorageAccountInformationInner;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in StorageAccountsClient. */
 public final class StorageAccountsClientImpl implements StorageAccountsClient {
-    private final ClientLogger logger = new ClientLogger(StorageAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final StorageAccountsService service;
 
@@ -69,7 +66,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataLakeAnalyticsAcc")
-    private interface StorageAccountsService {
+    public interface StorageAccountsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics"
@@ -258,7 +255,8 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account
+     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInformationInner>> listByAccountSinglePageAsync(
@@ -340,7 +338,8 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account
+     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInformationInner>> listByAccountSinglePageAsync(
@@ -419,7 +418,8 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageAccountInformationInner> listByAccountAsync(
@@ -446,7 +446,8 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageAccountInformationInner> listByAccountAsync(String resourceGroupName, String accountName) {
@@ -482,7 +483,8 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageAccountInformationInner> listByAccountAsync(
@@ -511,7 +513,8 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageAccountInformationInner> listByAccount(String resourceGroupName, String accountName) {
@@ -545,7 +548,8 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageAccountInformationInner> listByAccount(
@@ -572,7 +576,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> addWithResponseAsync(
@@ -637,7 +641,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> addWithResponseAsync(
@@ -699,7 +703,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> addAsync(
@@ -708,7 +712,30 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
         String storageAccountName,
         AddStorageAccountParameters parameters) {
         return addWithResponseAsync(resourceGroupName, accountName, storageAccountName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param storageAccountName The name of the Azure Storage account to add.
+     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String storageAccountName,
+        AddStorageAccountParameters parameters,
+        Context context) {
+        return addWithResponseAsync(resourceGroupName, accountName, storageAccountName, parameters, context).block();
     }
 
     /**
@@ -728,30 +755,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
         String accountName,
         String storageAccountName,
         AddStorageAccountParameters parameters) {
-        addAsync(resourceGroupName, accountName, storageAccountName, parameters).block();
-    }
-
-    /**
-     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param storageAccountName The name of the Azure Storage account to add.
-     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        AddStorageAccountParameters parameters,
-        Context context) {
-        return addWithResponseAsync(resourceGroupName, accountName, storageAccountName, parameters, context).block();
+        addWithResponse(resourceGroupName, accountName, storageAccountName, parameters, Context.NONE);
     }
 
     /**
@@ -763,7 +767,8 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Storage account linked to the given Data Lake Analytics account.
+     * @return the specified Azure Storage account linked to the given Data Lake Analytics account along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageAccountInformationInner>> getWithResponseAsync(
@@ -818,7 +823,8 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Storage account linked to the given Data Lake Analytics account.
+     * @return the specified Azure Storage account linked to the given Data Lake Analytics account along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageAccountInformationInner>> getWithResponseAsync(
@@ -869,20 +875,33 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Storage account linked to the given Data Lake Analytics account.
+     * @return the specified Azure Storage account linked to the given Data Lake Analytics account on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageAccountInformationInner> getAsync(
         String resourceGroupName, String accountName, String storageAccountName) {
         return getWithResponseAsync(resourceGroupName, accountName, storageAccountName)
-            .flatMap(
-                (Response<StorageAccountInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure Storage account linked to the given Data Lake Analytics account along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StorageAccountInformationInner> getWithResponse(
+        String resourceGroupName, String accountName, String storageAccountName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, storageAccountName, context).block();
     }
 
     /**
@@ -898,25 +917,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageAccountInformationInner get(String resourceGroupName, String accountName, String storageAccountName) {
-        return getAsync(resourceGroupName, accountName, storageAccountName).block();
-    }
-
-    /**
-     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Storage account linked to the given Data Lake Analytics account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StorageAccountInformationInner> getWithResponse(
-        String resourceGroupName, String accountName, String storageAccountName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, storageAccountName, context).block();
+        return getWithResponse(resourceGroupName, accountName, storageAccountName, Context.NONE).getValue();
     }
 
     /**
@@ -931,7 +932,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateWithResponseAsync(
@@ -996,7 +997,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateWithResponseAsync(
@@ -1053,21 +1054,16 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The Azure Storage account to modify.
-     * @param parameters The parameters containing the access key and suffix to update the storage account with, if any.
-     *     Passing nothing results in no change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        UpdateStorageAccountParameters parameters) {
+    private Mono<Void> updateAsync(String resourceGroupName, String accountName, String storageAccountName) {
+        final UpdateStorageAccountParameters parameters = null;
         return updateWithResponseAsync(resourceGroupName, accountName, storageAccountName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1077,16 +1073,22 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The Azure Storage account to modify.
+     * @param parameters The parameters containing the access key and suffix to update the storage account with, if any.
+     *     Passing nothing results in no change.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(String resourceGroupName, String accountName, String storageAccountName) {
-        final UpdateStorageAccountParameters parameters = null;
-        return updateWithResponseAsync(resourceGroupName, accountName, storageAccountName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+    public Response<Void> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String storageAccountName,
+        UpdateStorageAccountParameters parameters,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, accountName, storageAccountName, parameters, context).block();
     }
 
     /**
@@ -1103,32 +1105,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String accountName, String storageAccountName) {
         final UpdateStorageAccountParameters parameters = null;
-        updateAsync(resourceGroupName, accountName, storageAccountName, parameters).block();
-    }
-
-    /**
-     * Updates the Data Lake Analytics account to replace Azure Storage blob account details, such as the access key
-     * and/or suffix.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param storageAccountName The Azure Storage account to modify.
-     * @param parameters The parameters containing the access key and suffix to update the storage account with, if any.
-     *     Passing nothing results in no change.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        UpdateStorageAccountParameters parameters,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, storageAccountName, parameters, context).block();
+        updateWithResponse(resourceGroupName, accountName, storageAccountName, parameters, Context.NONE);
     }
 
     /**
@@ -1140,7 +1117,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1195,7 +1172,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1246,12 +1223,30 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String storageAccountName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, storageAccountName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param storageAccountName The name of the Azure Storage account to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String storageAccountName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, storageAccountName, context).block();
     }
 
     /**
@@ -1266,25 +1261,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String storageAccountName) {
-        deleteAsync(resourceGroupName, accountName, storageAccountName).block();
-    }
-
-    /**
-     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param storageAccountName The name of the Azure Storage account to remove.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String storageAccountName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, storageAccountName, context).block();
+        deleteWithResponse(resourceGroupName, accountName, storageAccountName, Context.NONE);
     }
 
     /**
@@ -1298,7 +1275,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     *     account along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageContainerInner>> listStorageContainersSinglePageAsync(
@@ -1364,7 +1341,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     *     account along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageContainerInner>> listStorageContainersSinglePageAsync(
@@ -1426,7 +1403,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     *     account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageContainerInner> listStorageContainersAsync(
@@ -1448,7 +1425,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     *     account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageContainerInner> listStorageContainersAsync(
@@ -1469,7 +1446,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     *     account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageContainerInner> listStorageContainers(
@@ -1489,7 +1466,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     *     account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageContainerInner> listStorageContainers(
@@ -1510,7 +1487,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
-     *     accounts.
+     *     accounts along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageContainerInner>> getStorageContainerWithResponseAsync(
@@ -1572,7 +1549,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
-     *     accounts.
+     *     accounts along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageContainerInner>> getStorageContainerWithResponseAsync(
@@ -1634,20 +1611,40 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
-     *     accounts.
+     *     accounts on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageContainerInner> getStorageContainerAsync(
         String resourceGroupName, String accountName, String storageAccountName, String containerName) {
         return getStorageContainerWithResponseAsync(resourceGroupName, accountName, storageAccountName, containerName)
-            .flatMap(
-                (Response<StorageContainerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
+     * accounts.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param storageAccountName The name of the Azure storage account from which to retrieve the blob container.
+     * @param containerName The name of the Azure storage container to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
+     *     accounts along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StorageContainerInner> getStorageContainerWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String storageAccountName,
+        String containerName,
+        Context context) {
+        return getStorageContainerWithResponseAsync(
+                resourceGroupName, accountName, storageAccountName, containerName, context)
+            .block();
     }
 
     /**
@@ -1667,34 +1664,9 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageContainerInner getStorageContainer(
         String resourceGroupName, String accountName, String storageAccountName, String containerName) {
-        return getStorageContainerAsync(resourceGroupName, accountName, storageAccountName, containerName).block();
-    }
-
-    /**
-     * Gets the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
-     * accounts.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param storageAccountName The name of the Azure storage account from which to retrieve the blob container.
-     * @param containerName The name of the Azure storage container to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
-     *     accounts.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StorageContainerInner> getStorageContainerWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        String containerName,
-        Context context) {
-        return getStorageContainerWithResponseAsync(
-                resourceGroupName, accountName, storageAccountName, containerName, context)
-            .block();
+        return getStorageContainerWithResponse(
+                resourceGroupName, accountName, storageAccountName, containerName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1709,7 +1681,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-     *     combination.
+     *     combination along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SasTokenInformationInner>> listSasTokensSinglePageAsync(
@@ -1780,7 +1752,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-     *     combination.
+     *     combination along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SasTokenInformationInner>> listSasTokensSinglePageAsync(
@@ -1851,7 +1823,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-     *     combination.
+     *     combination as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SasTokenInformationInner> listSasTokensAsync(
@@ -1874,7 +1846,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-     *     combination.
+     *     combination as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SasTokenInformationInner> listSasTokensAsync(
@@ -1902,7 +1874,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-     *     combination.
+     *     combination as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SasTokenInformationInner> listSasTokens(
@@ -1924,7 +1896,7 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-     *     combination.
+     *     combination as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SasTokenInformationInner> listSasTokens(
@@ -1940,11 +1912,13 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Storage account list information.
+     * @return azure Storage account list information along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInformationInner>> listByAccountNextSinglePageAsync(String nextLink) {
@@ -1975,12 +1949,14 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Storage account list information.
+     * @return azure Storage account list information along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageAccountInformationInner>> listByAccountNextSinglePageAsync(
@@ -2012,12 +1988,13 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     *     account along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageContainerInner>> listStorageContainersNextSinglePageAsync(String nextLink) {
@@ -2049,13 +2026,14 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     *     account along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageContainerInner>> listStorageContainersNextSinglePageAsync(
@@ -2087,12 +2065,13 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS response that contains the storage account, container and associated SAS token for connection
-     *     use.
+     * @return the SAS response that contains the storage account, container and associated SAS token for connection use
+     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SasTokenInformationInner>> listSasTokensNextSinglePageAsync(String nextLink) {
@@ -2123,13 +2102,14 @@ public final class StorageAccountsClientImpl implements StorageAccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS response that contains the storage account, container and associated SAS token for connection
-     *     use.
+     * @return the SAS response that contains the storage account, container and associated SAS token for connection use
+     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SasTokenInformationInner>> listSasTokensNextSinglePageAsync(

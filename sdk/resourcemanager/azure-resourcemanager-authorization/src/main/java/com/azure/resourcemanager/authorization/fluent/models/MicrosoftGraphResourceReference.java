@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** resourceReference. */
 @Fluent
 public final class MicrosoftGraphResourceReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphResourceReference.class);
-
     /*
      * The item's unique identifier.
      */
@@ -25,8 +22,7 @@ public final class MicrosoftGraphResourceReference {
     private String id;
 
     /*
-     * A string value that can be used to classify the item, such as
-     * 'microsoft.graph.driveItem'
+     * A string value that can be used to classify the item, such as 'microsoft.graph.driveItem'
      */
     @JsonProperty(value = "type")
     private String type;
@@ -41,6 +37,10 @@ public final class MicrosoftGraphResourceReference {
      * resourceReference
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphResourceReference class. */
+    public MicrosoftGraphResourceReference() {
+    }
 
     /**
      * Get the id property: The item's unique identifier.

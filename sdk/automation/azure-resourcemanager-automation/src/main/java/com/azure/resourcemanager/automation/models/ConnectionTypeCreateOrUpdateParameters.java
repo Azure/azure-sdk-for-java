@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.ConnectionTypeCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create or update connection type operation. */
-@JsonFlatten
 @Fluent
-public class ConnectionTypeCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionTypeCreateOrUpdateParameters.class);
-
+public final class ConnectionTypeCreateOrUpdateParameters {
     /*
      * Gets or sets the name of the connection type.
      */
@@ -24,17 +20,10 @@ public class ConnectionTypeCreateOrUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets a Boolean value to indicate if the connection type is
-     * global.
+     * Gets or sets the value of the connection type.
      */
-    @JsonProperty(value = "properties.isGlobal")
-    private Boolean isGlobal;
-
-    /*
-     * Gets or sets the field definitions of the connection type.
-     */
-    @JsonProperty(value = "properties.fieldDefinitions", required = true)
-    private Map<String, FieldDefinition> fieldDefinitions;
+    @JsonProperty(value = "properties", required = true)
+    private ConnectionTypeCreateOrUpdateProperties innerProperties = new ConnectionTypeCreateOrUpdateProperties();
 
     /**
      * Get the name property: Gets or sets the name of the connection type.
@@ -57,12 +46,21 @@ public class ConnectionTypeCreateOrUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the value of the connection type.
+     *
+     * @return the innerProperties value.
+     */
+    private ConnectionTypeCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
      *
      * @return the isGlobal value.
      */
     public Boolean isGlobal() {
-        return this.isGlobal;
+        return this.innerProperties() == null ? null : this.innerProperties().isGlobal();
     }
 
     /**
@@ -72,7 +70,10 @@ public class ConnectionTypeCreateOrUpdateParameters {
      * @return the ConnectionTypeCreateOrUpdateParameters object itself.
      */
     public ConnectionTypeCreateOrUpdateParameters withIsGlobal(Boolean isGlobal) {
-        this.isGlobal = isGlobal;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionTypeCreateOrUpdateProperties();
+        }
+        this.innerProperties().withIsGlobal(isGlobal);
         return this;
     }
 
@@ -82,7 +83,7 @@ public class ConnectionTypeCreateOrUpdateParameters {
      * @return the fieldDefinitions value.
      */
     public Map<String, FieldDefinition> fieldDefinitions() {
-        return this.fieldDefinitions;
+        return this.innerProperties() == null ? null : this.innerProperties().fieldDefinitions();
     }
 
     /**
@@ -92,7 +93,10 @@ public class ConnectionTypeCreateOrUpdateParameters {
      * @return the ConnectionTypeCreateOrUpdateParameters object itself.
      */
     public ConnectionTypeCreateOrUpdateParameters withFieldDefinitions(Map<String, FieldDefinition> fieldDefinitions) {
-        this.fieldDefinitions = fieldDefinitions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionTypeCreateOrUpdateProperties();
+        }
+        this.innerProperties().withFieldDefinitions(fieldDefinitions);
         return this;
     }
 
@@ -103,25 +107,20 @@ public class ConnectionTypeCreateOrUpdateParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ConnectionTypeCreateOrUpdateParameters"));
         }
-        if (fieldDefinitions() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property fieldDefinitions in model ConnectionTypeCreateOrUpdateParameters"));
+                        "Missing required property innerProperties in model ConnectionTypeCreateOrUpdateParameters"));
         } else {
-            fieldDefinitions()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionTypeCreateOrUpdateParameters.class);
 }

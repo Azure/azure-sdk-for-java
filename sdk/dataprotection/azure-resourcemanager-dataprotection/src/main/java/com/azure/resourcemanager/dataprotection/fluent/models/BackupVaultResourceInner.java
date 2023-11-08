@@ -9,23 +9,32 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.BackupVault;
 import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.DppTrackedResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** BackupVault Resource Backup Vault Resource. */
+/**
+ * BackupVault Resource
+ *
+ * <p>Backup Vault Resource.
+ */
 @Fluent
 public final class BackupVaultResourceInner extends DppTrackedResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupVaultResourceInner.class);
-
     /*
-     * BackupVault BackupVaultResource properties
+     * BackupVault
+     *
+     * BackupVaultResource properties
      */
     @JsonProperty(value = "properties", required = true)
     private BackupVault properties;
 
+    /** Creates an instance of BackupVaultResourceInner class. */
+    public BackupVaultResourceInner() {
+    }
+
     /**
-     * Get the properties property: BackupVault BackupVaultResource properties.
+     * Get the properties property: BackupVault
+     *
+     * <p>BackupVaultResource properties.
      *
      * @return the properties value.
      */
@@ -34,7 +43,9 @@ public final class BackupVaultResourceInner extends DppTrackedResource {
     }
 
     /**
-     * Set the properties property: BackupVault BackupVaultResource properties.
+     * Set the properties property: BackupVault
+     *
+     * <p>BackupVaultResource properties.
      *
      * @param properties the properties value to set.
      * @return the BackupVaultResourceInner object itself.
@@ -46,15 +57,15 @@ public final class BackupVaultResourceInner extends DppTrackedResource {
 
     /** {@inheritDoc} */
     @Override
-    public BackupVaultResourceInner withEtag(String etag) {
-        super.withEtag(etag);
+    public BackupVaultResourceInner withIdentity(DppIdentityDetails identity) {
+        super.withIdentity(identity);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public BackupVaultResourceInner withIdentity(DppIdentityDetails identity) {
-        super.withIdentity(identity);
+    public BackupVaultResourceInner withEtag(String etag) {
+        super.withEtag(etag);
         return this;
     }
 
@@ -81,7 +92,7 @@ public final class BackupVaultResourceInner extends DppTrackedResource {
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model BackupVaultResourceInner"));
@@ -89,4 +100,6 @@ public final class BackupVaultResourceInner extends DppTrackedResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupVaultResourceInner.class);
 }

@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcegraph.models.Facet;
 import com.azure.resourcemanager.resourcegraph.models.ResultTruncated;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Query result. */
 @Fluent
 public final class QueryResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryResponseInner.class);
-
     /*
      * Number of total records matching the query.
      */
@@ -24,8 +21,8 @@ public final class QueryResponseInner {
     private long totalRecords;
 
     /*
-     * Number of records returned in the current response. In the case of
-     * paging, this is the number of records in the current page.
+     * Number of records returned in the current response. In the case of paging, this is the number of records in the
+     * current page.
      */
     @JsonProperty(value = "count", required = true)
     private long count;
@@ -37,9 +34,8 @@ public final class QueryResponseInner {
     private ResultTruncated resultTruncated;
 
     /*
-     * When present, the value can be passed to a subsequent query call
-     * (together with the same query and scopes used in the current request) to
-     * retrieve the next page of data.
+     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used
+     * in the current request) to retrieve the next page of data.
      */
     @JsonProperty(value = "$skipToken")
     private String skipToken;
@@ -55,6 +51,10 @@ public final class QueryResponseInner {
      */
     @JsonProperty(value = "facets")
     private List<Facet> facets;
+
+    /** Creates an instance of QueryResponseInner class. */
+    public QueryResponseInner() {
+    }
 
     /**
      * Get the totalRecords property: Number of total records matching the query.
@@ -187,13 +187,13 @@ public final class QueryResponseInner {
      */
     public void validate() {
         if (resultTruncated() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resultTruncated in model QueryResponseInner"));
         }
         if (data() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property data in model QueryResponseInner"));
         }
@@ -201,4 +201,6 @@ public final class QueryResponseInner {
             facets().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QueryResponseInner.class);
 }

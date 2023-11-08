@@ -123,7 +123,7 @@ public interface PredictionResourceFormat {
      *
      * @return the autoAnalyze value.
      */
-    Boolean autoAnalyze();
+    boolean autoAnalyze();
 
     /**
      * Gets the mappings property: Definition of the link mapping of prediction.
@@ -152,6 +152,13 @@ public interface PredictionResourceFormat {
      * @return the systemGeneratedEntities value.
      */
     PredictionSystemGeneratedEntities systemGeneratedEntities();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.customerinsights.fluent.models.PredictionResourceFormatInner object.
@@ -322,7 +329,7 @@ public interface PredictionResourceFormat {
              * @param autoAnalyze Whether do auto analyze.
              * @return the next definition stage.
              */
-            WithCreate withAutoAnalyze(Boolean autoAnalyze);
+            WithCreate withAutoAnalyze(boolean autoAnalyze);
         }
         /** The stage of the PredictionResourceFormat definition allowing to specify mappings. */
         interface WithMappings {
@@ -503,7 +510,7 @@ public interface PredictionResourceFormat {
              * @param autoAnalyze Whether do auto analyze.
              * @return the next definition stage.
              */
-            Update withAutoAnalyze(Boolean autoAnalyze);
+            Update withAutoAnalyze(boolean autoAnalyze);
         }
         /** The stage of the PredictionResourceFormat update allowing to specify mappings. */
         interface WithMappings {
@@ -554,6 +561,17 @@ public interface PredictionResourceFormat {
     /**
      * Gets training results.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return training results along with {@link Response}.
+     */
+    Response<PredictionTrainingResults> getTrainingResultsWithResponse(Context context);
+
+    /**
+     * Gets training results.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return training results.
@@ -561,15 +579,15 @@ public interface PredictionResourceFormat {
     PredictionTrainingResults getTrainingResults();
 
     /**
-     * Gets training results.
+     * Gets model status of the prediction.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return training results.
+     * @return model status of the prediction along with {@link Response}.
      */
-    Response<PredictionTrainingResults> getTrainingResultsWithResponse(Context context);
+    Response<PredictionModelStatus> getModelStatusWithResponse(Context context);
 
     /**
      * Gets model status of the prediction.
@@ -581,15 +599,16 @@ public interface PredictionResourceFormat {
     PredictionModelStatus getModelStatus();
 
     /**
-     * Gets model status of the prediction.
+     * Creates or updates the model status of prediction.
      *
+     * @param parameters Parameters supplied to the create/update prediction model status operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model status of the prediction.
+     * @return the {@link Response}.
      */
-    Response<PredictionModelStatus> getModelStatusWithResponse(Context context);
+    Response<Void> modelStatusWithResponse(PredictionModelStatusInner parameters, Context context);
 
     /**
      * Creates or updates the model status of prediction.
@@ -600,16 +619,4 @@ public interface PredictionResourceFormat {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void modelStatus(PredictionModelStatusInner parameters);
-
-    /**
-     * Creates or updates the model status of prediction.
-     *
-     * @param parameters Parameters supplied to the create/update prediction model status operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> modelStatusWithResponse(PredictionModelStatusInner parameters, Context context);
 }

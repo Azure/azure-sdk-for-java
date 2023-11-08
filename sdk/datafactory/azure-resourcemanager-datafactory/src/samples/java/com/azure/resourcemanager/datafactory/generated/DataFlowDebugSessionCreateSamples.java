@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.CreateDataFlowDebugSessionRequest;
 import com.azure.resourcemanager.datafactory.models.DataFlowComputeType;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeComputeProperties;
@@ -47,9 +46,10 @@ public final class DataFlowDebugSessionCreateSamples {
                                                     .withTimeToLive(10)
                                                     .withAdditionalProperties(mapOf()))
                                             .withAdditionalProperties(mapOf())))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

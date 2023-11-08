@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** messageRule. */
 @Fluent
 public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphMessageRule.class);
-
     /*
      * messageRuleActions
      */
@@ -55,8 +52,7 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
     private Boolean isEnabled;
 
     /*
-     * Indicates if the rule is read-only and cannot be modified or deleted by
-     * the rules REST API.
+     * Indicates if the rule is read-only and cannot be modified or deleted by the rules REST API.
      */
     @JsonProperty(value = "isReadOnly")
     private Boolean isReadOnly;
@@ -71,6 +67,10 @@ public final class MicrosoftGraphMessageRule extends MicrosoftGraphEntity {
      * messageRule
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphMessageRule class. */
+    public MicrosoftGraphMessageRule() {
+    }
 
     /**
      * Get the actions property: messageRuleActions.

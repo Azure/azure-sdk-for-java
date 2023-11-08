@@ -5,7 +5,6 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.monitor.query.models.MetricUnit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -26,8 +25,7 @@ public final class Metric {
     private String type;
 
     /*
-     * the name and the display name of the metric, i.e. it is localizable
-     * string.
+     * the name and the display name of the metric, i.e. it is localizable string.
      */
     @JsonProperty(value = "name", required = true)
     private LocalizableString name;

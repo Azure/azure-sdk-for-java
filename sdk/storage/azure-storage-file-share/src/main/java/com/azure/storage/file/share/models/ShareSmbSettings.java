@@ -18,6 +18,9 @@ public final class ShareSmbSettings {
     @JsonProperty(value = "Multichannel")
     private SmbMultichannel multichannel;
 
+    /** Creates an instance of ShareSmbSettings class. */
+    public ShareSmbSettings() {}
+
     /**
      * Get the multichannel property: Settings for SMB Multichannel.
      *

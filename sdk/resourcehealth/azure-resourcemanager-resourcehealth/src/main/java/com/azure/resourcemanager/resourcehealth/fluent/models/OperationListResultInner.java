@@ -14,13 +14,17 @@ import java.util.List;
 @Fluent
 public final class OperationListResultInner {
     /*
-     * List of operations available in the resourcehealth resource provider.
+     * List of operations available in the Microsoft.ResourceHealth resource provider.
      */
     @JsonProperty(value = "value", required = true)
     private List<Operation> value;
 
+    /** Creates an instance of OperationListResultInner class. */
+    public OperationListResultInner() {
+    }
+
     /**
-     * Get the value property: List of operations available in the resourcehealth resource provider.
+     * Get the value property: List of operations available in the Microsoft.ResourceHealth resource provider.
      *
      * @return the value value.
      */
@@ -29,7 +33,7 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Set the value property: List of operations available in the resourcehealth resource provider.
+     * Set the value property: List of operations available in the Microsoft.ResourceHealth resource provider.
      *
      * @param value the value value to set.
      * @return the OperationListResultInner object itself.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the identity properties. */
 @Fluent
 public final class IdentityDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityDetails.class);
-
     /*
      * The type of identity
      */
@@ -31,6 +27,10 @@ public final class IdentityDetails {
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
+
+    /** Creates an instance of IdentityDetails class. */
+    public IdentityDetails() {
+    }
 
     /**
      * Get the type property: The type of identity.

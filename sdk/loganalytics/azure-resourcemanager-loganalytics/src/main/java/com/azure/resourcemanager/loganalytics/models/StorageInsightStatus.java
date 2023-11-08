@@ -6,14 +6,11 @@ package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The status of the storage insight. */
 @Fluent
 public final class StorageInsightStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageInsightStatus.class);
-
     /*
      * The state of the storage insight connection to the workspace
      */
@@ -25,6 +22,10 @@ public final class StorageInsightStatus {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of StorageInsightStatus class. */
+    public StorageInsightStatus() {
+    }
 
     /**
      * Get the state property: The state of the storage insight connection to the workspace.
@@ -73,9 +74,11 @@ public final class StorageInsightStatus {
      */
     public void validate() {
         if (state() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property state in model StorageInsightStatus"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageInsightStatus.class);
 }

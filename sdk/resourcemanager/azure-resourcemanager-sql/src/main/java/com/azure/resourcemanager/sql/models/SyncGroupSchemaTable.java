@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of table in sync group schema. */
 @Fluent
 public final class SyncGroupSchemaTable {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncGroupSchemaTable.class);
-
     /*
      * List of columns in sync group schema.
      */
@@ -26,6 +22,10 @@ public final class SyncGroupSchemaTable {
      */
     @JsonProperty(value = "quotedName")
     private String quotedName;
+
+    /** Creates an instance of SyncGroupSchemaTable class. */
+    public SyncGroupSchemaTable() {
+    }
 
     /**
      * Get the columns property: List of columns in sync group schema.

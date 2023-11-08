@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The log size capability. */
 @Immutable
 public final class LogSizeCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSizeCapability.class);
-
     /*
      * The log size limit (see 'unit' for the units).
      */
@@ -25,6 +21,10 @@ public final class LogSizeCapability {
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private LogSizeUnit unit;
+
+    /** Creates an instance of LogSizeCapability class. */
+    public LogSizeCapability() {
+    }
 
     /**
      * Get the limit property: The log size limit (see 'unit' for the units).

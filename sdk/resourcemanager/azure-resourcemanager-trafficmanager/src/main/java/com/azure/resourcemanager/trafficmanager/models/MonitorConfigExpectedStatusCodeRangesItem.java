@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Min and max value of a status code range. */
 @Fluent
 public final class MonitorConfigExpectedStatusCodeRangesItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorConfigExpectedStatusCodeRangesItem.class);
-
     /*
      * Min status code.
      */
@@ -25,6 +21,10 @@ public final class MonitorConfigExpectedStatusCodeRangesItem {
      */
     @JsonProperty(value = "max")
     private Integer max;
+
+    /** Creates an instance of MonitorConfigExpectedStatusCodeRangesItem class. */
+    public MonitorConfigExpectedStatusCodeRangesItem() {
+    }
 
     /**
      * Get the min property: Min status code.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphStatus. */
+/** status. */
 public final class MicrosoftGraphStatus extends ExpandableStringEnum<MicrosoftGraphStatus> {
     /** Static value active for MicrosoftGraphStatus. */
     public static final MicrosoftGraphStatus ACTIVE = fromString("active");
@@ -26,6 +26,15 @@ public final class MicrosoftGraphStatus extends ExpandableStringEnum<MicrosoftGr
     public static final MicrosoftGraphStatus UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class MicrosoftGraphStatus extends ExpandableStringEnum<MicrosoftGr
         return fromString(name, MicrosoftGraphStatus.class);
     }
 
-    /** @return known MicrosoftGraphStatus values. */
+    /**
+     * Gets known MicrosoftGraphStatus values.
+     *
+     * @return known MicrosoftGraphStatus values.
+     */
     public static Collection<MicrosoftGraphStatus> values() {
         return values(MicrosoftGraphStatus.class);
     }

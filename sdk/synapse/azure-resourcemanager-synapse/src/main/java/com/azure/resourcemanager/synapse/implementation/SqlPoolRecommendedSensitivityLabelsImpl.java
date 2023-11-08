@@ -10,10 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolRecommendedSensitivityLabelsClient;
 import com.azure.resourcemanager.synapse.models.RecommendedSensitivityLabelUpdateList;
 import com.azure.resourcemanager.synapse.models.SqlPoolRecommendedSensitivityLabels;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolRecommendedSensitivityLabelsImpl implements SqlPoolRecommendedSensitivityLabels {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolRecommendedSensitivityLabelsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolRecommendedSensitivityLabelsImpl.class);
 
     private final SqlPoolRecommendedSensitivityLabelsClient innerClient;
 
@@ -26,14 +25,6 @@ public final class SqlPoolRecommendedSensitivityLabelsImpl implements SqlPoolRec
         this.serviceManager = serviceManager;
     }
 
-    public void update(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        RecommendedSensitivityLabelUpdateList parameters) {
-        this.serviceClient().update(resourceGroupName, workspaceName, sqlPoolName, parameters);
-    }
-
     public Response<Void> updateWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -43,6 +34,14 @@ public final class SqlPoolRecommendedSensitivityLabelsImpl implements SqlPoolRec
         return this
             .serviceClient()
             .updateWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
+    }
+
+    public void update(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        RecommendedSensitivityLabelUpdateList parameters) {
+        this.serviceClient().update(resourceGroupName, workspaceName, sqlPoolName, parameters);
     }
 
     private SqlPoolRecommendedSensitivityLabelsClient serviceClient() {

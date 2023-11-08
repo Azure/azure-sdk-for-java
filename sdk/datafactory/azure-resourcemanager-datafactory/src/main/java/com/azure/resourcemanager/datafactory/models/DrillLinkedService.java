@@ -24,6 +24,10 @@ public final class DrillLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private DrillLinkedServiceTypeProperties innerTypeProperties = new DrillLinkedServiceTypeProperties();
 
+    /** Creates an instance of DrillLinkedService class. */
+    public DrillLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Drill server linked service properties.
      *
@@ -111,22 +115,22 @@ public final class DrillLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DrillLinkedService object itself.
      */
-    public DrillLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public DrillLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new DrillLinkedServiceTypeProperties();
         }

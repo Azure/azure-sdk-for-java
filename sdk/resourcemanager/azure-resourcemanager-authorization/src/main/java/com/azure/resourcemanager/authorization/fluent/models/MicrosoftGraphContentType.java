@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** contentType. */
 @Fluent
 public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphContentType.class);
-
     /*
      * The descriptive text for the item.
      */
@@ -26,8 +23,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
     private String description;
 
     /*
-     * The name of the group this content type belongs to. Helps organize
-     * related content types.
+     * The name of the group this content type belongs to. Helps organize related content types.
      */
     @JsonProperty(value = "group")
     private String group;
@@ -63,16 +59,14 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
     private String parentId;
 
     /*
-     * If true, the content type cannot be modified unless this value is first
-     * set to false.
+     * If true, the content type cannot be modified unless this value is first set to false.
      */
     @JsonProperty(value = "readOnly")
     private Boolean readOnly;
 
     /*
-     * If true, the content type cannot be modified by users or through
-     * push-down operations. Only site collection administrators can seal or
-     * unseal content types.
+     * If true, the content type cannot be modified by users or through push-down operations. Only site collection
+     * administrators can seal or unseal content types.
      */
     @JsonProperty(value = "sealed")
     private Boolean sealed;
@@ -87,6 +81,10 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
      * contentType
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphContentType class. */
+    public MicrosoftGraphContentType() {
+    }
 
     /**
      * Get the description property: The descriptive text for the item.

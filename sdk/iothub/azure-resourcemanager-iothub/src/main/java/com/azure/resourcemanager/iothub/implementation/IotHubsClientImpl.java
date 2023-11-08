@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.iothub.fluent.IotHubsClient;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IotHubsClient. */
 public final class IotHubsClientImpl implements IotHubsClient {
-    private final ClientLogger logger = new ClientLogger(IotHubsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IotHubsService service;
 
@@ -58,11 +55,10 @@ public final class IotHubsClientImpl implements IotHubsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "IotHubClientIotHubs")
-    private interface IotHubsService {
+    public interface IotHubsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
-                + "/{iotHubName}/failover")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
         Mono<Response<Flux<ByteBuffer>>> manualFailover(
@@ -77,7 +73,9 @@ public final class IotHubsClientImpl implements IotHubsClient {
     }
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.
@@ -134,7 +132,9 @@ public final class IotHubsClientImpl implements IotHubsClient {
     }
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.
@@ -189,7 +189,9 @@ public final class IotHubsClientImpl implements IotHubsClient {
     }
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.
@@ -199,7 +201,7 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginManualFailoverAsync(
@@ -213,7 +215,9 @@ public final class IotHubsClientImpl implements IotHubsClient {
     }
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.
@@ -224,7 +228,7 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginManualFailoverAsync(
@@ -238,7 +242,9 @@ public final class IotHubsClientImpl implements IotHubsClient {
     }
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.
@@ -248,16 +254,18 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginManualFailover(
         String iotHubName, String resourceGroupName, FailoverInput failoverInput) {
-        return beginManualFailoverAsync(iotHubName, resourceGroupName, failoverInput).getSyncPoller();
+        return this.beginManualFailoverAsync(iotHubName, resourceGroupName, failoverInput).getSyncPoller();
     }
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.
@@ -268,16 +276,18 @@ public final class IotHubsClientImpl implements IotHubsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginManualFailover(
         String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context) {
-        return beginManualFailoverAsync(iotHubName, resourceGroupName, failoverInput, context).getSyncPoller();
+        return this.beginManualFailoverAsync(iotHubName, resourceGroupName, failoverInput, context).getSyncPoller();
     }
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.
@@ -297,7 +307,9 @@ public final class IotHubsClientImpl implements IotHubsClient {
     }
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.
@@ -319,7 +331,9 @@ public final class IotHubsClientImpl implements IotHubsClient {
     }
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.
@@ -336,7 +350,9 @@ public final class IotHubsClientImpl implements IotHubsClient {
     }
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.

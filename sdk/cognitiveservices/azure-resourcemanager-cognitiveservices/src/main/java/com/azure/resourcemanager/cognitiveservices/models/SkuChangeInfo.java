@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sku change info of account. */
 @Fluent
 public final class SkuChangeInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuChangeInfo.class);
-
     /*
      * Gets the count of downgrades.
      */
@@ -31,6 +27,10 @@ public final class SkuChangeInfo {
      */
     @JsonProperty(value = "lastChangeDate")
     private String lastChangeDate;
+
+    /** Creates an instance of SkuChangeInfo class. */
+    public SkuChangeInfo() {
+    }
 
     /**
      * Get the countOfDowngrades property: Gets the count of downgrades.

@@ -6,15 +6,11 @@ package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ServerPrivateLinkServiceConnectionStateProperty model. */
 @Fluent
 public final class ServerPrivateLinkServiceConnectionStateProperty {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ServerPrivateLinkServiceConnectionStateProperty.class);
-
     /*
      * The private link service connection status.
      */
@@ -32,6 +28,10 @@ public final class ServerPrivateLinkServiceConnectionStateProperty {
      */
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateLinkServiceConnectionStateActionsRequire actionsRequired;
+
+    /** Creates an instance of ServerPrivateLinkServiceConnectionStateProperty class. */
+    public ServerPrivateLinkServiceConnectionStateProperty() {
+    }
 
     /**
      * Get the status property: The private link service connection status.
@@ -89,17 +89,19 @@ public final class ServerPrivateLinkServiceConnectionStateProperty {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model ServerPrivateLinkServiceConnectionStateProperty"));
         }
         if (description() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property description in model"
                             + " ServerPrivateLinkServiceConnectionStateProperty"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerPrivateLinkServiceConnectionStateProperty.class);
 }

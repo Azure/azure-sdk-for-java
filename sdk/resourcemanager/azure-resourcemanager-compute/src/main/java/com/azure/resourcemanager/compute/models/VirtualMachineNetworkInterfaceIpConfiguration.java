@@ -21,11 +21,14 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     private String name;
 
     /*
-     * Describes a virtual machine network interface IP configuration
-     * properties.
+     * Describes a virtual machine network interface IP configuration properties.
      */
     @JsonProperty(value = "properties")
     private VirtualMachineNetworkInterfaceIpConfigurationProperties innerProperties;
+
+    /** Creates an instance of VirtualMachineNetworkInterfaceIpConfiguration class. */
+    public VirtualMachineNetworkInterfaceIpConfiguration() {
+    }
 
     /**
      * Get the name property: The IP configuration name.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerExtendedBlobAuditingPolicies ListByWorkspace. */
 public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesListByWorkspaceSamples {
     /*
@@ -20,6 +18,6 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesListByWo
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerExtendedBlobAuditingPolicies()
-            .listByWorkspace("wsg-7398", "testWorkspace", Context.NONE);
+            .listByWorkspace("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }

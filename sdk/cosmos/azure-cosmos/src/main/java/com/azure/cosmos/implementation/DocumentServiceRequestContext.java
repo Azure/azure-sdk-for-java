@@ -5,15 +5,20 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean forceAddressRefresh;
@@ -39,9 +44,16 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile CosmosDiagnostics cosmosDiagnostics;
     public volatile String resourcePhysicalAddress;
     public volatile String throughputControlCycleId;
+    public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
+    private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    private AtomicBoolean isRequestCancelledOnTimeout = null;
+    private volatile List<String> excludeRegions;
 
-    public DocumentServiceRequestContext() {
-    }
+    // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
+    public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
+
+    public DocumentServiceRequestContext() {}
 
     /**
      * Sets routing directive for GlobalEndpointManager to resolve the request
@@ -77,6 +89,25 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.usePreferredLocations = null;
     }
 
+    public Set<Uri> getFailedEndpoints() {
+        return this.failedEndpoints;
+    }
+
+    public void addToFailedEndpoints(Exception exception, Uri address) {
+
+        if (exception instanceof CosmosException) {
+            CosmosException cosmosException = (CosmosException) exception;
+
+            // Tracking the failed endpoints, so during retry, we can prioritize other replicas (replicas have not been tried on)
+            // If the exception eventually cause a forceRefresh gateway addresses, during that time, we are going to officially mark
+            // the replica as unhealthy.
+            // We started by only track 410 exceptions, but can add other exceptions based on the feedback and observations
+            if (Exceptions.isGone(cosmosException)) {
+                this.failedEndpoints.add(address);
+            }
+        }
+    }
+
     @Override
     public DocumentServiceRequestContext clone() {
         DocumentServiceRequestContext context = new DocumentServiceRequestContext();
@@ -101,7 +132,33 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.cosmosDiagnostics = this.cosmosDiagnostics;
         context.resourcePhysicalAddress = this.resourcePhysicalAddress;
         context.throughputControlCycleId = this.throughputControlCycleId;
+        context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
+        context.endToEndOperationLatencyPolicyConfig = this.endToEndOperationLatencyPolicyConfig;
         return context;
+    }
+
+    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+        return endToEndOperationLatencyPolicyConfig;
+    }
+
+    public void setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+        this.endToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
+    }
+
+    public void setIsRequestCancelledOnTimeout(AtomicBoolean isRequestCancelledOnTimeout) {
+        this.isRequestCancelledOnTimeout = isRequestCancelledOnTimeout;
+    }
+
+    public AtomicBoolean isRequestCancelledOnTimeout() {
+        return this.isRequestCancelledOnTimeout;
+    }
+
+    public List<String> getExcludeRegions() {
+        return this.excludeRegions;
+    }
+
+    public void setExcludeRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
     }
 }
 

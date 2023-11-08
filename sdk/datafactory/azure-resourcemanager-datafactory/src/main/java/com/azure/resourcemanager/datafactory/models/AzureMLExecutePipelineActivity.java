@@ -24,6 +24,10 @@ public final class AzureMLExecutePipelineActivity extends ExecutionActivity {
     private AzureMLExecutePipelineActivityTypeProperties innerTypeProperties =
         new AzureMLExecutePipelineActivityTypeProperties();
 
+    /** Creates an instance of AzureMLExecutePipelineActivity class. */
+    public AzureMLExecutePipelineActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure ML Execute Pipeline activity properties.
      *
@@ -58,6 +62,20 @@ public final class AzureMLExecutePipelineActivity extends ExecutionActivity {
     @Override
     public AzureMLExecutePipelineActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLExecutePipelineActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLExecutePipelineActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

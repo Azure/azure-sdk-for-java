@@ -195,6 +195,15 @@ public final class Get8ItemsItem extends ExpandableStringEnum<Get8ItemsItem> {
     public static final Get8ItemsItem TODO = fromString("todo");
 
     /**
+     * Creates a new instance of Get8ItemsItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Get8ItemsItem() {
+    }
+
+    /**
      * Creates or finds a Get8ItemsItem from its string representation.
      *
      * @param name a name to look for.
@@ -205,7 +214,11 @@ public final class Get8ItemsItem extends ExpandableStringEnum<Get8ItemsItem> {
         return fromString(name, Get8ItemsItem.class);
     }
 
-    /** @return known Get8ItemsItem values. */
+    /**
+     * Gets known Get8ItemsItem values.
+     *
+     * @return known Get8ItemsItem values.
+     */
     public static Collection<Get8ItemsItem> values() {
         return values(Get8ItemsItem.class);
     }

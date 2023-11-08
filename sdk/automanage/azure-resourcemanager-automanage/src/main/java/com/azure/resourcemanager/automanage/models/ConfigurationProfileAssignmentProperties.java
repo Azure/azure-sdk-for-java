@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.automanage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /** Automanage configuration profile assignment properties. */
 @Fluent
 public final class ConfigurationProfileAssignmentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationProfileAssignmentProperties.class);
-
     /*
      * The Automanage configurationProfile ARM Resource URI.
      */
@@ -25,7 +19,7 @@ public final class ConfigurationProfileAssignmentProperties {
     /*
      * The target VM resource URI
      */
-    @JsonProperty(value = "targetId")
+    @JsonProperty(value = "targetId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetId;
 
     /*
@@ -33,13 +27,6 @@ public final class ConfigurationProfileAssignmentProperties {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
-
-    /*
-     * The profileOverrides setting for the configuration profile assignment.
-     */
-    @JsonProperty(value = "profileOverrides")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, Object> profileOverrides;
 
     /**
      * Get the configurationProfile property: The Automanage configurationProfile ARM Resource URI.
@@ -71,43 +58,12 @@ public final class ConfigurationProfileAssignmentProperties {
     }
 
     /**
-     * Set the targetId property: The target VM resource URI.
-     *
-     * @param targetId the targetId value to set.
-     * @return the ConfigurationProfileAssignmentProperties object itself.
-     */
-    public ConfigurationProfileAssignmentProperties withTargetId(String targetId) {
-        this.targetId = targetId;
-        return this;
-    }
-
-    /**
      * Get the status property: The status of onboarding, which only appears in the response.
      *
      * @return the status value.
      */
     public String status() {
         return this.status;
-    }
-
-    /**
-     * Get the profileOverrides property: The profileOverrides setting for the configuration profile assignment.
-     *
-     * @return the profileOverrides value.
-     */
-    public Map<String, Object> profileOverrides() {
-        return this.profileOverrides;
-    }
-
-    /**
-     * Set the profileOverrides property: The profileOverrides setting for the configuration profile assignment.
-     *
-     * @param profileOverrides the profileOverrides value to set.
-     * @return the ConfigurationProfileAssignmentProperties object itself.
-     */
-    public ConfigurationProfileAssignmentProperties withProfileOverrides(Map<String, Object> profileOverrides) {
-        this.profileOverrides = profileOverrides;
-        return this;
     }
 
     /**

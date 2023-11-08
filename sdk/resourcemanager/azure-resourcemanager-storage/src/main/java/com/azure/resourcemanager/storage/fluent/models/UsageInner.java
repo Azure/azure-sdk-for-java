@@ -25,8 +25,7 @@ public final class UsageInner {
     private Integer currentValue;
 
     /*
-     * Gets the maximum count of the resources that can be allocated in the
-     * subscription.
+     * Gets the maximum count of the resources that can be allocated in the subscription.
      */
     @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Integer limit;
@@ -36,6 +35,10 @@ public final class UsageInner {
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private UsageName name;
+
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
 
     /**
      * Get the unit property: Gets the unit of measurement.

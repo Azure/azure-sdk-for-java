@@ -41,12 +41,14 @@ public interface MachineExtensions {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param extensionName The name of the machine extension.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
+     * @return describes a Machine Extension along with {@link Response}.
      */
-    MachineExtension get(String resourceGroupName, String machineName, String extensionName);
+    Response<MachineExtension> getWithResponse(
+        String resourceGroupName, String machineName, String extensionName, Context context);
 
     /**
      * The operation to get the extension.
@@ -54,14 +56,12 @@ public interface MachineExtensions {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param extensionName The name of the machine extension.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Machine Extension.
      */
-    Response<MachineExtension> getWithResponse(
-        String resourceGroupName, String machineName, String extensionName, Context context);
+    MachineExtension get(String resourceGroupName, String machineName, String extensionName);
 
     /**
      * The operation to get all extensions of a non-Azure machine.
@@ -71,7 +71,7 @@ public interface MachineExtensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the Machine Extensions List Result.
+     * @return describes the Machine Extensions List Result as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MachineExtension> list(String resourceGroupName, String machineName);
 
@@ -85,7 +85,7 @@ public interface MachineExtensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the Machine Extensions List Result.
+     * @return describes the Machine Extensions List Result as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MachineExtension> list(String resourceGroupName, String machineName, String expand, Context context);
 
@@ -96,7 +96,7 @@ public interface MachineExtensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
+     * @return describes a Machine Extension along with {@link Response}.
      */
     MachineExtension getById(String id);
 
@@ -108,7 +108,7 @@ public interface MachineExtensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
+     * @return describes a Machine Extension along with {@link Response}.
      */
     Response<MachineExtension> getByIdWithResponse(String id, Context context);
 

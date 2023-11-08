@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Service Level Agreement details for a support ticket. */
 @Immutable
 public final class ServiceLevelAgreement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceLevelAgreement.class);
-
     /*
      * Time in UTC (ISO 8601 format) when the service level agreement starts.
      */
@@ -32,6 +28,10 @@ public final class ServiceLevelAgreement {
      */
     @JsonProperty(value = "slaMinutes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer slaMinutes;
+
+    /** Creates an instance of ServiceLevelAgreement class. */
+    public ServiceLevelAgreement() {
+    }
 
     /**
      * Get the startTime property: Time in UTC (ISO 8601 format) when the service level agreement starts.

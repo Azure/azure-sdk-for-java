@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 /** An immutable client-side representation of an Azure SQL Database import operation request. */
 @Fluent
 public interface SqlDatabaseImportRequest
-    extends HasInnerModel<ImportExtensionRequest>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
+    extends HasInnerModel<ImportExistingDatabaseDefinition>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
 
     /** The entirety of database import operation definition. */
     interface SqlDatabaseImportRequestDefinition

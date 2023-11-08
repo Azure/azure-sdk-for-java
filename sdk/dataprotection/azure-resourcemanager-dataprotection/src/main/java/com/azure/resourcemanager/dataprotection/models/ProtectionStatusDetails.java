@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ProtectionStatusDetails Protection status details. */
+/**
+ * ProtectionStatusDetails
+ *
+ * <p>Protection status details.
+ */
 @Fluent
 public final class ProtectionStatusDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionStatusDetails.class);
-
     /*
      * Specifies the protection status error of the resource
      */
@@ -25,6 +25,10 @@ public final class ProtectionStatusDetails {
      */
     @JsonProperty(value = "status")
     private Status status;
+
+    /** Creates an instance of ProtectionStatusDetails class. */
+    public ProtectionStatusDetails() {
+    }
 
     /**
      * Get the errorDetails property: Specifies the protection status error of the resource.

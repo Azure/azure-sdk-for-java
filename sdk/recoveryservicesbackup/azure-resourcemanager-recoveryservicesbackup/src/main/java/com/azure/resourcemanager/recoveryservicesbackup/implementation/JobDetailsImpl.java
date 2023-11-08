@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobDetailsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.JobResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobDetailsImpl implements JobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobDetailsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobDetailsImpl.class);
 
     private final JobDetailsClient innerClient;
 
@@ -28,15 +27,6 @@ public final class JobDetailsImpl implements JobDetails {
         this.serviceManager = serviceManager;
     }
 
-    public JobResource get(String vaultName, String resourceGroupName, String jobName) {
-        JobResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, jobName);
-        if (inner != null) {
-            return new JobResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<JobResource> getWithResponse(
         String vaultName, String resourceGroupName, String jobName, Context context) {
         Response<JobResourceInner> inner =
@@ -47,6 +37,15 @@ public final class JobDetailsImpl implements JobDetails {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new JobResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JobResource get(String vaultName, String resourceGroupName, String jobName) {
+        JobResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, jobName);
+        if (inner != null) {
+            return new JobResourceImpl(inner, this.manager());
         } else {
             return null;
         }

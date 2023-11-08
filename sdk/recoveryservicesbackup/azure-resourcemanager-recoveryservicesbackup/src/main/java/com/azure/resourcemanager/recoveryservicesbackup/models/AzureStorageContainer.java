@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("StorageContainer")
 @Fluent
 public final class AzureStorageContainer extends ProtectionContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStorageContainer.class);
-
     /*
      * Fully qualified ARM url.
      */
@@ -43,11 +39,14 @@ public final class AzureStorageContainer extends ProtectionContainer {
     private Long protectedItemCount;
 
     /*
-     * Whether storage account lock is to be acquired for this container or
-     * not.
+     * Whether storage account lock is to be acquired for this container or not.
      */
     @JsonProperty(value = "acquireStorageAccountLock")
     private AcquireStorageAccountLock acquireStorageAccountLock;
+
+    /** Creates an instance of AzureStorageContainer class. */
+    public AzureStorageContainer() {
+    }
 
     /**
      * Get the sourceResourceId property: Fully qualified ARM url.

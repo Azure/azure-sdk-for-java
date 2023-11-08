@@ -15,32 +15,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureTableSink extends CopySink {
     /*
-     * Azure Table default partition key value. Type: string (or Expression
-     * with resultType string).
+     * Azure Table default partition key value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableDefaultPartitionKeyValue")
     private Object azureTableDefaultPartitionKeyValue;
 
     /*
-     * Azure Table partition key name. Type: string (or Expression with
-     * resultType string).
+     * Azure Table partition key name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTablePartitionKeyName")
     private Object azureTablePartitionKeyName;
 
     /*
-     * Azure Table row key name. Type: string (or Expression with resultType
-     * string).
+     * Azure Table row key name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableRowKeyName")
     private Object azureTableRowKeyName;
 
     /*
-     * Azure Table insert type. Type: string (or Expression with resultType
-     * string).
+     * Azure Table insert type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableInsertType")
     private Object azureTableInsertType;
+
+    /** Creates an instance of AzureTableSink class. */
+    public AzureTableSink() {}
 
     /**
      * Get the azureTableDefaultPartitionKeyValue property: Azure Table default partition key value. Type: string (or
@@ -127,6 +126,41 @@ public final class AzureTableSink extends CopySink {
      */
     public AzureTableSink setAzureTableInsertType(Object azureTableInsertType) {
         this.azureTableInsertType = azureTableInsertType;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureTableSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureTableSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureTableSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureTableSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureTableSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphWeekIndex. */
+/** weekIndex. */
 public final class MicrosoftGraphWeekIndex extends ExpandableStringEnum<MicrosoftGraphWeekIndex> {
     /** Static value first for MicrosoftGraphWeekIndex. */
     public static final MicrosoftGraphWeekIndex FIRST = fromString("first");
@@ -26,6 +26,15 @@ public final class MicrosoftGraphWeekIndex extends ExpandableStringEnum<Microsof
     public static final MicrosoftGraphWeekIndex LAST = fromString("last");
 
     /**
+     * Creates a new instance of MicrosoftGraphWeekIndex value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphWeekIndex() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphWeekIndex from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class MicrosoftGraphWeekIndex extends ExpandableStringEnum<Microsof
         return fromString(name, MicrosoftGraphWeekIndex.class);
     }
 
-    /** @return known MicrosoftGraphWeekIndex values. */
+    /**
+     * Gets known MicrosoftGraphWeekIndex values.
+     *
+     * @return known MicrosoftGraphWeekIndex values.
+     */
     public static Collection<MicrosoftGraphWeekIndex> values() {
         return values(MicrosoftGraphWeekIndex.class);
     }

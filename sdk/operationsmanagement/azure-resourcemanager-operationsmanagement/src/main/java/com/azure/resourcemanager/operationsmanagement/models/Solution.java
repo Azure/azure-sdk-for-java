@@ -76,6 +76,13 @@ public interface Solution {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.operationsmanagement.fluent.models.SolutionInner object.
      *
      * @return the inner object.

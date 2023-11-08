@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReadOnlyEndpointFailoverPolicy. */
+/** Failover policy of the read-only endpoint for the failover group. */
 public final class ReadOnlyEndpointFailoverPolicy extends ExpandableStringEnum<ReadOnlyEndpointFailoverPolicy> {
     /** Static value Disabled for ReadOnlyEndpointFailoverPolicy. */
     public static final ReadOnlyEndpointFailoverPolicy DISABLED = fromString("Disabled");
@@ -27,7 +27,11 @@ public final class ReadOnlyEndpointFailoverPolicy extends ExpandableStringEnum<R
         return fromString(name, ReadOnlyEndpointFailoverPolicy.class);
     }
 
-    /** @return known ReadOnlyEndpointFailoverPolicy values. */
+    /**
+     * Gets known ReadOnlyEndpointFailoverPolicy values.
+     *
+     * @return known ReadOnlyEndpointFailoverPolicy values.
+     */
     public static Collection<ReadOnlyEndpointFailoverPolicy> values() {
         return values(ReadOnlyEndpointFailoverPolicy.class);
     }

@@ -5,6 +5,9 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -14,6 +17,7 @@ import io.netty.buffer.PooledByteBufAllocatorMetric;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoop;
 import io.netty.channel.pool.ChannelHealthChecker;
@@ -39,16 +43,18 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -155,10 +161,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private static final Logger logger = LoggerFactory.getLogger(RntbdClientChannelPool.class);
 
     private final long acquisitionTimeoutInNanos;
+    private final int connectTimeoutInMillis;
     private final Runnable acquisitionTimeoutTask;
     private final PooledByteBufAllocatorMetric allocatorMetric;
     private final Bootstrap bootstrap;
-    private final RntbdServiceEndpoint endpoint;
     private final EventExecutor executor;
     private final ChannelHealthChecker healthChecker;
     // private final ScheduledFuture<?> idleStateDetectionScheduledFuture;
@@ -167,13 +173,14 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final int maxRequestsPerChannel;
     private final ChannelPoolHandler poolHandler;
     private final boolean releaseHealthCheck;
+    private final RntbdDurableEndpointMetrics durableEndpointMetrics;
 
     // Because state from these fields can be requested on any thread...
 
     private final AtomicReference<Timeout> acquisitionAndIdleEndpointDetectionTimeout = new AtomicReference<>();
 
     private final ConcurrentHashMap<Channel, Channel> acquiredChannels = new ConcurrentHashMap<>();
-    private final Deque<Channel> availableChannels = new ConcurrentLinkedDeque<>();
+    private final Deque<Channel> availableChannels = new ArrayDeque<>();
     private final AtomicBoolean closed = new AtomicBoolean();
     private final AtomicBoolean connecting = new AtomicBoolean();
 
@@ -183,14 +190,37 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
     private final ClientTelemetry clientTelemetry;
+    private final RntbdServerErrorInjector serverErrorInjector;
+    private final RntbdServiceEndpoint endpoint;
+    private final RntbdConnectionStateListener connectionStateListener;
+
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
      *
      * @param bootstrap the {@link Bootstrap} that is used for connections.
      * @param config the {@link Config} that is used for the channel pool instance created.
+     * @param clientTelemetry the {@link ClientTelemetry} that is used to track client telemetry related metrics.
+     * @param connectionStateListener the {@link RntbdConnectionStateListener}.
+     * @param durableEndpointMetrics a holder for the metric state (which should be
+     *      durable for endpoints with the same address)
      */
-    RntbdClientChannelPool(final RntbdServiceEndpoint endpoint, final Bootstrap bootstrap, final Config config, final ClientTelemetry clientTelemetry) {
-        this(endpoint, bootstrap, config, new RntbdClientChannelHealthChecker(config), clientTelemetry);
+    RntbdClientChannelPool(
+        final RntbdServiceEndpoint endpoint,
+        final Bootstrap bootstrap,
+        final Config config,
+        final ClientTelemetry clientTelemetry,
+        final RntbdConnectionStateListener connectionStateListener,
+        final RntbdServerErrorInjector faultInjectionInterceptors,
+        final RntbdDurableEndpointMetrics durableEndpointMetrics) {
+        this(
+            endpoint,
+            bootstrap,
+            config,
+            new RntbdClientChannelHealthChecker(config),
+            clientTelemetry,
+            connectionStateListener,
+            faultInjectionInterceptors,
+            durableEndpointMetrics);
     }
 
     private RntbdClientChannelPool(
@@ -198,23 +228,30 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Bootstrap bootstrap,
         final Config config,
         final RntbdClientChannelHealthChecker healthChecker,
-        final ClientTelemetry clientTelemetry) {
+        final ClientTelemetry clientTelemetry,
+        final RntbdConnectionStateListener connectionStateListener,
+        final RntbdServerErrorInjector serverErrorInjector,
+        final RntbdDurableEndpointMetrics durableEndpointMetrics) {
 
         checkNotNull(endpoint, "expected non-null endpoint");
         checkNotNull(bootstrap, "expected non-null bootstrap");
         checkNotNull(config, "expected non-null config");
         checkNotNull(healthChecker, "expected non-null healthChecker");
+        checkNotNull(durableEndpointMetrics, "expected non-null durableEndpointMetrics");
 
-        this.endpoint = endpoint;
-        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker);
+        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener, serverErrorInjector);
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
+        this.serverErrorInjector = serverErrorInjector;
+        this.durableEndpointMetrics = durableEndpointMetrics;
+        this.endpoint = endpoint;
+        this.connectionStateListener = connectionStateListener;
 
         this.bootstrap = bootstrap.clone().handler(new ChannelInitializer<Channel>() {
             @Override
             protected void initChannel(final Channel channel) throws Exception {
-            checkState(channel.eventLoop().inEventLoop());
-            RntbdClientChannelPool.this.poolHandler.channelCreated(channel);
+                checkState(channel.eventLoop().inEventLoop());
+                RntbdClientChannelPool.this.poolHandler.channelCreated(channel);
             }
         });
 
@@ -223,6 +260,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         //  entirely removed.
 
         this.acquisitionTimeoutInNanos = config.connectionAcquisitionTimeoutInNanos();
+        this.connectTimeoutInMillis = config.connectTimeoutInMillis();
         this.allocatorMetric = config.allocator().metric();
         this.maxChannels = config.maxChannelsPerEndpoint();
         this.maxRequestsPerChannel = config.maxRequestsPerChannel();
@@ -259,26 +297,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
             this.pendingAcquisitionExpirationFuture = null;
         }
         this.clientTelemetry = clientTelemetry;
-
-//        this.idleStateDetectionScheduledFuture = this.executor.scheduleAtFixedRate(
-//            () -> {
-//                final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
-//
-//                if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
-//                    if (logger.isDebugEnabled()) {
-//                        logger.debug(
-//                            "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
-//                            endpoint,
-//                            Duration.ofNanos(elapsedTimeInNanos),
-//                            Duration.ofNanos(idleEndpointTimeoutInNanos));
-//                    }
-//                    endpoint.close();
-//                    return;
-//                }
-//
-//                this.runTasksInPendingAcquisitionQueue();
-//
-//            }, requestTimerResolutionInNanos, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
     }
 
     // region Accessors
@@ -423,16 +441,54 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     @Override
     public Future<Channel> acquire() {
-        return this.acquire(new ChannelPromiseWithExpiryTime(
-            this.bootstrap.config().group().next().newPromise(),
-            System.nanoTime() + this.acquisitionTimeoutInNanos));
+        return this.acquire(
+                new ChannelPromiseWithExpiryTime(this.getNewChannelPromise(), this.getNewPromiseExpiryTime()));
     }
 
-    public Future<Channel> acquire(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
-        return this.acquire(new ChannelPromiseWithExpiryTime(
-            this.bootstrap.config().group().next().newPromise(),
-            System.nanoTime() + this.acquisitionTimeoutInNanos,
-            channelAcquisitionTimeline));
+    public Future<Channel> acquire(RntbdRequestRecord requestRecord) {
+        checkNotNull(requestRecord, "Argument 'requestRecord' should not be null");
+
+        return this.acquire(
+                new ChannelPromiseWithExpiryTime(
+                        this.getNewChannelPromise(),
+                        this.getNewPromiseExpiryTime(),
+                        requestRecord));
+    }
+
+    /***
+     * A dedicate method to handle open connections from up stream.
+     *
+     * @param requestRecord the {@link OpenConnectionRntbdRequestRecord}.
+     *
+     * @return the future.
+     */
+    public Future<Channel> acquire(OpenConnectionRntbdRequestRecord requestRecord) {
+        checkNotNull(requestRecord, "Argument 'requestRecord' should not be null");
+
+        OpenChannelPromise openChannelPromise =
+                new OpenChannelPromise(this.getNewChannelPromise(), this.getNewPromiseExpiryTime(), requestRecord);
+
+        try {
+            // Compared to the normal request flow
+            // Open connection flow does not need to write any real request, hence we are passing the pending queue checking
+            if (this.executor.inEventLoop()) {
+                this.acquireChannel(openChannelPromise);
+            } else {
+                this.executor.execute(() -> this.acquireChannel(openChannelPromise));
+            }
+        } catch (Throwable cause) {
+            openChannelPromise.setFailure(cause);
+        }
+
+        return openChannelPromise;
+    }
+
+    private long getNewPromiseExpiryTime() {
+        return System.nanoTime() + this.acquisitionTimeoutInNanos;
+    }
+
+    private Promise<Channel> getNewChannelPromise() {
+        return this.bootstrap.config().group().next().newPromise();
     }
 
     /**
@@ -618,23 +674,26 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         try {
-            Channel candidate = this.pollChannel(channelAcquisitionTimeline);
 
-            if (candidate != null) {
+            Channel candidate = null;
 
-                // Fulfill this request with our candidate, assuming it's healthy
-                // If our candidate is unhealthy, notifyChannelHealthCheck will call us again
+            // in the open channel flow, force a new channel
+            // to be opened if min channels required for the endpoint
+            // has not been attained
+            if ((!(promise instanceof OpenChannelPromise)) || this.endpoint.getMinChannelsRequired() <= this.channels(false)) {
+                candidate = this.pollChannel(channelAcquisitionTimeline);
 
-                doAcquireChannel(promise, candidate);
-                return;
+                if (candidate != null) {
+
+                    // Fulfill this request with our candidate, assuming it's healthy
+                    // If our candidate is unhealthy, notifyChannelHealthCheck will call us again
+
+                    doAcquireChannel(promise, candidate);
+                    return;
+                }
             }
 
-            // make sure to retrieve the actual channel count to avoid establishing more
-            // TCP connections than allowed.
-            final int channelCount = this.channels(false);
-
-            if (channelCount < this.maxChannels) {
-
+            if (this.allowedToOpenNewChannel(this.maxChannels)) {
                 if (this.connecting.compareAndSet(false, true)) {
 
                     // Fulfill this request with a new channel, assuming we can connect one
@@ -646,6 +705,17 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         channelAcquisitionTimeline,
                         RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL,
                         clientTelemetry);
+
+                    if (this.serverErrorInjector != null) {
+                        Consumer<Duration> openConnectionConsumer =
+                            (delay) -> this.openNewChannelWithInjectedDelay(anotherPromise, delay);
+
+                        if (this.serverErrorInjector.injectRntbdServerConnectionDelay(
+                            promise.getRntbdRequestRecord(),
+                            openConnectionConsumer)) {
+                            return;
+                        }
+                    }
 
                     final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
 
@@ -669,7 +739,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
 
                     if (manager == null) {
-                        logger.debug("Channel({} --> {}) closed", channel, this.remoteAddress());
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Channel({} --> {}) closed", channel, this.remoteAddress());
+                        }
                     } else {
                         final long pendingRequestCount = manager.pendingRequestCount();
 
@@ -714,6 +786,43 @@ public final class RntbdClientChannelPool implements ChannelPool {
         } catch (Throwable cause) {
             promise.tryFailure(cause);
         }
+    }
+
+    private boolean allowedToOpenNewChannel(int channelLimit) {
+        final int channelCount = this.channels(false);
+        return channelCount < channelLimit;
+    }
+
+    private void openNewChannelWithInjectedDelay(final Promise<Channel> promise, Duration latencyDuration) {
+        this.ensureInEventLoop();
+
+        long delayInMillis = Math.min(this.connectTimeoutInMillis, latencyDuration.toMillis());
+        // Reduce the connection timeout based on the injected delay
+        // The higher delay being injected, then less time left to open connection, then it is easier to get connectionTimeout exception.
+        // But we would not want to use a <0 for connectionTimeout setting as netty throw exceptions.
+        long effectiveConnectTimeoutInMillis = Math.max(this.connectTimeoutInMillis - delayInMillis, 5);
+
+        this.executor.schedule(
+            () -> {
+                ChannelFuture channelFuture = this.bootstrap.clone().attr(POOL_KEY, this).handler(new ChannelInitializer<Channel>() {
+                    @Override
+                    protected void initChannel(Channel channel) throws Exception {
+                        checkState(channel.eventLoop().inEventLoop());
+
+                        channel.config().setOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int)effectiveConnectTimeoutInMillis);
+                        RntbdClientChannelPool.this.poolHandler.channelCreated(channel);
+                    }
+                }).connect();
+
+                if (channelFuture.isDone()) {
+                    this.safeNotifyChannelConnect(channelFuture, promise);
+                } else {
+                    channelFuture.addListener(ignored -> this.safeNotifyChannelConnect(channelFuture, promise));
+                }
+            },
+            delayInMillis,
+            TimeUnit.MILLISECONDS
+        );
     }
 
     /**
@@ -761,10 +870,17 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     private void closeChannel(final Channel channel) {
         this.ensureInEventLoop();
+        this.durableEndpointMetrics.incrementClosedChannels();
         this.acquiredChannels.remove(channel);
         this.availableChannels.remove(channel);
         channel.attr(POOL_KEY).set(null);
-        channel.close();
+        if (this.connectionStateListener != null) {
+            channel.close().addListener(future -> {
+                if (future.isDone() && !this.isClosed()) {
+                    this.connectionStateListener.openConnectionIfNeeded();
+                }
+            });
+        }
     }
 
     private void closeChannelAndFail(final Channel channel, final Throwable cause, final Promise<?> promise) {
@@ -987,7 +1103,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         listener.acquired();
         anotherPromise.addListener(listener);
 
-        return new ChannelPromiseWithExpiryTime(anotherPromise, promise.getExpiryTimeInNanos(), promise.getChannelAcquisitionTimeline());
+        return new ChannelPromiseWithExpiryTime(anotherPromise, promise.getExpiryTimeInNanos(), promise.getRntbdRequestRecord());
     }
 
     private void newTimeout(
@@ -1059,8 +1175,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     if (logger.isDebugEnabled()) {
                         logger.debug("Channel to endpoint {} is closed. " +
-                                "isInAvailableChannels={}, " +
-                                "isInAcquiredChannels={}, " +
                                 "isOnChannelEventLoop={}, " +
                                 "isActive={}, " +
                                 "isOpen={}, " +
@@ -1068,8 +1182,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
                                 "isWritable={}, " +
                                 "threadName={}",
                             channel.remoteAddress(),
-                            availableChannels.contains(channel),
-                            acquiredChannels.contains(channel),
                             channel.eventLoop().inEventLoop(),
                             channel.isActive(),
                             channel.isOpen(),
@@ -1094,6 +1206,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     if (logger.isDebugEnabled()) {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }
+
+                    durableEndpointMetrics.incrementAcquiredChannels();
 
                     this.acquiredChannels.compute(channel, (ignored, acquiredChannel) -> {
                         reportIssueUnless(logger, acquiredChannel == null, this,
@@ -1273,6 +1387,47 @@ public final class RntbdClientChannelPool implements ChannelPool {
         return null;
     }
 
+    public void injectConnectionErrors(String faultInjectionRuleId, double threshold, Class<?> eventType) {
+        if (this.executor.inEventLoop()) {
+            this.injectConnectionErrorsInternal(faultInjectionRuleId, threshold, eventType);
+        } else {
+            this.executor.submit(() -> this.injectConnectionErrorsInternal(faultInjectionRuleId, threshold, eventType)).awaitUninterruptibly(); // block until complete
+        }
+    }
+
+    private void injectConnectionErrorsInternal(String faultInjectionRuleId, double threshold, Class<?> eventType) {
+
+        // Calculate how many connections is going to be closed
+        int channelsToBeClosed = (int) Math.ceil(this.channels(false) * threshold);
+
+        // We will pick from acquired channel queues first as it means there are requests in flight on the channel
+        // and it will be easier to see the impact
+        List<Channel> channelsToBeClosedList = this.acquiredChannels.values().stream().limit(channelsToBeClosed).collect(Collectors.toList());
+
+        if (channelsToBeClosedList.size() < channelsToBeClosed) {
+            channelsToBeClosedList.addAll(
+                this.availableChannels
+                    .stream()
+                    .limit(channelsToBeClosed - channelsToBeClosedList.size()).collect(Collectors.toList()));
+        }
+
+        for (Channel channel: channelsToBeClosedList) {
+            if (eventType == RntbdFaultInjectionConnectionCloseEvent.class) {
+                channel
+                    .pipeline()
+                    .firstContext()
+                    .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent(faultInjectionRuleId));
+            } else if (eventType == RntbdFaultInjectionConnectionResetEvent.class) {
+                channel
+                    .pipeline()
+                    .firstContext()
+                    .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent(faultInjectionRuleId));
+            } else {
+                throw new IllegalStateException("ConnectionEventType " + eventType + " is not supported");
+            }
+        }
+    }
+
     /**
      * Releases a {@link Channel channel} and offers it back to the {@link RntbdClientChannelPool pool}.
      *
@@ -1329,7 +1484,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void releaseAndOfferChannelIfHealthy(
         final Channel channel,
         final Promise<Void> promise,
-        final Future<Boolean> future) {
+        final Future<Boolean> future) throws Exception {
 
         final boolean isHealthy = future.getNow();
 
@@ -1342,18 +1497,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
         } else {
             // Channel is unhealthy so just close and release it
-            try {
-                this.poolHandler.channelReleased(channel);
-            } catch (Throwable error) {
-                logger.debug("[{}] pool handler failed due to ", this, error);
-            } finally {
-                if (this.executor.inEventLoop()) {
-                    this.closeChannel(channel);
-                } else {
-                    this.executor.submit(() -> this.closeChannel(channel));
-                }
-                promise.setSuccess(null);
+            this.poolHandler.channelReleased(channel);
+            if (this.executor.inEventLoop()) {
+                this.closeChannel(channel);
+            } else {
+                this.executor.submit(() -> this.closeChannel(channel));
             }
+            promise.setSuccess(null);
         }
     }
 

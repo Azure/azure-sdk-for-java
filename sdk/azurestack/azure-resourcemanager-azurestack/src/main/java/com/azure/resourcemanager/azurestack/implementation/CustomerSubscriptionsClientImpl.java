@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestack.fluent.CustomerSubscriptionsClient;
 import com.azure.resourcemanager.azurestack.fluent.models.CustomerSubscriptionInner;
 import com.azure.resourcemanager.azurestack.models.CustomerSubscriptionList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CustomerSubscriptionsClient. */
 public final class CustomerSubscriptionsClientImpl implements CustomerSubscriptionsClient {
-    private final ClientLogger logger = new ClientLogger(CustomerSubscriptionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CustomerSubscriptionsService service;
 
@@ -62,7 +59,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureStackManagement")
-    private interface CustomerSubscriptionsService {
+    public interface CustomerSubscriptionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack"
@@ -146,7 +143,8 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomerSubscriptionInner>> listSinglePageAsync(
@@ -204,7 +202,8 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomerSubscriptionInner>> listSinglePageAsync(
@@ -258,7 +257,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomerSubscriptionInner> listAsync(String resourceGroup, String registrationName) {
@@ -275,7 +274,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomerSubscriptionInner> listAsync(
@@ -293,7 +292,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomerSubscriptionInner> list(String resourceGroup, String registrationName) {
@@ -309,7 +308,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomerSubscriptionInner> list(
@@ -326,7 +325,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerSubscriptionInner>> getWithResponseAsync(
@@ -382,7 +381,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerSubscriptionInner>> getWithResponseAsync(
@@ -434,20 +433,31 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomerSubscriptionInner> getAsync(
         String resourceGroup, String registrationName, String customerSubscriptionName) {
         return getWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName)
-            .flatMap(
-                (Response<CustomerSubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param customerSubscriptionName Name of the product.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return customer subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CustomerSubscriptionInner> getWithResponse(
+        String resourceGroup, String registrationName, String customerSubscriptionName, Context context) {
+        return getWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName, context).block();
     }
 
     /**
@@ -464,25 +474,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomerSubscriptionInner get(
         String resourceGroup, String registrationName, String customerSubscriptionName) {
-        return getAsync(resourceGroup, registrationName, customerSubscriptionName).block();
-    }
-
-    /**
-     * Returns the specified product.
-     *
-     * @param resourceGroup Name of the resource group.
-     * @param registrationName Name of the Azure Stack registration.
-     * @param customerSubscriptionName Name of the product.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomerSubscriptionInner> getWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context) {
-        return getWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName, context).block();
+        return getWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE).getValue();
     }
 
     /**
@@ -494,7 +486,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -550,7 +542,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -602,12 +594,30 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroup, String registrationName, String customerSubscriptionName) {
         return deleteWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a customer subscription under a registration.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param customerSubscriptionName Name of the product.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroup, String registrationName, String customerSubscriptionName, Context context) {
+        return deleteWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName, context).block();
     }
 
     /**
@@ -622,25 +632,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroup, String registrationName, String customerSubscriptionName) {
-        deleteAsync(resourceGroup, registrationName, customerSubscriptionName).block();
-    }
-
-    /**
-     * Deletes a customer subscription under a registration.
-     *
-     * @param resourceGroup Name of the resource group.
-     * @param registrationName Name of the Azure Stack registration.
-     * @param customerSubscriptionName Name of the product.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context) {
-        return deleteWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName, context).block();
+        deleteWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE);
     }
 
     /**
@@ -653,7 +645,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerSubscriptionInner>> createWithResponseAsync(
@@ -722,7 +714,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerSubscriptionInner>> createWithResponseAsync(
@@ -788,7 +780,7 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomerSubscriptionInner> createAsync(
@@ -798,14 +790,32 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
         CustomerSubscriptionInner customerCreationParameters) {
         return createWithResponseAsync(
                 resourceGroup, registrationName, customerSubscriptionName, customerCreationParameters)
-            .flatMap(
-                (Response<CustomerSubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a new customer subscription under a registration.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param customerSubscriptionName Name of the product.
+     * @param customerCreationParameters Parameters use to create a customer subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return customer subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CustomerSubscriptionInner> createWithResponse(
+        String resourceGroup,
+        String registrationName,
+        String customerSubscriptionName,
+        CustomerSubscriptionInner customerCreationParameters,
+        Context context) {
+        return createWithResponseAsync(
+                resourceGroup, registrationName, customerSubscriptionName, customerCreationParameters, context)
+            .block();
     }
 
     /**
@@ -826,43 +836,21 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
         String registrationName,
         String customerSubscriptionName,
         CustomerSubscriptionInner customerCreationParameters) {
-        return createAsync(resourceGroup, registrationName, customerSubscriptionName, customerCreationParameters)
-            .block();
-    }
-
-    /**
-     * Creates a new customer subscription under a registration.
-     *
-     * @param resourceGroup Name of the resource group.
-     * @param registrationName Name of the Azure Stack registration.
-     * @param customerSubscriptionName Name of the product.
-     * @param customerCreationParameters Parameters use to create a customer subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomerSubscriptionInner> createWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String customerSubscriptionName,
-        CustomerSubscriptionInner customerCreationParameters,
-        Context context) {
-        return createWithResponseAsync(
-                resourceGroup, registrationName, customerSubscriptionName, customerCreationParameters, context)
-            .block();
+        return createWithResponse(
+                resourceGroup, registrationName, customerSubscriptionName, customerCreationParameters, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomerSubscriptionInner>> listNextSinglePageAsync(String nextLink) {
@@ -893,12 +881,14 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomerSubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {

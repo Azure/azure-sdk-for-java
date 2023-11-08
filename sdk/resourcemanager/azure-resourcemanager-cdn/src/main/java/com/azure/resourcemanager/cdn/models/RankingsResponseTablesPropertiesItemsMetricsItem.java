@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RankingsResponseTablesPropertiesItemsMetricsItem model. */
 @Fluent
 public final class RankingsResponseTablesPropertiesItemsMetricsItem {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RankingsResponseTablesPropertiesItemsMetricsItem.class);
-
     /*
      * The metric property.
      */
@@ -32,6 +27,10 @@ public final class RankingsResponseTablesPropertiesItemsMetricsItem {
      */
     @JsonProperty(value = "percentage")
     private Float percentage;
+
+    /** Creates an instance of RankingsResponseTablesPropertiesItemsMetricsItem class. */
+    public RankingsResponseTablesPropertiesItemsMetricsItem() {
+    }
 
     /**
      * Get the metric property: The metric property.

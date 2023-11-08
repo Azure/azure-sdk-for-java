@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LeaseDuration. */
+/** Specifies whether the lease on a container is of infinite or fixed duration, only when the container is leased. */
 public final class LeaseDuration extends ExpandableStringEnum<LeaseDuration> {
     /** Static value Infinite for LeaseDuration. */
     public static final LeaseDuration INFINITE = fromString("Infinite");
 
     /** Static value Fixed for LeaseDuration. */
     public static final LeaseDuration FIXED = fromString("Fixed");
+
+    /**
+     * Creates a new instance of LeaseDuration value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LeaseDuration() {
+    }
 
     /**
      * Creates or finds a LeaseDuration from its string representation.
@@ -27,7 +36,11 @@ public final class LeaseDuration extends ExpandableStringEnum<LeaseDuration> {
         return fromString(name, LeaseDuration.class);
     }
 
-    /** @return known LeaseDuration values. */
+    /**
+     * Gets known LeaseDuration values.
+     *
+     * @return known LeaseDuration values.
+     */
     public static Collection<LeaseDuration> values() {
         return values(LeaseDuration.class);
     }

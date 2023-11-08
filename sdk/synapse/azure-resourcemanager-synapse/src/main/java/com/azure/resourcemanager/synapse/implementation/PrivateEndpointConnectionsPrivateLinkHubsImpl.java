@@ -13,11 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.PrivateEndpointConnectionsPrivat
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionForPrivateLinkHubInner;
 import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionForPrivateLinkHub;
 import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionsPrivateLinkHubs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateEndpointConnectionsPrivateLinkHubsImpl implements PrivateEndpointConnectionsPrivateLinkHubs {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsPrivateLinkHubsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionsPrivateLinkHubsImpl.class);
 
     private final PrivateEndpointConnectionsPrivateLinkHubsClient innerClient;
 
@@ -46,17 +44,6 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsImpl implements Priv
             .mapPage(inner, inner1 -> new PrivateEndpointConnectionForPrivateLinkHubImpl(inner1, this.manager()));
     }
 
-    public PrivateEndpointConnectionForPrivateLinkHub get(
-        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionForPrivateLinkHubInner inner =
-            this.serviceClient().get(resourceGroupName, privateLinkHubName, privateEndpointConnectionName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionForPrivateLinkHubImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateEndpointConnectionForPrivateLinkHub> getWithResponse(
         String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName, Context context) {
         Response<PrivateEndpointConnectionForPrivateLinkHubInner> inner =
@@ -69,6 +56,17 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsImpl implements Priv
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateEndpointConnectionForPrivateLinkHubImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateEndpointConnectionForPrivateLinkHub get(
+        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName) {
+        PrivateEndpointConnectionForPrivateLinkHubInner inner =
+            this.serviceClient().get(resourceGroupName, privateLinkHubName, privateEndpointConnectionName);
+        if (inner != null) {
+            return new PrivateEndpointConnectionForPrivateLinkHubImpl(inner, this.manager());
         } else {
             return null;
         }

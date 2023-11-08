@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SparkServerType. */
+/** The type of Spark server. */
 public final class SparkServerType extends ExpandableStringEnum<SparkServerType> {
     /** Static value SharkServer for SparkServerType. */
     public static final SparkServerType SHARK_SERVER = fromString("SharkServer");
@@ -18,6 +18,14 @@ public final class SparkServerType extends ExpandableStringEnum<SparkServerType>
 
     /** Static value SparkThriftServer for SparkServerType. */
     public static final SparkServerType SPARK_THRIFT_SERVER = fromString("SparkThriftServer");
+
+    /**
+     * Creates a new instance of SparkServerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkServerType() {}
 
     /**
      * Creates or finds a SparkServerType from its string representation.
@@ -30,7 +38,11 @@ public final class SparkServerType extends ExpandableStringEnum<SparkServerType>
         return fromString(name, SparkServerType.class);
     }
 
-    /** @return known SparkServerType values. */
+    /**
+     * Gets known SparkServerType values.
+     *
+     * @return known SparkServerType values.
+     */
     public static Collection<SparkServerType> values() {
         return values(SparkServerType.class);
     }

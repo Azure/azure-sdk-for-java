@@ -16,6 +16,21 @@ public interface DataSources {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String workspaceName, String dataSourceName, Context context);
+
+    /**
+     * Deletes a data source instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param dataSourceName Name of the datasource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,7 +38,7 @@ public interface DataSources {
     void delete(String resourceGroupName, String workspaceName, String dataSourceName);
 
     /**
-     * Deletes a data source instance.
+     * Gets a datasource instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -32,9 +47,9 @@ public interface DataSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a datasource instance along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
+    Response<DataSource> getWithResponse(
         String resourceGroupName, String workspaceName, String dataSourceName, Context context);
 
     /**
@@ -51,21 +66,6 @@ public interface DataSources {
     DataSource get(String resourceGroupName, String workspaceName, String dataSourceName);
 
     /**
-     * Gets a datasource instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataSourceName Name of the datasource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datasource instance.
-     */
-    Response<DataSource> getWithResponse(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context);
-
-    /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -74,7 +74,8 @@ public interface DataSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of data source instances in a workspace with the link to the next page.
+     * @return the first page of data source instances in a workspace with the link to the next page as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<DataSource> listByWorkspace(String resourceGroupName, String workspaceName, String filter);
 
@@ -89,7 +90,8 @@ public interface DataSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of data source instances in a workspace with the link to the next page.
+     * @return the first page of data source instances in a workspace with the link to the next page as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<DataSource> listByWorkspace(
         String resourceGroupName, String workspaceName, String filter, String skiptoken, Context context);
@@ -101,7 +103,7 @@ public interface DataSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datasource instance.
+     * @return a datasource instance along with {@link Response}.
      */
     DataSource getById(String id);
 
@@ -113,7 +115,7 @@ public interface DataSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datasource instance.
+     * @return a datasource instance along with {@link Response}.
      */
     Response<DataSource> getByIdWithResponse(String id, Context context);
 
@@ -135,7 +137,7 @@ public interface DataSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

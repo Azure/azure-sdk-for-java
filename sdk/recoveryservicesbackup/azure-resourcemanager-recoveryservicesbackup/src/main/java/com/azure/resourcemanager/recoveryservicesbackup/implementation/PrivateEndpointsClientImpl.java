@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.PrivateEndpointsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateEndpointsClient. */
 public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateEndpointsService service;
 
@@ -53,12 +50,10 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface PrivateEndpointsService {
+    public interface PrivateEndpointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}/operationsStatus"
-                + "/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}/operationsStatus/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationStatusInner>> getOperationStatus(
@@ -216,33 +211,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
         String vaultName, String resourceGroupName, String privateEndpointConnectionName, String operationId) {
         return getOperationStatusWithResponseAsync(
                 vaultName, resourceGroupName, privateEndpointConnectionName, operationId)
-            .flatMap(
-                (Response<OperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the operation status for a private endpoint connection.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param operationId Operation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for a private endpoint connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner getOperationStatus(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, String operationId) {
-        return getOperationStatusAsync(vaultName, resourceGroupName, privateEndpointConnectionName, operationId)
-            .block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -268,5 +237,25 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
         return getOperationStatusWithResponseAsync(
                 vaultName, resourceGroupName, privateEndpointConnectionName, operationId, context)
             .block();
+    }
+
+    /**
+     * Gets the operation status for a private endpoint connection.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param operationId Operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusInner getOperationStatus(
+        String vaultName, String resourceGroupName, String privateEndpointConnectionName, String operationId) {
+        return getOperationStatusWithResponse(
+                vaultName, resourceGroupName, privateEndpointConnectionName, operationId, Context.NONE)
+            .getValue();
     }
 }

@@ -7,6 +7,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
@@ -19,7 +20,7 @@ import java.util.UUID;
  * Performance test.
  */
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ClientLogger logger = new ClientLogger(ReceiveAndDeleteMessageTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReceiveAndDeleteMessageTest.class);
     private final ServiceBusStressOptions options;
     private final String messageContent;
 
@@ -62,17 +63,25 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         }
 
         if (count <= 0) {
-            throw logger.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
+            throw LOGGER.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
         }
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return receiverAsync
-            .receiveMessages()
-            .take(options.getMessagesToReceive())
-            .map(serviceBusReceivedMessageContext -> {
-                return serviceBusReceivedMessageContext;
-            }).then();
+        return Mono.using(
+            receiverBuilder::buildAsyncClient,
+            serviceBusReceiverAsyncClient -> {
+                return serviceBusReceiverAsyncClient
+                    .receiveMessages()
+                    .take(options.getMessagesToReceive())
+                    .map(message -> {
+                        return message;
+                    })
+                    .then();
+            },
+            ServiceBusReceiverAsyncClient::close,
+            true
+        );
     }
 }

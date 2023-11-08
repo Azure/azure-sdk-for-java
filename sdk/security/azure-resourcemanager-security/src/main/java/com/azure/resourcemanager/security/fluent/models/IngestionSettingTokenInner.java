@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configures how to correlate scan data and logs with resources associated with the subscription. */
 @Immutable
 public final class IngestionSettingTokenInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IngestionSettingTokenInner.class);
-
     /*
-     * The token is used for correlating security data and logs with the
-     * resources in the subscription.
+     * The token is used for correlating security data and logs with the resources in the subscription.
      */
     @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
     private String token;
+
+    /** Creates an instance of IngestionSettingTokenInner class. */
+    public IngestionSettingTokenInner() {
+    }
 
     /**
      * Get the token property: The token is used for correlating security data and logs with the resources in the

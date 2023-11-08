@@ -30,6 +30,9 @@ public enum ShareFileRangeWriteType {
      */
     @JsonCreator
     public static ShareFileRangeWriteType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ShareFileRangeWriteType[] items = ShareFileRangeWriteType.values();
         for (ShareFileRangeWriteType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ShareFileRangeWriteType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

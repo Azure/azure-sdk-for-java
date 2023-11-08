@@ -17,6 +17,20 @@ public interface OperationStatusClient {
      *
      * @param location The location parameter.
      * @param operationId The operationId parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for a resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OperationResourceInner> getWithResponse(String location, String operationId, Context context);
+
+    /**
+     * Gets the operation status for a resource.
+     *
+     * @param location The location parameter.
+     * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,18 +38,4 @@ public interface OperationStatusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationResourceInner get(String location, String operationId);
-
-    /**
-     * Gets the operation status for a resource.
-     *
-     * @param location The location parameter.
-     * @param operationId The operationId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationResourceInner> getWithResponse(String location, String operationId, Context context);
 }

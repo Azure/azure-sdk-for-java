@@ -67,6 +67,13 @@ public interface WorkloadNetworkVMGroup {
     Long revision();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVMGroupInner object.
      *
      * @return the inner object.
@@ -77,11 +84,13 @@ public interface WorkloadNetworkVMGroup {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The WorkloadNetworkVMGroup definition stages. */
     interface DefinitionStages {
         /** The first stage of the WorkloadNetworkVMGroup definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the WorkloadNetworkVMGroup definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -93,6 +102,7 @@ public interface WorkloadNetworkVMGroup {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the WorkloadNetworkVMGroup definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -114,6 +124,7 @@ public interface WorkloadNetworkVMGroup {
              */
             WorkloadNetworkVMGroup create(Context context);
         }
+
         /** The stage of the WorkloadNetworkVMGroup definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -124,6 +135,7 @@ public interface WorkloadNetworkVMGroup {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the WorkloadNetworkVMGroup definition allowing to specify members. */
         interface WithMembers {
             /**
@@ -134,6 +146,7 @@ public interface WorkloadNetworkVMGroup {
              */
             WithCreate withMembers(List<String> members);
         }
+
         /** The stage of the WorkloadNetworkVMGroup definition allowing to specify revision. */
         interface WithRevision {
             /**
@@ -145,6 +158,7 @@ public interface WorkloadNetworkVMGroup {
             WithCreate withRevision(Long revision);
         }
     }
+
     /**
      * Begins update for the WorkloadNetworkVMGroup resource.
      *
@@ -169,6 +183,7 @@ public interface WorkloadNetworkVMGroup {
          */
         WorkloadNetworkVMGroup apply(Context context);
     }
+
     /** The WorkloadNetworkVMGroup update stages. */
     interface UpdateStages {
         /** The stage of the WorkloadNetworkVMGroup update allowing to specify displayName. */
@@ -181,6 +196,7 @@ public interface WorkloadNetworkVMGroup {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the WorkloadNetworkVMGroup update allowing to specify members. */
         interface WithMembers {
             /**
@@ -191,6 +207,7 @@ public interface WorkloadNetworkVMGroup {
              */
             Update withMembers(List<String> members);
         }
+
         /** The stage of the WorkloadNetworkVMGroup update allowing to specify revision. */
         interface WithRevision {
             /**
@@ -202,6 +219,7 @@ public interface WorkloadNetworkVMGroup {
             Update withRevision(Long revision);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

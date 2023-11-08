@@ -5,22 +5,20 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The details of Azure-SSIS integration runtime outbound network dependency endpoint. */
 @Fluent
 public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails.class);
-
     /*
      * The port of endpoint.
      */
     @JsonProperty(value = "port")
     private Integer port;
+
+    /** Creates an instance of IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails class. */
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails() {
+    }
 
     /**
      * Get the port property: The port of endpoint.

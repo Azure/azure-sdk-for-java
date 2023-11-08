@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PortMirroringDirectionEnum. */
+/** Direction of port mirroring profile. */
 public final class PortMirroringDirectionEnum extends ExpandableStringEnum<PortMirroringDirectionEnum> {
     /** Static value INGRESS for PortMirroringDirectionEnum. */
     public static final PortMirroringDirectionEnum INGRESS = fromString("INGRESS");
@@ -18,6 +18,15 @@ public final class PortMirroringDirectionEnum extends ExpandableStringEnum<PortM
 
     /** Static value BIDIRECTIONAL for PortMirroringDirectionEnum. */
     public static final PortMirroringDirectionEnum BIDIRECTIONAL = fromString("BIDIRECTIONAL");
+
+    /**
+     * Creates a new instance of PortMirroringDirectionEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PortMirroringDirectionEnum() {
+    }
 
     /**
      * Creates or finds a PortMirroringDirectionEnum from its string representation.
@@ -30,7 +39,11 @@ public final class PortMirroringDirectionEnum extends ExpandableStringEnum<PortM
         return fromString(name, PortMirroringDirectionEnum.class);
     }
 
-    /** @return known PortMirroringDirectionEnum values. */
+    /**
+     * Gets known PortMirroringDirectionEnum values.
+     *
+     * @return known PortMirroringDirectionEnum values.
+     */
     public static Collection<PortMirroringDirectionEnum> values() {
         return values(PortMirroringDirectionEnum.class);
     }

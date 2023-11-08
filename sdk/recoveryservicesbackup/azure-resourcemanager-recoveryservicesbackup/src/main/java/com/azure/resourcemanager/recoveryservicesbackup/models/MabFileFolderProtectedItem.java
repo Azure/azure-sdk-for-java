@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import java.util.List;
 @JsonTypeName("MabFileFolderProtectedItem")
 @Fluent
 public final class MabFileFolderProtectedItem extends ProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MabFileFolderProtectedItem.class);
-
     /*
      * Friendly name of this backup item.
      */
@@ -61,6 +57,10 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
      */
     @JsonProperty(value = "extendedInfo")
     private MabFileFolderProtectedItemExtendedInfo extendedInfo;
+
+    /** Creates an instance of MabFileFolderProtectedItem class. */
+    public MabFileFolderProtectedItem() {
+    }
 
     /**
      * Get the friendlyName property: Friendly name of this backup item.
@@ -204,20 +204,6 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /** {@inheritDoc} */
     @Override
-    public MabFileFolderProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MabFileFolderProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public MabFileFolderProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
@@ -311,6 +297,13 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
     @Override
     public MabFileFolderProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MabFileFolderProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

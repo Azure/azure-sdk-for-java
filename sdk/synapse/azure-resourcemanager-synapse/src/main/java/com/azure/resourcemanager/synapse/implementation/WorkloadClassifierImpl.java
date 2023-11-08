@@ -50,6 +50,10 @@ public final class WorkloadClassifierImpl
         return this.innerModel().importance();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WorkloadClassifierInner innerModel() {
         return this.innerObject;
     }

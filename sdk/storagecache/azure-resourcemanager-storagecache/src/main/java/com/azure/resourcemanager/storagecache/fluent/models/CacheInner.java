@@ -14,14 +14,17 @@ import com.azure.resourcemanager.storagecache.models.CacheIdentity;
 import com.azure.resourcemanager.storagecache.models.CacheNetworkSettings;
 import com.azure.resourcemanager.storagecache.models.CacheSecuritySettings;
 import com.azure.resourcemanager.storagecache.models.CacheSku;
+import com.azure.resourcemanager.storagecache.models.CacheUpgradeSettings;
 import com.azure.resourcemanager.storagecache.models.CacheUpgradeStatus;
+import com.azure.resourcemanager.storagecache.models.PrimingJob;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
+import com.azure.resourcemanager.storagecache.models.StorageTargetSpaceAllocation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /**
- * A Cache instance. Follows Azure Resource Manager standards:
+ * A cache instance. Follows Azure Resource Manager standards:
  * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md.
  */
 @Fluent
@@ -39,16 +42,20 @@ public final class CacheInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Properties of the Cache.
+     * Properties of the cache.
      */
     @JsonProperty(value = "properties")
     private CacheProperties innerProperties;
 
     /*
-     * SKU for the Cache.
+     * SKU for the cache.
      */
     @JsonProperty(value = "sku")
     private CacheSku sku;
+
+    /** Creates an instance of CacheInner class. */
+    public CacheInner() {
+    }
 
     /**
      * Get the identity property: The identity of the cache, if configured.
@@ -80,7 +87,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Properties of the Cache.
+     * Get the innerProperties property: Properties of the cache.
      *
      * @return the innerProperties value.
      */
@@ -89,7 +96,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the sku property: SKU for the Cache.
+     * Get the sku property: SKU for the cache.
      *
      * @return the sku value.
      */
@@ -98,7 +105,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Set the sku property: SKU for the Cache.
+     * Set the sku property: SKU for the cache.
      *
      * @param sku the sku value to set.
      * @return the CacheInner object itself.
@@ -146,7 +153,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the health property: Health of the Cache.
+     * Get the health property: Health of the cache.
      *
      * @return the health value.
      */
@@ -155,7 +162,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the mountAddresses property: Array of IP addresses that can be used by clients mounting this Cache.
+     * Get the mountAddresses property: Array of IPv4 addresses that can be used by clients mounting this cache.
      *
      * @return the mountAddresses value.
      */
@@ -174,7 +181,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the subnet property: Subnet used for the Cache.
+     * Get the subnet property: Subnet used for the cache.
      *
      * @return the subnet value.
      */
@@ -183,7 +190,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Set the subnet property: Subnet used for the Cache.
+     * Set the subnet property: Subnet used for the cache.
      *
      * @param subnet the subnet value to set.
      * @return the CacheInner object itself.
@@ -197,12 +204,35 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the upgradeStatus property: Upgrade status of the Cache.
+     * Get the upgradeStatus property: Upgrade status of the cache.
      *
      * @return the upgradeStatus value.
      */
     public CacheUpgradeStatus upgradeStatus() {
         return this.innerProperties() == null ? null : this.innerProperties().upgradeStatus();
+    }
+
+    /**
+     * Get the upgradeSettings property: Upgrade settings of the cache.
+     *
+     * @return the upgradeSettings value.
+     */
+    public CacheUpgradeSettings upgradeSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeSettings();
+    }
+
+    /**
+     * Set the upgradeSettings property: Upgrade settings of the cache.
+     *
+     * @param upgradeSettings the upgradeSettings value to set.
+     * @return the CacheInner object itself.
+     */
+    public CacheInner withUpgradeSettings(CacheUpgradeSettings upgradeSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheProperties();
+        }
+        this.innerProperties().withUpgradeSettings(upgradeSettings);
+        return this;
     }
 
     /**
@@ -320,6 +350,24 @@ public final class CacheInner extends Resource {
         }
         this.innerProperties().withZones(zones);
         return this;
+    }
+
+    /**
+     * Get the primingJobs property: Specifies the priming jobs defined in the cache.
+     *
+     * @return the primingJobs value.
+     */
+    public List<PrimingJob> primingJobs() {
+        return this.innerProperties() == null ? null : this.innerProperties().primingJobs();
+    }
+
+    /**
+     * Get the spaceAllocation property: Specifies the space allocation percentage for each storage target in the cache.
+     *
+     * @return the spaceAllocation value.
+     */
+    public List<StorageTargetSpaceAllocation> spaceAllocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().spaceAllocation();
     }
 
     /**

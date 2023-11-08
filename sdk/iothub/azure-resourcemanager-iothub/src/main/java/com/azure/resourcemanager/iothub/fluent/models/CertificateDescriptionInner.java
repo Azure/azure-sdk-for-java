@@ -6,16 +6,12 @@ package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.CertificateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X509 Certificate. */
 @Fluent
 public final class CertificateDescriptionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateDescriptionInner.class);
-
     /*
      * The description of an X509 CA Certificate.
      */
@@ -27,6 +23,10 @@ public final class CertificateDescriptionInner extends ProxyResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of CertificateDescriptionInner class. */
+    public CertificateDescriptionInner() {
+    }
 
     /**
      * Get the properties property: The description of an X509 CA Certificate.

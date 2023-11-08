@@ -14,10 +14,10 @@ import com.azure.resourcemanager.avs.models.Endpoints;
 import com.azure.resourcemanager.avs.models.IdentitySource;
 import com.azure.resourcemanager.avs.models.InternetEnum;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
+import com.azure.resourcemanager.avs.models.NsxPublicIpQuotaRaisedEnum;
 import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.PrivateCloudProvisioningState;
 import com.azure.resourcemanager.avs.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +25,6 @@ import java.util.Map;
 /** A private cloud resource. */
 @Fluent
 public final class PrivateCloudInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateCloudInner.class);
-
     /*
      * The private cloud SKU
      */
@@ -44,6 +42,10 @@ public final class PrivateCloudInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private PrivateCloudIdentity identity;
+
+    /** Creates an instance of PrivateCloudInner class. */
+    public PrivateCloudInner() {
+    }
 
     /**
      * Get the sku property: The private cloud SKU.
@@ -302,6 +304,16 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
+     * Get the nsxPublicIpQuotaRaised property: Flag to indicate whether the private cloud has the quota for provisioned
+     * NSX Public IP count raised from 64 to 1024.
+     *
+     * @return the nsxPublicIpQuotaRaised value.
+     */
+    public NsxPublicIpQuotaRaisedEnum nsxPublicIpQuotaRaised() {
+        return this.innerProperties() == null ? null : this.innerProperties().nsxPublicIpQuotaRaised();
+    }
+
+    /**
      * Get the managementCluster property: The default cluster used for management.
      *
      * @return the managementCluster value.
@@ -417,13 +429,40 @@ public final class PrivateCloudInner extends Resource {
     }
 
     /**
+     * Get the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @return the extendedNetworkBlocks value.
+     */
+    public List<String> extendedNetworkBlocks() {
+        return this.innerProperties() == null ? null : this.innerProperties().extendedNetworkBlocks();
+    }
+
+    /**
+     * Set the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @param extendedNetworkBlocks the extendedNetworkBlocks value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withExtendedNetworkBlocks(extendedNetworkBlocks);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model PrivateCloudInner"));
         } else {
@@ -436,4 +475,6 @@ public final class PrivateCloudInner extends Resource {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateCloudInner.class);
 }

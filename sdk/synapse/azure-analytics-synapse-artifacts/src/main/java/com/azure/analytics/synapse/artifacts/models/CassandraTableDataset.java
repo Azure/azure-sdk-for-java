@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The Cassandra database dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,18 +19,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class CassandraTableDataset extends Dataset {
     /*
-     * The table name of the Cassandra database. Type: string (or Expression
-     * with resultType string).
+     * The table name of the Cassandra database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The keyspace of the Cassandra database. Type: string (or Expression with
-     * resultType string).
+     * The keyspace of the Cassandra database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.keyspace")
     private Object keyspace;
+
+    /** Creates an instance of CassandraTableDataset class. */
+    public CassandraTableDataset() {}
 
     /**
      * Get the tableName property: The table name of the Cassandra database. Type: string (or Expression with resultType
@@ -71,6 +74,55 @@ public class CassandraTableDataset extends Dataset {
      */
     public CassandraTableDataset setKeyspace(Object keyspace) {
         this.keyspace = keyspace;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraTableDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraTableDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraTableDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraTableDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraTableDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

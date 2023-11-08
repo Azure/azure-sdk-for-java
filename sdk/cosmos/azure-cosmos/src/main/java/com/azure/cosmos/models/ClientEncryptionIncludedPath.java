@@ -3,13 +3,11 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Path that needs encryption and the associated settings within {@link ClientEncryptionPolicy}.
  */
-@Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ClientEncryptionIncludedPath {
 
     @JsonProperty("path")
@@ -30,7 +28,6 @@ public final class ClientEncryptionIncludedPath {
      *
      * @return path
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getPath() {
         return path;
     }
@@ -41,7 +38,6 @@ public final class ClientEncryptionIncludedPath {
      * @param path path to be encrypted
      * @return ClientEncryptionIncludedPath.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionIncludedPath setPath(String path) {
         this.path = path;
         return this;
@@ -52,7 +48,6 @@ public final class ClientEncryptionIncludedPath {
      *
      * @return clientEncryptionKeyId
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getClientEncryptionKeyId() {
         return clientEncryptionKeyId;
     }
@@ -63,7 +58,6 @@ public final class ClientEncryptionIncludedPath {
      * @param clientEncryptionKeyId identifier of the Data Encryption Key
      * @return ClientEncryptionIncludedPath.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionIncludedPath setClientEncryptionKeyId(String clientEncryptionKeyId) {
         this.clientEncryptionKeyId = clientEncryptionKeyId;
         return this;
@@ -74,7 +68,6 @@ public final class ClientEncryptionIncludedPath {
      *
      * @return encryptionType
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getEncryptionType() {
         return encryptionType;
     }
@@ -85,7 +78,6 @@ public final class ClientEncryptionIncludedPath {
      * @param encryptionType type of encryption
      * @return ClientEncryptionIncludedPath.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionIncludedPath setEncryptionType(String encryptionType) {
         this.encryptionType = encryptionType;
         return this;
@@ -96,7 +88,6 @@ public final class ClientEncryptionIncludedPath {
      *
      * @return encryptionAlgorithm
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getEncryptionAlgorithm() {
         return encryptionAlgorithm;
     }
@@ -107,7 +98,6 @@ public final class ClientEncryptionIncludedPath {
      * @param encryptionAlgorithm type of encryption algorithm
      * @return ClientEncryptionIncludedPath.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionIncludedPath setEncryptionAlgorithm(String encryptionAlgorithm) {
         this.encryptionAlgorithm = encryptionAlgorithm;
         return this;

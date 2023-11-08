@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabric.fluent.ApplicationTypeVersionsClient;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApplicationTypeVersionsClient. */
 public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeVersionsClient {
-    private final ClientLogger logger = new ClientLogger(ApplicationTypeVersionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApplicationTypeVersionsService service;
 
@@ -63,7 +60,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManagem")
-    private interface ApplicationTypeVersionsService {
+    public interface ApplicationTypeVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric"
@@ -134,8 +131,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Get a Service Fabric application type version resource created or in the process of being created in the Service
-     * Fabric application type name resource.
+     * Gets a Service Fabric application type version resource.
+     *
+     * <p>Get a Service Fabric application type version resource created or in the process of being created in the
+     * Service Fabric application type name resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -145,7 +144,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type version resource created or in the process of being created in the
-     *     Service Fabric application type name resource.
+     *     Service Fabric application type name resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationTypeVersionResourceInner>> getWithResponseAsync(
@@ -195,8 +195,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Get a Service Fabric application type version resource created or in the process of being created in the Service
-     * Fabric application type name resource.
+     * Gets a Service Fabric application type version resource.
+     *
+     * <p>Get a Service Fabric application type version resource created or in the process of being created in the
+     * Service Fabric application type name resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -207,7 +209,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type version resource created or in the process of being created in the
-     *     Service Fabric application type name resource.
+     *     Service Fabric application type name resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationTypeVersionResourceInner>> getWithResponseAsync(
@@ -254,8 +257,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Get a Service Fabric application type version resource created or in the process of being created in the Service
-     * Fabric application type name resource.
+     * Gets a Service Fabric application type version resource.
+     *
+     * <p>Get a Service Fabric application type version resource created or in the process of being created in the
+     * Service Fabric application type name resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -265,25 +270,43 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type version resource created or in the process of being created in the
-     *     Service Fabric application type name resource.
+     *     Service Fabric application type name resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationTypeVersionResourceInner> getAsync(
         String resourceGroupName, String clusterName, String applicationTypeName, String version) {
         return getWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, version)
-            .flatMap(
-                (Response<ApplicationTypeVersionResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a Service Fabric application type version resource created or in the process of being created in the Service
-     * Fabric application type name resource.
+     * Gets a Service Fabric application type version resource.
+     *
+     * <p>Get a Service Fabric application type version resource created or in the process of being created in the
+     * Service Fabric application type name resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationTypeName The name of the application type name resource.
+     * @param version The application type version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Service Fabric application type version resource created or in the process of being created in the
+     *     Service Fabric application type name resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ApplicationTypeVersionResourceInner> getWithResponse(
+        String resourceGroupName, String clusterName, String applicationTypeName, String version, Context context) {
+        return getWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, version, context).block();
+    }
+
+    /**
+     * Gets a Service Fabric application type version resource.
+     *
+     * <p>Get a Service Fabric application type version resource created or in the process of being created in the
+     * Service Fabric application type name resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -298,32 +321,13 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationTypeVersionResourceInner get(
         String resourceGroupName, String clusterName, String applicationTypeName, String version) {
-        return getAsync(resourceGroupName, clusterName, applicationTypeName, version).block();
+        return getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, Context.NONE).getValue();
     }
 
     /**
-     * Get a Service Fabric application type version resource created or in the process of being created in the Service
-     * Fabric application type name resource.
+     * Creates or updates a Service Fabric application type version resource.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @param version The application type version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type version resource created or in the process of being created in the
-     *     Service Fabric application type name resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationTypeVersionResourceInner> getWithResponse(
-        String resourceGroupName, String clusterName, String applicationTypeName, String version, Context context) {
-        return getWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, version, context).block();
-    }
-
-    /**
-     * Create or update a Service Fabric application type version resource with the specified name.
+     * <p>Create or update a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -333,7 +337,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application type version resource for the specified application type name resource.
+     * @return an application type version resource for the specified application type name resource along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -393,7 +398,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Create or update a Service Fabric application type version resource with the specified name.
+     * Creates or updates a Service Fabric application type version resource.
+     *
+     * <p>Create or update a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -404,7 +411,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application type version resource for the specified application type name resource.
+     * @return an application type version resource for the specified application type name resource along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -462,7 +470,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Create or update a Service Fabric application type version resource with the specified name.
+     * Creates or updates a Service Fabric application type version resource.
+     *
+     * <p>Create or update a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -472,9 +482,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application type version resource for the specified application type name resource.
+     * @return the {@link PollerFlux} for polling of an application type version resource for the specified application
+     *     type name resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApplicationTypeVersionResourceInner>, ApplicationTypeVersionResourceInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -491,11 +502,13 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
                 this.client.getHttpPipeline(),
                 ApplicationTypeVersionResourceInner.class,
                 ApplicationTypeVersionResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * Create or update a Service Fabric application type version resource with the specified name.
+     * Creates or updates a Service Fabric application type version resource.
+     *
+     * <p>Create or update a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -506,9 +519,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application type version resource for the specified application type name resource.
+     * @return the {@link PollerFlux} for polling of an application type version resource for the specified application
+     *     type name resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApplicationTypeVersionResourceInner>, ApplicationTypeVersionResourceInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -532,7 +546,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Create or update a Service Fabric application type version resource with the specified name.
+     * Creates or updates a Service Fabric application type version resource.
+     *
+     * <p>Create or update a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -542,9 +558,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application type version resource for the specified application type name resource.
+     * @return the {@link SyncPoller} for polling of an application type version resource for the specified application
+     *     type name resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationTypeVersionResourceInner>, ApplicationTypeVersionResourceInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -552,12 +569,15 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
             String applicationTypeName,
             String version,
             ApplicationTypeVersionResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, applicationTypeName, version, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, applicationTypeName, version, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Create or update a Service Fabric application type version resource with the specified name.
+     * Creates or updates a Service Fabric application type version resource.
+     *
+     * <p>Create or update a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -568,9 +588,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application type version resource for the specified application type name resource.
+     * @return the {@link SyncPoller} for polling of an application type version resource for the specified application
+     *     type name resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationTypeVersionResourceInner>, ApplicationTypeVersionResourceInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -579,13 +600,15 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
             String version,
             ApplicationTypeVersionResourceInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, applicationTypeName, version, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, applicationTypeName, version, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Create or update a Service Fabric application type version resource with the specified name.
+     * Creates or updates a Service Fabric application type version resource.
+     *
+     * <p>Create or update a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -595,7 +618,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application type version resource for the specified application type name resource.
+     * @return an application type version resource for the specified application type name resource on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationTypeVersionResourceInner> createOrUpdateAsync(
@@ -610,7 +634,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Create or update a Service Fabric application type version resource with the specified name.
+     * Creates or updates a Service Fabric application type version resource.
+     *
+     * <p>Create or update a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -621,7 +647,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application type version resource for the specified application type name resource.
+     * @return an application type version resource for the specified application type name resource on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationTypeVersionResourceInner> createOrUpdateAsync(
@@ -638,7 +665,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Create or update a Service Fabric application type version resource with the specified name.
+     * Creates or updates a Service Fabric application type version resource.
+     *
+     * <p>Create or update a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -661,7 +690,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Create or update a Service Fabric application type version resource with the specified name.
+     * Creates or updates a Service Fabric application type version resource.
+     *
+     * <p>Create or update a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -687,7 +718,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Delete a Service Fabric application type version resource with the specified name.
+     * Deletes a Service Fabric application type version resource.
+     *
+     * <p>Delete a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -696,7 +729,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -746,7 +779,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Delete a Service Fabric application type version resource with the specified name.
+     * Deletes a Service Fabric application type version resource.
+     *
+     * <p>Delete a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -756,7 +791,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -803,7 +838,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Delete a Service Fabric application type version resource with the specified name.
+     * Deletes a Service Fabric application type version resource.
+     *
+     * <p>Delete a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -812,20 +849,23 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String applicationTypeName, String version) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, version);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Delete a Service Fabric application type version resource with the specified name.
+     * Deletes a Service Fabric application type version resource.
+     *
+     * <p>Delete a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -835,9 +875,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String applicationTypeName, String version, Context context) {
         context = this.client.mergeContext(context);
@@ -849,7 +889,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Delete a Service Fabric application type version resource with the specified name.
+     * Deletes a Service Fabric application type version resource.
+     *
+     * <p>Delete a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -858,16 +900,18 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String applicationTypeName, String version) {
-        return beginDeleteAsync(resourceGroupName, clusterName, applicationTypeName, version).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, applicationTypeName, version).getSyncPoller();
     }
 
     /**
-     * Delete a Service Fabric application type version resource with the specified name.
+     * Deletes a Service Fabric application type version resource.
+     *
+     * <p>Delete a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -877,16 +921,20 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String applicationTypeName, String version, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, applicationTypeName, version, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, clusterName, applicationTypeName, version, context)
+            .getSyncPoller();
     }
 
     /**
-     * Delete a Service Fabric application type version resource with the specified name.
+     * Deletes a Service Fabric application type version resource.
+     *
+     * <p>Delete a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -895,7 +943,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -906,7 +954,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Delete a Service Fabric application type version resource with the specified name.
+     * Deletes a Service Fabric application type version resource.
+     *
+     * <p>Delete a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -916,7 +966,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -927,7 +977,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Delete a Service Fabric application type version resource with the specified name.
+     * Deletes a Service Fabric application type version resource.
+     *
+     * <p>Delete a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -943,7 +995,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Delete a Service Fabric application type version resource with the specified name.
+     * Deletes a Service Fabric application type version resource.
+     *
+     * <p>Delete a Service Fabric application type version resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -961,7 +1015,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Gets all application type version resources created or in the process of being created in the Service Fabric
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     *
+     * <p>Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -971,7 +1028,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type version resources created or in the process of being created in the Service Fabric
-     *     application type name resource.
+     *     application type name resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationTypeVersionResourceListInner>> listWithResponseAsync(
@@ -1017,7 +1074,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Gets all application type version resources created or in the process of being created in the Service Fabric
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     *
+     * <p>Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1028,7 +1088,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type version resources created or in the process of being created in the Service Fabric
-     *     application type name resource.
+     *     application type name resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationTypeVersionResourceListInner>> listWithResponseAsync(
@@ -1071,7 +1131,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
-     * Gets all application type version resources created or in the process of being created in the Service Fabric
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     *
+     * <p>Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1081,24 +1144,43 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type version resources created or in the process of being created in the Service Fabric
-     *     application type name resource.
+     *     application type name resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationTypeVersionResourceListInner> listAsync(
         String resourceGroupName, String clusterName, String applicationTypeName) {
         return listWithResponseAsync(resourceGroupName, clusterName, applicationTypeName)
-            .flatMap(
-                (Response<ApplicationTypeVersionResourceListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets all application type version resources created or in the process of being created in the Service Fabric
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     *
+     * <p>Gets all application type version resources created or in the process of being created in the Service Fabric
+     * application type name resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationTypeName The name of the application type name resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all application type version resources created or in the process of being created in the Service Fabric
+     *     application type name resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ApplicationTypeVersionResourceListInner> listWithResponse(
+        String resourceGroupName, String clusterName, String applicationTypeName, Context context) {
+        return listWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, context).block();
+    }
+
+    /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     *
+     * <p>Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1113,26 +1195,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationTypeVersionResourceListInner list(
         String resourceGroupName, String clusterName, String applicationTypeName) {
-        return listAsync(resourceGroupName, clusterName, applicationTypeName).block();
-    }
-
-    /**
-     * Gets all application type version resources created or in the process of being created in the Service Fabric
-     * application type name resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type version resources created or in the process of being created in the Service Fabric
-     *     application type name resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationTypeVersionResourceListInner> listWithResponse(
-        String resourceGroupName, String clusterName, String applicationTypeName, Context context) {
-        return listWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, context).block();
+        return listWithResponse(resourceGroupName, clusterName, applicationTypeName, Context.NONE).getValue();
     }
 }

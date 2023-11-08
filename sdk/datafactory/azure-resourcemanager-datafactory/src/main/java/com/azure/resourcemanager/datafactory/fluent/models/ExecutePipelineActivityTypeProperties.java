@@ -28,11 +28,14 @@ public final class ExecutePipelineActivityTypeProperties {
     private Map<String, Object> parameters;
 
     /*
-     * Defines whether activity execution will wait for the dependent pipeline
-     * execution to finish. Default is false.
+     * Defines whether activity execution will wait for the dependent pipeline execution to finish. Default is false.
      */
     @JsonProperty(value = "waitOnCompletion")
     private Boolean waitOnCompletion;
+
+    /** Creates an instance of ExecutePipelineActivityTypeProperties class. */
+    public ExecutePipelineActivityTypeProperties() {
+    }
 
     /**
      * Get the pipeline property: Pipeline reference.

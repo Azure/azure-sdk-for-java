@@ -15,13 +15,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureBlobFSSink extends CopySink {
     /*
-     * The type of copy behavior for copy sink.
+     * The type of copy behavior for copy sink. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
 
+    /** Creates an instance of AzureBlobFSSink class. */
+    public AzureBlobFSSink() {}
+
     /**
-     * Get the copyBehavior property: The type of copy behavior for copy sink.
+     * Get the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
+     * resultType string).
      *
      * @return the copyBehavior value.
      */
@@ -30,13 +34,49 @@ public final class AzureBlobFSSink extends CopySink {
     }
 
     /**
-     * Set the copyBehavior property: The type of copy behavior for copy sink.
+     * Set the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
+     * resultType string).
      *
      * @param copyBehavior the copyBehavior value to set.
      * @return the AzureBlobFSSink object itself.
      */
     public AzureBlobFSSink setCopyBehavior(Object copyBehavior) {
         this.copyBehavior = copyBehavior;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobFSSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

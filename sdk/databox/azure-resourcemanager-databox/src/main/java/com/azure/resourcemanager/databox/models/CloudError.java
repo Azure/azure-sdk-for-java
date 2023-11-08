@@ -5,48 +5,57 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cloud error. */
+/** Provides additional information about an http error response. */
 @Fluent
 public final class CloudError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudError.class);
+    /*
+     * Gets or sets additional error info.
+     */
+    @JsonProperty(value = "additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
+    private List<AdditionalErrorInfo> additionalInfo;
 
     /*
-     * Cloud error code.
+     * Error code.
      */
     @JsonProperty(value = "code")
     private String code;
 
     /*
-     * Cloud error message.
-     */
-    @JsonProperty(value = "message")
-    private String message;
-
-    /*
-     * Cloud error target.
-     */
-    @JsonProperty(value = "target")
-    private String target;
-
-    /*
-     * Cloud error details.
+     * Gets or sets details for the error.
      */
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<CloudError> details;
 
     /*
-     * Cloud error additional info.
+     * The error message parsed from the body of the http error response.
      */
-    @JsonProperty(value = "additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private List<AdditionalErrorInfo> additionalInfo;
+    @JsonProperty(value = "message")
+    private String message;
+
+    /*
+     * Gets or sets the target of the error.
+     */
+    @JsonProperty(value = "target")
+    private String target;
+
+    /** Creates an instance of CloudError class. */
+    public CloudError() {
+    }
 
     /**
-     * Get the code property: Cloud error code.
+     * Get the additionalInfo property: Gets or sets additional error info.
+     *
+     * @return the additionalInfo value.
+     */
+    public List<AdditionalErrorInfo> additionalInfo() {
+        return this.additionalInfo;
+    }
+
+    /**
+     * Get the code property: Error code.
      *
      * @return the code value.
      */
@@ -55,7 +64,7 @@ public final class CloudError {
     }
 
     /**
-     * Set the code property: Cloud error code.
+     * Set the code property: Error code.
      *
      * @param code the code value to set.
      * @return the CloudError object itself.
@@ -66,7 +75,16 @@ public final class CloudError {
     }
 
     /**
-     * Get the message property: Cloud error message.
+     * Get the details property: Gets or sets details for the error.
+     *
+     * @return the details value.
+     */
+    public List<CloudError> details() {
+        return this.details;
+    }
+
+    /**
+     * Get the message property: The error message parsed from the body of the http error response.
      *
      * @return the message value.
      */
@@ -75,7 +93,7 @@ public final class CloudError {
     }
 
     /**
-     * Set the message property: Cloud error message.
+     * Set the message property: The error message parsed from the body of the http error response.
      *
      * @param message the message value to set.
      * @return the CloudError object itself.
@@ -86,7 +104,7 @@ public final class CloudError {
     }
 
     /**
-     * Get the target property: Cloud error target.
+     * Get the target property: Gets or sets the target of the error.
      *
      * @return the target value.
      */
@@ -95,7 +113,7 @@ public final class CloudError {
     }
 
     /**
-     * Set the target property: Cloud error target.
+     * Set the target property: Gets or sets the target of the error.
      *
      * @param target the target value to set.
      * @return the CloudError object itself.
@@ -106,34 +124,16 @@ public final class CloudError {
     }
 
     /**
-     * Get the details property: Cloud error details.
-     *
-     * @return the details value.
-     */
-    public List<CloudError> details() {
-        return this.details;
-    }
-
-    /**
-     * Get the additionalInfo property: Cloud error additional info.
-     *
-     * @return the additionalInfo value.
-     */
-    public List<AdditionalErrorInfo> additionalInfo() {
-        return this.additionalInfo;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (details() != null) {
-            details().forEach(e -> e.validate());
-        }
         if (additionalInfo() != null) {
             additionalInfo().forEach(e -> e.validate());
+        }
+        if (details() != null) {
+            details().forEach(e -> e.validate());
         }
     }
 }

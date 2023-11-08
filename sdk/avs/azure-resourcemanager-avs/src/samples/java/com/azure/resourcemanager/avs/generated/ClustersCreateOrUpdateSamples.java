@@ -9,7 +9,7 @@ import com.azure.resourcemanager.avs.models.Sku;
 /** Samples for Clusters CreateOrUpdate. */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Clusters_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Clusters_CreateOrUpdate.json
      */
     /**
      * Sample code: Clusters_CreateOrUpdate.
@@ -22,6 +22,7 @@ public final class ClustersCreateOrUpdateSamples {
             .define("cluster1")
             .withExistingPrivateCloud("group1", "cloud1")
             .withSku(new Sku().withName("AV20"))
+            .withClusterSize(3)
             .create();
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Partner region information for the failover group. */
 @Fluent
 public final class PartnerRegionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerRegionInfo.class);
-
     /*
      * Geo location of the partner managed instances.
      */
@@ -25,6 +21,10 @@ public final class PartnerRegionInfo {
      */
     @JsonProperty(value = "replicationRole", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceFailoverGroupReplicationRole replicationRole;
+
+    /** Creates an instance of PartnerRegionInfo class. */
+    public PartnerRegionInfo() {
+    }
 
     /**
      * Get the location property: Geo location of the partner managed instances.

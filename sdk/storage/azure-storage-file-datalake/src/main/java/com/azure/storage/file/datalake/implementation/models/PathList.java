@@ -17,8 +17,11 @@ public final class PathList {
     /*
      * The paths property.
      */
-    @JsonProperty(value = "paths")
+    @JsonProperty("paths")
     private List<Path> paths = new ArrayList<>();
+
+    /** Creates an instance of PathList class. */
+    public PathList() {}
 
     /**
      * Get the paths property: The paths property.

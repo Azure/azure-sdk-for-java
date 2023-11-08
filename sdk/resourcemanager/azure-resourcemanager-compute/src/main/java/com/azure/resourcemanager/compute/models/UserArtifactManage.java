@@ -12,27 +12,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UserArtifactManage {
     /*
-     * Required. The path and arguments to install the gallery application.
-     * This is limited to 4096 characters.
+     * Required. The path and arguments to install the gallery application. This is limited to 4096 characters.
      */
     @JsonProperty(value = "install", required = true)
     private String install;
 
     /*
-     * Required. The path and arguments to remove the gallery application. This
-     * is limited to 4096 characters.
+     * Required. The path and arguments to remove the gallery application. This is limited to 4096 characters.
      */
     @JsonProperty(value = "remove", required = true)
     private String remove;
 
     /*
-     * Optional. The path and arguments to update the gallery application. If
-     * not present, then update operation will invoke remove command on the
-     * previous version and install command on the current version of the
-     * gallery application. This is limited to 4096 characters.
+     * Optional. The path and arguments to update the gallery application. If not present, then update operation will
+     * invoke remove command on the previous version and install command on the current version of the gallery
+     * application. This is limited to 4096 characters.
      */
     @JsonProperty(value = "update")
     private String update;
+
+    /** Creates an instance of UserArtifactManage class. */
+    public UserArtifactManage() {
+    }
 
     /**
      * Get the install property: Required. The path and arguments to install the gallery application. This is limited to

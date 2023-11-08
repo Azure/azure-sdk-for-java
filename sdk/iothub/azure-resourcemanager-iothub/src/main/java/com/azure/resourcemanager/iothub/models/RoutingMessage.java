@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Routing message. */
 @Fluent
 public final class RoutingMessage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingMessage.class);
-
     /*
      * Body of routing message
      */
@@ -35,6 +31,10 @@ public final class RoutingMessage {
     @JsonProperty(value = "systemProperties")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> systemProperties;
+
+    /** Creates an instance of RoutingMessage class. */
+    public RoutingMessage() {
+    }
 
     /**
      * Get the body property: Body of routing message.

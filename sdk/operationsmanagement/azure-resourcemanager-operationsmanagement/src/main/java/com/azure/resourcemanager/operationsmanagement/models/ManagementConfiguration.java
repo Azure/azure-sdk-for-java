@@ -61,6 +61,13 @@ public interface ManagementConfiguration {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementConfigurationInner object.
      *
      * @return the inner object.

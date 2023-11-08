@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Transforms. */
 public interface Transforms {
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -23,7 +25,9 @@ public interface Transforms {
     PagedIterable<Transform> list(String resourceGroupName, String accountName);
 
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -39,20 +43,9 @@ public interface Transforms {
         String resourceGroupName, String accountName, String filter, String orderby, Context context);
 
     /**
-     * Gets a Transform.
+     * Get Transform
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Transform.
-     */
-    Transform get(String resourceGroupName, String accountName, String transformName);
-
-    /**
-     * Gets a Transform.
+     * <p>Gets a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -67,7 +60,9 @@ public interface Transforms {
         String resourceGroupName, String accountName, String transformName, Context context);
 
     /**
-     * Deletes a Transform.
+     * Get Transform
+     *
+     * <p>Gets a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -75,11 +70,14 @@ public interface Transforms {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Transform.
      */
-    void delete(String resourceGroupName, String accountName, String transformName);
+    Transform get(String resourceGroupName, String accountName, String transformName);
 
     /**
-     * Deletes a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -94,7 +92,23 @@ public interface Transforms {
         String resourceGroupName, String accountName, String transformName, Context context);
 
     /**
-     * Gets a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accountName, String transformName);
+
+    /**
+     * Get Transform
+     *
+     * <p>Gets a Transform.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,7 +119,9 @@ public interface Transforms {
     Transform getById(String id);
 
     /**
-     * Gets a Transform.
+     * Get Transform
+     *
+     * <p>Gets a Transform.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -117,7 +133,9 @@ public interface Transforms {
     Response<Transform> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +145,9 @@ public interface Transforms {
     void deleteById(String id);
 
     /**
-     * Deletes a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -23,13 +23,16 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     private DedicatedHostGroupProperties innerProperties;
 
     /*
-     * Availability Zone to use for this host group. Only single zone is
-     * supported. The zone can be assigned only during creation. If not
-     * provided, the group supports all zones in the region. If provided,
-     * enforces each host in the group to be in the same zone.
+     * Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only
+     * during creation. If not provided, the group supports all zones in the region. If provided, enforces each host in
+     * the group to be in the same zone.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /** Creates an instance of DedicatedHostGroupUpdate class. */
+    public DedicatedHostGroupUpdate() {
+    }
 
     /**
      * Get the innerProperties property: Dedicated Host Group Properties.
@@ -117,7 +120,7 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
      * Get the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
      * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
      * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
-     * not provided. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * not provided. Minimum api-version: 2020-06-01.
      *
      * @return the supportAutomaticPlacement value.
      */
@@ -129,7 +132,7 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
      * Set the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
      * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
      * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
-     * not provided. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * not provided. Minimum api-version: 2020-06-01.
      *
      * @param supportAutomaticPlacement the supportAutomaticPlacement value to set.
      * @return the DedicatedHostGroupUpdate object itself.
@@ -139,6 +142,32 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
             this.innerProperties = new DedicatedHostGroupProperties();
         }
         this.innerProperties().withSupportAutomaticPlacement(supportAutomaticPlacement);
+        return this;
+    }
+
+    /**
+     * Get the additionalCapabilities property: Enables or disables a capability on the dedicated host group. Minimum
+     * api-version: 2022-03-01.
+     *
+     * @return the additionalCapabilities value.
+     */
+    public DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalCapabilities();
+    }
+
+    /**
+     * Set the additionalCapabilities property: Enables or disables a capability on the dedicated host group. Minimum
+     * api-version: 2022-03-01.
+     *
+     * @param additionalCapabilities the additionalCapabilities value to set.
+     * @return the DedicatedHostGroupUpdate object itself.
+     */
+    public DedicatedHostGroupUpdate withAdditionalCapabilities(
+        DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostGroupProperties();
+        }
+        this.innerProperties().withAdditionalCapabilities(additionalCapabilities);
         return this;
     }
 

@@ -6,20 +6,20 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A server DNS alias acquisition request. */
+/** A server dns alias acquisition request. */
 @Fluent
 public final class ServerDnsAliasAcquisition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerDnsAliasAcquisition.class);
-
     /*
-     * The id of the server alias that will be acquired to point to this server
-     * instead.
+     * The id of the server alias that will be acquired to point to this server instead.
      */
-    @JsonProperty(value = "oldServerDnsAliasId")
+    @JsonProperty(value = "oldServerDnsAliasId", required = true)
     private String oldServerDnsAliasId;
+
+    /** Creates an instance of ServerDnsAliasAcquisition class. */
+    public ServerDnsAliasAcquisition() {
+    }
 
     /**
      * Get the oldServerDnsAliasId property: The id of the server alias that will be acquired to point to this server
@@ -49,5 +49,13 @@ public final class ServerDnsAliasAcquisition {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (oldServerDnsAliasId() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property oldServerDnsAliasId in model ServerDnsAliasAcquisition"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerDnsAliasAcquisition.class);
 }

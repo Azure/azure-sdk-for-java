@@ -428,14 +428,7 @@ public final class AlertRulesClientImpl implements AlertRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AlertRuleInner> getAsync(String resourceGroupName, String workspaceName, String ruleId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, ruleId)
-            .flatMap(
-                (Response<AlertRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -606,14 +599,7 @@ public final class AlertRulesClientImpl implements AlertRulesClient {
     private Mono<AlertRuleInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String ruleId, AlertRuleInner alertRule) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, ruleId, alertRule)
-            .flatMap(
-                (Response<AlertRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -770,8 +756,7 @@ public final class AlertRulesClientImpl implements AlertRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String ruleId) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, ruleId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, ruleId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -810,7 +795,8 @@ public final class AlertRulesClientImpl implements AlertRulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -845,7 +831,8 @@ public final class AlertRulesClientImpl implements AlertRulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

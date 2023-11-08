@@ -17,7 +17,7 @@ public interface Transactions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions.
+     * @return the list of transactions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Transaction> listByInvoice(String billingAccountName, String invoiceName);
 
@@ -30,7 +30,7 @@ public interface Transactions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions.
+     * @return the list of transactions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Transaction> listByInvoice(String billingAccountName, String invoiceName, Context context);
 }

@@ -22,6 +22,10 @@ public final class DomainRecommendationSearchParameters {
     @JsonProperty(value = "maxDomainRecommendations")
     private Integer maxDomainRecommendations;
 
+    /** Creates an instance of DomainRecommendationSearchParameters class. */
+    public DomainRecommendationSearchParameters() {
+    }
+
     /**
      * Get the keywords property: Keywords to be used for generating domain recommendations.
      *

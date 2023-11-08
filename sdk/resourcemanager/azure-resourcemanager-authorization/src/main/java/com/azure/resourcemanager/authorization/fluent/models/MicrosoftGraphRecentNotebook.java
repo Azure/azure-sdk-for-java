@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** recentNotebook. */
 @Fluent
 public final class MicrosoftGraphRecentNotebook {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphRecentNotebook.class);
-
     /*
      * The name of the notebook.
      */
@@ -26,10 +23,9 @@ public final class MicrosoftGraphRecentNotebook {
     private String displayName;
 
     /*
-     * The date and time when the notebook was last modified. The timestamp
-     * represents date and time information using ISO 8601 format and is always
-     * in UTC time. For example, midnight UTC on Jan 1, 2014 would look like
-     * this: '2014-01-01T00:00:00Z'. Read-only.
+     * The date and time when the notebook was last modified. The timestamp represents date and time information using
+     * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * '2014-01-01T00:00:00Z'. Read-only.
      */
     @JsonProperty(value = "lastAccessedTime")
     private OffsetDateTime lastAccessedTime;
@@ -50,6 +46,10 @@ public final class MicrosoftGraphRecentNotebook {
      * recentNotebook
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphRecentNotebook class. */
+    public MicrosoftGraphRecentNotebook() {
+    }
 
     /**
      * Get the displayName property: The name of the notebook.

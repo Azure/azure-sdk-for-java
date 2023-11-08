@@ -54,6 +54,16 @@ public class JobAddParameter {
     private Integer maxParallelTasks;
 
     /**
+     * Whether Tasks in this job can be preempted by other high priority jobs.
+     * If the value is set to True, other high priority jobs submitted to the
+     * system will take precedence and will be able requeue tasks from this
+     * job. You can update a job's allowTaskPreemption after it has been
+     * created using the update job API.
+     */
+    @JsonProperty(value = "allowTaskPreemption")
+    private Boolean allowTaskPreemption;
+
+    /**
      * The execution constraints for the Job.
      */
     @JsonProperty(value = "constraints")
@@ -238,6 +248,26 @@ public class JobAddParameter {
      */
     public JobAddParameter withMaxParallelTasks(Integer maxParallelTasks) {
         this.maxParallelTasks = maxParallelTasks;
+        return this;
+    }
+
+    /**
+     * Get if the value is set to True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
+     *
+     * @return the allowTaskPreemption value
+     */
+    public Boolean allowTaskPreemption() {
+        return this.allowTaskPreemption;
+    }
+
+    /**
+     * Set if the value is set to True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
+     *
+     * @param allowTaskPreemption the allowTaskPreemption value to set
+     * @return the JobAddParameter object itself.
+     */
+    public JobAddParameter withAllowTaskPreemption(Boolean allowTaskPreemption) {
+        this.allowTaskPreemption = allowTaskPreemption;
         return this;
     }
 

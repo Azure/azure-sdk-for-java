@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Backup properties of a server. */
 @Fluent
 public final class Backup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Backup.class);
-
     /*
      * Backup retention days for the server.
      */
@@ -22,8 +18,7 @@ public final class Backup {
     private Integer backupRetentionDays;
 
     /*
-     * A value indicating whether Geo-Redundant backup is enabled on the
-     * server.
+     * A value indicating whether Geo-Redundant backup is enabled on the server.
      */
     @JsonProperty(value = "geoRedundantBackup")
     private GeoRedundantBackupEnum geoRedundantBackup;
@@ -33,6 +28,10 @@ public final class Backup {
      */
     @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
+
+    /** Creates an instance of Backup class. */
+    public Backup() {
+    }
 
     /**
      * Get the backupRetentionDays property: Backup retention days for the server.

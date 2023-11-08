@@ -21,6 +21,10 @@ public final class ManagementLockObjectInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private ManagementLockProperties innerProperties = new ManagementLockProperties();
 
+    /** Creates an instance of ManagementLockObjectInner class. */
+    public ManagementLockObjectInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the lock.
      *

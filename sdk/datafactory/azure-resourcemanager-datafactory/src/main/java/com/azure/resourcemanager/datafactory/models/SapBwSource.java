@@ -20,6 +20,10 @@ public final class SapBwSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of SapBwSource class. */
+    public SapBwSource() {
+    }
+
     /**
      * Get the query property: MDX query. Type: string (or Expression with resultType string).
      *

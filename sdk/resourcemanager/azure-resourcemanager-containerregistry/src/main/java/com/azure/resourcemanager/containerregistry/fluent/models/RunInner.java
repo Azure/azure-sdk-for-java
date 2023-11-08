@@ -7,7 +7,6 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.ImageDescriptor;
 import com.azure.resourcemanager.containerregistry.models.ImageUpdateTrigger;
@@ -17,7 +16,6 @@ import com.azure.resourcemanager.containerregistry.models.RunStatus;
 import com.azure.resourcemanager.containerregistry.models.RunType;
 import com.azure.resourcemanager.containerregistry.models.SourceTriggerDescriptor;
 import com.azure.resourcemanager.containerregistry.models.TimerTriggerDescriptor;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -25,8 +23,6 @@ import java.util.List;
 /** Run resource properties. */
 @Fluent
 public final class RunInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunInner.class);
-
     /*
      * The properties of a run.
      */
@@ -38,6 +34,10 @@ public final class RunInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of RunInner class. */
+    public RunInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a run.

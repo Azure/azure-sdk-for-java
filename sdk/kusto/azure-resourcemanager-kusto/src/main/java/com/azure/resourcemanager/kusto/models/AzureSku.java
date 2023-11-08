@@ -6,14 +6,11 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure SKU definition. */
 @Fluent
 public final class AzureSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSku.class);
-
     /*
      * SKU name.
      */
@@ -31,6 +28,10 @@ public final class AzureSku {
      */
     @JsonProperty(value = "tier", required = true)
     private AzureSkuTier tier;
+
+    /** Creates an instance of AzureSku class. */
+    public AzureSku() {
+    }
 
     /**
      * Get the name property: SKU name.
@@ -99,12 +100,14 @@ public final class AzureSku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model AzureSku"));
         }
         if (tier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property tier in model AzureSku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSku.class);
 }

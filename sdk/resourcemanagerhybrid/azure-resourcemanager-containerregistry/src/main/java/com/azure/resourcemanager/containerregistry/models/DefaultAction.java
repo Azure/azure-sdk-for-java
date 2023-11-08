@@ -27,7 +27,11 @@ public final class DefaultAction extends ExpandableStringEnum<DefaultAction> {
         return fromString(name, DefaultAction.class);
     }
 
-    /** @return known DefaultAction values. */
+    /**
+     * Gets known DefaultAction values.
+     *
+     * @return known DefaultAction values.
+     */
     public static Collection<DefaultAction> values() {
         return values(DefaultAction.class);
     }

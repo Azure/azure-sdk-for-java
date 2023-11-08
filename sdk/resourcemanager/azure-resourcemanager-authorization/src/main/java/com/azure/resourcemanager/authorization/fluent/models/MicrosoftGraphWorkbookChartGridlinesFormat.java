@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** workbookChartGridlinesFormat. */
 @Fluent
 public final class MicrosoftGraphWorkbookChartGridlinesFormat extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookChartGridlinesFormat.class);
-
     /*
      * workbookChartLineFormat
      */
@@ -28,6 +25,10 @@ public final class MicrosoftGraphWorkbookChartGridlinesFormat extends MicrosoftG
      * workbookChartGridlinesFormat
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookChartGridlinesFormat class. */
+    public MicrosoftGraphWorkbookChartGridlinesFormat() {
+    }
 
     /**
      * Get the line property: workbookChartLineFormat.

@@ -6,19 +6,24 @@ package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies which access keys to reset to a new random value. */
+/**
+ * Regenerate access keys request
+ *
+ * <p>Specifies which access keys to reset to a new random value.
+ */
 @Fluent
 public final class RegenerateKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateKeyParameters.class);
-
     /*
      * Which access key to regenerate.
      */
     @JsonProperty(value = "keyType", required = true)
     private AccessKeyType keyType;
+
+    /** Creates an instance of RegenerateKeyParameters class. */
+    public RegenerateKeyParameters() {
+    }
 
     /**
      * Get the keyType property: Which access key to regenerate.
@@ -47,9 +52,11 @@ public final class RegenerateKeyParameters {
      */
     public void validate() {
         if (keyType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyType in model RegenerateKeyParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegenerateKeyParameters.class);
 }

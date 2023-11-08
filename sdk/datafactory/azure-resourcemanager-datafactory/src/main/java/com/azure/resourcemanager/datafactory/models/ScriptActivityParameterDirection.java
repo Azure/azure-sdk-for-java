@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptActivityParameterDirection. */
+/** The direction of the parameter. */
 public final class ScriptActivityParameterDirection extends ExpandableStringEnum<ScriptActivityParameterDirection> {
     /** Static value Input for ScriptActivityParameterDirection. */
     public static final ScriptActivityParameterDirection INPUT = fromString("Input");
@@ -18,6 +18,15 @@ public final class ScriptActivityParameterDirection extends ExpandableStringEnum
 
     /** Static value InputOutput for ScriptActivityParameterDirection. */
     public static final ScriptActivityParameterDirection INPUT_OUTPUT = fromString("InputOutput");
+
+    /**
+     * Creates a new instance of ScriptActivityParameterDirection value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptActivityParameterDirection() {
+    }
 
     /**
      * Creates or finds a ScriptActivityParameterDirection from its string representation.
@@ -30,7 +39,11 @@ public final class ScriptActivityParameterDirection extends ExpandableStringEnum
         return fromString(name, ScriptActivityParameterDirection.class);
     }
 
-    /** @return known ScriptActivityParameterDirection values. */
+    /**
+     * Gets known ScriptActivityParameterDirection values.
+     *
+     * @return known ScriptActivityParameterDirection values.
+     */
     public static Collection<ScriptActivityParameterDirection> values() {
         return values(ScriptActivityParameterDirection.class);
     }

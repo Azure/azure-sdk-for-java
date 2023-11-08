@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteLinkMacSecCipher. */
+/** Mac security cipher. */
 public final class ExpressRouteLinkMacSecCipher extends ExpandableStringEnum<ExpressRouteLinkMacSecCipher> {
     /** Static value GcmAes256 for ExpressRouteLinkMacSecCipher. */
     public static final ExpressRouteLinkMacSecCipher GCM_AES256 = fromString("GcmAes256");
@@ -23,6 +23,15 @@ public final class ExpressRouteLinkMacSecCipher extends ExpandableStringEnum<Exp
     public static final ExpressRouteLinkMacSecCipher GCM_AES_XPN256 = fromString("GcmAesXpn256");
 
     /**
+     * Creates a new instance of ExpressRouteLinkMacSecCipher value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteLinkMacSecCipher() {
+    }
+
+    /**
      * Creates or finds a ExpressRouteLinkMacSecCipher from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ExpressRouteLinkMacSecCipher extends ExpandableStringEnum<Exp
         return fromString(name, ExpressRouteLinkMacSecCipher.class);
     }
 
-    /** @return known ExpressRouteLinkMacSecCipher values. */
+    /**
+     * Gets known ExpressRouteLinkMacSecCipher values.
+     *
+     * @return known ExpressRouteLinkMacSecCipher values.
+     */
     public static Collection<ExpressRouteLinkMacSecCipher> values() {
         return values(ExpressRouteLinkMacSecCipher.class);
     }

@@ -7,18 +7,14 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.synapse.models.PrincipalType;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing a cluster principal assignment. */
 @Fluent
 public final class ClusterPrincipalAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPrincipalAssignmentInner.class);
-
     /*
      * The cluster principal.
      */
@@ -26,11 +22,14 @@ public final class ClusterPrincipalAssignmentInner extends ProxyResource {
     private ClusterPrincipalProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ClusterPrincipalAssignmentInner class. */
+    public ClusterPrincipalAssignmentInner() {
+    }
 
     /**
      * Get the innerProperties property: The cluster principal.
@@ -169,6 +168,15 @@ public final class ClusterPrincipalAssignmentInner extends ProxyResource {
      */
     public ResourceProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the aadObjectId property: The service principal object id in AAD (Azure active directory).
+     *
+     * @return the aadObjectId value.
+     */
+    public String aadObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadObjectId();
     }
 
     /**

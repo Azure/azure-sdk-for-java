@@ -17,6 +17,10 @@ public final class PremierAddOnPatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private PremierAddOnPatchResourceProperties innerProperties;
 
+    /** Creates an instance of PremierAddOnPatchResource class. */
+    public PremierAddOnPatchResource() {
+    }
+
     /**
      * Get the innerProperties property: PremierAddOnPatchResource resource specific properties.
      *

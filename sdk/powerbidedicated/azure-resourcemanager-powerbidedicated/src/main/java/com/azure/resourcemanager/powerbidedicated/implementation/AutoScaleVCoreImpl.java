@@ -49,8 +49,8 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
         return this.innerModel().sku();
     }
 
-    public Integer capacityLimit() {
-        return this.innerModel().capacityLimit();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String capacityObjectId() {
@@ -61,8 +61,8 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
         return this.innerModel().provisioningState();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public Integer capacityLimit() {
+        return this.innerModel().capacityLimit();
     }
 
     public Region region() {
@@ -71,6 +71,10 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public AutoScaleVCoreInner innerModel() {
@@ -202,6 +206,16 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
         }
     }
 
+    public AutoScaleVCoreImpl withSystemData(SystemData systemData) {
+        this.innerModel().withSystemData(systemData);
+        return this;
+    }
+
+    public AutoScaleVCoreImpl withCapacityObjectId(String capacityObjectId) {
+        this.innerModel().withCapacityObjectId(capacityObjectId);
+        return this;
+    }
+
     public AutoScaleVCoreImpl withCapacityLimit(Integer capacityLimit) {
         if (isInCreateMode()) {
             this.innerModel().withCapacityLimit(capacityLimit);
@@ -210,16 +224,6 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
             this.updateVCoreUpdateParameters.withCapacityLimit(capacityLimit);
             return this;
         }
-    }
-
-    public AutoScaleVCoreImpl withCapacityObjectId(String capacityObjectId) {
-        this.innerModel().withCapacityObjectId(capacityObjectId);
-        return this;
-    }
-
-    public AutoScaleVCoreImpl withSystemData(SystemData systemData) {
-        this.innerModel().withSystemData(systemData);
-        return this;
     }
 
     private boolean isInCreateMode() {

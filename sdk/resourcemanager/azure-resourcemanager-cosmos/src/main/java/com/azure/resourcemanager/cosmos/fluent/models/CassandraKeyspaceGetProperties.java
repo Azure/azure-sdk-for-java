@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos DB Cassandra keyspace. */
 @Fluent
 public final class CassandraKeyspaceGetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraKeyspaceGetProperties.class);
-
     /*
      * The resource property.
      */
@@ -27,6 +23,10 @@ public final class CassandraKeyspaceGetProperties {
      */
     @JsonProperty(value = "options")
     private CassandraKeyspaceGetPropertiesOptions options;
+
+    /** Creates an instance of CassandraKeyspaceGetProperties class. */
+    public CassandraKeyspaceGetProperties() {
+    }
 
     /**
      * Get the resource property: The resource property.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.models.StorageInsightInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list storage insights operation response. */
 @Fluent
 public final class StorageInsightListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageInsightListResult.class);
-
     /*
      * A list of storage insight items.
      */
@@ -27,6 +23,10 @@ public final class StorageInsightListResult {
      */
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
+
+    /** Creates an instance of StorageInsightListResult class. */
+    public StorageInsightListResult() {
+    }
 
     /**
      * Get the value property: A list of storage insight items.

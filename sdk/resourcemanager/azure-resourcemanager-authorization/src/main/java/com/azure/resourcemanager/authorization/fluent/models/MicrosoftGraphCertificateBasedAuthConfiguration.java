@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,12 +16,8 @@ import java.util.Map;
 /** certificateBasedAuthConfiguration. */
 @Fluent
 public final class MicrosoftGraphCertificateBasedAuthConfiguration extends MicrosoftGraphEntity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphCertificateBasedAuthConfiguration.class);
-
     /*
-     * Collection of certificate authorities which creates a trusted
-     * certificate chain.
+     * Collection of certificate authorities which creates a trusted certificate chain.
      */
     @JsonProperty(value = "certificateAuthorities")
     private List<MicrosoftGraphCertificateAuthority> certificateAuthorities;
@@ -31,6 +26,10 @@ public final class MicrosoftGraphCertificateBasedAuthConfiguration extends Micro
      * certificateBasedAuthConfiguration
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphCertificateBasedAuthConfiguration class. */
+    public MicrosoftGraphCertificateBasedAuthConfiguration() {
+    }
 
     /**
      * Get the certificateAuthorities property: Collection of certificate authorities which creates a trusted

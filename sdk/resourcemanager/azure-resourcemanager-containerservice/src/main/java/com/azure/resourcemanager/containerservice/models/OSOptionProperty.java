@@ -23,6 +23,10 @@ public final class OSOptionProperty {
     @JsonProperty(value = "enable-fips-image", required = true)
     private boolean enableFipsImage;
 
+    /** Creates an instance of OSOptionProperty class. */
+    public OSOptionProperty() {
+    }
+
     /**
      * Get the osType property: The OS type.
      *

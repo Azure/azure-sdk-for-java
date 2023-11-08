@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProximityPlacementGroupType. */
+/**
+ * Specifies the type of the proximity placement group. Possible values are: **Standard** : Co-locate resources within
+ * an Azure region or Availability Zone. **Ultra** : For future use.
+ */
 public final class ProximityPlacementGroupType extends ExpandableStringEnum<ProximityPlacementGroupType> {
     /** Static value Standard for ProximityPlacementGroupType. */
     public static final ProximityPlacementGroupType STANDARD = fromString("Standard");
 
     /** Static value Ultra for ProximityPlacementGroupType. */
     public static final ProximityPlacementGroupType ULTRA = fromString("Ultra");
+
+    /**
+     * Creates a new instance of ProximityPlacementGroupType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProximityPlacementGroupType() {
+    }
 
     /**
      * Creates or finds a ProximityPlacementGroupType from its string representation.
@@ -27,7 +39,11 @@ public final class ProximityPlacementGroupType extends ExpandableStringEnum<Prox
         return fromString(name, ProximityPlacementGroupType.class);
     }
 
-    /** @return known ProximityPlacementGroupType values. */
+    /**
+     * Gets known ProximityPlacementGroupType values.
+     *
+     * @return known ProximityPlacementGroupType values.
+     */
     public static Collection<ProximityPlacementGroupType> values() {
         return values(ProximityPlacementGroupType.class);
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AddonType. */
+/** The type of private cloud addon. */
 public final class AddonType extends ExpandableStringEnum<AddonType> {
     /** Static value SRM for AddonType. */
     public static final AddonType SRM = fromString("SRM");
@@ -18,6 +18,18 @@ public final class AddonType extends ExpandableStringEnum<AddonType> {
 
     /** Static value HCX for AddonType. */
     public static final AddonType HCX = fromString("HCX");
+
+    /** Static value Arc for AddonType. */
+    public static final AddonType ARC = fromString("Arc");
+
+    /**
+     * Creates a new instance of AddonType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AddonType() {
+    }
 
     /**
      * Creates or finds a AddonType from its string representation.
@@ -30,7 +42,11 @@ public final class AddonType extends ExpandableStringEnum<AddonType> {
         return fromString(name, AddonType.class);
     }
 
-    /** @return known AddonType values. */
+    /**
+     * Gets known AddonType values.
+     *
+     * @return known AddonType values.
+     */
     public static Collection<AddonType> values() {
         return values(AddonType.class);
     }

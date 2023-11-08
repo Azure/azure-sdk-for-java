@@ -17,8 +17,7 @@ public final class OnErrorDeploymentExtended {
     private String provisioningState;
 
     /*
-     * The deployment on error behavior type. Possible values are
-     * LastSuccessful and SpecificDeployment.
+     * The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment.
      */
     @JsonProperty(value = "type")
     private OnErrorDeploymentType type;
@@ -28,6 +27,10 @@ public final class OnErrorDeploymentExtended {
      */
     @JsonProperty(value = "deploymentName")
     private String deploymentName;
+
+    /** Creates an instance of OnErrorDeploymentExtended class. */
+    public OnErrorDeploymentExtended() {
+    }
 
     /**
      * Get the provisioningState property: The state of the provisioning for the on error deployment.

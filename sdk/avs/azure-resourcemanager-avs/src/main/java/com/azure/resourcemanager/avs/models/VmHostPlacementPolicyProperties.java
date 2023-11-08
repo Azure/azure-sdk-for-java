@@ -6,7 +6,6 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("VmHost")
 @Fluent
 public final class VmHostPlacementPolicyProperties extends PlacementPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VmHostPlacementPolicyProperties.class);
-
     /*
      * Virtual machine members list
      */
@@ -36,6 +33,22 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
      */
     @JsonProperty(value = "affinityType", required = true)
     private AffinityType affinityType;
+
+    /*
+     * vm-host placement policy affinity strength (should/must)
+     */
+    @JsonProperty(value = "affinityStrength")
+    private AffinityStrength affinityStrength;
+
+    /*
+     * placement policy azure hybrid benefit opt-in type
+     */
+    @JsonProperty(value = "azureHybridBenefitType")
+    private AzureHybridBenefitType azureHybridBenefitType;
+
+    /** Creates an instance of VmHostPlacementPolicyProperties class. */
+    public VmHostPlacementPolicyProperties() {
+    }
 
     /**
      * Get the vmMembers property: Virtual machine members list.
@@ -97,6 +110,46 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
         return this;
     }
 
+    /**
+     * Get the affinityStrength property: vm-host placement policy affinity strength (should/must).
+     *
+     * @return the affinityStrength value.
+     */
+    public AffinityStrength affinityStrength() {
+        return this.affinityStrength;
+    }
+
+    /**
+     * Set the affinityStrength property: vm-host placement policy affinity strength (should/must).
+     *
+     * @param affinityStrength the affinityStrength value to set.
+     * @return the VmHostPlacementPolicyProperties object itself.
+     */
+    public VmHostPlacementPolicyProperties withAffinityStrength(AffinityStrength affinityStrength) {
+        this.affinityStrength = affinityStrength;
+        return this;
+    }
+
+    /**
+     * Get the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
+     *
+     * @return the azureHybridBenefitType value.
+     */
+    public AzureHybridBenefitType azureHybridBenefitType() {
+        return this.azureHybridBenefitType;
+    }
+
+    /**
+     * Set the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
+     *
+     * @param azureHybridBenefitType the azureHybridBenefitType value to set.
+     * @return the VmHostPlacementPolicyProperties object itself.
+     */
+    public VmHostPlacementPolicyProperties withAzureHybridBenefitType(AzureHybridBenefitType azureHybridBenefitType) {
+        this.azureHybridBenefitType = azureHybridBenefitType;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public VmHostPlacementPolicyProperties withState(PlacementPolicyState state) {
@@ -120,22 +173,24 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
     public void validate() {
         super.validate();
         if (vmMembers() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property vmMembers in model VmHostPlacementPolicyProperties"));
         }
         if (hostMembers() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property hostMembers in model VmHostPlacementPolicyProperties"));
         }
         if (affinityType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property affinityType in model VmHostPlacementPolicyProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VmHostPlacementPolicyProperties.class);
 }

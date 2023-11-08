@@ -24,6 +24,10 @@ public final class MongoDbCollectionDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private MongoDbCollectionDatasetTypeProperties innerTypeProperties = new MongoDbCollectionDatasetTypeProperties();
 
+    /** Creates an instance of MongoDbCollectionDataset class. */
+    public MongoDbCollectionDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: MongoDB database dataset properties.
      *

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** teamMessagingSettings. */
 @Fluent
 public final class MicrosoftGraphTeamMessagingSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTeamMessagingSettings.class);
-
     /*
      * If set to true, @channel mentions are allowed.
      */
@@ -52,6 +49,10 @@ public final class MicrosoftGraphTeamMessagingSettings {
      * teamMessagingSettings
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTeamMessagingSettings class. */
+    public MicrosoftGraphTeamMessagingSettings() {
+    }
 
     /**
      * Get the allowChannelMentions property: If set to true, @channel mentions are allowed.

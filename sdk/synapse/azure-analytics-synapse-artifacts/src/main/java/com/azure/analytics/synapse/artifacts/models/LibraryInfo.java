@@ -9,8 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /**
- * Information about a library/package created at the workspace level. Library/package information of a Big Data pool
- * powered by Apache Spark.
+ * Information about a library/package created at the workspace level.
+ *
+ * <p>Library/package information of a Big Data pool powered by Apache Spark.
  */
 @Fluent
 public final class LibraryInfo {
@@ -55,6 +56,9 @@ public final class LibraryInfo {
      */
     @JsonProperty(value = "creatorId", access = JsonProperty.Access.WRITE_ONLY)
     private String creatorId;
+
+    /** Creates an instance of LibraryInfo class. */
+    public LibraryInfo() {}
 
     /**
      * Get the name property: Name of the library.

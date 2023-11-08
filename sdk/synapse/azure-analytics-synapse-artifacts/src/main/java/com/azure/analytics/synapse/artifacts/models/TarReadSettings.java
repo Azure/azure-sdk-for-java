@@ -15,11 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class TarReadSettings extends CompressionReadSettings {
     /*
-     * Preserve the compression file name as folder path. Type: boolean (or
-     * Expression with resultType boolean).
+     * Preserve the compression file name as folder path. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "preserveCompressionFileNameAsFolder")
     private Object preserveCompressionFileNameAsFolder;
+
+    /** Creates an instance of TarReadSettings class. */
+    public TarReadSettings() {}
 
     /**
      * Get the preserveCompressionFileNameAsFolder property: Preserve the compression file name as folder path. Type:

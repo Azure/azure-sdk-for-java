@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The encryption settings for a configuration store. */
 @Fluent
 public final class EncryptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProperties.class);
-
     /*
      * Key vault properties.
      */
     @JsonProperty(value = "keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
+
+    /** Creates an instance of EncryptionProperties class. */
+    public EncryptionProperties() {
+    }
 
     /**
      * Get the keyVaultProperties property: Key vault properties.

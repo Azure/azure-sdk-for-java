@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** Data flow properties for managed integration runtime. */
@@ -22,31 +23,39 @@ public final class IntegrationRuntimeDataFlowProperties {
     private DataFlowComputeType computeType;
 
     /*
-     * Core count of the cluster which will execute data flow job. Supported
-     * values are: 8, 16, 32, 48, 80, 144 and 272.
+     * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and
+     * 272.
      */
     @JsonProperty(value = "coreCount")
     private Integer coreCount;
 
     /*
-     * Time to live (in minutes) setting of the cluster which will execute data
-     * flow job.
+     * Time to live (in minutes) setting of the cluster which will execute data flow job.
      */
     @JsonProperty(value = "timeToLive")
     private Integer timeToLive;
 
     /*
-     * Cluster will not be recycled and it will be used in next data flow
-     * activity run until TTL (time to live) is reached if this is set as
-     * false. Default is true.
+     * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is
+     * reached if this is set as false. Default is true.
      */
     @JsonProperty(value = "cleanup")
     private Boolean cleanup;
 
     /*
+     * Custom properties are used to tune the data flow runtime performance.
+     */
+    @JsonProperty(value = "customProperties")
+    private List<IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem> customProperties;
+
+    /*
      * Data flow properties for managed integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntimeDataFlowProperties class. */
+    public IntegrationRuntimeDataFlowProperties() {
+    }
 
     /**
      * Get the computeType property: Compute type of the cluster which will execute data flow job.
@@ -133,6 +142,27 @@ public final class IntegrationRuntimeDataFlowProperties {
     }
 
     /**
+     * Get the customProperties property: Custom properties are used to tune the data flow runtime performance.
+     *
+     * @return the customProperties value.
+     */
+    public List<IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem> customProperties() {
+        return this.customProperties;
+    }
+
+    /**
+     * Set the customProperties property: Custom properties are used to tune the data flow runtime performance.
+     *
+     * @param customProperties the customProperties value to set.
+     * @return the IntegrationRuntimeDataFlowProperties object itself.
+     */
+    public IntegrationRuntimeDataFlowProperties withCustomProperties(
+        List<IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem> customProperties) {
+        this.customProperties = customProperties;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: Data flow properties for managed integration runtime.
      *
      * @return the additionalProperties value.
@@ -167,5 +197,8 @@ public final class IntegrationRuntimeDataFlowProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (customProperties() != null) {
+            customProperties().forEach(e -> e.validate());
+        }
     }
 }

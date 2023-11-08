@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReadinessState. */
+/** The readiness state of the corresponding partner topic. */
 public final class ReadinessState extends ExpandableStringEnum<ReadinessState> {
     /** Static value NeverActivated for ReadinessState. */
     public static final ReadinessState NEVER_ACTIVATED = fromString("NeverActivated");
 
     /** Static value Activated for ReadinessState. */
     public static final ReadinessState ACTIVATED = fromString("Activated");
+
+    /**
+     * Creates a new instance of ReadinessState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReadinessState() {
+    }
 
     /**
      * Creates or finds a ReadinessState from its string representation.
@@ -27,7 +36,11 @@ public final class ReadinessState extends ExpandableStringEnum<ReadinessState> {
         return fromString(name, ReadinessState.class);
     }
 
-    /** @return known ReadinessState values. */
+    /**
+     * Gets known ReadinessState values.
+     *
+     * @return known ReadinessState values.
+     */
     public static Collection<ReadinessState> values() {
         return values(ReadinessState.class);
     }

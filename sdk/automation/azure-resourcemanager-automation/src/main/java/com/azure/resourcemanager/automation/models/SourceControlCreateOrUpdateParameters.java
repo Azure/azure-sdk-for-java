@@ -5,65 +5,27 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.SourceControlCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the create or update source control operation. */
-@JsonFlatten
 @Fluent
-public class SourceControlCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlCreateOrUpdateParameters.class);
-
+public final class SourceControlCreateOrUpdateParameters {
     /*
-     * The repo url of the source control.
+     * The properties of the source control.
      */
-    @JsonProperty(value = "properties.repoUrl")
-    private String repoUrl;
+    @JsonProperty(value = "properties", required = true)
+    private SourceControlCreateOrUpdateProperties innerProperties = new SourceControlCreateOrUpdateProperties();
 
-    /*
-     * The repo branch of the source control. Include branch as empty string
-     * for VsoTfvc.
+    /**
+     * Get the innerProperties property: The properties of the source control.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.branch")
-    private String branch;
-
-    /*
-     * The folder path of the source control. Path must be relative.
-     */
-    @JsonProperty(value = "properties.folderPath")
-    private String folderPath;
-
-    /*
-     * The auto async of the source control. Default is false.
-     */
-    @JsonProperty(value = "properties.autoSync")
-    private Boolean autoSync;
-
-    /*
-     * The auto publish of the source control. Default is true.
-     */
-    @JsonProperty(value = "properties.publishRunbook")
-    private Boolean publishRunbook;
-
-    /*
-     * The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive.
-     */
-    @JsonProperty(value = "properties.sourceType")
-    private SourceType sourceType;
-
-    /*
-     * The authorization token for the repo of the source control.
-     */
-    @JsonProperty(value = "properties.securityToken")
-    private SourceControlSecurityTokenProperties securityToken;
-
-    /*
-     * The user description of the source control.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private SourceControlCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the repoUrl property: The repo url of the source control.
@@ -71,7 +33,7 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the repoUrl value.
      */
     public String repoUrl() {
-        return this.repoUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().repoUrl();
     }
 
     /**
@@ -81,7 +43,10 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
     public SourceControlCreateOrUpdateParameters withRepoUrl(String repoUrl) {
-        this.repoUrl = repoUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlCreateOrUpdateProperties();
+        }
+        this.innerProperties().withRepoUrl(repoUrl);
         return this;
     }
 
@@ -91,7 +56,7 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the branch value.
      */
     public String branch() {
-        return this.branch;
+        return this.innerProperties() == null ? null : this.innerProperties().branch();
     }
 
     /**
@@ -101,7 +66,10 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
     public SourceControlCreateOrUpdateParameters withBranch(String branch) {
-        this.branch = branch;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlCreateOrUpdateProperties();
+        }
+        this.innerProperties().withBranch(branch);
         return this;
     }
 
@@ -111,7 +79,7 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the folderPath value.
      */
     public String folderPath() {
-        return this.folderPath;
+        return this.innerProperties() == null ? null : this.innerProperties().folderPath();
     }
 
     /**
@@ -121,7 +89,10 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
     public SourceControlCreateOrUpdateParameters withFolderPath(String folderPath) {
-        this.folderPath = folderPath;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlCreateOrUpdateProperties();
+        }
+        this.innerProperties().withFolderPath(folderPath);
         return this;
     }
 
@@ -131,7 +102,7 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the autoSync value.
      */
     public Boolean autoSync() {
-        return this.autoSync;
+        return this.innerProperties() == null ? null : this.innerProperties().autoSync();
     }
 
     /**
@@ -141,7 +112,10 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
     public SourceControlCreateOrUpdateParameters withAutoSync(Boolean autoSync) {
-        this.autoSync = autoSync;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlCreateOrUpdateProperties();
+        }
+        this.innerProperties().withAutoSync(autoSync);
         return this;
     }
 
@@ -151,7 +125,7 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the publishRunbook value.
      */
     public Boolean publishRunbook() {
-        return this.publishRunbook;
+        return this.innerProperties() == null ? null : this.innerProperties().publishRunbook();
     }
 
     /**
@@ -161,7 +135,10 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
     public SourceControlCreateOrUpdateParameters withPublishRunbook(Boolean publishRunbook) {
-        this.publishRunbook = publishRunbook;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlCreateOrUpdateProperties();
+        }
+        this.innerProperties().withPublishRunbook(publishRunbook);
         return this;
     }
 
@@ -171,7 +148,7 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the sourceType value.
      */
     public SourceType sourceType() {
-        return this.sourceType;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceType();
     }
 
     /**
@@ -181,7 +158,10 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
     public SourceControlCreateOrUpdateParameters withSourceType(SourceType sourceType) {
-        this.sourceType = sourceType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlCreateOrUpdateProperties();
+        }
+        this.innerProperties().withSourceType(sourceType);
         return this;
     }
 
@@ -191,7 +171,7 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the securityToken value.
      */
     public SourceControlSecurityTokenProperties securityToken() {
-        return this.securityToken;
+        return this.innerProperties() == null ? null : this.innerProperties().securityToken();
     }
 
     /**
@@ -201,7 +181,10 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
     public SourceControlCreateOrUpdateParameters withSecurityToken(SourceControlSecurityTokenProperties securityToken) {
-        this.securityToken = securityToken;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlCreateOrUpdateProperties();
+        }
+        this.innerProperties().withSecurityToken(securityToken);
         return this;
     }
 
@@ -211,7 +194,7 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -221,7 +204,10 @@ public class SourceControlCreateOrUpdateParameters {
      * @return the SourceControlCreateOrUpdateParameters object itself.
      */
     public SourceControlCreateOrUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlCreateOrUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -231,8 +217,15 @@ public class SourceControlCreateOrUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (securityToken() != null) {
-            securityToken().validate();
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model SourceControlCreateOrUpdateParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SourceControlCreateOrUpdateParameters.class);
 }

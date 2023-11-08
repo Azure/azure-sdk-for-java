@@ -13,10 +13,9 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.PrivateCloudsClient;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.PrivateCloudInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.PrivateCloud;
 import com.azure.resourcemanager.vmwarecloudsimple.models.PrivateClouds;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateCloudsImpl implements PrivateClouds {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateCloudsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateCloudsImpl.class);
 
     private final PrivateCloudsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class PrivateCloudsImpl implements PrivateClouds {
         return Utils.mapPage(inner, inner1 -> new PrivateCloudImpl(inner1, this.manager()));
     }
 
-    public PrivateCloud get(String pcName, String regionId) {
-        PrivateCloudInner inner = this.serviceClient().get(pcName, regionId);
-        if (inner != null) {
-            return new PrivateCloudImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateCloud> getWithResponse(String pcName, String regionId, Context context) {
         Response<PrivateCloudInner> inner = this.serviceClient().getWithResponse(pcName, regionId, context);
         if (inner != null) {
@@ -56,6 +46,15 @@ public final class PrivateCloudsImpl implements PrivateClouds {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateCloudImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateCloud get(String pcName, String regionId) {
+        PrivateCloudInner inner = this.serviceClient().get(pcName, regionId);
+        if (inner != null) {
+            return new PrivateCloudImpl(inner, this.manager());
         } else {
             return null;
         }

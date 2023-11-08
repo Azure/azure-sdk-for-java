@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CompletionOperationTypes. */
+/** The type of completion operation. */
 public enum CompletionOperationTypes {
     /** Enum value DoNothing. */
     DO_NOTHING("DoNothing"),
@@ -33,6 +33,9 @@ public enum CompletionOperationTypes {
      */
     @JsonCreator
     public static CompletionOperationTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CompletionOperationTypes[] items = CompletionOperationTypes.values();
         for (CompletionOperationTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum CompletionOperationTypes {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

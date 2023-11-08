@@ -80,6 +80,10 @@ public final class DatadogMonitorResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DatadogMonitorResourceInner innerModel() {
         return this.innerObject;
     }
@@ -180,20 +184,20 @@ public final class DatadogMonitorResourceImpl
         return serviceManager.monitors().listApiKeys(resourceGroupName, monitorName, context);
     }
 
-    public DatadogApiKey getDefaultKey() {
-        return serviceManager.monitors().getDefaultKey(resourceGroupName, monitorName);
-    }
-
     public Response<DatadogApiKey> getDefaultKeyWithResponse(Context context) {
         return serviceManager.monitors().getDefaultKeyWithResponse(resourceGroupName, monitorName, context);
     }
 
-    public void setDefaultKey() {
-        serviceManager.monitors().setDefaultKey(resourceGroupName, monitorName);
+    public DatadogApiKey getDefaultKey() {
+        return serviceManager.monitors().getDefaultKey(resourceGroupName, monitorName);
     }
 
     public Response<Void> setDefaultKeyWithResponse(DatadogApiKeyInner body, Context context) {
         return serviceManager.monitors().setDefaultKeyWithResponse(resourceGroupName, monitorName, body, context);
+    }
+
+    public void setDefaultKey() {
+        serviceManager.monitors().setDefaultKey(resourceGroupName, monitorName);
     }
 
     public PagedIterable<DatadogHost> listHosts() {
@@ -220,12 +224,12 @@ public final class DatadogMonitorResourceImpl
         return serviceManager.monitors().listMonitoredResources(resourceGroupName, monitorName, context);
     }
 
-    public DatadogSetPasswordLink refreshSetPasswordLink() {
-        return serviceManager.monitors().refreshSetPasswordLink(resourceGroupName, monitorName);
-    }
-
     public Response<DatadogSetPasswordLink> refreshSetPasswordLinkWithResponse(Context context) {
         return serviceManager.monitors().refreshSetPasswordLinkWithResponse(resourceGroupName, monitorName, context);
+    }
+
+    public DatadogSetPasswordLink refreshSetPasswordLink() {
+        return serviceManager.monitors().refreshSetPasswordLink(resourceGroupName, monitorName);
     }
 
     public DatadogMonitorResourceImpl withRegion(Region location) {

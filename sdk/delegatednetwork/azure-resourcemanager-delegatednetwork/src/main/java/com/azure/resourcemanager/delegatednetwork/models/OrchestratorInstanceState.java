@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrchestratorInstanceState. */
+/** The current state of orchestratorInstance resource. */
 public final class OrchestratorInstanceState extends ExpandableStringEnum<OrchestratorInstanceState> {
     /** Static value Deleting for OrchestratorInstanceState. */
     public static final OrchestratorInstanceState DELETING = fromString("Deleting");
@@ -23,6 +23,15 @@ public final class OrchestratorInstanceState extends ExpandableStringEnum<Orches
     public static final OrchestratorInstanceState PROVISIONING = fromString("Provisioning");
 
     /**
+     * Creates a new instance of OrchestratorInstanceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrchestratorInstanceState() {
+    }
+
+    /**
      * Creates or finds a OrchestratorInstanceState from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class OrchestratorInstanceState extends ExpandableStringEnum<Orches
         return fromString(name, OrchestratorInstanceState.class);
     }
 
-    /** @return known OrchestratorInstanceState values. */
+    /**
+     * Gets known OrchestratorInstanceState values.
+     *
+     * @return known OrchestratorInstanceState values.
+     */
     public static Collection<OrchestratorInstanceState> values() {
         return values(OrchestratorInstanceState.class);
     }

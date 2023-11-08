@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.models.RedisUpdateParameters;
 
 /** Samples for Redis Update. */
 public final class RedisUpdateSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheUpdate.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheUpdate.json
      */
     /**
      * Sample code: RedisCacheUpdate.
@@ -23,10 +22,10 @@ public final class RedisUpdateSamples {
             .manager()
             .serviceClient()
             .getRedis()
-            .updateWithResponse(
+            .update(
                 "rg1",
                 "cache1",
                 new RedisUpdateParameters().withEnableNonSslPort(true).withReplicasPerPrimary(2),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

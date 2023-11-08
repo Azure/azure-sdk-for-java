@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolWorkloadGroup Delete. */
 public final class SqlPoolWorkloadGroupDeleteSamples {
     /*
@@ -20,6 +18,11 @@ public final class SqlPoolWorkloadGroupDeleteSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolWorkloadGroups()
-            .delete("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "wlm_workloadgroup", Context.NONE);
+            .delete(
+                "sqlcrudtest-6852",
+                "sqlcrudtest-2080",
+                "sqlcrudtest-9187",
+                "wlm_workloadgroup",
+                com.azure.core.util.Context.NONE);
     }
 }

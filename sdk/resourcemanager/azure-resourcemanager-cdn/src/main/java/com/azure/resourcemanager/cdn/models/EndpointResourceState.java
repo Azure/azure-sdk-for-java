@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EndpointResourceState. */
+/** Resource status of the endpoint. */
 public final class EndpointResourceState extends ExpandableStringEnum<EndpointResourceState> {
     /** Static value Creating for EndpointResourceState. */
     public static final EndpointResourceState CREATING = fromString("Creating");
@@ -29,6 +29,15 @@ public final class EndpointResourceState extends ExpandableStringEnum<EndpointRe
     public static final EndpointResourceState STOPPING = fromString("Stopping");
 
     /**
+     * Creates a new instance of EndpointResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointResourceState() {
+    }
+
+    /**
      * Creates or finds a EndpointResourceState from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class EndpointResourceState extends ExpandableStringEnum<EndpointRe
         return fromString(name, EndpointResourceState.class);
     }
 
-    /** @return known EndpointResourceState values. */
+    /**
+     * Gets known EndpointResourceState values.
+     *
+     * @return known EndpointResourceState values.
+     */
     public static Collection<EndpointResourceState> values() {
         return values(EndpointResourceState.class);
     }

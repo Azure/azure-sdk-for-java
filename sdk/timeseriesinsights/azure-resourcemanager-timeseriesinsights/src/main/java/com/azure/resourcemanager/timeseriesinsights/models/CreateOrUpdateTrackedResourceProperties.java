@@ -6,15 +6,13 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Properties required to create any resource tracked by Azure Resource Manager. */
 @Fluent
 public class CreateOrUpdateTrackedResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateOrUpdateTrackedResourceProperties.class);
-
     /*
      * The location of the resource.
      */
@@ -25,7 +23,12 @@ public class CreateOrUpdateTrackedResourceProperties {
      * Key-value pairs of additional properties for the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of CreateOrUpdateTrackedResourceProperties class. */
+    public CreateOrUpdateTrackedResourceProperties() {
+    }
 
     /**
      * Get the location property: The location of the resource.
@@ -74,10 +77,12 @@ public class CreateOrUpdateTrackedResourceProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model CreateOrUpdateTrackedResourceProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateOrUpdateTrackedResourceProperties.class);
 }

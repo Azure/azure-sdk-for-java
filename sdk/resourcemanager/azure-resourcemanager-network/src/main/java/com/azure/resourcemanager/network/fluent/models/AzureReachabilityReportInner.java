@@ -15,8 +15,7 @@ import java.util.List;
 @Fluent
 public final class AzureReachabilityReportInner {
     /*
-     * The aggregation level of Azure reachability report. Can be Country,
-     * State or City.
+     * The aggregation level of Azure reachability report. Can be Country, State or City.
      */
     @JsonProperty(value = "aggregationLevel", required = true)
     private String aggregationLevel;
@@ -32,6 +31,10 @@ public final class AzureReachabilityReportInner {
      */
     @JsonProperty(value = "reachabilityReport", required = true)
     private List<AzureReachabilityReportItem> reachabilityReport;
+
+    /** Creates an instance of AzureReachabilityReportInner class. */
+    public AzureReachabilityReportInner() {
+    }
 
     /**
      * Get the aggregationLevel property: The aggregation level of Azure reachability report. Can be Country, State or

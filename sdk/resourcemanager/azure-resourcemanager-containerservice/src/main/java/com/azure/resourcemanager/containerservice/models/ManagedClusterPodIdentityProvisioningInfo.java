@@ -16,6 +16,10 @@ public final class ManagedClusterPodIdentityProvisioningInfo {
     @JsonProperty(value = "error")
     private ManagedClusterPodIdentityProvisioningError error;
 
+    /** Creates an instance of ManagedClusterPodIdentityProvisioningInfo class. */
+    public ManagedClusterPodIdentityProvisioningInfo() {
+    }
+
     /**
      * Get the error property: Pod identity assignment error (if any).
      *

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.containerinstance.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.fluent.models.InitContainerPropertiesDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The init container definition. */
 @Fluent
 public final class InitContainerDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InitContainerDefinition.class);
-
     /*
      * The name for the init container.
      */
@@ -27,6 +24,10 @@ public final class InitContainerDefinition {
      */
     @JsonProperty(value = "properties", required = true)
     private InitContainerPropertiesDefinition innerProperties = new InitContainerPropertiesDefinition();
+
+    /** Creates an instance of InitContainerDefinition class. */
+    public InitContainerDefinition() {
+    }
 
     /**
      * Get the name property: The name for the init container.
@@ -159,18 +160,41 @@ public final class InitContainerDefinition {
     }
 
     /**
+     * Get the securityContext property: The container security properties.
+     *
+     * @return the securityContext value.
+     */
+    public SecurityContextDefinition securityContext() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityContext();
+    }
+
+    /**
+     * Set the securityContext property: The container security properties.
+     *
+     * @param securityContext the securityContext value to set.
+     * @return the InitContainerDefinition object itself.
+     */
+    public InitContainerDefinition withSecurityContext(SecurityContextDefinition securityContext) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InitContainerPropertiesDefinition();
+        }
+        this.innerProperties().withSecurityContext(securityContext);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model InitContainerDefinition"));
         }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model InitContainerDefinition"));
@@ -178,4 +202,6 @@ public final class InitContainerDefinition {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(InitContainerDefinition.class);
 }

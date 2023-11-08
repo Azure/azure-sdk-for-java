@@ -15,32 +15,49 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class GeoReplicationStats {
     /*
-     * The status of the secondary location. Possible values are: - Live:
-     * Indicates that the secondary location is active and operational. -
-     * Bootstrap: Indicates initial synchronization from the primary location
-     * to the secondary location is in progress.This typically occurs when
-     * replication is first enabled. - Unavailable: Indicates that the
-     * secondary location is temporarily unavailable.
+     * The status of the secondary location. Possible values are: - Live: Indicates that the secondary location is
+     * active and operational. - Bootstrap: Indicates initial synchronization from the primary location to the
+     * secondary location is in progress.This typically occurs when replication is first enabled. - Unavailable:
+     * Indicates that the secondary location is temporarily unavailable.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private GeoReplicationStatus status;
 
     /*
-     * All primary writes preceding this UTC date/time value are guaranteed to
-     * be available for read operations. Primary writes following this point in
-     * time may or may not be available for reads. Element may be default value
-     * if value of LastSyncTime is not available, this can happen if secondary
-     * is offline or we are in bootstrap.
+     * All primary writes preceding this UTC date/time value are guaranteed to be available for read operations.
+     * Primary writes following this point in time may or may not be available for reads. Element may be default value
+     * if value of LastSyncTime is not available, this can happen if secondary is offline or we are in bootstrap.
      */
     @JsonProperty(value = "lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncTime;
 
     /*
-     * A boolean flag which indicates whether or not account failover is
-     * supported for the account.
+     * A boolean flag which indicates whether or not account failover is supported for the account.
      */
     @JsonProperty(value = "canFailover", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean canFailover;
+
+    /*
+     * A boolean flag which indicates whether or not planned account failover is supported for the account.
+     */
+    @JsonProperty(value = "canPlannedFailover", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean canPlannedFailover;
+
+    /*
+     * The redundancy type of the account after an account failover is performed.
+     */
+    @JsonProperty(value = "postFailoverRedundancy", access = JsonProperty.Access.WRITE_ONLY)
+    private PostFailoverRedundancy postFailoverRedundancy;
+
+    /*
+     * The redundancy type of the account after a planned account failover is performed.
+     */
+    @JsonProperty(value = "postPlannedFailoverRedundancy", access = JsonProperty.Access.WRITE_ONLY)
+    private PostPlannedFailoverRedundancy postPlannedFailoverRedundancy;
+
+    /** Creates an instance of GeoReplicationStats class. */
+    public GeoReplicationStats() {
+    }
 
     /**
      * Get the status property: The status of the secondary location. Possible values are: - Live: Indicates that the
@@ -74,6 +91,36 @@ public final class GeoReplicationStats {
      */
     public Boolean canFailover() {
         return this.canFailover;
+    }
+
+    /**
+     * Get the canPlannedFailover property: A boolean flag which indicates whether or not planned account failover is
+     * supported for the account.
+     *
+     * @return the canPlannedFailover value.
+     */
+    public Boolean canPlannedFailover() {
+        return this.canPlannedFailover;
+    }
+
+    /**
+     * Get the postFailoverRedundancy property: The redundancy type of the account after an account failover is
+     * performed.
+     *
+     * @return the postFailoverRedundancy value.
+     */
+    public PostFailoverRedundancy postFailoverRedundancy() {
+        return this.postFailoverRedundancy;
+    }
+
+    /**
+     * Get the postPlannedFailoverRedundancy property: The redundancy type of the account after a planned account
+     * failover is performed.
+     *
+     * @return the postPlannedFailoverRedundancy value.
+     */
+    public PostPlannedFailoverRedundancy postPlannedFailoverRedundancy() {
+        return this.postPlannedFailoverRedundancy;
     }
 
     /**

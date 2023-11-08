@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Responsys linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -23,51 +25,48 @@ public class ResponsysLinkedService extends LinkedService {
     private Object endpoint;
 
     /*
-     * The client ID associated with the Responsys application. Type: string
-     * (or Expression with resultType string).
+     * The client ID associated with the Responsys application. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.clientId", required = true)
     private Object clientId;
 
     /*
-     * The client secret associated with the Responsys application. Type:
-     * string (or Expression with resultType string).
+     * The client secret associated with the Responsys application. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.clientSecret")
     private SecretBase clientSecret;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean
+     * (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with
-     * resultType boolean).
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
+     * Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of ResponsysLinkedService class. */
+    public ResponsysLinkedService() {}
 
     /**
      * Get the endpoint property: The endpoint of the Responsys server.
@@ -220,6 +219,34 @@ public class ResponsysLinkedService extends LinkedService {
      */
     public ResponsysLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResponsysLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResponsysLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResponsysLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResponsysLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

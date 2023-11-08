@@ -6,9 +6,7 @@ package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.fluent.models.PrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +14,15 @@ import java.util.Map;
 /** A private link resource. */
 @Fluent
 public final class PrivateLinkResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResource.class);
-
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties innerProperties;
+
+    /** Creates an instance of PrivateLinkResource class. */
+    public PrivateLinkResource() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobDetailsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.JobResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobDetailsClient. */
 public final class JobDetailsClientImpl implements JobDetailsClient {
-    private final ClientLogger logger = new ClientLogger(JobDetailsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobDetailsService service;
 
@@ -53,11 +50,10 @@ public final class JobDetailsClientImpl implements JobDetailsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface JobDetailsService {
+    public interface JobDetailsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupJobs/{jobName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupJobs/{jobName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobResourceInner>> get(
@@ -191,30 +187,7 @@ public final class JobDetailsClientImpl implements JobDetailsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResourceInner> getAsync(String vaultName, String resourceGroupName, String jobName) {
         return getWithResponseAsync(vaultName, resourceGroupName, jobName)
-            .flatMap(
-                (Response<JobResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets extended information associated with the job.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param jobName Name of the job whose details are to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extended information associated with the job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobResourceInner get(String vaultName, String resourceGroupName, String jobName) {
-        return getAsync(vaultName, resourceGroupName, jobName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -233,5 +206,21 @@ public final class JobDetailsClientImpl implements JobDetailsClient {
     public Response<JobResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, String jobName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, jobName, context).block();
+    }
+
+    /**
+     * Gets extended information associated with the job.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param jobName Name of the job whose details are to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return extended information associated with the job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobResourceInner get(String vaultName, String resourceGroupName, String jobName) {
+        return getWithResponse(vaultName, resourceGroupName, jobName, Context.NONE).getValue();
     }
 }

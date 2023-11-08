@@ -14,7 +14,9 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
 public interface PrivateLinkResourcesClient {
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -28,7 +30,9 @@ public interface PrivateLinkResourcesClient {
         String resourceGroupName, String resourceName);
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -41,20 +45,9 @@ public interface PrivateLinkResourcesClient {
     Mono<PrivateLinkResourcesListResultInner> listAsync(String resourceGroupName, String resourceName);
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkResourcesListResultInner list(String resourceGroupName, String resourceName);
-
-    /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -67,4 +60,19 @@ public interface PrivateLinkResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateLinkResourcesListResultInner> listWithResponse(
         String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Gets a list of private link resources in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkResourcesListResultInner list(String resourceGroupName, String resourceName);
 }

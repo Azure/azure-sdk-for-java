@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.timeseriesinsights.fluent.EventSourcesClient;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventSourceListResponseInner;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventSourceResourceInner;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EventSourcesClient. */
 public final class EventSourcesClientImpl implements EventSourcesClient {
-    private final ClientLogger logger = new ClientLogger(EventSourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EventSourcesService service;
 
@@ -60,7 +57,7 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "TimeSeriesInsightsCl")
-    private interface EventSourcesService {
+    public interface EventSourcesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
@@ -154,7 +151,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventSourceResourceInner>> createOrUpdateWithResponseAsync(
@@ -221,7 +219,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventSourceResourceInner>> createOrUpdateWithResponseAsync(
@@ -285,7 +284,7 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventSourceResourceInner> createOrUpdateAsync(
@@ -294,14 +293,32 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         String eventSourceName,
         EventSourceCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, parameters)
-            .flatMap(
-                (Response<EventSourceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update an event source under the specified environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param eventSourceName Name of the event source.
+     * @param parameters Parameters for creating an event source resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment receives data from one or more event sources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EventSourceResourceInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String environmentName,
+        String eventSourceName,
+        EventSourceCreateOrUpdateParameters parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, parameters, context)
+            .block();
     }
 
     /**
@@ -323,32 +340,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         String environmentName,
         String eventSourceName,
         EventSourceCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, environmentName, eventSourceName, parameters).block();
-    }
-
-    /**
-     * Create or update an event source under the specified environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param eventSourceName Name of the event source.
-     * @param parameters Parameters for creating an event source resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, parameters, context)
-            .block();
+        return createOrUpdateWithResponse(resourceGroupName, environmentName, eventSourceName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -362,7 +355,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the event source with the specified name in the specified environment.
+     * @return the event source with the specified name in the specified environment along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventSourceResourceInner>> getWithResponseAsync(
@@ -420,7 +414,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the event source with the specified name in the specified environment.
+     * @return the event source with the specified name in the specified environment along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventSourceResourceInner>> getWithResponseAsync(
@@ -474,20 +469,34 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the event source with the specified name in the specified environment.
+     * @return the event source with the specified name in the specified environment on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventSourceResourceInner> getAsync(
         String resourceGroupName, String environmentName, String eventSourceName) {
         return getWithResponseAsync(resourceGroupName, environmentName, eventSourceName)
-            .flatMap(
-                (Response<EventSourceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the event source with the specified name in the specified environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
+     *     environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the event source with the specified name in the specified environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EventSourceResourceInner> getWithResponse(
+        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
+        return getWithResponseAsync(resourceGroupName, environmentName, eventSourceName, context).block();
     }
 
     /**
@@ -505,27 +514,7 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSourceResourceInner get(String resourceGroupName, String environmentName, String eventSourceName) {
-        return getAsync(resourceGroupName, environmentName, eventSourceName).block();
-    }
-
-    /**
-     * Gets the event source with the specified name in the specified environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the event source with the specified name in the specified environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, environmentName, eventSourceName, context).block();
+        return getWithResponse(resourceGroupName, environmentName, eventSourceName, Context.NONE).getValue();
     }
 
     /**
@@ -540,7 +529,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventSourceResourceInner>> updateWithResponseAsync(
@@ -611,7 +601,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventSourceResourceInner>> updateWithResponseAsync(
@@ -679,7 +670,7 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventSourceResourceInner> updateAsync(
@@ -688,14 +679,34 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         String eventSourceName,
         EventSourceUpdateParameters eventSourceUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters)
-            .flatMap(
-                (Response<EventSourceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates the event source with the specified name in the specified subscription, resource group, and environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
+     *     environment.
+     * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment receives data from one or more event sources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EventSourceResourceInner> updateWithResponse(
+        String resourceGroupName,
+        String environmentName,
+        String eventSourceName,
+        EventSourceUpdateParameters eventSourceUpdateParameters,
+        Context context) {
+        return updateWithResponseAsync(
+                resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters, context)
+            .block();
     }
 
     /**
@@ -718,34 +729,9 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         String environmentName,
         String eventSourceName,
         EventSourceUpdateParameters eventSourceUpdateParameters) {
-        return updateAsync(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters).block();
-    }
-
-    /**
-     * Updates the event source with the specified name in the specified subscription, resource group, and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
-     * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters, context)
-            .block();
+        return updateWithResponse(
+                resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -759,7 +745,7 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -817,7 +803,7 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -871,12 +857,32 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String environmentName, String eventSourceName) {
         return deleteWithResponseAsync(resourceGroupName, environmentName, eventSourceName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
+     *     environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, environmentName, eventSourceName, context).block();
     }
 
     /**
@@ -893,27 +899,7 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String eventSourceName) {
-        deleteAsync(resourceGroupName, environmentName, eventSourceName).block();
-    }
-
-    /**
-     * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, environmentName, eventSourceName, context).block();
+        deleteWithResponse(resourceGroupName, environmentName, eventSourceName, Context.NONE);
     }
 
     /**
@@ -926,7 +912,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List EventSources operation.
+     * @return the response of the List EventSources operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventSourceListResponseInner>> listByEnvironmentWithResponseAsync(
@@ -978,7 +965,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List EventSources operation.
+     * @return the response of the List EventSources operation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventSourceListResponseInner>> listByEnvironmentWithResponseAsync(
@@ -1026,20 +1014,32 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List EventSources operation.
+     * @return the response of the List EventSources operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventSourceListResponseInner> listByEnvironmentAsync(
         String resourceGroupName, String environmentName) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName)
-            .flatMap(
-                (Response<EventSourceListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists all the available event sources associated with the subscription and within the specified resource group
+     * and environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List EventSources operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EventSourceListResponseInner> listByEnvironmentWithResponse(
+        String resourceGroupName, String environmentName, Context context) {
+        return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
     }
 
     /**
@@ -1056,25 +1056,6 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSourceListResponseInner listByEnvironment(String resourceGroupName, String environmentName) {
-        return listByEnvironmentAsync(resourceGroupName, environmentName).block();
-    }
-
-    /**
-     * Lists all the available event sources associated with the subscription and within the specified resource group
-     * and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List EventSources operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
-        return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
+        return listByEnvironmentWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();
     }
 }

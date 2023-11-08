@@ -15,11 +15,10 @@ import com.azure.resourcemanager.automation.fluent.models.SourceControlSyncJobIn
 import com.azure.resourcemanager.automation.models.SourceControlSyncJob;
 import com.azure.resourcemanager.automation.models.SourceControlSyncJobById;
 import com.azure.resourcemanager.automation.models.SourceControlSyncJobs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 
 public final class SourceControlSyncJobsImpl implements SourceControlSyncJobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlSyncJobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SourceControlSyncJobsImpl.class);
 
     private final SourceControlSyncJobsClient innerClient;
 

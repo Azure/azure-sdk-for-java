@@ -17,7 +17,7 @@ public interface PrivateLinkHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of privateLinkHubs.
+     * @return list of privateLinkHubs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkHub> listByResourceGroup(String resourceGroupName);
 
@@ -29,21 +29,9 @@ public interface PrivateLinkHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of privateLinkHubs.
+     * @return list of privateLinkHubs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkHub> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * Gets a privateLinkHub.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a privateLinkHub.
-     */
-    PrivateLinkHub getByResourceGroup(String resourceGroupName, String privateLinkHubName);
 
     /**
      * Gets a privateLinkHub.
@@ -58,6 +46,18 @@ public interface PrivateLinkHubs {
      */
     Response<PrivateLinkHub> getByResourceGroupWithResponse(
         String resourceGroupName, String privateLinkHubName, Context context);
+
+    /**
+     * Gets a privateLinkHub.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateLinkHubName Name of the privateLinkHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a privateLinkHub.
+     */
+    PrivateLinkHub getByResourceGroup(String resourceGroupName, String privateLinkHubName);
 
     /**
      * Deletes a privateLinkHub.
@@ -87,7 +87,7 @@ public interface PrivateLinkHubs {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of privateLinkHubs.
+     * @return list of privateLinkHubs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkHub> list();
 
@@ -98,7 +98,7 @@ public interface PrivateLinkHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of privateLinkHubs.
+     * @return list of privateLinkHubs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkHub> list(Context context);
 

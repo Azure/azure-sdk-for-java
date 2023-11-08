@@ -7,6 +7,8 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
 import com.azure.resourcemanager.mediaservices.models.KeyDelivery;
+import com.azure.resourcemanager.mediaservices.models.MinimumTlsVersion;
+import com.azure.resourcemanager.mediaservices.models.ProvisioningState;
 import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
 import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
@@ -48,11 +50,33 @@ public final class MediaServiceProperties {
     private KeyDelivery keyDelivery;
 
     /*
-     * Whether or not public network access is allowed for resources under the
-     * Media Services account.
+     * Whether or not public network access is allowed for resources under the Media Services account.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Provisioning state of the Media Services account.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
+
+    /*
+     * The Private Endpoint Connections created for the Media Service account.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * The minimum TLS version allowed for this account's requests. This is an optional property. If unspecified, a
+     * secure default value will be used.
+     */
+    @JsonProperty(value = "minimumTlsVersion")
+    private MinimumTlsVersion minimumTlsVersion;
+
+    /** Creates an instance of MediaServiceProperties class. */
+    public MediaServiceProperties() {
+    }
 
     /**
      * Get the mediaServiceId property: The Media Services account ID.
@@ -166,6 +190,47 @@ public final class MediaServiceProperties {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the Media Services account.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The Private Endpoint Connections created for the Media Service
+     * account.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
+     * optional property. If unspecified, a secure default value will be used.
+     *
+     * @return the minimumTlsVersion value.
+     */
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.minimumTlsVersion;
+    }
+
+    /**
+     * Set the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
+     * optional property. If unspecified, a secure default value will be used.
+     *
+     * @param minimumTlsVersion the minimumTlsVersion value to set.
+     * @return the MediaServiceProperties object itself.
+     */
+    public MediaServiceProperties withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        this.minimumTlsVersion = minimumTlsVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -179,6 +244,9 @@ public final class MediaServiceProperties {
         }
         if (keyDelivery() != null) {
             keyDelivery().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

@@ -19,6 +19,10 @@ public final class DeploymentExtendedInner extends Resource {
     @JsonProperty(value = "properties")
     private DeploymentPropertiesExtended properties;
 
+    /** Creates an instance of DeploymentExtendedInner class. */
+    public DeploymentExtendedInner() {
+    }
+
     /**
      * Get the properties property: Deployment properties.
      *

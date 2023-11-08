@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of an Azure Resource Manager template parameter. */
 @Fluent
 public final class ArmTemplateParameterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmTemplateParameterProperties.class);
-
     /*
      * The name of the template parameter.
      */
@@ -25,6 +21,10 @@ public final class ArmTemplateParameterProperties {
      */
     @JsonProperty(value = "value")
     private String value;
+
+    /** Creates an instance of ArmTemplateParameterProperties class. */
+    public ArmTemplateParameterProperties() {
+    }
 
     /**
      * Get the name property: The name of the template parameter.

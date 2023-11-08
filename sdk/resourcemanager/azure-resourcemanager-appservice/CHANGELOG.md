@@ -1,6 +1,184 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.33.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.30.0 (2023-08-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.29.0 (2023-07-28)
+
+### Features Added
+
+- Supported `withContainerSize` for `FunctionApp`.
+
+### Bugs Fixed
+
+- Updated SKU that automatically set Function App "Always On".
+Function App on `FREE`, `SHARED`, `DYNAMIC` (consumption plan), `ELASTIC_PREMIUM` (premium plan), `ELASTIC_ISOLATED` App Service has "Always On" turned off.
+
+## 2.28.0 (2023-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.27.0 (2023-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.26.1 (2023-04-25)
+
+### Breaking Changes
+
+- Changed to use AAD Auth for Kudu deployment.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.25.0 (2023-03-24)
+
+### Bugs Fixed
+
+- Fixed potential `NullPointerException`, when query tag on `WebApp` and `FunctionApp`. 
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-09-01`.
+
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+- Added "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING" and "WEBSITE_CONTENTSHARE" app settings to FunctionApp of Linux Consumption plan and Premium plan.
+
+## 2.22.0 (2022-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.21.0 (2022-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.20.0 (2022-10-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.19.0 (2022-09-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.18.0 (2022-08-26)
+
+### Features Added
+
+- Supported Java SE 17 in `FunctionRuntimeStack` for `FunctionApp`.
+
+## 2.17.0 (2022-07-25)
+
+### Features Added
+
+- Supported `getDeploymentStatus` in `SupportsOneDeploy`.
+
+### Breaking Changes
+
+- Merged multiple classes `AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem`,
+  `AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem`, 
+  `DomainPatchResourcePropertiesDomainNotRenewableReasonsItem` and `DomainPropertiesDomainNotRenewableReasonsItem` 
+  into one class `ResourceNotRenewableReason`.
+- `AppServiceEnvironmentPatchResource` was removed.
+- `ValidateRequest` was removed.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-01`.
+
+## 2.16.0 (2022-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.15.0 (2022-05-25)
+
+### Features Added
+
+- Supported `checkNameAvailability` method for `WebApps`.
+
+### Breaking Changes
+
+- Behavior changed on `WebApps.list()` and `WebApps.listByResourceGroup()` method, that results include sites with `kind` be empty or `linux`.
+
+## 2.14.0 (2022-04-11)
 
 ###  Bugs Fixed
 

@@ -28,6 +28,10 @@ public final class RemotePrivateEndpointConnection {
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkConnectionState privateLinkServiceConnectionState;
 
+    /** Creates an instance of RemotePrivateEndpointConnection class. */
+    public RemotePrivateEndpointConnection() {
+    }
+
     /**
      * Get the provisioningState property: The provisioningState property.
      *

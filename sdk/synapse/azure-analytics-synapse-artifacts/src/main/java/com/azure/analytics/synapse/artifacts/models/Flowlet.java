@@ -47,6 +47,9 @@ public class Flowlet extends DataFlow {
     @JsonProperty(value = "typeProperties.scriptLines")
     private List<String> scriptLines;
 
+    /** Creates an instance of Flowlet class. */
+    public Flowlet() {}
+
     /**
      * Get the sources property: List of sources in Flowlet.
      *
@@ -144,6 +147,27 @@ public class Flowlet extends DataFlow {
      */
     public Flowlet setScriptLines(List<String> scriptLines) {
         this.scriptLines = scriptLines;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Flowlet setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Flowlet setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Flowlet setFolder(DataFlowFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.LocationBasedRecommendedActionSessionsOperationStatusClient;
 import com.azure.resourcemanager.mariadb.fluent.models.RecommendedActionSessionsOperationStatusInner;
 import reactor.core.publisher.Mono;
@@ -32,9 +31,6 @@ import reactor.core.publisher.Mono;
  */
 public final class LocationBasedRecommendedActionSessionsOperationStatusClientImpl
     implements LocationBasedRecommendedActionSessionsOperationStatusClient {
-    private final ClientLogger logger =
-        new ClientLogger(LocationBasedRecommendedActionSessionsOperationStatusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LocationBasedRecommendedActionSessionsOperationStatusService service;
 
@@ -63,7 +59,7 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
      */
     @Host("{$host}")
     @ServiceInterface(name = "MariaDBManagementCli")
-    private interface LocationBasedRecommendedActionSessionsOperationStatusService {
+    public interface LocationBasedRecommendedActionSessionsOperationStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}"
@@ -88,7 +84,8 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recommendation action session operation status.
+     * @return recommendation action session operation status along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecommendedActionSessionsOperationStatusInner>> getWithResponseAsync(
@@ -137,7 +134,8 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recommendation action session operation status.
+     * @return recommendation action session operation status along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecommendedActionSessionsOperationStatusInner>> getWithResponseAsync(
@@ -182,19 +180,28 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recommendation action session operation status.
+     * @return recommendation action session operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecommendedActionSessionsOperationStatusInner> getAsync(String locationName, String operationId) {
-        return getWithResponseAsync(locationName, operationId)
-            .flatMap(
-                (Response<RecommendedActionSessionsOperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(locationName, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Recommendation action session operation status.
+     *
+     * @param locationName The name of the location.
+     * @param operationId The operation identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommendation action session operation status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RecommendedActionSessionsOperationStatusInner> getWithResponse(
+        String locationName, String operationId, Context context) {
+        return getWithResponseAsync(locationName, operationId, context).block();
     }
 
     /**
@@ -209,23 +216,6 @@ public final class LocationBasedRecommendedActionSessionsOperationStatusClientIm
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecommendedActionSessionsOperationStatusInner get(String locationName, String operationId) {
-        return getAsync(locationName, operationId).block();
-    }
-
-    /**
-     * Recommendation action session operation status.
-     *
-     * @param locationName The name of the location.
-     * @param operationId The operation identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recommendation action session operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecommendedActionSessionsOperationStatusInner> getWithResponse(
-        String locationName, String operationId, Context context) {
-        return getWithResponseAsync(locationName, operationId, context).block();
+        return getWithResponse(locationName, operationId, Context.NONE).getValue();
     }
 }

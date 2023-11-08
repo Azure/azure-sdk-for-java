@@ -22,6 +22,10 @@ public final class DiagnosticData {
     @JsonProperty(value = "renderingProperties")
     private Rendering renderingProperties;
 
+    /** Creates an instance of DiagnosticData class. */
+    public DiagnosticData() {
+    }
+
     /**
      * Get the table property: Data in table form.
      *

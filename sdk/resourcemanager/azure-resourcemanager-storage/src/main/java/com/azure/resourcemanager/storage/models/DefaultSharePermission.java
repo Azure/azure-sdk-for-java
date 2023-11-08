@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DefaultSharePermission. */
+/** Default share permission for users using Kerberos authentication if RBAC role is not assigned. */
 public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSharePermission> {
     /** Static value None for DefaultSharePermission. */
     public static final DefaultSharePermission NONE = fromString("None");
@@ -26,6 +26,15 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
         fromString("StorageFileDataSmbShareElevatedContributor");
 
     /**
+     * Creates a new instance of DefaultSharePermission value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DefaultSharePermission() {
+    }
+
+    /**
      * Creates or finds a DefaultSharePermission from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
         return fromString(name, DefaultSharePermission.class);
     }
 
-    /** @return known DefaultSharePermission values. */
+    /**
+     * Gets known DefaultSharePermission values.
+     *
+     * @return known DefaultSharePermission values.
+     */
     public static Collection<DefaultSharePermission> values() {
         return values(DefaultSharePermission.class);
     }

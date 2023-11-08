@@ -4,24 +4,22 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CommunityGalleries Get. */
 public final class CommunityGalleriesGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/communityGallery/GetACommunityGallery.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/communityGalleryExamples/CommunityGallery_Get.json
      */
     /**
-     * Sample code: Get a gallery.
+     * Sample code: Get a community gallery.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getAGallery(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getACommunityGallery(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getCommunityGalleries()
-            .getWithResponse("myLocation", "publicGalleryName", Context.NONE);
+            .getWithResponse("myLocation", "publicGalleryName", com.azure.core.util.Context.NONE);
     }
 }

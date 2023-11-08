@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FirewallPolicyRuleApplicationProtocolType. */
+/** The application protocol type of a Rule. */
 public final class FirewallPolicyRuleApplicationProtocolType
     extends ExpandableStringEnum<FirewallPolicyRuleApplicationProtocolType> {
     /** Static value Http for FirewallPolicyRuleApplicationProtocolType. */
@@ -16,6 +16,15 @@ public final class FirewallPolicyRuleApplicationProtocolType
 
     /** Static value Https for FirewallPolicyRuleApplicationProtocolType. */
     public static final FirewallPolicyRuleApplicationProtocolType HTTPS = fromString("Https");
+
+    /**
+     * Creates a new instance of FirewallPolicyRuleApplicationProtocolType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyRuleApplicationProtocolType() {
+    }
 
     /**
      * Creates or finds a FirewallPolicyRuleApplicationProtocolType from its string representation.
@@ -28,7 +37,11 @@ public final class FirewallPolicyRuleApplicationProtocolType
         return fromString(name, FirewallPolicyRuleApplicationProtocolType.class);
     }
 
-    /** @return known FirewallPolicyRuleApplicationProtocolType values. */
+    /**
+     * Gets known FirewallPolicyRuleApplicationProtocolType values.
+     *
+     * @return known FirewallPolicyRuleApplicationProtocolType values.
+     */
     public static Collection<FirewallPolicyRuleApplicationProtocolType> values() {
         return values(FirewallPolicyRuleApplicationProtocolType.class);
     }

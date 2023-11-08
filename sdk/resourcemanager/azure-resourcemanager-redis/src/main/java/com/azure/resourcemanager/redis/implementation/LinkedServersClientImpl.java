@@ -64,11 +64,10 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RedisManagementClien")
-    private interface LinkedServersService {
+    public interface LinkedServersService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/linkedServers/{linkedServerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -84,11 +83,10 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/linkedServers/{linkedServerName}")
-        @ExpectedResponses({200, 204})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
+        Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -100,8 +98,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/linkedServers/{linkedServerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisLinkedServerWithPropertiesInner>> get(
@@ -116,8 +113,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/linkedServers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisLinkedServerWithPropertiesList>> list(
@@ -143,7 +139,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -205,7 +201,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -269,7 +265,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -301,7 +297,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -336,7 +332,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -353,13 +349,13 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
             String name,
             String linkedServerName,
             RedisLinkedServerCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, name, linkedServerName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, name, linkedServerName, parameters).getSyncPoller();
     }
 
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -378,13 +374,13 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
             String linkedServerName,
             RedisLinkedServerCreateParameters parameters,
             Context context) {
-        return beginCreateAsync(resourceGroupName, name, linkedServerName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, name, linkedServerName, parameters, context).getSyncPoller();
     }
 
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -405,7 +401,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -431,7 +427,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -449,7 +445,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Adds a linked server to the Redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param parameters Parameters supplied to the Create Linked server operation.
@@ -472,7 +468,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -481,7 +477,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String name, String linkedServerName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -526,7 +522,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param context The context to associate with this operation.
@@ -536,7 +532,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String name, String linkedServerName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -578,7 +574,86 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String name, String linkedServerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, linkedServerName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String name, String linkedServerName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, name, linkedServerName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String name, String linkedServerName) {
+        return this.beginDeleteAsync(resourceGroupName, name, linkedServerName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String name, String linkedServerName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, name, linkedServerName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -588,14 +663,34 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name, String linkedServerName) {
-        return deleteWithResponseAsync(resourceGroupName, name, linkedServerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return beginDeleteAsync(resourceGroupName, name, linkedServerName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server that is being added to the Redis cache.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String name, String linkedServerName, Context context) {
+        return beginDeleteAsync(resourceGroupName, name, linkedServerName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the linked server from a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -610,25 +705,23 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String name, String linkedServerName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, name, linkedServerName, context).block();
+    public void delete(String resourceGroupName, String name, String linkedServerName, Context context) {
+        deleteAsync(resourceGroupName, name, linkedServerName, context).block();
     }
 
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -683,7 +776,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
      * @param context The context to associate with this operation.
@@ -736,7 +829,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,36 +842,13 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     public Mono<RedisLinkedServerWithPropertiesInner> getAsync(
         String resourceGroupName, String name, String linkedServerName) {
         return getWithResponseAsync(resourceGroupName, name, linkedServerName)
-            .flatMap(
-                (Response<RedisLinkedServerWithPropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param linkedServerName The name of the linked server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information about a linked server of a redis cache (requires Premium SKU).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisLinkedServerWithPropertiesInner get(String resourceGroupName, String name, String linkedServerName) {
-        return getAsync(resourceGroupName, name, linkedServerName).block();
-    }
-
-    /**
-     * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param linkedServerName The name of the linked server.
      * @param context The context to associate with this operation.
@@ -795,9 +865,25 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     }
 
     /**
+     * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the detailed information about a linked server of a redis cache (requires Premium SKU).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RedisLinkedServerWithPropertiesInner get(String resourceGroupName, String name, String linkedServerName) {
+        return getWithResponse(resourceGroupName, name, linkedServerName, Context.NONE).getValue();
+    }
+
+    /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -855,7 +941,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -911,7 +997,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -928,7 +1014,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -948,7 +1034,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -964,7 +1050,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -982,7 +1068,8 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1018,7 +1105,8 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

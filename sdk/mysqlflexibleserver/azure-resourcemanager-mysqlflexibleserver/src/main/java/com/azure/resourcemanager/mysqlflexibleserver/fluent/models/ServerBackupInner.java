@@ -25,6 +25,10 @@ public final class ServerBackupInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of ServerBackupInner class. */
+    public ServerBackupInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of a server backup.
      *

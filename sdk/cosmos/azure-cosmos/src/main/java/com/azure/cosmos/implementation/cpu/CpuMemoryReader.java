@@ -20,6 +20,9 @@ public class CpuMemoryReader {
                 ManagementFactory.getOperatingSystemMXBean();
         } catch (Throwable t) {
             logger.error("failed to initialized CpuMemoryReader", t);
+            if (t instanceof Error) {
+                throw (Error) t;
+            }
         }
 
         this.operatingSystemMXBean = tryGetAs(mxBean,
@@ -38,11 +41,14 @@ public class CpuMemoryReader {
             return Float.NaN;
         } catch (Throwable t) {
             logger.error("Failed to get System CPU", t);
+            if (t instanceof Error) {
+                throw (Error) t;
+            }
             return Float.NaN;
         }
     }
 
-    public long getSystemWideMemoryUsage() {
+    public long getSystemWideMemoryAvailableInMB() {
         try {
             long totalMemory = Runtime.getRuntime().totalMemory() / (1024*1024);
             long freeMemory = Runtime.getRuntime().freeMemory() / (1024*1024);
@@ -50,6 +56,9 @@ public class CpuMemoryReader {
             return maxMemory -(totalMemory - freeMemory);
         } catch (Throwable t) {
             logger.error("Failed to get System memory", t);
+            if (t instanceof Error) {
+                throw (Error) t;
+            }
             return 0;
         }
     }
@@ -59,6 +68,9 @@ public class CpuMemoryReader {
             return Utils.as(mxBean, classType);
         } catch (Throwable t) {
             logger.error("failed to initialized CpuMemoryReader as type {}", classType.getName(), t);
+            if (t instanceof Error) {
+                throw (Error) t;
+            }
             return null;
         }
     }

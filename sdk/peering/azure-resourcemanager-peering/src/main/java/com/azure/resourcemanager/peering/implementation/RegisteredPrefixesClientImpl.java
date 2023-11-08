@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.RegisteredPrefixesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringRegisteredPrefixInner;
 import com.azure.resourcemanager.peering.models.PeeringRegisteredPrefixListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RegisteredPrefixesClient. */
 public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesClient {
-    private final ClientLogger logger = new ClientLogger(RegisteredPrefixesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RegisteredPrefixesService service;
 
@@ -61,7 +58,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "PeeringManagementCli")
-    private interface RegisteredPrefixesService {
+    public interface RegisteredPrefixesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings"
@@ -148,7 +145,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringRegisteredPrefixInner>> getWithResponseAsync(
@@ -205,7 +202,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringRegisteredPrefixInner>> getWithResponseAsync(
@@ -258,20 +255,33 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeeringRegisteredPrefixInner> getAsync(
         String resourceGroupName, String peeringName, String registeredPrefixName) {
         return getWithResponseAsync(resourceGroupName, peeringName, registeredPrefixName)
-            .flatMap(
-                (Response<PeeringRegisteredPrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an existing registered prefix with the specified name under the given subscription, resource group and
+     * peering.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringName The name of the peering.
+     * @param registeredPrefixName The name of the registered prefix.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing registered prefix with the specified name under the given subscription, resource group and
+     *     peering along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PeeringRegisteredPrefixInner> getWithResponse(
+        String resourceGroupName, String peeringName, String registeredPrefixName, Context context) {
+        return getWithResponseAsync(resourceGroupName, peeringName, registeredPrefixName, context).block();
     }
 
     /**
@@ -289,27 +299,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PeeringRegisteredPrefixInner get(String resourceGroupName, String peeringName, String registeredPrefixName) {
-        return getAsync(resourceGroupName, peeringName, registeredPrefixName).block();
-    }
-
-    /**
-     * Gets an existing registered prefix with the specified name under the given subscription, resource group and
-     * peering.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringName The name of the peering.
-     * @param registeredPrefixName The name of the registered prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PeeringRegisteredPrefixInner> getWithResponse(
-        String resourceGroupName, String peeringName, String registeredPrefixName, Context context) {
-        return getWithResponseAsync(resourceGroupName, peeringName, registeredPrefixName, context).block();
+        return getWithResponse(resourceGroupName, peeringName, registeredPrefixName, Context.NONE).getValue();
     }
 
     /**
@@ -322,7 +312,8 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's prefix that is registered by the peering service provider.
+     * @return the customer's prefix that is registered by the peering service provider along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringRegisteredPrefixInner>> createOrUpdateWithResponseAsync(
@@ -388,7 +379,8 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's prefix that is registered by the peering service provider.
+     * @return the customer's prefix that is registered by the peering service provider along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringRegisteredPrefixInner>> createOrUpdateWithResponseAsync(
@@ -451,7 +443,8 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's prefix that is registered by the peering service provider.
+     * @return the customer's prefix that is registered by the peering service provider on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeeringRegisteredPrefixInner> createOrUpdateAsync(
@@ -460,14 +453,32 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
         String registeredPrefixName,
         PeeringRegisteredPrefixInner registeredPrefix) {
         return createOrUpdateWithResponseAsync(resourceGroupName, peeringName, registeredPrefixName, registeredPrefix)
-            .flatMap(
-                (Response<PeeringRegisteredPrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a new registered prefix with the specified name under the given subscription, resource group and peering.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringName The name of the peering.
+     * @param registeredPrefixName The name of the registered prefix.
+     * @param registeredPrefix The properties needed to create a registered prefix.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the customer's prefix that is registered by the peering service provider along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PeeringRegisteredPrefixInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String peeringName,
+        String registeredPrefixName,
+        PeeringRegisteredPrefixInner registeredPrefix,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, peeringName, registeredPrefixName, registeredPrefix, context)
+            .block();
     }
 
     /**
@@ -488,32 +499,9 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
         String peeringName,
         String registeredPrefixName,
         PeeringRegisteredPrefixInner registeredPrefix) {
-        return createOrUpdateAsync(resourceGroupName, peeringName, registeredPrefixName, registeredPrefix).block();
-    }
-
-    /**
-     * Creates a new registered prefix with the specified name under the given subscription, resource group and peering.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringName The name of the peering.
-     * @param registeredPrefixName The name of the registered prefix.
-     * @param registeredPrefix The properties needed to create a registered prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's prefix that is registered by the peering service provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PeeringRegisteredPrefixInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String peeringName,
-        String registeredPrefixName,
-        PeeringRegisteredPrefixInner registeredPrefix,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, peeringName, registeredPrefixName, registeredPrefix, context)
-            .block();
+        return createOrUpdateWithResponse(
+                resourceGroupName, peeringName, registeredPrefixName, registeredPrefix, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -526,7 +514,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -582,7 +570,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -634,12 +622,31 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String peeringName, String registeredPrefixName) {
         return deleteWithResponseAsync(resourceGroupName, peeringName, registeredPrefixName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes an existing registered prefix with the specified name under the given subscription, resource group and
+     * peering.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringName The name of the peering.
+     * @param registeredPrefixName The name of the registered prefix.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String peeringName, String registeredPrefixName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, peeringName, registeredPrefixName, context).block();
     }
 
     /**
@@ -655,26 +662,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String peeringName, String registeredPrefixName) {
-        deleteAsync(resourceGroupName, peeringName, registeredPrefixName).block();
-    }
-
-    /**
-     * Deletes an existing registered prefix with the specified name under the given subscription, resource group and
-     * peering.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringName The name of the peering.
-     * @param registeredPrefixName The name of the registered prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String peeringName, String registeredPrefixName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, peeringName, registeredPrefixName, context).block();
+        deleteWithResponse(resourceGroupName, peeringName, registeredPrefixName, Context.NONE);
     }
 
     /**
@@ -685,7 +673,8 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered prefixes.
+     * @return the paginated list of peering registered prefixes along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringRegisteredPrefixInner>> listByPeeringSinglePageAsync(
@@ -743,7 +732,8 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered prefixes.
+     * @return the paginated list of peering registered prefixes along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringRegisteredPrefixInner>> listByPeeringSinglePageAsync(
@@ -797,7 +787,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered prefixes.
+     * @return the paginated list of peering registered prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringRegisteredPrefixInner> listByPeeringAsync(String resourceGroupName, String peeringName) {
@@ -815,7 +805,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered prefixes.
+     * @return the paginated list of peering registered prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringRegisteredPrefixInner> listByPeeringAsync(
@@ -833,7 +823,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered prefixes.
+     * @return the paginated list of peering registered prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringRegisteredPrefixInner> listByPeering(String resourceGroupName, String peeringName) {
@@ -849,7 +839,7 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered prefixes.
+     * @return the paginated list of peering registered prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringRegisteredPrefixInner> listByPeering(
@@ -860,11 +850,13 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered prefixes.
+     * @return the paginated list of peering registered prefixes along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringRegisteredPrefixInner>> listByPeeringNextSinglePageAsync(String nextLink) {
@@ -895,12 +887,14 @@ public final class RegisteredPrefixesClientImpl implements RegisteredPrefixesCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered prefixes.
+     * @return the paginated list of peering registered prefixes along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringRegisteredPrefixInner>> listByPeeringNextSinglePageAsync(

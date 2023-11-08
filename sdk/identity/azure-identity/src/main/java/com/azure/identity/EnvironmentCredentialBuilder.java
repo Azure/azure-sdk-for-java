@@ -13,6 +13,24 @@ import java.util.concurrent.ForkJoinPool;
 /**
  * Fluent credential builder for instantiating a {@link EnvironmentCredential}.
  *
+ * <p>The {@link EnvironmentCredential} is appropriate for scenarios where the application is looking to read credential
+ * information from environment variables. The credential supports service principal and user credential based
+ * authentication and requires a set of environment variables to be configured for each scenario.</p>
+ *
+ * <p><strong>Sample: Construct EnvironmentCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.EnvironmentCredential},
+ * using the {@link com.azure.identity.EnvironmentCredentialBuilder} to configure it. Once this credential is
+ * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
+ * parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.environmentcredential.construct -->
+ * <pre>
+ * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.environmentcredential.construct -->
+ *
  * @see EnvironmentCredential
  */
 public class EnvironmentCredentialBuilder extends CredentialBuilderBase<EnvironmentCredentialBuilder> {
@@ -21,8 +39,8 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
     private String authorityHost;
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param authorityHost the Microsoft Entra endpoint
      * @return An updated instance of this builder with the authority host set as specified.
      */
     public EnvironmentCredentialBuilder authorityHost(String authorityHost) {

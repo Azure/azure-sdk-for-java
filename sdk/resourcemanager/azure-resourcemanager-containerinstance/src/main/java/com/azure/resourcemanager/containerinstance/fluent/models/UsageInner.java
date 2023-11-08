@@ -5,15 +5,17 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.models.UsageName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A single usage result. */
 @Immutable
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
+    /*
+     * Id of the usage result
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
     /*
      * Unit of the usage result
@@ -38,6 +40,19 @@ public final class UsageInner {
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private UsageName name;
+
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
+
+    /**
+     * Get the id property: Id of the usage result.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the unit property: Unit of the usage result.

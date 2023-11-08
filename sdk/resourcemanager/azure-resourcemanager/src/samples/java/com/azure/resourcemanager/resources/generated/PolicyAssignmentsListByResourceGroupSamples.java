@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyAssignments ListByResourceGroup. */
 public final class PolicyAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForResourceGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/listPolicyAssignmentsForResourceGroup.json
      */
     /**
      * Sample code: List policy assignments that apply to a resource group.
@@ -23,6 +21,6 @@ public final class PolicyAssignmentsListByResourceGroupSamples {
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .listByResourceGroup("TestResourceGroup", "atScope()", null, Context.NONE);
+            .listByResourceGroup("TestResourceGroup", "atScope()", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -6,36 +6,28 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.LoadBalancingSettingsParameters;
-import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * AFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be served from
- * CDN.
+ * Azure Front Door.
  */
 @Fluent
 public final class AfdOriginGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginGroupInner.class);
-
     /*
      * The JSON object that contains the properties of the origin group.
      */
     @JsonProperty(value = "properties")
     private AfdOriginGroupProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of AfdOriginGroupInner class. */
+    public AfdOriginGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin group.
@@ -44,15 +36,6 @@ public final class AfdOriginGroupInner extends ProxyResource {
      */
     private AfdOriginGroupProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -161,37 +144,6 @@ public final class AfdOriginGroupInner extends ProxyResource {
             .innerProperties()
             .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
                 trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
-        return this;
-    }
-
-    /**
-     * Get the responseBasedAfdOriginErrorDetectionSettings property: The JSON object that contains the properties to
-     * determine origin health using real requests/responses. This property is currently not supported.
-     *
-     * @return the responseBasedAfdOriginErrorDetectionSettings value.
-     */
-    public ResponseBasedOriginErrorDetectionParameters responseBasedAfdOriginErrorDetectionSettings() {
-        return this.innerProperties() == null
-            ? null
-            : this.innerProperties().responseBasedAfdOriginErrorDetectionSettings();
-    }
-
-    /**
-     * Set the responseBasedAfdOriginErrorDetectionSettings property: The JSON object that contains the properties to
-     * determine origin health using real requests/responses. This property is currently not supported.
-     *
-     * @param responseBasedAfdOriginErrorDetectionSettings the responseBasedAfdOriginErrorDetectionSettings value to
-     *     set.
-     * @return the AfdOriginGroupInner object itself.
-     */
-    public AfdOriginGroupInner withResponseBasedAfdOriginErrorDetectionSettings(
-        ResponseBasedOriginErrorDetectionParameters responseBasedAfdOriginErrorDetectionSettings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AfdOriginGroupProperties();
-        }
-        this
-            .innerProperties()
-            .withResponseBasedAfdOriginErrorDetectionSettings(responseBasedAfdOriginErrorDetectionSettings);
         return this;
     }
 

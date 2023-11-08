@@ -17,17 +17,16 @@ import java.util.List;
 @Fluent
 public final class RestorePointProperties {
     /*
-     * List of disk resource ids that the customer wishes to exclude from the
-     * restore point. If no disks are specified, all disks will be included.
+     * List of disk resource ids that the customer wishes to exclude from the restore point. If no disks are specified,
+     * all disks will be included.
      */
     @JsonProperty(value = "excludeDisks")
     private List<ApiEntityReference> excludeDisks;
 
     /*
-     * Gets the details of the VM captured at the time of the restore point
-     * creation.
+     * Gets the details of the VM captured at the time of the restore point creation.
      */
-    @JsonProperty(value = "sourceMetadata", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "sourceMetadata")
     private RestorePointSourceMetadata sourceMetadata;
 
     /*
@@ -37,10 +36,10 @@ public final class RestorePointProperties {
     private String provisioningState;
 
     /*
-     * Gets the consistency mode for the restore point. Please refer to
-     * https://aka.ms/RestorePoints for more details.
+     * ConsistencyMode of the RestorePoint. Can be specified in the input while creating a restore point. For now, only
+     * CrashConsistent is accepted as a valid input. Please refer to https://aka.ms/RestorePoints for more details.
      */
-    @JsonProperty(value = "consistencyMode", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "consistencyMode")
     private ConsistencyModeTypes consistencyMode;
 
     /*
@@ -50,8 +49,7 @@ public final class RestorePointProperties {
     private OffsetDateTime timeCreated;
 
     /*
-     * Resource Id of the source restore point from which a copy needs to be
-     * created.
+     * Resource Id of the source restore point from which a copy needs to be created.
      */
     @JsonProperty(value = "sourceRestorePoint")
     private ApiEntityReference sourceRestorePoint;
@@ -61,6 +59,10 @@ public final class RestorePointProperties {
      */
     @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private RestorePointInstanceView instanceView;
+
+    /** Creates an instance of RestorePointProperties class. */
+    public RestorePointProperties() {
+    }
 
     /**
      * Get the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
@@ -94,6 +96,17 @@ public final class RestorePointProperties {
     }
 
     /**
+     * Set the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
+     *
+     * @param sourceMetadata the sourceMetadata value to set.
+     * @return the RestorePointProperties object itself.
+     */
+    public RestorePointProperties withSourceMetadata(RestorePointSourceMetadata sourceMetadata) {
+        this.sourceMetadata = sourceMetadata;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Gets the provisioning state of the restore point.
      *
      * @return the provisioningState value.
@@ -103,13 +116,27 @@ public final class RestorePointProperties {
     }
 
     /**
-     * Get the consistencyMode property: Gets the consistency mode for the restore point. Please refer to
+     * Get the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
+     * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
      * https://aka.ms/RestorePoints for more details.
      *
      * @return the consistencyMode value.
      */
     public ConsistencyModeTypes consistencyMode() {
         return this.consistencyMode;
+    }
+
+    /**
+     * Set the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
+     * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
+     * https://aka.ms/RestorePoints for more details.
+     *
+     * @param consistencyMode the consistencyMode value to set.
+     * @return the RestorePointProperties object itself.
+     */
+    public RestorePointProperties withConsistencyMode(ConsistencyModeTypes consistencyMode) {
+        this.consistencyMode = consistencyMode;
+        return this;
     }
 
     /**

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the key vault. */
 @Fluent
 public final class KeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
-
     /*
      * The name of the key vault key.
      */
@@ -37,6 +33,10 @@ public final class KeyVaultProperties {
      */
     @JsonProperty(value = "userIdentity")
     private String userIdentity;
+
+    /** Creates an instance of KeyVaultProperties class. */
+    public KeyVaultProperties() {
+    }
 
     /**
      * Get the keyName property: The name of the key vault key.

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.hanaonazure.fluent.HanaInstancesClient;
 import com.azure.resourcemanager.hanaonazure.fluent.models.HanaInstanceInner;
 import com.azure.resourcemanager.hanaonazure.models.HanaInstance;
 import com.azure.resourcemanager.hanaonazure.models.HanaInstances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class HanaInstancesImpl implements HanaInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HanaInstancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HanaInstancesImpl.class);
 
     private final HanaInstancesClient innerClient;
 
@@ -48,15 +47,6 @@ public final class HanaInstancesImpl implements HanaInstances {
         return Utils.mapPage(inner, inner1 -> new HanaInstanceImpl(inner1, this.manager()));
     }
 
-    public HanaInstance getByResourceGroup(String resourceGroupName, String hanaInstanceName) {
-        HanaInstanceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, hanaInstanceName);
-        if (inner != null) {
-            return new HanaInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<HanaInstance> getByResourceGroupWithResponse(
         String resourceGroupName, String hanaInstanceName, Context context) {
         Response<HanaInstanceInner> inner =
@@ -67,6 +57,15 @@ public final class HanaInstancesImpl implements HanaInstances {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new HanaInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public HanaInstance getByResourceGroup(String resourceGroupName, String hanaInstanceName) {
+        HanaInstanceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, hanaInstanceName);
+        if (inner != null) {
+            return new HanaInstanceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -107,7 +106,7 @@ public final class HanaInstancesImpl implements HanaInstances {
     public HanaInstance getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class HanaInstancesImpl implements HanaInstances {
         }
         String hanaInstanceName = Utils.getValueFromIdByName(id, "hanaInstances");
         if (hanaInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
@@ -126,7 +125,7 @@ public final class HanaInstancesImpl implements HanaInstances {
     public Response<HanaInstance> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +133,7 @@ public final class HanaInstancesImpl implements HanaInstances {
         }
         String hanaInstanceName = Utils.getValueFromIdByName(id, "hanaInstances");
         if (hanaInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
@@ -145,7 +144,7 @@ public final class HanaInstancesImpl implements HanaInstances {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,7 +152,7 @@ public final class HanaInstancesImpl implements HanaInstances {
         }
         String hanaInstanceName = Utils.getValueFromIdByName(id, "hanaInstances");
         if (hanaInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
@@ -164,7 +163,7 @@ public final class HanaInstancesImpl implements HanaInstances {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -172,7 +171,7 @@ public final class HanaInstancesImpl implements HanaInstances {
         }
         String hanaInstanceName = Utils.getValueFromIdByName(id, "hanaInstances");
         if (hanaInstanceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));

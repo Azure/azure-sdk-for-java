@@ -48,7 +48,11 @@ public final class KnownSyslogDataSourceLogLevels extends ExpandableStringEnum<K
         return fromString(name, KnownSyslogDataSourceLogLevels.class);
     }
 
-    /** @return known KnownSyslogDataSourceLogLevels values. */
+    /**
+     * Gets known KnownSyslogDataSourceLogLevels values.
+     *
+     * @return known KnownSyslogDataSourceLogLevels values.
+     */
     public static Collection<KnownSyslogDataSourceLogLevels> values() {
         return values(KnownSyslogDataSourceLogLevels.class);
     }

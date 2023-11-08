@@ -6,14 +6,11 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A principal assignment check name availability request. */
 @Fluent
 public final class DatabasePrincipalAssignmentCheckNameRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasePrincipalAssignmentCheckNameRequest.class);
-
     /*
      * Principal Assignment resource name.
      */
@@ -21,8 +18,7 @@ public final class DatabasePrincipalAssignmentCheckNameRequest {
     private String name;
 
     /*
-     * The type of resource,
-     * Microsoft.Synapse/workspaces/kustoPools/databases/principalAssignments.
+     * The type of resource, Microsoft.Synapse/workspaces/kustoPools/databases/principalAssignments.
      */
     @JsonProperty(value = "type", required = true)
     private String type = "Microsoft.Synapse/workspaces/kustoPools/databases/principalAssignments";
@@ -81,10 +77,12 @@ public final class DatabasePrincipalAssignmentCheckNameRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model DatabasePrincipalAssignmentCheckNameRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabasePrincipalAssignmentCheckNameRequest.class);
 }

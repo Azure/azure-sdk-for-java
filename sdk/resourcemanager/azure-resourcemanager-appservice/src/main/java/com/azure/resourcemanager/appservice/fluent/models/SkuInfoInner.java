@@ -30,6 +30,10 @@ public final class SkuInfoInner {
     @JsonProperty(value = "capacity")
     private SkuCapacity capacity;
 
+    /** Creates an instance of SkuInfoInner class. */
+    public SkuInfoInner() {
+    }
+
     /**
      * Get the resourceType property: Resource type that this SKU applies to.
      *

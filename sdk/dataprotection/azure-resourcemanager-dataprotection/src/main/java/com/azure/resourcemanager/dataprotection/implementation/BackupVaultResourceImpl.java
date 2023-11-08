@@ -11,6 +11,7 @@ import com.azure.resourcemanager.dataprotection.fluent.models.BackupVaultResourc
 import com.azure.resourcemanager.dataprotection.models.BackupVault;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultResource;
 import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
+import com.azure.resourcemanager.dataprotection.models.PatchBackupVaultInput;
 import com.azure.resourcemanager.dataprotection.models.PatchResourceRequestInput;
 import java.util.Collections;
 import java.util.Map;
@@ -50,12 +51,12 @@ public final class BackupVaultResourceImpl
         return this.innerModel().etag();
     }
 
-    public DppIdentityDetails identity() {
-        return this.innerModel().identity();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public DppIdentityDetails identity() {
+        return this.innerModel().identity();
     }
 
     public BackupVault properties() {
@@ -70,6 +71,10 @@ public final class BackupVaultResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public BackupVaultResourceInner innerModel() {
         return this.innerObject;
     }
@@ -78,9 +83,9 @@ public final class BackupVaultResourceImpl
         return this.serviceManager;
     }
 
-    private String vaultName;
-
     private String resourceGroupName;
+
+    private String vaultName;
 
     private PatchResourceRequestInput updateParameters;
 
@@ -94,7 +99,7 @@ public final class BackupVaultResourceImpl
             serviceManager
                 .serviceClient()
                 .getBackupVaults()
-                .createOrUpdate(vaultName, resourceGroupName, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -103,7 +108,7 @@ public final class BackupVaultResourceImpl
             serviceManager
                 .serviceClient()
                 .getBackupVaults()
-                .createOrUpdate(vaultName, resourceGroupName, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), context);
         return this;
     }
 
@@ -124,7 +129,7 @@ public final class BackupVaultResourceImpl
             serviceManager
                 .serviceClient()
                 .getBackupVaults()
-                .update(vaultName, resourceGroupName, updateParameters, Context.NONE);
+                .update(resourceGroupName, vaultName, updateParameters, Context.NONE);
         return this;
     }
 
@@ -133,7 +138,7 @@ public final class BackupVaultResourceImpl
             serviceManager
                 .serviceClient()
                 .getBackupVaults()
-                .update(vaultName, resourceGroupName, updateParameters, context);
+                .update(resourceGroupName, vaultName, updateParameters, context);
         return this;
     }
 
@@ -142,8 +147,8 @@ public final class BackupVaultResourceImpl
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "backupVaults");
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "backupVaults");
     }
 
     public BackupVaultResource refresh() {
@@ -204,6 +209,11 @@ public final class BackupVaultResourceImpl
             this.updateParameters.withIdentity(identity);
             return this;
         }
+    }
+
+    public BackupVaultResourceImpl withProperties(PatchBackupVaultInput properties) {
+        this.updateParameters.withProperties(properties);
+        return this;
     }
 
     private boolean isInCreateMode() {

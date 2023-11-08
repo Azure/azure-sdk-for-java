@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 import reactor.core.publisher.Mono;
@@ -23,8 +24,6 @@ import java.net.URL;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all the leasing operations for {@link ShareFileAsyncClient files}.
@@ -61,13 +60,17 @@ public final class ShareLeaseAsyncClient {
     private volatile String leaseId;
 
     ShareLeaseAsyncClient(HttpPipeline pipeline, String url, String shareName, String shareSnapshot,
-        String resourcePath, String leaseId, boolean isShareFile, String accountName, String serviceVersion) {
+        String resourcePath, String leaseId, boolean isShareFile, String accountName, String serviceVersion,
+        boolean allowTrailingDot, boolean allowSourceTrailingDot, ShareTokenIntent shareTokenIntent) {
         this.isShareFile = isShareFile;
         this.leaseId = leaseId;
         this.client = new AzureFileStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
             .version(serviceVersion)
+            .fileRequestIntent(shareTokenIntent)
+            .allowTrailingDot(allowTrailingDot)
+            .allowSourceTrailingDot(allowSourceTrailingDot)
             .buildClient();
         this.accountName = accountName;
         this.shareName = shareName;
@@ -179,13 +182,11 @@ public final class ShareLeaseAsyncClient {
         Mono<Response<String>> response;
         if (this.isShareFile) {
             response = this.client.getFiles().acquireLeaseWithResponseAsync(shareName, resourcePath, null,
-                options.getDuration(), this.leaseId, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                options.getDuration(), this.leaseId, null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
             response = this.client.getShares().acquireLeaseWithResponseAsync(shareName, null,
-                options.getDuration(), this.leaseId, shareSnapshot,
-                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                options.getDuration(), this.leaseId, shareSnapshot, null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
@@ -238,11 +239,11 @@ public final class ShareLeaseAsyncClient {
         context = context == null ? Context.NONE : context;
         if (this.isShareFile) {
             return this.client.getFiles().releaseLeaseWithResponseAsync(shareName, resourcePath, this.leaseId,
-                null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null, null, context)
                 .map(response -> new SimpleResponse<>(response, null));
         } else {
             return this.client.getShares().releaseLeaseWithResponseAsync(shareName, this.leaseId, null,
-                shareSnapshot, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                shareSnapshot, null, context)
                 .map(response -> new SimpleResponse<>(response, null));
         }
     }
@@ -319,13 +320,11 @@ public final class ShareLeaseAsyncClient {
         Integer breakPeriod = options.getBreakPeriod() == null ? null
             : Math.toIntExact(options.getBreakPeriod().getSeconds());
         if (this.isShareFile) {
-            return this.client.getFiles().breakLeaseWithResponseAsync(shareName, resourcePath, null, null, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            return this.client.getFiles().breakLeaseWithResponseAsync(shareName, resourcePath, null, null, null, context)
                 .map(rb -> new SimpleResponse<>(rb, null));
         } else {
             return this.client.getShares().breakLeaseWithResponseAsync(shareName, null, breakPeriod,
-                null, null, shareSnapshot,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null, null, shareSnapshot, context)
                 .map(rb -> new SimpleResponse<>(rb, null));
         }
     }
@@ -379,11 +378,11 @@ public final class ShareLeaseAsyncClient {
         Mono<Response<String>> response;
         if (this.isShareFile) {
             response = this.client.getFiles().changeLeaseWithResponseAsync(shareName, resourcePath, this.leaseId, null, proposedId,
-                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         } else {
             response = this.client.getShares().changeLeaseWithResponseAsync(shareName, this.leaseId, null, proposedId, shareSnapshot,
-                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 
@@ -441,7 +440,7 @@ public final class ShareLeaseAsyncClient {
                 "Cannot renew a lease on a share file."));
         } else {
             response = this.client.getShares().renewLeaseWithResponseAsync(shareName, this.leaseId, null,
-                shareSnapshot, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                shareSnapshot, null, context)
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
         }
 

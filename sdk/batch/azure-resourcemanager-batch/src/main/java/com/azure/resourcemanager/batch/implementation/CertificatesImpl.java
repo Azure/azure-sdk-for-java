@@ -56,15 +56,6 @@ public final class CertificatesImpl implements Certificates {
         this.serviceClient().delete(resourceGroupName, accountName, certificateName, context);
     }
 
-    public Certificate get(String resourceGroupName, String accountName, String certificateName) {
-        CertificateInner inner = this.serviceClient().get(resourceGroupName, accountName, certificateName);
-        if (inner != null) {
-            return new CertificateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Certificate> getWithResponse(
         String resourceGroupName, String accountName, String certificateName, Context context) {
         CertificatesGetResponse inner =
@@ -80,8 +71,8 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public Certificate cancelDeletion(String resourceGroupName, String accountName, String certificateName) {
-        CertificateInner inner = this.serviceClient().cancelDeletion(resourceGroupName, accountName, certificateName);
+    public Certificate get(String resourceGroupName, String accountName, String certificateName) {
+        CertificateInner inner = this.serviceClient().get(resourceGroupName, accountName, certificateName);
         if (inner != null) {
             return new CertificateImpl(inner, this.manager());
         } else {
@@ -99,6 +90,15 @@ public final class CertificatesImpl implements Certificates {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CertificateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Certificate cancelDeletion(String resourceGroupName, String accountName, String certificateName) {
+        CertificateInner inner = this.serviceClient().cancelDeletion(resourceGroupName, accountName, certificateName);
+        if (inner != null) {
+            return new CertificateImpl(inner, this.manager());
         } else {
             return null;
         }

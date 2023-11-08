@@ -15,6 +15,20 @@ public interface Peerings {
      *
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing peering with the specified name under the given subscription and resource group along with
+     *     {@link Response}.
+     */
+    Response<Peering> getByResourceGroupWithResponse(String resourceGroupName, String peeringName, Context context);
+
+    /**
+     * Gets an existing peering with the specified name under the given subscription and resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,7 +37,7 @@ public interface Peerings {
     Peering getByResourceGroup(String resourceGroupName, String peeringName);
 
     /**
-     * Gets an existing peering with the specified name under the given subscription and resource group.
+     * Deletes an existing peering with the specified name under the given subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
@@ -31,9 +45,9 @@ public interface Peerings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing peering with the specified name under the given subscription and resource group.
+     * @return the {@link Response}.
      */
-    Response<Peering> getByResourceGroupWithResponse(String resourceGroupName, String peeringName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String peeringName, Context context);
 
     /**
      * Deletes an existing peering with the specified name under the given subscription and resource group.
@@ -47,26 +61,13 @@ public interface Peerings {
     void deleteByResourceGroup(String resourceGroupName, String peeringName);
 
     /**
-     * Deletes an existing peering with the specified name under the given subscription and resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringName The name of the peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(String resourceGroupName, String peeringName, Context context);
-
-    /**
      * Lists all of the peerings under the given subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Peering> listByResourceGroup(String resourceGroupName);
 
@@ -78,7 +79,7 @@ public interface Peerings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Peering> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -87,7 +88,7 @@ public interface Peerings {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Peering> list();
 
@@ -98,7 +99,7 @@ public interface Peerings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Peering> list(Context context);
 
@@ -109,7 +110,8 @@ public interface Peerings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing peering with the specified name under the given subscription and resource group.
+     * @return an existing peering with the specified name under the given subscription and resource group along with
+     *     {@link Response}.
      */
     Peering getById(String id);
 
@@ -121,7 +123,8 @@ public interface Peerings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing peering with the specified name under the given subscription and resource group.
+     * @return an existing peering with the specified name under the given subscription and resource group along with
+     *     {@link Response}.
      */
     Response<Peering> getByIdWithResponse(String id, Context context);
 
@@ -143,7 +146,7 @@ public interface Peerings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

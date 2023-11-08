@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FtpsState. */
+/** State of FTP / FTPS service. */
 public final class FtpsState extends ExpandableStringEnum<FtpsState> {
     /** Static value AllAllowed for FtpsState. */
     public static final FtpsState ALL_ALLOWED = fromString("AllAllowed");
@@ -18,6 +18,15 @@ public final class FtpsState extends ExpandableStringEnum<FtpsState> {
 
     /** Static value Disabled for FtpsState. */
     public static final FtpsState DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of FtpsState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FtpsState() {
+    }
 
     /**
      * Creates or finds a FtpsState from its string representation.
@@ -30,7 +39,11 @@ public final class FtpsState extends ExpandableStringEnum<FtpsState> {
         return fromString(name, FtpsState.class);
     }
 
-    /** @return known FtpsState values. */
+    /**
+     * Gets known FtpsState values.
+     *
+     * @return known FtpsState values.
+     */
     public static Collection<FtpsState> values() {
         return values(FtpsState.class);
     }

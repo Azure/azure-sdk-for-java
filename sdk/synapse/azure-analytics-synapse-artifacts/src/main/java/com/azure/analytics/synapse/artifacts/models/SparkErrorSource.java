@@ -23,6 +23,14 @@ public final class SparkErrorSource extends ExpandableStringEnum<SparkErrorSourc
     public static final SparkErrorSource DEPENDENCY = fromString("Dependency");
 
     /**
+     * Creates a new instance of SparkErrorSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkErrorSource() {}
+
+    /**
      * Creates or finds a SparkErrorSource from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +41,11 @@ public final class SparkErrorSource extends ExpandableStringEnum<SparkErrorSourc
         return fromString(name, SparkErrorSource.class);
     }
 
-    /** @return known SparkErrorSource values. */
+    /**
+     * Gets known SparkErrorSource values.
+     *
+     * @return known SparkErrorSource values.
+     */
     public static Collection<SparkErrorSource> values() {
         return values(SparkErrorSource.class);
     }

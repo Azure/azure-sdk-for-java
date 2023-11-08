@@ -7,7 +7,7 @@ package com.azure.resourcemanager.logic.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SegmentTerminatorSuffix. */
+/** The segment terminator suffix. */
 public enum SegmentTerminatorSuffix {
     /** Enum value NotSpecified. */
     NOT_SPECIFIED("NotSpecified"),
@@ -39,6 +39,9 @@ public enum SegmentTerminatorSuffix {
      */
     @JsonCreator
     public static SegmentTerminatorSuffix fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SegmentTerminatorSuffix[] items = SegmentTerminatorSuffix.values();
         for (SegmentTerminatorSuffix item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum SegmentTerminatorSuffix {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

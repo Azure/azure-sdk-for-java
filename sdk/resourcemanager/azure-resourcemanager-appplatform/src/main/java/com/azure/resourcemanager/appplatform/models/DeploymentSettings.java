@@ -5,133 +5,105 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Deployment settings payload. */
 @Fluent
 public final class DeploymentSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentSettings.class);
-
     /*
-     * Required CPU, basic tier should be 1, standard tier should be in range
-     * (1, 4)
+     * The requested resource quantity for required CPU and Memory. It is
+     * recommended that using this field to represent the required CPU and
+     * Memory, the old field cpu and memoryInGB will be deprecated later.
      */
-    @JsonProperty(value = "cpu")
-    private Integer cpu;
-
-    /*
-     * Required Memory size in GB, basic tier should be in range (1, 2),
-     * standard tier should be in range (1, 8)
-     */
-    @JsonProperty(value = "memoryInGB")
-    private Integer memoryInGB;
-
-    /*
-     * JVM parameter
-     */
-    @JsonProperty(value = "jvmOptions")
-    private String jvmOptions;
-
-    /*
-     * The path to the .NET executable relative to zip root
-     */
-    @JsonProperty(value = "netCoreMainEntryPath")
-    private String netCoreMainEntryPath;
+    @JsonProperty(value = "resourceRequests")
+    private ResourceRequests resourceRequests;
 
     /*
      * Collection of environment variables
      */
     @JsonProperty(value = "environmentVariables")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> environmentVariables;
 
     /*
-     * Runtime version
+     * Collection of addons
      */
-    @JsonProperty(value = "runtimeVersion")
-    private RuntimeVersion runtimeVersion;
+    @JsonProperty(value = "addonConfigs")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Map<String, Object>> addonConfigs;
+
+    /*
+     * Periodic probe of App Instance liveness. App Instance will be restarted
+     * if the probe fails. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+     */
+    @JsonProperty(value = "livenessProbe")
+    private Probe livenessProbe;
+
+    /*
+     * Periodic probe of App Instance service readiness. App Instance will be
+     * removed from service endpoints if the probe fails. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+     */
+    @JsonProperty(value = "readinessProbe")
+    private Probe readinessProbe;
+
+    /*
+     * StartupProbe indicates that the App Instance has successfully
+     * initialized. If specified, no other probes are executed until this
+     * completes successfully. If this probe fails, the Pod will be restarted,
+     * just as if the livenessProbe failed. This can be used to provide
+     * different probe parameters at the beginning of a App Instance's
+     * lifecycle, when it might take a long time to load data or warm a cache,
+     * than during steady-state operation. This cannot be updated. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+     */
+    @JsonProperty(value = "startupProbe")
+    private Probe startupProbe;
+
+    /*
+     * Optional duration in seconds the App Instance needs to terminate
+     * gracefully. May be decreased in delete request. Value must be
+     * non-negative integer. The value zero indicates stop immediately via the
+     * kill signal (no opportunity to shut down). If this value is nil, the
+     * default grace period will be used instead. The grace period is the
+     * duration in seconds after the processes running in the App Instance are
+     * sent a termination signal and the time when the processes are forcibly
+     * halted with a kill signal. Set this value longer than the expected
+     * cleanup time for your process. Defaults to 90 seconds.
+     */
+    @JsonProperty(value = "terminationGracePeriodSeconds")
+    private Integer terminationGracePeriodSeconds;
+
+    /*
+     * Container liveness and readiness probe settings
+     */
+    @JsonProperty(value = "containerProbeSettings")
+    private ContainerProbeSettings containerProbeSettings;
 
     /**
-     * Get the cpu property: Required CPU, basic tier should be 1, standard tier should be in range (1, 4).
+     * Get the resourceRequests property: The requested resource quantity for required CPU and Memory. It is recommended
+     * that using this field to represent the required CPU and Memory, the old field cpu and memoryInGB will be
+     * deprecated later.
      *
-     * @return the cpu value.
+     * @return the resourceRequests value.
      */
-    public Integer cpu() {
-        return this.cpu;
+    public ResourceRequests resourceRequests() {
+        return this.resourceRequests;
     }
 
     /**
-     * Set the cpu property: Required CPU, basic tier should be 1, standard tier should be in range (1, 4).
+     * Set the resourceRequests property: The requested resource quantity for required CPU and Memory. It is recommended
+     * that using this field to represent the required CPU and Memory, the old field cpu and memoryInGB will be
+     * deprecated later.
      *
-     * @param cpu the cpu value to set.
+     * @param resourceRequests the resourceRequests value to set.
      * @return the DeploymentSettings object itself.
      */
-    public DeploymentSettings withCpu(Integer cpu) {
-        this.cpu = cpu;
-        return this;
-    }
-
-    /**
-     * Get the memoryInGB property: Required Memory size in GB, basic tier should be in range (1, 2), standard tier
-     * should be in range (1, 8).
-     *
-     * @return the memoryInGB value.
-     */
-    public Integer memoryInGB() {
-        return this.memoryInGB;
-    }
-
-    /**
-     * Set the memoryInGB property: Required Memory size in GB, basic tier should be in range (1, 2), standard tier
-     * should be in range (1, 8).
-     *
-     * @param memoryInGB the memoryInGB value to set.
-     * @return the DeploymentSettings object itself.
-     */
-    public DeploymentSettings withMemoryInGB(Integer memoryInGB) {
-        this.memoryInGB = memoryInGB;
-        return this;
-    }
-
-    /**
-     * Get the jvmOptions property: JVM parameter.
-     *
-     * @return the jvmOptions value.
-     */
-    public String jvmOptions() {
-        return this.jvmOptions;
-    }
-
-    /**
-     * Set the jvmOptions property: JVM parameter.
-     *
-     * @param jvmOptions the jvmOptions value to set.
-     * @return the DeploymentSettings object itself.
-     */
-    public DeploymentSettings withJvmOptions(String jvmOptions) {
-        this.jvmOptions = jvmOptions;
-        return this;
-    }
-
-    /**
-     * Get the netCoreMainEntryPath property: The path to the .NET executable relative to zip root.
-     *
-     * @return the netCoreMainEntryPath value.
-     */
-    public String netCoreMainEntryPath() {
-        return this.netCoreMainEntryPath;
-    }
-
-    /**
-     * Set the netCoreMainEntryPath property: The path to the .NET executable relative to zip root.
-     *
-     * @param netCoreMainEntryPath the netCoreMainEntryPath value to set.
-     * @return the DeploymentSettings object itself.
-     */
-    public DeploymentSettings withNetCoreMainEntryPath(String netCoreMainEntryPath) {
-        this.netCoreMainEntryPath = netCoreMainEntryPath;
+    public DeploymentSettings withResourceRequests(ResourceRequests resourceRequests) {
+        this.resourceRequests = resourceRequests;
         return this;
     }
 
@@ -156,22 +128,148 @@ public final class DeploymentSettings {
     }
 
     /**
-     * Get the runtimeVersion property: Runtime version.
+     * Get the addonConfigs property: Collection of addons.
      *
-     * @return the runtimeVersion value.
+     * @return the addonConfigs value.
      */
-    public RuntimeVersion runtimeVersion() {
-        return this.runtimeVersion;
+    public Map<String, Map<String, Object>> addonConfigs() {
+        return this.addonConfigs;
     }
 
     /**
-     * Set the runtimeVersion property: Runtime version.
+     * Set the addonConfigs property: Collection of addons.
      *
-     * @param runtimeVersion the runtimeVersion value to set.
+     * @param addonConfigs the addonConfigs value to set.
      * @return the DeploymentSettings object itself.
      */
-    public DeploymentSettings withRuntimeVersion(RuntimeVersion runtimeVersion) {
-        this.runtimeVersion = runtimeVersion;
+    public DeploymentSettings withAddonConfigs(Map<String, Map<String, Object>> addonConfigs) {
+        this.addonConfigs = addonConfigs;
+        return this;
+    }
+
+    /**
+     * Get the livenessProbe property: Periodic probe of App Instance liveness. App Instance will be restarted if the
+     * probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @return the livenessProbe value.
+     */
+    public Probe livenessProbe() {
+        return this.livenessProbe;
+    }
+
+    /**
+     * Set the livenessProbe property: Periodic probe of App Instance liveness. App Instance will be restarted if the
+     * probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @param livenessProbe the livenessProbe value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withLivenessProbe(Probe livenessProbe) {
+        this.livenessProbe = livenessProbe;
+        return this;
+    }
+
+    /**
+     * Get the readinessProbe property: Periodic probe of App Instance service readiness. App Instance will be removed
+     * from service endpoints if the probe fails. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @return the readinessProbe value.
+     */
+    public Probe readinessProbe() {
+        return this.readinessProbe;
+    }
+
+    /**
+     * Set the readinessProbe property: Periodic probe of App Instance service readiness. App Instance will be removed
+     * from service endpoints if the probe fails. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @param readinessProbe the readinessProbe value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withReadinessProbe(Probe readinessProbe) {
+        this.readinessProbe = readinessProbe;
+        return this;
+    }
+
+    /**
+     * Get the startupProbe property: StartupProbe indicates that the App Instance has successfully initialized. If
+     * specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be
+     * restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the
+     * beginning of a App Instance's lifecycle, when it might take a long time to load data or warm a cache, than during
+     * steady-state operation. This cannot be updated. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @return the startupProbe value.
+     */
+    public Probe startupProbe() {
+        return this.startupProbe;
+    }
+
+    /**
+     * Set the startupProbe property: StartupProbe indicates that the App Instance has successfully initialized. If
+     * specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be
+     * restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the
+     * beginning of a App Instance's lifecycle, when it might take a long time to load data or warm a cache, than during
+     * steady-state operation. This cannot be updated. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @param startupProbe the startupProbe value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withStartupProbe(Probe startupProbe) {
+        this.startupProbe = startupProbe;
+        return this;
+    }
+
+    /**
+     * Get the terminationGracePeriodSeconds property: Optional duration in seconds the App Instance needs to terminate
+     * gracefully. May be decreased in delete request. Value must be non-negative integer. The value zero indicates stop
+     * immediately via the kill signal (no opportunity to shut down). If this value is nil, the default grace period
+     * will be used instead. The grace period is the duration in seconds after the processes running in the App Instance
+     * are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+     * value longer than the expected cleanup time for your process. Defaults to 90 seconds.
+     *
+     * @return the terminationGracePeriodSeconds value.
+     */
+    public Integer terminationGracePeriodSeconds() {
+        return this.terminationGracePeriodSeconds;
+    }
+
+    /**
+     * Set the terminationGracePeriodSeconds property: Optional duration in seconds the App Instance needs to terminate
+     * gracefully. May be decreased in delete request. Value must be non-negative integer. The value zero indicates stop
+     * immediately via the kill signal (no opportunity to shut down). If this value is nil, the default grace period
+     * will be used instead. The grace period is the duration in seconds after the processes running in the App Instance
+     * are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+     * value longer than the expected cleanup time for your process. Defaults to 90 seconds.
+     *
+     * @param terminationGracePeriodSeconds the terminationGracePeriodSeconds value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withTerminationGracePeriodSeconds(Integer terminationGracePeriodSeconds) {
+        this.terminationGracePeriodSeconds = terminationGracePeriodSeconds;
+        return this;
+    }
+
+    /**
+     * Get the containerProbeSettings property: Container liveness and readiness probe settings.
+     *
+     * @return the containerProbeSettings value.
+     */
+    public ContainerProbeSettings containerProbeSettings() {
+        return this.containerProbeSettings;
+    }
+
+    /**
+     * Set the containerProbeSettings property: Container liveness and readiness probe settings.
+     *
+     * @param containerProbeSettings the containerProbeSettings value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withContainerProbeSettings(ContainerProbeSettings containerProbeSettings) {
+        this.containerProbeSettings = containerProbeSettings;
         return this;
     }
 
@@ -181,5 +279,20 @@ public final class DeploymentSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (resourceRequests() != null) {
+            resourceRequests().validate();
+        }
+        if (livenessProbe() != null) {
+            livenessProbe().validate();
+        }
+        if (readinessProbe() != null) {
+            readinessProbe().validate();
+        }
+        if (startupProbe() != null) {
+            startupProbe().validate();
+        }
+        if (containerProbeSettings() != null) {
+            containerProbeSettings().validate();
+        }
     }
 }

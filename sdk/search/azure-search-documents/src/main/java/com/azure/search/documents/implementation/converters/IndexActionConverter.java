@@ -3,25 +3,19 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.search.documents.models.IndexAction;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Map;
-
-import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
-import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
-    private static final ClientLogger LOGGER = new ClientLogger(IndexActionConverter.class);
-
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
      */
@@ -52,26 +46,24 @@ public final class IndexActionConverter {
         com.azure.search.documents.implementation.models.IndexAction indexAction =
             new com.azure.search.documents.implementation.models.IndexAction().setActionType(obj.getActionType());
 
-        Map<String, Object> mapProperties = IndexActionHelper.getProperties(obj);
-        if (mapProperties == null) {
-            T properties = obj.getDocument();
-            if (serializer == null) {
-                try {
-                    String serializedJson = getDefaultSerializerAdapter().serialize(properties,
-                        SerializerEncoding.JSON);
-                    mapProperties = getDefaultSerializerAdapter().deserialize(serializedJson,
-                        MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
-                } catch (IOException ex) {
-                    throw LOGGER.logExceptionAsError(
-                        new RuntimeException("Failed to serialize IndexAction.", ex));
-                }
-            } else {
-                mapProperties = serializer.deserializeFromBytes(serializer.serializeToBytes(properties),
-                    MAP_STRING_OBJECT_TYPE_REFERENCE);
+        // Attempt to get the document as the Map<String, Object> properties.
+        Object document = IndexActionHelper.getProperties(obj);
+        if (document == null) {
+            // If ths document wasn't a Map type, get the generic document type.
+            document = obj.getDocument();
+        }
+
+        // Convert the document to the JSON representation.
+        byte[] documentJson = serializer.serializeToBytes(document);
+
+        if (documentJson != null) {
+            try (JsonReader reader = JsonProviders.createReader(documentJson)) {
+                indexAction.setAdditionalProperties(reader.readMap(JsonReader::readUntyped));
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
             }
         }
 
-        indexAction.setAdditionalProperties(mapProperties);
         return indexAction;
     }
 

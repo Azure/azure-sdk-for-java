@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.hdinsight.models.ClusterCreateProperties;
 import com.azure.resourcemanager.hdinsight.models.ClusterCreateRequestValidationParameters;
@@ -27,7 +26,7 @@ import java.util.Map;
 /** Samples for Locations ValidateClusterCreateRequest. */
 public final class LocationsValidateClusterCreateRequestSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Locations_ValidateClusterCreateRequest.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/HDI_Locations_ValidateClusterCreateRequest.json
      */
     /**
      * Sample code: Get the subscription usages for specific location.
@@ -75,7 +74,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                             .withLinuxOperatingSystemProfile(
                                                                 new LinuxOperatingSystemProfile()
                                                                     .withUsername("sshuser")
-                                                                    .withPassword("********")))
+                                                                    .withPassword("fakeTokenPlaceholder")))
                                                     .withScriptActions(Arrays.asList()),
                                                 new Role()
                                                     .withName("workernode")
@@ -87,7 +86,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                             .withLinuxOperatingSystemProfile(
                                                                 new LinuxOperatingSystemProfile()
                                                                     .withUsername("sshuser")
-                                                                    .withPassword("********")))
+                                                                    .withPassword("fakeTokenPlaceholder")))
                                                     .withScriptActions(Arrays.asList()),
                                                 new Role()
                                                     .withName("zookeepernode")
@@ -100,7 +99,7 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                             .withLinuxOperatingSystemProfile(
                                                                 new LinuxOperatingSystemProfile()
                                                                     .withUsername("sshuser")
-                                                                    .withPassword("**********")))
+                                                                    .withPassword("fakeTokenPlaceholder")))
                                                     .withScriptActions(Arrays.asList()))))
                             .withStorageProfile(
                                 new StorageProfile()
@@ -111,15 +110,16 @@ public final class LocationsValidateClusterCreateRequestSamples {
                                                     .withName("storagename.blob.core.windows.net")
                                                     .withIsDefault(true)
                                                     .withContainer("contianername")
-                                                    .withKey("*******")
+                                                    .withKey("fakeTokenPlaceholder")
                                                     .withResourceId(
-                                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storagename"))))
+                                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storagename")
+                                                    .withEnableSecureChannel(true))))
                             .withMinSupportedTlsVersion("1.2"))
                     .withName("testclustername")
                     .withType("Microsoft.HDInsight/clusters")
                     .withTenantId("00000000-0000-0000-0000-000000000000")
                     .withFetchAaddsResource(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

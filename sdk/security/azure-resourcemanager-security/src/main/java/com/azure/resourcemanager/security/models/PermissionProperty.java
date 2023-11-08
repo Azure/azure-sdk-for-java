@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PermissionProperty. */
+/** A permission detected in the cloud account. */
 public final class PermissionProperty extends ExpandableStringEnum<PermissionProperty> {
     /** Static value AWS::AWSSecurityHubReadOnlyAccess for PermissionProperty. */
     public static final PermissionProperty AWS_AWSSECURITY_HUB_READ_ONLY_ACCESS =
@@ -25,6 +25,15 @@ public final class PermissionProperty extends ExpandableStringEnum<PermissionPro
         fromString("GCP::Security Center Admin Viewer");
 
     /**
+     * Creates a new instance of PermissionProperty value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PermissionProperty() {
+    }
+
+    /**
      * Creates or finds a PermissionProperty from its string representation.
      *
      * @param name a name to look for.
@@ -35,7 +44,11 @@ public final class PermissionProperty extends ExpandableStringEnum<PermissionPro
         return fromString(name, PermissionProperty.class);
     }
 
-    /** @return known PermissionProperty values. */
+    /**
+     * Gets known PermissionProperty values.
+     *
+     * @return known PermissionProperty values.
+     */
     public static Collection<PermissionProperty> values() {
         return values(PermissionProperty.class);
     }

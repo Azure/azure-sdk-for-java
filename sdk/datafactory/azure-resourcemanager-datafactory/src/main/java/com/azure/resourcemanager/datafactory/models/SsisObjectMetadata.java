@@ -43,6 +43,10 @@ public class SsisObjectMetadata {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of SsisObjectMetadata class. */
+    public SsisObjectMetadata() {
+    }
+
     /**
      * Get the id property: Metadata id.
      *

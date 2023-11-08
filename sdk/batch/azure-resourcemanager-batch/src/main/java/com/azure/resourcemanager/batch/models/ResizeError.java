@@ -13,15 +13,13 @@ import java.util.List;
 @Fluent
 public final class ResizeError {
     /*
-     * An identifier for the error. Codes are invariant and are intended to be
-     * consumed programmatically.
+     * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
      */
     @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
-     * A message describing the error, intended to be suitable for display in a
-     * user interface.
+     * A message describing the error, intended to be suitable for display in a user interface.
      */
     @JsonProperty(value = "message", required = true)
     private String message;
@@ -31,6 +29,10 @@ public final class ResizeError {
      */
     @JsonProperty(value = "details")
     private List<ResizeError> details;
+
+    /** Creates an instance of ResizeError class. */
+    public ResizeError() {
+    }
 
     /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed

@@ -4,15 +4,15 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** A formula for creating a VM, specifying an image base and other parameters. */
-@Immutable
+@Fluent
 public final class FormulaFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FormulaFragment.class);
+    /** Creates an instance of FormulaFragment class. */
+    public FormulaFragment() {
+    }
 
     /** {@inheritDoc} */
     @Override

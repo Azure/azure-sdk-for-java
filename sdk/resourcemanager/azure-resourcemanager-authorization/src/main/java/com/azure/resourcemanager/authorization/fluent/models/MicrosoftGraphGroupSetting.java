@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,25 +16,20 @@ import java.util.Map;
 /** groupSetting. */
 @Fluent
 public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphGroupSetting.class);
-
     /*
-     * Display name of this group of settings, which comes from the associated
-     * template.
+     * Display name of this group of settings, which comes from the associated template.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Unique identifier for the template used to create this group of
-     * settings. Read-only.
+     * Unique identifier for the template used to create this group of settings. Read-only.
      */
     @JsonProperty(value = "templateId")
     private String templateId;
 
     /*
-     * Collection of name value pairs. Must contain and set all the settings
-     * defined in the template.
+     * Collection of name value pairs. Must contain and set all the settings defined in the template.
      */
     @JsonProperty(value = "values")
     private List<MicrosoftGraphSettingValue> values;
@@ -44,6 +38,10 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
      * groupSetting
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphGroupSetting class. */
+    public MicrosoftGraphGroupSetting() {
+    }
 
     /**
      * Get the displayName property: Display name of this group of settings, which comes from the associated template.

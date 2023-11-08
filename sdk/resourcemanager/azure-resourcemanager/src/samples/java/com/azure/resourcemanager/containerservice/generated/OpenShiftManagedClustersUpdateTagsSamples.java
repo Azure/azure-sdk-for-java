@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for OpenShiftManagedClusters UpdateTags. */
 public final class OpenShiftManagedClustersUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-04-30/examples/OpenShiftManagedClustersUpdateTags.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2019-04-30/examples/OpenShiftManagedClustersUpdateTags.json
      */
     /**
      * Sample code: Update OpenShift Managed Cluster Tags.
@@ -26,9 +25,13 @@ public final class OpenShiftManagedClustersUpdateTagsSamples {
             .serviceClient()
             .getOpenShiftManagedClusters()
             .updateTags(
-                "rg1", "clustername1", new TagsObject().withTags(mapOf("archv3", "", "tier", "testing")), Context.NONE);
+                "rg1",
+                "clustername1",
+                new TagsObject().withTags(mapOf("archv3", "", "tier", "testing")),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

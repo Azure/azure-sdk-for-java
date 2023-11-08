@@ -17,11 +17,27 @@ public final class Nfs3Target {
     private String target;
 
     /*
-     * Identifies the StorageCache usage model to be used for this storage
-     * target.
+     * Identifies the StorageCache usage model to be used for this storage target.
      */
     @JsonProperty(value = "usageModel")
     private String usageModel;
+
+    /*
+     * Amount of time (in seconds) the cache waits before it checks the back-end storage for file updates.
+     */
+    @JsonProperty(value = "verificationTimer")
+    private Integer verificationTimer;
+
+    /*
+     * Amount of time (in seconds) the cache waits after the last file change before it copies the changed file to
+     * back-end storage.
+     */
+    @JsonProperty(value = "writeBackTimer")
+    private Integer writeBackTimer;
+
+    /** Creates an instance of Nfs3Target class. */
+    public Nfs3Target() {
+    }
 
     /**
      * Get the target property: IP address or host name of an NFSv3 host (e.g., 10.0.44.44).
@@ -60,6 +76,50 @@ public final class Nfs3Target {
      */
     public Nfs3Target withUsageModel(String usageModel) {
         this.usageModel = usageModel;
+        return this;
+    }
+
+    /**
+     * Get the verificationTimer property: Amount of time (in seconds) the cache waits before it checks the back-end
+     * storage for file updates.
+     *
+     * @return the verificationTimer value.
+     */
+    public Integer verificationTimer() {
+        return this.verificationTimer;
+    }
+
+    /**
+     * Set the verificationTimer property: Amount of time (in seconds) the cache waits before it checks the back-end
+     * storage for file updates.
+     *
+     * @param verificationTimer the verificationTimer value to set.
+     * @return the Nfs3Target object itself.
+     */
+    public Nfs3Target withVerificationTimer(Integer verificationTimer) {
+        this.verificationTimer = verificationTimer;
+        return this;
+    }
+
+    /**
+     * Get the writeBackTimer property: Amount of time (in seconds) the cache waits after the last file change before it
+     * copies the changed file to back-end storage.
+     *
+     * @return the writeBackTimer value.
+     */
+    public Integer writeBackTimer() {
+        return this.writeBackTimer;
+    }
+
+    /**
+     * Set the writeBackTimer property: Amount of time (in seconds) the cache waits after the last file change before it
+     * copies the changed file to back-end storage.
+     *
+     * @param writeBackTimer the writeBackTimer value to set.
+     * @return the Nfs3Target object itself.
+     */
+    public Nfs3Target withWriteBackTimer(Integer writeBackTimer) {
+        this.writeBackTimer = writeBackTimer;
         return this;
     }
 

@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.models.DatabaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A List of databases. */
 @Fluent
 public final class DatabaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseListResult.class);
-
     /*
      * The list of databases housed in a server
      */
     @JsonProperty(value = "value")
     private List<DatabaseInner> value;
+
+    /** Creates an instance of DatabaseListResult class. */
+    public DatabaseListResult() {
+    }
 
     /**
      * Get the value property: The list of databases housed in a server.

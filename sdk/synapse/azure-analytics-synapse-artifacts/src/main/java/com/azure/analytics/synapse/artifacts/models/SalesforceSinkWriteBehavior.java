@@ -8,13 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SalesforceSinkWriteBehavior. */
+/** The write behavior for the operation. Default is Insert. */
 public final class SalesforceSinkWriteBehavior extends ExpandableStringEnum<SalesforceSinkWriteBehavior> {
     /** Static value Insert for SalesforceSinkWriteBehavior. */
     public static final SalesforceSinkWriteBehavior INSERT = fromString("Insert");
 
     /** Static value Upsert for SalesforceSinkWriteBehavior. */
     public static final SalesforceSinkWriteBehavior UPSERT = fromString("Upsert");
+
+    /**
+     * Creates a new instance of SalesforceSinkWriteBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SalesforceSinkWriteBehavior() {}
 
     /**
      * Creates or finds a SalesforceSinkWriteBehavior from its string representation.
@@ -27,7 +35,11 @@ public final class SalesforceSinkWriteBehavior extends ExpandableStringEnum<Sale
         return fromString(name, SalesforceSinkWriteBehavior.class);
     }
 
-    /** @return known SalesforceSinkWriteBehavior values. */
+    /**
+     * Gets known SalesforceSinkWriteBehavior values.
+     *
+     * @return known SalesforceSinkWriteBehavior values.
+     */
     public static Collection<SalesforceSinkWriteBehavior> values() {
         return values(SalesforceSinkWriteBehavior.class);
     }

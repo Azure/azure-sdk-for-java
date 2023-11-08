@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Restore status. */
 @Immutable
 public final class RestoreStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreStatusInner.class);
-
     /*
      * Restore health status
      */
@@ -51,6 +47,10 @@ public final class RestoreStatusInner {
      */
     @JsonProperty(value = "totalTransferBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalTransferBytes;
+
+    /** Creates an instance of RestoreStatusInner class. */
+    public RestoreStatusInner() {
+    }
 
     /**
      * Get the healthy property: Restore health status.

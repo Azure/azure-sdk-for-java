@@ -24,6 +24,10 @@ public final class HDInsightLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightLinkedServiceTypeProperties innerTypeProperties = new HDInsightLinkedServiceTypeProperties();
 
+    /** Creates an instance of HDInsightLinkedService class. */
+    public HDInsightLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight linked service properties.
      *
@@ -180,22 +184,22 @@ public final class HDInsightLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HDInsightLinkedService object itself.
      */
-    public HDInsightLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public HDInsightLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new HDInsightLinkedServiceTypeProperties();
         }

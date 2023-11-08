@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for CosmosDB (MongoDB API) data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,19 +19,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /*
-     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString
-     * or AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the CosmosDB (MongoDB API) database that you want to access.
-     * Type: string (or Expression with resultType string).
+     * The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
+
+    /** Creates an instance of CosmosDbMongoDbApiLinkedService class. */
+    public CosmosDbMongoDbApiLinkedService() {}
 
     /**
      * Get the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or
@@ -72,6 +76,34 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
      */
     public CosmosDbMongoDbApiLinkedService setDatabase(Object database) {
         this.database = database;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbMongoDbApiLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

@@ -7,11 +7,8 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ContentType. */
+/** Content type for upload. */
 public enum ContentType {
-    /** Enum value application/octet-stream. */
-    APPLICATION_OCTET_STREAM("application/octet-stream"),
-
     /** Enum value application/pdf. */
     APPLICATION_PDF("application/pdf"),
 
@@ -42,6 +39,9 @@ public enum ContentType {
      */
     @JsonCreator
     public static ContentType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ContentType[] items = ContentType.values();
         for (ContentType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +51,7 @@ public enum ContentType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

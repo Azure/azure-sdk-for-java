@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExportPolicyStatus. */
+/** The value that indicates whether the policy is enabled or not. */
 public final class ExportPolicyStatus extends ExpandableStringEnum<ExportPolicyStatus> {
     /** Static value enabled for ExportPolicyStatus. */
     public static final ExportPolicyStatus ENABLED = fromString("enabled");
 
     /** Static value disabled for ExportPolicyStatus. */
     public static final ExportPolicyStatus DISABLED = fromString("disabled");
+
+    /**
+     * Creates a new instance of ExportPolicyStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExportPolicyStatus() {
+    }
 
     /**
      * Creates or finds a ExportPolicyStatus from its string representation.
@@ -27,7 +36,11 @@ public final class ExportPolicyStatus extends ExpandableStringEnum<ExportPolicyS
         return fromString(name, ExportPolicyStatus.class);
     }
 
-    /** @return known ExportPolicyStatus values. */
+    /**
+     * Gets known ExportPolicyStatus values.
+     *
+     * @return known ExportPolicyStatus values.
+     */
     public static Collection<ExportPolicyStatus> values() {
         return values(ExportPolicyStatus.class);
     }

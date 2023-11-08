@@ -6,75 +6,45 @@ package com.azure.communication.callingserver.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 
-/**
- * The participant in a call.
- */
+/** The CallParticipant model. */
 @Immutable
 public final class CallParticipant {
-
-    /**
-     * The communication identity of the participant.
+    /*
+     * Communication identifier of the participant
      */
     private final CommunicationIdentifier identifier;
 
-    /**
-     * The participant id.
+    /*
+     * Is participant muted
      */
-    private final String participantId;
+    private final Boolean isMuted;
 
     /**
-     * Is participant muted.
-     */
-    private final boolean isMuted;
-
-    /**
-     * Get the communication identity of the participant.
+     * Constructor of the class
      *
-     * @return the communication identity of the participant object itself
+     * @param identifier The communication identifier
+     * @param isMuted The value of isMuted
+     */
+    public CallParticipant(CommunicationIdentifier identifier, Boolean isMuted) {
+        this.identifier = identifier;
+        this.isMuted = isMuted;
+    }
+
+    /**
+     * Get the identifier property: Communication identifier of the participant.
+     *
+     * @return the identifier value.
      */
     public CommunicationIdentifier getIdentifier() {
-        return identifier;
+        return this.identifier;
     }
 
     /**
-     * Get the participant id.
+     * Get the isMuted property: Is participant muted.
      *
-     * @return the participant id value.
+     * @return the isMuted value.
      */
-    public String getParticipantId() {
-        return participantId;
-    }
-
-    /**
-     * Get is participant muted.
-     *
-     * @return the communication identity of the participant object itself
-     */
-    public boolean isMuted() {
-        return isMuted;
-    }
-
-    /**
-     * Initializes a new instance of CallParticipant.
-     *
-     * @param communicationIdentifier Communication Identifier.
-     * @param participantId Participant Id.
-     * @param isMuted Is participant muted.
-     * @throws IllegalArgumentException if either parameter is null.
-     */
-    public CallParticipant(
-        CommunicationIdentifier communicationIdentifier,
-        String participantId,
-        boolean isMuted) {
-        if (communicationIdentifier == null) {
-            throw new IllegalArgumentException("object communicationIdentifier cannot be null");
-        }
-        if (participantId == null) {
-            throw new IllegalArgumentException("object participantId cannot be null");
-        }
-
-        this.identifier = communicationIdentifier;
-        this.participantId = participantId;
-        this.isMuted = isMuted;
+    public Boolean isMuted() {
+        return this.isMuted;
     }
 }

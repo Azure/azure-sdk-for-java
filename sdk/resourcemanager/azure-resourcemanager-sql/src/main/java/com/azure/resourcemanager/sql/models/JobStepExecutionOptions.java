@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The execution options of a job step. */
 @Fluent
 public final class JobStepExecutionOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStepExecutionOptions.class);
-
     /*
      * Execution timeout for the job step.
      */
@@ -21,8 +17,7 @@ public final class JobStepExecutionOptions {
     private Integer timeoutSeconds;
 
     /*
-     * Maximum number of times the job step will be reattempted if the first
-     * attempt fails.
+     * Maximum number of times the job step will be reattempted if the first attempt fails.
      */
     @JsonProperty(value = "retryAttempts")
     private Integer retryAttempts;
@@ -34,8 +29,7 @@ public final class JobStepExecutionOptions {
     private Integer initialRetryIntervalSeconds;
 
     /*
-     * The maximum amount of time to wait between retries for job step
-     * execution.
+     * The maximum amount of time to wait between retries for job step execution.
      */
     @JsonProperty(value = "maximumRetryIntervalSeconds")
     private Integer maximumRetryIntervalSeconds;
@@ -45,6 +39,10 @@ public final class JobStepExecutionOptions {
      */
     @JsonProperty(value = "retryIntervalBackoffMultiplier")
     private Float retryIntervalBackoffMultiplier;
+
+    /** Creates an instance of JobStepExecutionOptions class. */
+    public JobStepExecutionOptions() {
+    }
 
     /**
      * Get the timeoutSeconds property: Execution timeout for the job step.

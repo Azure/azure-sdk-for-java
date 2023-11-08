@@ -6,14 +6,11 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the EventHub event source. */
 @Fluent
 public class EventHubEventSourceCommonProperties extends AzureEventSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubEventSourceCommonProperties.class);
-
     /*
      * The name of the service bus that contains the event hub.
      */
@@ -27,19 +24,21 @@ public class EventHubEventSourceCommonProperties extends AzureEventSourcePropert
     private String eventHubName;
 
     /*
-     * The name of the event hub's consumer group that holds the partitions
-     * from which events will be read.
+     * The name of the event hub's consumer group that holds the partitions from which events will be read.
      */
     @JsonProperty(value = "consumerGroupName", required = true)
     private String consumerGroupName;
 
     /*
-     * The name of the SAS key that grants the Time Series Insights service
-     * access to the event hub. The shared access policies for this key must
-     * grant 'Listen' permissions to the event hub.
+     * The name of the SAS key that grants the Time Series Insights service access to the event hub. The shared access
+     * policies for this key must grant 'Listen' permissions to the event hub.
      */
     @JsonProperty(value = "keyName", required = true)
     private String keyName;
+
+    /** Creates an instance of EventHubEventSourceCommonProperties class. */
+    public EventHubEventSourceCommonProperties() {
+    }
 
     /**
      * Get the serviceBusNamespace property: The name of the service bus that contains the event hub.
@@ -139,6 +138,27 @@ public class EventHubEventSourceCommonProperties extends AzureEventSourcePropert
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EventHubEventSourceCommonProperties withLocalTimestamp(LocalTimestamp localTimestamp) {
+        super.withLocalTimestamp(localTimestamp);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EventHubEventSourceCommonProperties withType(IngressStartAtType type) {
+        super.withType(type);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EventHubEventSourceCommonProperties withTime(String time) {
+        super.withTime(time);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -148,28 +168,30 @@ public class EventHubEventSourceCommonProperties extends AzureEventSourcePropert
     public void validate() {
         super.validate();
         if (serviceBusNamespace() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serviceBusNamespace in model EventHubEventSourceCommonProperties"));
         }
         if (eventHubName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventHubName in model EventHubEventSourceCommonProperties"));
         }
         if (consumerGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property consumerGroupName in model EventHubEventSourceCommonProperties"));
         }
         if (keyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyName in model EventHubEventSourceCommonProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubEventSourceCommonProperties.class);
 }

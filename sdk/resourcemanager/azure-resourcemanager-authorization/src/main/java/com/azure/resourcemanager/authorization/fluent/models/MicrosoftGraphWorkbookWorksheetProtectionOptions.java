@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,12 +15,8 @@ import java.util.Map;
 /** workbookWorksheetProtectionOptions. */
 @Fluent
 public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookWorksheetProtectionOptions.class);
-
     /*
-     * Represents the worksheet protection option of allowing using auto filter
-     * feature.
+     * Represents the worksheet protection option of allowing using auto filter feature.
      */
     @JsonProperty(value = "allowAutoFilter")
     private Boolean allowAutoFilter;
@@ -45,8 +40,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
     private Boolean allowFormatCells;
 
     /*
-     * Represents the worksheet protection option of allowing formatting
-     * columns.
+     * Represents the worksheet protection option of allowing formatting columns.
      */
     @JsonProperty(value = "allowFormatColumns")
     private Boolean allowFormatColumns;
@@ -58,15 +52,13 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
     private Boolean allowFormatRows;
 
     /*
-     * Represents the worksheet protection option of allowing inserting
-     * columns.
+     * Represents the worksheet protection option of allowing inserting columns.
      */
     @JsonProperty(value = "allowInsertColumns")
     private Boolean allowInsertColumns;
 
     /*
-     * Represents the worksheet protection option of allowing inserting
-     * hyperlinks.
+     * Represents the worksheet protection option of allowing inserting hyperlinks.
      */
     @JsonProperty(value = "allowInsertHyperlinks")
     private Boolean allowInsertHyperlinks;
@@ -78,15 +70,13 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
     private Boolean allowInsertRows;
 
     /*
-     * Represents the worksheet protection option of allowing using pivot table
-     * feature.
+     * Represents the worksheet protection option of allowing using pivot table feature.
      */
     @JsonProperty(value = "allowPivotTables")
     private Boolean allowPivotTables;
 
     /*
-     * Represents the worksheet protection option of allowing using sort
-     * feature.
+     * Represents the worksheet protection option of allowing using sort feature.
      */
     @JsonProperty(value = "allowSort")
     private Boolean allowSort;
@@ -95,6 +85,10 @@ public final class MicrosoftGraphWorkbookWorksheetProtectionOptions {
      * workbookWorksheetProtectionOptions
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookWorksheetProtectionOptions class. */
+    public MicrosoftGraphWorkbookWorksheetProtectionOptions() {
+    }
 
     /**
      * Get the allowAutoFilter property: Represents the worksheet protection option of allowing using auto filter

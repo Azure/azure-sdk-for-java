@@ -28,6 +28,16 @@ public final class VirtualApplianceNicProperties {
     @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
+    /*
+     * Instance on which nic is attached.
+     */
+    @JsonProperty(value = "instanceName", access = JsonProperty.Access.WRITE_ONLY)
+    private String instanceName;
+
+    /** Creates an instance of VirtualApplianceNicProperties class. */
+    public VirtualApplianceNicProperties() {
+    }
+
     /**
      * Get the name property: NIC name.
      *
@@ -53,6 +63,15 @@ public final class VirtualApplianceNicProperties {
      */
     public String privateIpAddress() {
         return this.privateIpAddress;
+    }
+
+    /**
+     * Get the instanceName property: Instance on which nic is attached.
+     *
+     * @return the instanceName value.
+     */
+    public String instanceName() {
+        return this.instanceName;
     }
 
     /**

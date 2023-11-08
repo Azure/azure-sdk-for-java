@@ -4,25 +4,49 @@
 
 package com.azure.resourcemanager.monitor.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.monitor.models.CategoryType;
-import com.azure.resourcemanager.monitor.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The diagnostic settings category resource. */
-@JsonFlatten
-@Fluent
-public class DiagnosticSettingsCategoryResourceInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticSettingsCategoryResourceInner.class);
+@Immutable
+public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource {
+    /*
+     * The properties of a Diagnostic Settings Category.
+     */
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private DiagnosticSettingsCategory innerProperties;
 
     /*
-     * The type of the diagnostic settings category.
+     * The system metadata related to this resource.
      */
-    @JsonProperty(value = "properties.categoryType")
-    private CategoryType categoryType;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of DiagnosticSettingsCategoryResourceInner class. */
+    public DiagnosticSettingsCategoryResourceInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties of a Diagnostic Settings Category.
+     *
+     * @return the innerProperties value.
+     */
+    private DiagnosticSettingsCategory innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: The system metadata related to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the categoryType property: The type of the diagnostic settings category.
@@ -30,7 +54,7 @@ public class DiagnosticSettingsCategoryResourceInner extends ProxyOnlyResource {
      * @return the categoryType value.
      */
     public CategoryType categoryType() {
-        return this.categoryType;
+        return this.innerProperties() == null ? null : this.innerProperties().categoryType();
     }
 
     /**
@@ -40,7 +64,33 @@ public class DiagnosticSettingsCategoryResourceInner extends ProxyOnlyResource {
      * @return the DiagnosticSettingsCategoryResourceInner object itself.
      */
     public DiagnosticSettingsCategoryResourceInner withCategoryType(CategoryType categoryType) {
-        this.categoryType = categoryType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticSettingsCategory();
+        }
+        this.innerProperties().withCategoryType(categoryType);
+        return this;
+    }
+
+    /**
+     * Get the categoryGroups property: the collection of what category groups are supported.
+     *
+     * @return the categoryGroups value.
+     */
+    public List<String> categoryGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().categoryGroups();
+    }
+
+    /**
+     * Set the categoryGroups property: the collection of what category groups are supported.
+     *
+     * @param categoryGroups the categoryGroups value to set.
+     * @return the DiagnosticSettingsCategoryResourceInner object itself.
+     */
+    public DiagnosticSettingsCategoryResourceInner withCategoryGroups(List<String> categoryGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticSettingsCategory();
+        }
+        this.innerProperties().withCategoryGroups(categoryGroups);
         return this;
     }
 
@@ -49,8 +99,9 @@ public class DiagnosticSettingsCategoryResourceInner extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

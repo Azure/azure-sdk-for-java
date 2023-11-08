@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Open authentication access policy defined by user. */
 @Fluent
 public final class OpenAuthenticationAccessPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenAuthenticationAccessPolicy.class);
-
     /*
      * Type of provider for OAuth.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private OpenAuthenticationProviderType type;
 
     /*
@@ -27,6 +23,10 @@ public final class OpenAuthenticationAccessPolicy {
     @JsonProperty(value = "claims")
     private List<OpenAuthenticationPolicyClaim> claims;
 
+    /** Creates an instance of OpenAuthenticationAccessPolicy class. */
+    public OpenAuthenticationAccessPolicy() {
+    }
+
     /**
      * Get the type property: Type of provider for OAuth.
      *
@@ -34,6 +34,17 @@ public final class OpenAuthenticationAccessPolicy {
      */
     public OpenAuthenticationProviderType type() {
         return this.type;
+    }
+
+    /**
+     * Set the type property: Type of provider for OAuth.
+     *
+     * @param type the type value to set.
+     * @return the OpenAuthenticationAccessPolicy object itself.
+     */
+    public OpenAuthenticationAccessPolicy withType(OpenAuthenticationProviderType type) {
+        this.type = type;
+        return this;
     }
 
     /**

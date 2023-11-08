@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The basic information of an event. */
 @Fluent
 public class EventInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventInfoInner.class);
-
     /*
      * The event ID.
      */

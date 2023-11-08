@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PackageState. */
+/** The current state of the application package. */
 public enum PackageState {
     /** Enum value Pending. */
     PENDING("Pending"),
@@ -30,6 +30,9 @@ public enum PackageState {
      */
     @JsonCreator
     public static PackageState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PackageState[] items = PackageState.values();
         for (PackageState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum PackageState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

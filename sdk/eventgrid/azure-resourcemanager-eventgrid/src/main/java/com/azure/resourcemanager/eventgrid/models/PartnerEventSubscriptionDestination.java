@@ -21,6 +21,10 @@ public final class PartnerEventSubscriptionDestination extends EventSubscription
     @JsonProperty(value = "properties")
     private PartnerEventSubscriptionDestinationProperties innerProperties;
 
+    /** Creates an instance of PartnerEventSubscriptionDestination class. */
+    public PartnerEventSubscriptionDestination() {
+    }
+
     /**
      * Get the innerProperties property: Partner Destination Properties of the event subscription destination.
      *

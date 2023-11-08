@@ -18,10 +18,9 @@ import com.azure.resourcemanager.appconfiguration.models.ConfigurationStore;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStores;
 import com.azure.resourcemanager.appconfiguration.models.DeletedConfigurationStore;
 import com.azure.resourcemanager.appconfiguration.models.RegenerateKeyParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationStoresImpl implements ConfigurationStores {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationStoresImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationStoresImpl.class);
 
     private final ConfigurationStoresClient innerClient;
 
@@ -56,15 +55,6 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         return Utils.mapPage(inner, inner1 -> new ConfigurationStoreImpl(inner1, this.manager()));
     }
 
-    public ConfigurationStore getByResourceGroup(String resourceGroupName, String configStoreName) {
-        ConfigurationStoreInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, configStoreName);
-        if (inner != null) {
-            return new ConfigurationStoreImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ConfigurationStore> getByResourceGroupWithResponse(
         String resourceGroupName, String configStoreName, Context context) {
         Response<ConfigurationStoreInner> inner =
@@ -75,6 +65,15 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ConfigurationStoreImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConfigurationStore getByResourceGroup(String resourceGroupName, String configStoreName) {
+        ConfigurationStoreInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, configStoreName);
+        if (inner != null) {
+            return new ConfigurationStoreImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -100,17 +99,6 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         return Utils.mapPage(inner, inner1 -> new ApiKeyImpl(inner1, this.manager()));
     }
 
-    public ApiKey regenerateKey(
-        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters) {
-        ApiKeyInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, configStoreName, regenerateKeyParameters);
-        if (inner != null) {
-            return new ApiKeyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApiKey> regenerateKeyWithResponse(
         String resourceGroupName,
         String configStoreName,
@@ -131,6 +119,17 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         }
     }
 
+    public ApiKey regenerateKey(
+        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters) {
+        ApiKeyInner inner =
+            this.serviceClient().regenerateKey(resourceGroupName, configStoreName, regenerateKeyParameters);
+        if (inner != null) {
+            return new ApiKeyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<DeletedConfigurationStore> listDeleted() {
         PagedIterable<DeletedConfigurationStoreInner> inner = this.serviceClient().listDeleted();
         return Utils.mapPage(inner, inner1 -> new DeletedConfigurationStoreImpl(inner1, this.manager()));
@@ -139,15 +138,6 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     public PagedIterable<DeletedConfigurationStore> listDeleted(Context context) {
         PagedIterable<DeletedConfigurationStoreInner> inner = this.serviceClient().listDeleted(context);
         return Utils.mapPage(inner, inner1 -> new DeletedConfigurationStoreImpl(inner1, this.manager()));
-    }
-
-    public DeletedConfigurationStore getDeleted(String location, String configStoreName) {
-        DeletedConfigurationStoreInner inner = this.serviceClient().getDeleted(location, configStoreName);
-        if (inner != null) {
-            return new DeletedConfigurationStoreImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<DeletedConfigurationStore> getDeletedWithResponse(
@@ -165,6 +155,15 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         }
     }
 
+    public DeletedConfigurationStore getDeleted(String location, String configStoreName) {
+        DeletedConfigurationStoreInner inner = this.serviceClient().getDeleted(location, configStoreName);
+        if (inner != null) {
+            return new DeletedConfigurationStoreImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void purgeDeleted(String location, String configStoreName) {
         this.serviceClient().purgeDeleted(location, configStoreName);
     }
@@ -176,7 +175,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     public ConfigurationStore getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -184,7 +183,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -197,7 +196,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     public Response<ConfigurationStore> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -205,7 +204,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -218,7 +217,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -226,7 +225,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -239,7 +238,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -247,7 +246,7 @@ public final class ConfigurationStoresImpl implements ConfigurationStores {
         }
         String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

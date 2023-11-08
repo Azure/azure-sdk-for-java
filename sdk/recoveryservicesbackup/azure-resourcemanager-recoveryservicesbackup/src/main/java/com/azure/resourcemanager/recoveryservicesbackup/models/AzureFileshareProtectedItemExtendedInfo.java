@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Additional information about Azure File Share backup item. */
 @Fluent
 public final class AzureFileshareProtectedItemExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileshareProtectedItemExtendedInfo.class);
-
     /*
      * The oldest backup copy available for this item in the service.
      */
@@ -28,15 +24,14 @@ public final class AzureFileshareProtectedItemExtendedInfo {
     private Integer recoveryPointCount;
 
     /*
-     * Indicates consistency of policy object and policy applied to this backup
-     * item.
+     * Indicates consistency of policy object and policy applied to this backup item.
      */
     @JsonProperty(value = "policyState")
     private String policyState;
 
     /*
-     * Indicates the state of this resource. Possible values are from enum
-     * ResourceState {Invalid, Active, SoftDeleted, Deleted}
+     * Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted,
+     * Deleted}
      */
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceState;
@@ -46,6 +41,10 @@ public final class AzureFileshareProtectedItemExtendedInfo {
      */
     @JsonProperty(value = "resourceStateSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime resourceStateSyncTime;
+
+    /** Creates an instance of AzureFileshareProtectedItemExtendedInfo class. */
+    public AzureFileshareProtectedItemExtendedInfo() {
+    }
 
     /**
      * Get the oldestRecoveryPoint property: The oldest backup copy available for this item in the service.

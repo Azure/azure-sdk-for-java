@@ -22,8 +22,7 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
     private ApiEntityReference subnet;
 
     /*
-     * Specifies the primary IP Configuration in case the network interface has
-     * more than one IP Configuration.
+     * Specifies the primary IP Configuration in case the network interface has more than one IP Configuration.
      */
     @JsonProperty(value = "primary")
     private Boolean primary;
@@ -35,9 +34,8 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
     private VirtualMachineScaleSetUpdatePublicIpAddressConfiguration publicIpAddressConfiguration;
 
     /*
-     * Available from Api-Version 2017-03-30 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
-     * Possible values are: 'IPv4' and 'IPv6'.
+     * Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or
+     * IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'.
      */
     @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
@@ -65,6 +63,10 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
      */
     @JsonProperty(value = "loadBalancerInboundNatPools")
     private List<SubResource> loadBalancerInboundNatPools;
+
+    /** Creates an instance of VirtualMachineScaleSetUpdateIpConfigurationProperties class. */
+    public VirtualMachineScaleSetUpdateIpConfigurationProperties() {
+    }
 
     /**
      * Get the subnet property: The subnet.

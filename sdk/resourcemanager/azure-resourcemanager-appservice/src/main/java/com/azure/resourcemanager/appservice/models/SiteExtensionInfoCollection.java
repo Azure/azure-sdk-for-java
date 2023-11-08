@@ -25,6 +25,10 @@ public final class SiteExtensionInfoCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SiteExtensionInfoCollection class. */
+    public SiteExtensionInfoCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

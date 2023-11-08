@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.WorkspacePatchProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Workspace properties that can be patched. */
 @Fluent
 public final class WorkspacePatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePatch.class);
-
     /*
      * tags to be updated
      */
@@ -30,6 +26,10 @@ public final class WorkspacePatch {
      */
     @JsonProperty(value = "properties")
     private WorkspacePatchProperties innerProperties;
+
+    /** Creates an instance of WorkspacePatch class. */
+    public WorkspacePatch() {
+    }
 
     /**
      * Get the tags property: tags to be updated.

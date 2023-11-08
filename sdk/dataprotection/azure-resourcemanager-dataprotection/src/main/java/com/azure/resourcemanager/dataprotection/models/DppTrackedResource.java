@@ -5,58 +5,28 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The DppTrackedResource model. */
 @Fluent
-public class DppTrackedResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DppTrackedResource.class);
-
+public class DppTrackedResource extends DppBaseTrackedResource {
     /*
-     * Optional ETag.
-     */
-    @JsonProperty(value = "eTag")
-    private String etag;
-
-    /*
-     * DppIdentityDetails Input Managed Identity Details
+     * DppIdentityDetails
+     *
+     * Input Managed Identity Details
      */
     @JsonProperty(value = "identity")
     private DppIdentityDetails identity;
 
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /**
-     * Get the etag property: Optional ETag.
-     *
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
+    /** Creates an instance of DppTrackedResource class. */
+    public DppTrackedResource() {
     }
 
     /**
-     * Set the etag property: Optional ETag.
+     * Get the identity property: DppIdentityDetails
      *
-     * @param etag the etag value to set.
-     * @return the DppTrackedResource object itself.
-     */
-    public DppTrackedResource withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
-     * Get the identity property: DppIdentityDetails Input Managed Identity Details.
+     * <p>Input Managed Identity Details.
      *
      * @return the identity value.
      */
@@ -65,7 +35,9 @@ public class DppTrackedResource extends Resource {
     }
 
     /**
-     * Set the identity property: DppIdentityDetails Input Managed Identity Details.
+     * Set the identity property: DppIdentityDetails
+     *
+     * <p>Input Managed Identity Details.
      *
      * @param identity the identity value to set.
      * @return the DppTrackedResource object itself.
@@ -75,13 +47,11 @@ public class DppTrackedResource extends Resource {
         return this;
     }
 
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
+    /** {@inheritDoc} */
+    @Override
+    public DppTrackedResource withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -103,7 +73,9 @@ public class DppTrackedResource extends Resource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (identity() != null) {
             identity().validate();
         }

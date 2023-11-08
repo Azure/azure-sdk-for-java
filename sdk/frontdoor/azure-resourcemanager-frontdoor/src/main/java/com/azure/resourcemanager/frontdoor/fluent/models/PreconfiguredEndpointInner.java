@@ -5,122 +5,31 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.frontdoor.models.EndpointType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Defines the properties of a preconfigured endpoint. */
-@JsonFlatten
 @Fluent
-public class PreconfiguredEndpointInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreconfiguredEndpointInner.class);
-
+public final class PreconfiguredEndpointInner extends Resource {
     /*
-     * The description of the endpoint
+     * The properties of a preconfiguredEndpoint
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private PreconfiguredEndpointProperties innerProperties;
 
-    /*
-     * The endpoint that is preconfigured
-     */
-    @JsonProperty(value = "properties.endpoint")
-    private String endpoint;
-
-    /*
-     * The type of endpoint
-     */
-    @JsonProperty(value = "properties.endpointType")
-    private EndpointType endpointType;
-
-    /*
-     * The preconfigured endpoint backend
-     */
-    @JsonProperty(value = "properties.backend")
-    private String backend;
-
-    /**
-     * Get the description property: The description of the endpoint.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
+    /** Creates an instance of PreconfiguredEndpointInner class. */
+    public PreconfiguredEndpointInner() {
     }
 
     /**
-     * Set the description property: The description of the endpoint.
+     * Get the innerProperties property: The properties of a preconfiguredEndpoint.
      *
-     * @param description the description value to set.
-     * @return the PreconfiguredEndpointInner object itself.
+     * @return the innerProperties value.
      */
-    public PreconfiguredEndpointInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the endpoint property: The endpoint that is preconfigured.
-     *
-     * @return the endpoint value.
-     */
-    public String endpoint() {
-        return this.endpoint;
-    }
-
-    /**
-     * Set the endpoint property: The endpoint that is preconfigured.
-     *
-     * @param endpoint the endpoint value to set.
-     * @return the PreconfiguredEndpointInner object itself.
-     */
-    public PreconfiguredEndpointInner withEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
-
-    /**
-     * Get the endpointType property: The type of endpoint.
-     *
-     * @return the endpointType value.
-     */
-    public EndpointType endpointType() {
-        return this.endpointType;
-    }
-
-    /**
-     * Set the endpointType property: The type of endpoint.
-     *
-     * @param endpointType the endpointType value to set.
-     * @return the PreconfiguredEndpointInner object itself.
-     */
-    public PreconfiguredEndpointInner withEndpointType(EndpointType endpointType) {
-        this.endpointType = endpointType;
-        return this;
-    }
-
-    /**
-     * Get the backend property: The preconfigured endpoint backend.
-     *
-     * @return the backend value.
-     */
-    public String backend() {
-        return this.backend;
-    }
-
-    /**
-     * Set the backend property: The preconfigured endpoint backend.
-     *
-     * @param backend the backend value to set.
-     * @return the PreconfiguredEndpointInner object itself.
-     */
-    public PreconfiguredEndpointInner withBackend(String backend) {
-        this.backend = backend;
-        return this;
+    private PreconfiguredEndpointProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -138,10 +47,105 @@ public class PreconfiguredEndpointInner extends Resource {
     }
 
     /**
+     * Get the description property: The description of the endpoint.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: The description of the endpoint.
+     *
+     * @param description the description value to set.
+     * @return the PreconfiguredEndpointInner object itself.
+     */
+    public PreconfiguredEndpointInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PreconfiguredEndpointProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the endpoint property: The endpoint that is preconfigured.
+     *
+     * @return the endpoint value.
+     */
+    public String endpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
+    }
+
+    /**
+     * Set the endpoint property: The endpoint that is preconfigured.
+     *
+     * @param endpoint the endpoint value to set.
+     * @return the PreconfiguredEndpointInner object itself.
+     */
+    public PreconfiguredEndpointInner withEndpoint(String endpoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PreconfiguredEndpointProperties();
+        }
+        this.innerProperties().withEndpoint(endpoint);
+        return this;
+    }
+
+    /**
+     * Get the endpointType property: The type of endpoint.
+     *
+     * @return the endpointType value.
+     */
+    public EndpointType endpointType() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpointType();
+    }
+
+    /**
+     * Set the endpointType property: The type of endpoint.
+     *
+     * @param endpointType the endpointType value to set.
+     * @return the PreconfiguredEndpointInner object itself.
+     */
+    public PreconfiguredEndpointInner withEndpointType(EndpointType endpointType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PreconfiguredEndpointProperties();
+        }
+        this.innerProperties().withEndpointType(endpointType);
+        return this;
+    }
+
+    /**
+     * Get the backend property: The preconfigured endpoint backend.
+     *
+     * @return the backend value.
+     */
+    public String backend() {
+        return this.innerProperties() == null ? null : this.innerProperties().backend();
+    }
+
+    /**
+     * Set the backend property: The preconfigured endpoint backend.
+     *
+     * @param backend the backend value to set.
+     * @return the PreconfiguredEndpointInner object itself.
+     */
+    public PreconfiguredEndpointInner withBackend(String backend) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PreconfiguredEndpointProperties();
+        }
+        this.innerProperties().withBackend(backend);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

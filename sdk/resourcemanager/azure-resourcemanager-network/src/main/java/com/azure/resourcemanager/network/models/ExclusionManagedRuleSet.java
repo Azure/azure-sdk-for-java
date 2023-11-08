@@ -30,6 +30,10 @@ public final class ExclusionManagedRuleSet {
     @JsonProperty(value = "ruleGroups")
     private List<ExclusionManagedRuleGroup> ruleGroups;
 
+    /** Creates an instance of ExclusionManagedRuleSet class. */
+    public ExclusionManagedRuleSet() {
+    }
+
     /**
      * Get the ruleSetType property: Defines the rule set type to use.
      *

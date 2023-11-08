@@ -28,15 +28,6 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         this.serviceManager = serviceManager;
     }
 
-    public NameAvailability execute(String locationName, NameAvailabilityRequest nameAvailabilityRequest) {
-        NameAvailabilityInner inner = this.serviceClient().execute(locationName, nameAvailabilityRequest);
-        if (inner != null) {
-            return new NameAvailabilityImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NameAvailability> executeWithResponse(
         String locationName, NameAvailabilityRequest nameAvailabilityRequest, Context context) {
         Response<NameAvailabilityInner> inner =
@@ -47,6 +38,15 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NameAvailabilityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NameAvailability execute(String locationName, NameAvailabilityRequest nameAvailabilityRequest) {
+        NameAvailabilityInner inner = this.serviceClient().execute(locationName, nameAvailabilityRequest);
+        if (inner != null) {
+            return new NameAvailabilityImpl(inner, this.manager());
         } else {
             return null;
         }

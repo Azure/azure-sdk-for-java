@@ -64,6 +64,7 @@
 
 ## PrivateEndpointConnection
 
+- [Delete](#privateendpointconnection_delete)
 - [Get](#privateendpointconnection_get)
 - [ListByBatchAccount](#privateendpointconnection_listbybatchaccount)
 - [Update](#privateendpointconnection_update)
@@ -78,7 +79,7 @@
 /** Samples for Application Create. */
 public final class ApplicationCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationCreate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationCreate.json
      */
     /**
      * Sample code: ApplicationCreate.
@@ -100,12 +101,10 @@ public final class ApplicationCreateSamples {
 ### Application_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Application Delete. */
 public final class ApplicationDeleteSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationDelete.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationDelete.json
      */
     /**
      * Sample code: ApplicationDelete.
@@ -113,7 +112,9 @@ public final class ApplicationDeleteSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void applicationDelete(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.applications().deleteWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", Context.NONE);
+        manager
+            .applications()
+            .deleteWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -121,12 +122,10 @@ public final class ApplicationDeleteSamples {
 ### Application_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Application Get. */
 public final class ApplicationGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationGet.json
      */
     /**
      * Sample code: ApplicationGet.
@@ -134,7 +133,9 @@ public final class ApplicationGetSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void applicationGet(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.applications().getWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", Context.NONE);
+        manager
+            .applications()
+            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -142,12 +143,10 @@ public final class ApplicationGetSamples {
 ### Application_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Application List. */
 public final class ApplicationListSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationList.json
      */
     /**
      * Sample code: ApplicationList.
@@ -155,7 +154,9 @@ public final class ApplicationListSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void applicationList(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.applications().list("default-azurebatch-japaneast", "sampleacct", null, Context.NONE);
+        manager
+            .applications()
+            .list("default-azurebatch-japaneast", "sampleacct", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -163,13 +164,12 @@ public final class ApplicationListSamples {
 ### Application_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.Application;
 
 /** Samples for Application Update. */
 public final class ApplicationUpdateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationUpdate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationUpdate.json
      */
     /**
      * Sample code: ApplicationUpdate.
@@ -180,7 +180,7 @@ public final class ApplicationUpdateSamples {
         Application resource =
             manager
                 .applications()
-                .getWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", Context.NONE)
+                .getWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withDisplayName("myAppName").withAllowUpdates(true).withDefaultVersion("2").apply();
     }
@@ -190,13 +190,12 @@ public final class ApplicationUpdateSamples {
 ### ApplicationPackage_Activate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.ActivateApplicationPackageParameters;
 
 /** Samples for ApplicationPackage Activate. */
 public final class ApplicationPackageActivateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationPackageActivate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationPackageActivate.json
      */
     /**
      * Sample code: ApplicationPackageActivate.
@@ -212,7 +211,7 @@ public final class ApplicationPackageActivateSamples {
                 "app1",
                 "1",
                 new ActivateApplicationPackageParameters().withFormat("zip"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -223,7 +222,7 @@ public final class ApplicationPackageActivateSamples {
 /** Samples for ApplicationPackage Create. */
 public final class ApplicationPackageCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationPackageCreate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationPackageCreate.json
      */
     /**
      * Sample code: ApplicationPackageCreate.
@@ -243,12 +242,10 @@ public final class ApplicationPackageCreateSamples {
 ### ApplicationPackage_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ApplicationPackage Delete. */
 public final class ApplicationPackageDeleteSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationPackageDelete.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationPackageDelete.json
      */
     /**
      * Sample code: ApplicationPackageDelete.
@@ -258,7 +255,8 @@ public final class ApplicationPackageDeleteSamples {
     public static void applicationPackageDelete(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .applicationPackages()
-            .deleteWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", "1", Context.NONE);
+            .deleteWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "app1", "1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -266,12 +264,10 @@ public final class ApplicationPackageDeleteSamples {
 ### ApplicationPackage_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ApplicationPackage Get. */
 public final class ApplicationPackageGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationPackageGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationPackageGet.json
      */
     /**
      * Sample code: ApplicationPackageGet.
@@ -281,7 +277,8 @@ public final class ApplicationPackageGetSamples {
     public static void applicationPackageGet(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .applicationPackages()
-            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "app1", "1", Context.NONE);
+            .getWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "app1", "1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -289,12 +286,10 @@ public final class ApplicationPackageGetSamples {
 ### ApplicationPackage_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ApplicationPackage List. */
 public final class ApplicationPackageListSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationPackageList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/ApplicationPackageList.json
      */
     /**
      * Sample code: ApplicationPackageList.
@@ -302,7 +297,9 @@ public final class ApplicationPackageListSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void applicationPackageList(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.applicationPackages().list("default-azurebatch-japaneast", "sampleacct", "app1", null, Context.NONE);
+        manager
+            .applicationPackages()
+            .list("default-azurebatch-japaneast", "sampleacct", "app1", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -323,7 +320,7 @@ import java.util.Map;
 /** Samples for BatchAccount Create. */
 public final class BatchAccountCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountCreate_BYOS.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountCreate_BYOS.json
      */
     /**
      * Sample code: BatchAccountCreate_BYOS.
@@ -350,7 +347,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountCreate_UserAssignedIdentity.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountCreate_UserAssignedIdentity.json
      */
     /**
      * Sample code: BatchAccountCreate_UserAssignedIdentity.
@@ -378,7 +375,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateBatchAccountCreate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateBatchAccountCreate.json
      */
     /**
      * Sample code: PrivateBatchAccountCreate.
@@ -405,7 +402,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountCreate_SystemAssignedIdentity.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountCreate_SystemAssignedIdentity.json
      */
     /**
      * Sample code: BatchAccountCreate_SystemAssignedIdentity.
@@ -427,7 +424,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountCreate_Default.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountCreate_Default.json
      */
     /**
      * Sample code: BatchAccountCreate_Default.
@@ -463,12 +460,10 @@ public final class BatchAccountCreateSamples {
 ### BatchAccount_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount Delete. */
 public final class BatchAccountDeleteSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountDelete.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountDelete.json
      */
     /**
      * Sample code: BatchAccountDelete.
@@ -476,7 +471,7 @@ public final class BatchAccountDeleteSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void batchAccountDelete(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.batchAccounts().delete("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+        manager.batchAccounts().delete("default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -484,12 +479,10 @@ public final class BatchAccountDeleteSamples {
 ### BatchAccount_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount GetByResourceGroup. */
 public final class BatchAccountGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateBatchAccountGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateBatchAccountGet.json
      */
     /**
      * Sample code: PrivateBatchAccountGet.
@@ -499,11 +492,12 @@ public final class BatchAccountGetByResourceGroupSamples {
     public static void privateBatchAccountGet(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .batchAccounts()
-            .getByResourceGroupWithResponse("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountGet.json
      */
     /**
      * Sample code: BatchAccountGet.
@@ -513,7 +507,8 @@ public final class BatchAccountGetByResourceGroupSamples {
     public static void batchAccountGet(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .batchAccounts()
-            .getByResourceGroupWithResponse("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -521,12 +516,10 @@ public final class BatchAccountGetByResourceGroupSamples {
 ### BatchAccount_GetDetector
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount GetDetector. */
 public final class BatchAccountGetDetectorSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/DetectorGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/DetectorGet.json
      */
     /**
      * Sample code: GetDetector.
@@ -536,7 +529,8 @@ public final class BatchAccountGetDetectorSamples {
     public static void getDetector(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .batchAccounts()
-            .getDetectorWithResponse("default-azurebatch-japaneast", "sampleacct", "poolsAndNodes", Context.NONE);
+            .getDetectorWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "poolsAndNodes", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -544,12 +538,10 @@ public final class BatchAccountGetDetectorSamples {
 ### BatchAccount_GetKeys
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount GetKeys. */
 public final class BatchAccountGetKeysSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountGetKeys.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountGetKeys.json
      */
     /**
      * Sample code: BatchAccountGetKeys.
@@ -557,7 +549,9 @@ public final class BatchAccountGetKeysSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void batchAccountGetKeys(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.batchAccounts().getKeysWithResponse("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+        manager
+            .batchAccounts()
+            .getKeysWithResponse("default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -565,12 +559,10 @@ public final class BatchAccountGetKeysSamples {
 ### BatchAccount_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount List. */
 public final class BatchAccountListSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountList.json
      */
     /**
      * Sample code: BatchAccountList.
@@ -578,7 +570,7 @@ public final class BatchAccountListSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void batchAccountList(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.batchAccounts().list(Context.NONE);
+        manager.batchAccounts().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -586,12 +578,10 @@ public final class BatchAccountListSamples {
 ### BatchAccount_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount ListByResourceGroup. */
 public final class BatchAccountListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountListByResourceGroup.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountListByResourceGroup.json
      */
     /**
      * Sample code: BatchAccountListByResourceGroup.
@@ -599,7 +589,7 @@ public final class BatchAccountListByResourceGroupSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void batchAccountListByResourceGroup(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.batchAccounts().listByResourceGroup("default-azurebatch-japaneast", Context.NONE);
+        manager.batchAccounts().listByResourceGroup("default-azurebatch-japaneast", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -607,12 +597,10 @@ public final class BatchAccountListByResourceGroupSamples {
 ### BatchAccount_ListDetectors
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount ListDetectors. */
 public final class BatchAccountListDetectorsSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/DetectorList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/DetectorList.json
      */
     /**
      * Sample code: ListDetectors.
@@ -620,7 +608,9 @@ public final class BatchAccountListDetectorsSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void listDetectors(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.batchAccounts().listDetectors("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+        manager
+            .batchAccounts()
+            .listDetectors("default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -628,12 +618,10 @@ public final class BatchAccountListDetectorsSamples {
 ### BatchAccount_ListOutboundNetworkDependenciesEndpoints
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount ListOutboundNetworkDependenciesEndpoints. */
 public final class BatchAccountListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountListOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountListOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: ListOutboundNetworkDependencies.
@@ -643,7 +631,8 @@ public final class BatchAccountListOutboundNetworkDependenciesEndpointsSamples {
     public static void listOutboundNetworkDependencies(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .batchAccounts()
-            .listOutboundNetworkDependenciesEndpoints("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints(
+                "default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -651,14 +640,13 @@ public final class BatchAccountListOutboundNetworkDependenciesEndpointsSamples {
 ### BatchAccount_RegenerateKey
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.AccountKeyType;
 import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameters;
 
 /** Samples for BatchAccount RegenerateKey. */
 public final class BatchAccountRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountRegenerateKey.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountRegenerateKey.json
      */
     /**
      * Sample code: BatchAccountRegenerateKey.
@@ -672,7 +660,7 @@ public final class BatchAccountRegenerateKeySamples {
                 "default-azurebatch-japaneast",
                 "sampleacct",
                 new BatchAccountRegenerateKeyParameters().withKeyName(AccountKeyType.PRIMARY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -680,12 +668,10 @@ public final class BatchAccountRegenerateKeySamples {
 ### BatchAccount_SynchronizeAutoStorageKeys
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount SynchronizeAutoStorageKeys. */
 public final class BatchAccountSynchronizeAutoStorageKeysSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountSynchronizeAutoStorageKeys.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountSynchronizeAutoStorageKeys.json
      */
     /**
      * Sample code: BatchAccountSynchronizeAutoStorageKeys.
@@ -695,7 +681,8 @@ public final class BatchAccountSynchronizeAutoStorageKeysSamples {
     public static void batchAccountSynchronizeAutoStorageKeys(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .batchAccounts()
-            .synchronizeAutoStorageKeysWithResponse("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+            .synchronizeAutoStorageKeysWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -703,14 +690,13 @@ public final class BatchAccountSynchronizeAutoStorageKeysSamples {
 ### BatchAccount_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.BatchAccount;
 
 /** Samples for BatchAccount Update. */
 public final class BatchAccountUpdateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountUpdate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountUpdate.json
      */
     /**
      * Sample code: BatchAccountUpdate.
@@ -721,7 +707,8 @@ public final class BatchAccountUpdateSamples {
         BatchAccount resource =
             manager
                 .batchAccounts()
-                .getByResourceGroupWithResponse("default-azurebatch-japaneast", "sampleacct", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -737,12 +724,10 @@ public final class BatchAccountUpdateSamples {
 ### Certificate_CancelDeletion
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Certificate CancelDeletion. */
 public final class CertificateCancelDeletionSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateCancelDeletion.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateCancelDeletion.json
      */
     /**
      * Sample code: CertificateCancelDeletion.
@@ -756,7 +741,7 @@ public final class CertificateCancelDeletionSamples {
                 "default-azurebatch-japaneast",
                 "sampleacct",
                 "sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -769,7 +754,7 @@ import com.azure.resourcemanager.batch.models.CertificateFormat;
 /** Samples for Certificate Create. */
 public final class CertificateCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateCreate_Full.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateCreate_Full.json
      */
     /**
      * Sample code: CreateCertificate - Full.
@@ -781,7 +766,6 @@ public final class CertificateCreateSamples {
             .certificates()
             .define("sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e")
             .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
-            .withData("MIIJsgIBAzCCCW4GCSqGSIb3DQE...")
             .withPassword("<ExamplePassword>")
             .withThumbprintAlgorithm("sha1")
             .withThumbprint("0a0e4f50d51beadeac1d35afc5116098e7902e6e")
@@ -790,7 +774,7 @@ public final class CertificateCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateCreate_Minimal.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateCreate_Minimal.json
      */
     /**
      * Sample code: CreateCertificate - Minimal Pfx.
@@ -802,13 +786,12 @@ public final class CertificateCreateSamples {
             .certificates()
             .define("sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e")
             .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
-            .withData("MIIJsgIBAzCCCW4GCSqGSIb3DQE...")
             .withPassword("<ExamplePassword>")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateCreate_MinimalCer.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateCreate_MinimalCer.json
      */
     /**
      * Sample code: CreateCertificate - Minimal Cer.
@@ -820,7 +803,6 @@ public final class CertificateCreateSamples {
             .certificates()
             .define("sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e")
             .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
-            .withData("MIICrjCCAZagAwI...")
             .withFormat(CertificateFormat.CER)
             .create();
     }
@@ -830,12 +812,10 @@ public final class CertificateCreateSamples {
 ### Certificate_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Certificate Delete. */
 public final class CertificateDeleteSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateDelete.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateDelete.json
      */
     /**
      * Sample code: CertificateDelete.
@@ -849,7 +829,7 @@ public final class CertificateDeleteSamples {
                 "default-azurebatch-japaneast",
                 "sampleacct",
                 "sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -857,12 +837,10 @@ public final class CertificateDeleteSamples {
 ### Certificate_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Certificate Get. */
 public final class CertificateGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateGetWithDeletionError.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateGetWithDeletionError.json
      */
     /**
      * Sample code: Get Certificate with Deletion Error.
@@ -876,11 +854,11 @@ public final class CertificateGetSamples {
                 "default-azurebatch-japaneast",
                 "sampleacct",
                 "sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateGet.json
      */
     /**
      * Sample code: Get Certificate.
@@ -894,7 +872,7 @@ public final class CertificateGetSamples {
                 "default-azurebatch-japaneast",
                 "sampleacct",
                 "sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -902,12 +880,10 @@ public final class CertificateGetSamples {
 ### Certificate_ListByBatchAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Certificate ListByBatchAccount. */
 public final class CertificateListByBatchAccountSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateListWithFilter.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateListWithFilter.json
      */
     /**
      * Sample code: ListCertificates - Filter and Select.
@@ -924,11 +900,11 @@ public final class CertificateListByBatchAccountSamples {
                 "properties/format,properties/provisioningState",
                 "properties/provisioningStateTransitionTime gt '2017-05-01' or properties/provisioningState eq"
                     + " 'Failed'",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateList.json
      */
     /**
      * Sample code: ListCertificates.
@@ -938,7 +914,8 @@ public final class CertificateListByBatchAccountSamples {
     public static void listCertificates(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .certificates()
-            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", 1, null, null, Context.NONE);
+            .listByBatchAccount(
+                "default-azurebatch-japaneast", "sampleacct", 1, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -946,13 +923,12 @@ public final class CertificateListByBatchAccountSamples {
 ### Certificate_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.Certificate;
 
 /** Samples for Certificate Update. */
 public final class CertificateUpdateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateUpdate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateUpdate.json
      */
     /**
      * Sample code: UpdateCertificate.
@@ -967,7 +943,7 @@ public final class CertificateUpdateSamples {
                     "default-azurebatch-japaneast",
                     "sampleacct",
                     "sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withData("MIIJsgIBAzCCCW4GCSqGSIb3DQE...").withPassword("<ExamplePassword>").apply();
     }
@@ -977,13 +953,12 @@ public final class CertificateUpdateSamples {
 ### Location_CheckNameAvailability
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.CheckNameAvailabilityParameters;
 
 /** Samples for Location CheckNameAvailability. */
 public final class LocationCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/LocationCheckNameAvailability_AlreadyExists.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/LocationCheckNameAvailability_AlreadyExists.json
      */
     /**
      * Sample code: LocationCheckNameAvailability_AlreadyExists.
@@ -995,11 +970,13 @@ public final class LocationCheckNameAvailabilitySamples {
         manager
             .locations()
             .checkNameAvailabilityWithResponse(
-                "japaneast", new CheckNameAvailabilityParameters().withName("existingaccountname"), Context.NONE);
+                "japaneast",
+                new CheckNameAvailabilityParameters().withName("existingaccountname"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/LocationCheckNameAvailability_Available.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/LocationCheckNameAvailability_Available.json
      */
     /**
      * Sample code: LocationCheckNameAvailability_Available.
@@ -1010,7 +987,9 @@ public final class LocationCheckNameAvailabilitySamples {
         manager
             .locations()
             .checkNameAvailabilityWithResponse(
-                "japaneast", new CheckNameAvailabilityParameters().withName("newaccountname"), Context.NONE);
+                "japaneast",
+                new CheckNameAvailabilityParameters().withName("newaccountname"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1018,12 +997,10 @@ public final class LocationCheckNameAvailabilitySamples {
 ### Location_GetQuotas
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Location GetQuotas. */
 public final class LocationGetQuotasSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/LocationGetQuotas.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/LocationGetQuotas.json
      */
     /**
      * Sample code: LocationGetQuotas.
@@ -1031,7 +1008,7 @@ public final class LocationGetQuotasSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void locationGetQuotas(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.locations().getQuotasWithResponse("japaneast", Context.NONE);
+        manager.locations().getQuotasWithResponse("japaneast", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1039,12 +1016,10 @@ public final class LocationGetQuotasSamples {
 ### Location_ListSupportedCloudServiceSkus
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Location ListSupportedCloudServiceSkus. */
 public final class LocationListSupportedCloudServiceSkusSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/LocationListCloudServiceSkus.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/LocationListCloudServiceSkus.json
      */
     /**
      * Sample code: LocationListCloudServiceSkus.
@@ -1052,7 +1027,7 @@ public final class LocationListSupportedCloudServiceSkusSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void locationListCloudServiceSkus(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.locations().listSupportedCloudServiceSkus("japaneast", null, null, Context.NONE);
+        manager.locations().listSupportedCloudServiceSkus("japaneast", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1060,12 +1035,10 @@ public final class LocationListSupportedCloudServiceSkusSamples {
 ### Location_ListSupportedVirtualMachineSkus
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Location ListSupportedVirtualMachineSkus. */
 public final class LocationListSupportedVirtualMachineSkusSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/LocationListVirtualMachineSkus.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/LocationListVirtualMachineSkus.json
      */
     /**
      * Sample code: LocationListVirtualMachineSkus.
@@ -1073,7 +1046,7 @@ public final class LocationListSupportedVirtualMachineSkusSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void locationListVirtualMachineSkus(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.locations().listSupportedVirtualMachineSkus("japaneast", null, null, Context.NONE);
+        manager.locations().listSupportedVirtualMachineSkus("japaneast", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1081,12 +1054,10 @@ public final class LocationListSupportedVirtualMachineSkusSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/OperationsList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/OperationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -1094,7 +1065,7 @@ public final class OperationsListSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void operationsList(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1135,6 +1106,7 @@ import com.azure.resourcemanager.batch.models.MetadataItem;
 import com.azure.resourcemanager.batch.models.NetworkConfiguration;
 import com.azure.resourcemanager.batch.models.NetworkSecurityGroupRule;
 import com.azure.resourcemanager.batch.models.NetworkSecurityGroupRuleAccess;
+import com.azure.resourcemanager.batch.models.NodeCommunicationMode;
 import com.azure.resourcemanager.batch.models.NodePlacementConfiguration;
 import com.azure.resourcemanager.batch.models.NodePlacementPolicyType;
 import com.azure.resourcemanager.batch.models.OSDisk;
@@ -1161,7 +1133,7 @@ import java.util.Map;
 /** Samples for Pool Create. */
 public final class PoolCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_SharedImageGallery.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_SharedImageGallery.json
      */
     /**
      * Sample code: CreatePool - Custom Image.
@@ -1187,7 +1159,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_CloudServiceConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_CloudServiceConfiguration.json
      */
     /**
      * Sample code: CreatePool - Full CloudServiceConfiguration.
@@ -1233,13 +1205,13 @@ public final class PoolCreateSamples {
                     .asList(
                         new UserAccount()
                             .withName("username1")
-                            .withPassword("<ExamplePassword>")
+                            .withPassword("fakeTokenPlaceholder")
                             .withElevationLevel(ElevationLevel.ADMIN)
                             .withLinuxUserConfiguration(
                                 new LinuxUserConfiguration()
                                     .withUid(1234)
                                     .withGid(4567)
-                                    .withSshPrivateKey("sshprivatekeyvalue"))))
+                                    .withSshPrivateKey("fakeTokenPlaceholder"))))
             .withMetadata(
                 Arrays
                     .asList(
@@ -1286,7 +1258,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_MinimalCloudServiceConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_MinimalCloudServiceConfiguration.json
      */
     /**
      * Sample code: CreatePool - Minimal CloudServiceConfiguration.
@@ -1308,7 +1280,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_MinimalVirtualMachineConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_MinimalVirtualMachineConfiguration.json
      */
     /**
      * Sample code: CreatePool - Minimal VirtualMachineConfiguration.
@@ -1343,7 +1315,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_NoPublicIPAddresses.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_NoPublicIPAddresses.json
      */
     /**
      * Sample code: CreatePool - No public IP.
@@ -1376,7 +1348,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_VirtualMachineConfiguration_Extensions.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_VirtualMachineConfiguration_Extensions.json
      */
     /**
      * Sample code: CreatePool - VirtualMachineConfiguration Extensions.
@@ -1405,22 +1377,16 @@ public final class PoolCreateSamples {
                                     .asList(
                                         new VMExtension()
                                             .withName("batchextension1")
-                                            .withPublisher("Microsoft.Azure.Security.Monitoring")
-                                            .withType("SecurityMonitoringForLinux")
-                                            .withTypeHandlerVersion("1.0")
+                                            .withPublisher("Microsoft.Azure.KeyVault")
+                                            .withType("KeyVaultForLinux")
+                                            .withTypeHandlerVersion("2.0")
                                             .withAutoUpgradeMinorVersion(true)
+                                            .withEnableAutomaticUpgrade(true)
                                             .withSettings(
                                                 SerializerFactory
                                                     .createDefaultManagementSerializerAdapter()
                                                     .deserialize(
-                                                        "{\"settingsKey\":\"settingsValue\"}",
-                                                        Object.class,
-                                                        SerializerEncoding.JSON))
-                                            .withProtectedSettings(
-                                                SerializerFactory
-                                                    .createDefaultManagementSerializerAdapter()
-                                                    .deserialize(
-                                                        "{\"protectedSettingsKey\":\"protectedSettingsValue\"}",
+                                                        "{\"authenticationSettingsKey\":\"authenticationSettingsValue\",\"secretsManagementSettingsKey\":\"secretsManagementSettingsValue\"}",
                                                         Object.class,
                                                         SerializerEncoding.JSON))))))
             .withScaleSettings(
@@ -1429,11 +1395,12 @@ public final class PoolCreateSamples {
                         new AutoScaleSettings()
                             .withFormula("$TargetDedicatedNodes=1")
                             .withEvaluationInterval(Duration.parse("PT5M"))))
+            .withTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT)
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_UserAssignedIdentities.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_UserAssignedIdentities.json
      */
     /**
      * Sample code: CreatePool - UserAssignedIdentities.
@@ -1476,7 +1443,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_PublicIPs.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_PublicIPs.json
      */
     /**
      * Sample code: CreatePool - Public IPs.
@@ -1513,7 +1480,43 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_VirtualMachineConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_AcceleratedNetworking.json
+     */
+    /**
+     * Sample code: CreatePool - accelerated networking.
+     *
+     * @param manager Entry point to BatchManager.
+     */
+    public static void createPoolAcceleratedNetworking(com.azure.resourcemanager.batch.BatchManager manager) {
+        manager
+            .pools()
+            .define("testpool")
+            .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
+            .withVmSize("STANDARD_D1_V2")
+            .withDeploymentConfiguration(
+                new DeploymentConfiguration()
+                    .withVirtualMachineConfiguration(
+                        new VirtualMachineConfiguration()
+                            .withImageReference(
+                                new ImageReference()
+                                    .withPublisher("MicrosoftWindowsServer")
+                                    .withOffer("WindowsServer")
+                                    .withSku("2016-datacenter-smalldisk")
+                                    .withVersion("latest"))
+                            .withNodeAgentSkuId("batch.node.windows amd64")))
+            .withScaleSettings(
+                new ScaleSettings()
+                    .withFixedScale(new FixedScaleSettings().withTargetDedicatedNodes(1).withTargetLowPriorityNodes(0)))
+            .withNetworkConfiguration(
+                new NetworkConfiguration()
+                    .withSubnetId(
+                        "/subscriptions/subid/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123")
+                    .withEnableAcceleratedNetworking(true))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_VirtualMachineConfiguration.json
      */
     /**
      * Sample code: CreatePool - Full VirtualMachineConfiguration.
@@ -1614,12 +1617,10 @@ public final class PoolCreateSamples {
 ### Pool_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Pool Delete. */
 public final class PoolDeleteSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolDelete.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolDelete.json
      */
     /**
      * Sample code: DeletePool.
@@ -1627,7 +1628,9 @@ public final class PoolDeleteSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void deletePool(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().delete("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE);
+        manager
+            .pools()
+            .delete("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1635,12 +1638,10 @@ public final class PoolDeleteSamples {
 ### Pool_DisableAutoScale
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Pool DisableAutoScale. */
 public final class PoolDisableAutoScaleSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolDisableAutoScale.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolDisableAutoScale.json
      */
     /**
      * Sample code: Disable AutoScale.
@@ -1650,7 +1651,8 @@ public final class PoolDisableAutoScaleSamples {
     public static void disableAutoScale(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .pools()
-            .disableAutoScaleWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE);
+            .disableAutoScaleWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1658,12 +1660,10 @@ public final class PoolDisableAutoScaleSamples {
 ### Pool_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Pool Get. */
 public final class PoolGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolGet_VirtualMachineConfiguration_Extensions.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolGet_VirtualMachineConfiguration_Extensions.json
      */
     /**
      * Sample code: GetPool - VirtualMachineConfiguration Extensions.
@@ -1672,11 +1672,29 @@ public final class PoolGetSamples {
      */
     public static void getPoolVirtualMachineConfigurationExtensions(
         com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE);
+        manager
+            .pools()
+            .getWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolGet_AcceleratedNetworking.json
+     */
+    /**
+     * Sample code: GetPool - AcceleratedNetworking.
+     *
+     * @param manager Entry point to BatchManager.
+     */
+    public static void getPoolAcceleratedNetworking(com.azure.resourcemanager.batch.BatchManager manager) {
+        manager
+            .pools()
+            .getWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolGet.json
      */
     /**
      * Sample code: GetPool.
@@ -1684,7 +1702,10 @@ public final class PoolGetSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void getPool(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE);
+        manager
+            .pools()
+            .getWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1692,12 +1713,10 @@ public final class PoolGetSamples {
 ### Pool_ListByBatchAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Pool ListByBatchAccount. */
 public final class PoolListByBatchAccountSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolList.json
      */
     /**
      * Sample code: ListPool.
@@ -1707,11 +1726,12 @@ public final class PoolListByBatchAccountSamples {
     public static void listPool(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .pools()
-            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null, null, null, Context.NONE);
+            .listByBatchAccount(
+                "default-azurebatch-japaneast", "sampleacct", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolListWithFilter.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolListWithFilter.json
      */
     /**
      * Sample code: ListPoolWithFilter.
@@ -1728,7 +1748,7 @@ public final class PoolListByBatchAccountSamples {
                 "properties/allocationState,properties/provisioningStateTransitionTime,properties/currentDedicatedNodes,properties/currentLowPriorityNodes",
                 "startswith(name, 'po') or (properties/allocationState eq 'Steady' and"
                     + " properties/provisioningStateTransitionTime lt datetime'2017-02-02')",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1736,12 +1756,10 @@ public final class PoolListByBatchAccountSamples {
 ### Pool_StopResize
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Pool StopResize. */
 public final class PoolStopResizeSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolStopResize.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolStopResize.json
      */
     /**
      * Sample code: StopPoolResize.
@@ -1749,7 +1767,10 @@ public final class PoolStopResizeSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void stopPoolResize(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().stopResizeWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE);
+        manager
+            .pools()
+            .stopResizeWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1757,7 +1778,6 @@ public final class PoolStopResizeSamples {
 ### Pool_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.ApplicationPackageReference;
 import com.azure.resourcemanager.batch.models.AutoScaleSettings;
 import com.azure.resourcemanager.batch.models.CertificateReference;
@@ -1765,6 +1785,7 @@ import com.azure.resourcemanager.batch.models.CertificateStoreLocation;
 import com.azure.resourcemanager.batch.models.ComputeNodeDeallocationOption;
 import com.azure.resourcemanager.batch.models.FixedScaleSettings;
 import com.azure.resourcemanager.batch.models.MetadataItem;
+import com.azure.resourcemanager.batch.models.NodeCommunicationMode;
 import com.azure.resourcemanager.batch.models.Pool;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
 import com.azure.resourcemanager.batch.models.StartTask;
@@ -1774,7 +1795,7 @@ import java.util.Arrays;
 /** Samples for Pool Update. */
 public final class PoolUpdateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolUpdate_EnableAutoScale.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolUpdate_EnableAutoScale.json
      */
     /**
      * Sample code: UpdatePool - Enable Autoscale.
@@ -1785,7 +1806,8 @@ public final class PoolUpdateSamples {
         Pool resource =
             manager
                 .pools()
-                .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE)
+                .getWithResponse(
+                    "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -1795,7 +1817,7 @@ public final class PoolUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolUpdate_RemoveStartTask.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolUpdate_RemoveStartTask.json
      */
     /**
      * Sample code: UpdatePool - Remove Start Task.
@@ -1806,13 +1828,14 @@ public final class PoolUpdateSamples {
         Pool resource =
             manager
                 .pools()
-                .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE)
+                .getWithResponse(
+                    "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withStartTask(new StartTask()).apply();
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolUpdate_ResizePool.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolUpdate_ResizePool.json
      */
     /**
      * Sample code: UpdatePool - Resize Pool.
@@ -1823,7 +1846,8 @@ public final class PoolUpdateSamples {
         Pool resource =
             manager
                 .pools()
-                .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE)
+                .getWithResponse(
+                    "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -1839,7 +1863,7 @@ public final class PoolUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolUpdate_OtherProperties.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolUpdate_OtherProperties.json
      */
     /**
      * Sample code: UpdatePool - Other Properties.
@@ -1850,7 +1874,8 @@ public final class PoolUpdateSamples {
         Pool resource =
             manager
                 .pools()
-                .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE)
+                .getWithResponse(
+                    "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -1873,7 +1898,33 @@ public final class PoolUpdateSamples {
                             .withId(
                                 "/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_5678")
                             .withVersion("1.0")))
+            .withTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED)
             .apply();
+    }
+}
+```
+
+### PrivateEndpointConnection_Delete
+
+```java
+/** Samples for PrivateEndpointConnection Delete. */
+public final class PrivateEndpointConnectionDeleteSamples {
+    /*
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateEndpointConnectionDelete.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnectionDelete.
+     *
+     * @param manager Entry point to BatchManager.
+     */
+    public static void privateEndpointConnectionDelete(com.azure.resourcemanager.batch.BatchManager manager) {
+        manager
+            .privateEndpointConnections()
+            .delete(
+                "default-azurebatch-japaneast",
+                "sampleacct",
+                "testprivateEndpointConnection5testprivateEndpointConnection5.24d6b4b5-e65c-4330-bbe9-3a290d62f8e0",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1881,12 +1932,10 @@ public final class PoolUpdateSamples {
 ### PrivateEndpointConnection_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnection Get. */
 public final class PrivateEndpointConnectionGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateEndpointConnectionGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateEndpointConnectionGet.json
      */
     /**
      * Sample code: GetPrivateEndpointConnection.
@@ -1900,7 +1949,7 @@ public final class PrivateEndpointConnectionGetSamples {
                 "default-azurebatch-japaneast",
                 "sampleacct",
                 "testprivateEndpointConnection5testprivateEndpointConnection5.24d6b4b5-e65c-4330-bbe9-3a290d62f8e0",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1908,12 +1957,10 @@ public final class PrivateEndpointConnectionGetSamples {
 ### PrivateEndpointConnection_ListByBatchAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnection ListByBatchAccount. */
 public final class PrivateEndpointConnectionListByBatchAccountSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateEndpointConnectionsList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateEndpointConnectionsList.json
      */
     /**
      * Sample code: ListPrivateEndpointConnections.
@@ -1923,7 +1970,7 @@ public final class PrivateEndpointConnectionListByBatchAccountSamples {
     public static void listPrivateEndpointConnections(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .privateEndpointConnections()
-            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null, Context.NONE);
+            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1931,7 +1978,6 @@ public final class PrivateEndpointConnectionListByBatchAccountSamples {
 ### PrivateEndpointConnection_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus;
@@ -1939,7 +1985,7 @@ import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus
 /** Samples for PrivateEndpointConnection Update. */
 public final class PrivateEndpointConnectionUpdateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: UpdatePrivateEndpointConnection.
@@ -1959,7 +2005,7 @@ public final class PrivateEndpointConnectionUpdateSamples {
                             .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
                             .withDescription("Approved by xyz.abc@company.com")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1967,12 +2013,10 @@ public final class PrivateEndpointConnectionUpdateSamples {
 ### PrivateLinkResource_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResource Get. */
 public final class PrivateLinkResourceGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateLinkResourceGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateLinkResourceGet.json
      */
     /**
      * Sample code: GetPrivateLinkResource.
@@ -1982,7 +2026,8 @@ public final class PrivateLinkResourceGetSamples {
     public static void getPrivateLinkResource(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .privateLinkResources()
-            .getWithResponse("default-azurebatch-japaneast", "sampleacct", "sampleacct", Context.NONE);
+            .getWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "batchAccount", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1990,12 +2035,10 @@ public final class PrivateLinkResourceGetSamples {
 ### PrivateLinkResource_ListByBatchAccount
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResource ListByBatchAccount. */
 public final class PrivateLinkResourceListByBatchAccountSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateLinkResourcesList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: ListPrivateLinkResource.
@@ -2005,7 +2048,7 @@ public final class PrivateLinkResourceListByBatchAccountSamples {
     public static void listPrivateLinkResource(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .privateLinkResources()
-            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null, Context.NONE);
+            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null, com.azure.core.util.Context.NONE);
     }
 }
 ```

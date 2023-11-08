@@ -75,6 +75,13 @@ public interface IncidentComment {
     ClientInfo author();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.IncidentCommentInner object.
      *
      * @return the inner object.

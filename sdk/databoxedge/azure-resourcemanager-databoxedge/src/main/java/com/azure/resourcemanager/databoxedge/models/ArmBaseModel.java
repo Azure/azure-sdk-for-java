@@ -6,13 +6,13 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Represents the base class for all object models. */
 @Immutable
 public class ArmBaseModel extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmBaseModel.class);
+    /** Creates an instance of ArmBaseModel class. */
+    public ArmBaseModel() {
+    }
 
     /**
      * Validates the instance.

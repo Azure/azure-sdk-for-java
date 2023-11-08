@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.models.SignalRServiceUsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Object that includes an array of the resource usages and a possible link for next set. */
 @Fluent
 public final class SignalRServiceUsageList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRServiceUsageList.class);
-
     /*
      * List of the resource usages
      */
@@ -23,12 +19,15 @@ public final class SignalRServiceUsageList {
     private List<SignalRServiceUsageInner> value;
 
     /*
-     * The URL the client should use to fetch the next page (per server side
-     * paging).
+     * The URL the client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of SignalRServiceUsageList class. */
+    public SignalRServiceUsageList() {
+    }
 
     /**
      * Get the value property: List of the resource usages.

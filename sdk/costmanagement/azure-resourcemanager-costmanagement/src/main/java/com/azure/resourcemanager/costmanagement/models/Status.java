@@ -5,27 +5,27 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The status of the long running operation. */
 @Fluent
 public final class Status {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Status.class);
-
     /*
      * The status of the long running operation.
      */
     @JsonProperty(value = "status")
-    private OperationStatusType status;
+    private ReportOperationStatusType status;
+
+    /** Creates an instance of Status class. */
+    public Status() {
+    }
 
     /**
      * Get the status property: The status of the long running operation.
      *
      * @return the status value.
      */
-    public OperationStatusType status() {
+    public ReportOperationStatusType status() {
         return this.status;
     }
 
@@ -35,7 +35,7 @@ public final class Status {
      * @param status the status value to set.
      * @return the Status object itself.
      */
-    public Status withStatus(OperationStatusType status) {
+    public Status withStatus(ReportOperationStatusType status) {
         this.status = status;
         return this;
     }

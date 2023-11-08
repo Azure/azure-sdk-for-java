@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -18,13 +16,8 @@ import java.util.Map;
 @JsonTypeName("AzureVmWorkloadSQLDatabase")
 @Fluent
 public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorkloadProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadSqlDatabaseProtectedItem.class);
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSqlDatabaseProtectedItem withFriendlyName(String friendlyName) {
-        super.withFriendlyName(friendlyName);
-        return this;
+    /** Creates an instance of AzureVmWorkloadSqlDatabaseProtectedItem class. */
+    public AzureVmWorkloadSqlDatabaseProtectedItem() {
     }
 
     /** {@inheritDoc} */
@@ -45,13 +38,6 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
     @Override
     public AzureVmWorkloadSqlDatabaseProtectedItem withParentType(String parentType) {
         super.withParentType(parentType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSqlDatabaseProtectedItem withProtectionStatus(String protectionStatus) {
-        super.withProtectionStatus(protectionStatus);
         return this;
     }
 
@@ -115,15 +101,8 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSqlDatabaseProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSqlDatabaseProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
+    public AzureVmWorkloadSqlDatabaseProtectedItem withNodesList(List<DistributedNodesInfo> nodesList) {
+        super.withNodesList(nodesList);
         return this;
     }
 
@@ -225,6 +204,13 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
     @Override
     public AzureVmWorkloadSqlDatabaseProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSqlDatabaseProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

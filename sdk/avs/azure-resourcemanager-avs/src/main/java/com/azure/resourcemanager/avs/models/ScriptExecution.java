@@ -142,6 +142,13 @@ public interface ScriptExecution {
     List<String> errors();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.ScriptExecutionInner object.
      *
      * @return the inner object.
@@ -152,11 +159,13 @@ public interface ScriptExecution {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ScriptExecution definition stages. */
     interface DefinitionStages {
         /** The first stage of the ScriptExecution definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ScriptExecution definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -168,6 +177,7 @@ public interface ScriptExecution {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the ScriptExecution definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -196,6 +206,7 @@ public interface ScriptExecution {
              */
             ScriptExecution create(Context context);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify scriptCmdletId. */
         interface WithScriptCmdletId {
             /**
@@ -207,6 +218,7 @@ public interface ScriptExecution {
              */
             WithCreate withScriptCmdletId(String scriptCmdletId);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -217,6 +229,7 @@ public interface ScriptExecution {
              */
             WithCreate withParameters(List<ScriptExecutionParameter> parameters);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify hiddenParameters. */
         interface WithHiddenParameters {
             /**
@@ -229,6 +242,7 @@ public interface ScriptExecution {
              */
             WithCreate withHiddenParameters(List<ScriptExecutionParameter> hiddenParameters);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify failureReason. */
         interface WithFailureReason {
             /**
@@ -241,6 +255,7 @@ public interface ScriptExecution {
              */
             WithCreate withFailureReason(String failureReason);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify timeout. */
         interface WithTimeout {
             /**
@@ -251,6 +266,7 @@ public interface ScriptExecution {
              */
             WithCreate withTimeout(String timeout);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify retention. */
         interface WithRetention {
             /**
@@ -262,6 +278,7 @@ public interface ScriptExecution {
              */
             WithCreate withRetention(String retention);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify output. */
         interface WithOutput {
             /**
@@ -272,6 +289,7 @@ public interface ScriptExecution {
              */
             WithCreate withOutput(List<String> output);
         }
+
         /** The stage of the ScriptExecution definition allowing to specify namedOutputs. */
         interface WithNamedOutputs {
             /**
@@ -283,6 +301,7 @@ public interface ScriptExecution {
             WithCreate withNamedOutputs(Map<String, Object> namedOutputs);
         }
     }
+
     /**
      * Begins update for the ScriptExecution resource.
      *
@@ -315,6 +334,7 @@ public interface ScriptExecution {
          */
         ScriptExecution apply(Context context);
     }
+
     /** The ScriptExecution update stages. */
     interface UpdateStages {
         /** The stage of the ScriptExecution update allowing to specify scriptCmdletId. */
@@ -328,6 +348,7 @@ public interface ScriptExecution {
              */
             Update withScriptCmdletId(String scriptCmdletId);
         }
+
         /** The stage of the ScriptExecution update allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -338,6 +359,7 @@ public interface ScriptExecution {
              */
             Update withParameters(List<ScriptExecutionParameter> parameters);
         }
+
         /** The stage of the ScriptExecution update allowing to specify hiddenParameters. */
         interface WithHiddenParameters {
             /**
@@ -350,6 +372,7 @@ public interface ScriptExecution {
              */
             Update withHiddenParameters(List<ScriptExecutionParameter> hiddenParameters);
         }
+
         /** The stage of the ScriptExecution update allowing to specify failureReason. */
         interface WithFailureReason {
             /**
@@ -362,6 +385,7 @@ public interface ScriptExecution {
              */
             Update withFailureReason(String failureReason);
         }
+
         /** The stage of the ScriptExecution update allowing to specify timeout. */
         interface WithTimeout {
             /**
@@ -372,6 +396,7 @@ public interface ScriptExecution {
              */
             Update withTimeout(String timeout);
         }
+
         /** The stage of the ScriptExecution update allowing to specify retention. */
         interface WithRetention {
             /**
@@ -383,6 +408,7 @@ public interface ScriptExecution {
              */
             Update withRetention(String retention);
         }
+
         /** The stage of the ScriptExecution update allowing to specify output. */
         interface WithOutput {
             /**
@@ -393,6 +419,7 @@ public interface ScriptExecution {
              */
             Update withOutput(List<String> output);
         }
+
         /** The stage of the ScriptExecution update allowing to specify namedOutputs. */
         interface WithNamedOutputs {
             /**
@@ -404,6 +431,7 @@ public interface ScriptExecution {
             Update withNamedOutputs(Map<String, Object> namedOutputs);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -422,23 +450,23 @@ public interface ScriptExecution {
     /**
      * Return the logs for a script execution resource.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of a script executed by a user - custom or AVS.
-     */
-    ScriptExecution getExecutionLogs();
-
-    /**
-     * Return the logs for a script execution resource.
-     *
      * @param scriptOutputStreamType Name of the desired output stream to return. If not provided, will return all. An
      *     empty array will return nothing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance of a script executed by a user - custom or AVS.
+     * @return an instance of a script executed by a user - custom or AVS along with {@link Response}.
      */
     Response<ScriptExecution> getExecutionLogsWithResponse(
         List<ScriptOutputStreamType> scriptOutputStreamType, Context context);
+
+    /**
+     * Return the logs for a script execution resource.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance of a script executed by a user - custom or AVS.
+     */
+    ScriptExecution getExecutionLogs();
 }

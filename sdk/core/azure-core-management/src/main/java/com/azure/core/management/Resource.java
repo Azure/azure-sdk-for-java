@@ -18,9 +18,15 @@ public class Resource extends ProxyResource {
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of {@link Resource}.
+     */
+    public Resource() {
+    }
+
+    /**
      * Get the location value.
      *
-     * @return the geo-location where the resource live.
+     * @return the geolocation where the resource live.
      */
     public String location() {
         return this.location;
@@ -29,7 +35,7 @@ public class Resource extends ProxyResource {
     /**
      * Set the location value.
      *
-     * @param location the geo-location where the resource live.
+     * @param location the geolocation where the resource live.
      * @return the resource itself.
      */
     public Resource withLocation(String location) {

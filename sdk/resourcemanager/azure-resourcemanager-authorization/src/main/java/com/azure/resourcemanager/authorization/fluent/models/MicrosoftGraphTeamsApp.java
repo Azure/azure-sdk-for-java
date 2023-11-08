@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,24 +16,20 @@ import java.util.Map;
 /** teamsApp. */
 @Fluent
 public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTeamsApp.class);
-
     /*
-     * The name of the catalog app provided by the app developer in the
-     * Microsoft Teams zip app package.
+     * The name of the catalog app provided by the app developer in the Microsoft Teams zip app package.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * The distributionMethod property.
+     * teamsAppDistributionMethod
      */
     @JsonProperty(value = "distributionMethod")
     private MicrosoftGraphTeamsAppDistributionMethod distributionMethod;
 
     /*
-     * The ID of the catalog provided by the app developer in the Microsoft
-     * Teams zip app package.
+     * The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
      */
     @JsonProperty(value = "externalId")
     private String externalId;
@@ -49,6 +44,10 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
      * teamsApp
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTeamsApp class. */
+    public MicrosoftGraphTeamsApp() {
+    }
 
     /**
      * Get the displayName property: The name of the catalog app provided by the app developer in the Microsoft Teams
@@ -73,7 +72,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the distributionMethod property: The distributionMethod property.
+     * Get the distributionMethod property: teamsAppDistributionMethod.
      *
      * @return the distributionMethod value.
      */
@@ -82,7 +81,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the distributionMethod property: The distributionMethod property.
+     * Set the distributionMethod property: teamsAppDistributionMethod.
      *
      * @param distributionMethod the distributionMethod value to set.
      * @return the MicrosoftGraphTeamsApp object itself.

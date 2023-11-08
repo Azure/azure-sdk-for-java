@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes SyncCredentials. */
 public final class IntegrationRuntimesSyncCredentialsSamples {
     /*
@@ -21,6 +19,9 @@ public final class IntegrationRuntimesSyncCredentialsSamples {
         manager
             .integrationRuntimes()
             .syncCredentialsWithResponse(
-                "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", Context.NONE);
+                "exampleResourceGroup",
+                "exampleFactoryName",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

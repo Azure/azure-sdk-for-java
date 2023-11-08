@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeinterlaceMode. */
+/** The deinterlacing mode. Defaults to AutoPixelAdaptive. */
 public final class DeinterlaceMode extends ExpandableStringEnum<DeinterlaceMode> {
     /** Static value Off for DeinterlaceMode. */
     public static final DeinterlaceMode OFF = fromString("Off");
 
     /** Static value AutoPixelAdaptive for DeinterlaceMode. */
     public static final DeinterlaceMode AUTO_PIXEL_ADAPTIVE = fromString("AutoPixelAdaptive");
+
+    /**
+     * Creates a new instance of DeinterlaceMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeinterlaceMode() {
+    }
 
     /**
      * Creates or finds a DeinterlaceMode from its string representation.
@@ -27,7 +36,11 @@ public final class DeinterlaceMode extends ExpandableStringEnum<DeinterlaceMode>
         return fromString(name, DeinterlaceMode.class);
     }
 
-    /** @return known DeinterlaceMode values. */
+    /**
+     * Gets known DeinterlaceMode values.
+     *
+     * @return known DeinterlaceMode values.
+     */
     public static Collection<DeinterlaceMode> values() {
         return values(DeinterlaceMode.class);
     }

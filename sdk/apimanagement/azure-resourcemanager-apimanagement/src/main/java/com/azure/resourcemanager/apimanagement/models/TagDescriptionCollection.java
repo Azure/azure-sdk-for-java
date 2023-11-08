@@ -30,6 +30,10 @@ public final class TagDescriptionCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of TagDescriptionCollection class. */
+    public TagDescriptionCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

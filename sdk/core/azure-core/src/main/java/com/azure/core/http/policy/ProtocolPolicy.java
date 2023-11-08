@@ -5,10 +5,10 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -18,9 +18,27 @@ import java.net.MalformedURLException;
  */
 public class ProtocolPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(ProtocolPolicy.class);
-
     private final String protocol;
     private final boolean overwrite;
+
+    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+            if (overwrite || urlBuilder.getScheme() == null) {
+                LOGGER.atVerbose()
+                    .addKeyValue("protocol", protocol)
+                    .log("Setting protocol");
+
+                try {
+                    context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
+                } catch (MalformedURLException e) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to set the HTTP request protocol to " + protocol + ".",
+                        e));
+                }
+            }
+        }
+    };
 
     /**
      * Creates a new ProtocolPolicy.
@@ -35,17 +53,11 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-        if (overwrite || urlBuilder.getScheme() == null) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Setting protocol to " + protocol);
+        return inner.process(context, next);
+    }
 
-            try {
-                context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
-            } catch (MalformedURLException e) {
-                return Mono.error(new RuntimeException(
-                    String.format("Failed to set the HTTP request protocol to %s.", protocol), e));
-            }
-        }
-        return next.process();
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return inner.processSync(context, next);
     }
 }

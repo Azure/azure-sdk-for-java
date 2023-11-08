@@ -14,7 +14,9 @@ import com.azure.resourcemanager.mediaservices.fluent.models.JobInner;
 /** An instance of this class provides access to all the operations defined in JobsClient. */
 public interface JobsClient {
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -28,7 +30,9 @@ public interface JobsClient {
     PagedIterable<JobInner> list(String resourceGroupName, String accountName, String transformName);
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -51,22 +55,9 @@ public interface JobsClient {
         Context context);
 
     /**
-     * Gets a Job.
+     * Get Job
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
-     * @param jobName The Job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobInner get(String resourceGroupName, String accountName, String transformName, String jobName);
-
-    /**
-     * Gets a Job.
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -83,24 +74,26 @@ public interface JobsClient {
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
 
     /**
-     * Creates a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job resource type.
+     * @return a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobInner create(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters);
+    JobInner get(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -123,21 +116,28 @@ public interface JobsClient {
         Context context);
 
     /**
-     * Deletes a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
+     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Job resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String accountName, String transformName, String jobName);
+    JobInner create(
+        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters);
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -154,26 +154,26 @@ public interface JobsClient {
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobInner update(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters);
+    void delete(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -196,21 +196,29 @@ public interface JobsClient {
         Context context);
 
     /**
-     * Cancel a Job.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
      * @param jobName The Job name.
+     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Job resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName);
+    JobInner update(
+        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters);
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -225,4 +233,20 @@ public interface JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelJobWithResponse(
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
+
+    /**
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @param jobName The Job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName);
 }

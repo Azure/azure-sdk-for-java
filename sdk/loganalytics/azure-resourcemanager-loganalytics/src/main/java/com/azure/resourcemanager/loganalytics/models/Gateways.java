@@ -15,11 +15,14 @@ public interface Gateways {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param gatewayId The Log Analytics gateway Id.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
-    void delete(String resourceGroupName, String workspaceName, String gatewayId);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String workspaceName, String gatewayId, Context context);
 
     /**
      * Delete a Log Analytics gateway.
@@ -27,12 +30,9 @@ public interface Gateways {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param gatewayId The Log Analytics gateway Id.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String gatewayId, Context context);
+    void delete(String resourceGroupName, String workspaceName, String gatewayId);
 }

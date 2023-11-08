@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.RestorableMongodbDatabasePropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos DB MongoDB database event. */
 @Fluent
 public final class RestorableMongodbDatabaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableMongodbDatabaseProperties.class);
-
     /*
      * The resource of an Azure Cosmos DB MongoDB database event
      */
     @JsonProperty(value = "resource")
     private RestorableMongodbDatabasePropertiesResource resource;
+
+    /** Creates an instance of RestorableMongodbDatabaseProperties class. */
+    public RestorableMongodbDatabaseProperties() {
+    }
 
     /**
      * Get the resource property: The resource of an Azure Cosmos DB MongoDB database event.

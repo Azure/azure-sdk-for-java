@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectTaskInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** OData page of tasks. */
 @Fluent
 public final class TaskList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskList.class);
-
     /*
      * List of tasks
      */
@@ -27,6 +23,10 @@ public final class TaskList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of TaskList class. */
+    public TaskList() {
+    }
 
     /**
      * Get the value property: List of tasks.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about the error for a failed pipeline job. */
 @Fluent
 public final class PipelineJobError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineJobError.class);
-
     /*
      * The error code.
      */

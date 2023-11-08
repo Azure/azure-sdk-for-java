@@ -24,6 +24,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class VideoTrackDescriptor extends TrackDescriptor {
+    /** Creates an instance of VideoTrackDescriptor class. */
+    public VideoTrackDescriptor() {
+    }
+
     /**
      * Validates the instance.
      *

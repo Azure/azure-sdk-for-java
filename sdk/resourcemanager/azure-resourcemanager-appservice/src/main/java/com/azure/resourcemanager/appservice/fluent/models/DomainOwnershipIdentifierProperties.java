@@ -16,6 +16,10 @@ public final class DomainOwnershipIdentifierProperties {
     @JsonProperty(value = "ownershipId")
     private String ownershipId;
 
+    /** Creates an instance of DomainOwnershipIdentifierProperties class. */
+    public DomainOwnershipIdentifierProperties() {
+    }
+
     /**
      * Get the ownershipId property: Ownership Id.
      *

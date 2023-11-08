@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** The DocumentLanguage model. */
@@ -27,7 +28,7 @@ public final class DocumentLanguage {
      * Warnings encountered while processing document.
      */
     @JsonProperty(value = "warnings", required = true)
-    private List<TextAnalyticsWarning> warnings;
+    private List<DocumentWarning> warnings;
 
     /*
      * if showStats=true was specified in the request this field will contain
@@ -81,7 +82,7 @@ public final class DocumentLanguage {
      *
      * @return the warnings value.
      */
-    public List<TextAnalyticsWarning> getWarnings() {
+    public List<DocumentWarning> getWarnings() {
         return this.warnings;
     }
 
@@ -91,7 +92,7 @@ public final class DocumentLanguage {
      * @param warnings the warnings value to set.
      * @return the DocumentLanguage object itself.
      */
-    public DocumentLanguage setWarnings(List<TextAnalyticsWarning> warnings) {
+    public DocumentLanguage setWarnings(List<DocumentWarning> warnings) {
         this.warnings = warnings;
         return this;
     }

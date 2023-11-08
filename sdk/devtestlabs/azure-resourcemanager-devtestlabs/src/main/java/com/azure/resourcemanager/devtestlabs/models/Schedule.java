@@ -86,7 +86,10 @@ public interface Schedule {
     HourDetails hourlyRecurrence();
 
     /**
-     * Gets the timeZoneId property: The time zone ID (e.g. Pacific Standard time).
+     * Gets the timeZoneId property: The time zone ID (e.g. China Standard Time, Greenland Standard Time, Pacific
+     * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
+     * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
+     * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
      *
      * @return the timeZoneId value.
      */
@@ -142,6 +145,13 @@ public interface Schedule {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner object.
      *
      * @return the inner object.
@@ -155,11 +165,13 @@ public interface Schedule {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Schedule definition stages. */
     interface DefinitionStages {
         /** The first stage of the Schedule definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Schedule definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -178,6 +190,7 @@ public interface Schedule {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Schedule definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -188,6 +201,7 @@ public interface Schedule {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Schedule definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -217,6 +231,7 @@ public interface Schedule {
              */
             Schedule create(Context context);
         }
+
         /** The stage of the Schedule definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -227,6 +242,7 @@ public interface Schedule {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Schedule definition allowing to specify status. */
         interface WithStatus {
             /**
@@ -237,6 +253,7 @@ public interface Schedule {
              */
             WithCreate withStatus(EnableStatus status);
         }
+
         /** The stage of the Schedule definition allowing to specify taskType. */
         interface WithTaskType {
             /**
@@ -248,6 +265,7 @@ public interface Schedule {
              */
             WithCreate withTaskType(String taskType);
         }
+
         /** The stage of the Schedule definition allowing to specify weeklyRecurrence. */
         interface WithWeeklyRecurrence {
             /**
@@ -260,6 +278,7 @@ public interface Schedule {
              */
             WithCreate withWeeklyRecurrence(WeekDetails weeklyRecurrence);
         }
+
         /** The stage of the Schedule definition allowing to specify dailyRecurrence. */
         interface WithDailyRecurrence {
             /**
@@ -272,6 +291,7 @@ public interface Schedule {
              */
             WithCreate withDailyRecurrence(DayDetails dailyRecurrence);
         }
+
         /** The stage of the Schedule definition allowing to specify hourlyRecurrence. */
         interface WithHourlyRecurrence {
             /**
@@ -283,16 +303,24 @@ public interface Schedule {
              */
             WithCreate withHourlyRecurrence(HourDetails hourlyRecurrence);
         }
+
         /** The stage of the Schedule definition allowing to specify timeZoneId. */
         interface WithTimeZoneId {
             /**
-             * Specifies the timeZoneId property: The time zone ID (e.g. Pacific Standard time)..
+             * Specifies the timeZoneId property: The time zone ID (e.g. China Standard Time, Greenland Standard Time,
+             * Pacific Standard time, etc.). The possible values for this property can be found in
+             * `IReadOnlyCollection&lt;string&gt; TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
+             * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
              *
-             * @param timeZoneId The time zone ID (e.g. Pacific Standard time).
+             * @param timeZoneId The time zone ID (e.g. China Standard Time, Greenland Standard Time, Pacific Standard
+             *     time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
+             *     TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
+             *     (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
              * @return the next definition stage.
              */
             WithCreate withTimeZoneId(String timeZoneId);
         }
+
         /** The stage of the Schedule definition allowing to specify notificationSettings. */
         interface WithNotificationSettings {
             /**
@@ -303,6 +331,7 @@ public interface Schedule {
              */
             WithCreate withNotificationSettings(NotificationSettings notificationSettings);
         }
+
         /** The stage of the Schedule definition allowing to specify targetResourceId. */
         interface WithTargetResourceId {
             /**
@@ -314,6 +343,7 @@ public interface Schedule {
             WithCreate withTargetResourceId(String targetResourceId);
         }
     }
+
     /**
      * Begins update for the Schedule resource.
      *
@@ -338,6 +368,7 @@ public interface Schedule {
          */
         Schedule apply(Context context);
     }
+
     /** The Schedule update stages. */
     interface UpdateStages {
         /** The stage of the Schedule update allowing to specify tags. */
@@ -351,6 +382,7 @@ public interface Schedule {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

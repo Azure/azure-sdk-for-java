@@ -20,6 +20,14 @@ public final class ChangePointValue extends ExpandableStringEnum<ChangePointValu
     public static final ChangePointValue NOT_CHANGE_POINT = fromString("NotChangePoint");
 
     /**
+     * Creates a new instance of ChangePointValue value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ChangePointValue() {}
+
+    /**
      * Creates or finds a ChangePointValue from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +38,11 @@ public final class ChangePointValue extends ExpandableStringEnum<ChangePointValu
         return fromString(name, ChangePointValue.class);
     }
 
-    /** @return known ChangePointValue values. */
+    /**
+     * Gets known ChangePointValue values.
+     *
+     * @return known ChangePointValue values.
+     */
     public static Collection<ChangePointValue> values() {
         return values(ChangePointValue.class);
     }

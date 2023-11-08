@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RequestBodyOperator. */
+/** Describes operator to be matched. */
 public final class RequestBodyOperator extends ExpandableStringEnum<RequestBodyOperator> {
     /** Static value Any for RequestBodyOperator. */
     public static final RequestBodyOperator ANY = fromString("Any");
@@ -41,6 +41,15 @@ public final class RequestBodyOperator extends ExpandableStringEnum<RequestBodyO
     public static final RequestBodyOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of RequestBodyOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestBodyOperator() {
+    }
+
+    /**
      * Creates or finds a RequestBodyOperator from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class RequestBodyOperator extends ExpandableStringEnum<RequestBodyO
         return fromString(name, RequestBodyOperator.class);
     }
 
-    /** @return known RequestBodyOperator values. */
+    /**
+     * Gets known RequestBodyOperator values.
+     *
+     * @return known RequestBodyOperator values.
+     */
     public static Collection<RequestBodyOperator> values() {
         return values(RequestBodyOperator.class);
     }

@@ -16,6 +16,10 @@ public final class PowerQuerySink extends DataFlowSink {
     @JsonProperty(value = "script")
     private String script;
 
+    /** Creates an instance of PowerQuerySink class. */
+    public PowerQuerySink() {
+    }
+
     /**
      * Get the script property: sink script.
      *
@@ -40,6 +44,13 @@ public final class PowerQuerySink extends DataFlowSink {
     @Override
     public PowerQuerySink withSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
         super.withSchemaLinkedService(schemaLinkedService);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PowerQuerySink withRejectedDataLinkedService(LinkedServiceReference rejectedDataLinkedService) {
+        super.withRejectedDataLinkedService(rejectedDataLinkedService);
         return this;
     }
 

@@ -24,6 +24,10 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureBlobFSLinkedServiceTypeProperties innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureBlobFSLinkedService class. */
+    public AzureBlobFSLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Data Lake Storage Gen2 linked service properties.
      *
@@ -215,22 +219,22 @@ public final class AzureBlobFSLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
-    public AzureBlobFSLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureBlobFSLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
         }
@@ -314,6 +318,54 @@ public final class AzureBlobFSLinkedService extends LinkedService {
             this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withServicePrincipalCredential(servicePrincipalCredential);
+        return this;
+    }
+
+    /**
+     * Get the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @return the sasUri value.
+     */
+    public Object sasUri() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sasUri();
+    }
+
+    /**
+     * Set the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @param sasUri the sasUri value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService withSasUri(Object sasUri) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSasUri(sasUri);
+        return this;
+    }
+
+    /**
+     * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value.
+     */
+    public SecretBase sasToken() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sasToken();
+    }
+
+    /**
+     * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService withSasToken(SecretBase sasToken) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSasToken(sasToken);
         return this;
     }
 

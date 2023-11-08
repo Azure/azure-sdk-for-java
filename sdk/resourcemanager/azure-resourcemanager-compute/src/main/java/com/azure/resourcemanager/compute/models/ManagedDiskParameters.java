@@ -12,16 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedDiskParameters extends SubResource {
     /*
-     * Specifies the storage account type for the managed disk. NOTE:
-     * UltraSSD_LRS can only be used with data disks, it cannot be used with OS
-     * Disk.
+     * Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it
+     * cannot be used with OS Disk.
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountTypes storageAccountType;
 
     /*
-     * Specifies the customer managed disk encryption set resource id for the
-     * managed disk.
+     * Specifies the customer managed disk encryption set resource id for the managed disk.
      */
     @JsonProperty(value = "diskEncryptionSet")
     private DiskEncryptionSetParameters diskEncryptionSet;
@@ -31,6 +29,10 @@ public final class ManagedDiskParameters extends SubResource {
      */
     @JsonProperty(value = "securityProfile")
     private VMDiskSecurityProfile securityProfile;
+
+    /** Creates an instance of ManagedDiskParameters class. */
+    public ManagedDiskParameters() {
+    }
 
     /**
      * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS

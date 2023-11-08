@@ -6,14 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** List Restore Ranges Request. */
 @Fluent
 public final class AzureBackupFindRestorableTimeRangesRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupFindRestorableTimeRangesRequest.class);
-
     /*
      * Gets or sets the type of the source data store.
      */
@@ -31,6 +28,10 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
      */
     @JsonProperty(value = "endTime")
     private String endTime;
+
+    /** Creates an instance of AzureBackupFindRestorableTimeRangesRequest class. */
+    public AzureBackupFindRestorableTimeRangesRequest() {
+    }
 
     /**
      * Get the sourceDataStoreType property: Gets or sets the type of the source data store.
@@ -100,11 +101,13 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
      */
     public void validate() {
         if (sourceDataStoreType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceDataStoreType in model"
                             + " AzureBackupFindRestorableTimeRangesRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupFindRestorableTimeRangesRequest.class);
 }

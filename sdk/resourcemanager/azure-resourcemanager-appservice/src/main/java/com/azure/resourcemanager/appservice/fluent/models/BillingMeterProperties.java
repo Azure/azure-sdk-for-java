@@ -52,6 +52,10 @@ public final class BillingMeterProperties {
     @JsonProperty(value = "multiplier")
     private Double multiplier;
 
+    /** Creates an instance of BillingMeterProperties class. */
+    public BillingMeterProperties() {
+    }
+
     /**
      * Get the meterId property: Meter GUID onboarded in Commerce.
      *

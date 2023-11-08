@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoutingSource. */
+/** The source that the routing rule is to be applied to, such as DeviceMessages. */
 public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
     /** Static value Invalid for RoutingSource. */
     public static final RoutingSource INVALID = fromString("Invalid");
@@ -29,6 +29,15 @@ public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
     public static final RoutingSource DEVICE_CONNECTION_STATE_EVENTS = fromString("DeviceConnectionStateEvents");
 
     /**
+     * Creates a new instance of RoutingSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RoutingSource() {
+    }
+
+    /**
      * Creates or finds a RoutingSource from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
         return fromString(name, RoutingSource.class);
     }
 
-    /** @return known RoutingSource values. */
+    /**
+     * Gets known RoutingSource values.
+     *
+     * @return known RoutingSource values.
+     */
     public static Collection<RoutingSource> values() {
         return values(RoutingSource.class);
     }

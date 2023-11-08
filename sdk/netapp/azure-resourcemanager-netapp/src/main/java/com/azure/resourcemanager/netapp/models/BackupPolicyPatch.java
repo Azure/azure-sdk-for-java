@@ -6,9 +6,7 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.BackupPolicyProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +14,15 @@ import java.util.Map;
 /** Backup policy Details for create and update. */
 @Fluent
 public final class BackupPolicyPatch extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPolicyPatch.class);
-
     /*
      * Backup policy Properties
      */
     @JsonProperty(value = "properties")
     private BackupPolicyProperties innerProperties;
+
+    /** Creates an instance of BackupPolicyPatch class. */
+    public BackupPolicyPatch() {
+    }
 
     /**
      * Get the innerProperties property: Backup policy Properties.

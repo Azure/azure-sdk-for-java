@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.PrivateLinkResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of private link resources. */
 @Fluent
 public final class PrivateLinkResourceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceListResult.class);
-
     /*
      * Array of private link resources
      */
     @JsonProperty(value = "value")
     private List<PrivateLinkResourceInner> value;
+
+    /** Creates an instance of PrivateLinkResourceListResult class. */
+    public PrivateLinkResourceListResult() {
+    }
 
     /**
      * Get the value property: Array of private link resources.

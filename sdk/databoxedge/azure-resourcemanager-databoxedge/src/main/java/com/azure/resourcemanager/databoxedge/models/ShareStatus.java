@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ShareStatus. */
+/** Current status of the share. */
 public final class ShareStatus extends ExpandableStringEnum<ShareStatus> {
     /** Static value Offline for ShareStatus. */
     public static final ShareStatus OFFLINE = fromString("Offline");
@@ -26,6 +26,15 @@ public final class ShareStatus extends ExpandableStringEnum<ShareStatus> {
     public static final ShareStatus NEEDS_ATTENTION = fromString("NeedsAttention");
 
     /**
+     * Creates a new instance of ShareStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ShareStatus() {
+    }
+
+    /**
      * Creates or finds a ShareStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class ShareStatus extends ExpandableStringEnum<ShareStatus> {
         return fromString(name, ShareStatus.class);
     }
 
-    /** @return known ShareStatus values. */
+    /**
+     * Gets known ShareStatus values.
+     *
+     * @return known ShareStatus values.
+     */
     public static Collection<ShareStatus> values() {
         return values(ShareStatus.class);
     }

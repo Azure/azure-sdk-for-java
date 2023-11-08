@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SAPAseSystem")
 @Fluent
 public final class AzureVmWorkloadSapAseSystemProtectableItem extends AzureVmWorkloadProtectableItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadSapAseSystemProtectableItem.class);
+    /** Creates an instance of AzureVmWorkloadSapAseSystemProtectableItem class. */
+    public AzureVmWorkloadSapAseSystemProtectableItem() {
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -70,6 +70,13 @@ public final class AzureVmWorkloadSapAseSystemProtectableItem extends AzureVmWor
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withPrebackupvalidation(PreBackupValidation prebackupvalidation) {
         super.withPrebackupvalidation(prebackupvalidation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSapAseSystemProtectableItem withIsProtectable(Boolean isProtectable) {
+        super.withIsProtectable(isProtectable);
         return this;
     }
 

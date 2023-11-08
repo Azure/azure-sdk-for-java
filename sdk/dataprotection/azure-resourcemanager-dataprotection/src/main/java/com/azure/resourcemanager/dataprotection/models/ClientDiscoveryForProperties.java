@@ -5,23 +5,31 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ClientDiscoveryForProperties Class to represent shoebox properties in json client discovery. */
+/**
+ * ClientDiscoveryForProperties
+ *
+ * <p>Class to represent shoebox properties in json client discovery.
+ */
 @Fluent
 public final class ClientDiscoveryForProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryForProperties.class);
-
     /*
-     * ClientDiscoveryForServiceSpecification Operation properties.
+     * ClientDiscoveryForServiceSpecification
+     *
+     * Operation properties.
      */
     @JsonProperty(value = "serviceSpecification")
     private ClientDiscoveryForServiceSpecification serviceSpecification;
 
+    /** Creates an instance of ClientDiscoveryForProperties class. */
+    public ClientDiscoveryForProperties() {
+    }
+
     /**
-     * Get the serviceSpecification property: ClientDiscoveryForServiceSpecification Operation properties.
+     * Get the serviceSpecification property: ClientDiscoveryForServiceSpecification
+     *
+     * <p>Operation properties.
      *
      * @return the serviceSpecification value.
      */
@@ -30,7 +38,9 @@ public final class ClientDiscoveryForProperties {
     }
 
     /**
-     * Set the serviceSpecification property: ClientDiscoveryForServiceSpecification Operation properties.
+     * Set the serviceSpecification property: ClientDiscoveryForServiceSpecification
+     *
+     * <p>Operation properties.
      *
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the ClientDiscoveryForProperties object itself.

@@ -84,6 +84,13 @@ public interface Script {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.kusto.fluent.models.ScriptInner object.
      *
      * @return the inner object.
@@ -94,23 +101,26 @@ public interface Script {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Script definition stages. */
     interface DefinitionStages {
         /** The first stage of the Script definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Script definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, clusterName, databaseName.
              *
-             * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param clusterName The name of the Kusto cluster.
              * @param databaseName The name of the database in the Kusto cluster.
              * @return the next definition stage.
              */
             WithCreate withExistingDatabase(String resourceGroupName, String clusterName, String databaseName);
         }
+
         /**
          * The stage of the Script definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -136,6 +146,7 @@ public interface Script {
              */
             Script create(Context context);
         }
+
         /** The stage of the Script definition allowing to specify scriptUrl. */
         interface WithScriptUrl {
             /**
@@ -148,6 +159,7 @@ public interface Script {
              */
             WithCreate withScriptUrl(String scriptUrl);
         }
+
         /** The stage of the Script definition allowing to specify scriptUrlSasToken. */
         interface WithScriptUrlSasToken {
             /**
@@ -160,6 +172,7 @@ public interface Script {
              */
             WithCreate withScriptUrlSasToken(String scriptUrlSasToken);
         }
+
         /** The stage of the Script definition allowing to specify scriptContent. */
         interface WithScriptContent {
             /**
@@ -174,6 +187,7 @@ public interface Script {
              */
             WithCreate withScriptContent(String scriptContent);
         }
+
         /** The stage of the Script definition allowing to specify forceUpdateTag. */
         interface WithForceUpdateTag {
             /**
@@ -184,6 +198,7 @@ public interface Script {
              */
             WithCreate withForceUpdateTag(String forceUpdateTag);
         }
+
         /** The stage of the Script definition allowing to specify continueOnErrors. */
         interface WithContinueOnErrors {
             /**
@@ -196,6 +211,7 @@ public interface Script {
             WithCreate withContinueOnErrors(Boolean continueOnErrors);
         }
     }
+
     /**
      * Begins update for the Script resource.
      *
@@ -221,6 +237,7 @@ public interface Script {
          */
         Script apply(Context context);
     }
+
     /** The Script update stages. */
     interface UpdateStages {
         /** The stage of the Script update allowing to specify scriptUrl. */
@@ -235,6 +252,7 @@ public interface Script {
              */
             Update withScriptUrl(String scriptUrl);
         }
+
         /** The stage of the Script update allowing to specify forceUpdateTag. */
         interface WithForceUpdateTag {
             /**
@@ -245,6 +263,7 @@ public interface Script {
              */
             Update withForceUpdateTag(String forceUpdateTag);
         }
+
         /** The stage of the Script update allowing to specify continueOnErrors. */
         interface WithContinueOnErrors {
             /**
@@ -257,6 +276,7 @@ public interface Script {
             Update withContinueOnErrors(Boolean continueOnErrors);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

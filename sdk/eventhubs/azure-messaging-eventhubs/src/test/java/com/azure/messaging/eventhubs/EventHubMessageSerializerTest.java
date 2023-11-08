@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -28,6 +29,8 @@ import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
 import static com.azure.messaging.eventhubs.TestUtils.SEQUENCE_NUMBER;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EventHubMessageSerializerTest {
@@ -240,5 +243,30 @@ public class EventHubMessageSerializerTest {
             // Act
             serializer.deserialize(message, EventHubProperties.class);
         });
+    }
+
+    /**
+     * Tests that we do not throw exception when deserializing an AMQP message with null body.
+     * https://github.com/Azure/azure-sdk-for-java/issues/32939
+     */
+    @Test
+    public void deserializesNullBinaryDataBody() {
+
+        final Message message = getMessage(null, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
+
+        // Act
+        final EventData eventData = serializer.deserialize(message, EventData.class);
+
+        // Assert
+        final byte[] body = eventData.getBody();
+
+        assertNotNull(body);
+        assertEquals(0, body.length);
+
+        final String bodyAsString = eventData.getBodyAsString();
+        assertNotNull(bodyAsString);
+
+        final BinaryData bodyAsBinaryData = eventData.getBodyAsBinaryData();
+        assertNotNull(bodyAsBinaryData);
     }
 }

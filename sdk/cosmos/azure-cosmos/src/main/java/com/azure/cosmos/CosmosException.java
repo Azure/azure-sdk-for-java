@@ -11,8 +11,10 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,10 +47,10 @@ import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
  * service, an IllegalStateException is thrown instead of CosmosException.
  */
 public class CosmosException extends AzureException {
+    private static final long MAX_RETRY_AFTER_IN_MS = BatchExecUtils.MAX_RETRY_AFTER_IN_MS;
     private static final long serialVersionUID = 1L;
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    private final static String USER_AGENT = Utils.getUserAgent();
 
     /**
      * Status code
@@ -80,14 +83,14 @@ public class CosmosException extends AzureException {
     private CosmosError cosmosError;
 
     /**
-     * RNTBD channel task queue size
+     * RNTBD endpoint statistics
      */
-    private int rntbdChannelTaskQueueSize;
+    private RntbdEndpointStatistics rntbdEndpointStatistics;
 
     /**
      * RNTBD endpoint statistics
      */
-    private RntbdEndpointStatistics rntbdEndpointStatistics;
+    private RntbdChannelStatistics rntbdChannelStatistics;
 
     /**
      * LSN
@@ -107,7 +110,7 @@ public class CosmosException extends AzureException {
     /**
      * Request URI
      */
-    Uri requestUri;
+    private Uri requestUri;
 
     /**
      * Resource address
@@ -118,11 +121,6 @@ public class CosmosException extends AzureException {
      * Request payload length
      */
     private int requestPayloadLength;
-
-    /**
-     * RNTBD pending request queue size
-     */
-    private int rntbdPendingRequestQueueSize;
 
     /**
      * RNTBD request length
@@ -139,6 +137,21 @@ public class CosmosException extends AzureException {
      */
     private boolean sendingRequestHasStarted;
 
+    /***
+     * All selectable replica status.
+     */
+    private final List<String> replicaStatusList = new ArrayList<>();
+
+    /**
+     * Fault injection ruleId
+     */
+    private String faultInjectionRuleId;
+
+    /**
+     * Fault injection rule not applicable evaluation result.
+     */
+    private List<String> faultInjectionEvaluationResults;
+
     /**
      * Creates a new instance of the CosmosException class.
      *
@@ -152,6 +165,7 @@ public class CosmosException extends AzureException {
         this.statusCode = statusCode;
         this.responseHeaders = new ConcurrentHashMap<>();
 
+        //  Since ConcurrentHashMap only takes non-null entries, so filtering them before putting them in.
         if (responseHeaders != null) {
             for (Map.Entry<String, String> entry: responseHeaders.entrySet()) {
                 if (entry.getKey() != null && entry.getValue() != null) {
@@ -263,6 +277,16 @@ public class CosmosException extends AzureException {
     }
 
     /**
+     * Returns the error message without any diagnostics - using this method is only useful when
+     * also logging the {@link CosmosException#getDiagnostics()} separately. Without diagnostics it will often
+     * be impossible to determine the root cause of an error.
+     * @return the error message without any diagnostics
+     */
+    public String getShortMessage() {
+        return innerErrorMessage();
+    }
+
+    /**
      * Gets the activity ID associated with the request.
      *
      * @return the activity ID.
@@ -337,7 +361,7 @@ public class CosmosException extends AzureException {
 
             if (StringUtils.isNotEmpty(header)) {
                 try {
-                    retryIntervalInMilliseconds = Long.parseLong(header);
+                    retryIntervalInMilliseconds = Math.min(Long.parseLong(header), MAX_RETRY_AFTER_IN_MS);
                 } catch (NumberFormatException e) {
                     // If the value cannot be parsed as long, return 0.
                 }
@@ -398,12 +422,24 @@ public class CosmosException extends AzureException {
         return Double.parseDouble(value);
     }
 
+    void setRequestUri(Uri requestUri) {
+        this.requestUri = requestUri;
+    }
+
+    Uri getRequestUri() {
+        return this.requestUri;
+    }
+
     @Override
     public String toString() {
+        return toString(true);
+    }
+
+    String toString(boolean includeDiagnostics) {
         try {
             ObjectNode exceptionMessageNode = mapper.createObjectNode();
             exceptionMessageNode.put("ClassName", getClass().getSimpleName());
-            exceptionMessageNode.put(USER_AGENT_KEY, USER_AGENT);
+            exceptionMessageNode.put(USER_AGENT_KEY, this.getUserAgent());
             exceptionMessageNode.put("statusCode", statusCode);
             exceptionMessageNode.put("resourceAddress", resourceAddress);
             if (cosmosError != null) {
@@ -421,17 +457,29 @@ public class CosmosException extends AzureException {
                 exceptionMessageNode.put("requestHeaders", filterRequestHeaders.toString());
             }
 
-            if(this.cosmosDiagnostics != null) {
+            if (StringUtils.isNotEmpty(this.faultInjectionRuleId)) {
+                exceptionMessageNode.put("faultInjectionRuleId", this.faultInjectionRuleId);
+            }
+
+            if(includeDiagnostics && this.cosmosDiagnostics != null) {
                 cosmosDiagnostics.fillCosmosDiagnostics(exceptionMessageNode, null);
             }
 
             return mapper.writeValueAsString(exceptionMessageNode);
         } catch (JsonProcessingException ex) {
-            return getClass().getSimpleName() + "{" + USER_AGENT_KEY +"=" + USER_AGENT + ", error=" + cosmosError + ", " +
-                "resourceAddress='"
-                + resourceAddress + ", statusCode=" + statusCode + ", message=" + getMessage()
-                + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
-                + filterSensitiveData(requestHeaders) + '}';
+            return String.format(
+                "%s {%s=%s, error=%s, resourceAddress=%s, statusCode=%s, message=%s, causeInfo=%s, responseHeaders=%s, requestHeaders=%s, faultInjectionRuleId=[%s] }",
+                getClass().getSimpleName(),
+                USER_AGENT_KEY,
+                this.getUserAgent(),
+                cosmosError,
+                resourceAddress,
+                statusCode,
+                getMessage(),
+                causeInfo(),
+                responseHeaders,
+                filterSensitiveData(requestHeaders),
+                this.faultInjectionRuleId);
         }
     }
 
@@ -491,6 +539,14 @@ public class CosmosException extends AzureException {
         return this.rntbdEndpointStatistics;
     }
 
+    RntbdChannelStatistics getRntbdChannelStatistics() {
+        return this.rntbdChannelStatistics;
+    }
+
+    void setRntbdChannelStatistics(RntbdChannelStatistics rntbdChannelStatistics) {
+        this.rntbdChannelStatistics = rntbdChannelStatistics;
+    }
+
     void setRntbdRequestLength(int rntbdRequestLength) {
         this.rntbdRequestLength = rntbdRequestLength;
     }
@@ -523,34 +579,96 @@ public class CosmosException extends AzureException {
         this.sendingRequestHasStarted = hasSendingRequestStarted;
     }
 
-    int getRntbdChannelTaskQueueSize() {
-        return this.rntbdChannelTaskQueueSize;
+    private String getUserAgent() {
+        String userAgent = Utils.getUserAgent();
+        if (this.requestHeaders != null) {
+            userAgent = this.requestHeaders.getOrDefault(HttpConstants.HttpHeaders.USER_AGENT, userAgent);
+        }
+
+        return userAgent;
     }
 
-    void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
-        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
+    void setFaultInjectionRuleId(String faultInjectionRUleId) {
+        this.faultInjectionRuleId = faultInjectionRUleId;
     }
 
-    int getRntbdPendingRequestQueueSize() {
-        return this.rntbdChannelTaskQueueSize;
+    String getFaultInjectionRuleId() {
+        return this.faultInjectionRuleId;
     }
 
-    void setRntbdPendingRequestQueueSize(int rntbdPendingRequestQueueSize) {
-        this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
+    void setFaultInjectionEvaluationResults(List<String> faultInjectionEvaluationResults) {
+        this.faultInjectionEvaluationResults = faultInjectionEvaluationResults;
+    }
+
+    List<String> getFaultInjectionEvaluationResults() {
+        return this.faultInjectionEvaluationResults;
+    }
+
+    List<String> getReplicaStatusList() {
+        return this.replicaStatusList;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosExceptionHelper.setCosmosExceptionAccessor(
-            new ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor() {
+                new ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor() {
+                    @Override
+                    public CosmosException createCosmosException(int statusCode, Exception innerException) {
+                        return new CosmosException(statusCode, innerException);
+                    }
 
-                @Override
-                public CosmosException createCosmosException(int statusCode, Exception innerException) {
-                    return new CosmosException(statusCode, innerException);
-                }
-            });
+                    @Override
+                    public List<String> getReplicaStatusList(CosmosException cosmosException) {
+                        return cosmosException.getReplicaStatusList();
+                    }
+
+                    @Override
+                    public CosmosException setRntbdChannelStatistics(
+                        CosmosException cosmosException,
+                        RntbdChannelStatistics rntbdChannelStatistics) {
+
+                        cosmosException.setRntbdChannelStatistics(rntbdChannelStatistics);
+                        return cosmosException;
+                    }
+
+                    @Override
+                    public RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException) {
+                        return cosmosException.getRntbdChannelStatistics();
+                    }
+
+                    @Override
+                    public void setFaultInjectionRuleId(CosmosException cosmosException, String faultInjectionRuleId) {
+                        cosmosException.setFaultInjectionRuleId(faultInjectionRuleId);
+                    }
+
+                    @Override
+                    public String getFaultInjectionRuleId(CosmosException cosmosException) {
+                        return cosmosException.getFaultInjectionRuleId();
+                    }
+
+                    @Override
+                    public void setFaultInjectionEvaluationResults(CosmosException cosmosException, List<String> faultInjectionRuleEvaluationResults) {
+                        cosmosException.setFaultInjectionEvaluationResults(faultInjectionRuleEvaluationResults);
+                    }
+
+                    @Override
+                    public List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException) {
+                        return cosmosException.getFaultInjectionEvaluationResults();
+                    }
+
+                    @Override
+                    public void setRequestUri(CosmosException cosmosException, Uri requestUri) {
+                        cosmosException.setRequestUri(requestUri);
+                    }
+
+                    @Override
+                    public Uri getRequestUri(CosmosException cosmosException) {
+                        return cosmosException.getRequestUri();
+                    }
+                });
     }
+
+    static { initialize(); }
 }

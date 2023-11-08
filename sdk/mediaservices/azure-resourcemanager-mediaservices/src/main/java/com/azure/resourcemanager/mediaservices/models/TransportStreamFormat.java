@@ -14,6 +14,10 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Media.TransportStreamFormat")
 @Fluent
 public final class TransportStreamFormat extends MultiBitrateFormat {
+    /** Creates an instance of TransportStreamFormat class. */
+    public TransportStreamFormat() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public TransportStreamFormat withOutputFiles(List<OutputFile> outputFiles) {

@@ -22,6 +22,10 @@ public final class Extension {
     @JsonProperty(value = "properties")
     private CloudServiceExtensionProperties properties;
 
+    /** Creates an instance of Extension class. */
+    public Extension() {
+    }
+
     /**
      * Get the name property: The name of the extension.
      *

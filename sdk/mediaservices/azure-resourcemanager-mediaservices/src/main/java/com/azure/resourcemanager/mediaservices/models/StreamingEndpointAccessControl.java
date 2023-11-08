@@ -22,6 +22,10 @@ public final class StreamingEndpointAccessControl {
     @JsonProperty(value = "ip")
     private IpAccessControl ip;
 
+    /** Creates an instance of StreamingEndpointAccessControl class. */
+    public StreamingEndpointAccessControl() {
+    }
+
     /**
      * Get the akamai property: The access control of Akamai.
      *

@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageDependencies;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** Schema for Expand MSIX Image properties. */
 @Fluent
 public final class ExpandMsixImageProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpandMsixImageProperties.class);
-
     /*
      * Alias of MSIX Package.
      */
@@ -37,8 +33,7 @@ public final class ExpandMsixImageProperties {
     private String packageName;
 
     /*
-     * Package Family Name from appxmanifest.xml. Contains Package Name and
-     * Publisher name.
+     * Package Family Name from appxmanifest.xml. Contains Package Name and Publisher name.
      */
     @JsonProperty(value = "packageFamilyName")
     private String packageFamilyName;
@@ -96,6 +91,10 @@ public final class ExpandMsixImageProperties {
      */
     @JsonProperty(value = "packageApplications")
     private List<MsixPackageApplications> packageApplications;
+
+    /** Creates an instance of ExpandMsixImageProperties class. */
+    public ExpandMsixImageProperties() {
+    }
 
     /**
      * Get the packageAlias property: Alias of MSIX Package.

@@ -41,6 +41,10 @@ public final class AvailableDelegationInner {
     @JsonProperty(value = "actions")
     private List<String> actions;
 
+    /** Creates an instance of AvailableDelegationInner class. */
+    public AvailableDelegationInner() {
+    }
+
     /**
      * Get the name property: The name of the AvailableDelegation resource.
      *

@@ -8,13 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TeamDeskAuthenticationType. */
+/** The authentication type to use. */
 public final class TeamDeskAuthenticationType extends ExpandableStringEnum<TeamDeskAuthenticationType> {
     /** Static value Basic for TeamDeskAuthenticationType. */
     public static final TeamDeskAuthenticationType BASIC = fromString("Basic");
 
     /** Static value Token for TeamDeskAuthenticationType. */
     public static final TeamDeskAuthenticationType TOKEN = fromString("Token");
+
+    /**
+     * Creates a new instance of TeamDeskAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TeamDeskAuthenticationType() {}
 
     /**
      * Creates or finds a TeamDeskAuthenticationType from its string representation.
@@ -27,7 +35,11 @@ public final class TeamDeskAuthenticationType extends ExpandableStringEnum<TeamD
         return fromString(name, TeamDeskAuthenticationType.class);
     }
 
-    /** @return known TeamDeskAuthenticationType values. */
+    /**
+     * Gets known TeamDeskAuthenticationType values.
+     *
+     * @return known TeamDeskAuthenticationType values.
+     */
     public static Collection<TeamDeskAuthenticationType> values() {
         return values(TeamDeskAuthenticationType.class);
     }

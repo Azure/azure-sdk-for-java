@@ -475,14 +475,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WatchlistInner> getAsync(String resourceGroupName, String workspaceName, String watchlistAlias) {
         return getWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias)
-            .flatMap(
-                (Response<WatchlistInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -637,7 +630,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String watchlistAlias) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias)
-            .flatMap((WatchlistsDeleteResponse res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -823,14 +816,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     private Mono<WatchlistInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String watchlistAlias, WatchlistInner watchlist) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias, watchlist)
-            .flatMap(
-                (WatchlistsCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -886,7 +872,8 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -921,7 +908,8 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

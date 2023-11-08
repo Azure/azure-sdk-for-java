@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.fluent.models.ViewInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of listing views. It contains a list of available views. */
 @Immutable
 public final class ViewListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ViewListResult.class);
-
     /*
      * The list of views.
      */
@@ -27,6 +23,10 @@ public final class ViewListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ViewListResult class. */
+    public ViewListResult() {
+    }
 
     /**
      * Get the value property: The list of views.

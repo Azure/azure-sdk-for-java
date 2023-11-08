@@ -16,6 +16,10 @@ public final class VirtualNetworkSubnetUsageParameter {
     @JsonProperty(value = "virtualNetworkResourceId")
     private String virtualNetworkResourceId;
 
+    /** Creates an instance of VirtualNetworkSubnetUsageParameter class. */
+    public VirtualNetworkSubnetUsageParameter() {
+    }
+
     /**
      * Get the virtualNetworkResourceId property: Virtual network resource id.
      *

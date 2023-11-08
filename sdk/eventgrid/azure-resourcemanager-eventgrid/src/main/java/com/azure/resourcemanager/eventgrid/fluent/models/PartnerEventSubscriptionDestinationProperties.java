@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PartnerEventSubscriptionDestinationProperties {
     /*
-     * The Azure Resource Id that represents the endpoint of a Partner
-     * Destination of an event subscription.
+     * The Azure Resource Id that represents the endpoint of a Partner Destination of an event subscription.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
+
+    /** Creates an instance of PartnerEventSubscriptionDestinationProperties class. */
+    public PartnerEventSubscriptionDestinationProperties() {
+    }
 
     /**
      * Get the resourceId property: The Azure Resource Id that represents the endpoint of a Partner Destination of an

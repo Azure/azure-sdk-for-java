@@ -17,10 +17,9 @@ import com.azure.resourcemanager.synapse.models.IntegrationRuntimeOutboundNetwor
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeResource;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeStatusResponse;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimesImpl.class);
 
     private final IntegrationRuntimesClient innerClient;
 
@@ -30,17 +29,6 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         IntegrationRuntimesClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public IntegrationRuntimeResource get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeResourceInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<IntegrationRuntimeResource> getWithResponse(
@@ -64,6 +52,17 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
     }
 
+    public IntegrationRuntimeResource get(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeResourceInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         this.serviceClient().delete(resourceGroupName, workspaceName, integrationRuntimeName);
     }
@@ -72,15 +71,15 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         this.serviceClient().delete(resourceGroupName, workspaceName, integrationRuntimeName, context);
     }
 
-    public void upgrade(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        this.serviceClient().upgrade(resourceGroupName, workspaceName, integrationRuntimeName);
-    }
-
     public Response<Void> upgradeWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return this
             .serviceClient()
             .upgradeWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
+    }
+
+    public void upgrade(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        this.serviceClient().upgrade(resourceGroupName, workspaceName, integrationRuntimeName);
     }
 
     public PagedIterable<IntegrationRuntimeResource> listByWorkspace(String resourceGroupName, String workspaceName) {
@@ -126,19 +125,6 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         this.serviceClient().stop(resourceGroupName, workspaceName, integrationRuntimeName, context);
     }
 
-    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner inner =
-            this
-                .serviceClient()
-                .listOutboundNetworkDependenciesEndpoints(resourceGroupName, workspaceName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse>
         listOutboundNetworkDependenciesEndpointsWithResponse(
             String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
@@ -154,6 +140,19 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
                 inner.getHeaders(),
                 new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(
                     inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner inner =
+            this
+                .serviceClient()
+                .listOutboundNetworkDependenciesEndpoints(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -180,7 +179,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     public IntegrationRuntimeResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,14 +187,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -211,7 +210,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     public Response<IntegrationRuntimeResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -219,14 +218,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -239,7 +238,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -247,14 +246,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -267,7 +266,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -275,14 +274,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

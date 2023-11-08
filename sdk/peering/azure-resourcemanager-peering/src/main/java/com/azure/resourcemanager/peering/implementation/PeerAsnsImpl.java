@@ -13,10 +13,9 @@ import com.azure.resourcemanager.peering.fluent.PeerAsnsClient;
 import com.azure.resourcemanager.peering.fluent.models.PeerAsnInner;
 import com.azure.resourcemanager.peering.models.PeerAsn;
 import com.azure.resourcemanager.peering.models.PeerAsns;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeerAsnsImpl implements PeerAsns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerAsnsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeerAsnsImpl.class);
 
     private final PeerAsnsClient innerClient;
 
@@ -25,15 +24,6 @@ public final class PeerAsnsImpl implements PeerAsns {
     public PeerAsnsImpl(PeerAsnsClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public PeerAsn get(String peerAsnName) {
-        PeerAsnInner inner = this.serviceClient().get(peerAsnName);
-        if (inner != null) {
-            return new PeerAsnImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<PeerAsn> getWithResponse(String peerAsnName, Context context) {
@@ -49,12 +39,21 @@ public final class PeerAsnsImpl implements PeerAsns {
         }
     }
 
-    public void delete(String peerAsnName) {
-        this.serviceClient().delete(peerAsnName);
+    public PeerAsn get(String peerAsnName) {
+        PeerAsnInner inner = this.serviceClient().get(peerAsnName);
+        if (inner != null) {
+            return new PeerAsnImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String peerAsnName, Context context) {
         return this.serviceClient().deleteWithResponse(peerAsnName, context);
+    }
+
+    public void delete(String peerAsnName) {
+        this.serviceClient().delete(peerAsnName);
     }
 
     public PagedIterable<PeerAsn> list() {
@@ -70,7 +69,7 @@ public final class PeerAsnsImpl implements PeerAsns {
     public PeerAsn getById(String id) {
         String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
@@ -81,7 +80,7 @@ public final class PeerAsnsImpl implements PeerAsns {
     public Response<PeerAsn> getByIdWithResponse(String id, Context context) {
         String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
@@ -92,18 +91,18 @@ public final class PeerAsnsImpl implements PeerAsns {
     public void deleteById(String id) {
         String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
         }
-        this.deleteWithResponse(peerAsnName, Context.NONE).getValue();
+        this.deleteWithResponse(peerAsnName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));

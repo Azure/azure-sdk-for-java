@@ -28,6 +28,10 @@ public final class ContainerMemoryStatistics {
     @JsonProperty(value = "limit")
     private Long limit;
 
+    /** Creates an instance of ContainerMemoryStatistics class. */
+    public ContainerMemoryStatistics() {
+    }
+
     /**
      * Get the usage property: The usage property.
      *

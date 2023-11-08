@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource requirements. */
 @Fluent
 public final class ResourceRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceRequirements.class);
-
     /*
      * The resource requests of this container instance.
      */
@@ -25,6 +22,10 @@ public final class ResourceRequirements {
      */
     @JsonProperty(value = "limits")
     private ResourceLimits limits;
+
+    /** Creates an instance of ResourceRequirements class. */
+    public ResourceRequirements() {
+    }
 
     /**
      * Get the requests property: The resource requests of this container instance.
@@ -73,7 +74,7 @@ public final class ResourceRequirements {
      */
     public void validate() {
         if (requests() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property requests in model ResourceRequirements"));
         } else {
@@ -83,4 +84,6 @@ public final class ResourceRequirements {
             limits().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceRequirements.class);
 }

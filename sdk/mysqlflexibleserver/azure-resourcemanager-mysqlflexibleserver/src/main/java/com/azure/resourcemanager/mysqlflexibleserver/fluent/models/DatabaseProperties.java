@@ -22,6 +22,10 @@ public final class DatabaseProperties {
     @JsonProperty(value = "collation")
     private String collation;
 
+    /** Creates an instance of DatabaseProperties class. */
+    public DatabaseProperties() {
+    }
+
     /**
      * Get the charset property: The charset of the database.
      *

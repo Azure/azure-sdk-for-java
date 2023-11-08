@@ -5,23 +5,21 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ReplicationUpdateParametersProperties model. */
 @Fluent
 public final class ReplicationUpdateParametersProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationUpdateParametersProperties.class);
-
     /*
-     * Specifies whether the replication's regional endpoint is enabled.
-     * Requests will not be routed to a replication whose regional endpoint is
-     * disabled, however its data will continue to be synced with other
-     * replications.
+     * Specifies whether the replication's regional endpoint is enabled. Requests will not be routed to a replication
+     * whose regional endpoint is disabled, however its data will continue to be synced with other replications.
      */
     @JsonProperty(value = "regionEndpointEnabled")
     private Boolean regionEndpointEnabled;
+
+    /** Creates an instance of ReplicationUpdateParametersProperties class. */
+    public ReplicationUpdateParametersProperties() {
+    }
 
     /**
      * Get the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.

@@ -25,10 +25,9 @@ public final class RoleInstanceViewInner {
     private Integer platformFaultDomain;
 
     /*
-     * Specifies a unique identifier generated internally for the cloud service
-     * associated with this role instance. <br /><br /> NOTE: If you are using
-     * Azure Diagnostics extension, this property can be used as 'DeploymentId'
-     * for querying details.
+     * Specifies a unique identifier generated internally for the cloud service associated with this role instance. <br
+     * /><br /> NOTE: If you are using Azure Diagnostics extension, this property can be used as 'DeploymentId' for
+     * querying details.
      */
     @JsonProperty(value = "privateId", access = JsonProperty.Access.WRITE_ONLY)
     private String privateId;
@@ -38,6 +37,10 @@ public final class RoleInstanceViewInner {
      */
     @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceInstanceViewStatus> statuses;
+
+    /** Creates an instance of RoleInstanceViewInner class. */
+    public RoleInstanceViewInner() {
+    }
 
     /**
      * Get the platformUpdateDomain property: The Update Domain.

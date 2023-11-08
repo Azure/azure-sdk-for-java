@@ -24,6 +24,10 @@ public final class RestServiceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private RestServiceLinkedServiceTypeProperties innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
 
+    /** Creates an instance of RestServiceLinkedService class. */
+    public RestServiceLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Rest Service linked service properties.
      *
@@ -62,7 +66,7 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Get the url property: The base URL of the REST service.
+     * Get the url property: The base URL of the REST service. Type: string (or Expression with resultType string).
      *
      * @return the url value.
      */
@@ -71,7 +75,7 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Set the url property: The base URL of the REST service.
+     * Set the url property: The base URL of the REST service. Type: string (or Expression with resultType string).
      *
      * @param url the url value to set.
      * @return the RestServiceLinkedService object itself.
@@ -135,7 +139,8 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Get the username property: The user name used in Basic authentication type.
+     * Get the username property: The user name used in Basic authentication type. Type: string (or Expression with
+     * resultType string).
      *
      * @return the username value.
      */
@@ -144,7 +149,8 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Set the username property: The user name used in Basic authentication type.
+     * Set the username property: The user name used in Basic authentication type. Type: string (or Expression with
+     * resultType string).
      *
      * @param username the username value to set.
      * @return the RestServiceLinkedService object itself.
@@ -207,6 +213,7 @@ public final class RestServiceLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
+     * Type: string (or Expression with resultType string).
      *
      * @return the servicePrincipalId value.
      */
@@ -216,6 +223,7 @@ public final class RestServiceLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
+     * Type: string (or Expression with resultType string).
      *
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the RestServiceLinkedService object itself.
@@ -253,7 +261,7 @@ public final class RestServiceLinkedService extends LinkedService {
 
     /**
      * Get the tenant property: The tenant information (domain name or tenant ID) used in AadServicePrincipal
-     * authentication type under which your application resides.
+     * authentication type under which your application resides. Type: string (or Expression with resultType string).
      *
      * @return the tenant value.
      */
@@ -263,7 +271,7 @@ public final class RestServiceLinkedService extends LinkedService {
 
     /**
      * Set the tenant property: The tenant information (domain name or tenant ID) used in AadServicePrincipal
-     * authentication type under which your application resides.
+     * authentication type under which your application resides. Type: string (or Expression with resultType string).
      *
      * @param tenant the tenant value to set.
      * @return the RestServiceLinkedService object itself.
@@ -304,7 +312,8 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Get the aadResourceId property: The resource you are requesting authorization to use.
+     * Get the aadResourceId property: The resource you are requesting authorization to use. Type: string (or Expression
+     * with resultType string).
      *
      * @return the aadResourceId value.
      */
@@ -313,7 +322,8 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Set the aadResourceId property: The resource you are requesting authorization to use.
+     * Set the aadResourceId property: The resource you are requesting authorization to use. Type: string (or Expression
+     * with resultType string).
      *
      * @param aadResourceId the aadResourceId value to set.
      * @return the RestServiceLinkedService object itself.
@@ -328,22 +338,22 @@ public final class RestServiceLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the RestServiceLinkedService object itself.
      */
-    public RestServiceLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public RestServiceLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
         }
@@ -371,6 +381,129 @@ public final class RestServiceLinkedService extends LinkedService {
             this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
+     * Get the clientId property: The client ID associated with your application. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the clientId value.
+     */
+    public Object clientId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientId();
+    }
+
+    /**
+     * Set the clientId property: The client ID associated with your application. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param clientId the clientId value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withClientId(Object clientId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientId(clientId);
+        return this;
+    }
+
+    /**
+     * Get the clientSecret property: The client secret associated with your application.
+     *
+     * @return the clientSecret value.
+     */
+    public SecretBase clientSecret() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientSecret();
+    }
+
+    /**
+     * Set the clientSecret property: The client secret associated with your application.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withClientSecret(SecretBase clientSecret) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientSecret(clientSecret);
+        return this;
+    }
+
+    /**
+     * Get the tokenEndpoint property: The token endpoint of the authorization server to acquire access token. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the tokenEndpoint value.
+     */
+    public Object tokenEndpoint() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tokenEndpoint();
+    }
+
+    /**
+     * Set the tokenEndpoint property: The token endpoint of the authorization server to acquire access token. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param tokenEndpoint the tokenEndpoint value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withTokenEndpoint(Object tokenEndpoint) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTokenEndpoint(tokenEndpoint);
+        return this;
+    }
+
+    /**
+     * Get the resource property: The target service or resource to which the access will be requested. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the resource value.
+     */
+    public Object resource() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().resource();
+    }
+
+    /**
+     * Set the resource property: The target service or resource to which the access will be requested. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param resource the resource value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withResource(Object resource) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withResource(resource);
+        return this;
+    }
+
+    /**
+     * Get the scope property: The scope of the access required. It describes what kind of access will be requested.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the scope value.
+     */
+    public Object scope() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scope();
+    }
+
+    /**
+     * Set the scope property: The scope of the access required. It describes what kind of access will be requested.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param scope the scope value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withScope(Object scope) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withScope(scope);
         return this;
     }
 

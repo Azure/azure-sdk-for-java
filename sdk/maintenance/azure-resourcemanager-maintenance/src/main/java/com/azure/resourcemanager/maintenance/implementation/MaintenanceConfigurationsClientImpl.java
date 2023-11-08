@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationInner;
 import com.azure.resourcemanager.maintenance.models.ListMaintenanceConfigurationsResult;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MaintenanceConfigurationsClient. */
 public final class MaintenanceConfigurationsClientImpl implements MaintenanceConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final MaintenanceConfigurationsService service;
 
@@ -64,11 +61,10 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      */
     @Host("{$host}")
     @ServiceInterface(name = "MaintenanceManagemen")
-    private interface MaintenanceConfigurationsService {
+    public interface MaintenanceConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance"
-                + "/maintenanceConfigurations/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> getByResourceGroup(
@@ -82,9 +78,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance"
-                + "/maintenanceConfigurations/{resourceName}")
-        @ExpectedResponses({200})
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -98,8 +93,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance"
-                + "/maintenanceConfigurations/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> delete(
@@ -113,8 +107,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance"
-                + "/maintenanceConfigurations/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> update(
@@ -147,7 +140,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration record.
+     * @return configuration record along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> getByResourceGroupWithResponseAsync(
@@ -196,7 +189,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration record.
+     * @return configuration record along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> getByResourceGroupWithResponseAsync(
@@ -241,19 +234,29 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration record.
+     * @return configuration record on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MaintenanceConfigurationInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<MaintenanceConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Configuration record.
+     *
+     * @param resourceGroupName Resource Group Name.
+     * @param resourceName Maintenance Configuration Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration record along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MaintenanceConfigurationInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
@@ -268,24 +271,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner getByResourceGroup(String resourceGroupName, String resourceName) {
-        return getByResourceGroupAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Get Configuration record.
-     *
-     * @param resourceGroupName Resource Group Name.
-     * @param resourceName Maintenance Configuration Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration record.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -297,7 +283,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -353,7 +340,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -405,20 +393,31 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MaintenanceConfigurationInner> createOrUpdateAsync(
         String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configuration)
-            .flatMap(
-                (Response<MaintenanceConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or Update configuration record.
+     *
+     * @param resourceGroupName Resource Group Name.
+     * @param resourceName Maintenance Configuration Name.
+     * @param configuration The configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return maintenance configuration record type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(
+        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configuration, context).block();
     }
 
     /**
@@ -435,25 +434,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner createOrUpdate(
         String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration) {
-        return createOrUpdateAsync(resourceGroupName, resourceName, configuration).block();
-    }
-
-    /**
-     * Create or Update configuration record.
-     *
-     * @param resourceGroupName Resource Group Name.
-     * @param resourceName Maintenance Configuration Name.
-     * @param configuration The configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configuration, context).block();
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, configuration, Context.NONE).getValue();
     }
 
     /**
@@ -464,7 +445,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> deleteWithResponseAsync(
@@ -513,7 +495,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> deleteWithResponseAsync(
@@ -558,19 +541,29 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MaintenanceConfigurationInner> deleteAsync(String resourceGroupName, String resourceName) {
         return deleteWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<MaintenanceConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Delete Configuration record.
+     *
+     * @param resourceGroupName Resource Group Name.
+     * @param resourceName Maintenance Configuration Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return maintenance configuration record type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MaintenanceConfigurationInner> deleteWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
@@ -585,24 +578,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner delete(String resourceGroupName, String resourceName) {
-        return deleteAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Delete Configuration record.
-     *
-     * @param resourceGroupName Resource Group Name.
-     * @param resourceName Maintenance Configuration Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> deleteWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, context).block();
+        return deleteWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -614,7 +590,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> updateWithResponseAsync(
@@ -670,7 +647,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> updateWithResponseAsync(
@@ -722,20 +700,31 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MaintenanceConfigurationInner> updateAsync(
         String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration) {
         return updateWithResponseAsync(resourceGroupName, resourceName, configuration)
-            .flatMap(
-                (Response<MaintenanceConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Patch configuration record.
+     *
+     * @param resourceGroupName Resource Group Name.
+     * @param resourceName Maintenance Configuration Name.
+     * @param configuration The configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return maintenance configuration record type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MaintenanceConfigurationInner> updateWithResponse(
+        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context) {
+        return updateWithResponseAsync(resourceGroupName, resourceName, configuration, context).block();
     }
 
     /**
@@ -752,25 +741,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceConfigurationInner update(
         String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration) {
-        return updateAsync(resourceGroupName, resourceName, configuration).block();
-    }
-
-    /**
-     * Patch configuration record.
-     *
-     * @param resourceGroupName Resource Group Name.
-     * @param resourceName Maintenance Configuration Name.
-     * @param configuration The configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> updateWithResponse(
-        String resourceGroupName, String resourceName, MaintenanceConfigurationInner configuration, Context context) {
-        return updateWithResponseAsync(resourceGroupName, resourceName, configuration, context).block();
+        return updateWithResponse(resourceGroupName, resourceName, configuration, Context.NONE).getValue();
     }
 
     /**
@@ -778,7 +749,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MaintenanceConfigurationInner>> listSinglePageAsync() {
@@ -819,7 +791,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MaintenanceConfigurationInner>> listSinglePageAsync(Context context) {
@@ -855,7 +828,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MaintenanceConfigurationInner> listAsync() {
@@ -869,7 +842,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MaintenanceConfigurationInner> listAsync(Context context) {
@@ -881,7 +854,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> list() {
@@ -895,7 +868,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> list(Context context) {

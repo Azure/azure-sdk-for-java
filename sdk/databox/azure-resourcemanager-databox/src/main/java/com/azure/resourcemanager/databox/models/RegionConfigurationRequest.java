@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request body to get the configuration for the region. */
 @Fluent
 public final class RegionConfigurationRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionConfigurationRequest.class);
-
     /*
      * Request body to get the availability for scheduling orders.
      */
@@ -25,6 +21,16 @@ public final class RegionConfigurationRequest {
      */
     @JsonProperty(value = "transportAvailabilityRequest")
     private TransportAvailabilityRequest transportAvailabilityRequest;
+
+    /*
+     * Request body to get the datacenter address for given sku.
+     */
+    @JsonProperty(value = "datacenterAddressRequest")
+    private DatacenterAddressRequest datacenterAddressRequest;
+
+    /** Creates an instance of RegionConfigurationRequest class. */
+    public RegionConfigurationRequest() {
+    }
 
     /**
      * Get the scheduleAvailabilityRequest property: Request body to get the availability for scheduling orders.
@@ -69,6 +75,26 @@ public final class RegionConfigurationRequest {
     }
 
     /**
+     * Get the datacenterAddressRequest property: Request body to get the datacenter address for given sku.
+     *
+     * @return the datacenterAddressRequest value.
+     */
+    public DatacenterAddressRequest datacenterAddressRequest() {
+        return this.datacenterAddressRequest;
+    }
+
+    /**
+     * Set the datacenterAddressRequest property: Request body to get the datacenter address for given sku.
+     *
+     * @param datacenterAddressRequest the datacenterAddressRequest value to set.
+     * @return the RegionConfigurationRequest object itself.
+     */
+    public RegionConfigurationRequest withDatacenterAddressRequest(DatacenterAddressRequest datacenterAddressRequest) {
+        this.datacenterAddressRequest = datacenterAddressRequest;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -79,6 +105,9 @@ public final class RegionConfigurationRequest {
         }
         if (transportAvailabilityRequest() != null) {
             transportAvailabilityRequest().validate();
+        }
+        if (datacenterAddressRequest() != null) {
+            datacenterAddressRequest().validate();
         }
     }
 }

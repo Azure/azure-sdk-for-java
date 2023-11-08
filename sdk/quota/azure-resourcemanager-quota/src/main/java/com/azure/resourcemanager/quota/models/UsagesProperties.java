@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Usage properties for the specified resource. */
 @Fluent
 public final class UsagesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesProperties.class);
-
     /*
      * The quota limit properties for this resource.
      */
@@ -21,22 +17,20 @@ public final class UsagesProperties {
     private UsagesObject usages;
 
     /*
-     * The units for the quota usage, such as Count and Bytes. When requesting
-     * quota, use the **unit** value returned in the GET response in the
-     * request body of your PUT operation.
+     * The units for the quota usage, such as Count and Bytes. When requesting quota, use the **unit** value returned
+     * in the GET response in the request body of your PUT operation.
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
-     * Resource name provided by the resource provider. Use this property name
-     * when requesting quota.
+     * Resource name provided by the resource provider. Use this property name when requesting quota.
      */
     @JsonProperty(value = "name")
     private ResourceName name;
 
     /*
-     * The name of the resource type.
+     * The name of the resource type. Optional field.
      */
     @JsonProperty(value = "resourceType")
     private String resourceType;
@@ -46,8 +40,7 @@ public final class UsagesProperties {
      * *P1D (per one day)
      * *PT1M (per one minute)
      * *PT1S (per one second).
-     * This parameter is optional because it is not relevant for all resources
-     * such as compute.
+     * This parameter is optional because it is not relevant for all resources such as compute.
      */
     @JsonProperty(value = "quotaPeriod", access = JsonProperty.Access.WRITE_ONLY)
     private String quotaPeriod;
@@ -63,6 +56,10 @@ public final class UsagesProperties {
      */
     @JsonProperty(value = "properties")
     private Object properties;
+
+    /** Creates an instance of UsagesProperties class. */
+    public UsagesProperties() {
+    }
 
     /**
      * Get the usages property: The quota limit properties for this resource.
@@ -117,7 +114,7 @@ public final class UsagesProperties {
     }
 
     /**
-     * Get the resourceType property: The name of the resource type.
+     * Get the resourceType property: The name of the resource type. Optional field.
      *
      * @return the resourceType value.
      */
@@ -126,7 +123,7 @@ public final class UsagesProperties {
     }
 
     /**
-     * Set the resourceType property: The name of the resource type.
+     * Set the resourceType property: The name of the resource type. Optional field.
      *
      * @param resourceType the resourceType value to set.
      * @return the UsagesProperties object itself.

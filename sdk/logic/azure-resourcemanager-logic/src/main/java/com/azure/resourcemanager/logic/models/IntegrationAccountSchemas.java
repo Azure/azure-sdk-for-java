@@ -18,7 +18,7 @@ public interface IntegrationAccountSchemas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccountSchema> list(String resourceGroupName, String integrationAccountName);
 
@@ -33,10 +33,25 @@ public interface IntegrationAccountSchemas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccountSchema> list(
         String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context);
+
+    /**
+     * Gets an integration account schema.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param schemaName The integration account schema name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an integration account schema along with {@link Response}.
+     */
+    Response<IntegrationAccountSchema> getWithResponse(
+        String resourceGroupName, String integrationAccountName, String schemaName, Context context);
 
     /**
      * Gets an integration account schema.
@@ -52,7 +67,7 @@ public interface IntegrationAccountSchemas {
     IntegrationAccountSchema get(String resourceGroupName, String integrationAccountName, String schemaName);
 
     /**
-     * Gets an integration account schema.
+     * Deletes an integration account schema.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
@@ -61,9 +76,9 @@ public interface IntegrationAccountSchemas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account schema.
+     * @return the {@link Response}.
      */
-    Response<IntegrationAccountSchema> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String integrationAccountName, String schemaName, Context context);
 
     /**
@@ -79,19 +94,24 @@ public interface IntegrationAccountSchemas {
     void delete(String resourceGroupName, String integrationAccountName, String schemaName);
 
     /**
-     * Deletes an integration account schema.
+     * Get the content callback url.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param schemaName The integration account schema name.
+     * @param listContentCallbackUrl The callback url parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the content callback url along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String schemaName, Context context);
+    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
+        String resourceGroupName,
+        String integrationAccountName,
+        String schemaName,
+        GetCallbackUrlParameters listContentCallbackUrl,
+        Context context);
 
     /**
      * Get the content callback url.
@@ -112,33 +132,13 @@ public interface IntegrationAccountSchemas {
         GetCallbackUrlParameters listContentCallbackUrl);
 
     /**
-     * Get the content callback url.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param schemaName The integration account schema name.
-     * @param listContentCallbackUrl The callback url parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
-     */
-    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String schemaName,
-        GetCallbackUrlParameters listContentCallbackUrl,
-        Context context);
-
-    /**
      * Gets an integration account schema.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account schema.
+     * @return an integration account schema along with {@link Response}.
      */
     IntegrationAccountSchema getById(String id);
 
@@ -150,7 +150,7 @@ public interface IntegrationAccountSchemas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account schema.
+     * @return an integration account schema along with {@link Response}.
      */
     Response<IntegrationAccountSchema> getByIdWithResponse(String id, Context context);
 
@@ -172,7 +172,7 @@ public interface IntegrationAccountSchemas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

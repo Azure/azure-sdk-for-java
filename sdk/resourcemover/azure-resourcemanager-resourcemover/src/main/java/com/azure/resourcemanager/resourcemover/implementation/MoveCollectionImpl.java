@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resourcemover.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveCollectionInner;
 import com.azure.resourcemanager.resourcemover.models.BulkRemoveRequest;
@@ -62,12 +63,20 @@ public final class MoveCollectionImpl implements MoveCollection, MoveCollection.
         return this.innerModel().properties();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public MoveCollectionInner innerModel() {
@@ -168,20 +177,12 @@ public final class MoveCollectionImpl implements MoveCollection, MoveCollection.
         return this;
     }
 
-    public OperationStatus prepare(PrepareRequest body) {
-        return serviceManager.moveCollections().prepare(resourceGroupName, moveCollectionName, body);
-    }
-
     public OperationStatus prepare() {
         return serviceManager.moveCollections().prepare(resourceGroupName, moveCollectionName);
     }
 
     public OperationStatus prepare(PrepareRequest body, Context context) {
         return serviceManager.moveCollections().prepare(resourceGroupName, moveCollectionName, body, context);
-    }
-
-    public OperationStatus initiateMove(ResourceMoveRequest body) {
-        return serviceManager.moveCollections().initiateMove(resourceGroupName, moveCollectionName, body);
     }
 
     public OperationStatus initiateMove() {
@@ -192,20 +193,12 @@ public final class MoveCollectionImpl implements MoveCollection, MoveCollection.
         return serviceManager.moveCollections().initiateMove(resourceGroupName, moveCollectionName, body, context);
     }
 
-    public OperationStatus commit(CommitRequest body) {
-        return serviceManager.moveCollections().commit(resourceGroupName, moveCollectionName, body);
-    }
-
     public OperationStatus commit() {
         return serviceManager.moveCollections().commit(resourceGroupName, moveCollectionName);
     }
 
     public OperationStatus commit(CommitRequest body, Context context) {
         return serviceManager.moveCollections().commit(resourceGroupName, moveCollectionName, body, context);
-    }
-
-    public OperationStatus discard(DiscardRequest body) {
-        return serviceManager.moveCollections().discard(resourceGroupName, moveCollectionName, body);
     }
 
     public OperationStatus discard() {
@@ -222,10 +215,6 @@ public final class MoveCollectionImpl implements MoveCollection, MoveCollection.
 
     public OperationStatus resolveDependencies(Context context) {
         return serviceManager.moveCollections().resolveDependencies(resourceGroupName, moveCollectionName, context);
-    }
-
-    public OperationStatus bulkRemove(BulkRemoveRequest body) {
-        return serviceManager.moveCollections().bulkRemove(resourceGroupName, moveCollectionName, body);
     }
 
     public OperationStatus bulkRemove() {

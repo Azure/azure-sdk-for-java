@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationOrigin. */
+/** The intended executor of the operation. */
 public final class OperationOrigin extends ExpandableStringEnum<OperationOrigin> {
     /** Static value user for OperationOrigin. */
     public static final OperationOrigin USER = fromString("user");
@@ -27,7 +27,11 @@ public final class OperationOrigin extends ExpandableStringEnum<OperationOrigin>
         return fromString(name, OperationOrigin.class);
     }
 
-    /** @return known OperationOrigin values. */
+    /**
+     * Gets known OperationOrigin values.
+     *
+     * @return known OperationOrigin values.
+     */
     public static Collection<OperationOrigin> values() {
         return values(OperationOrigin.class);
     }

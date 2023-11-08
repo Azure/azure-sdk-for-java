@@ -1,0 +1,7 @@
+matrix:
+  image:
+    - Dockerfile
+  scenarios:
+    send-process:
+      chaos: "false"
+      imageBuildDir: ..\..\..\

@@ -8,7 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AccountImmutabilityPolicyState. */
+/**
+ * The ImmutabilityPolicy state defines the mode of the policy. Disabled state disables the policy, Unlocked state
+ * allows increase and decrease of immutability retention time and also allows toggling allowProtectedAppendWrites
+ * property, Locked state only allows the increase of the immutability retention time. A policy can only be created in a
+ * Disabled or Unlocked state and can be toggled between the two states. Only a policy in an Unlocked state can
+ * transition to a Locked state which cannot be reverted.
+ */
 public final class AccountImmutabilityPolicyState extends ExpandableStringEnum<AccountImmutabilityPolicyState> {
     /** Static value Unlocked for AccountImmutabilityPolicyState. */
     public static final AccountImmutabilityPolicyState UNLOCKED = fromString("Unlocked");
@@ -18,6 +24,15 @@ public final class AccountImmutabilityPolicyState extends ExpandableStringEnum<A
 
     /** Static value Disabled for AccountImmutabilityPolicyState. */
     public static final AccountImmutabilityPolicyState DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of AccountImmutabilityPolicyState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccountImmutabilityPolicyState() {
+    }
 
     /**
      * Creates or finds a AccountImmutabilityPolicyState from its string representation.
@@ -30,7 +45,11 @@ public final class AccountImmutabilityPolicyState extends ExpandableStringEnum<A
         return fromString(name, AccountImmutabilityPolicyState.class);
     }
 
-    /** @return known AccountImmutabilityPolicyState values. */
+    /**
+     * Gets known AccountImmutabilityPolicyState values.
+     *
+     * @return known AccountImmutabilityPolicyState values.
+     */
     public static Collection<AccountImmutabilityPolicyState> values() {
         return values(AccountImmutabilityPolicyState.class);
     }

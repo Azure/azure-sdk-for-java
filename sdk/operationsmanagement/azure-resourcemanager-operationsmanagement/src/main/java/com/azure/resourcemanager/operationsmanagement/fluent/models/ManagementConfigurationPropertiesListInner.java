@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.operationsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** the list of ManagementConfiguration response. */
 @Fluent
 public final class ManagementConfigurationPropertiesListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementConfigurationPropertiesListInner.class);
-
     /*
      * List of Management Configuration properties within the subscription.
      */
     @JsonProperty(value = "value")
     private List<ManagementConfigurationInner> value;
+
+    /** Creates an instance of ManagementConfigurationPropertiesListInner class. */
+    public ManagementConfigurationPropertiesListInner() {
+    }
 
     /**
      * Get the value property: List of Management Configuration properties within the subscription.

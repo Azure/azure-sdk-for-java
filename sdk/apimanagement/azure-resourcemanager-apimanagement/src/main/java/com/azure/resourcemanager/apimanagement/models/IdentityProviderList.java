@@ -30,6 +30,10 @@ public final class IdentityProviderList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of IdentityProviderList class. */
+    public IdentityProviderList() {
+    }
+
     /**
      * Get the value property: Identity Provider configuration values.
      *

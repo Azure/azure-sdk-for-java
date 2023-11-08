@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.WorkspaceSqlAadAdminsClient;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceAadAdminInfoInner;
 import com.azure.resourcemanager.synapse.models.WorkspaceAadAdminInfo;
 import com.azure.resourcemanager.synapse.models.WorkspaceSqlAadAdmins;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceSqlAadAdminsImpl implements WorkspaceSqlAadAdmins {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceSqlAadAdminsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceSqlAadAdminsImpl.class);
 
     private final WorkspaceSqlAadAdminsClient innerClient;
 
@@ -25,15 +24,6 @@ public final class WorkspaceSqlAadAdminsImpl implements WorkspaceSqlAadAdmins {
         WorkspaceSqlAadAdminsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public WorkspaceAadAdminInfo get(String resourceGroupName, String workspaceName) {
-        WorkspaceAadAdminInfoInner inner = this.serviceClient().get(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new WorkspaceAadAdminInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<WorkspaceAadAdminInfo> getWithResponse(
@@ -46,6 +36,15 @@ public final class WorkspaceSqlAadAdminsImpl implements WorkspaceSqlAadAdmins {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WorkspaceAadAdminInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WorkspaceAadAdminInfo get(String resourceGroupName, String workspaceName) {
+        WorkspaceAadAdminInfoInner inner = this.serviceClient().get(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new WorkspaceAadAdminInfoImpl(inner, this.manager());
         } else {
             return null;
         }

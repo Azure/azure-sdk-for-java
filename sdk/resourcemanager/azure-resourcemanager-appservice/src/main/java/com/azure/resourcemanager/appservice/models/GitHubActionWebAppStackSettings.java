@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class GitHubActionWebAppStackSettings {
     /*
-     * <code>true</code> if GitHub Actions is supported for the stack;
-     * otherwise, <code>false</code>.
+     * <code>true</code> if GitHub Actions is supported for the stack; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isSupported;
@@ -22,6 +21,10 @@ public final class GitHubActionWebAppStackSettings {
      */
     @JsonProperty(value = "supportedVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String supportedVersion;
+
+    /** Creates an instance of GitHubActionWebAppStackSettings class. */
+    public GitHubActionWebAppStackSettings() {
+    }
 
     /**
      * Get the isSupported property: &lt;code&gt;true&lt;/code&gt; if GitHub Actions is supported for the stack;

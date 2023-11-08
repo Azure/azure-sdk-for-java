@@ -53,11 +53,11 @@ public class RecognizePiiEntitiesBatchStringDocumentsAsync {
         client.recognizePiiEntitiesBatch(documents, "en", options).subscribe(
             recognizePiiEntitiesResultCollection -> {
                 // Model version
-                System.out.printf("Results of Azure Text Analytics \"Personally Identifiable Information Entities Recognition\" Model, version: %s%n", recognizePiiEntitiesResultCollection.getModelVersion());
+                System.out.printf("Results of \"Personally Identifiable Information Entities Recognition\" Model, version: %s%n", recognizePiiEntitiesResultCollection.getModelVersion());
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = recognizePiiEntitiesResultCollection.getStatistics();
-                System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+                System.out.printf("Documents statistics: document count = %d, erroneous document count = %d, transaction count = %d, valid document count = %d.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 for (RecognizePiiEntitiesResult entitiesResult : recognizePiiEntitiesResultCollection) {

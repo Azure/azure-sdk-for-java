@@ -24,17 +24,17 @@ public class UtilityMethodTests {
         assertEquals(expected, SearchAsyncClient.createSearchRequestAnswers(searchOptions));
     }
 
-    private static Stream<Arguments> createSearchRequestAnswersTestsSupplier() {
+    static Stream<Arguments> createSearchRequestAnswersTestsSupplier() {
         return Stream.of(
             // No QueryAnswer provided returns null.
             Arguments.of(new SearchOptions(), null),
 
             // Only QueryAnswer provided returns the string value of QueryAnswer.
-            Arguments.of(new SearchOptions().setAnswers(QueryAnswerType.EXTRACTIVE),
+            Arguments.of(new SearchOptions().setQueryAnswer(QueryAnswerType.EXTRACTIVE),
                 QueryAnswerType.EXTRACTIVE.toString()),
 
             // Both QueryAnswer and count provided returns the concatenated string mentioned in docs.
-            Arguments.of(new SearchOptions().setAnswers(QueryAnswerType.EXTRACTIVE).setAnswersCount(5),
+            Arguments.of(new SearchOptions().setQueryAnswer(QueryAnswerType.EXTRACTIVE).setAnswersCount(5),
                 QueryAnswerType.EXTRACTIVE + "|count-5")
         );
     }
@@ -45,7 +45,7 @@ public class UtilityMethodTests {
         assertEquals(expected, SearchAsyncClient.createSearchRequestCaptions(searchOptions));
     }
 
-    private static Stream<Arguments> createSearchRequestCaptionsTestsSupplier() {
+    static Stream<Arguments> createSearchRequestCaptionsTestsSupplier() {
         return Stream.of(
             // No QueryCaption provided returns null.
             Arguments.of(new SearchOptions(), null),

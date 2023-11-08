@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Catalog information for managed dedicated integration runtime. */
 @Fluent
 public final class IntegrationRuntimeSsisCatalogInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeSsisCatalogInfo.class);
-
     /*
      * The catalog database server URL.
      */
@@ -37,8 +34,8 @@ public final class IntegrationRuntimeSsisCatalogInfo {
     private SecureString catalogAdminPassword;
 
     /*
-     * The pricing tier for the catalog database. The valid values could be
-     * found in https://azure.microsoft.com/en-us/pricing/details/sql-database/
+     * The pricing tier for the catalog database. The valid values could be found in
+     * https://azure.microsoft.com/en-us/pricing/details/sql-database/
      */
     @JsonProperty(value = "catalogPricingTier")
     private IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier;
@@ -47,6 +44,10 @@ public final class IntegrationRuntimeSsisCatalogInfo {
      * Catalog information for managed dedicated integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntimeSsisCatalogInfo class. */
+    public IntegrationRuntimeSsisCatalogInfo() {
+    }
 
     /**
      * Get the catalogServerEndpoint property: The catalog database server URL.

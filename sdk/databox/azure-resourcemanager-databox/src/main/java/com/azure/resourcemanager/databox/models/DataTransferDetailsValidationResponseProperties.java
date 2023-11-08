@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,14 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ValidateDataTransferDetails")
 @Immutable
 public final class DataTransferDetailsValidationResponseProperties extends ValidationInputResponse {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DataTransferDetailsValidationResponseProperties.class);
-
     /*
      * Data transfer details validation status.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
+
+    /** Creates an instance of DataTransferDetailsValidationResponseProperties class. */
+    public DataTransferDetailsValidationResponseProperties() {
+    }
 
     /**
      * Get the status property: Data transfer details validation status.

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sku information related properties of a server. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
-     * The name of the sku, typically, tier + family + cores, e.g.
-     * Standard_D4s_v3.
+     * The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -26,6 +22,10 @@ public final class Sku {
      */
     @JsonProperty(value = "tier", required = true)
     private SkuTier tier;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the name property: The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
@@ -74,12 +74,14 @@ public final class Sku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
         }
         if (tier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property tier in model Sku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
 }

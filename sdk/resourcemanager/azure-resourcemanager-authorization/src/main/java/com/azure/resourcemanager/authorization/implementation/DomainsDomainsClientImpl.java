@@ -28,23 +28,22 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.authorization.fluent.DomainsDomainsClient;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfDomain;
-import com.azure.resourcemanager.authorization.fluent.models.DomainsDomainExpand;
-import com.azure.resourcemanager.authorization.fluent.models.DomainsDomainOrderby;
-import com.azure.resourcemanager.authorization.fluent.models.DomainsDomainSelect;
+import com.azure.resourcemanager.authorization.fluent.models.Get1ItemsItem;
+import com.azure.resourcemanager.authorization.fluent.models.Get2ItemsItem;
+import com.azure.resourcemanager.authorization.fluent.models.Get5ItemsItem;
+import com.azure.resourcemanager.authorization.fluent.models.Get6ItemsItem;
+import com.azure.resourcemanager.authorization.fluent.models.Get7ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDomainInner;
 import com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DomainsDomainsClient. */
 public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
-    private final ClientLogger logger = new ClientLogger(DomainsDomainsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DomainsDomainsService service;
 
@@ -68,7 +67,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftGraphClient")
-    private interface DomainsDomainsService {
+    public interface DomainsDomainsService {
         @Headers({"Content-Type: application/json"})
         @Get("/domains")
         @ExpectedResponses({200})
@@ -152,7 +151,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphDomainInner>> listDomainSinglePageAsync(
@@ -161,9 +160,9 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         String search,
         String filter,
         Boolean count,
-        List<DomainsDomainOrderby> orderby,
-        List<DomainsDomainSelect> select,
-        List<DomainsDomainExpand> expand) {
+        List<Get5ItemsItem> orderby,
+        List<Get6ItemsItem> select,
+        List<Get7ItemsItem> expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -172,11 +171,26 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         }
         final String accept = "application/json";
         String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+            (orderby == null)
+                ? null
+                : orderby
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -202,7 +216,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -220,7 +234,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphDomainInner>> listDomainSinglePageAsync(
@@ -229,9 +243,9 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         String search,
         String filter,
         Boolean count,
-        List<DomainsDomainOrderby> orderby,
-        List<DomainsDomainSelect> select,
-        List<DomainsDomainExpand> expand,
+        List<Get5ItemsItem> orderby,
+        List<Get6ItemsItem> select,
+        List<Get7ItemsItem> expand,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -241,11 +255,26 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         }
         final String accept = "application/json";
         String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+            (orderby == null)
+                ? null
+                : orderby
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .listDomain(
@@ -285,7 +314,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftGraphDomainInner> listDomainAsync(
@@ -294,9 +323,9 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         String search,
         String filter,
         Boolean count,
-        List<DomainsDomainOrderby> orderby,
-        List<DomainsDomainSelect> select,
-        List<DomainsDomainExpand> expand) {
+        List<Get5ItemsItem> orderby,
+        List<Get6ItemsItem> select,
+        List<Get7ItemsItem> expand) {
         return new PagedFlux<>(
             () -> listDomainSinglePageAsync(top, skip, search, filter, count, orderby, select, expand),
             nextLink -> listMoreSinglePageAsync(nextLink));
@@ -307,7 +336,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      *
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftGraphDomainInner> listDomainAsync() {
@@ -316,9 +345,9 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         final String search = null;
         final String filter = null;
         final Boolean count = null;
-        final List<DomainsDomainOrderby> orderby = null;
-        final List<DomainsDomainSelect> select = null;
-        final List<DomainsDomainExpand> expand = null;
+        final List<Get5ItemsItem> orderby = null;
+        final List<Get6ItemsItem> select = null;
+        final List<Get7ItemsItem> expand = null;
         return new PagedFlux<>(
             () -> listDomainSinglePageAsync(top, skip, search, filter, count, orderby, select, expand),
             nextLink -> listMoreSinglePageAsync(nextLink));
@@ -339,7 +368,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MicrosoftGraphDomainInner> listDomainAsync(
@@ -348,9 +377,9 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         String search,
         String filter,
         Boolean count,
-        List<DomainsDomainOrderby> orderby,
-        List<DomainsDomainSelect> select,
-        List<DomainsDomainExpand> expand,
+        List<Get5ItemsItem> orderby,
+        List<Get6ItemsItem> select,
+        List<Get7ItemsItem> expand,
         Context context) {
         return new PagedFlux<>(
             () -> listDomainSinglePageAsync(top, skip, search, filter, count, orderby, select, expand, context),
@@ -362,7 +391,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      *
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftGraphDomainInner> listDomain() {
@@ -371,9 +400,9 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         final String search = null;
         final String filter = null;
         final Boolean count = null;
-        final List<DomainsDomainOrderby> orderby = null;
-        final List<DomainsDomainSelect> select = null;
-        final List<DomainsDomainExpand> expand = null;
+        final List<Get5ItemsItem> orderby = null;
+        final List<Get6ItemsItem> select = null;
+        final List<Get7ItemsItem> expand = null;
         return new PagedIterable<>(listDomainAsync(top, skip, search, filter, count, orderby, select, expand));
     }
 
@@ -392,7 +421,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftGraphDomainInner> listDomain(
@@ -401,9 +430,9 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         String search,
         String filter,
         Boolean count,
-        List<DomainsDomainOrderby> orderby,
-        List<DomainsDomainSelect> select,
-        List<DomainsDomainExpand> expand,
+        List<Get5ItemsItem> orderby,
+        List<Get6ItemsItem> select,
+        List<Get7ItemsItem> expand,
         Context context) {
         return new PagedIterable<>(listDomainAsync(top, skip, search, filter, count, orderby, select, expand, context));
     }
@@ -415,7 +444,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain.
+     * @return domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphDomainInner>> createDomainWithResponseAsync(MicrosoftGraphDomainInner body) {
@@ -433,7 +462,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createDomain(this.client.getEndpoint(), body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -444,7 +473,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain.
+     * @return domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphDomainInner>> createDomainWithResponseAsync(
@@ -472,19 +501,27 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain.
+     * @return domain on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphDomainInner> createDomainAsync(MicrosoftGraphDomainInner body) {
-        return createDomainWithResponseAsync(body)
-            .flatMap(
-                (Response<MicrosoftGraphDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return createDomainWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Add new entity to domains.
+     *
+     * @param body New entity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MicrosoftGraphDomainInner> createDomainWithResponse(
+        MicrosoftGraphDomainInner body, Context context) {
+        return createDomainWithResponseAsync(body, context).block();
     }
 
     /**
@@ -498,23 +535,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MicrosoftGraphDomainInner createDomain(MicrosoftGraphDomainInner body) {
-        return createDomainAsync(body).block();
-    }
-
-    /**
-     * Add new entity to domains.
-     *
-     * @param body New entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MicrosoftGraphDomainInner> createDomainWithResponse(
-        MicrosoftGraphDomainInner body, Context context) {
-        return createDomainWithResponseAsync(body, context).block();
+        return createDomainWithResponse(body, Context.NONE).getValue();
     }
 
     /**
@@ -526,11 +547,11 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from domains by key.
+     * @return entity from domains by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphDomainInner>> getDomainWithResponseAsync(
-        String domainId, List<DomainsDomainSelect> select, List<DomainsDomainExpand> expand) {
+        String domainId, List<Get1ItemsItem> select, List<Get2ItemsItem> expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -542,16 +563,26 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         }
         final String accept = "application/json";
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .getDomain(
                             this.client.getEndpoint(), domainId, selectConverted, expandConverted, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -564,11 +595,11 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from domains by key.
+     * @return entity from domains by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphDomainInner>> getDomainWithResponseAsync(
-        String domainId, List<DomainsDomainSelect> select, List<DomainsDomainExpand> expand, Context context) {
+        String domainId, List<Get1ItemsItem> select, List<Get2ItemsItem> expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -580,9 +611,19 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         }
         final String accept = "application/json";
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .getDomain(this.client.getEndpoint(), domainId, selectConverted, expandConverted, accept, context);
@@ -592,49 +633,34 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * Get entity from domains by key.
      *
      * @param domainId key: id of domain.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from domains by key.
+     * @return entity from domains by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MicrosoftGraphDomainInner> getDomainAsync(
-        String domainId, List<DomainsDomainSelect> select, List<DomainsDomainExpand> expand) {
-        return getDomainWithResponseAsync(domainId, select, expand)
-            .flatMap(
-                (Response<MicrosoftGraphDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<MicrosoftGraphDomainInner> getDomainAsync(String domainId) {
+        final List<Get1ItemsItem> select = null;
+        final List<Get2ItemsItem> expand = null;
+        return getDomainWithResponseAsync(domainId, select, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get entity from domains by key.
      *
      * @param domainId key: id of domain.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from domains by key.
+     * @return entity from domains by key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MicrosoftGraphDomainInner> getDomainAsync(String domainId) {
-        final List<DomainsDomainSelect> select = null;
-        final List<DomainsDomainExpand> expand = null;
-        return getDomainWithResponseAsync(domainId, select, expand)
-            .flatMap(
-                (Response<MicrosoftGraphDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<MicrosoftGraphDomainInner> getDomainWithResponse(
+        String domainId, List<Get1ItemsItem> select, List<Get2ItemsItem> expand, Context context) {
+        return getDomainWithResponseAsync(domainId, select, expand, context).block();
     }
 
     /**
@@ -648,27 +674,9 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MicrosoftGraphDomainInner getDomain(String domainId) {
-        final List<DomainsDomainSelect> select = null;
-        final List<DomainsDomainExpand> expand = null;
-        return getDomainAsync(domainId, select, expand).block();
-    }
-
-    /**
-     * Get entity from domains by key.
-     *
-     * @param domainId key: id of domain.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from domains by key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MicrosoftGraphDomainInner> getDomainWithResponse(
-        String domainId, List<DomainsDomainSelect> select, List<DomainsDomainExpand> expand, Context context) {
-        return getDomainWithResponseAsync(domainId, select, expand, context).block();
+        final List<Get1ItemsItem> select = null;
+        final List<Get2ItemsItem> expand = null;
+        return getDomainWithResponse(domainId, select, expand, Context.NONE).getValue();
     }
 
     /**
@@ -679,7 +687,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateDomainWithResponseAsync(String domainId, MicrosoftGraphDomainInner body) {
@@ -700,7 +708,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateDomain(this.client.getEndpoint(), domainId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -712,7 +720,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateDomainWithResponseAsync(
@@ -744,11 +752,27 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateDomainAsync(String domainId, MicrosoftGraphDomainInner body) {
-        return updateDomainWithResponseAsync(domainId, body).flatMap((Response<Void> res) -> Mono.empty());
+        return updateDomainWithResponseAsync(domainId, body).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Update entity in domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateDomainWithResponse(String domainId, MicrosoftGraphDomainInner body, Context context) {
+        return updateDomainWithResponseAsync(domainId, body, context).block();
     }
 
     /**
@@ -762,23 +786,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateDomain(String domainId, MicrosoftGraphDomainInner body) {
-        updateDomainAsync(domainId, body).block();
-    }
-
-    /**
-     * Update entity in domains.
-     *
-     * @param domainId key: id of domain.
-     * @param body New property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateDomainWithResponse(String domainId, MicrosoftGraphDomainInner body, Context context) {
-        return updateDomainWithResponseAsync(domainId, body, context).block();
+        updateDomainWithResponse(domainId, body, Context.NONE);
     }
 
     /**
@@ -789,7 +797,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDomainWithResponseAsync(String domainId, String ifMatch) {
@@ -805,7 +813,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteDomain(this.client.getEndpoint(), domainId, ifMatch, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -817,7 +825,7 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteDomainWithResponseAsync(String domainId, String ifMatch, Context context) {
@@ -839,30 +847,31 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
      * Delete entity from domains.
      *
      * @param domainId key: id of domain.
-     * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteDomainAsync(String domainId, String ifMatch) {
-        return deleteDomainWithResponseAsync(domainId, ifMatch).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> deleteDomainAsync(String domainId) {
+        final String ifMatch = null;
+        return deleteDomainWithResponseAsync(domainId, ifMatch).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Delete entity from domains.
      *
      * @param domainId key: id of domain.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteDomainAsync(String domainId) {
-        final String ifMatch = null;
-        return deleteDomainWithResponseAsync(domainId, ifMatch).flatMap((Response<Void> res) -> Mono.empty());
+    public Response<Void> deleteDomainWithResponse(String domainId, String ifMatch, Context context) {
+        return deleteDomainWithResponseAsync(domainId, ifMatch, context).block();
     }
 
     /**
@@ -876,33 +885,18 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDomain(String domainId) {
         final String ifMatch = null;
-        deleteDomainAsync(domainId, ifMatch).block();
-    }
-
-    /**
-     * Delete entity from domains.
-     *
-     * @param domainId key: id of domain.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDomainWithResponse(String domainId, String ifMatch, Context context) {
-        return deleteDomainWithResponseAsync(domainId, ifMatch, context).block();
+        deleteDomainWithResponse(domainId, ifMatch, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of domain.
+     * @return collection of domain along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphDomainInner>> listMoreSinglePageAsync(String nextLink) {
@@ -920,18 +914,19 @@ public final class DomainsDomainsClientImpl implements DomainsDomainsClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of domain.
+     * @return collection of domain along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphDomainInner>> listMoreSinglePageAsync(String nextLink, Context context) {

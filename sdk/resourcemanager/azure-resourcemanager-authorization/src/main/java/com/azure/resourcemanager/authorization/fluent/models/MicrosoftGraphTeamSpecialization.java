@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphTeamSpecialization. */
+/** teamSpecialization. */
 public final class MicrosoftGraphTeamSpecialization extends ExpandableStringEnum<MicrosoftGraphTeamSpecialization> {
     /** Static value none for MicrosoftGraphTeamSpecialization. */
     public static final MicrosoftGraphTeamSpecialization NONE = fromString("none");
@@ -37,6 +37,15 @@ public final class MicrosoftGraphTeamSpecialization extends ExpandableStringEnum
     public static final MicrosoftGraphTeamSpecialization UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphTeamSpecialization value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphTeamSpecialization() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphTeamSpecialization from its string representation.
      *
      * @param name a name to look for.
@@ -47,7 +56,11 @@ public final class MicrosoftGraphTeamSpecialization extends ExpandableStringEnum
         return fromString(name, MicrosoftGraphTeamSpecialization.class);
     }
 
-    /** @return known MicrosoftGraphTeamSpecialization values. */
+    /**
+     * Gets known MicrosoftGraphTeamSpecialization values.
+     *
+     * @return known MicrosoftGraphTeamSpecialization values.
+     */
     public static Collection<MicrosoftGraphTeamSpecialization> values() {
         return values(MicrosoftGraphTeamSpecialization.class);
     }

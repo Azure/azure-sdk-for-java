@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.avs.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.ClusterInner;
 import java.util.List;
@@ -39,6 +40,41 @@ public interface Cluster {
     Sku sku();
 
     /**
+     * Gets the clusterSize property: The cluster size.
+     *
+     * @return the clusterSize value.
+     */
+    Integer clusterSize();
+
+    /**
+     * Gets the provisioningState property: The state of the cluster provisioning.
+     *
+     * @return the provisioningState value.
+     */
+    ClusterProvisioningState provisioningState();
+
+    /**
+     * Gets the clusterId property: The identity.
+     *
+     * @return the clusterId value.
+     */
+    Integer clusterId();
+
+    /**
+     * Gets the hosts property: The hosts.
+     *
+     * @return the hosts value.
+     */
+    List<String> hosts();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.ClusterInner object.
      *
      * @return the inner object.
@@ -52,11 +88,13 @@ public interface Cluster {
             DefinitionStages.WithSku,
             DefinitionStages.WithCreate {
     }
+
     /** The Cluster definition stages. */
     interface DefinitionStages {
         /** The first stage of the Cluster definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Cluster definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -68,6 +106,7 @@ public interface Cluster {
              */
             WithSku withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /** The stage of the Cluster definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -78,11 +117,12 @@ public interface Cluster {
              */
             WithCreate withSku(Sku sku);
         }
+
         /**
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate {
+        interface WithCreate extends DefinitionStages.WithClusterSize, DefinitionStages.WithHosts {
             /**
              * Executes the create request.
              *
@@ -98,7 +138,30 @@ public interface Cluster {
              */
             Cluster create(Context context);
         }
+
+        /** The stage of the Cluster definition allowing to specify clusterSize. */
+        interface WithClusterSize {
+            /**
+             * Specifies the clusterSize property: The cluster size.
+             *
+             * @param clusterSize The cluster size.
+             * @return the next definition stage.
+             */
+            WithCreate withClusterSize(Integer clusterSize);
+        }
+
+        /** The stage of the Cluster definition allowing to specify hosts. */
+        interface WithHosts {
+            /**
+             * Specifies the hosts property: The hosts.
+             *
+             * @param hosts The hosts.
+             * @return the next definition stage.
+             */
+            WithCreate withHosts(List<String> hosts);
+        }
     }
+
     /**
      * Begins update for the Cluster resource.
      *
@@ -123,6 +186,7 @@ public interface Cluster {
          */
         Cluster apply(Context context);
     }
+
     /** The Cluster update stages. */
     interface UpdateStages {
         /** The stage of the Cluster update allowing to specify clusterSize. */
@@ -135,6 +199,7 @@ public interface Cluster {
              */
             Update withClusterSize(Integer clusterSize);
         }
+
         /** The stage of the Cluster update allowing to specify hosts. */
         interface WithHosts {
             /**
@@ -146,6 +211,7 @@ public interface Cluster {
             Update withHosts(List<String> hosts);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -160,4 +226,24 @@ public interface Cluster {
      * @return the refreshed resource.
      */
     Cluster refresh(Context context);
+
+    /**
+     * List hosts by zone in a cluster.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of all zones and associated hosts for a cluster along with {@link Response}.
+     */
+    Response<ClusterZoneList> listZonesWithResponse(Context context);
+
+    /**
+     * List hosts by zone in a cluster.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of all zones and associated hosts for a cluster.
+     */
+    ClusterZoneList listZones();
 }

@@ -18,8 +18,8 @@ public final class ResourceSkuRestrictions {
     private ResourceSkuRestrictionsType type;
 
     /*
-     * The value of restrictions. If the restriction type is set to location.
-     * This would be different locations where the SKU is restricted.
+     * The value of restrictions. If the restriction type is set to location. This would be different locations where
+     * the SKU is restricted.
      */
     @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> values;
@@ -35,6 +35,10 @@ public final class ResourceSkuRestrictions {
      */
     @JsonProperty(value = "reasonCode", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSkuRestrictionsReasonCode reasonCode;
+
+    /** Creates an instance of ResourceSkuRestrictions class. */
+    public ResourceSkuRestrictions() {
+    }
 
     /**
      * Get the type property: The type of restrictions.

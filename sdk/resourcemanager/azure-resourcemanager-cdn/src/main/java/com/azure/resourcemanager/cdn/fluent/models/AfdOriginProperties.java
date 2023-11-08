@@ -5,19 +5,16 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the origin. */
 @Fluent
 public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginProperties.class);
-
     /*
      * Provisioning status
      */
@@ -29,6 +26,10 @@ public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParamete
      */
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
+
+    /** Creates an instance of AfdOriginProperties class. */
+    public AfdOriginProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning status.
@@ -99,7 +100,8 @@ public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParamete
 
     /** {@inheritDoc} */
     @Override
-    public AfdOriginProperties withSharedPrivateLinkResource(Object sharedPrivateLinkResource) {
+    public AfdOriginProperties withSharedPrivateLinkResource(
+        SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         super.withSharedPrivateLinkResource(sharedPrivateLinkResource);
         return this;
     }

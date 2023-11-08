@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressionEvaluationOptionsScopeType. */
+/** The scope to be used for evaluation of parameters, variables and functions in a nested template. */
 public final class ExpressionEvaluationOptionsScopeType
     extends ExpandableStringEnum<ExpressionEvaluationOptionsScopeType> {
     /** Static value NotSpecified for ExpressionEvaluationOptionsScopeType. */
@@ -21,6 +21,15 @@ public final class ExpressionEvaluationOptionsScopeType
     public static final ExpressionEvaluationOptionsScopeType INNER = fromString("Inner");
 
     /**
+     * Creates a new instance of ExpressionEvaluationOptionsScopeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressionEvaluationOptionsScopeType() {
+    }
+
+    /**
      * Creates or finds a ExpressionEvaluationOptionsScopeType from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class ExpressionEvaluationOptionsScopeType
         return fromString(name, ExpressionEvaluationOptionsScopeType.class);
     }
 
-    /** @return known ExpressionEvaluationOptionsScopeType values. */
+    /**
+     * Gets known ExpressionEvaluationOptionsScopeType values.
+     *
+     * @return known ExpressionEvaluationOptionsScopeType values.
+     */
     public static Collection<ExpressionEvaluationOptionsScopeType> values() {
         return values(ExpressionEvaluationOptionsScopeType.class);
     }

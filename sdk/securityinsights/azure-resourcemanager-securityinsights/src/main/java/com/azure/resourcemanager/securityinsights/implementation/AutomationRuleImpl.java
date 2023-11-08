@@ -77,6 +77,10 @@ public final class AutomationRuleImpl implements AutomationRule, AutomationRule.
         return this.innerModel().createdBy();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AutomationRuleInner innerModel() {
         return this.innerObject;
     }

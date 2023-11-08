@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Domain availability. */
 @Fluent
 public final class DomainAvailabilityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainAvailabilityInner.class);
-
     /*
      * Indicates the given SKU is available or not.
      */
@@ -43,6 +39,10 @@ public final class DomainAvailabilityInner {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /** Creates an instance of DomainAvailabilityInner class. */
+    public DomainAvailabilityInner() {
+    }
 
     /**
      * Get the isSubdomainAvailable property: Indicates the given SKU is available or not.

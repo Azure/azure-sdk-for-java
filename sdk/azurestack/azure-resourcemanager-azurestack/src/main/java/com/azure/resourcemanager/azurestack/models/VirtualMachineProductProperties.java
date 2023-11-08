@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Product information. */
 @Immutable
 public class VirtualMachineProductProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineProductProperties.class);
-
     /*
      * Specifies product version.
      */
@@ -32,6 +28,10 @@ public class VirtualMachineProductProperties {
      */
     @JsonProperty(value = "dataDiskImages", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataDiskImage> dataDiskImages;
+
+    /** Creates an instance of VirtualMachineProductProperties class. */
+    public VirtualMachineProductProperties() {
+    }
 
     /**
      * Get the version property: Specifies product version.

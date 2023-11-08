@@ -14,10 +14,9 @@ import com.azure.resourcemanager.advisor.fluent.models.ConfigDataInner;
 import com.azure.resourcemanager.advisor.models.ConfigData;
 import com.azure.resourcemanager.advisor.models.ConfigurationName;
 import com.azure.resourcemanager.advisor.models.Configurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationsImpl implements Configurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationsImpl.class);
 
     private final ConfigurationsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class ConfigurationsImpl implements Configurations {
         return Utils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
     }
 
-    public ConfigData createInSubscription(ConfigurationName configurationName, ConfigDataInner configContract) {
-        ConfigDataInner inner = this.serviceClient().createInSubscription(configurationName, configContract);
-        if (inner != null) {
-            return new ConfigDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ConfigData> createInSubscriptionWithResponse(
         ConfigurationName configurationName, ConfigDataInner configContract, Context context) {
         Response<ConfigDataInner> inner =
@@ -58,6 +48,15 @@ public final class ConfigurationsImpl implements Configurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ConfigDataImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConfigData createInSubscription(ConfigurationName configurationName, ConfigDataInner configContract) {
+        ConfigDataInner inner = this.serviceClient().createInSubscription(configurationName, configContract);
+        if (inner != null) {
+            return new ConfigDataImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -20,11 +20,14 @@ public final class SnapshotList {
     private List<SnapshotInner> value;
 
     /*
-     * The uri to fetch the next page of snapshots. Call ListNext() with this
-     * to fetch the next page of snapshots.
+     * The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of SnapshotList class. */
+    public SnapshotList() {
+    }
 
     /**
      * Get the value property: A list of snapshots.

@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.kusto.fluent.models.ReadWriteDatabaseProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.time.Duration;
 @JsonTypeName("ReadWrite")
 @Fluent
 public final class ReadWriteDatabase extends DatabaseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadWriteDatabase.class);
-
     /*
      * The database properties.
      */
     @JsonProperty(value = "properties")
     private ReadWriteDatabaseProperties innerProperties;
+
+    /** Creates an instance of ReadWriteDatabase class. */
+    public ReadWriteDatabase() {
+    }
 
     /**
      * Get the innerProperties property: The database properties.
@@ -116,6 +116,39 @@ public final class ReadWriteDatabase extends DatabaseInner {
      */
     public Boolean isFollowed() {
         return this.innerProperties() == null ? null : this.innerProperties().isFollowed();
+    }
+
+    /**
+     * Get the keyVaultProperties property: KeyVault properties for the database encryption.
+     *
+     * @return the keyVaultProperties value.
+     */
+    public KeyVaultProperties keyVaultProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultProperties();
+    }
+
+    /**
+     * Set the keyVaultProperties property: KeyVault properties for the database encryption.
+     *
+     * @param keyVaultProperties the keyVaultProperties value to set.
+     * @return the ReadWriteDatabase object itself.
+     */
+    public ReadWriteDatabase withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReadWriteDatabaseProperties();
+        }
+        this.innerProperties().withKeyVaultProperties(keyVaultProperties);
+        return this;
+    }
+
+    /**
+     * Get the suspensionDetails property: The database suspension details. If the database is suspended, this object
+     * contains information related to the database's suspension state.
+     *
+     * @return the suspensionDetails value.
+     */
+    public SuspensionDetails suspensionDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().suspensionDetails();
     }
 
     /**

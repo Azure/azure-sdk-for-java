@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleAssignmentGetResultsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The relevant Role Assignments. */
 @Immutable
 public final class SqlRoleAssignmentListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleAssignmentListResult.class);
-
     /*
      * List of Role Assignments and their properties
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlRoleAssignmentGetResultsInner> value;
+
+    /** Creates an instance of SqlRoleAssignmentListResult class. */
+    public SqlRoleAssignmentListResult() {
+    }
 
     /**
      * Get the value property: List of Role Assignments and their properties.

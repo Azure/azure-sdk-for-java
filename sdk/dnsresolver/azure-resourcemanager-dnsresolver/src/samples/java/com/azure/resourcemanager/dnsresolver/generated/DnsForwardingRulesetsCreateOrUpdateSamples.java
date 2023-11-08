@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DnsForwardingRulesets CreateOrUpdate. */
 public final class DnsForwardingRulesetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/DnsForwardingRuleset_Put.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Put.json
      */
     /**
      * Sample code: Upsert DNS forwarding ruleset.
@@ -25,7 +25,6 @@ public final class DnsForwardingRulesetsCreateOrUpdateSamples {
             .define("samplednsForwardingRuleset")
             .withRegion("westus2")
             .withExistingResourceGroup("sampleResourceGroup")
-            .withTags(mapOf("key1", "value1"))
             .withDnsResolverOutboundEndpoints(
                 Arrays
                     .asList(
@@ -35,6 +34,7 @@ public final class DnsForwardingRulesetsCreateOrUpdateSamples {
                         new SubResource()
                             .withId(
                                 "/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver/outboundEndpoints/sampleOutboundEndpoint1")))
+            .withTags(mapOf("key1", "value1"))
             .create();
     }
 

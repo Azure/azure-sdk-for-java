@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BillingProfileStatus. */
+/** The status of the billing profile. */
 public final class BillingProfileStatus extends ExpandableStringEnum<BillingProfileStatus> {
     /** Static value Active for BillingProfileStatus. */
     public static final BillingProfileStatus ACTIVE = fromString("Active");
@@ -18,6 +18,15 @@ public final class BillingProfileStatus extends ExpandableStringEnum<BillingProf
 
     /** Static value Warned for BillingProfileStatus. */
     public static final BillingProfileStatus WARNED = fromString("Warned");
+
+    /**
+     * Creates a new instance of BillingProfileStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BillingProfileStatus() {
+    }
 
     /**
      * Creates or finds a BillingProfileStatus from its string representation.
@@ -30,7 +39,11 @@ public final class BillingProfileStatus extends ExpandableStringEnum<BillingProf
         return fromString(name, BillingProfileStatus.class);
     }
 
-    /** @return known BillingProfileStatus values. */
+    /**
+     * Gets known BillingProfileStatus values.
+     *
+     * @return known BillingProfileStatus values.
+     */
     public static Collection<BillingProfileStatus> values() {
         return values(BillingProfileStatus.class);
     }

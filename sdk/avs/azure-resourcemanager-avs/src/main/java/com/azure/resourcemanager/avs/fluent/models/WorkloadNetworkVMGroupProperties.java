@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.VMGroupStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NSX VM Group Properties. */
 @Fluent
 public final class WorkloadNetworkVMGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkVMGroupProperties.class);
-
     /*
      * Display name of the VM group.
      */
@@ -46,6 +42,10 @@ public final class WorkloadNetworkVMGroupProperties {
      */
     @JsonProperty(value = "revision")
     private Long revision;
+
+    /** Creates an instance of WorkloadNetworkVMGroupProperties class. */
+    public WorkloadNetworkVMGroupProperties() {
+    }
 
     /**
      * Get the displayName property: Display name of the VM group.

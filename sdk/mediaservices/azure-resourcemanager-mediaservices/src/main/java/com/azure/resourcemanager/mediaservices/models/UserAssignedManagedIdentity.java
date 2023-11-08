@@ -23,6 +23,10 @@ public class UserAssignedManagedIdentity {
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
 
+    /** Creates an instance of UserAssignedManagedIdentity class. */
+    public UserAssignedManagedIdentity() {
+    }
+
     /**
      * Get the clientId property: The client ID.
      *

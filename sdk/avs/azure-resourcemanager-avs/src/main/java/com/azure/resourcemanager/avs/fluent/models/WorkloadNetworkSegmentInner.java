@@ -6,25 +6,25 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.SegmentStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentPortVif;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentProvisioningState;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentSubnet;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NSX Segment. */
 @Fluent
 public final class WorkloadNetworkSegmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkSegmentInner.class);
-
     /*
      * The properties of a Workload Segment proxy resource.
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkSegmentProperties innerProperties;
+
+    /** Creates an instance of WorkloadNetworkSegmentInner class. */
+    public WorkloadNetworkSegmentInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a Workload Segment proxy resource.

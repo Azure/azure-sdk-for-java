@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of association of a data collection rule with a monitored Azure resource. */
 @Fluent
 public class DataCollectionRuleAssociation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCollectionRuleAssociation.class);
-
     /*
      * Description of the association.
      */
@@ -27,8 +23,7 @@ public class DataCollectionRuleAssociation {
     private String dataCollectionRuleId;
 
     /*
-     * The resource ID of the data collection endpoint that is to be
-     * associated.
+     * The resource ID of the data collection endpoint that is to be associated.
      */
     @JsonProperty(value = "dataCollectionEndpointId")
     private String dataCollectionEndpointId;
@@ -38,6 +33,16 @@ public class DataCollectionRuleAssociation {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KnownDataCollectionRuleAssociationProvisioningState provisioningState;
+
+    /*
+     * Metadata about the resource
+     */
+    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
+    private DataCollectionRuleAssociationMetadata metadata;
+
+    /** Creates an instance of DataCollectionRuleAssociation class. */
+    public DataCollectionRuleAssociation() {
+    }
 
     /**
      * Get the description property: Description of the association.
@@ -111,10 +116,22 @@ public class DataCollectionRuleAssociation {
     }
 
     /**
+     * Get the metadata property: Metadata about the resource.
+     *
+     * @return the metadata value.
+     */
+    public DataCollectionRuleAssociationMetadata metadata() {
+        return this.metadata;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (metadata() != null) {
+            metadata().validate();
+        }
     }
 }

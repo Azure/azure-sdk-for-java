@@ -22,6 +22,10 @@ public final class ContainerResources {
     @JsonProperty(value = "memory")
     private String memory;
 
+    /** Creates an instance of ContainerResources class. */
+    public ContainerResources() {
+    }
+
     /**
      * Get the cpu property: Required CPU in cores, e.g. 0.5.
      *

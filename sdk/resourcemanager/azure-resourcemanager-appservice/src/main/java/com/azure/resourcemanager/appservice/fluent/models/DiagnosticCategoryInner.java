@@ -17,6 +17,10 @@ public final class DiagnosticCategoryInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DiagnosticCategoryProperties innerProperties;
 
+    /** Creates an instance of DiagnosticCategoryInner class. */
+    public DiagnosticCategoryInner() {
+    }
+
     /**
      * Get the innerProperties property: DiagnosticCategory resource specific properties.
      *

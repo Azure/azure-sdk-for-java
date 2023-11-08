@@ -200,14 +200,7 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
     private Mono<RelationInner> getRelationAsync(
         String resourceGroupName, String workspaceName, String entityId, String relationName) {
         return getRelationWithResponseAsync(resourceGroupName, workspaceName, entityId, relationName)
-            .flatMap(
-                (Response<RelationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

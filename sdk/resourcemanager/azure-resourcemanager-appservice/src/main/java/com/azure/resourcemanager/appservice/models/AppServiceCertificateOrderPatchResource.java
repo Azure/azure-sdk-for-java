@@ -21,6 +21,10 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
     @JsonProperty(value = "properties")
     private AppServiceCertificateOrderPatchResourceProperties innerProperties;
 
+    /** Creates an instance of AppServiceCertificateOrderPatchResource class. */
+    public AppServiceCertificateOrderPatchResource() {
+    }
+
     /**
      * Get the innerProperties property: AppServiceCertificateOrderPatchResource resource specific properties.
      *
@@ -298,8 +302,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
      *
      * @return the appServiceCertificateNotRenewableReasons value.
      */
-    public List<AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem>
-        appServiceCertificateNotRenewableReasons() {
+    public List<ResourceNotRenewableReason> appServiceCertificateNotRenewableReasons() {
         return this.innerProperties() == null
             ? null
             : this.innerProperties().appServiceCertificateNotRenewableReasons();

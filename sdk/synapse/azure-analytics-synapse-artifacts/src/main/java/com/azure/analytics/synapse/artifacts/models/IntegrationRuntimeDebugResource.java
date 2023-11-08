@@ -16,6 +16,9 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntime properties;
 
+    /** Creates an instance of IntegrationRuntimeDebugResource class. */
+    public IntegrationRuntimeDebugResource() {}
+
     /**
      * Get the properties property: Integration runtime properties.
      *
@@ -33,6 +36,13 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
      */
     public IntegrationRuntimeDebugResource setProperties(IntegrationRuntime properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IntegrationRuntimeDebugResource setName(String name) {
+        super.setName(name);
         return this;
     }
 }

@@ -24,6 +24,10 @@ public final class SapEccLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SapEccLinkedServiceTypeProperties innerTypeProperties = new SapEccLinkedServiceTypeProperties();
 
+    /** Creates an instance of SapEccLinkedService class. */
+    public SapEccLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: SAP ECC linked service properties.
      *
@@ -67,7 +71,7 @@ public final class SapEccLinkedService extends LinkedService {
      *
      * @return the url value.
      */
-    public String url() {
+    public Object url() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().url();
     }
 
@@ -78,7 +82,7 @@ public final class SapEccLinkedService extends LinkedService {
      * @param url the url value to set.
      * @return the SapEccLinkedService object itself.
      */
-    public SapEccLinkedService withUrl(String url) {
+    public SapEccLinkedService withUrl(Object url) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SapEccLinkedServiceTypeProperties();
         }
@@ -92,7 +96,7 @@ public final class SapEccLinkedService extends LinkedService {
      *
      * @return the username value.
      */
-    public String username() {
+    public Object username() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
     }
 
@@ -103,7 +107,7 @@ public final class SapEccLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the SapEccLinkedService object itself.
      */
-    public SapEccLinkedService withUsername(String username) {
+    public SapEccLinkedService withUsername(Object username) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SapEccLinkedServiceTypeProperties();
         }
@@ -137,7 +141,7 @@ public final class SapEccLinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
+     * provided. Type: string.
      *
      * @return the encryptedCredential value.
      */
@@ -148,7 +152,7 @@ public final class SapEccLinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
+     * provided. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapEccLinkedService object itself.

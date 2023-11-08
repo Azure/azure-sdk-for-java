@@ -39,6 +39,10 @@ public final class DomainUpdateParameters {
     @JsonProperty(value = "sku")
     private ResourceSku sku;
 
+    /** Creates an instance of DomainUpdateParameters class. */
+    public DomainUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Tags of the domains resource.
      *
@@ -159,6 +163,31 @@ public final class DomainUpdateParameters {
             this.innerProperties = new DomainUpdateParameterProperties();
         }
         this.innerProperties().withInboundIpRules(inboundIpRules);
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * domain.
+     *
+     * @return the minimumTlsVersionAllowed value.
+     */
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersionAllowed();
+    }
+
+    /**
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * domain.
+     *
+     * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
+     * @return the DomainUpdateParameters object itself.
+     */
+    public DomainUpdateParameters withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainUpdateParameterProperties();
+        }
+        this.innerProperties().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
         return this;
     }
 
@@ -288,6 +317,29 @@ public final class DomainUpdateParameters {
             this.innerProperties = new DomainUpdateParameterProperties();
         }
         this.innerProperties().withDataResidencyBoundary(dataResidencyBoundary);
+        return this;
+    }
+
+    /**
+     * Get the eventTypeInfo property: The eventTypeInfo for the domain.
+     *
+     * @return the eventTypeInfo value.
+     */
+    public EventTypeInfo eventTypeInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventTypeInfo();
+    }
+
+    /**
+     * Set the eventTypeInfo property: The eventTypeInfo for the domain.
+     *
+     * @param eventTypeInfo the eventTypeInfo value to set.
+     * @return the DomainUpdateParameters object itself.
+     */
+    public DomainUpdateParameters withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainUpdateParameterProperties();
+        }
+        this.innerProperties().withEventTypeInfo(eventTypeInfo);
         return this;
     }
 

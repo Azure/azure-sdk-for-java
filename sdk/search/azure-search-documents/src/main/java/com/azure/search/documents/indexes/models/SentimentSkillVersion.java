@@ -3,16 +3,18 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Represents the version of {@link SentimentSkill}.
  */
 public enum SentimentSkillVersion {
     /**
      * Version 1 of {@link SentimentSkill}.
+     *
+     * @deprecated This version of the skill is deprecated, please use {@link #V3}. See
+     * <a href="https://learn.microsoft.com/azure/search/cognitive-search-skill-deprecated">skill deprecation</a> for
+     * more information.
      */
+    @Deprecated
     V1("#Microsoft.Skills.Text.SentimentSkill"),
 
     /**
@@ -20,7 +22,6 @@ public enum SentimentSkillVersion {
      */
     V3("#Microsoft.Skills.Text.V3.SentimentSkill");
 
-    @JsonValue
     private final String odataType;
 
     SentimentSkillVersion(String odataType) {
@@ -45,7 +46,6 @@ public enum SentimentSkillVersion {
      * @return The {@link SentimentSkillVersion} corresponding to the {@code value}, or null if no versions match the
      * {@code value}.
      */
-    @JsonCreator
     public static SentimentSkillVersion fromString(String value) {
         if (V1.odataType.equals(value)) {
             return V1;

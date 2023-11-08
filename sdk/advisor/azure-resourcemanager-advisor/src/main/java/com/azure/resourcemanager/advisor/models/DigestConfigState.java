@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DigestConfigState. */
+/** State of digest configuration. */
 public final class DigestConfigState extends ExpandableStringEnum<DigestConfigState> {
     /** Static value Active for DigestConfigState. */
     public static final DigestConfigState ACTIVE = fromString("Active");
 
     /** Static value Disabled for DigestConfigState. */
     public static final DigestConfigState DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of DigestConfigState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DigestConfigState() {
+    }
 
     /**
      * Creates or finds a DigestConfigState from its string representation.
@@ -27,7 +36,11 @@ public final class DigestConfigState extends ExpandableStringEnum<DigestConfigSt
         return fromString(name, DigestConfigState.class);
     }
 
-    /** @return known DigestConfigState values. */
+    /**
+     * Gets known DigestConfigState values.
+     *
+     * @return known DigestConfigState values.
+     */
     public static Collection<DigestConfigState> values() {
         return values(DigestConfigState.class);
     }

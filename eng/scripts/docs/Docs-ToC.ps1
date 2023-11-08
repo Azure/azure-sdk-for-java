@@ -9,9 +9,36 @@ function Get-java-OnboardedDocsMsPackages($DocRepoLocation) {
     return $allPackages
 }
 
-function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
+function Get-java-OnboardedDocsMsPackagesForMoniker ($DocRepoLocation, $moniker) {
+    $packageOnboardingFiles = "$DocRepoLocation/package.json"
+  
+    $onboardingSpec = ConvertFrom-Json (Get-Content $packageOnboardingFiles -Raw)
+    if ("preview" -eq $moniker) {
+        $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "preview/docs-ref-autogen" }
+    } elseif("latest" -eq $moniker) {
+        $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "docs-ref-autogen" }
+    } elseif ("legacy" -eq $moniker) { 
+        $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "legacy/docs-ref-autogen" }
+    }
+
+    $onboardedPackages = @{}
+    foreach ($spec in $onboardingSpec.packages) {
+        $packageName = $spec.packageArtifactId
+        $groupId = $spec.packageGroupId
+        $jsonFile = "$DocRepoLocation/metadata/$moniker/$packageName.json"
+        if (Test-Path $jsonFile) {
+          $onboardedPackages["$groupId`:$packageName"] = ConvertFrom-Json (Get-Content $jsonFile -Raw)
+        }
+        else{
+          $onboardedPackages["$groupId`:$packageName"] = $null
+        }
+    }
+    return $onboardedPackages
+}
+
+function GetPackageReadmeName ($packageMetadata) {
     # Fallback to get package-level readme name if metadata file info does not exist
-    $packageLevelReadmeName = $packageMetadata.Package.Replace('azure-', '');
+    $packageLevelReadmeName = $packageMetadata.Package.Replace('azure-', '')
 
     # If there is a metadata json for the package use the DocsMsReadmeName from
     # the metadata function
@@ -20,10 +47,15 @@ function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
         $packageLevelReadmeName = $readmeMetadata.DocsMsReadMeName
     }
 
-    $packageTocHeader = $packageMetadata.Package
-    if ($packageMetadata.DisplayName) {
-        $packageTocHeader = $packageMetadata.DisplayName
-    }
+    return $packageLevelReadmeName
+}
+function Get-java-PackageLevelReadme($packageMetadata) {   
+    return GetPackageReadmeName -packageMetadata $packageMetadata
+}
+
+function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
+    $packageLevelReadmeName = GetPackageReadmeName -packageMetadata $packageMetadata
+    $packageTocHeader = GetDocsTocDisplayName -pkg $packageMetadata
 
     $children = @()
     # Children here combine namespaces in both preview and GA.
@@ -104,7 +136,7 @@ function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $folde
         # Log and warn
         Write-Host "Not able to find namespaces from javadoc jar $package-$version-javadoc.jar"
     }
-    return (Get-Content $filePath | ForEach-Object {$_.Trim() + "*"})
+    return (Get-Content $filePath | ForEach-Object {$_.Trim()})
 }
   
 function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
@@ -146,6 +178,11 @@ function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
         Write-Error "Can't find namespaces from javadoc jar jarFilePath."
     }
 }
+
+function Get-java-RepositoryLink ($packageInfo) {
+    $groupIdPath = $packageInfo.GroupId -replace "\.", "/"
+    return "$PackageRepositoryUri/$groupIdPath/$($packageInfo.Package)"
+}
   
 function Parse-Overview-Frame ($filePath, $destination) {
     $htmlBody = Get-Content $filePath
@@ -159,9 +196,62 @@ function Get-java-UpdatedDocsMsToc($toc) {
     # Add services exsting in old toc but missing in automation.
     $otherService = $services[-1]
     $sortableServices = $services | Where-Object { $_ –ne $otherService }
+    foreach ($service in $sortableServices) {
+        if ($service.name -eq "SQL") {
+            $items = $service.items
+            $service.items = @(
+                [PSCustomObject]@{
+                    name  = "Client"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.elasticdb*")
+                }
+            ) + $items
+        }
+        if ($service.name -eq "Log Analytics") {
+            $items = $service.items
+            $service.items = @(
+                [PSCustomObject]@{
+                    name  = "Client"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.loganalytics*")
+                }
+            ) + $items
+        }
+        if ($service.name -eq "Data Lake Analytics") {
+            $service.items += @(
+                [PSCustomObject]@{
+                    name  = "Resource Management"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.management.datalake.analytics*")
+                }
+            )
+        }
+        if ($service.name -eq "Data Lake Store") {
+            $service.items += @(
+                [PSCustomObject]@{
+                    name  = "Resource Management"
+                    landingPageType = "Service"
+                    children = @(
+                        "com.microsoft.azure.management.datalakestore*",
+                        "com.microsoft.azure.management.datalake.store*",
+                        "com.microsoft.azure.management.datalake.store.models*"
+                    )
+                }
+            )
+        }
+        if ($service.name -eq "Stream Analytics") {
+            $service.items += @(
+                [PSCustomObject]@{
+                    name  = "Resource Management"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.management.streamanalytics*")
+                }
+            )
+        }
+    }
     $sortableServices += [PSCustomObject]@{
         name  = "Active Directory"
-        href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
+        href  = "~/docs-ref-services/{moniker}/activedirectory.md"
         landingPageType = "Service"
         items = @(
             [PSCustomObject]@{
@@ -170,8 +260,7 @@ function Get-java-UpdatedDocsMsToc($toc) {
                 children = @("com.azure.resourcemanager.msi*")
             }, 
             [PSCustomObject]@{
-                name  = "client"
-                href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
+                name  = "Client"
                 children = @(
                     "com.microsoft.aad.adal*",
                     "com.microsoft.aad.adal4j*",
@@ -242,15 +331,6 @@ function Get-java-UpdatedDocsMsToc($toc) {
                 children = @(
                     "com.microsoft.azure.cognitiveservices.language.luis*", 
                     "com.microsoft.azure.cognitiveservices.language.luis.authoring*")
-            })
-    }
-    $sortableServices += [PSCustomObject]@{
-        name  = "Speech Service"
-        landingPageType = "Service"
-        items = @(
-            [PSCustomObject]@{
-                name  = "Management"
-                children = @("com.microsoft.cognitiveservices.speech*")
             })
     }
     $sortableServices += [PSCustomObject]@{

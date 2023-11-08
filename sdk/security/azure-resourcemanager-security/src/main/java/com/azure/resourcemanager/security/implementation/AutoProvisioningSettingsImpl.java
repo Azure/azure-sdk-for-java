@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.AutoProvisioningSettingsClient;
 import com.azure.resourcemanager.security.fluent.models.AutoProvisioningSettingInner;
 import com.azure.resourcemanager.security.models.AutoProvisioningSetting;
 import com.azure.resourcemanager.security.models.AutoProvisioningSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AutoProvisioningSettingsImpl implements AutoProvisioningSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoProvisioningSettingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AutoProvisioningSettingsImpl.class);
 
     private final AutoProvisioningSettingsClient innerClient;
 
@@ -38,15 +37,6 @@ public final class AutoProvisioningSettingsImpl implements AutoProvisioningSetti
         return Utils.mapPage(inner, inner1 -> new AutoProvisioningSettingImpl(inner1, this.manager()));
     }
 
-    public AutoProvisioningSetting get(String settingName) {
-        AutoProvisioningSettingInner inner = this.serviceClient().get(settingName);
-        if (inner != null) {
-            return new AutoProvisioningSettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AutoProvisioningSetting> getWithResponse(String settingName, Context context) {
         Response<AutoProvisioningSettingInner> inner = this.serviceClient().getWithResponse(settingName, context);
         if (inner != null) {
@@ -60,10 +50,19 @@ public final class AutoProvisioningSettingsImpl implements AutoProvisioningSetti
         }
     }
 
+    public AutoProvisioningSetting get(String settingName) {
+        AutoProvisioningSettingInner inner = this.serviceClient().get(settingName);
+        if (inner != null) {
+            return new AutoProvisioningSettingImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public AutoProvisioningSetting getById(String id) {
         String settingName = Utils.getValueFromIdByName(id, "autoProvisioningSettings");
         if (settingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -77,7 +76,7 @@ public final class AutoProvisioningSettingsImpl implements AutoProvisioningSetti
     public Response<AutoProvisioningSetting> getByIdWithResponse(String id, Context context) {
         String settingName = Utils.getValueFromIdByName(id, "autoProvisioningSettings");
         if (settingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

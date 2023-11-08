@@ -9,7 +9,7 @@ import com.azure.resourcemanager.automanage.models.ConfigurationProfileAssignmen
 /** Samples for ConfigurationProfileAssignments CreateOrUpdate. */
 public final class ConfigurationProfileAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/createOrUpdateConfigurationProfileAssignment.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/createOrUpdateConfigurationProfileAssignment.json
      */
     /**
      * Sample code: Create or update configuration profile assignment.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSensitivityLabels ListRecommended. */
 public final class SqlPoolSensitivityLabelsListRecommendedSamples {
     /*
@@ -20,6 +18,6 @@ public final class SqlPoolSensitivityLabelsListRecommendedSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolSensitivityLabels()
-            .listRecommended("myRG", "myServer", "myDatabase", null, null, null, Context.NONE);
+            .listRecommended("myRG", "myServer", "myDatabase", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

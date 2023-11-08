@@ -22,7 +22,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.costmanagement.fluent.GenerateReservationDetailsReportsClient;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in GenerateReservationDetailsReportsClient.
  */
 public final class GenerateReservationDetailsReportsClientImpl implements GenerateReservationDetailsReportsClient {
-    private final ClientLogger logger = new ClientLogger(GenerateReservationDetailsReportsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final GenerateReservationDetailsReportsService service;
 
@@ -64,11 +61,10 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      */
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
-    private interface GenerateReservationDetailsReportsService {
+    public interface GenerateReservationDetailsReportsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement"
-                + "/generateReservationDetailsReport")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/generateReservationDetailsReport")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> byBillingAccountId(
@@ -82,8 +78,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}"
-                + "/providers/Microsoft.CostManagement/generateReservationDetailsReport")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/generateReservationDetailsReport")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> byBillingProfileId(
@@ -98,7 +93,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously based on enrollment id.
+     * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
+     * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -106,7 +103,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the status of the long running operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> byBillingAccountIdWithResponseAsync(
@@ -144,7 +142,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously based on enrollment id.
+     * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
+     * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -153,7 +153,8 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the status of the long running operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> byBillingAccountIdWithResponseAsync(
@@ -188,7 +189,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously based on enrollment id.
+     * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
+     * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -196,9 +199,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the {@link PollerFlux} for polling of the status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountIdAsync(
         String billingAccountId, String startDate, String endDate) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -210,11 +213,13 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
                 this.client.getHttpPipeline(),
                 OperationStatusInner.class,
                 OperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously based on enrollment id.
+     * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
+     * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -223,9 +228,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the {@link PollerFlux} for polling of the status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountIdAsync(
         String billingAccountId, String startDate, String endDate, Context context) {
         context = this.client.mergeContext(context);
@@ -238,7 +243,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously based on enrollment id.
+     * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
+     * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -246,16 +253,18 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(
         String billingAccountId, String startDate, String endDate) {
-        return beginByBillingAccountIdAsync(billingAccountId, startDate, endDate).getSyncPoller();
+        return this.beginByBillingAccountIdAsync(billingAccountId, startDate, endDate).getSyncPoller();
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously based on enrollment id.
+     * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
+     * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -264,16 +273,18 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(
         String billingAccountId, String startDate, String endDate, Context context) {
-        return beginByBillingAccountIdAsync(billingAccountId, startDate, endDate, context).getSyncPoller();
+        return this.beginByBillingAccountIdAsync(billingAccountId, startDate, endDate, context).getSyncPoller();
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously based on enrollment id.
+     * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
+     * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -281,7 +292,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> byBillingAccountIdAsync(
@@ -292,7 +303,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously based on enrollment id.
+     * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
+     * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -301,7 +314,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> byBillingAccountIdAsync(
@@ -312,7 +325,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously based on enrollment id.
+     * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
+     * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -328,7 +343,9 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously based on enrollment id.
+     * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
+     * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -346,16 +363,20 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously by billing profile.
+     * Generates the reservations details report for provided date range asynchronously by billing profile. The
+     * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
+     * roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
+     * @param billingAccountId Billing account ID.
+     * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
      * @param endDate End Date.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the status of the long running operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> byBillingProfileIdWithResponseAsync(
@@ -398,17 +419,21 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously by billing profile.
+     * Generates the reservations details report for provided date range asynchronously by billing profile. The
+     * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
+     * roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
+     * @param billingAccountId Billing account ID.
+     * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
      * @param endDate End Date.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the status of the long running operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> byBillingProfileIdWithResponseAsync(
@@ -448,18 +473,21 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously by billing profile.
+     * Generates the reservations details report for provided date range asynchronously by billing profile. The
+     * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
+     * roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
+     * @param billingAccountId Billing account ID.
+     * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
      * @param endDate End Date.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the {@link PollerFlux} for polling of the status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileIdAsync(
         String billingAccountId, String billingProfileId, String startDate, String endDate) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -471,23 +499,26 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
                 this.client.getHttpPipeline(),
                 OperationStatusInner.class,
                 OperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously by billing profile.
+     * Generates the reservations details report for provided date range asynchronously by billing profile. The
+     * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
+     * roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
+     * @param billingAccountId Billing account ID.
+     * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
      * @param endDate End Date.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the {@link PollerFlux} for polling of the status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileIdAsync(
         String billingAccountId, String billingProfileId, String startDate, String endDate, Context context) {
         context = this.client.mergeContext(context);
@@ -500,54 +531,66 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously by billing profile.
+     * Generates the reservations details report for provided date range asynchronously by billing profile. The
+     * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
+     * roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
+     * @param billingAccountId Billing account ID.
+     * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
      * @param endDate End Date.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(
         String billingAccountId, String billingProfileId, String startDate, String endDate) {
-        return beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate).getSyncPoller();
+        return this
+            .beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate)
+            .getSyncPoller();
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously by billing profile.
+     * Generates the reservations details report for provided date range asynchronously by billing profile. The
+     * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
+     * roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
+     * @param billingAccountId Billing account ID.
+     * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
      * @param endDate End Date.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(
         String billingAccountId, String billingProfileId, String startDate, String endDate, Context context) {
-        return beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate, context)
+        return this
+            .beginByBillingProfileIdAsync(billingAccountId, billingProfileId, startDate, endDate, context)
             .getSyncPoller();
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously by billing profile.
+     * Generates the reservations details report for provided date range asynchronously by billing profile. The
+     * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
+     * roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
+     * @param billingAccountId Billing account ID.
+     * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
      * @param endDate End Date.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> byBillingProfileIdAsync(
@@ -558,17 +601,20 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously by billing profile.
+     * Generates the reservations details report for provided date range asynchronously by billing profile. The
+     * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
+     * roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
+     * @param billingAccountId Billing account ID.
+     * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
      * @param endDate End Date.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the long running operation.
+     * @return the status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> byBillingProfileIdAsync(
@@ -579,10 +625,13 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously by billing profile.
+     * Generates the reservations details report for provided date range asynchronously by billing profile. The
+     * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
+     * roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
+     * @param billingAccountId Billing account ID.
+     * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
      * @param endDate End Date.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -597,10 +646,13 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     }
 
     /**
-     * Generates the reservations details report for provided date range asynchronously by billing profile.
+     * Generates the reservations details report for provided date range asynchronously by billing profile. The
+     * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
+     * roles see,
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId BillingProfile ID.
+     * @param billingAccountId Billing account ID.
+     * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
      * @param endDate End Date.
      * @param context The context to associate with this operation.

@@ -4,10 +4,10 @@
 
 package com.azure.media.videoanalyzer.edge.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /** Defines a Spatial Analysis person line crossing operation eventing configuration. */
-@Immutable
+@Fluent
 public final class SpatialAnalysisPersonLineCrossingEvent extends SpatialAnalysisOperationEventBase {
     /** {@inheritDoc} */
     @Override

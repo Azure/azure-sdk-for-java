@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.models.ResourceSkuCapabilities;
 import com.azure.resourcemanager.datamigration.models.ResourceSkuCapacity;
 import com.azure.resourcemanager.datamigration.models.ResourceSkuCosts;
 import com.azure.resourcemanager.datamigration.models.ResourceSkuRestrictions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes an available DMS SKU. */
 @Immutable
 public final class ResourceSkuInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuInner.class);
-
     /*
      * The type of resource the SKU applies to.
      */
@@ -86,11 +82,14 @@ public final class ResourceSkuInner {
     private List<ResourceSkuCapabilities> capabilities;
 
     /*
-     * The restrictions because of which SKU cannot be used. This is empty if
-     * there are no restrictions.
+     * The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      */
     @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuRestrictions> restrictions;
+
+    /** Creates an instance of ResourceSkuInner class. */
+    public ResourceSkuInner() {
+    }
 
     /**
      * Get the resourceType property: The type of resource the SKU applies to.

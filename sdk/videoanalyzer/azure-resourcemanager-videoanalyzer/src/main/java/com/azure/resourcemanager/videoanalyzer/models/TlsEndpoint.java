@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.TlsEndpoint")
 @Fluent
 public final class TlsEndpoint extends EndpointBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TlsEndpoint.class);
-
     /*
      * List of trusted certificate authorities when authenticating a TLS
      * connection. A null list designates that Azure Video Analyzer's list of

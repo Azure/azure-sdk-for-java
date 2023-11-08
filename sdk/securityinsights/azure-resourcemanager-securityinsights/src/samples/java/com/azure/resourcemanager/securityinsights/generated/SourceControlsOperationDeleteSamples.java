@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SourceControlsOperation Delete. */
 public final class SourceControlsOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/sourcecontrols/DeleteSourceControl.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/sourcecontrols/DeleteSourceControl.json
      */
     /**
      * Sample code: Delete a source control.

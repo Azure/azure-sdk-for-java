@@ -9,11 +9,12 @@ import com.azure.core.annotation.Immutable;
 import java.time.OffsetDateTime;
 
 /**
- * The {@link AnalyzeHealthcareEntitiesOperationDetail} model.
+ * The {@code AnalyzeHealthcareEntitiesOperationDetail} model.
  */
 @Immutable
 public final class AnalyzeHealthcareEntitiesOperationDetail {
     private String operationId;
+    private String displayName;
     private OffsetDateTime createdAt;
     private OffsetDateTime expiresAt;
     private OffsetDateTime lastModifiedAt;
@@ -26,6 +27,11 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
                 public void setOperationId(AnalyzeHealthcareEntitiesOperationDetail operationResult,
                     String operationId) {
                     operationResult.setOperationId(operationId);
+                }
+
+                @Override
+                public void setDisplayName(AnalyzeHealthcareEntitiesOperationDetail operationDetail, String name) {
+                    operationDetail.setDisplayName(name);
                 }
 
                 @Override
@@ -50,12 +56,27 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
     }
 
     /**
-     * Gets the operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
+     * Constructs a {@code AnalyzeHealthcareEntitiesOperationDetail} model.
+     */
+    public AnalyzeHealthcareEntitiesOperationDetail() {
+    }
+
+    /**
+     * Gets the operationId property of the {@code AnalyzeHealthcareEntitiesOperationDetail}.
      *
-     * @return The operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
+     * @return The operationId property of the {@code AnalyzeHealthcareEntitiesOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
+    }
+
+    /**
+     * Gets the displayName property of the {@code AnalyzeHealthcareEntitiesOperationDetail}.
+     *
+     * @return The displayName property of the {@code AnalyzeHealthcareEntitiesOperationDetail}.
+     */
+    public String getDisplayName() {
+        return displayName;
     }
 
     /**
@@ -87,6 +108,10 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
 
     private void setOperationId(String operationId) {
         this.operationId = operationId;
+    }
+
+    private void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     private void setCreatedAt(OffsetDateTime createdAt) {

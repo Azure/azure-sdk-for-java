@@ -94,6 +94,13 @@ public interface UserContract {
     List<UserIdentityContract> identities();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.UserContractInner object.
      *
      * @return the inner object.
@@ -104,22 +111,25 @@ public interface UserContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The UserContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the UserContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the UserContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the UserContract definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -151,6 +161,7 @@ public interface UserContract {
              */
             UserContract create(Context context);
         }
+
         /** The stage of the UserContract definition allowing to specify email. */
         interface WithEmail {
             /**
@@ -162,6 +173,7 @@ public interface UserContract {
              */
             WithCreate withEmail(String email);
         }
+
         /** The stage of the UserContract definition allowing to specify firstName. */
         interface WithFirstName {
             /**
@@ -172,6 +184,7 @@ public interface UserContract {
              */
             WithCreate withFirstName(String firstName);
         }
+
         /** The stage of the UserContract definition allowing to specify lastName. */
         interface WithLastName {
             /**
@@ -182,6 +195,7 @@ public interface UserContract {
              */
             WithCreate withLastName(String lastName);
         }
+
         /** The stage of the UserContract definition allowing to specify password. */
         interface WithPassword {
             /**
@@ -193,6 +207,7 @@ public interface UserContract {
              */
             WithCreate withPassword(String password);
         }
+
         /** The stage of the UserContract definition allowing to specify appType. */
         interface WithAppType {
             /**
@@ -205,6 +220,7 @@ public interface UserContract {
              */
             WithCreate withAppType(AppType appType);
         }
+
         /** The stage of the UserContract definition allowing to specify confirmation. */
         interface WithConfirmation {
             /**
@@ -217,6 +233,7 @@ public interface UserContract {
              */
             WithCreate withConfirmation(Confirmation confirmation);
         }
+
         /** The stage of the UserContract definition allowing to specify state. */
         interface WithState {
             /**
@@ -230,6 +247,7 @@ public interface UserContract {
              */
             WithCreate withState(UserState state);
         }
+
         /** The stage of the UserContract definition allowing to specify note. */
         interface WithNote {
             /**
@@ -240,6 +258,7 @@ public interface UserContract {
              */
             WithCreate withNote(String note);
         }
+
         /** The stage of the UserContract definition allowing to specify identities. */
         interface WithIdentities {
             /**
@@ -250,6 +269,7 @@ public interface UserContract {
              */
             WithCreate withIdentities(List<UserIdentityContractInner> identities);
         }
+
         /** The stage of the UserContract definition allowing to specify notify. */
         interface WithNotify {
             /**
@@ -260,6 +280,7 @@ public interface UserContract {
              */
             WithCreate withNotify(Boolean notify);
         }
+
         /** The stage of the UserContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -273,6 +294,7 @@ public interface UserContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the UserContract resource.
      *
@@ -305,6 +327,7 @@ public interface UserContract {
          */
         UserContract apply(Context context);
     }
+
     /** The UserContract update stages. */
     interface UpdateStages {
         /** The stage of the UserContract update allowing to specify email. */
@@ -318,6 +341,7 @@ public interface UserContract {
              */
             Update withEmail(String email);
         }
+
         /** The stage of the UserContract update allowing to specify password. */
         interface WithPassword {
             /**
@@ -328,6 +352,7 @@ public interface UserContract {
              */
             Update withPassword(String password);
         }
+
         /** The stage of the UserContract update allowing to specify firstName. */
         interface WithFirstName {
             /**
@@ -338,6 +363,7 @@ public interface UserContract {
              */
             Update withFirstName(String firstName);
         }
+
         /** The stage of the UserContract update allowing to specify lastName. */
         interface WithLastName {
             /**
@@ -348,6 +374,7 @@ public interface UserContract {
              */
             Update withLastName(String lastName);
         }
+
         /** The stage of the UserContract update allowing to specify state. */
         interface WithState {
             /**
@@ -361,6 +388,7 @@ public interface UserContract {
              */
             Update withState(UserState state);
         }
+
         /** The stage of the UserContract update allowing to specify note. */
         interface WithNote {
             /**
@@ -371,6 +399,7 @@ public interface UserContract {
              */
             Update withNote(String note);
         }
+
         /** The stage of the UserContract update allowing to specify identities. */
         interface WithIdentities {
             /**
@@ -381,6 +410,7 @@ public interface UserContract {
              */
             Update withIdentities(List<UserIdentityContractInner> identities);
         }
+
         /** The stage of the UserContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -394,6 +424,7 @@ public interface UserContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -413,16 +444,6 @@ public interface UserContract {
      * Retrieves a redirection URL containing an authentication token for signing a given user into the developer
      * portal.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate SSO Url operations response details.
-     */
-    GenerateSsoUrlResult generateSsoUrl();
-
-    /**
-     * Retrieves a redirection URL containing an authentication token for signing a given user into the developer
-     * portal.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -432,15 +453,14 @@ public interface UserContract {
     Response<GenerateSsoUrlResult> generateSsoUrlWithResponse(Context context);
 
     /**
-     * Gets the Shared Access Authorization Token for the User.
+     * Retrieves a redirection URL containing an authentication token for signing a given user into the developer
+     * portal.
      *
-     * @param parameters Create Authorization Token parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Shared Access Authorization Token for the User.
+     * @return generate SSO Url operations response details.
      */
-    UserTokenResult getSharedAccessToken(UserTokenParameters parameters);
+    GenerateSsoUrlResult generateSsoUrl();
 
     /**
      * Gets the Shared Access Authorization Token for the User.
@@ -453,4 +473,15 @@ public interface UserContract {
      * @return the Shared Access Authorization Token for the User along with {@link Response}.
      */
     Response<UserTokenResult> getSharedAccessTokenWithResponse(UserTokenParameters parameters, Context context);
+
+    /**
+     * Gets the Shared Access Authorization Token for the User.
+     *
+     * @param parameters Create Authorization Token parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Shared Access Authorization Token for the User.
+     */
+    UserTokenResult getSharedAccessToken(UserTokenParameters parameters);
 }

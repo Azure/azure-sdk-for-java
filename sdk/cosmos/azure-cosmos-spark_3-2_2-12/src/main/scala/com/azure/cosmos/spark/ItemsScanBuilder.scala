@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.CosmosParameterizedQuery
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
@@ -20,8 +19,9 @@ import scala.collection.JavaConverters._
 private case class ItemsScanBuilder(session: SparkSession,
                                     config: CaseInsensitiveStringMap,
                                     inputSchema: StructType,
-                                    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
-                                    diagnosticsConfig: DiagnosticsConfig)
+                                    cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
+                                    diagnosticsConfig: DiagnosticsConfig,
+                                    sparkEnvironmentInfo: String)
   extends ScanBuilder
     with SupportsPushDownFilters
     with SupportsPushDownRequiredColumns {
@@ -70,8 +70,9 @@ private case class ItemsScanBuilder(session: SparkSession,
       this.configMap,
       this.readConfig,
       effectiveQuery,
-      cosmosClientStateHandle,
-      diagnosticsConfig)
+      cosmosClientStateHandles,
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
   }
 
   /**

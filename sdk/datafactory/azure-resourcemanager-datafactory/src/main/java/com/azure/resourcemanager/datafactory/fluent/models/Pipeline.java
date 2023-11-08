@@ -64,8 +64,7 @@ public final class Pipeline {
     private Map<String, Object> runDimensions;
 
     /*
-     * The folder that this Pipeline is in. If not specified, Pipeline will
-     * appear at the root level.
+     * The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level.
      */
     @JsonProperty(value = "folder")
     private PipelineFolder folder;
@@ -75,6 +74,10 @@ public final class Pipeline {
      */
     @JsonProperty(value = "policy")
     private PipelinePolicy policy;
+
+    /** Creates an instance of Pipeline class. */
+    public Pipeline() {
+    }
 
     /**
      * Get the description property: The description of the pipeline.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Deny assignment permissions. */
 @Fluent
 public final class DenyAssignmentPermission {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DenyAssignmentPermission.class);
-
     /*
      * Actions to which the deny assignment does not grant access.
      */
@@ -34,11 +30,26 @@ public final class DenyAssignmentPermission {
     private List<String> dataActions;
 
     /*
-     * Data actions to exclude from that the deny assignment does not grant
-     * access.
+     * Data actions to exclude from that the deny assignment does not grant access.
      */
     @JsonProperty(value = "notDataActions")
     private List<String> notDataActions;
+
+    /*
+     * The conditions on the Deny assignment permission. This limits the resources it applies to.
+     */
+    @JsonProperty(value = "condition")
+    private String condition;
+
+    /*
+     * Version of the condition.
+     */
+    @JsonProperty(value = "conditionVersion")
+    private String conditionVersion;
+
+    /** Creates an instance of DenyAssignmentPermission class. */
+    public DenyAssignmentPermission() {
+    }
 
     /**
      * Get the actions property: Actions to which the deny assignment does not grant access.
@@ -117,6 +128,48 @@ public final class DenyAssignmentPermission {
      */
     public DenyAssignmentPermission withNotDataActions(List<String> notDataActions) {
         this.notDataActions = notDataActions;
+        return this;
+    }
+
+    /**
+     * Get the condition property: The conditions on the Deny assignment permission. This limits the resources it
+     * applies to.
+     *
+     * @return the condition value.
+     */
+    public String condition() {
+        return this.condition;
+    }
+
+    /**
+     * Set the condition property: The conditions on the Deny assignment permission. This limits the resources it
+     * applies to.
+     *
+     * @param condition the condition value to set.
+     * @return the DenyAssignmentPermission object itself.
+     */
+    public DenyAssignmentPermission withCondition(String condition) {
+        this.condition = condition;
+        return this;
+    }
+
+    /**
+     * Get the conditionVersion property: Version of the condition.
+     *
+     * @return the conditionVersion value.
+     */
+    public String conditionVersion() {
+        return this.conditionVersion;
+    }
+
+    /**
+     * Set the conditionVersion property: Version of the condition.
+     *
+     * @param conditionVersion the conditionVersion value to set.
+     * @return the DenyAssignmentPermission object itself.
+     */
+    public DenyAssignmentPermission withConditionVersion(String conditionVersion) {
+        this.conditionVersion = conditionVersion;
         return this;
     }
 

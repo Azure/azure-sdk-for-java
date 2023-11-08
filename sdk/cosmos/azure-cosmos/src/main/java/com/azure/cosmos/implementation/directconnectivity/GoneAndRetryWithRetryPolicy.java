@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
@@ -24,6 +25,8 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntBinaryOperator;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -46,8 +49,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             waitTimeInSeconds,
             this.retryContext
         );
-        this.retryWithRetryPolicy = new RetryWithRetryPolicy(
-            waitTimeInSeconds, this.retryContext);
+        this.retryWithRetryPolicy = new RetryWithRetryPolicy(waitTimeInSeconds, this.retryContext);
         this.start = Instant.now();
     }
 
@@ -92,9 +94,9 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         private final static int BACK_OFF_MULTIPLIER = 2;
 
         private final RxDocumentServiceRequest request;
-        private volatile int attemptCount = 1;
-        private volatile int attemptCountInvalidPartition = 1;
-        private volatile int currentBackoffSeconds = GoneRetryPolicy.INITIAL_BACKOFF_TIME;
+        private final AtomicInteger attemptCount = new AtomicInteger(1);
+        private final AtomicInteger attemptCountInvalidPartition = new AtomicInteger(1);
+        private final AtomicInteger currentBackoffSeconds = new AtomicInteger(GoneRetryPolicy.INITIAL_BACKOFF_TIME);
         private final int waitTimeInSeconds;
         private RetryContext retryContext;
 
@@ -162,7 +164,27 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 "Received {} after backoff/retry. Will fail the request. {}",
                 exceptionType,
                 exception);
-            return BridgeInternal.createServiceUnavailableException(exception);
+            int subStatusCode = getExceptionSubStatusCodeForGoneRetryPolicy(exception);
+            return BridgeInternal.createServiceUnavailableException(exception, subStatusCode);
+        }
+
+        private int getExceptionSubStatusCodeForGoneRetryPolicy(Exception exception) {
+            int exceptionSubStatusCode = HttpConstants.SubStatusCodes.UNKNOWN;
+
+            if (exception instanceof CosmosException) {
+                if (exception instanceof PartitionKeyRangeIsSplittingException) {
+                    exceptionSubStatusCode = HttpConstants.SubStatusCodes.COMPLETING_SPLIT_EXCEEDED_RETRY_LIMIT;
+                } else if (exception instanceof PartitionIsMigratingException) {
+                    exceptionSubStatusCode = HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT;
+                } else if (exception instanceof InvalidPartitionException) {
+                    exceptionSubStatusCode = HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT;
+                } else if (exception instanceof PartitionKeyRangeGoneException) {
+                    exceptionSubStatusCode = HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE_EXCEEDED_RETRY_LIMIT;
+                } else {
+                    exceptionSubStatusCode = ((CosmosException) exception).getSubStatusCode();
+                }
+            }
+            return exceptionSubStatusCode;
         }
 
         @Override
@@ -178,7 +200,8 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             } else if (exception instanceof GoneException &&
                 !request.isReadOnly() &&
                 BridgeInternal.hasSendingRequestStarted((CosmosException)exception) &&
-                !((GoneException)exception).isBasedOn410ResponseFromService()) {
+                !((GoneException)exception).isBasedOn410ResponseFromService() &&
+                !this.request.getNonIdempotentWriteRetriesEnabled()) {
 
                 logger.warn(
                     "Operation will NOT be retried. Write operations which failed due to transient transport errors " +
@@ -188,21 +211,21 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                     exception);
 
                 return Mono.just(ShouldRetryResult.noRetry(
-                    Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount)));
+                    Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount.get())));
             }
 
             long remainingSeconds = this.waitTimeInSeconds -
                 GoneAndRetryWithRetryPolicy.this.getElapsedTime().toMillis() / 1_000L;
-            int currentRetryAttemptCount = this.attemptCount;
-            if (this.attemptCount++ > 1) {
+            int currentRetryAttemptCount = this.attemptCount.get();
+            if (this.attemptCount.getAndIncrement() > 1) {
                 if (remainingSeconds <= 0) {
                     exceptionToThrow = logAndWrapExceptionWithLastRetryWithException(exception);
                     return Mono.just(ShouldRetryResult.error(exceptionToThrow));
                 }
 
-                backoffTime = Duration.ofSeconds(Math.min(Math.min(this.currentBackoffSeconds, remainingSeconds),
+                backoffTime = Duration.ofSeconds(Math.min(Math.min(this.currentBackoffSeconds.get(), remainingSeconds),
                     GoneRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS));
-                this.currentBackoffSeconds *= GoneRetryPolicy.BACK_OFF_MULTIPLIER;
+                this.currentBackoffSeconds.accumulateAndGet(GoneRetryPolicy.BACK_OFF_MULTIPLIER, (left, right) -> left * right);
                 logger.debug("BackoffTime: {} seconds.", backoffTime.getSeconds());
             }
 
@@ -273,12 +296,12 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             this.request.requestContext.resolvedPartitionKeyRange = null;
             this.request.requestContext.quorumSelectedStoreResponse = null;
             this.request.requestContext.globalCommittedSelectedLSN = -1;
-            if (this.attemptCountInvalidPartition++ > 2) {
+            if (this.attemptCountInvalidPartition.getAndIncrement() > 2) {
                 // for second InvalidPartitionException, stop retrying.
                 logger.warn("Received second InvalidPartitionException after backoff/retry. Will fail the request. {}",
                     exception.toString());
                 return Pair.of(
-                    Mono.just(ShouldRetryResult.error(BridgeInternal.createServiceUnavailableException(exception))),
+                    Mono.just(ShouldRetryResult.error(BridgeInternal.createServiceUnavailableException(exception, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT))),
                     false);
             }
 
@@ -296,11 +319,11 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         private final static int BACK_OFF_MULTIPLIER = 2;
         private final static int RANDOM_SALT_IN_MS = 5;
 
-        private volatile int attemptCount = 1;
-        private volatile int currentBackoffMilliseconds = RetryWithRetryPolicy.INITIAL_BACKOFF_TIME_MS;
+        private final AtomicInteger attemptCount = new AtomicInteger(1);
+        private final AtomicInteger currentBackoffMilliseconds = new AtomicInteger(RetryWithRetryPolicy.INITIAL_BACKOFF_TIME_MS);
 
         private final int waitTimeInSeconds;
-        private RetryContext retryContext;
+        private final RetryContext retryContext;
 
 
         public RetryWithRetryPolicy(Integer waitTimeInSeconds, RetryContext retryContext) {
@@ -314,7 +337,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             Duration timeout;
 
             if (!(exception instanceof RetryWithException)) {
-                logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
+                logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount.get(),
                     exception);
                 return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
             }
@@ -325,7 +348,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             long remainingMilliseconds =
                 (this.waitTimeInSeconds * 1_000L) -
                     GoneAndRetryWithRetryPolicy.this.getElapsedTime().toMillis();
-            int currentRetryAttemptCount = this.attemptCount++;
+            int currentRetryAttemptCount = this.attemptCount.getAndIncrement();
 
             if (remainingMilliseconds <= 0) {
                 logger.warn("Received RetryWithException after backoff/retry. Will fail the request.",
@@ -335,9 +358,17 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
             backoffTime = Duration.ofMillis(
                 Math.min(
-                    Math.min(this.currentBackoffMilliseconds + random.nextInt(RANDOM_SALT_IN_MS), remainingMilliseconds),
+                    Math.min(this.currentBackoffMilliseconds.get() + random.nextInt(RANDOM_SALT_IN_MS), remainingMilliseconds),
                     RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS));
-            this.currentBackoffMilliseconds *= RetryWithRetryPolicy.BACK_OFF_MULTIPLIER;
+
+            this.currentBackoffMilliseconds.set(
+                Math.max(
+                    RetryWithRetryPolicy.INITIAL_BACKOFF_TIME_MS,
+                    Math.min(
+                        RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS,
+                        this.currentBackoffMilliseconds.get() * RetryWithRetryPolicy.BACK_OFF_MULTIPLIER))
+            );
+
             logger.debug("BackoffTime: {} ms.", backoffTime.toMillis());
 
             // Calculate the remaining time based after accounting for the backoff that we

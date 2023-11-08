@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
@@ -23,6 +24,16 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
 
     private static final String SOCKET_PATH = "/$servicebus/websocket";
     private static final String PROTOCOL = "AMQPWSB10";
+    /**
+     * Once there is an HTTP Connection to the host addressable by https://hostname
+     * (connection the client 'directly' established or established by tunneling through
+     * Proxy etc..), the WebSocket layer has to send an Upgrade request (GET https://hostname)
+     * with upgrade-specific headers to switch from HTTP to WebSocket protocol.
+     * The hostname is the FQDN of the Event Hubs or Service Bus or host part of
+     * CustomEndpointAddress when a custom endpoint frontends the Event Hubs or Service Bus.
+     * The upgrade request will have an HTTP 'Host' header with value as hostname.
+     */
+    private final String hostname;
 
     /**
      * Creates a handler that handles proton-j's connection events using web sockets.
@@ -30,9 +41,9 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the connection.
      */
-    public WebSocketsConnectionHandler(String connectionId, ConnectionOptions connectionOptions,
-        SslPeerDetails peerDetails) {
-        super(connectionId, connectionOptions, peerDetails);
+    public WebSocketsConnectionHandler(String connectionId, ConnectionOptions connectionOptions, SslPeerDetails peerDetails, AmqpMetricsProvider metricsProvider) {
+        super(connectionId, connectionOptions, peerDetails, metricsProvider);
+        this.hostname = connectionOptions.getHostname();
     }
 
     /**
@@ -43,11 +54,10 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      */
     @Override
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
-        final String hostName = event.getConnection().getHostname();
         logger.info("Adding web socket layer");
         final WebSocketImpl webSocket = new WebSocketImpl();
         webSocket.configure(
-            hostName,
+            hostname,
             SOCKET_PATH,
             "",
             0,
@@ -58,7 +68,7 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
         transport.addTransportLayer(webSocket);
 
         logger.atVerbose()
-            .addKeyValue(HOSTNAME_KEY, hostName)
+            .addKeyValue(HOSTNAME_KEY, hostname)
             .log("Adding web sockets transport layer.");
 
         super.addTransportLayers(event, transport);

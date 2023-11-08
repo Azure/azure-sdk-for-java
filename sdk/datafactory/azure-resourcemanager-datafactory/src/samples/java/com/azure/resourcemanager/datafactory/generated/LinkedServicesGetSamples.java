@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LinkedServices Get. */
 public final class LinkedServicesGetSamples {
     /*
@@ -19,6 +17,11 @@ public final class LinkedServicesGetSamples {
     public static void linkedServicesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .linkedServices()
-            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", null, Context.NONE);
+            .getWithResponse(
+                "exampleResourceGroup",
+                "exampleFactoryName",
+                "exampleLinkedService",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

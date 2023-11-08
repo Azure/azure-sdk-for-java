@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UpdateActionType. */
+/** Type of the actual difference for the compared object, while performing schema comparison. */
 public final class UpdateActionType extends ExpandableStringEnum<UpdateActionType> {
     /** Static value DeletedOnTarget for UpdateActionType. */
     public static final UpdateActionType DELETED_ON_TARGET = fromString("DeletedOnTarget");
@@ -18,6 +18,15 @@ public final class UpdateActionType extends ExpandableStringEnum<UpdateActionTyp
 
     /** Static value AddedOnTarget for UpdateActionType. */
     public static final UpdateActionType ADDED_ON_TARGET = fromString("AddedOnTarget");
+
+    /**
+     * Creates a new instance of UpdateActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UpdateActionType() {
+    }
 
     /**
      * Creates or finds a UpdateActionType from its string representation.
@@ -30,7 +39,11 @@ public final class UpdateActionType extends ExpandableStringEnum<UpdateActionTyp
         return fromString(name, UpdateActionType.class);
     }
 
-    /** @return known UpdateActionType values. */
+    /**
+     * Gets known UpdateActionType values.
+     *
+     * @return known UpdateActionType values.
+     */
     public static Collection<UpdateActionType> values() {
         return values(UpdateActionType.class);
     }

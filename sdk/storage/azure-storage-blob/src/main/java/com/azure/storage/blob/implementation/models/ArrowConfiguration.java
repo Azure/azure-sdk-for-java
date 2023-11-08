@@ -32,6 +32,9 @@ public final class ArrowConfiguration {
     @JsonProperty(value = "Schema", required = true)
     private SchemaWrapper schema;
 
+    /** Creates an instance of ArrowConfiguration class. */
+    public ArrowConfiguration() {}
+
     /**
      * Get the schema property: The Schema property.
      *

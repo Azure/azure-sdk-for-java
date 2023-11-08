@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,10 +15,8 @@ import java.util.List;
  */
 @Fluent
 public final class AfdOriginGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginGroupListResult.class);
-
     /*
-     * List of CDN origin groups within an endpoint
+     * List of Azure Front Door origin groups within an Azure Front Door endpoint
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AfdOriginGroupInner> value;
@@ -31,8 +27,12 @@ public final class AfdOriginGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AfdOriginGroupListResult class. */
+    public AfdOriginGroupListResult() {
+    }
+
     /**
-     * Get the value property: List of CDN origin groups within an endpoint.
+     * Get the value property: List of Azure Front Door origin groups within an Azure Front Door endpoint.
      *
      * @return the value value.
      */

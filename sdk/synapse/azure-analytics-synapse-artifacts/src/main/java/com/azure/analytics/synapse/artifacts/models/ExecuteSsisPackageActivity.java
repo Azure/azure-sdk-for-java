@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Map;
 
 /** Execute SSIS package activity. */
@@ -24,22 +25,20 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
     private SsisPackageLocation packageLocation;
 
     /*
-     * Specifies the runtime to execute SSIS package. The value should be "x86"
-     * or "x64". Type: string (or Expression with resultType string).
+     * Specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "typeProperties.runtime")
     private Object runtime;
 
     /*
-     * The logging level of SSIS package execution. Type: string (or Expression
-     * with resultType string).
+     * The logging level of SSIS package execution. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.loggingLevel")
     private Object loggingLevel;
 
     /*
-     * The environment path to execute the SSIS package. Type: string (or
-     * Expression with resultType string).
+     * The environment path to execute the SSIS package. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.environmentPath")
     private Object environmentPath;
@@ -91,6 +90,9 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.logLocation")
     private SsisLogLocation logLocation;
+
+    /** Creates an instance of ExecuteSsisPackageActivity class. */
+    public ExecuteSsisPackageActivity() {}
 
     /**
      * Get the packageLocation property: SSIS package location.
@@ -337,6 +339,62 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
      */
     public ExecuteSsisPackageActivity setLogLocation(SsisLogLocation logLocation) {
         this.logLocation = logLocation;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

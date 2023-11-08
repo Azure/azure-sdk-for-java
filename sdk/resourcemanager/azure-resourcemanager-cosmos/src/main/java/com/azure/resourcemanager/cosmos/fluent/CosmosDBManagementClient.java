@@ -178,6 +178,20 @@ public interface CosmosDBManagementClient {
     LocationsClient getLocations();
 
     /**
+     * Gets the CassandraClustersClient object to access its operations.
+     *
+     * @return the CassandraClustersClient object.
+     */
+    CassandraClustersClient getCassandraClusters();
+
+    /**
+     * Gets the CassandraDataCentersClient object to access its operations.
+     *
+     * @return the CassandraDataCentersClient object.
+     */
+    CassandraDataCentersClient getCassandraDataCenters();
+
+    /**
      * Gets the NotebookWorkspacesClient object to access its operations.
      *
      * @return the NotebookWorkspacesClient object.
@@ -248,16 +262,44 @@ public interface CosmosDBManagementClient {
     RestorableMongodbResourcesClient getRestorableMongodbResources();
 
     /**
-     * Gets the CassandraClustersClient object to access its operations.
+     * Gets the RestorableGremlinDatabasesClient object to access its operations.
      *
-     * @return the CassandraClustersClient object.
+     * @return the RestorableGremlinDatabasesClient object.
      */
-    CassandraClustersClient getCassandraClusters();
+    RestorableGremlinDatabasesClient getRestorableGremlinDatabases();
 
     /**
-     * Gets the CassandraDataCentersClient object to access its operations.
+     * Gets the RestorableGremlinGraphsClient object to access its operations.
      *
-     * @return the CassandraDataCentersClient object.
+     * @return the RestorableGremlinGraphsClient object.
      */
-    CassandraDataCentersClient getCassandraDataCenters();
+    RestorableGremlinGraphsClient getRestorableGremlinGraphs();
+
+    /**
+     * Gets the RestorableGremlinResourcesClient object to access its operations.
+     *
+     * @return the RestorableGremlinResourcesClient object.
+     */
+    RestorableGremlinResourcesClient getRestorableGremlinResources();
+
+    /**
+     * Gets the RestorableTablesClient object to access its operations.
+     *
+     * @return the RestorableTablesClient object.
+     */
+    RestorableTablesClient getRestorableTables();
+
+    /**
+     * Gets the RestorableTableResourcesClient object to access its operations.
+     *
+     * @return the RestorableTableResourcesClient object.
+     */
+    RestorableTableResourcesClient getRestorableTableResources();
+
+    /**
+     * Gets the ServicesClient object to access its operations.
+     *
+     * @return the ServicesClient object.
+     */
+    ServicesClient getServices();
 }

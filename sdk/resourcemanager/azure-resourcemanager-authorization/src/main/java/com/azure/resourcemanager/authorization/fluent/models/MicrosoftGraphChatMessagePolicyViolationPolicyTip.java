@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,13 +16,9 @@ import java.util.Map;
 /** chatMessagePolicyViolationPolicyTip. */
 @Fluent
 public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphChatMessagePolicyViolationPolicyTip.class);
-
     /*
-     * The URL a user can visit to read about the data loss prevention policies
-     * for the organization. (ie, policies about what users shouldn't say in
-     * chats)
+     * The URL a user can visit to read about the data loss prevention policies for the organization. (ie, policies
+     * about what users shouldn't say in chats)
      */
     @JsonProperty(value = "complianceUrl")
     private String complianceUrl;
@@ -35,9 +30,8 @@ public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip {
     private String generalText;
 
     /*
-     * The list of improper data in the message that was detected by the data
-     * loss prevention app. Each DLP app defines its own conditions, examples
-     * include 'Credit Card Number' and 'Social Security Number'.
+     * The list of improper data in the message that was detected by the data loss prevention app. Each DLP app defines
+     * its own conditions, examples include 'Credit Card Number' and 'Social Security Number'.
      */
     @JsonProperty(value = "matchedConditionDescriptions")
     private List<String> matchedConditionDescriptions;
@@ -46,6 +40,10 @@ public final class MicrosoftGraphChatMessagePolicyViolationPolicyTip {
      * chatMessagePolicyViolationPolicyTip
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphChatMessagePolicyViolationPolicyTip class. */
+    public MicrosoftGraphChatMessagePolicyViolationPolicyTip() {
+    }
 
     /**
      * Get the complianceUrl property: The URL a user can visit to read about the data loss prevention policies for the

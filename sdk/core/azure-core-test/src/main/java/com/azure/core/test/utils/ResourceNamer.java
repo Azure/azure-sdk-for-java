@@ -3,15 +3,15 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.util.CoreUtils;
+
 import java.util.Locale;
-import java.util.Random;
-import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * A random string generator used in tests.
  */
 public class ResourceNamer {
-    private static final Random RANDOM = new Random();
     private static final Locale LOCALE = Locale.US;
 
     private final String randName;
@@ -22,7 +22,8 @@ public class ResourceNamer {
      * @param name The prefix for generated strings.
      */
     public ResourceNamer(String name) {
-        this.randName = name.toLowerCase(LOCALE) + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase(LOCALE);
+        this.randName = name.toLowerCase(LOCALE)
+            + CoreUtils.randomUuid().toString().replace("-", "").substring(0, 3).toLowerCase(LOCALE);
     }
 
     /**
@@ -43,7 +44,7 @@ public class ResourceNamer {
             return randomString(maxLen);
         }
 
-        String minRandomString = String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
+        String minRandomString = String.format("%05d", Math.abs(ThreadLocalRandom.current().nextInt() % 100000));
 
         if (maxLen <= prefix.length() + randName.length() + minRandomnessLength) {
             String str = prefix + minRandomString;
@@ -59,13 +60,13 @@ public class ResourceNamer {
      * @return the UUID string.
      */
     public String randomUuid() {
-        return UUID.randomUUID().toString();
+        return CoreUtils.randomUuid().toString();
     }
 
     private String randomString(int length) {
         StringBuilder str = new StringBuilder();
         while (str.length() < length) {
-            str.append(UUID.randomUUID()
+            str.append(CoreUtils.randomUuid()
                 .toString()
                 .replace("-", "")
                 .substring(0, Math.min(32, length)).toLowerCase(LOCALE));

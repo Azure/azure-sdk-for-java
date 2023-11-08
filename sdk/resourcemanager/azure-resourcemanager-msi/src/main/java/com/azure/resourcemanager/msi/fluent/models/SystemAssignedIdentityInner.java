@@ -6,8 +6,8 @@ package com.azure.resourcemanager.msi.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +16,6 @@ import java.util.UUID;
 /** Describes a system assigned identity resource. */
 @Fluent
 public final class SystemAssignedIdentityInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemAssignedIdentityInner.class);
-
     /*
      * The geo-location where the resource lives
      */
@@ -32,11 +30,22 @@ public final class SystemAssignedIdentityInner extends ProxyResource {
     private Map<String, String> tags;
 
     /*
-     * System Assigned Identity properties. The properties associated with the
-     * identity.
+     * System Assigned Identity properties.
+     *
+     * The properties associated with the identity.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private SystemAssignedIdentityProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of SystemAssignedIdentityInner class. */
+    public SystemAssignedIdentityInner() {
+    }
 
     /**
      * Get the location property: The geo-location where the resource lives.
@@ -79,13 +88,23 @@ public final class SystemAssignedIdentityInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: System Assigned Identity properties. The properties associated with the
-     * identity.
+     * Get the innerProperties property: System Assigned Identity properties.
+     *
+     * <p>The properties associated with the identity.
      *
      * @return the innerProperties value.
      */
     private SystemAssignedIdentityProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -133,7 +152,7 @@ public final class SystemAssignedIdentityInner extends ProxyResource {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model SystemAssignedIdentityInner"));
@@ -142,4 +161,6 @@ public final class SystemAssignedIdentityInner extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SystemAssignedIdentityInner.class);
 }

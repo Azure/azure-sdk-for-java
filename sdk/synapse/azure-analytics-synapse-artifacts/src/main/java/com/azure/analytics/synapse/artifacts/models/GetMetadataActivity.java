@@ -41,6 +41,9 @@ public class GetMetadataActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.formatSettings")
     private FormatReadSettings formatSettings;
 
+    /** Creates an instance of GetMetadataActivity class. */
+    public GetMetadataActivity() {}
+
     /**
      * Get the dataset property: GetMetadata activity dataset reference.
      *
@@ -118,6 +121,62 @@ public class GetMetadataActivity extends ExecutionActivity {
      */
     public GetMetadataActivity setFormatSettings(FormatReadSettings formatSettings) {
         this.formatSettings = formatSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GetMetadataActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GetMetadataActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GetMetadataActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GetMetadataActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GetMetadataActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GetMetadataActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GetMetadataActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GetMetadataActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

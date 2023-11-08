@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EndpointMonitorStatus. */
+/** The monitoring status of the endpoint. */
 public final class EndpointMonitorStatus extends ExpandableStringEnum<EndpointMonitorStatus> {
     /** Static value CheckingEndpoint for EndpointMonitorStatus. */
     public static final EndpointMonitorStatus CHECKING_ENDPOINT = fromString("CheckingEndpoint");
@@ -28,6 +28,18 @@ public final class EndpointMonitorStatus extends ExpandableStringEnum<EndpointMo
     /** Static value Stopped for EndpointMonitorStatus. */
     public static final EndpointMonitorStatus STOPPED = fromString("Stopped");
 
+    /** Static value Unmonitored for EndpointMonitorStatus. */
+    public static final EndpointMonitorStatus UNMONITORED = fromString("Unmonitored");
+
+    /**
+     * Creates a new instance of EndpointMonitorStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointMonitorStatus() {
+    }
+
     /**
      * Creates or finds a EndpointMonitorStatus from its string representation.
      *
@@ -39,7 +51,11 @@ public final class EndpointMonitorStatus extends ExpandableStringEnum<EndpointMo
         return fromString(name, EndpointMonitorStatus.class);
     }
 
-    /** @return known EndpointMonitorStatus values. */
+    /**
+     * Gets known EndpointMonitorStatus values.
+     *
+     * @return known EndpointMonitorStatus values.
+     */
     public static Collection<EndpointMonitorStatus> values() {
         return values(EndpointMonitorStatus.class);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Pre-backup validation for Azure VM Workload provider. */
 @Fluent
 public final class PreBackupValidation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreBackupValidation.class);
-
     /*
      * Status of protectable item, i.e. InProgress,Succeeded,Failed
      */
@@ -31,6 +27,10 @@ public final class PreBackupValidation {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of PreBackupValidation class. */
+    public PreBackupValidation() {
+    }
 
     /**
      * Get the status property: Status of protectable item, i.e. InProgress,Succeeded,Failed.

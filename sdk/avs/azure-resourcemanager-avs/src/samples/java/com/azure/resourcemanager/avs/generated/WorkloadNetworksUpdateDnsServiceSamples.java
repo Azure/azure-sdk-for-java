@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.DnsServiceLogLevelEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsService;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks UpdateDnsService. */
 public final class WorkloadNetworksUpdateDnsServiceSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_UpdateDnsServices.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateDnsServices.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDnsService.
@@ -23,7 +22,7 @@ public final class WorkloadNetworksUpdateDnsServiceSamples {
         WorkloadNetworkDnsService resource =
             manager
                 .workloadNetworks()
-                .getDnsServiceWithResponse("group1", "cloud1", "dnsService1", Context.NONE)
+                .getDnsServiceWithResponse("group1", "cloud1", "dnsService1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

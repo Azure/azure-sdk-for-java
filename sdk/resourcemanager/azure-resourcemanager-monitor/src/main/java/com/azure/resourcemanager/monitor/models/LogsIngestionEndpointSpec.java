@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the endpoint used for ingesting logs. */
 @Immutable
 public class LogsIngestionEndpointSpec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogsIngestionEndpointSpec.class);
-
     /*
      * The endpoint. This property is READ-ONLY.
      */
     @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
+
+    /** Creates an instance of LogsIngestionEndpointSpec class. */
+    public LogsIngestionEndpointSpec() {
+    }
 
     /**
      * Get the endpoint property: The endpoint. This property is READ-ONLY.

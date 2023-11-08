@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of alerts. */
 @Immutable
 public final class AlertsResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertsResultInner.class);
-
     /*
      * List of alerts.
      */
@@ -26,6 +22,10 @@ public final class AlertsResultInner {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of AlertsResultInner class. */
+    public AlertsResultInner() {
+    }
 
     /**
      * Get the value property: List of alerts.

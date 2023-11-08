@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
@@ -37,7 +38,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 class ServiceBusClientBuilderTest extends IntegrationTestBase {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
-    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
+    private static final String DEFAULT_DOMAIN_NAME = TestUtils.getEndpoint().substring(1) + "/";
     private static final String ENDPOINT_FORMAT = "sb://%s.%s";
     private static final String QUEUE_NAME = "test-queue-name";
     private static final String VIA_QUEUE_NAME = "test-via-queue-name";
@@ -48,6 +49,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     private static final String ENDPOINT = getUri(ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
     private static final String DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$deadletterqueue";
     private static final String TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX = "/$Transfer/$deadletterqueue";
+    private static final String JAVA_NET_USER_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
     private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
@@ -65,7 +67,19 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     }
 
     @Test
-    void deadLetterqueueClient() {
+    void ensureIdentifierString() {
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
+        final ServiceBusSenderAsyncClient client = toClose(builder
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .queueName(QUEUE_NAME)
+            .buildAsyncClient());
+
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(client.getIdentifier()));
+    }
+
+    @Test
+    void deadLetterQueueClient() {
         // Arrange
         final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(NAMESPACE_CONNECTION_STRING)
@@ -73,8 +87,9 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .queueName(QUEUE_NAME)
             .subQueue(SubQueue.DEAD_LETTER_QUEUE);
 
+
         // Act
-        final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
+        final ServiceBusReceiverAsyncClient client = toClose(builder.buildAsyncClient());
 
         // Assert
         assertTrue(client.getEntityPath().endsWith(DEAD_LETTER_QUEUE_NAME_SUFFIX));
@@ -90,7 +105,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE);
 
         // Act
-        final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
+        final ServiceBusReceiverAsyncClient client = toClose(builder.buildAsyncClient());
 
         // Assert
         assertTrue(client.getEntityPath().endsWith(TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX));
@@ -220,29 +235,24 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
-    public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
-        boolean clientCreated = false;
-        try {
-            ServiceBusReceiverClient syncClient = new ServiceBusClientBuilder()
-                .connectionString(NAMESPACE_CONNECTION_STRING)
-                .configuration(configuration)
-                .receiver()
-                .topicName("baz").subscriptionName("bar")
-                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                .buildClient();
+    public void testProxyOptionsConfiguration(String proxyConfiguration) {
+        Configuration configuration = TestUtils.getGlobalConfiguration().clone()
+            .put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration)
+            .put(JAVA_NET_USER_SYSTEM_PROXIES, "true");
 
-            clientCreated = true;
-        } catch (Exception ex) {
-        }
-
-        Assertions.assertEquals(expectedClientCreation, clientCreated);
+        // Client creation should not fail with incorrect proxy configuration
+        toClose(new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .configuration(configuration)
+            .receiver()
+            .topicName("baz").subscriptionName("bar")
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+            .buildClient());
     }
 
     @Test
     public void testConnectionStringWithSas() {
-        String connectionStringWithEntityPath = "Endpoint=sb://sb-name.servicebus.windows.net/;"
+        String connectionStringWithEntityPath = "Endpoint=sb://sb-name" + TestUtils.getEndpoint() + "/;"
             + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=sb-name";
         assertNotNull(new ServiceBusClientBuilder()
             .connectionString(connectionStringWithEntityPath));
@@ -253,7 +263,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
         assertThrows(IllegalArgumentException.class,
             () -> new ServiceBusClientBuilder()
-                .connectionString("Endpoint=sb://sb-name.servicebus.windows.net/;EntityPath=sb-name"));
+                .connectionString("Endpoint=sb://sb-name" + TestUtils.getEndpoint() + "/;EntityPath=sb-name"));
     }
 
     @Test
@@ -262,58 +272,52 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         String fullyQualifiedNamespace = getFullyQualifiedDomainName();
         String sharedAccessKeyName = properties.getSharedAccessKeyName();
         String sharedAccessKey = properties.getSharedAccessKey();
-        String queueName = getQueueName(0);
+        String queueName = getQueueName(TestUtils.USE_CASE_DEFAULT);
 
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
 
-        ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
+        ServiceBusSenderAsyncClient senderAsyncClient = toClose(new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
             .sender()
             .queueName(queueName)
-            .buildAsyncClient();
-        try {
-            StepVerifier.create(
-                senderAsyncClient.createMessageBatch().flatMap(batch -> {
-                    assertTrue(batch.tryAddMessage(testData));
-                    return senderAsyncClient.sendMessages(batch);
-                })
-            ).verifyComplete();
-        } finally {
-            senderAsyncClient.close();
-        }
+            .buildAsyncClient());
+        StepVerifier.create(
+            senderAsyncClient.createMessageBatch().flatMap(batch -> {
+                assertTrue(batch.tryAddMessage(testData));
+                return senderAsyncClient.sendMessages(batch);
+            }))
+            .expectComplete()
+            .verify(TIMEOUT);
     }
-
 
     @Test
     public void testBatchSendEventByAzureSasCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties(true);
         String fullyQualifiedNamespace = getFullyQualifiedDomainName();
         String sharedAccessSignature = properties.getSharedAccessSignature();
-        String queueName = getQueueName(0);
+        String queueName = getQueueName(TestUtils.USE_CASE_DEFAULT);
 
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
 
-        ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
+        ServiceBusSenderAsyncClient senderAsyncClient = toClose(new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace,
                 new AzureSasCredential(sharedAccessSignature))
             .sender()
             .queueName(queueName)
-            .buildAsyncClient();
-        try {
-            StepVerifier.create(
-                senderAsyncClient.createMessageBatch().flatMap(batch -> {
-                    assertTrue(batch.tryAddMessage(testData));
-                    return senderAsyncClient.sendMessages(batch);
-                })
-            ).verifyComplete();
-        } finally {
-            senderAsyncClient.close();
-        }
+            .buildAsyncClient());
+
+        StepVerifier.create(
+            senderAsyncClient.createMessageBatch().flatMap(batch -> {
+                assertTrue(batch.tryAddMessage(testData));
+                return senderAsyncClient.sendMessages(batch);
+            }))
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @Test
     public void testConnectionWithAzureNameKeyCredential() {
-        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String fullyQualifiedNamespace = "sb-name" + TestUtils.getEndpoint();
         String sharedAccessKeyName = "SharedAccessKeyName test-value";
         String sharedAccessKey = "SharedAccessKey test-value";
 
@@ -325,9 +329,21 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .credential("",
                 new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
 
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureNamedKeyCredential(null, sharedAccessKey)));
+
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureNamedKeyCredential(sharedAccessKeyName, null)));
+
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace,
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+                new AzureNamedKeyCredential("", sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace,
+                new AzureNamedKeyCredential(sharedAccessKeyName, "")));
 
         assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, (AzureNamedKeyCredential) null));
@@ -336,7 +352,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     @Test
     public void testConnectionWithAzureSasCredential() {
-        String fullyQualifiedNamespace = "sb-name.servicebus.windows.net";
+        String fullyQualifiedNamespace = "sb-name" + TestUtils.getEndpoint();
         String sharedAccessSignature = "SharedAccessSignature test-value";
 
         assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
@@ -345,8 +361,11 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
             .credential("", new AzureSasCredential(sharedAccessSignature)));
 
+        assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new AzureSasCredential(null)));
+
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace, new AzureSasCredential(sharedAccessSignature)));
+            .credential(fullyQualifiedNamespace, new AzureSasCredential("")));
 
         assertThrows(NullPointerException.class, () -> new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, (AzureSasCredential) null));
@@ -355,16 +374,16 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
     private static Stream<Arguments> getProxyConfigurations() {
         return Stream.of(
-            Arguments.of("http://localhost:8080", true),
-            Arguments.of("localhost:8080", true),
-            Arguments.of("localhost_8080", false),
-            Arguments.of("http://example.com:8080", true),
-            Arguments.of("http://sub.example.com:8080", true),
-            Arguments.of(":8080", false),
-            Arguments.of("http://localhost", true),
-            Arguments.of("sub.example.com:8080", true),
-            Arguments.of("https://username:password@sub.example.com:8080", true),
-            Arguments.of("https://username:password@sub.example.com", true)
+            Arguments.of("http://localhost:8080"),
+            Arguments.of("localhost:8080"),
+            Arguments.of("localhost_8080"),
+            Arguments.of("http://example.com:8080"),
+            Arguments.of("http://sub.example.com:8080"),
+            Arguments.of(":8080"),
+            Arguments.of("http://localhost"),
+            Arguments.of("sub.example.com:8080"),
+            Arguments.of("https://username:password@sub.example.com:8080"),
+            Arguments.of("https://username:password@sub.example.com")
         );
 
     }
@@ -377,4 +396,5 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
                 "Invalid namespace name: %s", namespace), exception);
         }
     }
+
 }

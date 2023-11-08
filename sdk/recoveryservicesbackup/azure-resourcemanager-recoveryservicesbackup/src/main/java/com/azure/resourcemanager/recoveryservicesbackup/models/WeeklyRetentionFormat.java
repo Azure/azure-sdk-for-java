@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Weekly retention format. */
 @Fluent
 public final class WeeklyRetentionFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WeeklyRetentionFormat.class);
-
     /*
      * List of days of the week.
      */
@@ -26,6 +22,10 @@ public final class WeeklyRetentionFormat {
      */
     @JsonProperty(value = "weeksOfTheMonth")
     private List<WeekOfMonth> weeksOfTheMonth;
+
+    /** Creates an instance of WeeklyRetentionFormat class. */
+    public WeeklyRetentionFormat() {
+    }
 
     /**
      * Get the daysOfTheWeek property: List of days of the week.

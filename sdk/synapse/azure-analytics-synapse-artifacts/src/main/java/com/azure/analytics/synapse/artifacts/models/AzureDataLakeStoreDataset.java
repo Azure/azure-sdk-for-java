@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Azure Data Lake Store dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,15 +19,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureDataLakeStoreDataset extends Dataset {
     /*
-     * Path to the folder in the Azure Data Lake Store. Type: string (or
-     * Expression with resultType string).
+     * Path to the folder in the Azure Data Lake Store. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
 
     /*
-     * The name of the file in the Azure Data Lake Store. Type: string (or
-     * Expression with resultType string).
+     * The name of the file in the Azure Data Lake Store. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.fileName")
     private Object fileName;
@@ -37,11 +37,13 @@ public class AzureDataLakeStoreDataset extends Dataset {
     private DatasetStorageFormat format;
 
     /*
-     * The data compression method used for the item(s) in the Azure Data Lake
-     * Store.
+     * The data compression method used for the item(s) in the Azure Data Lake Store.
      */
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
+
+    /** Creates an instance of AzureDataLakeStoreDataset class. */
+    public AzureDataLakeStoreDataset() {}
 
     /**
      * Get the folderPath property: Path to the folder in the Azure Data Lake Store. Type: string (or Expression with
@@ -124,6 +126,55 @@ public class AzureDataLakeStoreDataset extends Dataset {
      */
     public AzureDataLakeStoreDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

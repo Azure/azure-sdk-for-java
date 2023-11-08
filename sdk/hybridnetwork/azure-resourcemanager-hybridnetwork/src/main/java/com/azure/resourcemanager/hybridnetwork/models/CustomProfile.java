@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the custom settings for the virtual machine. */
 @Fluent
 public final class CustomProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomProfile.class);
-
     /*
      * Path for metadata configuration.
      */
     @JsonProperty(value = "metadataConfigurationPath")
     private String metadataConfigurationPath;
+
+    /** Creates an instance of CustomProfile class. */
+    public CustomProfile() {
+    }
 
     /**
      * Get the metadataConfigurationPath property: Path for metadata configuration.

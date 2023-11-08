@@ -67,11 +67,10 @@ public final class DomainsClientImpl implements DomainsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface DomainsService {
+    public interface DomainsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainInner>> getByResourceGroup(
@@ -85,8 +84,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -101,8 +99,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -115,8 +112,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -158,8 +154,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/listKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainSharedAccessKeysInner>> listSharedAccessKeys(
@@ -173,8 +168,7 @@ public final class DomainsClientImpl implements DomainsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/regenerateKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/regenerateKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainSharedAccessKeysInner>> regenerateKey(
@@ -209,7 +203,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Get properties of a domain.
+     * Get a domain.
+     *
+     * <p>Get properties of a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -257,7 +253,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Get properties of a domain.
+     * Get a domain.
+     *
+     * <p>Get properties of a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -303,7 +301,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Get properties of a domain.
+     * Get a domain.
+     *
+     * <p>Get properties of a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -315,33 +315,13 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DomainInner> getByResourceGroupAsync(String resourceGroupName, String domainName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, domainName)
-            .flatMap(
-                (Response<DomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get properties of a domain.
+     * Get a domain.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainInner getByResourceGroup(String resourceGroupName, String domainName) {
-        return getByResourceGroupAsync(resourceGroupName, domainName).block();
-    }
-
-    /**
-     * Get properties of a domain.
+     * <p>Get properties of a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -358,7 +338,26 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain with the specified parameters.
+     * Get a domain.
+     *
+     * <p>Get properties of a domain.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainInner getByResourceGroup(String resourceGroupName, String domainName) {
+        return getByResourceGroupWithResponse(resourceGroupName, domainName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a domain.
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -413,7 +412,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain with the specified parameters.
+     * Create or update a domain.
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -466,7 +467,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain with the specified parameters.
+     * Create or update a domain.
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -488,7 +491,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain with the specified parameters.
+     * Create or update a domain.
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -512,7 +517,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain with the specified parameters.
+     * Create or update a domain.
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -525,11 +532,13 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
         String resourceGroupName, String domainName, DomainInner domainInfo) {
-        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainInfo).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, domainName, domainInfo).getSyncPoller();
     }
 
     /**
-     * Asynchronously creates or updates a new domain with the specified parameters.
+     * Create or update a domain.
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -543,11 +552,13 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
         String resourceGroupName, String domainName, DomainInner domainInfo, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainInfo, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, domainName, domainInfo, context).getSyncPoller();
     }
 
     /**
-     * Asynchronously creates or updates a new domain with the specified parameters.
+     * Create or update a domain.
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -565,7 +576,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain with the specified parameters.
+     * Create or update a domain.
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -585,7 +598,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain with the specified parameters.
+     * Create or update a domain.
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -601,7 +616,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain with the specified parameters.
+     * Create or update a domain.
+     *
+     * <p>Asynchronously creates or updates a new domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -619,7 +636,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -664,7 +683,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -708,7 +729,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -727,7 +750,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -748,7 +773,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -759,11 +786,13 @@ public final class DomainsClientImpl implements DomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName) {
-        return beginDeleteAsync(resourceGroupName, domainName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, domainName).getSyncPoller();
     }
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -776,11 +805,13 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String domainName, Context context) {
-        return beginDeleteAsync(resourceGroupName, domainName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, domainName, context).getSyncPoller();
     }
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -795,7 +826,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -813,7 +846,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -827,7 +862,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Delete existing domain.
+     * Delete a domain.
+     *
+     * <p>Delete existing domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -842,7 +879,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously updates a domain with the specified parameters.
+     * Update a domain.
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -899,7 +938,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously updates a domain with the specified parameters.
+     * Update a domain.
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -954,7 +995,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously updates a domain with the specified parameters.
+     * Update a domain.
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -976,7 +1019,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously updates a domain with the specified parameters.
+     * Update a domain.
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1000,7 +1045,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously updates a domain with the specified parameters.
+     * Update a domain.
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1013,11 +1060,13 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(
         String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, domainName, domainUpdateParameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, domainName, domainUpdateParameters).getSyncPoller();
     }
 
     /**
-     * Asynchronously updates a domain with the specified parameters.
+     * Update a domain.
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1031,11 +1080,13 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(
         String resourceGroupName, String domainName, DomainUpdateParameters domainUpdateParameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, domainName, domainUpdateParameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, domainName, domainUpdateParameters, context).getSyncPoller();
     }
 
     /**
-     * Asynchronously updates a domain with the specified parameters.
+     * Update a domain.
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1054,7 +1105,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously updates a domain with the specified parameters.
+     * Update a domain.
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1074,7 +1127,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously updates a domain with the specified parameters.
+     * Update a domain.
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1091,7 +1146,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Asynchronously updates a domain with the specified parameters.
+     * Update a domain.
+     *
+     * <p>Asynchronously updates a domain with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1109,7 +1166,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under an Azure subscription.
+     * List domains under an Azure subscription.
+     *
+     * <p>List all the domains under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1165,7 +1224,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under an Azure subscription.
+     * List domains under an Azure subscription.
+     *
+     * <p>List all the domains under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1219,7 +1280,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under an Azure subscription.
+     * List domains under an Azure subscription.
+     *
+     * <p>List all the domains under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1241,7 +1304,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under an Azure subscription.
+     * List domains under an Azure subscription.
+     *
+     * <p>List all the domains under an Azure subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1256,7 +1321,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under an Azure subscription.
+     * List domains under an Azure subscription.
+     *
+     * <p>List all the domains under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1280,7 +1347,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under an Azure subscription.
+     * List domains under an Azure subscription.
+     *
+     * <p>List all the domains under an Azure subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1294,7 +1363,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under an Azure subscription.
+     * List domains under an Azure subscription.
+     *
+     * <p>List all the domains under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1316,7 +1387,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under a resource group.
+     * List domains under a resource group.
+     *
+     * <p>List all the domains under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1379,7 +1452,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under a resource group.
+     * List domains under a resource group.
+     *
+     * <p>List all the domains under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1440,7 +1515,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under a resource group.
+     * List domains under a resource group.
+     *
+     * <p>List all the domains under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1464,7 +1541,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under a resource group.
+     * List domains under a resource group.
+     *
+     * <p>List all the domains under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1482,7 +1561,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under a resource group.
+     * List domains under a resource group.
+     *
+     * <p>List all the domains under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1508,7 +1589,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under a resource group.
+     * List domains under a resource group.
+     *
+     * <p>List all the domains under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1524,7 +1607,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List all the domains under a resource group.
+     * List domains under a resource group.
+     *
+     * <p>List all the domains under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -1548,7 +1633,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List the two keys used to publish to a domain.
+     * List keys for a domain.
+     *
+     * <p>List the two keys used to publish to a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1596,7 +1683,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List the two keys used to publish to a domain.
+     * List keys for a domain.
+     *
+     * <p>List the two keys used to publish to a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1642,7 +1731,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * List the two keys used to publish to a domain.
+     * List keys for a domain.
+     *
+     * <p>List the two keys used to publish to a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1654,33 +1745,13 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DomainSharedAccessKeysInner> listSharedAccessKeysAsync(String resourceGroupName, String domainName) {
         return listSharedAccessKeysWithResponseAsync(resourceGroupName, domainName)
-            .flatMap(
-                (Response<DomainSharedAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * List the two keys used to publish to a domain.
+     * List keys for a domain.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainSharedAccessKeysInner listSharedAccessKeys(String resourceGroupName, String domainName) {
-        return listSharedAccessKeysAsync(resourceGroupName, domainName).block();
-    }
-
-    /**
-     * List the two keys used to publish to a domain.
+     * <p>List the two keys used to publish to a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1697,7 +1768,26 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Regenerate a shared access key for a domain.
+     * List keys for a domain.
+     *
+     * <p>List the two keys used to publish to a domain.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainSharedAccessKeysInner listSharedAccessKeys(String resourceGroupName, String domainName) {
+        return listSharedAccessKeysWithResponse(resourceGroupName, domainName, Context.NONE).getValue();
+    }
+
+    /**
+     * Regenerate key for a domain.
+     *
+     * <p>Regenerate a shared access key for a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1753,7 +1843,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Regenerate a shared access key for a domain.
+     * Regenerate key for a domain.
+     *
+     * <p>Regenerate a shared access key for a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1807,7 +1899,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Regenerate a shared access key for a domain.
+     * Regenerate key for a domain.
+     *
+     * <p>Regenerate a shared access key for a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1821,35 +1915,13 @@ public final class DomainsClientImpl implements DomainsClient {
     private Mono<DomainSharedAccessKeysInner> regenerateKeyAsync(
         String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest) {
         return regenerateKeyWithResponseAsync(resourceGroupName, domainName, regenerateKeyRequest)
-            .flatMap(
-                (Response<DomainSharedAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Regenerate a shared access key for a domain.
+     * Regenerate key for a domain.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainSharedAccessKeysInner regenerateKey(
-        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest) {
-        return regenerateKeyAsync(resourceGroupName, domainName, regenerateKeyRequest).block();
-    }
-
-    /**
-     * Regenerate a shared access key for a domain.
+     * <p>Regenerate a shared access key for a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -1867,9 +1939,29 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
+     * Regenerate key for a domain.
+     *
+     * <p>Regenerate a shared access key for a domain.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainSharedAccessKeysInner regenerateKey(
+        String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest) {
+        return regenerateKeyWithResponse(resourceGroupName, domainName, regenerateKeyRequest, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1906,7 +1998,8 @@ public final class DomainsClientImpl implements DomainsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1943,7 +2036,8 @@ public final class DomainsClientImpl implements DomainsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1980,7 +2074,8 @@ public final class DomainsClientImpl implements DomainsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

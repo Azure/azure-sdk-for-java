@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MonitorProtocol. */
+/** The protocol (HTTP, HTTPS or TCP) used to probe for endpoint health. */
 public final class MonitorProtocol extends ExpandableStringEnum<MonitorProtocol> {
     /** Static value HTTP for MonitorProtocol. */
     public static final MonitorProtocol HTTP = fromString("HTTP");
@@ -18,6 +18,15 @@ public final class MonitorProtocol extends ExpandableStringEnum<MonitorProtocol>
 
     /** Static value TCP for MonitorProtocol. */
     public static final MonitorProtocol TCP = fromString("TCP");
+
+    /**
+     * Creates a new instance of MonitorProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MonitorProtocol() {
+    }
 
     /**
      * Creates or finds a MonitorProtocol from its string representation.
@@ -30,7 +39,11 @@ public final class MonitorProtocol extends ExpandableStringEnum<MonitorProtocol>
         return fromString(name, MonitorProtocol.class);
     }
 
-    /** @return known MonitorProtocol values. */
+    /**
+     * Gets known MonitorProtocol values.
+     *
+     * @return known MonitorProtocol values.
+     */
     public static Collection<MonitorProtocol> values() {
         return values(MonitorProtocol.class);
     }

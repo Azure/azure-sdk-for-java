@@ -29,6 +29,10 @@ public final class ServiceEndpointPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ServiceEndpointPropertiesFormat class. */
+    public ServiceEndpointPropertiesFormat() {
+    }
+
     /**
      * Get the service property: The type of the endpoint service.
      *

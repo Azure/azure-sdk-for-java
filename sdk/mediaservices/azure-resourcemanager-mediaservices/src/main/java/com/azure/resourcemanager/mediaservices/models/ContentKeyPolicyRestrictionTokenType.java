@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentKeyPolicyRestrictionTokenType. */
+/** The type of token. */
 public final class ContentKeyPolicyRestrictionTokenType
     extends ExpandableStringEnum<ContentKeyPolicyRestrictionTokenType> {
     /** Static value Unknown for ContentKeyPolicyRestrictionTokenType. */
@@ -21,6 +21,15 @@ public final class ContentKeyPolicyRestrictionTokenType
     public static final ContentKeyPolicyRestrictionTokenType JWT = fromString("Jwt");
 
     /**
+     * Creates a new instance of ContentKeyPolicyRestrictionTokenType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentKeyPolicyRestrictionTokenType() {
+    }
+
+    /**
      * Creates or finds a ContentKeyPolicyRestrictionTokenType from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class ContentKeyPolicyRestrictionTokenType
         return fromString(name, ContentKeyPolicyRestrictionTokenType.class);
     }
 
-    /** @return known ContentKeyPolicyRestrictionTokenType values. */
+    /**
+     * Gets known ContentKeyPolicyRestrictionTokenType values.
+     *
+     * @return known ContentKeyPolicyRestrictionTokenType values.
+     */
     public static Collection<ContentKeyPolicyRestrictionTokenType> values() {
         return values(ContentKeyPolicyRestrictionTokenType.class);
     }

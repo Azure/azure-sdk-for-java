@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Preferences related to the order. */
 @Fluent
 public final class Preferences {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Preferences.class);
-
     /*
      * Preferred data center region.
      */
@@ -28,10 +24,26 @@ public final class Preferences {
     private TransportPreferences transportPreferences;
 
     /*
+     * Optional Preferences related to the reverse shipment logistics of the sku.
+     */
+    @JsonProperty(value = "reverseTransportPreferences")
+    private TransportPreferences reverseTransportPreferences;
+
+    /*
      * Preferences related to the Encryption.
      */
     @JsonProperty(value = "encryptionPreferences")
     private EncryptionPreferences encryptionPreferences;
+
+    /*
+     * Preferences related to the Access Tier of storage accounts.
+     */
+    @JsonProperty(value = "storageAccountAccessTierPreferences")
+    private List<String> storageAccountAccessTierPreferences;
+
+    /** Creates an instance of Preferences class. */
+    public Preferences() {
+    }
 
     /**
      * Get the preferredDataCenterRegion property: Preferred data center region.
@@ -74,6 +86,28 @@ public final class Preferences {
     }
 
     /**
+     * Get the reverseTransportPreferences property: Optional Preferences related to the reverse shipment logistics of
+     * the sku.
+     *
+     * @return the reverseTransportPreferences value.
+     */
+    public TransportPreferences reverseTransportPreferences() {
+        return this.reverseTransportPreferences;
+    }
+
+    /**
+     * Set the reverseTransportPreferences property: Optional Preferences related to the reverse shipment logistics of
+     * the sku.
+     *
+     * @param reverseTransportPreferences the reverseTransportPreferences value to set.
+     * @return the Preferences object itself.
+     */
+    public Preferences withReverseTransportPreferences(TransportPreferences reverseTransportPreferences) {
+        this.reverseTransportPreferences = reverseTransportPreferences;
+        return this;
+    }
+
+    /**
      * Get the encryptionPreferences property: Preferences related to the Encryption.
      *
      * @return the encryptionPreferences value.
@@ -94,6 +128,26 @@ public final class Preferences {
     }
 
     /**
+     * Get the storageAccountAccessTierPreferences property: Preferences related to the Access Tier of storage accounts.
+     *
+     * @return the storageAccountAccessTierPreferences value.
+     */
+    public List<String> storageAccountAccessTierPreferences() {
+        return this.storageAccountAccessTierPreferences;
+    }
+
+    /**
+     * Set the storageAccountAccessTierPreferences property: Preferences related to the Access Tier of storage accounts.
+     *
+     * @param storageAccountAccessTierPreferences the storageAccountAccessTierPreferences value to set.
+     * @return the Preferences object itself.
+     */
+    public Preferences withStorageAccountAccessTierPreferences(List<String> storageAccountAccessTierPreferences) {
+        this.storageAccountAccessTierPreferences = storageAccountAccessTierPreferences;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -101,6 +155,9 @@ public final class Preferences {
     public void validate() {
         if (transportPreferences() != null) {
             transportPreferences().validate();
+        }
+        if (reverseTransportPreferences() != null) {
+            reverseTransportPreferences().validate();
         }
         if (encryptionPreferences() != null) {
             encryptionPreferences().validate();

@@ -13,11 +13,10 @@ import com.azure.resourcemanager.mariadb.fluent.QueryTextsClient;
 import com.azure.resourcemanager.mariadb.fluent.models.QueryTextInner;
 import com.azure.resourcemanager.mariadb.models.QueryText;
 import com.azure.resourcemanager.mariadb.models.QueryTexts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 public final class QueryTextsImpl implements QueryTexts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTextsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QueryTextsImpl.class);
 
     private final QueryTextsClient innerClient;
 
@@ -27,15 +26,6 @@ public final class QueryTextsImpl implements QueryTexts {
         QueryTextsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public QueryText get(String resourceGroupName, String serverName, String queryId) {
-        QueryTextInner inner = this.serviceClient().get(resourceGroupName, serverName, queryId);
-        if (inner != null) {
-            return new QueryTextImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<QueryText> getWithResponse(
@@ -48,6 +38,15 @@ public final class QueryTextsImpl implements QueryTexts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new QueryTextImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public QueryText get(String resourceGroupName, String serverName, String queryId) {
+        QueryTextInner inner = this.serviceClient().get(resourceGroupName, serverName, queryId);
+        if (inner != null) {
+            return new QueryTextImpl(inner, this.manager());
         } else {
             return null;
         }

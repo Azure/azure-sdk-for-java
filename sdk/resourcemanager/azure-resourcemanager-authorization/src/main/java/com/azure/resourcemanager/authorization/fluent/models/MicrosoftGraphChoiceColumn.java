@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** choiceColumn. */
 @Fluent
 public final class MicrosoftGraphChoiceColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphChoiceColumn.class);
-
     /*
      * If true, allows custom values that aren't in the configured choices.
      */
@@ -32,8 +29,7 @@ public final class MicrosoftGraphChoiceColumn {
     private List<String> choices;
 
     /*
-     * How the choices are to be presented in the UX. Must be one of
-     * checkBoxes, dropDownMenu, or radioButtons
+     * How the choices are to be presented in the UX. Must be one of checkBoxes, dropDownMenu, or radioButtons
      */
     @JsonProperty(value = "displayAs")
     private String displayAs;
@@ -42,6 +38,10 @@ public final class MicrosoftGraphChoiceColumn {
      * choiceColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphChoiceColumn class. */
+    public MicrosoftGraphChoiceColumn() {
+    }
 
     /**
      * Get the allowTextEntry property: If true, allows custom values that aren't in the configured choices.

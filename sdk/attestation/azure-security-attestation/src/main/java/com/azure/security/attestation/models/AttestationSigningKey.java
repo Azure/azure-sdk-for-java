@@ -38,14 +38,18 @@ public final class AttestationSigningKey {
     }
 
     /**
-     * @return Returns the X.509 certificate associated with this Signing Key.
+     * Returns the X.509 certificate associated with this Signing Key.
+     *
+     * @return the X.509 certificate.
      */
     public X509Certificate getCertificate() {
         return this.certificate;
     }
 
     /**
-     * @return Returns the private key associated with this signing key.
+     * Returns the private key associated with this signing key.
+     *
+     * @return the private key.
      */
     public PrivateKey getPrivateKey() {
         return this.privateKey;
@@ -63,8 +67,9 @@ public final class AttestationSigningKey {
     }
 
     /**
+     * Returns if a weak key is allowed on this signing key.
      *
-     * @return Returns if a weak key is allowed on this signing key.
+     * @return the boolean indicator.
      */
     public boolean isWeakKeyAllowed() {
         return this.weakKeyAllowed;
@@ -109,13 +114,13 @@ public final class AttestationSigningKey {
             }
         } catch (NoSuchAlgorithmException e) {
             ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
         } catch (InvalidKeyException e) {
             ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
         } catch (SignatureException e) {
             ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
         }
     }
 

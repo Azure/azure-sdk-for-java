@@ -66,6 +66,10 @@ public final class ChannelImpl implements Channel, Channel.Definition, Channel.U
         return this.innerModel().expirationTimeIfNotActivatedUtc();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ChannelInner innerModel() {
         return this.innerObject;
     }
@@ -168,14 +172,14 @@ public final class ChannelImpl implements Channel, Channel.Definition, Channel.U
         return this;
     }
 
-    public EventSubscriptionFullUrl getFullUrl() {
-        return serviceManager.channels().getFullUrl(resourceGroupName, partnerNamespaceName, channelName);
-    }
-
     public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context) {
         return serviceManager
             .channels()
             .getFullUrlWithResponse(resourceGroupName, partnerNamespaceName, channelName, context);
+    }
+
+    public EventSubscriptionFullUrl getFullUrl() {
+        return serviceManager.channels().getFullUrl(resourceGroupName, partnerNamespaceName, channelName);
     }
 
     public ChannelImpl withChannelType(ChannelType channelType) {

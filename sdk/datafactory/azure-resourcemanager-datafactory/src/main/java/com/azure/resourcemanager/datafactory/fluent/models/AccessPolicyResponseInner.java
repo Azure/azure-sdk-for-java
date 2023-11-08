@@ -29,6 +29,10 @@ public final class AccessPolicyResponseInner {
     @JsonProperty(value = "dataPlaneUrl")
     private String dataPlaneUrl;
 
+    /** Creates an instance of AccessPolicyResponseInner class. */
+    public AccessPolicyResponseInner() {
+    }
+
     /**
      * Get the policy property: The user access policy.
      *

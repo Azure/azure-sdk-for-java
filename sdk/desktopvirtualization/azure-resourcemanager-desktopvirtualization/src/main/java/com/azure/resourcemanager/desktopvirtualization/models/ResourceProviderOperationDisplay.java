@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Display metadata associated with the operation. */
 @Fluent
 public final class ResourceProviderOperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProviderOperationDisplay.class);
-
     /*
      * Resource provider: Microsoft Desktop Virtualization.
      */
@@ -37,6 +33,10 @@ public final class ResourceProviderOperationDisplay {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of ResourceProviderOperationDisplay class. */
+    public ResourceProviderOperationDisplay() {
+    }
 
     /**
      * Get the provider property: Resource provider: Microsoft Desktop Virtualization.

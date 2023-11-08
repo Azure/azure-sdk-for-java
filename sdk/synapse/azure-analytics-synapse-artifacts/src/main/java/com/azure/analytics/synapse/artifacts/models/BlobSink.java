@@ -15,22 +15,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class BlobSink extends CopySink {
     /*
-     * Blob writer overwrite files. Type: boolean (or Expression with
-     * resultType boolean).
+     * Blob writer overwrite files. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "blobWriterOverwriteFiles")
     private Object blobWriterOverwriteFiles;
 
     /*
-     * Blob writer date time format. Type: string (or Expression with
-     * resultType string).
+     * Blob writer date time format. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "blobWriterDateTimeFormat")
     private Object blobWriterDateTimeFormat;
 
     /*
-     * Blob writer add header. Type: boolean (or Expression with resultType
-     * boolean).
+     * Blob writer add header. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "blobWriterAddHeader")
     private Object blobWriterAddHeader;
@@ -40,6 +37,9 @@ public final class BlobSink extends CopySink {
      */
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
+
+    /** Creates an instance of BlobSink class. */
+    public BlobSink() {}
 
     /**
      * Get the blobWriterOverwriteFiles property: Blob writer overwrite files. Type: boolean (or Expression with
@@ -124,6 +124,41 @@ public final class BlobSink extends CopySink {
      */
     public BlobSink setCopyBehavior(Object copyBehavior) {
         this.copyBehavior = copyBehavior;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

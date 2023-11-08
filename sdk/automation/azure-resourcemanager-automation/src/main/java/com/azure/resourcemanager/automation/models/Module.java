@@ -146,6 +146,13 @@ public interface Module {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.ModuleInner object.
      *
      * @return the inner object.

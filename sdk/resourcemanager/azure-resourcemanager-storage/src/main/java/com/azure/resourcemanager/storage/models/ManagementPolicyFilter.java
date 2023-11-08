@@ -22,19 +22,21 @@ public final class ManagementPolicyFilter {
     private List<String> prefixMatch;
 
     /*
-     * An array of predefined enum values. Currently blockBlob supports all
-     * tiering and delete actions. Only delete actions are supported for
-     * appendBlob.
+     * An array of predefined enum values. Currently blockBlob supports all tiering and delete actions. Only delete
+     * actions are supported for appendBlob.
      */
     @JsonProperty(value = "blobTypes", required = true)
     private List<String> blobTypes;
 
     /*
-     * An array of blob index tag based filters, there can be at most 10 tag
-     * filters
+     * An array of blob index tag based filters, there can be at most 10 tag filters
      */
     @JsonProperty(value = "blobIndexMatch")
     private List<TagFilter> blobIndexMatch;
+
+    /** Creates an instance of ManagementPolicyFilter class. */
+    public ManagementPolicyFilter() {
+    }
 
     /**
      * Get the prefixMatch property: An array of strings for prefixes to be match.

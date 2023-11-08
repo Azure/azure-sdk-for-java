@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("AzureStorage")
 @Fluent
 public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileShareProtectionPolicy.class);
-
     /*
      * Type of workload for the backup management
      */
@@ -38,11 +34,14 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
     private RetentionPolicy retentionPolicy;
 
     /*
-     * TimeZone optional input as string. For example: TimeZone = "Pacific
-     * Standard Time".
+     * TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
+
+    /** Creates an instance of AzureFileShareProtectionPolicy class. */
+    public AzureFileShareProtectionPolicy() {
+    }
 
     /**
      * Get the workLoadType property: Type of workload for the backup management.

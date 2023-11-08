@@ -25,6 +25,8 @@ public class EncryptedBlobClientBuilderJavaDocCodeSnippets {
             .key(key, keyWrapAlgorithm)
             .keyResolver(keyResolver)
             .connectionString(connectionString)
+            .containerName("<YOUR CONTAINER NAME>")
+            .blobName("<YOUR BLOB NAME>")
             .buildEncryptedBlobAsyncClient();
         // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient
     }
@@ -38,6 +40,8 @@ public class EncryptedBlobClientBuilderJavaDocCodeSnippets {
             .key(key, keyWrapAlgorithm)
             .keyResolver(keyResolver)
             .connectionString(connectionString)
+            .containerName("<YOUR CONTAINER NAME>")
+            .blobName("<YOUR BLOB NAME>")
             .buildEncryptedBlobClient();
         // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient
     }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of shared private link resources. */
 @Fluent
 public final class SharedPrivateLinkResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResourceList.class);
-
     /*
      * The list of the shared private link resources
      */
@@ -23,12 +19,15 @@ public final class SharedPrivateLinkResourceList {
     private List<SharedPrivateLinkResourceInner> value;
 
     /*
-     * Request URL that can be used to query next page of private endpoint
-     * connections. Returned when the total number of requested private
-     * endpoint connections exceed maximum page size.
+     * Request URL that can be used to query next page of private endpoint connections. Returned when the total number
+     * of requested private endpoint connections exceed maximum page size.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of SharedPrivateLinkResourceList class. */
+    public SharedPrivateLinkResourceList() {
+    }
 
     /**
      * Get the value property: The list of the shared private link resources.

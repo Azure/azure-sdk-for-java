@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyName;
 
 /** Samples for WorkspaceManagedSqlServerBlobAuditingPolicies Get. */
@@ -21,6 +20,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesGetSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .workspaceManagedSqlServerBlobAuditingPolicies()
-            .getWithResponse("wsg-7398", "testWorkspace", BlobAuditingPolicyName.DEFAULT, Context.NONE);
+            .getWithResponse(
+                "wsg-7398", "testWorkspace", BlobAuditingPolicyName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }

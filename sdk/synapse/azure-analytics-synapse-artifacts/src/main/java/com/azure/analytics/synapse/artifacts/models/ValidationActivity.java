@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** This activity verifies that an external resource exists. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,34 +18,30 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class ValidationActivity extends ControlActivity {
     /*
-     * Specifies the timeout for the activity to run. If there is no value
-     * specified, it takes the value of TimeSpan.FromDays(7) which is 1 week as
-     * default. Type: string (or Expression with resultType string), pattern:
+     * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of
+     * TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "typeProperties.timeout")
     private Object timeout;
 
     /*
-     * A delay in seconds between validation attempts. If no value is
-     * specified, 10 seconds will be used as the default. Type: integer (or
-     * Expression with resultType integer).
+     * A delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the
+     * default. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "typeProperties.sleep")
     private Object sleep;
 
     /*
-     * Can be used if dataset points to a file. The file must be greater than
-     * or equal in size to the value specified. Type: integer (or Expression
-     * with resultType integer).
+     * Can be used if dataset points to a file. The file must be greater than or equal in size to the value specified.
+     * Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "typeProperties.minimumSize")
     private Object minimumSize;
 
     /*
-     * Can be used if dataset points to a folder. If set to true, the folder
-     * must have at least one file. If set to false, the folder must be empty.
-     * Type: boolean (or Expression with resultType boolean).
+     * Can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to
+     * false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.childItems")
     private Object childItems;
@@ -54,6 +51,9 @@ public class ValidationActivity extends ControlActivity {
      */
     @JsonProperty(value = "typeProperties.dataset", required = true)
     private DatasetReference dataset;
+
+    /** Creates an instance of ValidationActivity class. */
+    public ValidationActivity() {}
 
     /**
      * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
@@ -162,6 +162,48 @@ public class ValidationActivity extends ControlActivity {
      */
     public ValidationActivity setDataset(DatasetReference dataset) {
         this.dataset = dataset;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

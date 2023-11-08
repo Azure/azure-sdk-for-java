@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthcareapis.fluent.models.ServicesDescriptionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of service description objects with a next link. */
 @Fluent
 public final class ServicesDescriptionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesDescriptionListResult.class);
-
     /*
      * The link used to get the next page of service description objects.
      */

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes Stop. */
 public final class IntegrationRuntimesStopSamples {
     /*
@@ -19,6 +17,10 @@ public final class IntegrationRuntimesStopSamples {
     public static void stopIntegrationRuntime(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimes()
-            .stop("exampleResourceGroup", "exampleWorkspace", "exampleManagedIntegrationRuntime", Context.NONE);
+            .stop(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,39 +4,38 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import java.util.Arrays;
 
 /** Samples for VirtualMachineScaleSets Redeploy. */
 public final class VirtualMachineScaleSetsRedeploySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_Redeploy_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Redeploy_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Redeploy_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Redeploy_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsRedeployMinimumSetGen(
+    public static void virtualMachineScaleSetRedeployMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .redeploy("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa", null, Context.NONE);
+            .redeploy("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_Redeploy_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Redeploy_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Redeploy_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Redeploy_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsRedeployMaximumSetGen(
+    public static void virtualMachineScaleSetRedeployMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -47,6 +46,6 @@ public final class VirtualMachineScaleSetsRedeploySamples {
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

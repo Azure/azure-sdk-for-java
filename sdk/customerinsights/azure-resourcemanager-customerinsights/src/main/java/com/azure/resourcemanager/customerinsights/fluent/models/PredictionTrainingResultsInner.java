@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.CanonicalProfileDefinition;
 import com.azure.resourcemanager.customerinsights.models.PredictionDistributionDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The training results of the prediction. */
 @Immutable
 public final class PredictionTrainingResultsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PredictionTrainingResultsInner.class);
-
     /*
      * The hub name.
      */
@@ -46,6 +42,10 @@ public final class PredictionTrainingResultsInner {
      */
     @JsonProperty(value = "primaryProfileInstanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long primaryProfileInstanceCount;
+
+    /** Creates an instance of PredictionTrainingResultsInner class. */
+    public PredictionTrainingResultsInner() {
+    }
 
     /**
      * Get the tenantId property: The hub name.

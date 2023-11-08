@@ -18,7 +18,7 @@ public final class WorkbookUpdateParameters {
      * The kind of workbook. Only valid value is shared.
      */
     @JsonProperty(value = "kind")
-    private SharedTypeKind kind;
+    private WorkbookUpdateSharedTypeKind kind;
 
     /*
      * Resource tags.
@@ -33,12 +33,16 @@ public final class WorkbookUpdateParameters {
     @JsonProperty(value = "properties")
     private WorkbookPropertiesUpdateParameters innerProperties;
 
+    /** Creates an instance of WorkbookUpdateParameters class. */
+    public WorkbookUpdateParameters() {
+    }
+
     /**
      * Get the kind property: The kind of workbook. Only valid value is shared.
      *
      * @return the kind value.
      */
-    public SharedTypeKind kind() {
+    public WorkbookUpdateSharedTypeKind kind() {
         return this.kind;
     }
 
@@ -48,7 +52,7 @@ public final class WorkbookUpdateParameters {
      * @param kind the kind value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
-    public WorkbookUpdateParameters withKind(SharedTypeKind kind) {
+    public WorkbookUpdateParameters withKind(WorkbookUpdateSharedTypeKind kind) {
         this.kind = kind;
         return this;
     }

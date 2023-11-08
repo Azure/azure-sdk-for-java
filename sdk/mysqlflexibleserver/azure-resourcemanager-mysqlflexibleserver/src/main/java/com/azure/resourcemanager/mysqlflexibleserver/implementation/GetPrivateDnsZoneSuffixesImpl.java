@@ -27,15 +27,6 @@ public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuf
         this.serviceManager = serviceManager;
     }
 
-    public GetPrivateDnsZoneSuffixResponse execute() {
-        GetPrivateDnsZoneSuffixResponseInner inner = this.serviceClient().execute();
-        if (inner != null) {
-            return new GetPrivateDnsZoneSuffixResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<GetPrivateDnsZoneSuffixResponse> executeWithResponse(Context context) {
         Response<GetPrivateDnsZoneSuffixResponseInner> inner = this.serviceClient().executeWithResponse(context);
         if (inner != null) {
@@ -44,6 +35,15 @@ public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuf
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new GetPrivateDnsZoneSuffixResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public GetPrivateDnsZoneSuffixResponse execute() {
+        GetPrivateDnsZoneSuffixResponseInner inner = this.serviceClient().execute();
+        if (inner != null) {
+            return new GetPrivateDnsZoneSuffixResponseImpl(inner, this.manager());
         } else {
             return null;
         }

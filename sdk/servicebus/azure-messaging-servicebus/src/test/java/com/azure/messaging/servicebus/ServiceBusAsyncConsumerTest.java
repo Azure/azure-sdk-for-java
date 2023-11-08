@@ -7,16 +7,13 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -31,8 +28,8 @@ import reactor.test.publisher.TestPublisher;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.UUID;
-import java.util.function.Function;
 
+import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -46,6 +43,9 @@ import static org.mockito.Mockito.when;
  */
 class ServiceBusAsyncConsumerTest {
     private static final String LINK_NAME = "some-link";
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(20);
+
     private final TestPublisher<ServiceBusReceiveLink> linkPublisher = TestPublisher.create();
     private final Flux<ServiceBusReceiveLink> linkFlux = linkPublisher.flux();
     private final TestPublisher<Message> messagePublisher = TestPublisher.create();
@@ -53,10 +53,7 @@ class ServiceBusAsyncConsumerTest {
     private final TestPublisher<AmqpEndpointState> endpointPublisher = TestPublisher.create();
     private final Flux<AmqpEndpointState> endpointStateFlux = endpointPublisher.flux();
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
-
     private ServiceBusReceiveLinkProcessor linkProcessor;
-    private Function<String, Mono<OffsetDateTime>> onRenewLock;
 
     @Mock
     private ServiceBusAmqpConnection connection;
@@ -66,22 +63,10 @@ class ServiceBusAsyncConsumerTest {
     private AmqpRetryPolicy retryPolicy;
     @Mock
     private MessageSerializer serializer;
-    @Mock
-    LockContainer<LockRenewalOperation> messageLockContainer;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(20));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        logger.info("[{}]: Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}]: Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
 
@@ -93,12 +78,11 @@ class ServiceBusAsyncConsumerTest {
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
-        onRenewLock = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(1));
     }
 
     @AfterEach
     void teardown(TestInfo testInfo) {
-        logger.info("[{}]: Tearing down.", testInfo.getDisplayName());
+        LOGGER.info("[{}]: Tearing down.", testInfo.getDisplayName());
 
         Mockito.framework().clearInlineMock(this);
 
@@ -117,8 +101,8 @@ class ServiceBusAsyncConsumerTest {
         final int prefetch = 10;
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(0);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId", null);
+        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
+            maxAutoLockRenewDuration, false, "sessionId");
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);
@@ -149,7 +133,7 @@ class ServiceBusAsyncConsumerTest {
             .then(() -> messagePublisher.next(message2))
             .expectNext(receivedMessage2)
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
@@ -164,8 +148,8 @@ class ServiceBusAsyncConsumerTest {
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId", null);
+        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
+            maxAutoLockRenewDuration, false, "sessionId");
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);
@@ -189,7 +173,8 @@ class ServiceBusAsyncConsumerTest {
                 linkPublisher.complete();
                 endpointPublisher.complete();
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
@@ -204,8 +189,8 @@ class ServiceBusAsyncConsumerTest {
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(40);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId", null);
+        final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
+            maxAutoLockRenewDuration, false, "sessionId");
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);
@@ -233,7 +218,8 @@ class ServiceBusAsyncConsumerTest {
                 linkPublisher.error(new Throwable("fake error"));
                 endpointPublisher.complete();
             })
-            .verifyError();
+            .expectError()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }

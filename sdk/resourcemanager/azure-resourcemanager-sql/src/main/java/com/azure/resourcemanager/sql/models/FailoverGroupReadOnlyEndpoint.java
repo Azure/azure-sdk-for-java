@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Read-only endpoint of the failover group instance. */
 @Fluent
 public final class FailoverGroupReadOnlyEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverGroupReadOnlyEndpoint.class);
-
     /*
      * Failover policy of the read-only endpoint for the failover group.
      */
     @JsonProperty(value = "failoverPolicy")
     private ReadOnlyEndpointFailoverPolicy failoverPolicy;
+
+    /** Creates an instance of FailoverGroupReadOnlyEndpoint class. */
+    public FailoverGroupReadOnlyEndpoint() {
+    }
 
     /**
      * Get the failoverPolicy property: Failover policy of the read-only endpoint for the failover group.

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.8.0 (2023-09-28)
+
+### Features Added
+- Support key type of `RSA-HSM` and `EC-HSM` in JCA [#36648](https://github.com/Azure/azure-sdk-for-java/pull/36648).
+
+## 2.7.1 (2023-03-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `httpclient` from `4.5.13` to version `4.5.14`.
+- Upgraded `jackson-databind` from `2.13.2.2` to version `2.13.5`.
+
+## 2.7.0 (2022-05-24)
+
+### Dependency Upgrades
+Regular updates for dependency versions.
 
 ## 2.6.0 (2022-02-25)
 

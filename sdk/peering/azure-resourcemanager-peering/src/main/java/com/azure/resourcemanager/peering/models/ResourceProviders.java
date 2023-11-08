@@ -14,24 +14,24 @@ public interface ResourceProviders {
      *
      * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer
      *     location and service provider.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
-    Enum0 checkServiceProviderAvailability(CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput);
+    Response<Enum0> checkServiceProviderAvailabilityWithResponse(
+        CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput, Context context);
 
     /**
      * Checks if the peering service provider is present within 1000 miles of customer's location.
      *
      * @param checkServiceProviderAvailabilityInput The CheckServiceProviderAvailabilityInput indicating customer
      *     location and service provider.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<Enum0> checkServiceProviderAvailabilityWithResponse(
-        CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput, Context context);
+    Enum0 checkServiceProviderAvailability(CheckServiceProviderAvailabilityInput checkServiceProviderAvailabilityInput);
 }

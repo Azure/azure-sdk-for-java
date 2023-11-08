@@ -51,6 +51,10 @@ public final class RecurrenceSchedule {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of RecurrenceSchedule class. */
+    public RecurrenceSchedule() {
+    }
+
     /**
      * Get the minutes property: The minutes.
      *

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The ApplicationsGetMemberGroupsRequestBody model. */
 @Fluent
 public final class ApplicationsGetMemberGroupsRequestBody {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationsGetMemberGroupsRequestBody.class);
-
     /*
      * The securityEnabledOnly property.
      */
@@ -25,9 +22,13 @@ public final class ApplicationsGetMemberGroupsRequestBody {
     private Boolean securityEnabledOnly;
 
     /*
-     * Dictionary of <any>
+     * Dictionary of <AnyObject>
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of ApplicationsGetMemberGroupsRequestBody class. */
+    public ApplicationsGetMemberGroupsRequestBody() {
+    }
 
     /**
      * Get the securityEnabledOnly property: The securityEnabledOnly property.
@@ -50,7 +51,7 @@ public final class ApplicationsGetMemberGroupsRequestBody {
     }
 
     /**
-     * Get the additionalProperties property: Dictionary of &lt;any&gt;.
+     * Get the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
      *
      * @return the additionalProperties value.
      */
@@ -60,7 +61,7 @@ public final class ApplicationsGetMemberGroupsRequestBody {
     }
 
     /**
-     * Set the additionalProperties property: Dictionary of &lt;any&gt;.
+     * Set the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the ApplicationsGetMemberGroupsRequestBody object itself.

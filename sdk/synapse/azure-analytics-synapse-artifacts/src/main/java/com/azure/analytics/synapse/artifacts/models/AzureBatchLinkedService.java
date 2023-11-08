@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Azure Batch linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureBatchLinkedService extends LinkedService {
     /*
-     * The Azure Batch account name. Type: string (or Expression with
-     * resultType string).
+     * The Azure Batch account name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.accountName", required = true)
     private Object accountName;
@@ -30,15 +31,13 @@ public class AzureBatchLinkedService extends LinkedService {
     private SecretBase accessKey;
 
     /*
-     * The Azure Batch URI. Type: string (or Expression with resultType
-     * string).
+     * The Azure Batch URI. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.batchUri", required = true)
     private Object batchUri;
 
     /*
-     * The Azure Batch pool name. Type: string (or Expression with resultType
-     * string).
+     * The Azure Batch pool name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.poolName", required = true)
     private Object poolName;
@@ -50,12 +49,20 @@ public class AzureBatchLinkedService extends LinkedService {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
+    /** Creates an instance of AzureBatchLinkedService class. */
+    public AzureBatchLinkedService() {}
 
     /**
      * Get the accountName property: The Azure Batch account name. Type: string (or Expression with resultType string).
@@ -176,6 +183,54 @@ public class AzureBatchLinkedService extends LinkedService {
      */
     public AzureBatchLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureBatchLinkedService object itself.
+     */
+    public AzureBatchLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBatchLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBatchLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBatchLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBatchLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

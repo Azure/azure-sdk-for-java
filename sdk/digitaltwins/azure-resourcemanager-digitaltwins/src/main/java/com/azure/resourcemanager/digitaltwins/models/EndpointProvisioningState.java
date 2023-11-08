@@ -8,13 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EndpointProvisioningState. */
+/** The provisioning state. */
 public final class EndpointProvisioningState extends ExpandableStringEnum<EndpointProvisioningState> {
     /** Static value Provisioning for EndpointProvisioningState. */
     public static final EndpointProvisioningState PROVISIONING = fromString("Provisioning");
 
     /** Static value Deleting for EndpointProvisioningState. */
     public static final EndpointProvisioningState DELETING = fromString("Deleting");
+
+    /** Static value Updating for EndpointProvisioningState. */
+    public static final EndpointProvisioningState UPDATING = fromString("Updating");
 
     /** Static value Succeeded for EndpointProvisioningState. */
     public static final EndpointProvisioningState SUCCEEDED = fromString("Succeeded");
@@ -44,6 +47,15 @@ public final class EndpointProvisioningState extends ExpandableStringEnum<Endpoi
     public static final EndpointProvisioningState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of EndpointProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointProvisioningState() {
+    }
+
+    /**
      * Creates or finds a EndpointProvisioningState from its string representation.
      *
      * @param name a name to look for.
@@ -54,7 +66,11 @@ public final class EndpointProvisioningState extends ExpandableStringEnum<Endpoi
         return fromString(name, EndpointProvisioningState.class);
     }
 
-    /** @return known EndpointProvisioningState values. */
+    /**
+     * Gets known EndpointProvisioningState values.
+     *
+     * @return known EndpointProvisioningState values.
+     */
     public static Collection<EndpointProvisioningState> values() {
         return values(EndpointProvisioningState.class);
     }

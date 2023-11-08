@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.digitaltwins.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.digitaltwins.models.ExternalResource;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a time series database connection resource. */
 @Fluent
 public final class TimeSeriesDatabaseConnectionInner extends ExternalResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesDatabaseConnectionInner.class);
-
     /*
      * Properties of a specific time series database connection.
      */
     @JsonProperty(value = "properties")
     private TimeSeriesDatabaseConnectionProperties properties;
+
+    /** Creates an instance of TimeSeriesDatabaseConnectionInner class. */
+    public TimeSeriesDatabaseConnectionInner() {
+    }
 
     /**
      * Get the properties property: Properties of a specific time series database connection.

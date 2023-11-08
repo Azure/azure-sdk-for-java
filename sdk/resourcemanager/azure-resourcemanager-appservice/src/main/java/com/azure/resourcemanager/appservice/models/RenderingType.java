@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RenderingType. */
+/** Rendering Type. */
 public enum RenderingType {
     /** Enum value NoGraph. */
     NO_GRAPH("NoGraph"),
@@ -99,6 +99,9 @@ public enum RenderingType {
      */
     @JsonCreator
     public static RenderingType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RenderingType[] items = RenderingType.values();
         for (RenderingType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -108,6 +111,7 @@ public enum RenderingType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

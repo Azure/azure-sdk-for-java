@@ -24,6 +24,9 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
     @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
+    /** Creates an instance of AcsChatMessageReceivedEventData class. */
+    public AcsChatMessageReceivedEventData() {}
+
     /**
      * Get the messageBody property: The body of the chat message.
      *

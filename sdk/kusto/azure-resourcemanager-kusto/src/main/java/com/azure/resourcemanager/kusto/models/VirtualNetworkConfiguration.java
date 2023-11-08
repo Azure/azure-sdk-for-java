@@ -6,14 +6,11 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class that contains virtual network definition. */
 @Fluent
 public final class VirtualNetworkConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkConfiguration.class);
-
     /*
      * The subnet resource id.
      */
@@ -31,6 +28,17 @@ public final class VirtualNetworkConfiguration {
      */
     @JsonProperty(value = "dataManagementPublicIpId", required = true)
     private String dataManagementPublicIpId;
+
+    /*
+     * When enabled, the cluster is deployed into the configured subnet, when disabled it will be removed from the
+     * subnet.
+     */
+    @JsonProperty(value = "state")
+    private VnetState state;
+
+    /** Creates an instance of VirtualNetworkConfiguration class. */
+    public VirtualNetworkConfiguration() {
+    }
 
     /**
      * Get the subnetId property: The subnet resource id.
@@ -93,28 +101,52 @@ public final class VirtualNetworkConfiguration {
     }
 
     /**
+     * Get the state property: When enabled, the cluster is deployed into the configured subnet, when disabled it will
+     * be removed from the subnet.
+     *
+     * @return the state value.
+     */
+    public VnetState state() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: When enabled, the cluster is deployed into the configured subnet, when disabled it will
+     * be removed from the subnet.
+     *
+     * @param state the state value to set.
+     * @return the VirtualNetworkConfiguration object itself.
+     */
+    public VirtualNetworkConfiguration withState(VnetState state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnetId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subnetId in model VirtualNetworkConfiguration"));
         }
         if (enginePublicIpId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property enginePublicIpId in model VirtualNetworkConfiguration"));
         }
         if (dataManagementPublicIpId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataManagementPublicIpId in model VirtualNetworkConfiguration"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkConfiguration.class);
 }

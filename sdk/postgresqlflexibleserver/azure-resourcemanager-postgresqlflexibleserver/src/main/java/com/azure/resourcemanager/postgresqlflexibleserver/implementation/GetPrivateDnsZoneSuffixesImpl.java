@@ -9,10 +9,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.GetPrivateDnsZoneSuffixesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.GetPrivateDnsZoneSuffixes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuffixes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetPrivateDnsZoneSuffixesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GetPrivateDnsZoneSuffixesImpl.class);
 
     private final GetPrivateDnsZoneSuffixesClient innerClient;
 
@@ -25,12 +24,12 @@ public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuf
         this.serviceManager = serviceManager;
     }
 
-    public String execute() {
-        return this.serviceClient().execute();
-    }
-
     public Response<String> executeWithResponse(Context context) {
         return this.serviceClient().executeWithResponse(context);
+    }
+
+    public String execute() {
+        return this.serviceClient().execute();
     }
 
     private GetPrivateDnsZoneSuffixesClient serviceClient() {

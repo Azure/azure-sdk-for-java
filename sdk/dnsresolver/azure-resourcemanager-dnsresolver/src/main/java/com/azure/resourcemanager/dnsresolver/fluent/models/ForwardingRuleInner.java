@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRuleState;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
 import com.azure.resourcemanager.dnsresolver.models.TargetDnsServer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +18,6 @@ import java.util.Map;
 /** Describes a forwarding rule within a DNS forwarding ruleset. */
 @Fluent
 public final class ForwardingRuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForwardingRuleInner.class);
-
     /*
      * ETag of the forwarding rule.
      */
@@ -30,8 +27,8 @@ public final class ForwardingRuleInner extends ProxyResource {
     /*
      * Properties of the forwarding rule.
      */
-    @JsonProperty(value = "properties")
-    private ForwardingRuleProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private ForwardingRuleProperties innerProperties = new ForwardingRuleProperties();
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
@@ -174,8 +171,15 @@ public final class ForwardingRuleInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ForwardingRuleInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ForwardingRuleInner.class);
 }

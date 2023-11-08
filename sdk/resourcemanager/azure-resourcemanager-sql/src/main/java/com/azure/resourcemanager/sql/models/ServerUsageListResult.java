@@ -4,26 +4,32 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents the response to a list server metrics request. */
-@Fluent
+/** A list of server usage metrics. */
+@Immutable
 public final class ServerUsageListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUsageListResult.class);
-
     /*
-     * The list of server metrics for the server.
+     * Array of results.
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerUsageInner> value;
 
+    /*
+     * Link to retrieve next page of results.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
+    /** Creates an instance of ServerUsageListResult class. */
+    public ServerUsageListResult() {
+    }
+
     /**
-     * Get the value property: The list of server metrics for the server.
+     * Get the value property: Array of results.
      *
      * @return the value value.
      */
@@ -32,14 +38,12 @@ public final class ServerUsageListResult {
     }
 
     /**
-     * Set the value property: The list of server metrics for the server.
+     * Get the nextLink property: Link to retrieve next page of results.
      *
-     * @param value the value value to set.
-     * @return the ServerUsageListResult object itself.
+     * @return the nextLink value.
      */
-    public ServerUsageListResult withValue(List<ServerUsageInner> value) {
-        this.value = value;
-        return this;
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
@@ -48,11 +52,7 @@ public final class ServerUsageListResult {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ServerUsageListResult"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
     }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The QuotaLimit model. */
 @Fluent
 public final class QuotaLimit {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaLimit.class);
-
     /*
      * The count property.
      */
@@ -32,6 +28,10 @@ public final class QuotaLimit {
      */
     @JsonProperty(value = "rules")
     private List<ThrottlingRule> rules;
+
+    /** Creates an instance of QuotaLimit class. */
+    public QuotaLimit() {
+    }
 
     /**
      * Get the count property: The count property.

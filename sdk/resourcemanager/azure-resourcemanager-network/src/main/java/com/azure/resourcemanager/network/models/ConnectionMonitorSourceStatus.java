@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionMonitorSourceStatus. */
+/** Status of connection monitor source. */
 public final class ConnectionMonitorSourceStatus extends ExpandableStringEnum<ConnectionMonitorSourceStatus> {
     /** Static value Unknown for ConnectionMonitorSourceStatus. */
     public static final ConnectionMonitorSourceStatus UNKNOWN = fromString("Unknown");
@@ -18,6 +18,15 @@ public final class ConnectionMonitorSourceStatus extends ExpandableStringEnum<Co
 
     /** Static value Inactive for ConnectionMonitorSourceStatus. */
     public static final ConnectionMonitorSourceStatus INACTIVE = fromString("Inactive");
+
+    /**
+     * Creates a new instance of ConnectionMonitorSourceStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionMonitorSourceStatus() {
+    }
 
     /**
      * Creates or finds a ConnectionMonitorSourceStatus from its string representation.
@@ -30,7 +39,11 @@ public final class ConnectionMonitorSourceStatus extends ExpandableStringEnum<Co
         return fromString(name, ConnectionMonitorSourceStatus.class);
     }
 
-    /** @return known ConnectionMonitorSourceStatus values. */
+    /**
+     * Gets known ConnectionMonitorSourceStatus values.
+     *
+     * @return known ConnectionMonitorSourceStatus values.
+     */
     public static Collection<ConnectionMonitorSourceStatus> values() {
         return values(ConnectionMonitorSourceStatus.class);
     }

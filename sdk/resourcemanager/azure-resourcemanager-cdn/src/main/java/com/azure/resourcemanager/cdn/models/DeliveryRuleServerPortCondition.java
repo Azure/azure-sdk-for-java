@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ServerPort")
 @Fluent
 public final class DeliveryRuleServerPortCondition extends DeliveryRuleCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryRuleServerPortCondition.class);
-
     /*
      * Defines the parameters for the condition.
      */
     @JsonProperty(value = "parameters", required = true)
     private ServerPortMatchConditionParameters parameters;
+
+    /** Creates an instance of DeliveryRuleServerPortCondition class. */
+    public DeliveryRuleServerPortCondition() {
+    }
 
     /**
      * Get the parameters property: Defines the parameters for the condition.
@@ -53,7 +54,7 @@ public final class DeliveryRuleServerPortCondition extends DeliveryRuleCondition
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property parameters in model DeliveryRuleServerPortCondition"));
@@ -61,4 +62,6 @@ public final class DeliveryRuleServerPortCondition extends DeliveryRuleCondition
             parameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeliveryRuleServerPortCondition.class);
 }

@@ -16,10 +16,9 @@ import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.azure.resourcemanager.kusto.models.Script;
 import com.azure.resourcemanager.kusto.models.ScriptCheckNameRequest;
 import com.azure.resourcemanager.kusto.models.Scripts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ScriptsImpl implements Scripts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptsImpl.class);
 
     private final ScriptsClient innerClient;
 
@@ -43,15 +42,6 @@ public final class ScriptsImpl implements Scripts {
         return Utils.mapPage(inner, inner1 -> new ScriptImpl(inner1, this.manager()));
     }
 
-    public Script get(String resourceGroupName, String clusterName, String databaseName, String scriptName) {
-        ScriptInner inner = this.serviceClient().get(resourceGroupName, clusterName, databaseName, scriptName);
-        if (inner != null) {
-            return new ScriptImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Script> getWithResponse(
         String resourceGroupName, String clusterName, String databaseName, String scriptName, Context context) {
         Response<ScriptInner> inner =
@@ -67,6 +57,15 @@ public final class ScriptsImpl implements Scripts {
         }
     }
 
+    public Script get(String resourceGroupName, String clusterName, String databaseName, String scriptName) {
+        ScriptInner inner = this.serviceClient().get(resourceGroupName, clusterName, databaseName, scriptName);
+        if (inner != null) {
+            return new ScriptImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String clusterName, String databaseName, String scriptName) {
         this.serviceClient().delete(resourceGroupName, clusterName, databaseName, scriptName);
     }
@@ -74,17 +73,6 @@ public final class ScriptsImpl implements Scripts {
     public void delete(
         String resourceGroupName, String clusterName, String databaseName, String scriptName, Context context) {
         this.serviceClient().delete(resourceGroupName, clusterName, databaseName, scriptName, context);
-    }
-
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, String databaseName, ScriptCheckNameRequest scriptName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, databaseName, scriptName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
@@ -108,10 +96,21 @@ public final class ScriptsImpl implements Scripts {
         }
     }
 
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName, String clusterName, String databaseName, ScriptCheckNameRequest scriptName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, databaseName, scriptName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Script getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,21 +118,21 @@ public final class ScriptsImpl implements Scripts {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String databaseName = Utils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
         String scriptName = Utils.getValueFromIdByName(id, "scripts");
         if (scriptName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scripts'.", id)));
@@ -144,7 +143,7 @@ public final class ScriptsImpl implements Scripts {
     public Response<Script> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -152,21 +151,21 @@ public final class ScriptsImpl implements Scripts {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String databaseName = Utils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
         String scriptName = Utils.getValueFromIdByName(id, "scripts");
         if (scriptName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scripts'.", id)));
@@ -177,7 +176,7 @@ public final class ScriptsImpl implements Scripts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -185,21 +184,21 @@ public final class ScriptsImpl implements Scripts {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String databaseName = Utils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
         String scriptName = Utils.getValueFromIdByName(id, "scripts");
         if (scriptName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scripts'.", id)));
@@ -210,7 +209,7 @@ public final class ScriptsImpl implements Scripts {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -218,21 +217,21 @@ public final class ScriptsImpl implements Scripts {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String databaseName = Utils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
         String scriptName = Utils.getValueFromIdByName(id, "scripts");
         if (scriptName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scripts'.", id)));

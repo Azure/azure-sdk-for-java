@@ -16,63 +16,60 @@ public interface ApplicationDefinitions {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
+     * @return the managed application definition along with {@link Response}.
      */
-    ApplicationDefinition getByResourceGroup(String resourceGroupName, String applicationDefinitionName);
+    Response<ApplicationDefinition> getByResourceGroupWithResponse(
+        String resourceGroupName, String applicationDefinitionName, Context context);
 
     /**
      * Gets the managed application definition.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managed application definition.
      */
-    Response<ApplicationDefinition> getByResourceGroupWithResponse(
+    ApplicationDefinition getByResourceGroup(String resourceGroupName, String applicationDefinitionName);
+
+    /**
+     * Deletes the managed application definition.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteByResourceGroupWithResponse(
         String resourceGroupName, String applicationDefinitionName, Context context);
 
     /**
      * Deletes the managed application definition.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationDefinitionName The name of the managed application definition to delete.
+     * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteByResourceGroup(String resourceGroupName, String applicationDefinitionName);
-
-    /**
-     * Deletes the managed application definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationDefinitionName The name of the managed application definition to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String applicationDefinitionName, Context context);
 
     /**
      * Lists the managed application definitions in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ApplicationDefinition> listByResourceGroup(String resourceGroupName);
 
@@ -82,12 +79,45 @@ public interface ApplicationDefinitions {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed application definitions.
+     * @return list of managed application definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ApplicationDefinition> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Lists all the application definitions within a subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of managed application definitions as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ApplicationDefinition> list();
+
+    /**
+     * Lists all the application definitions within a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of managed application definitions as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ApplicationDefinition> list(Context context);
+
+    /**
+     * Gets the managed application definition.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed application definition along with {@link Response}.
+     */
+    Response<ApplicationDefinition> getByIdWithResponse(
+        String resourceGroupName, String applicationDefinitionName, Context context);
 
     /**
      * Gets the managed application definition.
@@ -95,27 +125,24 @@ public interface ApplicationDefinitions {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managed application definition.
      */
     ApplicationDefinition getById(String resourceGroupName, String applicationDefinitionName);
 
     /**
-     * Gets the managed application definition.
+     * Deletes the managed application definition.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed application definition.
+     * @return the {@link Response}.
      */
-    Response<ApplicationDefinition> getByIdWithResponse(
-        String resourceGroupName, String applicationDefinitionName, Context context);
+    Response<Void> deleteByIdWithResponse(String resourceGroupName, String applicationDefinitionName, Context context);
 
     /**
      * Deletes the managed application definition.
@@ -123,34 +150,37 @@ public interface ApplicationDefinitions {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteById(String resourceGroupName, String applicationDefinitionName);
 
     /**
-     * Deletes the managed application definition.
+     * Creates or updates a managed application definition.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
+     * @param parameters Parameters supplied to the create or update a managed application definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about managed application definition along with {@link Response}.
      */
-    void deleteById(String resourceGroupName, String applicationDefinitionName, Context context);
+    Response<ApplicationDefinition> createOrUpdateByIdWithResponse(
+        String resourceGroupName,
+        String applicationDefinitionName,
+        ApplicationDefinitionInner parameters,
+        Context context);
 
     /**
-     * Creates a new managed application definition.
+     * Creates or updates a managed application definition.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition.
      */
@@ -158,23 +188,36 @@ public interface ApplicationDefinitions {
         String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters);
 
     /**
-     * Creates a new managed application definition.
+     * Updates the managed application definition.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
-     * @param parameters Parameters supplied to the create or update a managed application definition.
+     * @param parameters Parameters supplied to the update a managed application definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.managedapplications.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about managed application definition along with {@link Response}.
+     */
+    Response<ApplicationDefinition> updateByIdWithResponse(
+        String resourceGroupName,
+        String applicationDefinitionName,
+        ApplicationDefinitionPatchable parameters,
+        Context context);
+
+    /**
+     * Updates the managed application definition.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationDefinitionName The name of the managed application definition.
+     * @param parameters Parameters supplied to the update a managed application definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition.
      */
-    ApplicationDefinition createOrUpdateById(
-        String resourceGroupName,
-        String applicationDefinitionName,
-        ApplicationDefinitionInner parameters,
-        Context context);
+    ApplicationDefinition updateById(
+        String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionPatchable parameters);
 
     /**
      * Begins definition for a new ApplicationDefinition resource.

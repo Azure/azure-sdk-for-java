@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DenyAssignments GetById. */
 public final class DenyAssignmentsGetByIdSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-07-01-preview/examples/GetDenyAssignmentById.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/GetDenyAssignmentById.json
      */
     /**
      * Sample code: Get deny assignment by ID.
@@ -25,6 +23,6 @@ public final class DenyAssignmentsGetByIdSamples {
             .getDenyAssignments()
             .getByIdWithResponse(
                 "subscriptions/subId/resourcegroups/rgname/providers/Microsoft.Authorization/denyAssignments/daId",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

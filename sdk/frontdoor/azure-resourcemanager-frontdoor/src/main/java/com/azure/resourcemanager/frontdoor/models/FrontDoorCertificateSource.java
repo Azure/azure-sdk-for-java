@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FrontDoorCertificateSource. */
+/** Defines the source of the SSL certificate. */
 public final class FrontDoorCertificateSource extends ExpandableStringEnum<FrontDoorCertificateSource> {
     /** Static value AzureKeyVault for FrontDoorCertificateSource. */
     public static final FrontDoorCertificateSource AZURE_KEY_VAULT = fromString("AzureKeyVault");
 
     /** Static value FrontDoor for FrontDoorCertificateSource. */
     public static final FrontDoorCertificateSource FRONT_DOOR = fromString("FrontDoor");
+
+    /**
+     * Creates a new instance of FrontDoorCertificateSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FrontDoorCertificateSource() {
+    }
 
     /**
      * Creates or finds a FrontDoorCertificateSource from its string representation.
@@ -27,7 +36,11 @@ public final class FrontDoorCertificateSource extends ExpandableStringEnum<Front
         return fromString(name, FrontDoorCertificateSource.class);
     }
 
-    /** @return known FrontDoorCertificateSource values. */
+    /**
+     * Gets known FrontDoorCertificateSource values.
+     *
+     * @return known FrontDoorCertificateSource values.
+     */
     public static Collection<FrontDoorCertificateSource> values() {
         return values(FrontDoorCertificateSource.class);
     }

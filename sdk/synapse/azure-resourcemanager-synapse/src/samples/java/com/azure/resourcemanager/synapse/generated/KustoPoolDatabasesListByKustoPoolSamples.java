@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDatabases ListByKustoPool. */
 public final class KustoPoolDatabasesListByKustoPoolSamples {
     /*
@@ -19,6 +17,7 @@ public final class KustoPoolDatabasesListByKustoPoolSamples {
     public static void kustoDatabasesListByKustoPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPoolDatabases()
-            .listByKustoPool("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", Context.NONE);
+            .listByKustoPool(
+                "kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", com.azure.core.util.Context.NONE);
     }
 }

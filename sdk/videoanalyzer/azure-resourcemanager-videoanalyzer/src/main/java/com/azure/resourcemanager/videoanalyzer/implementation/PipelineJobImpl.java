@@ -66,6 +66,10 @@ public final class PipelineJobImpl implements PipelineJob, PipelineJob.Definitio
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PipelineJobInner innerModel() {
         return this.innerObject;
     }

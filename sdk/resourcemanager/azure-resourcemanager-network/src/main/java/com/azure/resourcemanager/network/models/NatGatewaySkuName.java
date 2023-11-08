@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NatGatewaySkuName. */
+/** Name of Nat Gateway SKU. */
 public final class NatGatewaySkuName extends ExpandableStringEnum<NatGatewaySkuName> {
     /** Static value Standard for NatGatewaySkuName. */
     public static final NatGatewaySkuName STANDARD = fromString("Standard");
+
+    /**
+     * Creates a new instance of NatGatewaySkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NatGatewaySkuName() {
+    }
 
     /**
      * Creates or finds a NatGatewaySkuName from its string representation.
@@ -24,7 +33,11 @@ public final class NatGatewaySkuName extends ExpandableStringEnum<NatGatewaySkuN
         return fromString(name, NatGatewaySkuName.class);
     }
 
-    /** @return known NatGatewaySkuName values. */
+    /**
+     * Gets known NatGatewaySkuName values.
+     *
+     * @return known NatGatewaySkuName values.
+     */
     public static Collection<NatGatewaySkuName> values() {
         return values(NatGatewaySkuName.class);
     }

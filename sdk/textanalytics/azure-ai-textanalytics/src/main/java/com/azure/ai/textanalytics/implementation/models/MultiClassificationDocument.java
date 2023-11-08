@@ -27,7 +27,7 @@ public final class MultiClassificationDocument {
      * Warnings encountered while processing document.
      */
     @JsonProperty(value = "warnings", required = true)
-    private List<TextAnalyticsWarning> warnings;
+    private List<DocumentWarning> warnings;
 
     /*
      * if showStats=true was specified in the request this field will contain
@@ -81,7 +81,7 @@ public final class MultiClassificationDocument {
      *
      * @return the warnings value.
      */
-    public List<TextAnalyticsWarning> getWarnings() {
+    public List<DocumentWarning> getWarnings() {
         return this.warnings;
     }
 
@@ -91,7 +91,7 @@ public final class MultiClassificationDocument {
      * @param warnings the warnings value to set.
      * @return the MultiClassificationDocument object itself.
      */
-    public MultiClassificationDocument setWarnings(List<TextAnalyticsWarning> warnings) {
+    public MultiClassificationDocument setWarnings(List<DocumentWarning> warnings) {
         this.warnings = warnings;
         return this;
     }

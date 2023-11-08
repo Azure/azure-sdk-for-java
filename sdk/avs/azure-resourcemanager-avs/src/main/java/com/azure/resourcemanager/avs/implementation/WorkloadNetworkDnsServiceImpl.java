@@ -68,6 +68,10 @@ public final class WorkloadNetworkDnsServiceImpl
         return this.innerModel().revision();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WorkloadNetworkDnsServiceInner innerModel() {
         return this.innerObject;
     }

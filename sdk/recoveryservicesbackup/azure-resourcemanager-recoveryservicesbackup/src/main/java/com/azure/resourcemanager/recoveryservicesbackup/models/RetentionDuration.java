@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Retention duration. */
 @Fluent
 public final class RetentionDuration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionDuration.class);
-
     /*
-     * Count of duration types. Retention duration is obtained by the counting
-     * the duration type Count times.
-     * For example, when Count = 3 and DurationType = Weeks, retention duration
-     * will be three weeks.
+     * Count of duration types. Retention duration is obtained by the counting the duration type Count times.
+     * For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
      */
     @JsonProperty(value = "count")
     private Integer count;
@@ -28,6 +22,10 @@ public final class RetentionDuration {
      */
     @JsonProperty(value = "durationType")
     private RetentionDurationType durationType;
+
+    /** Creates an instance of RetentionDuration class. */
+    public RetentionDuration() {
+    }
 
     /**
      * Get the count property: Count of duration types. Retention duration is obtained by the counting the duration type

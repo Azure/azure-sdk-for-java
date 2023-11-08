@@ -16,6 +16,10 @@ public final class LoginRoutes {
     @JsonProperty(value = "logoutEndpoint")
     private String logoutEndpoint;
 
+    /** Creates an instance of LoginRoutes class. */
+    public LoginRoutes() {
+    }
+
     /**
      * Get the logoutEndpoint property: The endpoint at which a logout request should be made.
      *

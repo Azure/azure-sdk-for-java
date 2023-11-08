@@ -29,6 +29,9 @@ public class ScriptActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.logSettings")
     private ScriptActivityTypePropertiesLogSettings logSettings;
 
+    /** Creates an instance of ScriptActivity class. */
+    public ScriptActivity() {}
+
     /**
      * Get the scripts property: Array of script blocks. Type: array.
      *
@@ -66,6 +69,62 @@ public class ScriptActivity extends ExecutionActivity {
      */
     public ScriptActivity setLogSettings(ScriptActivityTypePropertiesLogSettings logSettings) {
         this.logSettings = logSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ScriptActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ScriptActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ScriptActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ScriptActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ScriptActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ScriptActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ScriptActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ScriptActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

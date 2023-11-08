@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Entities List. */
 public final class EntitiesListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/entities/GetEntities.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/entities/GetEntities.json
      */
     /**
      * Sample code: Get all entities.

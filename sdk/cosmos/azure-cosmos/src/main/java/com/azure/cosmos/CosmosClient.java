@@ -5,36 +5,46 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
-import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.time.Duration;
+import java.util.List;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
  * Calls to CosmosClient API's are blocked for completion.
+ * <p>
+ * CosmosClient is thread-safe.
+ * It's recommended to maintain a single instance of CosmosClient per lifetime of the application which enables efficient connection management and performance.
+ * CosmosClient initialization is a heavy operation - don't use initialization CosmosClient instances as credentials or network connectivity validations.
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
 public final class CosmosClient implements Closeable {
     private final CosmosAsyncClient asyncClientWrapper;
 
     CosmosClient(CosmosClientBuilder builder) {
-        this.asyncClientWrapper = builder.buildAsyncClient();
+        this.asyncClientWrapper = builder.buildAsyncClient(false);
     }
 
     /**
      * Create a Cosmos database if it does not already exist on the service.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.createDatabaseIfNotExists -->
+     * <pre>
+     * CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties&#40;databaseName&#41;;
+     * cosmosClient.createDatabaseIfNotExists&#40;databaseProperties&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.createDatabaseIfNotExists -->
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
@@ -44,7 +54,13 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Create a Cosmos database if it does not already exist on the service.
-     * <p>
+     * <!-- src_embed com.azure.cosmos.CosmosClient.createDatabaseIfNotExistsThroughput -->
+     * <pre>
+     * ThroughputProperties throughputProperties = ThroughputProperties
+     *     .createAutoscaledThroughput&#40;autoScaleMaxThroughput&#41;;
+     * cosmosClient.createDatabaseIfNotExists&#40;databaseName, throughputProperties&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.createDatabaseIfNotExistsThroughput -->
      * The throughputProperties will only be used if the specified database
      * does not exist and therefor a new database will be created with throughputProperties.
      *
@@ -58,7 +74,12 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Create a Cosmos database if it does not already exist on the service.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.createDatabaseIfNotExists -->
+     * <pre>
+     * CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties&#40;databaseName&#41;;
+     * cosmosClient.createDatabaseIfNotExists&#40;databaseProperties&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.createDatabaseIfNotExists -->
      * @param id the id of the database.
      * @return the {@link CosmosDatabaseResponse} with the created database.
      */
@@ -68,10 +89,16 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Creates a database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.createDatabase -->
+     * <pre>
+     * CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties&#40;databaseName&#41;;
+     * cosmosClient.createDatabase&#40;databaseProperties&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.createDatabase -->
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @param options the request options.
      * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
                                                  CosmosDatabaseRequestOptions options) {
@@ -80,9 +107,15 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Creates a Cosmos database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.createDatabase -->
+     * <pre>
+     * CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties&#40;databaseName&#41;;
+     * cosmosClient.createDatabase&#40;databaseProperties&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.createDatabase -->
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties) {
         return blockDatabaseResponse(asyncClientWrapper.createDatabase(databaseProperties));
@@ -90,9 +123,15 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Creates a Cosmos database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.createDatabase -->
+     * <pre>
+     * CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties&#40;databaseName&#41;;
+     * cosmosClient.createDatabase&#40;databaseProperties&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.createDatabase -->
      * @param id the id of the database.
      * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosDatabaseResponse createDatabase(String id) {
         return blockDatabaseResponse(asyncClientWrapper.createDatabase(id));
@@ -101,11 +140,18 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Creates a Cosmos database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.createDatabaseThroughput -->
+     * <pre>
+     * ThroughputProperties throughputProperties = ThroughputProperties
+     *     .createAutoscaledThroughput&#40;autoScaleMaxThroughput&#41;;
+     * cosmosClient.createDatabase&#40;databaseName, throughputProperties&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.createDatabaseThroughput -->
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @param throughputProperties the throughput properties.
      * @param options {@link CosmosDatabaseRequestOptions} the request options.
      * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
                                                  ThroughputProperties throughputProperties,
@@ -115,10 +161,17 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Creates a Cosmos database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.createDatabaseThroughput -->
+     * <pre>
+     * ThroughputProperties throughputProperties = ThroughputProperties
+     *     .createAutoscaledThroughput&#40;autoScaleMaxThroughput&#41;;
+     * cosmosClient.createDatabase&#40;databaseName, throughputProperties&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.createDatabaseThroughput -->
      * @param databaseProperties {@link CosmosDatabaseProperties} the database properties.
      * @param throughputProperties the throughput properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosDatabaseResponse createDatabase(CosmosDatabaseProperties databaseProperties,
                                                  ThroughputProperties throughputProperties) {
@@ -127,13 +180,36 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Creates a Cosmos database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.createDatabaseThroughput -->
+     * <pre>
+     * ThroughputProperties throughputProperties = ThroughputProperties
+     *     .createAutoscaledThroughput&#40;autoScaleMaxThroughput&#41;;
+     * cosmosClient.createDatabase&#40;databaseName, throughputProperties&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.createDatabaseThroughput -->
      * @param id the id of the database.
      * @param throughputProperties the throughput properties.
      * @return the {@link CosmosDatabaseResponse} with the created database.
+     * @throws CosmosException if resource with specified id already exists
      */
     public CosmosDatabaseResponse createDatabase(String id, ThroughputProperties throughputProperties) {
         return blockDatabaseResponse(asyncClientWrapper.createDatabase(id, throughputProperties));
+    }
+
+    void openConnectionsAndInitCaches() {
+        asyncClientWrapper.openConnectionsAndInitCaches();
+    }
+
+    void openConnectionsAndInitCaches(Duration aggressiveWarmupDuration) {
+        asyncClientWrapper.openConnectionsAndInitCaches(aggressiveWarmupDuration);
+    }
+
+    void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.asyncClientWrapper.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
+    }
+
+    void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.asyncClientWrapper.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
     CosmosDatabaseResponse blockDatabaseResponse(Mono<CosmosDatabaseResponse> databaseMono) {
@@ -151,7 +227,15 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Reads all Cosmos databases.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.readAllDatabases -->
+     * <pre>
+     * CosmosPagedIterable&lt;CosmosDatabaseProperties&gt; cosmosDatabaseProperties =
+     *     cosmosClient.readAllDatabases&#40;&#41;;
+     * cosmosDatabaseProperties.forEach&#40;databaseProperties -&gt; &#123;
+     *     System.out.println&#40;databaseProperties&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.readAllDatabases -->
      * @param options {@link CosmosQueryRequestOptions}the feed options.
      * @return the {@link CosmosPagedIterable} for feed response with the read databases.
      */
@@ -161,7 +245,15 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Reads all Cosmos databases.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.readAllDatabases -->
+     * <pre>
+     * CosmosPagedIterable&lt;CosmosDatabaseProperties&gt; cosmosDatabaseProperties =
+     *     cosmosClient.readAllDatabases&#40;&#41;;
+     * cosmosDatabaseProperties.forEach&#40;databaseProperties -&gt; &#123;
+     *     System.out.println&#40;databaseProperties&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.readAllDatabases -->
      * @return the {@link CosmosPagedIterable} for feed response with the read databases.
      */
     public CosmosPagedIterable<CosmosDatabaseProperties> readAllDatabases() {
@@ -170,7 +262,16 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Query a Cosmos database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.queryDatabases -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * CosmosPagedIterable&lt;CosmosDatabaseProperties&gt; databaseProperties =
+     *     cosmosClient.queryDatabases&#40;&quot;select * from d&quot;, options&#41;;
+     * databaseProperties.forEach&#40;properties -&gt; &#123;
+     *     System.out.println&#40;properties.getId&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.queryDatabases -->
      * @param query the query.
      * @param options {@link CosmosQueryRequestOptions}the feed options.
      * @return the {@link CosmosPagedIterable} for feed response with the obtained databases.
@@ -181,7 +282,16 @@ public final class CosmosClient implements Closeable {
 
     /**
      * Query a Cosmos database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosClient.queryDatabases -->
+     * <pre>
+     * CosmosQueryRequestOptions options = new CosmosQueryRequestOptions&#40;&#41;;
+     * CosmosPagedIterable&lt;CosmosDatabaseProperties&gt; databaseProperties =
+     *     cosmosClient.queryDatabases&#40;&quot;select * from d&quot;, options&#41;;
+     * databaseProperties.forEach&#40;properties -&gt; &#123;
+     *     System.out.println&#40;properties.getId&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosClient.queryDatabases -->
      * @param querySpec {@link SqlQuerySpec} the query spec.
      * @param options the query request options.
      * @return the {@link CosmosPagedIterable} for feed response with the obtained databases.
@@ -192,7 +302,7 @@ public final class CosmosClient implements Closeable {
     }
 
     /**
-     * Gets the Cosmos database client.
+     * Gets the Cosmos database instance without making a service call.
      *
      * @param id the id of the database.
      * @return {@link CosmosDatabase} the cosmos sync database.
@@ -223,13 +333,14 @@ public final class CosmosClient implements Closeable {
      * @param containerId The container id of the control container.
      * @return A {@link GlobalThroughputControlConfigBuilder}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GlobalThroughputControlConfigBuilder createGlobalThroughputControlConfigBuilder(String databaseId, String containerId) {
         return new GlobalThroughputControlConfigBuilder(this.asyncClientWrapper, databaseId, containerId);
     }
 
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosClientHelper.setCosmosClientAccessor(
             cosmosClient -> cosmosClient.asyncClient());
     }
+
+    static { initialize(); }
 }

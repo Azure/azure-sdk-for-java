@@ -76,7 +76,6 @@ function Get-SonaTypeProfileID([string]$GroupID) {
   $sonaTypeProfileID = switch -wildcard ($GroupID)
   {
     "com.azure*"                     { "88192f04117501" }
-    "com.microsoft"                  { "108eda13eb3910" }
     "com.microsoft.azure*"           { "534d15ee3800f4" }
     "com.microsoft.commondatamodel*" { "36ba35bb1eff8"  }
     "com.microsoft.rest*"            { "66eef5eb9b85bd" }
@@ -172,8 +171,7 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
     if (!$BearerToken) {
       throw "BearerToken required for Azure DevOps package feeds"
     }
-    
-    $baseUrl = "https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1"
+    $baseUrl = $RepositoryUrl
     $algorithm = "sha256"
     $headers = @{ Authorization="BEARER $BearerToken" }
   }
@@ -187,7 +185,7 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
   }
 
   $packageUrl = "$baseUrl/$($PackageDetail.GroupId.Replace('.', '/'))/$($PackageDetail.ArtifactID)/$($PackageDetail.Version)"
-  
+
   # Count the number of remote hashes found
   $remoteCount = 0
 
@@ -204,18 +202,26 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
 
     if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
       $remoteCount++
-      $remoteHash = $response.Content
 
-      Write-Information "  Getting local hash"
-      $localPath = $artifact.File.FullName
-      $localHash = Get-FileHash -Path $localPath -Algorithm $algorithm | Select-Object -ExpandProperty 'Hash'
-      
-      if ($remoteHash -eq $localHash) {
+      if ($artifact.File.Extension -ieq '.jar') {
+        # Because authenticode signing isn't determinsitic, we can't compare the hash of 2 separately signed jars
+        Write-Information "  Remote hash of jar file esists."
         $matchCount++
-        Write-Information "  Remote $remoteHash == Local $localHash"
       }
       else {
-        Write-Information "  Remote $remoteHash != Local $localHash"
+        $remoteHash = $response.Content
+
+        Write-Information "  Getting local hash"
+        $localPath = $artifact.File.FullName
+        $localHash = Get-FileHash -Path $localPath -Algorithm $algorithm | Select-Object -ExpandProperty 'Hash'
+
+        if ($remoteHash -eq $localHash) {
+          $matchCount++
+          Write-Information "  Remote $remoteHash == Local $localHash"
+        }
+        else {
+          Write-Information "  Remote $remoteHash != Local $localHash"
+        }
       }
     }
     else {

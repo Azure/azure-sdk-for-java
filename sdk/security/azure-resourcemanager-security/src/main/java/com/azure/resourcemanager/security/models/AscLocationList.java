@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.AscLocationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of locations where ASC saves your data. */
 @Immutable
 public final class AscLocationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AscLocationList.class);
-
     /*
      * The value property.
      */
@@ -27,6 +23,10 @@ public final class AscLocationList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of AscLocationList class. */
+    public AscLocationList() {
+    }
 
     /**
      * Get the value property: The value property.

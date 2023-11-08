@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ExcludedPath model. */
 @Fluent
 public final class ExcludedPath {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExcludedPath.class);
-
     /*
-     * The path for which the indexing behavior applies to. Index paths
-     * typically start with root and end with wildcard (/path/*)
+     * The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard
+     * (/path/*)
      */
     @JsonProperty(value = "path")
     private String path;
+
+    /** Creates an instance of ExcludedPath class. */
+    public ExcludedPath() {
+    }
 
     /**
      * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root

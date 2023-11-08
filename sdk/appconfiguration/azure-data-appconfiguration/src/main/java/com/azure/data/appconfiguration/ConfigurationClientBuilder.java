@@ -33,16 +33,18 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
+import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +52,13 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.CoreUtils.getApplicationId;
+import static com.azure.data.appconfiguration.implementation.ClientConstants.APP_CONFIG_TRACING_NAMESPACE_VALUE;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * ConfigurationClient ConfigurationClients} and {@link ConfigurationAsyncClient ConfigurationAsyncClients}, call {@link
- * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
- * the desired client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of
+ * {@link ConfigurationClient ConfigurationClients} and {@link ConfigurationAsyncClient ConfigurationAsyncClients}, call
+ * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an
+ * instance of the desired client.
  *
  * <p>The client needs the service endpoint of the Azure App Configuration store and access credential.
  * {@link #connectionString(String) connectionString(String)} gives the builder the service endpoint and access
@@ -84,8 +87,8 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
  * {@link #pipeline(HttpPipeline) this} and set the service endpoint with {@link #endpoint(String) this}. Using a
- * pipeline requires additional setup but allows for finer control on how the {@link ConfigurationClient} and {@link
- * ConfigurationAsyncClient} is built.</p>
+ * pipeline requires additional setup but allows for finer control on how the {@link ConfigurationClient} and
+ * {@link ConfigurationAsyncClient} is built.</p>
  *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.pipeline.instantiation -->
  * <pre>
@@ -111,11 +114,11 @@ public final class ConfigurationClientBuilder implements
     HttpTrait<ConfigurationClientBuilder>,
     ConfigurationTrait<ConfigurationClientBuilder>,
     EndpointTrait<ConfigurationClientBuilder> {
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
     private static final HttpPipelinePolicy ADD_HEADERS_POLICY;
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-data-appconfiguration.properties");
@@ -127,12 +130,12 @@ public final class ConfigurationClientBuilder implements
             .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
     }
 
-    private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     private ClientOptions clientOptions;
-    private ConfigurationClientCredentials credential;
+    private String connectionString;
     private TokenCredential tokenCredential;
 
     private String endpoint;
@@ -145,8 +148,8 @@ public final class ConfigurationClientBuilder implements
     private ConfigurationServiceVersion version;
 
     /**
-     * Constructs a new builder used to configure and build {@link ConfigurationClient ConfigurationClients} and {@link
-     * ConfigurationAsyncClient ConfigurationAsyncClients}.
+     * Constructs a new builder used to configure and build {@link ConfigurationClient ConfigurationClients} and
+     * {@link ConfigurationAsyncClient ConfigurationAsyncClients}.
      */
     public ConfigurationClientBuilder() {
         httpLogOptions = new HttpLogOptions();
@@ -156,67 +159,108 @@ public final class ConfigurationClientBuilder implements
      * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code buildClient()} is
      * called a new instance of {@link ConfigurationClient} is created.
      * <p>
-     * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link #endpoint(String)
-     * endpoint} are used to create the {@link ConfigurationClient client}. All other builder settings are ignored.</p>
+     * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link #endpoint(String) endpoint} are used to create the {@link ConfigurationClient client}. All other builder
+     * settings are ignored.</p>
      *
      * @return A ConfigurationClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} has not been set. This setting is automatically set when {@link
-     * #connectionString(String) connectionString} is called. Or can be set explicitly by calling {@link
-     * #endpoint(String)}.
+     * @throws NullPointerException If {@code endpoint} has not been set. This setting is automatically set when
+     * {@link #connectionString(String) connectionString} is called. Or can be set explicitly by calling
+     * {@link #endpoint(String)}.
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
-     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-     * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)} and
+     * {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationClient buildClient() {
-        return new ConfigurationClient(buildAsyncClient());
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+        return new ConfigurationClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy);
     }
 
     /**
-     * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code
-     * buildAsyncClient()} is called a new instance of {@link ConfigurationAsyncClient} is created.
+     * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time
+     * {@code buildAsyncClient()} is called a new instance of {@link ConfigurationAsyncClient} is created.
      * <p>
-     * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link #endpoint(String)
-     * endpoint} are used to create the {@link ConfigurationAsyncClient client}. All other builder settings are
-     * ignored.
+     * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link #endpoint(String) endpoint} are used to create the {@link ConfigurationAsyncClient client}. All other
+     * builder settings are ignored.
      *
      * @return A ConfigurationAsyncClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} has not been set. This setting is automatically set when {@link
-     * #connectionString(String) connectionString} is called. Or can be set explicitly by calling {@link
-     * #endpoint(String)}.
+     * @throws NullPointerException If {@code endpoint} has not been set. This setting is automatically set when
+     * {@link #connectionString(String) connectionString} is called. Or can be set explicitly by calling
+     * {@link #endpoint(String)}.
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
-     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-     * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)} and
+     * {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
-        // Global Env configuration store
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+        return new ConfigurationAsyncClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy);
+    }
+
+    /**
+     * Builds an instance of ConfigurationClientImpl with the provided parameters.
+     *
+     * @return an instance of ConfigurationClientImpl.
+     * @throws NullPointerException If {@code connectionString} is null.
+     * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
+     * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
+     * @throws IllegalArgumentException if {@code tokenCredential} is not null. App Configuration builder support single
+     * authentication per builder instance.
+     */
+    private AzureAppConfigurationImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
+        String endpointLocal = endpoint;
+        ConfigurationClientCredentials credentialsLocal = null;
+        TokenCredential tokenCredentialLocal = null;
+        // validate the authentication setup
+        if (tokenCredential == null && connectionString == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'tokenCredential' and 'connectionString' "
+                + "both can not be null. Set one authentication before creating client."));
+        } else if (tokenCredential != null && connectionString != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Multiple forms of authentication found. "
+                + "TokenCredential should be null if using connection string, vice versa."));
+        } else if (tokenCredential == null) {
+            if (connectionString.isEmpty()) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("'connectionString' cannot be an empty string."));
+            }
+            credentialsLocal = new ConfigurationClientCredentials(connectionString);
+            endpointLocal = credentialsLocal.getBaseUri();
+        } else {
+            tokenCredentialLocal = this.tokenCredential;
+        }
 
         // Service version
         ConfigurationServiceVersion serviceVersion = (version != null)
             ? version
             : ConfigurationServiceVersion.getLatest();
+        // Don't share the default auto-created pipeline between App Configuration client instances.
+        HttpPipeline buildPipeline = (pipeline == null)
+            ? createDefaultHttpPipeline(syncTokenPolicy, credentialsLocal, tokenCredentialLocal)
+            : pipeline;
+
+        return new AzureAppConfigurationImpl(buildPipeline, null, endpointLocal, serviceVersion.getVersion());
+    }
+
+    private HttpPipeline createDefaultHttpPipeline(SyncTokenPolicy syncTokenPolicy,
+        ConfigurationClientCredentials credentials, TokenCredential tokenCredential) {
+        // Global Env configuration store
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
 
         // Endpoint
         String buildEndpoint = endpoint;
-        if (tokenCredential == null) {
-            buildEndpoint = getBuildEndpoint();
+        if (credentials != null) {
+            buildEndpoint = credentials.getBaseUri();
         }
         // endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(buildEndpoint, "'Endpoint' is required and can not be null.");
 
-        SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
-
-        // if http pipeline is already defined
-        if (pipeline != null) {
-            return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
-        }
-
+        ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(
-            getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+            getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         policies.add(ADD_HEADERS_POLICY);
@@ -224,42 +268,48 @@ public final class ConfigurationClientBuilder implements
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY));
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions,
+            new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS)));
 
         policies.add(new AddDatePolicy());
 
         if (tokenCredential != null) {
             // User token based policy
             policies.add(
-                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", buildEndpoint)));
-        } else if (credential != null) {
-            // Use credential based policy
-            policies.add(new ConfigurationCredentialsPolicy(credential));
+                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (credentials != null) {
+            // Use credentialS based policy
+            policies.add(new ConfigurationCredentialsPolicy(credentials));
         } else {
-            // Throw exception that credential and tokenCredential cannot be null
-            throw logger.logExceptionAsError(
+            // Throw exception that credentials and tokenCredential cannot be null
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
         policies.add(syncTokenPolicy);
         policies.addAll(perRetryPolicies);
 
-        if (clientOptions != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(
-                header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+        localClientOptions.getHeaders().forEach(
+            header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // customized pipeline
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-                                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                                    .httpClient(httpClient)
-                                    .build();
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .tracer(createTracer(clientOptions))
+            .clientOptions(localClientOptions)
+            .build();
+    }
 
-        return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
+    private static Tracer createTracer(ClientOptions clientOptions) {
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        return TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, APP_CONFIG_TRACING_NAMESPACE_VALUE, tracingOptions);
     }
 
     /**
@@ -267,14 +317,14 @@ public final class ConfigurationClientBuilder implements
      *
      * @param endpoint The URL of the Azure App Configuration instance.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws IllegalArgumentException If {@code endpoint} is null, or it cannot be parsed into a valid URL.
      */
     @Override
     public ConfigurationClientBuilder endpoint(String endpoint) {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
         this.endpoint = endpoint;
         return this;
@@ -282,10 +332,9 @@ public final class ConfigurationClientBuilder implements
 
     /**
      * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
-     * recommended that this method be called with an instance of the {@link HttpClientOptions}
-     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
-     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
-     * interface.
+     * recommended that this method be called with an instance of the {@link HttpClientOptions} class (a subclass of the
+     * {@link ClientOptions} base class). The HttpClientOptions subclass provides more configuration options suitable
+     * for HTTP clients, which is applicable for any class that implements this HttpTrait interface.
      *
      * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
      * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
@@ -295,8 +344,8 @@ public final class ConfigurationClientBuilder implements
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
-     * @see HttpClientOptions
      * @return the updated ConfigurationClientBuilder object
+     * @see HttpClientOptions
      */
     @Override
     public ConfigurationClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -311,31 +360,10 @@ public final class ConfigurationClientBuilder implements
      * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
      * secret={secret_value}"
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code connectionString} is null.
-     * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
-     * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
      */
     @Override
     public ConfigurationClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-
-        if (connectionString.isEmpty()) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'connectionString' cannot be an empty string."));
-        }
-
-        try {
-            this.credential = new ConfigurationClientCredentials(connectionString);
-        } catch (InvalidKeyException err) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "The secret contained within the connection string is invalid and cannot instantiate the HMAC-SHA256"
-                    + " algorithm.", err));
-        } catch (NoSuchAlgorithmException err) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
-        }
-
-        this.endpoint = credential.getBaseUri();
+        this.connectionString = connectionString;
         return this;
     }
 
@@ -346,19 +374,16 @@ public final class ConfigurationClientBuilder implements
      *
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code credential} is null.
      */
     @Override
     public ConfigurationClientBuilder credential(TokenCredential tokenCredential) {
-        // token credential can not be null value
-        Objects.requireNonNull(tokenCredential);
         this.tokenCredential = tokenCredential;
         return this;
     }
 
     /**
-     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
-     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from the
+     * service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
      * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
      * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
@@ -420,7 +445,7 @@ public final class ConfigurationClientBuilder implements
     @Override
     public ConfigurationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = client;
@@ -445,7 +470,7 @@ public final class ConfigurationClientBuilder implements
     @Override
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.pipeline = pipeline;
@@ -455,8 +480,9 @@ public final class ConfigurationClientBuilder implements
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * The default configuration store is a clone of the
+     * {@link Configuration#getGlobalConfiguration() global configuration store}, use {@link Configuration#NONE} to
+     * bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
      * @return The updated ConfigurationClientBuilder object.
@@ -477,7 +503,6 @@ public final class ConfigurationClientBuilder implements
      *
      * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests. For example,
      * {@link RetryPolicy} can be used to retry requests.
-     *
      * @return The updated ConfigurationClientBuilder object.
      */
     public ConfigurationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
@@ -519,16 +544,6 @@ public final class ConfigurationClientBuilder implements
     public ConfigurationClientBuilder serviceVersion(ConfigurationServiceVersion version) {
         this.version = version;
         return this;
-    }
-
-    private String getBuildEndpoint() {
-        if (endpoint != null) {
-            return endpoint;
-        } else if (credential != null) {
-            return credential.getBaseUri();
-        } else {
-            return null;
-        }
     }
 }
 

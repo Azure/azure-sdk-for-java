@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A private IP address bound to the availability group listener. */
 @Fluent
 public final class PrivateIpAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateIpAddress.class);
-
     /*
      * Private IP address bound to the availability group listener.
      */
@@ -25,6 +21,10 @@ public final class PrivateIpAddress {
      */
     @JsonProperty(value = "subnetResourceId")
     private String subnetResourceId;
+
+    /** Creates an instance of PrivateIpAddress class. */
+    public PrivateIpAddress() {
+    }
 
     /**
      * Get the ipAddress property: Private IP address bound to the availability group listener.

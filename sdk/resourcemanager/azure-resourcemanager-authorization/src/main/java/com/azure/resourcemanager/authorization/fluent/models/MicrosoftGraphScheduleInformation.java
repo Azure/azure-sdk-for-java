@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,13 +16,10 @@ import java.util.Map;
 /** scheduleInformation. */
 @Fluent
 public final class MicrosoftGraphScheduleInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphScheduleInformation.class);
-
     /*
-     * Represents a merged view of availability of all the items in
-     * scheduleItems. The view consists of time slots. Availability during each
-     * time slot is indicated with: 0= free, 1= tentative, 2= busy, 3= out of
-     * office, 4= working elsewhere.
+     * Represents a merged view of availability of all the items in scheduleItems. The view consists of time slots.
+     * Availability during each time slot is indicated with: 0= free, 1= tentative, 2= busy, 3= out of office, 4=
+     * working elsewhere.
      */
     @JsonProperty(value = "availabilityView")
     private String availabilityView;
@@ -35,15 +31,13 @@ public final class MicrosoftGraphScheduleInformation {
     private MicrosoftGraphFreeBusyError error;
 
     /*
-     * An SMTP address of the user, distribution list, or resource, identifying
-     * an instance of scheduleInformation.
+     * An SMTP address of the user, distribution list, or resource, identifying an instance of scheduleInformation.
      */
     @JsonProperty(value = "scheduleId")
     private String scheduleId;
 
     /*
-     * Contains the items that describe the availability of the user or
-     * resource.
+     * Contains the items that describe the availability of the user or resource.
      */
     @JsonProperty(value = "scheduleItems")
     private List<MicrosoftGraphScheduleItem> scheduleItems;
@@ -58,6 +52,10 @@ public final class MicrosoftGraphScheduleInformation {
      * scheduleInformation
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphScheduleInformation class. */
+    public MicrosoftGraphScheduleInformation() {
+    }
 
     /**
      * Get the availabilityView property: Represents a merged view of availability of all the items in scheduleItems.

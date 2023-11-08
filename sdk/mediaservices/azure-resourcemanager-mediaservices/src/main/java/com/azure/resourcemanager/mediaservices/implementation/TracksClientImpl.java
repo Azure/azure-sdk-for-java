@@ -64,7 +64,7 @@ public final class TracksClientImpl implements TracksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesTr")
-    private interface TracksService {
+    public interface TracksService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
@@ -170,7 +170,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Lists the Tracks in the asset.
+     * List Tracks in the Asset
+     *
+     * <p>Lists the Tracks in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -206,7 +208,7 @@ public final class TracksClientImpl implements TracksClient {
         if (assetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter assetName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -229,7 +231,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Lists the Tracks in the asset.
+     * List Tracks in the Asset
+     *
+     * <p>Lists the Tracks in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -266,7 +270,7 @@ public final class TracksClientImpl implements TracksClient {
         if (assetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter assetName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -286,7 +290,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Lists the Tracks in the asset.
+     * List Tracks in the Asset
+     *
+     * <p>Lists the Tracks in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -302,7 +308,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Lists the Tracks in the asset.
+     * List Tracks in the Asset
+     *
+     * <p>Lists the Tracks in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -320,7 +328,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Lists the Tracks in the asset.
+     * List Tracks in the Asset
+     *
+     * <p>Lists the Tracks in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -336,7 +346,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Lists the Tracks in the asset.
+     * List Tracks in the Asset
+     *
+     * <p>Lists the Tracks in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -354,7 +366,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Get the details of a Track in the Asset.
+     * Get a Track
+     *
+     * <p>Get the details of a Track in the Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -393,7 +407,7 @@ public final class TracksClientImpl implements TracksClient {
         if (trackName == null) {
             return Mono.error(new IllegalArgumentException("Parameter trackName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -413,7 +427,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Get the details of a Track in the Asset.
+     * Get a Track
+     *
+     * <p>Get the details of a Track in the Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -453,7 +469,7 @@ public final class TracksClientImpl implements TracksClient {
         if (trackName == null) {
             return Mono.error(new IllegalArgumentException("Parameter trackName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -470,7 +486,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Get the details of a Track in the Asset.
+     * Get a Track
+     *
+     * <p>Get the details of a Track in the Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -485,35 +503,13 @@ public final class TracksClientImpl implements TracksClient {
     private Mono<AssetTrackInner> getAsync(
         String resourceGroupName, String accountName, String assetName, String trackName) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName)
-            .flatMap(
-                (Response<AssetTrackInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the details of a Track in the Asset.
+     * Get a Track
      *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param assetName The Asset name.
-     * @param trackName The Asset Track name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Track in the Asset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackInner get(String resourceGroupName, String accountName, String assetName, String trackName) {
-        return getAsync(resourceGroupName, accountName, assetName, trackName).block();
-    }
-
-    /**
-     * Get the details of a Track in the Asset.
+     * <p>Get the details of a Track in the Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -532,7 +528,28 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Create or update a Track in the asset.
+     * Get a Track
+     *
+     * <p>Get the details of a Track in the Asset.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param trackName The Asset Track name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of a Track in the Asset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssetTrackInner get(String resourceGroupName, String accountName, String assetName, String trackName) {
+        return getWithResponse(resourceGroupName, accountName, assetName, trackName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -577,7 +594,7 @@ public final class TracksClientImpl implements TracksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -598,7 +615,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -649,7 +668,7 @@ public final class TracksClientImpl implements TracksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -667,7 +686,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -695,7 +716,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -726,7 +749,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -741,12 +766,15 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -767,12 +795,15 @@ public final class TracksClientImpl implements TracksClient {
         String trackName,
         AssetTrackInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -793,7 +824,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -820,7 +853,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -839,7 +874,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -864,7 +901,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -903,7 +942,7 @@ public final class TracksClientImpl implements TracksClient {
         if (trackName == null) {
             return Mono.error(new IllegalArgumentException("Parameter trackName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -923,7 +962,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -963,7 +1004,7 @@ public final class TracksClientImpl implements TracksClient {
         if (trackName == null) {
             return Mono.error(new IllegalArgumentException("Parameter trackName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -980,7 +1021,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1003,7 +1046,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1027,7 +1072,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1041,11 +1088,13 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String assetName, String trackName) {
-        return beginDeleteAsync(resourceGroupName, accountName, assetName, trackName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, assetName, trackName).getSyncPoller();
     }
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1060,11 +1109,13 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, assetName, trackName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, assetName, trackName, context).getSyncPoller();
     }
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1083,7 +1134,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1104,7 +1157,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1120,7 +1175,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1138,7 +1195,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1183,7 +1242,7 @@ public final class TracksClientImpl implements TracksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1204,7 +1263,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1255,7 +1316,7 @@ public final class TracksClientImpl implements TracksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1273,7 +1334,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1301,7 +1364,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1332,7 +1397,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1347,11 +1414,13 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdate(
         String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
-        return beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters).getSyncPoller();
     }
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1372,12 +1441,15 @@ public final class TracksClientImpl implements TracksClient {
         String trackName,
         AssetTrackInner parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1398,7 +1470,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1425,7 +1499,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1444,7 +1520,9 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1469,10 +1547,12 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1511,7 +1591,7 @@ public final class TracksClientImpl implements TracksClient {
         if (trackName == null) {
             return Mono.error(new IllegalArgumentException("Parameter trackName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1531,10 +1611,12 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1574,7 +1656,7 @@ public final class TracksClientImpl implements TracksClient {
         if (trackName == null) {
             return Mono.error(new IllegalArgumentException("Parameter trackName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1591,10 +1673,12 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1617,10 +1701,12 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1644,10 +1730,12 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1661,14 +1749,16 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(
         String resourceGroupName, String accountName, String assetName, String trackName) {
-        return beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName).getSyncPoller();
+        return this.beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName).getSyncPoller();
     }
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1683,14 +1773,18 @@ public final class TracksClientImpl implements TracksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(
         String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
-        return beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName, context).getSyncPoller();
+        return this
+            .beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName, context)
+            .getSyncPoller();
     }
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1710,10 +1804,12 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1734,10 +1830,12 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1753,10 +1851,12 @@ public final class TracksClientImpl implements TracksClient {
     }
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.DataMaskingRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list data masking rules request. */
 @Fluent
 public final class DataMaskingRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMaskingRuleListResult.class);
-
     /*
      * The list of Sql pool data masking rules.
      */
     @JsonProperty(value = "value")
     private List<DataMaskingRuleInner> value;
+
+    /** Creates an instance of DataMaskingRuleListResult class. */
+    public DataMaskingRuleListResult() {
+    }
 
     /**
      * Get the value property: The list of Sql pool data masking rules.

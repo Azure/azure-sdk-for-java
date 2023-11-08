@@ -26,6 +26,15 @@ public final class WebhookAction extends ExpandableStringEnum<WebhookAction> {
     public static final WebhookAction CHART_DELETE = fromString("chart_delete");
 
     /**
+     * Creates a new instance of WebhookAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebhookAction() {
+    }
+
+    /**
      * Creates or finds a WebhookAction from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class WebhookAction extends ExpandableStringEnum<WebhookAction> {
         return fromString(name, WebhookAction.class);
     }
 
-    /** @return known WebhookAction values. */
+    /**
+     * Gets known WebhookAction values.
+     *
+     * @return known WebhookAction values.
+     */
     public static Collection<WebhookAction> values() {
         return values(WebhookAction.class);
     }

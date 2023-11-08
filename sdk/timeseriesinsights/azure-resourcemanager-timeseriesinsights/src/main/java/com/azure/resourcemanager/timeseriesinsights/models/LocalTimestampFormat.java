@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LocalTimestampFormat. */
+/** An enum that represents the format of the local timestamp property that needs to be set. */
 public final class LocalTimestampFormat extends ExpandableStringEnum<LocalTimestampFormat> {
     /** Static value Embedded for LocalTimestampFormat. */
     public static final LocalTimestampFormat EMBEDDED = fromString("Embedded");
+
+    /**
+     * Creates a new instance of LocalTimestampFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LocalTimestampFormat() {
+    }
 
     /**
      * Creates or finds a LocalTimestampFormat from its string representation.
@@ -24,7 +33,11 @@ public final class LocalTimestampFormat extends ExpandableStringEnum<LocalTimest
         return fromString(name, LocalTimestampFormat.class);
     }
 
-    /** @return known LocalTimestampFormat values. */
+    /**
+     * Gets known LocalTimestampFormat values.
+     *
+     * @return known LocalTimestampFormat values.
+     */
     public static Collection<LocalTimestampFormat> values() {
         return values(LocalTimestampFormat.class);
     }

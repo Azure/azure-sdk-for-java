@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("AzureIaaSVMJob")
 @Fluent
 public final class AzureIaaSvmJob extends Job {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSvmJob.class);
-
     /*
      * Time elapsed during the execution of this job.
      */
@@ -40,8 +36,7 @@ public final class AzureIaaSvmJob extends Job {
     private List<AzureIaaSvmErrorInfo> errorDetails;
 
     /*
-     * Specifies whether the backup item is a Classic or an Azure Resource
-     * Manager VM.
+     * Specifies whether the backup item is a Classic or an Azure Resource Manager VM.
      */
     @JsonProperty(value = "virtualMachineVersion")
     private String virtualMachineVersion;
@@ -63,6 +58,10 @@ public final class AzureIaaSvmJob extends Job {
      */
     @JsonProperty(value = "isUserTriggered")
     private Boolean isUserTriggered;
+
+    /** Creates an instance of AzureIaaSvmJob class. */
+    public AzureIaaSvmJob() {
+    }
 
     /**
      * Get the duration property: Time elapsed during the execution of this job.

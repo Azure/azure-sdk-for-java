@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -15,6 +16,9 @@ import com.azure.cosmos.implementation.Utils;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * The type Cosmos item response. This contains the item and response methods
@@ -25,9 +29,15 @@ public class CosmosItemResponse<T> {
     private final Class<T> itemClassType;
     private final ItemDeserializer itemDeserializer;
     byte[] responseBodyAsByteArray;
-    private T item;
+    //  Converting item to volatile to fix Double-checked locking - https://en.wikipedia.org/wiki/Double-checked_locking
+    //  http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
+    private volatile T item;
     final ResourceResponse<Document> resourceResponse;
     private InternalObjectNode props;
+
+    private AtomicBoolean hasTrackingIdCalculated = new AtomicBoolean(false);
+
+    private boolean hasTrackingId;
 
     CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
         this(response, response.getBodyAsByteArray(), classType, itemDeserializer);
@@ -202,11 +212,48 @@ public class CosmosItemResponse<T> {
         return resourceResponse.getETag();
     }
 
+    CosmosItemResponse<T> withRemappedStatusCode(
+        int statusCode,
+        double additionalRequestCharge,
+        boolean isContentResponseOnWriteEnabled) {
+
+        ResourceResponse<Document> mappedResourceResponse =
+            this.resourceResponse.withRemappedStatusCode(statusCode, additionalRequestCharge);
+
+        byte[] payload = null;
+        if (isContentResponseOnWriteEnabled) {
+            payload = this.responseBodyAsByteArray;
+        }
+
+        return new CosmosItemResponse<>(
+            mappedResourceResponse, payload, this.itemClassType, this.itemDeserializer);
+    }
+
+    boolean hasTrackingId(String candidate) {
+        if (this.hasTrackingIdCalculated.compareAndSet(false, true)) {
+            SerializationDiagnosticsContext serializationDiagnosticsContext =
+                BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
+            Instant serializationStartTime = Instant.now();
+            InternalObjectNode itemNode = getProperties();
+            Instant serializationEndTime = Instant.now();
+            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics =
+                new SerializationDiagnosticsContext.SerializationDiagnostics(
+                    serializationStartTime,
+                    serializationEndTime,
+                    SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                );
+            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+
+            return this.hasTrackingId = (itemNode != null && candidate.equals(itemNode.get(Constants.Properties.TRACKING_ID)));
+        } else {
+            return this.hasTrackingId;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosItemResponseHelper.setCosmosItemResponseBuilderAccessor(
             new ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor() {
                 public <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
@@ -214,6 +261,17 @@ public class CosmosItemResponse<T> {
                                                                           Class<T> classType,
                                                                           ItemDeserializer itemDeserializer) {
                     return new CosmosItemResponse<>(response, contentAsByteArray, classType, itemDeserializer);
+                }
+
+                @Override
+                public <T> CosmosItemResponse<T> withRemappedStatusCode(CosmosItemResponse<T> originalResponse,
+                                                                        int newStatusCode,
+                                                                        double additionalRequestCharge,
+                                                                        boolean isContentResponseOnWriteEnabled) {
+
+                    CosmosItemResponse<T> mappedItemResponse = originalResponse
+                        .withRemappedStatusCode(newStatusCode, additionalRequestCharge, isContentResponseOnWriteEnabled);
+                    return mappedItemResponse;
                 }
 
                 public byte[] getByteArrayContent(CosmosItemResponse<byte[]> response) {
@@ -227,6 +285,16 @@ public class CosmosItemResponse<T> {
                 public ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response) {
                     return response.resourceResponse;
                 }
+
+                @Override
+                public boolean hasTrackingId(CosmosItemResponse<?> response, String candidate) {
+                    checkNotNull(response, "Argument 'response' must not be null.");
+                    checkNotNull(candidate, "Argument 'candidate' must not be null.");
+
+                    return response.hasTrackingId(candidate);
+                }
             });
     }
+
+    static { initialize(); }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PermissionTypes. */
+/** Supported permission types. */
 public enum PermissionTypes {
     /** Enum value Read. */
     READ("Read"),
@@ -33,6 +33,9 @@ public enum PermissionTypes {
      */
     @JsonCreator
     public static PermissionTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PermissionTypes[] items = PermissionTypes.values();
         for (PermissionTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum PermissionTypes {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

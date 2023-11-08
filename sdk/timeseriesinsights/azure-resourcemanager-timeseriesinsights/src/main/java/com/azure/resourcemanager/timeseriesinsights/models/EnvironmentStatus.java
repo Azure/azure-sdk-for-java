@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -14,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Immutable
 public final class EnvironmentStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentStatus.class);
-
     /*
      * An object that represents the status of ingress on an environment.
      */
@@ -27,6 +23,10 @@ public final class EnvironmentStatus {
      */
     @JsonProperty(value = "warmStorage", access = JsonProperty.Access.WRITE_ONLY)
     private WarmStorageEnvironmentStatus warmStorage;
+
+    /** Creates an instance of EnvironmentStatus class. */
+    public EnvironmentStatus() {
+    }
 
     /**
      * Get the ingress property: An object that represents the status of ingress on an environment.

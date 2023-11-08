@@ -37,8 +37,7 @@ public final class MetadataSolutionRelated {
     private List<String> queries;
 
     /*
-     * The Workspaces referenced in the metadata request that are related to
-     * the Log Analytics solution
+     * The Workspaces referenced in the metadata request that are related to the Log Analytics solution
      */
     @JsonProperty(value = "workspaces")
     private List<String> workspaces;

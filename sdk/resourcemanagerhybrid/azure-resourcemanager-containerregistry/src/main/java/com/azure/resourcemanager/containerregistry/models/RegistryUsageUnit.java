@@ -27,7 +27,11 @@ public final class RegistryUsageUnit extends ExpandableStringEnum<RegistryUsageU
         return fromString(name, RegistryUsageUnit.class);
     }
 
-    /** @return known RegistryUsageUnit values. */
+    /**
+     * Gets known RegistryUsageUnit values.
+     *
+     * @return known RegistryUsageUnit values.
+     */
     public static Collection<RegistryUsageUnit> values() {
         return values(RegistryUsageUnit.class);
     }

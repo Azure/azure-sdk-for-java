@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeStatusOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStatusResponseInner;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in IntegrationRuntimeStatusOperationsClient.
  */
 public final class IntegrationRuntimeStatusOperationsClientImpl implements IntegrationRuntimeStatusOperationsClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimeStatusOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationRuntimeStatusOperationsService service;
 
@@ -59,7 +56,7 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface IntegrationRuntimeStatusOperationsService {
+    public interface IntegrationRuntimeStatusOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -78,7 +75,9 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
     }
 
     /**
-     * Get the integration runtime status.
+     * Get integration runtime status
+     *
+     * <p>Get the integration runtime status.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -134,7 +133,9 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
     }
 
     /**
-     * Get the integration runtime status.
+     * Get integration runtime status
+     *
+     * <p>Get the integration runtime status.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -188,7 +189,9 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
     }
 
     /**
-     * Get the integration runtime status.
+     * Get integration runtime status
+     *
+     * <p>Get the integration runtime status.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -202,35 +205,13 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
     private Mono<IntegrationRuntimeStatusResponseInner> getAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName)
-            .flatMap(
-                (Response<IntegrationRuntimeStatusResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the integration runtime status.
+     * Get integration runtime status
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeStatusResponseInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        return getAsync(resourceGroupName, workspaceName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Get the integration runtime status.
+     * <p>Get the integration runtime status.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -245,5 +226,24 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
     public Response<IntegrationRuntimeStatusResponseInner> getWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).block();
+    }
+
+    /**
+     * Get integration runtime status
+     *
+     * <p>Get the integration runtime status.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration runtime status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeStatusResponseInner get(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return getWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, Context.NONE).getValue();
     }
 }

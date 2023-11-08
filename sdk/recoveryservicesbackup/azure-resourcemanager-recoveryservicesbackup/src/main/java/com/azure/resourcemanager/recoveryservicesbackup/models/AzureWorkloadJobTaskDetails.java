@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure VM workload specific job task details. */
 @Fluent
 public final class AzureWorkloadJobTaskDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadJobTaskDetails.class);
-
     /*
      * The task display name.
      */
@@ -25,6 +21,10 @@ public final class AzureWorkloadJobTaskDetails {
      */
     @JsonProperty(value = "status")
     private String status;
+
+    /** Creates an instance of AzureWorkloadJobTaskDetails class. */
+    public AzureWorkloadJobTaskDetails() {
+    }
 
     /**
      * Get the taskId property: The task display name.

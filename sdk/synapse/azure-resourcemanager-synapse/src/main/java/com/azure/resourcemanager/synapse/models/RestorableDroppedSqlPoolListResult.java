@@ -7,20 +7,21 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.RestorableDroppedSqlPoolInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list restorable dropped Sql pools request. */
 @Fluent
 public final class RestorableDroppedSqlPoolListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDroppedSqlPoolListResult.class);
-
     /*
      * A list of restorable dropped Sql pools
      */
     @JsonProperty(value = "value", required = true)
     private List<RestorableDroppedSqlPoolInner> value;
+
+    /** Creates an instance of RestorableDroppedSqlPoolListResult class. */
+    public RestorableDroppedSqlPoolListResult() {
+    }
 
     /**
      * Get the value property: A list of restorable dropped Sql pools.
@@ -49,7 +50,7 @@ public final class RestorableDroppedSqlPoolListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model RestorableDroppedSqlPoolListResult"));
@@ -57,4 +58,6 @@ public final class RestorableDroppedSqlPoolListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestorableDroppedSqlPoolListResult.class);
 }

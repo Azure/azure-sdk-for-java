@@ -6,17 +6,13 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An SMS receiver. */
 @Fluent
 public final class SmsReceiver {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SmsReceiver.class);
-
     /*
-     * The name of the SMS receiver. Names must be unique across all receivers
-     * within an action group.
+     * The name of the SMS receiver. Names must be unique across all receivers within an action group.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -38,6 +34,10 @@ public final class SmsReceiver {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ReceiverStatus status;
+
+    /** Creates an instance of SmsReceiver class. */
+    public SmsReceiver() {
+    }
 
     /**
      * Get the name property: The name of the SMS receiver. Names must be unique across all receivers within an action
@@ -117,19 +117,21 @@ public final class SmsReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model SmsReceiver"));
         }
         if (countryCode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property countryCode in model SmsReceiver"));
         }
         if (phoneNumber() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property phoneNumber in model SmsReceiver"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SmsReceiver.class);
 }

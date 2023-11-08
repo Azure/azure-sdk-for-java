@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class RedisRebootParameters {
     /*
-     * Which Redis node(s) to reboot. Depending on this value data loss is
-     * possible.
+     * Which Redis node(s) to reboot. Depending on this value data loss is possible.
      */
     @JsonProperty(value = "rebootType")
     private RebootType rebootType;
@@ -25,11 +24,14 @@ public final class RedisRebootParameters {
     private Integer shardId;
 
     /*
-     * A list of redis instances to reboot, specified by per-instance SSL ports
-     * or non-SSL ports.
+     * A list of redis instances to reboot, specified by per-instance SSL ports or non-SSL ports.
      */
     @JsonProperty(value = "ports")
     private List<Integer> ports;
+
+    /** Creates an instance of RedisRebootParameters class. */
+    public RedisRebootParameters() {
+    }
 
     /**
      * Get the rebootType property: Which Redis node(s) to reboot. Depending on this value data loss is possible.

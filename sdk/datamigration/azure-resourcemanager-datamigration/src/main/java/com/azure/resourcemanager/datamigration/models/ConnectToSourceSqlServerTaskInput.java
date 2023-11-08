@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for the task that validates connection to SQL Server and also validates source server requirements. */
 @Fluent
 public final class ConnectToSourceSqlServerTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourceSqlServerTaskInput.class);
-
     /*
      * Connection information for Source SQL Server
      */
@@ -37,6 +34,10 @@ public final class ConnectToSourceSqlServerTaskInput {
      */
     @JsonProperty(value = "collectAgentJobs")
     private Boolean collectAgentJobs;
+
+    /** Creates an instance of ConnectToSourceSqlServerTaskInput class. */
+    public ConnectToSourceSqlServerTaskInput() {
+    }
 
     /**
      * Get the sourceConnectionInfo property: Connection information for Source SQL Server.
@@ -126,7 +127,7 @@ public final class ConnectToSourceSqlServerTaskInput {
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model ConnectToSourceSqlServerTaskInput"));
@@ -134,4 +135,6 @@ public final class ConnectToSourceSqlServerTaskInput {
             sourceConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectToSourceSqlServerTaskInput.class);
 }

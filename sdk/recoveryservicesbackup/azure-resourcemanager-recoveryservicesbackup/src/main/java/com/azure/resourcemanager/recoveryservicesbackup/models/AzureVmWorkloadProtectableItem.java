@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -23,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "SAPAseSystem", value = AzureVmWorkloadSapAseSystemProtectableItem.class),
     @JsonSubTypes.Type(name = "SAPHanaDatabase", value = AzureVmWorkloadSapHanaDatabaseProtectableItem.class),
     @JsonSubTypes.Type(name = "SAPHanaSystem", value = AzureVmWorkloadSapHanaSystemProtectableItem.class),
+    @JsonSubTypes.Type(name = "SAPHanaDBInstance", value = AzureVmWorkloadSapHanaDBInstance.class),
+    @JsonSubTypes.Type(name = "HanaHSRContainer", value = AzureVmWorkloadSapHanaHsr.class),
     @JsonSubTypes.Type(
         name = "SQLAvailabilityGroupContainer",
         value = AzureVmWorkloadSqlAvailabilityGroupProtectableItem.class),
@@ -31,8 +31,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadProtectableItem.class);
-
     /*
      * Name for instance or AG
      */
@@ -40,10 +38,8 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
     private String parentName;
 
     /*
-     * Parent Unique Name is added to provide the service formatted URI Name of
-     * the Parent
-     * Only Applicable for data bases where the parent would be either Instance
-     * or a SQL AG.
+     * Parent Unique Name is added to provide the service formatted URI Name of the Parent
+     * Only Applicable for data bases where the parent would be either Instance or a SQL AG.
      */
     @JsonProperty(value = "parentUniqueName")
     private String parentUniqueName;
@@ -83,6 +79,16 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
      */
     @JsonProperty(value = "prebackupvalidation")
     private PreBackupValidation prebackupvalidation;
+
+    /*
+     * Indicates if item is protectable
+     */
+    @JsonProperty(value = "isProtectable")
+    private Boolean isProtectable;
+
+    /** Creates an instance of AzureVmWorkloadProtectableItem class. */
+    public AzureVmWorkloadProtectableItem() {
+    }
 
     /**
      * Get the parentName property: Name for instance or AG.
@@ -243,6 +249,26 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
      */
     public AzureVmWorkloadProtectableItem withPrebackupvalidation(PreBackupValidation prebackupvalidation) {
         this.prebackupvalidation = prebackupvalidation;
+        return this;
+    }
+
+    /**
+     * Get the isProtectable property: Indicates if item is protectable.
+     *
+     * @return the isProtectable value.
+     */
+    public Boolean isProtectable() {
+        return this.isProtectable;
+    }
+
+    /**
+     * Set the isProtectable property: Indicates if item is protectable.
+     *
+     * @param isProtectable the isProtectable value to set.
+     * @return the AzureVmWorkloadProtectableItem object itself.
+     */
+    public AzureVmWorkloadProtectableItem withIsProtectable(Boolean isProtectable) {
+        this.isProtectable = isProtectable;
         return this;
     }
 

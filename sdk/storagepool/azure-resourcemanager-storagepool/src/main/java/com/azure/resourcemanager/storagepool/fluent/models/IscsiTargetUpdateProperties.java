@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.models.Acl;
 import com.azure.resourcemanager.storagepool.models.IscsiLun;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties for iSCSI Target update request. */
 @Fluent
 public final class IscsiTargetUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IscsiTargetUpdateProperties.class);
-
     /*
-     * Access Control List (ACL) for an iSCSI Target; defines LUN masking
-     * policy
+     * Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
      */
     @JsonProperty(value = "staticAcls")
     private List<Acl> staticAcls;
@@ -29,6 +24,10 @@ public final class IscsiTargetUpdateProperties {
      */
     @JsonProperty(value = "luns")
     private List<IscsiLun> luns;
+
+    /** Creates an instance of IscsiTargetUpdateProperties class. */
+    public IscsiTargetUpdateProperties() {
+    }
 
     /**
      * Get the staticAcls property: Access Control List (ACL) for an iSCSI Target; defines LUN masking policy.

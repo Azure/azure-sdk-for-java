@@ -6,19 +6,20 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input values. */
 @Fluent
 public final class OperationInputs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInputs.class);
-
     /*
      * The name of the IoT hub to check.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /** Creates an instance of OperationInputs class. */
+    public OperationInputs() {
+    }
 
     /**
      * Get the name property: The name of the IoT hub to check.
@@ -47,9 +48,11 @@ public final class OperationInputs {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model OperationInputs"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationInputs.class);
 }

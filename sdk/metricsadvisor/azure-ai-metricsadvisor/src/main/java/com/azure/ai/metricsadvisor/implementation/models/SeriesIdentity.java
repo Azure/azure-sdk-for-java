@@ -17,6 +17,9 @@ public final class SeriesIdentity {
     @JsonProperty(value = "dimension", required = true)
     private Map<String, String> dimension;
 
+    /** Creates an instance of SeriesIdentity class. */
+    public SeriesIdentity() {}
+
     /**
      * Get the dimension property: dimension specified for series.
      *

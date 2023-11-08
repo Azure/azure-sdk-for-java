@@ -7,15 +7,12 @@ package com.azure.resourcemanager.storagepool.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.fluent.models.StoragePoolRPOperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of operations supported by the RP. */
 @Fluent
 public final class StoragePoolOperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StoragePoolOperationListResult.class);
-
     /*
      * An array of operations supported by the StoragePool RP.
      */
@@ -27,6 +24,10 @@ public final class StoragePoolOperationListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of StoragePoolOperationListResult class. */
+    public StoragePoolOperationListResult() {
+    }
 
     /**
      * Get the value property: An array of operations supported by the StoragePool RP.
@@ -75,7 +76,7 @@ public final class StoragePoolOperationListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model StoragePoolOperationListResult"));
@@ -83,4 +84,6 @@ public final class StoragePoolOperationListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StoragePoolOperationListResult.class);
 }

@@ -20,6 +20,10 @@ public final class JsonReadSettings extends FormatReadSettings {
     @JsonProperty(value = "compressionProperties")
     private CompressionReadSettings compressionProperties;
 
+    /** Creates an instance of JsonReadSettings class. */
+    public JsonReadSettings() {
+    }
+
     /**
      * Get the compressionProperties property: Compression settings.
      *

@@ -22,6 +22,10 @@ public final class ApplicationGatewayAutoscaleConfiguration {
     @JsonProperty(value = "maxCapacity")
     private Integer maxCapacity;
 
+    /** Creates an instance of ApplicationGatewayAutoscaleConfiguration class. */
+    public ApplicationGatewayAutoscaleConfiguration() {
+    }
+
     /**
      * Get the minCapacity property: Lower bound on number of Application Gateway capacity.
      *

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response of /command api. */
 @Fluent
 public final class CommandOutputInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommandOutputInner.class);
-
     /*
      * Output of the command.
      */
     @JsonProperty(value = "commandOutput")
     private String commandOutput;
+
+    /** Creates an instance of CommandOutputInner class. */
+    public CommandOutputInner() {
+    }
 
     /**
      * Get the commandOutput property: Output of the command.

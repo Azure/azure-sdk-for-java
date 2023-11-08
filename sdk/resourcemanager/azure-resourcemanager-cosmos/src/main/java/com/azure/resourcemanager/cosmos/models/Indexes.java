@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The indexes for the path. */
 @Fluent
 public final class Indexes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Indexes.class);
-
     /*
      * The datatype for which the indexing behavior is applied to.
      */
@@ -31,6 +27,10 @@ public final class Indexes {
      */
     @JsonProperty(value = "kind")
     private IndexKind kind;
+
+    /** Creates an instance of Indexes class. */
+    public Indexes() {
+    }
 
     /**
      * Get the dataType property: The datatype for which the indexing behavior is applied to.

@@ -11,19 +11,20 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountSkuListResultInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ApiKeysInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
 import com.azure.resourcemanager.cognitiveservices.models.Account;
+import com.azure.resourcemanager.cognitiveservices.models.AccountModel;
 import com.azure.resourcemanager.cognitiveservices.models.AccountSkuListResult;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
 import com.azure.resourcemanager.cognitiveservices.models.ApiKeys;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
 import com.azure.resourcemanager.cognitiveservices.models.UsageListResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccountsImpl implements Accounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccountsImpl.class);
 
     private final AccountsClient innerClient;
 
@@ -44,15 +45,6 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().delete(resourceGroupName, accountName, context);
     }
 
-    public Account getByResourceGroup(String resourceGroupName, String accountName) {
-        AccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
-        if (inner != null) {
-            return new AccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Account> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context) {
         Response<AccountInner> inner =
@@ -63,6 +55,15 @@ public final class AccountsImpl implements Accounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Account getByResourceGroup(String resourceGroupName, String accountName) {
+        AccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
+        if (inner != null) {
+            return new AccountImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -88,15 +89,6 @@ public final class AccountsImpl implements Accounts {
         return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
-    public ApiKeys listKeys(String resourceGroupName, String accountName) {
-        ApiKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
-        if (inner != null) {
-            return new ApiKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApiKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context) {
         Response<ApiKeysInner> inner =
             this.serviceClient().listKeysWithResponse(resourceGroupName, accountName, context);
@@ -111,8 +103,8 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public ApiKeys regenerateKey(String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
-        ApiKeysInner inner = this.serviceClient().regenerateKey(resourceGroupName, accountName, parameters);
+    public ApiKeys listKeys(String resourceGroupName, String accountName) {
+        ApiKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
         if (inner != null) {
             return new ApiKeysImpl(inner, this.manager());
         } else {
@@ -135,10 +127,10 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public AccountSkuListResult listSkus(String resourceGroupName, String accountName) {
-        AccountSkuListResultInner inner = this.serviceClient().listSkus(resourceGroupName, accountName);
+    public ApiKeys regenerateKey(String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
+        ApiKeysInner inner = this.serviceClient().regenerateKey(resourceGroupName, accountName, parameters);
         if (inner != null) {
-            return new AccountSkuListResultImpl(inner, this.manager());
+            return new ApiKeysImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -159,10 +151,10 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public UsageListResult listUsages(String resourceGroupName, String accountName) {
-        UsageListResultInner inner = this.serviceClient().listUsages(resourceGroupName, accountName);
+    public AccountSkuListResult listSkus(String resourceGroupName, String accountName) {
+        AccountSkuListResultInner inner = this.serviceClient().listSkus(resourceGroupName, accountName);
         if (inner != null) {
-            return new UsageListResultImpl(inner, this.manager());
+            return new AccountSkuListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -183,10 +175,30 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
+    public UsageListResult listUsages(String resourceGroupName, String accountName) {
+        UsageListResultInner inner = this.serviceClient().listUsages(resourceGroupName, accountName);
+        if (inner != null) {
+            return new UsageListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<AccountModel> listModels(String resourceGroupName, String accountName) {
+        PagedIterable<AccountModelInner> inner = this.serviceClient().listModels(resourceGroupName, accountName);
+        return Utils.mapPage(inner, inner1 -> new AccountModelImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<AccountModel> listModels(String resourceGroupName, String accountName, Context context) {
+        PagedIterable<AccountModelInner> inner =
+            this.serviceClient().listModels(resourceGroupName, accountName, context);
+        return Utils.mapPage(inner, inner1 -> new AccountModelImpl(inner1, this.manager()));
+    }
+
     public Account getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -194,7 +206,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -205,7 +217,7 @@ public final class AccountsImpl implements Accounts {
     public Response<Account> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -213,7 +225,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -224,7 +236,7 @@ public final class AccountsImpl implements Accounts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -232,7 +244,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -243,7 +255,7 @@ public final class AccountsImpl implements Accounts {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -251,7 +263,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));

@@ -21,6 +21,10 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
     @JsonProperty(value = "key", required = true)
     private SecureString key;
 
+    /** Creates an instance of LinkedIntegrationRuntimeKeyAuthorization class. */
+    public LinkedIntegrationRuntimeKeyAuthorization() {
+    }
+
     /**
      * Get the key property: The key used for authorization.
      *

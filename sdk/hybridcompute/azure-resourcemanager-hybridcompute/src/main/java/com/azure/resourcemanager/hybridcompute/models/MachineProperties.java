@@ -6,8 +6,7 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Describes the properties of a hybrid machine. */
 @Fluent
 public final class MachineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineProperties.class);
-
     /*
      * Metadata pertaining to the geographic location of the resource.
      */
@@ -79,8 +76,7 @@ public final class MachineProperties {
     private String machineFqdn;
 
     /*
-     * Public Key that the client provides to be used during initial resource
-     * onboarding
+     * Public Key that the client provides to be used during initial resource onboarding
      */
     @JsonProperty(value = "clientPublicKey")
     private String clientPublicKey;
@@ -134,15 +130,13 @@ public final class MachineProperties {
     private String dnsFqdn;
 
     /*
-     * The resource id of the private link scope this machine is assigned to,
-     * if any.
+     * The resource id of the private link scope this machine is assigned to, if any.
      */
     @JsonProperty(value = "privateLinkScopeResourceId")
     private String privateLinkScopeResourceId;
 
     /*
-     * The resource id of the parent cluster (Azure HCI) this machine is
-     * assigned to, if any.
+     * The resource id of the parent cluster (Azure HCI) this machine is assigned to, if any.
      */
     @JsonProperty(value = "parentClusterResourceId")
     private String parentClusterResourceId;
@@ -151,7 +145,12 @@ public final class MachineProperties {
      * Detected properties from the machine.
      */
     @JsonProperty(value = "detectedProperties", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> detectedProperties;
+
+    /** Creates an instance of MachineProperties class. */
+    public MachineProperties() {
+    }
 
     /**
      * Get the locationData property: Metadata pertaining to the geographic location of the resource.

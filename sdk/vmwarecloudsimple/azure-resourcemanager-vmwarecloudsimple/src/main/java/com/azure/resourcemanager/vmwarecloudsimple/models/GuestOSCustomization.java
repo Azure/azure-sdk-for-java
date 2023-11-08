@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Guest OS Customization properties. */
 @Fluent
 public final class GuestOSCustomization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GuestOSCustomization.class);
-
     /*
      * List of dns servers to use
      */
@@ -44,6 +40,10 @@ public final class GuestOSCustomization {
      */
     @JsonProperty(value = "username")
     private String username;
+
+    /** Creates an instance of GuestOSCustomization class. */
+    public GuestOSCustomization() {
+    }
 
     /**
      * Get the dnsServers property: List of dns servers to use.

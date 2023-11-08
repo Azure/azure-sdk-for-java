@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyFactName. */
+/** The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc. */
 public final class PolicyFactName extends ExpandableStringEnum<PolicyFactName> {
     /** Static value UserOwnedLabVmCount for PolicyFactName. */
     public static final PolicyFactName USER_OWNED_LAB_VM_COUNT = fromString("UserOwnedLabVmCount");
@@ -41,6 +41,15 @@ public final class PolicyFactName extends ExpandableStringEnum<PolicyFactName> {
     public static final PolicyFactName SCHEDULE_EDIT_PERMISSION = fromString("ScheduleEditPermission");
 
     /**
+     * Creates a new instance of PolicyFactName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyFactName() {
+    }
+
+    /**
      * Creates or finds a PolicyFactName from its string representation.
      *
      * @param name a name to look for.
@@ -51,7 +60,11 @@ public final class PolicyFactName extends ExpandableStringEnum<PolicyFactName> {
         return fromString(name, PolicyFactName.class);
     }
 
-    /** @return known PolicyFactName values. */
+    /**
+     * Gets known PolicyFactName values.
+     *
+     * @return known PolicyFactName values.
+     */
     public static Collection<PolicyFactName> values() {
         return values(PolicyFactName.class);
     }

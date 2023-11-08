@@ -49,6 +49,9 @@ public final class MediaLiveEventIncomingDataChunkDroppedEventData {
     @JsonProperty(value = "trackName", access = JsonProperty.Access.WRITE_ONLY)
     private String trackName;
 
+    /** Creates an instance of MediaLiveEventIncomingDataChunkDroppedEventData class. */
+    public MediaLiveEventIncomingDataChunkDroppedEventData() {}
+
     /**
      * Get the timestamp property: Gets the timestamp of the data chunk dropped.
      *

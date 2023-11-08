@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagementLocks GetByScope. */
 public final class ManagementLocksGetByScopeSamples {
     /*
@@ -22,6 +20,6 @@ public final class ManagementLocksGetByScopeSamples {
             .manager()
             .managementLockClient()
             .getManagementLocks()
-            .getByScopeWithResponse("subscriptions/subscriptionId", "testlock", Context.NONE);
+            .getByScopeWithResponse("subscriptions/subscriptionId", "testlock", com.azure.core.util.Context.NONE);
     }
 }

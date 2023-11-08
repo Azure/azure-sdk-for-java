@@ -11,6 +11,7 @@ import com.azure.resourcemanager.appservice.models.AutoHealRules;
 import com.azure.resourcemanager.appservice.models.AzureStorageInfoValue;
 import com.azure.resourcemanager.appservice.models.ConnStringInfo;
 import com.azure.resourcemanager.appservice.models.CorsSettings;
+import com.azure.resourcemanager.appservice.models.DefaultAction;
 import com.azure.resourcemanager.appservice.models.Experiments;
 import com.azure.resourcemanager.appservice.models.FtpsState;
 import com.azure.resourcemanager.appservice.models.HandlerMapping;
@@ -37,6 +38,10 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties")
     private SiteConfigInner innerProperties;
+
+    /** Creates an instance of SiteConfigResourceInner class. */
+    public SiteConfigResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Core resource properties.
@@ -519,6 +524,29 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
             this.innerProperties = new SiteConfigInner();
         }
         this.innerProperties().withAppSettings(appSettings);
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
+     *
+     * @return the metadata value.
+     */
+    public List<NameValuePair> metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
+     *
+     * @param metadata the metadata value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withMetadata(List<NameValuePair> metadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withMetadata(metadata);
         return this;
     }
 
@@ -1282,6 +1310,32 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the ipSecurityRestrictionsDefaultAction property: Default action for main access restriction if no rules are
+     * matched.
+     *
+     * @return the ipSecurityRestrictionsDefaultAction value.
+     */
+    public DefaultAction ipSecurityRestrictionsDefaultAction() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipSecurityRestrictionsDefaultAction();
+    }
+
+    /**
+     * Set the ipSecurityRestrictionsDefaultAction property: Default action for main access restriction if no rules are
+     * matched.
+     *
+     * @param ipSecurityRestrictionsDefaultAction the ipSecurityRestrictionsDefaultAction value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withIpSecurityRestrictionsDefaultAction(
+        DefaultAction ipSecurityRestrictionsDefaultAction) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withIpSecurityRestrictionsDefaultAction(ipSecurityRestrictionsDefaultAction);
+        return this;
+    }
+
+    /**
      * Get the scmIpSecurityRestrictions property: IP security restrictions for scm.
      *
      * @return the scmIpSecurityRestrictions value.
@@ -1302,6 +1356,32 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
             this.innerProperties = new SiteConfigInner();
         }
         this.innerProperties().withScmIpSecurityRestrictions(scmIpSecurityRestrictions);
+        return this;
+    }
+
+    /**
+     * Get the scmIpSecurityRestrictionsDefaultAction property: Default action for scm access restriction if no rules
+     * are matched.
+     *
+     * @return the scmIpSecurityRestrictionsDefaultAction value.
+     */
+    public DefaultAction scmIpSecurityRestrictionsDefaultAction() {
+        return this.innerProperties() == null ? null : this.innerProperties().scmIpSecurityRestrictionsDefaultAction();
+    }
+
+    /**
+     * Set the scmIpSecurityRestrictionsDefaultAction property: Default action for scm access restriction if no rules
+     * are matched.
+     *
+     * @param scmIpSecurityRestrictionsDefaultAction the scmIpSecurityRestrictionsDefaultAction value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withScmIpSecurityRestrictionsDefaultAction(
+        DefaultAction scmIpSecurityRestrictionsDefaultAction) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withScmIpSecurityRestrictionsDefaultAction(scmIpSecurityRestrictionsDefaultAction);
         return this;
     }
 
@@ -1469,6 +1549,31 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
             this.innerProperties = new SiteConfigInner();
         }
         this.innerProperties().withFunctionAppScaleLimit(functionAppScaleLimit);
+        return this;
+    }
+
+    /**
+     * Get the elasticWebAppScaleLimit property: Maximum number of workers that a site can scale out to. This setting
+     * only applies to apps in plans where ElasticScaleEnabled is &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @return the elasticWebAppScaleLimit value.
+     */
+    public Integer elasticWebAppScaleLimit() {
+        return this.innerProperties() == null ? null : this.innerProperties().elasticWebAppScaleLimit();
+    }
+
+    /**
+     * Set the elasticWebAppScaleLimit property: Maximum number of workers that a site can scale out to. This setting
+     * only applies to apps in plans where ElasticScaleEnabled is &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @param elasticWebAppScaleLimit the elasticWebAppScaleLimit value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withElasticWebAppScaleLimit(Integer elasticWebAppScaleLimit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withElasticWebAppScaleLimit(elasticWebAppScaleLimit);
         return this;
     }
 

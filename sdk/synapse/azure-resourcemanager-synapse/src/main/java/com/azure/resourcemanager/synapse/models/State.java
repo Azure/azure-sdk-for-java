@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for State. */
+/** The state of the resource. */
 public final class State extends ExpandableStringEnum<State> {
     /** Static value Creating for State. */
     public static final State CREATING = fromString("Creating");
@@ -38,6 +38,15 @@ public final class State extends ExpandableStringEnum<State> {
     public static final State UPDATING = fromString("Updating");
 
     /**
+     * Creates a new instance of State value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public State() {
+    }
+
+    /**
      * Creates or finds a State from its string representation.
      *
      * @param name a name to look for.
@@ -48,7 +57,11 @@ public final class State extends ExpandableStringEnum<State> {
         return fromString(name, State.class);
     }
 
-    /** @return known State values. */
+    /**
+     * Gets known State values.
+     *
+     * @return known State values.
+     */
     public static Collection<State> values() {
         return values(State.class);
     }

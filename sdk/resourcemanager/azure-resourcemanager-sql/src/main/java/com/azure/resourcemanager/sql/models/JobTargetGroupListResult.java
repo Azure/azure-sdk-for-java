@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.JobTargetGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of target groups. */
 @Immutable
 public final class JobTargetGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobTargetGroupListResult.class);
-
     /*
      * Array of results.
      */
@@ -27,6 +23,10 @@ public final class JobTargetGroupListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of JobTargetGroupListResult class. */
+    public JobTargetGroupListResult() {
+    }
 
     /**
      * Get the value property: Array of results.

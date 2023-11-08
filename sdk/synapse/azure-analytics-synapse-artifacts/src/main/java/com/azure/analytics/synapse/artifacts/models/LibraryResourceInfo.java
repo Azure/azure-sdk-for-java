@@ -65,6 +65,9 @@ public final class LibraryResourceInfo {
     @JsonProperty(value = "artifactId", access = JsonProperty.Access.WRITE_ONLY)
     private String artifactId;
 
+    /** Creates an instance of LibraryResourceInfo class. */
+    public LibraryResourceInfo() {}
+
     /**
      * Get the id property: Fully qualified resource ID for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.

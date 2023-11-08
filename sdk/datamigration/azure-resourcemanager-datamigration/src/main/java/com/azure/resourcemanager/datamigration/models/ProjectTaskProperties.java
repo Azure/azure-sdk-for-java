@@ -6,8 +6,6 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -73,8 +71,6 @@ import java.util.List;
 })
 @Immutable
 public class ProjectTaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProjectTaskProperties.class);
-
     /*
      * Array of errors. This is ignored if submitted.
      */
@@ -92,6 +88,10 @@ public class ProjectTaskProperties {
      */
     @JsonProperty(value = "commands", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommandProperties> commands;
+
+    /** Creates an instance of ProjectTaskProperties class. */
+    public ProjectTaskProperties() {
+    }
 
     /**
      * Get the errors property: Array of errors. This is ignored if submitted.

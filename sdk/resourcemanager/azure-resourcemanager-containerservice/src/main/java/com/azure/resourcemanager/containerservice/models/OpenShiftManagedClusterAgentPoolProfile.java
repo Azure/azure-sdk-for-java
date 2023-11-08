@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class OpenShiftManagedClusterAgentPoolProfile {
     /*
-     * Unique name of the pool profile in the context of the subscription and
-     * resource group.
+     * Unique name of the pool profile in the context of the subscription and resource group.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -37,8 +36,7 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
     private String subnetCidr;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows.
-     * Default to Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     @JsonProperty(value = "osType")
     private OSType osType;
@@ -48,6 +46,10 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
      */
     @JsonProperty(value = "role")
     private OpenShiftAgentPoolProfileRole role;
+
+    /** Creates an instance of OpenShiftManagedClusterAgentPoolProfile class. */
+    public OpenShiftManagedClusterAgentPoolProfile() {
+    }
 
     /**
      * Get the name property: Unique name of the pool profile in the context of the subscription and resource group.

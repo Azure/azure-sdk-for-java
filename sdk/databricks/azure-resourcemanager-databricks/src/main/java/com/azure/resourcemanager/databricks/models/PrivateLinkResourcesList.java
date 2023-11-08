@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databricks.fluent.models.GroupIdInformationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The available private link resources for a workspace. */
 @Fluent
 public final class PrivateLinkResourcesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesList.class);
-
     /*
      * The list of available private link resources for a workspace
      */
@@ -27,6 +23,10 @@ public final class PrivateLinkResourcesList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PrivateLinkResourcesList class. */
+    public PrivateLinkResourcesList() {
+    }
 
     /**
      * Get the value property: The list of available private link resources for a workspace.

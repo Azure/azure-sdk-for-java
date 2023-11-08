@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -22,15 +23,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.DatabaseAutomaticTuningsClient;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseAutomaticTuningInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabaseAutomaticTuningsClient. */
 public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomaticTuningsClient {
-    private final ClientLogger logger = new ClientLogger(DatabaseAutomaticTuningsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DatabaseAutomaticTuningsService service;
 
@@ -55,8 +53,8 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
-    private interface DatabaseAutomaticTuningsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+    public interface DatabaseAutomaticTuningsService {
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/automaticTuning/current")
@@ -69,9 +67,10 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
             @PathParam("databaseName") String databaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/automaticTuning/current")
@@ -85,6 +84,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabaseAutomaticTuningInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -98,7 +98,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's automatic tuning.
+     * @return a database's automatic tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseAutomaticTuningInner>> getWithResponseAsync(
@@ -125,7 +125,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -136,9 +136,10 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -152,7 +153,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's automatic tuning.
+     * @return a database's automatic tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatabaseAutomaticTuningInner>> getWithResponseAsync(
@@ -179,7 +180,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -188,7 +189,8 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -202,20 +204,32 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's automatic tuning.
+     * @return a database's automatic tuning on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseAutomaticTuningInner> getAsync(
         String resourceGroupName, String serverName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName)
-            .flatMap(
-                (Response<DatabaseAutomaticTuningInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a database's automatic tuning.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's automatic tuning along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DatabaseAutomaticTuningInner> getWithResponse(
+        String resourceGroupName, String serverName, String databaseName, Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, context).block();
     }
 
     /**
@@ -232,26 +246,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseAutomaticTuningInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getAsync(resourceGroupName, serverName, databaseName).block();
-    }
-
-    /**
-     * Gets a database's automatic tuning.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's automatic tuning.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabaseAutomaticTuningInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, context).block();
+        return getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE).getValue();
     }
 
     /**
@@ -261,11 +256,11 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters Database-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database-level Automatic Tuning.
+     * @return database-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseAutomaticTuningInner>> updateWithResponseAsync(
@@ -297,7 +292,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -308,10 +303,11 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -321,12 +317,12 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters Database-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database-level Automatic Tuning.
+     * @return database-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatabaseAutomaticTuningInner>> updateWithResponseAsync(
@@ -362,7 +358,7 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -371,8 +367,9 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -383,24 +380,17 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters Database-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database-level Automatic Tuning.
+     * @return database-level Automatic Tuning on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseAutomaticTuningInner> updateAsync(
         String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters) {
         return updateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters)
-            .flatMap(
-                (Response<DatabaseAutomaticTuningInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -410,31 +400,12 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters Database-level Automatic Tuning.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database-level Automatic Tuning.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseAutomaticTuningInner update(
-        String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters) {
-        return updateAsync(resourceGroupName, serverName, databaseName, parameters).block();
-    }
-
-    /**
-     * Update automatic tuning properties for target database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters Database-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database-level Automatic Tuning.
+     * @return database-level Automatic Tuning along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseAutomaticTuningInner> updateWithResponse(
@@ -444,5 +415,24 @@ public final class DatabaseAutomaticTuningsClientImpl implements DatabaseAutomat
         DatabaseAutomaticTuningInner parameters,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
+    }
+
+    /**
+     * Update automatic tuning properties for target database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The requested automatic tuning resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database-level Automatic Tuning.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabaseAutomaticTuningInner update(
+        String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters) {
+        return updateWithResponse(resourceGroupName, serverName, databaseName, parameters, Context.NONE).getValue();
     }
 }

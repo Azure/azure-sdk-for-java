@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.OriginGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class OriginGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginGroupListResult.class);
-
     /*
      * List of CDN origin groups within an endpoint
      */
@@ -30,6 +26,10 @@ public final class OriginGroupListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of OriginGroupListResult class. */
+    public OriginGroupListResult() {
+    }
 
     /**
      * Get the value property: List of CDN origin groups within an endpoint.

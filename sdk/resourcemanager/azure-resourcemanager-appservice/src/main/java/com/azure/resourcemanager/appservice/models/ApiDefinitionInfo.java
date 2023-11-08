@@ -16,6 +16,10 @@ public final class ApiDefinitionInfo {
     @JsonProperty(value = "url")
     private String url;
 
+    /** Creates an instance of ApiDefinitionInfo class. */
+    public ApiDefinitionInfo() {
+    }
+
     /**
      * Get the url property: The URL of the API definition.
      *

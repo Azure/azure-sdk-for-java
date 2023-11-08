@@ -25,6 +25,10 @@ public final class FunctionEnvelopeCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of FunctionEnvelopeCollection class. */
+    public FunctionEnvelopeCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

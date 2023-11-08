@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.monitor.fluent.models.WorkspaceInfoProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about a Log Analytics Workspace. */
-@JsonFlatten
 @Fluent
-public class WorkspaceInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceInfo.class);
-
+public final class WorkspaceInfo {
     /*
      * Azure Resource Manager identifier of the Log Analytics Workspace.
      */
@@ -29,10 +25,14 @@ public class WorkspaceInfo {
     private String location;
 
     /*
-     * Log Analytics workspace identifier.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.customerId", required = true)
-    private String customerId;
+    @JsonProperty(value = "properties", required = true)
+    private WorkspaceInfoProperties innerProperties = new WorkspaceInfoProperties();
+
+    /** Creates an instance of WorkspaceInfo class. */
+    public WorkspaceInfo() {
+    }
 
     /**
      * Get the id property: Azure Resource Manager identifier of the Log Analytics Workspace.
@@ -75,12 +75,21 @@ public class WorkspaceInfo {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private WorkspaceInfoProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the customerId property: Log Analytics workspace identifier.
      *
      * @return the customerId value.
      */
     public String customerId() {
-        return this.customerId;
+        return this.innerProperties() == null ? null : this.innerProperties().customerId();
     }
 
     /**
@@ -90,7 +99,10 @@ public class WorkspaceInfo {
      * @return the WorkspaceInfo object itself.
      */
     public WorkspaceInfo withCustomerId(String customerId) {
-        this.customerId = customerId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceInfoProperties();
+        }
+        this.innerProperties().withCustomerId(customerId);
         return this;
     }
 
@@ -101,19 +113,23 @@ public class WorkspaceInfo {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model WorkspaceInfo"));
         }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model WorkspaceInfo"));
         }
-        if (customerId() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property customerId in model WorkspaceInfo"));
+                    new IllegalArgumentException("Missing required property innerProperties in model WorkspaceInfo"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceInfo.class);
 }

@@ -5,9 +5,8 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.Gen1EnvironmentCreationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,107 +17,25 @@ import java.util.Map;
 /** Parameters supplied to the Create or Update Environment operation for a Gen1 environment. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("Gen1")
-@JsonFlatten
 @Fluent
-public class Gen1EnvironmentCreateOrUpdateParameters extends EnvironmentCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Gen1EnvironmentCreateOrUpdateParameters.class);
-
+public final class Gen1EnvironmentCreateOrUpdateParameters extends EnvironmentCreateOrUpdateParameters {
     /*
-     * ISO8601 timespan specifying the minimum number of days the environment's
-     * events will be available for query.
+     * Properties used to create a Gen1 environment.
      */
-    @JsonProperty(value = "properties.dataRetentionTime", required = true)
-    private Duration dataRetentionTime;
+    @JsonProperty(value = "properties", required = true)
+    private Gen1EnvironmentCreationProperties innerProperties = new Gen1EnvironmentCreationProperties();
 
-    /*
-     * The behavior the Time Series Insights service should take when the
-     * environment's capacity has been exceeded. If "PauseIngress" is
-     * specified, new events will not be read from the event source. If
-     * "PurgeOldData" is specified, new events will continue to be read and old
-     * events will be deleted from the environment. The default behavior is
-     * PurgeOldData.
-     */
-    @JsonProperty(value = "properties.storageLimitExceededBehavior")
-    private StorageLimitExceededBehavior storageLimitExceededBehavior;
-
-    /*
-     * The list of event properties which will be used to partition data in the
-     * environment. Currently, only a single partition key property is
-     * supported.
-     */
-    @JsonProperty(value = "properties.partitionKeyProperties")
-    private List<TimeSeriesIdProperty> partitionKeyProperties;
-
-    /**
-     * Get the dataRetentionTime property: ISO8601 timespan specifying the minimum number of days the environment's
-     * events will be available for query.
-     *
-     * @return the dataRetentionTime value.
-     */
-    public Duration dataRetentionTime() {
-        return this.dataRetentionTime;
+    /** Creates an instance of Gen1EnvironmentCreateOrUpdateParameters class. */
+    public Gen1EnvironmentCreateOrUpdateParameters() {
     }
 
     /**
-     * Set the dataRetentionTime property: ISO8601 timespan specifying the minimum number of days the environment's
-     * events will be available for query.
+     * Get the innerProperties property: Properties used to create a Gen1 environment.
      *
-     * @param dataRetentionTime the dataRetentionTime value to set.
-     * @return the Gen1EnvironmentCreateOrUpdateParameters object itself.
+     * @return the innerProperties value.
      */
-    public Gen1EnvironmentCreateOrUpdateParameters withDataRetentionTime(Duration dataRetentionTime) {
-        this.dataRetentionTime = dataRetentionTime;
-        return this;
-    }
-
-    /**
-     * Get the storageLimitExceededBehavior property: The behavior the Time Series Insights service should take when the
-     * environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the
-     * event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted
-     * from the environment. The default behavior is PurgeOldData.
-     *
-     * @return the storageLimitExceededBehavior value.
-     */
-    public StorageLimitExceededBehavior storageLimitExceededBehavior() {
-        return this.storageLimitExceededBehavior;
-    }
-
-    /**
-     * Set the storageLimitExceededBehavior property: The behavior the Time Series Insights service should take when the
-     * environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the
-     * event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted
-     * from the environment. The default behavior is PurgeOldData.
-     *
-     * @param storageLimitExceededBehavior the storageLimitExceededBehavior value to set.
-     * @return the Gen1EnvironmentCreateOrUpdateParameters object itself.
-     */
-    public Gen1EnvironmentCreateOrUpdateParameters withStorageLimitExceededBehavior(
-        StorageLimitExceededBehavior storageLimitExceededBehavior) {
-        this.storageLimitExceededBehavior = storageLimitExceededBehavior;
-        return this;
-    }
-
-    /**
-     * Get the partitionKeyProperties property: The list of event properties which will be used to partition data in the
-     * environment. Currently, only a single partition key property is supported.
-     *
-     * @return the partitionKeyProperties value.
-     */
-    public List<TimeSeriesIdProperty> partitionKeyProperties() {
-        return this.partitionKeyProperties;
-    }
-
-    /**
-     * Set the partitionKeyProperties property: The list of event properties which will be used to partition data in the
-     * environment. Currently, only a single partition key property is supported.
-     *
-     * @param partitionKeyProperties the partitionKeyProperties value to set.
-     * @return the Gen1EnvironmentCreateOrUpdateParameters object itself.
-     */
-    public Gen1EnvironmentCreateOrUpdateParameters withPartitionKeyProperties(
-        List<TimeSeriesIdProperty> partitionKeyProperties) {
-        this.partitionKeyProperties = partitionKeyProperties;
-        return this;
+    private Gen1EnvironmentCreationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -143,6 +60,87 @@ public class Gen1EnvironmentCreateOrUpdateParameters extends EnvironmentCreateOr
     }
 
     /**
+     * Get the dataRetentionTime property: ISO8601 timespan specifying the minimum number of days the environment's
+     * events will be available for query.
+     *
+     * @return the dataRetentionTime value.
+     */
+    public Duration dataRetentionTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataRetentionTime();
+    }
+
+    /**
+     * Set the dataRetentionTime property: ISO8601 timespan specifying the minimum number of days the environment's
+     * events will be available for query.
+     *
+     * @param dataRetentionTime the dataRetentionTime value to set.
+     * @return the Gen1EnvironmentCreateOrUpdateParameters object itself.
+     */
+    public Gen1EnvironmentCreateOrUpdateParameters withDataRetentionTime(Duration dataRetentionTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Gen1EnvironmentCreationProperties();
+        }
+        this.innerProperties().withDataRetentionTime(dataRetentionTime);
+        return this;
+    }
+
+    /**
+     * Get the storageLimitExceededBehavior property: The behavior the Time Series Insights service should take when the
+     * environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the
+     * event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted
+     * from the environment. The default behavior is PurgeOldData.
+     *
+     * @return the storageLimitExceededBehavior value.
+     */
+    public StorageLimitExceededBehavior storageLimitExceededBehavior() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageLimitExceededBehavior();
+    }
+
+    /**
+     * Set the storageLimitExceededBehavior property: The behavior the Time Series Insights service should take when the
+     * environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the
+     * event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted
+     * from the environment. The default behavior is PurgeOldData.
+     *
+     * @param storageLimitExceededBehavior the storageLimitExceededBehavior value to set.
+     * @return the Gen1EnvironmentCreateOrUpdateParameters object itself.
+     */
+    public Gen1EnvironmentCreateOrUpdateParameters withStorageLimitExceededBehavior(
+        StorageLimitExceededBehavior storageLimitExceededBehavior) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Gen1EnvironmentCreationProperties();
+        }
+        this.innerProperties().withStorageLimitExceededBehavior(storageLimitExceededBehavior);
+        return this;
+    }
+
+    /**
+     * Get the partitionKeyProperties property: The list of event properties which will be used to partition data in the
+     * environment. Currently, only a single partition key property is supported.
+     *
+     * @return the partitionKeyProperties value.
+     */
+    public List<TimeSeriesIdProperty> partitionKeyProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().partitionKeyProperties();
+    }
+
+    /**
+     * Set the partitionKeyProperties property: The list of event properties which will be used to partition data in the
+     * environment. Currently, only a single partition key property is supported.
+     *
+     * @param partitionKeyProperties the partitionKeyProperties value to set.
+     * @return the Gen1EnvironmentCreateOrUpdateParameters object itself.
+     */
+    public Gen1EnvironmentCreateOrUpdateParameters withPartitionKeyProperties(
+        List<TimeSeriesIdProperty> partitionKeyProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Gen1EnvironmentCreationProperties();
+        }
+        this.innerProperties().withPartitionKeyProperties(partitionKeyProperties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -150,15 +148,15 @@ public class Gen1EnvironmentCreateOrUpdateParameters extends EnvironmentCreateOr
     @Override
     public void validate() {
         super.validate();
-        if (dataRetentionTime() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property dataRetentionTime in model"
-                            + " Gen1EnvironmentCreateOrUpdateParameters"));
-        }
-        if (partitionKeyProperties() != null) {
-            partitionKeyProperties().forEach(e -> e.validate());
+                        "Missing required property innerProperties in model Gen1EnvironmentCreateOrUpdateParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Gen1EnvironmentCreateOrUpdateParameters.class);
 }

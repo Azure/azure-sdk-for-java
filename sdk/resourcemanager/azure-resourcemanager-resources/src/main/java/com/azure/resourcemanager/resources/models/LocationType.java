@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for LocationType. */
+/** The location type. */
 public enum LocationType {
     /** Enum value Region. */
     REGION("Region"),
@@ -30,6 +30,9 @@ public enum LocationType {
      */
     @JsonCreator
     public static LocationType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LocationType[] items = LocationType.values();
         for (LocationType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum LocationType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

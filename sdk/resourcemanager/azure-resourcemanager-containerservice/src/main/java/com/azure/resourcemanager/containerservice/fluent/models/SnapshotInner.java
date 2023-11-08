@@ -24,11 +24,14 @@ public final class SnapshotInner extends Resource {
     private SnapshotProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of SnapshotInner class. */
+    public SnapshotInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of a snapshot.
@@ -138,7 +141,9 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Get the osSku property: Specifies an OS SKU. This value must not be specified if OSType is Windows.
+     * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
+     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
+     * Windows.
      *
      * @return the osSku value.
      */

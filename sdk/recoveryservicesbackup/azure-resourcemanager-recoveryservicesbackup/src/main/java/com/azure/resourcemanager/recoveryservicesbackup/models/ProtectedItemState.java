@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProtectedItemState. */
+/** Backup state of the backed up item. */
 public final class ProtectedItemState extends ExpandableStringEnum<ProtectedItemState> {
     /** Static value Invalid for ProtectedItemState. */
     public static final ProtectedItemState INVALID = fromString("Invalid");
@@ -28,6 +28,18 @@ public final class ProtectedItemState extends ExpandableStringEnum<ProtectedItem
     /** Static value ProtectionPaused for ProtectedItemState. */
     public static final ProtectedItemState PROTECTION_PAUSED = fromString("ProtectionPaused");
 
+    /** Static value BackupsSuspended for ProtectedItemState. */
+    public static final ProtectedItemState BACKUPS_SUSPENDED = fromString("BackupsSuspended");
+
+    /**
+     * Creates a new instance of ProtectedItemState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProtectedItemState() {
+    }
+
     /**
      * Creates or finds a ProtectedItemState from its string representation.
      *
@@ -39,7 +51,11 @@ public final class ProtectedItemState extends ExpandableStringEnum<ProtectedItem
         return fromString(name, ProtectedItemState.class);
     }
 
-    /** @return known ProtectedItemState values. */
+    /**
+     * Gets known ProtectedItemState values.
+     *
+     * @return known ProtectedItemState values.
+     */
     public static Collection<ProtectedItemState> values() {
         return values(ProtectedItemState.class);
     }

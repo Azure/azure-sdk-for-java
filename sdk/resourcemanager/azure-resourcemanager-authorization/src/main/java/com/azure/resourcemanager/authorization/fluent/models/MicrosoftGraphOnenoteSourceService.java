@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphOnenoteSourceService. */
+/** onenoteSourceService. */
 public final class MicrosoftGraphOnenoteSourceService extends ExpandableStringEnum<MicrosoftGraphOnenoteSourceService> {
     /** Static value Unknown for MicrosoftGraphOnenoteSourceService. */
     public static final MicrosoftGraphOnenoteSourceService UNKNOWN = fromString("Unknown");
@@ -24,6 +24,15 @@ public final class MicrosoftGraphOnenoteSourceService extends ExpandableStringEn
         fromString("OnPremOneDriveForBusiness");
 
     /**
+     * Creates a new instance of MicrosoftGraphOnenoteSourceService value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphOnenoteSourceService() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphOnenoteSourceService from its string representation.
      *
      * @param name a name to look for.
@@ -34,7 +43,11 @@ public final class MicrosoftGraphOnenoteSourceService extends ExpandableStringEn
         return fromString(name, MicrosoftGraphOnenoteSourceService.class);
     }
 
-    /** @return known MicrosoftGraphOnenoteSourceService values. */
+    /**
+     * Gets known MicrosoftGraphOnenoteSourceService values.
+     *
+     * @return known MicrosoftGraphOnenoteSourceService values.
+     */
     public static Collection<MicrosoftGraphOnenoteSourceService> values() {
         return values(MicrosoftGraphOnenoteSourceService.class);
     }

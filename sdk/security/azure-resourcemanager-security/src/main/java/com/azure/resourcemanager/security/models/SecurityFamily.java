@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecurityFamily. */
+/** The security family of the discovered solution. */
 public final class SecurityFamily extends ExpandableStringEnum<SecurityFamily> {
     /** Static value Waf for SecurityFamily. */
     public static final SecurityFamily WAF = fromString("Waf");
@@ -23,6 +23,15 @@ public final class SecurityFamily extends ExpandableStringEnum<SecurityFamily> {
     public static final SecurityFamily VA = fromString("Va");
 
     /**
+     * Creates a new instance of SecurityFamily value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityFamily() {
+    }
+
+    /**
      * Creates or finds a SecurityFamily from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class SecurityFamily extends ExpandableStringEnum<SecurityFamily> {
         return fromString(name, SecurityFamily.class);
     }
 
-    /** @return known SecurityFamily values. */
+    /**
+     * Gets known SecurityFamily values.
+     *
+     * @return known SecurityFamily values.
+     */
     public static Collection<SecurityFamily> values() {
         return values(SecurityFamily.class);
     }

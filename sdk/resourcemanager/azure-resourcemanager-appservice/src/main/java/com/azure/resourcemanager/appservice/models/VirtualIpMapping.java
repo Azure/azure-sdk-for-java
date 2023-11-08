@@ -40,6 +40,10 @@ public final class VirtualIpMapping {
     @JsonProperty(value = "serviceName")
     private String serviceName;
 
+    /** Creates an instance of VirtualIpMapping class. */
+    public VirtualIpMapping() {
+    }
+
     /**
      * Get the virtualIp property: Virtual IP address.
      *

@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Solutions can group tables and functions that are associated with a certain Azure Log Analytics offering. */
+/**
+ * A Log Analytics solution.
+ *
+ * <p>Solutions can group tables and functions that are associated with a certain Azure Log Analytics offering.
+ */
 @Fluent
 public final class MetadataSolution {
     /*

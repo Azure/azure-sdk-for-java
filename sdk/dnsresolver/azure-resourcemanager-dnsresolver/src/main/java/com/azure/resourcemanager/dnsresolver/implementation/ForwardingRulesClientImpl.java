@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.fluent.ForwardingRulesClient;
 import com.azure.resourcemanager.dnsresolver.fluent.models.ForwardingRuleInner;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRuleListResult;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ForwardingRulesClient. */
 public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
-    private final ClientLogger logger = new ClientLogger(ForwardingRulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ForwardingRulesService service;
 
@@ -336,14 +333,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         String ifNoneMatch) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(
-                (Response<ForwardingRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -368,14 +358,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         final String ifNoneMatch = null;
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(
-                (Response<ForwardingRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -604,14 +587,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         String ifMatch) {
         return updateWithResponseAsync(
                 resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch)
-            .flatMap(
-                (Response<ForwardingRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -635,14 +611,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         final String ifMatch = null;
         return updateWithResponseAsync(
                 resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch)
-            .flatMap(
-                (Response<ForwardingRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -833,7 +802,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
     private Mono<Void> deleteAsync(
         String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName, String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -852,7 +821,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName) {
         final String ifMatch = null;
         return deleteWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1024,14 +993,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
     private Mono<ForwardingRuleInner> getAsync(
         String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName) {
         return getWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName)
-            .flatMap(
-                (Response<ForwardingRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1290,7 +1252,8 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1326,7 +1289,8 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

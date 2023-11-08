@@ -15,14 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class HttpSource extends CopySource {
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP
-     * server. The default value is equivalent to
-     * System.Net.HttpWebRequest.Timeout. Type: string (or Expression with
-     * resultType string), pattern:
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent
+     * to System.Net.HttpWebRequest.Timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
+
+    /** Creates an instance of HttpSource class. */
+    public HttpSource() {}
 
     /**
      * Get the httpRequestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP
@@ -45,6 +46,27 @@ public final class HttpSource extends CopySource {
      */
     public HttpSource setHttpRequestTimeout(Object httpRequestTimeout) {
         this.httpRequestTimeout = httpRequestTimeout;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

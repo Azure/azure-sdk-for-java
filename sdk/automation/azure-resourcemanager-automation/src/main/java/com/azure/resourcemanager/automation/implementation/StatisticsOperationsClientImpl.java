@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.StatisticsOperationsClient;
 import com.azure.resourcemanager.automation.fluent.models.StatisticsInner;
 import com.azure.resourcemanager.automation.models.StatisticsListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in StatisticsOperationsClient. */
 public final class StatisticsOperationsClientImpl implements StatisticsOperationsClient {
-    private final ClientLogger logger = new ClientLogger(StatisticsOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final StatisticsOperationsService service;
 
@@ -86,7 +83,8 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list statistics operation.
+     * @return the response model for the list statistics operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StatisticsInner>> listByAutomationAccountSinglePageAsync(
@@ -111,7 +109,7 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -143,7 +141,8 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list statistics operation.
+     * @return the response model for the list statistics operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StatisticsInner>> listByAutomationAccountSinglePageAsync(
@@ -168,7 +167,7 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -196,7 +195,7 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list statistics operation.
+     * @return the response model for the list statistics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StatisticsInner> listByAutomationAccountAsync(
@@ -213,7 +212,7 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list statistics operation.
+     * @return the response model for the list statistics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StatisticsInner> listByAutomationAccountAsync(
@@ -233,7 +232,7 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list statistics operation.
+     * @return the response model for the list statistics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StatisticsInner> listByAutomationAccountAsync(
@@ -250,7 +249,7 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list statistics operation.
+     * @return the response model for the list statistics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StatisticsInner> listByAutomationAccount(
@@ -269,7 +268,7 @@ public final class StatisticsOperationsClientImpl implements StatisticsOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list statistics operation.
+     * @return the response model for the list statistics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StatisticsInner> listByAutomationAccount(

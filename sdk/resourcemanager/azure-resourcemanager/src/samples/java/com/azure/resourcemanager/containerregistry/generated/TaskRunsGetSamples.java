@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TaskRuns Get. */
 public final class TaskRunsGetSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsGet.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsGet.json
      */
     /**
      * Sample code: TaskRuns_Get.
@@ -22,6 +20,6 @@ public final class TaskRunsGetSamples {
             .manager()
             .serviceClient()
             .getTaskRuns()
-            .getWithResponse("myResourceGroup", "myRegistry", "myRun", Context.NONE);
+            .getWithResponse("myResourceGroup", "myRegistry", "myRun", com.azure.core.util.Context.NONE);
     }
 }

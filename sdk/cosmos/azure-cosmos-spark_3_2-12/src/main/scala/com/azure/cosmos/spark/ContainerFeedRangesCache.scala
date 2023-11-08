@@ -17,6 +17,15 @@ import scala.collection.JavaConverters._
 private[spark] object ContainerFeedRangesCache {
 
   private val cache = new TrieMap[String, CachedFeedRanges]
+  private var feedRangeRefreshIntervalOverride: Option[Long] = None
+
+  def overrideFeedRangeRefreshInterval(newInterval: Long): Unit = {
+    this.feedRangeRefreshIntervalOverride = Some(newInterval)
+  }
+
+  def resetFeedRangeRefreshInterval(): Unit = {
+    this.feedRangeRefreshIntervalOverride = None
+  }
 
   def getFeedRanges
   (
@@ -25,11 +34,15 @@ private[spark] object ContainerFeedRangesCache {
 
     val key = SparkBridgeInternal.getCacheKeyForContainer(container)
 
+    val cacheExpirationThreshold = Instant.now.minus(
+      feedRangeRefreshIntervalOverride.getOrElse(CosmosConstants.feedRangesCacheIntervalInMinutes),
+      ChronoUnit.MINUTES)
+
     cache.get(key) match {
       case Some(cached) =>
         if (cached
           .retrievedAt
-          .compareTo(Instant.now.minus(CosmosConstants.feedRangesCacheIntervalInMinutes, ChronoUnit.MINUTES)) >= 0) {
+          .compareTo(cacheExpirationThreshold) >= 0) {
 
           SMono.just(cached.feedRanges)
         } else {

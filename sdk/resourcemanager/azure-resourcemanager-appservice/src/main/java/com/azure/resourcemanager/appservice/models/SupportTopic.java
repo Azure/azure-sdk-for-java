@@ -22,6 +22,10 @@ public final class SupportTopic {
     @JsonProperty(value = "pesId", access = JsonProperty.Access.WRITE_ONLY)
     private String pesId;
 
+    /** Creates an instance of SupportTopic class. */
+    public SupportTopic() {
+    }
+
     /**
      * Get the id property: Support Topic Id.
      *

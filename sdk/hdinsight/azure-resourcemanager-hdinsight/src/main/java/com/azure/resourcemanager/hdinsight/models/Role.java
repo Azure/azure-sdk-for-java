@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a role on the cluster. */
 @Fluent
 public final class Role {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Role.class);
-
     /*
      * The name of the role.
      */
@@ -80,6 +76,10 @@ public final class Role {
      */
     @JsonProperty(value = "encryptDataDisks")
     private Boolean encryptDataDisks;
+
+    /** Creates an instance of Role class. */
+    public Role() {
+    }
 
     /**
      * Get the name property: The name of the role.

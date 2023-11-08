@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Azure Cosmos DB Role Assignment. */
 @Fluent
 public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleAssignmentGetResultsInner.class);
-
     /*
      * Properties related to the Role Assignment.
      */
     @JsonProperty(value = "properties")
     private SqlRoleAssignmentResource innerProperties;
+
+    /** Creates an instance of SqlRoleAssignmentGetResultsInner class. */
+    public SqlRoleAssignmentGetResultsInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties related to the Role Assignment.

@@ -17,6 +17,10 @@ public final class SlotDifferenceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SlotDifferenceProperties innerProperties;
 
+    /** Creates an instance of SlotDifferenceInner class. */
+    public SlotDifferenceInner() {
+    }
+
     /**
      * Get the innerProperties property: SlotDifference resource specific properties.
      *

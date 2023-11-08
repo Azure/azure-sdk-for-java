@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.powerbidedicated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.powerbidedicated.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.powerbidedicated.models.OperationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Capacities REST API operation. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * Operation name: {provider}/{resource}/{operation}.
      */
@@ -26,6 +23,22 @@ public final class OperationInner {
      */
     @JsonProperty(value = "display")
     private OperationDisplay display;
+
+    /*
+     * Origin of the operation.
+     */
+    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
+    private String origin;
+
+    /*
+     * Additional properties to expose performance metrics to shoebox.
+     */
+    @JsonProperty(value = "properties")
+    private OperationProperties properties;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
@@ -57,6 +70,35 @@ public final class OperationInner {
     }
 
     /**
+     * Get the origin property: Origin of the operation.
+     *
+     * @return the origin value.
+     */
+    public String origin() {
+        return this.origin;
+    }
+
+    /**
+     * Get the properties property: Additional properties to expose performance metrics to shoebox.
+     *
+     * @return the properties value.
+     */
+    public OperationProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Additional properties to expose performance metrics to shoebox.
+     *
+     * @param properties the properties value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withProperties(OperationProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -64,6 +106,9 @@ public final class OperationInner {
     public void validate() {
         if (display() != null) {
             display().validate();
+        }
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

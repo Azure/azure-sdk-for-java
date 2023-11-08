@@ -6,15 +6,12 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The X12 agreement protocol settings. */
 @Fluent
 public final class X12ProtocolSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12ProtocolSettings.class);
-
     /*
      * The X12 validation settings.
      */
@@ -86,6 +83,10 @@ public final class X12ProtocolSettings {
      */
     @JsonProperty(value = "x12DelimiterOverrides")
     private List<X12DelimiterOverrides> x12DelimiterOverrides;
+
+    /** Creates an instance of X12ProtocolSettings class. */
+    public X12ProtocolSettings() {
+    }
 
     /**
      * Get the validationSettings property: The X12 validation settings.
@@ -334,7 +335,7 @@ public final class X12ProtocolSettings {
      */
     public void validate() {
         if (validationSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property validationSettings in model X12ProtocolSettings"));
@@ -342,7 +343,7 @@ public final class X12ProtocolSettings {
             validationSettings().validate();
         }
         if (framingSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property framingSettings in model X12ProtocolSettings"));
@@ -350,7 +351,7 @@ public final class X12ProtocolSettings {
             framingSettings().validate();
         }
         if (envelopeSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property envelopeSettings in model X12ProtocolSettings"));
@@ -358,7 +359,7 @@ public final class X12ProtocolSettings {
             envelopeSettings().validate();
         }
         if (acknowledgementSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property acknowledgementSettings in model X12ProtocolSettings"));
@@ -366,7 +367,7 @@ public final class X12ProtocolSettings {
             acknowledgementSettings().validate();
         }
         if (messageFilter() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageFilter in model X12ProtocolSettings"));
@@ -374,7 +375,7 @@ public final class X12ProtocolSettings {
             messageFilter().validate();
         }
         if (securitySettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property securitySettings in model X12ProtocolSettings"));
@@ -382,7 +383,7 @@ public final class X12ProtocolSettings {
             securitySettings().validate();
         }
         if (processingSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property processingSettings in model X12ProtocolSettings"));
@@ -399,7 +400,7 @@ public final class X12ProtocolSettings {
             messageFilterList().forEach(e -> e.validate());
         }
         if (schemaReferences() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schemaReferences in model X12ProtocolSettings"));
@@ -410,4 +411,6 @@ public final class X12ProtocolSettings {
             x12DelimiterOverrides().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12ProtocolSettings.class);
 }

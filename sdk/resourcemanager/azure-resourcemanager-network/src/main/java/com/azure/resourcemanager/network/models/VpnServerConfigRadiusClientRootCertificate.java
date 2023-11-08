@@ -22,6 +22,10 @@ public final class VpnServerConfigRadiusClientRootCertificate {
     @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
+    /** Creates an instance of VpnServerConfigRadiusClientRootCertificate class. */
+    public VpnServerConfigRadiusClientRootCertificate() {
+    }
+
     /**
      * Get the name property: The certificate name.
      *

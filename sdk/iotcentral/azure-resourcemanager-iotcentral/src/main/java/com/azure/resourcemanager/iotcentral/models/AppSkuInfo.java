@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the SKU of the IoT Central application. */
 @Fluent
 public final class AppSkuInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppSkuInfo.class);
-
     /*
      * The name of the SKU.
      */
@@ -47,9 +44,11 @@ public final class AppSkuInfo {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model AppSkuInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AppSkuInfo.class);
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,18 +15,15 @@ import java.util.Map;
 /** numberColumn. */
 @Fluent
 public final class MicrosoftGraphNumberColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphNumberColumn.class);
-
     /*
-     * How many decimal places to display. See below for information about the
-     * possible values.
+     * How many decimal places to display. See below for information about the possible values.
      */
     @JsonProperty(value = "decimalPlaces")
     private String decimalPlaces;
 
     /*
-     * How the value should be presented in the UX. Must be one of number or
-     * percentage. If unspecified, treated as number.
+     * How the value should be presented in the UX. Must be one of number or percentage. If unspecified, treated as
+     * number.
      */
     @JsonProperty(value = "displayAs")
     private String displayAs;
@@ -48,6 +44,10 @@ public final class MicrosoftGraphNumberColumn {
      * numberColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphNumberColumn class. */
+    public MicrosoftGraphNumberColumn() {
+    }
 
     /**
      * Get the decimalPlaces property: How many decimal places to display. See below for information about the possible

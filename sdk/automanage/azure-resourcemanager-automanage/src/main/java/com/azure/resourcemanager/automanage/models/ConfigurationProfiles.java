@@ -31,7 +31,7 @@ public interface ConfigurationProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile.
+     * @return information about a configuration profile along with {@link Response}.
      */
     Response<ConfigurationProfile> getByResourceGroupWithResponse(
         String resourceGroupName, String configurationProfileName, Context context);
@@ -56,7 +56,7 @@ public interface ConfigurationProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String configurationProfileName, Context context);
 
@@ -67,7 +67,8 @@ public interface ConfigurationProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ConfigurationProfile> listByResourceGroup(String resourceGroupName);
 
@@ -79,7 +80,8 @@ public interface ConfigurationProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ConfigurationProfile> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -88,7 +90,8 @@ public interface ConfigurationProfiles {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ConfigurationProfile> list();
 
@@ -99,7 +102,8 @@ public interface ConfigurationProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ConfigurationProfile> list(Context context);
 
@@ -110,7 +114,7 @@ public interface ConfigurationProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile.
+     * @return information about a configuration profile along with {@link Response}.
      */
     ConfigurationProfile getById(String id);
 
@@ -122,7 +126,7 @@ public interface ConfigurationProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile.
+     * @return information about a configuration profile along with {@link Response}.
      */
     Response<ConfigurationProfile> getByIdWithResponse(String id, Context context);
 
@@ -144,7 +148,7 @@ public interface ConfigurationProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

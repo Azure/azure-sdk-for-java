@@ -13,10 +13,9 @@ import com.azure.resourcemanager.videoanalyzer.fluent.LivePipelinesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.LivePipelineInner;
 import com.azure.resourcemanager.videoanalyzer.models.LivePipeline;
 import com.azure.resourcemanager.videoanalyzer.models.LivePipelines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LivePipelinesImpl implements LivePipelines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LivePipelinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LivePipelinesImpl.class);
 
     private final LivePipelinesClient innerClient;
 
@@ -92,7 +91,7 @@ public final class LivePipelinesImpl implements LivePipelines {
     public LivePipeline getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -100,7 +99,7 @@ public final class LivePipelinesImpl implements LivePipelines {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,7 +107,7 @@ public final class LivePipelinesImpl implements LivePipelines {
         }
         String livePipelineName = Utils.getValueFromIdByName(id, "livePipelines");
         if (livePipelineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'livePipelines'.", id)));
@@ -119,7 +118,7 @@ public final class LivePipelinesImpl implements LivePipelines {
     public Response<LivePipeline> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -127,7 +126,7 @@ public final class LivePipelinesImpl implements LivePipelines {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,7 +134,7 @@ public final class LivePipelinesImpl implements LivePipelines {
         }
         String livePipelineName = Utils.getValueFromIdByName(id, "livePipelines");
         if (livePipelineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'livePipelines'.", id)));
@@ -146,7 +145,7 @@ public final class LivePipelinesImpl implements LivePipelines {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,7 +153,7 @@ public final class LivePipelinesImpl implements LivePipelines {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,18 +161,18 @@ public final class LivePipelinesImpl implements LivePipelines {
         }
         String livePipelineName = Utils.getValueFromIdByName(id, "livePipelines");
         if (livePipelineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'livePipelines'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, livePipelineName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, livePipelineName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,7 +180,7 @@ public final class LivePipelinesImpl implements LivePipelines {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -189,7 +188,7 @@ public final class LivePipelinesImpl implements LivePipelines {
         }
         String livePipelineName = Utils.getValueFromIdByName(id, "livePipelines");
         if (livePipelineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'livePipelines'.", id)));

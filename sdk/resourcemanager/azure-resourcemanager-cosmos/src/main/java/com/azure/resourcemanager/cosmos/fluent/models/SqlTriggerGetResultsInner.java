@@ -5,23 +5,23 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.SqlTriggerGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure Cosmos DB trigger. */
 @Fluent
 public final class SqlTriggerGetResultsInner extends ArmResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlTriggerGetResultsInner.class);
-
     /*
      * The properties of an Azure Cosmos DB trigger
      */
     @JsonProperty(value = "properties")
     private SqlTriggerGetProperties innerProperties;
+
+    /** Creates an instance of SqlTriggerGetResultsInner class. */
+    public SqlTriggerGetResultsInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB trigger.

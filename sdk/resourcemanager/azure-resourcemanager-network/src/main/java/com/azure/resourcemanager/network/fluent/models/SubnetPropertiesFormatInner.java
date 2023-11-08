@@ -68,8 +68,7 @@ public final class SubnetPropertiesFormatInner {
     private List<PrivateEndpointInner> privateEndpoints;
 
     /*
-     * An array of references to the network interface IP configurations using
-     * subnet.
+     * An array of references to the network interface IP configurations using subnet.
      */
     @JsonProperty(value = "ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<IpConfigurationInner> ipConfigurations;
@@ -105,8 +104,8 @@ public final class SubnetPropertiesFormatInner {
     private List<Delegation> delegations;
 
     /*
-     * A read-only string identifying the intention of use for this subnet
-     * based on delegations and other user-defined properties.
+     * A read-only string identifying the intention of use for this subnet based on delegations and other user-defined
+     * properties.
      */
     @JsonProperty(value = "purpose", access = JsonProperty.Access.WRITE_ONLY)
     private String purpose;
@@ -118,15 +117,13 @@ public final class SubnetPropertiesFormatInner {
     private ProvisioningState provisioningState;
 
     /*
-     * Enable or Disable apply network policies on private end point in the
-     * subnet.
+     * Enable or Disable apply network policies on private end point in the subnet.
      */
     @JsonProperty(value = "privateEndpointNetworkPolicies")
     private VirtualNetworkPrivateEndpointNetworkPolicies privateEndpointNetworkPolicies;
 
     /*
-     * Enable or Disable apply network policies on private link service in the
-     * subnet.
+     * Enable or Disable apply network policies on private link service in the subnet.
      */
     @JsonProperty(value = "privateLinkServiceNetworkPolicies")
     private VirtualNetworkPrivateLinkServiceNetworkPolicies privateLinkServiceNetworkPolicies;
@@ -134,8 +131,19 @@ public final class SubnetPropertiesFormatInner {
     /*
      * Application gateway IP configurations of virtual network resource.
      */
-    @JsonProperty(value = "applicationGatewayIpConfigurations")
+    @JsonProperty(value = "applicationGatewayIPConfigurations")
     private List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations;
+
+    /*
+     * Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can
+     * only be set at the time of subnet creation and cannot be updated for an existing subnet.
+     */
+    @JsonProperty(value = "defaultOutboundAccess")
+    private Boolean defaultOutboundAccess;
+
+    /** Creates an instance of SubnetPropertiesFormatInner class. */
+    public SubnetPropertiesFormatInner() {
+    }
 
     /**
      * Get the addressPrefix property: The address prefix for the subnet.
@@ -449,6 +457,30 @@ public final class SubnetPropertiesFormatInner {
     public SubnetPropertiesFormatInner withApplicationGatewayIpConfigurations(
         List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations) {
         this.applicationGatewayIpConfigurations = applicationGatewayIpConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
+     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
+     * existing subnet.
+     *
+     * @return the defaultOutboundAccess value.
+     */
+    public Boolean defaultOutboundAccess() {
+        return this.defaultOutboundAccess;
+    }
+
+    /**
+     * Set the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
+     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
+     * existing subnet.
+     *
+     * @param defaultOutboundAccess the defaultOutboundAccess value to set.
+     * @return the SubnetPropertiesFormatInner object itself.
+     */
+    public SubnetPropertiesFormatInner withDefaultOutboundAccess(Boolean defaultOutboundAccess) {
+        this.defaultOutboundAccess = defaultOutboundAccess;
         return this;
     }
 

@@ -16,6 +16,21 @@ public interface ServerSecurityAlertPolicies {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param securityAlertPolicyName The name of the security alert policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a server's security alert policy along with {@link Response}.
+     */
+    Response<ServerSecurityAlertPolicy> getWithResponse(
+        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName, Context context);
+
+    /**
+     * Get a server's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -25,21 +40,6 @@ public interface ServerSecurityAlertPolicies {
         String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName);
 
     /**
-     * Get a server's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's security alert policy.
-     */
-    Response<ServerSecurityAlertPolicy> getWithResponse(
-        String resourceGroupName, String serverName, SecurityAlertPolicyName securityAlertPolicyName, Context context);
-
-    /**
      * Get the server's threat detection policies.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -47,7 +47,7 @@ public interface ServerSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ServerSecurityAlertPolicy> listByServer(String resourceGroupName, String serverName);
 
@@ -60,7 +60,7 @@ public interface ServerSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's threat detection policies.
+     * @return the server's threat detection policies as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ServerSecurityAlertPolicy> listByServer(String resourceGroupName, String serverName, Context context);
 
@@ -71,7 +71,7 @@ public interface ServerSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's security alert policy.
+     * @return a server's security alert policy along with {@link Response}.
      */
     ServerSecurityAlertPolicy getById(String id);
 
@@ -83,7 +83,7 @@ public interface ServerSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's security alert policy.
+     * @return a server's security alert policy along with {@link Response}.
      */
     Response<ServerSecurityAlertPolicy> getByIdWithResponse(String id, Context context);
 

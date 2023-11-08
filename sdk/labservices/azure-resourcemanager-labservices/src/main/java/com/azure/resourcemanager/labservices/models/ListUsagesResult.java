@@ -4,22 +4,18 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.labservices.fluent.models.UsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of Core Usages. */
-@Immutable
+@Fluent
 public final class ListUsagesResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListUsagesResult.class);
-
     /*
      * The array page of Usages.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value")
     private List<UsageInner> value;
 
     /*
@@ -35,6 +31,17 @@ public final class ListUsagesResult {
      */
     public List<UsageInner> value() {
         return this.value;
+    }
+
+    /**
+     * Set the value property: The array page of Usages.
+     *
+     * @param value the value value to set.
+     * @return the ListUsagesResult object itself.
+     */
+    public ListUsagesResult withValue(List<UsageInner> value) {
+        this.value = value;
+        return this;
     }
 
     /**

@@ -6,23 +6,23 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.VMGroupStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NSX VM Group. */
 @Fluent
 public final class WorkloadNetworkVMGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkVMGroupInner.class);
-
     /*
      * VM Group properties.
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkVMGroupProperties innerProperties;
+
+    /** Creates an instance of WorkloadNetworkVMGroupInner class. */
+    public WorkloadNetworkVMGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: VM Group properties.

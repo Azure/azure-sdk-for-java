@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Custom linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -19,6 +21,9 @@ public final class CustomDataSourceLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties", required = true)
     private Object typeProperties;
+
+    /** Creates an instance of CustomDataSourceLinkedService class. */
+    public CustomDataSourceLinkedService() {}
 
     /**
      * Get the typeProperties property: Custom linked service properties.
@@ -37,6 +42,34 @@ public final class CustomDataSourceLinkedService extends LinkedService {
      */
     public CustomDataSourceLinkedService setTypeProperties(Object typeProperties) {
         this.typeProperties = typeProperties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomDataSourceLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomDataSourceLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomDataSourceLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomDataSourceLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

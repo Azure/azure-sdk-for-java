@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.EntityQueryTemplatesClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryTemplateInner;
-import com.azure.resourcemanager.securityinsights.models.Constant74;
+import com.azure.resourcemanager.securityinsights.models.Constant88;
 import com.azure.resourcemanager.securityinsights.models.EntityQueryTemplate;
 import com.azure.resourcemanager.securityinsights.models.EntityQueryTemplates;
 
@@ -35,7 +35,7 @@ public final class EntityQueryTemplatesImpl implements EntityQueryTemplates {
     }
 
     public PagedIterable<EntityQueryTemplate> list(
-        String resourceGroupName, String workspaceName, Constant74 kind, Context context) {
+        String resourceGroupName, String workspaceName, Constant88 kind, Context context) {
         PagedIterable<EntityQueryTemplateInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, kind, context);
         return Utils.mapPage(inner, inner1 -> new EntityQueryTemplateImpl(inner1, this.manager()));

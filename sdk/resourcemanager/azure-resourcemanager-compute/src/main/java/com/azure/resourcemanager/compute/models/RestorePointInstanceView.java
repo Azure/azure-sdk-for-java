@@ -23,6 +23,10 @@ public final class RestorePointInstanceView {
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
+    /** Creates an instance of RestorePointInstanceView class. */
+    public RestorePointInstanceView() {
+    }
+
     /**
      * Get the diskRestorePoints property: The disk restore points information.
      *

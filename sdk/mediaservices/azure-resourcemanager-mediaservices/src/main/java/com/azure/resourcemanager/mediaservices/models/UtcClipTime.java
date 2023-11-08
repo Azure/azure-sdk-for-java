@@ -25,6 +25,10 @@ public final class UtcClipTime extends ClipTime {
     @JsonProperty(value = "time", required = true)
     private OffsetDateTime time;
 
+    /** Creates an instance of UtcClipTime class. */
+    public UtcClipTime() {
+    }
+
     /**
      * Get the time property: The time position on the timeline of the input media based on Utc time.
      *

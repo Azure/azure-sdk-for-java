@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 agreement validation settings. */
 @Fluent
 public final class X12ValidationSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12ValidationSettings.class);
-
     /*
      * The value indicating whether to validate character set in the message.
      */
@@ -21,8 +18,7 @@ public final class X12ValidationSettings {
     private boolean validateCharacterSet;
 
     /*
-     * The value indicating whether to check for duplicate interchange control
-     * number.
+     * The value indicating whether to check for duplicate interchange control number.
      */
     @JsonProperty(value = "checkDuplicateInterchangeControlNumber", required = true)
     private boolean checkDuplicateInterchangeControlNumber;
@@ -34,15 +30,13 @@ public final class X12ValidationSettings {
     private int interchangeControlNumberValidityDays;
 
     /*
-     * The value indicating whether to check for duplicate group control
-     * number.
+     * The value indicating whether to check for duplicate group control number.
      */
     @JsonProperty(value = "checkDuplicateGroupControlNumber", required = true)
     private boolean checkDuplicateGroupControlNumber;
 
     /*
-     * The value indicating whether to check for duplicate transaction set
-     * control number.
+     * The value indicating whether to check for duplicate transaction set control number.
      */
     @JsonProperty(value = "checkDuplicateTransactionSetControlNumber", required = true)
     private boolean checkDuplicateTransactionSetControlNumber;
@@ -60,15 +54,13 @@ public final class X12ValidationSettings {
     private boolean validateXsdTypes;
 
     /*
-     * The value indicating whether to allow leading and trailing spaces and
-     * zeroes.
+     * The value indicating whether to allow leading and trailing spaces and zeroes.
      */
     @JsonProperty(value = "allowLeadingAndTrailingSpacesAndZeroes", required = true)
     private boolean allowLeadingAndTrailingSpacesAndZeroes;
 
     /*
-     * The value indicating whether to trim leading and trailing spaces and
-     * zeroes.
+     * The value indicating whether to trim leading and trailing spaces and zeroes.
      */
     @JsonProperty(value = "trimLeadingAndTrailingSpacesAndZeroes", required = true)
     private boolean trimLeadingAndTrailingSpacesAndZeroes;
@@ -78,6 +70,10 @@ public final class X12ValidationSettings {
      */
     @JsonProperty(value = "trailingSeparatorPolicy", required = true)
     private TrailingSeparatorPolicy trailingSeparatorPolicy;
+
+    /** Creates an instance of X12ValidationSettings class. */
+    public X12ValidationSettings() {
+    }
 
     /**
      * Get the validateCharacterSet property: The value indicating whether to validate character set in the message.
@@ -300,10 +296,12 @@ public final class X12ValidationSettings {
      */
     public void validate() {
         if (trailingSeparatorPolicy() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property trailingSeparatorPolicy in model X12ValidationSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12ValidationSettings.class);
 }

@@ -6,9 +6,10 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.Architecture;
+import com.azure.resourcemanager.compute.models.CommunityGalleryImageIdentifier;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
-import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
@@ -22,36 +23,35 @@ import java.util.List;
 @Fluent
 public final class CommunityGalleryImageProperties {
     /*
-     * This property allows you to specify the type of the OS that is included
-     * in the disk when creating a VM from a managed image. <br><br> Possible
-     * values are: <br><br> **Windows** <br><br> **Linux**
+     * This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
+     * managed image. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**
      */
     @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
 
     /*
-     * This property allows the user to specify whether the virtual machines
-     * created under this image are 'Generalized' or 'Specialized'.
+     * This property allows the user to specify whether the virtual machines created under this image are 'Generalized'
+     * or 'Specialized'.
      */
     @JsonProperty(value = "osState", required = true)
     private OperatingSystemStateTypes osState;
 
     /*
-     * The end of life date of the gallery image definition. This property can
-     * be used for decommissioning purposes. This property is updatable.
+     * The end of life date of the gallery image definition. This property can be used for decommissioning purposes.
+     * This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * This is the gallery image definition identifier.
+     * This is the community gallery image definition identifier.
      */
     @JsonProperty(value = "identifier", required = true)
-    private GalleryImageIdentifier identifier;
+    private CommunityGalleryImageIdentifier identifier;
 
     /*
-     * The properties describe the recommended machine configuration for this
-     * Image Definition. These properties are updatable.
+     * The properties describe the recommended machine configuration for this Image Definition. These properties are
+     * updatable.
      */
     @JsonProperty(value = "recommended")
     private RecommendedMachineConfiguration recommended;
@@ -63,8 +63,7 @@ public final class CommunityGalleryImageProperties {
     private Disallowed disallowed;
 
     /*
-     * The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      */
     @JsonProperty(value = "hyperVGeneration")
     private HyperVGeneration hyperVGeneration;
@@ -76,11 +75,32 @@ public final class CommunityGalleryImageProperties {
     private List<GalleryImageFeature> features;
 
     /*
-     * Describes the gallery image definition purchase plan. This is used by
-     * marketplace images.
+     * Describes the gallery image definition purchase plan. This is used by marketplace images.
      */
     @JsonProperty(value = "purchasePlan")
     private ImagePurchasePlan purchasePlan;
+
+    /*
+     * The architecture of the image. Applicable to OS disks only.
+     */
+    @JsonProperty(value = "architecture")
+    private Architecture architecture;
+
+    /*
+     * Privacy statement uri for the current community gallery image.
+     */
+    @JsonProperty(value = "privacyStatementUri")
+    private String privacyStatementUri;
+
+    /*
+     * End-user license agreement for the current community gallery image.
+     */
+    @JsonProperty(value = "eula")
+    private String eula;
+
+    /** Creates an instance of CommunityGalleryImageProperties class. */
+    public CommunityGalleryImageProperties() {
+    }
 
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
@@ -151,21 +171,21 @@ public final class CommunityGalleryImageProperties {
     }
 
     /**
-     * Get the identifier property: This is the gallery image definition identifier.
+     * Get the identifier property: This is the community gallery image definition identifier.
      *
      * @return the identifier value.
      */
-    public GalleryImageIdentifier identifier() {
+    public CommunityGalleryImageIdentifier identifier() {
         return this.identifier;
     }
 
     /**
-     * Set the identifier property: This is the gallery image definition identifier.
+     * Set the identifier property: This is the community gallery image definition identifier.
      *
      * @param identifier the identifier value to set.
      * @return the CommunityGalleryImageProperties object itself.
      */
-    public CommunityGalleryImageProperties withIdentifier(GalleryImageIdentifier identifier) {
+    public CommunityGalleryImageProperties withIdentifier(CommunityGalleryImageIdentifier identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -271,6 +291,66 @@ public final class CommunityGalleryImageProperties {
      */
     public CommunityGalleryImageProperties withPurchasePlan(ImagePurchasePlan purchasePlan) {
         this.purchasePlan = purchasePlan;
+        return this;
+    }
+
+    /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.architecture;
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the CommunityGalleryImageProperties object itself.
+     */
+    public CommunityGalleryImageProperties withArchitecture(Architecture architecture) {
+        this.architecture = architecture;
+        return this;
+    }
+
+    /**
+     * Get the privacyStatementUri property: Privacy statement uri for the current community gallery image.
+     *
+     * @return the privacyStatementUri value.
+     */
+    public String privacyStatementUri() {
+        return this.privacyStatementUri;
+    }
+
+    /**
+     * Set the privacyStatementUri property: Privacy statement uri for the current community gallery image.
+     *
+     * @param privacyStatementUri the privacyStatementUri value to set.
+     * @return the CommunityGalleryImageProperties object itself.
+     */
+    public CommunityGalleryImageProperties withPrivacyStatementUri(String privacyStatementUri) {
+        this.privacyStatementUri = privacyStatementUri;
+        return this;
+    }
+
+    /**
+     * Get the eula property: End-user license agreement for the current community gallery image.
+     *
+     * @return the eula value.
+     */
+    public String eula() {
+        return this.eula;
+    }
+
+    /**
+     * Set the eula property: End-user license agreement for the current community gallery image.
+     *
+     * @param eula the eula value to set.
+     * @return the CommunityGalleryImageProperties object itself.
+     */
+    public CommunityGalleryImageProperties withEula(String eula) {
+        this.eula = eula;
         return this;
     }
 

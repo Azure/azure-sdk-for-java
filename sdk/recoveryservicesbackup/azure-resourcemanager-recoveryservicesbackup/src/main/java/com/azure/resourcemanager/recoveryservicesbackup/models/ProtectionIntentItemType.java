@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProtectionIntentItemType. */
+/** backup protectionIntent type. */
 public final class ProtectionIntentItemType extends ExpandableStringEnum<ProtectionIntentItemType> {
     /** Static value Invalid for ProtectionIntentItemType. */
     public static final ProtectionIntentItemType INVALID = fromString("Invalid");
@@ -32,6 +32,15 @@ public final class ProtectionIntentItemType extends ExpandableStringEnum<Protect
         fromString("AzureWorkloadSQLAutoProtectionIntent");
 
     /**
+     * Creates a new instance of ProtectionIntentItemType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProtectionIntentItemType() {
+    }
+
+    /**
      * Creates or finds a ProtectionIntentItemType from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class ProtectionIntentItemType extends ExpandableStringEnum<Protect
         return fromString(name, ProtectionIntentItemType.class);
     }
 
-    /** @return known ProtectionIntentItemType values. */
+    /**
+     * Gets known ProtectionIntentItemType values.
+     *
+     * @return known ProtectionIntentItemType values.
+     */
     public static Collection<ProtectionIntentItemType> values() {
         return values(ProtectionIntentItemType.class);
     }

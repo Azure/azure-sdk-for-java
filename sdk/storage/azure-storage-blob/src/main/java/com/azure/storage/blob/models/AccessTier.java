@@ -52,6 +52,20 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
     /** Static value Archive for AccessTier. */
     public static final AccessTier ARCHIVE = fromString("Archive");
 
+    /** Static value Premium for AccessTier. */
+    public static final AccessTier PREMIUM = fromString("Premium");
+
+    /** Static value Cold for AccessTier. */
+    public static final AccessTier COLD = fromString("Cold");
+
+    /**
+     * Creates a new instance of AccessTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessTier() {}
+
     /**
      * Creates or finds a AccessTier from its string representation.
      *
@@ -63,7 +77,11 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
         return fromString(name, AccessTier.class);
     }
 
-    /** @return known AccessTier values. */
+    /**
+     * Gets known AccessTier values.
+     *
+     * @return known AccessTier values.
+     */
     public static Collection<AccessTier> values() {
         return values(AccessTier.class);
     }

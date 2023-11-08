@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationType. */
+/** Specifies authentication type being used for connecting to the storage account. */
 public final class AuthenticationType extends ExpandableStringEnum<AuthenticationType> {
     /** Static value keyBased for AuthenticationType. */
     public static final AuthenticationType KEY_BASED = fromString("keyBased");
 
     /** Static value identityBased for AuthenticationType. */
     public static final AuthenticationType IDENTITY_BASED = fromString("identityBased");
+
+    /**
+     * Creates a new instance of AuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationType() {
+    }
 
     /**
      * Creates or finds a AuthenticationType from its string representation.
@@ -27,7 +36,11 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
         return fromString(name, AuthenticationType.class);
     }
 
-    /** @return known AuthenticationType values. */
+    /**
+     * Gets known AuthenticationType values.
+     *
+     * @return known AuthenticationType values.
+     */
     public static Collection<AuthenticationType> values() {
         return values(AuthenticationType.class);
     }

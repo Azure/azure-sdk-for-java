@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.DeploymentInner;
 import com.azure.resourcemanager.cognitiveservices.models.Deployment;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentProperties;
+import com.azure.resourcemanager.cognitiveservices.models.Sku;
 
 public final class DeploymentImpl implements Deployment, Deployment.Definition, Deployment.Update {
     private DeploymentInner innerObject;
@@ -27,6 +28,10 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
         return this.innerModel().type();
     }
 
+    public Sku sku() {
+        return this.innerModel().sku();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -37,6 +42,10 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
 
     public DeploymentProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public DeploymentInner innerModel() {
@@ -132,6 +141,11 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
                 .getDeployments()
                 .getWithResponse(resourceGroupName, accountName, deploymentName, context)
                 .getValue();
+        return this;
+    }
+
+    public DeploymentImpl withSku(Sku sku) {
+        this.innerModel().withSku(sku);
         return this;
     }
 

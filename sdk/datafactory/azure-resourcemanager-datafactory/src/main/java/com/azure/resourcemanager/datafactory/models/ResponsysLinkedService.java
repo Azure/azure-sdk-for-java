@@ -24,6 +24,10 @@ public final class ResponsysLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ResponsysLinkedServiceTypeProperties innerTypeProperties = new ResponsysLinkedServiceTypeProperties();
 
+    /** Creates an instance of ResponsysLinkedService class. */
+    public ResponsysLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Responsys linked service properties.
      *
@@ -213,22 +217,22 @@ public final class ResponsysLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ResponsysLinkedService object itself.
      */
-    public ResponsysLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public ResponsysLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new ResponsysLinkedServiceTypeProperties();
         }

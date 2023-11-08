@@ -9,7 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Metadata about types of Azure resources, containing relevant tables, functions, etc. */
+/**
+ * A type of resource in Azure.
+ *
+ * <p>Metadata about types of Azure resources, containing relevant tables, functions, etc.
+ */
 @Fluent
 public final class MetadataResourceType {
     /*

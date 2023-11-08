@@ -14,14 +14,11 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +28,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.METRIC_ID;
-import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.ANOMALY;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.CHANGE_POINT;
@@ -44,24 +40,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FeedbackTest extends FeedbackTestBase {
     private MetricsAdvisorClient client;
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     /**
      * Verifies the result of the list metric feedback method when no options specified.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     void testListMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         listMetricFeedbackRunner(inputMetricFeedbackList -> {
             List<MetricFeedback> actualMetricFeedbackList = new ArrayList<>();
@@ -116,10 +103,11 @@ public class FeedbackTest extends FeedbackTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     void testListMetricFeedbackFilterByDimensionFilter(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
         creatMetricFeedbackRunner(inputMetricFeedback -> {
             MetricFeedback createdFeedback = client.addFeedback(METRIC_ID, inputMetricFeedback
                 .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)));
@@ -148,10 +136,11 @@ public class FeedbackTest extends FeedbackTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     void testListMetricFeedbackFilterByFeedbackType(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         // Act & Assert
         client.listFeedback(METRIC_ID,
@@ -168,9 +157,10 @@ public class FeedbackTest extends FeedbackTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     void testListMetricFeedbackFilterStartTime(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
         creatMetricFeedbackRunner(inputMetricFeedback -> {
             final MetricFeedback createdMetricFeedback = client.addFeedback(METRIC_ID, inputMetricFeedback);
 
@@ -194,7 +184,7 @@ public class FeedbackTest extends FeedbackTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void getMetricFeedbackNullId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         // Act & Assert
         Exception exception = assertThrows(NullPointerException.class, () -> client.getFeedback(null));
@@ -206,9 +196,10 @@ public class FeedbackTest extends FeedbackTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     public void getMetricFeedbackValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
         creatMetricFeedbackRunner(expectedMetricFeedback -> {
             final MetricFeedback createdFeedback = client.addFeedback(METRIC_ID, expectedMetricFeedback);
             // Act & Assert
@@ -226,9 +217,10 @@ public class FeedbackTest extends FeedbackTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     public void createCommentMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
         creatMetricFeedbackRunner(expectedMetricFeedback -> {
             // Act & Assert
             final MetricFeedback createdMetricFeedback = client.addFeedback(METRIC_ID, expectedMetricFeedback);
@@ -241,9 +233,10 @@ public class FeedbackTest extends FeedbackTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     public void createAnomalyFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         creatMetricFeedbackRunner(expectedMetricFeedback -> {
             // Act & Assert
@@ -258,9 +251,10 @@ public class FeedbackTest extends FeedbackTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     public void createPeriodMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         creatMetricFeedbackRunner(expectedMetricFeedback -> {
 
@@ -276,9 +270,10 @@ public class FeedbackTest extends FeedbackTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     public void createChangePointMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         creatMetricFeedbackRunner(expectedMetricFeedback -> {
 

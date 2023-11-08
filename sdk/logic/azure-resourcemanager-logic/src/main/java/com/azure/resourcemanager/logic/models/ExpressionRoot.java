@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The expression root. */
 @Fluent
 public final class ExpressionRoot extends Expression {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressionRoot.class);
-
     /*
      * The path.
      */
     @JsonProperty(value = "path")
     private String path;
+
+    /** Creates an instance of ExpressionRoot class. */
+    public ExpressionRoot() {
+    }
 
     /**
      * Get the path property: The path.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class representing a Traffic Manager HeatMap traffic flow properties. */
 @Fluent
 public final class TrafficFlow {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficFlow.class);
-
     /*
      * The IP address that this query experience originated from.
      */
@@ -38,6 +34,10 @@ public final class TrafficFlow {
      */
     @JsonProperty(value = "queryExperiences")
     private List<QueryExperience> queryExperiences;
+
+    /** Creates an instance of TrafficFlow class. */
+    public TrafficFlow() {
+    }
 
     /**
      * Get the sourceIp property: The IP address that this query experience originated from.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SiteExtensionType. */
+/** Site extension type. */
 public enum SiteExtensionType {
     /** Enum value Gallery. */
     GALLERY("Gallery"),
@@ -30,6 +30,9 @@ public enum SiteExtensionType {
      */
     @JsonCreator
     public static SiteExtensionType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SiteExtensionType[] items = SiteExtensionType.values();
         for (SiteExtensionType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum SiteExtensionType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

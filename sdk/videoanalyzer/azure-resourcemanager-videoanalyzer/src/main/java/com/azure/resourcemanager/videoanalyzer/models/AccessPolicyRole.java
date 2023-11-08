@@ -24,7 +24,11 @@ public final class AccessPolicyRole extends ExpandableStringEnum<AccessPolicyRol
         return fromString(name, AccessPolicyRole.class);
     }
 
-    /** @return known AccessPolicyRole values. */
+    /**
+     * Gets known AccessPolicyRole values.
+     *
+     * @return known AccessPolicyRole values.
+     */
     public static Collection<AccessPolicyRole> values() {
         return values(AccessPolicyRole.class);
     }

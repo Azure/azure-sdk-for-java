@@ -172,7 +172,7 @@ public class ResourceId {
                 byte[] temp = new byte[4];
                 ResourceId.blockCopy(buffer, 4, temp, 0, 4);
 
-                boolean isCollection = (temp[0] & (128)) > 0;
+                boolean isCollection = (temp[0] & (128)) != 0;
 
                 if (isCollection) {
                     rid.documentCollection = ByteBuffer.wrap(temp).getInt();

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.storagepool.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.fluent.models.OutboundEnvironmentEndpointInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of Outbound Environment Endpoints. */
 @Fluent
 public final class OutboundEnvironmentEndpointList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundEnvironmentEndpointList.class);
-
     /*
      * Collection of resources.
      */
@@ -27,6 +24,10 @@ public final class OutboundEnvironmentEndpointList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of OutboundEnvironmentEndpointList class. */
+    public OutboundEnvironmentEndpointList() {
+    }
 
     /**
      * Get the value property: Collection of resources.
@@ -64,7 +65,7 @@ public final class OutboundEnvironmentEndpointList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model OutboundEnvironmentEndpointList"));
@@ -72,4 +73,6 @@ public final class OutboundEnvironmentEndpointList {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OutboundEnvironmentEndpointList.class);
 }

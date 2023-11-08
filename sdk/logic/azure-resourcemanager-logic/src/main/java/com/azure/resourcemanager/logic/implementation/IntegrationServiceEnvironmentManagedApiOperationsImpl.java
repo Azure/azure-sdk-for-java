@@ -11,12 +11,11 @@ import com.azure.resourcemanager.logic.fluent.IntegrationServiceEnvironmentManag
 import com.azure.resourcemanager.logic.fluent.models.ApiOperationInner;
 import com.azure.resourcemanager.logic.models.ApiOperation;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentManagedApiOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationServiceEnvironmentManagedApiOperationsImpl
     implements IntegrationServiceEnvironmentManagedApiOperations {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentManagedApiOperationsImpl.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(IntegrationServiceEnvironmentManagedApiOperationsImpl.class);
 
     private final IntegrationServiceEnvironmentManagedApiOperationsClient innerClient;
 

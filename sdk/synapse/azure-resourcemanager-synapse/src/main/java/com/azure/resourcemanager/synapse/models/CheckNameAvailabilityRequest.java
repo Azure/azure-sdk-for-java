@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Check name availability request A request about whether a workspace name is available. */
+/**
+ * Check name availability request
+ *
+ * <p>A request about whether a workspace name is available.
+ */
 @Fluent
 public final class CheckNameAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityRequest.class);
-
     /*
      * Workspace name
      */
@@ -25,6 +25,10 @@ public final class CheckNameAvailabilityRequest {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of CheckNameAvailabilityRequest class. */
+    public CheckNameAvailabilityRequest() {
+    }
 
     /**
      * Get the name property: Workspace name.

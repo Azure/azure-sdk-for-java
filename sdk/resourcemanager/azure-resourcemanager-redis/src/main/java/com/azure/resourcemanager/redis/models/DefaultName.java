@@ -14,6 +14,15 @@ public final class DefaultName extends ExpandableStringEnum<DefaultName> {
     public static final DefaultName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of DefaultName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DefaultName() {
+    }
+
+    /**
      * Creates or finds a DefaultName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class DefaultName extends ExpandableStringEnum<DefaultName> {
         return fromString(name, DefaultName.class);
     }
 
-    /** @return known DefaultName values. */
+    /**
+     * Gets known DefaultName values.
+     *
+     * @return known DefaultName values.
+     */
     public static Collection<DefaultName> values() {
         return values(DefaultName.class);
     }

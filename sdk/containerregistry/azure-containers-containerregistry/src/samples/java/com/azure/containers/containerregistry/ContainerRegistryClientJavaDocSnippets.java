@@ -4,7 +4,6 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
@@ -25,7 +24,6 @@ public class ContainerRegistryClientJavaDocSnippets {
         // BEGIN: com.azure.containers.containerregistry.ContainerRegistryClient.instantiation
         ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildClient();
         // END: com.azure.containers.containerregistry.ContainerRegistryClient.instantiation
@@ -44,7 +42,6 @@ public class ContainerRegistryClientJavaDocSnippets {
         ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder()
             .pipeline(pipeline)
             .endpoint(endpoint)
-            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(credential)
             .buildClient();
         // END: com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation

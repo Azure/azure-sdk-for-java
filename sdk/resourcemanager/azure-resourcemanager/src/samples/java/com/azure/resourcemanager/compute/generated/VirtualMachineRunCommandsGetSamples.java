@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineRunCommands Get. */
 public final class VirtualMachineRunCommandsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/VirtualMachineRunCommandGet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/runCommandExamples/RunCommand_Get.json
      */
     /**
      * Sample code: VirtualMachineRunCommandGet.
@@ -22,6 +20,6 @@ public final class VirtualMachineRunCommandsGetSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineRunCommands()
-            .getWithResponse("SoutheastAsia", "RunPowerShellScript", Context.NONE);
+            .getWithResponse("SoutheastAsia", "RunPowerShellScript", com.azure.core.util.Context.NONE);
     }
 }

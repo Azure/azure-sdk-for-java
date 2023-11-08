@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,12 +16,11 @@ import java.util.Map;
 /** workbookChartPoint. */
 @Fluent
 public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookChartPoint.class);
-
     /*
      * Json
      */
     @JsonProperty(value = "value")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> value;
 
     /*
@@ -34,6 +33,10 @@ public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity
      * workbookChartPoint
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookChartPoint class. */
+    public MicrosoftGraphWorkbookChartPoint() {
+    }
 
     /**
      * Get the value property: Json.

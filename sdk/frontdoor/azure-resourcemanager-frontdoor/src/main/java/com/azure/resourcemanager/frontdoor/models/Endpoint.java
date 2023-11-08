@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the endpoint properties. */
 @Fluent
 public final class Endpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Endpoint.class);
-
     /*
      * The name of the endpoint
      */
@@ -25,6 +21,10 @@ public final class Endpoint {
      */
     @JsonProperty(value = "endpoint")
     private String endpoint;
+
+    /** Creates an instance of Endpoint class. */
+    public Endpoint() {
+    }
 
     /**
      * Get the name property: The name of the endpoint.

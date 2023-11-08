@@ -24,6 +24,10 @@ public final class ListPoolsResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ListPoolsResult class. */
+    public ListPoolsResult() {
+    }
+
     /**
      * Get the value property: The collection of returned pools.
      *

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OverrideTaskStepProperties model. */
 @Fluent
 public final class OverrideTaskStepProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OverrideTaskStepProperties.class);
-
     /*
      * The source context against which run has to be queued.
      */
@@ -41,18 +37,20 @@ public final class OverrideTaskStepProperties {
     private String target;
 
     /*
-     * The collection of overridable values that can be passed when running a
-     * Task.
+     * The collection of overridable values that can be passed when running a Task.
      */
     @JsonProperty(value = "values")
     private List<SetValue> values;
 
     /*
-     * Base64 encoded update trigger token that will be attached with the base
-     * image trigger webhook.
+     * Base64 encoded update trigger token that will be attached with the base image trigger webhook.
      */
     @JsonProperty(value = "updateTriggerToken")
     private String updateTriggerToken;
+
+    /** Creates an instance of OverrideTaskStepProperties class. */
+    public OverrideTaskStepProperties() {
+    }
 
     /**
      * Get the contextPath property: The source context against which run has to be queued.

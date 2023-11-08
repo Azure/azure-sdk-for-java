@@ -6,14 +6,11 @@ package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the return carrier and customer's account with the carrier. */
 @Fluent
 public final class ReturnShipping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReturnShipping.class);
-
     /*
      * The carrier's name.
      */
@@ -25,6 +22,10 @@ public final class ReturnShipping {
      */
     @JsonProperty(value = "carrierAccountNumber", required = true)
     private String carrierAccountNumber;
+
+    /** Creates an instance of ReturnShipping class. */
+    public ReturnShipping() {
+    }
 
     /**
      * Get the carrierName property: The carrier's name.
@@ -73,15 +74,17 @@ public final class ReturnShipping {
      */
     public void validate() {
         if (carrierName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property carrierName in model ReturnShipping"));
         }
         if (carrierAccountNumber() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property carrierAccountNumber in model ReturnShipping"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReturnShipping.class);
 }

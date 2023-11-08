@@ -13,22 +13,22 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.options.AppendBlobCreateOptions;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.options.AppendBlobSealOptions;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
+import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -53,17 +53,38 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClientBase {
+
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
+     * @deprecated use {@link AppendBlobClient#getMaxAppendBlockBytes()}.
      */
+    @Deprecated
     public static final int MAX_APPEND_BLOCK_BYTES = AppendBlobAsyncClient.MAX_APPEND_BLOCK_BYTES;
 
     /**
      * Indicates the maximum number of blocks allowed in an append blob.
+     * @deprecated use {@link AppendBlobClient#getMaxBlocks()}.
      */
+    @Deprecated
     public static final int MAX_BLOCKS = AppendBlobAsyncClient.MAX_BLOCKS;
+
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
+     */
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW = AppendBlobAsyncClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW;
+
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
+     * For versions 2022-11-02 and above.
+     */
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = AppendBlobAsyncClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
+
+    /**
+     * Indicates the maximum number of blocks allowed in an append blob.
+     */
+    static final int MAX_APPEND_BLOCKS = AppendBlobAsyncClient.MAX_APPEND_BLOCKS;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
@@ -100,7 +121,7 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
-     * it will be overwritten.
+     * new data will get appended to the existing blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -110,8 +131,27 @@ public final class AppendBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
-     * it will be overwritten.
+     * Creates and opens an output stream to write data to the append blob. If overwrite is specified {@code true},
+     * the existing blob will be deleted and recreated, should data exist on the blob. If overwrite is specified
+     * {@code false}, new data will get appended to the existing blob.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @param overwrite Whether an existing blob should be deleted and recreated, should data exist on the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(boolean overwrite) {
+        AppendBlobRequestConditions requestConditions = null;
+        if (!overwrite) {
+            requestConditions = new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        } else {
+            // creating new blob to overwrite existing blob
+            create(true);
+        }
+        return getBlobOutputStream(requestConditions);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the append blob.
      *
      * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
@@ -243,10 +283,72 @@ public final class AppendBlobClient extends BlobClientBase {
     }
 
     /**
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists -->
+     * <pre>
+     * client.createIfNotExists&#40;&#41;;
+     * System.out.println&#40;&quot;Created AppendBlob&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExists -->
+     *
+     * @return {@link AppendBlobItem} containing information of the created appended blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppendBlobItem createIfNotExists() {
+        return createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null).getValue();
+    }
+
+    /**
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tags&quot;, &quot;value&quot;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * Response&lt;AppendBlobItem&gt; response = client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;
+     *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;, timeout, context&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createIfNotExistsWithResponse#AppendBlobCreateOptions-Duration-Context -->
+     *
+     * @param options {@link AppendBlobCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive response {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains the {@link AppendBlobItem} containing information about the append blob. If {@link Response}'s status
+     * code is 201, a new append blob was successfully created. If status code is 409, an append blob already existed at
+     * this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout,
+        Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
+            createIfNotExistsWithResponse(options, context), timeout);
+    }
+
+    /**
      * Commits a new block of data to the end of the existing append blob.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
+     * size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -274,6 +376,10 @@ public final class AppendBlobClient extends BlobClientBase {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
+     * size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -311,9 +417,14 @@ public final class AppendBlobClient extends BlobClientBase {
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES, true);
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
-            fbb.subscribeOn(Schedulers.elastic()), length, contentMd5, appendBlobRequestConditions, context);
+        Flux<ByteBuffer> fbb;
+
+        // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service versions
+        // support up to 4MB
+        fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
+
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb, length, contentMd5,
+            appendBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -469,5 +580,28 @@ public final class AppendBlobClient extends BlobClientBase {
         Mono<Response<Void>> response = appendBlobAsyncClient.sealWithResponse(options, context);
 
         return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Get the max number of append block bytes based on service version being used. Service versions 2022-11-02 and
+     * above support uploading block bytes up to 100MB, all older service versions support up to 4MB.
+     *
+     * @return the max number of block bytes that can be uploaded based on service version.
+     */
+    public int getMaxAppendBlockBytes() {
+        if (appendBlobAsyncClient.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()) {
+            return MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW;
+        } else {
+            return MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
+        }
+    }
+
+    /**
+     * Get the maximum number of blocks allowed in an append blob.
+     *
+     * @return the max number of blocks that can be uploaded in an append blob.
+     */
+    public int getMaxBlocks() {
+        return MAX_APPEND_BLOCKS;
     }
 }

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request payload of get SSIS object metadata. */
 @Fluent
 public final class GetSsisObjectMetadataRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetSsisObjectMetadataRequest.class);
-
     /*
      * Metadata path.
      */
     @JsonProperty(value = "metadataPath")
     private String metadataPath;
+
+    /** Creates an instance of GetSsisObjectMetadataRequest class. */
+    public GetSsisObjectMetadataRequest() {
+    }
 
     /**
      * Get the metadataPath property: Metadata path.

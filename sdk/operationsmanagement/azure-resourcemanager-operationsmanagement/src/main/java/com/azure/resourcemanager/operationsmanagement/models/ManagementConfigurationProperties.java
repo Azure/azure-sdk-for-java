@@ -6,15 +6,12 @@ package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ManagementConfiguration properties supported by the OperationsManagement resource provider. */
 @Fluent
 public final class ManagementConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementConfigurationProperties.class);
-
     /*
      * The applicationId of the appliance for this Management.
      */
@@ -44,6 +41,10 @@ public final class ManagementConfigurationProperties {
      */
     @JsonProperty(value = "template", required = true)
     private Object template;
+
+    /** Creates an instance of ManagementConfigurationProperties class. */
+    public ManagementConfigurationProperties() {
+    }
 
     /**
      * Get the applicationId property: The applicationId of the appliance for this Management.
@@ -141,13 +142,13 @@ public final class ManagementConfigurationProperties {
      */
     public void validate() {
         if (parentResourceType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property parentResourceType in model ManagementConfigurationProperties"));
         }
         if (parameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property parameters in model ManagementConfigurationProperties"));
@@ -155,10 +156,12 @@ public final class ManagementConfigurationProperties {
             parameters().forEach(e -> e.validate());
         }
         if (template() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property template in model ManagementConfigurationProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementConfigurationProperties.class);
 }

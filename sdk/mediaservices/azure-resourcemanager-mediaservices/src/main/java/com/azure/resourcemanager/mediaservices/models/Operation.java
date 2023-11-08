@@ -47,6 +47,10 @@ public final class Operation {
     @JsonProperty(value = "actionType")
     private ActionType actionType;
 
+    /** Creates an instance of Operation class. */
+    public Operation() {
+    }
+
     /**
      * Get the name property: The operation name.
      *

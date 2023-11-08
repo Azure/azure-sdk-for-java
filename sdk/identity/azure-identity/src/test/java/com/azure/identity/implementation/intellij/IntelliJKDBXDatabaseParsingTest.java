@@ -5,18 +5,14 @@ package com.azure.identity.implementation.intellij;
 
 import com.azure.identity.implementation.IntelliJAuthMethodDetails;
 import com.azure.identity.implementation.IntelliJCacheAccessor;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"javax.crypto.*" })
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class IntelliJKDBXDatabaseParsingTest {
 
     @Test
@@ -24,7 +20,7 @@ public class IntelliJKDBXDatabaseParsingTest {
         InputStream inputStreamwow = new FileInputStream(getPath("c.kdbx"));
         IntelliJKdbxDatabase kdbxDatabase = IntelliJKdbxDatabase.parse(inputStreamwow, "testpassword");
         String password = kdbxDatabase.getDatabaseEntryValue("ADAuthManager");
-        Assert.assertEquals("DummyEntry", password);
+        assertEquals("DummyEntry", password);
     }
 
     @Test
@@ -32,7 +28,7 @@ public class IntelliJKDBXDatabaseParsingTest {
         File authFile = new File(getPath("AuthMethodDetails.json"));
         IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(null);
         IntelliJAuthMethodDetails authMethodDetails = cacheAccessor.parseAuthMethodDetails(authFile);
-        Assert.assertEquals("dummyuser@email.com", authMethodDetails.getAccountEmail());
+        assertEquals("dummyuser@email.com", authMethodDetails.getAccountEmail());
     }
 
     private String getPath(String filename) {

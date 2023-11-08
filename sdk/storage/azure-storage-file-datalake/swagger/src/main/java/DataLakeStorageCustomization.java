@@ -14,23 +14,28 @@ public class DataLakeStorageCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.file.datalake.implementation.models");
-
         implementationModels.getClass("BlobHierarchyListSegment")
             .addAnnotation("@JsonDeserialize(using = com.azure.storage.file.datalake.implementation.util.CustomHierarchicalListingDeserializer.class)");
+        changeJsonPropertyValue(implementationModels.getClass("FileSystemList"), "filesystems", "filesystems");
+        changeJsonPropertyValue(implementationModels.getClass("PathList"), "paths", "paths");
+        changeJsonPropertyValue(implementationModels.getClass("SetAccessControlRecursiveResponse"), "failedEntries", "failedEntries");
+    }
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private void changeJsonPropertyValue(ClassCustomization classCustomization, String fieldName, String jsonPropertyValue) {
+        classCustomization.customizeAst(ast -> {
+            AnnotationExpr annotationExpr = ast.getClassByName(classCustomization.getClassName())
+                .get()
+                .getFieldByName(fieldName)
+                .get()
+                .getAnnotationByName("JsonProperty")
+                .get();
 
-        implementationModels.getClass("FileSystemList")
-            .getProperty("filesystems")
-            .removeAnnotation("@JsonProperty")
-            .addAnnotation("@JsonProperty(value = \"filesystems\")");
-
-        implementationModels.getClass("PathList")
-            .getProperty("paths")
-            .removeAnnotation("@JsonProperty")
-            .addAnnotation("@JsonProperty(value = \"paths\")");
-
-        implementationModels.getClass("SetAccessControlRecursiveResponse")
-            .getProperty("failedEntries")
-            .removeAnnotation("@JsonProperty")
-            .addAnnotation("@JsonProperty(\"failedEntries\")");
+            if (annotationExpr instanceof NormalAnnotationExpr) {
+                ((NormalAnnotationExpr) annotationExpr)
+                    .setPairs(new NodeList<>(new MemberValuePair("value", new StringLiteralExpr(jsonPropertyValue))));
+            } else {
+                ((SingleMemberAnnotationExpr) annotationExpr).setMemberValue(new StringLiteralExpr(jsonPropertyValue));
+            }
+        });
     }
 }

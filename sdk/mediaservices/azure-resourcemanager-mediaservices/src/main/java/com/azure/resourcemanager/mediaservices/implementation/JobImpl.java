@@ -89,6 +89,10 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
         return this.innerModel().endTime();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public JobInner innerModel() {
         return this.innerObject;
     }
@@ -193,14 +197,14 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
         return this;
     }
 
-    public void cancelJob() {
-        serviceManager.jobs().cancelJob(resourceGroupName, accountName, transformName, jobName);
-    }
-
     public Response<Void> cancelJobWithResponse(Context context) {
         return serviceManager
             .jobs()
             .cancelJobWithResponse(resourceGroupName, accountName, transformName, jobName, context);
+    }
+
+    public void cancelJob() {
+        serviceManager.jobs().cancelJob(resourceGroupName, accountName, transformName, jobName);
     }
 
     public JobImpl withDescription(String description) {

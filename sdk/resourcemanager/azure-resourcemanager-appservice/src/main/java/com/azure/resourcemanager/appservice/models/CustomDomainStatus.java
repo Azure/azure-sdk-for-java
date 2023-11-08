@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomDomainStatus. */
+/** The status of the custom domain. */
 public final class CustomDomainStatus extends ExpandableStringEnum<CustomDomainStatus> {
     /** Static value RetrievingValidationToken for CustomDomainStatus. */
     public static final CustomDomainStatus RETRIEVING_VALIDATION_TOKEN = fromString("RetrievingValidationToken");
@@ -28,6 +28,18 @@ public final class CustomDomainStatus extends ExpandableStringEnum<CustomDomainS
     /** Static value Deleting for CustomDomainStatus. */
     public static final CustomDomainStatus DELETING = fromString("Deleting");
 
+    /** Static value Unhealthy for CustomDomainStatus. */
+    public static final CustomDomainStatus UNHEALTHY = fromString("Unhealthy");
+
+    /**
+     * Creates a new instance of CustomDomainStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomDomainStatus() {
+    }
+
     /**
      * Creates or finds a CustomDomainStatus from its string representation.
      *
@@ -39,7 +51,11 @@ public final class CustomDomainStatus extends ExpandableStringEnum<CustomDomainS
         return fromString(name, CustomDomainStatus.class);
     }
 
-    /** @return known CustomDomainStatus values. */
+    /**
+     * Gets known CustomDomainStatus values.
+     *
+     * @return known CustomDomainStatus values.
+     */
     public static Collection<CustomDomainStatus> values() {
         return values(CustomDomainStatus.class);
     }

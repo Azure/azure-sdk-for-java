@@ -64,11 +64,10 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface VpnServerConfigurationsAssociatedWithVirtualWansService {
+    public interface VpnServerConfigurationsAssociatedWithVirtualWansService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
-                + "/{virtualWANName}/vpnServerConfigurations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/vpnServerConfigurations")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> list(
@@ -113,7 +112,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -164,7 +163,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -241,7 +240,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner> beginList(
         String resourceGroupName, String virtualWanName) {
-        return beginListAsync(resourceGroupName, virtualWanName).getSyncPoller();
+        return this.beginListAsync(resourceGroupName, virtualWanName).getSyncPoller();
     }
 
     /**
@@ -258,7 +257,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner> beginList(
         String resourceGroupName, String virtualWanName, Context context) {
-        return beginListAsync(resourceGroupName, virtualWanName, context).getSyncPoller();
+        return this.beginListAsync(resourceGroupName, virtualWanName, context).getSyncPoller();
     }
 
     /**

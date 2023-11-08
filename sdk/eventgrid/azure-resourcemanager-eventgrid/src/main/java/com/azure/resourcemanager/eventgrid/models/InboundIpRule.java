@@ -22,6 +22,10 @@ public final class InboundIpRule {
     @JsonProperty(value = "action")
     private IpActionType action;
 
+    /** Creates an instance of InboundIpRule class. */
+    public InboundIpRule() {
+    }
+
     /**
      * Get the ipMask property: IP Address in CIDR notation e.g., 10.0.0.0/8.
      *

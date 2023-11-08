@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The event response message received from the service URI. */
 @Fluent
 public final class EventResponseMessage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventResponseMessage.class);
-
     /*
      * The content of the event response message.
      */
@@ -46,6 +42,10 @@ public final class EventResponseMessage {
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /** Creates an instance of EventResponseMessage class. */
+    public EventResponseMessage() {
+    }
 
     /**
      * Get the content property: The content of the event response message.

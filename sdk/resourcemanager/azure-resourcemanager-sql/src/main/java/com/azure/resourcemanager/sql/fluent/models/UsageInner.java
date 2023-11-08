@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.Name;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ARM usage. */
 @Immutable
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
-
     /*
      * Resource ID.
      */
@@ -56,6 +52,10 @@ public final class UsageInner {
      */
     @JsonProperty(value = "requestedLimit", access = JsonProperty.Access.WRITE_ONLY)
     private Integer requestedLimit;
+
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
 
     /**
      * Get the id property: Resource ID.

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BastionHostSkuName. */
+/** The name of this Bastion Host. */
 public final class BastionHostSkuName extends ExpandableStringEnum<BastionHostSkuName> {
     /** Static value Basic for BastionHostSkuName. */
     public static final BastionHostSkuName BASIC = fromString("Basic");
 
     /** Static value Standard for BastionHostSkuName. */
     public static final BastionHostSkuName STANDARD = fromString("Standard");
+
+    /**
+     * Creates a new instance of BastionHostSkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BastionHostSkuName() {
+    }
 
     /**
      * Creates or finds a BastionHostSkuName from its string representation.
@@ -27,7 +36,11 @@ public final class BastionHostSkuName extends ExpandableStringEnum<BastionHostSk
         return fromString(name, BastionHostSkuName.class);
     }
 
-    /** @return known BastionHostSkuName values. */
+    /**
+     * Gets known BastionHostSkuName values.
+     *
+     * @return known BastionHostSkuName values.
+     */
     public static Collection<BastionHostSkuName> values() {
         return values(BastionHostSkuName.class);
     }

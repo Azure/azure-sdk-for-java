@@ -24,6 +24,10 @@ public final class SybaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SybaseLinkedServiceTypeProperties innerTypeProperties = new SybaseLinkedServiceTypeProperties();
 
+    /** Creates an instance of SybaseLinkedService class. */
+    public SybaseLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Sybase linked service properties.
      *
@@ -201,22 +205,22 @@ public final class SybaseLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SybaseLinkedService object itself.
      */
-    public SybaseLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public SybaseLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SybaseLinkedServiceTypeProperties();
         }

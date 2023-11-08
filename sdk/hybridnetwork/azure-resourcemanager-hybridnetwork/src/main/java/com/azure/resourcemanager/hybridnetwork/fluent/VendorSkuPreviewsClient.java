@@ -23,7 +23,7 @@ public interface VendorSkuPreviewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PreviewSubscriptionInner> list(String vendorName, String skuName);
@@ -37,7 +37,7 @@ public interface VendorSkuPreviewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PreviewSubscriptionInner> list(String vendorName, String skuName, Context context);
@@ -52,9 +52,9 @@ public interface VendorSkuPreviewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription which can use a sku.
+     * @return the {@link SyncPoller} for polling of customer subscription which can use a sku.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PreviewSubscriptionInner>, PreviewSubscriptionInner> beginCreateOrUpdate(
         String vendorName, String skuName, String previewSubscription, PreviewSubscriptionInner parameters);
 
@@ -69,9 +69,9 @@ public interface VendorSkuPreviewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription which can use a sku.
+     * @return the {@link SyncPoller} for polling of customer subscription which can use a sku.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PreviewSubscriptionInner>, PreviewSubscriptionInner> beginCreateOrUpdate(
         String vendorName,
         String skuName,
@@ -115,6 +115,22 @@ public interface VendorSkuPreviewsClient {
         String previewSubscription,
         PreviewSubscriptionInner parameters,
         Context context);
+
+    /**
+     * Gets the preview information of a vendor sku.
+     *
+     * @param vendorName The name of the vendor.
+     * @param skuName The name of the vendor sku.
+     * @param previewSubscription Preview subscription ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the preview information of a vendor sku along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PreviewSubscriptionInner> getWithResponse(
+        String vendorName, String skuName, String previewSubscription, Context context);
 
     /**
      * Gets the preview information of a vendor sku.
@@ -131,22 +147,6 @@ public interface VendorSkuPreviewsClient {
     PreviewSubscriptionInner get(String vendorName, String skuName, String previewSubscription);
 
     /**
-     * Gets the preview information of a vendor sku.
-     *
-     * @param vendorName The name of the vendor.
-     * @param skuName The name of the vendor sku.
-     * @param previewSubscription Preview subscription ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview information of a vendor sku.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PreviewSubscriptionInner> getWithResponse(
-        String vendorName, String skuName, String previewSubscription, Context context);
-
-    /**
      * Deletes the preview information of a vendor sku.
      *
      * @param vendorName The name of the vendor.
@@ -155,9 +155,9 @@ public interface VendorSkuPreviewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String vendorName, String skuName, String previewSubscription);
 
     /**
@@ -170,9 +170,9 @@ public interface VendorSkuPreviewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String vendorName, String skuName, String previewSubscription, Context context);
 

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.ResourceMoveDefinition;
 
 /** Samples for SqlPools Rename. */
@@ -27,6 +26,6 @@ public final class SqlPoolsRenameSamples {
                 new ResourceMoveDefinition()
                     .withId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Synapse/workspaces/testsvr/sqlPools/newtestdb"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

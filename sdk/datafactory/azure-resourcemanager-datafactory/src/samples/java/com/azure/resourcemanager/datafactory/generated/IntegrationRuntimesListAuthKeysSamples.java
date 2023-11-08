@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes ListAuthKeys. */
 public final class IntegrationRuntimesListAuthKeysSamples {
     /*
@@ -21,6 +19,9 @@ public final class IntegrationRuntimesListAuthKeysSamples {
         manager
             .integrationRuntimes()
             .listAuthKeysWithResponse(
-                "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", Context.NONE);
+                "exampleResourceGroup",
+                "exampleFactoryName",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

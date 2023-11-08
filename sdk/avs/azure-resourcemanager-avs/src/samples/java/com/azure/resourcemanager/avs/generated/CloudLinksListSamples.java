@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudLinks List. */
 public final class CloudLinksListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/CloudLinks_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/CloudLinks_List.json
      */
     /**
      * Sample code: CloudLinks_List.
@@ -17,6 +15,6 @@ public final class CloudLinksListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void cloudLinksList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.cloudLinks().list("group1", "cloud1", Context.NONE);
+        manager.cloudLinks().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

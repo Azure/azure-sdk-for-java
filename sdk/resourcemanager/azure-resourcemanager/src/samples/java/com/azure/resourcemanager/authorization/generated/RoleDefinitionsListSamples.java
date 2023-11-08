@@ -4,25 +4,23 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleDefinitions List. */
 public final class RoleDefinitionsListSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-01-01-preview/examples/GetRoleDefinitionAtScope.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/GetRoleDefinitionAtScope.json
      */
     /**
-     * Sample code: List role definition for scope.
+     * Sample code: List role definitions for scope.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listRoleDefinitionForScope(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void listRoleDefinitionsForScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .accessManagement()
             .roleAssignments()
             .manager()
             .roleServiceClient()
             .getRoleDefinitions()
-            .list("scope", null, Context.NONE);
+            .list("scope", null, com.azure.core.util.Context.NONE);
     }
 }

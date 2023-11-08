@@ -31,11 +31,14 @@ public final class BastionShareableLinkInner {
     private String createdAt;
 
     /*
-     * Optional field indicating the warning or error message related to the vm
-     * in case of partial failure.
+     * Optional field indicating the warning or error message related to the vm in case of partial failure.
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
+
+    /** Creates an instance of BastionShareableLinkInner class. */
+    public BastionShareableLinkInner() {
+    }
 
     /**
      * Get the vm property: Reference of the virtual machine resource.

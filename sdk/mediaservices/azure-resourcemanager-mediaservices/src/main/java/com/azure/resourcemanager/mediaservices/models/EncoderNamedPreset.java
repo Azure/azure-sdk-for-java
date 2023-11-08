@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncoderNamedPreset. */
+/** The built-in preset to be used for encoding videos. */
 public final class EncoderNamedPreset extends ExpandableStringEnum<EncoderNamedPreset> {
     /** Static value H264SingleBitrateSD for EncoderNamedPreset. */
     public static final EncoderNamedPreset H264SINGLE_BITRATE_SD = fromString("H264SingleBitrateSD");
@@ -24,6 +24,9 @@ public final class EncoderNamedPreset extends ExpandableStringEnum<EncoderNamedP
 
     /** Static value AACGoodQualityAudio for EncoderNamedPreset. */
     public static final EncoderNamedPreset AACGOOD_QUALITY_AUDIO = fromString("AACGoodQualityAudio");
+
+    /** Static value DDGoodQualityAudio for EncoderNamedPreset. */
+    public static final EncoderNamedPreset DDGOOD_QUALITY_AUDIO = fromString("DDGoodQualityAudio");
 
     /** Static value ContentAwareEncodingExperimental for EncoderNamedPreset. */
     public static final EncoderNamedPreset CONTENT_AWARE_ENCODING_EXPERIMENTAL =
@@ -61,6 +64,15 @@ public final class EncoderNamedPreset extends ExpandableStringEnum<EncoderNamedP
     public static final EncoderNamedPreset H265SINGLE_BITRATE4K = fromString("H265SingleBitrate4K");
 
     /**
+     * Creates a new instance of EncoderNamedPreset value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncoderNamedPreset() {
+    }
+
+    /**
      * Creates or finds a EncoderNamedPreset from its string representation.
      *
      * @param name a name to look for.
@@ -71,7 +83,11 @@ public final class EncoderNamedPreset extends ExpandableStringEnum<EncoderNamedP
         return fromString(name, EncoderNamedPreset.class);
     }
 
-    /** @return known EncoderNamedPreset values. */
+    /**
+     * Gets known EncoderNamedPreset values.
+     *
+     * @return known EncoderNamedPreset values.
+     */
     public static Collection<EncoderNamedPreset> values() {
         return values(EncoderNamedPreset.class);
     }

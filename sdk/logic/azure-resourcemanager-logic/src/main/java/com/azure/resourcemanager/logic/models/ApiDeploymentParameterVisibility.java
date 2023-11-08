@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApiDeploymentParameterVisibility. */
+/** The Api deployment parameter visibility. */
 public final class ApiDeploymentParameterVisibility extends ExpandableStringEnum<ApiDeploymentParameterVisibility> {
     /** Static value NotSpecified for ApiDeploymentParameterVisibility. */
     public static final ApiDeploymentParameterVisibility NOT_SPECIFIED = fromString("NotSpecified");
@@ -18,6 +18,15 @@ public final class ApiDeploymentParameterVisibility extends ExpandableStringEnum
 
     /** Static value Internal for ApiDeploymentParameterVisibility. */
     public static final ApiDeploymentParameterVisibility INTERNAL = fromString("Internal");
+
+    /**
+     * Creates a new instance of ApiDeploymentParameterVisibility value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApiDeploymentParameterVisibility() {
+    }
 
     /**
      * Creates or finds a ApiDeploymentParameterVisibility from its string representation.
@@ -30,7 +39,11 @@ public final class ApiDeploymentParameterVisibility extends ExpandableStringEnum
         return fromString(name, ApiDeploymentParameterVisibility.class);
     }
 
-    /** @return known ApiDeploymentParameterVisibility values. */
+    /**
+     * Gets known ApiDeploymentParameterVisibility values.
+     *
+     * @return known ApiDeploymentParameterVisibility values.
+     */
     public static Collection<ApiDeploymentParameterVisibility> values() {
         return values(ApiDeploymentParameterVisibility.class);
     }

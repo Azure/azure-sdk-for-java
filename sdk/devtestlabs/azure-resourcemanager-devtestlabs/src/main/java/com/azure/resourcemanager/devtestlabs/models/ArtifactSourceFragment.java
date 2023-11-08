@@ -4,15 +4,15 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** Properties of an artifact source. */
-@Immutable
+@Fluent
 public final class ArtifactSourceFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArtifactSourceFragment.class);
+    /** Creates an instance of ArtifactSourceFragment class. */
+    public ArtifactSourceFragment() {
+    }
 
     /** {@inheritDoc} */
     @Override

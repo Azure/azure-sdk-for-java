@@ -21,6 +21,12 @@ public class CreateBatchOptions {
     private String partitionId;
 
     /**
+     * Creates a new instance.
+     */
+    public CreateBatchOptions() {
+    }
+
+    /**
      * Sets the maximum size for the {@link EventDataBatch batch of events}, in bytes.
      *
      * @param maximumSizeInBytes The maximum size to allow for the {@link EventDataBatch batch of events}.

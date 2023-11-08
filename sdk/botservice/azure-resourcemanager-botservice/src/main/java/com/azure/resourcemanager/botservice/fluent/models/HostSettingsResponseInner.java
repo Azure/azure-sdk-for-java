@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response body returned for a request to Bot Service Management to check per subscription hostSettings. */
 @Fluent
 public final class HostSettingsResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostSettingsResponseInner.class);
-
     /*
      * For in-conversation bot user authentication
      */

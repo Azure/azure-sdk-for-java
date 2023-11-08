@@ -35,6 +35,10 @@ public final class VirtualHubRouteV2 {
     @JsonProperty(value = "nextHops")
     private List<String> nextHops;
 
+    /** Creates an instance of VirtualHubRouteV2 class. */
+    public VirtualHubRouteV2() {
+    }
+
     /**
      * Get the destinationType property: The type of destinations.
      *

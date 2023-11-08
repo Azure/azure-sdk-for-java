@@ -17,6 +17,10 @@ public final class LoadBalancerVipSwapRequest {
     @JsonProperty(value = "frontendIPConfigurations")
     private List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations;
 
+    /** Creates an instance of LoadBalancerVipSwapRequest class. */
+    public LoadBalancerVipSwapRequest() {
+    }
+
     /**
      * Get the frontendIpConfigurations property: A list of frontend IP configuration resources that should swap VIPs.
      *

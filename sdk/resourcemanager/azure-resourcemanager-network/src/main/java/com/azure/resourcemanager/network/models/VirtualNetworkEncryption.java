@@ -22,6 +22,10 @@ public final class VirtualNetworkEncryption {
     @JsonProperty(value = "enforcement")
     private VirtualNetworkEncryptionEnforcement enforcement;
 
+    /** Creates an instance of VirtualNetworkEncryption class. */
+    public VirtualNetworkEncryption() {
+    }
+
     /**
      * Get the enabled property: Indicates if encryption is enabled on the virtual network.
      *

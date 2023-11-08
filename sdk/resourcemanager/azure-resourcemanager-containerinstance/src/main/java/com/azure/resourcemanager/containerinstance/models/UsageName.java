@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The name object of the resource. */
 @Immutable
 public final class UsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageName.class);
-
     /*
      * The name of the resource
      */
@@ -25,6 +21,10 @@ public final class UsageName {
      */
     @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
+
+    /** Creates an instance of UsageName class. */
+    public UsageName() {
+    }
 
     /**
      * Get the value property: The name of the resource.

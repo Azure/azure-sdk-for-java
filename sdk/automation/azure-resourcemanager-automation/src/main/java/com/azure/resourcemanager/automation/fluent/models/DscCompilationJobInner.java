@@ -5,108 +5,32 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.DscConfigurationAssociationProperty;
 import com.azure.resourcemanager.automation.models.JobProvisioningState;
 import com.azure.resourcemanager.automation.models.JobStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
 /** Definition of the Dsc Compilation job. */
-@JsonFlatten
 @Fluent
-public class DscCompilationJobInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscCompilationJobInner.class);
-
+public final class DscCompilationJobInner extends ProxyResource {
     /*
-     * Gets or sets the configuration.
+     * Gets or sets the properties of the Dsc Compilation job.
      */
-    @JsonProperty(value = "properties.configuration")
-    private DscConfigurationAssociationProperty configuration;
+    @JsonProperty(value = "properties")
+    private DscCompilationJobProperties innerProperties;
 
-    /*
-     * Gets the compilation job started by.
+    /**
+     * Get the innerProperties property: Gets or sets the properties of the Dsc Compilation job.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.startedBy", access = JsonProperty.Access.WRITE_ONLY)
-    private String startedBy;
-
-    /*
-     * Gets the id of the job.
-     */
-    @JsonProperty(value = "properties.jobId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID jobId;
-
-    /*
-     * Gets the creation time of the job.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * The current provisioning state of the job.
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private JobProvisioningState provisioningState;
-
-    /*
-     * Gets or sets the runOn which specifies the group name where the job is
-     * to be executed.
-     */
-    @JsonProperty(value = "properties.runOn")
-    private String runOn;
-
-    /*
-     * Gets or sets the status of the job.
-     */
-    @JsonProperty(value = "properties.status")
-    private JobStatus status;
-
-    /*
-     * Gets or sets the status details of the job.
-     */
-    @JsonProperty(value = "properties.statusDetails")
-    private String statusDetails;
-
-    /*
-     * Gets the start time of the job.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * Gets the end time of the job.
-     */
-    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * Gets the exception of the job.
-     */
-    @JsonProperty(value = "properties.exception", access = JsonProperty.Access.WRITE_ONLY)
-    private String exception;
-
-    /*
-     * Gets the last modified time of the job.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Gets the last status modified time of the job.
-     */
-    @JsonProperty(value = "properties.lastStatusModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastStatusModifiedTime;
-
-    /*
-     * Gets or sets the parameters of the job.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, String> parameters;
+    private DscCompilationJobProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the configuration property: Gets or sets the configuration.
@@ -114,7 +38,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the configuration value.
      */
     public DscConfigurationAssociationProperty configuration() {
-        return this.configuration;
+        return this.innerProperties() == null ? null : this.innerProperties().configuration();
     }
 
     /**
@@ -124,7 +48,10 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the DscCompilationJobInner object itself.
      */
     public DscCompilationJobInner withConfiguration(DscConfigurationAssociationProperty configuration) {
-        this.configuration = configuration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscCompilationJobProperties();
+        }
+        this.innerProperties().withConfiguration(configuration);
         return this;
     }
 
@@ -134,7 +61,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the startedBy value.
      */
     public String startedBy() {
-        return this.startedBy;
+        return this.innerProperties() == null ? null : this.innerProperties().startedBy();
     }
 
     /**
@@ -143,7 +70,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the jobId value.
      */
     public UUID jobId() {
-        return this.jobId;
+        return this.innerProperties() == null ? null : this.innerProperties().jobId();
     }
 
     /**
@@ -152,7 +79,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -161,7 +88,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public JobProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -171,7 +98,10 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the DscCompilationJobInner object itself.
      */
     public DscCompilationJobInner withProvisioningState(JobProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscCompilationJobProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -181,7 +111,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the runOn value.
      */
     public String runOn() {
-        return this.runOn;
+        return this.innerProperties() == null ? null : this.innerProperties().runOn();
     }
 
     /**
@@ -191,7 +121,10 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the DscCompilationJobInner object itself.
      */
     public DscCompilationJobInner withRunOn(String runOn) {
-        this.runOn = runOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscCompilationJobProperties();
+        }
+        this.innerProperties().withRunOn(runOn);
         return this;
     }
 
@@ -201,7 +134,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the status value.
      */
     public JobStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -211,7 +144,10 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the DscCompilationJobInner object itself.
      */
     public DscCompilationJobInner withStatus(JobStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscCompilationJobProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -221,7 +157,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the statusDetails value.
      */
     public String statusDetails() {
-        return this.statusDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().statusDetails();
     }
 
     /**
@@ -231,7 +167,10 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the DscCompilationJobInner object itself.
      */
     public DscCompilationJobInner withStatusDetails(String statusDetails) {
-        this.statusDetails = statusDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscCompilationJobProperties();
+        }
+        this.innerProperties().withStatusDetails(statusDetails);
         return this;
     }
 
@@ -241,7 +180,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -250,7 +189,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -259,7 +198,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the exception value.
      */
     public String exception() {
-        return this.exception;
+        return this.innerProperties() == null ? null : this.innerProperties().exception();
     }
 
     /**
@@ -268,7 +207,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -277,7 +216,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the lastStatusModifiedTime value.
      */
     public OffsetDateTime lastStatusModifiedTime() {
-        return this.lastStatusModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastStatusModifiedTime();
     }
 
     /**
@@ -286,7 +225,7 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -296,7 +235,10 @@ public class DscCompilationJobInner extends ProxyResource {
      * @return the DscCompilationJobInner object itself.
      */
     public DscCompilationJobInner withParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscCompilationJobProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -306,8 +248,8 @@ public class DscCompilationJobInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (configuration() != null) {
-            configuration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

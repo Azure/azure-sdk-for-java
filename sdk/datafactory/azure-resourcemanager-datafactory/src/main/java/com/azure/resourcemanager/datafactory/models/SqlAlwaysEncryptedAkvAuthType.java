@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlAlwaysEncryptedAkvAuthType. */
+/** Sql always encrypted AKV authentication type. Type: string. */
 public final class SqlAlwaysEncryptedAkvAuthType extends ExpandableStringEnum<SqlAlwaysEncryptedAkvAuthType> {
     /** Static value ServicePrincipal for SqlAlwaysEncryptedAkvAuthType. */
     public static final SqlAlwaysEncryptedAkvAuthType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
@@ -21,6 +21,15 @@ public final class SqlAlwaysEncryptedAkvAuthType extends ExpandableStringEnum<Sq
         fromString("UserAssignedManagedIdentity");
 
     /**
+     * Creates a new instance of SqlAlwaysEncryptedAkvAuthType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlAlwaysEncryptedAkvAuthType() {
+    }
+
+    /**
      * Creates or finds a SqlAlwaysEncryptedAkvAuthType from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class SqlAlwaysEncryptedAkvAuthType extends ExpandableStringEnum<Sq
         return fromString(name, SqlAlwaysEncryptedAkvAuthType.class);
     }
 
-    /** @return known SqlAlwaysEncryptedAkvAuthType values. */
+    /**
+     * Gets known SqlAlwaysEncryptedAkvAuthType values.
+     *
+     * @return known SqlAlwaysEncryptedAkvAuthType values.
+     */
     public static Collection<SqlAlwaysEncryptedAkvAuthType> values() {
         return values(SqlAlwaysEncryptedAkvAuthType.class);
     }

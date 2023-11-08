@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 
 /** Samples for RecordSets Get. */
 public final class RecordSetsGetSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetPTRGet.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetPTRGet.json
      */
     /**
      * Sample code: GET Private DNS Zone PTR Record Set.
@@ -23,11 +22,12 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, "1", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, "1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetMXGet.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetMXGet.json
      */
     /**
      * Sample code: GET Private DNS Zone MX Record Set.
@@ -40,11 +40,12 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.MX, "recordMX", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.MX, "recordMX", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetAAAAGet.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAAAAGet.json
      */
     /**
      * Sample code: GET Private DNS Zone AAAA Record Set.
@@ -57,11 +58,12 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.AAAA, "recordAAAA", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.AAAA, "recordAAAA", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetSOAGet.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSOAGet.json
      */
     /**
      * Sample code: GET Private DNS Zone SOA Record Set.
@@ -74,11 +76,12 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.SOA, "@", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.SOA, "@", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetSRVGet.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSRVGet.json
      */
     /**
      * Sample code: GET Private DNS Zone SRV Record Set.
@@ -91,11 +94,12 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.SRV, "recordSRV", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.SRV, "recordSRV", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetAGet.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAGet.json
      */
     /**
      * Sample code: GET Private DNS Zone A Record Set.
@@ -108,11 +112,12 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.A, "recordA", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.A, "recordA", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetCNAMEGet.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetCNAMEGet.json
      */
     /**
      * Sample code: GET Private DNS Zone CNAME Record Set.
@@ -125,11 +130,16 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.CNAME, "recordCNAME", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1",
+                "privatezone1.com",
+                RecordType.CNAME,
+                "recordCNAME",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/RecordSetTXTGet.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetTXTGet.json
      */
     /**
      * Sample code: GET Private DNS Zone TXT Record Set.
@@ -142,6 +152,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.TXT, "recordTXT", Context.NONE);
+            .getWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.TXT, "recordTXT", com.azure.core.util.Context.NONE);
     }
 }

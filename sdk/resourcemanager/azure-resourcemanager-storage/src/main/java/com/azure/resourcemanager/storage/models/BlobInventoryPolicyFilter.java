@@ -16,37 +16,60 @@ import java.util.List;
 @Fluent
 public final class BlobInventoryPolicyFilter {
     /*
-     * An array of strings for blob prefixes to be matched.
+     * An array of strings with maximum 10 blob prefixes to be included in the inventory.
      */
     @JsonProperty(value = "prefixMatch")
     private List<String> prefixMatch;
 
     /*
-     * An array of predefined enum values. Valid values include blockBlob,
-     * appendBlob, pageBlob. Hns accounts does not support pageBlobs. This
-     * field is required when definition.objectType property is set to 'Blob'.
+     * An array of strings with maximum 10 blob prefixes to be excluded from the inventory.
+     */
+    @JsonProperty(value = "excludePrefix")
+    private List<String> excludePrefix;
+
+    /*
+     * An array of predefined enum values. Valid values include blockBlob, appendBlob, pageBlob. Hns accounts does not
+     * support pageBlobs. This field is required when definition.objectType property is set to 'Blob'.
      */
     @JsonProperty(value = "blobTypes")
     private List<String> blobTypes;
 
     /*
-     * Includes blob versions in blob inventory when value is set to true. The
-     * definition.schemaFields values 'VersionId and IsCurrentVersion' are
-     * required if this property is set to true, else they must be excluded.
+     * Includes blob versions in blob inventory when value is set to true. The definition.schemaFields values
+     * 'VersionId and IsCurrentVersion' are required if this property is set to true, else they must be excluded.
      */
     @JsonProperty(value = "includeBlobVersions")
     private Boolean includeBlobVersions;
 
     /*
-     * Includes blob snapshots in blob inventory when value is set to true. The
-     * definition.schemaFields value 'Snapshot' is required if this property is
-     * set to true, else it must be excluded.
+     * Includes blob snapshots in blob inventory when value is set to true. The definition.schemaFields value
+     * 'Snapshot' is required if this property is set to true, else it must be excluded.
      */
     @JsonProperty(value = "includeSnapshots")
     private Boolean includeSnapshots;
 
+    /*
+     * For 'Container' definition.objectType the definition.schemaFields must include 'Deleted, Version, DeletedTime
+     * and RemainingRetentionDays'. For 'Blob' definition.objectType and HNS enabled storage accounts the
+     * definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and RemainingRetentionDays' and for Hns
+     * disabled accounts the definition.schemaFields must include 'Deleted and RemainingRetentionDays', else it must be
+     * excluded.
+     */
+    @JsonProperty(value = "includeDeleted")
+    private Boolean includeDeleted;
+
+    /*
+     * This property is used to filter objects based on the object creation time
+     */
+    @JsonProperty(value = "creationTime")
+    private BlobInventoryCreationTime creationTime;
+
+    /** Creates an instance of BlobInventoryPolicyFilter class. */
+    public BlobInventoryPolicyFilter() {
+    }
+
     /**
-     * Get the prefixMatch property: An array of strings for blob prefixes to be matched.
+     * Get the prefixMatch property: An array of strings with maximum 10 blob prefixes to be included in the inventory.
      *
      * @return the prefixMatch value.
      */
@@ -55,13 +78,35 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Set the prefixMatch property: An array of strings for blob prefixes to be matched.
+     * Set the prefixMatch property: An array of strings with maximum 10 blob prefixes to be included in the inventory.
      *
      * @param prefixMatch the prefixMatch value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
     public BlobInventoryPolicyFilter withPrefixMatch(List<String> prefixMatch) {
         this.prefixMatch = prefixMatch;
+        return this;
+    }
+
+    /**
+     * Get the excludePrefix property: An array of strings with maximum 10 blob prefixes to be excluded from the
+     * inventory.
+     *
+     * @return the excludePrefix value.
+     */
+    public List<String> excludePrefix() {
+        return this.excludePrefix;
+    }
+
+    /**
+     * Set the excludePrefix property: An array of strings with maximum 10 blob prefixes to be excluded from the
+     * inventory.
+     *
+     * @param excludePrefix the excludePrefix value to set.
+     * @return the BlobInventoryPolicyFilter object itself.
+     */
+    public BlobInventoryPolicyFilter withExcludePrefix(List<String> excludePrefix) {
+        this.excludePrefix = excludePrefix;
         return this;
     }
 
@@ -136,10 +181,61 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
+     * Get the includeDeleted property: For 'Container' definition.objectType the definition.schemaFields must include
+     * 'Deleted, Version, DeletedTime and RemainingRetentionDays'. For 'Blob' definition.objectType and HNS enabled
+     * storage accounts the definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and
+     * RemainingRetentionDays' and for Hns disabled accounts the definition.schemaFields must include 'Deleted and
+     * RemainingRetentionDays', else it must be excluded.
+     *
+     * @return the includeDeleted value.
+     */
+    public Boolean includeDeleted() {
+        return this.includeDeleted;
+    }
+
+    /**
+     * Set the includeDeleted property: For 'Container' definition.objectType the definition.schemaFields must include
+     * 'Deleted, Version, DeletedTime and RemainingRetentionDays'. For 'Blob' definition.objectType and HNS enabled
+     * storage accounts the definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and
+     * RemainingRetentionDays' and for Hns disabled accounts the definition.schemaFields must include 'Deleted and
+     * RemainingRetentionDays', else it must be excluded.
+     *
+     * @param includeDeleted the includeDeleted value to set.
+     * @return the BlobInventoryPolicyFilter object itself.
+     */
+    public BlobInventoryPolicyFilter withIncludeDeleted(Boolean includeDeleted) {
+        this.includeDeleted = includeDeleted;
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: This property is used to filter objects based on the object creation time.
+     *
+     * @return the creationTime value.
+     */
+    public BlobInventoryCreationTime creationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Set the creationTime property: This property is used to filter objects based on the object creation time.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the BlobInventoryPolicyFilter object itself.
+     */
+    public BlobInventoryPolicyFilter withCreationTime(BlobInventoryCreationTime creationTime) {
+        this.creationTime = creationTime;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (creationTime() != null) {
+            creationTime().validate();
+        }
     }
 }

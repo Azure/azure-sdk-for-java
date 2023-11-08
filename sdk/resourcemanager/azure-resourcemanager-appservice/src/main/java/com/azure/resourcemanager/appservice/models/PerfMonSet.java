@@ -42,6 +42,10 @@ public final class PerfMonSet {
     @JsonProperty(value = "values")
     private List<PerfMonSample> values;
 
+    /** Creates an instance of PerfMonSet class. */
+    public PerfMonSet() {
+    }
+
     /**
      * Get the name property: Unique key name of the counter.
      *

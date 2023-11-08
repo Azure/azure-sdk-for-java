@@ -75,11 +75,10 @@ public final class SnapshotsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface SnapshotsService {
+    public interface SnapshotsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots"
-                + "/{snapshotName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -94,8 +93,7 @@ public final class SnapshotsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots"
-                + "/{snapshotName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -110,8 +108,7 @@ public final class SnapshotsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots"
-                + "/{snapshotName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SnapshotInner>> getByResourceGroup(
@@ -125,8 +122,7 @@ public final class SnapshotsClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots"
-                + "/{snapshotName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -162,8 +158,7 @@ public final class SnapshotsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots"
-                + "/{snapshotName}/beginGetAccess")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/beginGetAccess")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> grantAccess(
@@ -178,8 +173,7 @@ public final class SnapshotsClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots"
-                + "/{snapshotName}/endGetAccess")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/endGetAccess")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> revokeAccess(
@@ -251,7 +245,7 @@ public final class SnapshotsClientImpl
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -310,7 +304,7 @@ public final class SnapshotsClientImpl
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -395,7 +389,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdate(
         String resourceGroupName, String snapshotName, SnapshotInner snapshot) {
-        return beginCreateOrUpdateAsync(resourceGroupName, snapshotName, snapshot).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, snapshotName, snapshot).getSyncPoller();
     }
 
     /**
@@ -415,7 +409,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdate(
         String resourceGroupName, String snapshotName, SnapshotInner snapshot, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, snapshotName, snapshot, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, snapshotName, snapshot, context).getSyncPoller();
     }
 
     /**
@@ -539,7 +533,7 @@ public final class SnapshotsClientImpl
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -598,7 +592,7 @@ public final class SnapshotsClientImpl
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -682,7 +676,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
         String resourceGroupName, String snapshotName, SnapshotUpdate snapshot) {
-        return beginUpdateAsync(resourceGroupName, snapshotName, snapshot).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, snapshotName, snapshot).getSyncPoller();
     }
 
     /**
@@ -702,7 +696,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
         String resourceGroupName, String snapshotName, SnapshotUpdate snapshot, Context context) {
-        return beginUpdateAsync(resourceGroupName, snapshotName, snapshot, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, snapshotName, snapshot, context).getSyncPoller();
     }
 
     /**
@@ -819,7 +813,7 @@ public final class SnapshotsClientImpl
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -871,7 +865,7 @@ public final class SnapshotsClientImpl
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -900,31 +894,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SnapshotInner> getByResourceGroupAsync(String resourceGroupName, String snapshotName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, snapshotName)
-            .flatMap(
-                (Response<SnapshotInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets information about a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
-     *     is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
-     *     characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a snapshot.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SnapshotInner getByResourceGroup(String resourceGroupName, String snapshotName) {
-        return getByResourceGroupAsync(resourceGroupName, snapshotName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -944,6 +914,23 @@ public final class SnapshotsClientImpl
     public Response<SnapshotInner> getByResourceGroupWithResponse(
         String resourceGroupName, String snapshotName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, snapshotName, context).block();
+    }
+
+    /**
+     * Gets information about a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The max name length is 80
+     *     characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a snapshot.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SnapshotInner getByResourceGroup(String resourceGroupName, String snapshotName) {
+        return getByResourceGroupWithResponse(resourceGroupName, snapshotName, Context.NONE).getValue();
     }
 
     /**
@@ -979,7 +966,7 @@ public final class SnapshotsClientImpl
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         return FluxUtil
             .withContext(
                 context ->
@@ -1029,7 +1016,7 @@ public final class SnapshotsClientImpl
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1099,7 +1086,7 @@ public final class SnapshotsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String snapshotName) {
-        return beginDeleteAsync(resourceGroupName, snapshotName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, snapshotName).getSyncPoller();
     }
 
     /**
@@ -1118,7 +1105,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String snapshotName, Context context) {
-        return beginDeleteAsync(resourceGroupName, snapshotName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, snapshotName, context).getSyncPoller();
     }
 
     /**
@@ -1219,7 +1206,7 @@ public final class SnapshotsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1274,7 +1261,7 @@ public final class SnapshotsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1380,7 +1367,7 @@ public final class SnapshotsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1423,7 +1410,7 @@ public final class SnapshotsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1533,7 +1520,7 @@ public final class SnapshotsClientImpl
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1593,7 +1580,7 @@ public final class SnapshotsClientImpl
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1678,7 +1665,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
         String resourceGroupName, String snapshotName, GrantAccessData grantAccessData) {
-        return beginGrantAccessAsync(resourceGroupName, snapshotName, grantAccessData).getSyncPoller();
+        return this.beginGrantAccessAsync(resourceGroupName, snapshotName, grantAccessData).getSyncPoller();
     }
 
     /**
@@ -1698,7 +1685,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
         String resourceGroupName, String snapshotName, GrantAccessData grantAccessData, Context context) {
-        return beginGrantAccessAsync(resourceGroupName, snapshotName, grantAccessData, context).getSyncPoller();
+        return this.beginGrantAccessAsync(resourceGroupName, snapshotName, grantAccessData, context).getSyncPoller();
     }
 
     /**
@@ -1816,7 +1803,7 @@ public final class SnapshotsClientImpl
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         return FluxUtil
             .withContext(
                 context ->
@@ -1866,7 +1853,7 @@ public final class SnapshotsClientImpl
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01";
+        final String apiVersion = "2023-04-02";
         context = this.client.mergeContext(context);
         return service
             .revokeAccess(
@@ -1936,7 +1923,7 @@ public final class SnapshotsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName, String snapshotName) {
-        return beginRevokeAccessAsync(resourceGroupName, snapshotName).getSyncPoller();
+        return this.beginRevokeAccessAsync(resourceGroupName, snapshotName).getSyncPoller();
     }
 
     /**
@@ -1955,7 +1942,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(
         String resourceGroupName, String snapshotName, Context context) {
-        return beginRevokeAccessAsync(resourceGroupName, snapshotName, context).getSyncPoller();
+        return this.beginRevokeAccessAsync(resourceGroupName, snapshotName, context).getSyncPoller();
     }
 
     /**
@@ -2033,7 +2020,8 @@ public final class SnapshotsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2070,7 +2058,8 @@ public final class SnapshotsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2108,7 +2097,8 @@ public final class SnapshotsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2144,7 +2134,8 @@ public final class SnapshotsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

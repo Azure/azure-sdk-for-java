@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.models.AclAction;
 import com.azure.resourcemanager.webpubsub.models.LiveTraceCategory;
 import com.azure.resourcemanager.webpubsub.models.LiveTraceConfiguration;
@@ -25,7 +24,7 @@ import java.util.Map;
 /** Samples for WebPubSub Update. */
 public final class WebPubSubUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSub_Update.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_Update.json
      */
     /**
      * Sample code: WebPubSub_Update.
@@ -36,12 +35,13 @@ public final class WebPubSubUpdateSamples {
         WebPubSubResource resource =
             manager
                 .webPubSubs()
-                .getByResourceGroupWithResponse("myResourceGroup", "myWebPubSubService", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "value1"))
-            .withSku(new ResourceSku().withName("Standard_S1").withTier(WebPubSubSkuTier.STANDARD).withCapacity(1))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withSku(new ResourceSku().withName("Premium_P1").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(1))
             .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED))
             .withTls(new WebPubSubTlsSettings().withClientCertEnabled(false))
             .withLiveTraceConfiguration(
@@ -66,6 +66,7 @@ public final class WebPubSubUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

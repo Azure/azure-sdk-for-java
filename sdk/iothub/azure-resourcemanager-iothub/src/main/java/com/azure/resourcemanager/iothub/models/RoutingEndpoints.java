@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,36 +15,40 @@ import java.util.List;
  */
 @Fluent
 public final class RoutingEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingEndpoints.class);
-
     /*
-     * The list of Service Bus queue endpoints that IoT hub routes the messages
-     * to, based on the routing rules.
+     * The list of Service Bus queue endpoints that IoT hub routes the messages to, based on the routing rules.
      */
     @JsonProperty(value = "serviceBusQueues")
     private List<RoutingServiceBusQueueEndpointProperties> serviceBusQueues;
 
     /*
-     * The list of Service Bus topic endpoints that the IoT hub routes the
-     * messages to, based on the routing rules.
+     * The list of Service Bus topic endpoints that the IoT hub routes the messages to, based on the routing rules.
      */
     @JsonProperty(value = "serviceBusTopics")
     private List<RoutingServiceBusTopicEndpointProperties> serviceBusTopics;
 
     /*
-     * The list of Event Hubs endpoints that IoT hub routes messages to, based
-     * on the routing rules. This list does not include the built-in Event Hubs
-     * endpoint.
+     * The list of Event Hubs endpoints that IoT hub routes messages to, based on the routing rules. This list does not
+     * include the built-in Event Hubs endpoint.
      */
     @JsonProperty(value = "eventHubs")
     private List<RoutingEventHubProperties> eventHubs;
 
     /*
-     * The list of storage container endpoints that IoT hub routes messages to,
-     * based on the routing rules.
+     * The list of storage container endpoints that IoT hub routes messages to, based on the routing rules.
      */
     @JsonProperty(value = "storageContainers")
     private List<RoutingStorageContainerProperties> storageContainers;
+
+    /*
+     * The list of Cosmos DB container endpoints that IoT hub routes messages to, based on the routing rules.
+     */
+    @JsonProperty(value = "cosmosDBSqlContainers")
+    private List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers;
+
+    /** Creates an instance of RoutingEndpoints class. */
+    public RoutingEndpoints() {
+    }
 
     /**
      * Get the serviceBusQueues property: The list of Service Bus queue endpoints that IoT hub routes the messages to,
@@ -137,6 +139,28 @@ public final class RoutingEndpoints {
     }
 
     /**
+     * Get the cosmosDBSqlContainers property: The list of Cosmos DB container endpoints that IoT hub routes messages
+     * to, based on the routing rules.
+     *
+     * @return the cosmosDBSqlContainers value.
+     */
+    public List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers() {
+        return this.cosmosDBSqlContainers;
+    }
+
+    /**
+     * Set the cosmosDBSqlContainers property: The list of Cosmos DB container endpoints that IoT hub routes messages
+     * to, based on the routing rules.
+     *
+     * @param cosmosDBSqlContainers the cosmosDBSqlContainers value to set.
+     * @return the RoutingEndpoints object itself.
+     */
+    public RoutingEndpoints withCosmosDBSqlContainers(List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlContainers) {
+        this.cosmosDBSqlContainers = cosmosDBSqlContainers;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -153,6 +177,9 @@ public final class RoutingEndpoints {
         }
         if (storageContainers() != null) {
             storageContainers().forEach(e -> e.validate());
+        }
+        if (cosmosDBSqlContainers() != null) {
+            cosmosDBSqlContainers().forEach(e -> e.validate());
         }
     }
 }

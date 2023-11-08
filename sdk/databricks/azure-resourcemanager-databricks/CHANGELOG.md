@@ -1,7 +1,119 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.4 (2023-06-08)
+
+- Azure Resource Manager AzureDatabricks client library for Java. This package contains Microsoft Azure SDK for AzureDatabricks Management SDK. The Microsoft Azure management APIs allow end users to operate on Azure Databricks Workspace / Access Connector resources. Package tag package-2023-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `withActionRequired(java.lang.String)` was removed
+* `actionRequired()` was removed
+
+### Features Added
+
+* `models.AccessConnectorUpdate` was added
+
+* `models.ManagedDiskEncryption` was added
+
+* `models.AccessConnector$Definition` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.AccessConnectorListResult` was added
+
+* `models.AccessConnectors` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.AccessConnector$UpdateStages` was added
+
+* `models.AccessConnector$Update` was added
+
+* `models.AccessConnector` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.AccessConnectorProperties` was added
+
+* `models.ManagedDiskEncryptionKeyVaultProperties` was added
+
+* `models.AccessConnector$DefinitionStages` was added
+
+#### `models.Workspace$Definition` was modified
+
+* `withManagedDiskIdentity(models.ManagedIdentityConfiguration)` was added
+
+#### `AzureDatabricksManager` was modified
+
+* `accessConnectors()` was added
+
+#### `models.OperationDisplay` was modified
+
+* `description()` was added
+* `withDescription(java.lang.String)` was added
+
+#### `models.Workspace` was modified
+
+* `managedDiskIdentity()` was added
+* `diskEncryptionSetId()` was added
+
+#### `models.EncryptionEntitiesDefinition` was modified
+
+* `withManagedDisk(models.ManagedDiskEncryption)` was added
+* `managedDisk()` was added
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `withGroupIds(java.util.List)` was added
+* `groupIds()` was added
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `actionsRequired()` was added
+* `withActionsRequired(java.lang.String)` was added
+
+## 1.0.0-beta.3 (2023-01-16)
+
+- Azure Resource Manager AzureDatabricks client library for Java. This package contains Microsoft Azure SDK for AzureDatabricks Management SDK. The Microsoft Azure management APIs allow end users to operate on Azure Databricks Workspace resources. Package tag package-2021-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.OutboundNetworkDependenciesEndpoints` was added
+
+* `models.EndpointDetail` was added
+
+* `models.OutboundEnvironmentEndpoint` was added
+
+* `models.EndpointDependency` was added
+
+#### `models.VirtualNetworkPeering` was modified
+
+* `resourceGroupName()` was added
+
+#### `AzureDatabricksManager` was modified
+
+* `outboundNetworkDependenciesEndpoints()` was added
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.Workspace` was modified
+
+* `resourceGroupName()` was added
+
+#### `AzureDatabricksManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
 
 ## 1.0.0-beta.2 (2021-06-21)
 

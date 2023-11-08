@@ -71,6 +71,10 @@ public final class VirtualNetworkPeeringImpl
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public VirtualNetworkPeeringInner innerModel() {
         return this.innerObject;
     }

@@ -54,6 +54,10 @@ public final class AscOperationInner {
     @JsonProperty(value = "properties")
     private AscOperationProperties innerProperties;
 
+    /** Creates an instance of AscOperationInner class. */
+    public AscOperationInner() {
+    }
+
     /**
      * Get the id property: The operation Id.
      *

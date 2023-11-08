@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -27,26 +28,25 @@ import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentTiersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeploymentsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.ModelsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.OperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceSkusClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.UsagesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the CognitiveServicesManagementClientImpl type. */
 @ServiceClient(builder = CognitiveServicesManagementClientBuilder.class)
 public final class CognitiveServicesManagementClientImpl implements CognitiveServicesManagementClient {
-    private final ClientLogger logger = new ClientLogger(CognitiveServicesManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -155,6 +155,18 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         return this.resourceSkus;
     }
 
+    /** The UsagesClient object to access its operations. */
+    private final UsagesClient usages;
+
+    /**
+     * Gets the UsagesClient object to access its operations.
+     *
+     * @return the UsagesClient object.
+     */
+    public UsagesClient getUsages() {
+        return this.usages;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -189,6 +201,18 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
      */
     public CommitmentTiersClient getCommitmentTiers() {
         return this.commitmentTiers;
+    }
+
+    /** The ModelsClient object to access its operations. */
+    private final ModelsClient models;
+
+    /**
+     * Gets the ModelsClient object to access its operations.
+     *
+     * @return the ModelsClient object.
+     */
+    public ModelsClient getModels() {
+        return this.models;
     }
 
     /** The PrivateEndpointConnectionsClient object to access its operations. */
@@ -261,13 +285,15 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-10-01";
+        this.apiVersion = "2023-05-01";
         this.accounts = new AccountsClientImpl(this);
         this.deletedAccounts = new DeletedAccountsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
+        this.usages = new UsagesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.commitmentTiers = new CommitmentTiersClientImpl(this);
+        this.models = new ModelsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
@@ -290,10 +316,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -357,7 +380,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -416,4 +439,6 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CognitiveServicesManagementClientImpl.class);
 }

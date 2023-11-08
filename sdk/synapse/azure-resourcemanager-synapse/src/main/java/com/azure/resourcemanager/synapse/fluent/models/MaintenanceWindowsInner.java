@@ -6,22 +6,22 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.MaintenanceWindowTimeRange;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Maintenance windows. */
 @Fluent
 public final class MaintenanceWindowsInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceWindowsInner.class);
-
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private MaintenanceWindowsProperties innerProperties;
+
+    /** Creates an instance of MaintenanceWindowsInner class. */
+    public MaintenanceWindowsInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

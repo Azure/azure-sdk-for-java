@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,20 +16,17 @@ import java.util.Map;
 /** plannerAssignedToTaskBoardTaskFormat. */
 @Fluent
 public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends MicrosoftGraphEntity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat.class);
-
     /*
      * plannerOrderHintsByAssignee
      */
     @JsonProperty(value = "orderHintsByAssignee")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> orderHintsByAssignee;
 
     /*
-     * Hint value used to order the task on the AssignedTo view of the Task
-     * Board when the task is not assigned to anyone, or if the
-     * orderHintsByAssignee dictionary does not provide an order hint for the
-     * user the task is assigned to. The format is defined as outlined here.
+     * Hint value used to order the task on the AssignedTo view of the Task Board when the task is not assigned to
+     * anyone, or if the orderHintsByAssignee dictionary does not provide an order hint for the user the task is
+     * assigned to. The format is defined as outlined here.
      */
     @JsonProperty(value = "unassignedOrderHint")
     private String unassignedOrderHint;
@@ -38,6 +35,10 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
      * plannerAssignedToTaskBoardTaskFormat
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat class. */
+    public MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat() {
+    }
 
     /**
      * Get the orderHintsByAssignee property: plannerOrderHintsByAssignee.

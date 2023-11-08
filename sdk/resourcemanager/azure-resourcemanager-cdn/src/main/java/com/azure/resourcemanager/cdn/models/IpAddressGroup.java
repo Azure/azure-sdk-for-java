@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** CDN Ip address group. */
 @Fluent
 public final class IpAddressGroup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpAddressGroup.class);
-
     /*
      * The delivery region of the ip address group
      */
@@ -32,6 +28,10 @@ public final class IpAddressGroup {
      */
     @JsonProperty(value = "ipv6Addresses")
     private List<CidrIpAddress> ipv6Addresses;
+
+    /** Creates an instance of IpAddressGroup class. */
+    public IpAddressGroup() {
+    }
 
     /**
      * Get the deliveryRegion property: The delivery region of the ip address group.

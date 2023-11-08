@@ -12,11 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class ContainerNetworkInterfaceIpConfigurationPropertiesFormat {
     /*
-     * The provisioning state of the container network interface IP
-     * configuration resource.
+     * The provisioning state of the container network interface IP configuration resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ContainerNetworkInterfaceIpConfigurationPropertiesFormat class. */
+    public ContainerNetworkInterfaceIpConfigurationPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the container network interface IP configuration

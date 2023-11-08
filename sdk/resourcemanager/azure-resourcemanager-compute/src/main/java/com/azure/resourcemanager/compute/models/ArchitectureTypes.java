@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ArchitectureTypes. */
+/** Specifies the Architecture Type. */
 public final class ArchitectureTypes extends ExpandableStringEnum<ArchitectureTypes> {
     /** Static value x64 for ArchitectureTypes. */
     public static final ArchitectureTypes X64 = fromString("x64");
 
     /** Static value Arm64 for ArchitectureTypes. */
     public static final ArchitectureTypes ARM64 = fromString("Arm64");
+
+    /**
+     * Creates a new instance of ArchitectureTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArchitectureTypes() {
+    }
 
     /**
      * Creates or finds a ArchitectureTypes from its string representation.
@@ -27,7 +36,11 @@ public final class ArchitectureTypes extends ExpandableStringEnum<ArchitectureTy
         return fromString(name, ArchitectureTypes.class);
     }
 
-    /** @return known ArchitectureTypes values. */
+    /**
+     * Gets known ArchitectureTypes values.
+     *
+     * @return known ArchitectureTypes values.
+     */
     public static Collection<ArchitectureTypes> values() {
         return values(ArchitectureTypes.class);
     }

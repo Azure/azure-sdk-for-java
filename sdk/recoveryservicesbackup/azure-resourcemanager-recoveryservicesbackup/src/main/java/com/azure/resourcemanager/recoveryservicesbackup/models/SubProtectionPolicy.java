@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Sub-protection policy which includes schedule and retention. */
 @Fluent
 public final class SubProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubProtectionPolicy.class);
-
     /*
      * Type of backup policy type
      */
@@ -31,6 +29,19 @@ public final class SubProtectionPolicy {
      */
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
+
+    /*
+     * Tiering policy to automatically move RPs to another tier.
+     * Key is Target Tier, defined in RecoveryPointTierType enum.
+     * Tiering policy specifies the criteria to move RP to the target tier.
+     */
+    @JsonProperty(value = "tieringPolicy")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, TieringPolicy> tieringPolicy;
+
+    /** Creates an instance of SubProtectionPolicy class. */
+    public SubProtectionPolicy() {
+    }
 
     /**
      * Get the policyType property: Type of backup policy type.
@@ -93,6 +104,28 @@ public final class SubProtectionPolicy {
     }
 
     /**
+     * Get the tieringPolicy property: Tiering policy to automatically move RPs to another tier. Key is Target Tier,
+     * defined in RecoveryPointTierType enum. Tiering policy specifies the criteria to move RP to the target tier.
+     *
+     * @return the tieringPolicy value.
+     */
+    public Map<String, TieringPolicy> tieringPolicy() {
+        return this.tieringPolicy;
+    }
+
+    /**
+     * Set the tieringPolicy property: Tiering policy to automatically move RPs to another tier. Key is Target Tier,
+     * defined in RecoveryPointTierType enum. Tiering policy specifies the criteria to move RP to the target tier.
+     *
+     * @param tieringPolicy the tieringPolicy value to set.
+     * @return the SubProtectionPolicy object itself.
+     */
+    public SubProtectionPolicy withTieringPolicy(Map<String, TieringPolicy> tieringPolicy) {
+        this.tieringPolicy = tieringPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -103,6 +136,16 @@ public final class SubProtectionPolicy {
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();
+        }
+        if (tieringPolicy() != null) {
+            tieringPolicy()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

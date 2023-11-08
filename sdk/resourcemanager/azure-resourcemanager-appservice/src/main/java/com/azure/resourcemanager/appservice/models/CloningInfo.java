@@ -15,38 +15,34 @@ import java.util.UUID;
 @Fluent
 public final class CloningInfo {
     /*
-     * Correlation ID of cloning operation. This ID ties multiple cloning
-     * operations
+     * Correlation ID of cloning operation. This ID ties multiple cloning operations
      * together to use the same snapshot.
      */
     @JsonProperty(value = "correlationId")
     private UUID correlationId;
 
     /*
-     * <code>true</code> to overwrite destination app; otherwise,
-     * <code>false</code>.
+     * <code>true</code> to overwrite destination app; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "overwrite")
     private Boolean overwrite;
 
     /*
-     * <code>true</code> to clone custom hostnames from source app; otherwise,
-     * <code>false</code>.
+     * <code>true</code> to clone custom hostnames from source app; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "cloneCustomHostNames")
     private Boolean cloneCustomHostNames;
 
     /*
-     * <code>true</code> to clone source control from source app; otherwise,
-     * <code>false</code>.
+     * <code>true</code> to clone source control from source app; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "cloneSourceControl")
     private Boolean cloneSourceControl;
 
     /*
      * ARM resource ID of the source app. App resource ID is of the form
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}
-     * for production slots and
+     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for
+     * production slots and
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName}
      * for other slots.
      */
@@ -66,36 +62,36 @@ public final class CloningInfo {
     private String hostingEnvironment;
 
     /*
-     * Application setting overrides for cloned app. If specified, these
-     * settings override the settings cloned
-     * from source app. Otherwise, application settings from source app are
-     * retained.
+     * Application setting overrides for cloned app. If specified, these settings override the settings cloned
+     * from source app. Otherwise, application settings from source app are retained.
      */
     @JsonProperty(value = "appSettingsOverrides")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> appSettingsOverrides;
 
     /*
-     * <code>true</code> to configure load balancing for source and destination
-     * app.
+     * <code>true</code> to configure load balancing for source and destination app.
      */
     @JsonProperty(value = "configureLoadBalancing")
     private Boolean configureLoadBalancing;
 
     /*
-     * ARM resource ID of the Traffic Manager profile to use, if it exists.
-     * Traffic Manager resource ID is of the form
+     * ARM resource ID of the Traffic Manager profile to use, if it exists. Traffic Manager resource ID is of the form
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{profileName}.
      */
     @JsonProperty(value = "trafficManagerProfileId")
     private String trafficManagerProfileId;
 
     /*
-     * Name of Traffic Manager profile to create. This is only needed if
-     * Traffic Manager profile does not already exist.
+     * Name of Traffic Manager profile to create. This is only needed if Traffic Manager profile does not already
+     * exist.
      */
     @JsonProperty(value = "trafficManagerProfileName")
     private String trafficManagerProfileName;
+
+    /** Creates an instance of CloningInfo class. */
+    public CloningInfo() {
+    }
 
     /**
      * Get the correlationId property: Correlation ID of cloning operation. This ID ties multiple cloning operations

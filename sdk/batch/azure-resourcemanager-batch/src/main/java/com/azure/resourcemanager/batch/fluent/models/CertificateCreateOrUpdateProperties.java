@@ -14,21 +14,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CertificateCreateOrUpdateProperties extends CertificateBaseProperties {
     /*
-     * The base64-encoded contents of the certificate. The maximum size is
-     * 10KB.
+     * The base64-encoded contents of the certificate.
+     *
+     * The maximum size is 10KB.
      */
     @JsonProperty(value = "data", required = true)
     private String data;
 
     /*
-     * The password to access the certificate's private key. This must not be
-     * specified if the certificate format is Cer.
+     * The password to access the certificate's private key.
+     *
+     * This must not be specified if the certificate format is Cer.
      */
     @JsonProperty(value = "password")
     private String password;
 
+    /** Creates an instance of CertificateCreateOrUpdateProperties class. */
+    public CertificateCreateOrUpdateProperties() {
+    }
+
     /**
-     * Get the data property: The base64-encoded contents of the certificate. The maximum size is 10KB.
+     * Get the data property: The base64-encoded contents of the certificate.
+     *
+     * <p>The maximum size is 10KB.
      *
      * @return the data value.
      */
@@ -37,7 +45,9 @@ public final class CertificateCreateOrUpdateProperties extends CertificateBasePr
     }
 
     /**
-     * Set the data property: The base64-encoded contents of the certificate. The maximum size is 10KB.
+     * Set the data property: The base64-encoded contents of the certificate.
+     *
+     * <p>The maximum size is 10KB.
      *
      * @param data the data value to set.
      * @return the CertificateCreateOrUpdateProperties object itself.
@@ -48,8 +58,9 @@ public final class CertificateCreateOrUpdateProperties extends CertificateBasePr
     }
 
     /**
-     * Get the password property: The password to access the certificate's private key. This must not be specified if
-     * the certificate format is Cer.
+     * Get the password property: The password to access the certificate's private key.
+     *
+     * <p>This must not be specified if the certificate format is Cer.
      *
      * @return the password value.
      */
@@ -58,8 +69,9 @@ public final class CertificateCreateOrUpdateProperties extends CertificateBasePr
     }
 
     /**
-     * Set the password property: The password to access the certificate's private key. This must not be specified if
-     * the certificate format is Cer.
+     * Set the password property: The password to access the certificate's private key.
+     *
+     * <p>This must not be specified if the certificate format is Cer.
      *
      * @param password the password value to set.
      * @return the CertificateCreateOrUpdateProperties object itself.

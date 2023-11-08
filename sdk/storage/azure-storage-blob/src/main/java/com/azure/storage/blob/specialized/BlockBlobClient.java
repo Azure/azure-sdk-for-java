@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -18,32 +19,37 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
-import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
-import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
-import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
-import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
+import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions;
+import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -213,9 +219,57 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options) {
+        return getBlobOutputStream(options, null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
+     *
+     * @param options {@link BlockBlobOutputStreamOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options, Context context) {
         BlobAsyncClient blobClient = prepareBuilder().buildAsyncClient();
 
-        return BlobOutputStream.blockBlobOutputStream(blobClient, options, null);
+        return BlobOutputStream.blockBlobOutputStream(blobClient, options, context);
+    }
+
+    /**
+     * Opens a seekable byte channel in write-only mode to upload the blob.
+     *
+     * @param options {@link BlobSeekableByteChannelReadOptions}
+     * @return A <code>SeekableByteChannel</code> object that represents the channel to use for writing to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     * @throws NullPointerException if 'options' is null.
+     */
+    public SeekableByteChannel openSeekableByteChannelWrite(BlockBlobSeekableByteChannelWriteOptions options) {
+        Objects.requireNonNull(options);
+
+        // Behavior can support more modes but this client does not currently support them
+        StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode internalMode;
+        long startingPosition = 0L;
+        if (options.getWriteMode() == BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
+            internalMode = StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE;
+        } else {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Unsupported value for `options.getWriteMode()`."));
+        }
+
+        return new StorageSeekableByteChannel(
+            options.getBlockSizeInBytes() != null
+                ? options.getBlockSizeInBytes().intValue()
+                : BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE,
+            new StorageSeekableByteChannelBlockBlobWriteBehavior(this, options.getHeaders(), options.getMetadata(),
+                options.getTags(), options.getTier(), options.getRequestConditions(), internalMode, null),
+            startingPosition);
     }
 
     private BlobClientBuilder prepareBuilder() {
@@ -263,6 +317,32 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     /**
+     * Creates a new block blob. By default, this method will not overwrite an existing blob. Updating an existing block
+     * blob overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content
+     * of the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use
+     * PutBlock and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData -->
+     * <pre>
+     * BinaryData binaryData = BinaryData.fromStream&#40;data, length&#41;;
+     * System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *     Base64.getEncoder&#40;&#41;.encodeToString&#40;client.upload&#40;binaryData&#41;.getContentMd5&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData -->
+     *
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     * @return The information of the uploaded block blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlockBlobItem upload(BinaryData data) {
+        return upload(data, false);
+    }
+
+    /**
      * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
      * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
      * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
@@ -295,6 +375,42 @@ public final class BlockBlobClient extends BlobClientBase {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         return uploadWithResponse(data, length, null, null, null, null, blobRequestConditions, null, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
+     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
+     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
+     * and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData-boolean -->
+     * <pre>
+     * boolean overwrite = false;
+     * BinaryData binaryData = BinaryData.fromStream&#40;data, length&#41;;
+     * System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *     Base64.getEncoder&#40;&#41;.encodeToString&#40;client.upload&#40;binaryData, overwrite&#41;.getContentMd5&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData-boolean -->
+     *
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
+     * @return The information of the uploaded block blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlockBlobItem upload(BinaryData data, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return uploadWithResponse(
+            new BlockBlobSimpleUploadOptions(data)
+                .setRequestConditions(blobRequestConditions),
+            null, Context.NONE)
             .getValue();
     }
 
@@ -571,6 +687,30 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-BinaryData -->
+     * <pre>
+     * BinaryData binaryData = BinaryData.fromStream&#40;data, length&#41;;
+     * client.stageBlock&#40;base64BlockId, binaryData&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-BinaryData -->
+     *
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * ids for a given blob must be the same length.
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stageBlock(String base64BlockId, BinaryData data) {
+        stageBlockWithResponse(new BlockBlobStageBlockOptions(base64BlockId, data), null, Context.NONE);
+    }
+
+    /**
+     * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
+     * commitBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-byte-String-Duration-Context -->
      * <pre>
      * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
@@ -606,8 +746,44 @@ public final class BlockBlobClient extends BlobClientBase {
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
-        Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId,
-            fbb.subscribeOn(Schedulers.elastic()), length, contentMd5, leaseId, context);
+        Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId,
+            context);
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
+     * commitBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#BlockBlobStageBlockOptions-Duration-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     * BinaryData binaryData = BinaryData.fromStream&#40;data, length&#41;;
+     * BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions&#40;base64BlockId, binaryData&#41;
+     *     .setContentMd5&#40;md5&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;,
+     *     client.stageBlockWithResponse&#40;options, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#BlockBlobStageBlockOptions-Duration-Context -->
+     *
+     * @param options {@link BlockBlobStageBlockOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A response containing status code and HTTP headers
+     *
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input options is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout, Context context) {
+        Objects.requireNonNull(options, "options must not be null");
+        Mono<Response<Void>> response = client.stageBlockWithResponse(
+            options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(), context);
         return blockWithOptionalTimeout(response, timeout);
     }
 

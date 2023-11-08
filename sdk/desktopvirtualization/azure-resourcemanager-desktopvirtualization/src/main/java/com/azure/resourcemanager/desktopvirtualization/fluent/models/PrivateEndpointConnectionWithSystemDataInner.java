@@ -6,25 +6,23 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpoint;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnection;
-import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkServiceConnectionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Private Endpoint Connection resource. */
 @Fluent
 public final class PrivateEndpointConnectionWithSystemDataInner extends PrivateEndpointConnection {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionWithSystemDataInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of PrivateEndpointConnectionWithSystemDataInner class. */
+    public PrivateEndpointConnectionWithSystemDataInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -47,14 +45,6 @@ public final class PrivateEndpointConnectionWithSystemDataInner extends PrivateE
     public PrivateEndpointConnectionWithSystemDataInner withPrivateLinkServiceConnectionState(
         PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         super.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PrivateEndpointConnectionWithSystemDataInner withProvisioningState(
-        PrivateEndpointConnectionProvisioningState provisioningState) {
-        super.withProvisioningState(provisioningState);
         return this;
     }
 

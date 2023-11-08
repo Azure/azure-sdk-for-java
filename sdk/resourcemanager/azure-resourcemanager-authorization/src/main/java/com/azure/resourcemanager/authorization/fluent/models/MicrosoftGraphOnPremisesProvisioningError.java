@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,12 +16,9 @@ import java.util.Map;
 /** onPremisesProvisioningError. */
 @Fluent
 public final class MicrosoftGraphOnPremisesProvisioningError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnPremisesProvisioningError.class);
-
     /*
-     * Category of the provisioning error. Note: Currently, there is only one
-     * possible value. Possible value: PropertyConflict - indicates a property
-     * value is not unique. Other objects contain the same value for the
+     * Category of the provisioning error. Note: Currently, there is only one possible value. Possible value:
+     * PropertyConflict - indicates a property value is not unique. Other objects contain the same value for the
      * property.
      */
     @JsonProperty(value = "category")
@@ -35,8 +31,7 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
     private OffsetDateTime occurredDateTime;
 
     /*
-     * Name of the directory property causing the error. Current possible
-     * values: UserPrincipalName or ProxyAddress
+     * Name of the directory property causing the error. Current possible values: UserPrincipalName or ProxyAddress
      */
     @JsonProperty(value = "propertyCausingError")
     private String propertyCausingError;
@@ -51,6 +46,10 @@ public final class MicrosoftGraphOnPremisesProvisioningError {
      * onPremisesProvisioningError
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnPremisesProvisioningError class. */
+    public MicrosoftGraphOnPremisesProvisioningError() {
+    }
 
     /**
      * Get the category property: Category of the provisioning error. Note: Currently, there is only one possible value.

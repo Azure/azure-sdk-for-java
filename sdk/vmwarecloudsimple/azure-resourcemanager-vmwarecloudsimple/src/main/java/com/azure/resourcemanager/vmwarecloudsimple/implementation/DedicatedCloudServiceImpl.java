@@ -68,6 +68,10 @@ public final class DedicatedCloudServiceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DedicatedCloudServiceInner innerModel() {
         return this.innerObject;
     }

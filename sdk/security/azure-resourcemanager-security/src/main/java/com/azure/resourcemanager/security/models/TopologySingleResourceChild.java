@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TopologySingleResourceChild model. */
 @Immutable
 public final class TopologySingleResourceChild {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologySingleResourceChild.class);
-
     /*
      * Azure resource id which serves as child resource in topology view
      */
     @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
+
+    /** Creates an instance of TopologySingleResourceChild class. */
+    public TopologySingleResourceChild() {
+    }
 
     /**
      * Get the resourceId property: Azure resource id which serves as child resource in topology view.

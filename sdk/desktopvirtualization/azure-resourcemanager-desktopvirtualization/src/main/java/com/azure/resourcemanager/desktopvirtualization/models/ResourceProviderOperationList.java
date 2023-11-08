@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ResourceProviderOperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of the request to list operations. */
 @Fluent
 public final class ResourceProviderOperationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProviderOperationList.class);
-
     /*
      * List of operations supported by this resource provider.
      */
@@ -27,6 +23,10 @@ public final class ResourceProviderOperationList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ResourceProviderOperationList class. */
+    public ResourceProviderOperationList() {
+    }
 
     /**
      * Get the value property: List of operations supported by this resource provider.

@@ -15,10 +15,9 @@ import com.azure.resourcemanager.devtestlabs.models.AttachDiskProperties;
 import com.azure.resourcemanager.devtestlabs.models.DetachDiskProperties;
 import com.azure.resourcemanager.devtestlabs.models.Disk;
 import com.azure.resourcemanager.devtestlabs.models.Disks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DisksImpl implements Disks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DisksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DisksImpl.class);
 
     private final DisksClient innerClient;
 
@@ -48,15 +47,6 @@ public final class DisksImpl implements Disks {
         return Utils.mapPage(inner, inner1 -> new DiskImpl(inner1, this.manager()));
     }
 
-    public Disk get(String resourceGroupName, String labName, String username, String name) {
-        DiskInner inner = this.serviceClient().get(resourceGroupName, labName, username, name);
-        if (inner != null) {
-            return new DiskImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Disk> getWithResponse(
         String resourceGroupName, String labName, String username, String name, String expand, Context context) {
         Response<DiskInner> inner =
@@ -67,6 +57,15 @@ public final class DisksImpl implements Disks {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DiskImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Disk get(String resourceGroupName, String labName, String username, String name) {
+        DiskInner inner = this.serviceClient().get(resourceGroupName, labName, username, name);
+        if (inner != null) {
+            return new DiskImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -121,7 +120,7 @@ public final class DisksImpl implements Disks {
     public Disk getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,21 +128,21 @@ public final class DisksImpl implements Disks {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "disks");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'disks'.", id)));
@@ -155,7 +154,7 @@ public final class DisksImpl implements Disks {
     public Response<Disk> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,21 +162,21 @@ public final class DisksImpl implements Disks {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "disks");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'disks'.", id)));
@@ -188,7 +187,7 @@ public final class DisksImpl implements Disks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,21 +195,21 @@ public final class DisksImpl implements Disks {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "disks");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'disks'.", id)));
@@ -221,7 +220,7 @@ public final class DisksImpl implements Disks {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -229,21 +228,21 @@ public final class DisksImpl implements Disks {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "disks");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'disks'.", id)));

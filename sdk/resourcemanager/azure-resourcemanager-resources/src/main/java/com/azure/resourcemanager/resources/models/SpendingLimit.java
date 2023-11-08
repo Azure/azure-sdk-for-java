@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SpendingLimit. */
+/** The subscription spending limit. */
 public enum SpendingLimit {
     /** Enum value On. */
     ON("On"),
@@ -33,6 +33,9 @@ public enum SpendingLimit {
      */
     @JsonCreator
     public static SpendingLimit fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SpendingLimit[] items = SpendingLimit.values();
         for (SpendingLimit item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum SpendingLimit {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

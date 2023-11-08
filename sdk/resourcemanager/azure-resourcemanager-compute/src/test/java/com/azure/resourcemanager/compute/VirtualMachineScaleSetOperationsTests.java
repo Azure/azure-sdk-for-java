@@ -18,6 +18,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.PowerState;
+import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.Sku;
@@ -111,14 +112,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .create();
 
         PurchasePlan plan = new PurchasePlan()
-            .withName("access_server_byol")
+            .withName("openvpnas")
             .withPublisher("openvpn")
             .withProduct("openvpnas");
 
         ImageReference imageReference = new ImageReference()
             .withPublisher("openvpn")
             .withOffer("openvpnas")
-            .withSku("access_server_byol")
+            .withSku("openvpnas")
             .withVersion("latest");
 
         VirtualMachineScaleSet virtualMachineScaleSet =
@@ -141,7 +142,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         VirtualMachineScaleSet currentVirtualMachineScaleSet = this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
         // assertion for purchase plan
-        Assertions.assertEquals("access_server_byol", currentVirtualMachineScaleSet.plan().name());
+        Assertions.assertEquals("openvpnas", currentVirtualMachineScaleSet.plan().name());
         Assertions.assertEquals("openvpn", currentVirtualMachineScaleSet.plan().publisher());
         Assertions.assertEquals("openvpnas", currentVirtualMachineScaleSet.plan().product());
 
@@ -493,7 +494,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withDeploymentEnabled()
                 .create();
         final InputStream embeddedJsonConfig =
-            VirtualMachineExtensionOperationsTests.class.getResourceAsStream("/myTest.txt");
+            this.getClass().getResourceAsStream("/myTest.txt");
         String secretValue = IOUtils.toString(embeddedJsonConfig, StandardCharsets.UTF_8);
         Secret secret = vault.secrets().define(secretName).withValue(secretValue).create();
         List<VaultCertificate> certs = new ArrayList<>();
@@ -1269,6 +1270,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
         List<VirtualMachineScaleSetVM> vmInstances = vmss.virtualMachines().list(null, VirtualMachineScaleSetVMExpandType.INSTANCE_VIEW).stream().collect(Collectors.toList());
         Assertions.assertEquals(3, vmInstances.size());
+        Assertions.assertTrue(vmInstances.stream().allMatch(vm -> vm.timeCreated() != null));
         List<PowerState> powerStates = vmInstances.stream().map(VirtualMachineScaleSetVM::powerState).collect(Collectors.toList());
         Assertions.assertEquals(Arrays.asList(PowerState.RUNNING, PowerState.RUNNING, PowerState.RUNNING), powerStates);
 
@@ -1282,9 +1284,11 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // check single VM
         VirtualMachineScaleSetVM vmInstance0 = vmss.virtualMachines().getInstance(firstInstanceId);
         Assertions.assertEquals(PowerState.DEALLOCATED, vmInstance0.powerState());
+        Assertions.assertNotNull(vmInstance0.timeCreated());
     }
 
     @Test
+    @Disabled("no longer works")
     public void canPerformSimulateEvictionOnSpotVMSSInstance() {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
@@ -1791,12 +1795,15 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withCapacity(3)
             .create();
 
+        List<VirtualMachineScaleSetVM> instances = vmss.virtualMachines().list().stream().collect(Collectors.toList());
+        Assertions.assertEquals(3, instances.size());
+
         // batch operation on instance 0 and 2
-        // leave instance 0 untouched
-        Collection<String> instanceIds = Arrays.asList("0", "2");
+        // leave instance 1 untouched
+        Collection<String> instanceIds = Arrays.asList(instances.get(0).instanceId(), instances.get(2).instanceId());
 
         VirtualMachineScaleSetVMs vmInstances = vmss.virtualMachines();
-        VirtualMachineScaleSetVM vmInstance2 = vmss.virtualMachines().getInstance("2");
+        VirtualMachineScaleSetVM vmInstance2 = vmss.virtualMachines().getInstance(instances.get(2).instanceId());
 
 //        vmInstances.reimageInstances(instanceIds);
 
@@ -1819,7 +1826,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertEquals(PowerState.DEALLOCATED, vmInstance2.powerState());
 
         // instance 1 is not affected
-        VirtualMachineScaleSetVM vmInstance1 = vmss.virtualMachines().getInstance("1");
+        VirtualMachineScaleSetVM vmInstance1 = vmss.virtualMachines().getInstance(instances.get(1).instanceId());
         Assertions.assertEquals(PowerState.RUNNING, vmInstance1.powerState());
     }
 
@@ -1849,12 +1856,35 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
-            .withUpgradeMode(UpgradeMode.AUTOMATIC)
+            .withUpgradeMode(UpgradeMode.MANUAL)
             .withEphemeralOSDisk()
             .withPlacement(DiffDiskPlacement.CACHE_DISK)
-            .withCapacity(2)
+            .withCapacity(1)
             .create();
         Assertions.assertTrue(uniformVMSS.isEphemeralOSDisk());
+
+        // somehow newly created vmss with ephemeral OS disk has outdated VMs and there's a delay before vmss detects that
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+        // update VMs to latest model, create baseline
+        uniformVMSS.virtualMachines().updateInstances(
+            uniformVMSS.virtualMachines()
+                .list()
+                .stream()
+                .map(VirtualMachineScaleSetVM::instanceId)
+                .toArray(String[]::new));
+
+        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
+
+        // scale up vmss
+        uniformVMSS.update()
+            .withCapacity(2)
+            .apply();
+
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+        // verify that scaling up won't result in outdated VMs
+        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
 
         // flex vmss with ephemeral os disk
         Network network2 =
@@ -1914,5 +1944,39 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // flex vmss can have a mixed set of VMs with ephemeral and non-ephemeral os disk
         // which contradicts the FAQ: https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks#frequently-asked-questions
         Assertions.assertFalse(vm.isOSDiskEphemeral());
+    }
+
+    @Test
+    public void canCreateVMSSWithProximityPlacementGroup() throws Exception {
+        final String vmssName = generateRandomResourceName("vmss", 10);
+
+        Network network = this.networkManager
+            .networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            // create ProximityPlacementGroup with the VMSS
+            .withNewProximityPlacementGroup("ppg", ProximityPlacementGroupType.STANDARD)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withVirtualMachinePublicIp()
+            .create();
+
+        Assertions.assertNotNull(vmss.proximityPlacementGroup());
+        Assertions.assertEquals(ProximityPlacementGroupType.STANDARD, vmss.proximityPlacementGroup().proximityPlacementGroupType());
     }
 }

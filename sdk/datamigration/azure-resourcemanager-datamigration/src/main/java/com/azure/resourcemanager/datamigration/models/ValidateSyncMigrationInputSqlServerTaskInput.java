@@ -6,16 +6,12 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for task that validates migration input for SQL sync migrations. */
 @Fluent
 public final class ValidateSyncMigrationInputSqlServerTaskInput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ValidateSyncMigrationInputSqlServerTaskInput.class);
-
     /*
      * Information for connecting to source SQL server
      */
@@ -33,6 +29,10 @@ public final class ValidateSyncMigrationInputSqlServerTaskInput {
      */
     @JsonProperty(value = "selectedDatabases", required = true)
     private List<MigrateSqlServerSqlDbSyncDatabaseInput> selectedDatabases;
+
+    /** Creates an instance of ValidateSyncMigrationInputSqlServerTaskInput class. */
+    public ValidateSyncMigrationInputSqlServerTaskInput() {
+    }
 
     /**
      * Get the sourceConnectionInfo property: Information for connecting to source SQL server.
@@ -104,7 +104,7 @@ public final class ValidateSyncMigrationInputSqlServerTaskInput {
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model"
@@ -113,7 +113,7 @@ public final class ValidateSyncMigrationInputSqlServerTaskInput {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetConnectionInfo in model"
@@ -122,7 +122,7 @@ public final class ValidateSyncMigrationInputSqlServerTaskInput {
             targetConnectionInfo().validate();
         }
         if (selectedDatabases() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectedDatabases in model"
@@ -131,4 +131,6 @@ public final class ValidateSyncMigrationInputSqlServerTaskInput {
             selectedDatabases().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ValidateSyncMigrationInputSqlServerTaskInput.class);
 }

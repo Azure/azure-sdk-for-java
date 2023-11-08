@@ -38,6 +38,20 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU along with {@link Response}.
+     */
+    Response<Account> getByResourceGroupWithResponse(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Returns a Cognitive Services account specified by the parameters.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -47,27 +61,14 @@ public interface Accounts {
     Account getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Returns a Cognitive Services account specified by the parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU.
-     */
-    Response<Account> getByResourceGroupWithResponse(String resourceGroupName, String accountName, Context context);
-
-    /**
      * Returns all the resources of a particular type belonging to a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Account> listByResourceGroup(String resourceGroupName);
 
@@ -79,7 +80,8 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Account> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -88,7 +90,8 @@ public interface Accounts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Account> list();
 
@@ -99,9 +102,23 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Account> list(Context context);
+
+    /**
+     * Lists the account keys for the specified Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys for the cognitive services account along with {@link Response}.
+     */
+    Response<ApiKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
 
     /**
      * Lists the account keys for the specified Cognitive Services account.
@@ -116,17 +133,19 @@ public interface Accounts {
     ApiKeys listKeys(String resourceGroupName, String accountName);
 
     /**
-     * Lists the account keys for the specified Cognitive Services account.
+     * Regenerates the specified account key for the specified Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
+     * @param parameters regenerate key parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys for the cognitive services account.
+     * @return the access keys for the cognitive services account along with {@link Response}.
      */
-    Response<ApiKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<ApiKeys> regenerateKeyWithResponse(
+        String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context);
 
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
@@ -142,19 +161,17 @@ public interface Accounts {
     ApiKeys regenerateKey(String resourceGroupName, String accountName, RegenerateKeyParameters parameters);
 
     /**
-     * Regenerates the specified account key for the specified Cognitive Services account.
+     * List available SKUs for the requested Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @param parameters regenerate key parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys for the cognitive services account.
+     * @return the list of cognitive services accounts operation response along with {@link Response}.
      */
-    Response<ApiKeys> regenerateKeyWithResponse(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context);
+    Response<AccountSkuListResult> listSkusWithResponse(String resourceGroupName, String accountName, Context context);
 
     /**
      * List available SKUs for the requested Cognitive Services account.
@@ -169,17 +186,20 @@ public interface Accounts {
     AccountSkuListResult listSkus(String resourceGroupName, String accountName);
 
     /**
-     * List available SKUs for the requested Cognitive Services account.
+     * Get usages for the requested Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response.
+     * @return usages for the requested Cognitive Services account along with {@link Response}.
      */
-    Response<AccountSkuListResult> listSkusWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<UsageListResult> listUsagesWithResponse(
+        String resourceGroupName, String accountName, String filter, Context context);
 
     /**
      * Get usages for the requested Cognitive Services account.
@@ -194,20 +214,31 @@ public interface Accounts {
     UsageListResult listUsages(String resourceGroupName, String accountName);
 
     /**
-     * Get usages for the requested Cognitive Services account.
+     * List available Models for the requested Cognitive Services account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     *     name.value (name of the metric, can have an or of multiple names).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link
+     *     PagedIterable}.
+     */
+    PagedIterable<AccountModel> listModels(String resourceGroupName, String accountName);
+
+    /**
+     * List available Models for the requested Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usages for the requested Cognitive Services account.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link
+     *     PagedIterable}.
      */
-    Response<UsageListResult> listUsagesWithResponse(
-        String resourceGroupName, String accountName, String filter, Context context);
+    PagedIterable<AccountModel> listModels(String resourceGroupName, String accountName, Context context);
 
     /**
      * Returns a Cognitive Services account specified by the parameters.
@@ -217,7 +248,7 @@ public interface Accounts {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU.
+     *     and SKU along with {@link Response}.
      */
     Account getById(String id);
 
@@ -230,7 +261,7 @@ public interface Accounts {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU.
+     *     and SKU along with {@link Response}.
      */
     Response<Account> getByIdWithResponse(String id, Context context);
 

@@ -13,18 +13,20 @@ import java.util.List;
 @Fluent
 public final class VaultSecretGroup {
     /*
-     * The relative URL of the Key Vault containing all of the certificates in
-     * VaultCertificates.
+     * The relative URL of the Key Vault containing all of the certificates in VaultCertificates.
      */
     @JsonProperty(value = "sourceVault")
     private SubResource sourceVault;
 
     /*
-     * The list of key vault references in SourceVault which contain
-     * certificates.
+     * The list of key vault references in SourceVault which contain certificates.
      */
     @JsonProperty(value = "vaultCertificates")
     private List<VaultCertificate> vaultCertificates;
+
+    /** Creates an instance of VaultSecretGroup class. */
+    public VaultSecretGroup() {
+    }
 
     /**
      * Get the sourceVault property: The relative URL of the Key Vault containing all of the certificates in

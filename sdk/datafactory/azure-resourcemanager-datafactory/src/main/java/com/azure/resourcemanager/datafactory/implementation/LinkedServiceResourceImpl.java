@@ -35,6 +35,10 @@ public final class LinkedServiceResourceImpl
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LinkedServiceResourceInner innerModel() {
         return this.innerObject;
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource reference. */
 @Fluent
 public class ResourceReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceReference.class);
-
     /*
      * The resource id.
      */
@@ -31,6 +27,10 @@ public class ResourceReference {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ResourceReference class. */
+    public ResourceReference() {
+    }
 
     /**
      * Get the id property: The resource id.

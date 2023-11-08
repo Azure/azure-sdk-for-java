@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.models.ServiceProvisioningState;
 import com.azure.resourcemanager.datamigration.models.ServiceSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A Database Migration Service resource. */
-@JsonFlatten
 @Fluent
-public class DataMigrationServiceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMigrationServiceInner.class);
-
+public final class DataMigrationServiceInner extends Resource {
     /*
      * HTTP strong entity tag value. Ignored if submitted
      */
@@ -33,30 +27,20 @@ public class DataMigrationServiceInner extends Resource {
     private String kind;
 
     /*
+     * Custom service properties
+     */
+    @JsonProperty(value = "properties")
+    private DataMigrationServiceProperties innerProperties;
+
+    /*
      * Service SKU
      */
     @JsonProperty(value = "sku")
     private ServiceSku sku;
 
-    /*
-     * The resource's provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ServiceProvisioningState provisioningState;
-
-    /*
-     * The public key of the service, used to encrypt secrets sent to the
-     * service
-     */
-    @JsonProperty(value = "properties.publicKey")
-    private String publicKey;
-
-    /*
-     * The ID of the Microsoft.Network/virtualNetworks/subnets resource to
-     * which the service should be joined
-     */
-    @JsonProperty(value = "properties.virtualSubnetId")
-    private String virtualSubnetId;
+    /** Creates an instance of DataMigrationServiceInner class. */
+    public DataMigrationServiceInner() {
+    }
 
     /**
      * Get the etag property: HTTP strong entity tag value. Ignored if submitted.
@@ -99,6 +83,15 @@ public class DataMigrationServiceInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Custom service properties.
+     *
+     * @return the innerProperties value.
+     */
+    private DataMigrationServiceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the sku property: Service SKU.
      *
      * @return the sku value.
@@ -118,57 +111,6 @@ public class DataMigrationServiceInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the provisioningState property: The resource's provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public ServiceProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
-     *
-     * @return the publicKey value.
-     */
-    public String publicKey() {
-        return this.publicKey;
-    }
-
-    /**
-     * Set the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
-     *
-     * @param publicKey the publicKey value to set.
-     * @return the DataMigrationServiceInner object itself.
-     */
-    public DataMigrationServiceInner withPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-        return this;
-    }
-
-    /**
-     * Get the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
-     * service should be joined.
-     *
-     * @return the virtualSubnetId value.
-     */
-    public String virtualSubnetId() {
-        return this.virtualSubnetId;
-    }
-
-    /**
-     * Set the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
-     * service should be joined.
-     *
-     * @param virtualSubnetId the virtualSubnetId value to set.
-     * @return the DataMigrationServiceInner object itself.
-     */
-    public DataMigrationServiceInner withVirtualSubnetId(String virtualSubnetId) {
-        this.virtualSubnetId = virtualSubnetId;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public DataMigrationServiceInner withLocation(String location) {
@@ -184,11 +126,71 @@ public class DataMigrationServiceInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The resource's provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public ServiceProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
+     *
+     * @return the publicKey value.
+     */
+    public String publicKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicKey();
+    }
+
+    /**
+     * Set the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
+     *
+     * @param publicKey the publicKey value to set.
+     * @return the DataMigrationServiceInner object itself.
+     */
+    public DataMigrationServiceInner withPublicKey(String publicKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMigrationServiceProperties();
+        }
+        this.innerProperties().withPublicKey(publicKey);
+        return this;
+    }
+
+    /**
+     * Get the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
+     * service should be joined.
+     *
+     * @return the virtualSubnetId value.
+     */
+    public String virtualSubnetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualSubnetId();
+    }
+
+    /**
+     * Set the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
+     * service should be joined.
+     *
+     * @param virtualSubnetId the virtualSubnetId value to set.
+     * @return the DataMigrationServiceInner object itself.
+     */
+    public DataMigrationServiceInner withVirtualSubnetId(String virtualSubnetId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMigrationServiceProperties();
+        }
+        this.innerProperties().withVirtualSubnetId(virtualSubnetId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }

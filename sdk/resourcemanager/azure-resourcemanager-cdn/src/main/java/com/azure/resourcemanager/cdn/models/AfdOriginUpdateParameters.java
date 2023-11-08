@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** AFDOrigin properties needed for origin update. */
 @Fluent
 public final class AfdOriginUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginUpdateParameters.class);
-
     /*
      * The JSON object that contains the properties of the origin.
      */
     @JsonProperty(value = "properties")
     private AfdOriginUpdatePropertiesParameters innerProperties;
+
+    /** Creates an instance of AfdOriginUpdateParameters class. */
+    public AfdOriginUpdateParameters() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin.
@@ -135,9 +135,9 @@ public final class AfdOriginUpdateParameters {
 
     /**
      * Get the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default. This overrides the host header
-     * defined at Endpoint.
+     * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
+     * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
+     * header defined at Endpoint.
      *
      * @return the originHostHeader value.
      */
@@ -147,9 +147,9 @@ public final class AfdOriginUpdateParameters {
 
     /**
      * Set the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default. This overrides the host header
-     * defined at Endpoint.
+     * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
+     * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
+     * header defined at Endpoint.
      *
      * @param originHostHeader the originHostHeader value to set.
      * @return the AfdOriginUpdateParameters object itself.
@@ -217,7 +217,7 @@ public final class AfdOriginUpdateParameters {
      *
      * @return the sharedPrivateLinkResource value.
      */
-    public Object sharedPrivateLinkResource() {
+    public SharedPrivateLinkResourceProperties sharedPrivateLinkResource() {
         return this.innerProperties() == null ? null : this.innerProperties().sharedPrivateLinkResource();
     }
 
@@ -227,7 +227,8 @@ public final class AfdOriginUpdateParameters {
      * @param sharedPrivateLinkResource the sharedPrivateLinkResource value to set.
      * @return the AfdOriginUpdateParameters object itself.
      */
-    public AfdOriginUpdateParameters withSharedPrivateLinkResource(Object sharedPrivateLinkResource) {
+    public AfdOriginUpdateParameters withSharedPrivateLinkResource(
+        SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }

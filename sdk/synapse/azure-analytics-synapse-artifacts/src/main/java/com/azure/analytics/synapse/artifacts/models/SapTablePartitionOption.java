@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapTablePartitionOption. */
+/** The partition mechanism that will be used for SAP table read in parallel. */
 public final class SapTablePartitionOption extends ExpandableStringEnum<SapTablePartitionOption> {
     /** Static value None for SapTablePartitionOption. */
     public static final SapTablePartitionOption NONE = fromString("None");
@@ -29,6 +29,14 @@ public final class SapTablePartitionOption extends ExpandableStringEnum<SapTable
     public static final SapTablePartitionOption PARTITION_ON_TIME = fromString("PartitionOnTime");
 
     /**
+     * Creates a new instance of SapTablePartitionOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapTablePartitionOption() {}
+
+    /**
      * Creates or finds a SapTablePartitionOption from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +47,11 @@ public final class SapTablePartitionOption extends ExpandableStringEnum<SapTable
         return fromString(name, SapTablePartitionOption.class);
     }
 
-    /** @return known SapTablePartitionOption values. */
+    /**
+     * Gets known SapTablePartitionOption values.
+     *
+     * @return known SapTablePartitionOption values.
+     */
     public static Collection<SapTablePartitionOption> values() {
         return values(SapTablePartitionOption.class);
     }

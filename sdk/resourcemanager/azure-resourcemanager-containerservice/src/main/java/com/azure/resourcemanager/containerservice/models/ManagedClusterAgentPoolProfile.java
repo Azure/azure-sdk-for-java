@@ -15,16 +15,22 @@ import java.util.Map;
 @Fluent
 public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     /*
-     * Unique name of the agent pool profile in the context of the subscription
-     * and resource group. Windows agent pool names must be 6 characters or
-     * less.
+     * Unique name of the agent pool profile in the context of the subscription and resource group.
+     *
+     * Windows agent pool names must be 6 characters or less.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of ManagedClusterAgentPoolProfile class. */
+    public ManagedClusterAgentPoolProfile() {
+    }
+
     /**
      * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group. Windows agent pool names must be 6 characters or less.
+     * group.
+     *
+     * <p>Windows agent pool names must be 6 characters or less.
      *
      * @return the name value.
      */
@@ -34,7 +40,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /**
      * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group. Windows agent pool names must be 6 characters or less.
+     * group.
+     *
+     * <p>Windows agent pool names must be 6 characters or less.
      *
      * @param name the name value to set.
      * @return the ManagedClusterAgentPoolProfile object itself.
@@ -300,6 +308,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withCreationData(CreationData creationData) {
         super.withCreationData(creationData);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withHostGroupId(String hostGroupId) {
+        super.withHostGroupId(hostGroupId);
         return this;
     }
 

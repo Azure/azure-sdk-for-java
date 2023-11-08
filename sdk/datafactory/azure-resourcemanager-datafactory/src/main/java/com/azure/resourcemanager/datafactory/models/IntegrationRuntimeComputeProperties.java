@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class IntegrationRuntimeComputeProperties {
     /*
-     * The location for managed integration runtime. The supported regions
-     * could be found on
+     * The location for managed integration runtime. The supported regions could be found on
      * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities
      */
     @JsonProperty(value = "location")
@@ -36,8 +35,7 @@ public final class IntegrationRuntimeComputeProperties {
     private Integer numberOfNodes;
 
     /*
-     * Maximum parallel executions count per node for managed integration
-     * runtime.
+     * Maximum parallel executions count per node for managed integration runtime.
      */
     @JsonProperty(value = "maxParallelExecutionsPerNode")
     private Integer maxParallelExecutionsPerNode;
@@ -55,9 +53,25 @@ public final class IntegrationRuntimeComputeProperties {
     private IntegrationRuntimeVNetProperties vNetProperties;
 
     /*
+     * CopyComputeScale properties for managed integration runtime.
+     */
+    @JsonProperty(value = "copyComputeScaleProperties")
+    private CopyComputeScaleProperties copyComputeScaleProperties;
+
+    /*
+     * PipelineExternalComputeScale properties for managed integration runtime.
+     */
+    @JsonProperty(value = "pipelineExternalComputeScaleProperties")
+    private PipelineExternalComputeScaleProperties pipelineExternalComputeScaleProperties;
+
+    /*
      * The compute resource properties for managed integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntimeComputeProperties class. */
+    public IntegrationRuntimeComputeProperties() {
+    }
 
     /**
      * Get the location property: The location for managed integration runtime. The supported regions could be found on
@@ -185,6 +199,50 @@ public final class IntegrationRuntimeComputeProperties {
     }
 
     /**
+     * Get the copyComputeScaleProperties property: CopyComputeScale properties for managed integration runtime.
+     *
+     * @return the copyComputeScaleProperties value.
+     */
+    public CopyComputeScaleProperties copyComputeScaleProperties() {
+        return this.copyComputeScaleProperties;
+    }
+
+    /**
+     * Set the copyComputeScaleProperties property: CopyComputeScale properties for managed integration runtime.
+     *
+     * @param copyComputeScaleProperties the copyComputeScaleProperties value to set.
+     * @return the IntegrationRuntimeComputeProperties object itself.
+     */
+    public IntegrationRuntimeComputeProperties withCopyComputeScaleProperties(
+        CopyComputeScaleProperties copyComputeScaleProperties) {
+        this.copyComputeScaleProperties = copyComputeScaleProperties;
+        return this;
+    }
+
+    /**
+     * Get the pipelineExternalComputeScaleProperties property: PipelineExternalComputeScale properties for managed
+     * integration runtime.
+     *
+     * @return the pipelineExternalComputeScaleProperties value.
+     */
+    public PipelineExternalComputeScaleProperties pipelineExternalComputeScaleProperties() {
+        return this.pipelineExternalComputeScaleProperties;
+    }
+
+    /**
+     * Set the pipelineExternalComputeScaleProperties property: PipelineExternalComputeScale properties for managed
+     * integration runtime.
+     *
+     * @param pipelineExternalComputeScaleProperties the pipelineExternalComputeScaleProperties value to set.
+     * @return the IntegrationRuntimeComputeProperties object itself.
+     */
+    public IntegrationRuntimeComputeProperties withPipelineExternalComputeScaleProperties(
+        PipelineExternalComputeScaleProperties pipelineExternalComputeScaleProperties) {
+        this.pipelineExternalComputeScaleProperties = pipelineExternalComputeScaleProperties;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: The compute resource properties for managed integration runtime.
      *
      * @return the additionalProperties value.
@@ -224,6 +282,12 @@ public final class IntegrationRuntimeComputeProperties {
         }
         if (vNetProperties() != null) {
             vNetProperties().validate();
+        }
+        if (copyComputeScaleProperties() != null) {
+            copyComputeScaleProperties().validate();
+        }
+        if (pipelineExternalComputeScaleProperties() != null) {
+            pipelineExternalComputeScaleProperties().validate();
         }
     }
 }

@@ -23,6 +23,10 @@ public final class LookupActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private LookupActivityTypeProperties innerTypeProperties = new LookupActivityTypeProperties();
 
+    /** Creates an instance of LookupActivity class. */
+    public LookupActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Lookup activity properties.
      *
@@ -57,6 +61,20 @@ public final class LookupActivity extends ExecutionActivity {
     @Override
     public LookupActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

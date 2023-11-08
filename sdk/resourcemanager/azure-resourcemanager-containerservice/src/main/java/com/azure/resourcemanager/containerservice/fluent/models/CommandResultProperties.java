@@ -47,6 +47,10 @@ public final class CommandResultProperties {
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
+    /** Creates an instance of CommandResultProperties class. */
+    public CommandResultProperties() {
+    }
+
     /**
      * Get the provisioningState property: provisioning State.
      *

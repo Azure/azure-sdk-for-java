@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificateType. */
+/** Type of certificate used. */
 public final class CertificateType extends ExpandableStringEnum<CertificateType> {
     /** Static value Shared for CertificateType. */
     public static final CertificateType SHARED = fromString("Shared");
 
     /** Static value Dedicated for CertificateType. */
     public static final CertificateType DEDICATED = fromString("Dedicated");
+
+    /**
+     * Creates a new instance of CertificateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificateType() {
+    }
 
     /**
      * Creates or finds a CertificateType from its string representation.
@@ -27,7 +36,11 @@ public final class CertificateType extends ExpandableStringEnum<CertificateType>
         return fromString(name, CertificateType.class);
     }
 
-    /** @return known CertificateType values. */
+    /**
+     * Gets known CertificateType values.
+     *
+     * @return known CertificateType values.
+     */
     public static Collection<CertificateType> values() {
         return values(CertificateType.class);
     }

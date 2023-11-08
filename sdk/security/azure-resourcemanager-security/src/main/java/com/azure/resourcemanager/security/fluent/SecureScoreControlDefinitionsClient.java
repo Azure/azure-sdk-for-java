@@ -17,7 +17,7 @@ public interface SecureScoreControlDefinitionsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecureScoreControlDefinitionItemInner> list();
@@ -29,7 +29,7 @@ public interface SecureScoreControlDefinitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecureScoreControlDefinitionItemInner> list(Context context);
@@ -39,7 +39,7 @@ public interface SecureScoreControlDefinitionsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecureScoreControlDefinitionItemInner> listBySubscription();
@@ -51,7 +51,7 @@ public interface SecureScoreControlDefinitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecureScoreControlDefinitionItemInner> listBySubscription(Context context);

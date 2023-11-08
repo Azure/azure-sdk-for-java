@@ -10,6 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResour
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -113,6 +114,13 @@ public interface KubernetesCluster
     /** @return resource ID of the disk encryption set. */
     String diskEncryptionSetId();
 
+    /**
+     * Gets the resource group containing agent pool nodes.
+     *
+     * @return The resource group containing agent pool nodes.
+     */
+    String agentPoolResourceGroup();
+
     // Actions
 
     /**
@@ -138,6 +146,15 @@ public interface KubernetesCluster
      * @return the completion.
      */
     Mono<Void> stopAsync();
+
+    /**
+     * Begins creating the agent pool resource.
+     *
+     * @param agentPoolName the name of the agent pool.
+     * @param agentPool the agent pool.
+     * @return the accepted create operation
+     */
+    Accepted<AgentPool> beginCreateAgentPool(String agentPoolName, AgentPoolData agentPool);
 
     // Fluent interfaces
 
@@ -177,7 +194,7 @@ public interface KubernetesCluster
         interface WithVersion {
             /**
              * Specifies the version for the Kubernetes cluster.
-             * Could retrieve from {@link KubernetesClusters#listKubernetesVersions(Region)}
+             * Could retrieve from {@link KubernetesClusters#listOrchestrators(Region, ContainerServiceResourceTypes)}
              *
              * @param kubernetesVersion the kubernetes version
              * @return the next stage of the definition
@@ -368,7 +385,9 @@ public interface KubernetesCluster
                  * @param dockerBridgeCidr the CIDR notation IP range assigned to the Docker bridge network; it must not
                  *     overlap with any subnet IP ranges or the Kubernetes service address range
                  * @return the next stage of the definition
+                 * @deprecated The property has no effect since 2019
                  */
+                @Deprecated
                 WithAttach<ParentT> withDockerBridgeCidr(String dockerBridgeCidr);
             }
 
@@ -532,6 +551,19 @@ public interface KubernetesCluster
         }
 
         /**
+         * The stage of the Kubernetes cluster definition allowing to specify the resource group for agent pool nodes.
+         */
+        interface WithAgentPoolResourceGroup {
+            /**
+             * Specifies the resource group for agent pool nodes.
+             *
+             * @param resourceGroupName the resource group for agent pool nodes
+             * @return the next stage of the definition
+             */
+            WithCreate withAgentPoolResourceGroup(String resourceGroupName);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
@@ -548,6 +580,7 @@ public interface KubernetesCluster
                 WithAAD,
                 WithLocalAccounts,
                 WithDiskEncryption,
+                WithAgentPoolResourceGroup,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }

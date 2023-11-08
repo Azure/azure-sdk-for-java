@@ -20,26 +20,13 @@ public final class WorkspaceClient {
     @Generated private final WorkspacesImpl serviceClient;
 
     /**
-     * Initializes an instance of Workspaces client.
+     * Initializes an instance of WorkspaceClient class.
      *
      * @param serviceClient the service client implementation.
      */
     @Generated
     WorkspaceClient(WorkspacesImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Get Workspace.
-     *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Workspace get() {
-        return this.serviceClient.get();
     }
 
     /**
@@ -55,5 +42,18 @@ public final class WorkspaceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Workspace> getWithResponse(Context context) {
         return this.serviceClient.getWithResponse(context);
+    }
+
+    /**
+     * Get Workspace.
+     *
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workspace.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Workspace get() {
+        return this.serviceClient.get();
     }
 }

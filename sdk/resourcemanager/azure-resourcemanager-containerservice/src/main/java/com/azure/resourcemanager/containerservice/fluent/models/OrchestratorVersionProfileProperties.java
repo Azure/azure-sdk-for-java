@@ -19,6 +19,10 @@ public final class OrchestratorVersionProfileProperties {
     @JsonProperty(value = "orchestrators", required = true)
     private List<OrchestratorVersionProfile> orchestrators;
 
+    /** Creates an instance of OrchestratorVersionProfileProperties class. */
+    public OrchestratorVersionProfileProperties() {
+    }
+
     /**
      * Get the orchestrators property: List of orchestrator version profiles.
      *

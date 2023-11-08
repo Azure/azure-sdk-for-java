@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Object that represents a Service resource. */
-@JsonFlatten
 @Fluent
-public class ServiceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceInner.class);
-
+public final class ServiceInner {
     /*
      * Id of the resource.
      */
@@ -36,16 +30,14 @@ public class ServiceInner {
     private String type;
 
     /*
-     * Localized name of the Azure service.
+     * Properties of the resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private ServiceProperties innerProperties;
 
-    /*
-     * ARM Resource types.
-     */
-    @JsonProperty(value = "properties.resourceTypes")
-    private List<String> resourceTypes;
+    /** Creates an instance of ServiceInner class. */
+    public ServiceInner() {
+    }
 
     /**
      * Get the id property: Id of the resource.
@@ -75,12 +67,21 @@ public class ServiceInner {
     }
 
     /**
+     * Get the innerProperties property: Properties of the resource.
+     *
+     * @return the innerProperties value.
+     */
+    private ServiceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the displayName property: Localized name of the Azure service.
      *
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -90,7 +91,10 @@ public class ServiceInner {
      * @return the ServiceInner object itself.
      */
     public ServiceInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -100,7 +104,7 @@ public class ServiceInner {
      * @return the resourceTypes value.
      */
     public List<String> resourceTypes() {
-        return this.resourceTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceTypes();
     }
 
     /**
@@ -110,7 +114,10 @@ public class ServiceInner {
      * @return the ServiceInner object itself.
      */
     public ServiceInner withResourceTypes(List<String> resourceTypes) {
-        this.resourceTypes = resourceTypes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceProperties();
+        }
+        this.innerProperties().withResourceTypes(resourceTypes);
         return this;
     }
 
@@ -120,5 +127,8 @@ public class ServiceInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

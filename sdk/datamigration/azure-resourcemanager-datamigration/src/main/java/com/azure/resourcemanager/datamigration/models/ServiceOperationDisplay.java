@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Localized display text. */
 @Fluent
 public final class ServiceOperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceOperationDisplay.class);
-
     /*
      * The localized resource provider name
      */
@@ -37,6 +33,10 @@ public final class ServiceOperationDisplay {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of ServiceOperationDisplay class. */
+    public ServiceOperationDisplay() {
+    }
 
     /**
      * Get the provider property: The localized resource provider name.

@@ -25,6 +25,10 @@ public final class ExecuteSsisPackageActivity extends ExecutionActivity {
     private ExecuteSsisPackageActivityTypeProperties innerTypeProperties =
         new ExecuteSsisPackageActivityTypeProperties();
 
+    /** Creates an instance of ExecuteSsisPackageActivity class. */
+    public ExecuteSsisPackageActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Execute SSIS package activity properties.
      *
@@ -59,6 +63,20 @@ public final class ExecuteSsisPackageActivity extends ExecutionActivity {
     @Override
     public ExecuteSsisPackageActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteSsisPackageActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

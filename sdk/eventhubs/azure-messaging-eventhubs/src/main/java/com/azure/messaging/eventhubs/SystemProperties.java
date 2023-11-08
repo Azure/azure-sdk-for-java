@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @see <a href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/eventhub/Azure.Messaging.EventHubs/src/Amqp/AmqpSystemProperties.cs">AmqpSystemProperties</a>
  */
 final class SystemProperties implements Map<String, Object> {
-    private final ClientLogger logger = new ClientLogger(SystemProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SystemProperties.class);
     private final Long offset;
     private final String partitionKey;
     private final Instant enqueuedTime;
@@ -121,59 +121,59 @@ final class SystemProperties implements Map<String, Object> {
         final HashSet<Entry<String, Object>> entries = new HashSet<>();
         if (properties.getMessageId() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.MESSAGE_ID.getValue(), properties.getMessageId().toString(), logger));
+                AmqpMessageConstant.MESSAGE_ID.getValue(), properties.getMessageId().toString(), LOGGER));
         }
         if (properties.getUserId() != null && properties.getUserId().length > 0) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.USER_ID.getValue(), properties.getUserId(), logger));
+                AmqpMessageConstant.USER_ID.getValue(), properties.getUserId(), LOGGER));
         }
         if (properties.getTo() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.TO.getValue(), properties.getTo(), logger));
+                AmqpMessageConstant.TO.getValue(), properties.getTo(), LOGGER));
         }
         if (properties.getSubject() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.SUBJECT.getValue(), properties.getSubject(), logger));
+                AmqpMessageConstant.SUBJECT.getValue(), properties.getSubject(), LOGGER));
         }
         if (properties.getReplyTo() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.REPLY_TO.getValue(), properties.getReplyTo(), logger));
+                AmqpMessageConstant.REPLY_TO.getValue(), properties.getReplyTo(), LOGGER));
         }
         if (properties.getCorrelationId() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.CORRELATION_ID.getValue(), properties.getCorrelationId().toString(), logger));
+                AmqpMessageConstant.CORRELATION_ID.getValue(), properties.getCorrelationId().toString(), LOGGER));
         }
         if (properties.getContentType() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.CONTENT_TYPE.getValue(), properties.getContentType(), logger));
+                AmqpMessageConstant.CONTENT_TYPE.getValue(), properties.getContentType(), LOGGER));
         }
         if (properties.getContentEncoding() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.CONTENT_ENCODING.getValue(), properties.getContentEncoding(), logger));
+                AmqpMessageConstant.CONTENT_ENCODING.getValue(), properties.getContentEncoding(), LOGGER));
         }
         if (properties.getContentEncoding() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue(), properties.getContentEncoding(), logger));
+                AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue(), properties.getContentEncoding(), LOGGER));
         }
         if (properties.getCreationTime() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.CREATION_TIME.getValue(), properties.getCreationTime(), logger));
+                AmqpMessageConstant.CREATION_TIME.getValue(), properties.getCreationTime(), LOGGER));
         }
         if (properties.getGroupId() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.GROUP_ID.getValue(), properties.getGroupId(), logger));
+                AmqpMessageConstant.GROUP_ID.getValue(), properties.getGroupId(), LOGGER));
         }
         if (properties.getGroupSequence() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.GROUP_SEQUENCE.getValue(), properties.getGroupSequence(), logger));
+                AmqpMessageConstant.GROUP_SEQUENCE.getValue(), properties.getGroupSequence(), LOGGER));
         }
         if (properties.getReplyToGroupId() != null) {
             entries.add(new SystemPropertiesEntry(
-                AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue(), properties.getReplyToGroupId(), logger));
+                AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue(), properties.getReplyToGroupId(), LOGGER));
         }
 
         message.getMessageAnnotations().forEach((key, value) ->
-            entries.add(new SystemPropertiesEntry(key, value, logger)));
+            entries.add(new SystemPropertiesEntry(key, value, LOGGER)));
 
         return entries;
     }
@@ -207,9 +207,9 @@ final class SystemProperties implements Map<String, Object> {
         }
 
         if (key == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'key' cannot be null"));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'key' cannot be null"));
         } else if (!(key instanceof String)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("'key' is not a string. key: %s. class: %s", key, key.getClass())));
         }
 
@@ -237,9 +237,9 @@ final class SystemProperties implements Map<String, Object> {
         }
 
         if (key == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'key' cannot be null"));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'key' cannot be null"));
         } else if (!(key instanceof String)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("'key' is not a string. key: %s. class: %s", key, key.getClass())));
         }
 
@@ -327,31 +327,31 @@ final class SystemProperties implements Map<String, Object> {
 
     @Override
     public Object put(String key, Object value) {
-        throw logger.logExceptionAsError(
+        throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("System properties are read-only. Cannot perform 'put' operation."));
     }
 
     @Override
     public boolean remove(Object key, Object value) {
-        throw logger.logExceptionAsError(
+        throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("System properties are read-only. Cannot perform 'remove' operation."));
     }
 
     @Override
     public Object remove(Object key) {
-        throw logger.logExceptionAsError(
+        throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("System properties are read-only. Cannot perform 'remove' operation."));
     }
 
     @Override
     public void putAll(Map<? extends String, ?> m) {
-        throw logger.logExceptionAsError(
+        throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("System properties are read-only. Cannot perform 'putAll' operation."));
     }
 
     @Override
     public void clear() {
-        throw logger.logExceptionAsError(
+        throw LOGGER.logExceptionAsError(
             new UnsupportedOperationException("System properties are read-only. Cannot perform 'clear' operation."));
     }
 

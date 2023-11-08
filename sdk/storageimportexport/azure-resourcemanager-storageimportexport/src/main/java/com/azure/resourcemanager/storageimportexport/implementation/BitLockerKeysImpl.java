@@ -11,10 +11,9 @@ import com.azure.resourcemanager.storageimportexport.fluent.BitLockerKeysClient;
 import com.azure.resourcemanager.storageimportexport.fluent.models.DriveBitLockerKeyInner;
 import com.azure.resourcemanager.storageimportexport.models.BitLockerKeys;
 import com.azure.resourcemanager.storageimportexport.models.DriveBitLockerKey;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BitLockerKeysImpl implements BitLockerKeys {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BitLockerKeysImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BitLockerKeysImpl.class);
 
     private final BitLockerKeysClient innerClient;
 

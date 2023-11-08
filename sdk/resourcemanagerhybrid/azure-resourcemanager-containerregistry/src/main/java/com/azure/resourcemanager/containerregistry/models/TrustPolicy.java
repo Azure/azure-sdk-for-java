@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The content trust policy for a container registry. */
 @Fluent
 public final class TrustPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrustPolicy.class);
-
     /*
      * The type of trust policy.
      */

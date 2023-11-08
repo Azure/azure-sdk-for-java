@@ -35,7 +35,9 @@ public interface DeploymentsClient
         InnerSupportsListing<DeploymentExtendedInner>,
         InnerSupportsDelete<Void> {
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -53,7 +55,9 @@ public interface DeploymentsClient
     Mono<Response<Flux<ByteBuffer>>> deleteAtScopeWithResponseAsync(String scope, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -71,7 +75,9 @@ public interface DeploymentsClient
     PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(String scope, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -89,7 +95,9 @@ public interface DeploymentsClient
     SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -108,7 +116,9 @@ public interface DeploymentsClient
     SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -126,7 +136,9 @@ public interface DeploymentsClient
     Mono<Void> deleteAtScopeAsync(String scope, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -143,7 +155,9 @@ public interface DeploymentsClient
     void deleteAtScope(String scope, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -191,19 +205,6 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    boolean checkExistenceAtScope(String scope, String deploymentName);
-
-    /**
-     * Checks whether the deployment exists.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -214,7 +215,22 @@ public interface DeploymentsClient
     Response<Boolean> checkExistenceAtScopeWithResponse(String scope, String deploymentName, Context context);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Checks whether the deployment exists.
+     *
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    boolean checkExistenceAtScope(String scope, String deploymentName);
+
+    /**
+     * Deploys resources at a given scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
@@ -229,7 +245,9 @@ public interface DeploymentsClient
         String scope, String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at a given scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
@@ -244,7 +262,9 @@ public interface DeploymentsClient
         String scope, String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at a given scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
@@ -259,7 +279,9 @@ public interface DeploymentsClient
         String scope, String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at a given scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
@@ -275,7 +297,9 @@ public interface DeploymentsClient
         String scope, String deploymentName, DeploymentInner parameters, Context context);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at a given scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
@@ -290,7 +314,9 @@ public interface DeploymentsClient
         String scope, String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at a given scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
@@ -304,7 +330,9 @@ public interface DeploymentsClient
     DeploymentExtendedInner createOrUpdateAtScope(String scope, String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at a given scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
@@ -350,19 +378,6 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner getAtScope(String scope, String deploymentName);
-
-    /**
-     * Gets a deployment.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -373,7 +388,22 @@ public interface DeploymentsClient
     Response<DeploymentExtendedInner> getAtScopeWithResponse(String scope, String deploymentName, Context context);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * Gets a deployment.
+     *
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExtendedInner getAtScope(String scope, String deploymentName);
+
+    /**
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -388,7 +418,9 @@ public interface DeploymentsClient
     Mono<Response<Void>> cancelAtScopeWithResponseAsync(String scope, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -403,21 +435,9 @@ public interface DeploymentsClient
     Mono<Void> cancelAtScopeAsync(String scope, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
+     * Cancels a currently running template deployment.
      *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancelAtScope(String scope, String deploymentName);
-
-    /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -431,6 +451,22 @@ public interface DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelAtScopeWithResponse(String scope, String deploymentName, Context context);
+
+    /**
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancelAtScope(String scope, String deploymentName);
 
     /**
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
@@ -578,19 +614,6 @@ public interface DeploymentsClient
      *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExportResultInner exportTemplateAtScope(String scope, String deploymentName);
-
-    /**
-     * Exports the template used for specified deployment.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -600,6 +623,19 @@ public interface DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentExportResultInner> exportTemplateAtScopeWithResponse(
         String scope, String deploymentName, Context context);
+
+    /**
+     * Exports the template used for specified deployment.
+     *
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment export result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExportResultInner exportTemplateAtScope(String scope, String deploymentName);
 
     /**
      * Get all the deployments at the given scope.
@@ -657,7 +693,9 @@ public interface DeploymentsClient
     PagedIterable<DeploymentExtendedInner> listAtScope(String scope, String filter, Integer top, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -674,7 +712,9 @@ public interface DeploymentsClient
     Mono<Response<Flux<ByteBuffer>>> deleteAtTenantScopeWithResponseAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -691,7 +731,9 @@ public interface DeploymentsClient
     PollerFlux<PollResult<Void>, Void> beginDeleteAtTenantScopeAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -708,7 +750,9 @@ public interface DeploymentsClient
     SyncPoller<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -726,7 +770,9 @@ public interface DeploymentsClient
     SyncPoller<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -743,7 +789,9 @@ public interface DeploymentsClient
     Mono<Void> deleteAtTenantScopeAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -759,7 +807,9 @@ public interface DeploymentsClient
     void deleteAtTenantScope(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -803,18 +853,6 @@ public interface DeploymentsClient
      * Checks whether the deployment exists.
      *
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    boolean checkExistenceAtTenantScope(String deploymentName);
-
-    /**
-     * Checks whether the deployment exists.
-     *
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -825,7 +863,21 @@ public interface DeploymentsClient
     Response<Boolean> checkExistenceAtTenantScopeWithResponse(String deploymentName, Context context);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Checks whether the deployment exists.
+     *
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    boolean checkExistenceAtTenantScope(String deploymentName);
+
+    /**
+     * Deploys resources at tenant scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -839,7 +891,9 @@ public interface DeploymentsClient
         String deploymentName, ScopedDeployment parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at tenant scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -853,7 +907,9 @@ public interface DeploymentsClient
         String deploymentName, ScopedDeployment parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at tenant scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -867,7 +923,9 @@ public interface DeploymentsClient
         String deploymentName, ScopedDeployment parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at tenant scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -882,7 +940,9 @@ public interface DeploymentsClient
         String deploymentName, ScopedDeployment parameters, Context context);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at tenant scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -895,7 +955,9 @@ public interface DeploymentsClient
     Mono<DeploymentExtendedInner> createOrUpdateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at tenant scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -908,7 +970,9 @@ public interface DeploymentsClient
     DeploymentExtendedInner createOrUpdateAtTenantScope(String deploymentName, ScopedDeployment parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at tenant scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -950,18 +1014,6 @@ public interface DeploymentsClient
      * Gets a deployment.
      *
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner getAtTenantScope(String deploymentName);
-
-    /**
-     * Gets a deployment.
-     *
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -972,7 +1024,21 @@ public interface DeploymentsClient
     Response<DeploymentExtendedInner> getAtTenantScopeWithResponse(String deploymentName, Context context);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * Gets a deployment.
+     *
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExtendedInner getAtTenantScope(String deploymentName);
+
+    /**
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -986,7 +1052,9 @@ public interface DeploymentsClient
     Mono<Response<Void>> cancelAtTenantScopeWithResponseAsync(String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -1000,20 +1068,9 @@ public interface DeploymentsClient
     Mono<Void> cancelAtTenantScopeAsync(String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
+     * Cancels a currently running template deployment.
      *
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancelAtTenantScope(String deploymentName);
-
-    /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -1026,6 +1083,21 @@ public interface DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelAtTenantScopeWithResponse(String deploymentName, Context context);
+
+    /**
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancelAtTenantScope(String deploymentName);
 
     /**
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
@@ -1259,18 +1331,6 @@ public interface DeploymentsClient
      * Exports the template used for specified deployment.
      *
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExportResultInner exportTemplateAtTenantScope(String deploymentName);
-
-    /**
-     * Exports the template used for specified deployment.
-     *
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1280,6 +1340,18 @@ public interface DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentExportResultInner> exportTemplateAtTenantScopeWithResponse(
         String deploymentName, Context context);
+
+    /**
+     * Exports the template used for specified deployment.
+     *
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment export result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExportResultInner exportTemplateAtTenantScope(String deploymentName);
 
     /**
      * Get all the deployments at the tenant scope.
@@ -1331,7 +1403,9 @@ public interface DeploymentsClient
     PagedIterable<DeploymentExtendedInner> listAtTenantScope(String filter, Integer top, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -1350,7 +1424,9 @@ public interface DeploymentsClient
         String groupId, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -1368,7 +1444,9 @@ public interface DeploymentsClient
     PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupScopeAsync(String groupId, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -1386,7 +1464,9 @@ public interface DeploymentsClient
     SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(String groupId, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -1406,7 +1486,9 @@ public interface DeploymentsClient
         String groupId, String deploymentName, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -1424,7 +1506,9 @@ public interface DeploymentsClient
     Mono<Void> deleteAtManagementGroupScopeAsync(String groupId, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -1441,7 +1525,9 @@ public interface DeploymentsClient
     void deleteAtManagementGroupScope(String groupId, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -1490,19 +1576,6 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    boolean checkExistenceAtManagementGroupScope(String groupId, String deploymentName);
-
-    /**
-     * Checks whether the deployment exists.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1514,7 +1587,22 @@ public interface DeploymentsClient
         String groupId, String deploymentName, Context context);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Checks whether the deployment exists.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    boolean checkExistenceAtManagementGroupScope(String groupId, String deploymentName);
+
+    /**
+     * Deploys resources at management group scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
@@ -1529,7 +1617,9 @@ public interface DeploymentsClient
         String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at management group scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
@@ -1545,7 +1635,9 @@ public interface DeploymentsClient
             String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at management group scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
@@ -1560,7 +1652,9 @@ public interface DeploymentsClient
         String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at management group scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
@@ -1576,7 +1670,9 @@ public interface DeploymentsClient
         String groupId, String deploymentName, ScopedDeployment parameters, Context context);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at management group scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
@@ -1591,7 +1687,9 @@ public interface DeploymentsClient
         String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at management group scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
@@ -1606,7 +1704,9 @@ public interface DeploymentsClient
         String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at management group scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
@@ -1653,19 +1753,6 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner getAtManagementGroupScope(String groupId, String deploymentName);
-
-    /**
-     * Gets a deployment.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1677,7 +1764,22 @@ public interface DeploymentsClient
         String groupId, String deploymentName, Context context);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * Gets a deployment.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExtendedInner getAtManagementGroupScope(String groupId, String deploymentName);
+
+    /**
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -1692,7 +1794,9 @@ public interface DeploymentsClient
     Mono<Response<Void>> cancelAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -1707,21 +1811,9 @@ public interface DeploymentsClient
     Mono<Void> cancelAtManagementGroupScopeAsync(String groupId, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
+     * Cancels a currently running template deployment.
      *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancelAtManagementGroupScope(String groupId, String deploymentName);
-
-    /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -1735,6 +1827,22 @@ public interface DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelAtManagementGroupScopeWithResponse(String groupId, String deploymentName, Context context);
+
+    /**
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancelAtManagementGroupScope(String groupId, String deploymentName);
 
     /**
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
@@ -1992,19 +2100,6 @@ public interface DeploymentsClient
      *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExportResultInner exportTemplateAtManagementGroupScope(String groupId, String deploymentName);
-
-    /**
-     * Exports the template used for specified deployment.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2014,6 +2109,19 @@ public interface DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentExportResultInner> exportTemplateAtManagementGroupScopeWithResponse(
         String groupId, String deploymentName, Context context);
+
+    /**
+     * Exports the template used for specified deployment.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment export result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExportResultInner exportTemplateAtManagementGroupScope(String groupId, String deploymentName);
 
     /**
      * Get all the deployments for a management group.
@@ -2072,7 +2180,9 @@ public interface DeploymentsClient
         String groupId, String filter, Integer top, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -2089,7 +2199,9 @@ public interface DeploymentsClient
     Mono<Response<Flux<ByteBuffer>>> deleteAtSubscriptionScopeWithResponseAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -2106,7 +2218,9 @@ public interface DeploymentsClient
     PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionScopeAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -2123,7 +2237,9 @@ public interface DeploymentsClient
     SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -2141,7 +2257,9 @@ public interface DeploymentsClient
     SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -2158,7 +2276,9 @@ public interface DeploymentsClient
     Mono<Void> deleteAtSubscriptionScopeAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -2174,7 +2294,9 @@ public interface DeploymentsClient
     void deleteAtSubscriptionScope(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
      * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
      * the status of the process. While the process is running, a call to the URI in the Location header returns a
@@ -2218,18 +2340,6 @@ public interface DeploymentsClient
      * Checks whether the deployment exists.
      *
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    boolean checkExistenceAtSubscriptionScope(String deploymentName);
-
-    /**
-     * Checks whether the deployment exists.
-     *
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2240,7 +2350,21 @@ public interface DeploymentsClient
     Response<Boolean> checkExistenceAtSubscriptionScopeWithResponse(String deploymentName, Context context);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Checks whether the deployment exists.
+     *
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    boolean checkExistenceAtSubscriptionScope(String deploymentName);
+
+    /**
+     * Deploys resources at subscription scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -2254,7 +2378,9 @@ public interface DeploymentsClient
         String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at subscription scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -2268,7 +2394,9 @@ public interface DeploymentsClient
         beginCreateOrUpdateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at subscription scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -2282,7 +2410,9 @@ public interface DeploymentsClient
         String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at subscription scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -2297,7 +2427,9 @@ public interface DeploymentsClient
         String deploymentName, DeploymentInner parameters, Context context);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at subscription scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -2311,7 +2443,9 @@ public interface DeploymentsClient
         String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at subscription scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -2324,7 +2458,9 @@ public interface DeploymentsClient
     DeploymentExtendedInner createOrUpdateAtSubscriptionScope(String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources at subscription scope.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -2366,18 +2502,6 @@ public interface DeploymentsClient
      * Gets a deployment.
      *
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner getAtSubscriptionScope(String deploymentName);
-
-    /**
-     * Gets a deployment.
-     *
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2388,7 +2512,21 @@ public interface DeploymentsClient
     Response<DeploymentExtendedInner> getAtSubscriptionScopeWithResponse(String deploymentName, Context context);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * Gets a deployment.
+     *
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExtendedInner getAtSubscriptionScope(String deploymentName);
+
+    /**
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -2402,7 +2540,9 @@ public interface DeploymentsClient
     Mono<Response<Void>> cancelAtSubscriptionScopeWithResponseAsync(String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -2416,20 +2556,9 @@ public interface DeploymentsClient
     Mono<Void> cancelAtSubscriptionScopeAsync(String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
+     * Cancels a currently running template deployment.
      *
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancelAtSubscriptionScope(String deploymentName);
-
-    /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
@@ -2442,6 +2571,21 @@ public interface DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelAtSubscriptionScopeWithResponse(String deploymentName, Context context);
+
+    /**
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancelAtSubscriptionScope(String deploymentName);
 
     /**
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
@@ -2677,18 +2821,6 @@ public interface DeploymentsClient
      * Exports the template used for specified deployment.
      *
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExportResultInner exportTemplateAtSubscriptionScope(String deploymentName);
-
-    /**
-     * Exports the template used for specified deployment.
-     *
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2698,6 +2830,18 @@ public interface DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentExportResultInner> exportTemplateAtSubscriptionScopeWithResponse(
         String deploymentName, Context context);
+
+    /**
+     * Exports the template used for specified deployment.
+     *
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment export result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExportResultInner exportTemplateAtSubscriptionScope(String deploymentName);
 
     /**
      * Get all the deployments for a subscription.
@@ -2749,7 +2893,9 @@ public interface DeploymentsClient
     PagedIterable<DeploymentExtendedInner> list(String filter, Integer top, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
      * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
      * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
@@ -2769,7 +2915,9 @@ public interface DeploymentsClient
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
      * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
      * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
@@ -2789,7 +2937,9 @@ public interface DeploymentsClient
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
      * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
      * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
@@ -2809,7 +2959,9 @@ public interface DeploymentsClient
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
      * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
      * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
@@ -2830,7 +2982,9 @@ public interface DeploymentsClient
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
      * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
      * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
@@ -2850,7 +3004,9 @@ public interface DeploymentsClient
     Mono<Void> deleteAsync(String resourceGroupName, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
      * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
      * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
@@ -2869,7 +3025,9 @@ public interface DeploymentsClient
     void delete(String resourceGroupName, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * Deletes a deployment from the deployment history.
+     *
+     * <p>A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
      * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
      * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
      * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
@@ -2922,20 +3080,6 @@ public interface DeploymentsClient
      * @param resourceGroupName The name of the resource group with the deployment to check. The name is case
      *     insensitive.
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    boolean checkExistence(String resourceGroupName, String deploymentName);
-
-    /**
-     * Checks whether the deployment exists.
-     *
-     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case
-     *     insensitive.
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2946,7 +3090,23 @@ public interface DeploymentsClient
     Response<Boolean> checkExistenceWithResponse(String resourceGroupName, String deploymentName, Context context);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Checks whether the deployment exists.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case
+     *     insensitive.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    boolean checkExistence(String resourceGroupName, String deploymentName);
+
+    /**
+     * Deploys resources to a resource group.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
@@ -2962,7 +3122,9 @@ public interface DeploymentsClient
         String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources to a resource group.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
@@ -2978,7 +3140,9 @@ public interface DeploymentsClient
         String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources to a resource group.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
@@ -2994,7 +3158,9 @@ public interface DeploymentsClient
         String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources to a resource group.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
@@ -3011,7 +3177,9 @@ public interface DeploymentsClient
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources to a resource group.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
@@ -3027,7 +3195,9 @@ public interface DeploymentsClient
         String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources to a resource group.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
@@ -3042,7 +3212,9 @@ public interface DeploymentsClient
     DeploymentExtendedInner createOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
+     * Deploys resources to a resource group.
+     *
+     * <p>You can provide the template and parameters directly in the request or link to JSON files.
      *
      * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
      *     The resource group must already exist.
@@ -3090,19 +3262,6 @@ public interface DeploymentsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner getByResourceGroup(String resourceGroupName, String deploymentName);
-
-    /**
-     * Gets a deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3114,7 +3273,22 @@ public interface DeploymentsClient
         String resourceGroupName, String deploymentName, Context context);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * Gets a deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExtendedInner getByResourceGroup(String resourceGroupName, String deploymentName);
+
+    /**
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resource group partially deployed.
      *
@@ -3129,7 +3303,9 @@ public interface DeploymentsClient
     Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resource group partially deployed.
      *
@@ -3144,21 +3320,9 @@ public interface DeploymentsClient
     Mono<Void> cancelAsync(String resourceGroupName, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resource group partially deployed.
+     * Cancels a currently running template deployment.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancel(String resourceGroupName, String deploymentName);
-
-    /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resource group partially deployed.
      *
@@ -3172,6 +3336,22 @@ public interface DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelWithResponse(String resourceGroupName, String deploymentName, Context context);
+
+    /**
+     * Cancels a currently running template deployment.
+     *
+     * <p>You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resource group partially deployed.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void cancel(String resourceGroupName, String deploymentName);
 
     /**
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
@@ -3439,19 +3619,6 @@ public interface DeploymentsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExportResultInner exportTemplate(String resourceGroupName, String deploymentName);
-
-    /**
-     * Exports the template used for specified deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3461,6 +3628,19 @@ public interface DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeploymentExportResultInner> exportTemplateWithResponse(
         String resourceGroupName, String deploymentName, Context context);
+
+    /**
+     * Exports the template used for specified deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment export result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExportResultInner exportTemplate(String resourceGroupName, String deploymentName);
 
     /**
      * Get all the deployments for a resource group.
@@ -3551,18 +3731,6 @@ public interface DeploymentsClient
      * Calculate the hash of the given template.
      *
      * @param template The template provided to calculate hash.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to calculate template hash.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TemplateHashResultInner calculateTemplateHash(Object template);
-
-    /**
-     * Calculate the hash of the given template.
-     *
-     * @param template The template provided to calculate hash.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3571,4 +3739,16 @@ public interface DeploymentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TemplateHashResultInner> calculateTemplateHashWithResponse(Object template, Context context);
+
+    /**
+     * Calculate the hash of the given template.
+     *
+     * @param template The template provided to calculate hash.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to calculate template hash.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TemplateHashResultInner calculateTemplateHash(Object template);
 }

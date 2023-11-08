@@ -17,6 +17,15 @@ public final class ItemScopePath extends ExpandableStringEnum<ItemScopePath> {
     public static final ItemScopePath MYANALYTICS_ITEMS = fromString("myanalyticsItems");
 
     /**
+     * Creates a new instance of ItemScopePath value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ItemScopePath() {
+    }
+
+    /**
      * Creates or finds a ItemScopePath from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class ItemScopePath extends ExpandableStringEnum<ItemScopePath> {
         return fromString(name, ItemScopePath.class);
     }
 
-    /** @return known ItemScopePath values. */
+    /**
+     * Gets known ItemScopePath values.
+     *
+     * @return known ItemScopePath values.
+     */
     public static Collection<ItemScopePath> values() {
         return values(ItemScopePath.class);
     }

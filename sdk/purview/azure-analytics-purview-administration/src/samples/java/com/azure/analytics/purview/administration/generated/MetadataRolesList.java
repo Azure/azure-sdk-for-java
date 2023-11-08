@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.administration.generated;
 
 import com.azure.analytics.purview.administration.MetadataRolesClient;
-import com.azure.analytics.purview.administration.PurviewMetadataClientBuilder;
+import com.azure.analytics.purview.administration.MetadataRolesClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -13,12 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class MetadataRolesList {
     public static void main(String[] args) {
-        MetadataRolesClient client =
-                new PurviewMetadataClientBuilder()
+        MetadataRolesClient metadataRolesClient =
+                new MetadataRolesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildMetadataRolesClient();
+                        .buildClient();
+        // BEGIN:com.azure.analytics.purview.administration.generated.metadataroleslist.metadataroleslist
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = client.list(requestOptions);
+        PagedIterable<BinaryData> response = metadataRolesClient.list(requestOptions);
+        // END:com.azure.analytics.purview.administration.generated.metadataroleslist.metadataroleslist
     }
 }

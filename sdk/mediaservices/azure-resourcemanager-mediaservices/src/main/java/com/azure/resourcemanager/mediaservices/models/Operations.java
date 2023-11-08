@@ -10,16 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * Lists all the Media Services operations.
+     * List Operations
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Operation items.
-     */
-    OperationCollection list();
-
-    /**
-     * Lists all the Media Services operations.
+     * <p>Lists all the Media Services operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,4 +21,15 @@ public interface Operations {
      * @return a collection of Operation items along with {@link Response}.
      */
     Response<OperationCollection> listWithResponse(Context context);
+
+    /**
+     * List Operations
+     *
+     * <p>Lists all the Media Services operations.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of Operation items.
+     */
+    OperationCollection list();
 }

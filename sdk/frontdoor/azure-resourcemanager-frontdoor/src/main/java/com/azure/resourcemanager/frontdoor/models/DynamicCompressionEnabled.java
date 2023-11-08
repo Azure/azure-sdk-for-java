@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DynamicCompressionEnabled. */
+/** Whether to use dynamic compression for cached content. */
 public final class DynamicCompressionEnabled extends ExpandableStringEnum<DynamicCompressionEnabled> {
     /** Static value Enabled for DynamicCompressionEnabled. */
     public static final DynamicCompressionEnabled ENABLED = fromString("Enabled");
 
     /** Static value Disabled for DynamicCompressionEnabled. */
     public static final DynamicCompressionEnabled DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of DynamicCompressionEnabled value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DynamicCompressionEnabled() {
+    }
 
     /**
      * Creates or finds a DynamicCompressionEnabled from its string representation.
@@ -27,7 +36,11 @@ public final class DynamicCompressionEnabled extends ExpandableStringEnum<Dynami
         return fromString(name, DynamicCompressionEnabled.class);
     }
 
-    /** @return known DynamicCompressionEnabled values. */
+    /**
+     * Gets known DynamicCompressionEnabled values.
+     *
+     * @return known DynamicCompressionEnabled values.
+     */
     public static Collection<DynamicCompressionEnabled> values() {
         return values(DynamicCompressionEnabled.class);
     }

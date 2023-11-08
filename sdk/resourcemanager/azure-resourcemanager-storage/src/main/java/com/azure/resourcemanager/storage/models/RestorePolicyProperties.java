@@ -18,8 +18,7 @@ public final class RestorePolicyProperties {
     private boolean enabled;
 
     /*
-     * how long this blob can be restored. It should be great than zero and
-     * less than DeleteRetentionPolicy.days.
+     * how long this blob can be restored. It should be great than zero and less than DeleteRetentionPolicy.days.
      */
     @JsonProperty(value = "days")
     private Integer days;
@@ -35,6 +34,10 @@ public final class RestorePolicyProperties {
      */
     @JsonProperty(value = "minRestoreTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime minRestoreTime;
+
+    /** Creates an instance of RestorePolicyProperties class. */
+    public RestorePolicyProperties() {
+    }
 
     /**
      * Get the enabled property: Blob restore is enabled if set to true.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.GetSsisObjectMetadataRequest;
 
 /** Samples for IntegrationRuntimeObjectMetadata Get. */
@@ -26,6 +25,6 @@ public final class IntegrationRuntimeObjectMetadataGetSamples {
                 "exampleFactoryName",
                 "testactivityv2",
                 new GetSsisObjectMetadataRequest().withMetadataPath("ssisFolders"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

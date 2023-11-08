@@ -5,36 +5,31 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The customer's ASN that is registered by the peering service provider. */
-@JsonFlatten
 @Fluent
-public class PeeringRegisteredAsnInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringRegisteredAsnInner.class);
-
+public final class PeeringRegisteredAsnInner extends ProxyResource {
     /*
-     * The customer's ASN from which traffic originates.
+     * The properties that define a registered ASN.
      */
-    @JsonProperty(value = "properties.asn")
-    private Integer asn;
+    @JsonProperty(value = "properties")
+    private PeeringRegisteredAsnProperties innerProperties;
 
-    /*
-     * The peering service prefix key that is to be shared with the customer.
-     */
-    @JsonProperty(value = "properties.peeringServicePrefixKey", access = JsonProperty.Access.WRITE_ONLY)
-    private String peeringServicePrefixKey;
+    /** Creates an instance of PeeringRegisteredAsnInner class. */
+    public PeeringRegisteredAsnInner() {
+    }
 
-    /*
-     * The provisioning state of the resource.
+    /**
+     * Get the innerProperties property: The properties that define a registered ASN.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private PeeringRegisteredAsnProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the asn property: The customer's ASN from which traffic originates.
@@ -42,7 +37,7 @@ public class PeeringRegisteredAsnInner extends ProxyResource {
      * @return the asn value.
      */
     public Integer asn() {
-        return this.asn;
+        return this.innerProperties() == null ? null : this.innerProperties().asn();
     }
 
     /**
@@ -52,7 +47,10 @@ public class PeeringRegisteredAsnInner extends ProxyResource {
      * @return the PeeringRegisteredAsnInner object itself.
      */
     public PeeringRegisteredAsnInner withAsn(Integer asn) {
-        this.asn = asn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringRegisteredAsnProperties();
+        }
+        this.innerProperties().withAsn(asn);
         return this;
     }
 
@@ -62,7 +60,7 @@ public class PeeringRegisteredAsnInner extends ProxyResource {
      * @return the peeringServicePrefixKey value.
      */
     public String peeringServicePrefixKey() {
-        return this.peeringServicePrefixKey;
+        return this.innerProperties() == null ? null : this.innerProperties().peeringServicePrefixKey();
     }
 
     /**
@@ -71,7 +69,7 @@ public class PeeringRegisteredAsnInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -80,5 +78,8 @@ public class PeeringRegisteredAsnInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

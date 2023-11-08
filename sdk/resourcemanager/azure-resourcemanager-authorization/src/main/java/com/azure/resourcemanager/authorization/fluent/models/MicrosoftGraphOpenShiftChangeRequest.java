@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** openShiftChangeRequest. */
 @Fluent
 public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphScheduleChangeRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOpenShiftChangeRequest.class);
-
     /*
      * ID for the open shift.
      */
@@ -29,6 +26,10 @@ public final class MicrosoftGraphOpenShiftChangeRequest extends MicrosoftGraphSc
      * openShiftChangeRequest
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOpenShiftChangeRequest class. */
+    public MicrosoftGraphOpenShiftChangeRequest() {
+    }
 
     /**
      * Get the openShiftId property: ID for the open shift.

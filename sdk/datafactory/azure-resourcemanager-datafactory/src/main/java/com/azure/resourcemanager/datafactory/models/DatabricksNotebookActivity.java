@@ -25,6 +25,10 @@ public final class DatabricksNotebookActivity extends ExecutionActivity {
     private DatabricksNotebookActivityTypeProperties innerTypeProperties =
         new DatabricksNotebookActivityTypeProperties();
 
+    /** Creates an instance of DatabricksNotebookActivity class. */
+    public DatabricksNotebookActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Databricks Notebook activity properties.
      *
@@ -59,6 +63,20 @@ public final class DatabricksNotebookActivity extends ExecutionActivity {
     @Override
     public DatabricksNotebookActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksNotebookActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksNotebookActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

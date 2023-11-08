@@ -32,6 +32,9 @@ public final class MediaJobOutputProgressEventData {
     @JsonProperty(value = "jobCorrelationData")
     private Map<String, String> jobCorrelationData;
 
+    /** Creates an instance of MediaJobOutputProgressEventData class. */
+    public MediaJobOutputProgressEventData() {}
+
     /**
      * Get the label property: Gets the Job output label.
      *

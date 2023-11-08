@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.PrivateLinkHubsClient;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkHubInner;
 import com.azure.resourcemanager.synapse.models.PrivateLinkHub;
 import com.azure.resourcemanager.synapse.models.PrivateLinkHubs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkHubsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkHubsImpl.class);
 
     private final PrivateLinkHubsClient innerClient;
 
@@ -38,15 +37,6 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
         return Utils.mapPage(inner, inner1 -> new PrivateLinkHubImpl(inner1, this.manager()));
     }
 
-    public PrivateLinkHub getByResourceGroup(String resourceGroupName, String privateLinkHubName) {
-        PrivateLinkHubInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, privateLinkHubName);
-        if (inner != null) {
-            return new PrivateLinkHubImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateLinkHub> getByResourceGroupWithResponse(
         String resourceGroupName, String privateLinkHubName, Context context) {
         Response<PrivateLinkHubInner> inner =
@@ -57,6 +47,15 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateLinkHubImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateLinkHub getByResourceGroup(String resourceGroupName, String privateLinkHubName) {
+        PrivateLinkHubInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, privateLinkHubName);
+        if (inner != null) {
+            return new PrivateLinkHubImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -83,7 +82,7 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
     public PrivateLinkHub getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -91,7 +90,7 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
         }
         String privateLinkHubName = Utils.getValueFromIdByName(id, "privateLinkHubs");
         if (privateLinkHubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -103,7 +102,7 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
     public Response<PrivateLinkHub> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +110,7 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
         }
         String privateLinkHubName = Utils.getValueFromIdByName(id, "privateLinkHubs");
         if (privateLinkHubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -123,7 +122,7 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
         }
         String privateLinkHubName = Utils.getValueFromIdByName(id, "privateLinkHubs");
         if (privateLinkHubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,7 +150,7 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
         }
         String privateLinkHubName = Utils.getValueFromIdByName(id, "privateLinkHubs");
         if (privateLinkHubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

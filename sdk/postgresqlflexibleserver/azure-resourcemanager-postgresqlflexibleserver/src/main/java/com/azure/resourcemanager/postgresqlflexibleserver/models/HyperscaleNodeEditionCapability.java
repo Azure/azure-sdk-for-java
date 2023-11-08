@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Hyperscale node edition capabilities. */
 @Immutable
 public final class HyperscaleNodeEditionCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HyperscaleNodeEditionCapability.class);
-
     /*
      * Server edition name
      */
@@ -44,6 +40,10 @@ public final class HyperscaleNodeEditionCapability {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
+
+    /** Creates an instance of HyperscaleNodeEditionCapability class. */
+    public HyperscaleNodeEditionCapability() {
+    }
 
     /**
      * Get the name property: Server edition name.

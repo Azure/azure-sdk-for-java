@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.ExternalSecuritySolutionsClient
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
 import com.azure.resourcemanager.security.models.ExternalSecuritySolution;
 import com.azure.resourcemanager.security.models.ExternalSecuritySolutions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExternalSecuritySolutionsImpl implements ExternalSecuritySolutions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExternalSecuritySolutionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExternalSecuritySolutionsImpl.class);
 
     private final ExternalSecuritySolutionsClient innerClient;
 
@@ -50,17 +49,6 @@ public final class ExternalSecuritySolutionsImpl implements ExternalSecuritySolu
         return Utils.mapPage(inner, inner1 -> new ExternalSecuritySolutionImpl(inner1, this.manager()));
     }
 
-    public ExternalSecuritySolution get(
-        String resourceGroupName, String ascLocation, String externalSecuritySolutionsName) {
-        ExternalSecuritySolutionInner inner =
-            this.serviceClient().get(resourceGroupName, ascLocation, externalSecuritySolutionsName);
-        if (inner != null) {
-            return new ExternalSecuritySolutionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ExternalSecuritySolution> getWithResponse(
         String resourceGroupName, String ascLocation, String externalSecuritySolutionsName, Context context) {
         Response<ExternalSecuritySolutionInner> inner =
@@ -73,6 +61,17 @@ public final class ExternalSecuritySolutionsImpl implements ExternalSecuritySolu
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ExternalSecuritySolutionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ExternalSecuritySolution get(
+        String resourceGroupName, String ascLocation, String externalSecuritySolutionsName) {
+        ExternalSecuritySolutionInner inner =
+            this.serviceClient().get(resourceGroupName, ascLocation, externalSecuritySolutionsName);
+        if (inner != null) {
+            return new ExternalSecuritySolutionImpl(inner, this.manager());
         } else {
             return null;
         }

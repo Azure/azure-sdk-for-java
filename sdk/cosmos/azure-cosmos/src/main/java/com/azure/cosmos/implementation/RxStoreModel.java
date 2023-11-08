@@ -2,11 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -50,4 +56,23 @@ public interface RxStoreModel {
      * @param throughputControlStore
      */
     void enableThroughputControl(ThroughputControlStore throughputControlStore);
+
+    /**
+     * Submits open connection tasks and warms up caches for replicas for containers specified by
+     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} and in
+     * {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()} preferred regions.
+     *
+     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and
+     *                                     no. of proactive connection regions
+     */
+    Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
+
+    /***
+     * Configure fault injector provider.
+     *
+     * @param injectorProvider the fault injector provider.
+     */
+    void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider, Configs configs);
+    void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities);
+    void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 }

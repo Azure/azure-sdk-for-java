@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.CustomersClient;
 import com.azure.resourcemanager.billing.fluent.models.CustomerInner;
 import com.azure.resourcemanager.billing.models.Customer;
 import com.azure.resourcemanager.billing.models.Customers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CustomersImpl implements Customers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomersImpl.class);
 
     private final CustomersClient innerClient;
 
@@ -52,15 +51,6 @@ public final class CustomersImpl implements Customers {
         return Utils.mapPage(inner, inner1 -> new CustomerImpl(inner1, this.manager()));
     }
 
-    public Customer get(String billingAccountName, String customerName) {
-        CustomerInner inner = this.serviceClient().get(billingAccountName, customerName);
-        if (inner != null) {
-            return new CustomerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Customer> getWithResponse(
         String billingAccountName, String customerName, String expand, Context context) {
         Response<CustomerInner> inner =
@@ -71,6 +61,15 @@ public final class CustomersImpl implements Customers {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CustomerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Customer get(String billingAccountName, String customerName) {
+        CustomerInner inner = this.serviceClient().get(billingAccountName, customerName);
+        if (inner != null) {
+            return new CustomerImpl(inner, this.manager());
         } else {
             return null;
         }

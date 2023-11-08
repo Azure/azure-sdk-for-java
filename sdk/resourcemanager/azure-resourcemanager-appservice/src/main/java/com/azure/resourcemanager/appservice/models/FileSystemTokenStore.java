@@ -16,6 +16,10 @@ public final class FileSystemTokenStore {
     @JsonProperty(value = "directory")
     private String directory;
 
+    /** Creates an instance of FileSystemTokenStore class. */
+    public FileSystemTokenStore() {
+    }
+
     /**
      * Get the directory property: The directory in which the tokens will be stored.
      *

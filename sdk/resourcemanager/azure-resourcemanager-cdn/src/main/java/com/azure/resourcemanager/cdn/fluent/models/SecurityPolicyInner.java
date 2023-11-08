@@ -6,31 +6,23 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.SecurityPolicyPropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SecurityPolicy association for AzureFrontDoor profile. */
 @Fluent
 public final class SecurityPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPolicyInner.class);
-
     /*
-     * The json object that contains properties required to create a security
-     * policy
+     * The json object that contains properties required to create a security policy
      */
     @JsonProperty(value = "properties")
     private SecurityPolicyProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of SecurityPolicyInner class. */
+    public SecurityPolicyInner() {
+    }
 
     /**
      * Get the innerProperties property: The json object that contains properties required to create a security policy.
@@ -39,15 +31,6 @@ public final class SecurityPolicyInner extends ProxyResource {
      */
     private SecurityPolicyProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

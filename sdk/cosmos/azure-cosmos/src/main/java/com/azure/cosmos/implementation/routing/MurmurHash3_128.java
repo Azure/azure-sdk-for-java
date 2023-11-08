@@ -130,11 +130,6 @@ public class MurmurHash3_128 {
         return new UInt128(h1, h2);
     }
 
-    private static int rotateLeft32(int n, int numBits) {
-        assert numBits < 32;
-        return Integer.rotateLeft(n, numBits);
-    }
-
     private static long rotateLeft64(long n, int numBits) {
         assert numBits < 64;
         return Long.rotateLeft(n, numBits);

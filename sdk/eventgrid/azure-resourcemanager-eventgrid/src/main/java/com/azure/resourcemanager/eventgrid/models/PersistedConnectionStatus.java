@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PersistedConnectionStatus. */
+/** Status of the connection. */
 public final class PersistedConnectionStatus extends ExpandableStringEnum<PersistedConnectionStatus> {
     /** Static value Pending for PersistedConnectionStatus. */
     public static final PersistedConnectionStatus PENDING = fromString("Pending");
@@ -23,6 +23,15 @@ public final class PersistedConnectionStatus extends ExpandableStringEnum<Persis
     public static final PersistedConnectionStatus DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of PersistedConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PersistedConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a PersistedConnectionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class PersistedConnectionStatus extends ExpandableStringEnum<Persis
         return fromString(name, PersistedConnectionStatus.class);
     }
 
-    /** @return known PersistedConnectionStatus values. */
+    /**
+     * Gets known PersistedConnectionStatus values.
+     *
+     * @return known PersistedConnectionStatus values.
+     */
     public static Collection<PersistedConnectionStatus> values() {
         return values(PersistedConnectionStatus.class);
     }

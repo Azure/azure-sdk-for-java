@@ -867,7 +867,7 @@ public interface VirtualMachineScaleSet
              *
              * <p>Each call to this method adds the given public key to the list of VM's public keys.
              *
-             * @param publicKey the SSH public key in PEM format.
+             * @param publicKey the SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
@@ -1015,7 +1015,7 @@ public interface VirtualMachineScaleSet
              *
              * <p>Each call to this method adds the given public key to the list of VM's public keys.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
@@ -1034,7 +1034,7 @@ public interface VirtualMachineScaleSet
              *
              * <p>Each call to this method adds the given public key to the list of VM's public keys.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManaged withSsh(String publicKey);
@@ -1050,7 +1050,7 @@ public interface VirtualMachineScaleSet
              *
              * <p>Each call to this method adds the given public key to the list of VM's public keys.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateUnmanaged withSsh(String publicKey);

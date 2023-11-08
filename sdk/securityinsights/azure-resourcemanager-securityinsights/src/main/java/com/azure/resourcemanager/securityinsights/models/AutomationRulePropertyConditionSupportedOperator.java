@@ -46,7 +46,11 @@ public final class AutomationRulePropertyConditionSupportedOperator
         return fromString(name, AutomationRulePropertyConditionSupportedOperator.class);
     }
 
-    /** @return known AutomationRulePropertyConditionSupportedOperator values. */
+    /**
+     * Gets known AutomationRulePropertyConditionSupportedOperator values.
+     *
+     * @return known AutomationRulePropertyConditionSupportedOperator values.
+     */
     public static Collection<AutomationRulePropertyConditionSupportedOperator> values() {
         return values(AutomationRulePropertyConditionSupportedOperator.class);
     }

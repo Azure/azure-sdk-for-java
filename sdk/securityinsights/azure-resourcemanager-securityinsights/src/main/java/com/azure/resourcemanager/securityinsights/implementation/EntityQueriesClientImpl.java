@@ -462,14 +462,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EntityQueryInner> getAsync(String resourceGroupName, String workspaceName, String entityQueryId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, entityQueryId)
-            .flatMap(
-                (Response<EntityQueryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -644,14 +637,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
     private Mono<EntityQueryInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String entityQueryId, CustomEntityQuery entityQuery) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, entityQueryId, entityQuery)
-            .flatMap(
-                (Response<EntityQueryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -814,7 +800,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String entityQueryId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, entityQueryId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -853,7 +839,8 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -888,7 +875,8 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

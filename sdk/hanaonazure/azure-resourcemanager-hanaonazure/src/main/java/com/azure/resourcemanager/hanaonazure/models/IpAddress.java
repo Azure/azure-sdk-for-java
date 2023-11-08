@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the IP address of the network interface. */
 @Fluent
 public final class IpAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpAddress.class);
-
     /*
      * Specifies the IP address of the network interface.
      */
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
+
+    /** Creates an instance of IpAddress class. */
+    public IpAddress() {
+    }
 
     /**
      * Get the ipAddress property: Specifies the IP address of the network interface.

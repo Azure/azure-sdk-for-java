@@ -80,6 +80,10 @@ public final class DataMigrationServiceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return groupName;
+    }
+
     public DataMigrationServiceInner innerModel() {
         return this.innerObject;
     }
@@ -169,12 +173,12 @@ public final class DataMigrationServiceImpl
         return this;
     }
 
-    public DataMigrationServiceStatusResponse checkStatus() {
-        return serviceManager.services().checkStatus(groupName, serviceName);
-    }
-
     public Response<DataMigrationServiceStatusResponse> checkStatusWithResponse(Context context) {
         return serviceManager.services().checkStatusWithResponse(groupName, serviceName, context);
+    }
+
+    public DataMigrationServiceStatusResponse checkStatus() {
+        return serviceManager.services().checkStatus(groupName, serviceName);
     }
 
     public void start() {
@@ -193,15 +197,15 @@ public final class DataMigrationServiceImpl
         serviceManager.services().stop(groupName, serviceName, context);
     }
 
-    public NameAvailabilityResponse nestedCheckNameAvailability(NameAvailabilityRequest parameters) {
-        return serviceManager.services().nestedCheckNameAvailability(groupName, serviceName, parameters);
-    }
-
     public Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
         NameAvailabilityRequest parameters, Context context) {
         return serviceManager
             .services()
             .nestedCheckNameAvailabilityWithResponse(groupName, serviceName, parameters, context);
+    }
+
+    public NameAvailabilityResponse nestedCheckNameAvailability(NameAvailabilityRequest parameters) {
+        return serviceManager.services().nestedCheckNameAvailability(groupName, serviceName, parameters);
     }
 
     public DataMigrationServiceImpl withRegion(Region location) {

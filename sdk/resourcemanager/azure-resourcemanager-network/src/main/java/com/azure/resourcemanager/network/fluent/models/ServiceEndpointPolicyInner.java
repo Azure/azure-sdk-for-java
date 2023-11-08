@@ -27,8 +27,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
     private String etag;
 
     /*
-     * Kind of service endpoint policy. This is metadata used for the Azure
-     * portal experience.
+     * Kind of service endpoint policy. This is metadata used for the Azure portal experience.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
@@ -38,6 +37,10 @@ public final class ServiceEndpointPolicyInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ServiceEndpointPolicyInner class. */
+    public ServiceEndpointPolicyInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the service end point policy.

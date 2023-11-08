@@ -27,12 +27,9 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.authorization.fluent.ApplicationsApplicationsClient;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfApplication;
 import com.azure.resourcemanager.authorization.fluent.models.Get2ItemsItem;
@@ -42,20 +39,15 @@ import com.azure.resourcemanager.authorization.fluent.models.Get7ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.Get8ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
-import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApplicationsApplicationsClient. */
 public final class ApplicationsApplicationsClientImpl implements ApplicationsApplicationsClient {
-    private final ClientLogger logger = new ClientLogger(ApplicationsApplicationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApplicationsApplicationsService service;
 
@@ -80,7 +72,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftGraphClient")
-    private interface ApplicationsApplicationsService {
+    public interface ApplicationsApplicationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/applications")
         @ExpectedResponses({200})
@@ -148,7 +140,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
         @Get("/applications/{application-id}/logo")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<StreamResponse> getLogo(
+        Mono<Response<BinaryData>> getLogo(
             @HostParam("$host") String endpoint,
             @PathParam("application-id") String applicationId,
             @HeaderParam("Accept") String accept,
@@ -162,6 +154,18 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
             @HostParam("$host") String endpoint,
             @PathParam("application-id") String applicationId,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> data,
+            @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/octet-stream"})
+        @Put("/applications/{application-id}/logo")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
+        Mono<Response<Void>> setLogo(
+            @HostParam("$host") String endpoint,
+            @PathParam("application-id") String applicationId,
+            @BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -189,7 +193,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphApplicationInner>> listApplicationSinglePageAsync(
@@ -210,11 +214,26 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
         }
         final String accept = "application/json";
         String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+            (orderby == null)
+                ? null
+                : orderby
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -241,7 +260,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -260,7 +279,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphApplicationInner>> listApplicationSinglePageAsync(
@@ -282,11 +301,26 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
         }
         final String accept = "application/json";
         String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+            (orderby == null)
+                ? null
+                : orderby
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .listApplication(
@@ -328,7 +362,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftGraphApplicationInner> listApplicationAsync(
@@ -353,7 +387,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      *
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftGraphApplicationInner> listApplicationAsync() {
@@ -389,7 +423,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MicrosoftGraphApplicationInner> listApplicationAsync(
@@ -415,7 +449,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      *
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftGraphApplicationInner> listApplication() {
@@ -448,7 +482,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftGraphApplicationInner> listApplication(
@@ -473,7 +507,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return application along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphApplicationInner>> createApplicationWithResponseAsync(
@@ -492,7 +526,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createApplication(this.client.getEndpoint(), body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -503,7 +537,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return application along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphApplicationInner>> createApplicationWithResponseAsync(
@@ -531,33 +565,11 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphApplicationInner> createApplicationAsync(MicrosoftGraphApplicationInner body) {
-        return createApplicationWithResponseAsync(body)
-            .flatMap(
-                (Response<MicrosoftGraphApplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Add new entity to applications.
-     *
-     * @param body New entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphApplicationInner createApplication(MicrosoftGraphApplicationInner body) {
-        return createApplicationAsync(body).block();
+        return createApplicationWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -568,12 +580,26 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphApplicationInner> createApplicationWithResponse(
         MicrosoftGraphApplicationInner body, Context context) {
         return createApplicationWithResponseAsync(body, context).block();
+    }
+
+    /**
+     * Add new entity to applications.
+     *
+     * @param body New entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphApplicationInner createApplication(MicrosoftGraphApplicationInner body) {
+        return createApplicationWithResponse(body, Context.NONE).getValue();
     }
 
     /**
@@ -586,7 +612,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from applications by key.
+     * @return entity from applications by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphApplicationInner>> getApplicationWithResponseAsync(
@@ -602,9 +628,19 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
         }
         final String accept = "application/json";
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
                 context ->
@@ -617,7 +653,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
                             expandConverted,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -631,7 +667,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from applications by key.
+     * @return entity from applications by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphApplicationInner>> getApplicationWithResponseAsync(
@@ -651,9 +687,19 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
         }
         final String accept = "application/json";
         String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+            (select == null)
+                ? null
+                : select
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+            (expand == null)
+                ? null
+                : expand
+                    .stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
             .getApplication(
@@ -670,36 +716,10 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * Get entity from applications by key.
      *
      * @param applicationId key: id of application.
-     * @param consistencyLevel Indicates the requested consistency level.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from applications by key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MicrosoftGraphApplicationInner> getApplicationAsync(
-        String applicationId, String consistencyLevel, List<Get2ItemsItem> select, List<Get3ItemsItem> expand) {
-        return getApplicationWithResponseAsync(applicationId, consistencyLevel, select, expand)
-            .flatMap(
-                (Response<MicrosoftGraphApplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get entity from applications by key.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from applications by key.
+     * @return entity from applications by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphApplicationInner> getApplicationAsync(String applicationId) {
@@ -707,14 +727,30 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
         final List<Get2ItemsItem> select = null;
         final List<Get3ItemsItem> expand = null;
         return getApplicationWithResponseAsync(applicationId, consistencyLevel, select, expand)
-            .flatMap(
-                (Response<MicrosoftGraphApplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get entity from applications by key.
+     *
+     * @param applicationId key: id of application.
+     * @param consistencyLevel Indicates the requested consistency level.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return entity from applications by key along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MicrosoftGraphApplicationInner> getApplicationWithResponse(
+        String applicationId,
+        String consistencyLevel,
+        List<Get2ItemsItem> select,
+        List<Get3ItemsItem> expand,
+        Context context) {
+        return getApplicationWithResponseAsync(applicationId, consistencyLevel, select, expand, context).block();
     }
 
     /**
@@ -731,30 +767,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
         final String consistencyLevel = null;
         final List<Get2ItemsItem> select = null;
         final List<Get3ItemsItem> expand = null;
-        return getApplicationAsync(applicationId, consistencyLevel, select, expand).block();
-    }
-
-    /**
-     * Get entity from applications by key.
-     *
-     * @param applicationId key: id of application.
-     * @param consistencyLevel Indicates the requested consistency level.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from applications by key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MicrosoftGraphApplicationInner> getApplicationWithResponse(
-        String applicationId,
-        String consistencyLevel,
-        List<Get2ItemsItem> select,
-        List<Get3ItemsItem> expand,
-        Context context) {
-        return getApplicationWithResponseAsync(applicationId, consistencyLevel, select, expand, context).block();
+        return getApplicationWithResponse(applicationId, consistencyLevel, select, expand, Context.NONE).getValue();
     }
 
     /**
@@ -765,7 +778,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateApplicationWithResponseAsync(
@@ -788,7 +801,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
         return FluxUtil
             .withContext(
                 context -> service.updateApplication(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -800,7 +813,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateApplicationWithResponseAsync(
@@ -832,11 +845,28 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateApplicationAsync(String applicationId, MicrosoftGraphApplicationInner body) {
-        return updateApplicationWithResponseAsync(applicationId, body).flatMap((Response<Void> res) -> Mono.empty());
+        return updateApplicationWithResponseAsync(applicationId, body).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Update entity in applications.
+     *
+     * @param applicationId key: id of application.
+     * @param body New property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateApplicationWithResponse(
+        String applicationId, MicrosoftGraphApplicationInner body, Context context) {
+        return updateApplicationWithResponseAsync(applicationId, body, context).block();
     }
 
     /**
@@ -850,24 +880,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateApplication(String applicationId, MicrosoftGraphApplicationInner body) {
-        updateApplicationAsync(applicationId, body).block();
-    }
-
-    /**
-     * Update entity in applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateApplicationWithResponse(
-        String applicationId, MicrosoftGraphApplicationInner body, Context context) {
-        return updateApplicationWithResponseAsync(applicationId, body, context).block();
+        updateApplicationWithResponse(applicationId, body, Context.NONE);
     }
 
     /**
@@ -878,7 +891,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteApplicationWithResponseAsync(String applicationId, String ifMatch) {
@@ -896,7 +909,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
             .withContext(
                 context ->
                     service.deleteApplication(this.client.getEndpoint(), applicationId, ifMatch, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -908,7 +921,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteApplicationWithResponseAsync(
@@ -931,30 +944,31 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * Delete entity from applications.
      *
      * @param applicationId key: id of application.
-     * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteApplicationAsync(String applicationId, String ifMatch) {
-        return deleteApplicationWithResponseAsync(applicationId, ifMatch).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> deleteApplicationAsync(String applicationId) {
+        final String ifMatch = null;
+        return deleteApplicationWithResponseAsync(applicationId, ifMatch).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Delete entity from applications.
      *
      * @param applicationId key: id of application.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteApplicationAsync(String applicationId) {
-        final String ifMatch = null;
-        return deleteApplicationWithResponseAsync(applicationId, ifMatch).flatMap((Response<Void> res) -> Mono.empty());
+    public Response<Void> deleteApplicationWithResponse(String applicationId, String ifMatch, Context context) {
+        return deleteApplicationWithResponseAsync(applicationId, ifMatch, context).block();
     }
 
     /**
@@ -968,23 +982,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteApplication(String applicationId) {
         final String ifMatch = null;
-        deleteApplicationAsync(applicationId, ifMatch).block();
-    }
-
-    /**
-     * Delete entity from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteApplicationWithResponse(String applicationId, String ifMatch, Context context) {
-        return deleteApplicationWithResponseAsync(applicationId, ifMatch, context).block();
+        deleteApplicationWithResponse(applicationId, ifMatch, Context.NONE);
     }
 
     /**
@@ -994,10 +992,11 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for application from applications.
+     * @return media content for application from applications along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> getLogoWithResponseAsync(String applicationId) {
+    public Mono<Response<BinaryData>> getLogoWithResponseAsync(String applicationId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1010,7 +1009,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
         final String accept = "application/octet-stream, application/json";
         return FluxUtil
             .withContext(context -> service.getLogo(this.client.getEndpoint(), applicationId, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1021,10 +1020,11 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for application from applications.
+     * @return media content for application from applications along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamResponse> getLogoWithResponseAsync(String applicationId, Context context) {
+    private Mono<Response<BinaryData>> getLogoWithResponseAsync(String applicationId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1046,39 +1046,11 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for application from applications.
+     * @return media content for application from applications on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> getLogoAsync(String applicationId) {
-        return getLogoWithResponseAsync(applicationId).flatMapMany(StreamResponse::getValue);
-    }
-
-    /**
-     * Get media content for application from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for application from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InputStream getLogo(String applicationId) {
-        Iterator<ByteBufferBackedInputStream> iterator =
-            getLogoAsync(applicationId).map(ByteBufferBackedInputStream::new).toStream().iterator();
-        Enumeration<InputStream> enumeration =
-            new Enumeration<InputStream>() {
-                @Override
-                public boolean hasMoreElements() {
-                    return iterator.hasNext();
-                }
-
-                @Override
-                public InputStream nextElement() {
-                    return iterator.next();
-                }
-            };
-        return new SequenceInputStream(enumeration);
+    public Mono<BinaryData> getLogoAsync(String applicationId) {
+        return getLogoWithResponseAsync(applicationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1089,11 +1061,25 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return media content for application from applications along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getLogoWithResponse(String applicationId, Context context) {
+        return getLogoWithResponseAsync(applicationId, context).block();
+    }
+
+    /**
+     * Get media content for application from applications.
+     *
+     * @param applicationId key: id of application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return media content for application from applications.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamResponse getLogoWithResponse(String applicationId, Context context) {
-        return getLogoWithResponseAsync(applicationId, context).block();
+    public BinaryData getLogo(String applicationId) {
+        return getLogoWithResponse(applicationId, Context.NONE).getValue();
     }
 
     /**
@@ -1101,11 +1087,11 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      *
      * @param applicationId key: id of application.
      * @param data New media content.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setLogoWithResponseAsync(
@@ -1127,7 +1113,7 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
             .withContext(
                 context ->
                     service.setLogo(this.client.getEndpoint(), applicationId, data, contentLength, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1135,12 +1121,12 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      *
      * @param applicationId key: id of application.
      * @param data New media content.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> setLogoWithResponseAsync(
@@ -1167,16 +1153,15 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      *
      * @param applicationId key: id of application.
      * @param data New media content.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setLogoAsync(String applicationId, Flux<ByteBuffer> data, long contentLength) {
-        return setLogoWithResponseAsync(applicationId, data, contentLength)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return setLogoWithResponseAsync(applicationId, data, contentLength).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1184,27 +1169,12 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
      *
      * @param applicationId key: id of application.
      * @param data New media content.
-     * @param contentLength The contentLength parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setLogo(String applicationId, Flux<ByteBuffer> data, long contentLength) {
-        setLogoAsync(applicationId, data, contentLength).block();
-    }
-
-    /**
-     * Update media content for application in applications.
-     *
-     * @param applicationId key: id of application.
-     * @param data New media content.
-     * @param contentLength The contentLength parameter.
+     * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setLogoWithResponse(
@@ -1213,13 +1183,143 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
     }
 
     /**
-     * Get the next page of items.
+     * Update media content for application in applications.
      *
-     * @param nextLink The nextLink parameter.
+     * @param applicationId key: id of application.
+     * @param data New media content.
+     * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of application.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setLogo(String applicationId, Flux<ByteBuffer> data, long contentLength) {
+        setLogoWithResponse(applicationId, data, contentLength, Context.NONE);
+    }
+
+    /**
+     * Update media content for application in applications.
+     *
+     * @param applicationId key: id of application.
+     * @param data New media content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setLogoWithResponseAsync(String applicationId, BinaryData data, long contentLength) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (applicationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
+        }
+        if (data == null) {
+            return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service.setLogo(this.client.getEndpoint(), applicationId, data, contentLength, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update media content for application in applications.
+     *
+     * @param applicationId key: id of application.
+     * @param data New media content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> setLogoWithResponseAsync(
+        String applicationId, BinaryData data, long contentLength, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (applicationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
+        }
+        if (data == null) {
+            return Mono.error(new IllegalArgumentException("Parameter data is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.setLogo(this.client.getEndpoint(), applicationId, data, contentLength, accept, context);
+    }
+
+    /**
+     * Update media content for application in applications.
+     *
+     * @param applicationId key: id of application.
+     * @param data New media content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setLogoAsync(String applicationId, BinaryData data, long contentLength) {
+        return setLogoWithResponseAsync(applicationId, data, contentLength).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Update media content for application in applications.
+     *
+     * @param applicationId key: id of application.
+     * @param data New media content.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setLogoWithResponse(
+        String applicationId, BinaryData data, long contentLength, Context context) {
+        return setLogoWithResponseAsync(applicationId, data, contentLength, context).block();
+    }
+
+    /**
+     * Update media content for application in applications.
+     *
+     * @param applicationId key: id of application.
+     * @param data New media content.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setLogo(String applicationId, BinaryData data, long contentLength) {
+        setLogoWithResponse(applicationId, data, contentLength, Context.NONE);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of application along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphApplicationInner>> listMoreSinglePageAsync(String nextLink) {
@@ -1237,18 +1337,19 @@ public final class ApplicationsApplicationsClientImpl implements ApplicationsApp
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of application.
+     * @return collection of application along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphApplicationInner>> listMoreSinglePageAsync(

@@ -18,7 +18,7 @@ public interface IntegrationAccountMaps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account maps.
+     * @return a list of integration account maps as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccountMap> list(String resourceGroupName, String integrationAccountName);
 
@@ -33,10 +33,25 @@ public interface IntegrationAccountMaps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account maps.
+     * @return a list of integration account maps as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccountMap> list(
         String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context);
+
+    /**
+     * Gets an integration account map.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param mapName The integration account map name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an integration account map along with {@link Response}.
+     */
+    Response<IntegrationAccountMap> getWithResponse(
+        String resourceGroupName, String integrationAccountName, String mapName, Context context);
 
     /**
      * Gets an integration account map.
@@ -52,7 +67,7 @@ public interface IntegrationAccountMaps {
     IntegrationAccountMap get(String resourceGroupName, String integrationAccountName, String mapName);
 
     /**
-     * Gets an integration account map.
+     * Deletes an integration account map.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
@@ -61,9 +76,9 @@ public interface IntegrationAccountMaps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account map.
+     * @return the {@link Response}.
      */
-    Response<IntegrationAccountMap> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String integrationAccountName, String mapName, Context context);
 
     /**
@@ -79,19 +94,24 @@ public interface IntegrationAccountMaps {
     void delete(String resourceGroupName, String integrationAccountName, String mapName);
 
     /**
-     * Deletes an integration account map.
+     * Get the content callback url.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param mapName The integration account map name.
+     * @param listContentCallbackUrl The callback url parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the content callback url along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String mapName, Context context);
+    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
+        String resourceGroupName,
+        String integrationAccountName,
+        String mapName,
+        GetCallbackUrlParameters listContentCallbackUrl,
+        Context context);
 
     /**
      * Get the content callback url.
@@ -112,33 +132,13 @@ public interface IntegrationAccountMaps {
         GetCallbackUrlParameters listContentCallbackUrl);
 
     /**
-     * Get the content callback url.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param mapName The integration account map name.
-     * @param listContentCallbackUrl The callback url parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
-     */
-    Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String mapName,
-        GetCallbackUrlParameters listContentCallbackUrl,
-        Context context);
-
-    /**
      * Gets an integration account map.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account map.
+     * @return an integration account map along with {@link Response}.
      */
     IntegrationAccountMap getById(String id);
 
@@ -150,7 +150,7 @@ public interface IntegrationAccountMaps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account map.
+     * @return an integration account map along with {@link Response}.
      */
     Response<IntegrationAccountMap> getByIdWithResponse(String id, Context context);
 
@@ -172,7 +172,7 @@ public interface IntegrationAccountMaps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

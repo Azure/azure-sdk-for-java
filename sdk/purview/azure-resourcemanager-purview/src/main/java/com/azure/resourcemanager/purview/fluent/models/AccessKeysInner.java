@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.purview.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Account access keys. */
 @Fluent
 public final class AccessKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessKeysInner.class);
-
     /*
      * Gets or sets the primary connection string.
      */
@@ -25,6 +21,10 @@ public final class AccessKeysInner {
      */
     @JsonProperty(value = "atlasKafkaSecondaryEndpoint")
     private String atlasKafkaSecondaryEndpoint;
+
+    /** Creates an instance of AccessKeysInner class. */
+    public AccessKeysInner() {
+    }
 
     /**
      * Get the atlasKafkaPrimaryEndpoint property: Gets or sets the primary connection string.

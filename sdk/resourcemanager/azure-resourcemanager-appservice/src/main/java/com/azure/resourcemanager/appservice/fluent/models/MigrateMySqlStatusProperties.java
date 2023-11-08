@@ -29,6 +29,10 @@ public final class MigrateMySqlStatusProperties {
     @JsonProperty(value = "localMySqlEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean localMySqlEnabled;
 
+    /** Creates an instance of MigrateMySqlStatusProperties class. */
+    public MigrateMySqlStatusProperties() {
+    }
+
     /**
      * Get the migrationOperationStatus property: Status of the migration task.
      *

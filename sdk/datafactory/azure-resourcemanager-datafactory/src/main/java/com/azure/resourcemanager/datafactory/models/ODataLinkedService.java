@@ -24,6 +24,10 @@ public final class ODataLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ODataLinkedServiceTypeProperties innerTypeProperties = new ODataLinkedServiceTypeProperties();
 
+    /** Creates an instance of ODataLinkedService class. */
+    public ODataLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: OData linked service properties.
      *
@@ -390,22 +394,22 @@ public final class ODataLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ODataLinkedService object itself.
      */
-    public ODataLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public ODataLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new ODataLinkedServiceTypeProperties();
         }

@@ -17,6 +17,10 @@ public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DeletedAppRestoreRequestProperties innerProperties;
 
+    /** Creates an instance of DeletedAppRestoreRequest class. */
+    public DeletedAppRestoreRequest() {
+    }
+
     /**
      * Get the innerProperties property: DeletedAppRestoreRequest resource specific properties.
      *

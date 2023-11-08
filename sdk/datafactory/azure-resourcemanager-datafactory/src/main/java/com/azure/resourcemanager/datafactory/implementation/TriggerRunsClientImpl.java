@@ -52,11 +52,10 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface TriggerRunsService {
+    public interface TriggerRunsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/triggers/{triggerName}/triggerRuns/{runId}/rerun")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/triggerRuns/{runId}/rerun")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> rerun(
@@ -72,8 +71,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/triggers/{triggerName}/triggerRuns/{runId}/cancel")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/triggerRuns/{runId}/cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancel(
@@ -89,8 +87,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/queryTriggerRuns")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryTriggerRuns")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TriggerRunsQueryResponseInner>> queryByFactory(
@@ -233,23 +230,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> rerunAsync(String resourceGroupName, String factoryName, String triggerName, String runId) {
         return rerunWithResponseAsync(resourceGroupName, factoryName, triggerName, runId)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Rerun single trigger instance by runId.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
-        rerunAsync(resourceGroupName, factoryName, triggerName, runId).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -269,6 +250,22 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     public Response<Void> rerunWithResponse(
         String resourceGroupName, String factoryName, String triggerName, String runId, Context context) {
         return rerunWithResponseAsync(resourceGroupName, factoryName, triggerName, runId, context).block();
+    }
+
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        rerunWithResponse(resourceGroupName, factoryName, triggerName, runId, Context.NONE);
     }
 
     /**
@@ -400,23 +397,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String factoryName, String triggerName, String runId) {
         return cancelWithResponseAsync(resourceGroupName, factoryName, triggerName, runId)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Cancel a single trigger instance by runId.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String factoryName, String triggerName, String runId) {
-        cancelAsync(resourceGroupName, factoryName, triggerName, runId).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -436,6 +417,22 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     public Response<Void> cancelWithResponse(
         String resourceGroupName, String factoryName, String triggerName, String runId, Context context) {
         return cancelWithResponseAsync(resourceGroupName, factoryName, triggerName, runId, context).block();
+    }
+
+    /**
+     * Cancel a single trigger instance by runId.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancel(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        cancelWithResponse(resourceGroupName, factoryName, triggerName, runId, Context.NONE);
     }
 
     /**
@@ -563,31 +560,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     private Mono<TriggerRunsQueryResponseInner> queryByFactoryAsync(
         String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
         return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters)
-            .flatMap(
-                (Response<TriggerRunsQueryResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Query trigger runs.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the pipeline run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger runs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerRunsQueryResponseInner queryByFactory(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
-        return queryByFactoryAsync(resourceGroupName, factoryName, filterParameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -606,5 +579,22 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     public Response<TriggerRunsQueryResponseInner> queryByFactoryWithResponse(
         String resourceGroupName, String factoryName, RunFilterParameters filterParameters, Context context) {
         return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters, context).block();
+    }
+
+    /**
+     * Query trigger runs.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param filterParameters Parameters to filter the pipeline run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of trigger runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerRunsQueryResponseInner queryByFactory(
+        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
+        return queryByFactoryWithResponse(resourceGroupName, factoryName, filterParameters, Context.NONE).getValue();
     }
 }

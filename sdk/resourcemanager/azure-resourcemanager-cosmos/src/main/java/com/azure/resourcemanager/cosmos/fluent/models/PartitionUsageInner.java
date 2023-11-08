@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The partition level usage data for a usage request. */
 @Immutable
 public final class PartitionUsageInner extends UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartitionUsageInner.class);
-
     /*
      * The partition id (GUID identifier) of the usages.
      */
@@ -25,6 +21,10 @@ public final class PartitionUsageInner extends UsageInner {
      */
     @JsonProperty(value = "partitionKeyRangeId", access = JsonProperty.Access.WRITE_ONLY)
     private String partitionKeyRangeId;
+
+    /** Creates an instance of PartitionUsageInner class. */
+    public PartitionUsageInner() {
+    }
 
     /**
      * Get the partitionId property: The partition id (GUID identifier) of the usages.

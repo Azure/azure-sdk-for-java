@@ -73,8 +73,7 @@ public class SendSessionMessageAsyncSample {
         // Setting the sessionId parameter ensures all messages end up in the same session and are received in order.
         List<ServiceBusMessage> messages = Arrays.asList(
             new ServiceBusMessage(BinaryData.fromBytes("Hello".getBytes(UTF_8))).setSessionId(sessionId),
-            new ServiceBusMessage(BinaryData.fromBytes("Bonjour".getBytes(UTF_8))).setSessionId(sessionId),
-            new ServiceBusMessage(BinaryData.fromBytes("Guten tag".getBytes(UTF_8))).setSessionId(sessionId)
+            new ServiceBusMessage(BinaryData.fromBytes("Bonjour".getBytes(UTF_8))).setSessionId(sessionId)
         );
 
         // This sends all the messages in a single message batch.

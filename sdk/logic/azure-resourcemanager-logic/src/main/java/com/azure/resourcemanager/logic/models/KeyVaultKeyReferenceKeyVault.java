@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The key vault reference. */
 @Fluent
 public final class KeyVaultKeyReferenceKeyVault {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultKeyReferenceKeyVault.class);
-
     /*
      * The resource id.
      */
@@ -31,6 +27,10 @@ public final class KeyVaultKeyReferenceKeyVault {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of KeyVaultKeyReferenceKeyVault class. */
+    public KeyVaultKeyReferenceKeyVault() {
+    }
 
     /**
      * Get the id property: The resource id.

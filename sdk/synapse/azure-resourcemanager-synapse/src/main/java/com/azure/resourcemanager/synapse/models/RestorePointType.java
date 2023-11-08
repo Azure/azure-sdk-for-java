@@ -7,7 +7,7 @@ package com.azure.resourcemanager.synapse.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RestorePointType. */
+/** The type of restore point. */
 public enum RestorePointType {
     /** Enum value CONTINUOUS. */
     CONTINUOUS("CONTINUOUS"),
@@ -30,6 +30,9 @@ public enum RestorePointType {
      */
     @JsonCreator
     public static RestorePointType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RestorePointType[] items = RestorePointType.values();
         for (RestorePointType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum RestorePointType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

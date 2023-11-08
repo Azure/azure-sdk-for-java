@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphOperationStatus. */
+/** operationStatus. */
 public final class MicrosoftGraphOperationStatus extends ExpandableStringEnum<MicrosoftGraphOperationStatus> {
     /** Static value NotStarted for MicrosoftGraphOperationStatus. */
     public static final MicrosoftGraphOperationStatus NOT_STARTED = fromString("NotStarted");
@@ -23,6 +23,15 @@ public final class MicrosoftGraphOperationStatus extends ExpandableStringEnum<Mi
     public static final MicrosoftGraphOperationStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of MicrosoftGraphOperationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphOperationStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphOperationStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class MicrosoftGraphOperationStatus extends ExpandableStringEnum<Mi
         return fromString(name, MicrosoftGraphOperationStatus.class);
     }
 
-    /** @return known MicrosoftGraphOperationStatus values. */
+    /**
+     * Gets known MicrosoftGraphOperationStatus values.
+     *
+     * @return known MicrosoftGraphOperationStatus values.
+     */
     public static Collection<MicrosoftGraphOperationStatus> values() {
         return values(MicrosoftGraphOperationStatus.class);
     }

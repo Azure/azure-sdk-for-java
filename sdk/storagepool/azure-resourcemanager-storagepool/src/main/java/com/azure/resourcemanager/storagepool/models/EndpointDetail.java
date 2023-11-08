@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Current TCP connectivity information from the App Service Environment to a single endpoint. */
 @Fluent
 public final class EndpointDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointDetail.class);
-
     /*
      * An IP Address that Domain Name currently resolves to.
      */
@@ -27,18 +23,22 @@ public final class EndpointDetail {
     private Integer port;
 
     /*
-     * The time in milliseconds it takes for a TCP connection to be created
-     * from the App Service Environment to this IpAddress at this Port.
+     * The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this
+     * IpAddress at this Port.
      */
     @JsonProperty(value = "latency")
     private Double latency;
 
     /*
-     * Whether it is possible to create a TCP connection from the App Service
-     * Environment to this IpAddress at this Port.
+     * Whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this
+     * Port.
      */
     @JsonProperty(value = "isAccessible")
     private Boolean isAccessible;
+
+    /** Creates an instance of EndpointDetail class. */
+    public EndpointDetail() {
+    }
 
     /**
      * Get the ipAddress property: An IP Address that Domain Name currently resolves to.

@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "Json", value = JsonInputSchemaMapping.class)})
 @Immutable
 public class InputSchemaMapping {
+    /** Creates an instance of InputSchemaMapping class. */
+    public InputSchemaMapping() {
+    }
+
     /**
      * Validates the instance.
      *

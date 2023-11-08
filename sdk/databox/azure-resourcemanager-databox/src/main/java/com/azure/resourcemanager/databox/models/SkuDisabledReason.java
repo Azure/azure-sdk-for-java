@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SkuDisabledReason. */
+/** Reason why the Sku is disabled. */
 public enum SkuDisabledReason {
     /** Enum value None. */
     NONE("None"),
@@ -42,6 +42,9 @@ public enum SkuDisabledReason {
      */
     @JsonCreator
     public static SkuDisabledReason fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SkuDisabledReason[] items = SkuDisabledReason.values();
         for (SkuDisabledReason item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum SkuDisabledReason {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

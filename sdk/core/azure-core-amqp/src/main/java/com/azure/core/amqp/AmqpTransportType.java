@@ -10,7 +10,7 @@ import java.util.Locale;
  */
 public enum AmqpTransportType {
     /**
-     * AMQP over TCP. Uses port 5671 - assigned by IANA for secure AMQP (AMQPS).
+     * AMQP over TCP. Uses port 5671 - assigned by IANA for secure AMQP.
      */
     AMQP("Amqp"),
 

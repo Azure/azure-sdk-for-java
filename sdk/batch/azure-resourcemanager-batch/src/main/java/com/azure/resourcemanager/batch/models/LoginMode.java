@@ -7,7 +7,12 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for LoginMode. */
+/**
+ * Login mode for user
+ *
+ * <p>Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode and
+ * for CloudServiceConfiguration pools is batch mode.
+ */
 public enum LoginMode {
     /** Enum value Batch. */
     BATCH("Batch"),
@@ -30,6 +35,9 @@ public enum LoginMode {
      */
     @JsonCreator
     public static LoginMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LoginMode[] items = LoginMode.values();
         for (LoginMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +47,7 @@ public enum LoginMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

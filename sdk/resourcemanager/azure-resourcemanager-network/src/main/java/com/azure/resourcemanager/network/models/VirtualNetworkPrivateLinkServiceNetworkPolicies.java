@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkPrivateLinkServiceNetworkPolicies. */
+/** Enable or Disable apply network policies on private link service in the subnet. */
 public final class VirtualNetworkPrivateLinkServiceNetworkPolicies
     extends ExpandableStringEnum<VirtualNetworkPrivateLinkServiceNetworkPolicies> {
     /** Static value Enabled for VirtualNetworkPrivateLinkServiceNetworkPolicies. */
@@ -16,6 +16,15 @@ public final class VirtualNetworkPrivateLinkServiceNetworkPolicies
 
     /** Static value Disabled for VirtualNetworkPrivateLinkServiceNetworkPolicies. */
     public static final VirtualNetworkPrivateLinkServiceNetworkPolicies DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of VirtualNetworkPrivateLinkServiceNetworkPolicies value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkPrivateLinkServiceNetworkPolicies() {
+    }
 
     /**
      * Creates or finds a VirtualNetworkPrivateLinkServiceNetworkPolicies from its string representation.
@@ -28,7 +37,11 @@ public final class VirtualNetworkPrivateLinkServiceNetworkPolicies
         return fromString(name, VirtualNetworkPrivateLinkServiceNetworkPolicies.class);
     }
 
-    /** @return known VirtualNetworkPrivateLinkServiceNetworkPolicies values. */
+    /**
+     * Gets known VirtualNetworkPrivateLinkServiceNetworkPolicies values.
+     *
+     * @return known VirtualNetworkPrivateLinkServiceNetworkPolicies values.
+     */
     public static Collection<VirtualNetworkPrivateLinkServiceNetworkPolicies> values() {
         return values(VirtualNetworkPrivateLinkServiceNetworkPolicies.class);
     }

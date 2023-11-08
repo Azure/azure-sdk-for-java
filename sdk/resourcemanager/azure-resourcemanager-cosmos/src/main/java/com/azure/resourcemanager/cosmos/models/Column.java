@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB Cassandra table column. */
 @Fluent
 public final class Column {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Column.class);
-
     /*
      * Name of the Cosmos DB Cassandra table column
      */
@@ -25,6 +21,10 @@ public final class Column {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of Column class. */
+    public Column() {
+    }
 
     /**
      * Get the name property: Name of the Cosmos DB Cassandra table column.

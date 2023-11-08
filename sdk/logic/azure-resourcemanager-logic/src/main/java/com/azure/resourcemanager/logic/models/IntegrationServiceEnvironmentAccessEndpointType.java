@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationServiceEnvironmentAccessEndpointType. */
+/** The integration service environment access endpoint type. */
 public final class IntegrationServiceEnvironmentAccessEndpointType
     extends ExpandableStringEnum<IntegrationServiceEnvironmentAccessEndpointType> {
     /** Static value NotSpecified for IntegrationServiceEnvironmentAccessEndpointType. */
@@ -21,6 +21,15 @@ public final class IntegrationServiceEnvironmentAccessEndpointType
     public static final IntegrationServiceEnvironmentAccessEndpointType INTERNAL = fromString("Internal");
 
     /**
+     * Creates a new instance of IntegrationServiceEnvironmentAccessEndpointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationServiceEnvironmentAccessEndpointType() {
+    }
+
+    /**
      * Creates or finds a IntegrationServiceEnvironmentAccessEndpointType from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +40,11 @@ public final class IntegrationServiceEnvironmentAccessEndpointType
         return fromString(name, IntegrationServiceEnvironmentAccessEndpointType.class);
     }
 
-    /** @return known IntegrationServiceEnvironmentAccessEndpointType values. */
+    /**
+     * Gets known IntegrationServiceEnvironmentAccessEndpointType values.
+     *
+     * @return known IntegrationServiceEnvironmentAccessEndpointType values.
+     */
     public static Collection<IntegrationServiceEnvironmentAccessEndpointType> values() {
         return values(IntegrationServiceEnvironmentAccessEndpointType.class);
     }

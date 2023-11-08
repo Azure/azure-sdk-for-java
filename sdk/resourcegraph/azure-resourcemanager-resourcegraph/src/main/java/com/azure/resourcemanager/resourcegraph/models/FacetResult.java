@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resourcegraph.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("FacetResult")
 @Fluent
 public final class FacetResult extends Facet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FacetResult.class);
-
     /*
      * Number of total records in the facet results.
      */
@@ -31,11 +28,14 @@ public final class FacetResult extends Facet {
     private int count;
 
     /*
-     * A JObject array or Table containing the desired facets. Only present if
-     * the facet is valid.
+     * A JObject array or Table containing the desired facets. Only present if the facet is valid.
      */
     @JsonProperty(value = "data", required = true)
     private Object data;
+
+    /** Creates an instance of FacetResult class. */
+    public FacetResult() {
+    }
 
     /**
      * Get the totalRecords property: Number of total records in the facet results.
@@ -115,9 +115,11 @@ public final class FacetResult extends Facet {
     public void validate() {
         super.validate();
         if (data() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property data in model FacetResult"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FacetResult.class);
 }

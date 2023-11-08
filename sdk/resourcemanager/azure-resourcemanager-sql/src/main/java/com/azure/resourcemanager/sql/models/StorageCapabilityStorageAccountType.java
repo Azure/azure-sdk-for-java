@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageCapabilityStorageAccountType. */
+/** The storage account type for the database's backups. */
 public final class StorageCapabilityStorageAccountType
     extends ExpandableStringEnum<StorageCapabilityStorageAccountType> {
     /** Static value GRS for StorageCapabilityStorageAccountType. */
@@ -19,6 +19,9 @@ public final class StorageCapabilityStorageAccountType
 
     /** Static value ZRS for StorageCapabilityStorageAccountType. */
     public static final StorageCapabilityStorageAccountType ZRS = fromString("ZRS");
+
+    /** Static value GZRS for StorageCapabilityStorageAccountType. */
+    public static final StorageCapabilityStorageAccountType GZRS = fromString("GZRS");
 
     /**
      * Creates or finds a StorageCapabilityStorageAccountType from its string representation.
@@ -31,7 +34,11 @@ public final class StorageCapabilityStorageAccountType
         return fromString(name, StorageCapabilityStorageAccountType.class);
     }
 
-    /** @return known StorageCapabilityStorageAccountType values. */
+    /**
+     * Gets known StorageCapabilityStorageAccountType values.
+     *
+     * @return known StorageCapabilityStorageAccountType values.
+     */
     public static Collection<StorageCapabilityStorageAccountType> values() {
         return values(StorageCapabilityStorageAccountType.class);
     }

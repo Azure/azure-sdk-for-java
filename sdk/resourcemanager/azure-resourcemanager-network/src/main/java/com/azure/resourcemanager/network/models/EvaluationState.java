@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EvaluationState. */
+/** Connectivity analysis evaluation state. */
 public final class EvaluationState extends ExpandableStringEnum<EvaluationState> {
     /** Static value NotStarted for EvaluationState. */
     public static final EvaluationState NOT_STARTED = fromString("NotStarted");
@@ -18,6 +18,15 @@ public final class EvaluationState extends ExpandableStringEnum<EvaluationState>
 
     /** Static value Completed for EvaluationState. */
     public static final EvaluationState COMPLETED = fromString("Completed");
+
+    /**
+     * Creates a new instance of EvaluationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EvaluationState() {
+    }
 
     /**
      * Creates or finds a EvaluationState from its string representation.
@@ -30,7 +39,11 @@ public final class EvaluationState extends ExpandableStringEnum<EvaluationState>
         return fromString(name, EvaluationState.class);
     }
 
-    /** @return known EvaluationState values. */
+    /**
+     * Gets known EvaluationState values.
+     *
+     * @return known EvaluationState values.
+     */
     public static Collection<EvaluationState> values() {
         return values(EvaluationState.class);
     }

@@ -17,6 +17,13 @@ public interface CapabilityProperties {
     String zone();
 
     /**
+     * Gets the supportedHAMode property: Supported high availability mode.
+     *
+     * @return the supportedHAMode value.
+     */
+    List<String> supportedHAMode();
+
+    /**
      * Gets the geoBackupSupported property: A value indicating whether a new server in this region can have geo-backups
      * to paired region.
      *
@@ -53,6 +60,21 @@ public interface CapabilityProperties {
      * @return the supportedHyperscaleNodeEditions value.
      */
     List<HyperscaleNodeEditionCapability> supportedHyperscaleNodeEditions();
+
+    /**
+     * Gets the fastProvisioningSupported property: A value indicating whether fast provisioning is supported in this
+     * region.
+     *
+     * @return the fastProvisioningSupported value.
+     */
+    Boolean fastProvisioningSupported();
+
+    /**
+     * Gets the supportedFastProvisioningEditions property: The supportedFastProvisioningEditions property.
+     *
+     * @return the supportedFastProvisioningEditions value.
+     */
+    List<FastProvisioningEditionCapability> supportedFastProvisioningEditions();
 
     /**
      * Gets the status property: The status.

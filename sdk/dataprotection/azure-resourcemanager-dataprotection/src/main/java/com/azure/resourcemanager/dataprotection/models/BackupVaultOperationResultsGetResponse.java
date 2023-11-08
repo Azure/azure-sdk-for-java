@@ -30,7 +30,11 @@ public final class BackupVaultOperationResultsGetResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public BackupVaultResourceInner getValue() {
         return super.getValue();

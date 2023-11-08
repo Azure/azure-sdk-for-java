@@ -15,21 +15,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NonComplianceMessage {
     /*
-     * A message that describes why a resource is non-compliant with the
-     * policy. This is shown in 'deny' error messages and on resource's
-     * non-compliant compliance results.
+     * A message that describes why a resource is non-compliant with the policy. This is shown in 'deny' error messages
+     * and on resource's non-compliant compliance results.
      */
     @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
-     * The policy definition reference ID within a policy set definition the
-     * message is intended for. This is only applicable if the policy
-     * assignment assigns a policy set definition. If this is not provided the
-     * message applies to all policies assigned by this policy assignment.
+     * The policy definition reference ID within a policy set definition the message is intended for. This is only
+     * applicable if the policy assignment assigns a policy set definition. If this is not provided the message applies
+     * to all policies assigned by this policy assignment.
      */
     @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
+
+    /** Creates an instance of NonComplianceMessage class. */
+    public NonComplianceMessage() {
+    }
 
     /**
      * Get the message property: A message that describes why a resource is non-compliant with the policy. This is shown

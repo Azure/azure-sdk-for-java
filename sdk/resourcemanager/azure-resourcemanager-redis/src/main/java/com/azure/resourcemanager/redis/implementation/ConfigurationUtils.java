@@ -42,8 +42,14 @@ class ConfigurationUtils {
             if (configuration.maxclients() != null) {
                 map.put("maxclients", configuration.maxclients());
             }
+            if (configuration.authnotrequired() != null) {
+                map.put("authnotrequired", configuration.authnotrequired());
+            }
             if (configuration.rdbStorageConnectionString() != null) {
                 map.put("rdb-storage-connection-string", configuration.rdbStorageConnectionString());
+            }
+            if (configuration.aofBackupEnabled() != null) {
+                map.put("aof-backup-enabled", configuration.aofBackupEnabled());
             }
             if (configuration.maxmemoryDelta() != null) {
                 map.put("maxmemory-delta", configuration.maxmemoryDelta());
@@ -64,7 +70,7 @@ class ConfigurationUtils {
                 map.put("rdb-backup-frequency", configuration.rdbBackupFrequency());
             }
             if (configuration.additionalProperties() != null) {
-                map.putAll(configuration.additionalProperties());
+                configuration.additionalProperties().forEach((key1, value) -> map.put(key1, value));
             }
         }
         return map;
@@ -76,26 +82,14 @@ class ConfigurationUtils {
             return;
         }
         switch (key) {
-            case "rdb-storage-connection-string":
-                configuration.withRdbStorageConnectionString(value);
-                break;
             case "maxmemory-policy":
                 configuration.withMaxmemoryPolicy(value);
-                break;
-            case "maxmemory-delta":
-                configuration.withMaxmemoryDelta(value);
                 break;
             case "rdb-backup-enabled":
                 configuration.withRdbBackupEnabled(value);
                 break;
-            case "maxfragmentationmemory-reserved":
-                configuration.withMaxfragmentationmemoryReserved(value);
-                break;
-            case "maxmemory-reserved":
-                configuration.withMaxmemoryReserved(value);
-                break;
-            case "rdb-backup-frequency":
-                configuration.withRdbBackupFrequency(value);
+            case "preferred-data-persistence-auth-method":
+                configuration.withPreferredDataPersistenceAuthMethod(value);
                 break;
             case "rdb-backup-max-snapshot-count":
                 configuration.withRdbBackupMaxSnapshotCount(value);
@@ -105,6 +99,27 @@ class ConfigurationUtils {
                 break;
             case "aof-storage-connection-string-1":
                 configuration.withAofStorageConnectionString1(value);
+                break;
+            case "authnotrequired":
+                configuration.withAuthnotrequired(value);
+                break;
+            case "rdb-storage-connection-string":
+                configuration.withRdbStorageConnectionString(value);
+                break;
+            case "aof-backup-enabled":
+                configuration.withAofBackupEnabled(value);
+                break;
+            case "maxmemory-delta":
+                configuration.withMaxmemoryDelta(value);
+                break;
+            case "maxfragmentationmemory-reserved":
+                configuration.withMaxfragmentationmemoryReserved(value);
+                break;
+            case "maxmemory-reserved":
+                configuration.withMaxmemoryReserved(value);
+                break;
+            case "rdb-backup-frequency":
+                configuration.withRdbBackupFrequency(value);
                 break;
             default:
                 if (configuration.additionalProperties() == null) {
@@ -123,26 +138,14 @@ class ConfigurationUtils {
             configuration.additionalProperties().remove(key);
         }
         switch (key) {
-            case "rdb-storage-connection-string":
-                configuration.withRdbStorageConnectionString(null);
-                break;
             case "maxmemory-policy":
                 configuration.withMaxmemoryPolicy(null);
-                break;
-            case "maxmemory-delta":
-                configuration.withMaxmemoryDelta(null);
                 break;
             case "rdb-backup-enabled":
                 configuration.withRdbBackupEnabled(null);
                 break;
-            case "maxfragmentationmemory-reserved":
-                configuration.withMaxfragmentationmemoryReserved(null);
-                break;
-            case "maxmemory-reserved":
-                configuration.withMaxmemoryReserved(null);
-                break;
-            case "rdb-backup-frequency":
-                configuration.withRdbBackupFrequency(null);
+            case "preferred-data-persistence-auth-method":
+                configuration.withPreferredDataPersistenceAuthMethod(null);
                 break;
             case "rdb-backup-max-snapshot-count":
                 configuration.withRdbBackupMaxSnapshotCount(null);
@@ -152,6 +155,27 @@ class ConfigurationUtils {
                 break;
             case "aof-storage-connection-string-1":
                 configuration.withAofStorageConnectionString1(null);
+                break;
+            case "authnotrequired":
+                configuration.withAuthnotrequired(null);
+                break;
+            case "rdb-storage-connection-string":
+                configuration.withRdbStorageConnectionString(null);
+                break;
+            case "aof-backup-enabled":
+                configuration.withAofBackupEnabled(null);
+                break;
+            case "maxmemory-delta":
+                configuration.withMaxmemoryDelta(null);
+                break;
+            case "maxfragmentationmemory-reserved":
+                configuration.withMaxfragmentationmemoryReserved(null);
+                break;
+            case "maxmemory-reserved":
+                configuration.withMaxmemoryReserved(null);
+                break;
+            case "rdb-backup-frequency":
+                configuration.withRdbBackupFrequency(null);
                 break;
             default:
                 break;

@@ -35,10 +35,13 @@ public class IntegrationRuntime {
     private String description;
 
     /*
-     * Azure Data Factory nested object which serves as a compute resource for
-     * activities.
+     * Azure Data Factory nested object which serves as a compute resource for activities.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntime class. */
+    public IntegrationRuntime() {
+    }
 
     /**
      * Get the description property: Integration runtime description.

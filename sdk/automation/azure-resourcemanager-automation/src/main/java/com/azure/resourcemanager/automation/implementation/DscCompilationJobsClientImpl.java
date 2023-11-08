@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.automation.fluent.DscCompilationJobsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DscCompilationJobsClient. */
 public final class DscCompilationJobsClientImpl implements DscCompilationJobsClient {
-    private final ClientLogger logger = new ClientLogger(DscCompilationJobsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DscCompilationJobsService service;
 
@@ -156,7 +153,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -193,7 +191,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -223,7 +221,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -261,7 +260,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -287,9 +286,9 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return the {@link PollerFlux} for polling of definition of the Dsc Compilation job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreateAsync(
         String resourceGroupName,
         String automationAccountName,
@@ -304,7 +303,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                 this.client.getHttpPipeline(),
                 DscCompilationJobInner.class,
                 DscCompilationJobInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -318,9 +317,9 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return the {@link PollerFlux} for polling of definition of the Dsc Compilation job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreateAsync(
         String resourceGroupName,
         String automationAccountName,
@@ -350,9 +349,9 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return the {@link SyncPoller} for polling of definition of the Dsc Compilation job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(
         String resourceGroupName,
         String automationAccountName,
@@ -373,9 +372,9 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return the {@link SyncPoller} for polling of definition of the Dsc Compilation job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DscCompilationJobInner>, DscCompilationJobInner> beginCreate(
         String resourceGroupName,
         String automationAccountName,
@@ -396,7 +395,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DscCompilationJobInner> createAsync(
@@ -420,7 +419,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DscCompilationJobInner> createAsync(
@@ -487,7 +486,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DscCompilationJobInner>> getWithResponseAsync(
@@ -516,7 +516,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -544,7 +544,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DscCompilationJobInner>> getWithResponseAsync(
@@ -573,7 +574,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -597,20 +598,13 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DscCompilationJobInner> getAsync(
         String resourceGroupName, String automationAccountName, String compilationJobName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, compilationJobName)
-            .flatMap(
-                (Response<DscCompilationJobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -640,7 +634,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DscCompilationJobInner> getWithResponse(
@@ -657,7 +651,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountSinglePageAsync(
@@ -682,7 +677,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -719,7 +714,8 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountSinglePageAsync(
@@ -744,7 +740,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -777,7 +773,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DscCompilationJobInner> listByAutomationAccountAsync(
@@ -795,7 +791,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DscCompilationJobInner> listByAutomationAccountAsync(
@@ -816,7 +812,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DscCompilationJobInner> listByAutomationAccountAsync(
@@ -834,7 +830,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DscCompilationJobInner> listByAutomationAccount(
@@ -853,7 +849,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DscCompilationJobInner> listByAutomationAccount(
@@ -872,7 +868,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
+     * @return definition of the job stream along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobStreamInner>> getStreamWithResponseAsync(
@@ -903,7 +899,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -933,7 +929,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
+     * @return definition of the job stream along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobStreamInner>> getStreamWithResponseAsync(
@@ -964,7 +960,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -990,20 +986,13 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
+     * @return definition of the job stream on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobStreamInner> getStreamAsync(
         String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId) {
         return getStreamWithResponseAsync(resourceGroupName, automationAccountName, jobId, jobStreamId)
-            .flatMap(
-                (Response<JobStreamInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1035,7 +1024,7 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
+     * @return definition of the job stream along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobStreamInner> getStreamWithResponse(
@@ -1047,11 +1036,13 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -1083,12 +1074,14 @@ public final class DscCompilationJobsClientImpl implements DscCompilationJobsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscCompilationJobInner>> listByAutomationAccountNextSinglePageAsync(

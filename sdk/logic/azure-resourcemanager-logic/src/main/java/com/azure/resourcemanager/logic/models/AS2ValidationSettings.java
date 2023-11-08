@@ -6,17 +6,13 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AS2 agreement validation settings. */
 @Fluent
 public final class AS2ValidationSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2ValidationSettings.class);
-
     /*
-     * The value indicating whether to override incoming message properties
-     * with those in agreement.
+     * The value indicating whether to override incoming message properties with those in agreement.
      */
     @JsonProperty(value = "overrideMessageProperties", required = true)
     private boolean overrideMessageProperties;
@@ -52,15 +48,13 @@ public final class AS2ValidationSettings {
     private int interchangeDuplicatesValidityDays;
 
     /*
-     * The value indicating whether to check for certificate revocation list on
-     * send.
+     * The value indicating whether to check for certificate revocation list on send.
      */
     @JsonProperty(value = "checkCertificateRevocationListOnSend", required = true)
     private boolean checkCertificateRevocationListOnSend;
 
     /*
-     * The value indicating whether to check for certificate revocation list on
-     * receive.
+     * The value indicating whether to check for certificate revocation list on receive.
      */
     @JsonProperty(value = "checkCertificateRevocationListOnReceive", required = true)
     private boolean checkCertificateRevocationListOnReceive;
@@ -76,6 +70,10 @@ public final class AS2ValidationSettings {
      */
     @JsonProperty(value = "signingAlgorithm")
     private SigningAlgorithm signingAlgorithm;
+
+    /** Creates an instance of AS2ValidationSettings class. */
+    public AS2ValidationSettings() {
+    }
 
     /**
      * Get the overrideMessageProperties property: The value indicating whether to override incoming message properties
@@ -292,10 +290,12 @@ public final class AS2ValidationSettings {
      */
     public void validate() {
         if (encryptionAlgorithm() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property encryptionAlgorithm in model AS2ValidationSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AS2ValidationSettings.class);
 }

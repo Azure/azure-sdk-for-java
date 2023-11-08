@@ -62,11 +62,10 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineExtensionsService {
+    public interface VirtualMachineExtensionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachines/{vmName}/extensions/{vmExtensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -82,8 +81,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachines/{vmName}/extensions/{vmExtensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -99,8 +97,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachines/{vmName}/extensions/{vmExtensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -115,8 +112,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachines/{vmName}/extensions/{vmExtensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<VirtualMachineExtensionInner>> get(
@@ -132,8 +128,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachines/{vmName}/extensions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<VirtualMachineExtensionsListResultInner>> list(
@@ -195,7 +190,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -264,7 +259,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -361,7 +356,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         String vmName,
         String vmExtensionName,
         VirtualMachineExtensionInner extensionParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters)
             .getSyncPoller();
     }
 
@@ -385,7 +381,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         String vmExtensionName,
         VirtualMachineExtensionInner extensionParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context)
             .getSyncPoller();
     }
 
@@ -529,7 +526,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -598,7 +595,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -695,7 +692,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         String vmName,
         String vmExtensionName,
         VirtualMachineExtensionUpdate extensionParameters) {
-        return beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).getSyncPoller();
     }
 
     /**
@@ -718,7 +715,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         String vmExtensionName,
         VirtualMachineExtensionUpdate extensionParameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters, context)
             .getSyncPoller();
     }
 
@@ -851,7 +849,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -907,7 +905,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -980,7 +978,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmName, String vmExtensionName) {
-        return beginDeleteAsync(resourceGroupName, vmName, vmExtensionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, vmName, vmExtensionName).getSyncPoller();
     }
 
     /**
@@ -998,7 +996,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmName, String vmExtensionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, vmName, vmExtensionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, vmName, vmExtensionName, context).getSyncPoller();
     }
 
     /**
@@ -1108,7 +1106,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1167,7 +1165,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1189,32 +1187,6 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineExtensionInner> getAsync(
-        String resourceGroupName, String vmName, String vmExtensionName, String expand) {
-        return getWithResponseAsync(resourceGroupName, vmName, vmExtensionName, expand)
-            .flatMap(
-                (Response<VirtualMachineExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation to get the extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the extension.
-     * @param vmExtensionName The name of the virtual machine extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1225,31 +1197,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         String resourceGroupName, String vmName, String vmExtensionName) {
         final String expand = null;
         return getWithResponseAsync(resourceGroupName, vmName, vmExtensionName, expand)
-            .flatMap(
-                (Response<VirtualMachineExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation to get the extension.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the extension.
-     * @param vmExtensionName The name of the virtual machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName) {
-        final String expand = null;
-        return getAsync(resourceGroupName, vmName, vmExtensionName, expand).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1269,6 +1217,23 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
     public Response<VirtualMachineExtensionInner> getWithResponse(
         String resourceGroupName, String vmName, String vmExtensionName, String expand, Context context) {
         return getWithResponseAsync(resourceGroupName, vmName, vmExtensionName, expand, context).block();
+    }
+
+    /**
+     * The operation to get the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine containing the extension.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine Extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName) {
+        final String expand = null;
+        return getWithResponse(resourceGroupName, vmName, vmExtensionName, expand, Context.NONE).getValue();
     }
 
     /**
@@ -1305,7 +1270,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1358,7 +1323,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1378,31 +1343,6 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
-     * @param expand The expand expression to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Extension operation response on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineExtensionsListResultInner> listAsync(
-        String resourceGroupName, String vmName, String expand) {
-        return listWithResponseAsync(resourceGroupName, vmName, expand)
-            .flatMap(
-                (Response<VirtualMachineExtensionsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation to get all extensions of a Virtual Machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1412,30 +1352,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
     public Mono<VirtualMachineExtensionsListResultInner> listAsync(String resourceGroupName, String vmName) {
         final String expand = null;
         return listWithResponseAsync(resourceGroupName, vmName, expand)
-            .flatMap(
-                (Response<VirtualMachineExtensionsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * The operation to get all extensions of a Virtual Machine.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine containing the extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Extension operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineExtensionsListResultInner list(String resourceGroupName, String vmName) {
-        final String expand = null;
-        return listAsync(resourceGroupName, vmName, expand).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1454,5 +1371,21 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
     public Response<VirtualMachineExtensionsListResultInner> listWithResponse(
         String resourceGroupName, String vmName, String expand, Context context) {
         return listWithResponseAsync(resourceGroupName, vmName, expand, context).block();
+    }
+
+    /**
+     * The operation to get all extensions of a Virtual Machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine containing the extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Extension operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualMachineExtensionsListResultInner list(String resourceGroupName, String vmName) {
+        final String expand = null;
+        return listWithResponse(resourceGroupName, vmName, expand, Context.NONE).getValue();
     }
 }

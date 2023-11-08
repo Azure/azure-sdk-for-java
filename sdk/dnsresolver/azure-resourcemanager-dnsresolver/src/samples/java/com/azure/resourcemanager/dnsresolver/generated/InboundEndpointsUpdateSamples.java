@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for InboundEndpoints Update. */
 public final class InboundEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/InboundEndpoint_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Patch.json
      */
     /**
      * Sample code: Update inbound endpoint for DNS resolver.

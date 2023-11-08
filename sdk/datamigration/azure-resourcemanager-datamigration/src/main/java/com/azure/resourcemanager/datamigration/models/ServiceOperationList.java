@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.models.ServiceOperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** OData page of action (operation) objects. */
 @Fluent
 public final class ServiceOperationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceOperationList.class);
-
     /*
      * List of actions
      */
@@ -27,6 +23,10 @@ public final class ServiceOperationList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ServiceOperationList class. */
+    public ServiceOperationList() {
+    }
 
     /**
      * Get the value property: List of actions.

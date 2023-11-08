@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,14 +13,15 @@ import java.util.List;
  */
 @Fluent
 public final class UniqueKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UniqueKey.class);
-
     /*
-     * List of paths must be unique for each document in the Azure Cosmos DB
-     * service
+     * List of paths must be unique for each document in the Azure Cosmos DB service
      */
     @JsonProperty(value = "paths")
     private List<String> paths;
+
+    /** Creates an instance of UniqueKey class. */
+    public UniqueKey() {
+    }
 
     /**
      * Get the paths property: List of paths must be unique for each document in the Azure Cosmos DB service.

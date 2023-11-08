@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.PrivateLinkHubPrivateLinkResourc
 import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.synapse.models.PrivateLinkHubPrivateLinkResources;
 import com.azure.resourcemanager.synapse.models.PrivateLinkResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkHubPrivateLinkResourcesImpl implements PrivateLinkHubPrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkHubPrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkHubPrivateLinkResourcesImpl.class);
 
     private final PrivateLinkHubPrivateLinkResourcesClient innerClient;
 
@@ -42,17 +41,6 @@ public final class PrivateLinkHubPrivateLinkResourcesImpl implements PrivateLink
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PrivateLinkResource get(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName) {
-        PrivateLinkResourceInner inner =
-            this.serviceClient().get(resourceGroupName, privateLinkHubName, privateLinkResourceName);
-        if (inner != null) {
-            return new PrivateLinkResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateLinkResource> getWithResponse(
         String resourceGroupName, String privateLinkHubName, String privateLinkResourceName, Context context) {
         Response<PrivateLinkResourceInner> inner =
@@ -65,6 +53,17 @@ public final class PrivateLinkHubPrivateLinkResourcesImpl implements PrivateLink
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateLinkResource get(
+        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName) {
+        PrivateLinkResourceInner inner =
+            this.serviceClient().get(resourceGroupName, privateLinkHubName, privateLinkResourceName);
+        if (inner != null) {
+            return new PrivateLinkResourceImpl(inner, this.manager());
         } else {
             return null;
         }

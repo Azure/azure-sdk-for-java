@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import wiremock.com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -84,7 +83,24 @@ public class FlatteningSerializerTests {
 
     @Test
     public void canSerializeMapKeysWithDotAndSlash() {
-        String serialized = serialize(prepareSchoolModel());
+        Teacher teacher = new Teacher();
+
+        Map<String, Student> students = new HashMap<>();
+        students.put("af.B/C", new Student());
+        students.put("af.B/D", new Student());
+
+        teacher.setStudents(students);
+
+        School school = new School().setName("school1");
+        school.setTeacher(teacher);
+
+        Map<String, String> schoolTags = new HashMap<>();
+        schoolTags.put("foo.aa", "bar");
+        schoolTags.put("x.y", "zz");
+
+        school.setTags(schoolTags);
+
+        String serialized = serialize(school);
         assertEquals("{\"teacher\":{\"students\":{\"af.B/D\":{},\"af.B/C\":{}}},\"tags\":{\"foo.aa\":\"bar\",\"x.y\":\"zz\"},\"properties\":{\"name\":\"school1\"}}", serialized);
     }
 
@@ -296,7 +312,7 @@ public class FlatteningSerializerTests {
         List<String> meals = Arrays.asList("carrot", "apple");
         AnimalWithTypeIdContainingDot animalToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         FlattenableAnimalInfo animalInfoToSerialize = new FlattenableAnimalInfo().withAnimal(animalToSerialize);
-        List<FlattenableAnimalInfo> animalsInfoSerialized = ImmutableList.of(animalInfoToSerialize);
+        List<FlattenableAnimalInfo> animalsInfoSerialized = Collections.singletonList(animalInfoToSerialize);
         AnimalShelter animalShelterToSerialize = new AnimalShelter().withAnimalsInfo(animalsInfoSerialized);
         String serialized = serialize(animalShelterToSerialize);
         String[] results = {
@@ -735,27 +751,6 @@ public class FlatteningSerializerTests {
 
             Arguments.of("{\"a\":{\"flattened\": {\"property\": \"value\"}}}", "value")
         );
-    }
-
-    private School prepareSchoolModel() {
-        Teacher teacher = new Teacher();
-
-        Map<String, Student> students = new HashMap<>();
-        students.put("af.B/C", new Student());
-        students.put("af.B/D", new Student());
-
-        teacher.setStudents(students);
-
-        School school = new School().setName("school1");
-        school.setTeacher(teacher);
-
-        Map<String, String> schoolTags = new HashMap<>();
-        schoolTags.put("foo.aa", "bar");
-        schoolTags.put("x.y", "zz");
-
-        school.setTags(schoolTags);
-
-        return school;
     }
 }
 

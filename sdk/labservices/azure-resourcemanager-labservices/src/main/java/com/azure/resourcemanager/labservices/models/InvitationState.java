@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for InvitationState. */
+/** The lab user invitation state. */
 public enum InvitationState {
     /** Enum value NotSent. */
     NOT_SENT("NotSent"),
@@ -36,6 +36,9 @@ public enum InvitationState {
      */
     @JsonCreator
     public static InvitationState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         InvitationState[] items = InvitationState.values();
         for (InvitationState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum InvitationState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

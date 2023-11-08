@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Container group log analytics information. */
 @Fluent
 public final class LogAnalytics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalytics.class);
-
     /*
      * The workspace id for log analytics
      */
@@ -25,7 +22,7 @@ public final class LogAnalytics {
     /*
      * The workspace key for log analytics
      */
-    @JsonProperty(value = "workspaceKey", required = true)
+    @JsonProperty(value = "workspaceKey")
     private String workspaceKey;
 
     /*
@@ -46,6 +43,10 @@ public final class LogAnalytics {
      */
     @JsonProperty(value = "workspaceResourceId")
     private String workspaceResourceId;
+
+    /** Creates an instance of LogAnalytics class. */
+    public LogAnalytics() {
+    }
 
     /**
      * Get the workspaceId property: The workspace id for log analytics.
@@ -154,14 +155,16 @@ public final class LogAnalytics {
      */
     public void validate() {
         if (workspaceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property workspaceId in model LogAnalytics"));
         }
         if (workspaceKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property workspaceKey in model LogAnalytics"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LogAnalytics.class);
 }

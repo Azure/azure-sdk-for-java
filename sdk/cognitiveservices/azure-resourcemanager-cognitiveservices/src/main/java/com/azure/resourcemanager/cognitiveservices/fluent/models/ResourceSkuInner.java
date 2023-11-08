@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceSkuRestrictions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes an available Cognitive Services SKU. */
 @Fluent
 public final class ResourceSkuInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuInner.class);
-
     /*
      * The type of resource the SKU applies to.
      */
@@ -47,11 +43,14 @@ public final class ResourceSkuInner {
     private List<String> locations;
 
     /*
-     * The restrictions because of which SKU cannot be used. This is empty if
-     * there are no restrictions.
+     * The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      */
     @JsonProperty(value = "restrictions")
     private List<ResourceSkuRestrictions> restrictions;
+
+    /** Creates an instance of ResourceSkuInner class. */
+    public ResourceSkuInner() {
+    }
 
     /**
      * Get the resourceType property: The type of resource the SKU applies to.

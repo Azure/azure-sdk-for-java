@@ -5,97 +5,28 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
-/** The CustomEntitiesTaskParameters model. */
+/** Supported parameters for a Custom Entities task. */
 @Fluent
-public final class CustomEntitiesTaskParameters {
+public final class CustomEntitiesTaskParameters extends CustomTaskParameters {
     /*
-     * The project-name property.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
+     * Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
-    @JsonProperty(value = "project-name", required = true)
-    private String projectName;
-
-    /*
-     * The deployment-name property.
-     */
-    @JsonProperty(value = "deployment-name", required = true)
-    private String deploymentName;
-
-    /*
-     * The loggingOptOut property.
-     */
-    @JsonProperty(value = "loggingOptOut")
-    private Boolean loggingOptOut;
-
-    /*
-     * The stringIndexType property.
-     */
-    @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
-    /**
-     * Get the projectName property: The project-name property.
-     *
-     * @return the projectName value.
-     */
-    public String getProjectName() {
-        return this.projectName;
-    }
+    /** Creates an instance of CustomEntitiesTaskParameters class. */
+    public CustomEntitiesTaskParameters() {}
 
     /**
-     * Set the projectName property: The project-name property.
-     *
-     * @param projectName the projectName value to set.
-     * @return the CustomEntitiesTaskParameters object itself.
-     */
-    public CustomEntitiesTaskParameters setProjectName(String projectName) {
-        this.projectName = projectName;
-        return this;
-    }
-
-    /**
-     * Get the deploymentName property: The deployment-name property.
-     *
-     * @return the deploymentName value.
-     */
-    public String getDeploymentName() {
-        return this.deploymentName;
-    }
-
-    /**
-     * Set the deploymentName property: The deployment-name property.
-     *
-     * @param deploymentName the deploymentName value to set.
-     * @return the CustomEntitiesTaskParameters object itself.
-     */
-    public CustomEntitiesTaskParameters setDeploymentName(String deploymentName) {
-        this.deploymentName = deploymentName;
-        return this;
-    }
-
-    /**
-     * Get the loggingOptOut property: The loggingOptOut property.
-     *
-     * @return the loggingOptOut value.
-     */
-    public Boolean isLoggingOptOut() {
-        return this.loggingOptOut;
-    }
-
-    /**
-     * Set the loggingOptOut property: The loggingOptOut property.
-     *
-     * @param loggingOptOut the loggingOptOut value to set.
-     * @return the CustomEntitiesTaskParameters object itself.
-     */
-    public CustomEntitiesTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
-        this.loggingOptOut = loggingOptOut;
-        return this;
-    }
-
-    /**
-     * Get the stringIndexType property: The stringIndexType property.
+     * Get the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
+     * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     * https://aka.ms/text-analytics-offsets.
      *
      * @return the stringIndexType value.
      */
@@ -104,7 +35,9 @@ public final class CustomEntitiesTaskParameters {
     }
 
     /**
-     * Set the stringIndexType property: The stringIndexType property.
+     * Set the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
+     * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     * https://aka.ms/text-analytics-offsets.
      *
      * @param stringIndexType the stringIndexType value to set.
      * @return the CustomEntitiesTaskParameters object itself.
@@ -112,5 +45,73 @@ public final class CustomEntitiesTaskParameters {
     public CustomEntitiesTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesTaskParameters setProjectName(String projectName) {
+        super.setProjectName(projectName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesTaskParameters setDeploymentName(String deploymentName) {
+        super.setDeploymentName(deploymentName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
+        return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("projectName", getProjectName());
+        jsonWriter.writeStringField("deploymentName", getDeploymentName());
+        jsonWriter.writeBooleanField("loggingOptOut", isLoggingOptOut());
+        jsonWriter.writeStringField("stringIndexType", Objects.toString(this.stringIndexType, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomEntitiesTaskParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomEntitiesTaskParameters if the JsonReader was pointing to an instance of it, or null
+     *     if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomEntitiesTaskParameters.
+     */
+    public static CustomEntitiesTaskParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    CustomEntitiesTaskParameters deserializedCustomEntitiesTaskParameters =
+                            new CustomEntitiesTaskParameters();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("projectName".equals(fieldName)) {
+                            deserializedCustomEntitiesTaskParameters.setProjectName(reader.getString());
+                        } else if ("deploymentName".equals(fieldName)) {
+                            deserializedCustomEntitiesTaskParameters.setDeploymentName(reader.getString());
+                        } else if ("loggingOptOut".equals(fieldName)) {
+                            deserializedCustomEntitiesTaskParameters.setLoggingOptOut(
+                                    reader.getNullable(JsonReader::getBoolean));
+                        } else if ("stringIndexType".equals(fieldName)) {
+                            deserializedCustomEntitiesTaskParameters.stringIndexType =
+                                    StringIndexType.fromString(reader.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedCustomEntitiesTaskParameters;
+                });
     }
 }

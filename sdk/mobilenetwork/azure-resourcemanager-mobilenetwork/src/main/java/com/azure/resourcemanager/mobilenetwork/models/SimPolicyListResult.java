@@ -9,11 +9,11 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.SimPolicyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for SimPolicies API service call. */
+/** Response for SIM policies API service call. */
 @Fluent
 public final class SimPolicyListResult {
     /*
-     * A list of SimPolicies.
+     * A list of SIM policies.
      */
     @JsonProperty(value = "value")
     private List<SimPolicyInner> value;
@@ -24,8 +24,12 @@ public final class SimPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SimPolicyListResult class. */
+    public SimPolicyListResult() {
+    }
+
     /**
-     * Get the value property: A list of SimPolicies.
+     * Get the value property: A list of SIM policies.
      *
      * @return the value value.
      */
@@ -34,7 +38,7 @@ public final class SimPolicyListResult {
     }
 
     /**
-     * Set the value property: A list of SimPolicies.
+     * Set the value property: A list of SIM policies.
      *
      * @param value the value value to set.
      * @return the SimPolicyListResult object itself.

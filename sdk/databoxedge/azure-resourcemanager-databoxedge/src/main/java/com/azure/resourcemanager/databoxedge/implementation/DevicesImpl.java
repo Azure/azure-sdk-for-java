@@ -23,10 +23,9 @@ import com.azure.resourcemanager.databoxedge.models.SecuritySettings;
 import com.azure.resourcemanager.databoxedge.models.UpdateSummary;
 import com.azure.resourcemanager.databoxedge.models.UploadCertificateRequest;
 import com.azure.resourcemanager.databoxedge.models.UploadCertificateResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DevicesImpl implements Devices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DevicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DevicesImpl.class);
 
     private final DevicesClient innerClient;
 
@@ -60,15 +59,6 @@ public final class DevicesImpl implements Devices {
         return Utils.mapPage(inner, inner1 -> new DataBoxEdgeDeviceImpl(inner1, this.manager()));
     }
 
-    public DataBoxEdgeDevice getByResourceGroup(String resourceGroupName, String deviceName) {
-        DataBoxEdgeDeviceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, deviceName);
-        if (inner != null) {
-            return new DataBoxEdgeDeviceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataBoxEdgeDevice> getByResourceGroupWithResponse(
         String resourceGroupName, String deviceName, Context context) {
         Response<DataBoxEdgeDeviceInner> inner =
@@ -79,6 +69,15 @@ public final class DevicesImpl implements Devices {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DataBoxEdgeDeviceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DataBoxEdgeDevice getByResourceGroup(String resourceGroupName, String deviceName) {
+        DataBoxEdgeDeviceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, deviceName);
+        if (inner != null) {
+            return new DataBoxEdgeDeviceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -100,16 +99,6 @@ public final class DevicesImpl implements Devices {
         this.serviceClient().downloadUpdates(deviceName, resourceGroupName, context);
     }
 
-    public DataBoxEdgeDeviceExtendedInfo getExtendedInformation(String deviceName, String resourceGroupName) {
-        DataBoxEdgeDeviceExtendedInfoInner inner =
-            this.serviceClient().getExtendedInformation(deviceName, resourceGroupName);
-        if (inner != null) {
-            return new DataBoxEdgeDeviceExtendedInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataBoxEdgeDeviceExtendedInfo> getExtendedInformationWithResponse(
         String deviceName, String resourceGroupName, Context context) {
         Response<DataBoxEdgeDeviceExtendedInfoInner> inner =
@@ -125,21 +114,22 @@ public final class DevicesImpl implements Devices {
         }
     }
 
+    public DataBoxEdgeDeviceExtendedInfo getExtendedInformation(String deviceName, String resourceGroupName) {
+        DataBoxEdgeDeviceExtendedInfoInner inner =
+            this.serviceClient().getExtendedInformation(deviceName, resourceGroupName);
+        if (inner != null) {
+            return new DataBoxEdgeDeviceExtendedInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void installUpdates(String deviceName, String resourceGroupName) {
         this.serviceClient().installUpdates(deviceName, resourceGroupName);
     }
 
     public void installUpdates(String deviceName, String resourceGroupName, Context context) {
         this.serviceClient().installUpdates(deviceName, resourceGroupName, context);
-    }
-
-    public NetworkSettings getNetworkSettings(String deviceName, String resourceGroupName) {
-        NetworkSettingsInner inner = this.serviceClient().getNetworkSettings(deviceName, resourceGroupName);
-        if (inner != null) {
-            return new NetworkSettingsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<NetworkSettings> getNetworkSettingsWithResponse(
@@ -152,6 +142,15 @@ public final class DevicesImpl implements Devices {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NetworkSettingsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NetworkSettings getNetworkSettings(String deviceName, String resourceGroupName) {
+        NetworkSettingsInner inner = this.serviceClient().getNetworkSettings(deviceName, resourceGroupName);
+        if (inner != null) {
+            return new NetworkSettingsImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -175,15 +174,6 @@ public final class DevicesImpl implements Devices {
         this.serviceClient().createOrUpdateSecuritySettings(deviceName, resourceGroupName, securitySettings, context);
     }
 
-    public UpdateSummary getUpdateSummary(String deviceName, String resourceGroupName) {
-        UpdateSummaryInner inner = this.serviceClient().getUpdateSummary(deviceName, resourceGroupName);
-        if (inner != null) {
-            return new UpdateSummaryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<UpdateSummary> getUpdateSummaryWithResponse(
         String deviceName, String resourceGroupName, Context context) {
         Response<UpdateSummaryInner> inner =
@@ -199,12 +189,10 @@ public final class DevicesImpl implements Devices {
         }
     }
 
-    public UploadCertificateResponse uploadCertificate(
-        String deviceName, String resourceGroupName, UploadCertificateRequest parameters) {
-        UploadCertificateResponseInner inner =
-            this.serviceClient().uploadCertificate(deviceName, resourceGroupName, parameters);
+    public UpdateSummary getUpdateSummary(String deviceName, String resourceGroupName) {
+        UpdateSummaryInner inner = this.serviceClient().getUpdateSummary(deviceName, resourceGroupName);
         if (inner != null) {
-            return new UploadCertificateResponseImpl(inner, this.manager());
+            return new UpdateSummaryImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -225,10 +213,21 @@ public final class DevicesImpl implements Devices {
         }
     }
 
+    public UploadCertificateResponse uploadCertificate(
+        String deviceName, String resourceGroupName, UploadCertificateRequest parameters) {
+        UploadCertificateResponseInner inner =
+            this.serviceClient().uploadCertificate(deviceName, resourceGroupName, parameters);
+        if (inner != null) {
+            return new UploadCertificateResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public DataBoxEdgeDevice getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -236,7 +235,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -249,7 +248,7 @@ public final class DevicesImpl implements Devices {
     public Response<DataBoxEdgeDevice> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -257,7 +256,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -270,7 +269,7 @@ public final class DevicesImpl implements Devices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -278,7 +277,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -291,7 +290,7 @@ public final class DevicesImpl implements Devices {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -299,7 +298,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "dataBoxEdgeDevices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

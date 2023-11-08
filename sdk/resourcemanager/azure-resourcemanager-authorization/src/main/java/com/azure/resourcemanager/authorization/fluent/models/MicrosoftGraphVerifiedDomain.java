@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** verifiedDomain. */
 @Fluent
 public final class MicrosoftGraphVerifiedDomain {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphVerifiedDomain.class);
-
     /*
      * For example, 'Email', 'OfficeCommunicationsOnline'.
      */
@@ -25,15 +22,13 @@ public final class MicrosoftGraphVerifiedDomain {
     private String capabilities;
 
     /*
-     * true if this is the default domain associated with the tenant;
-     * otherwise, false.
+     * true if this is the default domain associated with the tenant; otherwise, false.
      */
     @JsonProperty(value = "isDefault")
     private Boolean isDefault;
 
     /*
-     * true if this is the initial domain associated with the tenant;
-     * otherwise, false
+     * true if this is the initial domain associated with the tenant; otherwise, false
      */
     @JsonProperty(value = "isInitial")
     private Boolean isInitial;
@@ -54,6 +49,10 @@ public final class MicrosoftGraphVerifiedDomain {
      * verifiedDomain
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphVerifiedDomain class. */
+    public MicrosoftGraphVerifiedDomain() {
+    }
 
     /**
      * Get the capabilities property: For example, 'Email', 'OfficeCommunicationsOnline'.

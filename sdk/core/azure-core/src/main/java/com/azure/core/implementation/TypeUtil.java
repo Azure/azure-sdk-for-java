@@ -65,7 +65,6 @@ public final class TypeUtil {
      * @param type the input type
      * @return the raw class
      */
-    @SuppressWarnings("unchecked")
     public static Class<?> getRawClass(Type type) {
         if (type instanceof ParameterizedType) {
             return (Class<?>) ((ParameterizedType) type).getRawType();
@@ -81,6 +80,11 @@ public final class TypeUtil {
      * @return the direct super type
      */
     public static Type getSuperType(final Type type) {
+        Type superType = SUPER_TYPE_MAP.get(type);
+        if (superType != null) {
+            return superType;
+        }
+
         return SUPER_TYPE_MAP.computeIfAbsent(type, _type -> {
             if (type instanceof ParameterizedType) {
                 final ParameterizedType parameterizedType = (ParameterizedType) type;
@@ -184,17 +188,6 @@ public final class TypeUtil {
                 return null;
             }
         };
-    }
-
-    /**
-     * Returns whether the rest response expects to have any body (by checking if the body parameter type is set to
-     * Void, in which case no body is expected).
-     *
-     * @param restResponseReturnType The RestResponse subtype containing the type arguments we are inspecting.
-     * @return True if a body is expected, false if a Void body is expected.
-     */
-    public static boolean restResponseTypeExpectsBody(ParameterizedType restResponseReturnType) {
-        return getRestResponseBodyType(restResponseReturnType) != Void.class;
     }
 
     /**

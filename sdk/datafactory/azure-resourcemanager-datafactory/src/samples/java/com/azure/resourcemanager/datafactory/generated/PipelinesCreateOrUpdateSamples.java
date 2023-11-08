@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.datafactory.models.BlobSink;
 import com.azure.resourcemanager.datafactory.models.BlobSource;
@@ -118,7 +117,12 @@ public final class PipelinesCreateOrUpdateSamples {
         PipelineResource resource =
             manager
                 .pipelines()
-                .getWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null, Context.NONE)
+                .getWithResponse(
+                    "exampleResourceGroup",
+                    "exampleFactoryName",
+                    "examplePipeline",
+                    null,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -172,6 +176,7 @@ public final class PipelinesCreateOrUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

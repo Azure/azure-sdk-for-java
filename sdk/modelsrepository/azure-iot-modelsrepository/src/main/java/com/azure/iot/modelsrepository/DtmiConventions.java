@@ -69,7 +69,7 @@ public final class DtmiConventions {
                 return new URI(stringUri + "/" + dtmiPath);
             }
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Invalid uri syntax");
+            throw new IllegalArgumentException("Invalid uri syntax", e);
         }
     }
 
@@ -107,7 +107,7 @@ public final class DtmiConventions {
                 return new URI(stringUri + "/" + ModelsRepositoryConstants.MODELS_REPOSITORY_METADATA_FILE);
             }
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Invalid uri syntax");
+            throw new IllegalArgumentException("Invalid uri syntax", e);
         }
     }
 

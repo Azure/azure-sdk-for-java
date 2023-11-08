@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Protocol. */
+/**
+ * Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is
+ * TLS-encrypted.
+ */
 public final class Protocol extends ExpandableStringEnum<Protocol> {
     /** Static value Encrypted for Protocol. */
     public static final Protocol ENCRYPTED = fromString("Encrypted");
 
     /** Static value Plaintext for Protocol. */
     public static final Protocol PLAINTEXT = fromString("Plaintext");
+
+    /**
+     * Creates a new instance of Protocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Protocol() {
+    }
 
     /**
      * Creates or finds a Protocol from its string representation.
@@ -27,7 +39,11 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
         return fromString(name, Protocol.class);
     }
 
-    /** @return known Protocol values. */
+    /**
+     * Gets known Protocol values.
+     *
+     * @return known Protocol values.
+     */
     public static Collection<Protocol> values() {
         return values(Protocol.class);
     }

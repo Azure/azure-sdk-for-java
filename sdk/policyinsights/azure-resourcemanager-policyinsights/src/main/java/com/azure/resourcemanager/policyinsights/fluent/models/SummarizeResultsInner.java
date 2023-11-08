@@ -5,27 +5,21 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.models.Summary;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Summarize action results. */
 @Fluent
 public final class SummarizeResultsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SummarizeResultsInner.class);
-
     /*
-     * OData context string; used by OData clients to resolve type information
-     * based on metadata.
+     * OData context string; used by OData clients to resolve type information based on metadata.
      */
     @JsonProperty(value = "@odata.context")
     private String odataContext;
 
     /*
-     * OData entity count; represents the number of summaries returned; always
-     * set to 1.
+     * OData entity count; represents the number of summaries returned; always set to 1.
      */
     @JsonProperty(value = "@odata.count")
     private Integer odataCount;
@@ -35,6 +29,10 @@ public final class SummarizeResultsInner {
      */
     @JsonProperty(value = "value")
     private List<Summary> value;
+
+    /** Creates an instance of SummarizeResultsInner class. */
+    public SummarizeResultsInner() {
+    }
 
     /**
      * Get the odataContext property: OData context string; used by OData clients to resolve type information based on

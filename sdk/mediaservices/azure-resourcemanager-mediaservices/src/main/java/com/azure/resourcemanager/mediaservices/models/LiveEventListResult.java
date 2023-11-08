@@ -9,7 +9,11 @@ import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** LiveEventListResult The LiveEvent list result. */
+/**
+ * LiveEventListResult
+ *
+ * <p>The LiveEvent list result.
+ */
 @Fluent
 public final class LiveEventListResult {
     /*
@@ -25,11 +29,14 @@ public final class LiveEventListResult {
     private Integer odataCount;
 
     /*
-     * The link to the next set of results. Not empty if value contains
-     * incomplete list of live outputs.
+     * The link to the next set of results. Not empty if value contains incomplete list of live outputs.
      */
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
+
+    /** Creates an instance of LiveEventListResult class. */
+    public LiveEventListResult() {
+    }
 
     /**
      * Get the value property: The result of the List Live Event operation.

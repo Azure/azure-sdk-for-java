@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeNodeMonitoringData;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Get monitoring data response. */
 @Fluent
 public final class IntegrationRuntimeMonitoringDataInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeMonitoringDataInner.class);
-
     /*
      * Integration runtime name.
      */
@@ -27,6 +23,10 @@ public final class IntegrationRuntimeMonitoringDataInner {
      */
     @JsonProperty(value = "nodes")
     private List<IntegrationRuntimeNodeMonitoringData> nodes;
+
+    /** Creates an instance of IntegrationRuntimeMonitoringDataInner class. */
+    public IntegrationRuntimeMonitoringDataInner() {
+    }
 
     /**
      * Get the name property: Integration runtime name.

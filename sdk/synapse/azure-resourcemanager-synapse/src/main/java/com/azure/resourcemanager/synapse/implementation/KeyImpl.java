@@ -33,6 +33,10 @@ public final class KeyImpl implements Key, Key.Definition, Key.Update {
         return this.innerModel().keyVaultUrl();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public KeyInner innerModel() {
         return this.innerObject;
     }

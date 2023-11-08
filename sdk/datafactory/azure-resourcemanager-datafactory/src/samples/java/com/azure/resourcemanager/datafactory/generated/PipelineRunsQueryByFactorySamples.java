@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.RunFilterParameters;
 import com.azure.resourcemanager.datafactory.models.RunQueryFilter;
 import com.azure.resourcemanager.datafactory.models.RunQueryFilterOperand;
@@ -38,6 +37,6 @@ public final class PipelineRunsQueryByFactorySamples {
                                     .withOperand(RunQueryFilterOperand.PIPELINE_NAME)
                                     .withOperator(RunQueryFilterOperator.EQUALS)
                                     .withValues(Arrays.asList("examplePipeline")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

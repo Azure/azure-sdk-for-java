@@ -6,7 +6,6 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
@@ -16,14 +15,16 @@ import java.time.Duration;
  */
 @Fluent
 public final class WarmStoreConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WarmStoreConfigurationProperties.class);
-
     /*
-     * ISO8601 timespan specifying the number of days the environment's events
-     * will be available for query from the warm store.
+     * ISO8601 timespan specifying the number of days the environment's events will be available for query from the
+     * warm store.
      */
     @JsonProperty(value = "dataRetention", required = true)
     private Duration dataRetention;
+
+    /** Creates an instance of WarmStoreConfigurationProperties class. */
+    public WarmStoreConfigurationProperties() {
+    }
 
     /**
      * Get the dataRetention property: ISO8601 timespan specifying the number of days the environment's events will be
@@ -54,10 +55,12 @@ public final class WarmStoreConfigurationProperties {
      */
     public void validate() {
         if (dataRetention() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataRetention in model WarmStoreConfigurationProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WarmStoreConfigurationProperties.class);
 }

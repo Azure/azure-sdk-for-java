@@ -11,6 +11,7 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.authorization.models.PasswordCredential;
 import com.google.common.io.ByteStreams;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
@@ -20,6 +21,7 @@ import com.azure.resourcemanager.samples.Utils;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.function.Consumer;
 
 /**
  * Azure service principal sample for managing its credentials.
@@ -43,9 +45,9 @@ public final class ManageServicePrincipalCredentials {
         final String spName         = Utils.randomResourceName(azureResourceManager, "sp", 20);
         final String appName        = Utils.randomResourceName(azureResourceManager, "app", 20);
         final String passwordName1  = Utils.randomResourceName(azureResourceManager, "password", 20);
-        final String password1      = "P@ssw0rd";
+        final PasswordHolder passwordHolder1 = new PasswordHolder();
         final String passwordName2  = Utils.randomResourceName(azureResourceManager, "password", 20);
-        final String password2      = "StrongP@ss!12";
+        final PasswordHolder passwordHolder2 = new PasswordHolder();
         final String certName1      = Utils.randomResourceName(azureResourceManager, "cert", 20);
         final String raName         = Utils.randomUuid(azureResourceManager);
         String servicePrincipalId = "";
@@ -59,8 +61,10 @@ public final class ManageServicePrincipalCredentials {
                     .define(spName)
                     .withNewApplication()
                     .definePasswordCredential(passwordName1)
+                        .withPasswordConsumer(passwordHolder1)
                         .attach()
                     .definePasswordCredential(passwordName2)
+                        .withPasswordConsumer(passwordHolder2)
                         .attach()
                     .defineCertificateCredential(certName1)
                         .withAsymmetricX509Certificate()
@@ -98,7 +102,7 @@ public final class ManageServicePrincipalCredentials {
             TokenCredential testCredential = new ClientSecretCredentialBuilder()
                 .tenantId(azureResourceManager.tenantId())
                 .clientId(servicePrincipal.applicationId())
-                .clientSecret(password1)
+                .clientSecret(passwordHolder1.password)
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
@@ -114,7 +118,7 @@ public final class ManageServicePrincipalCredentials {
             testCredential = new ClientSecretCredentialBuilder()
                 .tenantId(azureResourceManager.tenantId())
                 .clientId(servicePrincipal.applicationId())
-                .clientSecret(password2)
+                .clientSecret(passwordHolder2.password)
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
@@ -161,7 +165,7 @@ public final class ManageServicePrincipalCredentials {
             testCredential = new ClientSecretCredentialBuilder()
                 .tenantId(azureResourceManager.tenantId())
                 .clientId(servicePrincipal.applicationId())
-                .clientSecret(password1)
+                .clientSecret(passwordHolder1.password)
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
@@ -189,7 +193,7 @@ public final class ManageServicePrincipalCredentials {
             testCredential = new ClientSecretCredentialBuilder()
                 .tenantId(azureResourceManager.tenantId())
                 .clientId(servicePrincipal.applicationId())
-                .clientSecret(password2)
+                .clientSecret(passwordHolder2.password)
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
             try {
@@ -211,6 +215,15 @@ public final class ManageServicePrincipalCredentials {
             } catch (Exception e) {
                 System.out.println("Did not create applications in Azure. No clean up is necessary");
             }
+        }
+    }
+
+    private static class PasswordHolder implements Consumer<PasswordCredential> {
+        private String password;
+
+        @Override
+        public void accept(PasswordCredential passwordCredential) {
+            this.password = passwordCredential.value();
         }
     }
 

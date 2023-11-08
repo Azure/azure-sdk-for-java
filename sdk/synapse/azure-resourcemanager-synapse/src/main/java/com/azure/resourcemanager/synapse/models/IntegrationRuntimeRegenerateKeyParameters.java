@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters to regenerate the authentication key. */
 @Fluent
 public final class IntegrationRuntimeRegenerateKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeRegenerateKeyParameters.class);
-
     /*
      * The name of the authentication key to regenerate.
      */
     @JsonProperty(value = "keyName")
     private IntegrationRuntimeAuthKeyName keyName;
+
+    /** Creates an instance of IntegrationRuntimeRegenerateKeyParameters class. */
+    public IntegrationRuntimeRegenerateKeyParameters() {
+    }
 
     /**
      * Get the keyName property: The name of the authentication key to regenerate.

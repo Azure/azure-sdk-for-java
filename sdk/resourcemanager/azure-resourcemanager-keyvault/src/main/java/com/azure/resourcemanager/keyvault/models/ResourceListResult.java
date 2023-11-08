@@ -6,16 +6,12 @@ package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of vault resources. */
 @Fluent
 public final class ResourceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceListResult.class);
-
     /*
      * The list of vault resources.
      */
@@ -27,6 +23,10 @@ public final class ResourceListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ResourceListResult class. */
+    public ResourceListResult() {
+    }
 
     /**
      * Get the value property: The list of vault resources.

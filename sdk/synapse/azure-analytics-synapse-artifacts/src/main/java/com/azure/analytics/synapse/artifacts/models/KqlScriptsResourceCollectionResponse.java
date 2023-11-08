@@ -23,6 +23,9 @@ public final class KqlScriptsResourceCollectionResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of KqlScriptsResourceCollectionResponse class. */
+    public KqlScriptsResourceCollectionResponse() {}
+
     /**
      * Get the value property: The value property.
      *

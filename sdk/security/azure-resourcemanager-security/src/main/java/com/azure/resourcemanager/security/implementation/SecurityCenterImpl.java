@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -27,6 +28,11 @@ import com.azure.resourcemanager.security.fluent.AdvancedThreatProtectionsClient
 import com.azure.resourcemanager.security.fluent.AlertsClient;
 import com.azure.resourcemanager.security.fluent.AlertsSuppressionRulesClient;
 import com.azure.resourcemanager.security.fluent.AllowedConnectionsClient;
+import com.azure.resourcemanager.security.fluent.ApiCollectionOffboardingsClient;
+import com.azure.resourcemanager.security.fluent.ApiCollectionOnboardingsClient;
+import com.azure.resourcemanager.security.fluent.ApiCollectionsClient;
+import com.azure.resourcemanager.security.fluent.ApplicationOperationsClient;
+import com.azure.resourcemanager.security.fluent.ApplicationsClient;
 import com.azure.resourcemanager.security.fluent.AssessmentsClient;
 import com.azure.resourcemanager.security.fluent.AssessmentsMetadatasClient;
 import com.azure.resourcemanager.security.fluent.AutoProvisioningSettingsClient;
@@ -34,28 +40,24 @@ import com.azure.resourcemanager.security.fluent.AutomationsClient;
 import com.azure.resourcemanager.security.fluent.ComplianceResultsClient;
 import com.azure.resourcemanager.security.fluent.CompliancesClient;
 import com.azure.resourcemanager.security.fluent.ConnectorsClient;
+import com.azure.resourcemanager.security.fluent.CustomAssessmentAutomationsClient;
+import com.azure.resourcemanager.security.fluent.CustomEntityStoreAssignmentsClient;
 import com.azure.resourcemanager.security.fluent.DeviceSecurityGroupsClient;
-import com.azure.resourcemanager.security.fluent.DevicesClient;
-import com.azure.resourcemanager.security.fluent.DevicesForHubsClient;
-import com.azure.resourcemanager.security.fluent.DevicesForSubscriptionsClient;
 import com.azure.resourcemanager.security.fluent.DiscoveredSecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.ExternalSecuritySolutionsClient;
+import com.azure.resourcemanager.security.fluent.GovernanceAssignmentsClient;
+import com.azure.resourcemanager.security.fluent.GovernanceRulesClient;
+import com.azure.resourcemanager.security.fluent.HealthReportOperationsClient;
+import com.azure.resourcemanager.security.fluent.HealthReportsClient;
 import com.azure.resourcemanager.security.fluent.InformationProtectionPoliciesClient;
 import com.azure.resourcemanager.security.fluent.IngestionSettingsClient;
-import com.azure.resourcemanager.security.fluent.IotAlertTypesClient;
-import com.azure.resourcemanager.security.fluent.IotAlertsClient;
-import com.azure.resourcemanager.security.fluent.IotDefenderSettingsClient;
-import com.azure.resourcemanager.security.fluent.IotRecommendationTypesClient;
-import com.azure.resourcemanager.security.fluent.IotRecommendationsClient;
 import com.azure.resourcemanager.security.fluent.IotSecuritySolutionAnalyticsClient;
 import com.azure.resourcemanager.security.fluent.IotSecuritySolutionsAnalyticsAggregatedAlertsClient;
 import com.azure.resourcemanager.security.fluent.IotSecuritySolutionsAnalyticsRecommendationsClient;
 import com.azure.resourcemanager.security.fluent.IotSecuritySolutionsClient;
-import com.azure.resourcemanager.security.fluent.IotSensorsClient;
-import com.azure.resourcemanager.security.fluent.IotSitesClient;
 import com.azure.resourcemanager.security.fluent.JitNetworkAccessPoliciesClient;
 import com.azure.resourcemanager.security.fluent.LocationsClient;
-import com.azure.resourcemanager.security.fluent.OnPremiseIotSensorsClient;
+import com.azure.resourcemanager.security.fluent.MdeOnboardingsClient;
 import com.azure.resourcemanager.security.fluent.OperationsClient;
 import com.azure.resourcemanager.security.fluent.PricingsClient;
 import com.azure.resourcemanager.security.fluent.RegulatoryComplianceAssessmentsClient;
@@ -65,7 +67,11 @@ import com.azure.resourcemanager.security.fluent.SecureScoreControlDefinitionsCl
 import com.azure.resourcemanager.security.fluent.SecureScoreControlsClient;
 import com.azure.resourcemanager.security.fluent.SecureScoresClient;
 import com.azure.resourcemanager.security.fluent.SecurityCenter;
+import com.azure.resourcemanager.security.fluent.SecurityConnectorApplicationOperationsClient;
+import com.azure.resourcemanager.security.fluent.SecurityConnectorApplicationsClient;
+import com.azure.resourcemanager.security.fluent.SecurityConnectorsClient;
 import com.azure.resourcemanager.security.fluent.SecurityContactsClient;
+import com.azure.resourcemanager.security.fluent.SecurityOperatorsClient;
 import com.azure.resourcemanager.security.fluent.SecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.SecuritySolutionsReferenceDatasClient;
 import com.azure.resourcemanager.security.fluent.ServerVulnerabilityAssessmentsClient;
@@ -84,15 +90,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the SecurityCenterImpl type. */
 @ServiceClient(builder = SecurityCenterBuilder.class)
 public final class SecurityCenterImpl implements SecurityCenter {
-    private final ClientLogger logger = new ClientLogger(SecurityCenterImpl.class);
-
     /** Azure subscription ID. */
     private final String subscriptionId;
 
@@ -151,6 +154,42 @@ public final class SecurityCenterImpl implements SecurityCenter {
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /** The MdeOnboardingsClient object to access its operations. */
+    private final MdeOnboardingsClient mdeOnboardings;
+
+    /**
+     * Gets the MdeOnboardingsClient object to access its operations.
+     *
+     * @return the MdeOnboardingsClient object.
+     */
+    public MdeOnboardingsClient getMdeOnboardings() {
+        return this.mdeOnboardings;
+    }
+
+    /** The CustomAssessmentAutomationsClient object to access its operations. */
+    private final CustomAssessmentAutomationsClient customAssessmentAutomations;
+
+    /**
+     * Gets the CustomAssessmentAutomationsClient object to access its operations.
+     *
+     * @return the CustomAssessmentAutomationsClient object.
+     */
+    public CustomAssessmentAutomationsClient getCustomAssessmentAutomations() {
+        return this.customAssessmentAutomations;
+    }
+
+    /** The CustomEntityStoreAssignmentsClient object to access its operations. */
+    private final CustomEntityStoreAssignmentsClient customEntityStoreAssignments;
+
+    /**
+     * Gets the CustomEntityStoreAssignmentsClient object to access its operations.
+     *
+     * @return the CustomEntityStoreAssignmentsClient object.
+     */
+    public CustomEntityStoreAssignmentsClient getCustomEntityStoreAssignments() {
+        return this.customEntityStoreAssignments;
     }
 
     /** The ComplianceResultsClient object to access its operations. */
@@ -609,174 +648,6 @@ public final class SecurityCenterImpl implements SecurityCenter {
         return this.connectors;
     }
 
-    /** The SqlVulnerabilityAssessmentScansClient object to access its operations. */
-    private final SqlVulnerabilityAssessmentScansClient sqlVulnerabilityAssessmentScans;
-
-    /**
-     * Gets the SqlVulnerabilityAssessmentScansClient object to access its operations.
-     *
-     * @return the SqlVulnerabilityAssessmentScansClient object.
-     */
-    public SqlVulnerabilityAssessmentScansClient getSqlVulnerabilityAssessmentScans() {
-        return this.sqlVulnerabilityAssessmentScans;
-    }
-
-    /** The SqlVulnerabilityAssessmentScanResultsClient object to access its operations. */
-    private final SqlVulnerabilityAssessmentScanResultsClient sqlVulnerabilityAssessmentScanResults;
-
-    /**
-     * Gets the SqlVulnerabilityAssessmentScanResultsClient object to access its operations.
-     *
-     * @return the SqlVulnerabilityAssessmentScanResultsClient object.
-     */
-    public SqlVulnerabilityAssessmentScanResultsClient getSqlVulnerabilityAssessmentScanResults() {
-        return this.sqlVulnerabilityAssessmentScanResults;
-    }
-
-    /** The SqlVulnerabilityAssessmentBaselineRulesClient object to access its operations. */
-    private final SqlVulnerabilityAssessmentBaselineRulesClient sqlVulnerabilityAssessmentBaselineRules;
-
-    /**
-     * Gets the SqlVulnerabilityAssessmentBaselineRulesClient object to access its operations.
-     *
-     * @return the SqlVulnerabilityAssessmentBaselineRulesClient object.
-     */
-    public SqlVulnerabilityAssessmentBaselineRulesClient getSqlVulnerabilityAssessmentBaselineRules() {
-        return this.sqlVulnerabilityAssessmentBaselineRules;
-    }
-
-    /** The IotDefenderSettingsClient object to access its operations. */
-    private final IotDefenderSettingsClient iotDefenderSettings;
-
-    /**
-     * Gets the IotDefenderSettingsClient object to access its operations.
-     *
-     * @return the IotDefenderSettingsClient object.
-     */
-    public IotDefenderSettingsClient getIotDefenderSettings() {
-        return this.iotDefenderSettings;
-    }
-
-    /** The IotSensorsClient object to access its operations. */
-    private final IotSensorsClient iotSensors;
-
-    /**
-     * Gets the IotSensorsClient object to access its operations.
-     *
-     * @return the IotSensorsClient object.
-     */
-    public IotSensorsClient getIotSensors() {
-        return this.iotSensors;
-    }
-
-    /** The DevicesForSubscriptionsClient object to access its operations. */
-    private final DevicesForSubscriptionsClient devicesForSubscriptions;
-
-    /**
-     * Gets the DevicesForSubscriptionsClient object to access its operations.
-     *
-     * @return the DevicesForSubscriptionsClient object.
-     */
-    public DevicesForSubscriptionsClient getDevicesForSubscriptions() {
-        return this.devicesForSubscriptions;
-    }
-
-    /** The DevicesForHubsClient object to access its operations. */
-    private final DevicesForHubsClient devicesForHubs;
-
-    /**
-     * Gets the DevicesForHubsClient object to access its operations.
-     *
-     * @return the DevicesForHubsClient object.
-     */
-    public DevicesForHubsClient getDevicesForHubs() {
-        return this.devicesForHubs;
-    }
-
-    /** The DevicesClient object to access its operations. */
-    private final DevicesClient devices;
-
-    /**
-     * Gets the DevicesClient object to access its operations.
-     *
-     * @return the DevicesClient object.
-     */
-    public DevicesClient getDevices() {
-        return this.devices;
-    }
-
-    /** The OnPremiseIotSensorsClient object to access its operations. */
-    private final OnPremiseIotSensorsClient onPremiseIotSensors;
-
-    /**
-     * Gets the OnPremiseIotSensorsClient object to access its operations.
-     *
-     * @return the OnPremiseIotSensorsClient object.
-     */
-    public OnPremiseIotSensorsClient getOnPremiseIotSensors() {
-        return this.onPremiseIotSensors;
-    }
-
-    /** The IotSitesClient object to access its operations. */
-    private final IotSitesClient iotSites;
-
-    /**
-     * Gets the IotSitesClient object to access its operations.
-     *
-     * @return the IotSitesClient object.
-     */
-    public IotSitesClient getIotSites() {
-        return this.iotSites;
-    }
-
-    /** The IotAlertsClient object to access its operations. */
-    private final IotAlertsClient iotAlerts;
-
-    /**
-     * Gets the IotAlertsClient object to access its operations.
-     *
-     * @return the IotAlertsClient object.
-     */
-    public IotAlertsClient getIotAlerts() {
-        return this.iotAlerts;
-    }
-
-    /** The IotAlertTypesClient object to access its operations. */
-    private final IotAlertTypesClient iotAlertTypes;
-
-    /**
-     * Gets the IotAlertTypesClient object to access its operations.
-     *
-     * @return the IotAlertTypesClient object.
-     */
-    public IotAlertTypesClient getIotAlertTypes() {
-        return this.iotAlertTypes;
-    }
-
-    /** The IotRecommendationsClient object to access its operations. */
-    private final IotRecommendationsClient iotRecommendations;
-
-    /**
-     * Gets the IotRecommendationsClient object to access its operations.
-     *
-     * @return the IotRecommendationsClient object.
-     */
-    public IotRecommendationsClient getIotRecommendations() {
-        return this.iotRecommendations;
-    }
-
-    /** The IotRecommendationTypesClient object to access its operations. */
-    private final IotRecommendationTypesClient iotRecommendationTypes;
-
-    /**
-     * Gets the IotRecommendationTypesClient object to access its operations.
-     *
-     * @return the IotRecommendationTypesClient object.
-     */
-    public IotRecommendationTypesClient getIotRecommendationTypes() {
-        return this.iotRecommendationTypes;
-    }
-
     /** The AlertsClient object to access its operations. */
     private final AlertsClient alerts;
 
@@ -825,6 +696,198 @@ public final class SecurityCenterImpl implements SecurityCenter {
         return this.softwareInventories;
     }
 
+    /** The GovernanceRulesClient object to access its operations. */
+    private final GovernanceRulesClient governanceRules;
+
+    /**
+     * Gets the GovernanceRulesClient object to access its operations.
+     *
+     * @return the GovernanceRulesClient object.
+     */
+    public GovernanceRulesClient getGovernanceRules() {
+        return this.governanceRules;
+    }
+
+    /** The GovernanceAssignmentsClient object to access its operations. */
+    private final GovernanceAssignmentsClient governanceAssignments;
+
+    /**
+     * Gets the GovernanceAssignmentsClient object to access its operations.
+     *
+     * @return the GovernanceAssignmentsClient object.
+     */
+    public GovernanceAssignmentsClient getGovernanceAssignments() {
+        return this.governanceAssignments;
+    }
+
+    /** The ApplicationsClient object to access its operations. */
+    private final ApplicationsClient applications;
+
+    /**
+     * Gets the ApplicationsClient object to access its operations.
+     *
+     * @return the ApplicationsClient object.
+     */
+    public ApplicationsClient getApplications() {
+        return this.applications;
+    }
+
+    /** The ApplicationOperationsClient object to access its operations. */
+    private final ApplicationOperationsClient applicationOperations;
+
+    /**
+     * Gets the ApplicationOperationsClient object to access its operations.
+     *
+     * @return the ApplicationOperationsClient object.
+     */
+    public ApplicationOperationsClient getApplicationOperations() {
+        return this.applicationOperations;
+    }
+
+    /** The SecurityConnectorApplicationsClient object to access its operations. */
+    private final SecurityConnectorApplicationsClient securityConnectorApplications;
+
+    /**
+     * Gets the SecurityConnectorApplicationsClient object to access its operations.
+     *
+     * @return the SecurityConnectorApplicationsClient object.
+     */
+    public SecurityConnectorApplicationsClient getSecurityConnectorApplications() {
+        return this.securityConnectorApplications;
+    }
+
+    /** The SecurityConnectorApplicationOperationsClient object to access its operations. */
+    private final SecurityConnectorApplicationOperationsClient securityConnectorApplicationOperations;
+
+    /**
+     * Gets the SecurityConnectorApplicationOperationsClient object to access its operations.
+     *
+     * @return the SecurityConnectorApplicationOperationsClient object.
+     */
+    public SecurityConnectorApplicationOperationsClient getSecurityConnectorApplicationOperations() {
+        return this.securityConnectorApplicationOperations;
+    }
+
+    /** The ApiCollectionsClient object to access its operations. */
+    private final ApiCollectionsClient apiCollections;
+
+    /**
+     * Gets the ApiCollectionsClient object to access its operations.
+     *
+     * @return the ApiCollectionsClient object.
+     */
+    public ApiCollectionsClient getApiCollections() {
+        return this.apiCollections;
+    }
+
+    /** The ApiCollectionOnboardingsClient object to access its operations. */
+    private final ApiCollectionOnboardingsClient apiCollectionOnboardings;
+
+    /**
+     * Gets the ApiCollectionOnboardingsClient object to access its operations.
+     *
+     * @return the ApiCollectionOnboardingsClient object.
+     */
+    public ApiCollectionOnboardingsClient getApiCollectionOnboardings() {
+        return this.apiCollectionOnboardings;
+    }
+
+    /** The ApiCollectionOffboardingsClient object to access its operations. */
+    private final ApiCollectionOffboardingsClient apiCollectionOffboardings;
+
+    /**
+     * Gets the ApiCollectionOffboardingsClient object to access its operations.
+     *
+     * @return the ApiCollectionOffboardingsClient object.
+     */
+    public ApiCollectionOffboardingsClient getApiCollectionOffboardings() {
+        return this.apiCollectionOffboardings;
+    }
+
+    /** The HealthReportsClient object to access its operations. */
+    private final HealthReportsClient healthReports;
+
+    /**
+     * Gets the HealthReportsClient object to access its operations.
+     *
+     * @return the HealthReportsClient object.
+     */
+    public HealthReportsClient getHealthReports() {
+        return this.healthReports;
+    }
+
+    /** The HealthReportOperationsClient object to access its operations. */
+    private final HealthReportOperationsClient healthReportOperations;
+
+    /**
+     * Gets the HealthReportOperationsClient object to access its operations.
+     *
+     * @return the HealthReportOperationsClient object.
+     */
+    public HealthReportOperationsClient getHealthReportOperations() {
+        return this.healthReportOperations;
+    }
+
+    /** The SqlVulnerabilityAssessmentScansClient object to access its operations. */
+    private final SqlVulnerabilityAssessmentScansClient sqlVulnerabilityAssessmentScans;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScansClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentScansClient object.
+     */
+    public SqlVulnerabilityAssessmentScansClient getSqlVulnerabilityAssessmentScans() {
+        return this.sqlVulnerabilityAssessmentScans;
+    }
+
+    /** The SqlVulnerabilityAssessmentScanResultsClient object to access its operations. */
+    private final SqlVulnerabilityAssessmentScanResultsClient sqlVulnerabilityAssessmentScanResults;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScanResultsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentScanResultsClient object.
+     */
+    public SqlVulnerabilityAssessmentScanResultsClient getSqlVulnerabilityAssessmentScanResults() {
+        return this.sqlVulnerabilityAssessmentScanResults;
+    }
+
+    /** The SqlVulnerabilityAssessmentBaselineRulesClient object to access its operations. */
+    private final SqlVulnerabilityAssessmentBaselineRulesClient sqlVulnerabilityAssessmentBaselineRules;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentBaselineRulesClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentBaselineRulesClient object.
+     */
+    public SqlVulnerabilityAssessmentBaselineRulesClient getSqlVulnerabilityAssessmentBaselineRules() {
+        return this.sqlVulnerabilityAssessmentBaselineRules;
+    }
+
+    /** The SecurityConnectorsClient object to access its operations. */
+    private final SecurityConnectorsClient securityConnectors;
+
+    /**
+     * Gets the SecurityConnectorsClient object to access its operations.
+     *
+     * @return the SecurityConnectorsClient object.
+     */
+    public SecurityConnectorsClient getSecurityConnectors() {
+        return this.securityConnectors;
+    }
+
+    /** The SecurityOperatorsClient object to access its operations. */
+    private final SecurityOperatorsClient securityOperators;
+
+    /**
+     * Gets the SecurityOperatorsClient object to access its operations.
+     *
+     * @return the SecurityOperatorsClient object.
+     */
+    public SecurityOperatorsClient getSecurityOperators() {
+        return this.securityOperators;
+    }
+
     /**
      * Initializes an instance of SecurityCenter client.
      *
@@ -847,6 +910,9 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.mdeOnboardings = new MdeOnboardingsClientImpl(this);
+        this.customAssessmentAutomations = new CustomAssessmentAutomationsClientImpl(this);
+        this.customEntityStoreAssignments = new CustomEntityStoreAssignmentsClientImpl(this);
         this.complianceResults = new ComplianceResultsClientImpl(this);
         this.pricings = new PricingsClientImpl(this);
         this.advancedThreatProtections = new AdvancedThreatProtectionsClientImpl(this);
@@ -887,24 +953,26 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.secureScoreControlDefinitions = new SecureScoreControlDefinitionsClientImpl(this);
         this.securitySolutions = new SecuritySolutionsClientImpl(this);
         this.connectors = new ConnectorsClientImpl(this);
-        this.sqlVulnerabilityAssessmentScans = new SqlVulnerabilityAssessmentScansClientImpl(this);
-        this.sqlVulnerabilityAssessmentScanResults = new SqlVulnerabilityAssessmentScanResultsClientImpl(this);
-        this.sqlVulnerabilityAssessmentBaselineRules = new SqlVulnerabilityAssessmentBaselineRulesClientImpl(this);
-        this.iotDefenderSettings = new IotDefenderSettingsClientImpl(this);
-        this.iotSensors = new IotSensorsClientImpl(this);
-        this.devicesForSubscriptions = new DevicesForSubscriptionsClientImpl(this);
-        this.devicesForHubs = new DevicesForHubsClientImpl(this);
-        this.devices = new DevicesClientImpl(this);
-        this.onPremiseIotSensors = new OnPremiseIotSensorsClientImpl(this);
-        this.iotSites = new IotSitesClientImpl(this);
-        this.iotAlerts = new IotAlertsClientImpl(this);
-        this.iotAlertTypes = new IotAlertTypesClientImpl(this);
-        this.iotRecommendations = new IotRecommendationsClientImpl(this);
-        this.iotRecommendationTypes = new IotRecommendationTypesClientImpl(this);
         this.alerts = new AlertsClientImpl(this);
         this.settings = new SettingsClientImpl(this);
         this.ingestionSettings = new IngestionSettingsClientImpl(this);
         this.softwareInventories = new SoftwareInventoriesClientImpl(this);
+        this.governanceRules = new GovernanceRulesClientImpl(this);
+        this.governanceAssignments = new GovernanceAssignmentsClientImpl(this);
+        this.applications = new ApplicationsClientImpl(this);
+        this.applicationOperations = new ApplicationOperationsClientImpl(this);
+        this.securityConnectorApplications = new SecurityConnectorApplicationsClientImpl(this);
+        this.securityConnectorApplicationOperations = new SecurityConnectorApplicationOperationsClientImpl(this);
+        this.apiCollections = new ApiCollectionsClientImpl(this);
+        this.apiCollectionOnboardings = new ApiCollectionOnboardingsClientImpl(this);
+        this.apiCollectionOffboardings = new ApiCollectionOffboardingsClientImpl(this);
+        this.healthReports = new HealthReportsClientImpl(this);
+        this.healthReportOperations = new HealthReportOperationsClientImpl(this);
+        this.sqlVulnerabilityAssessmentScans = new SqlVulnerabilityAssessmentScansClientImpl(this);
+        this.sqlVulnerabilityAssessmentScanResults = new SqlVulnerabilityAssessmentScanResultsClientImpl(this);
+        this.sqlVulnerabilityAssessmentBaselineRules = new SqlVulnerabilityAssessmentBaselineRulesClientImpl(this);
+        this.securityConnectors = new SecurityConnectorsClientImpl(this);
+        this.securityOperators = new SecurityOperatorsClientImpl(this);
     }
 
     /**
@@ -923,10 +991,7 @@ public final class SecurityCenterImpl implements SecurityCenter {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -990,7 +1055,7 @@ public final class SecurityCenterImpl implements SecurityCenter {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -1049,4 +1114,6 @@ public final class SecurityCenterImpl implements SecurityCenter {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityCenterImpl.class);
 }

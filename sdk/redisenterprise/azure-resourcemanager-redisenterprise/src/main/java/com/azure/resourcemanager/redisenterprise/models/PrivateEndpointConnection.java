@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.redisenterprise.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateEndpointConnectionInner;
 
@@ -31,6 +32,13 @@ public interface PrivateEndpointConnection {
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the privateEndpoint property: The resource of private end point.
      *
      * @return the privateEndpoint value.
@@ -51,6 +59,13 @@ public interface PrivateEndpointConnection {
      * @return the provisioningState value.
      */
     PrivateEndpointConnectionProvisioningState provisioningState();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.redisenterprise.fluent.models.PrivateEndpointConnectionInner object.

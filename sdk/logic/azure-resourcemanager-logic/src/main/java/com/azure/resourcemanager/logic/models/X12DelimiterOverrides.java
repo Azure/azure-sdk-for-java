@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 delimiter override settings. */
 @Fluent
 public final class X12DelimiterOverrides {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12DelimiterOverrides.class);
-
     /*
      * The protocol version.
      */
@@ -67,6 +64,10 @@ public final class X12DelimiterOverrides {
      */
     @JsonProperty(value = "targetNamespace")
     private String targetNamespace;
+
+    /** Creates an instance of X12DelimiterOverrides class. */
+    public X12DelimiterOverrides() {
+    }
 
     /**
      * Get the protocolVersion property: The protocol version.
@@ -255,10 +256,12 @@ public final class X12DelimiterOverrides {
      */
     public void validate() {
         if (segmentTerminatorSuffix() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property segmentTerminatorSuffix in model X12DelimiterOverrides"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12DelimiterOverrides.class);
 }

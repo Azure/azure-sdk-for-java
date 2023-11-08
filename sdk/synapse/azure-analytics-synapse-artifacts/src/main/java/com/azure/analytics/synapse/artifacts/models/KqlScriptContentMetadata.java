@@ -16,6 +16,9 @@ public final class KqlScriptContentMetadata {
     @JsonProperty(value = "language")
     private String language;
 
+    /** Creates an instance of KqlScriptContentMetadata class. */
+    public KqlScriptContentMetadata() {}
+
     /**
      * Get the language property: The language property.
      *

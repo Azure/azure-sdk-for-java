@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The cluster create parameters. */
 @Fluent
 public final class ClusterCreateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterCreateProperties.class);
-
     /*
      * The version of the cluster.
      */
@@ -98,6 +94,10 @@ public final class ClusterCreateProperties {
      */
     @JsonProperty(value = "privateLinkConfigurations")
     private List<PrivateLinkConfiguration> privateLinkConfigurations;
+
+    /** Creates an instance of ClusterCreateProperties class. */
+    public ClusterCreateProperties() {
+    }
 
     /**
      * Get the clusterVersion property: The version of the cluster.

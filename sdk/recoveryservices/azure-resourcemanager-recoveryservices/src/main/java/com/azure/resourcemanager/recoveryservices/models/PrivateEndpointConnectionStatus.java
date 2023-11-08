@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrivateEndpointConnectionStatus. */
+/** Gets or sets the status. */
 public final class PrivateEndpointConnectionStatus extends ExpandableStringEnum<PrivateEndpointConnectionStatus> {
     /** Static value Pending for PrivateEndpointConnectionStatus. */
     public static final PrivateEndpointConnectionStatus PENDING = fromString("Pending");
@@ -23,6 +23,15 @@ public final class PrivateEndpointConnectionStatus extends ExpandableStringEnum<
     public static final PrivateEndpointConnectionStatus DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of PrivateEndpointConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateEndpointConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a PrivateEndpointConnectionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class PrivateEndpointConnectionStatus extends ExpandableStringEnum<
         return fromString(name, PrivateEndpointConnectionStatus.class);
     }
 
-    /** @return known PrivateEndpointConnectionStatus values. */
+    /**
+     * Gets known PrivateEndpointConnectionStatus values.
+     *
+     * @return known PrivateEndpointConnectionStatus values.
+     */
     public static Collection<PrivateEndpointConnectionStatus> values() {
         return values(PrivateEndpointConnectionStatus.class);
     }

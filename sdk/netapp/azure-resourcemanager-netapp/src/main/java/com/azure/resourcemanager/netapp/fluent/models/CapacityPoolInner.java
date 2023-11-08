@@ -11,15 +11,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.EncryptionType;
 import com.azure.resourcemanager.netapp.models.QosType;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Capacity pool resource. */
 @Fluent
 public final class CapacityPoolInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityPoolInner.class);
-
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -33,10 +30,14 @@ public final class CapacityPoolInner extends Resource {
     private PoolProperties innerProperties = new PoolProperties();
 
     /*
-     * The system meta data relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of CapacityPoolInner class. */
+    public CapacityPoolInner() {
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -57,7 +58,7 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -80,7 +81,9 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the poolId property: poolId UUID v4 used to identify the Pool.
+     * Get the poolId property: poolId
+     *
+     * <p>UUID v4 used to identify the Pool.
      *
      * @return the poolId value.
      */
@@ -89,8 +92,10 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value
-     * must be multiply of 4398046511104).
+     * Get the size property: size
+     *
+     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 4398046511104).
      *
      * @return the size value.
      */
@@ -99,8 +104,10 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Set the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value
-     * must be multiply of 4398046511104).
+     * Set the size property: size
+     *
+     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 4398046511104).
      *
      * @param size the size value to set.
      * @return the CapacityPoolInner object itself.
@@ -114,7 +121,9 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the serviceLevel property: serviceLevel The service level of the file system.
+     * Get the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @return the serviceLevel value.
      */
@@ -123,7 +132,9 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Set the serviceLevel property: serviceLevel The service level of the file system.
+     * Set the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @param serviceLevel the serviceLevel value to set.
      * @return the CapacityPoolInner object itself.
@@ -146,7 +157,7 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the totalThroughputMibps property: Total throughput of pool in Mibps.
+     * Get the totalThroughputMibps property: Total throughput of pool in MiB/s.
      *
      * @return the totalThroughputMibps value.
      */
@@ -155,7 +166,7 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the utilizedThroughputMibps property: Utilized throughput of pool in Mibps.
+     * Get the utilizedThroughputMibps property: Utilized throughput of pool in MiB/s.
      *
      * @return the utilizedThroughputMibps value.
      */
@@ -210,8 +221,10 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the encryptionType property: encryptionType Encryption type of the capacity pool, set encryption type for
-     * data at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+     * Get the encryptionType property: encryptionType
+     *
+     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
+     * it. This value can only be set when creating new pool.
      *
      * @return the encryptionType value.
      */
@@ -220,8 +233,10 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Set the encryptionType property: encryptionType Encryption type of the capacity pool, set encryption type for
-     * data at rest for this pool and all volumes in it. This value can only be set when creating new pool.
+     * Set the encryptionType property: encryptionType
+     *
+     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
+     * it. This value can only be set when creating new pool.
      *
      * @param encryptionType the encryptionType value to set.
      * @return the CapacityPoolInner object itself.
@@ -241,7 +256,7 @@ public final class CapacityPoolInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model CapacityPoolInner"));
@@ -249,4 +264,6 @@ public final class CapacityPoolInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CapacityPoolInner.class);
 }

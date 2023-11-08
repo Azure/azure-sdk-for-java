@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** audioConferencing. */
 @Fluent
 public final class MicrosoftGraphAudioConferencing {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphAudioConferencing.class);
-
     /*
      * The conferenceId property.
      */
@@ -25,8 +22,7 @@ public final class MicrosoftGraphAudioConferencing {
     private String conferenceId;
 
     /*
-     * A URL to the externally-accessible web page that contains dial-in
-     * information.
+     * A URL to the externally-accessible web page that contains dial-in information.
      */
     @JsonProperty(value = "dialinUrl")
     private String dialinUrl;
@@ -47,6 +43,10 @@ public final class MicrosoftGraphAudioConferencing {
      * audioConferencing
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAudioConferencing class. */
+    public MicrosoftGraphAudioConferencing() {
+    }
 
     /**
      * Get the conferenceId property: The conferenceId property.

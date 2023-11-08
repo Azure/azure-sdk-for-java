@@ -47,7 +47,7 @@ public class SearchFilterTests {
         assertEquals(expected, SearchFilter.create(formattableString, args));
     }
 
-    private static Stream<Arguments> manyArgumentsSupplier() {
+    static Stream<Arguments> manyArgumentsSupplier() {
         return Stream.of(
             Arguments.of("Foo eq 2 and Bar eq 3", "Foo eq %d and Bar eq %d", new Object[]{2, 3}),
             Arguments.of("Foo eq 2 and Bar eq 3 and Baz eq 4", "Foo eq %d and Bar eq %d and Baz eq %d",
@@ -77,7 +77,7 @@ public class SearchFilterTests {
         assertEquals(expected, SearchFilter.create(formattableString, arg));
     }
 
-    private static Stream<Arguments> numberArgumentSupplier() {
+    static Stream<Arguments> numberArgumentSupplier() {
         return Stream.of(
             Arguments.of("Foo eq 0", "Foo eq %d", (byte) 0),
             Arguments.of("Foo eq -2", "Foo eq %d", (byte) -2),
@@ -147,7 +147,7 @@ public class SearchFilterTests {
         assertEquals(expected, SearchFilter.create(formattableString, arg));
     }
 
-    private static Stream<Arguments> limitArgumentSupplier() {
+    static Stream<Arguments> limitArgumentSupplier() {
         return Stream.of(
             Arguments.of("Foo eq NaN", "Foo eq %s", Float.NaN),
             Arguments.of("Foo eq INF", "Foo eq %s", Float.POSITIVE_INFINITY),
@@ -174,7 +174,7 @@ public class SearchFilterTests {
     }
 
     @SuppressWarnings("UnnecessaryBoxing")
-    private static Stream<Arguments> textArgumentSupplier() {
+    static Stream<Arguments> textArgumentSupplier() {
         return Stream.of(
             Arguments.of("Foo eq 'x'", "Foo eq %s", 'x'),
             Arguments.of("Foo eq ''''", "Foo eq %s", '\''),
@@ -205,7 +205,7 @@ public class SearchFilterTests {
         assertEquals(expected, SearchFilter.create(formattableString, geography));
     }
 
-    private static Stream<Arguments> geographyArgumentSupplier() {
+    static Stream<Arguments> geographyArgumentSupplier() {
         final String formattableString = "Foo eq %s";
 
         final String expectedPointFilter = "Foo eq geography'POINT(0 0)'";

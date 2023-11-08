@@ -131,19 +131,6 @@ public interface WebApplicationFirewallPoliciesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WebApplicationFirewallPolicyInner getByResourceGroup(String resourceGroupName, String policyName);
-
-    /**
-     * Retrieve protection policy with specified name within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param policyName The name of the policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -153,6 +140,19 @@ public interface WebApplicationFirewallPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(
         String resourceGroupName, String policyName, Context context);
+
+    /**
+     * Retrieve protection policy with specified name within a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param policyName The name of the policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines web application firewall policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WebApplicationFirewallPolicyInner getByResourceGroup(String resourceGroupName, String policyName);
 
     /**
      * Creates or update policy with specified rule set name within a resource group.
@@ -191,21 +191,6 @@ public interface WebApplicationFirewallPoliciesClient
      * @param resourceGroupName The name of the resource group.
      * @param policyName The name of the policy.
      * @param parameters Policy to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WebApplicationFirewallPolicyInner createOrUpdate(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters);
-
-    /**
-     * Creates or update policy with specified rule set name within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param policyName The name of the policy.
-     * @param parameters Policy to be created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -215,6 +200,21 @@ public interface WebApplicationFirewallPoliciesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WebApplicationFirewallPolicyInner> createOrUpdateWithResponse(
         String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters, Context context);
+
+    /**
+     * Creates or update policy with specified rule set name within a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param policyName The name of the policy.
+     * @param parameters Policy to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines web application firewall policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WebApplicationFirewallPolicyInner createOrUpdate(
+        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters);
 
     /**
      * Deletes Policy.

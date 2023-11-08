@@ -4,6 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
@@ -28,13 +29,7 @@ public final class BlobDownloadHeaders {
     private final BlobsDownloadHeaders internalHeaders;
 
     static {
-        BlobDownloadHeadersConstructorProxy.setAccessor(
-            new BlobDownloadHeadersConstructorProxy.BlobDownloadHeadersConstructorAccessor() {
-                @Override
-                public BlobDownloadHeaders create(BlobsDownloadHeaders internalHeaders) {
-                    return new BlobDownloadHeaders(internalHeaders);
-                }
-            });
+        BlobDownloadHeadersConstructorProxy.setAccessor(BlobDownloadHeaders::new);
     }
 
     private BlobDownloadHeaders(BlobsDownloadHeaders internalHeaders) {
@@ -47,7 +42,7 @@ public final class BlobDownloadHeaders {
     public BlobDownloadHeaders() {
         // Added to maintain backwards compatibility as the private constructor removes the implicit no args
         // constructor.
-        this.internalHeaders = new BlobsDownloadHeaders();
+        this.internalHeaders = new BlobsDownloadHeaders(new HttpHeaders());
     }
 
     /*
@@ -731,7 +726,7 @@ public final class BlobDownloadHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
-        return internalHeaders.getDateProperty();
+        return internalHeaders.getDate();
     }
 
     /**
@@ -742,7 +737,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
-        internalHeaders.setDateProperty(dateProperty);
+        internalHeaders.setDate(dateProperty);
         return this;
     }
 
@@ -1033,6 +1028,26 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setHasLegalHold(Boolean hasLegalHold) {
         internalHeaders.setXMsLegalHold(hasLegalHold);
+        return this;
+    }
+
+    /**
+     * Get the xMsCreationTime property: The x-ms-creation-time property.
+     *
+     * @return the creation time value.
+     */
+    public OffsetDateTime getCreationTime() {
+        return internalHeaders.getXMsCreationTime();
+    }
+
+    /**
+     * Set the xMsCreationTime property: The x-ms-creation-time property.
+     *
+     * @param creationTime the xMsCreationTime value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setCreationTime(OffsetDateTime creationTime) {
+        internalHeaders.setXMsCreationTime(creationTime);
         return this;
     }
 }

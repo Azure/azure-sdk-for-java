@@ -5,21 +5,24 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a list of machine groups and set of rules that are recommended by Azure Security Center to be allowed. */
+/**
+ * Represents a list of VM/server groups and set of rules that are Recommended by Microsoft Defender for Cloud to be
+ * allowed.
+ */
 @Fluent
 public final class AdaptiveApplicationControlGroupsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveApplicationControlGroupsInner.class);
-
     /*
      * The value property.
      */
     @JsonProperty(value = "value")
     private List<AdaptiveApplicationControlGroupInner> value;
+
+    /** Creates an instance of AdaptiveApplicationControlGroupsInner class. */
+    public AdaptiveApplicationControlGroupsInner() {
+    }
 
     /**
      * Get the value property: The value property.

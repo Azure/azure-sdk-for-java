@@ -5,45 +5,32 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.CreateOrUpdateComputePolicyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** The parameters used to create a new compute policy. */
-@JsonFlatten
 @Fluent
-public class CreateOrUpdateComputePolicyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateOrUpdateComputePolicyParameters.class);
-
+public final class CreateOrUpdateComputePolicyParameters {
     /*
-     * The AAD object identifier for the entity to create a policy for.
+     * The compute policy properties to use when creating a new compute policy.
      */
-    @JsonProperty(value = "properties.objectId", required = true)
-    private UUID objectId;
+    @JsonProperty(value = "properties", required = true)
+    private CreateOrUpdateComputePolicyProperties innerProperties = new CreateOrUpdateComputePolicyProperties();
 
-    /*
-     * The type of AAD object the object identifier refers to.
-     */
-    @JsonProperty(value = "properties.objectType", required = true)
-    private AadObjectType objectType;
+    /** Creates an instance of CreateOrUpdateComputePolicyParameters class. */
+    public CreateOrUpdateComputePolicyParameters() {
+    }
 
-    /*
-     * The maximum degree of parallelism per job this user can use to submit
-     * jobs. This property, the min priority per job property, or both must be
-     * passed.
+    /**
+     * Get the innerProperties property: The compute policy properties to use when creating a new compute policy.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.maxDegreeOfParallelismPerJob")
-    private Integer maxDegreeOfParallelismPerJob;
-
-    /*
-     * The minimum priority per job this user can use to submit jobs. This
-     * property, the max degree of parallelism per job property, or both must
-     * be passed.
-     */
-    @JsonProperty(value = "properties.minPriorityPerJob")
-    private Integer minPriorityPerJob;
+    private CreateOrUpdateComputePolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the objectId property: The AAD object identifier for the entity to create a policy for.
@@ -51,7 +38,7 @@ public class CreateOrUpdateComputePolicyParameters {
      * @return the objectId value.
      */
     public UUID objectId() {
-        return this.objectId;
+        return this.innerProperties() == null ? null : this.innerProperties().objectId();
     }
 
     /**
@@ -61,7 +48,10 @@ public class CreateOrUpdateComputePolicyParameters {
      * @return the CreateOrUpdateComputePolicyParameters object itself.
      */
     public CreateOrUpdateComputePolicyParameters withObjectId(UUID objectId) {
-        this.objectId = objectId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateComputePolicyProperties();
+        }
+        this.innerProperties().withObjectId(objectId);
         return this;
     }
 
@@ -71,7 +61,7 @@ public class CreateOrUpdateComputePolicyParameters {
      * @return the objectType value.
      */
     public AadObjectType objectType() {
-        return this.objectType;
+        return this.innerProperties() == null ? null : this.innerProperties().objectType();
     }
 
     /**
@@ -81,7 +71,10 @@ public class CreateOrUpdateComputePolicyParameters {
      * @return the CreateOrUpdateComputePolicyParameters object itself.
      */
     public CreateOrUpdateComputePolicyParameters withObjectType(AadObjectType objectType) {
-        this.objectType = objectType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateComputePolicyProperties();
+        }
+        this.innerProperties().withObjectType(objectType);
         return this;
     }
 
@@ -92,7 +85,7 @@ public class CreateOrUpdateComputePolicyParameters {
      * @return the maxDegreeOfParallelismPerJob value.
      */
     public Integer maxDegreeOfParallelismPerJob() {
-        return this.maxDegreeOfParallelismPerJob;
+        return this.innerProperties() == null ? null : this.innerProperties().maxDegreeOfParallelismPerJob();
     }
 
     /**
@@ -104,7 +97,10 @@ public class CreateOrUpdateComputePolicyParameters {
      */
     public CreateOrUpdateComputePolicyParameters withMaxDegreeOfParallelismPerJob(
         Integer maxDegreeOfParallelismPerJob) {
-        this.maxDegreeOfParallelismPerJob = maxDegreeOfParallelismPerJob;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateComputePolicyProperties();
+        }
+        this.innerProperties().withMaxDegreeOfParallelismPerJob(maxDegreeOfParallelismPerJob);
         return this;
     }
 
@@ -115,7 +111,7 @@ public class CreateOrUpdateComputePolicyParameters {
      * @return the minPriorityPerJob value.
      */
     public Integer minPriorityPerJob() {
-        return this.minPriorityPerJob;
+        return this.innerProperties() == null ? null : this.innerProperties().minPriorityPerJob();
     }
 
     /**
@@ -126,7 +122,10 @@ public class CreateOrUpdateComputePolicyParameters {
      * @return the CreateOrUpdateComputePolicyParameters object itself.
      */
     public CreateOrUpdateComputePolicyParameters withMinPriorityPerJob(Integer minPriorityPerJob) {
-        this.minPriorityPerJob = minPriorityPerJob;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateComputePolicyProperties();
+        }
+        this.innerProperties().withMinPriorityPerJob(minPriorityPerJob);
         return this;
     }
 
@@ -136,17 +135,15 @@ public class CreateOrUpdateComputePolicyParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (objectId() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property objectId in model CreateOrUpdateComputePolicyParameters"));
-        }
-        if (objectType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property objectType in model CreateOrUpdateComputePolicyParameters"));
+                        "Missing required property innerProperties in model CreateOrUpdateComputePolicyParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateOrUpdateComputePolicyParameters.class);
 }

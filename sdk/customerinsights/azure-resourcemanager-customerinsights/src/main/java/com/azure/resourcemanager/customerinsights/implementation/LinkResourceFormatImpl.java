@@ -106,6 +106,10 @@ public final class LinkResourceFormatImpl
         return this.innerModel().operationType();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LinkResourceFormatInner innerModel() {
         return this.innerObject;
     }

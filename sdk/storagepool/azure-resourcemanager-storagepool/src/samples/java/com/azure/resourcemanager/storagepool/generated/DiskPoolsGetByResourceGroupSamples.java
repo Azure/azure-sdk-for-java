@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskPools GetByResourceGroup. */
 public final class DiskPoolsGetByResourceGroupSamples {
     /*
@@ -17,6 +15,8 @@ public final class DiskPoolsGetByResourceGroupSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void getDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().getByResourceGroupWithResponse("myResourceGroup", "myDiskPool", Context.NONE);
+        manager
+            .diskPools()
+            .getByResourceGroupWithResponse("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentTierInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of cognitive services accounts operation response. */
 @Fluent
 public final class CommitmentTierListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommitmentTierListResult.class);
-
     /*
      * The link used to get the next page of CommitmentTier.
      */
@@ -23,11 +19,14 @@ public final class CommitmentTierListResult {
     private String nextLink;
 
     /*
-     * Gets the list of Cognitive Services accounts CommitmentTier and their
-     * properties.
+     * Gets the list of Cognitive Services accounts CommitmentTier and their properties.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommitmentTierInner> value;
+
+    /** Creates an instance of CommitmentTierListResult class. */
+    public CommitmentTierListResult() {
+    }
 
     /**
      * Get the nextLink property: The link used to get the next page of CommitmentTier.

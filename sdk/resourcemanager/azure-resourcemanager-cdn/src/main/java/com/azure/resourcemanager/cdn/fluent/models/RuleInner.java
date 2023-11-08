@@ -6,33 +6,26 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleCondition;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.MatchProcessingBehavior;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Friendly Rules name mapping to the any Rules or secret related information. */
 @Fluent
 public final class RuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleInner.class);
-
     /*
      * The JSON object that contains the properties of the Rules to create.
      */
     @JsonProperty(value = "properties")
     private RuleProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of RuleInner class. */
+    public RuleInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the Rules to create.
@@ -41,15 +34,6 @@ public final class RuleInner extends ProxyResource {
      */
     private RuleProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

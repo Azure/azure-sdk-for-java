@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.DesktopInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** DesktopList List of Desktop definitions. */
+/**
+ * DesktopList
+ *
+ * <p>List of Desktop definitions.
+ */
 @Fluent
 public final class DesktopList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DesktopList.class);
-
     /*
      * List of Desktop definitions.
      */
@@ -27,6 +27,10 @@ public final class DesktopList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of DesktopList class. */
+    public DesktopList() {
+    }
 
     /**
      * Get the value property: List of Desktop definitions.

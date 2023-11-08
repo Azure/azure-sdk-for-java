@@ -37,6 +37,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -68,7 +69,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static com.azure.storage.blob.implementation.util.BuilderHelper.createTracer;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
 
 /**
@@ -114,6 +118,8 @@ public final class EncryptedBlobClientBuilder implements
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
     private static final String BLOB_CLIENT_NAME = USER_AGENT_PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
     private static final String BLOB_CLIENT_VERSION = USER_AGENT_PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+    private static final String USER_AGENT_MODIFICATION_REGEX =
+        "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
 
     private String endpoint;
     private String accountName;
@@ -122,6 +128,7 @@ public final class EncryptedBlobClientBuilder implements
     private String snapshot;
     private String versionId;
     private boolean requiresEncryption;
+    private final EncryptionVersion encryptionVersion;
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
@@ -148,9 +155,33 @@ public final class EncryptedBlobClientBuilder implements
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
+     * @deprecated Use {@link EncryptedBlobClientBuilder#EncryptedBlobClientBuilder(EncryptionVersion)}.
      */
+    @Deprecated
     public EncryptedBlobClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
+        this.encryptionVersion = EncryptionVersion.V1;
+        LOGGER.warning("Client is being configured to use v1 of client side encryption, "
+            + "which is no longer considered secure. The default is v1 for compatibility reasons, but it is highly"
+            + "recommended the version be set to v2 using the constructor");
+    }
+
+    /**
+     * Creates a new instance of the EncryptedBlobClientbuilder.
+     *
+     * @param version The version of the client side encryption protocol to use. It is highly recommended that v2 be
+     * preferred for security reasons, though v1 continues to be supported for compatibility reasons. Note that even a
+     * client configured to encrypt using v2 can decrypt blobs that use the v1 protocol.
+     */
+    public EncryptedBlobClientBuilder(EncryptionVersion version) {
+        Objects.requireNonNull(version);
+        logOptions = getDefaultHttpLogOptions();
+        this.encryptionVersion = version;
+        if (EncryptionVersion.V1.equals(this.encryptionVersion)) {
+            LOGGER.warning("Client is being configured to use v1 of client side encryption, "
+                + "which is no longer considered secure. The default is v1 for compatibility reasons, but it is highly"
+                + "recommended the version be set to v2 using the constructor");
+        }
     }
 
     /**
@@ -164,6 +195,8 @@ public final class EncryptedBlobClientBuilder implements
      *     .key&#40;key, keyWrapAlgorithm&#41;
      *     .keyResolver&#40;keyResolver&#41;
      *     .connectionString&#40;connectionString&#41;
+     *     .containerName&#40;&quot;&lt;YOUR CONTAINER NAME&gt;&quot;&#41;
+     *     .blobName&#40;&quot;&lt;YOUR BLOB NAME&gt;&quot;&#41;
      *     .buildEncryptedBlobAsyncClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient -->
@@ -189,6 +222,8 @@ public final class EncryptedBlobClientBuilder implements
      *     .key&#40;key, keyWrapAlgorithm&#41;
      *     .keyResolver&#40;keyResolver&#41;
      *     .connectionString&#40;connectionString&#41;
+     *     .containerName&#40;&quot;&lt;YOUR CONTAINER NAME&gt;&quot;&#41;
+     *     .blobName&#40;&quot;&lt;YOUR BLOB NAME&gt;&quot;&#41;
      *     .buildEncryptedBlobClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient -->
@@ -214,7 +249,7 @@ public final class EncryptedBlobClientBuilder implements
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption);
     }
 
 
@@ -232,7 +267,24 @@ public final class EncryptedBlobClientBuilder implements
         return new HttpPipelineBuilder()
             .httpClient(pipeline.getHttpClient())
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .tracer(pipeline.getTracer())
             .build();
+    }
+
+    private String modifyUserAgentString(String applicationId, Configuration userAgentConfiguration) {
+        Pattern pattern = Pattern.compile(USER_AGENT_MODIFICATION_REGEX);
+        String userAgent = UserAgentUtil.toUserAgentString(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION,
+            userAgentConfiguration);
+        Matcher matcher = pattern.matcher(userAgent);
+        String version = encryptionVersion == EncryptionVersion.V2 ? "2.0" : "1.0";
+        String stringToAppend = "azstorage-clientsideencryption/" + version;
+        if (matcher.matches() && !userAgent.contains(stringToAppend)) {
+            String segment1 = matcher.group(1) == null ? "" : matcher.group(1);
+            String segment2 = matcher.group(2) == null ? "" : matcher.group(2);
+            String segment3 = matcher.group(3) == null ? "" : matcher.group(3);
+            userAgent = segment1 + stringToAppend + " " + segment2 + segment3;
+        }
+        return userAgent;
     }
 
     private HttpPipeline getHttpPipeline() {
@@ -259,6 +311,7 @@ public final class EncryptedBlobClientBuilder implements
 
             return new HttpPipelineBuilder()
                 .httpClient(httpPipeline.getHttpClient())
+                .tracer(httpPipeline.getTracer())
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build();
         }
@@ -271,7 +324,11 @@ public final class EncryptedBlobClientBuilder implements
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
-        policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));
+
+        // adding modified user-agent string that will contain "azstorage-clientsideencryption/" + encryption version
+        String modifiedUserAgent = modifyUserAgentString(applicationId, userAgentConfiguration);
+        policies.add(new UserAgentPolicy(modifiedUserAgent));
+
         policies.add(new RequestIdPolicy());
 
         policies.addAll(perCallPolicies);
@@ -316,6 +373,7 @@ public final class EncryptedBlobClientBuilder implements
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .tracer(createTracer(clientOptions))
             .build();
     }
 
@@ -511,7 +569,7 @@ public final class EncryptedBlobClientBuilder implements
             }
         } catch (MalformedURLException ex) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
+                new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.", ex));
         }
         return this;
     }

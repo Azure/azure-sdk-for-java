@@ -24,6 +24,10 @@ public final class SecureString extends SecretBase {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of SecureString class. */
+    public SecureString() {
+    }
+
     /**
      * Get the value property: Value of secure string.
      *

@@ -21,6 +21,10 @@ public final class ConnectionStringDictionaryInner extends ProxyOnlyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ConnStringValueTypePair> properties;
 
+    /** Creates an instance of ConnectionStringDictionaryInner class. */
+    public ConnectionStringDictionaryInner() {
+    }
+
     /**
      * Get the properties property: Connection strings.
      *

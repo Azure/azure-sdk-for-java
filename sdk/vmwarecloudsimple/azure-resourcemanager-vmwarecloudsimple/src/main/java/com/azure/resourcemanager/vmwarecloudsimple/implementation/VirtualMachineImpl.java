@@ -13,12 +13,10 @@ import com.azure.resourcemanager.vmwarecloudsimple.models.GuestOSCustomization;
 import com.azure.resourcemanager.vmwarecloudsimple.models.GuestOSType;
 import com.azure.resourcemanager.vmwarecloudsimple.models.PatchPayload;
 import com.azure.resourcemanager.vmwarecloudsimple.models.ResourcePool;
-import com.azure.resourcemanager.vmwarecloudsimple.models.StopMode;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDisk;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDiskController;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachine;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachineStatus;
-import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachineStopMode;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualNic;
 import java.util.Collections;
 import java.util.List;
@@ -55,7 +53,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         }
     }
 
-    public Integer amountOfRam() {
+    public int amountOfRam() {
         return this.innerModel().amountOfRam();
     }
 
@@ -115,7 +113,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         }
     }
 
-    public Integer numberOfCores() {
+    public int numberOfCores() {
         return this.innerModel().numberOfCores();
     }
 
@@ -181,6 +179,10 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public VirtualMachineInner innerModel() {
         return this.innerObject;
     }
@@ -192,6 +194,8 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
     private String resourceGroupName;
 
     private String virtualMachineName;
+
+    private String createReferer;
 
     private PatchPayload updateVirtualMachineRequest;
 
@@ -205,7 +209,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
             serviceManager
                 .serviceClient()
                 .getVirtualMachines()
-                .createOrUpdate(resourceGroupName, virtualMachineName, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, createReferer, virtualMachineName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -214,7 +218,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
             serviceManager
                 .serviceClient()
                 .getVirtualMachines()
-                .createOrUpdate(resourceGroupName, virtualMachineName, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, createReferer, virtualMachineName, this.innerModel(), context);
         return this;
     }
 
@@ -223,6 +227,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         this.innerObject = new VirtualMachineInner();
         this.serviceManager = serviceManager;
         this.virtualMachineName = name;
+        this.createReferer = null;
     }
 
     public VirtualMachineImpl update() {
@@ -277,26 +282,6 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         return this;
     }
 
-    public void start() {
-        serviceManager.virtualMachines().start(resourceGroupName, virtualMachineName);
-    }
-
-    public void start(Context context) {
-        serviceManager.virtualMachines().start(resourceGroupName, virtualMachineName, context);
-    }
-
-    public void stop(StopMode mode, VirtualMachineStopMode m) {
-        serviceManager.virtualMachines().stop(resourceGroupName, virtualMachineName, mode, m);
-    }
-
-    public void stop() {
-        serviceManager.virtualMachines().stop(resourceGroupName, virtualMachineName);
-    }
-
-    public void stop(StopMode mode, VirtualMachineStopMode m, Context context) {
-        serviceManager.virtualMachines().stop(resourceGroupName, virtualMachineName, mode, m, context);
-    }
-
     public VirtualMachineImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -317,7 +302,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         }
     }
 
-    public VirtualMachineImpl withAmountOfRam(Integer amountOfRam) {
+    public VirtualMachineImpl withAmountOfRam(int amountOfRam) {
         this.innerModel().withAmountOfRam(amountOfRam);
         return this;
     }
@@ -342,7 +327,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         return this;
     }
 
-    public VirtualMachineImpl withNumberOfCores(Integer numberOfCores) {
+    public VirtualMachineImpl withNumberOfCores(int numberOfCores) {
         this.innerModel().withNumberOfCores(numberOfCores);
         return this;
     }
@@ -374,6 +359,11 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
 
     public VirtualMachineImpl withVSphereNetworks(List<String> vSphereNetworks) {
         this.innerModel().withVSphereNetworks(vSphereNetworks);
+        return this;
+    }
+
+    public VirtualMachineImpl withReferer(String referer) {
+        this.createReferer = referer;
         return this;
     }
 

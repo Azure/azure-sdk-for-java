@@ -24,15 +24,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceVaultConfigsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupResourceVaultConfigsClient. */
 public final class BackupResourceVaultConfigsClientImpl implements BackupResourceVaultConfigsClient {
-    private final ClientLogger logger = new ClientLogger(BackupResourceVaultConfigsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupResourceVaultConfigsService service;
 
@@ -58,11 +55,10 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupResourceVaultConfigsService {
+    public interface BackupResourceVaultConfigsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupconfig/vaultconfig")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupconfig/vaultconfig")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupResourceVaultConfigResourceInner>> get(
@@ -76,8 +72,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupconfig/vaultconfig")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupconfig/vaultconfig")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupResourceVaultConfigResourceInner>> update(
@@ -92,8 +87,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupconfig/vaultconfig")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupconfig/vaultconfig")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupResourceVaultConfigResourceInner>> put(
@@ -215,30 +209,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupResourceVaultConfigResourceInner> getAsync(String vaultName, String resourceGroupName) {
-        return getWithResponseAsync(vaultName, resourceGroupName)
-            .flatMap(
-                (Response<BackupResourceVaultConfigResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Fetches resource vault config.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupResourceVaultConfigResourceInner get(String vaultName, String resourceGroupName) {
-        return getAsync(vaultName, resourceGroupName).block();
+        return getWithResponseAsync(vaultName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -256,6 +227,21 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
     public Response<BackupResourceVaultConfigResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, context).block();
+    }
+
+    /**
+     * Fetches resource vault config.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup resource vault config details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupResourceVaultConfigResourceInner get(String vaultName, String resourceGroupName) {
+        return getWithResponse(vaultName, resourceGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -386,31 +372,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
     private Mono<BackupResourceVaultConfigResourceInner> updateAsync(
         String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<BackupResourceVaultConfigResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates vault security config.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param parameters resource config request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupResourceVaultConfigResourceInner update(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
-        return updateAsync(vaultName, resourceGroupName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -432,6 +394,23 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         BackupResourceVaultConfigResourceInner parameters,
         Context context) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
+    }
+
+    /**
+     * Updates vault security config.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters resource config request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup resource vault config details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupResourceVaultConfigResourceInner update(
+        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
+        return updateWithResponse(vaultName, resourceGroupName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -562,31 +541,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
     private Mono<BackupResourceVaultConfigResourceInner> putAsync(
         String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
         return putWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<BackupResourceVaultConfigResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates vault security config.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param parameters resource config request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupResourceVaultConfigResourceInner put(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
-        return putAsync(vaultName, resourceGroupName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -608,5 +563,22 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         BackupResourceVaultConfigResourceInner parameters,
         Context context) {
         return putWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
+    }
+
+    /**
+     * Updates vault security config.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters resource config request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup resource vault config details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupResourceVaultConfigResourceInner put(
+        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
+        return putWithResponse(vaultName, resourceGroupName, parameters, Context.NONE).getValue();
     }
 }

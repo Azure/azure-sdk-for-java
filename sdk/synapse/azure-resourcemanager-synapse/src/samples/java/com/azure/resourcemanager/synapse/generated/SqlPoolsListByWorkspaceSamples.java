@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPools ListByWorkspace. */
 public final class SqlPoolsListByWorkspaceSamples {
     /*
@@ -18,7 +16,7 @@ public final class SqlPoolsListByWorkspaceSamples {
      */
     public static void listSQLAnalyticsPoolsInAWorkspaceWithFilter(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPools().listByWorkspace("sqlcrudtest-6845", "sqlcrudtest-7177", Context.NONE);
+        manager.sqlPools().listByWorkspace("sqlcrudtest-6845", "sqlcrudtest-7177", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -30,6 +28,6 @@ public final class SqlPoolsListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listSQLAnalyticsPoolsInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPools().listByWorkspace("sqlcrudtest-6845", "sqlcrudtest-7177", Context.NONE);
+        manager.sqlPools().listByWorkspace("sqlcrudtest-6845", "sqlcrudtest-7177", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Compliance summary on a particular summary level. */
 @Fluent
 public final class SummaryResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SummaryResults.class);
-
     /*
-     * HTTP POST URI for queryResults action on Microsoft.PolicyInsights to
-     * retrieve raw results for the compliance summary. This property will not
-     * be available by default in future API versions, but could be queried
-     * explicitly.
+     * HTTP POST URI for queryResults action on Microsoft.PolicyInsights to retrieve raw results for the compliance
+     * summary. This property will not be available by default in future API versions, but could be queried explicitly.
      */
     @JsonProperty(value = "queryResultsUri")
     private String queryResultsUri;
@@ -43,9 +37,8 @@ public final class SummaryResults {
     private List<ComplianceDetail> resourceDetails;
 
     /*
-     * The policy artifact summary at this level. For query scope level, it
-     * represents policy assignment summary. For policy assignment level, it
-     * represents policy definitions summary.
+     * The policy artifact summary at this level. For query scope level, it represents policy assignment summary. For
+     * policy assignment level, it represents policy definitions summary.
      */
     @JsonProperty(value = "policyDetails")
     private List<ComplianceDetail> policyDetails;
@@ -55,6 +48,10 @@ public final class SummaryResults {
      */
     @JsonProperty(value = "policyGroupDetails")
     private List<ComplianceDetail> policyGroupDetails;
+
+    /** Creates an instance of SummaryResults class. */
+    public SummaryResults() {
+    }
 
     /**
      * Get the queryResultsUri property: HTTP POST URI for queryResults action on Microsoft.PolicyInsights to retrieve

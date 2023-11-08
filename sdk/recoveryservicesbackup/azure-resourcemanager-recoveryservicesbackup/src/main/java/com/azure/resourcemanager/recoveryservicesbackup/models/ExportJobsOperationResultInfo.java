@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ExportJobsOperationResultInfo")
 @Fluent
 public final class ExportJobsOperationResultInfo extends OperationResultInfoBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportJobsOperationResultInfo.class);
-
     /*
-     * URL of the blob into which the serialized string of list of jobs is
-     * exported.
+     * URL of the blob into which the serialized string of list of jobs is exported.
      */
     @JsonProperty(value = "blobUrl")
     private String blobUrl;
@@ -42,6 +37,10 @@ public final class ExportJobsOperationResultInfo extends OperationResultInfoBase
      */
     @JsonProperty(value = "excelFileBlobSasKey")
     private String excelFileBlobSasKey;
+
+    /** Creates an instance of ExportJobsOperationResultInfo class. */
+    public ExportJobsOperationResultInfo() {
+    }
 
     /**
      * Get the blobUrl property: URL of the blob into which the serialized string of list of jobs is exported.

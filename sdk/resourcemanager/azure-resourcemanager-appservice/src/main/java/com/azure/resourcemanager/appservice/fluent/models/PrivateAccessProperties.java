@@ -24,6 +24,10 @@ public final class PrivateAccessProperties {
     @JsonProperty(value = "virtualNetworks")
     private List<PrivateAccessVirtualNetwork> virtualNetworks;
 
+    /** Creates an instance of PrivateAccessProperties class. */
+    public PrivateAccessProperties() {
+    }
+
     /**
      * Get the enabled property: Whether private access is enabled or not.
      *

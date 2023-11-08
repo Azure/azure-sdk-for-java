@@ -48,6 +48,10 @@ public final class BgpCommunity {
     @JsonProperty(value = "serviceGroup")
     private String serviceGroup;
 
+    /** Creates an instance of BgpCommunity class. */
+    public BgpCommunity() {
+    }
+
     /**
      * Get the serviceSupportedRegion property: The region which the service support. e.g. For O365, region is Global.
      *

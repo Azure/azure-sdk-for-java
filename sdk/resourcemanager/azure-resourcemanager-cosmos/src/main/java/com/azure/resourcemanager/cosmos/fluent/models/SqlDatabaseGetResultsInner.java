@@ -5,24 +5,24 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure Cosmos DB SQL database. */
 @Fluent
 public final class SqlDatabaseGetResultsInner extends ArmResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlDatabaseGetResultsInner.class);
-
     /*
      * The properties of an Azure Cosmos DB SQL database
      */
     @JsonProperty(value = "properties")
     private SqlDatabaseGetProperties innerProperties;
+
+    /** Creates an instance of SqlDatabaseGetResultsInner class. */
+    public SqlDatabaseGetResultsInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB SQL database.

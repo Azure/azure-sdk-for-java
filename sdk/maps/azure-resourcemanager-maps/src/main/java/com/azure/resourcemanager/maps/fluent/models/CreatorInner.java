@@ -6,22 +6,29 @@ package com.azure.resourcemanager.maps.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.maps.models.CreatorProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure resource which represents Maps Creator product and provides ability to manage private location data. */
 @Fluent
 public final class CreatorInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreatorInner.class);
-
     /*
      * The Creator resource properties.
      */
     @JsonProperty(value = "properties", required = true)
     private CreatorProperties properties;
+
+    /*
+     * The system meta data relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of CreatorInner class. */
+    public CreatorInner() {
+    }
 
     /**
      * Get the properties property: The Creator resource properties.
@@ -41,6 +48,15 @@ public final class CreatorInner extends Resource {
     public CreatorInner withProperties(CreatorProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -64,11 +80,13 @@ public final class CreatorInner extends Resource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property properties in model CreatorInner"));
         } else {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreatorInner.class);
 }

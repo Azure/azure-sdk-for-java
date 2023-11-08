@@ -9,7 +9,8 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.tracing.TracerProxy;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.tracing.Tracer;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -19,23 +20,37 @@ import com.azure.core.models.CloudEvent;
  * This pipeline policy should be added after OpenTelemetryPolicy in the http pipeline.
  *
  * It checks whether the {@link HttpRequest} headers have "traceparent" or "tracestate" and whether the serialized
- * http body json string for a list of {@link CloudEvent} instances has place holders
+ * http body json string for a list of {@link CloudEvent} instances has placeholders
  * {@link Constants#TRACE_PARENT_PLACEHOLDER} or {@link Constants#TRACE_STATE_PLACEHOLDER}.
- * The place holders will be replaced by the value from headers if the headers have "traceparent" or "tracestate",
+ * The placeholders will be replaced by the value from headers if the headers have "traceparent" or "tracestate",
  * or be removed if the headers don't have.
  *
- * The place holders won't exist in the json string if the {@link TracerProxy#isTracingEnabled()} returns false.
+ * The placeholders won't exist in the json string if the {@link Tracer#isEnabled()} returns false.
  */
 public final class CloudEventTracingPipelinePolicy implements HttpPipelinePolicy {
+    private final Tracer tracer;
+    public CloudEventTracingPipelinePolicy(Tracer tracer) {
+        this.tracer = tracer;
+    }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final HttpRequest request = context.getHttpRequest();
         final HttpHeader contentType = request.getHeaders().get(Constants.CONTENT_TYPE);
         StringBuilder bodyStringBuilder = new StringBuilder();
-        if (TracerProxy.isTracingEnabled() && contentType != null
+        if (tracer.isEnabled() && contentType != null
             && Constants.CLOUD_EVENT_CONTENT_TYPE.equals(contentType.getValue())) {
-            return request.getBody().map(byteBuffer -> bodyStringBuilder.append(new String(byteBuffer.array(),
-                StandardCharsets.UTF_8)))
+            return request.getBody()
+                .map(byteBuffer -> {
+                    if (byteBuffer.hasArray()) {
+                        return bodyStringBuilder.append(new String(byteBuffer.array(),
+                            byteBuffer.arrayOffset() + byteBuffer.position(), byteBuffer.remaining(),
+                            StandardCharsets.UTF_8));
+                    } else {
+                        return bodyStringBuilder.append(new String(FluxUtil.byteBufferToArray(byteBuffer.duplicate()),
+                            StandardCharsets.UTF_8));
+                    }
+                })
                 .then(Mono.fromCallable(() -> replaceTracingPlaceHolder(request, bodyStringBuilder)))
                 .then(next.process());
         } else {

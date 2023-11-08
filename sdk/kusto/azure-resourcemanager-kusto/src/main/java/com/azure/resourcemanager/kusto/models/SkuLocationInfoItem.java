@@ -6,15 +6,12 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The locations and zones info for SKU. */
 @Fluent
 public final class SkuLocationInfoItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuLocationInfoItem.class);
-
     /*
      * The available location of the SKU.
      */
@@ -26,6 +23,16 @@ public final class SkuLocationInfoItem {
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /*
+     * Gets details of capabilities available to a SKU in specific zones.
+     */
+    @JsonProperty(value = "zoneDetails")
+    private List<ResourceSkuZoneDetails> zoneDetails;
+
+    /** Creates an instance of SkuLocationInfoItem class. */
+    public SkuLocationInfoItem() {
+    }
 
     /**
      * Get the location property: The available location of the SKU.
@@ -68,15 +75,40 @@ public final class SkuLocationInfoItem {
     }
 
     /**
+     * Get the zoneDetails property: Gets details of capabilities available to a SKU in specific zones.
+     *
+     * @return the zoneDetails value.
+     */
+    public List<ResourceSkuZoneDetails> zoneDetails() {
+        return this.zoneDetails;
+    }
+
+    /**
+     * Set the zoneDetails property: Gets details of capabilities available to a SKU in specific zones.
+     *
+     * @param zoneDetails the zoneDetails value to set.
+     * @return the SkuLocationInfoItem object itself.
+     */
+    public SkuLocationInfoItem withZoneDetails(List<ResourceSkuZoneDetails> zoneDetails) {
+        this.zoneDetails = zoneDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model SkuLocationInfoItem"));
         }
+        if (zoneDetails() != null) {
+            zoneDetails().forEach(e -> e.validate());
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SkuLocationInfoItem.class);
 }

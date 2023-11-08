@@ -11,11 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class StorageMigrationResponseProperties {
     /*
-     * When server starts the migration process, it will return an operation ID
-     * identifying that particular migration operation.
+     * When server starts the migration process, it will return an operation ID identifying that particular migration
+     * operation.
      */
     @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
+
+    /** Creates an instance of StorageMigrationResponseProperties class. */
+    public StorageMigrationResponseProperties() {
+    }
 
     /**
      * Get the operationId property: When server starts the migration process, it will return an operation ID

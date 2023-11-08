@@ -15,24 +15,18 @@ import com.azure.resourcemanager.authorization.fluent.models.ApplicationsAddPass
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsCheckMemberGroupsRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsCheckMemberObjectsRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsExpand;
-import com.azure.resourcemanager.authorization.fluent.models.ApplicationsGetAvailableExtensionPropertiesRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.ApplicationsGetByIdsRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsGetMemberGroupsRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsGetMemberObjectsRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsOrderby;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsRemoveKeyRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsRemovePasswordRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsSelect;
-import com.azure.resourcemanager.authorization.fluent.models.ApplicationsValidatePropertiesRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.Get1ItemsItem;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDirectoryObjectInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphExtensionPropertyInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphHomeRealmDiscoveryPolicyInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphKeyCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphPasswordCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphTokenIssuancePolicyInner;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphTokenLifetimePolicyInner;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -49,7 +43,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from applications.
+     * @return createdOnBehalfOf from applications along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphDirectoryObjectInner>> getCreatedOnBehalfOfWithResponseAsync(
@@ -59,30 +53,31 @@ public interface ApplicationsClient {
      * Get createdOnBehalfOf from applications.
      *
      * @param applicationId key: id of application.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from applications.
+     * @return createdOnBehalfOf from applications on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfAsync(
-        String applicationId, List<Get1ItemsItem> select, List<String> expand);
+    Mono<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfAsync(String applicationId);
 
     /**
      * Get createdOnBehalfOf from applications.
      *
      * @param applicationId key: id of application.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from applications.
+     * @return createdOnBehalfOf from applications along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfAsync(String applicationId);
+    Response<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfWithResponse(
+        String applicationId, List<Get1ItemsItem> select, List<String> expand, Context context);
 
     /**
      * Get createdOnBehalfOf from applications.
@@ -98,23 +93,6 @@ public interface ApplicationsClient {
     MicrosoftGraphDirectoryObjectInner getCreatedOnBehalfOf(String applicationId);
 
     /**
-     * Get createdOnBehalfOf from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfWithResponse(
-        String applicationId, List<Get1ItemsItem> select, List<String> expand, Context context);
-
-    /**
      * Get ref of createdOnBehalfOf from applications.
      *
      * @param applicationId key: id of application.
@@ -122,7 +100,8 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from applications.
+     * @return ref of createdOnBehalfOf from applications along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<String>> getRefCreatedOnBehalfOfWithResponseAsync(String applicationId);
@@ -135,10 +114,24 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from applications.
+     * @return ref of createdOnBehalfOf from applications on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<String> getRefCreatedOnBehalfOfAsync(String applicationId);
+
+    /**
+     * Get ref of createdOnBehalfOf from applications.
+     *
+     * @param applicationId key: id of application.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of createdOnBehalfOf from applications along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<String> getRefCreatedOnBehalfOfWithResponse(String applicationId, Context context);
 
     /**
      * Get ref of createdOnBehalfOf from applications.
@@ -154,20 +147,6 @@ public interface ApplicationsClient {
     String getRefCreatedOnBehalfOf(String applicationId);
 
     /**
-     * Get ref of createdOnBehalfOf from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<String> getRefCreatedOnBehalfOfWithResponse(String applicationId, Context context);
-
-    /**
      * Update the ref of navigation property createdOnBehalfOf in applications.
      *
      * @param applicationId key: id of application.
@@ -176,7 +155,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> setRefCreatedOnBehalfOfWithResponseAsync(String applicationId, Map<String, Object> body);
@@ -190,10 +169,25 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> setRefCreatedOnBehalfOfAsync(String applicationId, Map<String, Object> body);
+
+    /**
+     * Update the ref of navigation property createdOnBehalfOf in applications.
+     *
+     * @param applicationId key: id of application.
+     * @param body New navigation property ref values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> setRefCreatedOnBehalfOfWithResponse(String applicationId, Map<String, Object> body, Context context);
 
     /**
      * Update the ref of navigation property createdOnBehalfOf in applications.
@@ -209,21 +203,6 @@ public interface ApplicationsClient {
     void setRefCreatedOnBehalfOf(String applicationId, Map<String, Object> body);
 
     /**
-     * Update the ref of navigation property createdOnBehalfOf in applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> setRefCreatedOnBehalfOfWithResponse(String applicationId, Map<String, Object> body, Context context);
-
-    /**
      * Delete ref of navigation property createdOnBehalfOf for applications.
      *
      * @param applicationId key: id of application.
@@ -232,7 +211,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteRefCreatedOnBehalfOfWithResponseAsync(String applicationId, String ifMatch);
@@ -241,28 +220,29 @@ public interface ApplicationsClient {
      * Delete ref of navigation property createdOnBehalfOf for applications.
      *
      * @param applicationId key: id of application.
-     * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteRefCreatedOnBehalfOfAsync(String applicationId, String ifMatch);
+    Mono<Void> deleteRefCreatedOnBehalfOfAsync(String applicationId);
 
     /**
      * Delete ref of navigation property createdOnBehalfOf for applications.
      *
      * @param applicationId key: id of application.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteRefCreatedOnBehalfOfAsync(String applicationId);
+    Response<Void> deleteRefCreatedOnBehalfOfWithResponse(String applicationId, String ifMatch, Context context);
 
     /**
      * Delete ref of navigation property createdOnBehalfOf for applications.
@@ -275,21 +255,6 @@ public interface ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void deleteRefCreatedOnBehalfOf(String applicationId);
-
-    /**
-     * Delete ref of navigation property createdOnBehalfOf for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteRefCreatedOnBehalfOfWithResponse(String applicationId, String ifMatch, Context context);
 
     /**
      * Get extensionProperties from applications.
@@ -307,7 +272,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphExtensionPropertyInner> listExtensionPropertiesAsync(
@@ -329,7 +294,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphExtensionPropertyInner> listExtensionPropertiesAsync(String applicationId);
@@ -342,7 +307,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphExtensionPropertyInner> listExtensionProperties(String applicationId);
@@ -364,7 +329,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphExtensionPropertyInner> listExtensionProperties(
@@ -388,7 +353,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return extensionProperty along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphExtensionPropertyInner>> createExtensionPropertiesWithResponseAsync(
@@ -403,25 +368,10 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return extensionProperty on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphExtensionPropertyInner> createExtensionPropertiesAsync(
-        String applicationId, MicrosoftGraphExtensionPropertyInner body);
-
-    /**
-     * Create new navigation property to extensionProperties for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphExtensionPropertyInner createExtensionProperties(
         String applicationId, MicrosoftGraphExtensionPropertyInner body);
 
     /**
@@ -434,11 +384,26 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return extensionProperty along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphExtensionPropertyInner> createExtensionPropertiesWithResponse(
         String applicationId, MicrosoftGraphExtensionPropertyInner body, Context context);
+
+    /**
+     * Create new navigation property to extensionProperties for applications.
+     *
+     * @param applicationId key: id of application.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return extensionProperty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphExtensionPropertyInner createExtensionProperties(
+        String applicationId, MicrosoftGraphExtensionPropertyInner body);
 
     /**
      * Get extensionProperties from applications.
@@ -451,7 +416,8 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphExtensionPropertyInner>> getExtensionPropertiesWithResponseAsync(
@@ -462,32 +428,37 @@ public interface ApplicationsClient {
      *
      * @param applicationId key: id of application.
      * @param extensionPropertyId key: id of extensionProperty.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphExtensionPropertyInner> getExtensionPropertiesAsync(
-        String applicationId, String extensionPropertyId, List<ApplicationsSelect> select, List<String> expand);
+        String applicationId, String extensionPropertyId);
 
     /**
      * Get extensionProperties from applications.
      *
      * @param applicationId key: id of application.
      * @param extensionPropertyId key: id of extensionProperty.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphExtensionPropertyInner> getExtensionPropertiesAsync(
-        String applicationId, String extensionPropertyId);
+    Response<MicrosoftGraphExtensionPropertyInner> getExtensionPropertiesWithResponse(
+        String applicationId,
+        String extensionPropertyId,
+        List<ApplicationsSelect> select,
+        List<String> expand,
+        Context context);
 
     /**
      * Get extensionProperties from applications.
@@ -504,28 +475,6 @@ public interface ApplicationsClient {
     MicrosoftGraphExtensionPropertyInner getExtensionProperties(String applicationId, String extensionPropertyId);
 
     /**
-     * Get extensionProperties from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param extensionPropertyId key: id of extensionProperty.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphExtensionPropertyInner> getExtensionPropertiesWithResponse(
-        String applicationId,
-        String extensionPropertyId,
-        List<ApplicationsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
      * Update the navigation property extensionProperties in applications.
      *
      * @param applicationId key: id of application.
@@ -535,7 +484,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> updateExtensionPropertiesWithResponseAsync(
@@ -551,11 +500,28 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> updateExtensionPropertiesAsync(
         String applicationId, String extensionPropertyId, MicrosoftGraphExtensionPropertyInner body);
+
+    /**
+     * Update the navigation property extensionProperties in applications.
+     *
+     * @param applicationId key: id of application.
+     * @param extensionPropertyId key: id of extensionProperty.
+     * @param body New navigation property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateExtensionPropertiesWithResponse(
+        String applicationId, String extensionPropertyId, MicrosoftGraphExtensionPropertyInner body, Context context);
 
     /**
      * Update the navigation property extensionProperties in applications.
@@ -573,23 +539,6 @@ public interface ApplicationsClient {
         String applicationId, String extensionPropertyId, MicrosoftGraphExtensionPropertyInner body);
 
     /**
-     * Update the navigation property extensionProperties in applications.
-     *
-     * @param applicationId key: id of application.
-     * @param extensionPropertyId key: id of extensionProperty.
-     * @param body New navigation property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateExtensionPropertiesWithResponse(
-        String applicationId, String extensionPropertyId, MicrosoftGraphExtensionPropertyInner body, Context context);
-
-    /**
      * Delete navigation property extensionProperties for applications.
      *
      * @param applicationId key: id of application.
@@ -599,7 +548,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteExtensionPropertiesWithResponseAsync(
@@ -610,29 +559,31 @@ public interface ApplicationsClient {
      *
      * @param applicationId key: id of application.
      * @param extensionPropertyId key: id of extensionProperty.
-     * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteExtensionPropertiesAsync(String applicationId, String extensionPropertyId, String ifMatch);
+    Mono<Void> deleteExtensionPropertiesAsync(String applicationId, String extensionPropertyId);
 
     /**
      * Delete navigation property extensionProperties for applications.
      *
      * @param applicationId key: id of application.
      * @param extensionPropertyId key: id of extensionProperty.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteExtensionPropertiesAsync(String applicationId, String extensionPropertyId);
+    Response<Void> deleteExtensionPropertiesWithResponse(
+        String applicationId, String extensionPropertyId, String ifMatch, Context context);
 
     /**
      * Delete navigation property extensionProperties for applications.
@@ -646,23 +597,6 @@ public interface ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void deleteExtensionProperties(String applicationId, String extensionPropertyId);
-
-    /**
-     * Delete navigation property extensionProperties for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param extensionPropertyId key: id of extensionProperty.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteExtensionPropertiesWithResponse(
-        String applicationId, String extensionPropertyId, String ifMatch, Context context);
 
     /**
      * Get homeRealmDiscoveryPolicies from applications.
@@ -680,7 +614,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPoliciesAsync(
@@ -702,7 +636,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPoliciesAsync(String applicationId);
@@ -715,7 +649,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPolicies(String applicationId);
@@ -737,7 +671,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPolicies(
@@ -766,7 +700,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<String> listRefHomeRealmDiscoveryPoliciesAsync(
@@ -786,7 +720,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<String> listRefHomeRealmDiscoveryPoliciesAsync(String applicationId);
@@ -799,7 +733,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<String> listRefHomeRealmDiscoveryPolicies(String applicationId);
@@ -819,7 +753,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<String> listRefHomeRealmDiscoveryPolicies(
@@ -841,7 +775,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return dictionary of &lt;AnyObject&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Map<String, Object>>> createRefHomeRealmDiscoveryPoliciesWithResponseAsync(
@@ -856,24 +790,10 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return dictionary of &lt;AnyObject&gt; on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Map<String, Object>> createRefHomeRealmDiscoveryPoliciesAsync(String applicationId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to homeRealmDiscoveryPolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, Object> createRefHomeRealmDiscoveryPolicies(String applicationId, Map<String, Object> body);
 
     /**
      * Create new navigation property ref to homeRealmDiscoveryPolicies for applications.
@@ -885,11 +805,25 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return dictionary of &lt;AnyObject&gt; along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Map<String, Object>> createRefHomeRealmDiscoveryPoliciesWithResponse(
         String applicationId, Map<String, Object> body, Context context);
+
+    /**
+     * Create new navigation property ref to homeRealmDiscoveryPolicies for applications.
+     *
+     * @param applicationId key: id of application.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;AnyObject&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefHomeRealmDiscoveryPolicies(String applicationId, Map<String, Object> body);
 
     /**
      * Invoke action addKey.
@@ -900,7 +834,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keyCredential.
+     * @return keyCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphKeyCredentialInner>> addKeyWithResponseAsync(
@@ -915,10 +849,26 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keyCredential.
+     * @return keyCredential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphKeyCredentialInner> addKeyAsync(String applicationId, ApplicationsAddKeyRequestBodyInner body);
+
+    /**
+     * Invoke action addKey.
+     *
+     * @param applicationId key: id of application.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keyCredential along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphKeyCredentialInner> addKeyWithResponse(
+        String applicationId, ApplicationsAddKeyRequestBodyInner body, Context context);
 
     /**
      * Invoke action addKey.
@@ -935,22 +885,6 @@ public interface ApplicationsClient {
     MicrosoftGraphKeyCredentialInner addKey(String applicationId, ApplicationsAddKeyRequestBodyInner body);
 
     /**
-     * Invoke action addKey.
-     *
-     * @param applicationId key: id of application.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keyCredential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphKeyCredentialInner> addKeyWithResponse(
-        String applicationId, ApplicationsAddKeyRequestBodyInner body, Context context);
-
-    /**
      * Invoke action addPassword.
      *
      * @param applicationId key: id of application.
@@ -959,7 +893,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return passwordCredential.
+     * @return passwordCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPasswordWithResponseAsync(
@@ -974,11 +908,27 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return passwordCredential.
+     * @return passwordCredential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphPasswordCredentialInner> addPasswordAsync(
         String applicationId, ApplicationsAddPasswordRequestBodyInner body);
+
+    /**
+     * Invoke action addPassword.
+     *
+     * @param applicationId key: id of application.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return passwordCredential along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphPasswordCredentialInner> addPasswordWithResponse(
+        String applicationId, ApplicationsAddPasswordRequestBodyInner body, Context context);
 
     /**
      * Invoke action addPassword.
@@ -996,22 +946,6 @@ public interface ApplicationsClient {
         String applicationId, ApplicationsAddPasswordRequestBodyInner body);
 
     /**
-     * Invoke action addPassword.
-     *
-     * @param applicationId key: id of application.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return passwordCredential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphPasswordCredentialInner> addPasswordWithResponse(
-        String applicationId, ApplicationsAddPasswordRequestBodyInner body, Context context);
-
-    /**
      * Invoke action checkMemberGroups.
      *
      * @param applicationId key: id of application.
@@ -1020,7 +954,8 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
+     * @return array of Post200ApplicationJsonItemsItem along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<List<String>>> checkMemberGroupsWithResponseAsync(
@@ -1035,10 +970,26 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
+     * @return array of Post200ApplicationJsonItemsItem on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<List<String>> checkMemberGroupsAsync(String applicationId, ApplicationsCheckMemberGroupsRequestBody body);
+
+    /**
+     * Invoke action checkMemberGroups.
+     *
+     * @param applicationId key: id of application.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of Post200ApplicationJsonItemsItem along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<String>> checkMemberGroupsWithResponse(
+        String applicationId, ApplicationsCheckMemberGroupsRequestBody body, Context context);
 
     /**
      * Invoke action checkMemberGroups.
@@ -1055,22 +1006,6 @@ public interface ApplicationsClient {
     List<String> checkMemberGroups(String applicationId, ApplicationsCheckMemberGroupsRequestBody body);
 
     /**
-     * Invoke action checkMemberGroups.
-     *
-     * @param applicationId key: id of application.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<String>> checkMemberGroupsWithResponse(
-        String applicationId, ApplicationsCheckMemberGroupsRequestBody body, Context context);
-
-    /**
      * Invoke action checkMemberObjects.
      *
      * @param applicationId key: id of application.
@@ -1079,7 +1014,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<List<String>>> checkMemberObjectsWithResponseAsync(
@@ -1094,10 +1029,26 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<List<String>> checkMemberObjectsAsync(String applicationId, ApplicationsCheckMemberObjectsRequestBody body);
+
+    /**
+     * Invoke action checkMemberObjects.
+     *
+     * @param applicationId key: id of application.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<String>> checkMemberObjectsWithResponse(
+        String applicationId, ApplicationsCheckMemberObjectsRequestBody body, Context context);
 
     /**
      * Invoke action checkMemberObjects.
@@ -1114,22 +1065,6 @@ public interface ApplicationsClient {
     List<String> checkMemberObjects(String applicationId, ApplicationsCheckMemberObjectsRequestBody body);
 
     /**
-     * Invoke action checkMemberObjects.
-     *
-     * @param applicationId key: id of application.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<String>> checkMemberObjectsWithResponse(
-        String applicationId, ApplicationsCheckMemberObjectsRequestBody body, Context context);
-
-    /**
      * Invoke action getMemberGroups.
      *
      * @param applicationId key: id of application.
@@ -1138,7 +1073,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<List<String>>> getMemberGroupsWithResponseAsync(
@@ -1153,10 +1088,26 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<List<String>> getMemberGroupsAsync(String applicationId, ApplicationsGetMemberGroupsRequestBody body);
+
+    /**
+     * Invoke action getMemberGroups.
+     *
+     * @param applicationId key: id of application.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<String>> getMemberGroupsWithResponse(
+        String applicationId, ApplicationsGetMemberGroupsRequestBody body, Context context);
 
     /**
      * Invoke action getMemberGroups.
@@ -1173,22 +1124,6 @@ public interface ApplicationsClient {
     List<String> getMemberGroups(String applicationId, ApplicationsGetMemberGroupsRequestBody body);
 
     /**
-     * Invoke action getMemberGroups.
-     *
-     * @param applicationId key: id of application.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<String>> getMemberGroupsWithResponse(
-        String applicationId, ApplicationsGetMemberGroupsRequestBody body, Context context);
-
-    /**
      * Invoke action getMemberObjects.
      *
      * @param applicationId key: id of application.
@@ -1197,7 +1132,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<List<String>>> getMemberObjectsWithResponseAsync(
@@ -1212,10 +1147,26 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<List<String>> getMemberObjectsAsync(String applicationId, ApplicationsGetMemberObjectsRequestBody body);
+
+    /**
+     * Invoke action getMemberObjects.
+     *
+     * @param applicationId key: id of application.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<String>> getMemberObjectsWithResponse(
+        String applicationId, ApplicationsGetMemberObjectsRequestBody body, Context context);
 
     /**
      * Invoke action getMemberObjects.
@@ -1232,22 +1183,6 @@ public interface ApplicationsClient {
     List<String> getMemberObjects(String applicationId, ApplicationsGetMemberObjectsRequestBody body);
 
     /**
-     * Invoke action getMemberObjects.
-     *
-     * @param applicationId key: id of application.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<String>> getMemberObjectsWithResponse(
-        String applicationId, ApplicationsGetMemberObjectsRequestBody body, Context context);
-
-    /**
      * Invoke action removeKey.
      *
      * @param applicationId key: id of application.
@@ -1256,7 +1191,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> removeKeyWithResponseAsync(String applicationId, ApplicationsRemoveKeyRequestBody body);
@@ -1270,10 +1205,25 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> removeKeyAsync(String applicationId, ApplicationsRemoveKeyRequestBody body);
+
+    /**
+     * Invoke action removeKey.
+     *
+     * @param applicationId key: id of application.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> removeKeyWithResponse(String applicationId, ApplicationsRemoveKeyRequestBody body, Context context);
 
     /**
      * Invoke action removeKey.
@@ -1289,21 +1239,6 @@ public interface ApplicationsClient {
     void removeKey(String applicationId, ApplicationsRemoveKeyRequestBody body);
 
     /**
-     * Invoke action removeKey.
-     *
-     * @param applicationId key: id of application.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> removeKeyWithResponse(String applicationId, ApplicationsRemoveKeyRequestBody body, Context context);
-
-    /**
      * Invoke action removePassword.
      *
      * @param applicationId key: id of application.
@@ -1312,7 +1247,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> removePasswordWithResponseAsync(
@@ -1327,10 +1262,26 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> removePasswordAsync(String applicationId, ApplicationsRemovePasswordRequestBody body);
+
+    /**
+     * Invoke action removePassword.
+     *
+     * @param applicationId key: id of application.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> removePasswordWithResponse(
+        String applicationId, ApplicationsRemovePasswordRequestBody body, Context context);
 
     /**
      * Invoke action removePassword.
@@ -1346,22 +1297,6 @@ public interface ApplicationsClient {
     void removePassword(String applicationId, ApplicationsRemovePasswordRequestBody body);
 
     /**
-     * Invoke action removePassword.
-     *
-     * @param applicationId key: id of application.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> removePasswordWithResponse(
-        String applicationId, ApplicationsRemovePasswordRequestBody body, Context context);
-
-    /**
      * Invoke action restore.
      *
      * @param applicationId key: id of application.
@@ -1369,7 +1304,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return directoryObject along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphDirectoryObjectInner>> restoreWithResponseAsync(String applicationId);
@@ -1382,7 +1317,7 @@ public interface ApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return directoryObject on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphDirectoryObjectInner> restoreAsync(String applicationId);
@@ -1391,917 +1326,26 @@ public interface ApplicationsClient {
      * Invoke action restore.
      *
      * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphDirectoryObjectInner restore(String applicationId);
-
-    /**
-     * Invoke action restore.
-     *
-     * @param applicationId key: id of application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return directoryObject along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphDirectoryObjectInner> restoreWithResponse(String applicationId, Context context);
 
     /**
-     * Get owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnersAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<String> expand);
-
-    /**
-     * Get owners from applications.
+     * Invoke action restore.
      *
      * @param applicationId key: id of application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnersAsync(String applicationId);
-
-    /**
-     * Get owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listOwners(String applicationId);
-
-    /**
-     * Get owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listOwners(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefOwnersAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby);
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefOwnersAsync(String applicationId);
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefOwners(String applicationId);
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefOwners(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context);
-
-    /**
-     * Create new navigation property ref to owners for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return directoryObject.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Map<String, Object>>> createRefOwnersWithResponseAsync(
-        String applicationId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to owners for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Map<String, Object>> createRefOwnersAsync(String applicationId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to owners for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, Object> createRefOwners(String applicationId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to owners for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, Object>> createRefOwnersWithResponse(
-        String applicationId, Map<String, Object> body, Context context);
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand);
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePoliciesAsync(String applicationId);
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePolicies(String applicationId);
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePolicies(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand,
-        Context context);
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefTokenIssuancePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby);
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefTokenIssuancePoliciesAsync(String applicationId);
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefTokenIssuancePolicies(String applicationId);
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefTokenIssuancePolicies(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context);
-
-    /**
-     * Create new navigation property ref to tokenIssuancePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Map<String, Object>>> createRefTokenIssuancePoliciesWithResponseAsync(
-        String applicationId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to tokenIssuancePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Map<String, Object>> createRefTokenIssuancePoliciesAsync(String applicationId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to tokenIssuancePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, Object> createRefTokenIssuancePolicies(String applicationId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to tokenIssuancePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, Object>> createRefTokenIssuancePoliciesWithResponse(
-        String applicationId, Map<String, Object> body, Context context);
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand);
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePoliciesAsync(String applicationId);
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePolicies(String applicationId);
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePolicies(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand,
-        Context context);
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefTokenLifetimePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby);
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefTokenLifetimePoliciesAsync(String applicationId);
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefTokenLifetimePolicies(String applicationId);
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefTokenLifetimePolicies(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context);
-
-    /**
-     * Create new navigation property ref to tokenLifetimePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Map<String, Object>>> createRefTokenLifetimePoliciesWithResponseAsync(
-        String applicationId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to tokenLifetimePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Map<String, Object>> createRefTokenLifetimePoliciesAsync(String applicationId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to tokenLifetimePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, Object> createRefTokenLifetimePolicies(String applicationId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to tokenLifetimePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, Object>> createRefTokenLifetimePoliciesWithResponse(
-        String applicationId, Map<String, Object> body, Context context);
-
-    /**
-     * Invoke function delta.
-     *
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<MicrosoftGraphApplicationInner>>> deltaWithResponseAsync();
-
-    /**
-     * Invoke function delta.
-     *
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<MicrosoftGraphApplicationInner>> deltaAsync();
-
-    /**
-     * Invoke function delta.
-     *
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<MicrosoftGraphApplicationInner> delta();
-
-    /**
-     * Invoke function delta.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<MicrosoftGraphApplicationInner>> deltaWithResponse(Context context);
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<MicrosoftGraphExtensionPropertyInner>>> getAvailableExtensionPropertiesWithResponseAsync(
-        ApplicationsGetAvailableExtensionPropertiesRequestBody body);
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<MicrosoftGraphExtensionPropertyInner>> getAvailableExtensionPropertiesAsync(
-        ApplicationsGetAvailableExtensionPropertiesRequestBody body);
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<MicrosoftGraphExtensionPropertyInner> getAvailableExtensionProperties(
-        ApplicationsGetAvailableExtensionPropertiesRequestBody body);
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<MicrosoftGraphExtensionPropertyInner>> getAvailableExtensionPropertiesWithResponse(
-        ApplicationsGetAvailableExtensionPropertiesRequestBody body, Context context);
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<MicrosoftGraphDirectoryObjectInner>>> getByIdsWithResponseAsync(
-        ApplicationsGetByIdsRequestBody body);
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<MicrosoftGraphDirectoryObjectInner>> getByIdsAsync(ApplicationsGetByIdsRequestBody body);
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<MicrosoftGraphDirectoryObjectInner> getByIds(ApplicationsGetByIdsRequestBody body);
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<MicrosoftGraphDirectoryObjectInner>> getByIdsWithResponse(
-        ApplicationsGetByIdsRequestBody body, Context context);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> validatePropertiesWithResponseAsync(ApplicationsValidatePropertiesRequestBody body);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> validatePropertiesAsync(ApplicationsValidatePropertiesRequestBody body);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void validateProperties(ApplicationsValidatePropertiesRequestBody body);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> validatePropertiesWithResponse(ApplicationsValidatePropertiesRequestBody body, Context context);
+    MicrosoftGraphDirectoryObjectInner restore(String applicationId);
 }

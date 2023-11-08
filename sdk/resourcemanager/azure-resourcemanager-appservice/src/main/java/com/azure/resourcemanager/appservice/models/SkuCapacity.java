@@ -40,6 +40,10 @@ public final class SkuCapacity {
     @JsonProperty(value = "scaleType")
     private String scaleType;
 
+    /** Creates an instance of SkuCapacity class. */
+    public SkuCapacity() {
+    }
+
     /**
      * Get the minimum property: Minimum number of workers for this App Service plan SKU.
      *

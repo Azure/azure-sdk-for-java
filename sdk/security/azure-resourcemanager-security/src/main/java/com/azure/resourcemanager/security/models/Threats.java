@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Threats. */
+/** Threats impact of the assessment. */
 public final class Threats extends ExpandableStringEnum<Threats> {
     /** Static value accountBreach for Threats. */
     public static final Threats ACCOUNT_BREACH = fromString("accountBreach");
@@ -35,6 +35,15 @@ public final class Threats extends ExpandableStringEnum<Threats> {
     public static final Threats DENIAL_OF_SERVICE = fromString("denialOfService");
 
     /**
+     * Creates a new instance of Threats value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Threats() {
+    }
+
+    /**
      * Creates or finds a Threats from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class Threats extends ExpandableStringEnum<Threats> {
         return fromString(name, Threats.class);
     }
 
-    /** @return known Threats values. */
+    /**
+     * Gets known Threats values.
+     *
+     * @return known Threats values.
+     */
     public static Collection<Threats> values() {
         return values(Threats.class);
     }

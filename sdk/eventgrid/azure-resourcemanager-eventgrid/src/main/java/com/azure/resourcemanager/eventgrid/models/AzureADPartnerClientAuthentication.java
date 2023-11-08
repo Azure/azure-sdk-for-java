@@ -21,6 +21,10 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     @JsonProperty(value = "properties")
     private AzureADPartnerClientAuthenticationProperties innerProperties;
 
+    /** Creates an instance of AzureADPartnerClientAuthentication class. */
+    public AzureADPartnerClientAuthentication() {
+    }
+
     /**
      * Get the innerProperties property: AzureAD ClientAuthentication Properties.
      *

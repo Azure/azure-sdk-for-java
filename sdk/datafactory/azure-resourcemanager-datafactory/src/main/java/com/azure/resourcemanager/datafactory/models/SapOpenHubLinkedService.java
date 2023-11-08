@@ -19,11 +19,14 @@ import java.util.Map;
 @Fluent
 public final class SapOpenHubLinkedService extends LinkedService {
     /*
-     * Properties specific to SAP Business Warehouse Open Hub Destination
-     * linked service type.
+     * Properties specific to SAP Business Warehouse Open Hub Destination linked service type.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private SapOpenHubLinkedServiceTypeProperties innerTypeProperties = new SapOpenHubLinkedServiceTypeProperties();
+
+    /** Creates an instance of SapOpenHubLinkedService class. */
+    public SapOpenHubLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to SAP Business Warehouse Open Hub Destination linked
@@ -315,22 +318,22 @@ public final class SapOpenHubLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapOpenHubLinkedService object itself.
      */
-    public SapOpenHubLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public SapOpenHubLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SapOpenHubLinkedServiceTypeProperties();
         }

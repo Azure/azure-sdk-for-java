@@ -28,6 +28,10 @@ public final class ExpressRouteCircuitSku {
     @JsonProperty(value = "family")
     private ExpressRouteCircuitSkuFamily family;
 
+    /** Creates an instance of ExpressRouteCircuitSku class. */
+    public ExpressRouteCircuitSku() {
+    }
+
     /**
      * Get the name property: The name of the SKU.
      *

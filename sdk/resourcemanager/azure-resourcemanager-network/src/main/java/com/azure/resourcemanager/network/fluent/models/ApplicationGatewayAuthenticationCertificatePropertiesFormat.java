@@ -23,6 +23,10 @@ public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayAuthenticationCertificatePropertiesFormat class. */
+    public ApplicationGatewayAuthenticationCertificatePropertiesFormat() {
+    }
+
     /**
      * Get the data property: Certificate public data.
      *

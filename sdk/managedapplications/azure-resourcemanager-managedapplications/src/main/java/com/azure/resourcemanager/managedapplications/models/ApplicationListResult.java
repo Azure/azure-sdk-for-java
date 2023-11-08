@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of managed applications. */
 @Fluent
 public final class ApplicationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationListResult.class);
-
     /*
      * The array of managed applications.
      */
@@ -27,6 +23,10 @@ public final class ApplicationListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ApplicationListResult class. */
+    public ApplicationListResult() {
+    }
 
     /**
      * Get the value property: The array of managed applications.

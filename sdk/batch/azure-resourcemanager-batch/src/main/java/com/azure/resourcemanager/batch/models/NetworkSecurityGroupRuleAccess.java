@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for NetworkSecurityGroupRuleAccess. */
+/** The action that should be taken for a specified IP address, subnet range or tag. */
 public enum NetworkSecurityGroupRuleAccess {
     /** Enum value Allow. */
     ALLOW("Allow"),
@@ -30,6 +30,9 @@ public enum NetworkSecurityGroupRuleAccess {
      */
     @JsonCreator
     public static NetworkSecurityGroupRuleAccess fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         NetworkSecurityGroupRuleAccess[] items = NetworkSecurityGroupRuleAccess.values();
         for (NetworkSecurityGroupRuleAccess item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum NetworkSecurityGroupRuleAccess {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -60,19 +60,6 @@ public interface VpnServerConfigurationsClient
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnServerConfigurationInner getByResourceGroup(String resourceGroupName, String vpnServerConfigurationName);
-
-    /**
-     * Retrieves the details of a VpnServerConfiguration.
-     *
-     * @param resourceGroupName The resource group name of the VpnServerConfiguration.
-     * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,6 +69,19 @@ public interface VpnServerConfigurationsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VpnServerConfigurationInner> getByResourceGroupWithResponse(
         String resourceGroupName, String vpnServerConfigurationName, Context context);
+
+    /**
+     * Retrieves the details of a VpnServerConfiguration.
+     *
+     * @param resourceGroupName The resource group name of the VpnServerConfiguration.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnServerConfiguration Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VpnServerConfigurationInner getByResourceGroup(String resourceGroupName, String vpnServerConfigurationName);
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
@@ -242,21 +242,6 @@ public interface VpnServerConfigurationsClient
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnServerConfigurationInner updateTags(
-        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters);
-
-    /**
-     * Updates VpnServerConfiguration tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnServerConfiguration.
-     * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
-     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -269,6 +254,21 @@ public interface VpnServerConfigurationsClient
         String vpnServerConfigurationName,
         TagsObject vpnServerConfigurationParameters,
         Context context);
+
+    /**
+     * Updates VpnServerConfiguration tags.
+     *
+     * @param resourceGroupName The resource group name of the VpnServerConfiguration.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
+     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnServerConfiguration Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VpnServerConfigurationInner updateTags(
+        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters);
 
     /**
      * Deletes a VpnServerConfiguration.

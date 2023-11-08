@@ -53,6 +53,15 @@ public final class ApplicationsOrderby extends ExpandableStringEnum<Applications
     public static final ApplicationsOrderby TARGET_OBJECTS_DESC = fromString("targetObjects desc");
 
     /**
+     * Creates a new instance of ApplicationsOrderby value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationsOrderby() {
+    }
+
+    /**
      * Creates or finds a ApplicationsOrderby from its string representation.
      *
      * @param name a name to look for.
@@ -63,7 +72,11 @@ public final class ApplicationsOrderby extends ExpandableStringEnum<Applications
         return fromString(name, ApplicationsOrderby.class);
     }
 
-    /** @return known ApplicationsOrderby values. */
+    /**
+     * Gets known ApplicationsOrderby values.
+     *
+     * @return known ApplicationsOrderby values.
+     */
     public static Collection<ApplicationsOrderby> values() {
         return values(ApplicationsOrderby.class);
     }

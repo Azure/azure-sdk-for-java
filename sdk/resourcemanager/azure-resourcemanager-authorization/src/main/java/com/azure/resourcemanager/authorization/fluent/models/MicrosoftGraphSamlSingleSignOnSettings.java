@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,11 +15,8 @@ import java.util.Map;
 /** samlSingleSignOnSettings. */
 @Fluent
 public final class MicrosoftGraphSamlSingleSignOnSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphSamlSingleSignOnSettings.class);
-
     /*
-     * The relative URI the service provider would redirect to after completion
-     * of the single sign-on flow.
+     * The relative URI the service provider would redirect to after completion of the single sign-on flow.
      */
     @JsonProperty(value = "relayState")
     private String relayState;
@@ -29,6 +25,10 @@ public final class MicrosoftGraphSamlSingleSignOnSettings {
      * samlSingleSignOnSettings
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSamlSingleSignOnSettings class. */
+    public MicrosoftGraphSamlSingleSignOnSettings() {
+    }
 
     /**
      * Get the relayState property: The relative URI the service provider would redirect to after completion of the

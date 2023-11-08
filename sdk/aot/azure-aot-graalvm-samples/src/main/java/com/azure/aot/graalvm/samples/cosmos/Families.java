@@ -4,8 +4,15 @@
 package com.azure.aot.graalvm.samples.cosmos;
 
 
+/**
+ * Helper class to get family details.
+ */
 public class Families {
 
+    /**
+     * Returns the family details of Andersen family.
+     * @return the family details of Andersen family.
+     */
     public static Family getAndersenFamilyItem() {
         Family andersenFamily = new Family();
         andersenFamily.setId("Andersen-" + System.currentTimeMillis());
@@ -42,6 +49,10 @@ public class Families {
         return andersenFamily;
     }
 
+    /**
+     * Returns the family details of Wakefield family.
+     * @return the family details of Wakefield family.
+     */
     public static Family getWakefieldFamilyItem() {
         Family wakefieldFamily = new Family();
         wakefieldFamily.setId("Wakefield-" + System.currentTimeMillis());
@@ -90,6 +101,10 @@ public class Families {
         return wakefieldFamily;
     }
 
+    /**
+     * Returns the family details of Johnson family.
+     * @return the family details of Johnson family.
+     */
     public static Family getJohnsonFamilyItem() {
         Family johnsonFamily = new Family();
         johnsonFamily.setId("Johnson-" + System.currentTimeMillis());
@@ -106,6 +121,10 @@ public class Families {
         return johnsonFamily;
     }
 
+    /**
+     * Returns  the family details of Smith family.
+     * @return the family details of Smith family.
+     */
     public static Family getSmithFamilyItem() {
         Family smithFamily = new Family();
         smithFamily.setId("Smith-" + System.currentTimeMillis());

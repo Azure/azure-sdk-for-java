@@ -18,55 +18,49 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualNetworkPeeringPropertiesFormat {
     /*
-     * Whether the VMs in the local virtual network space would be able to
-     * access the VMs in remote virtual network space.
+     * Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network
+     * space.
      */
     @JsonProperty(value = "allowVirtualNetworkAccess")
     private Boolean allowVirtualNetworkAccess;
 
     /*
-     * Whether the forwarded traffic from the VMs in the local virtual network
-     * will be allowed/disallowed in remote virtual network.
+     * Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote
+     * virtual network.
      */
     @JsonProperty(value = "allowForwardedTraffic")
     private Boolean allowForwardedTraffic;
 
     /*
-     * If gateway links can be used in remote virtual networking to link to
-     * this virtual network.
+     * If gateway links can be used in remote virtual networking to link to this virtual network.
      */
     @JsonProperty(value = "allowGatewayTransit")
     private Boolean allowGatewayTransit;
 
     /*
-     * If remote gateways can be used on this virtual network. If the flag is
-     * set to true, and allowGatewayTransit on remote peering is also true,
-     * virtual network will use gateways of remote virtual network for transit.
-     * Only one peering can have this flag set to true. This flag cannot be set
-     * if virtual network already has a gateway.
+     * If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on
+     * remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one
+     * peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway.
      */
     @JsonProperty(value = "useRemoteGateways")
     private Boolean useRemoteGateways;
 
     /*
-     * The reference to the remote virtual network. The remote virtual network
-     * can be in the same or different region (preview). See here to register
-     * for the preview and learn more
+     * The reference to the remote virtual network. The remote virtual network can be in the same or different region
+     * (preview). See here to register for the preview and learn more
      * (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
      */
     @JsonProperty(value = "remoteVirtualNetwork")
     private SubResource remoteVirtualNetwork;
 
     /*
-     * The reference to the address space peered with the remote virtual
-     * network.
+     * The reference to the address space peered with the remote virtual network.
      */
     @JsonProperty(value = "remoteAddressSpace")
     private AddressSpace remoteAddressSpace;
 
     /*
-     * The reference to the current address space of the remote virtual
-     * network.
+     * The reference to the current address space of the remote virtual network.
      */
     @JsonProperty(value = "remoteVirtualNetworkAddressSpace")
     private AddressSpace remoteVirtualNetworkAddressSpace;
@@ -112,6 +106,10 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
+
+    /** Creates an instance of VirtualNetworkPeeringPropertiesFormat class. */
+    public VirtualNetworkPeeringPropertiesFormat() {
+    }
 
     /**
      * Get the allowVirtualNetworkAccess property: Whether the VMs in the local virtual network space would be able to

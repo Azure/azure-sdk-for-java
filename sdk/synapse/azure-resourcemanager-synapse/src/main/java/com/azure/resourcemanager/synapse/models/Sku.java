@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sku SQL pool SKU. */
+/**
+ * Sku
+ *
+ * <p>SQL pool SKU.
+ */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
      * The service tier
      */
@@ -27,12 +27,15 @@ public final class Sku {
     private String name;
 
     /*
-     * If the SKU supports scale out/in then the capacity integer should be
-     * included. If scale out/in is not possible for the resource this may be
-     * omitted.
+     * If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible
+     * for the resource this may be omitted.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the tier property: The service tier.

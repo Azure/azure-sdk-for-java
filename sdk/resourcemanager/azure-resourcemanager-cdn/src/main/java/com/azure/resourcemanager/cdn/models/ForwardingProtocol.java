@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ForwardingProtocol. */
+/** Protocol this rule will use when forwarding traffic to backends. */
 public final class ForwardingProtocol extends ExpandableStringEnum<ForwardingProtocol> {
     /** Static value HttpOnly for ForwardingProtocol. */
     public static final ForwardingProtocol HTTP_ONLY = fromString("HttpOnly");
@@ -18,6 +18,15 @@ public final class ForwardingProtocol extends ExpandableStringEnum<ForwardingPro
 
     /** Static value MatchRequest for ForwardingProtocol. */
     public static final ForwardingProtocol MATCH_REQUEST = fromString("MatchRequest");
+
+    /**
+     * Creates a new instance of ForwardingProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ForwardingProtocol() {
+    }
 
     /**
      * Creates or finds a ForwardingProtocol from its string representation.
@@ -30,7 +39,11 @@ public final class ForwardingProtocol extends ExpandableStringEnum<ForwardingPro
         return fromString(name, ForwardingProtocol.class);
     }
 
-    /** @return known ForwardingProtocol values. */
+    /**
+     * Gets known ForwardingProtocol values.
+     *
+     * @return known ForwardingProtocol values.
+     */
     public static Collection<ForwardingProtocol> values() {
         return values(ForwardingProtocol.class);
     }

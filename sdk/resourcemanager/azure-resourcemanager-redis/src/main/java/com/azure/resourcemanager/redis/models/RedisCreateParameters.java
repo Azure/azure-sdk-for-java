@@ -22,8 +22,7 @@ public final class RedisCreateParameters {
     private RedisCreateProperties innerProperties = new RedisCreateProperties();
 
     /*
-     * A list of availability zones denoting where the resource needs to come
-     * from.
+     * A list of availability zones denoting where the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -46,6 +45,10 @@ public final class RedisCreateParameters {
      */
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
+
+    /** Creates an instance of RedisCreateParameters class. */
+    public RedisCreateParameters() {
+    }
 
     /**
      * Get the innerProperties property: Redis cache properties.
@@ -239,8 +242,9 @@ public final class RedisCreateParameters {
     }
 
     /**
-     * Get the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
-     * valid values: (4, 6).
+     * Get the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
+     * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
+     * versions: 4.0, 6.0 (latest). Default value is 'latest'.
      *
      * @return the redisVersion value.
      */
@@ -249,8 +253,9 @@ public final class RedisCreateParameters {
     }
 
     /**
-     * Set the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
-     * valid values: (4, 6).
+     * Set the redisVersion property: Redis version. This should be in the form 'major[.minor]' (only 'major' is
+     * required) or the value 'latest' which refers to the latest stable Redis version that is available. Supported
+     * versions: 4.0, 6.0 (latest). Default value is 'latest'.
      *
      * @param redisVersion the redisVersion value to set.
      * @return the RedisCreateParameters object itself.
@@ -427,6 +432,33 @@ public final class RedisCreateParameters {
             this.innerProperties = new RedisCreateProperties();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the updateChannel property: Optional: Specifies the update channel for the monthly Redis updates your Redis
+     * Cache will receive. Caches using 'Preview' update channel get latest Redis updates at least 4 weeks ahead of
+     * 'Stable' channel caches. Default value is 'Stable'.
+     *
+     * @return the updateChannel value.
+     */
+    public UpdateChannel updateChannel() {
+        return this.innerProperties() == null ? null : this.innerProperties().updateChannel();
+    }
+
+    /**
+     * Set the updateChannel property: Optional: Specifies the update channel for the monthly Redis updates your Redis
+     * Cache will receive. Caches using 'Preview' update channel get latest Redis updates at least 4 weeks ahead of
+     * 'Stable' channel caches. Default value is 'Stable'.
+     *
+     * @param updateChannel the updateChannel value to set.
+     * @return the RedisCreateParameters object itself.
+     */
+    public RedisCreateParameters withUpdateChannel(UpdateChannel updateChannel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisCreateProperties();
+        }
+        this.innerProperties().withUpdateChannel(updateChannel);
         return this;
     }
 

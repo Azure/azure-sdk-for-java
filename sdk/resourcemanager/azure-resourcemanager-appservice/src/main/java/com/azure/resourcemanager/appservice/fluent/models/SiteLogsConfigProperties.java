@@ -37,6 +37,10 @@ public final class SiteLogsConfigProperties {
     @JsonProperty(value = "detailedErrorMessages")
     private EnabledConfig detailedErrorMessages;
 
+    /** Creates an instance of SiteLogsConfigProperties class. */
+    public SiteLogsConfigProperties() {
+    }
+
     /**
      * Get the applicationLogs property: Application logs configuration.
      *

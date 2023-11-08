@@ -3,6 +3,8 @@
 # Args:
   # service: name of service, used for namespace and artifact id
   # suffix: suffix for sdk automation, usually it is due to premium sdk
+app:
+  service: appcontainers
 appplatform:
   suffix: generated
 authorization:
@@ -19,17 +21,25 @@ containerregistry:
   suffix: generated
 containerservice:
   suffix: generated
+containerservice/Microsoft.ContainerService/aks:
+  suffix: generated
+containerservice/Microsoft.ContainerService/fleet:
+  service: containerservicefleet
 cosmos-db:
   service: cosmos
   suffix: generated
 cost-management:
   service: costmanagement
+cpim:
+  service: azureadexternalidentities
 customer-insights:
   service: customerinsights
 datalake-analytics:
   service: datalakeanalytics
 datalake-store:
   service: datalakestore
+developerhub:
+  service: devhub
 dnc:
   service: delegatednetwork
 dns:
@@ -37,8 +47,25 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+fist:
+  service: iotfirmwaredefense
+graphservicesprod:
+  service: graphservices
+hdinsight/Microsoft.HDInsight/HDInsightOnAks:
+  service: hdinsight
+  suffix: containers
+help:
+  service: selfhelp
+hybridaks:
+  service: hybridcontainerservice
 keyvault:
   suffix: generated
+liftrqumulo:
+  service: qumulo
+loadtestservice:
+  service: loadtesting
+machinelearningservices:
+  service: machinelearning
 monitor:
   suffix: generated
 msi:
@@ -47,20 +74,30 @@ mysql:
   service: mysqlflexibleserver
 network:
   suffix: generated
+newrelic:
+  service: newrelicobservability
 operationalinsights:
   service: loganalytics
+paloaltonetworks:
+  suffix: ngfw
 postgresql:
   service: postgresqlflexibleserver
+postgresqlhsc:
+  service: cosmosdbforpostgresql
 privatedns:
   suffix: generated
 redis:
   suffix: generated
 resources:
   suffix: generated
+riskiq:
+  service: defendereasm
 service-map:
   service: servicemap
 servicebus:
   suffix: generated
+solutions:
+  service: managedapplications
 sql:
   suffix: generated
 storage:

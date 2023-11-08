@@ -23,6 +23,10 @@ public final class NetezzaTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private NetezzaTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of NetezzaTableDataset class. */
+    public NetezzaTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

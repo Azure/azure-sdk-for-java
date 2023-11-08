@@ -19,7 +19,8 @@ stages:
         variables:
           - template: ../variables/globals.yml
         pool:
-          vmImage: ubuntu-20.04
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
         strategy:
           runOnce:
             deploy:
@@ -54,12 +55,12 @@ stages:
           - deployment: TagRepository
             displayName: "Create release tag"
             condition: ne(variables['Skip.TagRepository'], 'true')
-            environment: github
+            environment: maven
             variables:
               - template: ../variables/globals.yml
             pool:
-              name: azsdk-pool-mms-win-2019-general
-              vmImage: windows-2019
+              name: azsdk-pool-mms-win-2022-general
+              vmImage: windows-2022
             strategy:
               runOnce:
                 deploy:
@@ -85,8 +86,8 @@ stages:
               variables:
                 - template: ../variables/globals.yml
               pool:
-                name: azsdk-pool-mms-win-2019-general
-                vmImage: windows-2019
+                name: azsdk-pool-mms-win-2022-general
+                vmImage: windows-2022
               strategy:
                 runOnce:
                   deploy:
@@ -99,7 +100,7 @@ stages:
                         path: azure-sdk-build-tools
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
-                          SkipDefaultCheckout: true
+                          SkipCheckoutNone: true
                           Repositories:
                             - Name: Azure/azure-sdk-for-java
                               Commitish: $(Build.SourceVersion)
@@ -110,13 +111,14 @@ stages:
                           ArtifactID: ${{artifact.name}}
                           GroupID: ${{artifact.groupId}}
                           ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                          Target: MavenCentral
+                          OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
+                          Target: EsrpRelease
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
                       - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
                         parameters:
-                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-mavencentral-$(System.JobAttempt)
-                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-esrp-$(System.JobAttempt)
+                          ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
                       # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
                       # this is that the azure-sdk-for-java feed will have the package available immediately
                       # whereas Maven can take several hours for the package to become available.

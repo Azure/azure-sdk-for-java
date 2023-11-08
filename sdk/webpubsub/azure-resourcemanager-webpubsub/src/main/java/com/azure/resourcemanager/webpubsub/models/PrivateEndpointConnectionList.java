@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of private endpoint connections. */
 @Fluent
 public final class PrivateEndpointConnectionList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionList.class);
-
     /*
      * The list of the private endpoint connections
      */
@@ -23,12 +19,15 @@ public final class PrivateEndpointConnectionList {
     private List<PrivateEndpointConnectionInner> value;
 
     /*
-     * Request URL that can be used to query next page of private endpoint
-     * connections. Returned when the total number of requested private
-     * endpoint connections exceed maximum page size.
+     * Request URL that can be used to query next page of private endpoint connections. Returned when the total number
+     * of requested private endpoint connections exceed maximum page size.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PrivateEndpointConnectionList class. */
+    public PrivateEndpointConnectionList() {
+    }
 
     /**
      * Get the value property: The list of the private endpoint connections.

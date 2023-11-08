@@ -17,6 +17,10 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
     @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
+    /** Creates an instance of VirtualMachineScaleSetNetworkConfigurationDnsSettings class. */
+    public VirtualMachineScaleSetNetworkConfigurationDnsSettings() {
+    }
+
     /**
      * Get the dnsServers property: List of DNS servers IP addresses.
      *

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a script action on a running cluster. */
 @Fluent
 public class RuntimeScriptAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuntimeScriptAction.class);
-
     /*
      * The name of the script action.
      */
@@ -44,6 +41,10 @@ public class RuntimeScriptAction {
      */
     @JsonProperty(value = "applicationName", access = JsonProperty.Access.WRITE_ONLY)
     private String applicationName;
+
+    /** Creates an instance of RuntimeScriptAction class. */
+    public RuntimeScriptAction() {
+    }
 
     /**
      * Get the name property: The name of the script action.
@@ -141,19 +142,21 @@ public class RuntimeScriptAction {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model RuntimeScriptAction"));
         }
         if (uri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property uri in model RuntimeScriptAction"));
         }
         if (roles() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property roles in model RuntimeScriptAction"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RuntimeScriptAction.class);
 }

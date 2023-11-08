@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Details for upgrading vault. */
 @Immutable
 public final class UpgradeDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpgradeDetails.class);
-
     /*
      * ID of the vault upgrade operation.
      */
@@ -68,6 +64,10 @@ public final class UpgradeDetails {
      */
     @JsonProperty(value = "previousResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String previousResourceId;
+
+    /** Creates an instance of UpgradeDetails class. */
+    public UpgradeDetails() {
+    }
 
     /**
      * Get the operationId property: ID of the vault upgrade operation.

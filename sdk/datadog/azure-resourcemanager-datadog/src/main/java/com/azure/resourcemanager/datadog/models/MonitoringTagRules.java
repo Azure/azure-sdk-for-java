@@ -46,6 +46,13 @@ public interface MonitoringTagRules {
     SystemData systemData();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.datadog.fluent.models.MonitoringTagRulesInner object.
      *
      * @return the inner object.
@@ -56,11 +63,13 @@ public interface MonitoringTagRules {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The MonitoringTagRules definition stages. */
     interface DefinitionStages {
         /** The first stage of the MonitoringTagRules definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the MonitoringTagRules definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -72,6 +81,7 @@ public interface MonitoringTagRules {
              */
             WithCreate withExistingMonitor(String resourceGroupName, String monitorName);
         }
+
         /**
          * The stage of the MonitoringTagRules definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -92,6 +102,7 @@ public interface MonitoringTagRules {
              */
             MonitoringTagRules create(Context context);
         }
+
         /** The stage of the MonitoringTagRules definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -103,6 +114,7 @@ public interface MonitoringTagRules {
             WithCreate withProperties(MonitoringTagRulesProperties properties);
         }
     }
+
     /**
      * Begins update for the MonitoringTagRules resource.
      *
@@ -127,6 +139,7 @@ public interface MonitoringTagRules {
          */
         MonitoringTagRules apply(Context context);
     }
+
     /** The MonitoringTagRules update stages. */
     interface UpdateStages {
         /** The stage of the MonitoringTagRules update allowing to specify properties. */
@@ -140,6 +153,7 @@ public interface MonitoringTagRules {
             Update withProperties(MonitoringTagRulesProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

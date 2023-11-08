@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Kind. */
+/** The kind of workbook. Choices are user and shared. */
 public final class Kind extends ExpandableStringEnum<Kind> {
     /** Static value user for Kind. */
     public static final Kind USER = fromString("user");
 
     /** Static value shared for Kind. */
     public static final Kind SHARED = fromString("shared");
+
+    /**
+     * Creates a new instance of Kind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Kind() {
+    }
 
     /**
      * Creates or finds a Kind from its string representation.
@@ -27,7 +36,11 @@ public final class Kind extends ExpandableStringEnum<Kind> {
         return fromString(name, Kind.class);
     }
 
-    /** @return known Kind values. */
+    /**
+     * Gets known Kind values.
+     *
+     * @return known Kind values.
+     */
     public static Collection<Kind> values() {
         return values(Kind.class);
     }

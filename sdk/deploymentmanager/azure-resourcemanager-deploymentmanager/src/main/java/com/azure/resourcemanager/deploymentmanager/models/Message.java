@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Supplementary contextual messages during a rollout. */
 @Immutable
 public final class Message {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Message.class);
-
     /*
      * Time in UTC this message was provided.
      */
@@ -26,6 +22,10 @@ public final class Message {
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
+
+    /** Creates an instance of Message class. */
+    public Message() {
+    }
 
     /**
      * Get the timestamp property: Time in UTC this message was provided.

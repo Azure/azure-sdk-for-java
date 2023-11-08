@@ -11,10 +11,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.StartMenuItemsClie
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.StartMenuItemInner;
 import com.azure.resourcemanager.desktopvirtualization.models.StartMenuItem;
 import com.azure.resourcemanager.desktopvirtualization.models.StartMenuItems;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StartMenuItemsImpl implements StartMenuItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StartMenuItemsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StartMenuItemsImpl.class);
 
     private final StartMenuItemsClient innerClient;
 
@@ -32,9 +31,17 @@ public final class StartMenuItemsImpl implements StartMenuItems {
         return Utils.mapPage(inner, inner1 -> new StartMenuItemImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StartMenuItem> list(String resourceGroupName, String applicationGroupName, Context context) {
+    public PagedIterable<StartMenuItem> list(
+        String resourceGroupName,
+        String applicationGroupName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
         PagedIterable<StartMenuItemInner> inner =
-            this.serviceClient().list(resourceGroupName, applicationGroupName, context);
+            this
+                .serviceClient()
+                .list(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new StartMenuItemImpl(inner1, this.manager()));
     }
 

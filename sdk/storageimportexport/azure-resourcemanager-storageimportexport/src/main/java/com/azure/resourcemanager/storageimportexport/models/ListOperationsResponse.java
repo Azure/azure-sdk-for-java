@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageimportexport.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List operations response. */
 @Fluent
 public final class ListOperationsResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListOperationsResponse.class);
-
     /*
      * operations
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
+
+    /** Creates an instance of ListOperationsResponse class. */
+    public ListOperationsResponse() {
+    }
 
     /**
      * Get the value property: operations.

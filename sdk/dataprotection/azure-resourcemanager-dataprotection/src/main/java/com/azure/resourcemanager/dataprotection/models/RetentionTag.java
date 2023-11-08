@@ -6,14 +6,15 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** RetentionTag Retention tag. */
+/**
+ * RetentionTag
+ *
+ * <p>Retention tag.
+ */
 @Fluent
 public final class RetentionTag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionTag.class);
-
     /*
      * Retention Tag version.
      */
@@ -31,6 +32,10 @@ public final class RetentionTag {
      */
     @JsonProperty(value = "tagName", required = true)
     private String tagName;
+
+    /** Creates an instance of RetentionTag class. */
+    public RetentionTag() {
+    }
 
     /**
      * Get the etag property: Retention Tag version.
@@ -77,9 +82,11 @@ public final class RetentionTag {
      */
     public void validate() {
         if (tagName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property tagName in model RetentionTag"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RetentionTag.class);
 }

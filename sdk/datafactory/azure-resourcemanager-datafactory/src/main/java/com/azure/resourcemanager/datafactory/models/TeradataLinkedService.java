@@ -24,6 +24,10 @@ public final class TeradataLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private TeradataLinkedServiceTypeProperties innerTypeProperties = new TeradataLinkedServiceTypeProperties();
 
+    /** Creates an instance of TeradataLinkedService class. */
+    public TeradataLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Teradata linked service properties.
      *
@@ -180,22 +184,22 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the TeradataLinkedService object itself.
      */
-    public TeradataLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public TeradataLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new TeradataLinkedServiceTypeProperties();
         }

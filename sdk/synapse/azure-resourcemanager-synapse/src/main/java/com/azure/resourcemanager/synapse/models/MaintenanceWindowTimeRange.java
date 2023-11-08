@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Maintenance window time range. */
 @Fluent
 public final class MaintenanceWindowTimeRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceWindowTimeRange.class);
-
     /*
      * Day of maintenance window.
      */
@@ -31,6 +27,10 @@ public final class MaintenanceWindowTimeRange {
      */
     @JsonProperty(value = "duration")
     private String duration;
+
+    /** Creates an instance of MaintenanceWindowTimeRange class. */
+    public MaintenanceWindowTimeRange() {
+    }
 
     /**
      * Get the dayOfWeek property: Day of maintenance window.

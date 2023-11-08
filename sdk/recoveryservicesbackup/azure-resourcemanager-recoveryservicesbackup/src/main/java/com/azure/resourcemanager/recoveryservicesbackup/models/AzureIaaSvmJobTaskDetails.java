@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -14,8 +12,6 @@ import java.time.OffsetDateTime;
 /** Azure IaaS VM workload-specific job task details. */
 @Fluent
 public final class AzureIaaSvmJobTaskDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSvmJobTaskDetails.class);
-
     /*
      * The task display name.
      */
@@ -64,6 +60,10 @@ public final class AzureIaaSvmJobTaskDetails {
      */
     @JsonProperty(value = "taskExecutionDetails")
     private String taskExecutionDetails;
+
+    /** Creates an instance of AzureIaaSvmJobTaskDetails class. */
+    public AzureIaaSvmJobTaskDetails() {
+    }
 
     /**
      * Get the taskId property: The task display name.

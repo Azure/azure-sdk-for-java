@@ -16,10 +16,9 @@ import com.azure.resourcemanager.digitaltwins.models.CheckNameRequest;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameResult;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwins;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DigitalTwinsImpl implements DigitalTwins {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DigitalTwinsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DigitalTwinsImpl.class);
 
     private final DigitalTwinsClient innerClient;
 
@@ -32,15 +31,6 @@ public final class DigitalTwinsImpl implements DigitalTwins {
         this.serviceManager = serviceManager;
     }
 
-    public DigitalTwinsDescription getByResourceGroup(String resourceGroupName, String resourceName) {
-        DigitalTwinsDescriptionInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new DigitalTwinsDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DigitalTwinsDescription> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<DigitalTwinsDescriptionInner> inner =
@@ -51,6 +41,15 @@ public final class DigitalTwinsImpl implements DigitalTwins {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DigitalTwinsDescriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DigitalTwinsDescription getByResourceGroup(String resourceGroupName, String resourceName) {
+        DigitalTwinsDescriptionInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new DigitalTwinsDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -95,16 +94,6 @@ public final class DigitalTwinsImpl implements DigitalTwins {
         return Utils.mapPage(inner, inner1 -> new DigitalTwinsDescriptionImpl(inner1, this.manager()));
     }
 
-    public CheckNameResult checkNameAvailability(String location, CheckNameRequest digitalTwinsInstanceCheckName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(location, digitalTwinsInstanceCheckName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String location, CheckNameRequest digitalTwinsInstanceCheckName, Context context) {
         Response<CheckNameResultInner> inner =
@@ -120,10 +109,20 @@ public final class DigitalTwinsImpl implements DigitalTwins {
         }
     }
 
+    public CheckNameResult checkNameAvailability(String location, CheckNameRequest digitalTwinsInstanceCheckName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(location, digitalTwinsInstanceCheckName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public DigitalTwinsDescription getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class DigitalTwinsImpl implements DigitalTwins {
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,7 +144,7 @@ public final class DigitalTwinsImpl implements DigitalTwins {
     public Response<DigitalTwinsDescription> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,7 +152,7 @@ public final class DigitalTwinsImpl implements DigitalTwins {
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,7 +166,7 @@ public final class DigitalTwinsImpl implements DigitalTwins {
     public DigitalTwinsDescription deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -175,7 +174,7 @@ public final class DigitalTwinsImpl implements DigitalTwins {
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -189,7 +188,7 @@ public final class DigitalTwinsImpl implements DigitalTwins {
     public DigitalTwinsDescription deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -197,7 +196,7 @@ public final class DigitalTwinsImpl implements DigitalTwins {
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

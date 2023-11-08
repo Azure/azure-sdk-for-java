@@ -5,22 +5,48 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list Kusto databases operation response. */
 @Fluent
 public final class DatabaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseListResult.class);
+    /*
+     * Link to the next page of results
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
 
     /*
      * The list of Kusto databases.
      */
     @JsonProperty(value = "value")
     private List<DatabaseInner> value;
+
+    /** Creates an instance of DatabaseListResult class. */
+    public DatabaseListResult() {
+    }
+
+    /**
+     * Get the nextLink property: Link to the next page of results.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: Link to the next page of results.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the DatabaseListResult object itself.
+     */
+    public DatabaseListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
 
     /**
      * Get the value property: The list of Kusto databases.

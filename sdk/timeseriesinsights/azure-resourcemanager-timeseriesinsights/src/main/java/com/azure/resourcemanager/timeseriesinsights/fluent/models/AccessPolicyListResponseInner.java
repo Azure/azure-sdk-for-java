@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the List access policies operation. */
 @Fluent
 public final class AccessPolicyListResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyListResponseInner.class);
-
     /*
      * Result of the List access policies operation.
      */
     @JsonProperty(value = "value")
     private List<AccessPolicyResourceInner> value;
+
+    /** Creates an instance of AccessPolicyListResponseInner class. */
+    public AccessPolicyListResponseInner() {
+    }
 
     /**
      * Get the value property: Result of the List access policies operation.

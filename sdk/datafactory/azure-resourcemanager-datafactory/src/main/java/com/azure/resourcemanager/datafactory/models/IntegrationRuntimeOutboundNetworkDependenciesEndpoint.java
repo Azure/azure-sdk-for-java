@@ -23,6 +23,10 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpoint {
     @JsonProperty(value = "endpointDetails")
     private List<IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails> endpointDetails;
 
+    /** Creates an instance of IntegrationRuntimeOutboundNetworkDependenciesEndpoint class. */
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpoint() {
+    }
+
     /**
      * Get the domainName property: The domain name of endpoint.
      *

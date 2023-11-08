@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Recovery point tier information. */
 @Fluent
 public class RecoveryPointTierInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointTierInformation.class);
-
     /*
      * Recovery point tier type.
      */
@@ -34,6 +30,10 @@ public class RecoveryPointTierInformation {
     @JsonProperty(value = "extendedInfo")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> extendedInfo;
+
+    /** Creates an instance of RecoveryPointTierInformation class. */
+    public RecoveryPointTierInformation() {
+    }
 
     /**
      * Get the type property: Recovery point tier type.

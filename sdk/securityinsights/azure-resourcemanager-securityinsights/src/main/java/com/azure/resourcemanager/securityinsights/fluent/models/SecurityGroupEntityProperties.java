@@ -19,15 +19,13 @@ public final class SecurityGroupEntityProperties extends EntityCommonProperties 
     private String distinguishedName;
 
     /*
-     * A single-value attribute that is the unique identifier for the object,
-     * assigned by active directory.
+     * A single-value attribute that is the unique identifier for the object, assigned by active directory.
      */
     @JsonProperty(value = "objectGuid", access = JsonProperty.Access.WRITE_ONLY)
     private UUID objectGuid;
 
     /*
-     * The SID attribute is a single-value attribute that specifies the
-     * security identifier (SID) of the group
+     * The SID attribute is a single-value attribute that specifies the security identifier (SID) of the group
      */
     @JsonProperty(value = "sid", access = JsonProperty.Access.WRITE_ONLY)
     private String sid;

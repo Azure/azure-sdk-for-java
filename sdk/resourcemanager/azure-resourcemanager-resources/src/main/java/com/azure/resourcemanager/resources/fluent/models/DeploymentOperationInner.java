@@ -29,6 +29,10 @@ public final class DeploymentOperationInner {
     @JsonProperty(value = "properties")
     private DeploymentOperationProperties properties;
 
+    /** Creates an instance of DeploymentOperationInner class. */
+    public DeploymentOperationInner() {
+    }
+
     /**
      * Get the id property: Full deployment operation ID.
      *

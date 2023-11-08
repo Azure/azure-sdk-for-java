@@ -5,28 +5,25 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** Specifies the metric alert criteria for a single resource that has multiple metric criteria. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria")
-@JsonFlatten
 @Fluent
-public class MetricAlertSingleResourceMultipleMetricCriteria extends MetricAlertCriteria {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MetricAlertSingleResourceMultipleMetricCriteria.class);
-
+public final class MetricAlertSingleResourceMultipleMetricCriteria extends MetricAlertCriteria {
     /*
      * The list of metric criteria for this 'all of' operation.
      */
     @JsonProperty(value = "allOf")
     private List<MetricCriteria> allOf;
+
+    /** Creates an instance of MetricAlertSingleResourceMultipleMetricCriteria class. */
+    public MetricAlertSingleResourceMultipleMetricCriteria() {
+    }
 
     /**
      * Get the allOf property: The list of metric criteria for this 'all of' operation.

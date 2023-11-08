@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.fluent.DefaultAccountsClient;
 import com.azure.resourcemanager.purview.fluent.models.DefaultAccountPayloadInner;
 import com.azure.resourcemanager.purview.models.ScopeType;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DefaultAccountsClient. */
 public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
-    private final ClientLogger logger = new ClientLogger(DefaultAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DefaultAccountsService service;
 
@@ -56,7 +53,7 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "PurviewManagementCli")
-    private interface DefaultAccountsService {
+    public interface DefaultAccountsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Purview/getDefaultAccount")
         @ExpectedResponses({200})
@@ -96,7 +93,9 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
     }
 
     /**
-     * Get the default account for the scope.
+     * Gets the default account information set for the scope.
+     *
+     * <p>Get the default account for the scope.
      *
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
@@ -105,7 +104,7 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default account for the scope.
+     * @return the default account for the scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DefaultAccountPayloadInner>> getWithResponseAsync(
@@ -139,7 +138,9 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
     }
 
     /**
-     * Get the default account for the scope.
+     * Gets the default account information set for the scope.
+     *
+     * <p>Get the default account for the scope.
      *
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
@@ -149,7 +150,7 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default account for the scope.
+     * @return the default account for the scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DefaultAccountPayloadInner>> getWithResponseAsync(
@@ -180,56 +181,48 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
     }
 
     /**
-     * Get the default account for the scope.
+     * Gets the default account information set for the scope.
+     *
+     * <p>Get the default account for the scope.
+     *
+     * @param scopeTenantId The tenant ID.
+     * @param scopeType The scope for the default account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the default account for the scope on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DefaultAccountPayloadInner> getAsync(UUID scopeTenantId, ScopeType scopeType) {
+        final String scope = null;
+        return getWithResponseAsync(scopeTenantId, scopeType, scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the default account information set for the scope.
+     *
+     * <p>Get the default account for the scope.
      *
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
      * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
      *     subscription.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default account for the scope.
+     * @return the default account for the scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DefaultAccountPayloadInner> getAsync(UUID scopeTenantId, ScopeType scopeType, String scope) {
-        return getWithResponseAsync(scopeTenantId, scopeType, scope)
-            .flatMap(
-                (Response<DefaultAccountPayloadInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<DefaultAccountPayloadInner> getWithResponse(
+        UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
+        return getWithResponseAsync(scopeTenantId, scopeType, scope, context).block();
     }
 
     /**
-     * Get the default account for the scope.
+     * Gets the default account information set for the scope.
      *
-     * @param scopeTenantId The tenant ID.
-     * @param scopeType The scope for the default account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default account for the scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DefaultAccountPayloadInner> getAsync(UUID scopeTenantId, ScopeType scopeType) {
-        final String scope = null;
-        return getWithResponseAsync(scopeTenantId, scopeType, scope)
-            .flatMap(
-                (Response<DefaultAccountPayloadInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the default account for the scope.
+     * <p>Get the default account for the scope.
      *
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
@@ -241,26 +234,7 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DefaultAccountPayloadInner get(UUID scopeTenantId, ScopeType scopeType) {
         final String scope = null;
-        return getAsync(scopeTenantId, scopeType, scope).block();
-    }
-
-    /**
-     * Get the default account for the scope.
-     *
-     * @param scopeTenantId The tenant ID.
-     * @param scopeType The scope for the default account.
-     * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
-     *     subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default account for the scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DefaultAccountPayloadInner> getWithResponse(
-        UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
-        return getWithResponseAsync(scopeTenantId, scopeType, scope, context).block();
+        return getWithResponse(scopeTenantId, scopeType, scope, Context.NONE).getValue();
     }
 
     /**
@@ -270,7 +244,8 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return payload to get and set the default account in the given scope.
+     * @return payload to get and set the default account in the given scope along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DefaultAccountPayloadInner>> setWithResponseAsync(
@@ -309,7 +284,8 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return payload to get and set the default account in the given scope.
+     * @return payload to get and set the default account in the given scope along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DefaultAccountPayloadInner>> setWithResponseAsync(
@@ -339,19 +315,27 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return payload to get and set the default account in the given scope.
+     * @return payload to get and set the default account in the given scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DefaultAccountPayloadInner> setAsync(DefaultAccountPayloadInner defaultAccountPayload) {
-        return setWithResponseAsync(defaultAccountPayload)
-            .flatMap(
-                (Response<DefaultAccountPayloadInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return setWithResponseAsync(defaultAccountPayload).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Sets the default account for the scope.
+     *
+     * @param defaultAccountPayload The payload containing the default account information and the scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return payload to get and set the default account in the given scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DefaultAccountPayloadInner> setWithResponse(
+        DefaultAccountPayloadInner defaultAccountPayload, Context context) {
+        return setWithResponseAsync(defaultAccountPayload, context).block();
     }
 
     /**
@@ -365,23 +349,7 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DefaultAccountPayloadInner set(DefaultAccountPayloadInner defaultAccountPayload) {
-        return setAsync(defaultAccountPayload).block();
-    }
-
-    /**
-     * Sets the default account for the scope.
-     *
-     * @param defaultAccountPayload The payload containing the default account information and the scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return payload to get and set the default account in the given scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DefaultAccountPayloadInner> setWithResponse(
-        DefaultAccountPayloadInner defaultAccountPayload, Context context) {
-        return setWithResponseAsync(defaultAccountPayload, context).block();
+        return setWithResponse(defaultAccountPayload, Context.NONE).getValue();
     }
 
     /**
@@ -394,7 +362,7 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> removeWithResponseAsync(UUID scopeTenantId, ScopeType scopeType, String scope) {
@@ -437,7 +405,7 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> removeWithResponseAsync(
@@ -472,16 +440,15 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      *
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
-     * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
-     *     subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> removeAsync(UUID scopeTenantId, ScopeType scopeType, String scope) {
-        return removeWithResponseAsync(scopeTenantId, scopeType, scope).flatMap((Response<Void> res) -> Mono.empty());
+    private Mono<Void> removeAsync(UUID scopeTenantId, ScopeType scopeType) {
+        final String scope = null;
+        return removeWithResponseAsync(scopeTenantId, scopeType, scope).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -489,15 +456,17 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
      *
      * @param scopeTenantId The tenant ID.
      * @param scopeType The scope for the default account.
+     * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
+     *     subscription.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> removeAsync(UUID scopeTenantId, ScopeType scopeType) {
-        final String scope = null;
-        return removeWithResponseAsync(scopeTenantId, scopeType, scope).flatMap((Response<Void> res) -> Mono.empty());
+    public Response<Void> removeWithResponse(UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
+        return removeWithResponseAsync(scopeTenantId, scopeType, scope, context).block();
     }
 
     /**
@@ -512,24 +481,6 @@ public final class DefaultAccountsClientImpl implements DefaultAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void remove(UUID scopeTenantId, ScopeType scopeType) {
         final String scope = null;
-        removeAsync(scopeTenantId, scopeType, scope).block();
-    }
-
-    /**
-     * Removes the default account from the scope.
-     *
-     * @param scopeTenantId The tenant ID.
-     * @param scopeType The scope for the default account.
-     * @param scope The Id of the scope object, for example if the scope is "Subscription" then it is the ID of that
-     *     subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeWithResponse(UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
-        return removeWithResponseAsync(scopeTenantId, scopeType, scope, context).block();
+        removeWithResponse(scopeTenantId, scopeType, scope, Context.NONE);
     }
 }

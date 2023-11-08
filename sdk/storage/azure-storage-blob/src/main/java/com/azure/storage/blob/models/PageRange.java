@@ -24,6 +24,9 @@ public final class PageRange {
     @JsonProperty(value = "End", required = true)
     private long end;
 
+    /** Creates an instance of PageRange class. */
+    public PageRange() {}
+
     /**
      * Get the start property: The Start property.
      *

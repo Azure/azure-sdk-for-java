@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * Trigger that schedules pipeline reruns for all fixed time interval windows from a requested start time to requested
@@ -27,25 +28,25 @@ public class RerunTumblingWindowTrigger extends Trigger {
     private Object parentTrigger;
 
     /*
-     * The start time for the time period for which restatement is initiated.
-     * Only UTC time is currently supported.
+     * The start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
     @JsonProperty(value = "typeProperties.requestedStartTime", required = true)
     private OffsetDateTime requestedStartTime;
 
     /*
-     * The end time for the time period for which restatement is initiated.
-     * Only UTC time is currently supported.
+     * The end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
     @JsonProperty(value = "typeProperties.requestedEndTime", required = true)
     private OffsetDateTime requestedEndTime;
 
     /*
-     * The max number of parallel time windows (ready for execution) for which
-     * a rerun is triggered.
+     * The max number of parallel time windows (ready for execution) for which a rerun is triggered.
      */
     @JsonProperty(value = "typeProperties.rerunConcurrency", required = true)
     private int rerunConcurrency;
+
+    /** Creates an instance of RerunTumblingWindowTrigger class. */
+    public RerunTumblingWindowTrigger() {}
 
     /**
      * Get the parentTrigger property: The parent trigger reference.
@@ -130,6 +131,20 @@ public class RerunTumblingWindowTrigger extends Trigger {
      */
     public RerunTumblingWindowTrigger setRerunConcurrency(int rerunConcurrency) {
         this.rerunConcurrency = rerunConcurrency;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RerunTumblingWindowTrigger setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RerunTumblingWindowTrigger setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

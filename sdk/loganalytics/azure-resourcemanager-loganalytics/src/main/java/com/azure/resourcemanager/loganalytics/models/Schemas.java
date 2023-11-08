@@ -14,23 +14,23 @@ public interface Schemas {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schema for a given workspace.
+     * @return the schema for a given workspace along with {@link Response}.
      */
-    SearchGetSchemaResponse get(String resourceGroupName, String workspaceName);
+    Response<SearchGetSchemaResponse> getWithResponse(String resourceGroupName, String workspaceName, Context context);
 
     /**
      * Gets the schema for a given workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the schema for a given workspace.
      */
-    Response<SearchGetSchemaResponse> getWithResponse(String resourceGroupName, String workspaceName, Context context);
+    SearchGetSchemaResponse get(String resourceGroupName, String workspaceName);
 }

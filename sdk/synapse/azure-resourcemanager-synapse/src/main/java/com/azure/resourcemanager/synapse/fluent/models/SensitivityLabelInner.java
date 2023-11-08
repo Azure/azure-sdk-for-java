@@ -6,16 +6,12 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelRank;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A sensitivity label. */
 @Fluent
 public final class SensitivityLabelInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SensitivityLabelInner.class);
-
     /*
      * Resource properties.
      */
@@ -27,6 +23,10 @@ public final class SensitivityLabelInner extends ProxyResource {
      */
     @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String managedBy;
+
+    /** Creates an instance of SensitivityLabelInner class. */
+    public SensitivityLabelInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

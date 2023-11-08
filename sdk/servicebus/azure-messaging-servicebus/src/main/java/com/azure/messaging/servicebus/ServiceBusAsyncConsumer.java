@@ -21,7 +21,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * A package-private consumer responsible for reading {@link ServiceBusMessage} from a specific Service Bus link.
  */
 class ServiceBusAsyncConsumer implements AutoCloseable {
-    private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String linkName;
     private final ServiceBusReceiveLinkProcessor linkProcessor;
@@ -63,7 +63,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             deadLetterErrorDescription, propertiesToModify, transactionContext);
 
         if (deliveryState == null) {
-            return monoError(logger,
+            return monoError(LOGGER,
                 new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
         }
         return linkProcessor.updateDisposition(lockToken, deliveryState);

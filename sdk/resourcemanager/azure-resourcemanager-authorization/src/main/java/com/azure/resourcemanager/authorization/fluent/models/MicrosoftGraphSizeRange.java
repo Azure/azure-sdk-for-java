@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,18 +15,16 @@ import java.util.Map;
 /** sizeRange. */
 @Fluent
 public final class MicrosoftGraphSizeRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphSizeRange.class);
-
     /*
-     * The maximum size (in kilobytes) that an incoming message must have in
-     * order for a condition or exception to apply.
+     * The maximum size (in kilobytes) that an incoming message must have in order for a condition or exception to
+     * apply.
      */
     @JsonProperty(value = "maximumSize")
     private Integer maximumSize;
 
     /*
-     * The minimum size (in kilobytes) that an incoming message must have in
-     * order for a condition or exception to apply.
+     * The minimum size (in kilobytes) that an incoming message must have in order for a condition or exception to
+     * apply.
      */
     @JsonProperty(value = "minimumSize")
     private Integer minimumSize;
@@ -36,6 +33,10 @@ public final class MicrosoftGraphSizeRange {
      * sizeRange
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSizeRange class. */
+    public MicrosoftGraphSizeRange() {
+    }
 
     /**
      * Get the maximumSize property: The maximum size (in kilobytes) that an incoming message must have in order for a

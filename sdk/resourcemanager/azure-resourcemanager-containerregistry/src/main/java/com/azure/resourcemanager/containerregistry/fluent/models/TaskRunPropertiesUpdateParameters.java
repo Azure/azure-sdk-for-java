@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.RunRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a task run update parameters. */
 @Fluent
 public final class TaskRunPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskRunPropertiesUpdateParameters.class);
-
     /*
      * The request (parameters) for the new run
      */
@@ -22,11 +18,14 @@ public final class TaskRunPropertiesUpdateParameters {
     private RunRequest runRequest;
 
     /*
-     * How the run should be forced to rerun even if the run request
-     * configuration has not changed
+     * How the run should be forced to rerun even if the run request configuration has not changed
      */
     @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
+
+    /** Creates an instance of TaskRunPropertiesUpdateParameters class. */
+    public TaskRunPropertiesUpdateParameters() {
+    }
 
     /**
      * Get the runRequest property: The request (parameters) for the new run.

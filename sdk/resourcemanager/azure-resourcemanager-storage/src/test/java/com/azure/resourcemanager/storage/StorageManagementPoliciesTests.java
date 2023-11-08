@@ -5,19 +5,24 @@ package com.azure.resourcemanager.storage;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.storage.models.AccessTier;
+import com.azure.resourcemanager.storage.models.BlobTypes;
+import com.azure.resourcemanager.storage.models.DateAfterModification;
+import com.azure.resourcemanager.storage.models.Kind;
+import com.azure.resourcemanager.storage.models.ManagementPolicies;
+import com.azure.resourcemanager.storage.models.ManagementPolicy;
+import com.azure.resourcemanager.storage.models.ManagementPolicyBaseBlob;
+import com.azure.resourcemanager.storage.models.PolicyRule;
+import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.storage.models.AccessTier;
-import com.azure.resourcemanager.storage.models.BlobTypes;
-import com.azure.resourcemanager.storage.models.ManagementPolicies;
-import com.azure.resourcemanager.storage.models.ManagementPolicy;
-import com.azure.resourcemanager.storage.models.PolicyRule;
-import com.azure.resourcemanager.storage.models.StorageAccount;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class StorageManagementPoliciesTests extends StorageManagementTest {
     private String rgName = "";
@@ -254,5 +259,96 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         Assertions.assertTrue(rules.get(0).deleteActionOnBaseBlobEnabled());
         Assertions.assertEquals(90, rules.get(0).daysAfterSnapShotCreationUntilDeleting().intValue());
         Assertions.assertTrue(rules.get(0).deleteActionOnSnapShotEnabled());
+    }
+
+    @Test
+    public void testLcmBaseBlobActionsWithPremiumAccount() {
+        String saName = generateRandomResourceName("javacmsa", 15);
+
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.PREMIUM_LRS)
+                .withBlockBlobStorageAccountKind()
+                .create();
+
+        Assertions.assertEquals(StorageAccountSkuType.PREMIUM_LRS.name(), storageAccount.skuType().name());
+        Assertions.assertEquals(Kind.BLOCK_BLOB_STORAGE, storageAccount.kind());
+
+        // enable last access time tracking policy
+        storageManager.blobServices()
+            .define("managementPolicyTest")
+            .withExistingStorageAccount(rgName, saName)
+            .withLastAccessTimeTrackingPolicyEnabled()
+            .create();
+
+        ManagementPolicies managementPolicies = this.storageManager.managementPolicies();
+        ManagementPolicy managementPolicy = managementPolicies.define("management-test")
+            .withExistingStorageAccount(rgName, saName)
+            .defineRule("tierToHotLMT")
+                .withLifecycleRuleType()
+                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToHot(new DateAfterModification().withDaysAfterModificationGreaterThan(50f)))
+                .attach()
+            .defineRule("tierToCoolLMT")
+                .withLifecycleRuleType()
+                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToCool(new DateAfterModification().withDaysAfterModificationGreaterThan(50f)))
+                .attach()
+            .defineRule("tierToArchiveLMT")
+                .withLifecycleRuleType()
+                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToArchive(new DateAfterModification().withDaysAfterModificationGreaterThan(50f)))
+                .attach()
+            .defineRule("tierToHotCreated")
+                .withLifecycleRuleType()
+                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToHot(new DateAfterModification().withDaysAfterCreationGreaterThan(50f)))
+                .attach()
+            .defineRule("tierToCoolCreated")
+                .withLifecycleRuleType()
+                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToCool(new DateAfterModification().withDaysAfterCreationGreaterThan(50f)))
+                .attach()
+            .defineRule("tierToArchiveCreated")
+                .withLifecycleRuleType()
+                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToArchive(new DateAfterModification().withDaysAfterCreationGreaterThan(50f)))
+                .attach()
+            .defineRule("tierToHotLAT")
+                .withLifecycleRuleType()
+                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToHot(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)))
+                .attach()
+            .defineRule("tierToCoolLAT")
+                .withLifecycleRuleType()
+                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToCool(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)))
+                .attach()
+            .defineRule("tierToArchiveLAT")
+                .withLifecycleRuleType()
+                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToArchive(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)))
+                .attach()
+            .defineRule("tierToCoolAutoUpTierLAT")
+                .withLifecycleRuleType()
+                .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
+                .withActionsOnBaseBlob(new ManagementPolicyBaseBlob().withTierToCool(new DateAfterModification().withDaysAfterLastAccessTimeGreaterThan(50f)).withEnableAutoTierToHotFromCool(true))
+                .attach()
+            .create();
+
+        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> ResourceManagerUtils.toPrimitiveBoolean(rule.actionsOnBaseBlob().enableAutoTierToHotFromCool())));
+        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToHot() != null && rule.actionsOnBaseBlob().tierToHot().daysAfterModificationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToCool() != null && rule.actionsOnBaseBlob().tierToCool().daysAfterModificationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToArchive() != null && rule.actionsOnBaseBlob().tierToArchive().daysAfterModificationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToHot() != null && rule.actionsOnBaseBlob().tierToHot().daysAfterCreationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToCool() != null && rule.actionsOnBaseBlob().tierToCool().daysAfterCreationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToArchive() != null && rule.actionsOnBaseBlob().tierToArchive().daysAfterCreationGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToHot() != null && rule.actionsOnBaseBlob().tierToHot().daysAfterLastAccessTimeGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToCool() != null && rule.actionsOnBaseBlob().tierToCool().daysAfterLastAccessTimeGreaterThan() != null));
+        Assertions.assertTrue(managementPolicy.rules().stream().anyMatch(rule -> rule.actionsOnBaseBlob().tierToArchive() != null && rule.actionsOnBaseBlob().tierToArchive().daysAfterLastAccessTimeGreaterThan() != null));
     }
 }

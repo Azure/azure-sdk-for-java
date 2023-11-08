@@ -17,6 +17,15 @@ public final class StorageAuthentication extends ExpandableStringEnum<StorageAut
     public static final StorageAuthentication MANAGED_IDENTITY = fromString("ManagedIdentity");
 
     /**
+     * Creates a new instance of StorageAuthentication value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageAuthentication() {
+    }
+
+    /**
      * Creates or finds a StorageAuthentication from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class StorageAuthentication extends ExpandableStringEnum<StorageAut
         return fromString(name, StorageAuthentication.class);
     }
 
-    /** @return known StorageAuthentication values. */
+    /**
+     * Gets known StorageAuthentication values.
+     *
+     * @return known StorageAuthentication values.
+     */
     public static Collection<StorageAuthentication> values() {
         return values(StorageAuthentication.class);
     }

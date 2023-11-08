@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Algorithm. */
+/** Algorithm to use for URL signing. */
 public final class Algorithm extends ExpandableStringEnum<Algorithm> {
     /** Static value SHA256 for Algorithm. */
     public static final Algorithm SHA256 = fromString("SHA256");
+
+    /**
+     * Creates a new instance of Algorithm value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Algorithm() {
+    }
 
     /**
      * Creates or finds a Algorithm from its string representation.
@@ -24,7 +33,11 @@ public final class Algorithm extends ExpandableStringEnum<Algorithm> {
         return fromString(name, Algorithm.class);
     }
 
-    /** @return known Algorithm values. */
+    /**
+     * Gets known Algorithm values.
+     *
+     * @return known Algorithm values.
+     */
     public static Collection<Algorithm> values() {
         return values(Algorithm.class);
     }

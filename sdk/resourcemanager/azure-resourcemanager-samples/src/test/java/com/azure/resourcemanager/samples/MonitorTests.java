@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.samples;
 
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.monitor.samples.AutoscaleSettingsBasedOnPerformanceOrSchedule;
 import com.azure.resourcemanager.monitor.samples.QueryMetricsAndActivityLogs;
 import com.azure.resourcemanager.monitor.samples.SecurityBreachOrRiskActivityLogAlerts;
@@ -23,6 +24,8 @@ public class MonitorTests extends SamplesTestBase {
         }
     }
 
+    // Require latest date as query parameter
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testSecurityBreachOrRiskActivityLogAlerts() {
         Assertions.assertTrue(SecurityBreachOrRiskActivityLogAlerts.runSample(azureResourceManager));

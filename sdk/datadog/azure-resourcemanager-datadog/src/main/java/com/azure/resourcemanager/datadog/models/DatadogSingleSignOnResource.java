@@ -46,6 +46,13 @@ public interface DatadogSingleSignOnResource {
     SystemData systemData();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.datadog.fluent.models.DatadogSingleSignOnResourceInner object.
      *
      * @return the inner object.
@@ -56,11 +63,13 @@ public interface DatadogSingleSignOnResource {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The DatadogSingleSignOnResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the DatadogSingleSignOnResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the DatadogSingleSignOnResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -72,6 +81,7 @@ public interface DatadogSingleSignOnResource {
              */
             WithCreate withExistingMonitor(String resourceGroupName, String monitorName);
         }
+
         /**
          * The stage of the DatadogSingleSignOnResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -92,6 +102,7 @@ public interface DatadogSingleSignOnResource {
              */
             DatadogSingleSignOnResource create(Context context);
         }
+
         /** The stage of the DatadogSingleSignOnResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -103,6 +114,7 @@ public interface DatadogSingleSignOnResource {
             WithCreate withProperties(DatadogSingleSignOnProperties properties);
         }
     }
+
     /**
      * Begins update for the DatadogSingleSignOnResource resource.
      *
@@ -127,6 +139,7 @@ public interface DatadogSingleSignOnResource {
          */
         DatadogSingleSignOnResource apply(Context context);
     }
+
     /** The DatadogSingleSignOnResource update stages. */
     interface UpdateStages {
         /** The stage of the DatadogSingleSignOnResource update allowing to specify properties. */
@@ -140,6 +153,7 @@ public interface DatadogSingleSignOnResource {
             Update withProperties(DatadogSingleSignOnProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

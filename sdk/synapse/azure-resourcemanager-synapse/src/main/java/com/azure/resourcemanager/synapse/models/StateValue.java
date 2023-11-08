@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StateValue. */
+/** property configuration state. */
 public final class StateValue extends ExpandableStringEnum<StateValue> {
     /** Static value Consistent for StateValue. */
     public static final StateValue CONSISTENT = fromString("Consistent");
@@ -18,6 +18,15 @@ public final class StateValue extends ExpandableStringEnum<StateValue> {
 
     /** Static value Updating for StateValue. */
     public static final StateValue UPDATING = fromString("Updating");
+
+    /**
+     * Creates a new instance of StateValue value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StateValue() {
+    }
 
     /**
      * Creates or finds a StateValue from its string representation.
@@ -30,7 +39,11 @@ public final class StateValue extends ExpandableStringEnum<StateValue> {
         return fromString(name, StateValue.class);
     }
 
-    /** @return known StateValue values. */
+    /**
+     * Gets known StateValue values.
+     *
+     * @return known StateValue values.
+     */
     public static Collection<StateValue> values() {
         return values(StateValue.class);
     }

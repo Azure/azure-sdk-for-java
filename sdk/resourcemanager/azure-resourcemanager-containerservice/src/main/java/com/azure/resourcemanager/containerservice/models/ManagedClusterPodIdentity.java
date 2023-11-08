@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about the pod identity assigned to the Managed Cluster. */
 @Fluent
-public class ManagedClusterPodIdentity {
+public final class ManagedClusterPodIdentity {
     /*
      * The name of the pod identity.
      */
@@ -46,6 +46,10 @@ public class ManagedClusterPodIdentity {
      */
     @JsonProperty(value = "provisioningInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedClusterPodIdentityProvisioningInfo provisioningInfo;
+
+    /** Creates an instance of ManagedClusterPodIdentity class. */
+    public ManagedClusterPodIdentity() {
+    }
 
     /**
      * Get the name property: The name of the pod identity.

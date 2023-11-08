@@ -6,56 +6,37 @@ package com.azure.security.keyvault.administration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImpl;
-import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
-import com.azure.security.keyvault.administration.implementation.models.DataAction;
-import com.azure.security.keyvault.administration.implementation.models.Permission;
-import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
-import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentProperties;
-import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentPropertiesWithScope;
-import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
-import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionProperties;
-import com.azure.security.keyvault.administration.implementation.models.RoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
-import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
-import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionType;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
 import com.azure.security.keyvault.administration.models.SetRoleDefinitionOptions;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.swallowExceptionForStatusCodeAsync;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleAssignmentCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
 
 /**
  * The {@link KeyVaultAccessControlAsyncClient} provides asynchronous methods to view and manage Role Based Access
@@ -69,7 +50,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * <!-- src_embed com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.instantiation -->
  * <pre>
  * KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myaccount.managedhsm.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -79,14 +60,10 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 @ServiceClient(builder = KeyVaultAccessControlClientBuilder.class, isAsync = true)
 public final class KeyVaultAccessControlAsyncClient {
-    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-
     /**
      * The logger to be used.
      */
-    private final ClientLogger logger = new ClientLogger(KeyVaultAccessControlAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlAsyncClient.class);
 
     /**
      * The underlying AutoRest client used to interact with the Key Vault service.
@@ -113,17 +90,13 @@ public final class KeyVaultAccessControlAsyncClient {
      */
     KeyVaultAccessControlAsyncClient(URL vaultUrl, HttpPipeline httpPipeline,
                                      KeyVaultAdministrationServiceVersion serviceVersion) {
-        Objects.requireNonNull(vaultUrl,
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
 
         this.vaultUrl = vaultUrl.toString();
         this.serviceVersion = serviceVersion.getVersion();
         this.pipeline = httpPipeline;
 
-        clientImpl = new KeyVaultAccessControlClientImplBuilder()
-            .pipeline(httpPipeline)
-            .apiVersion(this.serviceVersion)
-            .buildClient();
+        clientImpl = new KeyVaultAccessControlClientImpl(httpPipeline, this.serviceVersion);
     }
 
     /**
@@ -212,20 +185,19 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                              Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
 
             return clientImpl.getRoleDefinitions()
                 .listSinglePageAsync(vaultUrl, roleScope.toString(), null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing role definitions for roleScope - {}", roleScope))
-                .doOnSuccess(response -> logger.verbose("Listed role definitions for roleScope - {}", roleScope))
-                .doOnError(error -> logger.warning("Failed to list role definitions for roleScope - {}", roleScope,
+                    context)
+                .doOnRequest(ignored -> LOGGER.verbose("Listing role definitions for roleScope - {}", roleScope))
+                .doOnSuccess(response -> LOGGER.verbose("Listed role definitions for roleScope - {}", roleScope))
+                .doOnError(error -> LOGGER.warning("Failed to list role definitions for roleScope - {}", roleScope,
                     error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionsPagedResponse);
+                .map(KeyVaultAdministrationUtil::transformRoleDefinitionsPagedResponse);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -246,18 +218,17 @@ public final class KeyVaultAccessControlAsyncClient {
     Mono<PagedResponse<KeyVaultRoleDefinition>> listRoleDefinitionsNextPage(String continuationToken, Context context) {
         try {
             return clientImpl.getRoleDefinitions()
-                .listNextSinglePageAsync(continuationToken, vaultUrl, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .listNextSinglePageAsync(continuationToken, vaultUrl, context)
                 .doOnRequest(ignored ->
-                    logger.verbose("Listing next role definitions page - Page {}", continuationToken))
+                    LOGGER.verbose("Listing next role definitions page - Page {}", continuationToken))
                 .doOnSuccess(response ->
-                    logger.verbose("Listed next role definitions page - Page {}", continuationToken))
+                    LOGGER.verbose("Listed next role definitions page - Page {}", continuationToken))
                 .doOnError(error ->
-                    logger.warning("Failed to list next role definitions page - Page {}", continuationToken, error))
+                    LOGGER.warning("Failed to list next role definitions page - Page {}", continuationToken, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionsPagedResponse);
+                .map(KeyVaultAdministrationUtil::transformRoleDefinitionsPagedResponse);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -396,63 +367,21 @@ public final class KeyVaultAccessControlAsyncClient {
     Mono<Response<KeyVaultRoleDefinition>> setRoleDefinitionWithResponse(SetRoleDefinitionOptions options,
                                                                          Context context) {
         try {
-            Objects.requireNonNull(options,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'options'"));
-            Objects.requireNonNull(options.getRoleScope(),
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'options.getRoleScope()'"));
-            Objects.requireNonNull(options.getRoleDefinitionName(),
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'options.getRoleDefinitionName()'"));
-
-            List<RoleScope> assignableScopes = null;
-
-            if (options.getAssignableScopes() != null) {
-                assignableScopes = options.getAssignableScopes().stream()
-                    .map(keyVaultRoleScope -> RoleScope.fromString(keyVaultRoleScope.toString()))
-                    .collect(Collectors.toList());
-            }
-
-            List<Permission> permissions = null;
-
-            if (options.getPermissions() != null) {
-                permissions = options.getPermissions().stream()
-                    .map(keyVaultPermission -> new Permission()
-                        .setActions(keyVaultPermission.getActions())
-                        .setNotActions(keyVaultPermission.getNotActions())
-                        .setDataActions(keyVaultPermission.getDataActions().stream()
-                            .map(allowedDataAction -> DataAction.fromString(allowedDataAction.toString()))
-                            .collect(Collectors.toList()))
-                        .setNotDataActions(keyVaultPermission.getNotDataActions().stream()
-                            .map(notDataAction -> DataAction.fromString(notDataAction.toString()))
-                            .collect(Collectors.toList())))
-                    .collect(Collectors.toList());
-            }
-
-            RoleDefinitionProperties roleDefinitionProperties =
-                new RoleDefinitionProperties()
-                    .setRoleName(options.getRoleDefinitionName())
-                    .setAssignableScopes(assignableScopes)
-                    .setDescription(options.getDescription())
-                    .setPermissions(permissions);
-            RoleDefinitionCreateParameters parameters =
-                new RoleDefinitionCreateParameters()
-                    .setProperties(roleDefinitionProperties);
+            RoleDefinitionCreateParameters parameters = validateAndGetRoleDefinitionCreateParameters(options);
 
             return clientImpl.getRoleDefinitions()
                 .createOrUpdateWithResponseAsync(vaultUrl, options.getRoleScope().toString(),
                     options.getRoleDefinitionName(), parameters,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored ->
-                    logger.verbose("Creating role definition - {}", options.getRoleDefinitionName()))
-                .doOnSuccess(response -> logger.verbose("Created role definition - {}", response.getValue().getName()))
+                    LOGGER.verbose("Creating role definition - {}", options.getRoleDefinitionName()))
+                .doOnSuccess(response -> LOGGER.verbose("Created role definition - {}", response.getValue().getName()))
                 .doOnError(error ->
-                    logger.warning("Failed to create role definition - {}", options.getRoleDefinitionName(), error))
+                    LOGGER.warning("Failed to create role definition - {}", options.getRoleDefinitionName(), error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionResponse);
+                .map(KeyVaultAdministrationUtil::transformRoleDefinitionResponse);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -541,25 +470,20 @@ public final class KeyVaultAccessControlAsyncClient {
     Mono<Response<KeyVaultRoleDefinition>> getRoleDefinitionWithResponse(KeyVaultRoleScope roleScope,
                                                                          String roleDefinitionName, Context context) {
         try {
-            Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleScope'"));
-            Objects.requireNonNull(roleDefinitionName,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleDefinitionName'"));
+            validateRoleDefinitionParameters(roleScope, roleDefinitionName);
 
             return clientImpl.getRoleDefinitions()
                 .getWithResponseAsync(vaultUrl, roleScope.toString(), roleDefinitionName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Retrieving role definition - {}", roleDefinitionName))
+                    context)
+                .doOnRequest(ignored -> LOGGER.verbose("Retrieving role definition - {}", roleDefinitionName))
                 .doOnSuccess(response ->
-                    logger.verbose("Retrieved role definition - {}", response.getValue().getName()))
+                    LOGGER.verbose("Retrieved role definition - {}", response.getValue().getName()))
                 .doOnError(error ->
-                    logger.warning("Failed to retrieved role definition - {}", roleDefinitionName, error))
+                    LOGGER.warning("Failed to retrieved role definition - {}", roleDefinitionName, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionResponse);
+                .map(KeyVaultAdministrationUtil::transformRoleDefinitionResponse);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -641,25 +565,20 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                             String roleDefinitionName,
                                                                             Context context) {
         try {
-            Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleScope'"));
-            Objects.requireNonNull(roleDefinitionName,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleDefinitionName'"));
+            validateRoleDefinitionParameters(roleScope, roleDefinitionName);
 
             return clientImpl.getRoleDefinitions()
                 .deleteWithResponseAsync(vaultUrl, roleScope.toString(), roleDefinitionName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Deleting role definition - {}", roleDefinitionName))
-                .doOnSuccess(response -> logger.verbose("Deleted role definition - {}", response.getValue().getName()))
-                .doOnError(error -> logger.warning("Failed to delete role definition - {}", roleDefinitionName, error))
+                    context)
+                .doOnRequest(ignored -> LOGGER.verbose("Deleting role definition - {}", roleDefinitionName))
+                .doOnSuccess(response -> LOGGER.verbose("Deleted role definition - {}", response.getValue().getName()))
+                .doOnError(error -> LOGGER.warning("Failed to delete role definition - {}", roleDefinitionName, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(KeyVaultAdministrationException.class, e ->
-                    swallowExceptionForStatusCode(404, e, logger));
+                    swallowExceptionForStatusCodeAsync(404, e, LOGGER));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -720,20 +639,19 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                              Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
 
             return clientImpl.getRoleAssignments()
                 .listForScopeSinglePageAsync(vaultUrl, roleScope.toString(), null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing role assignments for roleScope - {}", roleScope))
-                .doOnSuccess(response -> logger.verbose("Listed role assignments for roleScope - {}", roleScope))
-                .doOnError(error -> logger.warning("Failed to list role assignments for roleScope - {}", roleScope,
+                    context)
+                .doOnRequest(ignored -> LOGGER.verbose("Listing role assignments for roleScope - {}", roleScope))
+                .doOnSuccess(response -> LOGGER.verbose("Listed role assignments for roleScope - {}", roleScope))
+                .doOnError(error -> LOGGER.warning("Failed to list role assignments for roleScope - {}", roleScope,
                     error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentsPagedResponse);
+                .map(KeyVaultAdministrationUtil::transformRoleAssignmentsPagedResponse);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -754,17 +672,17 @@ public final class KeyVaultAccessControlAsyncClient {
         try {
             return clientImpl.getRoleAssignments()
                 .listForScopeNextSinglePageAsync(continuationToken, vaultUrl,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored ->
-                    logger.verbose("Listing next role assignments page - Page {}", continuationToken))
+                    LOGGER.verbose("Listing next role assignments page - Page {}", continuationToken))
                 .doOnSuccess(response ->
-                    logger.verbose("Listed next role assignments page - Page {}", continuationToken))
-                .doOnError(error -> logger.warning("Failed to list next role assignments page - Page {}",
+                    LOGGER.verbose("Listed next role assignments page - Page {}", continuationToken))
+                .doOnError(error -> LOGGER.warning("Failed to list next role assignments page - Page {}",
                     continuationToken, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentsPagedResponse);
+                .map(KeyVaultAdministrationUtil::transformRoleAssignmentsPagedResponse);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -915,37 +833,18 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                             String roleAssignmentName,
                                                                             Context context) {
         try {
-            Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleScope'"));
-            Objects.requireNonNull(roleAssignmentName,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleAssignmentName'"));
-            Objects.requireNonNull(principalId,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'principalId'"));
-            Objects.requireNonNull(roleDefinitionId,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleDefinitionId'"));
-
-            RoleAssignmentProperties roleAssignmentProperties =
-                new RoleAssignmentProperties()
-                    .setRoleDefinitionId(roleDefinitionId)
-                    .setPrincipalId(principalId);
-            RoleAssignmentCreateParameters parameters =
-                new RoleAssignmentCreateParameters()
-                    .setProperties(roleAssignmentProperties);
+            RoleAssignmentCreateParameters parameters = validateAndGetRoleAssignmentCreateParameters(roleScope, roleDefinitionId, principalId, roleAssignmentName);
 
             return clientImpl.getRoleAssignments()
                 .createWithResponseAsync(vaultUrl, roleScope.toString(), roleAssignmentName, parameters,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Creating role assignment - {}", roleAssignmentName))
-                .doOnSuccess(response -> logger.verbose("Created role assignment - {}", response.getValue().getName()))
-                .doOnError(error -> logger.warning("Failed to create role assignment - {}", roleAssignmentName, error))
+                    context)
+                .doOnRequest(ignored -> LOGGER.verbose("Creating role assignment - {}", roleAssignmentName))
+                .doOnSuccess(response -> LOGGER.verbose("Created role assignment - {}", response.getValue().getName()))
+                .doOnError(error -> LOGGER.warning("Failed to create role assignment - {}", roleAssignmentName, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
+                .map(KeyVaultAdministrationUtil::transformRoleAssignmentResponse);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1032,25 +931,19 @@ public final class KeyVaultAccessControlAsyncClient {
     Mono<Response<KeyVaultRoleAssignment>> getRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
                                                                          String roleAssignmentName, Context context) {
         try {
-            Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleScope'"));
-            Objects.requireNonNull(roleAssignmentName,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleAssignmentName'"));
-
+            validateRoleAssignmentParameters(roleScope, roleAssignmentName);
             return clientImpl.getRoleAssignments()
                 .getWithResponseAsync(vaultUrl, roleScope.toString(), roleAssignmentName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Retrieving role assignment - {}", roleAssignmentName))
+                    context)
+                .doOnRequest(ignored -> LOGGER.verbose("Retrieving role assignment - {}", roleAssignmentName))
                 .doOnSuccess(response ->
-                    logger.verbose("Retrieved role assignment - {}", response.getValue().getName()))
+                    LOGGER.verbose("Retrieved role assignment - {}", response.getValue().getName()))
                 .doOnError(error ->
-                    logger.warning("Failed to retrieve role assignment - {}", roleAssignmentName, error))
+                    LOGGER.warning("Failed to retrieve role assignment - {}", roleAssignmentName, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
-                .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
+                .map(KeyVaultAdministrationUtil::transformRoleAssignmentResponse);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1131,190 +1024,20 @@ public final class KeyVaultAccessControlAsyncClient {
     Mono<Response<Void>> deleteRoleAssignmentWithResponse(KeyVaultRoleScope roleScope, String roleAssignmentName,
                                                           Context context) {
         try {
-            Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleScope'"));
-            Objects.requireNonNull(roleAssignmentName,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleAssignmentName'"));
+            validateRoleAssignmentParameters(roleScope, roleAssignmentName);
 
             return clientImpl.getRoleAssignments()
                 .deleteWithResponseAsync(vaultUrl, roleScope.toString(), roleAssignmentName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Deleting role assignment - {}", roleAssignmentName))
-                .doOnSuccess(response -> logger.verbose("Deleted role assignment - {}", response.getValue().getName()))
-                .doOnError(error -> logger.warning("Failed to delete role assignment - {}", roleAssignmentName, error))
+                    context)
+                .doOnRequest(ignored -> LOGGER.verbose("Deleting role assignment - {}", roleAssignmentName))
+                .doOnSuccess(response -> LOGGER.verbose("Deleted role assignment - {}", response.getValue().getName()))
+                .doOnError(error -> LOGGER.warning("Failed to delete role assignment - {}", roleAssignmentName, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(KeyVaultAdministrationException.class, e ->
-                    swallowExceptionForStatusCode(404, e, logger));
+                    swallowExceptionForStatusCodeAsync(404, e, LOGGER));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
-    }
-
-    @SuppressWarnings("BoundedWildcard")
-    private static PagedResponse<KeyVaultRoleDefinition> transformRoleDefinitionsPagedResponse(
-        PagedResponse<RoleDefinition> pagedResponse) {
-
-        List<KeyVaultRoleDefinition> keyVaultRoleDefinitions = new ArrayList<>();
-
-        for (RoleDefinition roleDefinition : pagedResponse.getValue()) {
-            keyVaultRoleDefinitions.add(roleDefinitionToKeyVaultRoleDefinition(roleDefinition));
-        }
-
-        return new TransformedPagedResponse<>(keyVaultRoleDefinitions, pagedResponse);
-    }
-
-    private static Response<KeyVaultRoleDefinition> transformRoleDefinitionResponse(Response<RoleDefinition> response) {
-        KeyVaultRoleDefinition keyVaultRoleDefinition = roleDefinitionToKeyVaultRoleDefinition(response.getValue());
-
-        return new TransformedResponse<>(keyVaultRoleDefinition, response);
-    }
-
-    private static KeyVaultRoleDefinition roleDefinitionToKeyVaultRoleDefinition(RoleDefinition roleDefinition) {
-        List<KeyVaultPermission> keyVaultPermissions = new ArrayList<>();
-
-        for (Permission permission : roleDefinition.getPermissions()) {
-            keyVaultPermissions.add(
-                new KeyVaultPermission(permission.getActions(), permission.getNotActions(),
-                    permission.getDataActions().stream()
-                        .map(dataAction -> KeyVaultDataAction.fromString(dataAction.toString()))
-                        .collect(Collectors.toList()),
-                    permission.getNotDataActions().stream()
-                        .map(notDataAction -> KeyVaultDataAction.fromString(notDataAction.toString()))
-                        .collect(Collectors.toList())));
-        }
-
-        return new KeyVaultRoleDefinition(roleDefinition.getId(), roleDefinition.getName(),
-            KeyVaultRoleDefinitionType.fromString(roleDefinition.getType().toString()), roleDefinition.getRoleName(),
-            roleDefinition.getDescription(), KeyVaultRoleType.fromString(roleDefinition.getRoleType().toString()),
-            keyVaultPermissions, roleDefinition.getAssignableScopes().stream()
-            .map(roleScope -> KeyVaultRoleScope.fromString(roleScope.toString()))
-            .collect(Collectors.toList()));
-    }
-
-    private static PagedResponse<KeyVaultRoleAssignment> transformRoleAssignmentsPagedResponse(
-        PagedResponse<RoleAssignment> pagedResponse) {
-
-        List<KeyVaultRoleAssignment> keyVaultRoleAssignments = new ArrayList<>();
-
-        for (RoleAssignment roleAssignment : pagedResponse.getValue()) {
-            keyVaultRoleAssignments.add(roleAssignmentToKeyVaultRoleAssignment(roleAssignment));
-        }
-
-        return new TransformedPagedResponse<>(keyVaultRoleAssignments, pagedResponse);
-    }
-
-    private static Response<KeyVaultRoleAssignment> transformRoleAssignmentResponse(Response<RoleAssignment> response) {
-        KeyVaultRoleAssignment keyVaultRoleAssignment = roleAssignmentToKeyVaultRoleAssignment(response.getValue());
-
-        return new TransformedResponse<>(keyVaultRoleAssignment, response);
-    }
-
-    private static KeyVaultRoleAssignment roleAssignmentToKeyVaultRoleAssignment(RoleAssignment roleAssignment) {
-        RoleAssignmentPropertiesWithScope propertiesWithScope = roleAssignment.getProperties();
-
-        return new KeyVaultRoleAssignment(roleAssignment.getId(), roleAssignment.getName(), roleAssignment.getType(),
-            new KeyVaultRoleAssignmentProperties(propertiesWithScope.getRoleDefinitionId(),
-                propertiesWithScope.getPrincipalId(),
-                KeyVaultRoleScope.fromString(propertiesWithScope.getScope().toString())));
-    }
-
-    private static final class TransformedPagedResponse<L extends List<T>, T, U> implements PagedResponse<T> {
-        private final L output;
-        private final PagedResponse<U> pagedResponse;
-
-        TransformedPagedResponse(L output, PagedResponse<U> inputPagedResponse) {
-            this.output = output;
-            this.pagedResponse = inputPagedResponse;
-        }
-
-        @Override
-        public void close() throws IOException {
-        }
-
-        @Override
-        public IterableStream<T> getElements() {
-            return new IterableStream<>(output);
-        }
-
-        @Override
-        public String getContinuationToken() {
-            return pagedResponse.getContinuationToken();
-        }
-
-        @Override
-        public int getStatusCode() {
-            return pagedResponse.getStatusCode();
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return pagedResponse.getHeaders();
-        }
-
-        @Override
-        public HttpRequest getRequest() {
-            return pagedResponse.getRequest();
-        }
-
-        @Override
-        public List<T> getValue() {
-            return output;
-        }
-    }
-
-    private static final class TransformedResponse<T, U> implements Response<T> {
-        private final T output;
-        private final Response<U> response;
-
-        TransformedResponse(T output, Response<U> response) {
-            this.output = output;
-            this.response = response;
-        }
-
-        @Override
-        public int getStatusCode() {
-            return response.getStatusCode();
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return response.getHeaders();
-        }
-
-        @Override
-        public HttpRequest getRequest() {
-            return response.getRequest();
-        }
-
-        @Override
-        public T getValue() {
-            return output;
-        }
-    }
-
-    /**
-     * Deserializes a given {@link Response HTTP response} including headers to a given class.
-     *
-     * @param statusCode The status code which will trigger exception swallowing.
-     * @param httpResponseException The {@link HttpResponseException} to be swallowed.
-     * @param logger {@link ClientLogger} that will be used to record the exception.
-     * @param <E> The class of the exception to swallow.
-     *
-     * @return A {@link Mono} that contains the deserialized response.
-     */
-    static <E extends HttpResponseException> Mono<Response<Void>> swallowExceptionForStatusCode(int statusCode,
-                                                                                                E httpResponseException,
-                                                                                                ClientLogger logger) {
-        HttpResponse httpResponse = httpResponseException.getResponse();
-
-        if (httpResponse.getStatusCode() == statusCode) {
-            return Mono.just(new SimpleResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                httpResponse.getHeaders(), null));
-        }
-
-        return monoError(logger, httpResponseException);
     }
 }

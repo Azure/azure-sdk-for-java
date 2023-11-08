@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GlobalReachConnections Delete. */
 public final class GlobalReachConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/GlobalReachConnections_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_Delete.json
      */
     /**
      * Sample code: GlobalReachConnections_Delete.
@@ -17,6 +15,6 @@ public final class GlobalReachConnectionsDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void globalReachConnectionsDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.globalReachConnections().delete("group1", "cloud1", "connection1", Context.NONE);
+        manager.globalReachConnections().delete("group1", "cloud1", "connection1", com.azure.core.util.Context.NONE);
     }
 }

@@ -23,17 +23,19 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProtectionContainersClient. */
 public final class ProtectionContainersClientImpl implements ProtectionContainersClient {
-    private final ClientLogger logger = new ClientLogger(ProtectionContainersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectionContainersService service;
 
@@ -58,11 +60,10 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectionContainersService {
+    public interface ProtectionContainersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionContainerResourceInner>> get(
@@ -78,11 +79,10 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectionContainerResourceInner>> register(
+        Mono<Response<Flux<ByteBuffer>>> register(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("vaultName") String vaultName,
@@ -96,8 +96,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> unregister(
@@ -113,8 +112,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/inquire")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/inquire")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> inquire(
@@ -131,8 +129,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/refreshContainers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/refreshContainers")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> refresh(
@@ -280,32 +277,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     private Mono<ProtectionContainerResourceInner> getAsync(
         String vaultName, String resourceGroupName, String fabricName, String containerName) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName)
-            .flatMap(
-                (Response<ProtectionContainerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets details of the specific container registered to your Recovery Services Vault.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Name of the fabric where the container belongs.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specific container registered to your Recovery Services Vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerResourceInner get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName) {
-        return getAsync(vaultName, resourceGroupName, fabricName, containerName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -328,6 +300,24 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     }
 
     /**
+     * Gets details of the specific container registered to your Recovery Services Vault.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Name of the fabric where the container belongs.
+     * @param containerName Name of the container whose details need to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specific container registered to your Recovery Services Vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProtectionContainerResourceInner get(
+        String vaultName, String resourceGroupName, String fabricName, String containerName) {
+        return getWithResponse(vaultName, resourceGroupName, fabricName, containerName, Context.NONE).getValue();
+    }
+
+    /**
      * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
      * status, use location header to call get latest status of the operation.
      *
@@ -343,7 +333,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionContainerResourceInner>> registerWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> registerWithResponseAsync(
         String vaultName,
         String resourceGroupName,
         String fabricName,
@@ -415,7 +405,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionContainerResourceInner>> registerWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> registerWithResponseAsync(
         String vaultName,
         String resourceGroupName,
         String fabricName,
@@ -480,6 +470,131 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of base class for container with backup items.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ProtectionContainerResourceInner>, ProtectionContainerResourceInner>
+        beginRegisterAsync(
+            String vaultName,
+            String resourceGroupName,
+            String fabricName,
+            String containerName,
+            ProtectionContainerResourceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            registerWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, parameters);
+        return this
+            .client
+            .<ProtectionContainerResourceInner, ProtectionContainerResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ProtectionContainerResourceInner.class,
+                ProtectionContainerResourceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
+     * status, use location header to call get latest status of the operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the container.
+     * @param containerName Name of the container to be registered.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of base class for container with backup items.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ProtectionContainerResourceInner>, ProtectionContainerResourceInner>
+        beginRegisterAsync(
+            String vaultName,
+            String resourceGroupName,
+            String fabricName,
+            String containerName,
+            ProtectionContainerResourceInner parameters,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            registerWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, parameters, context);
+        return this
+            .client
+            .<ProtectionContainerResourceInner, ProtectionContainerResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ProtectionContainerResourceInner.class,
+                ProtectionContainerResourceInner.class,
+                context);
+    }
+
+    /**
+     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
+     * status, use location header to call get latest status of the operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the container.
+     * @param containerName Name of the container to be registered.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of base class for container with backup items.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ProtectionContainerResourceInner>, ProtectionContainerResourceInner> beginRegister(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        ProtectionContainerResourceInner parameters) {
+        return this
+            .beginRegisterAsync(vaultName, resourceGroupName, fabricName, containerName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
+     * status, use location header to call get latest status of the operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the container.
+     * @param containerName Name of the container to be registered.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of base class for container with backup items.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ProtectionContainerResourceInner>, ProtectionContainerResourceInner> beginRegister(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        ProtectionContainerResourceInner parameters,
+        Context context) {
+        return this
+            .beginRegisterAsync(vaultName, resourceGroupName, fabricName, containerName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
+     * status, use location header to call get latest status of the operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the container.
+     * @param containerName Name of the container to be registered.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for container with backup items on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -489,15 +604,37 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
         String fabricName,
         String containerName,
         ProtectionContainerResourceInner parameters) {
-        return registerWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, parameters)
-            .flatMap(
-                (Response<ProtectionContainerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginRegisterAsync(vaultName, resourceGroupName, fabricName, containerName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
+     * status, use location header to call get latest status of the operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the container.
+     * @param containerName Name of the container to be registered.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for container with backup items on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ProtectionContainerResourceInner> registerAsync(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        ProtectionContainerResourceInner parameters,
+        Context context) {
+        return beginRegisterAsync(vaultName, resourceGroupName, fabricName, containerName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -537,18 +674,17 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for container with backup items along with {@link Response}.
+     * @return base class for container with backup items.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectionContainerResourceInner> registerWithResponse(
+    public ProtectionContainerResourceInner register(
         String vaultName,
         String resourceGroupName,
         String fabricName,
         String containerName,
         ProtectionContainerResourceInner parameters,
         Context context) {
-        return registerWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, parameters, context)
-            .block();
+        return registerAsync(vaultName, resourceGroupName, fabricName, containerName, parameters, context).block();
     }
 
     /**
@@ -687,25 +823,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     private Mono<Void> unregisterAsync(
         String vaultName, String resourceGroupName, String fabricName, String containerName) {
         return unregisterWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To
-     * determine whether the backend service has finished processing the request, call Get Container Operation Result
-     * API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Name of the fabric where the container belongs.
-     * @param containerName Name of the container which needs to be unregistered from the Recovery Services Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void unregister(String vaultName, String resourceGroupName, String fabricName, String containerName) {
-        unregisterAsync(vaultName, resourceGroupName, fabricName, containerName).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -730,7 +848,27 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     }
 
     /**
-     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To
+     * determine whether the backend service has finished processing the request, call Get Container Operation Result
+     * API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Name of the fabric where the container belongs.
+     * @param containerName Name of the container which needs to be unregistered from the Recovery Services Vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void unregister(String vaultName, String resourceGroupName, String fabricName, String containerName) {
+        unregisterWithResponse(vaultName, resourceGroupName, fabricName, containerName, Context.NONE);
+    }
+
+    /**
+     * Inquires all the protectable items under the given container.
+     *
+     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
@@ -790,7 +928,9 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     }
 
     /**
-     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * Inquires all the protectable items under the given container.
+     *
+     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
@@ -853,27 +993,9 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     }
 
     /**
-     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * Inquires all the protectable items under the given container.
      *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric Name associated with the container.
-     * @param containerName Name of the container in which inquiry needs to be triggered.
-     * @param filter OData filter options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> inquireAsync(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String filter) {
-        return inquireWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
@@ -889,28 +1011,13 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
         String vaultName, String resourceGroupName, String fabricName, String containerName) {
         final String filter = null;
         return inquireWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * Inquires all the protectable items under the given container.
      *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric Name associated with the container.
-     * @param containerName Name of the container in which inquiry needs to be triggered.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void inquire(String vaultName, String resourceGroupName, String fabricName, String containerName) {
-        final String filter = null;
-        inquireAsync(vaultName, resourceGroupName, fabricName, containerName, filter).block();
-    }
-
-    /**
-     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
@@ -933,6 +1040,25 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
         Context context) {
         return inquireWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, filter, context)
             .block();
+    }
+
+    /**
+     * Inquires all the protectable items under the given container.
+     *
+     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric Name associated with the container.
+     * @param containerName Name of the container in which inquiry needs to be triggered.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void inquire(String vaultName, String resourceGroupName, String fabricName, String containerName) {
+        final String filter = null;
+        inquireWithResponse(vaultName, resourceGroupName, fabricName, containerName, filter, Context.NONE);
     }
 
     /**
@@ -1052,25 +1178,6 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated the container.
-     * @param filter OData filter options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> refreshAsync(String vaultName, String resourceGroupName, String fabricName, String filter) {
-        return refreshWithResponseAsync(vaultName, resourceGroupName, fabricName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
-     * asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated the container.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1080,24 +1187,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     private Mono<Void> refreshAsync(String vaultName, String resourceGroupName, String fabricName) {
         final String filter = null;
         return refreshWithResponseAsync(vaultName, resourceGroupName, fabricName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
-     * asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated the container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void refresh(String vaultName, String resourceGroupName, String fabricName) {
-        final String filter = null;
-        refreshAsync(vaultName, resourceGroupName, fabricName, filter).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1118,5 +1208,22 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     public Response<Void> refreshWithResponse(
         String vaultName, String resourceGroupName, String fabricName, String filter, Context context) {
         return refreshWithResponseAsync(vaultName, resourceGroupName, fabricName, filter, context).block();
+    }
+
+    /**
+     * Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
+     * asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated the container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void refresh(String vaultName, String resourceGroupName, String fabricName) {
+        final String filter = null;
+        refreshWithResponse(vaultName, resourceGroupName, fabricName, filter, Context.NONE);
     }
 }

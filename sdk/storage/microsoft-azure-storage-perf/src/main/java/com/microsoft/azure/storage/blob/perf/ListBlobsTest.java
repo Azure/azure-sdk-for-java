@@ -27,7 +27,7 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
 
     private Mono<Void> upload(String blobName) {
         return Mono.empty()
-            .publishOn(Schedulers.elastic())
+            .publishOn(Schedulers.boundedElastic())
             .then(Mono.fromCallable(() -> {
                 cloudBlobContainer.getBlockBlobReference(blobName).upload(new NullInputStream(), 0);
                 return 1;

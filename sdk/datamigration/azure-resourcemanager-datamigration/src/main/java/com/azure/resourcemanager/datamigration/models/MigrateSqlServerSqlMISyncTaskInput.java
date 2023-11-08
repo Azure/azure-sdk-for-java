@@ -4,15 +4,15 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.List;
 
 /** Input for task that migrates SQL Server databases to Azure SQL Database Managed Instance online scenario. */
-@Immutable
+@Fluent
 public final class MigrateSqlServerSqlMISyncTaskInput extends SqlServerSqlMISyncTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlMISyncTaskInput.class);
+    /** Creates an instance of MigrateSqlServerSqlMISyncTaskInput class. */
+    public MigrateSqlServerSqlMISyncTaskInput() {
+    }
 
     /** {@inheritDoc} */
     @Override

@@ -19,7 +19,28 @@ import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParamet
 /** An instance of this class provides access to all the operations defined in SystemTopicEventSubscriptionsClient. */
 public interface SystemTopicEventSubscriptionsClient {
     /**
-     * Get an event subscription.
+     * Get delivery attributes for an event subscription.
+     *
+     * <p>Get all delivery attributes for an event subscription.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
+        String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
+
+    /**
+     * Get delivery attributes for an event subscription.
+     *
+     * <p>Get all delivery attributes for an event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -28,13 +49,16 @@ public interface SystemTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an event subscription.
+     * @return all delivery attributes for an event subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EventSubscriptionInner get(String resourceGroupName, String systemTopicName, String eventSubscriptionName);
+    DeliveryAttributeListResultInner getDeliveryAttributes(
+        String resourceGroupName, String systemTopicName, String eventSubscriptionName);
 
     /**
-     * Get an event subscription.
+     * Get an event subscription of a system topic.
+     *
+     * <p>Get an event subscription.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -51,7 +75,26 @@ public interface SystemTopicEventSubscriptionsClient {
         String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * Asynchronously creates or updates an event subscription with the specified parameters. Existing event
+     * Get an event subscription of a system topic.
+     *
+     * <p>Get an event subscription.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an event subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EventSubscriptionInner get(String resourceGroupName, String systemTopicName, String eventSubscriptionName);
+
+    /**
+     * Create or update an event subscription for a system topic.
+     *
+     * <p>Asynchronously creates or updates an event subscription with the specified parameters. Existing event
      * subscriptions will be updated with this API.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
@@ -72,7 +115,9 @@ public interface SystemTopicEventSubscriptionsClient {
         EventSubscriptionInner eventSubscriptionInfo);
 
     /**
-     * Asynchronously creates or updates an event subscription with the specified parameters. Existing event
+     * Create or update an event subscription for a system topic.
+     *
+     * <p>Asynchronously creates or updates an event subscription with the specified parameters. Existing event
      * subscriptions will be updated with this API.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
@@ -95,7 +140,9 @@ public interface SystemTopicEventSubscriptionsClient {
         Context context);
 
     /**
-     * Asynchronously creates or updates an event subscription with the specified parameters. Existing event
+     * Create or update an event subscription for a system topic.
+     *
+     * <p>Asynchronously creates or updates an event subscription with the specified parameters. Existing event
      * subscriptions will be updated with this API.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
@@ -116,7 +163,9 @@ public interface SystemTopicEventSubscriptionsClient {
         EventSubscriptionInner eventSubscriptionInfo);
 
     /**
-     * Asynchronously creates or updates an event subscription with the specified parameters. Existing event
+     * Create or update an event subscription for a system topic.
+     *
+     * <p>Asynchronously creates or updates an event subscription with the specified parameters. Existing event
      * subscriptions will be updated with this API.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
@@ -139,7 +188,9 @@ public interface SystemTopicEventSubscriptionsClient {
         Context context);
 
     /**
-     * Delete an existing event subscription of a system topic.
+     * Delete an event subscription of a system topic.
+     *
+     * <p>Delete an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -155,7 +206,9 @@ public interface SystemTopicEventSubscriptionsClient {
         String resourceGroupName, String systemTopicName, String eventSubscriptionName);
 
     /**
-     * Delete an existing event subscription of a system topic.
+     * Delete an event subscription of a system topic.
+     *
+     * <p>Delete an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -172,7 +225,9 @@ public interface SystemTopicEventSubscriptionsClient {
         String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * Delete an existing event subscription of a system topic.
+     * Delete an event subscription of a system topic.
+     *
+     * <p>Delete an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -186,7 +241,9 @@ public interface SystemTopicEventSubscriptionsClient {
     void delete(String resourceGroupName, String systemTopicName, String eventSubscriptionName);
 
     /**
-     * Delete an existing event subscription of a system topic.
+     * Delete an event subscription of a system topic.
+     *
+     * <p>Delete an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -201,7 +258,9 @@ public interface SystemTopicEventSubscriptionsClient {
     void delete(String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * Update an existing event subscription of a system topic.
+     * Update event subscription of a system topic.
+     *
+     * <p>Update an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -221,7 +280,9 @@ public interface SystemTopicEventSubscriptionsClient {
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
 
     /**
-     * Update an existing event subscription of a system topic.
+     * Update event subscription of a system topic.
+     *
+     * <p>Update an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -243,7 +304,9 @@ public interface SystemTopicEventSubscriptionsClient {
         Context context);
 
     /**
-     * Update an existing event subscription of a system topic.
+     * Update event subscription of a system topic.
+     *
+     * <p>Update an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -263,7 +326,9 @@ public interface SystemTopicEventSubscriptionsClient {
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
 
     /**
-     * Update an existing event subscription of a system topic.
+     * Update event subscription of a system topic.
+     *
+     * <p>Update an existing event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -285,23 +350,9 @@ public interface SystemTopicEventSubscriptionsClient {
         Context context);
 
     /**
-     * Get the full endpoint URL for an event subscription of a system topic.
+     * Get full URL of an event subscription of a system topic
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription of a system topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EventSubscriptionFullUrlInner getFullUrl(
-        String resourceGroupName, String systemTopicName, String eventSubscriptionName);
-
-    /**
-     * Get the full endpoint URL for an event subscription of a system topic.
+     * <p>Get the full endpoint URL for an event subscription of a system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -318,7 +369,27 @@ public interface SystemTopicEventSubscriptionsClient {
         String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * List event subscriptions that belong to a specific system topic.
+     * Get full URL of an event subscription of a system topic
+     *
+     * <p>Get the full endpoint URL for an event subscription of a system topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param systemTopicName Name of the system topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription of a system topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EventSubscriptionFullUrlInner getFullUrl(
+        String resourceGroupName, String systemTopicName, String eventSubscriptionName);
+
+    /**
+     * List event subscriptions of a system topic.
+     *
+     * <p>List event subscriptions that belong to a specific system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -331,7 +402,9 @@ public interface SystemTopicEventSubscriptionsClient {
     PagedIterable<EventSubscriptionInner> listBySystemTopic(String resourceGroupName, String systemTopicName);
 
     /**
-     * List event subscriptions that belong to a specific system topic.
+     * List event subscriptions of a system topic.
+     *
+     * <p>List event subscriptions that belong to a specific system topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
@@ -352,37 +425,4 @@ public interface SystemTopicEventSubscriptionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EventSubscriptionInner> listBySystemTopic(
         String resourceGroupName, String systemTopicName, String filter, Integer top, Context context);
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeliveryAttributeListResultInner getDeliveryAttributes(
-        String resourceGroupName, String systemTopicName, String eventSubscriptionName);
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param systemTopicName Name of the system topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
-        String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
 }

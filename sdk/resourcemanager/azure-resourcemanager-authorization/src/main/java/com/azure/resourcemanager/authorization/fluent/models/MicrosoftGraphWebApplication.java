@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** webApplication. */
 @Fluent
 public final class MicrosoftGraphWebApplication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWebApplication.class);
-
     /*
      * Home page or landing page of the application.
      */
@@ -32,17 +29,15 @@ public final class MicrosoftGraphWebApplication {
     private MicrosoftGraphImplicitGrantSettings implicitGrantSettings;
 
     /*
-     * Specifies the URL that will be used by Microsoft's authorization service
-     * to logout an user using front-channel, back-channel or SAML logout
-     * protocols.
+     * Specifies the URL that will be used by Microsoft's authorization service to logout an user using front-channel,
+     * back-channel or SAML logout protocols.
      */
     @JsonProperty(value = "logoutUrl")
     private String logoutUrl;
 
     /*
-     * Specifies the URLs where user tokens are sent for sign-in, or the
-     * redirect URIs where OAuth 2.0 authorization codes and access tokens are
-     * sent.
+     * Specifies the URLs where user tokens are sent for sign-in, or the redirect URIs where OAuth 2.0 authorization
+     * codes and access tokens are sent.
      */
     @JsonProperty(value = "redirectUris")
     private List<String> redirectUris;
@@ -51,6 +46,10 @@ public final class MicrosoftGraphWebApplication {
      * webApplication
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWebApplication class. */
+    public MicrosoftGraphWebApplication() {
+    }
 
     /**
      * Get the homePageUrl property: Home page or landing page of the application.

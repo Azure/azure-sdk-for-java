@@ -6,6 +6,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.util.StorageBlockingSink;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
@@ -21,7 +22,6 @@ import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -35,6 +35,12 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public abstract class BlobOutputStream extends StorageOutputStream {
 
+    private volatile boolean isClosed;
+
+    /**
+     *
+     * @param writeThreshold How many bytes the output will retain before it initiates a write to the Storage service.
+     */
     BlobOutputStream(final int writeThreshold) {
         super(writeThreshold);
     }
@@ -114,7 +120,11 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     @Override
     public synchronized void close() throws IOException {
         try {
-            // if the user has already closed the stream, this will throw a STREAM_CLOSED exception
+            // if the stream is already closed, we can stop executing any further steps to avoid throwing
+            // STREAM_CLOSED exception
+            if (isClosed) {
+                return;
+            }
             // if an exception was thrown by any thread in the threadExecutor, realize it now
             this.checkStreamState();
 
@@ -125,7 +135,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             try {
                 this.commit();
             } catch (final BlobStorageException e) {
-                throw new IOException(e);
+                throw new IOException("The blob has not been committed. Data has not been persisted.", e);
             }
             /* Need this check because for block blob the buffered upload error only manifests itself after commit is
                called */
@@ -133,8 +143,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 throw lastError;
             }
         } finally {
-            // if close() is called again, an exception will be thrown
             this.lastError = new IOException(Constants.STREAM_CLOSED);
+            isClosed = true;
         }
     }
 
@@ -147,7 +157,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
             final AppendBlobRequestConditions appendBlobRequestConditions) {
-            super(AppendBlobClient.MAX_APPEND_BLOCK_BYTES);
+            // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service
+            // versions support up to 4MB
+            super(client.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()
+                ? AppendBlobClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW
+                : AppendBlobClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE);
+
             this.client = client;
             this.appendBlobRequestConditions = (appendBlobRequestConditions == null)
                 ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
@@ -183,10 +198,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 return Mono.error(this.lastError);
             }
 
-            Flux<ByteBuffer> fbb = Flux.range(0, 1).concatMap(pos -> Mono.fromCallable(() ->
-                ByteBuffer.wrap(data, (int) offset, writeLength)));
-
-            return this.appendBlock(fbb.subscribeOn(Schedulers.elastic()), writeLength);
+            return this.appendBlock(Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)).flux(),
+                writeLength);
         }
 
         @Override
@@ -337,16 +350,15 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     writeLength)));
             }
 
-            Flux<ByteBuffer> fbb = Flux.range(0, 1)
-                .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
-
             long pageOffset = pageRange.getStart();
             if (pageOffset + writeLength - 1 > pageRange.getEnd()) {
                 throw LOGGER.logExceptionAsError(
                     new RuntimeException("The input data length is larger than the page range."));
             }
             pageRange.setStart(pageRange.getStart() + writeLength);
-            return this.writePages(fbb.subscribeOn(Schedulers.elastic()), writeLength, pageOffset);
+
+            return this.writePages(Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)).flux(),
+                writeLength, pageOffset);
         }
 
         @Override

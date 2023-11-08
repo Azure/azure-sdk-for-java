@@ -6,9 +6,7 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationGroupPatchProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** ApplicationGroup properties that can be patched. */
 @Fluent
 public final class ApplicationGroupPatch extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGroupPatch.class);
-
     /*
      * tags to be updated
      */
@@ -30,6 +26,10 @@ public final class ApplicationGroupPatch extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private ApplicationGroupPatchProperties innerProperties;
+
+    /** Creates an instance of ApplicationGroupPatch class. */
+    public ApplicationGroupPatch() {
+    }
 
     /**
      * Get the tags property: tags to be updated.
@@ -103,6 +103,29 @@ public final class ApplicationGroupPatch extends ProxyResource {
             this.innerProperties = new ApplicationGroupPatchProperties();
         }
         this.innerProperties().withFriendlyName(friendlyName);
+        return this;
+    }
+
+    /**
+     * Get the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @return the showInFeed value.
+     */
+    public Boolean showInFeed() {
+        return this.innerProperties() == null ? null : this.innerProperties().showInFeed();
+    }
+
+    /**
+     * Set the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @param showInFeed the showInFeed value to set.
+     * @return the ApplicationGroupPatch object itself.
+     */
+    public ApplicationGroupPatch withShowInFeed(Boolean showInFeed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupPatchProperties();
+        }
+        this.innerProperties().withShowInFeed(showInFeed);
         return this;
     }
 

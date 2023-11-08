@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Routes that matched. */
 @Fluent
 public final class MatchedRoute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MatchedRoute.class);
-
     /*
      * Properties of routes that matched
      */
     @JsonProperty(value = "properties")
     private RouteProperties properties;
+
+    /** Creates an instance of MatchedRoute class. */
+    public MatchedRoute() {
+    }
 
     /**
      * Get the properties property: Properties of routes that matched.

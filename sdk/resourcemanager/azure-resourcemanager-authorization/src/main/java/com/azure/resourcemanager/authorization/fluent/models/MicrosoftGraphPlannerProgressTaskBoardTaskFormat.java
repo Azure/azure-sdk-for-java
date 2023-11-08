@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,12 +15,9 @@ import java.util.Map;
 /** plannerProgressTaskBoardTaskFormat. */
 @Fluent
 public final class MicrosoftGraphPlannerProgressTaskBoardTaskFormat extends MicrosoftGraphEntity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphPlannerProgressTaskBoardTaskFormat.class);
-
     /*
-     * Hint value used to order the task on the Progress view of the Task
-     * Board. The format is defined as outlined here.
+     * Hint value used to order the task on the Progress view of the Task Board. The format is defined as outlined
+     * here.
      */
     @JsonProperty(value = "orderHint")
     private String orderHint;
@@ -30,6 +26,10 @@ public final class MicrosoftGraphPlannerProgressTaskBoardTaskFormat extends Micr
      * plannerProgressTaskBoardTaskFormat
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerProgressTaskBoardTaskFormat class. */
+    public MicrosoftGraphPlannerProgressTaskBoardTaskFormat() {
+    }
 
     /**
      * Get the orderHint property: Hint value used to order the task on the Progress view of the Task Board. The format

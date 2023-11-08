@@ -1,6 +1,177 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.33.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.32.0 (2023-10-27)
+
+### Breaking Changes
+
+- Removed unused classes `ActionType`, `Origin`.
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.30.0 (2023-08-25)
+
+### Bugs Fixed
+
+- Fixed a bug that `GenericResources.deleteById` might select the wrong default api-version for resources whose child 
+  resource type collides with other resources.
+
+## 2.30.0-beta.1 (2023-08-18)
+
+### Features Added
+
+- Supported Deployment Stack as preview. See https://learn.microsoft.com/azure/azure-resource-manager/bicep/deployment-stacks
+
+## 2.29.0 (2023-07-28)
+
+### Bugs Fixed
+
+- Fixed a bug that methods in `GenericResources`, `PolicyAssignments` and `TagOperations` fails when get or delete a 
+  resource, if the resource name contains space.
+
+## 2.28.0 (2023-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.27.0 (2023-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of resources to `2022-09-01`.
+- Updated `api-version` of subscriptions to `2022-12-01`.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.25.0 (2023-03-24)
+
+### Breaking Changes
+
+- Updated class `Identity` to final class.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of policy (policyAssignments) to `2022-06-01`.
+
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.22.0 (2022-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.21.0 (2022-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.20.0 (2022-10-26)
+
+### Bugs Fixed
+
+- Fixed bug that `ProviderRegistrationPolicy` does not work.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.19.0 (2022-09-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.18.0 (2022-08-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.17.0 (2022-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.16.0 (2022-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.15.0 (2022-05-25)
+
+### Features Added
+
+- Supported `ResourceManager.resourceChangeClient()`.
+
+### Breaking Changes
+
+- Removed unused classes `DeploymentsWhatIfAtManagementGroupScopeHeaders`, `DeploymentsWhatIfAtManagementGroupScopeResponse`, `DeploymentsWhatIfAtSubscriptionScopeHeaders`, `DeploymentsWhatIfAtSubscriptionScopeResponse`, `DeploymentsWhatIfAtTenantScopeHeaders`, `DeploymentsWhatIfAtTenantScopeResponse`, `DeploymentsWhatIfHeaders`, `DeploymentsWhatIfResponse`
+
+## 2.14.0 (2022-04-11)
+
+### Bugs Fixed
+
+- Fixed a bug that `ResourceManager.pipeline()` be `null`.
 
 ### Other Changes
 

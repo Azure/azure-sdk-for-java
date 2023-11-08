@@ -24,6 +24,10 @@ public final class AzureStorageLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureStorageLinkedServiceTypeProperties innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureStorageLinkedService class. */
+    public AzureStorageLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Storage linked service properties.
      *
@@ -159,7 +163,7 @@ public final class AzureStorageLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
@@ -169,7 +173,7 @@ public final class AzureStorageLinkedService extends LinkedService {
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureStorageLinkedService object itself.

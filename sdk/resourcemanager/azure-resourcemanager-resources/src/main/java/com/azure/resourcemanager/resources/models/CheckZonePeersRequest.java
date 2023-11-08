@@ -23,6 +23,10 @@ public final class CheckZonePeersRequest {
     @JsonProperty(value = "subscriptionIds")
     private List<String> subscriptionIds;
 
+    /** Creates an instance of CheckZonePeersRequest class. */
+    public CheckZonePeersRequest() {
+    }
+
     /**
      * Get the location property: The Microsoft location.
      *

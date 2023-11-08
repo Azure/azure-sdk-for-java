@@ -7,7 +7,6 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,7 +19,7 @@ import java.util.Map;
 /** onenotePage. */
 @Fluent
 public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntitySchemaObjectModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenotePage.class);
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * The page's HTML content.
@@ -35,17 +34,15 @@ public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntity
     private String contentUrl;
 
     /*
-     * The unique identifier of the application that created the page.
-     * Read-only.
+     * The unique identifier of the application that created the page. Read-only.
      */
     @JsonProperty(value = "createdByAppId")
     private String createdByAppId;
 
     /*
-     * The date and time when the page was last modified. The timestamp
-     * represents date and time information using ISO 8601 format and is always
-     * in UTC time. For example, midnight UTC on Jan 1, 2014 would look like
-     * this: '2014-01-01T00:00:00Z'. Read-only.
+     * The date and time when the page was last modified. The timestamp represents date and time information using ISO
+     * 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * '2014-01-01T00:00:00Z'. Read-only.
      */
     @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
@@ -97,6 +94,10 @@ public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOnenotePage class. */
+    public MicrosoftGraphOnenotePage() {
+    }
+
     /**
      * Get the content property: The page's HTML content.
      *
@@ -104,7 +105,7 @@ public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntity
      */
     public byte[] content() {
         if (this.content == null) {
-            return null;
+            return EMPTY_BYTE_ARRAY;
         }
         return this.content.decodedBytes();
     }

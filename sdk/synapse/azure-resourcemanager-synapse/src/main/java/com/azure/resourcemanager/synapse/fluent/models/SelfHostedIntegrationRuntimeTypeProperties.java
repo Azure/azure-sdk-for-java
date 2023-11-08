@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.LinkedIntegrationRuntimeType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The self-hosted integration runtime properties. */
 @Fluent
 public final class SelfHostedIntegrationRuntimeTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SelfHostedIntegrationRuntimeTypeProperties.class);
-
     /*
      * Linked integration runtime type from data factory
      */
     @JsonProperty(value = "linkedInfo")
     private LinkedIntegrationRuntimeType linkedInfo;
+
+    /** Creates an instance of SelfHostedIntegrationRuntimeTypeProperties class. */
+    public SelfHostedIntegrationRuntimeTypeProperties() {
+    }
 
     /**
      * Get the linkedInfo property: Linked integration runtime type from data factory.

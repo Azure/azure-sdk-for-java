@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Extended Properties for Azure IaasVM Backup. */
 @Fluent
 public final class ExtendedProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedProperties.class);
-
     /*
      * Extended Properties for Disk Exclusion.
      */
@@ -25,6 +21,10 @@ public final class ExtendedProperties {
      */
     @JsonProperty(value = "linuxVmApplicationName")
     private String linuxVmApplicationName;
+
+    /** Creates an instance of ExtendedProperties class. */
+    public ExtendedProperties() {
+    }
 
     /**
      * Get the diskExclusionProperties property: Extended Properties for Disk Exclusion.

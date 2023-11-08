@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details needed if the VM was encrypted at the time of backup. */
 @Fluent
 public final class EncryptionDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionDetails.class);
-
     /*
-     * Identifies whether this backup copy represents an encrypted VM at the
-     * time of backup.
+     * Identifies whether this backup copy represents an encrypted VM at the time of backup.
      */
     @JsonProperty(value = "encryptionEnabled")
     private Boolean encryptionEnabled;
@@ -44,6 +39,10 @@ public final class EncryptionDetails {
      */
     @JsonProperty(value = "secretKeyVaultId")
     private String secretKeyVaultId;
+
+    /** Creates an instance of EncryptionDetails class. */
+    public EncryptionDetails() {
+    }
 
     /**
      * Get the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time of

@@ -13,12 +13,15 @@ import java.util.Map;
 @Fluent
 public final class UnknownTarget {
     /*
-     * Dictionary of string->string pairs containing information about the
-     * Storage Target.
+     * Dictionary of string->string pairs containing information about the Storage Target.
      */
     @JsonProperty(value = "attributes")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> attributes;
+
+    /** Creates an instance of UnknownTarget class. */
+    public UnknownTarget() {
+    }
 
     /**
      * Get the attributes property: Dictionary of string-&gt;string pairs containing information about the Storage

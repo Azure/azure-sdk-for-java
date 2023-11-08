@@ -4,17 +4,20 @@
 
 package com.azure.resourcemanager.policyinsights.generated;
 
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.policyinsights.fluent.models.AttestationInner;
 import com.azure.resourcemanager.policyinsights.models.AttestationEvidence;
 import com.azure.resourcemanager.policyinsights.models.ComplianceState;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 /** Samples for Attestations CreateOrUpdateAtSubscription. */
 public final class AttestationsCreateOrUpdateAtSubscriptionSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_CreateSubscriptionScope.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_CreateSubscriptionScope.json
      */
     /**
      * Sample code: Create attestation at subscription scope.
@@ -35,7 +38,7 @@ public final class AttestationsCreateOrUpdateAtSubscriptionSamples {
     }
 
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_CreateSubscriptionScope_AllProperties.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_CreateSubscriptionScope_AllProperties.json
      */
     /**
      * Sample code: Create attestation at subscription scope with all properties.
@@ -43,7 +46,7 @@ public final class AttestationsCreateOrUpdateAtSubscriptionSamples {
      * @param manager Entry point to PolicyInsightsManager.
      */
     public static void createAttestationAtSubscriptionScopeWithAllProperties(
-        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) throws IOException {
         manager
             .attestations()
             .createOrUpdateAtSubscription(
@@ -61,8 +64,13 @@ public final class AttestationsCreateOrUpdateAtSubscriptionSamples {
                             .asList(
                                 new AttestationEvidence()
                                     .withDescription("The results of the security audit.")
-                                    .withSourceUri(
-                                        "https://gist.github.com/contoso/9573e238762c60166c090ae16b814011"))),
+                                    .withSourceUri("https://gist.github.com/contoso/9573e238762c60166c090ae16b814011")))
+                    .withAssessmentDate(OffsetDateTime.parse("2021-06-10T00:00:00Z"))
+                    .withMetadata(
+                        SerializerFactory
+                            .createDefaultManagementSerializerAdapter()
+                            .deserialize(
+                                "{\"departmentId\":\"NYC-MARKETING-1\"}", Object.class, SerializerEncoding.JSON)),
                 Context.NONE);
     }
 }

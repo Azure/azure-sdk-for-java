@@ -133,6 +133,13 @@ public interface LabCost {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.LabCostInner object.
      *
      * @return the inner object.
@@ -146,11 +153,13 @@ public interface LabCost {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The LabCost definition stages. */
     interface DefinitionStages {
         /** The first stage of the LabCost definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the LabCost definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -169,6 +178,7 @@ public interface LabCost {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the LabCost definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -180,6 +190,7 @@ public interface LabCost {
              */
             WithCreate withExistingLab(String resourceGroupName, String labName);
         }
+
         /**
          * The stage of the LabCost definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -206,6 +217,7 @@ public interface LabCost {
              */
             LabCost create(Context context);
         }
+
         /** The stage of the LabCost definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -216,6 +228,7 @@ public interface LabCost {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the LabCost definition allowing to specify targetCost. */
         interface WithTargetCost {
             /**
@@ -226,6 +239,7 @@ public interface LabCost {
              */
             WithCreate withTargetCost(TargetCostProperties targetCost);
         }
+
         /** The stage of the LabCost definition allowing to specify currencyCode. */
         interface WithCurrencyCode {
             /**
@@ -236,6 +250,7 @@ public interface LabCost {
              */
             WithCreate withCurrencyCode(String currencyCode);
         }
+
         /** The stage of the LabCost definition allowing to specify startDateTime. */
         interface WithStartDateTime {
             /**
@@ -246,6 +261,7 @@ public interface LabCost {
              */
             WithCreate withStartDateTime(OffsetDateTime startDateTime);
         }
+
         /** The stage of the LabCost definition allowing to specify endDateTime. */
         interface WithEndDateTime {
             /**
@@ -256,6 +272,7 @@ public interface LabCost {
              */
             WithCreate withEndDateTime(OffsetDateTime endDateTime);
         }
+
         /** The stage of the LabCost definition allowing to specify createdDate. */
         interface WithCreatedDate {
             /**
@@ -267,6 +284,7 @@ public interface LabCost {
             WithCreate withCreatedDate(OffsetDateTime createdDate);
         }
     }
+
     /**
      * Begins update for the LabCost resource.
      *
@@ -297,6 +315,7 @@ public interface LabCost {
          */
         LabCost apply(Context context);
     }
+
     /** The LabCost update stages. */
     interface UpdateStages {
         /** The stage of the LabCost update allowing to specify tags. */
@@ -309,6 +328,7 @@ public interface LabCost {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the LabCost update allowing to specify targetCost. */
         interface WithTargetCost {
             /**
@@ -319,6 +339,7 @@ public interface LabCost {
              */
             Update withTargetCost(TargetCostProperties targetCost);
         }
+
         /** The stage of the LabCost update allowing to specify currencyCode. */
         interface WithCurrencyCode {
             /**
@@ -329,6 +350,7 @@ public interface LabCost {
              */
             Update withCurrencyCode(String currencyCode);
         }
+
         /** The stage of the LabCost update allowing to specify startDateTime. */
         interface WithStartDateTime {
             /**
@@ -339,6 +361,7 @@ public interface LabCost {
              */
             Update withStartDateTime(OffsetDateTime startDateTime);
         }
+
         /** The stage of the LabCost update allowing to specify endDateTime. */
         interface WithEndDateTime {
             /**
@@ -349,6 +372,7 @@ public interface LabCost {
              */
             Update withEndDateTime(OffsetDateTime endDateTime);
         }
+
         /** The stage of the LabCost update allowing to specify createdDate. */
         interface WithCreatedDate {
             /**
@@ -360,6 +384,7 @@ public interface LabCost {
             Update withCreatedDate(OffsetDateTime createdDate);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

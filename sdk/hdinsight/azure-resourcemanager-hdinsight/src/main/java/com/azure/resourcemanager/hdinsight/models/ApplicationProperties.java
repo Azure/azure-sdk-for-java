@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The HDInsight cluster application GET response. */
 @Fluent
 public final class ApplicationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationProperties.class);
-
     /*
      * The list of roles in the cluster.
      */
@@ -86,6 +82,10 @@ public final class ApplicationProperties {
      */
     @JsonProperty(value = "privateLinkConfigurations")
     private List<PrivateLinkConfiguration> privateLinkConfigurations;
+
+    /** Creates an instance of ApplicationProperties class. */
+    public ApplicationProperties() {
+    }
 
     /**
      * Get the computeProfile property: The list of roles in the cluster.

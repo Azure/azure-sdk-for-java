@@ -8,13 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlConnectionType. */
+/** The type of the connection. */
 public final class SqlConnectionType extends ExpandableStringEnum<SqlConnectionType> {
     /** Static value SqlOnDemand for SqlConnectionType. */
     public static final SqlConnectionType SQL_ON_DEMAND = fromString("SqlOnDemand");
 
     /** Static value SqlPool for SqlConnectionType. */
     public static final SqlConnectionType SQL_POOL = fromString("SqlPool");
+
+    /**
+     * Creates a new instance of SqlConnectionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlConnectionType() {}
 
     /**
      * Creates or finds a SqlConnectionType from its string representation.
@@ -27,7 +35,11 @@ public final class SqlConnectionType extends ExpandableStringEnum<SqlConnectionT
         return fromString(name, SqlConnectionType.class);
     }
 
-    /** @return known SqlConnectionType values. */
+    /**
+     * Gets known SqlConnectionType values.
+     *
+     * @return known SqlConnectionType values.
+     */
     public static Collection<SqlConnectionType> values() {
         return values(SqlConnectionType.class);
     }

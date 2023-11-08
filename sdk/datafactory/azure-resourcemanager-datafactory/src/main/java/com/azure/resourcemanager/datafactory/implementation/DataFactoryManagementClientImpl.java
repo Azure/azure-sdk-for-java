@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -22,12 +23,15 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.datafactory.fluent.ActivityRunsClient;
+import com.azure.resourcemanager.datafactory.fluent.ChangeDataCapturesClient;
+import com.azure.resourcemanager.datafactory.fluent.CredentialOperationsClient;
 import com.azure.resourcemanager.datafactory.fluent.DataFactoryManagementClient;
 import com.azure.resourcemanager.datafactory.fluent.DataFlowDebugSessionsClient;
 import com.azure.resourcemanager.datafactory.fluent.DataFlowsClient;
 import com.azure.resourcemanager.datafactory.fluent.DatasetsClient;
 import com.azure.resourcemanager.datafactory.fluent.ExposureControlsClient;
 import com.azure.resourcemanager.datafactory.fluent.FactoriesClient;
+import com.azure.resourcemanager.datafactory.fluent.GlobalParametersClient;
 import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimeNodesClient;
 import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimeObjectMetadatasClient;
 import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimesClient;
@@ -48,7 +52,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -331,6 +334,18 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
         return this.managedPrivateEndpoints;
     }
 
+    /** The CredentialOperationsClient object to access its operations. */
+    private final CredentialOperationsClient credentialOperations;
+
+    /**
+     * Gets the CredentialOperationsClient object to access its operations.
+     *
+     * @return the CredentialOperationsClient object.
+     */
+    public CredentialOperationsClient getCredentialOperations() {
+        return this.credentialOperations;
+    }
+
     /** The PrivateEndPointConnectionsClient object to access its operations. */
     private final PrivateEndPointConnectionsClient privateEndPointConnections;
 
@@ -365,6 +380,30 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
+    }
+
+    /** The GlobalParametersClient object to access its operations. */
+    private final GlobalParametersClient globalParameters;
+
+    /**
+     * Gets the GlobalParametersClient object to access its operations.
+     *
+     * @return the GlobalParametersClient object.
+     */
+    public GlobalParametersClient getGlobalParameters() {
+        return this.globalParameters;
+    }
+
+    /** The ChangeDataCapturesClient object to access its operations. */
+    private final ChangeDataCapturesClient changeDataCaptures;
+
+    /**
+     * Gets the ChangeDataCapturesClient object to access its operations.
+     *
+     * @return the ChangeDataCapturesClient object.
+     */
+    public ChangeDataCapturesClient getChangeDataCaptures() {
+        return this.changeDataCaptures;
     }
 
     /**
@@ -407,9 +446,12 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
         this.dataFlowDebugSessions = new DataFlowDebugSessionsClientImpl(this);
         this.managedVirtualNetworks = new ManagedVirtualNetworksClientImpl(this);
         this.managedPrivateEndpoints = new ManagedPrivateEndpointsClientImpl(this);
+        this.credentialOperations = new CredentialOperationsClientImpl(this);
         this.privateEndPointConnections = new PrivateEndPointConnectionsClientImpl(this);
         this.privateEndpointConnectionOperations = new PrivateEndpointConnectionOperationsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.globalParameters = new GlobalParametersClientImpl(this);
+        this.changeDataCaptures = new ChangeDataCapturesClientImpl(this);
     }
 
     /**
@@ -428,10 +470,7 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**

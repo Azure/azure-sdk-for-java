@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyUnknownConfiguration")
 @Immutable
 public final class ContentKeyPolicyUnknownConfiguration extends ContentKeyPolicyConfiguration {
+    /** Creates an instance of ContentKeyPolicyUnknownConfiguration class. */
+    public ContentKeyPolicyUnknownConfiguration() {
+    }
+
     /**
      * Validates the instance.
      *

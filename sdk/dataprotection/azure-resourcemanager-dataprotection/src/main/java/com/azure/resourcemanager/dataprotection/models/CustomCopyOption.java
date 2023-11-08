@@ -5,24 +5,28 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** CustomCopyOption Duration based custom options to copy. */
+/**
+ * CustomCopyOption
+ *
+ * <p>Duration based custom options to copy.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("CustomCopyOption")
 @Fluent
 public final class CustomCopyOption extends CopyOption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomCopyOption.class);
-
     /*
      * Data copied after given timespan
      */
     @JsonProperty(value = "duration")
     private String duration;
+
+    /** Creates an instance of CustomCopyOption class. */
+    public CustomCopyOption() {
+    }
 
     /**
      * Get the duration property: Data copied after given timespan.

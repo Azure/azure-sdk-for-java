@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.RestorableMongodbCollectionPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Azure Cosmos DB MongoDB collection event. */
 @Fluent
 public final class RestorableMongodbCollectionGetResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableMongodbCollectionGetResultInner.class);
-
     /*
      * The properties of a MongoDB collection event.
      */
@@ -38,6 +34,10 @@ public final class RestorableMongodbCollectionGetResultInner {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of RestorableMongodbCollectionGetResultInner class. */
+    public RestorableMongodbCollectionGetResultInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a MongoDB collection event.

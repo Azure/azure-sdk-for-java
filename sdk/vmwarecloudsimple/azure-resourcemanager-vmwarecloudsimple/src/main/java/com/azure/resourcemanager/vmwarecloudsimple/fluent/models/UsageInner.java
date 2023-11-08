@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.models.UsageCount;
 import com.azure.resourcemanager.vmwarecloudsimple.models.UsageName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Usage model. */
 @Fluent
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
-
     /*
      * The current usage value
      */
@@ -23,9 +19,8 @@ public final class UsageInner {
     private int currentValue;
 
     /*
-     * limit of a given sku in a region for a subscription. The maximum
-     * permitted value for the usage quota. If there is no limit, this value
-     * will be -1
+     * limit of a given sku in a region for a subscription. The maximum permitted value for the usage quota. If there
+     * is no limit, this value will be -1
      */
     @JsonProperty(value = "limit", required = true)
     private int limit;
@@ -41,6 +36,10 @@ public final class UsageInner {
      */
     @JsonProperty(value = "unit")
     private UsageCount unit;
+
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
 
     /**
      * Get the currentValue property: The current usage value.

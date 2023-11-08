@@ -23,6 +23,15 @@ public final class DependencyCondition extends ExpandableStringEnum<DependencyCo
     public static final DependencyCondition COMPLETED = fromString("Completed");
 
     /**
+     * Creates a new instance of DependencyCondition value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DependencyCondition() {
+    }
+
+    /**
      * Creates or finds a DependencyCondition from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class DependencyCondition extends ExpandableStringEnum<DependencyCo
         return fromString(name, DependencyCondition.class);
     }
 
-    /** @return known DependencyCondition values. */
+    /**
+     * Gets known DependencyCondition values.
+     *
+     * @return known DependencyCondition values.
+     */
     public static Collection<DependencyCondition> values() {
         return values(DependencyCondition.class);
     }

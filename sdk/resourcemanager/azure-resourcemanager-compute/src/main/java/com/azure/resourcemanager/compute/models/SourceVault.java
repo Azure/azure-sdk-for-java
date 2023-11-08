@@ -19,6 +19,10 @@ public final class SourceVault {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of SourceVault class. */
+    public SourceVault() {
+    }
+
     /**
      * Get the id property: Resource Id.
      *

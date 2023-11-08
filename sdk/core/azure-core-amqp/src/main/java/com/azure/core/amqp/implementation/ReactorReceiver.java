@@ -29,10 +29,13 @@ import java.io.UncheckedIOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
@@ -44,6 +47,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
 public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoCloseable {
+    private static final Symbol SEQUENCE_NUMBER_ANNOTATION = Symbol.valueOf(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
@@ -54,24 +58,42 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     // A Mono that signals completion when the disposal/closing of ReactorReceiver is completed.
     private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
+    // Indicate if the completeClose method is called.
+    private final AtomicBoolean isCompleteCloseCalled = new AtomicBoolean();
     private final Flux<Message> messagesProcessor;
     private final AmqpRetryOptions retryOptions;
     private final ClientLogger logger;
     private final Flux<AmqpEndpointState> endpointStates;
+    private final Sinks.Empty<AmqpEndpointState> terminateEndpointStates = Sinks.empty();
 
     private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>();
+    private final AmqpMetricsProvider metricsProvider;
+    private final AtomicLong lastSequenceNumber = new AtomicLong();
+    private final AutoCloseable trackPrefetchSeqNoSubscription;
+
+    @Deprecated
+    protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
+                              ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+                              AmqpRetryOptions retryOptions) {
+        this(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
+            new AmqpMetricsProvider(null, amqpConnection.getFullyQualifiedNamespace(), entityPath));
+    }
 
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
-        AmqpRetryOptions retryOptions) {
+                              ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+                              AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
+        this.metricsProvider = metricsProvider;
+        this.trackPrefetchSeqNoSubscription = this.metricsProvider.trackPrefetchSequenceNumber(lastSequenceNumber::get);
 
         Map<String, Object> loggingContext = createContextWithConnectionId(handler.getConnectionId());
         loggingContext.put(LINK_NAME_KEY, this.handler.getLinkName());
+        loggingContext.put(ENTITY_PATH_KEY, entityPath);
+
         this.logger = new ClientLogger(ReactorReceiver.class, loggingContext);
 
         // Delivered messages are not published on another scheduler because we want the settlement method that happens
@@ -83,7 +105,20 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 return Mono.create(sink -> {
                     try {
                         this.dispatcher.invoke(() -> {
+                            if (isDisposed()) {
+                                sink.error(new IllegalStateException(
+                                    "Cannot decode delivery when ReactorReceiver instance is closed."));
+                                return;
+                            }
+
                             final Message message = decodeDelivery(delivery);
+                            if (metricsProvider.isPrefetchedSequenceNumberEnabled()) {
+                                Long seqNo = getSequenceNumber(message);
+                                if (seqNo != null) {
+                                    lastSequenceNumber.set(seqNo);
+                                }
+                            }
+
                             final int creditsLeft = receiver.getRemoteCredit();
 
                             if (creditsLeft > 0) {
@@ -105,6 +140,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                                     .log("There are no credits to add.");
                             }
 
+                            metricsProvider.recordAddCredits(credits == null ? 0 : credits);
                             sink.success(message);
                         });
                     } catch (IOException | RejectedExecutionException e) {
@@ -117,7 +153,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
                 logger.atVerbose()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .log("State {}", state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
@@ -127,7 +162,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                     : "Freeing resources due to error.";
 
                 logger.atInfo()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .log(message);
 
                 completeClose();
@@ -138,7 +172,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                     : "Freeing resources.";
 
                 logger.atVerbose()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .log(message);
 
                 completeClose();
@@ -164,7 +197,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                     error -> { },
                     () -> {
                         logger.atVerbose()
-                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .log("Authorization completed.");
 
                         closeAsync("Authorization completed. Disposing.", null).subscribe();
@@ -179,7 +211,9 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates.distinct();
+        return endpointStates
+            .distinctUntilChanged()
+            .takeUntilOther(this.terminateEndpointStates.asMono());
     }
 
     @Override
@@ -197,6 +231,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
             try {
                 dispatcher.invoke(() -> {
                     receiver.flow(credits);
+                    metricsProvider.recordAddCredits(credits);
                     sink.success();
                 });
             } catch (IOException e) {
@@ -277,6 +312,15 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      * internally when there is an error in the link, session or connection.
      * </p>
      *
+     * <p>
+     * Closing ReactorReceiver involves 3 stages, running in following order  -
+     * <ul>
+     *      <li>local-close (client to broker) via beginClose() </li>
+     *      <li>remote-close ack (broker to client)</li>
+     *      <li>disposal of ReactorReceiver resources via completeClose()</li>
+     * </ul>
+     * @link <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/docs/reactor-receiver-closeflow.png">Reactor receiver close flow</a>
+     *
      * @param message Message to log.
      * @param errorCondition Error condition associated with close operation.
      */
@@ -286,35 +330,17 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         }
 
         addErrorCondition(logger.atVerbose(), errorCondition)
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("Setting error condition and disposing. {}", message);
 
-        final Runnable closeReceiver = () -> {
-            if (receiver.getLocalState() != EndpointState.CLOSED) {
-                receiver.close();
-
-                if (receiver.getCondition() == null) {
-                    receiver.setCondition(errorCondition);
+        return beginClose(errorCondition)
+            .flatMap(localCloseScheduled -> {
+                if (localCloseScheduled) {
+                    return timeoutRemoteCloseAck();
+                } else {
+                    return Mono.empty();
                 }
-            }
-        };
-
-        return Mono.fromRunnable(() -> {
-            try {
-                dispatcher.invoke(closeReceiver);
-            } catch (IOException e) {
-                logger.warning("IO sink was closed when scheduling work. Manually invoking and completing close.", e);
-
-                closeReceiver.run();
-                completeClose();
-            } catch (RejectedExecutionException e) {
-                // Not logging error here again because we have to log the exception when we throw it.
-                logger.info("RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
-
-                closeReceiver.run();
-                completeClose();
-            }
-        }).then(isClosedMono.asMono()).publishOn(Schedulers.boundedElastic());
+            })
+            .publishOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -326,10 +352,111 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         return isClosedMono.asMono().publishOn(Schedulers.boundedElastic());
     }
 
+    protected void onHandlerClose() {
+        // Note: Given the disposition is a generic AMQP feature of brokers that support receive-link with UNSETTLED
+        // settlement mode, in near future we will enable delivery disposition API in amqp-core 'ReceiverLinkHandler'.
+        // Such a future API in 'ReceiverLinkHandler' means the handler will own the 'ReceiverUnsettledDeliveries'
+        // object, and the closing of the handler (i.e., handler.close()) will close 'ReceiverUnsettledDeliveries'.
+        // TODO: anuchan: Remove onHandlerClose
+        // This 'onHandlerClose' method is a temporary internal method for the 'ServiceBusReactorReceiver' to close
+        // the 'ReceiverUnsettledDeliveries' for the interim while we rollout the full disposition API support in
+        // amqp-core. The 'onHandlerClose' method will be removed once ownership of the 'ReceiverUnsettledDeliveries'
+        // is abstracted within 'ReceiverLinkHandler', so 'ServiceBusReactorReceiver' no longer have to own it.
+    }
+
     /**
-     * Takes care of disposing of subscriptions, reactor resources after they've been closed.
+     * Beings the client side close by initiating local-close on underlying receiver.
+     *
+     * @param errorCondition Error condition associated with close operation.
+     * @return a {@link Mono} when subscribed attempt to initiate local-close, emitting {@code true}
+     *     if local-close is scheduled on the dispatcher, emits {@code false} if unable to schedule
+     *     local-close that lead to manual close.
+     */
+    private Mono<Boolean> beginClose(ErrorCondition errorCondition) {
+        final Runnable localClose = () -> {
+            if (receiver.getLocalState() != EndpointState.CLOSED) {
+                receiver.close();
+
+                if (receiver.getCondition() == null) {
+                    receiver.setCondition(errorCondition);
+                }
+            }
+        };
+
+        return Mono.create(sink -> {
+            boolean localCloseScheduled = false;
+            try {
+                dispatcher.invoke(localClose);
+                localCloseScheduled = true;
+            } catch (IOException e) {
+                logger.warning("IO sink was closed when scheduling work. Manually invoking and completing close.", e);
+
+                localClose.run();
+                terminateEndpointState();
+                completeClose();
+            } catch (RejectedExecutionException e) {
+                // Not logging error here again because we have to log the exception when we throw it.
+                logger.info("RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
+
+                localClose.run();
+                terminateEndpointState();
+                completeClose();
+            } finally {
+                sink.success(localCloseScheduled);
+            }
+        });
+    }
+
+    /**
+     * Apply timeout on remote-close ack. If timeout happens, i.e., if remote-close ack doesn't arrive within
+     * the timeout duration, then terminate the Flux returned by getEndpointStates() and complete close.
+     *
+     * a {@link Mono} that registers remote-close ack timeout based close cleanup.
+     */
+    private Mono<Void> timeoutRemoteCloseAck() {
+        return isClosedMono.asMono()
+            .timeout(retryOptions.getTryTimeout())
+            .onErrorResume(error -> {
+                if (error instanceof TimeoutException) {
+                    logger.info("Timeout waiting for RemoteClose. Manually terminating EndpointStates and completing close.");
+                    terminateEndpointState();
+                    completeClose();
+                }
+                return Mono.empty();
+            })
+            .subscribeOn(Schedulers.boundedElastic());
+    }
+
+    /**
+     * Terminate the Flux returned by the getEndpointStates() API.
+     *
+     * <p>
+     * The termination of Flux returned by getEndpointStates() is the signal that "AmqpReceiveLinkProcessor"
+     * uses to either terminate its downstream or obtain a new ReactorReceiver to continue delivering events
+     * downstream.
+     * </p>
+     */
+    private void terminateEndpointState() {
+        this.terminateEndpointStates.emitEmpty((signalType, emitResult) -> {
+            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                .log("Could not emit EndpointStates termination.");
+            return false;
+        });
+    }
+
+    /**
+     * Completes the closing of the underlying receiver, which includes disposing of subscriptions,
+     * closing of token manager, and releasing of protonJ resources.
+     * <p>
+     * The completeClose invoked in 3 cases - when the broker ack for beginClose (i.e. ack via
+     * remote-close frame), if the broker ack for beginClose never comes through within timeout,
+     * if the client fails to run beginClose.
+     * </p>
      */
     private void completeClose() {
+        if (isCompleteCloseCalled.getAndSet(true)) {
+            return;
+        }
 
         isClosedMono.emitEmpty((signalType, result) -> {
             addSignalTypeAndResult(logger.atWarning(), signalType, result)
@@ -344,7 +471,31 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         }
 
         handler.close();
+        onHandlerClose();
         receiver.free();
+        try {
+            trackPrefetchSeqNoSubscription.close();
+        } catch (Exception e) {
+            logger.verbose("Error closing metrics subscription.", e);
+        }
+    }
+
+    private Long getSequenceNumber(Message message) {
+        if (message == null || message.getMessageAnnotations() == null || message.getBody() == null) {
+            return null;
+        }
+
+        Map<Symbol, Object> properties = message.getMessageAnnotations().getValue();
+        Object seqNo = properties != null ? properties.get(SEQUENCE_NUMBER_ANNOTATION) : null;
+        if (seqNo instanceof Integer) {
+            return ((Integer) seqNo).longValue();
+        } else if (seqNo instanceof Long) {
+            return (Long) seqNo;
+        } else if (seqNo != null) {
+            logger.verbose("Received message has unexpected `x-opt-sequence-number` annotation value - `{}`. Ignoring it.", seqNo);
+        }
+
+        return null;
     }
 
     @Override

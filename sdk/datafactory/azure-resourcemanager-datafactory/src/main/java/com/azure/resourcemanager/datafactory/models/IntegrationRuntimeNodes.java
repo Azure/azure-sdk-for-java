@@ -16,21 +16,6 @@ public interface IntegrationRuntimeNodes {
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param nodeName The integration runtime node name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a self-hosted integration runtime node.
-     */
-    SelfHostedIntegrationRuntimeNode get(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName);
-
-    /**
-     * Gets a self-hosted integration runtime node.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param nodeName The integration runtime node name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +26,7 @@ public interface IntegrationRuntimeNodes {
         String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, Context context);
 
     /**
-     * Deletes a self-hosted integration runtime node.
+     * Gets a self-hosted integration runtime node.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -50,8 +35,10 @@ public interface IntegrationRuntimeNodes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a self-hosted integration runtime node.
      */
-    void delete(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName);
+    SelfHostedIntegrationRuntimeNode get(
+        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName);
 
     /**
      * Deletes a self-hosted integration runtime node.
@@ -70,24 +57,17 @@ public interface IntegrationRuntimeNodes {
         String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, Context context);
 
     /**
-     * Updates a self-hosted integration runtime node.
+     * Deletes a self-hosted integration runtime node.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param nodeName The integration runtime node name.
-     * @param updateIntegrationRuntimeNodeRequest The parameters for updating an integration runtime node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of Self-hosted integration runtime node.
      */
-    SelfHostedIntegrationRuntimeNode update(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        String nodeName,
-        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest);
+    void delete(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName);
 
     /**
      * Updates a self-hosted integration runtime node.
@@ -112,19 +92,24 @@ public interface IntegrationRuntimeNodes {
         Context context);
 
     /**
-     * Get the IP address of self-hosted integration runtime node.
+     * Updates a self-hosted integration runtime node.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param nodeName The integration runtime node name.
+     * @param updateIntegrationRuntimeNodeRequest The parameters for updating an integration runtime node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP address of self-hosted integration runtime node.
+     * @return properties of Self-hosted integration runtime node.
      */
-    IntegrationRuntimeNodeIpAddress getIpAddress(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName);
+    SelfHostedIntegrationRuntimeNode update(
+        String resourceGroupName,
+        String factoryName,
+        String integrationRuntimeName,
+        String nodeName,
+        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest);
 
     /**
      * Get the IP address of self-hosted integration runtime node.
@@ -141,4 +126,19 @@ public interface IntegrationRuntimeNodes {
      */
     Response<IntegrationRuntimeNodeIpAddress> getIpAddressWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, Context context);
+
+    /**
+     * Get the IP address of self-hosted integration runtime node.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param nodeName The integration runtime node name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the IP address of self-hosted integration runtime node.
+     */
+    IntegrationRuntimeNodeIpAddress getIpAddress(
+        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName);
 }

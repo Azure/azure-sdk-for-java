@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The shared keys for a workspace. */
 @Fluent
 public final class SharedKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedKeysInner.class);
-
     /*
      * The primary shared key of a workspace.
      */
@@ -25,6 +21,10 @@ public final class SharedKeysInner {
      */
     @JsonProperty(value = "secondarySharedKey")
     private String secondarySharedKey;
+
+    /** Creates an instance of SharedKeysInner class. */
+    public SharedKeysInner() {
+    }
 
     /**
      * Get the primarySharedKey property: The primary shared key of a workspace.

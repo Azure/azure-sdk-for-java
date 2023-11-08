@@ -6,14 +6,11 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A job target, for example a specific database or a container of databases that is evaluated during job execution. */
 @Fluent
 public final class JobTarget {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobTarget.class);
-
     /*
      * Whether the target is included or excluded from the group.
      */
@@ -51,12 +48,15 @@ public final class JobTarget {
     private String shardMapName;
 
     /*
-     * The resource ID of the credential that is used during job execution to
-     * connect to the target and determine the list of databases inside the
-     * target.
+     * The resource ID of the credential that is used during job execution to connect to the target and determine the
+     * list of databases inside the target.
      */
     @JsonProperty(value = "refreshCredential")
     private String refreshCredential;
+
+    /** Creates an instance of JobTarget class. */
+    public JobTarget() {
+    }
 
     /**
      * Get the membershipType property: Whether the target is included or excluded from the group.
@@ -207,8 +207,10 @@ public final class JobTarget {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property type in model JobTarget"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JobTarget.class);
 }

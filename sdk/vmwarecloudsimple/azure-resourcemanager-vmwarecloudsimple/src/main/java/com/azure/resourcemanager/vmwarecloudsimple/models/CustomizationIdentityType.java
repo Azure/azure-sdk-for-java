@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomizationIdentityType. */
+/** Identity type. */
 public final class CustomizationIdentityType extends ExpandableStringEnum<CustomizationIdentityType> {
     /** Static value WINDOWS_TEXT for CustomizationIdentityType. */
     public static final CustomizationIdentityType WINDOWS_TEXT = fromString("WINDOWS_TEXT");
@@ -18,6 +18,15 @@ public final class CustomizationIdentityType extends ExpandableStringEnum<Custom
 
     /** Static value LINUX for CustomizationIdentityType. */
     public static final CustomizationIdentityType LINUX = fromString("LINUX");
+
+    /**
+     * Creates a new instance of CustomizationIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomizationIdentityType() {
+    }
 
     /**
      * Creates or finds a CustomizationIdentityType from its string representation.
@@ -30,7 +39,11 @@ public final class CustomizationIdentityType extends ExpandableStringEnum<Custom
         return fromString(name, CustomizationIdentityType.class);
     }
 
-    /** @return known CustomizationIdentityType values. */
+    /**
+     * Gets known CustomizationIdentityType values.
+     *
+     * @return known CustomizationIdentityType values.
+     */
     public static Collection<CustomizationIdentityType> values() {
         return values(CustomizationIdentityType.class);
     }

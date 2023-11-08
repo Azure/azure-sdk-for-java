@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** workbookChartFont. */
 @Fluent
 public final class MicrosoftGraphWorkbookChartFont extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookChartFont.class);
-
     /*
      * Represents the bold status of font.
      */
@@ -25,8 +22,7 @@ public final class MicrosoftGraphWorkbookChartFont extends MicrosoftGraphEntity 
     private Boolean bold;
 
     /*
-     * HTML color code representation of the text color. E.g. #FF0000
-     * represents Red.
+     * HTML color code representation of the text color. E.g. #FF0000 represents Red.
      */
     @JsonProperty(value = "color")
     private String color;
@@ -50,8 +46,7 @@ public final class MicrosoftGraphWorkbookChartFont extends MicrosoftGraphEntity 
     private Double size;
 
     /*
-     * Type of underline applied to the font. The possible values are: None,
-     * Single.
+     * Type of underline applied to the font. The possible values are: None, Single.
      */
     @JsonProperty(value = "underline")
     private String underline;
@@ -60,6 +55,10 @@ public final class MicrosoftGraphWorkbookChartFont extends MicrosoftGraphEntity 
      * workbookChartFont
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookChartFont class. */
+    public MicrosoftGraphWorkbookChartFont() {
+    }
 
     /**
      * Get the bold property: Represents the bold status of font.

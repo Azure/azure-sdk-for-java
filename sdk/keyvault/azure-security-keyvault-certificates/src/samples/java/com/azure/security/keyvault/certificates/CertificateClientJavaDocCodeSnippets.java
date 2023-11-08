@@ -35,11 +35,10 @@ import java.util.Map;
  * This class contains code samples for generating javadocs through doclets for {@link CertificateClient}
  */
 public final class CertificateClientJavaDocCodeSnippets {
-
-    private String key1 = "key1";
-    private String key2 = "key2";
-    private String value1 = "val1";
-    private String value2 = "val2";
+    private final String key1 = "key1";
+    private final String key2 = "key2";
+    private final String value1 = "val1";
+    private final String value2 = "val2";
 
     /**
      * Implementation for.CertificateClient
@@ -50,7 +49,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.instantiation
         CertificateClient certificateClient = new CertificateClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .vaultUrl("https://myvault.vault.azure.net/")
+            .vaultUrl("<your-key-vault-url>")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
         // END: com.azure.security.keyvault.certificates.CertificateClient.instantiation
@@ -313,14 +312,14 @@ public final class CertificateClientJavaDocCodeSnippets {
     public void deleteCertificateIssuefrCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.deleteIssuerWithResponse#string-context
-        CertificateIssuer deletedIssuer = certificateClient.deleteIssuer("certificateName");
+        CertificateIssuer deletedIssuer = certificateClient.deleteIssuer("issuerName");
         System.out.printf("Deleted certificate issuer with name %s and provider id %s%n", deletedIssuer.getName(),
             deletedIssuer.getProvider());
         // END: com.azure.security.keyvault.certificates.CertificateClient.deleteIssuerWithResponse#string-context
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.deleteIssuer#string
         Response<CertificateIssuer> deletedIssuerWithResponse = certificateClient.
-            deleteIssuerWithResponse("certificateName", new Context(key1, value1));
+            deleteIssuerWithResponse("issuerName", new Context(key1, value1));
         System.out.printf("Deleted certificate issuer with name %s and provider id %s%n",
             deletedIssuerWithResponse.getValue().getName(),
             deletedIssuerWithResponse.getValue().getProvider());
@@ -377,7 +376,7 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
         SyncPoller<KeyVaultCertificateWithPolicy, Void> recoverDeletedCertPoller = certificateClient
             .beginRecoverDeletedCertificate("deletedCertificateName");
         // Recovered certificate is accessible as soon as polling beings
@@ -386,7 +385,7 @@ public final class CertificateClientJavaDocCodeSnippets {
             recoverDeletedCertPollResponse.getValue().getProperties().getName(),
             recoverDeletedCertPollResponse.getValue().getProperties().getId());
         recoverDeletedCertPoller.waitForCompletion();
-        // END: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
+        // END: com.azure.security.keyvault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
     }
 
     /**

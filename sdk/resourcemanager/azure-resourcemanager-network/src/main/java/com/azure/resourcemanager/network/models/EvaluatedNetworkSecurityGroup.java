@@ -35,6 +35,10 @@ public final class EvaluatedNetworkSecurityGroup {
     @JsonProperty(value = "rulesEvaluationResult", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkSecurityRulesEvaluationResult> rulesEvaluationResult;
 
+    /** Creates an instance of EvaluatedNetworkSecurityGroup class. */
+    public EvaluatedNetworkSecurityGroup() {
+    }
+
     /**
      * Get the networkSecurityGroupId property: Network security group ID.
      *

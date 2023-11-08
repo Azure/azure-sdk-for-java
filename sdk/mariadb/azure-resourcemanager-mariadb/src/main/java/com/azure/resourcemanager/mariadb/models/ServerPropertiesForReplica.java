@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Replica")
 @Fluent
 public final class ServerPropertiesForReplica extends ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForReplica.class);
-
     /*
      * The master server id to create replica from.
      */
     @JsonProperty(value = "sourceServerId", required = true)
     private String sourceServerId;
+
+    /** Creates an instance of ServerPropertiesForReplica class. */
+    public ServerPropertiesForReplica() {
+    }
 
     /**
      * Get the sourceServerId property: The master server id to create replica from.
@@ -88,10 +89,12 @@ public final class ServerPropertiesForReplica extends ServerPropertiesForCreate 
     public void validate() {
         super.validate();
         if (sourceServerId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceServerId in model ServerPropertiesForReplica"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerPropertiesForReplica.class);
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.GetSsisObjectMetadataRequest;
 
 /** Samples for IntegrationRuntimeObjectMetadata List. */
@@ -25,6 +24,6 @@ public final class IntegrationRuntimeObjectMetadataListSamples {
                 "exampleWorkspace",
                 "testactivityv2",
                 new GetSsisObjectMetadataRequest().withMetadataPath("ssisFolders"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

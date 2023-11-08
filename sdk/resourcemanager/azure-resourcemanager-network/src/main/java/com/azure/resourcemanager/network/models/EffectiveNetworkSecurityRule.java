@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class EffectiveNetworkSecurityRule {
     /*
-     * The name of the security rule specified by the user (if created by the
-     * user).
+     * The name of the security rule specified by the user (if created by the user).
      */
     @JsonProperty(value = "name")
     private String name;
@@ -37,17 +36,15 @@ public final class EffectiveNetworkSecurityRule {
     private String destinationPortRange;
 
     /*
-     * The source port ranges. Expected values include a single integer between
-     * 0 and 65535, a range using '-' as separator (e.g. 100-400), or an
-     * asterisk (*).
+     * The source port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as
+     * separator (e.g. 100-400), or an asterisk (*).
      */
     @JsonProperty(value = "sourcePortRanges")
     private List<String> sourcePortRanges;
 
     /*
-     * The destination port ranges. Expected values include a single integer
-     * between 0 and 65535, a range using '-' as separator (e.g. 100-400), or
-     * an asterisk (*).
+     * The destination port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as
+     * separator (e.g. 100-400), or an asterisk (*).
      */
     @JsonProperty(value = "destinationPortRanges")
     private List<String> destinationPortRanges;
@@ -65,17 +62,15 @@ public final class EffectiveNetworkSecurityRule {
     private String destinationAddressPrefix;
 
     /*
-     * The source address prefixes. Expected values include CIDR IP ranges,
-     * Default Tags (VirtualNetwork, AzureLoadBalancer, Internet), System Tags,
-     * and the asterisk (*).
+     * The source address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork,
+     * AzureLoadBalancer, Internet), System Tags, and the asterisk (*).
      */
     @JsonProperty(value = "sourceAddressPrefixes")
     private List<String> sourceAddressPrefixes;
 
     /*
-     * The destination address prefixes. Expected values include CIDR IP
-     * ranges, Default Tags (VirtualNetwork, AzureLoadBalancer, Internet),
-     * System Tags, and the asterisk (*).
+     * The destination address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork,
+     * AzureLoadBalancer, Internet), System Tags, and the asterisk (*).
      */
     @JsonProperty(value = "destinationAddressPrefixes")
     private List<String> destinationAddressPrefixes;
@@ -109,6 +104,10 @@ public final class EffectiveNetworkSecurityRule {
      */
     @JsonProperty(value = "direction")
     private SecurityRuleDirection direction;
+
+    /** Creates an instance of EffectiveNetworkSecurityRule class. */
+    public EffectiveNetworkSecurityRule() {
+    }
 
     /**
      * Get the name property: The name of the security rule specified by the user (if created by the user).

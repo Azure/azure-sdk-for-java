@@ -4,11 +4,6 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
@@ -18,13 +13,7 @@ import java.util.Objects;
  * Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
  * an exception will be thrown to prevent leaking the key.
  */
-public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
-    // AzureKeyCredentialPolicy can be a commonly used policy, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredentialPolicy.class);
-
-    private final String name;
-    private final AzureKeyCredential credential;
-
+public final class AzureKeyCredentialPolicy extends KeyCredentialPolicy {
     /**
      * Creates a policy that uses the passed {@link AzureKeyCredential} to set the specified header name.
      *
@@ -34,23 +23,22 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
      * @throws IllegalArgumentException If {@code name} is empty.
      */
     public AzureKeyCredentialPolicy(String name, AzureKeyCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        Objects.requireNonNull(name, "'name' cannot be null.");
-        if (name.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty."));
-        }
-
-        this.name = name;
-        this.credential = credential;
+        super(name, credential, null);
     }
 
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            return Mono.error(new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
-        }
-
-        context.getHttpRequest().setHeader(name, credential.getKey());
-        return next.process();
+    /**
+     * Creates a policy that uses the passed {@link AzureKeyCredential} to set the specified header name.
+     * <p>
+     * The {@code prefix} will be applied before the {@link AzureKeyCredential#getKey()} when setting the header. A
+     * space will be inserted between {@code prefix} and credential.
+     *
+     * @param name The name of the key header that will be set to {@link AzureKeyCredential#getKey()}.
+     * @param credential The {@link AzureKeyCredential} containing the authorization key to use.
+     * @param prefix The prefix to apply before the credential, for example "SharedAccessKey credential".
+     * @throws NullPointerException If {@code name} or {@code credential} is {@code null}.
+     * @throws IllegalArgumentException If {@code name} is empty.
+     */
+    public AzureKeyCredentialPolicy(String name, AzureKeyCredential credential, String prefix) {
+        super(name, Objects.requireNonNull(credential, "'credential' cannot be null."), prefix);
     }
 }

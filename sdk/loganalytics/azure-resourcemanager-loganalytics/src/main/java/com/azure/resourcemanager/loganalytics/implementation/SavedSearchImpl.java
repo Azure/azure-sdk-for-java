@@ -65,6 +65,10 @@ public final class SavedSearchImpl implements SavedSearch, SavedSearch.Definitio
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SavedSearchInner innerModel() {
         return this.innerObject;
     }

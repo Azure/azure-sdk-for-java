@@ -4,43 +4,41 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineImages ListPublishers. */
 public final class VirtualMachineImagesListPublishersSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImages_ListPublishers_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineImageExamples/VirtualMachineImage_ListPublishers_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineImages_ListPublishers_MaximumSet_Gen.
+     * Sample code: VirtualMachineImage_ListPublishers_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineImagesListPublishersMaximumSetGen(
+    public static void virtualMachineImageListPublishersMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineImages()
-            .listPublishersWithResponse("aaaaa", Context.NONE);
+            .listPublishersWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImages_ListPublishers_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineImageExamples/VirtualMachineImage_ListPublishers_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineImages_ListPublishers_MinimumSet_Gen.
+     * Sample code: VirtualMachineImage_ListPublishers_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineImagesListPublishersMinimumSetGen(
+    public static void virtualMachineImageListPublishersMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineImages()
-            .listPublishersWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .listPublishersWithResponse("aaaaa", com.azure.core.util.Context.NONE);
     }
 }

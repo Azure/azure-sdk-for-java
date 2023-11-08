@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Summary Collection. */
 @Fluent
 public final class SummaryCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SummaryCollection.class);
-
     /*
      * Gets or sets the field name on which summary is done.
      */
@@ -26,6 +22,10 @@ public final class SummaryCollection {
      */
     @JsonProperty(value = "summary")
     private List<Summary> summary;
+
+    /** Creates an instance of SummaryCollection class. */
+    public SummaryCollection() {
+    }
 
     /**
      * Get the fieldName property: Gets or sets the field name on which summary is done.

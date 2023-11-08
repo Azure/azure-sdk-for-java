@@ -5,22 +5,21 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents a collection of diagnostic setting category resources. */
 @Fluent
 public final class DiagnosticSettingsCategoryResourceCollectionInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DiagnosticSettingsCategoryResourceCollectionInner.class);
-
     /*
      * The collection of diagnostic settings category resources.
      */
     @JsonProperty(value = "value")
     private List<DiagnosticSettingsCategoryResourceInner> value;
+
+    /** Creates an instance of DiagnosticSettingsCategoryResourceCollectionInner class. */
+    public DiagnosticSettingsCategoryResourceCollectionInner() {
+    }
 
     /**
      * Get the value property: The collection of diagnostic settings category resources.

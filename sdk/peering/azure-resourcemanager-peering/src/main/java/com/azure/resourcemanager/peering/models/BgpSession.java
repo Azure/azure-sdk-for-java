@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties that define a BGP session. */
 @Fluent
 public final class BgpSession {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpSession.class);
-
     /*
      * The IPv4 prefix that contains both ends' IPv4 addresses.
      */
@@ -79,6 +75,10 @@ public final class BgpSession {
      */
     @JsonProperty(value = "md5AuthenticationKey")
     private String md5AuthenticationKey;
+
+    /** Creates an instance of BgpSession class. */
+    public BgpSession() {
+    }
 
     /**
      * Get the sessionPrefixV4 property: The IPv4 prefix that contains both ends' IPv4 addresses.

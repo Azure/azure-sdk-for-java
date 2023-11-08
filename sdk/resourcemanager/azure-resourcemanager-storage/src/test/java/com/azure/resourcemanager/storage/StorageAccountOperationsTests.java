@@ -58,11 +58,13 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .withTag("tag1", "value1")
                 .withHnsEnabled(true)
                 .withAzureFilesAadIntegrationEnabled(false)
+                .withInfrastructureEncryption()
                 .createAsync();
         StorageAccount storageAccount = resourceStream.block();
         Assertions.assertEquals(rgName, storageAccount.resourceGroupName());
         Assertions.assertEquals(SkuName.STANDARD_RAGRS, storageAccount.skuType().name());
         Assertions.assertTrue(storageAccount.isHnsEnabled());
+        Assertions.assertTrue(storageAccount.infrastructureEncryptionEnabled());
         // Assertions.assertFalse(storageAccount.isAzureFilesAadIntegrationEnabled());
         // List
         PagedIterable<StorageAccount> accounts = storageManager.storageAccounts().listByResourceGroup(rgName);
@@ -95,6 +97,8 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 break;
             }
         }
+
+        Assertions.assertTrue(storageAccount.infrastructureEncryptionEnabled());
 
         Map<StorageService, StorageAccountEncryptionStatus> statuses = storageAccount.encryptionStatuses();
         Assertions.assertNotNull(statuses);
@@ -180,5 +184,86 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(MinimumTlsVersion.TLS1_1, storageAccount.minimumTlsVersion());
         Assertions.assertFalse(storageAccount.isBlobPublicAccessAllowed());
         Assertions.assertFalse(storageAccount.isSharedKeyAccessAllowed());
+    }
+
+    @Test
+    public void canAllowCrossTenantReplicationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .disallowCrossTenantReplication()
+                .create();
+
+        Assertions.assertFalse(storageAccount.isAllowCrossTenantReplication());
+
+        storageAccount.update()
+            .allowCrossTenantReplication()
+            .apply();
+
+        Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());
+    }
+
+    @Test
+    public void canDisallowCrossTenantReplicationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .create();
+
+        Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());
+
+        storageAccount.update()
+            .disallowCrossTenantReplication()
+            .apply();
+
+        Assertions.assertFalse(storageAccount.isAllowCrossTenantReplication());
+    }
+
+    @Test
+    public void canEnableDefaultToOAuthAuthenticationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .create();
+
+        Assertions.assertFalse(storageAccount.isDefaultToOAuthAuthentication());
+
+        storageAccount.update()
+            .enableDefaultToOAuthAuthentication()
+            .apply();
+
+        Assertions.assertTrue(storageAccount.isDefaultToOAuthAuthentication());
+    }
+    @Test
+    public void canDisableDefaultToOAuthAuthenticationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .enableDefaultToOAuthAuthentication()
+                .create();
+
+        Assertions.assertTrue(storageAccount.isDefaultToOAuthAuthentication());
+
+        storageAccount.update()
+            .disableDefaultToOAuthAuthentication()
+            .apply();
+
+        Assertions.assertFalse(storageAccount.isDefaultToOAuthAuthentication());
     }
 }

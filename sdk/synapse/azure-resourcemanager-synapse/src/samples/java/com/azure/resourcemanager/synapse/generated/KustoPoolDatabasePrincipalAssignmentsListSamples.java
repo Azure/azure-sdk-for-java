@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDatabasePrincipalAssignments List. */
 public final class KustoPoolDatabasePrincipalAssignmentsListSamples {
     /*
@@ -20,6 +18,11 @@ public final class KustoPoolDatabasePrincipalAssignmentsListSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPoolDatabasePrincipalAssignments()
-            .list("synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustorptest", Context.NONE);
+            .list(
+                "synapseWorkspaceName",
+                "kustoclusterrptest4",
+                "Kustodatabase8",
+                "kustorptest",
+                com.azure.core.util.Context.NONE);
     }
 }

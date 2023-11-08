@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,9 +15,6 @@ import java.util.List;
 @JsonTypeName("Migrate.MySql.AzureDbForMySql.Sync")
 @Fluent
 public final class MigrateMySqlAzureDbForMySqlSyncTaskProperties extends ProjectTaskProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateMySqlAzureDbForMySqlSyncTaskProperties.class);
-
     /*
      * Task input
      */
@@ -31,6 +26,10 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskProperties extends Project
      */
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<MigrateMySqlAzureDbForMySqlSyncTaskOutput> output;
+
+    /** Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskProperties class. */
+    public MigrateMySqlAzureDbForMySqlSyncTaskProperties() {
+    }
 
     /**
      * Get the input property: Task input.

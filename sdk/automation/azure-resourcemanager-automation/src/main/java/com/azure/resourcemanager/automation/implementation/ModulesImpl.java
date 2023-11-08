@@ -15,10 +15,9 @@ import com.azure.resourcemanager.automation.models.Module;
 import com.azure.resourcemanager.automation.models.ModuleCreateOrUpdateParameters;
 import com.azure.resourcemanager.automation.models.ModuleUpdateParameters;
 import com.azure.resourcemanager.automation.models.Modules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ModulesImpl implements Modules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ModulesImpl.class);
 
     private final ModulesClient innerClient;
 

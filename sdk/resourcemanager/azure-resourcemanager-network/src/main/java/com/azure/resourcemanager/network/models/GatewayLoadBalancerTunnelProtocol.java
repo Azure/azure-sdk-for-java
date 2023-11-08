@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GatewayLoadBalancerTunnelProtocol. */
+/** Protocol of gateway load balancer tunnel interface. */
 public final class GatewayLoadBalancerTunnelProtocol extends ExpandableStringEnum<GatewayLoadBalancerTunnelProtocol> {
     /** Static value None for GatewayLoadBalancerTunnelProtocol. */
     public static final GatewayLoadBalancerTunnelProtocol NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class GatewayLoadBalancerTunnelProtocol extends ExpandableStringEnu
 
     /** Static value VXLAN for GatewayLoadBalancerTunnelProtocol. */
     public static final GatewayLoadBalancerTunnelProtocol VXLAN = fromString("VXLAN");
+
+    /**
+     * Creates a new instance of GatewayLoadBalancerTunnelProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GatewayLoadBalancerTunnelProtocol() {
+    }
 
     /**
      * Creates or finds a GatewayLoadBalancerTunnelProtocol from its string representation.
@@ -30,7 +39,11 @@ public final class GatewayLoadBalancerTunnelProtocol extends ExpandableStringEnu
         return fromString(name, GatewayLoadBalancerTunnelProtocol.class);
     }
 
-    /** @return known GatewayLoadBalancerTunnelProtocol values. */
+    /**
+     * Gets known GatewayLoadBalancerTunnelProtocol values.
+     *
+     * @return known GatewayLoadBalancerTunnelProtocol values.
+     */
     public static Collection<GatewayLoadBalancerTunnelProtocol> values() {
         return values(GatewayLoadBalancerTunnelProtocol.class);
     }

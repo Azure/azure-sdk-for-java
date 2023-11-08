@@ -17,6 +17,10 @@ public final class AccessProfile {
     @JsonProperty(value = "kubeConfig")
     private byte[] kubeConfig;
 
+    /** Creates an instance of AccessProfile class. */
+    public AccessProfile() {
+    }
+
     /**
      * Get the kubeConfig property: Base64-encoded Kubernetes configuration file.
      *

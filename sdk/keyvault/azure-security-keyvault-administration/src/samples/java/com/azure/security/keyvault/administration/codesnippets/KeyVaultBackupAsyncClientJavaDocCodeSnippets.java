@@ -22,7 +22,7 @@ public class KeyVaultBackupAsyncClientJavaDocCodeSnippets {
     public KeyVaultBackupAsyncClient createAsyncClient() {
         // BEGIN: com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.instantiation
         KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl("https://myaccount.managedhsm.azure.net/")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.instantiation

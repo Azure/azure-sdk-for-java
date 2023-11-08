@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceKind. */
+/** The kind of the service. */
 public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
     /** Static value SignalR for ServiceKind. */
     public static final ServiceKind SIGNALR = fromString("SignalR");
 
     /** Static value RawWebSockets for ServiceKind. */
     public static final ServiceKind RAW_WEB_SOCKETS = fromString("RawWebSockets");
+
+    /**
+     * Creates a new instance of ServiceKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceKind() {
+    }
 
     /**
      * Creates or finds a ServiceKind from its string representation.
@@ -27,7 +36,11 @@ public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
         return fromString(name, ServiceKind.class);
     }
 
-    /** @return known ServiceKind values. */
+    /**
+     * Gets known ServiceKind values.
+     *
+     * @return known ServiceKind values.
+     */
     public static Collection<ServiceKind> values() {
         return values(ServiceKind.class);
     }

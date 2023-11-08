@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Azure storage specific error information. */
 @Fluent
 public final class AzureWorkloadErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadErrorInfo.class);
-
     /*
      * Error code.
      */
@@ -44,6 +40,10 @@ public final class AzureWorkloadErrorInfo {
      */
     @JsonProperty(value = "additionalDetails")
     private String additionalDetails;
+
+    /** Creates an instance of AzureWorkloadErrorInfo class. */
+    public AzureWorkloadErrorInfo() {
+    }
 
     /**
      * Get the errorCode property: Error code.

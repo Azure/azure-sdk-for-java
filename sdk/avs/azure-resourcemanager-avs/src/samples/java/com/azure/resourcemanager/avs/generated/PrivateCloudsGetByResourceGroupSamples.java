@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds GetByResourceGroup. */
 public final class PrivateCloudsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_Get.json
      */
     /**
      * Sample code: PrivateClouds_Get.
@@ -17,11 +15,11 @@ public final class PrivateCloudsGetByResourceGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().getByResourceGroupWithResponse("group1", "cloud1", Context.NONE);
+        manager.privateClouds().getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_Get_Stretched.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_Get_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_Get_Stretched.
@@ -29,6 +27,6 @@ public final class PrivateCloudsGetByResourceGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsGetStretched(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().getByResourceGroupWithResponse("group1", "cloud1", Context.NONE);
+        manager.privateClouds().getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

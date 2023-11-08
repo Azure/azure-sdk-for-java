@@ -27,8 +27,11 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 
@@ -75,28 +78,12 @@ import java.util.Map;
  * <pre>
  * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
  *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
- *     .addPolicy&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;&#41;
  *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation -->
- *
- * <p>Alternatively, a custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies
- * can be specified. It provides finer control over the construction of {@link CryptographyAsyncClient} and
- * {@link CryptographyClient}</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
- *     .build&#40;&#41;;
- * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation -->
  *
  * <p>The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to
  * build {@link CryptographyClient} are {@link JsonWebKey jsonWebKey} or
@@ -127,13 +114,16 @@ public final class CryptographyClientBuilder implements
     TokenCredentialTrait<CryptographyClientBuilder>,
     HttpTrait<CryptographyClientBuilder>,
     ConfigurationTrait<CryptographyClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CryptographyClientBuilder.class);
 
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
     private final Map<String, String> properties;
@@ -149,6 +139,7 @@ public final class CryptographyClientBuilder implements
     private RetryOptions retryOptions;
     private String keyId;
     private TokenCredential credential;
+    private boolean disableChallengeResourceVerification = false;
 
     /**
      * The constructor with defaults.
@@ -182,7 +173,32 @@ public final class CryptographyClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CryptographyClient buildClient() {
-        return new CryptographyClient(buildAsyncClient());
+        if (jsonWebKey == null) {
+            if (Strings.isNullOrEmpty(keyId)) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "An Azure Key Vault key identifier is required to build the cryptography client if a JSON Web Key"
+                        + " is not provided."));
+            }
+
+            CryptographyServiceVersion serviceVersion =
+                version != null ? version : CryptographyServiceVersion.getLatest();
+
+            if (pipeline != null) {
+                return new CryptographyClient(keyId, pipeline, serviceVersion);
+            }
+
+            if (credential == null) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "Azure Key Vault credentials are required to build the cryptography client if a JSON Web Key is not"
+                        + " provided."));
+            }
+
+            HttpPipeline pipeline = setupPipeline();
+
+            return new CryptographyClient(keyId, pipeline, serviceVersion);
+        } else {
+            return new CryptographyClient(jsonWebKey);
+        }
     }
 
     /**
@@ -209,19 +225,20 @@ public final class CryptographyClientBuilder implements
     public CryptographyAsyncClient buildAsyncClient() {
         if (jsonWebKey == null) {
             if (Strings.isNullOrEmpty(keyId)) {
-                throw logger.logExceptionAsError(new IllegalStateException(
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "An Azure Key Vault key identifier is required to build the cryptography client if a JSON Web Key"
                         + " is not provided."));
             }
 
-            CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
+            CryptographyServiceVersion serviceVersion =
+                version != null ? version : CryptographyServiceVersion.getLatest();
 
             if (pipeline != null) {
                 return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
             }
 
             if (credential == null) {
-                throw logger.logExceptionAsError(new IllegalStateException(
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "Azure Key Vault credentials are required to build the cryptography client if a JSON Web Key is not"
                         + " provided."));
             }
@@ -246,15 +263,15 @@ public final class CryptographyClientBuilder implements
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
+        ClientOptions localClientOptions = clientOptions != null ? clientOptions : new ClientOptions();
+
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));
 
-        if (clientOptions != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+        localClientOptions.getHeaders().forEach(header ->
+            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         // Add per call additional policies.
         policies.addAll(perCallPolicies);
@@ -263,7 +280,7 @@ public final class CryptographyClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -271,9 +288,15 @@ public final class CryptographyClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
+        TracingOptions tracingOptions = localClientOptions.getTracingOptions();
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .tracer(tracer)
+            .clientOptions(localClientOptions)
             .build();
     }
 
@@ -290,7 +313,9 @@ public final class CryptographyClientBuilder implements
     }
 
     /**
-     * Sets the Azure Key Vault key identifier of the JSON Web Key to be used for cryptography operations.
+     * Sets the Azure Key Vault key identifier of the JSON Web Key to be used for cryptography operations. You should
+     * validate that this URL references a valid Key Vault or Managed HSM resource. Refer to the following
+     * <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
      * {@code Verify}, it is recommended to use a {@link CryptographyAsyncClient} or {@link CryptographyClient} created
@@ -305,7 +330,7 @@ public final class CryptographyClientBuilder implements
      */
     public CryptographyClientBuilder keyIdentifier(String keyId) {
         if (keyId == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'keyId' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'keyId' cannot be null."));
         }
 
         this.keyId = keyId;
@@ -327,7 +352,7 @@ public final class CryptographyClientBuilder implements
     @Override
     public CryptographyClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         this.credential = credential;
@@ -348,7 +373,7 @@ public final class CryptographyClientBuilder implements
      */
     public CryptographyClientBuilder jsonWebKey(JsonWebKey jsonWebKey) {
         if (jsonWebKey == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'jsonWebKey' must not be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'jsonWebKey' must not be null."));
         }
 
         this.jsonWebKey = jsonWebKey;
@@ -396,7 +421,7 @@ public final class CryptographyClientBuilder implements
     @Override
     public CryptographyClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -543,6 +568,18 @@ public final class CryptographyClientBuilder implements
     @Override
     public CryptographyClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+
+        return this;
+    }
+
+    /**
+     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
+     * verification is performed by default.
+     *
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    public CryptographyClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
 
         return this;
     }

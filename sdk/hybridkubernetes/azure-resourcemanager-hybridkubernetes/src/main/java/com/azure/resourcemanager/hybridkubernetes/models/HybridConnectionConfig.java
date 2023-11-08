@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridkubernetes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains the REP (rendezvous endpoint) and “Sender” access token. */
 @Immutable
 public final class HybridConnectionConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridConnectionConfig.class);
-
     /*
      * Timestamp when this token will be expired.
      */
@@ -37,6 +33,10 @@ public final class HybridConnectionConfig {
      */
     @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
     private String token;
+
+    /** Creates an instance of HybridConnectionConfig class. */
+    public HybridConnectionConfig() {
+    }
 
     /**
      * Get the expirationTime property: Timestamp when this token will be expired.

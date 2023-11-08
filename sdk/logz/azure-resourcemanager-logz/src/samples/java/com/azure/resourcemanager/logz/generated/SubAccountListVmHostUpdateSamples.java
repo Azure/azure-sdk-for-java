@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SubAccount ListVmHostUpdate. */
 public final class SubAccountListVmHostUpdateSamples {
     /*
@@ -17,6 +15,8 @@ public final class SubAccountListVmHostUpdateSamples {
      * @param manager Entry point to LogzManager.
      */
     public static void subAccountVMHostsUpdate(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager.subAccounts().listVmHostUpdate("myResourceGroup", "myMonitor", "SubAccount1", null, Context.NONE);
+        manager
+            .subAccounts()
+            .listVmHostUpdate("myResourceGroup", "myMonitor", "SubAccount1", null, com.azure.core.util.Context.NONE);
     }
 }

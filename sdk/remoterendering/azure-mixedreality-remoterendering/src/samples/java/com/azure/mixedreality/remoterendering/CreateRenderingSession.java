@@ -15,8 +15,7 @@ import java.util.UUID;
 /**
  * Sample class demonstrating how to create a rendering session.
  */
-public class CreateRenderingSession extends SampleBase
-{
+public class CreateRenderingSession extends SampleBase {
     /**
      * Main method to invoke this demo about how to create a rendering session.
      *

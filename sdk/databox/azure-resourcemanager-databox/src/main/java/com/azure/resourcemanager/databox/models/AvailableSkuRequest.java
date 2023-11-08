@@ -6,15 +6,12 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The filters for showing the available skus. */
 @Fluent
 public final class AvailableSkuRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableSkuRequest.class);
-
     /*
      * Type of the transfer.
      */
@@ -40,6 +37,10 @@ public final class AvailableSkuRequest {
      */
     @JsonProperty(value = "skuNames")
     private List<SkuName> skuNames;
+
+    /** Creates an instance of AvailableSkuRequest class. */
+    public AvailableSkuRequest() {
+    }
 
     /**
      * Get the transferType property: Type of the transfer.
@@ -132,20 +133,22 @@ public final class AvailableSkuRequest {
      */
     public void validate() {
         if (transferType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property transferType in model AvailableSkuRequest"));
         }
         if (country() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property country in model AvailableSkuRequest"));
         }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model AvailableSkuRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableSkuRequest.class);
 }

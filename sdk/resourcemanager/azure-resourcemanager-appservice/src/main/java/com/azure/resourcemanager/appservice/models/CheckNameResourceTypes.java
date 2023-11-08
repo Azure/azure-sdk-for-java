@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CheckNameResourceTypes. */
+/** Resource type used for verification. */
 public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckNameResourceTypes> {
     /** Static value Site for CheckNameResourceTypes. */
     public static final CheckNameResourceTypes SITE = fromString("Site");
@@ -37,6 +37,15 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
         fromString("Microsoft.Web/publishingUsers");
 
     /**
+     * Creates a new instance of CheckNameResourceTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CheckNameResourceTypes() {
+    }
+
+    /**
      * Creates or finds a CheckNameResourceTypes from its string representation.
      *
      * @param name a name to look for.
@@ -47,7 +56,11 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
         return fromString(name, CheckNameResourceTypes.class);
     }
 
-    /** @return known CheckNameResourceTypes values. */
+    /**
+     * Gets known CheckNameResourceTypes values.
+     *
+     * @return known CheckNameResourceTypes values.
+     */
     public static Collection<CheckNameResourceTypes> values() {
         return values(CheckNameResourceTypes.class);
     }

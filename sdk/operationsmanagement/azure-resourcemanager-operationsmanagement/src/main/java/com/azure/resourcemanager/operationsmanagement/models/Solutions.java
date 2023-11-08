@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Solutions. */
 public interface Solutions {
     /**
-     * Deletes the solution in the subscription.
+     * Deletes the solution
+     *
+     * <p>Deletes the solution in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -21,7 +23,9 @@ public interface Solutions {
     void deleteByResourceGroup(String resourceGroupName, String solutionName);
 
     /**
-     * Deletes the solution in the subscription.
+     * Deletes the solution
+     *
+     * <p>Deletes the solution in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -33,7 +37,24 @@ public interface Solutions {
     void delete(String resourceGroupName, String solutionName, Context context);
 
     /**
-     * Retrieves the user solution.
+     * Retrieve solution.
+     *
+     * <p>Retrieves the user solution.
+     *
+     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @param solutionName User Solution Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the container for solution along with {@link Response}.
+     */
+    Response<Solution> getByResourceGroupWithResponse(String resourceGroupName, String solutionName, Context context);
+
+    /**
+     * Retrieve solution.
+     *
+     * <p>Retrieves the user solution.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
@@ -45,20 +66,23 @@ public interface Solutions {
     Solution getByResourceGroup(String resourceGroupName, String solutionName);
 
     /**
-     * Retrieves the user solution.
+     * Retrieves the solution list for the subscription
+     *
+     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the list of solution response along with {@link Response}.
      */
-    Response<Solution> getByResourceGroupWithResponse(String resourceGroupName, String solutionName, Context context);
+    Response<SolutionPropertiesList> listByResourceGroupWithResponse(String resourceGroupName, Context context);
 
     /**
-     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * Retrieves the solution list for the subscription
+     *
+     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,19 +93,22 @@ public interface Solutions {
     SolutionPropertiesList listByResourceGroup(String resourceGroupName);
 
     /**
-     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * Retrieves the solution list for the subscription
      *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of solution response.
+     * @return the list of solution response along with {@link Response}.
      */
-    Response<SolutionPropertiesList> listByResourceGroupWithResponse(String resourceGroupName, Context context);
+    Response<SolutionPropertiesList> listBySubscriptionWithResponse(Context context);
 
     /**
-     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * Retrieves the solution list for the subscription
+     *
+     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -90,41 +117,36 @@ public interface Solutions {
     SolutionPropertiesList listBySubscription();
 
     /**
-     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * Retrieve solution.
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of solution response.
-     */
-    Response<SolutionPropertiesList> listBySubscriptionWithResponse(Context context);
-
-    /**
-     * Retrieves the user solution.
+     * <p>Retrieves the user solution.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution along with {@link Response}.
      */
     Solution getById(String id);
 
     /**
-     * Retrieves the user solution.
+     * Retrieve solution.
+     *
+     * <p>Retrieves the user solution.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution along with {@link Response}.
      */
     Response<Solution> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the solution in the subscription.
+     * Deletes the solution
+     *
+     * <p>Deletes the solution in the subscription.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +156,9 @@ public interface Solutions {
     void deleteById(String id);
 
     /**
-     * Deletes the solution in the subscription.
+     * Deletes the solution
+     *
+     * <p>Deletes the solution in the subscription.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

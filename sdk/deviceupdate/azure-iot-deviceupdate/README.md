@@ -1,8 +1,8 @@
 # Azure Device Update for IoT Hub client library for Java
 
-The library provides access to the Device Update for IoT Hub service that enables customers to publish updates for their IoT devices to the cloud, and then deploy these updates to their devices (approve updates to groups of devices managed and provisioned in IoT Hub). 
+The library provides access to the Device Update for IoT Hub service that enables customers to publish updates for their IoT devices to the cloud, and then deploy these updates to their devices (approve updates to groups of devices managed and provisioned in IoT Hub).
 
-  [Source code](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk) | [Product documentation](https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update)
+  [Source code](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/deviceupdate/azure-iot-deviceupdate/src) | [Product documentation](https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update)
 
 ## Getting started
 
@@ -24,7 +24,7 @@ For the best development experience, developers should use the official Microsof
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-iot-deviceupdate</artifactId>
-  <version>1.0.0-beta.2</version>
+  <version>1.0.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -54,9 +54,11 @@ All Device Update for IoT Hub service operations will throw a ErrorResponseExcep
 
 For example, if you use the `getUpdateWithResponse` operation and the model you are looking for doesn't exist, you can catch that specific HttpStatusCode to decide the operation that follows in that case.
 
-``` java com.azure.iot.deviceupdate.DeviceUpdateAsyncClient.notfound
+
+``` java com.azure.iot.deviceupdate.DeviceUpdateClient.notfound
 try {
-    client.getUpdateWithResponse("foo", "bar", "0.0.0.1", null).block();
+    Response<BinaryData> response = client.getUpdateWithResponse("foo", "bar", "0.0.0.1",
+            null);
 } catch (HttpResponseException e) {
     if (e.getResponse().getStatusCode() == 404) {
         // update does not exist

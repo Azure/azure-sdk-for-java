@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.AfdDomainInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class AfdDomainListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdDomainListResult.class);
-
     /*
      * List of AzureFrontDoor domains within a profile.
      */
@@ -30,6 +26,10 @@ public final class AfdDomainListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of AfdDomainListResult class. */
+    public AfdDomainListResult() {
+    }
 
     /**
      * Get the value property: List of AzureFrontDoor domains within a profile.

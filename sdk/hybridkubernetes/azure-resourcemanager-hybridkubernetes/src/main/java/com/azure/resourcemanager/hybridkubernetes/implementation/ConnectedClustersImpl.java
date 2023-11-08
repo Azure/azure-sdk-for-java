@@ -16,10 +16,9 @@ import com.azure.resourcemanager.hybridkubernetes.models.ConnectedCluster;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusters;
 import com.azure.resourcemanager.hybridkubernetes.models.CredentialResults;
 import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConnectedClustersImpl implements ConnectedClusters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectedClustersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectedClustersImpl.class);
 
     private final ConnectedClustersClient innerClient;
 
@@ -30,15 +29,6 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ConnectedCluster getByResourceGroup(String resourceGroupName, String clusterName) {
-        ConnectedClusterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, clusterName);
-        if (inner != null) {
-            return new ConnectedClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ConnectedCluster> getByResourceGroupWithResponse(
@@ -56,23 +46,21 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         }
     }
 
+    public ConnectedCluster getByResourceGroup(String resourceGroupName, String clusterName) {
+        ConnectedClusterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new ConnectedClusterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String clusterName) {
         this.serviceClient().delete(resourceGroupName, clusterName);
     }
 
     public void delete(String resourceGroupName, String clusterName, Context context) {
         this.serviceClient().delete(resourceGroupName, clusterName, context);
-    }
-
-    public CredentialResults listClusterUserCredential(
-        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties) {
-        CredentialResultsInner inner =
-            this.serviceClient().listClusterUserCredential(resourceGroupName, clusterName, properties);
-        if (inner != null) {
-            return new CredentialResultsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CredentialResults> listClusterUserCredentialWithResponse(
@@ -87,6 +75,17 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CredentialResultsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CredentialResults listClusterUserCredential(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties) {
+        CredentialResultsInner inner =
+            this.serviceClient().listClusterUserCredential(resourceGroupName, clusterName, properties);
+        if (inner != null) {
+            return new CredentialResultsImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -116,7 +115,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
     public ConnectedCluster getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,7 +123,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +136,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
     public Response<ConnectedCluster> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,7 +144,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,7 +157,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +165,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -179,7 +178,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,7 +186,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

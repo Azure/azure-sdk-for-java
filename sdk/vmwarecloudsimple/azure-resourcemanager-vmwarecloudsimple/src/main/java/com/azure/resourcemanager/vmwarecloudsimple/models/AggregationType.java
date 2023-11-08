@@ -7,7 +7,7 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AggregationType. */
+/** Metric's aggregation type for e.g. (Average, Total). */
 public enum AggregationType {
     /** Enum value Average. */
     AVERAGE("Average"),
@@ -30,6 +30,9 @@ public enum AggregationType {
      */
     @JsonCreator
     public static AggregationType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AggregationType[] items = AggregationType.values();
         for (AggregationType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum AggregationType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

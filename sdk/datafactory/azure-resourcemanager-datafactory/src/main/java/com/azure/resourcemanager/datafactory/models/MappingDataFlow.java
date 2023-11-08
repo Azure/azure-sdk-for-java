@@ -22,6 +22,10 @@ public final class MappingDataFlow extends DataFlow {
     @JsonProperty(value = "typeProperties")
     private MappingDataFlowTypeProperties innerTypeProperties;
 
+    /** Creates an instance of MappingDataFlow class. */
+    public MappingDataFlow() {
+    }
+
     /**
      * Get the innerTypeProperties property: Mapping data flow type properties.
      *

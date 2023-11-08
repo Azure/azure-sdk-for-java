@@ -35,7 +35,14 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: metricsadvisor
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-ai-metricsadvisor
         groupId: com.azure
         safeName: azureaimetricsadvisor
+    AdditionalModules:
+      - name: azure-ai-metricsadvisor-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

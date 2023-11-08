@@ -27,11 +27,13 @@ public interface ProfilesClient
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager Name Availability response.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<TrafficManagerNameAvailabilityInner>> checkTrafficManagerRelativeDnsNameAvailabilityWithResponseAsync(
@@ -40,11 +42,12 @@ public interface ProfilesClient
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager Name Availability response.
+     * @return class representing a Traffic Manager Name Availability response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityAsync(
@@ -53,7 +56,23 @@ public interface ProfilesClient
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityWithResponse(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context);
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -66,25 +85,69 @@ public interface ProfilesClient
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
      *
-     * @param parameters Parameters supplied to check Traffic Manager name operation.
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<TrafficManagerNameAvailabilityInner>> checkTrafficManagerNameAvailabilityV2WithResponseAsync(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters);
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<TrafficManagerNameAvailabilityInner> checkTrafficManagerNameAvailabilityV2Async(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters);
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<TrafficManagerNameAvailabilityInner> checkTrafficManagerNameAvailabilityV2WithResponse(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context);
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager Name Availability response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityWithResponse(
-        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context);
+    TrafficManagerNameAvailabilityInner checkTrafficManagerNameAvailabilityV2(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters);
 
     /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ProfileInner> listByResourceGroupAsync(String resourceGroupName);
@@ -92,11 +155,11 @@ public interface ProfilesClient
     /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName);
@@ -104,12 +167,12 @@ public interface ProfilesClient
     /**
      * Lists all Traffic Manager profiles within a resource group.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -119,7 +182,7 @@ public interface ProfilesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ProfileInner> listAsync();
@@ -129,7 +192,7 @@ public interface ProfilesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProfileInner> list();
@@ -141,7 +204,7 @@ public interface ProfilesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProfileInner> list(Context context);
@@ -149,12 +212,12 @@ public interface ProfilesClient
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager profile.
+     * @return a Traffic Manager profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String profileName);
@@ -162,12 +225,12 @@ public interface ProfilesClient
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager profile.
+     * @return a Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName);
@@ -175,7 +238,22 @@ public interface ProfilesClient
     /**
      * Gets a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName The name of the Traffic Manager profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Traffic Manager profile along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ProfileInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String profileName, Context context);
+
+    /**
+     * Gets a Traffic Manager profile.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -186,30 +264,16 @@ public interface ProfilesClient
     ProfileInner getByResourceGroup(String resourceGroupName, String profileName);
 
     /**
-     * Gets a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String profileName, Context context);
-
-    /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
+     * @return class representing a Traffic Manager profile along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ProfileInner>> createOrUpdateWithResponseAsync(
@@ -218,13 +282,13 @@ public interface ProfilesClient
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
+     * @return class representing a Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ProfileInner> createOrUpdateAsync(String resourceGroupName, String profileName, ProfileInner parameters);
@@ -232,9 +296,25 @@ public interface ProfilesClient
     /**
      * Create or update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager profile along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ProfileInner> createOrUpdateWithResponse(
+        String resourceGroupName, String profileName, ProfileInner parameters, Context context);
+
+    /**
+     * Create or update a Traffic Manager profile.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName The name of the Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -244,30 +324,15 @@ public interface ProfilesClient
     ProfileInner createOrUpdate(String resourceGroupName, String profileName, ProfileInner parameters);
 
     /**
-     * Create or update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProfileInner> createOrUpdateWithResponse(
-        String resourceGroupName, String profileName, ProfileInner parameters, Context context);
-
-    /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
+     * @return the result of the request or operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(String resourceGroupName, String profileName);
@@ -275,12 +340,12 @@ public interface ProfilesClient
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
+     * @return the result of the request or operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DeleteOperationResultInner> deleteAsync(String resourceGroupName, String profileName);
@@ -288,7 +353,22 @@ public interface ProfilesClient
     /**
      * Deletes a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName The name of the Traffic Manager profile to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the request or operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DeleteOperationResultInner> deleteWithResponse(
+        String resourceGroupName, String profileName, Context context);
+
+    /**
+     * Deletes a Traffic Manager profile.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -299,30 +379,16 @@ public interface ProfilesClient
     DeleteOperationResultInner delete(String resourceGroupName, String profileName);
 
     /**
-     * Deletes a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
-     * @param profileName The name of the Traffic Manager profile to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeleteOperationResultInner> deleteWithResponse(
-        String resourceGroupName, String profileName, Context context);
-
-    /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
+     * @return class representing a Traffic Manager profile along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ProfileInner>> updateWithResponseAsync(
@@ -331,13 +397,13 @@ public interface ProfilesClient
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
+     * @return class representing a Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ProfileInner> updateAsync(String resourceGroupName, String profileName, ProfileInner parameters);
@@ -345,9 +411,25 @@ public interface ProfilesClient
     /**
      * Update a Traffic Manager profile.
      *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager profile along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ProfileInner> updateWithResponse(
+        String resourceGroupName, String profileName, ProfileInner parameters, Context context);
+
+    /**
+     * Update a Traffic Manager profile.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param profileName The name of the Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -355,20 +437,4 @@ public interface ProfilesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ProfileInner update(String resourceGroupName, String profileName, ProfileInner parameters);
-
-    /**
-     * Update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param parameters Class representing a Traffic Manager profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProfileInner> updateWithResponse(
-        String resourceGroupName, String profileName, ProfileInner parameters, Context context);
 }

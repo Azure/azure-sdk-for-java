@@ -13,10 +13,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsCli
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPoints;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecoveryPointsImpl implements RecoveryPoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecoveryPointsImpl.class);
 
     private final RecoveryPointsClient innerClient;
 
@@ -51,24 +50,6 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
         return Utils.mapPage(inner, inner1 -> new RecoveryPointResourceImpl(inner1, this.manager()));
     }
 
-    public RecoveryPointResource get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId) {
-        RecoveryPointResourceInner inner =
-            this
-                .serviceClient()
-                .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
-        if (inner != null) {
-            return new RecoveryPointResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RecoveryPointResource> getWithResponse(
         String vaultName,
         String resourceGroupName,
@@ -94,6 +75,24 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RecoveryPointResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RecoveryPointResource get(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        String recoveryPointId) {
+        RecoveryPointResourceInner inner =
+            this
+                .serviceClient()
+                .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
+        if (inner != null) {
+            return new RecoveryPointResourceImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -481,8 +481,8 @@ public final class ShareServiceSasSignatureValues {
      */
     private static String getCanonicalName(String account, String shareName, String filePath) {
         return !CoreUtils.isNullOrEmpty(filePath)
-            ? String.format("/file/%s/%s/%s", account, shareName, filePath.replace("\\", "/"))
-            : String.format("/file/%s/%s", account, shareName);
+            ? "/file/" + account + "/" + shareName + "/" + filePath.replace('\\', '/')
+            : "/file/" + account + "/" + shareName;
     }
 
     private String stringToSign(String canonicalName) {

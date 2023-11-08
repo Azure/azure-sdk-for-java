@@ -12,12 +12,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings {
     /*
-     * The Domain name label.The concatenation of the domain name label and vm
-     * index will be the domain name labels of the PublicIPAddress resources
-     * that will be created
+     * The Domain name label.The concatenation of the domain name label and vm index will be the domain name labels of
+     * the PublicIPAddress resources that will be created
      */
     @JsonProperty(value = "domainNameLabel", required = true)
     private String domainNameLabel;
+
+    /*
+     * The Domain name label scope.The concatenation of the hashed domain name label that generated according to the
+     * policy from domain name label scope and vm index will be the domain name labels of the PublicIPAddress resources
+     * that will be created
+     */
+    @JsonProperty(value = "domainNameLabelScope")
+    private DomainNameLabelScopeTypes domainNameLabelScope;
+
+    /** Creates an instance of VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings class. */
+    public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings() {
+    }
 
     /**
      * Get the domainNameLabel property: The Domain name label.The concatenation of the domain name label and vm index
@@ -38,6 +49,31 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings
      */
     public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings withDomainNameLabel(String domainNameLabel) {
         this.domainNameLabel = domainNameLabel;
+        return this;
+    }
+
+    /**
+     * Get the domainNameLabelScope property: The Domain name label scope.The concatenation of the hashed domain name
+     * label that generated according to the policy from domain name label scope and vm index will be the domain name
+     * labels of the PublicIPAddress resources that will be created.
+     *
+     * @return the domainNameLabelScope value.
+     */
+    public DomainNameLabelScopeTypes domainNameLabelScope() {
+        return this.domainNameLabelScope;
+    }
+
+    /**
+     * Set the domainNameLabelScope property: The Domain name label scope.The concatenation of the hashed domain name
+     * label that generated according to the policy from domain name label scope and vm index will be the domain name
+     * labels of the PublicIPAddress resources that will be created.
+     *
+     * @param domainNameLabelScope the domainNameLabelScope value to set.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings object itself.
+     */
+    public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings withDomainNameLabelScope(
+        DomainNameLabelScopeTypes domainNameLabelScope) {
+        this.domainNameLabelScope = domainNameLabelScope;
         return this;
     }
 

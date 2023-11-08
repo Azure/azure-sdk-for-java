@@ -17,6 +17,10 @@ public final class SecurityGroupViewParameters {
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
+    /** Creates an instance of SecurityGroupViewParameters class. */
+    public SecurityGroupViewParameters() {
+    }
+
     /**
      * Get the targetResourceId property: ID of the target VM.
      *

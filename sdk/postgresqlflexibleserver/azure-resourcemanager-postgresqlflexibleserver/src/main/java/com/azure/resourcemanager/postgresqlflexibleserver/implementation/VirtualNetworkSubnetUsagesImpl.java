@@ -13,10 +13,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualN
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsageResult;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualNetworkSubnetUsagesImpl implements VirtualNetworkSubnetUsages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkSubnetUsagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkSubnetUsagesImpl.class);
 
     private final VirtualNetworkSubnetUsagesClient innerClient;
 
@@ -29,15 +28,6 @@ public final class VirtualNetworkSubnetUsagesImpl implements VirtualNetworkSubne
         this.serviceManager = serviceManager;
     }
 
-    public VirtualNetworkSubnetUsageResult execute(String locationName, VirtualNetworkSubnetUsageParameter parameters) {
-        VirtualNetworkSubnetUsageResultInner inner = this.serviceClient().execute(locationName, parameters);
-        if (inner != null) {
-            return new VirtualNetworkSubnetUsageResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VirtualNetworkSubnetUsageResult> executeWithResponse(
         String locationName, VirtualNetworkSubnetUsageParameter parameters, Context context) {
         Response<VirtualNetworkSubnetUsageResultInner> inner =
@@ -48,6 +38,15 @@ public final class VirtualNetworkSubnetUsagesImpl implements VirtualNetworkSubne
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VirtualNetworkSubnetUsageResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VirtualNetworkSubnetUsageResult execute(String locationName, VirtualNetworkSubnetUsageParameter parameters) {
+        VirtualNetworkSubnetUsageResultInner inner = this.serviceClient().execute(locationName, parameters);
+        if (inner != null) {
+            return new VirtualNetworkSubnetUsageResultImpl(inner, this.manager());
         } else {
             return null;
         }

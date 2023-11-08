@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.models.SkuCost;
 import com.azure.resourcemanager.databoxedge.models.SkuLocationInfo;
 import com.azure.resourcemanager.databoxedge.models.SkuName;
 import com.azure.resourcemanager.databoxedge.models.SkuRestriction;
 import com.azure.resourcemanager.databoxedge.models.SkuTier;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SkuInformation object. */
 @Immutable
 public final class ResourceTypeSkuInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceTypeSkuInner.class);
-
     /*
      * The type of the resource
      */
@@ -79,6 +75,10 @@ public final class ResourceTypeSkuInner {
      */
     @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuRestriction> restrictions;
+
+    /** Creates an instance of ResourceTypeSkuInner class. */
+    public ResourceTypeSkuInner() {
+    }
 
     /**
      * Get the resourceType property: The type of the resource.

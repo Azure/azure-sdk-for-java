@@ -39,6 +39,10 @@ public final class SsisPackage extends SsisObjectMetadata {
     @JsonProperty(value = "parameters")
     private List<SsisParameter> parameters;
 
+    /** Creates an instance of SsisPackage class. */
+    public SsisPackage() {
+    }
+
     /**
      * Get the folderId property: Folder id which contains package.
      *

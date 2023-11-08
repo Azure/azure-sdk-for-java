@@ -5,69 +5,32 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.Type;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The top level data export resource container. */
-@JsonFlatten
 @Fluent
-public class DataExportInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataExportInner.class);
-
+public final class DataExportInner extends ProxyResource {
     /*
-     * The data export rule ID.
+     * data export properties.
      */
-    @JsonProperty(value = "properties.dataExportId")
-    private String dataExportId;
+    @JsonProperty(value = "properties")
+    private DataExportProperties innerProperties;
 
-    /*
-     * An array of tables to export, for example: [“Heartbeat, SecurityEvent”].
-     */
-    @JsonProperty(value = "properties.tableNames")
-    private List<String> tableNames;
+    /** Creates an instance of DataExportInner class. */
+    public DataExportInner() {
+    }
 
-    /*
-     * Active when enabled.
+    /**
+     * Get the innerProperties property: data export properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.enable")
-    private Boolean enable;
-
-    /*
-     * The latest data export rule modification time.
-     */
-    @JsonProperty(value = "properties.createdDate")
-    private String createdDate;
-
-    /*
-     * Date and time when the export was last modified.
-     */
-    @JsonProperty(value = "properties.lastModifiedDate")
-    private String lastModifiedDate;
-
-    /*
-     * The destination resource ID. This can be copied from the Properties
-     * entry of the destination resource in Azure.
-     */
-    @JsonProperty(value = "properties.destination.resourceId")
-    private String resourceId;
-
-    /*
-     * The type of the destination resource
-     */
-    @JsonProperty(value = "properties.destination.type", access = JsonProperty.Access.WRITE_ONLY)
-    private Type typePropertiesDestinationType;
-
-    /*
-     * Optional. Allows to define an Event Hub name. Not applicable when
-     * destination is Storage Account.
-     */
-    @JsonProperty(value = "properties.destination.metaData.eventHubName")
-    private String eventHubName;
+    private DataExportProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the dataExportId property: The data export rule ID.
@@ -75,7 +38,7 @@ public class DataExportInner extends ProxyResource {
      * @return the dataExportId value.
      */
     public String dataExportId() {
-        return this.dataExportId;
+        return this.innerProperties() == null ? null : this.innerProperties().dataExportId();
     }
 
     /**
@@ -85,7 +48,10 @@ public class DataExportInner extends ProxyResource {
      * @return the DataExportInner object itself.
      */
     public DataExportInner withDataExportId(String dataExportId) {
-        this.dataExportId = dataExportId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataExportProperties();
+        }
+        this.innerProperties().withDataExportId(dataExportId);
         return this;
     }
 
@@ -95,7 +61,7 @@ public class DataExportInner extends ProxyResource {
      * @return the tableNames value.
      */
     public List<String> tableNames() {
-        return this.tableNames;
+        return this.innerProperties() == null ? null : this.innerProperties().tableNames();
     }
 
     /**
@@ -105,7 +71,10 @@ public class DataExportInner extends ProxyResource {
      * @return the DataExportInner object itself.
      */
     public DataExportInner withTableNames(List<String> tableNames) {
-        this.tableNames = tableNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataExportProperties();
+        }
+        this.innerProperties().withTableNames(tableNames);
         return this;
     }
 
@@ -115,7 +84,7 @@ public class DataExportInner extends ProxyResource {
      * @return the enable value.
      */
     public Boolean enable() {
-        return this.enable;
+        return this.innerProperties() == null ? null : this.innerProperties().enable();
     }
 
     /**
@@ -125,7 +94,10 @@ public class DataExportInner extends ProxyResource {
      * @return the DataExportInner object itself.
      */
     public DataExportInner withEnable(Boolean enable) {
-        this.enable = enable;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataExportProperties();
+        }
+        this.innerProperties().withEnable(enable);
         return this;
     }
 
@@ -135,7 +107,7 @@ public class DataExportInner extends ProxyResource {
      * @return the createdDate value.
      */
     public String createdDate() {
-        return this.createdDate;
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
     }
 
     /**
@@ -145,7 +117,10 @@ public class DataExportInner extends ProxyResource {
      * @return the DataExportInner object itself.
      */
     public DataExportInner withCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataExportProperties();
+        }
+        this.innerProperties().withCreatedDate(createdDate);
         return this;
     }
 
@@ -155,7 +130,7 @@ public class DataExportInner extends ProxyResource {
      * @return the lastModifiedDate value.
      */
     public String lastModifiedDate() {
-        return this.lastModifiedDate;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedDate();
     }
 
     /**
@@ -165,7 +140,10 @@ public class DataExportInner extends ProxyResource {
      * @return the DataExportInner object itself.
      */
     public DataExportInner withLastModifiedDate(String lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataExportProperties();
+        }
+        this.innerProperties().withLastModifiedDate(lastModifiedDate);
         return this;
     }
 
@@ -176,7 +154,7 @@ public class DataExportInner extends ProxyResource {
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -187,17 +165,20 @@ public class DataExportInner extends ProxyResource {
      * @return the DataExportInner object itself.
      */
     public DataExportInner withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataExportProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
         return this;
     }
 
     /**
-     * Get the typePropertiesDestinationType property: The type of the destination resource.
+     * Get the type property: The type of the destination resource.
      *
-     * @return the typePropertiesDestinationType value.
+     * @return the type value.
      */
-    public Type typePropertiesDestinationType() {
-        return this.typePropertiesDestinationType;
+    public Type typePropertiesType() {
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
@@ -207,7 +188,7 @@ public class DataExportInner extends ProxyResource {
      * @return the eventHubName value.
      */
     public String eventHubName() {
-        return this.eventHubName;
+        return this.innerProperties() == null ? null : this.innerProperties().eventHubName();
     }
 
     /**
@@ -218,7 +199,10 @@ public class DataExportInner extends ProxyResource {
      * @return the DataExportInner object itself.
      */
     public DataExportInner withEventHubName(String eventHubName) {
-        this.eventHubName = eventHubName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataExportProperties();
+        }
+        this.innerProperties().withEventHubName(eventHubName);
         return this;
     }
 
@@ -228,5 +212,8 @@ public class DataExportInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

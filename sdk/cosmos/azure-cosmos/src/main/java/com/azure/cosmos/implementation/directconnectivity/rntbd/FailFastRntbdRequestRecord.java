@@ -34,7 +34,7 @@ public class FailFastRntbdRequestRecord extends RntbdRequestRecord {
     public static FailFastRntbdRequestRecord createAndFailFast(
         RntbdRequestArgs args,
         long concurrentRequestsSnapshot,
-        RntbdMetrics metrics,
+        RntbdMetricsCompletionRecorder metricsComplectionRecorder,
         SocketAddress remoteAddress) {
 
         FailFastRntbdRequestRecord failFastRecord = new FailFastRntbdRequestRecord(args);
@@ -58,11 +58,12 @@ public class FailFastRntbdRequestRecord extends RntbdRequestRecord {
         final GoneException admissionControlBlocksRequestException = new GoneException(
             reason,
             headers,
-            remoteAddress);
+            remoteAddress,
+            HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
         BridgeInternal.setRequestHeaders(admissionControlBlocksRequestException, args.serviceRequest().getHeaders());
 
         failFastRecord.whenComplete((response, error) -> {
-            metrics.markComplete(failFastRecord);
+            metricsComplectionRecorder.markComplete(failFastRecord);
         });
         failFastRecord.completeExceptionally(admissionControlBlocksRequestException);
 

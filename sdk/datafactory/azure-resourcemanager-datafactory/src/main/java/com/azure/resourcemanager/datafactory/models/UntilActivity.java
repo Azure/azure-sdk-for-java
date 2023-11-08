@@ -26,6 +26,10 @@ public final class UntilActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private UntilActivityTypeProperties innerTypeProperties = new UntilActivityTypeProperties();
 
+    /** Creates an instance of UntilActivity class. */
+    public UntilActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Until activity properties.
      *
@@ -46,6 +50,20 @@ public final class UntilActivity extends ControlActivity {
     @Override
     public UntilActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UntilActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UntilActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
@@ -91,8 +109,7 @@ public final class UntilActivity extends ControlActivity {
     /**
      * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
      * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
-     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      *
      * @return the timeout value.
      */
@@ -103,8 +120,7 @@ public final class UntilActivity extends ControlActivity {
     /**
      * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
      * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
-     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      *
      * @param timeout the timeout value to set.
      * @return the UntilActivity object itself.

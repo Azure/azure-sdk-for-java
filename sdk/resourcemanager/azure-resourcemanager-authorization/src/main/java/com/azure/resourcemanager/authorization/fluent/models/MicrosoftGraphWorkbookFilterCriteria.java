@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +16,6 @@ import java.util.Map;
 /** workbookFilterCriteria. */
 @Fluent
 public final class MicrosoftGraphWorkbookFilterCriteria {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookFilterCriteria.class);
-
     /*
      * The color property.
      */
@@ -64,12 +62,17 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
      * Json
      */
     @JsonProperty(value = "values")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> values;
 
     /*
      * workbookFilterCriteria
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookFilterCriteria class. */
+    public MicrosoftGraphWorkbookFilterCriteria() {
+    }
 
     /**
      * Get the color property: The color property.

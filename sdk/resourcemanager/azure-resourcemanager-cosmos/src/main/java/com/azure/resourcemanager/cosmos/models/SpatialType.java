@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SpatialType. */
+/** Indicates the spatial type of index. */
 public final class SpatialType extends ExpandableStringEnum<SpatialType> {
     /** Static value Point for SpatialType. */
     public static final SpatialType POINT = fromString("Point");
@@ -23,6 +23,15 @@ public final class SpatialType extends ExpandableStringEnum<SpatialType> {
     public static final SpatialType MULTI_POLYGON = fromString("MultiPolygon");
 
     /**
+     * Creates a new instance of SpatialType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SpatialType() {
+    }
+
+    /**
      * Creates or finds a SpatialType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class SpatialType extends ExpandableStringEnum<SpatialType> {
         return fromString(name, SpatialType.class);
     }
 
-    /** @return known SpatialType values. */
+    /**
+     * Gets known SpatialType values.
+     *
+     * @return known SpatialType values.
+     */
     public static Collection<SpatialType> values() {
         return values(SpatialType.class);
     }

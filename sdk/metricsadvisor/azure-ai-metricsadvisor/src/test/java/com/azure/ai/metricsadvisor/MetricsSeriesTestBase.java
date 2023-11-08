@@ -8,36 +8,23 @@ import com.azure.ai.metricsadvisor.models.ListMetricEnrichmentStatusOptions;
 import com.azure.core.util.Configuration;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase {
 
-    static final String METRIC_ID = "390d1139-98fb-45af-b831-8d5ad61b150a";
-    static final String DIMENSION_NAME = "region";
-    static final Iterable<?> EXPECTED_DIMENSION_VALUES = Arrays.asList("Music",
-        "Musical Instruments",
-        "Office Products",
-        "Outdoors",
-        "Personal Computers",
-        "Shoes Handbags & Sunglasses",
-        "Software & Computer Games",
-        "Sports",
-        "Sports Collectibles",
-        "__SUM__",
-        "Tools & Home Improvement").stream().sorted().collect(Collectors.toList());
+    static final String METRIC_ID = "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066";
+    static final String DIMENSION_NAME = "Dim1";
     static final int LISTING_SERIES_DEFINITIONS_LIMIT = 50;
 
-    static final int EXPECTED_DIMENSION_VALUES_COUNT = 11;
-    static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2021-01-01T00:00:00Z");
-    static final OffsetDateTime TIME_SERIES_END_TIME = OffsetDateTime.parse("2021-10-22T00:00:00Z");
+    static final int EXPECTED_DIMENSION_VALUES_COUNT = 3;
+    static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2022-01-01T00:00:00Z");
+    static final OffsetDateTime TIME_SERIES_END_TIME = OffsetDateTime.parse("2022-03-22T00:00:00Z");
     static final HashMap<String, String> SERIES_KEY_FILTER = new HashMap<String, String>() {{
-            put("region", "Miami");
-            put("category", "Shoes Handbags & Sunglasses");
+            put("Dim1", "JPN");
+            put("Dim2", "JP");
         }};
 
     // Pre-configured test resource.

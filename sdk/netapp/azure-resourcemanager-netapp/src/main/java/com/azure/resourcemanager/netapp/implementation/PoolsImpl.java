@@ -13,10 +13,9 @@ import com.azure.resourcemanager.netapp.fluent.PoolsClient;
 import com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner;
 import com.azure.resourcemanager.netapp.models.CapacityPool;
 import com.azure.resourcemanager.netapp.models.Pools;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PoolsImpl implements Pools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PoolsImpl.class);
 
     private final PoolsClient innerClient;
 
@@ -37,15 +36,6 @@ public final class PoolsImpl implements Pools {
         return Utils.mapPage(inner, inner1 -> new CapacityPoolImpl(inner1, this.manager()));
     }
 
-    public CapacityPool get(String resourceGroupName, String accountName, String poolName) {
-        CapacityPoolInner inner = this.serviceClient().get(resourceGroupName, accountName, poolName);
-        if (inner != null) {
-            return new CapacityPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CapacityPool> getWithResponse(
         String resourceGroupName, String accountName, String poolName, Context context) {
         Response<CapacityPoolInner> inner =
@@ -56,6 +46,15 @@ public final class PoolsImpl implements Pools {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CapacityPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CapacityPool get(String resourceGroupName, String accountName, String poolName) {
+        CapacityPoolInner inner = this.serviceClient().get(resourceGroupName, accountName, poolName);
+        if (inner != null) {
+            return new CapacityPoolImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -72,7 +71,7 @@ public final class PoolsImpl implements Pools {
     public CapacityPool getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -80,7 +79,7 @@ public final class PoolsImpl implements Pools {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -88,7 +87,7 @@ public final class PoolsImpl implements Pools {
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
@@ -99,7 +98,7 @@ public final class PoolsImpl implements Pools {
     public Response<CapacityPool> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,7 +106,7 @@ public final class PoolsImpl implements Pools {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class PoolsImpl implements Pools {
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
@@ -126,7 +125,7 @@ public final class PoolsImpl implements Pools {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +133,7 @@ public final class PoolsImpl implements Pools {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,7 +141,7 @@ public final class PoolsImpl implements Pools {
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
@@ -153,7 +152,7 @@ public final class PoolsImpl implements Pools {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,7 +160,7 @@ public final class PoolsImpl implements Pools {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +168,7 @@ public final class PoolsImpl implements Pools {
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));

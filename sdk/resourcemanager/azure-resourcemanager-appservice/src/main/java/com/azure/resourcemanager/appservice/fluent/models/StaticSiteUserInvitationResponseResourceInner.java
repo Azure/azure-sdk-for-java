@@ -18,6 +18,10 @@ public final class StaticSiteUserInvitationResponseResourceInner extends ProxyOn
     @JsonProperty(value = "properties")
     private StaticSiteUserInvitationResponseResourceProperties innerProperties;
 
+    /** Creates an instance of StaticSiteUserInvitationResponseResourceInner class. */
+    public StaticSiteUserInvitationResponseResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: StaticSiteUserInvitationResponseResource resource specific properties.
      *

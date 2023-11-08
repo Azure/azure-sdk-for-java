@@ -23,7 +23,7 @@ public interface RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentResourceFormatInner> listByHub(String resourceGroupName, String hubName);
@@ -37,7 +37,7 @@ public interface RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentResourceFormatInner> listByHub(
@@ -53,9 +53,9 @@ public interface RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the {@link SyncPoller} for polling of the Role Assignment resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName, String hubName, String assignmentName, RoleAssignmentResourceFormatInner parameters);
 
@@ -70,9 +70,9 @@ public interface RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the {@link SyncPoller} for polling of the Role Assignment resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hubName,
@@ -116,6 +116,22 @@ public interface RoleAssignmentsClient {
         String assignmentName,
         RoleAssignmentResourceFormatInner parameters,
         Context context);
+
+    /**
+     * Gets the role assignment in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param assignmentName The name of the role assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the role assignment in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RoleAssignmentResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String assignmentName, Context context);
 
     /**
      * Gets the role assignment in the hub.
@@ -132,7 +148,7 @@ public interface RoleAssignmentsClient {
     RoleAssignmentResourceFormatInner get(String resourceGroupName, String hubName, String assignmentName);
 
     /**
-     * Gets the role assignment in the hub.
+     * Deletes the role assignment in the hub.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
@@ -141,11 +157,10 @@ public interface RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleAssignmentResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String assignmentName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String assignmentName, Context context);
 
     /**
      * Deletes the role assignment in the hub.
@@ -159,19 +174,4 @@ public interface RoleAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String hubName, String assignmentName);
-
-    /**
-     * Deletes the role assignment in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param assignmentName The name of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String assignmentName, Context context);
 }

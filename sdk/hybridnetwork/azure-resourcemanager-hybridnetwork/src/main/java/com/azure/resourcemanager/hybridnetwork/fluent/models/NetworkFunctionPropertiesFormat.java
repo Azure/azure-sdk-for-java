@@ -6,20 +6,16 @@ package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionUserConfiguration;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
 import com.azure.resourcemanager.hybridnetwork.models.SkuType;
 import com.azure.resourcemanager.hybridnetwork.models.VendorProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network function properties. */
 @Fluent
 public final class NetworkFunctionPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionPropertiesFormat.class);
-
     /*
      * The provisioning state of the network function resource.
      */
@@ -45,8 +41,7 @@ public final class NetworkFunctionPropertiesFormat {
     private SkuType skuType;
 
     /*
-     * The vendor name for the network function. Once set, it cannot be
-     * updated.
+     * The vendor name for the network function. Once set, it cannot be updated.
      */
     @JsonProperty(value = "vendorName")
     private String vendorName;
@@ -86,6 +81,10 @@ public final class NetworkFunctionPropertiesFormat {
      */
     @JsonProperty(value = "networkFunctionUserConfigurations")
     private List<NetworkFunctionUserConfiguration> networkFunctionUserConfigurations;
+
+    /** Creates an instance of NetworkFunctionPropertiesFormat class. */
+    public NetworkFunctionPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the network function resource.

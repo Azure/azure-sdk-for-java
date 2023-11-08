@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The key vault properties. */
 @Fluent
 public final class KeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
-
     /*
-     * The Key Vault uri which holds they key associated with the Log Analytics
-     * cluster.
+     * The Key Vault uri which holds they key associated with the Log Analytics cluster.
      */
     @JsonProperty(value = "keyVaultUri")
     private String keyVaultUri;
@@ -32,6 +27,16 @@ public final class KeyVaultProperties {
      */
     @JsonProperty(value = "keyVersion")
     private String keyVersion;
+
+    /*
+     * Selected key minimum required size.
+     */
+    @JsonProperty(value = "keyRsaSize")
+    private Integer keyRsaSize;
+
+    /** Creates an instance of KeyVaultProperties class. */
+    public KeyVaultProperties() {
+    }
 
     /**
      * Get the keyVaultUri property: The Key Vault uri which holds they key associated with the Log Analytics cluster.
@@ -90,6 +95,26 @@ public final class KeyVaultProperties {
      */
     public KeyVaultProperties withKeyVersion(String keyVersion) {
         this.keyVersion = keyVersion;
+        return this;
+    }
+
+    /**
+     * Get the keyRsaSize property: Selected key minimum required size.
+     *
+     * @return the keyRsaSize value.
+     */
+    public Integer keyRsaSize() {
+        return this.keyRsaSize;
+    }
+
+    /**
+     * Set the keyRsaSize property: Selected key minimum required size.
+     *
+     * @param keyRsaSize the keyRsaSize value to set.
+     * @return the KeyVaultProperties object itself.
+     */
+    public KeyVaultProperties withKeyRsaSize(Integer keyRsaSize) {
+        this.keyRsaSize = keyRsaSize;
         return this;
     }
 

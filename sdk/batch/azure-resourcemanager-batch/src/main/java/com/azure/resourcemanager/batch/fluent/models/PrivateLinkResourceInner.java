@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.batch.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contains information about a private link resource. */
-@Fluent
+@Immutable
 public final class PrivateLinkResourceInner extends ProxyResource {
     /*
      * The properties associated with the private link resource.
@@ -23,6 +23,10 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of PrivateLinkResourceInner class. */
+    public PrivateLinkResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties associated with the private link resource.
@@ -43,8 +47,9 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the groupId property: The group id of the private link resource. The group id is used to establish the
-     * private link connection.
+     * Get the groupId property: The group id of the private link resource.
+     *
+     * <p>The group id is used to establish the private link connection.
      *
      * @return the groupId value.
      */

@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.NodeCountInformationsClient;
 import com.azure.resourcemanager.automation.fluent.models.NodeCountsInner;
 import com.azure.resourcemanager.automation.models.CountType;
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NodeCountInformationsClient. */
 public final class NodeCountInformationsClientImpl implements NodeCountInformationsClient {
-    private final ClientLogger logger = new ClientLogger(NodeCountInformationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final NodeCountInformationsService service;
 
@@ -82,7 +79,8 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets the count of nodes by count type.
+     * @return gets the count of nodes by count type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NodeCountsInner>> getWithResponseAsync(
@@ -110,7 +108,7 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -138,7 +136,8 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets the count of nodes by count type.
+     * @return gets the count of nodes by count type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NodeCountsInner>> getWithResponseAsync(
@@ -166,7 +165,7 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -190,20 +189,13 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets the count of nodes by count type.
+     * @return gets the count of nodes by count type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NodeCountsInner> getAsync(
         String resourceGroupName, String automationAccountName, CountType countType) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, countType)
-            .flatMap(
-                (Response<NodeCountsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -232,7 +224,7 @@ public final class NodeCountInformationsClientImpl implements NodeCountInformati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets the count of nodes by count type.
+     * @return gets the count of nodes by count type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NodeCountsInner> getWithResponse(

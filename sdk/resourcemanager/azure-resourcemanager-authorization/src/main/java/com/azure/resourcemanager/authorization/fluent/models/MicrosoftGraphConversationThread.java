@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** conversationThread. */
 @Fluent
 public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphConversationThread.class);
-
     /*
      * The Cc: recipients for the thread.
      */
@@ -27,8 +24,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
     private List<MicrosoftGraphRecipient> ccRecipients;
 
     /*
-     * Indicates whether any of the posts within this thread has at least one
-     * attachment.
+     * Indicates whether any of the posts within this thread has at least one attachment.
      */
     @JsonProperty(value = "hasAttachments")
     private Boolean hasAttachments;
@@ -40,9 +36,8 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
     private Boolean isLocked;
 
     /*
-     * The Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "lastDeliveredDateTime")
     private OffsetDateTime lastDeliveredDateTime;
@@ -54,8 +49,8 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
     private String preview;
 
     /*
-     * The topic of the conversation. This property can be set when the
-     * conversation is created, but it cannot be updated.
+     * The topic of the conversation. This property can be set when the conversation is created, but it cannot be
+     * updated.
      */
     @JsonProperty(value = "topic")
     private String topic;
@@ -82,6 +77,10 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
      * conversationThread
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphConversationThread class. */
+    public MicrosoftGraphConversationThread() {
+    }
 
     /**
      * Get the ccRecipients property: The Cc: recipients for the thread.

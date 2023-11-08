@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Active Directory Application. */
 @Fluent
 public final class AzureActiveDirectoryApp {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryApp.class);
-
     /*
      * Application ID of the Azure Active Directory Application
      */
@@ -31,6 +28,10 @@ public final class AzureActiveDirectoryApp {
      */
     @JsonProperty(value = "tenantId", required = true)
     private String tenantId;
+
+    /** Creates an instance of AzureActiveDirectoryApp class. */
+    public AzureActiveDirectoryApp() {
+    }
 
     /**
      * Get the applicationId property: Application ID of the Azure Active Directory Application.
@@ -99,21 +100,23 @@ public final class AzureActiveDirectoryApp {
      */
     public void validate() {
         if (applicationId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property applicationId in model AzureActiveDirectoryApp"));
         }
         if (appKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property appKey in model AzureActiveDirectoryApp"));
         }
         if (tenantId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tenantId in model AzureActiveDirectoryApp"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureActiveDirectoryApp.class);
 }

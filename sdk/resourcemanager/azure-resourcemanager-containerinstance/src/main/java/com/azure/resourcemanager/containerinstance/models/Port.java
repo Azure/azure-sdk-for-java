@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The port exposed on the container group. */
 @Fluent
 public final class Port {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Port.class);
-
     /*
      * The protocol associated with the port.
      */
@@ -25,6 +21,10 @@ public final class Port {
      */
     @JsonProperty(value = "port", required = true)
     private int port;
+
+    /** Creates an instance of Port class. */
+    public Port() {
+    }
 
     /**
      * Get the protocol property: The protocol associated with the port.

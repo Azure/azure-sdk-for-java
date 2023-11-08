@@ -26,9 +26,9 @@ public interface MachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
+     * @return the {@link SyncPoller} for polling of describes a Machine Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MachineExtensionInner>, MachineExtensionInner> beginCreateOrUpdate(
         String resourceGroupName, String machineName, String extensionName, MachineExtensionInner extensionParameters);
 
@@ -43,9 +43,9 @@ public interface MachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
+     * @return the {@link SyncPoller} for polling of describes a Machine Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MachineExtensionInner>, MachineExtensionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String machineName,
@@ -100,9 +100,9 @@ public interface MachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
+     * @return the {@link SyncPoller} for polling of describes a Machine Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MachineExtensionInner>, MachineExtensionInner> beginUpdate(
         String resourceGroupName, String machineName, String extensionName, MachineExtensionUpdate extensionParameters);
 
@@ -117,9 +117,9 @@ public interface MachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
+     * @return the {@link SyncPoller} for polling of describes a Machine Extension.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MachineExtensionInner>, MachineExtensionInner> beginUpdate(
         String resourceGroupName,
         String machineName,
@@ -173,9 +173,9 @@ public interface MachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName, String extensionName);
 
     /**
@@ -188,9 +188,9 @@ public interface MachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String machineName, String extensionName, Context context);
 
@@ -227,6 +227,22 @@ public interface MachineExtensionsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param extensionName The name of the machine extension.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Machine Extension along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MachineExtensionInner> getWithResponse(
+        String resourceGroupName, String machineName, String extensionName, Context context);
+
+    /**
+     * The operation to get the extension.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the machine containing the extension.
+     * @param extensionName The name of the machine extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -236,22 +252,6 @@ public interface MachineExtensionsClient {
     MachineExtensionInner get(String resourceGroupName, String machineName, String extensionName);
 
     /**
-     * The operation to get the extension.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the machine containing the extension.
-     * @param extensionName The name of the machine extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Machine Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MachineExtensionInner> getWithResponse(
-        String resourceGroupName, String machineName, String extensionName, Context context);
-
-    /**
      * The operation to get all extensions of a non-Azure machine.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -259,7 +259,7 @@ public interface MachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the Machine Extensions List Result.
+     * @return describes the Machine Extensions List Result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MachineExtensionInner> list(String resourceGroupName, String machineName);
@@ -274,7 +274,7 @@ public interface MachineExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the Machine Extensions List Result.
+     * @return describes the Machine Extensions List Result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MachineExtensionInner> list(

@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.OperationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.AvailableRpOperationInner;
 import com.azure.resourcemanager.synapse.fluent.models.CheckNameAvailabilityResponseInner;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public final class OperationsClientImpl implements OperationsClient {
-    private final ClientLogger logger = new ClientLogger(OperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationsService service;
 
@@ -59,7 +56,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface OperationsService {
+    public interface OperationsService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/checkNameAvailability")
         @ExpectedResponses({200})
@@ -113,7 +110,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Check whether a workspace name is available.
+     * Check name availability
+     *
+     * <p>Check whether a workspace name is available.
      *
      * @param request The check request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,7 +157,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Check whether a workspace name is available.
+     * Check name availability
+     *
+     * <p>Check whether a workspace name is available.
      *
      * @param request The check request.
      * @param context The context to associate with this operation.
@@ -196,7 +197,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Check whether a workspace name is available.
+     * Check name availability
+     *
+     * <p>Check whether a workspace name is available.
      *
      * @param request The check request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,33 +209,13 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityAsync(CheckNameAvailabilityRequest request) {
-        return checkNameAvailabilityWithResponseAsync(request)
-            .flatMap(
-                (Response<CheckNameAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return checkNameAvailabilityWithResponseAsync(request).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Check whether a workspace name is available.
+     * Check name availability
      *
-     * @param request The check request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check name availability response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest request) {
-        return checkNameAvailabilityAsync(request).block();
-    }
-
-    /**
-     * Check whether a workspace name is available.
+     * <p>Check whether a workspace name is available.
      *
      * @param request The check request.
      * @param context The context to associate with this operation.
@@ -248,7 +231,25 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Get all available operations.
+     * Check name availability
+     *
+     * <p>Check whether a workspace name is available.
+     *
+     * @param request The check request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return check name availability response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest request) {
+        return checkNameAvailabilityWithResponse(request, Context.NONE).getValue();
+    }
+
+    /**
+     * All operations
+     *
+     * <p>Get all available operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -269,7 +270,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Get all available operations.
+     * All operations
+     *
+     * <p>Get all available operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,7 +294,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Get all available operations.
+     * All operations
+     *
+     * <p>Get all available operations.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -299,31 +304,13 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<AvailableRpOperationInner>> listAsync() {
-        return listWithResponseAsync()
-            .flatMap(
-                (Response<List<AvailableRpOperationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get all available operations.
+     * All operations
      *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available operations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AvailableRpOperationInner> list() {
-        return listAsync().block();
-    }
-
-    /**
-     * Get all available operations.
+     * <p>Get all available operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -337,7 +324,23 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Get the result of an operation.
+     * All operations
+     *
+     * <p>Get all available operations.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all available operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<AvailableRpOperationInner> list() {
+        return listWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * Get operation result
+     *
+     * <p>Get the result of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -391,7 +394,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Get the result of an operation.
+     * Get operation result
+     *
+     * <p>Get the result of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -443,7 +448,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Get the result of an operation.
+     * Get operation result
+     *
+     * <p>Get the result of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -457,26 +464,13 @@ public final class OperationsClientImpl implements OperationsClient {
     private Mono<Void> getLocationHeaderResultAsync(
         String resourceGroupName, String workspaceName, String operationId) {
         return getLocationHeaderResultWithResponseAsync(resourceGroupName, workspaceName, operationId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Get the result of an operation.
+     * Get operation result
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param operationId Operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getLocationHeaderResult(String resourceGroupName, String workspaceName, String operationId) {
-        getLocationHeaderResultAsync(resourceGroupName, workspaceName, operationId).block();
-    }
-
-    /**
-     * Get the result of an operation.
+     * <p>Get the result of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -494,7 +488,26 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Get the status of an operation.
+     * Get operation result
+     *
+     * <p>Get the result of an operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param operationId Operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getLocationHeaderResult(String resourceGroupName, String workspaceName, String operationId) {
+        getLocationHeaderResultWithResponse(resourceGroupName, workspaceName, operationId, Context.NONE);
+    }
+
+    /**
+     * Get operation status
+     *
+     * <p>Get the status of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -548,7 +561,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Get the status of an operation.
+     * Get operation status
+     *
+     * <p>Get the status of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -600,7 +615,9 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Get the status of an operation.
+     * Get operation status
+     *
+     * <p>Get the status of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -614,35 +631,13 @@ public final class OperationsClientImpl implements OperationsClient {
     private Mono<OperationResourceInner> getAzureAsyncHeaderResultAsync(
         String resourceGroupName, String workspaceName, String operationId) {
         return getAzureAsyncHeaderResultWithResponseAsync(resourceGroupName, workspaceName, operationId)
-            .flatMap(
-                (Response<OperationResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the status of an operation.
+     * Get operation status
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param operationId Operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationResourceInner getAzureAsyncHeaderResult(
-        String resourceGroupName, String workspaceName, String operationId) {
-        return getAzureAsyncHeaderResultAsync(resourceGroupName, workspaceName, operationId).block();
-    }
-
-    /**
-     * Get the status of an operation.
+     * <p>Get the status of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -658,5 +653,25 @@ public final class OperationsClientImpl implements OperationsClient {
         String resourceGroupName, String workspaceName, String operationId, Context context) {
         return getAzureAsyncHeaderResultWithResponseAsync(resourceGroupName, workspaceName, operationId, context)
             .block();
+    }
+
+    /**
+     * Get operation status
+     *
+     * <p>Get the status of an operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param operationId Operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of an operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationResourceInner getAzureAsyncHeaderResult(
+        String resourceGroupName, String workspaceName, String operationId) {
+        return getAzureAsyncHeaderResultWithResponse(resourceGroupName, workspaceName, operationId, Context.NONE)
+            .getValue();
     }
 }

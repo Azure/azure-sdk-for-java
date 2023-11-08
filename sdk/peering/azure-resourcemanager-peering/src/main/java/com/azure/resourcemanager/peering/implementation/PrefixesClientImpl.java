@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.PrefixesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServicePrefixInner;
 import com.azure.resourcemanager.peering.models.PeeringServicePrefixListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrefixesClient. */
 public final class PrefixesClientImpl implements PrefixesClient {
-    private final ClientLogger logger = new ClientLogger(PrefixesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrefixesService service;
 
@@ -60,7 +57,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "PeeringManagementCli")
-    private interface PrefixesService {
+    public interface PrefixesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering"
@@ -149,7 +146,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
+     *     service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringServicePrefixInner>> getWithResponseAsync(
@@ -207,7 +204,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
+     *     service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringServicePrefixInner>> getWithResponseAsync(
@@ -256,25 +253,18 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
-     * @param expand The properties to be expanded.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
+     *     service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeeringServicePrefixInner> getAsync(
-        String resourceGroupName, String peeringServiceName, String prefixName, String expand) {
+        String resourceGroupName, String peeringServiceName, String prefixName) {
+        final String expand = null;
         return getWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, expand)
-            .flatMap(
-                (Response<PeeringServicePrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -283,25 +273,18 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @param resourceGroupName The name of the resource group.
      * @param peeringServiceName The name of the peering service.
      * @param prefixName The name of the prefix.
+     * @param expand The properties to be expanded.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
+     *     service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PeeringServicePrefixInner> getAsync(
-        String resourceGroupName, String peeringServiceName, String prefixName) {
-        final String expand = null;
-        return getWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, expand)
-            .flatMap(
-                (Response<PeeringServicePrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<PeeringServicePrefixInner> getWithResponse(
+        String resourceGroupName, String peeringServiceName, String prefixName, String expand, Context context) {
+        return getWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, expand, context).block();
     }
 
     /**
@@ -319,27 +302,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PeeringServicePrefixInner get(String resourceGroupName, String peeringServiceName, String prefixName) {
         final String expand = null;
-        return getAsync(resourceGroupName, peeringServiceName, prefixName, expand).block();
-    }
-
-    /**
-     * Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param expand The properties to be expanded.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PeeringServicePrefixInner> getWithResponse(
-        String resourceGroupName, String peeringServiceName, String prefixName, String expand, Context context) {
-        return getWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, expand, context).block();
+        return getWithResponse(resourceGroupName, peeringServiceName, prefixName, expand, Context.NONE).getValue();
     }
 
     /**
@@ -352,7 +315,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peering service prefix class.
+     * @return the peering service prefix class along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringServicePrefixInner>> createOrUpdateWithResponseAsync(
@@ -418,7 +381,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peering service prefix class.
+     * @return the peering service prefix class along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringServicePrefixInner>> createOrUpdateWithResponseAsync(
@@ -481,7 +444,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peering service prefix class.
+     * @return the peering service prefix class on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeeringServicePrefixInner> createOrUpdateAsync(
@@ -490,14 +453,32 @@ public final class PrefixesClientImpl implements PrefixesClient {
         String prefixName,
         PeeringServicePrefixInner peeringServicePrefix) {
         return createOrUpdateWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix)
-            .flatMap(
-                (Response<PeeringServicePrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a new prefix with the specified name under the given subscription, resource group and peering service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringServiceName The name of the peering service.
+     * @param prefixName The name of the prefix.
+     * @param peeringServicePrefix The properties needed to create a prefix.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the peering service prefix class along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PeeringServicePrefixInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String peeringServiceName,
+        String prefixName,
+        PeeringServicePrefixInner peeringServicePrefix,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix, context)
+            .block();
     }
 
     /**
@@ -518,32 +499,9 @@ public final class PrefixesClientImpl implements PrefixesClient {
         String peeringServiceName,
         String prefixName,
         PeeringServicePrefixInner peeringServicePrefix) {
-        return createOrUpdateAsync(resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix).block();
-    }
-
-    /**
-     * Creates a new prefix with the specified name under the given subscription, resource group and peering service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param peeringServicePrefix The properties needed to create a prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peering service prefix class.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PeeringServicePrefixInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String peeringServiceName,
-        String prefixName,
-        PeeringServicePrefixInner peeringServicePrefix,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix, context)
-            .block();
+        return createOrUpdateWithResponse(
+                resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -556,7 +514,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -612,7 +570,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -664,12 +622,31 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String peeringServiceName, String prefixName) {
         return deleteWithResponseAsync(resourceGroupName, peeringServiceName, prefixName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
+     * service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringServiceName The name of the peering service.
+     * @param prefixName The name of the prefix.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String peeringServiceName, String prefixName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, context).block();
     }
 
     /**
@@ -685,26 +662,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String peeringServiceName, String prefixName) {
-        deleteAsync(resourceGroupName, peeringServiceName, prefixName).block();
-    }
-
-    /**
-     * Deletes an existing prefix with the specified name under the given subscription, resource group and peering
-     * service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringServiceName The name of the peering service.
-     * @param prefixName The name of the prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String peeringServiceName, String prefixName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, peeringServiceName, prefixName, context).block();
+        deleteWithResponse(resourceGroupName, peeringServiceName, prefixName, Context.NONE);
     }
 
     /**
@@ -716,7 +674,8 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServicePrefixInner>> listByPeeringServiceSinglePageAsync(
@@ -777,7 +736,8 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServicePrefixInner>> listByPeeringServiceSinglePageAsync(
@@ -834,7 +794,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServicePrefixInner> listByPeeringServiceAsync(
@@ -852,7 +812,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServicePrefixInner> listByPeeringServiceAsync(
@@ -873,7 +833,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServicePrefixInner> listByPeeringServiceAsync(
@@ -891,7 +851,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServicePrefixInner> listByPeeringService(
@@ -910,7 +870,7 @@ public final class PrefixesClientImpl implements PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServicePrefixInner> listByPeeringService(
@@ -921,11 +881,13 @@ public final class PrefixesClientImpl implements PrefixesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServicePrefixInner>> listByPeeringServiceNextSinglePageAsync(String nextLink) {
@@ -957,12 +919,14 @@ public final class PrefixesClientImpl implements PrefixesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServicePrefixInner>> listByPeeringServiceNextSinglePageAsync(

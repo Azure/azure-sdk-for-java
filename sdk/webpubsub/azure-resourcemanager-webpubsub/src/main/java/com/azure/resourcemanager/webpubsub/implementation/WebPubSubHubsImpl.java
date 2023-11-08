@@ -13,10 +13,9 @@ import com.azure.resourcemanager.webpubsub.fluent.WebPubSubHubsClient;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubHubInner;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHub;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WebPubSubHubsImpl implements WebPubSubHubs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubHubsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebPubSubHubsImpl.class);
 
     private final WebPubSubHubsClient innerClient;
 
@@ -38,15 +37,6 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
         return Utils.mapPage(inner, inner1 -> new WebPubSubHubImpl(inner1, this.manager()));
     }
 
-    public WebPubSubHub get(String hubName, String resourceGroupName, String resourceName) {
-        WebPubSubHubInner inner = this.serviceClient().get(hubName, resourceGroupName, resourceName);
-        if (inner != null) {
-            return new WebPubSubHubImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WebPubSubHub> getWithResponse(
         String hubName, String resourceGroupName, String resourceName, Context context) {
         Response<WebPubSubHubInner> inner =
@@ -57,6 +47,15 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WebPubSubHubImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WebPubSubHub get(String hubName, String resourceGroupName, String resourceName) {
+        WebPubSubHubInner inner = this.serviceClient().get(hubName, resourceGroupName, resourceName);
+        if (inner != null) {
+            return new WebPubSubHubImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -73,14 +72,14 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
     public WebPubSubHub getById(String id) {
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -88,7 +87,7 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
@@ -99,14 +98,14 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
     public Response<WebPubSubHub> getByIdWithResponse(String id, Context context) {
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,7 +113,7 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
@@ -125,14 +124,14 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
     public void deleteById(String id) {
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,7 +139,7 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
@@ -151,14 +150,14 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
     public void deleteByIdWithResponse(String id, Context context) {
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +165,7 @@ public final class WebPubSubHubsImpl implements WebPubSubHubs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "webPubSub");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));

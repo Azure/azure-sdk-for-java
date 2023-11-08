@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.AzureMonitorSelectedConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The azure monitor status response. */
 @Fluent
 public final class AzureMonitorResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMonitorResponseInner.class);
-
     /*
      * The status of the monitor on the HDInsight cluster.
      */
@@ -32,6 +28,10 @@ public final class AzureMonitorResponseInner {
      */
     @JsonProperty(value = "selectedConfigurations")
     private AzureMonitorSelectedConfigurations selectedConfigurations;
+
+    /** Creates an instance of AzureMonitorResponseInner class. */
+    public AzureMonitorResponseInner() {
+    }
 
     /**
      * Get the clusterMonitoringEnabled property: The status of the monitor on the HDInsight cluster.

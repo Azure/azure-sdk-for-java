@@ -4,41 +4,39 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines Start. */
 public final class VirtualMachinesStartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Start_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_Start_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_Start_MaximumSet_Gen.
+     * Sample code: VirtualMachine_Start_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesStartMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void virtualMachineStartMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .start("rgcompute", "aaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .start("rgcompute", "aaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Start_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_Start_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_Start_MinimumSet_Gen.
+     * Sample code: VirtualMachine_Start_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesStartMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void virtualMachineStartMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .start("rgcompute", "aaaaa", Context.NONE);
+            .start("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

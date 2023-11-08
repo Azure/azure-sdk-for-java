@@ -43,6 +43,10 @@ public final class ActionResponseImpl implements ActionResponse, ActionResponse.
         return this.innerModel().logicAppResourceId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ActionResponseInner innerModel() {
         return this.innerObject;
     }

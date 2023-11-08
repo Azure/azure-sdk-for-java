@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.CoreUtils;
+
 import java.util.Map;
 
 /**
@@ -85,6 +86,13 @@ public enum Messages {
     public static final String EXCEPTION_OCCURRED_WHILE_EMITTING = getMessage("EXCEPTION_OCCURRED_WHILE_EMITTING");
 
     /**
+     * Encoder is not supported message.
+     */
+    static final String ENCODING_TYPE_NOT_SUPPORTED_ENCODER = getMessage("ENCODING_TYPE_NOT_SUPPORTED_ENCODER");
+
+    /**
+     * Gets the message given its corresponding key.
+     *
      * @param key the key of the message to retrieve
      * @return the message matching the given key
      */

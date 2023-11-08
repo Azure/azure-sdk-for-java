@@ -29,6 +29,10 @@ public final class OrchestratorProfile {
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
+    /** Creates an instance of OrchestratorProfile class. */
+    public OrchestratorProfile() {
+    }
+
     /**
      * Get the orchestratorType property: Orchestrator type.
      *

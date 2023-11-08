@@ -25,6 +25,10 @@ public final class VirtualMachineRunCommandsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of VirtualMachineRunCommandsListResult class. */
+    public VirtualMachineRunCommandsListResult() {
+    }
+
     /**
      * Get the value property: The list of run commands.
      *

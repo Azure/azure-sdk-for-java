@@ -17,6 +17,10 @@ public final class FactoryUpdateProperties {
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
+    /** Creates an instance of FactoryUpdateProperties class. */
+    public FactoryUpdateProperties() {
+    }
+
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
      *

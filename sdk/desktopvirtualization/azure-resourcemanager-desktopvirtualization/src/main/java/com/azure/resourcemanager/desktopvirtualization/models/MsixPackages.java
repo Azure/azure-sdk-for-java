@@ -16,6 +16,21 @@ public interface MsixPackages {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a msixpackage along with {@link Response}.
+     */
+    Response<MsixPackage> getWithResponse(
+        String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context);
+
+    /**
+     * Get a msixpackage.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param hostPoolName The name of the host pool within the specified resource group.
+     * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,7 +39,7 @@ public interface MsixPackages {
     MsixPackage get(String resourceGroupName, String hostPoolName, String msixPackageFullName);
 
     /**
-     * Get a msixpackage.
+     * Remove an MSIX Package.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
@@ -33,9 +48,9 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return the {@link Response}.
      */
-    Response<MsixPackage> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context);
 
     /**
@@ -51,21 +66,6 @@ public interface MsixPackages {
     void delete(String resourceGroupName, String hostPoolName, String msixPackageFullName);
 
     /**
-     * Remove an MSIX Package.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hostPoolName The name of the host pool within the specified resource group.
-     * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context);
-
-    /**
      * List MSIX packages in hostpool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -73,7 +73,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MsixPackage> list(String resourceGroupName, String hostPoolName);
 
@@ -82,13 +82,22 @@ public interface MsixPackages {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return msixPackageList.
+     * @return msixPackageList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<MsixPackage> list(String resourceGroupName, String hostPoolName, Context context);
+    PagedIterable<MsixPackage> list(
+        String resourceGroupName,
+        String hostPoolName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context);
 
     /**
      * Get a msixpackage.
@@ -97,7 +106,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return a msixpackage along with {@link Response}.
      */
     MsixPackage getById(String id);
 
@@ -109,7 +118,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a msixpackage.
+     * @return a msixpackage along with {@link Response}.
      */
     Response<MsixPackage> getByIdWithResponse(String id, Context context);
 
@@ -131,7 +140,7 @@ public interface MsixPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration service environment subnet network health. */
 @Fluent
 public final class IntegrationServiceEnvironmentNetworkDependencyHealth {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentNetworkDependencyHealth.class);
-
     /*
      * The error if any occurred during the operation.
      */
@@ -26,6 +21,10 @@ public final class IntegrationServiceEnvironmentNetworkDependencyHealth {
      */
     @JsonProperty(value = "state")
     private IntegrationServiceEnvironmentNetworkDependencyHealthState state;
+
+    /** Creates an instance of IntegrationServiceEnvironmentNetworkDependencyHealth class. */
+    public IntegrationServiceEnvironmentNetworkDependencyHealth() {
+    }
 
     /**
      * Get the error property: The error if any occurred during the operation.

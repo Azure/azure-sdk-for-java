@@ -5,23 +5,31 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AdhocBasedTaggingCriteria Adhoc backup tagging criteria. */
+/**
+ * AdhocBasedTaggingCriteria
+ *
+ * <p>Adhoc backup tagging criteria.
+ */
 @Fluent
 public final class AdhocBasedTaggingCriteria {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdhocBasedTaggingCriteria.class);
-
     /*
-     * RetentionTag Retention tag information
+     * RetentionTag
+     *
+     * Retention tag information
      */
     @JsonProperty(value = "tagInfo")
     private RetentionTag tagInfo;
 
+    /** Creates an instance of AdhocBasedTaggingCriteria class. */
+    public AdhocBasedTaggingCriteria() {
+    }
+
     /**
-     * Get the tagInfo property: RetentionTag Retention tag information.
+     * Get the tagInfo property: RetentionTag
+     *
+     * <p>Retention tag information.
      *
      * @return the tagInfo value.
      */
@@ -30,7 +38,9 @@ public final class AdhocBasedTaggingCriteria {
     }
 
     /**
-     * Set the tagInfo property: RetentionTag Retention tag information.
+     * Set the tagInfo property: RetentionTag
+     *
+     * <p>Retention tag information.
      *
      * @param tagInfo the tagInfo value to set.
      * @return the AdhocBasedTaggingCriteria object itself.

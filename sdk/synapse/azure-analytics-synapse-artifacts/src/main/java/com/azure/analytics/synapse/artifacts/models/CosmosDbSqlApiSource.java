@@ -21,33 +21,32 @@ public final class CosmosDbSqlApiSource extends CopySource {
     private Object query;
 
     /*
-     * Page size of the result. Type: integer (or Expression with resultType
-     * integer).
+     * Page size of the result. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "pageSize")
     private Object pageSize;
 
     /*
-     * Preferred regions. Type: array of strings (or Expression with resultType
-     * array of strings).
+     * Preferred regions. Type: array of strings (or Expression with resultType array of strings).
      */
     @JsonProperty(value = "preferredRegions")
     private Object preferredRegions;
 
     /*
-     * Whether detect primitive values as datetime values. Type: boolean (or
-     * Expression with resultType boolean).
+     * Whether detect primitive values as datetime values. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "detectDatetime")
     private Object detectDatetime;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
+
+    /** Creates an instance of CosmosDbSqlApiSource class. */
+    public CosmosDbSqlApiSource() {}
 
     /**
      * Get the query property: SQL API query. Type: string (or Expression with resultType string).
@@ -152,6 +151,27 @@ public final class CosmosDbSqlApiSource extends CopySource {
      */
     public CosmosDbSqlApiSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbSqlApiSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbSqlApiSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbSqlApiSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

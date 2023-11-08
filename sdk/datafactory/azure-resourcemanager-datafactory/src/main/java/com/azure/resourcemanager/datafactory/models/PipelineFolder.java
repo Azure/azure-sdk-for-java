@@ -16,6 +16,10 @@ public final class PipelineFolder {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of PipelineFolder class. */
+    public PipelineFolder() {
+    }
+
     /**
      * Get the name property: The name of the folder that this Pipeline is in.
      *

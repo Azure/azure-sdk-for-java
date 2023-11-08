@@ -54,21 +54,6 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SignaturesOverridesInner patch(
-        String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters);
-
-    /**
-     * Will update the status of policy's signature overrides for IDPS.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will contain all properties of the object to put.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,6 +63,21 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SignaturesOverridesInner> patchWithResponse(
         String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters, Context context);
+
+    /**
+     * Will update the status of policy's signature overrides for IDPS.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters Will contain all properties of the object to put.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains all specific policy signatures overrides for the IDPS.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SignaturesOverridesInner patch(
+        String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters);
 
     /**
      * Will override/create a new signature overrides for the policy's IDPS.
@@ -116,21 +116,6 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will contain all properties of the object to put.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SignaturesOverridesInner put(
-        String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters);
-
-    /**
-     * Will override/create a new signature overrides for the policy's IDPS.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will contain all properties of the object to put.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,6 +125,21 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SignaturesOverridesInner> putWithResponse(
         String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters, Context context);
+
+    /**
+     * Will override/create a new signature overrides for the policy's IDPS.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters Will contain all properties of the object to put.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains all specific policy signatures overrides for the IDPS.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SignaturesOverridesInner put(
+        String resourceGroupName, String firewallPolicyName, SignaturesOverridesInner parameters);
 
     /**
      * Returns all signatures overrides for a specific policy.
@@ -173,19 +173,6 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SignaturesOverridesInner get(String resourceGroupName, String firewallPolicyName);
-
-    /**
-     * Returns all signatures overrides for a specific policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -195,6 +182,19 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SignaturesOverridesInner> getWithResponse(
         String resourceGroupName, String firewallPolicyName, Context context);
+
+    /**
+     * Returns all signatures overrides for a specific policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains all specific policy signatures overrides for the IDPS.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SignaturesOverridesInner get(String resourceGroupName, String firewallPolicyName);
 
     /**
      * Returns all signatures overrides objects for a specific policy as a list containing a single value.
@@ -229,19 +229,6 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SignaturesOverridesListInner list(String resourceGroupName, String firewallPolicyName);
-
-    /**
-     * Returns all signatures overrides objects for a specific policy as a list containing a single value.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -251,4 +238,17 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SignaturesOverridesListInner> listWithResponse(
         String resourceGroupName, String firewallPolicyName, Context context);
+
+    /**
+     * Returns all signatures overrides objects for a specific policy as a list containing a single value.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an object containing an array with a single item.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SignaturesOverridesListInner list(String resourceGroupName, String firewallPolicyName);
 }

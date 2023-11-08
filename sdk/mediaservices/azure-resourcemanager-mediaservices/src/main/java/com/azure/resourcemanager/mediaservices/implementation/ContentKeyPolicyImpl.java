@@ -63,6 +63,10 @@ public final class ContentKeyPolicyImpl
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ContentKeyPolicyInner innerModel() {
         return this.innerObject;
     }
@@ -166,16 +170,16 @@ public final class ContentKeyPolicyImpl
         return this;
     }
 
-    public ContentKeyPolicyProperties getPolicyPropertiesWithSecrets() {
-        return serviceManager
-            .contentKeyPolicies()
-            .getPolicyPropertiesWithSecrets(resourceGroupName, accountName, contentKeyPolicyName);
-    }
-
     public Response<ContentKeyPolicyProperties> getPolicyPropertiesWithSecretsWithResponse(Context context) {
         return serviceManager
             .contentKeyPolicies()
             .getPolicyPropertiesWithSecretsWithResponse(resourceGroupName, accountName, contentKeyPolicyName, context);
+    }
+
+    public ContentKeyPolicyProperties getPolicyPropertiesWithSecrets() {
+        return serviceManager
+            .contentKeyPolicies()
+            .getPolicyPropertiesWithSecrets(resourceGroupName, accountName, contentKeyPolicyName);
     }
 
     public ContentKeyPolicyImpl withDescription(String description) {

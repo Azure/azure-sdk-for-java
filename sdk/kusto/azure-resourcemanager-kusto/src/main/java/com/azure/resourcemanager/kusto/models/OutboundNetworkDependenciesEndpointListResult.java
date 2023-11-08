@@ -7,16 +7,12 @@ package com.azure.resourcemanager.kusto.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependenciesEndpointInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of Outbound Environment Endpoints. */
 @Fluent
 public final class OutboundNetworkDependenciesEndpointListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OutboundNetworkDependenciesEndpointListResult.class);
-
     /*
      * Collection of resources.
      */
@@ -28,6 +24,10 @@ public final class OutboundNetworkDependenciesEndpointListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of OutboundNetworkDependenciesEndpointListResult class. */
+    public OutboundNetworkDependenciesEndpointListResult() {
+    }
 
     /**
      * Get the value property: Collection of resources.
@@ -66,7 +66,7 @@ public final class OutboundNetworkDependenciesEndpointListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model OutboundNetworkDependenciesEndpointListResult"));
@@ -74,4 +74,6 @@ public final class OutboundNetworkDependenciesEndpointListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OutboundNetworkDependenciesEndpointListResult.class);
 }

@@ -45,6 +45,13 @@ public interface FirewallRule {
     String endIpAddress();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mariadb.fluent.models.FirewallRuleInner object.
      *
      * @return the inner object.

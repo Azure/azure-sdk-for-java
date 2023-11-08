@@ -16,6 +16,10 @@ public final class EndpointDetail {
     @JsonProperty(value = "port", access = JsonProperty.Access.WRITE_ONLY)
     private Integer port;
 
+    /** Creates an instance of EndpointDetail class. */
+    public EndpointDetail() {
+    }
+
     /**
      * Get the port property: The port an endpoint is connected to.
      *

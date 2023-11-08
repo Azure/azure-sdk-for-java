@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkloadNetworkVMGroupProvisioningState. */
+/** The provisioning state. */
 public final class WorkloadNetworkVMGroupProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkVMGroupProvisioningState> {
     /** Static value Succeeded for WorkloadNetworkVMGroupProvisioningState. */
@@ -26,6 +26,18 @@ public final class WorkloadNetworkVMGroupProvisioningState
     /** Static value Updating for WorkloadNetworkVMGroupProvisioningState. */
     public static final WorkloadNetworkVMGroupProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Canceled for WorkloadNetworkVMGroupProvisioningState. */
+    public static final WorkloadNetworkVMGroupProvisioningState CANCELED = fromString("Canceled");
+
+    /**
+     * Creates a new instance of WorkloadNetworkVMGroupProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadNetworkVMGroupProvisioningState() {
+    }
+
     /**
      * Creates or finds a WorkloadNetworkVMGroupProvisioningState from its string representation.
      *
@@ -37,7 +49,11 @@ public final class WorkloadNetworkVMGroupProvisioningState
         return fromString(name, WorkloadNetworkVMGroupProvisioningState.class);
     }
 
-    /** @return known WorkloadNetworkVMGroupProvisioningState values. */
+    /**
+     * Gets known WorkloadNetworkVMGroupProvisioningState values.
+     *
+     * @return known WorkloadNetworkVMGroupProvisioningState values.
+     */
     public static Collection<WorkloadNetworkVMGroupProvisioningState> values() {
         return values(WorkloadNetworkVMGroupProvisioningState.class);
     }

@@ -68,11 +68,10 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface PartnerConfigurationsService {
+    public interface PartnerConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerConfigurations/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerConfigurationInner>> getByResourceGroup(
@@ -85,8 +84,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerConfigurations/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -100,8 +98,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerConfigurations/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -113,8 +110,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerConfigurations/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -128,8 +124,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerConfigurations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerConfigurationsListResult>> listByResourceGroup(
@@ -155,8 +150,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerConfigurations/default/authorizePartner")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default/authorizePartner")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerConfigurationInner>> authorizePartner(
@@ -170,8 +164,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerConfigurations/default/unauthorizePartner")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default/unauthorizePartner")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerConfigurationInner>> unauthorizePartner(
@@ -195,7 +188,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Get properties of a partner configuration.
+     * Get a partner configuration.
+     *
+     * <p>Get properties of a partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,7 +233,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Get properties of a partner configuration.
+     * Get a partner configuration.
+     *
+     * <p>Get properties of a partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
@@ -280,7 +277,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Get properties of a partner configuration.
+     * Get a partner configuration.
+     *
+     * <p>Get properties of a partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,33 +289,13 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerConfigurationInner> getByResourceGroupAsync(String resourceGroupName) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName)
-            .flatMap(
-                (Response<PartnerConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByResourceGroupWithResponseAsync(resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get properties of a partner configuration.
+     * Get a partner configuration.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerConfigurationInner getByResourceGroup(String resourceGroupName) {
-        return getByResourceGroupAsync(resourceGroupName).block();
-    }
-
-    /**
-     * Get properties of a partner configuration.
+     * <p>Get properties of a partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
@@ -332,7 +311,25 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * Get a partner configuration.
+     *
+     * <p>Get properties of a partner configuration.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a partner configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PartnerConfigurationInner getByResourceGroup(String resourceGroupName) {
+        return getByResourceGroupWithResponse(resourceGroupName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a partner configuration.
+     *
+     * <p>Synchronously creates or updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
@@ -384,7 +381,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * Create or update a partner configuration.
+     *
+     * <p>Synchronously creates or updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
@@ -434,7 +433,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * Create or update a partner configuration.
+     *
+     * <p>Synchronously creates or updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
@@ -459,7 +460,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * Create or update a partner configuration.
+     *
+     * <p>Synchronously creates or updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
@@ -486,7 +489,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * Create or update a partner configuration.
+     *
+     * <p>Synchronously creates or updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
@@ -498,11 +503,13 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerConfigurationInner>, PartnerConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, PartnerConfigurationInner partnerConfigurationInfo) {
-        return beginCreateOrUpdateAsync(resourceGroupName, partnerConfigurationInfo).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, partnerConfigurationInfo).getSyncPoller();
     }
 
     /**
-     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * Create or update a partner configuration.
+     *
+     * <p>Synchronously creates or updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
@@ -515,11 +522,13 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerConfigurationInner>, PartnerConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, PartnerConfigurationInner partnerConfigurationInfo, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, partnerConfigurationInfo, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, partnerConfigurationInfo, context).getSyncPoller();
     }
 
     /**
-     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * Create or update a partner configuration.
+     *
+     * <p>Synchronously creates or updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
@@ -537,7 +546,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * Create or update a partner configuration.
+     *
+     * <p>Synchronously creates or updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
@@ -556,7 +567,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * Create or update a partner configuration.
+     *
+     * <p>Synchronously creates or updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
@@ -572,7 +585,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * Create or update a partner configuration.
+     *
+     * <p>Synchronously creates or updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
@@ -589,7 +604,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Delete existing partner configuration.
+     * Delete a partner configuration.
+     *
+     * <p>Delete existing partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -629,7 +646,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Delete existing partner configuration.
+     * Delete a partner configuration.
+     *
+     * <p>Delete existing partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
@@ -667,7 +686,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Delete existing partner configuration.
+     * Delete a partner configuration.
+     *
+     * <p>Delete existing partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -685,7 +706,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Delete existing partner configuration.
+     * Delete a partner configuration.
+     *
+     * <p>Delete existing partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
@@ -704,7 +727,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Delete existing partner configuration.
+     * Delete a partner configuration.
+     *
+     * <p>Delete existing partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -714,11 +739,13 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName) {
-        return beginDeleteAsync(resourceGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName).getSyncPoller();
     }
 
     /**
-     * Delete existing partner configuration.
+     * Delete a partner configuration.
+     *
+     * <p>Delete existing partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
@@ -729,11 +756,13 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, context).getSyncPoller();
     }
 
     /**
-     * Delete existing partner configuration.
+     * Delete a partner configuration.
+     *
+     * <p>Delete existing partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -747,7 +776,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Delete existing partner configuration.
+     * Delete a partner configuration.
+     *
+     * <p>Delete existing partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
@@ -762,7 +793,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Delete existing partner configuration.
+     * Delete a partner configuration.
+     *
+     * <p>Delete existing partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -775,7 +808,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Delete existing partner configuration.
+     * Delete a partner configuration.
+     *
+     * <p>Delete existing partner configuration.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
@@ -789,7 +824,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously updates a partner configuration with the specified parameters.
+     * Update a partner configuration.
+     *
+     * <p>Synchronously updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
@@ -842,7 +879,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously updates a partner configuration with the specified parameters.
+     * Update a partner configuration.
+     *
+     * <p>Synchronously updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
@@ -895,7 +934,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously updates a partner configuration with the specified parameters.
+     * Update a partner configuration.
+     *
+     * <p>Synchronously updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
@@ -920,7 +961,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously updates a partner configuration with the specified parameters.
+     * Update a partner configuration.
+     *
+     * <p>Synchronously updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
@@ -949,7 +992,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously updates a partner configuration with the specified parameters.
+     * Update a partner configuration.
+     *
+     * <p>Synchronously updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
@@ -961,11 +1006,13 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerConfigurationInner>, PartnerConfigurationInner> beginUpdate(
         String resourceGroupName, PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, partnerConfigurationUpdateParameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, partnerConfigurationUpdateParameters).getSyncPoller();
     }
 
     /**
-     * Synchronously updates a partner configuration with the specified parameters.
+     * Update a partner configuration.
+     *
+     * <p>Synchronously updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
@@ -980,11 +1027,13 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
         String resourceGroupName,
         PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, partnerConfigurationUpdateParameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, partnerConfigurationUpdateParameters, context).getSyncPoller();
     }
 
     /**
-     * Synchronously updates a partner configuration with the specified parameters.
+     * Update a partner configuration.
+     *
+     * <p>Synchronously updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
@@ -1002,7 +1051,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously updates a partner configuration with the specified parameters.
+     * Update a partner configuration.
+     *
+     * <p>Synchronously updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
@@ -1023,7 +1074,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously updates a partner configuration with the specified parameters.
+     * Update a partner configuration.
+     *
+     * <p>Synchronously updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
@@ -1039,7 +1092,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Synchronously updates a partner configuration with the specified parameters.
+     * Update a partner configuration.
+     *
+     * <p>Synchronously updates a partner configuration with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
@@ -1058,7 +1113,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under a resource group.
+     * List partner configurations under a resource group.
+     *
+     * <p>List all the partner configurations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1106,7 +1163,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under a resource group.
+     * List partner configurations under a resource group.
+     *
+     * <p>List all the partner configurations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
@@ -1152,7 +1211,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under a resource group.
+     * List partner configurations under a resource group.
+     *
+     * <p>List all the partner configurations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1166,7 +1227,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under a resource group.
+     * List partner configurations under a resource group.
+     *
+     * <p>List all the partner configurations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
@@ -1181,7 +1244,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under a resource group.
+     * List partner configurations under a resource group.
+     *
+     * <p>List all the partner configurations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1195,7 +1260,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under a resource group.
+     * List partner configurations under a resource group.
+     *
+     * <p>List all the partner configurations under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
@@ -1210,7 +1277,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under an Azure subscription.
+     * List partner configurations under an Azure subscription.
+     *
+     * <p>List all the partner configurations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1266,7 +1335,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under an Azure subscription.
+     * List partner configurations under an Azure subscription.
+     *
+     * <p>List all the partner configurations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1321,7 +1392,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under an Azure subscription.
+     * List partner configurations under an Azure subscription.
+     *
+     * <p>List all the partner configurations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1343,7 +1416,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under an Azure subscription.
+     * List partner configurations under an Azure subscription.
+     *
+     * <p>List all the partner configurations under an Azure subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1358,7 +1433,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under an Azure subscription.
+     * List partner configurations under an Azure subscription.
+     *
+     * <p>List all the partner configurations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1382,7 +1459,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under an Azure subscription.
+     * List partner configurations under an Azure subscription.
+     *
+     * <p>List all the partner configurations under an Azure subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1396,7 +1475,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * List all the partner configurations under an Azure subscription.
+     * List partner configurations under an Azure subscription.
+     *
+     * <p>List all the partner configurations under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -1418,7 +1499,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Authorize a single partner either by partner registration immutable Id or by partner name.
+     * Authorize a partner.
+     *
+     * <p>Authorize a single partner either by partner registration immutable Id or by partner name.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be authorized.
@@ -1468,7 +1551,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Authorize a single partner either by partner registration immutable Id or by partner name.
+     * Authorize a partner.
+     *
+     * <p>Authorize a single partner either by partner registration immutable Id or by partner name.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be authorized.
@@ -1516,7 +1601,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Authorize a single partner either by partner registration immutable Id or by partner name.
+     * Authorize a partner.
+     *
+     * <p>Authorize a single partner either by partner registration immutable Id or by partner name.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be authorized.
@@ -1528,33 +1615,13 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerConfigurationInner> authorizePartnerAsync(String resourceGroupName, Partner partnerInfo) {
         return authorizePartnerWithResponseAsync(resourceGroupName, partnerInfo)
-            .flatMap(
-                (Response<PartnerConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Authorize a single partner either by partner registration immutable Id or by partner name.
+     * Authorize a partner.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerInfo The information of the partner to be authorized.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return partner configuration information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerConfigurationInner authorizePartner(String resourceGroupName, Partner partnerInfo) {
-        return authorizePartnerAsync(resourceGroupName, partnerInfo).block();
-    }
-
-    /**
-     * Authorize a single partner either by partner registration immutable Id or by partner name.
+     * <p>Authorize a single partner either by partner registration immutable Id or by partner name.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be authorized.
@@ -1571,7 +1638,26 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Unauthorize a single partner either by partner registration immutable Id or by partner name.
+     * Authorize a partner.
+     *
+     * <p>Authorize a single partner either by partner registration immutable Id or by partner name.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerInfo The information of the partner to be authorized.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return partner configuration information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PartnerConfigurationInner authorizePartner(String resourceGroupName, Partner partnerInfo) {
+        return authorizePartnerWithResponse(resourceGroupName, partnerInfo, Context.NONE).getValue();
+    }
+
+    /**
+     * Unauthorize a partner.
+     *
+     * <p>Unauthorize a single partner either by partner registration immutable Id or by partner name.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be unauthorized.
@@ -1621,7 +1707,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Unauthorize a single partner either by partner registration immutable Id or by partner name.
+     * Unauthorize a partner.
+     *
+     * <p>Unauthorize a single partner either by partner registration immutable Id or by partner name.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be unauthorized.
@@ -1669,7 +1757,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
-     * Unauthorize a single partner either by partner registration immutable Id or by partner name.
+     * Unauthorize a partner.
+     *
+     * <p>Unauthorize a single partner either by partner registration immutable Id or by partner name.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be unauthorized.
@@ -1681,33 +1771,13 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerConfigurationInner> unauthorizePartnerAsync(String resourceGroupName, Partner partnerInfo) {
         return unauthorizePartnerWithResponseAsync(resourceGroupName, partnerInfo)
-            .flatMap(
-                (Response<PartnerConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Unauthorize a single partner either by partner registration immutable Id or by partner name.
+     * Unauthorize a partner.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerInfo The information of the partner to be unauthorized.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return partner configuration information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PartnerConfigurationInner unauthorizePartner(String resourceGroupName, Partner partnerInfo) {
-        return unauthorizePartnerAsync(resourceGroupName, partnerInfo).block();
-    }
-
-    /**
-     * Unauthorize a single partner either by partner registration immutable Id or by partner name.
+     * <p>Unauthorize a single partner either by partner registration immutable Id or by partner name.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be unauthorized.
@@ -1724,9 +1794,27 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     }
 
     /**
+     * Unauthorize a partner.
+     *
+     * <p>Unauthorize a single partner either by partner registration immutable Id or by partner name.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerInfo The information of the partner to be unauthorized.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return partner configuration information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PartnerConfigurationInner unauthorizePartner(String resourceGroupName, Partner partnerInfo) {
+        return unauthorizePartnerWithResponse(resourceGroupName, partnerInfo, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1763,7 +1851,8 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

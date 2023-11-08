@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LinkedServices Delete. */
 public final class LinkedServicesDeleteSamples {
     /*
@@ -19,6 +17,7 @@ public final class LinkedServicesDeleteSamples {
     public static void linkedServicesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .linkedServices()
-            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", Context.NONE);
+            .deleteWithResponse(
+                "exampleResourceGroup", "exampleFactoryName", "exampleLinkedService", com.azure.core.util.Context.NONE);
     }
 }

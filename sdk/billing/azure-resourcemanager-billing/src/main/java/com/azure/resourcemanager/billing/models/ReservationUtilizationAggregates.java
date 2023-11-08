@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The aggregate values of reservation utilization. */
 @Immutable
 public final class ReservationUtilizationAggregates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationUtilizationAggregates.class);
-
     /*
      * The grain of the aggregate
      */
@@ -37,6 +33,10 @@ public final class ReservationUtilizationAggregates {
      */
     @JsonProperty(value = "valueUnit", access = JsonProperty.Access.WRITE_ONLY)
     private String valueUnit;
+
+    /** Creates an instance of ReservationUtilizationAggregates class. */
+    public ReservationUtilizationAggregates() {
+    }
 
     /**
      * Get the grain property: The grain of the aggregate.

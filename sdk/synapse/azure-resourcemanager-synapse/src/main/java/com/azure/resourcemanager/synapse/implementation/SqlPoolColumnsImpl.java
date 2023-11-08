@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolColumnsClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolColumnInner;
 import com.azure.resourcemanager.synapse.models.SqlPoolColumn;
 import com.azure.resourcemanager.synapse.models.SqlPoolColumns;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolColumnsImpl implements SqlPoolColumns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolColumnsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolColumnsImpl.class);
 
     private final SqlPoolColumnsClient innerClient;
 
@@ -25,22 +24,6 @@ public final class SqlPoolColumnsImpl implements SqlPoolColumns {
         SqlPoolColumnsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public SqlPoolColumn get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        SqlPoolColumnInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
-        if (inner != null) {
-            return new SqlPoolColumnImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SqlPoolColumn> getWithResponse(
@@ -62,6 +45,22 @@ public final class SqlPoolColumnsImpl implements SqlPoolColumns {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SqlPoolColumnImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlPoolColumn get(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String schemaName,
+        String tableName,
+        String columnName) {
+        SqlPoolColumnInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
+        if (inner != null) {
+            return new SqlPoolColumnImpl(inner, this.manager());
         } else {
             return null;
         }

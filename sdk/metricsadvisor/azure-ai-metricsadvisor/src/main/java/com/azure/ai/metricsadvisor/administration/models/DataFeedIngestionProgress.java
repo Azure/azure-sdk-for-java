@@ -4,8 +4,9 @@
 
 package com.azure.ai.metricsadvisor.administration.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.DataFeedIngestionProgressHelper;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
 /** The DataFeedIngestionProgress model. */
@@ -15,15 +16,16 @@ public final class DataFeedIngestionProgress {
      * the timestamp of latest success ingestion job.
      * null indicates not available
      */
-    @JsonProperty(value = "latestSuccessTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime latestSuccessTimestamp;
 
     /*
      * the timestamp of latest ingestion job with status update.
      * null indicates not available
      */
-    @JsonProperty(value = "latestActiveTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime latestActiveTimestamp;
+
+    /** Creates an instance of DataFeedIngestionProgress class. */
+    public DataFeedIngestionProgress() {}
 
     /**
      * Get the latestSuccessTimestamp property: the timestamp of latest success ingestion job. null indicates not
@@ -44,4 +46,26 @@ public final class DataFeedIngestionProgress {
     public OffsetDateTime getLatestActiveTimestamp() {
         return this.latestActiveTimestamp;
     }
+
+    static {
+        DataFeedIngestionProgressHelper
+            .setAccessor(new DataFeedIngestionProgressHelper.DataFeedIngestionProgressAccessor() {
+                @Override
+                public void setLatestActiveTimestamp(DataFeedIngestionProgress ingestionStatus, OffsetDateTime offsetDateTime) {
+                    ingestionStatus.setLatestActiveTimestamp(offsetDateTime);
+                }
+
+                @Override
+                public void setLatestSuccessTimestamp(DataFeedIngestionProgress ingestionStatus, OffsetDateTime offsetDateTime) {
+                    ingestionStatus.setLatestSuccessTimestamp(offsetDateTime);
+                }
+            });
+    }
+    void setLatestActiveTimestamp(OffsetDateTime timestamp) {
+        this.latestActiveTimestamp = timestamp;
+    }
+    void setLatestSuccessTimestamp(OffsetDateTime timestamp) {
+        this.latestSuccessTimestamp = timestamp;
+    }
+
 }

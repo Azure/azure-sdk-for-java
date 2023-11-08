@@ -23,6 +23,10 @@ public final class CassandraTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private CassandraTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of CassandraTableDataset class. */
+    public CassandraTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Cassandra dataset properties.
      *

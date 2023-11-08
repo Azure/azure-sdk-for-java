@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayBackendHealthServerHealth. */
+/** Health of backend server. */
 public final class ApplicationGatewayBackendHealthServerHealth
     extends ExpandableStringEnum<ApplicationGatewayBackendHealthServerHealth> {
     /** Static value Unknown for ApplicationGatewayBackendHealthServerHealth. */
@@ -27,6 +27,15 @@ public final class ApplicationGatewayBackendHealthServerHealth
     public static final ApplicationGatewayBackendHealthServerHealth DRAINING = fromString("Draining");
 
     /**
+     * Creates a new instance of ApplicationGatewayBackendHealthServerHealth value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayBackendHealthServerHealth() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayBackendHealthServerHealth from its string representation.
      *
      * @param name a name to look for.
@@ -37,7 +46,11 @@ public final class ApplicationGatewayBackendHealthServerHealth
         return fromString(name, ApplicationGatewayBackendHealthServerHealth.class);
     }
 
-    /** @return known ApplicationGatewayBackendHealthServerHealth values. */
+    /**
+     * Gets known ApplicationGatewayBackendHealthServerHealth values.
+     *
+     * @return known ApplicationGatewayBackendHealthServerHealth values.
+     */
     public static Collection<ApplicationGatewayBackendHealthServerHealth> values() {
         return values(ApplicationGatewayBackendHealthServerHealth.class);
     }

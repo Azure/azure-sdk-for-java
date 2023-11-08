@@ -12,13 +12,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class WaitActivityTypeProperties {
     /*
-     * Duration in seconds.
+     * Duration in seconds. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "waitTimeInSeconds", required = true)
     private Object waitTimeInSeconds;
 
+    /** Creates an instance of WaitActivityTypeProperties class. */
+    public WaitActivityTypeProperties() {
+    }
+
     /**
-     * Get the waitTimeInSeconds property: Duration in seconds.
+     * Get the waitTimeInSeconds property: Duration in seconds. Type: integer (or Expression with resultType integer).
      *
      * @return the waitTimeInSeconds value.
      */
@@ -27,7 +31,7 @@ public final class WaitActivityTypeProperties {
     }
 
     /**
-     * Set the waitTimeInSeconds property: Duration in seconds.
+     * Set the waitTimeInSeconds property: Duration in seconds. Type: integer (or Expression with resultType integer).
      *
      * @param waitTimeInSeconds the waitTimeInSeconds value to set.
      * @return the WaitActivityTypeProperties object itself.

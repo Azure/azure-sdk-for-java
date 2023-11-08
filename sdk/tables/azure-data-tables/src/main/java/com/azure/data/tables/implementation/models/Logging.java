@@ -6,8 +6,10 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Azure Analytics Logging settings. */
+@JacksonXmlRootElement(localName = "Logging")
 @Fluent
 public final class Logging {
     /*
@@ -39,6 +41,9 @@ public final class Logging {
      */
     @JsonProperty(value = "RetentionPolicy", required = true)
     private RetentionPolicy retentionPolicy;
+
+    /** Creates an instance of Logging class. */
+    public Logging() {}
 
     /**
      * Get the version property: The version of Analytics to configure.

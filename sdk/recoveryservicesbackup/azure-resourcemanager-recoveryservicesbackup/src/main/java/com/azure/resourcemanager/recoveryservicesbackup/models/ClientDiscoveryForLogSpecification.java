@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class to represent shoebox log specification in json client discovery. */
 @Fluent
 public final class ClientDiscoveryForLogSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryForLogSpecification.class);
-
     /*
      * Name for shoebox log specification.
      */
@@ -31,6 +27,10 @@ public final class ClientDiscoveryForLogSpecification {
      */
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
+
+    /** Creates an instance of ClientDiscoveryForLogSpecification class. */
+    public ClientDiscoveryForLogSpecification() {
+    }
 
     /**
      * Get the name property: Name for shoebox log specification.

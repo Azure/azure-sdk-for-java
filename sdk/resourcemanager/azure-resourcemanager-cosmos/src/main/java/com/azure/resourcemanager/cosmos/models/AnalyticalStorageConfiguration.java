@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Analytical storage specific properties. */
 @Fluent
 public final class AnalyticalStorageConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AnalyticalStorageConfiguration.class);
-
     /*
      * Describes the types of schema for analytical storage.
      */
     @JsonProperty(value = "schemaType")
     private AnalyticalStorageSchemaType schemaType;
+
+    /** Creates an instance of AnalyticalStorageConfiguration class. */
+    public AnalyticalStorageConfiguration() {
+    }
 
     /**
      * Get the schemaType property: Describes the types of schema for analytical storage.

@@ -45,6 +45,13 @@ public interface ManagedPrivateEndpointResource {
     String etag();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.ManagedPrivateEndpointResourceInner object.
      *
      * @return the inner object.
@@ -58,11 +65,13 @@ public interface ManagedPrivateEndpointResource {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The ManagedPrivateEndpointResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ManagedPrivateEndpointResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ManagedPrivateEndpointResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -76,6 +85,7 @@ public interface ManagedPrivateEndpointResource {
             WithProperties withExistingManagedVirtualNetwork(
                 String resourceGroupName, String factoryName, String managedVirtualNetworkName);
         }
+
         /** The stage of the ManagedPrivateEndpointResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -86,6 +96,7 @@ public interface ManagedPrivateEndpointResource {
              */
             WithCreate withProperties(ManagedPrivateEndpoint properties);
         }
+
         /**
          * The stage of the ManagedPrivateEndpointResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -106,6 +117,7 @@ public interface ManagedPrivateEndpointResource {
              */
             ManagedPrivateEndpointResource create(Context context);
         }
+
         /** The stage of the ManagedPrivateEndpointResource definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -119,6 +131,7 @@ public interface ManagedPrivateEndpointResource {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the ManagedPrivateEndpointResource resource.
      *
@@ -143,6 +156,7 @@ public interface ManagedPrivateEndpointResource {
          */
         ManagedPrivateEndpointResource apply(Context context);
     }
+
     /** The ManagedPrivateEndpointResource update stages. */
     interface UpdateStages {
         /** The stage of the ManagedPrivateEndpointResource update allowing to specify properties. */
@@ -155,6 +169,7 @@ public interface ManagedPrivateEndpointResource {
              */
             Update withProperties(ManagedPrivateEndpoint properties);
         }
+
         /** The stage of the ManagedPrivateEndpointResource update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -168,6 +183,7 @@ public interface ManagedPrivateEndpointResource {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Shipment pick up response. */
 @Immutable
 public final class ShipmentPickUpResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShipmentPickUpResponseInner.class);
-
     /*
      * Confirmation number for the pick up request.
      */
@@ -22,11 +18,14 @@ public final class ShipmentPickUpResponseInner {
     private String confirmationNumber;
 
     /*
-     * Time by which shipment should be ready for pick up, this is in local
-     * time of pick up area.
+     * Time by which shipment should be ready for pick up, this is in local time of pick up area.
      */
     @JsonProperty(value = "readyByTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime readyByTime;
+
+    /** Creates an instance of ShipmentPickUpResponseInner class. */
+    public ShipmentPickUpResponseInner() {
+    }
 
     /**
      * Get the confirmationNumber property: Confirmation number for the pick up request.

@@ -3,8 +3,12 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
@@ -16,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.opentest4j.AssertionFailedError;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.publisher.TestPublisher;
@@ -33,6 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static com.azure.messaging.servicebus.ReceiverOptions.createNonSessionOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,6 +48,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -55,10 +62,11 @@ class ServiceBusReceiverClientTest {
     private static final String ENTITY_PATH = "test-entity-path";
     private static final String LOCK_TOKEN = UUID.randomUUID().toString();
     private static final String SESSION_ID = "test-session-id";
+    private static final String CLIENT_IDENTIFIER = "my-client-identifier";
 
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(5);
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverClientTest.class);
 
     private ServiceBusReceiverClient client;
 
@@ -80,8 +88,10 @@ class ServiceBusReceiverClientTest {
         MockitoAnnotations.initMocks(this);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
         when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER));
         client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
     }
 
@@ -100,6 +110,16 @@ class ServiceBusReceiverClientTest {
     void properties() {
         assertEquals(NAMESPACE, client.getFullyQualifiedNamespace());
         assertEquals(ENTITY_PATH, client.getEntityPath());
+        assertEquals(CLIENT_IDENTIFIER, client.getIdentifier());
+    }
+
+    @Test
+    void sessionIdCheck() {
+        // Arrange
+        when(asyncClient.getSessionId()).thenReturn(SESSION_ID);
+
+        // Assert
+        assertEquals(SESSION_ID, client.getSessionId());
     }
 
     @Test
@@ -396,7 +416,7 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final byte[] contents = new byte[]{10, 111, 23};
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.getSessionState(SESSION_ID)).thenReturn(Mono.just(contents));
+        when(asyncClient.getSessionState()).thenReturn(Mono.just(contents));
 
         // Act
         final byte[] actual = client.getSessionState();
@@ -409,7 +429,7 @@ class ServiceBusReceiverClientTest {
     void getSessionStateNull() {
         // Arrange
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.getSessionState(SESSION_ID)).thenReturn(Mono.empty());
+        when(asyncClient.getSessionState()).thenReturn(Mono.empty());
 
         // Act
         final byte[] actual = client.getSessionState();
@@ -491,9 +511,9 @@ class ServiceBusReceiverClientTest {
             final AtomicInteger emittedMessages = new AtomicInteger();
 
             sink.onRequest(number -> {
-                logger.info("Requesting {} messages.", number);
+                LOGGER.info("Requesting {} messages.", number);
                 if (emittedMessages.get() >= maxMessages) {
-                    logger.info("Completing sink.");
+                    LOGGER.info("Completing sink.");
                     sink.complete();
                     return;
                 }
@@ -503,7 +523,7 @@ class ServiceBusReceiverClientTest {
 
                     final int emit = emittedMessages.incrementAndGet();
                     if (emit >= maxMessages) {
-                        logger.info("Completing sink.");
+                        LOGGER.info("Completing sink.");
                         sink.complete();
                         break;
                     }
@@ -537,9 +557,9 @@ class ServiceBusReceiverClientTest {
             final AtomicInteger emittedMessages = new AtomicInteger();
 
             sink.onRequest(number -> {
-                logger.info("Requesting {} messages.", number);
+                LOGGER.info("Requesting {} messages.", number);
                 if (emittedMessages.get() >= returnedMessages) {
-                    logger.info("Completing sink. Max: {}", returnedMessages);
+                    LOGGER.info("Completing sink. Max: {}", returnedMessages);
                     sink.complete();
                     return;
                 }
@@ -549,7 +569,7 @@ class ServiceBusReceiverClientTest {
 
                     final int emit = emittedMessages.incrementAndGet();
                     if (emit >= returnedMessages) {
-                        logger.info("Completing sink.", returnedMessages);
+                        LOGGER.info("Completing sink.", returnedMessages);
                         sink.complete();
                         break;
                     }
@@ -636,7 +656,7 @@ class ServiceBusReceiverClientTest {
         Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
             sink.onRequest(e -> {
                 if (emittedMessages.get() >= numberToEmit) {
-                    logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
+                    LOGGER.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
                         emittedMessages.get(), numberToEmit);
                     return;
                 }
@@ -647,14 +667,14 @@ class ServiceBusReceiverClientTest {
 
                     final int emit = emittedMessages.incrementAndGet();
                     if (emit >= numberToEmit) {
-                        logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}", emit, maxMessages);
+                        LOGGER.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}", emit, maxMessages);
                         break;
                     }
                 }
             });
 
             sink.onCancel(() -> {
-                logger.info("Cancelled. Completing sink.");
+                LOGGER.info("Cancelled. Completing sink.");
                 sink.complete();
             });
         });
@@ -683,7 +703,7 @@ class ServiceBusReceiverClientTest {
         Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
             sink.onRequest(e -> {
                 if (emittedMessages.get() >= numberToEmit) {
-                    logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
+                    LOGGER.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
                         emittedMessages.get(), numberToEmit);
                     return;
                 }
@@ -693,14 +713,14 @@ class ServiceBusReceiverClientTest {
 
                     final int emit = emittedMessages.incrementAndGet();
                     if (emit >= numberToEmit) {
-                        logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}", emit, maxMessages);
+                        LOGGER.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}", emit, maxMessages);
                         break;
                     }
                 }
             });
 
             sink.onCancel(() -> {
-                logger.info("Cancelled. Completing sink.");
+                LOGGER.info("Cancelled. Completing sink.");
                 sink.complete();
             });
         });
@@ -730,7 +750,7 @@ class ServiceBusReceiverClientTest {
         Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
             sink.onRequest(e -> {
                 if (emittedMessages.get() >= numberToEmit) {
-                    logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
+                    LOGGER.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
                         emittedMessages.get(), numberToEmit);
                     return;
                 }
@@ -740,14 +760,14 @@ class ServiceBusReceiverClientTest {
 
                     final int emit = emittedMessages.incrementAndGet();
                     if (emit >= numberToEmit) {
-                        logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}", emit, maxMessages);
+                        LOGGER.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}", emit, maxMessages);
                         break;
                     }
                 }
             });
 
             sink.onCancel(() -> {
-                logger.info("Cancelled. Completing sink.");
+                LOGGER.info("Cancelled. Completing sink.");
                 sink.complete();
             });
         });
@@ -822,7 +842,7 @@ class ServiceBusReceiverClientTest {
         final String sessionId = "a-session-id";
         final OffsetDateTime response = Instant.ofEpochSecond(1585259339).atOffset(ZoneOffset.UTC);
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.renewSessionLock(SESSION_ID)).thenReturn(Mono.just(response));
+        when(asyncClient.renewSessionLock()).thenReturn(Mono.just(response));
 
 
         // Act
@@ -837,12 +857,106 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final byte[] contents = new byte[]{10, 111, 23};
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.setSessionState(SESSION_ID, contents)).thenReturn(Mono.empty());
+        when(asyncClient.setSessionState(contents)).thenReturn(Mono.empty());
 
         // Act
         client.setSessionState(contents);
 
         // Assert
-        verify(asyncClient).setSessionState(SESSION_ID, contents);
+        verify(asyncClient).setSessionState(contents);
+    }
+
+    @Test
+    void iterationReplaysUpstreamTerminalError() {
+        // Arrange
+        final int messageCount = 10;
+        final AmqpException terminalError = new AmqpException(false, "non-retriable terminal error.", new AmqpErrorContext("contoso.com"));
+        final AtomicInteger state = new AtomicInteger(0);
+
+        Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
+            sink.onRequest(r -> {
+                final int s = state.getAndIncrement();
+                if (s == 0) {
+                    for (int m = 0; m < r; m++) {
+                        sink.next(mock(ServiceBusReceivedMessage.class));
+                        if (m >= messageCount) {
+                            sink.error(new AssertionFailedError(String.format("Received request for %d when expected to emit %d messages.", r, messageCount)));
+                        }
+                    }
+                } else if (s == 1) {
+                    sink.error(terminalError);
+                } else {
+                    sink.error((new AssertionFailedError("Unexpected request after termination.")));
+                }
+            });
+
+            sink.onCancel(() -> {
+                LOGGER.info("Cancelled. Completing sink.");
+                sink.complete();
+            });
+        });
+        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
+
+        // Assert the first receive get messages.
+        final IterableStream<ServiceBusReceivedMessage> messages0 = client.receiveMessages(messageCount);
+        assertNotNull(messages0);
+        final long collected = messages0.stream().count();
+        assertEquals(messageCount, collected);
+
+        // Assert the second receive iteration get terminal error.
+        final IterableStream<ServiceBusReceivedMessage> messages1 = client.receiveMessages(messageCount);
+        assertNotNull(messages1);
+        final AmqpException e1 = assertThrows(AmqpException.class,  () -> messages1.stream().count());
+        assertEquals(terminalError, e1);
+
+        // Assert the same terminal error 'replayed' to further receive iterations.
+        final IterableStream<ServiceBusReceivedMessage> messages2 = client.receiveMessages(messageCount);
+        assertNotNull(messages2);
+        final AmqpException e2 = assertThrows(AmqpException.class,  () -> messages2.stream().count());
+        assertEquals(terminalError, e2);
+    }
+
+    @Test
+    void iterationAfterCloseEmitsError() {
+        // Arrange
+        final int messageCount = 10;
+        final AtomicInteger state = new AtomicInteger(0);
+
+        Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
+            sink.onRequest(r -> {
+                final int s = state.getAndIncrement();
+                if (s == 0) {
+                    for (int m = 0; m < r; m++) {
+                        sink.next(mock(ServiceBusReceivedMessage.class));
+                        if (m >= messageCount) {
+                            sink.error(new AssertionFailedError(String.format("Received request for %d when expected to emit %d messages.", r, messageCount)));
+                        }
+                    }
+                } else {
+                    sink.error((new AssertionFailedError("Unexpected request after termination.")));
+                }
+            });
+
+            sink.onCancel(() -> {
+                LOGGER.info("Cancelled. Completing sink.");
+                sink.complete();
+            });
+        });
+        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
+        doNothing().when(asyncClient).close();
+
+        // Assert the first receive get messages.
+        final IterableStream<ServiceBusReceivedMessage> messages0 = client.receiveMessages(messageCount);
+        assertNotNull(messages0);
+        final long collected = messages0.stream().count();
+        assertEquals(messageCount, collected);
+
+        client.close();
+
+        // Assert any iteration on iterable obtained after client close get error.
+        final IterableStream<ServiceBusReceivedMessage> messages1 = client.receiveMessages(messageCount);
+        assertNotNull(messages1);
+        final RuntimeException e = assertThrows(RuntimeException.class,  () -> messages1.stream().count());
+        assertEquals("The receiver client is terminated. Re-create the client to continue receive attempt.", e.getMessage());
     }
 }

@@ -4,43 +4,41 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines PerformMaintenance. */
 public final class VirtualMachinesPerformMaintenanceSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_PerformMaintenance_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_PerformMaintenance_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_PerformMaintenance_MinimumSet_Gen.
+     * Sample code: VirtualMachine_PerformMaintenance_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesPerformMaintenanceMinimumSetGen(
+    public static void virtualMachinePerformMaintenanceMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .performMaintenance("rgcompute", "aaaaaaaaaa", Context.NONE);
+            .performMaintenance("rgcompute", "aaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_PerformMaintenance_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_PerformMaintenance_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_PerformMaintenance_MaximumSet_Gen.
+     * Sample code: VirtualMachine_PerformMaintenance_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesPerformMaintenanceMaximumSetGen(
+    public static void virtualMachinePerformMaintenanceMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .performMaintenance("rgcompute", "aaaaaaa", Context.NONE);
+            .performMaintenance("rgcompute", "aaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

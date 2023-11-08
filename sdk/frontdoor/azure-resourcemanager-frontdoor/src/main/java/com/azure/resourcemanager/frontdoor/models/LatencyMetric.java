@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the properties of a latency metric used in the latency scorecard. */
 @Immutable
 public final class LatencyMetric {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LatencyMetric.class);
-
     /*
      * The name of the Latency Metric
      */
@@ -73,6 +69,10 @@ public final class LatencyMetric {
      */
     @JsonProperty(value = "bUpper95CI", access = JsonProperty.Access.WRITE_ONLY)
     private Float bUpper95CI;
+
+    /** Creates an instance of LatencyMetric class. */
+    public LatencyMetric() {
+    }
 
     /**
      * Get the name property: The name of the Latency Metric.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RunStatus. */
+/** The current status of the run. */
 public final class RunStatus extends ExpandableStringEnum<RunStatus> {
     /** Static value Queued for RunStatus. */
     public static final RunStatus QUEUED = fromString("Queued");
@@ -35,6 +35,15 @@ public final class RunStatus extends ExpandableStringEnum<RunStatus> {
     public static final RunStatus TIMEOUT = fromString("Timeout");
 
     /**
+     * Creates a new instance of RunStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RunStatus() {
+    }
+
+    /**
      * Creates or finds a RunStatus from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class RunStatus extends ExpandableStringEnum<RunStatus> {
         return fromString(name, RunStatus.class);
     }
 
-    /** @return known RunStatus values. */
+    /**
+     * Gets known RunStatus values.
+     *
+     * @return known RunStatus values.
+     */
     public static Collection<RunStatus> values() {
         return values(RunStatus.class);
     }

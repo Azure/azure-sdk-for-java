@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MirrorState. */
+/** The status of the replication. */
 public final class MirrorState extends ExpandableStringEnum<MirrorState> {
     /** Static value Uninitialized for MirrorState. */
     public static final MirrorState UNINITIALIZED = fromString("Uninitialized");
@@ -18,6 +18,15 @@ public final class MirrorState extends ExpandableStringEnum<MirrorState> {
 
     /** Static value Broken for MirrorState. */
     public static final MirrorState BROKEN = fromString("Broken");
+
+    /**
+     * Creates a new instance of MirrorState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MirrorState() {
+    }
 
     /**
      * Creates or finds a MirrorState from its string representation.
@@ -30,7 +39,11 @@ public final class MirrorState extends ExpandableStringEnum<MirrorState> {
         return fromString(name, MirrorState.class);
     }
 
-    /** @return known MirrorState values. */
+    /**
+     * Gets known MirrorState values.
+     *
+     * @return known MirrorState values.
+     */
     public static Collection<MirrorState> values() {
         return values(MirrorState.class);
     }

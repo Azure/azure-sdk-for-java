@@ -5,16 +5,15 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerGroupIdentityUserAssignedIdentities model. */
+/**
+ * The list of user identities associated with the container group. The user identity dictionary key references will be
+ * ARM resource ids in the form:
+ * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+ */
 @Immutable
 public final class ContainerGroupIdentityUserAssignedIdentities {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerGroupIdentityUserAssignedIdentities.class);
-
     /*
      * The principal id of user assigned identity.
      */
@@ -26,6 +25,10 @@ public final class ContainerGroupIdentityUserAssignedIdentities {
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
+
+    /** Creates an instance of ContainerGroupIdentityUserAssignedIdentities class. */
+    public ContainerGroupIdentityUserAssignedIdentities() {
+    }
 
     /**
      * Get the principalId property: The principal id of user assigned identity.

@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.AfdCustomDomainsClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AfdCustomDomainsClient. */
 public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient {
-    private final ClientLogger logger = new ClientLogger(AfdCustomDomainsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AfdCustomDomainsService service;
 
@@ -69,11 +66,10 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientA")
-    private interface AfdCustomDomainsService {
+    public interface AfdCustomDomainsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/customDomains")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AfdDomainListResult>> listByProfile(
@@ -87,8 +83,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/customDomains/{customDomainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AfdDomainInner>> get(
@@ -103,8 +98,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/customDomains/{customDomainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -120,8 +114,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/customDomains/{customDomainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -137,8 +130,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/customDomains/{customDomainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -153,8 +145,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/customDomains/{customDomainName}/refreshValidationToken")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/customDomains/{customDomainName}/refreshValidationToken")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> refreshValidationToken(
@@ -182,8 +173,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * Lists existing AzureFrontDoor domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which
-     *     is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -241,8 +232,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * Lists existing AzureFrontDoor domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which
-     *     is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -298,8 +289,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * Lists existing AzureFrontDoor domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which
-     *     is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,8 +307,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * Lists existing AzureFrontDoor domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which
-     *     is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -336,8 +327,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * Lists existing AzureFrontDoor domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which
-     *     is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -352,8 +343,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * Lists existing AzureFrontDoor domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which
-     *     is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -494,33 +485,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdDomainInner> getAsync(String resourceGroupName, String profileName, String customDomainName) {
         return getWithResponseAsync(resourceGroupName, profileName, customDomainName)
-            .flatMap(
-                (Response<AfdDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets an existing AzureFrontDoor domain with the specified domain name under the specified subscription, resource
-     * group and profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param customDomainName Name of the domain under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing AzureFrontDoor domain with the specified domain name under the specified subscription,
-     *     resource group and profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AfdDomainInner get(String resourceGroupName, String profileName, String customDomainName) {
-        return getAsync(resourceGroupName, profileName, customDomainName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -542,6 +507,25 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
     public Response<AfdDomainInner> getWithResponse(
         String resourceGroupName, String profileName, String customDomainName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, customDomainName, context).block();
+    }
+
+    /**
+     * Gets an existing AzureFrontDoor domain with the specified domain name under the specified subscription, resource
+     * group and profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param customDomainName Name of the domain under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing AzureFrontDoor domain with the specified domain name under the specified subscription,
+     *     resource group and profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AfdDomainInner get(String resourceGroupName, String profileName, String customDomainName) {
+        return getWithResponse(resourceGroupName, profileName, customDomainName, Context.NONE).getValue();
     }
 
     /**
@@ -749,7 +733,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdDomainInner>, AfdDomainInner> beginCreate(
         String resourceGroupName, String profileName, String customDomainName, AfdDomainInner customDomain) {
-        return beginCreateAsync(resourceGroupName, profileName, customDomainName, customDomain).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, profileName, customDomainName, customDomain).getSyncPoller();
     }
 
     /**
@@ -774,7 +758,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
         String customDomainName,
         AfdDomainInner customDomain,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, customDomainName, customDomain, context)
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, customDomainName, customDomain, context)
             .getSyncPoller();
     }
 
@@ -1093,7 +1078,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
         String profileName,
         String customDomainName,
         AfdDomainUpdateParameters customDomainUpdateProperties) {
-        return beginUpdateAsync(resourceGroupName, profileName, customDomainName, customDomainUpdateProperties)
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, customDomainName, customDomainUpdateProperties)
             .getSyncPoller();
     }
 
@@ -1119,7 +1105,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
         String customDomainName,
         AfdDomainUpdateParameters customDomainUpdateProperties,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, profileName, customDomainName, customDomainUpdateProperties, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, customDomainName, customDomainUpdateProperties, context)
             .getSyncPoller();
     }
 
@@ -1399,7 +1386,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String customDomainName) {
-        return beginDeleteAsync(resourceGroupName, profileName, customDomainName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, customDomainName).getSyncPoller();
     }
 
     /**
@@ -1419,7 +1406,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String customDomainName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, customDomainName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, customDomainName, context).getSyncPoller();
     }
 
     /**
@@ -1669,7 +1656,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshValidationToken(
         String resourceGroupName, String profileName, String customDomainName) {
-        return beginRefreshValidationTokenAsync(resourceGroupName, profileName, customDomainName).getSyncPoller();
+        return this.beginRefreshValidationTokenAsync(resourceGroupName, profileName, customDomainName).getSyncPoller();
     }
 
     /**
@@ -1688,7 +1675,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshValidationToken(
         String resourceGroupName, String profileName, String customDomainName, Context context) {
-        return beginRefreshValidationTokenAsync(resourceGroupName, profileName, customDomainName, context)
+        return this
+            .beginRefreshValidationTokenAsync(resourceGroupName, profileName, customDomainName, context)
             .getSyncPoller();
     }
 
@@ -1770,7 +1758,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1806,7 +1795,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

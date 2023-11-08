@@ -22,6 +22,10 @@ public final class DataEffect {
     @JsonProperty(value = "detailsSchema")
     private Object detailsSchema;
 
+    /** Creates an instance of DataEffect class. */
+    public DataEffect() {
+    }
+
     /**
      * Get the name property: The data effect name.
      *

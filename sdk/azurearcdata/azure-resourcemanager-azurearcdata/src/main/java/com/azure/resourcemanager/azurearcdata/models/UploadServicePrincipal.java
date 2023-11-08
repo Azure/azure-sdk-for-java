@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Service principal for uploading billing, metrics and logs. */
 @Fluent
 public final class UploadServicePrincipal {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UploadServicePrincipal.class);
-
     /*
      * Client ID of the service principal for uploading data.
      */
@@ -28,8 +24,7 @@ public final class UploadServicePrincipal {
     private UUID tenantId;
 
     /*
-     * Authority for the service principal. Example:
-     * https://login.microsoftonline.com/
+     * Authority for the service principal. Example: https://login.microsoftonline.com/
      */
     @JsonProperty(value = "authority")
     private String authority;
@@ -39,6 +34,10 @@ public final class UploadServicePrincipal {
      */
     @JsonProperty(value = "clientSecret")
     private String clientSecret;
+
+    /** Creates an instance of UploadServicePrincipal class. */
+    public UploadServicePrincipal() {
+    }
 
     /**
      * Get the clientId property: Client ID of the service principal for uploading data.

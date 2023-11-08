@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Delimited text dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -23,8 +25,7 @@ public class DelimitedTextDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The column delimiter. Type: string (or Expression with resultType
-     * string).
+     * The column delimiter. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.columnDelimiter")
     private Object columnDelimiter;
@@ -36,18 +37,16 @@ public class DelimitedTextDataset extends Dataset {
     private Object rowDelimiter;
 
     /*
-     * The code page name of the preferred encoding. If miss, the default value
-     * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name
-     * column of the table in the following link to set supported values:
-     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type:
-     * string (or Expression with resultType string).
+     * The code page name of the preferred encoding. If miss, the default value is UTF-8, unless BOM denotes another
+     * Unicode encoding. Refer to the name column of the table in the following link to set supported values:
+     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.encodingName")
     private Object encodingName;
 
     /*
-     * The data compressionCodec. Type: string (or Expression with resultType
-     * string).
+     * The data compressionCodec. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.compressionCodec")
     private Object compressionCodec;
@@ -59,34 +58,33 @@ public class DelimitedTextDataset extends Dataset {
     private Object compressionLevel;
 
     /*
-     * The quote character. Type: string (or Expression with resultType
-     * string).
+     * The quote character. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.quoteChar")
     private Object quoteChar;
 
     /*
-     * The escape character. Type: string (or Expression with resultType
-     * string).
+     * The escape character. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.escapeChar")
     private Object escapeChar;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as
-     * output,write the headers into the output as the first row of data. The
-     * default value is false. Type: boolean (or Expression with resultType
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the
+     * output as the first row of data. The default value is false. Type: boolean (or Expression with resultType
      * boolean).
      */
     @JsonProperty(value = "typeProperties.firstRowAsHeader")
     private Object firstRowAsHeader;
 
     /*
-     * The null value string. Type: string (or Expression with resultType
-     * string).
+     * The null value string. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.nullValue")
     private Object nullValue;
+
+    /** Creates an instance of DelimitedTextDataset class. */
+    public DelimitedTextDataset() {}
 
     /**
      * Get the location property: The location of the delimited text storage.
@@ -297,6 +295,55 @@ public class DelimitedTextDataset extends Dataset {
      */
     public DelimitedTextDataset setNullValue(Object nullValue) {
         this.nullValue = nullValue;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

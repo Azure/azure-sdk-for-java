@@ -77,6 +77,10 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SystemTopicInner innerModel() {
         return this.innerObject;
     }

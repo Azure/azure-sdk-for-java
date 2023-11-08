@@ -9,17 +9,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class representing cluster principal property. */
 @Fluent
 public final class ClusterPrincipalProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPrincipalProperties.class);
-
     /*
-     * The principal ID assigned to the cluster principal. It can be a user
-     * email, application ID, or security group name.
+     * The principal ID assigned to the cluster principal. It can be a user email, application ID, or security group
+     * name.
      */
     @JsonProperty(value = "principalId", required = true)
     private String principalId;
@@ -65,6 +62,10 @@ public final class ClusterPrincipalProperties {
      */
     @JsonProperty(value = "aadObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String aadObjectId;
+
+    /** Creates an instance of ClusterPrincipalProperties class. */
+    public ClusterPrincipalProperties() {
+    }
 
     /**
      * Get the principalId property: The principal ID assigned to the cluster principal. It can be a user email,
@@ -191,21 +192,23 @@ public final class ClusterPrincipalProperties {
      */
     public void validate() {
         if (principalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalId in model ClusterPrincipalProperties"));
         }
         if (role() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property role in model ClusterPrincipalProperties"));
         }
         if (principalType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalType in model ClusterPrincipalProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterPrincipalProperties.class);
 }

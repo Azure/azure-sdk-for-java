@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the agent registration keys. */
 @Fluent
 public final class AgentRegistrationKeys {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentRegistrationKeys.class);
-
     /*
      * Gets or sets the primary key.
      */

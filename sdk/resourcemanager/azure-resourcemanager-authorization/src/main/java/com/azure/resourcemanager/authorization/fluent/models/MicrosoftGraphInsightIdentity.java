@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,9 +14,7 @@ import java.util.Map;
 
 /** insightIdentity. */
 @Fluent
-public class MicrosoftGraphInsightIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphInsightIdentity.class);
-
+public final class MicrosoftGraphInsightIdentity {
     /*
      * The email address of the user who shared the item.
      */
@@ -40,6 +37,10 @@ public class MicrosoftGraphInsightIdentity {
      * insightIdentity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphInsightIdentity class. */
+    public MicrosoftGraphInsightIdentity() {
+    }
 
     /**
      * Get the address property: The email address of the user who shared the item.

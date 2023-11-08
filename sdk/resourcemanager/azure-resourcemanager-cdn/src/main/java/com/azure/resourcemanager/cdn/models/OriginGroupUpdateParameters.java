@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.OriginGroupUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Origin group properties needed for origin group creation or update. */
 @Fluent
 public final class OriginGroupUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginGroupUpdateParameters.class);
-
     /*
      * The JSON object that contains the properties of the origin group.
      */
     @JsonProperty(value = "properties")
     private OriginGroupUpdatePropertiesParameters innerProperties;
+
+    /** Creates an instance of OriginGroupUpdateParameters class. */
+    public OriginGroupUpdateParameters() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin group.

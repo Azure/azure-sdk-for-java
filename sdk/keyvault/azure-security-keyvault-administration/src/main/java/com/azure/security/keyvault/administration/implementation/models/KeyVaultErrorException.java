@@ -30,6 +30,7 @@ public final class KeyVaultErrorException extends HttpResponseException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public KeyVaultError getValue() {
         return (KeyVaultError) super.getValue();

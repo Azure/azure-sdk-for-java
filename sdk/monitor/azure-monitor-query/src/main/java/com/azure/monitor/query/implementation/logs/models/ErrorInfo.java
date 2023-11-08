@@ -31,6 +31,8 @@ public final class ErrorInfo {
     private List<ErrorDetail> details;
 
     /*
+     * The code and message for an error.
+     *
      * Inner error details if they exist.
      */
     @JsonProperty(value = "innererror")
@@ -95,7 +97,9 @@ public final class ErrorInfo {
     }
 
     /**
-     * Get the innererror property: Inner error details if they exist.
+     * Get the innererror property: The code and message for an error.
+     *
+     * <p>Inner error details if they exist.
      *
      * @return the innererror value.
      */
@@ -104,7 +108,9 @@ public final class ErrorInfo {
     }
 
     /**
-     * Set the innererror property: Inner error details if they exist.
+     * Set the innererror property: The code and message for an error.
+     *
+     * <p>Inner error details if they exist.
      *
      * @param innererror the innererror value to set.
      * @return the ErrorInfo object itself.

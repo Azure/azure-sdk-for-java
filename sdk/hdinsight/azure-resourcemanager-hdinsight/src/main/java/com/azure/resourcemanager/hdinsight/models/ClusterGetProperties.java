@@ -7,15 +7,12 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of cluster. */
 @Fluent
 public final class ClusterGetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterGetProperties.class);
-
     /*
      * The version of the cluster.
      */
@@ -159,6 +156,10 @@ public final class ClusterGetProperties {
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /** Creates an instance of ClusterGetProperties class. */
+    public ClusterGetProperties() {
+    }
 
     /**
      * Get the clusterVersion property: The version of the cluster.
@@ -638,7 +639,7 @@ public final class ClusterGetProperties {
      */
     public void validate() {
         if (clusterDefinition() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clusterDefinition in model ClusterGetProperties"));
@@ -688,4 +689,6 @@ public final class ClusterGetProperties {
             privateEndpointConnections().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterGetProperties.class);
 }

@@ -4,28 +4,121 @@
 
 package com.azure.resourcemanager.costmanagement.models;
 
-import com.azure.resourcemanager.costmanagement.fluent.models.OperationInner;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An immutable client-side representation of Operation. */
-public interface Operation {
+/**
+ * REST API Operation
+ *
+ * <p>Details of a REST API operation, returned from the Resource Provider Operations API.
+ */
+@Fluent
+public class Operation {
+    /*
+     * The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+     */
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
+
+    /*
+     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for
+     * ARM/control-plane operations.
+     */
+    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isDataAction;
+
+    /*
+     * Localized display information for this particular operation.
+     */
+    @JsonProperty(value = "display")
+    private OperationDisplay display;
+
+    /*
+     * The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+     * value is "user,system"
+     */
+    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
+    private Origin origin;
+
+    /*
+     * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+     */
+    @JsonProperty(value = "actionType", access = JsonProperty.Access.WRITE_ONLY)
+    private ActionType actionType;
+
+    /** Creates an instance of Operation class. */
+    public Operation() {
+    }
+
     /**
-     * Gets the name property: Operation name: {provider}/{resource}/{operation}.
+     * Get the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
      *
      * @return the name value.
      */
-    String name();
+    public String name() {
+        return this.name;
+    }
 
     /**
-     * Gets the display property: The object that represents the operation.
+     * Get the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
+     * operations and "false" for ARM/control-plane operations.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Get the display property: Localized display information for this particular operation.
      *
      * @return the display value.
      */
-    OperationDisplay display();
+    public OperationDisplay display() {
+        return this.display;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.OperationInner object.
+     * Set the display property: Localized display information for this particular operation.
      *
-     * @return the inner object.
+     * @param display the display value to set.
+     * @return the Operation object itself.
      */
-    OperationInner innerModel();
+    public Operation withDisplay(OperationDisplay display) {
+        this.display = display;
+        return this;
+    }
+
+    /**
+     * Get the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
+     * audit logs UX. Default value is "user,system".
+     *
+     * @return the origin value.
+     */
+    public Origin origin() {
+        return this.origin;
+    }
+
+    /**
+     * Get the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
+     * only APIs.
+     *
+     * @return the actionType value.
+     */
+    public ActionType actionType() {
+        return this.actionType;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (display() != null) {
+            display().validate();
+        }
+    }
 }

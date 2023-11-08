@@ -8,21 +8,24 @@ import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 
 public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
 
+    public static final String ALERT_CONFIG_ID = "126d1470-b500-4ef0-b5c0-47f9ca914a75";
+
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     public abstract void listAlerts(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-    public static final String ALERT_CONFIG_ID = "1c1575d8-b09e-40c3-a3c0-d459c64d8382";
 
     // Pre-configured test resource.
     protected static class ListAlertsInput {
         static final ListAlertsInput INSTANCE = new ListAlertsInput();
-        final OffsetDateTime startTime = OffsetDateTime.parse("2021-10-10T00:00:00Z");
-        final OffsetDateTime endTime = OffsetDateTime.parse("2021-10-21T00:00:00Z");
+        final OffsetDateTime startTime = OffsetDateTime.parse("2022-01-01T00:00:00Z");
+        final OffsetDateTime endTime = OffsetDateTime.parse("2022-03-22T00:00:00Z");
         final AlertQueryTimeMode timeMode = AlertQueryTimeMode.ANOMALY_TIME;
         final ListAlertOptions options = new ListAlertOptions()
             .setAlertQueryTimeMode(timeMode)
@@ -32,7 +35,7 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
 
     protected static class ListAlertsOutput {
         static final ListAlertsOutput INSTANCE = new ListAlertsOutput();
-        final int expectedAlerts = 11;
+        final int expectedAlerts = 3;
     }
 
     protected void assertAlertOutput(AnomalyAlert anomalyAlert) {

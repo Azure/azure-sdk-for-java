@@ -13,10 +13,9 @@ import com.azure.resourcemanager.maps.fluent.CreatorsClient;
 import com.azure.resourcemanager.maps.fluent.models.CreatorInner;
 import com.azure.resourcemanager.maps.models.Creator;
 import com.azure.resourcemanager.maps.models.Creators;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CreatorsImpl implements Creators {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreatorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CreatorsImpl.class);
 
     private final CreatorsClient innerClient;
 
@@ -37,22 +36,13 @@ public final class CreatorsImpl implements Creators {
         return Utils.mapPage(inner, inner1 -> new CreatorImpl(inner1, this.manager()));
     }
 
-    public void delete(String resourceGroupName, String accountName, String creatorName) {
-        this.serviceClient().delete(resourceGroupName, accountName, creatorName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String creatorName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, creatorName, context);
     }
 
-    public Creator get(String resourceGroupName, String accountName, String creatorName) {
-        CreatorInner inner = this.serviceClient().get(resourceGroupName, accountName, creatorName);
-        if (inner != null) {
-            return new CreatorImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String accountName, String creatorName) {
+        this.serviceClient().delete(resourceGroupName, accountName, creatorName);
     }
 
     public Response<Creator> getWithResponse(
@@ -70,10 +60,19 @@ public final class CreatorsImpl implements Creators {
         }
     }
 
+    public Creator get(String resourceGroupName, String accountName, String creatorName) {
+        CreatorInner inner = this.serviceClient().get(resourceGroupName, accountName, creatorName);
+        if (inner != null) {
+            return new CreatorImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Creator getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -81,14 +80,14 @@ public final class CreatorsImpl implements Creators {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String creatorName = Utils.getValueFromIdByName(id, "creators");
         if (creatorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'creators'.", id)));
@@ -99,7 +98,7 @@ public final class CreatorsImpl implements Creators {
     public Response<Creator> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,14 +106,14 @@ public final class CreatorsImpl implements Creators {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String creatorName = Utils.getValueFromIdByName(id, "creators");
         if (creatorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'creators'.", id)));
@@ -125,7 +124,7 @@ public final class CreatorsImpl implements Creators {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -133,25 +132,25 @@ public final class CreatorsImpl implements Creators {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String creatorName = Utils.getValueFromIdByName(id, "creators");
         if (creatorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'creators'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, creatorName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, creatorName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,14 +158,14 @@ public final class CreatorsImpl implements Creators {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String creatorName = Utils.getValueFromIdByName(id, "creators");
         if (creatorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'creators'.", id)));

@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DataProtection DataProtection type volumes include an object containing details of the replication. */
+/**
+ * DataProtection
+ *
+ * <p>DataProtection type volumes include an object containing details of the replication.
+ */
 @Fluent
 public final class VolumePropertiesDataProtection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumePropertiesDataProtection.class);
-
-    /*
-     * Backup Properties
-     */
-    @JsonProperty(value = "backup")
-    private VolumeBackupProperties backup;
-
     /*
      * Replication properties
      */
@@ -32,24 +26,14 @@ public final class VolumePropertiesDataProtection {
     @JsonProperty(value = "snapshot")
     private VolumeSnapshotProperties snapshot;
 
-    /**
-     * Get the backup property: Backup Properties.
-     *
-     * @return the backup value.
+    /*
+     * VolumeRelocation properties
      */
-    public VolumeBackupProperties backup() {
-        return this.backup;
-    }
+    @JsonProperty(value = "volumeRelocation")
+    private VolumeRelocationProperties volumeRelocation;
 
-    /**
-     * Set the backup property: Backup Properties.
-     *
-     * @param backup the backup value to set.
-     * @return the VolumePropertiesDataProtection object itself.
-     */
-    public VolumePropertiesDataProtection withBackup(VolumeBackupProperties backup) {
-        this.backup = backup;
-        return this;
+    /** Creates an instance of VolumePropertiesDataProtection class. */
+    public VolumePropertiesDataProtection() {
     }
 
     /**
@@ -93,19 +77,39 @@ public final class VolumePropertiesDataProtection {
     }
 
     /**
+     * Get the volumeRelocation property: VolumeRelocation properties.
+     *
+     * @return the volumeRelocation value.
+     */
+    public VolumeRelocationProperties volumeRelocation() {
+        return this.volumeRelocation;
+    }
+
+    /**
+     * Set the volumeRelocation property: VolumeRelocation properties.
+     *
+     * @param volumeRelocation the volumeRelocation value to set.
+     * @return the VolumePropertiesDataProtection object itself.
+     */
+    public VolumePropertiesDataProtection withVolumeRelocation(VolumeRelocationProperties volumeRelocation) {
+        this.volumeRelocation = volumeRelocation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (backup() != null) {
-            backup().validate();
-        }
         if (replication() != null) {
             replication().validate();
         }
         if (snapshot() != null) {
             snapshot().validate();
+        }
+        if (volumeRelocation() != null) {
+            volumeRelocation().validate();
         }
     }
 }

@@ -55,11 +55,10 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface LoadBalancerProbesService {
+    public interface LoadBalancerProbesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/loadBalancers/{loadBalancerName}/probes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LoadBalancerProbeListResult>> list(
@@ -73,8 +72,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/loadBalancers/{loadBalancerName}/probes/{probeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProbeInner>> get(
@@ -130,7 +128,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -190,7 +188,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -316,7 +314,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -372,7 +370,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -401,30 +399,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProbeInner> getAsync(String resourceGroupName, String loadBalancerName, String probeName) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, probeName)
-            .flatMap(
-                (Response<ProbeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets load balancer probe.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param probeName The name of the probe.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer probe.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProbeInner get(String resourceGroupName, String loadBalancerName, String probeName) {
-        return getAsync(resourceGroupName, loadBalancerName, probeName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -446,9 +421,26 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
     }
 
     /**
+     * Gets load balancer probe.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param probeName The name of the probe.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return load balancer probe.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProbeInner get(String resourceGroupName, String loadBalancerName, String probeName) {
+        return getWithResponse(resourceGroupName, loadBalancerName, probeName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -484,7 +476,8 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

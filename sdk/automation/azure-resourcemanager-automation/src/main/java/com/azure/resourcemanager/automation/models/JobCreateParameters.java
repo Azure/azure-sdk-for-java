@@ -5,36 +5,28 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.JobCreateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create job operation. */
-@JsonFlatten
 @Fluent
-public class JobCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobCreateParameters.class);
-
+public final class JobCreateParameters {
     /*
-     * Gets or sets the runbook.
+     * Gets or sets the list of job properties.
      */
-    @JsonProperty(value = "properties.runbook")
-    private RunbookAssociationProperty runbook;
+    @JsonProperty(value = "properties", required = true)
+    private JobCreateProperties innerProperties = new JobCreateProperties();
 
-    /*
-     * Gets or sets the parameters of the job.
+    /**
+     * Get the innerProperties property: Gets or sets the list of job properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, String> parameters;
-
-    /*
-     * Gets or sets the runOn which specifies the group name where the job is
-     * to be executed.
-     */
-    @JsonProperty(value = "properties.runOn")
-    private String runOn;
+    private JobCreateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the runbook property: Gets or sets the runbook.
@@ -42,7 +34,7 @@ public class JobCreateParameters {
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
-        return this.runbook;
+        return this.innerProperties() == null ? null : this.innerProperties().runbook();
     }
 
     /**
@@ -52,7 +44,10 @@ public class JobCreateParameters {
      * @return the JobCreateParameters object itself.
      */
     public JobCreateParameters withRunbook(RunbookAssociationProperty runbook) {
-        this.runbook = runbook;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobCreateProperties();
+        }
+        this.innerProperties().withRunbook(runbook);
         return this;
     }
 
@@ -62,7 +57,7 @@ public class JobCreateParameters {
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -72,7 +67,10 @@ public class JobCreateParameters {
      * @return the JobCreateParameters object itself.
      */
     public JobCreateParameters withParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobCreateProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -82,7 +80,7 @@ public class JobCreateParameters {
      * @return the runOn value.
      */
     public String runOn() {
-        return this.runOn;
+        return this.innerProperties() == null ? null : this.innerProperties().runOn();
     }
 
     /**
@@ -92,7 +90,10 @@ public class JobCreateParameters {
      * @return the JobCreateParameters object itself.
      */
     public JobCreateParameters withRunOn(String runOn) {
-        this.runOn = runOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobCreateProperties();
+        }
+        this.innerProperties().withRunOn(runOn);
         return this;
     }
 
@@ -102,8 +103,15 @@ public class JobCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (runbook() != null) {
-            runbook().validate();
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model JobCreateParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JobCreateParameters.class);
 }

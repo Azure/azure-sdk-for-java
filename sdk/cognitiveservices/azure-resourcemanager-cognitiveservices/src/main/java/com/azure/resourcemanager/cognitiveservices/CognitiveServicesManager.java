@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -28,21 +30,25 @@ import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentPlan
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentTiersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeletedAccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.DeploymentsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ModelsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.OperationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceSkusImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.UsagesImpl;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlans;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentTiers;
 import com.azure.resourcemanager.cognitiveservices.models.DeletedAccounts;
 import com.azure.resourcemanager.cognitiveservices.models.Deployments;
+import com.azure.resourcemanager.cognitiveservices.models.Models;
 import com.azure.resourcemanager.cognitiveservices.models.Operations;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResources;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceProviders;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceSkus;
+import com.azure.resourcemanager.cognitiveservices.models.Usages;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -58,11 +64,15 @@ public final class CognitiveServicesManager {
 
     private ResourceSkus resourceSkus;
 
+    private Usages usages;
+
     private Operations operations;
 
     private ResourceProviders resourceProviders;
 
     private CommitmentTiers commitmentTiers;
+
+    private Models models;
 
     private PrivateEndpointConnections privateEndpointConnections;
 
@@ -100,6 +110,19 @@ public final class CognitiveServicesManager {
     }
 
     /**
+     * Creates an instance of CognitiveServices service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the CognitiveServices service API instance.
+     */
+    public static CognitiveServicesManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new CognitiveServicesManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create CognitiveServicesManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -110,13 +133,14 @@ public final class CognitiveServicesManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -178,15 +202,30 @@ public final class CognitiveServicesManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -208,7 +247,7 @@ public final class CognitiveServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.cognitiveservices")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -226,10 +265,15 @@ public final class CognitiveServicesManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -260,7 +304,11 @@ public final class CognitiveServicesManager {
         }
     }
 
-    /** @return Resource collection API of Accounts. */
+    /**
+     * Gets the resource collection API of Accounts. It manages Account.
+     *
+     * @return Resource collection API of Accounts.
+     */
     public Accounts accounts() {
         if (this.accounts == null) {
             this.accounts = new AccountsImpl(clientObject.getAccounts(), this);
@@ -268,7 +316,11 @@ public final class CognitiveServicesManager {
         return accounts;
     }
 
-    /** @return Resource collection API of DeletedAccounts. */
+    /**
+     * Gets the resource collection API of DeletedAccounts.
+     *
+     * @return Resource collection API of DeletedAccounts.
+     */
     public DeletedAccounts deletedAccounts() {
         if (this.deletedAccounts == null) {
             this.deletedAccounts = new DeletedAccountsImpl(clientObject.getDeletedAccounts(), this);
@@ -276,7 +328,11 @@ public final class CognitiveServicesManager {
         return deletedAccounts;
     }
 
-    /** @return Resource collection API of ResourceSkus. */
+    /**
+     * Gets the resource collection API of ResourceSkus.
+     *
+     * @return Resource collection API of ResourceSkus.
+     */
     public ResourceSkus resourceSkus() {
         if (this.resourceSkus == null) {
             this.resourceSkus = new ResourceSkusImpl(clientObject.getResourceSkus(), this);
@@ -284,7 +340,23 @@ public final class CognitiveServicesManager {
         return resourceSkus;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Usages.
+     *
+     * @return Resource collection API of Usages.
+     */
+    public Usages usages() {
+        if (this.usages == null) {
+            this.usages = new UsagesImpl(clientObject.getUsages(), this);
+        }
+        return usages;
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -292,7 +364,11 @@ public final class CognitiveServicesManager {
         return operations;
     }
 
-    /** @return Resource collection API of ResourceProviders. */
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
     public ResourceProviders resourceProviders() {
         if (this.resourceProviders == null) {
             this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
@@ -300,7 +376,11 @@ public final class CognitiveServicesManager {
         return resourceProviders;
     }
 
-    /** @return Resource collection API of CommitmentTiers. */
+    /**
+     * Gets the resource collection API of CommitmentTiers.
+     *
+     * @return Resource collection API of CommitmentTiers.
+     */
     public CommitmentTiers commitmentTiers() {
         if (this.commitmentTiers == null) {
             this.commitmentTiers = new CommitmentTiersImpl(clientObject.getCommitmentTiers(), this);
@@ -308,7 +388,23 @@ public final class CognitiveServicesManager {
         return commitmentTiers;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of Models.
+     *
+     * @return Resource collection API of Models.
+     */
+    public Models models() {
+        if (this.models == null) {
+            this.models = new ModelsImpl(clientObject.getModels(), this);
+        }
+        return models;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -317,7 +413,11 @@ public final class CognitiveServicesManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of PrivateLinkResources. */
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
     public PrivateLinkResources privateLinkResources() {
         if (this.privateLinkResources == null) {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
@@ -325,7 +425,11 @@ public final class CognitiveServicesManager {
         return privateLinkResources;
     }
 
-    /** @return Resource collection API of Deployments. */
+    /**
+     * Gets the resource collection API of Deployments. It manages Deployment.
+     *
+     * @return Resource collection API of Deployments.
+     */
     public Deployments deployments() {
         if (this.deployments == null) {
             this.deployments = new DeploymentsImpl(clientObject.getDeployments(), this);
@@ -333,7 +437,11 @@ public final class CognitiveServicesManager {
         return deployments;
     }
 
-    /** @return Resource collection API of CommitmentPlans. */
+    /**
+     * Gets the resource collection API of CommitmentPlans. It manages CommitmentPlan, CommitmentPlanAccountAssociation.
+     *
+     * @return Resource collection API of CommitmentPlans.
+     */
     public CommitmentPlans commitmentPlans() {
         if (this.commitmentPlans == null) {
             this.commitmentPlans = new CommitmentPlansImpl(clientObject.getCommitmentPlans(), this);

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.UUID;
 /** The workspace managed identity. */
 @Fluent
 public class ManagedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentity.class);
-
     /*
      * The principal ID of the workspace managed identity
      */
@@ -41,6 +37,10 @@ public class ManagedIdentity {
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedManagedIdentity> userAssignedIdentities;
+
+    /** Creates an instance of ManagedIdentity class. */
+    public ManagedIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal ID of the workspace managed identity.

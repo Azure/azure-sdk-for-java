@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StatusLevelTypes. */
+/** The level code. */
 public final class StatusLevelTypes extends ExpandableStringEnum<StatusLevelTypes> {
     /** Static value Info for StatusLevelTypes. */
     public static final StatusLevelTypes INFO = fromString("Info");
@@ -18,6 +18,15 @@ public final class StatusLevelTypes extends ExpandableStringEnum<StatusLevelType
 
     /** Static value Error for StatusLevelTypes. */
     public static final StatusLevelTypes ERROR = fromString("Error");
+
+    /**
+     * Creates a new instance of StatusLevelTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StatusLevelTypes() {
+    }
 
     /**
      * Creates or finds a StatusLevelTypes from its string representation.
@@ -30,7 +39,11 @@ public final class StatusLevelTypes extends ExpandableStringEnum<StatusLevelType
         return fromString(name, StatusLevelTypes.class);
     }
 
-    /** @return known StatusLevelTypes values. */
+    /**
+     * Gets known StatusLevelTypes values.
+     *
+     * @return known StatusLevelTypes values.
+     */
     public static Collection<StatusLevelTypes> values() {
         return values(StatusLevelTypes.class);
     }

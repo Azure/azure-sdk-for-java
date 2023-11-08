@@ -25,48 +25,46 @@ public final class HubspotLinkedServiceTypeProperties {
     private SecretBase clientSecret;
 
     /*
-     * The access token obtained when initially authenticating your OAuth
-     * integration.
+     * The access token obtained when initially authenticating your OAuth integration.
      */
     @JsonProperty(value = "accessToken")
     private SecretBase accessToken;
 
     /*
-     * The refresh token obtained when initially authenticating your OAuth
-     * integration.
+     * The refresh token obtained when initially authenticating your OAuth integration.
      */
     @JsonProperty(value = "refreshToken")
     private SecretBase refreshToken;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
     @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of HubspotLinkedServiceTypeProperties class. */
+    public HubspotLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the clientId property: The client ID associated with your Hubspot application.
@@ -216,22 +214,22 @@ public final class HubspotLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HubspotLinkedServiceTypeProperties object itself.
      */
-    public HubspotLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public HubspotLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

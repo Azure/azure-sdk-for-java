@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InstanceSku model. */
+/** The role instance SKU. */
 @Immutable
 public final class InstanceSku {
     /*
@@ -21,6 +21,10 @@ public final class InstanceSku {
      */
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
+
+    /** Creates an instance of InstanceSku class. */
+    public InstanceSku() {
+    }
 
     /**
      * Get the name property: The sku name.

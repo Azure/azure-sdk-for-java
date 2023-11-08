@@ -24,6 +24,10 @@ public final class NetezzaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private NetezzaLinkedServiceTypeProperties innerTypeProperties = new NetezzaLinkedServiceTypeProperties();
 
+    /** Creates an instance of NetezzaLinkedService class. */
+    public NetezzaLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Netezza linked service properties.
      *
@@ -111,22 +115,22 @@ public final class NetezzaLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the NetezzaLinkedService object itself.
      */
-    public NetezzaLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public NetezzaLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new NetezzaLinkedServiceTypeProperties();
         }

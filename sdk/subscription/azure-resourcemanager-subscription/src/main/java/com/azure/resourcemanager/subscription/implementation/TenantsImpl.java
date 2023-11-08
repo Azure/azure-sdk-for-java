@@ -11,10 +11,9 @@ import com.azure.resourcemanager.subscription.fluent.TenantsClient;
 import com.azure.resourcemanager.subscription.fluent.models.TenantIdDescriptionInner;
 import com.azure.resourcemanager.subscription.models.TenantIdDescription;
 import com.azure.resourcemanager.subscription.models.Tenants;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TenantsImpl implements Tenants {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TenantsImpl.class);
 
     private final TenantsClient innerClient;
 

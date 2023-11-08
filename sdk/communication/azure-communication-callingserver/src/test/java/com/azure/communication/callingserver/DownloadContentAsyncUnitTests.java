@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.UUID;
 import java.util.AbstractMap.SimpleEntry;
 
+import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpRange;
 
@@ -31,22 +32,24 @@ import reactor.test.StepVerifier;
 public class DownloadContentAsyncUnitTests {
 
     private static final String CONTENTS = "VideoContents";
-    private CallingServerAsyncClient callingServerClient;
+    private static final String AMS_ENDPOINT = "https://url.com";
+
+    private CallRecordingAsync callRecording;
 
     @BeforeEach
     public void setup() {
-        callingServerClient =
-            CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<>(
+        CallAutomationAsyncClient callingServerClient =
+            CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>(
                 Collections.singletonList(
-                    new SimpleEntry<>(CallingServerResponseMocker.generateDownloadResult(CONTENTS), 200)
+                    new SimpleEntry<>(CallAutomationUnitTestBase.generateDownloadResult(CONTENTS), 200)
                 )));
+        callRecording = callingServerClient.getCallRecordingAsync();
     }
+
     @Test
     public void downloadStream() {
         StepVerifier.create(
-            callingServerClient.downloadStream(
-                "https://url.com",
-                new HttpRange(CONTENTS.length()))
+            callRecording.downloadStream(AMS_ENDPOINT)
         ).consumeNextWith(byteBuffer -> {
             String resultContents = new String(byteBuffer.array(), StandardCharsets.UTF_8);
             assertEquals(CONTENTS, resultContents);
@@ -56,8 +59,8 @@ public class DownloadContentAsyncUnitTests {
     @Test
     public void downloadStreamWithResponse() {
         StepVerifier.create(
-            callingServerClient.downloadStreamWithResponse(
-                "https://url.com",
+            callRecording.downloadStreamWithResponse(
+                AMS_ENDPOINT,
                 new HttpRange(CONTENTS.length()))
         ).consumeNextWith(response -> {
             assertEquals(200, response.getStatusCode());
@@ -67,32 +70,30 @@ public class DownloadContentAsyncUnitTests {
 
     @Test
     public void downloadStreamWithResponseThrowException() {
-        callingServerClient =
-            CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<>(
+        CallAutomationAsyncClient callingServerClient =
+            CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>(
                 Collections.singletonList(
                     new SimpleEntry<>("", 416)
                 )));
+        callRecording = callingServerClient.getCallRecordingAsync();
 
         StepVerifier.create(
-            callingServerClient.downloadStreamWithResponse("https://url.com", new HttpRange(CONTENTS.length()))
-        ).consumeNextWith(response -> {
-            StepVerifier.create(response.getValue())
-                .verifyError(NullPointerException.class);
-        });
+            callRecording.downloadStreamWithResponse(AMS_ENDPOINT, new HttpRange(CONTENTS.length()))
+        ).consumeNextWith(response ->
+            StepVerifier.create(response.getValue()).verifyError(NullPointerException.class));
     }
 
     @Test
     public void downloadToWithResponse() throws IOException {
         String fileName = "./" + UUID.randomUUID().toString().replace("-", "") + ".txt";
         Path path = FileSystems.getDefault().getPath(fileName);
-        ParallelDownloadOptions options = new ParallelDownloadOptions().setMaxConcurrency(1).setBlockSize(512L);
+        ParallelDownloadOptions parallelOptions = new ParallelDownloadOptions().setMaxConcurrency(1).setBlockSize(512L);
+        DownloadToFileOptions options = new DownloadToFileOptions().setParallelDownloadOptions(parallelOptions).setOverwrite(true);
         File file = null;
 
         try {
-            StepVerifier.create(callingServerClient.downloadToWithResponse("https://url.com", path, options, true))
-                .consumeNextWith(response -> {
-                    assertEquals(200, response.getStatusCode());
-                }).verifyComplete();
+            StepVerifier.create(callRecording.downloadToWithResponse(AMS_ENDPOINT, path, options))
+                .consumeNextWith(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
 
             file = path.toFile();
             assertTrue(file.exists(), "file does not exist");
@@ -101,7 +102,7 @@ public class DownloadContentAsyncUnitTests {
             br.close();
         } finally {
             if (file != null && file.exists()) {
-                file.delete();
+                assertTrue(file.delete());
             }
         }
     }

@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.powerbidedicated.fluent.models.DedicatedCapacityMutableProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Provision request specification. */
-@JsonFlatten
 @Fluent
-public class DedicatedCapacityUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCapacityUpdateParameters.class);
-
+public final class DedicatedCapacityUpdateParameters {
     /*
      * The SKU of the Dedicated capacity resource.
      */
@@ -27,19 +23,18 @@ public class DedicatedCapacityUpdateParameters {
      * Key-value pairs of additional provisioning properties.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * A collection of Dedicated capacity administrators
+     * Properties of the provision operation request.
      */
-    @JsonProperty(value = "properties.administration")
-    private DedicatedCapacityAdministrators administration;
+    @JsonProperty(value = "properties")
+    private DedicatedCapacityMutableProperties innerProperties;
 
-    /*
-     * The capacity mode.
-     */
-    @JsonProperty(value = "properties.mode")
-    private Mode mode;
+    /** Creates an instance of DedicatedCapacityUpdateParameters class. */
+    public DedicatedCapacityUpdateParameters() {
+    }
 
     /**
      * Get the sku property: The SKU of the Dedicated capacity resource.
@@ -82,12 +77,21 @@ public class DedicatedCapacityUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Properties of the provision operation request.
+     *
+     * @return the innerProperties value.
+     */
+    private DedicatedCapacityMutableProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the administration property: A collection of Dedicated capacity administrators.
      *
      * @return the administration value.
      */
     public DedicatedCapacityAdministrators administration() {
-        return this.administration;
+        return this.innerProperties() == null ? null : this.innerProperties().administration();
     }
 
     /**
@@ -97,28 +101,56 @@ public class DedicatedCapacityUpdateParameters {
      * @return the DedicatedCapacityUpdateParameters object itself.
      */
     public DedicatedCapacityUpdateParameters withAdministration(DedicatedCapacityAdministrators administration) {
-        this.administration = administration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCapacityMutableProperties();
+        }
+        this.innerProperties().withAdministration(administration);
         return this;
     }
 
     /**
-     * Get the mode property: The capacity mode.
+     * Get the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
+     * default value 'Gen2' is used. [Learn
+     * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
      *
      * @return the mode value.
      */
     public Mode mode() {
-        return this.mode;
+        return this.innerProperties() == null ? null : this.innerProperties().mode();
     }
 
     /**
-     * Set the mode property: The capacity mode.
+     * Set the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
+     * default value 'Gen2' is used. [Learn
+     * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
      *
      * @param mode the mode value to set.
      * @return the DedicatedCapacityUpdateParameters object itself.
      */
     public DedicatedCapacityUpdateParameters withMode(Mode mode) {
-        this.mode = mode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCapacityMutableProperties();
+        }
+        this.innerProperties().withMode(mode);
         return this;
+    }
+
+    /**
+     * Get the tenantId property: Tenant ID for the capacity. Used for creating Pro Plus capacity.
+     *
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
+    }
+
+    /**
+     * Get the friendlyName property: Capacity name.
+     *
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
     }
 
     /**
@@ -130,8 +162,8 @@ public class DedicatedCapacityUpdateParameters {
         if (sku() != null) {
             sku().validate();
         }
-        if (administration() != null) {
-            administration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

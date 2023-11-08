@@ -5,19 +5,26 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ArtifactManifestOrder. */
+/** Sort options for ordering manifests in a collection. */
 public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactManifestOrder> {
-    /** Static value none for ArtifactManifestOrder. */
+    /** Do not provide an orderby value in the request. */
     public static final ArtifactManifestOrder NONE = fromString("none");
 
-    /** Static value timedesc for ArtifactManifestOrder. */
+    /** Order manifests by LastUpdatedOn field, from most recently updated to least recently updated. */
     public static final ArtifactManifestOrder LAST_UPDATED_ON_DESCENDING = fromString("timedesc");
 
-    /** Static value timeasc for ArtifactManifestOrder. */
+    /** Order manifest by LastUpdatedOn field, from least recently updated to most recently updated. */
     public static final ArtifactManifestOrder LAST_UPDATED_ON_ASCENDING = fromString("timeasc");
+
+    /**
+     * Creates a new instance of ArtifactManifestOrder value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArtifactManifestOrder() {}
 
     /**
      * Creates or finds a ArtifactManifestOrder from its string representation.
@@ -25,12 +32,15 @@ public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactMa
      * @param name a name to look for.
      * @return the corresponding ArtifactManifestOrder.
      */
-    @JsonCreator
     public static ArtifactManifestOrder fromString(String name) {
         return fromString(name, ArtifactManifestOrder.class);
     }
 
-    /** @return known ArtifactManifestOrder values. */
+    /**
+     * Gets known ArtifactManifestOrder values.
+     *
+     * @return known ArtifactManifestOrder values.
+     */
     public static Collection<ArtifactManifestOrder> values() {
         return values(ArtifactManifestOrder.class);
     }

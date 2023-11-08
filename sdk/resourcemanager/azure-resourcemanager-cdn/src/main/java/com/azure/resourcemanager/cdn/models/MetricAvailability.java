@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Retention policy of a resource metric. */
 @Fluent
 public final class MetricAvailability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAvailability.class);
-
     /*
      * The timeGrain property.
      */
@@ -25,6 +21,10 @@ public final class MetricAvailability {
      */
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
+
+    /** Creates an instance of MetricAvailability class. */
+    public MetricAvailability() {
+    }
 
     /**
      * Get the timeGrain property: The timeGrain property.

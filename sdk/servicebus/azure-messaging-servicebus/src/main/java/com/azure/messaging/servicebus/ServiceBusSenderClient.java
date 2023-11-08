@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
@@ -13,45 +12,82 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
- * A <b>synchronous</b> sender responsible for sending {@link ServiceBusMessage} to  specific queue or topic on
- * Azure Service Bus.
+ * <p>A <b>synchronous</b> sender responsible for sending {@link ServiceBusMessage} to a queue or topic on
+ * Azure Service Bus.</p>
  *
- * <p><strong>Create an instance of sender</strong></p>
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Create an instance of sender</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sender&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
+ *
+ * sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;Foo bar&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  *
- * <p><strong>Send messages to a Service Bus resource</strong></p>
+ * <p><strong>Sample: Send messages to a Service Bus resource</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch -->
  * <pre>
- * List&lt;ServiceBusMessage&gt; messages = Arrays.asList&#40;new ServiceBusMessage&#40;BinaryData.fromBytes&#40;&quot;test-1&quot;.getBytes&#40;UTF_8&#41;&#41;&#41;,
- *     new ServiceBusMessage&#40;BinaryData.fromBytes&#40;&quot;test-2&quot;.getBytes&#40;UTF_8&#41;&#41;&#41;&#41;;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
- * CreateMessageBatchOptions options = new CreateMessageBatchOptions&#40;&#41;.setMaximumSizeInBytes&#40;10 * 1024&#41;;
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
+ *     .sender&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildClient&#40;&#41;;
+ *
+ * List&lt;ServiceBusMessage&gt; messages = Arrays.asList&#40;
+ *     new ServiceBusMessage&#40;&quot;test-1&quot;&#41;,
+ *     new ServiceBusMessage&#40;&quot;test-2&quot;&#41;&#41;;
  *
  * &#47;&#47; Creating a batch without options set.
- * ServiceBusMessageBatch batch = sender.createMessageBatch&#40;options&#41;;
+ * ServiceBusMessageBatch batch = sender.createMessageBatch&#40;&#41;;
  * for &#40;ServiceBusMessage message : messages&#41; &#123;
  *     if &#40;batch.tryAddMessage&#40;message&#41;&#41; &#123;
  *         continue;
  *     &#125;
  *
+ *     &#47;&#47; The batch is full. Send the current batch and create a new one.
+ *     sender.sendMessages&#40;batch&#41;;
+ *
+ *     batch = sender.createMessageBatch&#40;&#41;;
+ *
+ *     &#47;&#47; Add the message we couldn't before.
+ *     if &#40;!batch.tryAddMessage&#40;message&#41;&#41; &#123;
+ *         throw new IllegalArgumentException&#40;&quot;Message is too large for an empty batch.&quot;&#41;;
+ *     &#125;
+ * &#125;
+ *
+ * &#47;&#47; Send the final batch if there are any messages in it.
+ * if &#40;batch.getCount&#40;&#41; &gt; 0&#41; &#123;
  *     sender.sendMessages&#40;batch&#41;;
  * &#125;
+ *
+ * &#47;&#47; Continue using the sender and finally, dispose of the sender.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
+ * sender.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch -->
  *
- * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch}</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int -->
+ * <p><strong>Sample: Send messages using a size-limited {@link ServiceBusMessageBatch}</strong></p>
+ * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions -->
  * <pre>
  * List&lt;ServiceBusMessage&gt; telemetryMessages = Arrays.asList&#40;firstMessage, secondMessage, thirdMessage&#41;;
  *
@@ -75,8 +111,45 @@ import java.util.Objects;
  *         &#125;
  *     &#125;
  * &#125;
+ *
+ * &#47;&#47; Send the final batch if there are any messages in it.
+ * if &#40;currentBatch.getCount&#40;&#41; &gt; 0&#41; &#123;
+ *     sender.sendMessages&#40;currentBatch&#41;;
+ * &#125;
+ *
+ * &#47;&#47; Continue using the sender and finally, dispose of the sender.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
+ * sender.close&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int -->
+ * <!-- end com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions -->
+ *
+ * <p><strong>Sample: Sending a message to a session-enabled queue</strong></p>
+ *
+ * <p>The snippet below demonstrates sending a message to a
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a>
+ * enabled queue.  Setting {@link ServiceBusMessage#setMessageId(String)} property to "greetings" will send the message
+ * to a Service Bus session with an id of "greetings".</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session -->
+ * <pre>
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .sender&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .buildClient&#40;&#41;;
+ *
+ * &#47;&#47; Setting sessionId publishes that message to a specific session, in this case, &quot;greeting&quot;.
+ * ServiceBusMessage message = new ServiceBusMessage&#40;&quot;Hello world&quot;&#41;
+ *     .setSessionId&#40;&quot;greetings&quot;&#41;;
+ *
+ * sender.sendMessage&#40;message&#41;;
+ *
+ * &#47;&#47; Dispose of the sender.
+ * sender.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session -->
  *
  * @see ServiceBusClientBuilder#sender()
  * @see ServiceBusSenderAsyncClient To communicate with a Service Bus resource using an asynchronous client.
@@ -103,6 +176,7 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws IllegalArgumentException if {@code sequenceNumber} is negative.
      * @throws ServiceBusException If the message could not be cancelled.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public void cancelScheduledMessage(long sequenceNumber) {
         asyncClient.cancelScheduledMessage(sequenceNumber).block(tryTimeout);
@@ -115,6 +189,7 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code sequenceNumbers} is null.
      * @throws ServiceBusException If the messages could not be cancelled.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public void cancelScheduledMessages(Iterable<Long> sequenceNumbers) {
         asyncClient.cancelScheduledMessages(sequenceNumbers).block(tryTimeout);
@@ -126,6 +201,7 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @return A {@link ServiceBusMessageBatch} that can fit as many messages as the transport allows.
      *
      * @throws ServiceBusException if the message batch could not be created.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public ServiceBusMessageBatch createMessageBatch() {
         return asyncClient.createMessageBatch().block(tryTimeout);
@@ -139,6 +215,9 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code options} is null.
      * @throws ServiceBusException if the message batch could not be created.
+     * @throws IllegalStateException if sender is already disposed.
+     * @throws IllegalArgumentException if {@link CreateMessageBatchOptions#getMaximumSizeInBytes()} is larger than
+     *      maximum allowed size.
      */
     public ServiceBusMessageBatch createMessageBatch(CreateMessageBatchOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
@@ -164,13 +243,22 @@ public final class ServiceBusSenderClient implements AutoCloseable {
     }
 
     /**
+     * Gets the identifier of the instance of {@link ServiceBusSenderClient}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusSenderClient}.
+     */
+    public String getIdentifier() {
+        return asyncClient.getIdentifier();
+    }
+
+    /**
      * Sends a message to a Service Bus queue or topic.
      *
      * @param message Message to be sent to Service Bus queue or topic.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
-     * @throws AmqpException if {@code message} is larger than the maximum allowed size of a single message.
-     * @throws ServiceBusException if the message could not be sent.
+     * @throws ServiceBusException if {@code message} is larger than the maximum allowed size of a single message or
+     *      the message could not be sent.
      * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessage(ServiceBusMessage message) {
@@ -186,8 +274,8 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @param messages Messages to be sent to Service Bus queue or topic.
      *
      * @throws NullPointerException if {@code messages} is {@code null}.
-     * @throws AmqpException if {@code messages} are larger than the maximum allowed size of a single batch.
-     * @throws ServiceBusException if the messages could not be sent.
+     * @throws ServiceBusException if the message could not be sent or {@code message} is larger than the maximum size of the {@link
+     *     ServiceBusMessageBatch}.
      * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessages(Iterable<ServiceBusMessage> messages) {
@@ -216,8 +304,8 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
-     * @throws AmqpException if {@code message} is larger than the maximum allowed size of a single message.
-     * @throws ServiceBusException if the message could not be sent.
+     * @throws ServiceBusException if {@code message} is larger than the maximum allowed size of a single message or
+     *      the message could not be sent.
      * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessage(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
@@ -234,8 +322,8 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code messages}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
-     * @throws AmqpException if {@code messages} are larger than the maximum allowed size of a single batch.
-     * @throws ServiceBusException if messages could not be sent.
+     * @throws ServiceBusException if the message could not be sent or {@code message} is larger than the maximum size of the {@link
+     *     ServiceBusMessageBatch}.
      * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessages(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
@@ -324,7 +412,8 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @throws IllegalStateException if sender is already disposed.
      * @throws NullPointerException If {@code messages}, {@code scheduledEnqueueTime}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
-     * @throws ServiceBusException If the messages could not be scheduled.
+     * @throws ServiceBusException If the messages could not be scheduled or the {@code message} is larger than
+     *      the maximum size of the {@link ServiceBusMessageBatch}.
      */
     public Iterable<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
@@ -338,7 +427,6 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @return A new {@link ServiceBusTransactionContext}.
      *
      * @throws IllegalStateException if sender is already disposed.
-     * @throws IllegalStateException if the sender is disposed.
      * @throws ServiceBusException if a transaction cannot be created.
      *
      * @see ServiceBusReceiverClient#createTransaction()

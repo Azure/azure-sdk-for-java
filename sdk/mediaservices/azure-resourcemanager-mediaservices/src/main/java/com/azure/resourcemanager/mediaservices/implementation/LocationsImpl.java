@@ -27,17 +27,6 @@ public final class LocationsImpl implements Locations {
         this.serviceManager = serviceManager;
     }
 
-    public EntityNameAvailabilityCheckOutput checkNameAvailability(
-        String locationName, CheckNameAvailabilityInput parameters) {
-        EntityNameAvailabilityCheckOutputInner inner =
-            this.serviceClient().checkNameAvailability(locationName, parameters);
-        if (inner != null) {
-            return new EntityNameAvailabilityCheckOutputImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<EntityNameAvailabilityCheckOutput> checkNameAvailabilityWithResponse(
         String locationName, CheckNameAvailabilityInput parameters, Context context) {
         Response<EntityNameAvailabilityCheckOutputInner> inner =
@@ -48,6 +37,17 @@ public final class LocationsImpl implements Locations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EntityNameAvailabilityCheckOutputImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EntityNameAvailabilityCheckOutput checkNameAvailability(
+        String locationName, CheckNameAvailabilityInput parameters) {
+        EntityNameAvailabilityCheckOutputInner inner =
+            this.serviceClient().checkNameAvailability(locationName, parameters);
+        if (inner != null) {
+            return new EntityNameAvailabilityCheckOutputImpl(inner, this.manager());
         } else {
             return null;
         }

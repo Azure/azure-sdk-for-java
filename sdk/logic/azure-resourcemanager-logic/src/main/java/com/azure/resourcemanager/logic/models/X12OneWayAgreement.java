@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 one-way agreement. */
 @Fluent
 public final class X12OneWayAgreement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12OneWayAgreement.class);
-
     /*
      * The sender business identity
      */
@@ -31,6 +28,10 @@ public final class X12OneWayAgreement {
      */
     @JsonProperty(value = "protocolSettings", required = true)
     private X12ProtocolSettings protocolSettings;
+
+    /** Creates an instance of X12OneWayAgreement class. */
+    public X12OneWayAgreement() {
+    }
 
     /**
      * Get the senderBusinessIdentity property: The sender business identity.
@@ -99,7 +100,7 @@ public final class X12OneWayAgreement {
      */
     public void validate() {
         if (senderBusinessIdentity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property senderBusinessIdentity in model X12OneWayAgreement"));
@@ -107,7 +108,7 @@ public final class X12OneWayAgreement {
             senderBusinessIdentity().validate();
         }
         if (receiverBusinessIdentity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property receiverBusinessIdentity in model X12OneWayAgreement"));
@@ -115,7 +116,7 @@ public final class X12OneWayAgreement {
             receiverBusinessIdentity().validate();
         }
         if (protocolSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocolSettings in model X12OneWayAgreement"));
@@ -123,4 +124,6 @@ public final class X12OneWayAgreement {
             protocolSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12OneWayAgreement.class);
 }

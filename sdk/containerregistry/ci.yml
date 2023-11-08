@@ -33,11 +33,24 @@ pr:
       - sdk/containerregistry/azure-containers-containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry-perf/pom.xml
 
+parameters:
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: containerregistry
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-containers-containerregistry
         groupId: com.azure
         safeName: azurecontainerscontainerregistry
+    AdditionalModules:
+      - name: azure-containers-containerregistry-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

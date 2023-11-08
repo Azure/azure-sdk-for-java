@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DestinationProtocol. */
+/** Protocol to use for the redirect. The default value is MatchRequest. */
 public final class DestinationProtocol extends ExpandableStringEnum<DestinationProtocol> {
     /** Static value MatchRequest for DestinationProtocol. */
     public static final DestinationProtocol MATCH_REQUEST = fromString("MatchRequest");
@@ -18,6 +18,15 @@ public final class DestinationProtocol extends ExpandableStringEnum<DestinationP
 
     /** Static value Https for DestinationProtocol. */
     public static final DestinationProtocol HTTPS = fromString("Https");
+
+    /**
+     * Creates a new instance of DestinationProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DestinationProtocol() {
+    }
 
     /**
      * Creates or finds a DestinationProtocol from its string representation.
@@ -30,7 +39,11 @@ public final class DestinationProtocol extends ExpandableStringEnum<DestinationP
         return fromString(name, DestinationProtocol.class);
     }
 
-    /** @return known DestinationProtocol values. */
+    /**
+     * Gets known DestinationProtocol values.
+     *
+     * @return known DestinationProtocol values.
+     */
     public static Collection<DestinationProtocol> values() {
         return values(DestinationProtocol.class);
     }

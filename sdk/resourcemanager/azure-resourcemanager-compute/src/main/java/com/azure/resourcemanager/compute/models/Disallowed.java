@@ -17,6 +17,10 @@ public final class Disallowed {
     @JsonProperty(value = "diskTypes")
     private List<String> diskTypes;
 
+    /** Creates an instance of Disallowed class. */
+    public Disallowed() {
+    }
+
     /**
      * Get the diskTypes property: A list of disk types.
      *

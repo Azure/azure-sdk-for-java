@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GeoReplicationStatus. */
+/**
+ * The status of the secondary location. Possible values are: - Live: Indicates that the secondary location is active
+ * and operational. - Bootstrap: Indicates initial synchronization from the primary location to the secondary location
+ * is in progress.This typically occurs when replication is first enabled. - Unavailable: Indicates that the secondary
+ * location is temporarily unavailable.
+ */
 public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicationStatus> {
     /** Static value Live for GeoReplicationStatus. */
     public static final GeoReplicationStatus LIVE = fromString("Live");
@@ -18,6 +23,15 @@ public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicat
 
     /** Static value Unavailable for GeoReplicationStatus. */
     public static final GeoReplicationStatus UNAVAILABLE = fromString("Unavailable");
+
+    /**
+     * Creates a new instance of GeoReplicationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GeoReplicationStatus() {
+    }
 
     /**
      * Creates or finds a GeoReplicationStatus from its string representation.
@@ -30,7 +44,11 @@ public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicat
         return fromString(name, GeoReplicationStatus.class);
     }
 
-    /** @return known GeoReplicationStatus values. */
+    /**
+     * Gets known GeoReplicationStatus values.
+     *
+     * @return known GeoReplicationStatus values.
+     */
     public static Collection<GeoReplicationStatus> values() {
         return values(GeoReplicationStatus.class);
     }

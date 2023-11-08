@@ -17,6 +17,10 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private KubeEnvironmentPatchResourceProperties innerProperties;
 
+    /** Creates an instance of KubeEnvironmentPatchResource class. */
+    public KubeEnvironmentPatchResource() {
+    }
+
     /**
      * Get the innerProperties property: KubeEnvironmentPatchResource resource specific properties.
      *

@@ -22,9 +22,8 @@ public final class FrontendIpConfigurationInner extends SubResource {
     private FrontendIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of frontend IP
-     * configurations used by the load balancer. This name can be used to
-     * access the resource.
+     * The name of the resource that is unique within the set of frontend IP configurations used by the load balancer.
+     * This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -42,11 +41,14 @@ public final class FrontendIpConfigurationInner extends SubResource {
     private String type;
 
     /*
-     * A list of availability zones denoting the IP allocated for the resource
-     * needs to come from.
+     * A list of availability zones denoting the IP allocated for the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /** Creates an instance of FrontendIpConfigurationInner class. */
+    public FrontendIpConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the load balancer probe.

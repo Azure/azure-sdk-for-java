@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("OperationStatusJobExtendedInfo")
 @Fluent
 public final class OperationStatusJobExtendedInfo extends OperationStatusExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusJobExtendedInfo.class);
-
     /*
      * ID of the job created for this protected item.
      */
     @JsonProperty(value = "jobId")
     private String jobId;
+
+    /** Creates an instance of OperationStatusJobExtendedInfo class. */
+    public OperationStatusJobExtendedInfo() {
+    }
 
     /**
      * Get the jobId property: ID of the job created for this protected item.

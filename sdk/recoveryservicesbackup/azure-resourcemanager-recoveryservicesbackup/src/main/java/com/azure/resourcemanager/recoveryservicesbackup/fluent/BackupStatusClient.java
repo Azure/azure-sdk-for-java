@@ -18,19 +18,6 @@ public interface BackupStatusClient {
      *
      * @param azureRegion Azure region to hit Api.
      * @param parameters Container Backup Status Request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container backup status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupStatusResponseInner get(String azureRegion, BackupStatusRequest parameters);
-
-    /**
-     * Get the container backup status.
-     *
-     * @param azureRegion Azure region to hit Api.
-     * @param parameters Container Backup Status Request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,4 +27,17 @@ public interface BackupStatusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BackupStatusResponseInner> getWithResponse(
         String azureRegion, BackupStatusRequest parameters, Context context);
+
+    /**
+     * Get the container backup status.
+     *
+     * @param azureRegion Azure region to hit Api.
+     * @param parameters Container Backup Status Request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the container backup status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackupStatusResponseInner get(String azureRegion, BackupStatusRequest parameters);
 }

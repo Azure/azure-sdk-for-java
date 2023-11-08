@@ -14,22 +14,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SybaseLinkedServiceTypeProperties {
     /*
-     * Server name for connection. Type: string (or Expression with resultType
-     * string).
+     * Server name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "server", required = true)
     private Object server;
 
     /*
-     * Database name for connection. Type: string (or Expression with
-     * resultType string).
+     * Database name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "database", required = true)
     private Object database;
 
     /*
-     * Schema name for connection. Type: string (or Expression with resultType
-     * string).
+     * Schema name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;
@@ -41,8 +38,7 @@ public final class SybaseLinkedServiceTypeProperties {
     private SybaseAuthenticationType authenticationType;
 
     /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -54,12 +50,15 @@ public final class SybaseLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of SybaseLinkedServiceTypeProperties class. */
+    public SybaseLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the server property: Server name for connection. Type: string (or Expression with resultType string).
@@ -183,22 +182,22 @@ public final class SybaseLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SybaseLinkedServiceTypeProperties object itself.
      */
-    public SybaseLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public SybaseLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

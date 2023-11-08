@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KillChainIntent. */
+/** Holds the alert intent stage(s) mapping for this alert. */
 public final class KillChainIntent extends ExpandableStringEnum<KillChainIntent> {
     /** Static value Unknown for KillChainIntent. */
     public static final KillChainIntent UNKNOWN = fromString("Unknown");
@@ -63,7 +63,11 @@ public final class KillChainIntent extends ExpandableStringEnum<KillChainIntent>
         return fromString(name, KillChainIntent.class);
     }
 
-    /** @return known KillChainIntent values. */
+    /**
+     * Gets known KillChainIntent values.
+     *
+     * @return known KillChainIntent values.
+     */
     public static Collection<KillChainIntent> values() {
         return values(KillChainIntent.class);
     }

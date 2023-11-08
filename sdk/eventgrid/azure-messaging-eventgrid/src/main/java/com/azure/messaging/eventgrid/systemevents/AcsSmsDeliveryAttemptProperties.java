@@ -29,6 +29,9 @@ public final class AcsSmsDeliveryAttemptProperties {
     @JsonProperty(value = "segmentsFailed")
     private Integer segmentsFailed;
 
+    /** Creates an instance of AcsSmsDeliveryAttemptProperties class. */
+    public AcsSmsDeliveryAttemptProperties() {}
+
     /**
      * Get the timestamp property: TimeStamp when delivery was attempted.
      *

@@ -19,10 +19,9 @@ import com.azure.resourcemanager.kusto.models.DataConnection;
 import com.azure.resourcemanager.kusto.models.DataConnectionCheckNameRequest;
 import com.azure.resourcemanager.kusto.models.DataConnectionValidationListResult;
 import com.azure.resourcemanager.kusto.models.DataConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataConnectionsImpl implements DataConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataConnectionsImpl.class);
 
     private final DataConnectionsClient innerClient;
 
@@ -76,22 +75,6 @@ public final class DataConnectionsImpl implements DataConnections {
         }
     }
 
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName) {
-        CheckNameResultInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(resourceGroupName, clusterName, databaseName, dataConnectionName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName,
         String clusterName,
@@ -114,12 +97,17 @@ public final class DataConnectionsImpl implements DataConnections {
         }
     }
 
-    public DataConnection get(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
-        DataConnectionInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, databaseName, dataConnectionName);
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DataConnectionCheckNameRequest dataConnectionName) {
+        CheckNameResultInner inner =
+            this
+                .serviceClient()
+                .checkNameAvailability(resourceGroupName, clusterName, databaseName, dataConnectionName);
         if (inner != null) {
-            return new DataConnectionImpl(inner, this.manager());
+            return new CheckNameResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -137,6 +125,17 @@ public final class DataConnectionsImpl implements DataConnections {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DataConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DataConnection get(
+        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
+        DataConnectionInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, databaseName, dataConnectionName);
+        if (inner != null) {
+            return new DataConnectionImpl(inner, this.manager());
         } else {
             return null;
         }

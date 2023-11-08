@@ -34,6 +34,10 @@ public final class DetectorDefinition {
     @JsonProperty(value = "isEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEnabled;
 
+    /** Creates an instance of DetectorDefinition class. */
+    public DetectorDefinition() {
+    }
+
     /**
      * Get the displayName property: Display name of the detector.
      *

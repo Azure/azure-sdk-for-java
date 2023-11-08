@@ -6,19 +6,20 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB Cassandra keyspace resource object. */
 @Fluent
 public class CassandraKeyspaceResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraKeyspaceResource.class);
-
     /*
      * Name of the Cosmos DB Cassandra keyspace
      */
     @JsonProperty(value = "id", required = true)
     private String id;
+
+    /** Creates an instance of CassandraKeyspaceResource class. */
+    public CassandraKeyspaceResource() {
+    }
 
     /**
      * Get the id property: Name of the Cosmos DB Cassandra keyspace.
@@ -47,9 +48,11 @@ public class CassandraKeyspaceResource {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model CassandraKeyspaceResource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CassandraKeyspaceResource.class);
 }

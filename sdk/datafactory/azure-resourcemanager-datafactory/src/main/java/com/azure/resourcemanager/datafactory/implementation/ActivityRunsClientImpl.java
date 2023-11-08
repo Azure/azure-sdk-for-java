@@ -52,11 +52,10 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface ActivityRunsService {
+    public interface ActivityRunsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRun(
@@ -211,32 +210,7 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
     private Mono<ActivityRunsQueryResponseInner> queryByPipelineRunAsync(
         String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
         return queryByPipelineRunWithResponseAsync(resourceGroupName, factoryName, runId, filterParameters)
-            .flatMap(
-                (Response<ActivityRunsQueryResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Query activity runs based on input filter conditions.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param runId The pipeline run identifier.
-     * @param filterParameters Parameters to filter the activity runs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActivityRunsQueryResponseInner queryByPipelineRun(
-        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
-        return queryByPipelineRunAsync(resourceGroupName, factoryName, runId, filterParameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -261,5 +235,24 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
         Context context) {
         return queryByPipelineRunWithResponseAsync(resourceGroupName, factoryName, runId, filterParameters, context)
             .block();
+    }
+
+    /**
+     * Query activity runs based on input filter conditions.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param runId The pipeline run identifier.
+     * @param filterParameters Parameters to filter the activity runs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list activity runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActivityRunsQueryResponseInner queryByPipelineRun(
+        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
+        return queryByPipelineRunWithResponse(resourceGroupName, factoryName, runId, filterParameters, Context.NONE)
+            .getValue();
     }
 }

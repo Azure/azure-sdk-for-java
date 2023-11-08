@@ -22,15 +22,15 @@ public final class DedicatedHostProperties {
     private Integer platformFaultDomain;
 
     /*
-     * Specifies whether the dedicated host should be replaced automatically in
-     * case of a failure. The value is defaulted to 'true' when not provided.
+     * Specifies whether the dedicated host should be replaced automatically in case of a failure. The value is
+     * defaulted to 'true' when not provided.
      */
     @JsonProperty(value = "autoReplaceOnFailure")
     private Boolean autoReplaceOnFailure;
 
     /*
-     * A unique id generated and assigned to the dedicated host by the
-     * platform. <br><br> Does not change throughout the lifetime of the host.
+     * A unique id generated and assigned to the dedicated host by the platform. Does not change throughout the
+     * lifetime of the host.
      */
     @JsonProperty(value = "hostId", access = JsonProperty.Access.WRITE_ONLY)
     private String hostId;
@@ -42,10 +42,8 @@ public final class DedicatedHostProperties {
     private List<SubResourceReadOnly> virtualMachines;
 
     /*
-     * Specifies the software license type that will be applied to the VMs
-     * deployed on the dedicated host. <br><br> Possible values are: <br><br>
-     * **None** <br><br> **Windows_Server_Hybrid** <br><br>
-     * **Windows_Server_Perpetual** <br><br> Default: **None**
+     * Specifies the software license type that will be applied to the VMs deployed on the dedicated host. Possible
+     * values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The default value is: **None.**
      */
     @JsonProperty(value = "licenseType")
     private DedicatedHostLicenseTypes licenseType;
@@ -69,11 +67,14 @@ public final class DedicatedHostProperties {
     private DedicatedHostInstanceView instanceView;
 
     /*
-     * Specifies the time at which the Dedicated Host resource was
-     * created.<br><br>Minimum api-version: 2021-11-01.
+     * Specifies the time at which the Dedicated Host resource was created. Minimum api-version: 2021-11-01.
      */
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
+
+    /** Creates an instance of DedicatedHostProperties class. */
+    public DedicatedHostProperties() {
+    }
 
     /**
      * Get the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
@@ -118,8 +119,8 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Get the hostId property: A unique id generated and assigned to the dedicated host by the platform.
-     * &lt;br&gt;&lt;br&gt; Does not change throughout the lifetime of the host.
+     * Get the hostId property: A unique id generated and assigned to the dedicated host by the platform. Does not
+     * change throughout the lifetime of the host.
      *
      * @return the hostId value.
      */
@@ -138,9 +139,8 @@ public final class DedicatedHostProperties {
 
     /**
      * Get the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
-     * dedicated host. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt;
-     * **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt; **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default:
-     * **None**.
+     * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
+     * default value is: **None.**.
      *
      * @return the licenseType value.
      */
@@ -150,9 +150,8 @@ public final class DedicatedHostProperties {
 
     /**
      * Set the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
-     * dedicated host. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt;
-     * **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt; **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default:
-     * **None**.
+     * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
+     * default value is: **None.**.
      *
      * @param licenseType the licenseType value to set.
      * @return the DedicatedHostProperties object itself.
@@ -190,8 +189,8 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Get the timeCreated property: Specifies the time at which the Dedicated Host resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     * Get the timeCreated property: Specifies the time at which the Dedicated Host resource was created. Minimum
+     * api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */

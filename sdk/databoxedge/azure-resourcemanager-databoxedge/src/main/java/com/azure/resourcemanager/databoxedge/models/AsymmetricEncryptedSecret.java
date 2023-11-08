@@ -6,14 +6,11 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represent the secrets intended for encryption with asymmetric key pair. */
 @Fluent
 public final class AsymmetricEncryptedSecret {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AsymmetricEncryptedSecret.class);
-
     /*
      * The value of the secret.
      */
@@ -21,8 +18,7 @@ public final class AsymmetricEncryptedSecret {
     private String value;
 
     /*
-     * Thumbprint certificate used to encrypt \"Value\". If the value is
-     * unencrypted, it will be null.
+     * Thumbprint certificate used to encrypt \"Value\". If the value is unencrypted, it will be null.
      */
     @JsonProperty(value = "encryptionCertThumbprint")
     private String encryptionCertThumbprint;
@@ -32,6 +28,10 @@ public final class AsymmetricEncryptedSecret {
      */
     @JsonProperty(value = "encryptionAlgorithm", required = true)
     private EncryptionAlgorithm encryptionAlgorithm;
+
+    /** Creates an instance of AsymmetricEncryptedSecret class. */
+    public AsymmetricEncryptedSecret() {
+    }
 
     /**
      * Get the value property: The value of the secret.
@@ -102,15 +102,17 @@ public final class AsymmetricEncryptedSecret {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model AsymmetricEncryptedSecret"));
         }
         if (encryptionAlgorithm() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property encryptionAlgorithm in model AsymmetricEncryptedSecret"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AsymmetricEncryptedSecret.class);
 }

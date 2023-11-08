@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolBlobAuditingPoliciesClien
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolBlobAuditingPolicyInner;
 import com.azure.resourcemanager.synapse.models.SqlPoolBlobAuditingPolicies;
 import com.azure.resourcemanager.synapse.models.SqlPoolBlobAuditingPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolBlobAuditingPoliciesImpl implements SqlPoolBlobAuditingPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolBlobAuditingPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolBlobAuditingPoliciesImpl.class);
 
     private final SqlPoolBlobAuditingPoliciesClient innerClient;
 
@@ -29,15 +28,6 @@ public final class SqlPoolBlobAuditingPoliciesImpl implements SqlPoolBlobAuditin
         this.serviceManager = serviceManager;
     }
 
-    public SqlPoolBlobAuditingPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        SqlPoolBlobAuditingPolicyInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
-        if (inner != null) {
-            return new SqlPoolBlobAuditingPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SqlPoolBlobAuditingPolicy> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         Response<SqlPoolBlobAuditingPolicyInner> inner =
@@ -48,6 +38,15 @@ public final class SqlPoolBlobAuditingPoliciesImpl implements SqlPoolBlobAuditin
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SqlPoolBlobAuditingPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlPoolBlobAuditingPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        SqlPoolBlobAuditingPolicyInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
+        if (inner != null) {
+            return new SqlPoolBlobAuditingPolicyImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -70,7 +69,7 @@ public final class SqlPoolBlobAuditingPoliciesImpl implements SqlPoolBlobAuditin
     public SqlPoolBlobAuditingPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -78,14 +77,14 @@ public final class SqlPoolBlobAuditingPoliciesImpl implements SqlPoolBlobAuditin
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
@@ -96,7 +95,7 @@ public final class SqlPoolBlobAuditingPoliciesImpl implements SqlPoolBlobAuditin
     public Response<SqlPoolBlobAuditingPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -104,14 +103,14 @@ public final class SqlPoolBlobAuditingPoliciesImpl implements SqlPoolBlobAuditin
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));

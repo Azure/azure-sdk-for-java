@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The target that a job execution is executed on. */
 @Immutable
 public final class JobExecutionTarget {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobExecutionTarget.class);
-
     /*
      * The type of the target.
      */
@@ -31,6 +27,10 @@ public final class JobExecutionTarget {
      */
     @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
+
+    /** Creates an instance of JobExecutionTarget class. */
+    public JobExecutionTarget() {
+    }
 
     /**
      * Get the type property: The type of the target.

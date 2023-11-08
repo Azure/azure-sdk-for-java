@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ManagementOperationState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of a Sql pool operation. */
 @Immutable
 public final class SqlPoolOperationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolOperationProperties.class);
-
     /*
      * The name of the Sql pool the operation is being performed on.
      */
@@ -99,6 +95,10 @@ public final class SqlPoolOperationProperties {
      */
     @JsonProperty(value = "isCancellable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCancellable;
+
+    /** Creates an instance of SqlPoolOperationProperties class. */
+    public SqlPoolOperationProperties() {
+    }
 
     /**
      * Get the databaseName property: The name of the Sql pool the operation is being performed on.

@@ -68,6 +68,10 @@ public final class Contact {
     @JsonProperty(value = "phone", required = true)
     private String phone;
 
+    /** Creates an instance of Contact class. */
+    public Contact() {
+    }
+
     /**
      * Get the addressMailing property: Mailing address.
      *

@@ -17,6 +17,9 @@ public final class DetectionIncidentFilterCondition {
     @JsonProperty(value = "dimensionFilter")
     private List<DimensionGroupIdentity> dimensionFilter;
 
+    /** Creates an instance of DetectionIncidentFilterCondition class. */
+    public DetectionIncidentFilterCondition() {}
+
     /**
      * Get the dimensionFilter property: dimension filter.
      *

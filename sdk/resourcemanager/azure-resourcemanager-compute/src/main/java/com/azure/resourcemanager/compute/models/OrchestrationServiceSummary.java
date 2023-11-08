@@ -22,6 +22,10 @@ public final class OrchestrationServiceSummary {
     @JsonProperty(value = "serviceState", access = JsonProperty.Access.WRITE_ONLY)
     private OrchestrationServiceState serviceState;
 
+    /** Creates an instance of OrchestrationServiceSummary class. */
+    public OrchestrationServiceSummary() {
+    }
+
     /**
      * Get the serviceName property: The name of the service.
      *

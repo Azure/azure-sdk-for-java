@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphSelectionLikelihoodInfo. */
+/** selectionLikelihoodInfo. */
 public final class MicrosoftGraphSelectionLikelihoodInfo
     extends ExpandableStringEnum<MicrosoftGraphSelectionLikelihoodInfo> {
     /** Static value notSpecified for MicrosoftGraphSelectionLikelihoodInfo. */
@@ -16,6 +16,15 @@ public final class MicrosoftGraphSelectionLikelihoodInfo
 
     /** Static value high for MicrosoftGraphSelectionLikelihoodInfo. */
     public static final MicrosoftGraphSelectionLikelihoodInfo HIGH = fromString("high");
+
+    /**
+     * Creates a new instance of MicrosoftGraphSelectionLikelihoodInfo value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphSelectionLikelihoodInfo() {
+    }
 
     /**
      * Creates or finds a MicrosoftGraphSelectionLikelihoodInfo from its string representation.
@@ -28,7 +37,11 @@ public final class MicrosoftGraphSelectionLikelihoodInfo
         return fromString(name, MicrosoftGraphSelectionLikelihoodInfo.class);
     }
 
-    /** @return known MicrosoftGraphSelectionLikelihoodInfo values. */
+    /**
+     * Gets known MicrosoftGraphSelectionLikelihoodInfo values.
+     *
+     * @return known MicrosoftGraphSelectionLikelihoodInfo values.
+     */
     public static Collection<MicrosoftGraphSelectionLikelihoodInfo> values() {
         return values(MicrosoftGraphSelectionLikelihoodInfo.class);
     }

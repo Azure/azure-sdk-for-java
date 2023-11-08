@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databoxedge.fluent.TriggersClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
 import com.azure.resourcemanager.databoxedge.models.Trigger;
 import com.azure.resourcemanager.databoxedge.models.Triggers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TriggersImpl implements Triggers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TriggersImpl.class);
 
     private final TriggersClient innerClient;
 
@@ -40,15 +39,6 @@ public final class TriggersImpl implements Triggers {
         return Utils.mapPage(inner, inner1 -> new TriggerImpl(inner1, this.manager()));
     }
 
-    public Trigger get(String deviceName, String name, String resourceGroupName) {
-        TriggerInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
-        if (inner != null) {
-            return new TriggerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Trigger> getWithResponse(
         String deviceName, String name, String resourceGroupName, Context context) {
         Response<TriggerInner> inner =
@@ -59,6 +49,15 @@ public final class TriggersImpl implements Triggers {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TriggerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Trigger get(String deviceName, String name, String resourceGroupName) {
+        TriggerInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
+        if (inner != null) {
+            return new TriggerImpl(inner, this.manager());
         } else {
             return null;
         }

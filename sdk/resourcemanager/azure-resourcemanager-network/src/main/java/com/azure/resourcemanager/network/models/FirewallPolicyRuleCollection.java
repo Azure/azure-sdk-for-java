@@ -35,6 +35,10 @@ public class FirewallPolicyRuleCollection {
     @JsonProperty(value = "priority")
     private Integer priority;
 
+    /** Creates an instance of FirewallPolicyRuleCollection class. */
+    public FirewallPolicyRuleCollection() {
+    }
+
     /**
      * Get the name property: The name of the rule collection.
      *

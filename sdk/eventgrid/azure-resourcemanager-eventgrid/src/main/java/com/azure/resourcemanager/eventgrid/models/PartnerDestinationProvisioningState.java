@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PartnerDestinationProvisioningState. */
+/** Provisioning state of the partner destination. */
 public final class PartnerDestinationProvisioningState
     extends ExpandableStringEnum<PartnerDestinationProvisioningState> {
     /** Static value Creating for PartnerDestinationProvisioningState. */
@@ -29,6 +29,19 @@ public final class PartnerDestinationProvisioningState
     /** Static value Failed for PartnerDestinationProvisioningState. */
     public static final PartnerDestinationProvisioningState FAILED = fromString("Failed");
 
+    /** Static value IdleDueToMirroredChannelResourceDeletion for PartnerDestinationProvisioningState. */
+    public static final PartnerDestinationProvisioningState IDLE_DUE_TO_MIRRORED_CHANNEL_RESOURCE_DELETION =
+        fromString("IdleDueToMirroredChannelResourceDeletion");
+
+    /**
+     * Creates a new instance of PartnerDestinationProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PartnerDestinationProvisioningState() {
+    }
+
     /**
      * Creates or finds a PartnerDestinationProvisioningState from its string representation.
      *
@@ -40,7 +53,11 @@ public final class PartnerDestinationProvisioningState
         return fromString(name, PartnerDestinationProvisioningState.class);
     }
 
-    /** @return known PartnerDestinationProvisioningState values. */
+    /**
+     * Gets known PartnerDestinationProvisioningState values.
+     *
+     * @return known PartnerDestinationProvisioningState values.
+     */
     public static Collection<PartnerDestinationProvisioningState> values() {
         return values(PartnerDestinationProvisioningState.class);
     }

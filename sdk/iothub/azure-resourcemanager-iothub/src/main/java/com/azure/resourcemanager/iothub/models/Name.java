@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Name of Iot Hub type. */
 @Fluent
 public final class Name {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Name.class);
-
     /*
      * IotHub type
      */
@@ -25,6 +21,10 @@ public final class Name {
      */
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
+
+    /** Creates an instance of Name class. */
+    public Name() {
+    }
 
     /**
      * Get the value property: IotHub type.

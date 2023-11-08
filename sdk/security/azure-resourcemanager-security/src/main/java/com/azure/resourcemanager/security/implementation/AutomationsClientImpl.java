@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.AutomationsClient;
 import com.azure.resourcemanager.security.fluent.models.AutomationInner;
 import com.azure.resourcemanager.security.fluent.models.AutomationValidationStatusInner;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AutomationsClient. */
 public final class AutomationsClientImpl implements AutomationsClient {
-    private final ClientLogger logger = new ClientLogger(AutomationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AutomationsService service;
 
@@ -63,7 +60,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAutoma")
-    private interface AutomationsService {
+    public interface AutomationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations")
         @ExpectedResponses({200})
@@ -77,8 +74,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/automations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AutomationList>> listByResourceGroup(
@@ -91,8 +87,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/automations/{automationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AutomationInner>> getByResourceGroup(
@@ -106,8 +101,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/automations/{automationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AutomationInner>> createOrUpdate(
@@ -122,8 +116,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/automations/{automationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -137,8 +130,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/automations/{automationName}/validate")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}/validate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AutomationValidationStatusInner>> validate(
@@ -178,7 +170,8 @@ public final class AutomationsClientImpl implements AutomationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationInner>> listSinglePageAsync() {
@@ -221,7 +214,8 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationInner>> listSinglePageAsync(Context context) {
@@ -259,7 +253,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutomationInner> listAsync() {
@@ -274,7 +268,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutomationInner> listAsync(Context context) {
@@ -288,7 +282,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationInner> list() {
@@ -303,7 +297,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationInner> list(Context context) {
@@ -319,7 +313,8 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -374,7 +369,8 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationInner>> listByResourceGroupSinglePageAsync(
@@ -426,7 +422,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutomationInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -445,7 +441,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutomationInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -463,7 +459,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationInner> listByResourceGroup(String resourceGroupName) {
@@ -480,7 +476,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -496,7 +492,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
+     * @return the security automation resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationInner>> getByResourceGroupWithResponseAsync(
@@ -547,7 +543,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
+     * @return the security automation resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationInner>> getByResourceGroupWithResponseAsync(
@@ -594,19 +590,30 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
+     * @return the security automation resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutomationInner> getByResourceGroupAsync(String resourceGroupName, String automationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, automationName)
-            .flatMap(
-                (Response<AutomationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves information about the model of a security automation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param automationName The security automation name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security automation resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AutomationInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String automationName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, automationName, context).block();
     }
 
     /**
@@ -622,25 +629,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutomationInner getByResourceGroup(String resourceGroupName, String automationName) {
-        return getByResourceGroupAsync(resourceGroupName, automationName).block();
-    }
-
-    /**
-     * Retrieves information about the model of a security automation.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param automationName The security automation name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutomationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String automationName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, automationName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, automationName, Context.NONE).getValue();
     }
 
     /**
@@ -654,7 +643,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
+     * @return the security automation resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationInner>> createOrUpdateWithResponseAsync(
@@ -713,7 +702,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
+     * @return the security automation resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationInner>> createOrUpdateWithResponseAsync(
@@ -768,20 +757,33 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
+     * @return the security automation resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutomationInner> createOrUpdateAsync(
         String resourceGroupName, String automationName, AutomationInner automation) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationName, automation)
-            .flatMap(
-                (Response<AutomationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a security automation. If a security automation is already created and a subsequent request is
+     * issued for the same automation id, then it will be updated.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param automationName The security automation name.
+     * @param automation The security automation resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security automation resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AutomationInner> createOrUpdateWithResponse(
+        String resourceGroupName, String automationName, AutomationInner automation, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, automationName, automation, context).block();
     }
 
     /**
@@ -799,27 +801,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutomationInner createOrUpdate(String resourceGroupName, String automationName, AutomationInner automation) {
-        return createOrUpdateAsync(resourceGroupName, automationName, automation).block();
-    }
-
-    /**
-     * Creates or updates a security automation. If a security automation is already created and a subsequent request is
-     * issued for the same automation id, then it will be updated.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param automationName The security automation name.
-     * @param automation The security automation resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutomationInner> createOrUpdateWithResponse(
-        String resourceGroupName, String automationName, AutomationInner automation, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, automationName, automation, context).block();
+        return createOrUpdateWithResponse(resourceGroupName, automationName, automation, Context.NONE).getValue();
     }
 
     /**
@@ -831,7 +813,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationName) {
@@ -881,7 +863,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -928,11 +910,28 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String automationName) {
-        return deleteWithResponseAsync(resourceGroupName, automationName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, automationName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a security automation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param automationName The security automation name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, automationName, context).block();
     }
 
     /**
@@ -947,24 +946,7 @@ public final class AutomationsClientImpl implements AutomationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String automationName) {
-        deleteAsync(resourceGroupName, automationName).block();
-    }
-
-    /**
-     * Deletes a security automation.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param automationName The security automation name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String automationName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, automationName, context).block();
+        deleteWithResponse(resourceGroupName, automationName, Context.NONE);
     }
 
     /**
@@ -978,7 +960,8 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag.
+     * @return the security automation model state property bag along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationValidationStatusInner>> validateWithResponseAsync(
@@ -1037,7 +1020,8 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag.
+     * @return the security automation model state property bag along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationValidationStatusInner>> validateWithResponseAsync(
@@ -1092,20 +1076,33 @@ public final class AutomationsClientImpl implements AutomationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag.
+     * @return the security automation model state property bag on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutomationValidationStatusInner> validateAsync(
         String resourceGroupName, String automationName, AutomationInner automation) {
         return validateWithResponseAsync(resourceGroupName, automationName, automation)
-            .flatMap(
-                (Response<AutomationValidationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Validates the security automation model before create or update. Any validation errors are returned to the
+     * client.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param automationName The security automation name.
+     * @param automation The security automation resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security automation model state property bag along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AutomationValidationStatusInner> validateWithResponse(
+        String resourceGroupName, String automationName, AutomationInner automation, Context context) {
+        return validateWithResponseAsync(resourceGroupName, automationName, automation, context).block();
     }
 
     /**
@@ -1124,37 +1121,19 @@ public final class AutomationsClientImpl implements AutomationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutomationValidationStatusInner validate(
         String resourceGroupName, String automationName, AutomationInner automation) {
-        return validateAsync(resourceGroupName, automationName, automation).block();
-    }
-
-    /**
-     * Validates the security automation model before create or update. Any validation errors are returned to the
-     * client.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param automationName The security automation name.
-     * @param automation The security automation resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutomationValidationStatusInner> validateWithResponse(
-        String resourceGroupName, String automationName, AutomationInner automation, Context context) {
-        return validateWithResponseAsync(resourceGroupName, automationName, automation, context).block();
+        return validateWithResponse(resourceGroupName, automationName, automation, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationInner>> listNextSinglePageAsync(String nextLink) {
@@ -1185,12 +1164,14 @@ public final class AutomationsClientImpl implements AutomationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1221,11 +1202,13 @@ public final class AutomationsClientImpl implements AutomationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1257,12 +1240,14 @@ public final class AutomationsClientImpl implements AutomationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response.
+     * @return list of security automations response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationInner>> listByResourceGroupNextSinglePageAsync(

@@ -17,6 +17,15 @@ public final class PeeringLocationsKind extends ExpandableStringEnum<PeeringLoca
     public static final PeeringLocationsKind EXCHANGE = fromString("Exchange");
 
     /**
+     * Creates a new instance of PeeringLocationsKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PeeringLocationsKind() {
+    }
+
+    /**
      * Creates or finds a PeeringLocationsKind from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class PeeringLocationsKind extends ExpandableStringEnum<PeeringLoca
         return fromString(name, PeeringLocationsKind.class);
     }
 
-    /** @return known PeeringLocationsKind values. */
+    /**
+     * Gets known PeeringLocationsKind values.
+     *
+     * @return known PeeringLocationsKind values.
+     */
     public static Collection<PeeringLocationsKind> values() {
         return values(PeeringLocationsKind.class);
     }

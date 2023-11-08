@@ -28,7 +28,9 @@ public interface KubeEnvironmentsClient
         InnerSupportsListing<KubeEnvironmentInner>,
         InnerSupportsDelete<Void> {
     /**
-     * Description for Get all Kubernetes Environments for a subscription.
+     * Get all Kubernetes Environments for a subscription.
+     *
+     * <p>Description for Get all Kubernetes Environments for a subscription.
      *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -39,7 +41,9 @@ public interface KubeEnvironmentsClient
     PagedFlux<KubeEnvironmentInner> listAsync();
 
     /**
-     * Description for Get all Kubernetes Environments for a subscription.
+     * Get all Kubernetes Environments for a subscription.
+     *
+     * <p>Description for Get all Kubernetes Environments for a subscription.
      *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -50,7 +54,9 @@ public interface KubeEnvironmentsClient
     PagedIterable<KubeEnvironmentInner> list();
 
     /**
-     * Description for Get all Kubernetes Environments for a subscription.
+     * Get all Kubernetes Environments for a subscription.
+     *
+     * <p>Description for Get all Kubernetes Environments for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +69,9 @@ public interface KubeEnvironmentsClient
     PagedIterable<KubeEnvironmentInner> list(Context context);
 
     /**
-     * Description for Get all the Kubernetes Environments in a resource group.
+     * Get all the Kubernetes Environments in a resource group.
+     *
+     * <p>Description for Get all the Kubernetes Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,7 +84,9 @@ public interface KubeEnvironmentsClient
     PagedFlux<KubeEnvironmentInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Description for Get all the Kubernetes Environments in a resource group.
+     * Get all the Kubernetes Environments in a resource group.
+     *
+     * <p>Description for Get all the Kubernetes Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +99,9 @@ public interface KubeEnvironmentsClient
     PagedIterable<KubeEnvironmentInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Description for Get all the Kubernetes Environments in a resource group.
+     * Get all the Kubernetes Environments in a resource group.
+     *
+     * <p>Description for Get all the Kubernetes Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -103,7 +115,9 @@ public interface KubeEnvironmentsClient
     PagedIterable<KubeEnvironmentInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Description for Get the properties of a Kubernetes Environment.
+     * Get the properties of a Kubernetes Environment.
+     *
+     * <p>Description for Get the properties of a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -118,7 +132,9 @@ public interface KubeEnvironmentsClient
     Mono<Response<KubeEnvironmentInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get the properties of a Kubernetes Environment.
+     * Get the properties of a Kubernetes Environment.
+     *
+     * <p>Description for Get the properties of a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -133,21 +149,9 @@ public interface KubeEnvironmentsClient
     Mono<KubeEnvironmentInner> getByResourceGroupAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get the properties of a Kubernetes Environment.
+     * Get the properties of a Kubernetes Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KubeEnvironmentInner getByResourceGroup(String resourceGroupName, String name);
-
-    /**
-     * Description for Get the properties of a Kubernetes Environment.
+     * <p>Description for Get the properties of a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -163,7 +167,25 @@ public interface KubeEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * Get the properties of a Kubernetes Environment.
+     *
+     * <p>Description for Get the properties of a Kubernetes Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the Kubernetes Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KubeEnvironmentInner getByResourceGroup(String resourceGroupName, String name);
+
+    /**
+     * Creates or updates a Kubernetes Environment.
+     *
+     * <p>Description for Creates or updates a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -180,7 +202,9 @@ public interface KubeEnvironmentsClient
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope);
 
     /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * Creates or updates a Kubernetes Environment.
+     *
+     * <p>Description for Creates or updates a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -197,7 +221,9 @@ public interface KubeEnvironmentsClient
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope);
 
     /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * Creates or updates a Kubernetes Environment.
+     *
+     * <p>Description for Creates or updates a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -214,7 +240,9 @@ public interface KubeEnvironmentsClient
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope);
 
     /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * Creates or updates a Kubernetes Environment.
+     *
+     * <p>Description for Creates or updates a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -232,7 +260,9 @@ public interface KubeEnvironmentsClient
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope, Context context);
 
     /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * Creates or updates a Kubernetes Environment.
+     *
+     * <p>Description for Creates or updates a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -249,7 +279,9 @@ public interface KubeEnvironmentsClient
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope);
 
     /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * Creates or updates a Kubernetes Environment.
+     *
+     * <p>Description for Creates or updates a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -265,7 +297,9 @@ public interface KubeEnvironmentsClient
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope);
 
     /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * Creates or updates a Kubernetes Environment.
+     *
+     * <p>Description for Creates or updates a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -282,7 +316,9 @@ public interface KubeEnvironmentsClient
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope, Context context);
 
     /**
-     * Description for Delete a Kubernetes Environment.
+     * Delete a Kubernetes Environment.
+     *
+     * <p>Description for Delete a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -296,7 +332,9 @@ public interface KubeEnvironmentsClient
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Delete a Kubernetes Environment.
+     * Delete a Kubernetes Environment.
+     *
+     * <p>Description for Delete a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -310,7 +348,9 @@ public interface KubeEnvironmentsClient
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Delete a Kubernetes Environment.
+     * Delete a Kubernetes Environment.
+     *
+     * <p>Description for Delete a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -324,7 +364,9 @@ public interface KubeEnvironmentsClient
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name);
 
     /**
-     * Description for Delete a Kubernetes Environment.
+     * Delete a Kubernetes Environment.
+     *
+     * <p>Description for Delete a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -339,7 +381,9 @@ public interface KubeEnvironmentsClient
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Delete a Kubernetes Environment.
+     * Delete a Kubernetes Environment.
+     *
+     * <p>Description for Delete a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -353,7 +397,9 @@ public interface KubeEnvironmentsClient
     Mono<Void> deleteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Delete a Kubernetes Environment.
+     * Delete a Kubernetes Environment.
+     *
+     * <p>Description for Delete a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -366,7 +412,9 @@ public interface KubeEnvironmentsClient
     void delete(String resourceGroupName, String name);
 
     /**
-     * Description for Delete a Kubernetes Environment.
+     * Delete a Kubernetes Environment.
+     *
+     * <p>Description for Delete a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -380,7 +428,9 @@ public interface KubeEnvironmentsClient
     void delete(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * Creates or updates a Kubernetes Environment.
+     *
+     * <p>Description for Creates or updates a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -397,7 +447,9 @@ public interface KubeEnvironmentsClient
         String resourceGroupName, String name, KubeEnvironmentPatchResource kubeEnvironmentEnvelope);
 
     /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * Creates or updates a Kubernetes Environment.
+     *
+     * <p>Description for Creates or updates a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -414,23 +466,9 @@ public interface KubeEnvironmentsClient
         String resourceGroupName, String name, KubeEnvironmentPatchResource kubeEnvironmentEnvelope);
 
     /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * Creates or updates a Kubernetes Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KubeEnvironmentInner update(
-        String resourceGroupName, String name, KubeEnvironmentPatchResource kubeEnvironmentEnvelope);
-
-    /**
-     * Description for Creates or updates a Kubernetes Environment.
+     * <p>Description for Creates or updates a Kubernetes Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
@@ -445,4 +483,22 @@ public interface KubeEnvironmentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<KubeEnvironmentInner> updateWithResponse(
         String resourceGroupName, String name, KubeEnvironmentPatchResource kubeEnvironmentEnvelope, Context context);
+
+    /**
+     * Creates or updates a Kubernetes Environment.
+     *
+     * <p>Description for Creates or updates a Kubernetes Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the Kubernetes Environment.
+     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KubeEnvironmentInner update(
+        String resourceGroupName, String name, KubeEnvironmentPatchResource kubeEnvironmentEnvelope);
 }

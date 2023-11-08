@@ -434,14 +434,7 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SourceControlInner> getAsync(String resourceGroupName, String workspaceName, String sourceControlId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sourceControlId)
-            .flatMap(
-                (Response<SourceControlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -598,7 +591,7 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String sourceControlId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, sourceControlId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -776,14 +769,7 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
     private Mono<SourceControlInner> createAsync(
         String resourceGroupName, String workspaceName, String sourceControlId, SourceControlInner sourceControl) {
         return createWithResponseAsync(resourceGroupName, workspaceName, sourceControlId, sourceControl)
-            .flatMap(
-                (Response<SourceControlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -831,7 +817,8 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -866,7 +853,8 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

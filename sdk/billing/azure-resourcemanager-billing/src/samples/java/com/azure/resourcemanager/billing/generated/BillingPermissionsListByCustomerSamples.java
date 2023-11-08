@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingPermissions ListByCustomer. */
 public final class BillingPermissionsListByCustomerSamples {
     /*
@@ -17,6 +15,8 @@ public final class BillingPermissionsListByCustomerSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingProfilePermissionsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingPermissions().listByCustomer("{billingAccountName}", "{customerName}", Context.NONE);
+        manager
+            .billingPermissions()
+            .listByCustomer("{billingAccountName}", "{customerName}", com.azure.core.util.Context.NONE);
     }
 }

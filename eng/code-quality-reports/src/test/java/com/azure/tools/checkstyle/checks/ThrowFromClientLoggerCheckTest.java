@@ -5,22 +5,21 @@ package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck.THROW_LOGGER_EXCEPTION_MESSAGE;
 
 public class ThrowFromClientLoggerCheckTest extends AbstractModuleTestSupport {
     private Checker checker;
 
-    @Before
+    @BeforeEach
     public void prepare() throws Exception {
         checker = createChecker(createModuleConfig(ThrowFromClientLoggerCheck.class));
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         checker.destroy();
     }

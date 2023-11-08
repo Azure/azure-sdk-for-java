@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakestore.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TierType. */
+/** The commitment tier to use for next month. */
 public enum TierType {
     /** Enum value Consumption. */
     CONSUMPTION("Consumption"),
@@ -45,6 +45,9 @@ public enum TierType {
      */
     @JsonCreator
     public static TierType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TierType[] items = TierType.values();
         for (TierType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -54,6 +57,7 @@ public enum TierType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

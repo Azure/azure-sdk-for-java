@@ -6,7 +6,6 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
 /** Update specific properties of the software update configuration. */
 @Fluent
 public final class UpdateConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateConfiguration.class);
-
     /*
      * operating system of target machines
      */
@@ -35,22 +32,20 @@ public final class UpdateConfiguration {
     private LinuxProperties linux;
 
     /*
-     * Maximum time allowed for the software update configuration run. Duration
-     * needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601
+     * Maximum time allowed for the software update configuration run. Duration needs to be specified using the format
+     * PT[n]H[n]M[n]S as per ISO8601
      */
     @JsonProperty(value = "duration")
     private Duration duration;
 
     /*
-     * List of azure resource Ids for azure virtual machines targeted by the
-     * software update configuration.
+     * List of azure resource Ids for azure virtual machines targeted by the software update configuration.
      */
     @JsonProperty(value = "azureVirtualMachines")
     private List<String> azureVirtualMachines;
 
     /*
-     * List of names of non-azure machines targeted by the software update
-     * configuration.
+     * List of names of non-azure machines targeted by the software update configuration.
      */
     @JsonProperty(value = "nonAzureComputerNames")
     private List<String> nonAzureComputerNames;
@@ -214,7 +209,7 @@ public final class UpdateConfiguration {
      */
     public void validate() {
         if (operatingSystem() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operatingSystem in model UpdateConfiguration"));
@@ -229,4 +224,6 @@ public final class UpdateConfiguration {
             targets().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UpdateConfiguration.class);
 }

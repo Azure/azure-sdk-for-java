@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyAssignments ListForResource. */
 public final class PolicyAssignmentsListForResourceSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForResource.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/listPolicyAssignmentsForResource.json
      */
     /**
      * Sample code: List all policy assignments that apply to a resource.
@@ -31,6 +29,6 @@ public final class PolicyAssignmentsListForResourceSamples {
                 "MyTestComputer.cloudapp.net",
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

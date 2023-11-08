@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Subscriptions Get. */
 public final class SubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetSubscription.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetSubscription.json
      */
     /**
      * Sample code: GetASingleSubscription.
@@ -22,6 +20,6 @@ public final class SubscriptionsGetSamples {
             .manager()
             .subscriptionClient()
             .getSubscriptions()
-            .getWithResponse("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", Context.NONE);
+            .getWithResponse("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", com.azure.core.util.Context.NONE);
     }
 }

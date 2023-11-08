@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,21 +15,17 @@ import java.util.Map;
 /** presence. */
 @Fluent
 public final class MicrosoftGraphPresence extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPresence.class);
-
     /*
-     * The supplemental information to a user's availability. Possible values
-     * are Available, Away, BeRightBack,Busy, DoNotDisturb, InACall,
-     * InAConferenceCall, Inactive,InAMeeting, Offline, OffWork,OutOfOffice,
+     * The supplemental information to a user's availability. Possible values are Available, Away, BeRightBack,Busy,
+     * DoNotDisturb, InACall, InAConferenceCall, Inactive,InAMeeting, Offline, OffWork,OutOfOffice,
      * PresenceUnknown,Presenting, UrgentInterruptionsOnly.
      */
     @JsonProperty(value = "activity")
     private String activity;
 
     /*
-     * The base presence information for a user. Possible values are Available,
-     * AvailableIdle,  Away, BeRightBack, Busy, BusyIdle, DoNotDisturb,
-     * Offline, PresenceUnknown
+     * The base presence information for a user. Possible values are Available, AvailableIdle,  Away, BeRightBack,
+     * Busy, BusyIdle, DoNotDisturb, Offline, PresenceUnknown
      */
     @JsonProperty(value = "availability")
     private String availability;
@@ -39,6 +34,10 @@ public final class MicrosoftGraphPresence extends MicrosoftGraphEntity {
      * presence
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPresence class. */
+    public MicrosoftGraphPresence() {
+    }
 
     /**
      * Get the activity property: The supplemental information to a user's availability. Possible values are Available,

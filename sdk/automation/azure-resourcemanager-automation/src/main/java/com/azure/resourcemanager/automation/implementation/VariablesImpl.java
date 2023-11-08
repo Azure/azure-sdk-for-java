@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.VariablesClient;
 import com.azure.resourcemanager.automation.fluent.models.VariableInner;
 import com.azure.resourcemanager.automation.models.Variable;
 import com.azure.resourcemanager.automation.models.Variables;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VariablesImpl implements Variables {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VariablesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VariablesImpl.class);
 
     private final VariablesClient innerClient;
 
@@ -77,7 +76,7 @@ public final class VariablesImpl implements Variables {
     public Variable getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,7 +84,7 @@ public final class VariablesImpl implements Variables {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class VariablesImpl implements Variables {
         }
         String variableName = Utils.getValueFromIdByName(id, "variables");
         if (variableName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
@@ -105,7 +104,7 @@ public final class VariablesImpl implements Variables {
     public Response<Variable> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,7 +112,7 @@ public final class VariablesImpl implements Variables {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,7 +121,7 @@ public final class VariablesImpl implements Variables {
         }
         String variableName = Utils.getValueFromIdByName(id, "variables");
         if (variableName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
@@ -133,7 +132,7 @@ public final class VariablesImpl implements Variables {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +140,7 @@ public final class VariablesImpl implements Variables {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,18 +149,18 @@ public final class VariablesImpl implements Variables {
         }
         String variableName = Utils.getValueFromIdByName(id, "variables");
         if (variableName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, variableName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, variableName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +168,7 @@ public final class VariablesImpl implements Variables {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,7 +177,7 @@ public final class VariablesImpl implements Variables {
         }
         String variableName = Utils.getValueFromIdByName(id, "variables");
         if (variableName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));

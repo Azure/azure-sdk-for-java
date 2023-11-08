@@ -37,6 +37,10 @@ public final class AgentPoolAvailableVersionsInner {
     @JsonProperty(value = "properties", required = true)
     private AgentPoolAvailableVersionsProperties innerProperties = new AgentPoolAvailableVersionsProperties();
 
+    /** Creates an instance of AgentPoolAvailableVersionsInner class. */
+    public AgentPoolAvailableVersionsInner() {
+    }
+
     /**
      * Get the id property: The ID of the agent pool version list.
      *

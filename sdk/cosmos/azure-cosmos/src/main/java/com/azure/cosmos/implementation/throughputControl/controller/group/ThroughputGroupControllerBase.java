@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.throughputControl.controller.IThroughputC
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.IThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
+import com.azure.cosmos.implementation.throughputControl.exceptions.ThroughputControlInitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -29,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.Exceptions.isPartitionCompletingSplittingException;
-import static com.azure.cosmos.implementation.Exceptions.isPartitionSplit;
+import static com.azure.cosmos.implementation.Exceptions.isPartitionSplitOrMerge;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -157,6 +158,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         return this.resolveRequestController()
             .flatMap(requestController -> {
                 if (requestController.canHandleRequest(request)) {
+                    request.setPriorityLevel(group.getPriorityLevel());
                     return requestController.processRequest(request, originalRequestMono)
                         .doOnError(throwable -> this.handleException(throwable));
                 }
@@ -217,9 +219,10 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     protected Mono<IThroughputRequestController> resolveRequestController() {
         return this.requestControllerAsyncCache.getAsync(
-            this.group.getGroupName(),
-            null,
-            () -> this.createAndInitializeRequestController());
+                    this.group.getGroupName(),
+                    null,
+                    () -> this.createAndInitializeRequestController())
+                .onErrorResume(throwable -> Mono.error(new ThroughputControlInitializationException(throwable)));
     }
 
     private void refreshRequestController() {
@@ -232,7 +235,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         checkNotNull(throwable, "Throwable can not be null");
 
         CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
-        if (isPartitionSplit(cosmosException) || isPartitionCompletingSplittingException(cosmosException)) {
+        if (isPartitionSplitOrMerge(cosmosException) || isPartitionCompletingSplittingException(cosmosException)) {
             this.refreshRequestController();
         }
     }

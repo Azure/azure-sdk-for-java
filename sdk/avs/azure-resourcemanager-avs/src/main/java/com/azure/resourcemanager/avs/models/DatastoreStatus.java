@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatastoreStatus. */
+/** The operational status of the datastore. */
 public final class DatastoreStatus extends ExpandableStringEnum<DatastoreStatus> {
     /** Static value Unknown for DatastoreStatus. */
     public static final DatastoreStatus UNKNOWN = fromString("Unknown");
@@ -32,6 +32,15 @@ public final class DatastoreStatus extends ExpandableStringEnum<DatastoreStatus>
     public static final DatastoreStatus DEAD_OR_ERROR = fromString("DeadOrError");
 
     /**
+     * Creates a new instance of DatastoreStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatastoreStatus() {
+    }
+
+    /**
      * Creates or finds a DatastoreStatus from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class DatastoreStatus extends ExpandableStringEnum<DatastoreStatus>
         return fromString(name, DatastoreStatus.class);
     }
 
-    /** @return known DatastoreStatus values. */
+    /**
+     * Gets known DatastoreStatus values.
+     *
+     * @return known DatastoreStatus values.
+     */
     public static Collection<DatastoreStatus> values() {
         return values(DatastoreStatus.class);
     }

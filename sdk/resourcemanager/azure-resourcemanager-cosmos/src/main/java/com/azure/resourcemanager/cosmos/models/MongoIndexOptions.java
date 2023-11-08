@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB MongoDB collection index options. */
 @Fluent
 public final class MongoIndexOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoIndexOptions.class);
-
     /*
      * Expire after seconds
      */
@@ -25,6 +21,10 @@ public final class MongoIndexOptions {
      */
     @JsonProperty(value = "unique")
     private Boolean unique;
+
+    /** Creates an instance of MongoIndexOptions class. */
+    public MongoIndexOptions() {
+    }
 
     /**
      * Get the expireAfterSeconds property: Expire after seconds.

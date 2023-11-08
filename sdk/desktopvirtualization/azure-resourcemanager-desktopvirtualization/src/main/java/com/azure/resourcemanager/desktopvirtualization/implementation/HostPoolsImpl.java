@@ -15,10 +15,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.Registratio
 import com.azure.resourcemanager.desktopvirtualization.models.HostPool;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPools;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class HostPoolsImpl implements HostPools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostPoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HostPoolsImpl.class);
 
     private final HostPoolsClient innerClient;
 
@@ -29,15 +28,6 @@ public final class HostPoolsImpl implements HostPools {
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public HostPool getByResourceGroup(String resourceGroupName, String hostPoolName) {
-        HostPoolInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, hostPoolName);
-        if (inner != null) {
-            return new HostPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<HostPool> getByResourceGroupWithResponse(
@@ -55,8 +45,13 @@ public final class HostPoolsImpl implements HostPools {
         }
     }
 
-    public void delete(String resourceGroupName, String hostPoolName) {
-        this.serviceClient().delete(resourceGroupName, hostPoolName);
+    public HostPool getByResourceGroup(String resourceGroupName, String hostPoolName) {
+        HostPoolInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, hostPoolName);
+        if (inner != null) {
+            return new HostPoolImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -64,13 +59,19 @@ public final class HostPoolsImpl implements HostPools {
         return this.serviceClient().deleteWithResponse(resourceGroupName, hostPoolName, force, context);
     }
 
+    public void delete(String resourceGroupName, String hostPoolName) {
+        this.serviceClient().delete(resourceGroupName, hostPoolName);
+    }
+
     public PagedIterable<HostPool> listByResourceGroup(String resourceGroupName) {
         PagedIterable<HostPoolInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
         return Utils.mapPage(inner, inner1 -> new HostPoolImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<HostPool> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<HostPoolInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<HostPool> listByResourceGroup(
+        String resourceGroupName, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
+        PagedIterable<HostPoolInner> inner =
+            this.serviceClient().listByResourceGroup(resourceGroupName, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new HostPoolImpl(inner1, this.manager()));
     }
 
@@ -79,18 +80,9 @@ public final class HostPoolsImpl implements HostPools {
         return Utils.mapPage(inner, inner1 -> new HostPoolImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<HostPool> list(Context context) {
-        PagedIterable<HostPoolInner> inner = this.serviceClient().list(context);
+    public PagedIterable<HostPool> list(Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
+        PagedIterable<HostPoolInner> inner = this.serviceClient().list(pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new HostPoolImpl(inner1, this.manager()));
-    }
-
-    public RegistrationInfo retrieveRegistrationToken(String resourceGroupName, String hostPoolName) {
-        RegistrationInfoInner inner = this.serviceClient().retrieveRegistrationToken(resourceGroupName, hostPoolName);
-        if (inner != null) {
-            return new RegistrationInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<RegistrationInfo> retrieveRegistrationTokenWithResponse(
@@ -108,10 +100,19 @@ public final class HostPoolsImpl implements HostPools {
         }
     }
 
+    public RegistrationInfo retrieveRegistrationToken(String resourceGroupName, String hostPoolName) {
+        RegistrationInfoInner inner = this.serviceClient().retrieveRegistrationToken(resourceGroupName, hostPoolName);
+        if (inner != null) {
+            return new RegistrationInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public HostPool getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +120,7 @@ public final class HostPoolsImpl implements HostPools {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
@@ -130,7 +131,7 @@ public final class HostPoolsImpl implements HostPools {
     public Response<HostPool> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +139,7 @@ public final class HostPoolsImpl implements HostPools {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
@@ -149,7 +150,7 @@ public final class HostPoolsImpl implements HostPools {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,7 +158,7 @@ public final class HostPoolsImpl implements HostPools {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));
@@ -169,7 +170,7 @@ public final class HostPoolsImpl implements HostPools {
     public Response<Void> deleteByIdWithResponse(String id, Boolean force, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,7 +178,7 @@ public final class HostPoolsImpl implements HostPools {
         }
         String hostPoolName = Utils.getValueFromIdByName(id, "hostPools");
         if (hostPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hostPools'.", id)));

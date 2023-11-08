@@ -4,43 +4,41 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DedicatedHostGroups ListByResourceGroup. */
 public final class DedicatedHostGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
-     * Sample code: DedicatedHostGroups_ListByResourceGroup_MinimumSet_Gen.
+     * Sample code: DedicatedHostGroup_ListByResourceGroup_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dedicatedHostGroupsListByResourceGroupMinimumSetGen(
+    public static void dedicatedHostGroupListByResourceGroupMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getDedicatedHostGroups()
-            .listByResourceGroup("rgcompute", Context.NONE);
+            .listByResourceGroup("rgcompute", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHostGroup_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
-     * Sample code: DedicatedHostGroups_ListByResourceGroup_MaximumSet_Gen.
+     * Sample code: DedicatedHostGroup_ListByResourceGroup_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dedicatedHostGroupsListByResourceGroupMaximumSetGen(
+    public static void dedicatedHostGroupListByResourceGroupMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getDedicatedHostGroups()
-            .listByResourceGroup("rgcompute", Context.NONE);
+            .listByResourceGroup("rgcompute", com.azure.core.util.Context.NONE);
     }
 }

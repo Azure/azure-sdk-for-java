@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Request body for applying artifacts to a virtual machine. */
 @Fluent
 public final class ApplyArtifactsRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplyArtifactsRequest.class);
-
     /*
      * The list of artifacts to apply.
      */
     @JsonProperty(value = "artifacts")
     private List<ArtifactInstallProperties> artifacts;
+
+    /** Creates an instance of ApplyArtifactsRequest class. */
+    public ApplyArtifactsRequest() {
+    }
 
     /**
      * Get the artifacts property: The list of artifacts to apply.

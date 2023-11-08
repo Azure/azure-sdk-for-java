@@ -7,15 +7,12 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.PrincipalType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Role assignment properties. */
 @Fluent
 public final class RoleAssignmentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentProperties.class);
-
     /*
      * The role assignment scope.
      */
@@ -47,16 +44,15 @@ public final class RoleAssignmentProperties {
     private String description;
 
     /*
-     * The conditions on the role assignment. This limits the resources it can
-     * be assigned to. e.g.:
-     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-     * StringEqualsIgnoreCase 'foo_storage_container'
+     * The conditions on the role assignment. This limits the resources it can be assigned to. e.g.:
+     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
+     * 'foo_storage_container'
      */
     @JsonProperty(value = "condition")
     private String condition;
 
     /*
-     * Version of the condition. Currently accepted value is '2.0'
+     * Version of the condition. Currently the only accepted value is '2.0'
      */
     @JsonProperty(value = "conditionVersion")
     private String conditionVersion;
@@ -90,6 +86,10 @@ public final class RoleAssignmentProperties {
      */
     @JsonProperty(value = "delegatedManagedIdentityResourceId")
     private String delegatedManagedIdentityResourceId;
+
+    /** Creates an instance of RoleAssignmentProperties class. */
+    public RoleAssignmentProperties() {
+    }
 
     /**
      * Get the scope property: The role assignment scope.
@@ -205,7 +205,7 @@ public final class RoleAssignmentProperties {
     }
 
     /**
-     * Get the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
+     * Get the conditionVersion property: Version of the condition. Currently the only accepted value is '2.0'.
      *
      * @return the conditionVersion value.
      */
@@ -214,7 +214,7 @@ public final class RoleAssignmentProperties {
     }
 
     /**
-     * Set the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
+     * Set the conditionVersion property: Version of the condition. Currently the only accepted value is '2.0'.
      *
      * @param conditionVersion the conditionVersion value to set.
      * @return the RoleAssignmentProperties object itself.
@@ -287,16 +287,18 @@ public final class RoleAssignmentProperties {
      */
     public void validate() {
         if (roleDefinitionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property roleDefinitionId in model RoleAssignmentProperties"));
         }
         if (principalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalId in model RoleAssignmentProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoleAssignmentProperties.class);
 }

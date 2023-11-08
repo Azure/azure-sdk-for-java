@@ -16,6 +16,10 @@ public final class ApiManagementConfig {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ApiManagementConfig class. */
+    public ApiManagementConfig() {
+    }
+
     /**
      * Get the id property: APIM-Api Identifier.
      *

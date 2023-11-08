@@ -5,42 +5,27 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Definition of the credential. */
-@JsonFlatten
 @Fluent
-public class CredentialInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialInner.class);
-
+public final class CredentialInner extends ProxyResource {
     /*
-     * Gets the user name of the credential.
+     * Gets or sets the properties of the credential.
      */
-    @JsonProperty(value = "properties.userName", access = JsonProperty.Access.WRITE_ONLY)
-    private String username;
+    @JsonProperty(value = "properties")
+    private CredentialProperties innerProperties;
 
-    /*
-     * Gets the creation time.
+    /**
+     * Get the innerProperties property: Gets or sets the properties of the credential.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets the last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Gets or sets the description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private CredentialProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the username property: Gets the user name of the credential.
@@ -48,7 +33,7 @@ public class CredentialInner extends ProxyResource {
      * @return the username value.
      */
     public String username() {
-        return this.username;
+        return this.innerProperties() == null ? null : this.innerProperties().username();
     }
 
     /**
@@ -57,7 +42,7 @@ public class CredentialInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -66,7 +51,7 @@ public class CredentialInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -75,7 +60,7 @@ public class CredentialInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -85,7 +70,10 @@ public class CredentialInner extends ProxyResource {
      * @return the CredentialInner object itself.
      */
     public CredentialInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CredentialProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -95,5 +83,8 @@ public class CredentialInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

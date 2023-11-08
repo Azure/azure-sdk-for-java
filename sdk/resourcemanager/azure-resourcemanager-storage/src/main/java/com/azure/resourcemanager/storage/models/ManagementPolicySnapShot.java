@@ -11,18 +11,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagementPolicySnapShot {
     /*
-     * The function to tier blob snapshot to cool storage. Support blob
-     * snapshot currently at Hot tier
+     * The function to tier blob snapshot to cool storage.
      */
     @JsonProperty(value = "tierToCool")
     private DateAfterCreation tierToCool;
 
     /*
-     * The function to tier blob snapshot to archive storage. Support blob
-     * snapshot currently at Hot or Cool tier
+     * The function to tier blob snapshot to archive storage.
      */
     @JsonProperty(value = "tierToArchive")
     private DateAfterCreation tierToArchive;
+
+    /*
+     * The function to tier blobs to cold storage.
+     */
+    @JsonProperty(value = "tierToCold")
+    private DateAfterCreation tierToCold;
+
+    /*
+     * The function to tier blobs to hot storage. This action can only be used with Premium Block Blob Storage Accounts
+     */
+    @JsonProperty(value = "tierToHot")
+    private DateAfterCreation tierToHot;
 
     /*
      * The function to delete the blob snapshot
@@ -30,9 +40,12 @@ public final class ManagementPolicySnapShot {
     @JsonProperty(value = "delete")
     private DateAfterCreation delete;
 
+    /** Creates an instance of ManagementPolicySnapShot class. */
+    public ManagementPolicySnapShot() {
+    }
+
     /**
-     * Get the tierToCool property: The function to tier blob snapshot to cool storage. Support blob snapshot currently
-     * at Hot tier.
+     * Get the tierToCool property: The function to tier blob snapshot to cool storage.
      *
      * @return the tierToCool value.
      */
@@ -41,8 +54,7 @@ public final class ManagementPolicySnapShot {
     }
 
     /**
-     * Set the tierToCool property: The function to tier blob snapshot to cool storage. Support blob snapshot currently
-     * at Hot tier.
+     * Set the tierToCool property: The function to tier blob snapshot to cool storage.
      *
      * @param tierToCool the tierToCool value to set.
      * @return the ManagementPolicySnapShot object itself.
@@ -53,8 +65,7 @@ public final class ManagementPolicySnapShot {
     }
 
     /**
-     * Get the tierToArchive property: The function to tier blob snapshot to archive storage. Support blob snapshot
-     * currently at Hot or Cool tier.
+     * Get the tierToArchive property: The function to tier blob snapshot to archive storage.
      *
      * @return the tierToArchive value.
      */
@@ -63,14 +74,55 @@ public final class ManagementPolicySnapShot {
     }
 
     /**
-     * Set the tierToArchive property: The function to tier blob snapshot to archive storage. Support blob snapshot
-     * currently at Hot or Cool tier.
+     * Set the tierToArchive property: The function to tier blob snapshot to archive storage.
      *
      * @param tierToArchive the tierToArchive value to set.
      * @return the ManagementPolicySnapShot object itself.
      */
     public ManagementPolicySnapShot withTierToArchive(DateAfterCreation tierToArchive) {
         this.tierToArchive = tierToArchive;
+        return this;
+    }
+
+    /**
+     * Get the tierToCold property: The function to tier blobs to cold storage.
+     *
+     * @return the tierToCold value.
+     */
+    public DateAfterCreation tierToCold() {
+        return this.tierToCold;
+    }
+
+    /**
+     * Set the tierToCold property: The function to tier blobs to cold storage.
+     *
+     * @param tierToCold the tierToCold value to set.
+     * @return the ManagementPolicySnapShot object itself.
+     */
+    public ManagementPolicySnapShot withTierToCold(DateAfterCreation tierToCold) {
+        this.tierToCold = tierToCold;
+        return this;
+    }
+
+    /**
+     * Get the tierToHot property: The function to tier blobs to hot storage. This action can only be used with Premium
+     * Block Blob Storage Accounts.
+     *
+     * @return the tierToHot value.
+     */
+    public DateAfterCreation tierToHot() {
+        return this.tierToHot;
+    }
+
+    /**
+     * Set the tierToHot property: The function to tier blobs to hot storage. This action can only be used with Premium
+     * Block Blob Storage Accounts.
+     *
+     * @param tierToHot the tierToHot value to set.
+     * @return the ManagementPolicySnapShot object itself.
+     */
+    public ManagementPolicySnapShot withTierToHot(DateAfterCreation tierToHot) {
+        this.tierToHot = tierToHot;
         return this;
     }
 
@@ -105,6 +157,12 @@ public final class ManagementPolicySnapShot {
         }
         if (tierToArchive() != null) {
             tierToArchive().validate();
+        }
+        if (tierToCold() != null) {
+            tierToCold().validate();
+        }
+        if (tierToHot() != null) {
+            tierToHot().validate();
         }
         if (delete() != null) {
             delete().validate();

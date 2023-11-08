@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Collection of links of homeRealmDiscoveryPolicy. */
 @Fluent
 public final class CollectionOfLinksOfHomeRealmDiscoveryPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CollectionOfLinksOfHomeRealmDiscoveryPolicy.class);
-
     /*
      * The value property.
      */
@@ -35,6 +32,10 @@ public final class CollectionOfLinksOfHomeRealmDiscoveryPolicy {
      * Collection of links of homeRealmDiscoveryPolicy
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of CollectionOfLinksOfHomeRealmDiscoveryPolicy class. */
+    public CollectionOfLinksOfHomeRealmDiscoveryPolicy() {
+    }
 
     /**
      * Get the value property: The value property.

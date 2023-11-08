@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The callback url. */
 @Fluent
 public final class CallbackUrlInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CallbackUrlInner.class);
-
     /*
      * The URL value.
      */
     @JsonProperty(value = "value")
     private String value;
+
+    /** Creates an instance of CallbackUrlInner class. */
+    public CallbackUrlInner() {
+    }
 
     /**
      * Get the value property: The URL value.

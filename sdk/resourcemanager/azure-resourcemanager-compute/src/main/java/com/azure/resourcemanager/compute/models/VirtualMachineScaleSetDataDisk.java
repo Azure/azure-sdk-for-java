@@ -18,24 +18,21 @@ public final class VirtualMachineScaleSetDataDisk {
     private String name;
 
     /*
-     * Specifies the logical unit number of the data disk. This value is used
-     * to identify data disks within the VM and therefore must be unique for
-     * each data disk attached to a VM.
+     * Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
+     * therefore must be unique for each data disk attached to a VM.
      */
     @JsonProperty(value = "lun", required = true)
     private int lun;
 
     /*
-     * Specifies the caching requirements. <br><br> Possible values are:
-     * <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br>
-     * Default: **None for Standard storage. ReadOnly for Premium storage**
+     * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The default
+     * values are: **None for Standard storage. ReadOnly for Premium storage.**
      */
     @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /*
-     * Specifies whether writeAccelerator should be enabled or disabled on the
-     * disk.
+     * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
     @JsonProperty(value = "writeAcceleratorEnabled")
     private Boolean writeAcceleratorEnabled;
@@ -47,9 +44,9 @@ public final class VirtualMachineScaleSetDataDisk {
     private DiskCreateOptionTypes createOption;
 
     /*
-     * Specifies the size of an empty data disk in gigabytes. This element can
-     * be used to overwrite the size of the disk in a virtual machine image.
-     * <br><br> This value cannot be larger than 1023 GB
+     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
+     * disk in a virtual machine image. The property diskSizeGB is the number of bytes x 1024^3 for the disk and the
+     * value cannot be larger than 1023.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
@@ -61,20 +58,31 @@ public final class VirtualMachineScaleSetDataDisk {
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /*
-     * Specifies the Read-Write IOPS for the managed disk. Should be used only
-     * when StorageAccountType is UltraSSD_LRS. If not specified, a default
-     * value would be assigned based on diskSizeGB.
+     * Specifies the Read-Write IOPS for the managed disk. Should be used only when StorageAccountType is UltraSSD_LRS.
+     * If not specified, a default value would be assigned based on diskSizeGB.
      */
     @JsonProperty(value = "diskIOPSReadWrite")
     private Long diskIopsReadWrite;
 
     /*
-     * Specifies the bandwidth in MB per second for the managed disk. Should be
-     * used only when StorageAccountType is UltraSSD_LRS. If not specified, a
-     * default value would be assigned based on diskSizeGB.
+     * Specifies the bandwidth in MB per second for the managed disk. Should be used only when StorageAccountType is
+     * UltraSSD_LRS. If not specified, a default value would be assigned based on diskSizeGB.
      */
     @JsonProperty(value = "diskMBpsReadWrite")
     private Long diskMBpsReadWrite;
+
+    /*
+     * Specifies whether data disk should be deleted or detached upon VMSS Flex deletion (This feature is available for
+     * VMSS with Flexible OrchestrationMode only).<br><br> Possible values: <br><br> **Delete** If this value is used,
+     * the data disk is deleted when the VMSS Flex VM is deleted.<br><br> **Detach** If this value is used, the data
+     * disk is retained after VMSS Flex VM is deleted.<br><br> The default value is set to **Delete**.
+     */
+    @JsonProperty(value = "deleteOption")
+    private DiskDeleteOptionTypes deleteOption;
+
+    /** Creates an instance of VirtualMachineScaleSetDataDisk class. */
+    public VirtualMachineScaleSetDataDisk() {
+    }
 
     /**
      * Get the name property: The disk name.
@@ -119,9 +127,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     * Get the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
+     * **ReadWrite.** The default values are: **None for Standard storage. ReadOnly for Premium storage.**.
      *
      * @return the caching value.
      */
@@ -130,9 +137,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     * Set the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
+     * **ReadWrite.** The default values are: **None for Standard storage. ReadOnly for Premium storage.**.
      *
      * @param caching the caching value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
@@ -186,8 +192,8 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Get the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
-     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than
-     * 1023 GB.
+     * overwrite the size of the disk in a virtual machine image. The property diskSizeGB is the number of bytes x
+     * 1024^3 for the disk and the value cannot be larger than 1023.
      *
      * @return the diskSizeGB value.
      */
@@ -197,8 +203,8 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Set the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
-     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than
-     * 1023 GB.
+     * overwrite the size of the disk in a virtual machine image. The property diskSizeGB is the number of bytes x
+     * 1024^3 for the disk and the value cannot be larger than 1023.
      *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
@@ -271,6 +277,34 @@ public final class VirtualMachineScaleSetDataDisk {
      */
     public VirtualMachineScaleSetDataDisk withDiskMBpsReadWrite(Long diskMBpsReadWrite) {
         this.diskMBpsReadWrite = diskMBpsReadWrite;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specifies whether data disk should be deleted or detached upon VMSS Flex deletion
+     * (This feature is available for VMSS with Flexible OrchestrationMode only).&lt;br&gt;&lt;br&gt; Possible values:
+     * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the data disk is deleted when the VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the data disk is retained after VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; The default value is set to **Delete**.
+     *
+     * @return the deleteOption value.
+     */
+    public DiskDeleteOptionTypes deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specifies whether data disk should be deleted or detached upon VMSS Flex deletion
+     * (This feature is available for VMSS with Flexible OrchestrationMode only).&lt;br&gt;&lt;br&gt; Possible values:
+     * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the data disk is deleted when the VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the data disk is retained after VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; The default value is set to **Delete**.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the VirtualMachineScaleSetDataDisk object itself.
+     */
+    public VirtualMachineScaleSetDataDisk withDeleteOption(DiskDeleteOptionTypes deleteOption) {
+        this.deleteOption = deleteOption;
         return this;
     }
 

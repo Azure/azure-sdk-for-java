@@ -39,6 +39,9 @@ public enum PathLeaseAction {
      */
     @JsonCreator
     public static PathLeaseAction fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PathLeaseAction[] items = PathLeaseAction.values();
         for (PathLeaseAction item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum PathLeaseAction {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

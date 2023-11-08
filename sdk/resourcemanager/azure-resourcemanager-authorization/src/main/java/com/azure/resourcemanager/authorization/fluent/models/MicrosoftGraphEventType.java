@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphEventType. */
+/** eventType. */
 public final class MicrosoftGraphEventType extends ExpandableStringEnum<MicrosoftGraphEventType> {
     /** Static value singleInstance for MicrosoftGraphEventType. */
     public static final MicrosoftGraphEventType SINGLE_INSTANCE = fromString("singleInstance");
@@ -23,6 +23,15 @@ public final class MicrosoftGraphEventType extends ExpandableStringEnum<Microsof
     public static final MicrosoftGraphEventType SERIES_MASTER = fromString("seriesMaster");
 
     /**
+     * Creates a new instance of MicrosoftGraphEventType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphEventType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphEventType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class MicrosoftGraphEventType extends ExpandableStringEnum<Microsof
         return fromString(name, MicrosoftGraphEventType.class);
     }
 
-    /** @return known MicrosoftGraphEventType values. */
+    /**
+     * Gets known MicrosoftGraphEventType values.
+     *
+     * @return known MicrosoftGraphEventType values.
+     */
     public static Collection<MicrosoftGraphEventType> values() {
         return values(MicrosoftGraphEventType.class);
     }

@@ -15,8 +15,7 @@ import java.util.List;
 @Fluent
 public final class PrivateDnsZoneGroupInner extends SubResource {
     /*
-     * Name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -32,6 +31,10 @@ public final class PrivateDnsZoneGroupInner extends SubResource {
      */
     @JsonProperty(value = "properties")
     private PrivateDnsZoneGroupPropertiesFormat innerProperties;
+
+    /** Creates an instance of PrivateDnsZoneGroupInner class. */
+    public PrivateDnsZoneGroupInner() {
+    }
 
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to

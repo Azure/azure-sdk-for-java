@@ -5,8 +5,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.messaging.servicebus.TestUtils;
-import com.azure.messaging.servicebus.implementation.EntityHelper;
-import com.azure.messaging.servicebus.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -69,7 +69,7 @@ class CreateQueueOptionsTest {
         when(rule2.getSecondaryKey()).thenReturn("secondaryKey2");
         when(rule2.getAccessRights()).thenReturn(Collections.singletonList(AccessRights.SEND));
 
-        final QueueProperties expected = EntityHelper.toModel(new QueueDescription())
+        final QueueProperties expected = EntityHelper.toModel(new QueueDescriptionImpl())
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofSeconds(13))

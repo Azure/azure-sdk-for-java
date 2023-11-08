@@ -72,7 +72,8 @@ public final class LogsBatchQuery {
 
         String preferHeader = buildPreferHeaderString(logsQueryOptions);
         if (logsQueryOptions != null && logsQueryOptions.getServerTimeout() != null) {
-            if (logsQueryOptions.getServerTimeout().compareTo(this.maxServerTimeout) > 0) {
+            // Set the server timeout to max server timeout among all the queries in the batch
+            if (maxServerTimeout == null || logsQueryOptions.getServerTimeout().compareTo(maxServerTimeout) > 0) {
                 maxServerTimeout = logsQueryOptions.getServerTimeout();
             }
         }

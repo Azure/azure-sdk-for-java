@@ -16,23 +16,22 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class BackupSchedule {
     /*
-     * How often the backup should be executed (e.g. for weekly backup, this
-     * should be set to 7 and FrequencyUnit should be set to Day)
+     * How often the backup should be executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit
+     * should be set to Day)
      */
     @JsonProperty(value = "frequencyInterval", required = true)
     private int frequencyInterval;
 
     /*
-     * The unit of time for how often the backup should be executed (e.g. for
-     * weekly backup, this should be set to Day and FrequencyInterval should be
-     * set to 7)
+     * The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day
+     * and FrequencyInterval should be set to 7)
      */
     @JsonProperty(value = "frequencyUnit", required = true)
     private FrequencyUnit frequencyUnit;
 
     /*
-     * True if the retention policy should always keep at least one backup in
-     * the storage account, regardless how old it is; false otherwise.
+     * True if the retention policy should always keep at least one backup in the storage account, regardless how old
+     * it is; false otherwise.
      */
     @JsonProperty(value = "keepAtLeastOneBackup", required = true)
     private boolean keepAtLeastOneBackup;
@@ -54,6 +53,10 @@ public final class BackupSchedule {
      */
     @JsonProperty(value = "lastExecutionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastExecutionTime;
+
+    /** Creates an instance of BackupSchedule class. */
+    public BackupSchedule() {
+    }
 
     /**
      * Get the frequencyInterval property: How often the backup should be executed (e.g. for weekly backup, this should

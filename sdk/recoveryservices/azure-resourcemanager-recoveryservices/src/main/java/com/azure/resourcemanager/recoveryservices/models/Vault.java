@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 import java.util.Map;
@@ -68,6 +69,20 @@ public interface Vault {
     Sku sku();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the etag property: Optional ETag.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -80,6 +95,13 @@ public interface Vault {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner object.
@@ -95,11 +117,13 @@ public interface Vault {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Vault definition stages. */
     interface DefinitionStages {
         /** The first stage of the Vault definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Vault definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -118,16 +142,18 @@ public interface Vault {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Vault definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Vault definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -136,7 +162,8 @@ public interface Vault {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithProperties,
-                DefinitionStages.WithSku {
+                DefinitionStages.WithSku,
+                DefinitionStages.WithEtag {
             /**
              * Executes the create request.
              *
@@ -152,6 +179,7 @@ public interface Vault {
              */
             Vault create(Context context);
         }
+
         /** The stage of the Vault definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -162,6 +190,7 @@ public interface Vault {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Vault definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -172,6 +201,7 @@ public interface Vault {
              */
             WithCreate withIdentity(IdentityData identity);
         }
+
         /** The stage of the Vault definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -182,6 +212,7 @@ public interface Vault {
              */
             WithCreate withProperties(VaultProperties properties);
         }
+
         /** The stage of the Vault definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -192,7 +223,19 @@ public interface Vault {
              */
             WithCreate withSku(Sku sku);
         }
+
+        /** The stage of the Vault definition allowing to specify etag. */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: Optional ETag..
+             *
+             * @param etag Optional ETag.
+             * @return the next definition stage.
+             */
+            WithCreate withEtag(String etag);
+        }
     }
+
     /**
      * Begins update for the Vault resource.
      *
@@ -222,6 +265,7 @@ public interface Vault {
          */
         Vault apply(Context context);
     }
+
     /** The Vault update stages. */
     interface UpdateStages {
         /** The stage of the Vault update allowing to specify tags. */
@@ -234,6 +278,7 @@ public interface Vault {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Vault update allowing to specify etag. */
         interface WithEtag {
             /**
@@ -244,6 +289,7 @@ public interface Vault {
              */
             Update withEtag(String etag);
         }
+
         /** The stage of the Vault update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -254,6 +300,7 @@ public interface Vault {
              */
             Update withProperties(VaultProperties properties);
         }
+
         /** The stage of the Vault update allowing to specify sku. */
         interface WithSku {
             /**
@@ -264,6 +311,7 @@ public interface Vault {
              */
             Update withSku(Sku sku);
         }
+
         /** The stage of the Vault update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -275,6 +323,7 @@ public interface Vault {
             Update withIdentity(IdentityData identity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

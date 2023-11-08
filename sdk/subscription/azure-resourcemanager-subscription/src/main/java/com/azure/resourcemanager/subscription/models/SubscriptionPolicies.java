@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.subscription.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subscription policies. */
 @Immutable
 public final class SubscriptionPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionPolicies.class);
-
     /*
-     * The subscription location placement ID. The ID indicates which regions
-     * are visible for a subscription. For example, a subscription with a
-     * location placement Id of Public_2014-09-01 has access to Azure public
-     * regions.
+     * The subscription location placement ID. The ID indicates which regions are visible for a subscription. For
+     * example, a subscription with a location placement Id of Public_2014-09-01 has access to Azure public regions.
      */
     @JsonProperty(value = "locationPlacementId", access = JsonProperty.Access.WRITE_ONLY)
     private String locationPlacementId;
@@ -34,6 +28,10 @@ public final class SubscriptionPolicies {
      */
     @JsonProperty(value = "spendingLimit", access = JsonProperty.Access.WRITE_ONLY)
     private SpendingLimit spendingLimit;
+
+    /** Creates an instance of SubscriptionPolicies class. */
+    public SubscriptionPolicies() {
+    }
 
     /**
      * Get the locationPlacementId property: The subscription location placement ID. The ID indicates which regions are

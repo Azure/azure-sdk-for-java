@@ -20,6 +20,55 @@ import reactor.core.publisher.Mono;
  */
 public interface ManagedDatabaseSecurityAlertPoliciesClient {
     /**
+     * Gets a list of managed database's security alert policies.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policies are defined.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed database's security alert policies as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ManagedDatabaseSecurityAlertPolicyInner> listByDatabaseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName);
+
+    /**
+     * Gets a list of managed database's security alert policies.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policies are defined.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed database's security alert policies as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedDatabaseSecurityAlertPolicyInner> listByDatabase(
+        String resourceGroupName, String managedInstanceName, String databaseName);
+
+    /**
+     * Gets a list of managed database's security alert policies.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policies are defined.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed database's security alert policies as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedDatabaseSecurityAlertPolicyInner> listByDatabase(
+        String resourceGroupName, String managedInstanceName, String databaseName, Context context);
+
+    /**
      * Gets a managed database's security alert policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -30,7 +79,8 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy.
+     * @return a managed database's security alert policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -50,7 +100,7 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy.
+     * @return a managed database's security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedDatabaseSecurityAlertPolicyInner> getAsync(
@@ -58,6 +108,28 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
         String managedInstanceName,
         String databaseName,
         SecurityAlertPolicyName securityAlertPolicyName);
+
+    /**
+     * Gets a managed database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's security alert policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ManagedDatabaseSecurityAlertPolicyInner> getWithResponse(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        Context context);
 
     /**
      * Gets a managed database's security alert policy.
@@ -80,28 +152,6 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
         SecurityAlertPolicyName securityAlertPolicyName);
 
     /**
-     * Gets a managed database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedDatabaseSecurityAlertPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        Context context);
-
-    /**
      * Creates or updates a database's security alert policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -109,11 +159,12 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed database security alert policy.
+     * @param parameters The database security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy.
+     * @return a managed database security alert policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
@@ -131,11 +182,11 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed database security alert policy.
+     * @param parameters The database security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy.
+     * @return a managed database security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateAsync(
@@ -153,7 +204,31 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed database security alert policy.
+     * @param parameters The database security alert policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database security alert policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        ManagedDatabaseSecurityAlertPolicyInner parameters,
+        Context context);
+
+    /**
+     * Creates or updates a database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @param parameters The database security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -166,77 +241,4 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
         String databaseName,
         SecurityAlertPolicyName securityAlertPolicyName,
         ManagedDatabaseSecurityAlertPolicyInner parameters);
-
-    /**
-     * Creates or updates a database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed database security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ManagedDatabaseSecurityAlertPolicyInner parameters,
-        Context context);
-
-    /**
-     * Gets a list of managed database's security alert policies.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policies are defined.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's security alert policies.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ManagedDatabaseSecurityAlertPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName);
-
-    /**
-     * Gets a list of managed database's security alert policies.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policies are defined.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's security alert policies.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedDatabaseSecurityAlertPolicyInner> listByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName);
-
-    /**
-     * Gets a list of managed database's security alert policies.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policies are defined.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's security alert policies.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedDatabaseSecurityAlertPolicyInner> listByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName, Context context);
 }

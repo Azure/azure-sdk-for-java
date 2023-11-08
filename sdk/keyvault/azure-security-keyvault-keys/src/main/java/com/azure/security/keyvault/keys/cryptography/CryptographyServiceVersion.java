@@ -25,9 +25,14 @@ public enum CryptographyServiceVersion implements ServiceVersion {
     V7_2("7.2"),
 
     /**
-     * Service version {@code 7.3-preview}.
+     * Service version {@code 7.3}.
      */
-    V7_3_PREVIEW("7.3-preview");
+    V7_3("7.3"),
+
+    /**
+     * Service version {@code 7.4-preview.1}.
+     */
+    V7_4("7.4");
 
     private final String version;
 
@@ -49,6 +54,6 @@ public enum CryptographyServiceVersion implements ServiceVersion {
      * @return the latest {@link CryptographyServiceVersion}
      */
     public static CryptographyServiceVersion getLatest() {
-        return V7_3_PREVIEW;
+        return V7_4;
     }
 }

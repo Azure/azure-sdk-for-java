@@ -54,11 +54,10 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface PipelineRunsService {
+    public interface PipelineRunsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/queryPipelineRuns")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryPipelineRuns")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PipelineRunsQueryResponseInner>> queryByFactory(
@@ -73,8 +72,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/pipelineruns/{runId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PipelineRunInner>> get(
@@ -89,8 +87,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/pipelineruns/{runId}/cancel")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancel(
@@ -230,31 +227,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
     private Mono<PipelineRunsQueryResponseInner> queryByFactoryAsync(
         String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
         return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters)
-            .flatMap(
-                (Response<PipelineRunsQueryResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Query pipeline runs in the factory based on input filter conditions.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the pipeline run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list pipeline runs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineRunsQueryResponseInner queryByFactory(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
-        return queryByFactoryAsync(resourceGroupName, factoryName, filterParameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -273,6 +246,23 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
     public Response<PipelineRunsQueryResponseInner> queryByFactoryWithResponse(
         String resourceGroupName, String factoryName, RunFilterParameters filterParameters, Context context) {
         return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters, context).block();
+    }
+
+    /**
+     * Query pipeline runs in the factory based on input filter conditions.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param filterParameters Parameters to filter the pipeline run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list pipeline runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PipelineRunsQueryResponseInner queryByFactory(
+        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
+        return queryByFactoryWithResponse(resourceGroupName, factoryName, filterParameters, Context.NONE).getValue();
     }
 
     /**
@@ -393,30 +383,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PipelineRunInner> getAsync(String resourceGroupName, String factoryName, String runId) {
         return getWithResponseAsync(resourceGroupName, factoryName, runId)
-            .flatMap(
-                (Response<PipelineRunInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a pipeline run by its run ID.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline run by its run ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineRunInner get(String resourceGroupName, String factoryName, String runId) {
-        return getAsync(resourceGroupName, factoryName, runId).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -435,6 +402,22 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
     public Response<PipelineRunInner> getWithResponse(
         String resourceGroupName, String factoryName, String runId, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, runId, context).block();
+    }
+
+    /**
+     * Get a pipeline run by its run ID.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pipeline run by its run ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PipelineRunInner get(String resourceGroupName, String factoryName, String runId) {
+        return getWithResponse(resourceGroupName, factoryName, runId, Context.NONE).getValue();
     }
 
     /**
@@ -551,24 +534,6 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
-     * @param isRecursive If true, cancel all the Child pipelines that are triggered by the current pipeline.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelAsync(String resourceGroupName, String factoryName, String runId, Boolean isRecursive) {
-        return cancelWithResponseAsync(resourceGroupName, factoryName, runId, isRecursive)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Cancel a pipeline run by its run ID.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -578,23 +543,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
     private Mono<Void> cancelAsync(String resourceGroupName, String factoryName, String runId) {
         final Boolean isRecursive = null;
         return cancelWithResponseAsync(resourceGroupName, factoryName, runId, isRecursive)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Cancel a pipeline run by its run ID.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String factoryName, String runId) {
-        final Boolean isRecursive = null;
-        cancelAsync(resourceGroupName, factoryName, runId, isRecursive).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -614,5 +563,21 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
     public Response<Void> cancelWithResponse(
         String resourceGroupName, String factoryName, String runId, Boolean isRecursive, Context context) {
         return cancelWithResponseAsync(resourceGroupName, factoryName, runId, isRecursive, context).block();
+    }
+
+    /**
+     * Cancel a pipeline run by its run ID.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancel(String resourceGroupName, String factoryName, String runId) {
+        final Boolean isRecursive = null;
+        cancelWithResponse(resourceGroupName, factoryName, runId, isRecursive, Context.NONE);
     }
 }

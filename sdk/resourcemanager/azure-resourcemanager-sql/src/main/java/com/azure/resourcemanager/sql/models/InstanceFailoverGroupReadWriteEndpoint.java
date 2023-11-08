@@ -6,29 +6,28 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Read-write endpoint of the failover group instance. */
 @Fluent
 public final class InstanceFailoverGroupReadWriteEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstanceFailoverGroupReadWriteEndpoint.class);
-
     /*
-     * Failover policy of the read-write endpoint for the failover group. If
-     * failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes
-     * is required.
+     * Failover policy of the read-write endpoint for the failover group. If failoverPolicy is Automatic then
+     * failoverWithDataLossGracePeriodMinutes is required.
      */
     @JsonProperty(value = "failoverPolicy", required = true)
     private ReadWriteEndpointFailoverPolicy failoverPolicy;
 
     /*
-     * Grace period before failover with data loss is attempted for the
-     * read-write endpoint. If failoverPolicy is Automatic then
-     * failoverWithDataLossGracePeriodMinutes is required.
+     * Grace period before failover with data loss is attempted for the read-write endpoint. If failoverPolicy is
+     * Automatic then failoverWithDataLossGracePeriodMinutes is required.
      */
     @JsonProperty(value = "failoverWithDataLossGracePeriodMinutes")
     private Integer failoverWithDataLossGracePeriodMinutes;
+
+    /** Creates an instance of InstanceFailoverGroupReadWriteEndpoint class. */
+    public InstanceFailoverGroupReadWriteEndpoint() {
+    }
 
     /**
      * Get the failoverPolicy property: Failover policy of the read-write endpoint for the failover group. If
@@ -84,10 +83,12 @@ public final class InstanceFailoverGroupReadWriteEndpoint {
      */
     public void validate() {
         if (failoverPolicy() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property failoverPolicy in model InstanceFailoverGroupReadWriteEndpoint"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(InstanceFailoverGroupReadWriteEndpoint.class);
 }

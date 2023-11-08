@@ -23,6 +23,11 @@ public final class FileConstants {
     public static final String FILE_TIME_NOW = "Now";
 
     /**
+     * Default value for copying SMB Properties from source file.
+     */
+    public static final String COPY_SOURCE = "Source";
+
+    /**
      * Default value for several SMB file headers.
      */
     public static final String PRESERVE = "Preserve";

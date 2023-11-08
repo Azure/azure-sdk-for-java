@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents message sent to a UserSession. */
 @Fluent
 public final class SendMessage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SendMessage.class);
-
     /*
      * Title of message.
      */
@@ -25,6 +21,10 @@ public final class SendMessage {
      */
     @JsonProperty(value = "messageBody")
     private String messageBody;
+
+    /** Creates an instance of SendMessage class. */
+    public SendMessage() {
+    }
 
     /**
      * Get the messageTitle property: Title of message.

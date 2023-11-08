@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Property overrides on a subnet of a virtual network. */
 @Fluent
 public final class SubnetOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetOverride.class);
-
     /*
      * The resource ID of the subnet.
      */
@@ -27,15 +23,13 @@ public final class SubnetOverride {
     private String labSubnetName;
 
     /*
-     * Indicates whether this subnet can be used during virtual machine
-     * creation (i.e. Allow, Deny).
+     * Indicates whether this subnet can be used during virtual machine creation (i.e. Allow, Deny).
      */
     @JsonProperty(value = "useInVmCreationPermission")
     private UsagePermissionType useInVmCreationPermission;
 
     /*
-     * Indicates whether public IP addresses can be assigned to virtual
-     * machines on this subnet (i.e. Allow, Deny).
+     * Indicates whether public IP addresses can be assigned to virtual machines on this subnet (i.e. Allow, Deny).
      */
     @JsonProperty(value = "usePublicIpAddressPermission")
     private UsagePermissionType usePublicIpAddressPermission;
@@ -51,6 +45,10 @@ public final class SubnetOverride {
      */
     @JsonProperty(value = "virtualNetworkPoolName")
     private String virtualNetworkPoolName;
+
+    /** Creates an instance of SubnetOverride class. */
+    public SubnetOverride() {
+    }
 
     /**
      * Get the resourceId property: The resource ID of the subnet.

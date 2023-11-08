@@ -3,33 +3,34 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
-import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.UUID;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -38,16 +39,8 @@ import java.util.stream.Collectors;
 public final class CoreUtils {
     // CoreUtils is a commonly used utility, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
-    private static final String COMMA = ",";
-    private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
-    private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
-    private static final byte ZERO = (byte) 0x00;
-    private static final byte BB = (byte) 0xBB;
-    private static final byte BF = (byte) 0xBF;
-    private static final byte EF = (byte) 0xEF;
-    private static final byte FE = (byte) 0xFE;
-    private static final byte FF = (byte) 0xFF;
-    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=([\\S]+)\\b", Pattern.CASE_INSENSITIVE);
+
+    private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -151,7 +144,7 @@ public final class CoreUtils {
             return null;
         }
 
-        return Arrays.stream(array).map(mapper).collect(Collectors.joining(COMMA));
+        return Arrays.stream(array).map(mapper).collect(Collectors.joining(","));
     }
 
     /**
@@ -204,8 +197,7 @@ public final class CoreUtils {
      * @return an immutable {@link Map}.
      */
     public static Map<String, String> getProperties(String propertiesFileName) {
-        try (InputStream inputStream = CoreUtils.class.getClassLoader()
-            .getResourceAsStream(propertiesFileName)) {
+        try (InputStream inputStream = CoreUtils.class.getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
@@ -238,36 +230,7 @@ public final class CoreUtils {
             return null;
         }
 
-        if (bytes.length >= 3 && bytes[0] == EF && bytes[1] == BB && bytes[2] == BF) {
-            return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-        } else if (bytes.length >= 4 && bytes[0] == ZERO && bytes[1] == ZERO && bytes[2] == FE && bytes[3] == FF) {
-            return new String(bytes, 4, bytes.length - 4, UTF_32BE);
-        } else if (bytes.length >= 4 && bytes[0] == FF && bytes[1] == FE && bytes[2] == ZERO && bytes[3] == ZERO) {
-            return new String(bytes, 4, bytes.length - 4, UTF_32LE);
-        } else if (bytes.length >= 2 && bytes[0] == FE && bytes[1] == FF) {
-            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
-        } else if (bytes.length >= 2 && bytes[0] == FF && bytes[1] == FE) {
-            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16LE);
-        } else {
-            /*
-             * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
-             * present or invalid fallback to 'UTF-8' for the default charset.
-             */
-            if (!isNullOrEmpty(contentType)) {
-                try {
-                    Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
-                    if (charsetMatcher.find()) {
-                        return new String(bytes, Charset.forName(charsetMatcher.group(1)));
-                    } else {
-                        return new String(bytes, StandardCharsets.UTF_8);
-                    }
-                } catch (IllegalCharsetNameException | UnsupportedCharsetException ex) {
-                    return new String(bytes, StandardCharsets.UTF_8);
-                }
-            } else {
-                return new String(bytes, StandardCharsets.UTF_8);
-            }
-        }
+        return ImplUtils.bomAwareToString(bytes, 0, bytes.length, contentType);
     }
 
     /**
@@ -303,16 +266,24 @@ public final class CoreUtils {
      * @return {@link HttpHeaders} containing the {@link Header} values from {@link ClientOptions#getHeaders()} if
      * {@code clientOptions} isn't null and contains {@link Header} values, otherwise null.
      */
+    @SuppressWarnings("deprecation")
     public static HttpHeaders createHttpHeadersFromClientOptions(ClientOptions clientOptions) {
         if (clientOptions == null) {
             return null;
         }
 
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-        clientOptions.getHeaders().forEach(
-            header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        Iterator<Header> headerIterator = clientOptions.getHeaders().iterator();
+        if (!headerIterator.hasNext()) {
+            return null;
+        }
 
-        return httpHeaderList.isEmpty() ? null : new HttpHeaders(httpHeaderList);
+        HttpHeaders headers = new HttpHeaders();
+        do {
+            Header header = headerIterator.next();
+            headers.set(header.getName(), header.getValue());
+        } while (headerIterator.hasNext());
+
+        return headers;
     }
 
     /**
@@ -341,15 +312,19 @@ public final class CoreUtils {
         try {
             long timeoutMillis = Long.parseLong(environmentTimeout);
             if (timeoutMillis < 0) {
-                logger.verbose("{} was set to {} ms. Using timeout of 'Duration.ZERO' to indicate no timeout.",
-                    timeoutPropertyName, timeoutMillis);
+                logger.atVerbose()
+                    .addKeyValue(timeoutPropertyName, timeoutMillis)
+                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout.");
                 return Duration.ZERO;
             }
 
             return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.warning("{} wasn't configured with a valid number. Using default of {}.", timeoutPropertyName,
-                defaultTimeout, ex);
+            logger.atWarning()
+                .addKeyValue(timeoutPropertyName, environmentTimeout)
+                .addKeyValue("defaultTimeout", defaultTimeout)
+                .log("Timeout is not valid number. Using default value.", ex);
+
             return defaultTimeout;
         }
     }
@@ -366,6 +341,17 @@ public final class CoreUtils {
         Objects.requireNonNull(into, "'into' cannot be null.");
         Objects.requireNonNull(from, "'from' cannot be null.");
 
+        // If the 'into' Context is the NONE Context just return the 'from' Context.
+        // This is safe as Context is immutable and prevents needing to create any new Contexts and temporary arrays.
+        if (into == Context.NONE) {
+            return from;
+        }
+
+        // Same goes the other way, where if the 'from' Context is the NONE Context just return the 'into' Context.
+        if (from == Context.NONE) {
+            return into;
+        }
+
         Context[] contextChain = from.getContextChain();
 
         Context returnContext = into;
@@ -376,5 +362,229 @@ public final class CoreUtils {
         }
 
         return returnContext;
+    }
+
+    /**
+     * Optimized version of {@link String#join(CharSequence, Iterable)} when the {@code values} has a small set of
+     * object.
+     *
+     * @param delimiter Delimiter between the values.
+     * @param values The values to join.
+     * @return The {@code values} joined delimited by the {@code delimiter}.
+     * @throws NullPointerException If {@code delimiter} or {@code values} is null.
+     */
+    public static String stringJoin(String delimiter, List<String> values) {
+        Objects.requireNonNull(delimiter, "'delimiter' cannot be null.");
+        Objects.requireNonNull(values, "'values' cannot be null.");
+
+        int count = values.size();
+        switch (count) {
+            case 0:
+                return "";
+            case 1:
+                return values.get(0);
+            case 2:
+                return values.get(0) + delimiter + values.get(1);
+            case 3:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
+            case 4:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3);
+            case 5:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4);
+            case 6:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5);
+            case 7:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+            case 8:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                    + delimiter + values.get(7);
+            case 9:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                    + delimiter + values.get(7) + delimiter + values.get(8);
+            case 10:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                    + delimiter + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+            default:
+                return String.join(delimiter, values);
+        }
+    }
+
+    /**
+     * Converts a byte array into a hex string.
+     *
+     * <p>The hex string returned uses characters {@code 0123456789abcdef}, if uppercase {@code ABCDEF} is required the
+     * returned string will need to be {@link String#toUpperCase() uppercased}.</p>
+     *
+     * <p>If {@code bytes} is null, null will be returned. If {@code bytes} was an empty array an empty string is
+     * returned.</p>
+     *
+     * @param bytes The byte array to convert into a hex string.
+     * @return A hex string representing the {@code bytes} that were passed, or null if {@code bytes} were null.
+     */
+    public static String bytesToHexString(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
+
+        if (bytes.length == 0) {
+            return "";
+        }
+
+        // Hex uses 4 bits, converting a byte to hex will double its size.
+        char[] hexString = new char[bytes.length * 2];
+
+        for (int i = 0; i < bytes.length; i++) {
+            // Convert the byte into an integer, masking all but the last 8 bits (the byte).
+            int b = bytes[i] & 0xFF;
+
+            // Shift 4 times to the right to get the leading 4 bits and get the corresponding hex character.
+            hexString[i * 2] = LOWERCASE_HEX_CHARACTERS[b >>> 4];
+
+            // Mask all but the last 4 bits and get the corresponding hex character.
+            hexString[i * 2 + 1] = LOWERCASE_HEX_CHARACTERS[b & 0x0F];
+        }
+
+        return new String(hexString);
+    }
+
+    /**
+     * Extracts the size from a {@code Content-Range} header.
+     * <p>
+     * The {@code Content-Range} header can take the following forms:
+     *
+     * <ul>
+     * <li>{@code <unit> <start>-<end>/<size>}</li>
+     * <li>{@code <unit> <start>-<end>/}&#42;</li>
+     * <li>{@code <unit> }&#42;{@code /<size>}</li>
+     * </ul>
+     *
+     * If the {@code <size>} is represented by &#42; this method will return -1.
+     * <p>
+     * If {@code contentRange} is null a {@link NullPointerException} will be thrown, if it doesn't contain a size
+     * segment ({@code /<size>} or /&#42;) an {@link IllegalArgumentException} will be thrown.
+     *
+     * @param contentRange The {@code Content-Range} header to extract the size from.
+     * @return The size contained in the {@code Content-Range}, or -1 if the size was &#42;.
+     * @throws NullPointerException If {@code contentRange} is null.
+     * @throws IllegalArgumentException If {@code contentRange} doesn't contain a {@code <size>} segment.
+     * @throws NumberFormatException If the {@code <size>} segment of the {@code contentRange} isn't a valid number.
+     */
+    public static long extractSizeFromContentRange(String contentRange) {
+        Objects.requireNonNull(contentRange, "Cannot extract length from null 'contentRange'.");
+        int index = contentRange.indexOf('/');
+
+        if (index == -1) {
+            // No size segment.
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Content-Range header wasn't properly "
+                + "formatted and didn't contain a '/size' segment. The 'contentRange' was: " + contentRange));
+        }
+
+        String sizeString = contentRange.substring(index + 1).trim();
+        if ("*".equals(sizeString)) {
+            // Size unknown to the Content-Range header.
+            return -1;
+        }
+
+        return Long.parseLong(sizeString);
+    }
+
+    /**
+     * Utility method for parsing query parameters one-by-one without the use of string splitting.
+     * <p>
+     * This method provides an optimization over parsing query parameters with {@link String#split(String)} or a
+     * {@link java.util.regex.Pattern} as it doesn't allocate any arrays to maintain values, instead it parses the query
+     * parameters linearly.
+     * <p>
+     * Query parameter parsing works the following way, {@code key=value} will turn into an immutable {@link Map.Entry}
+     * where the {@link Map.Entry#getKey()} is {@code key} and the {@link Map.Entry#getValue()} is {@code value}. For
+     * query parameters without a value, {@code key=} or just {@code key}, the value will be an empty string.
+     *
+     * @param queryParameters The query parameter string.
+     * @return An {@link Iterator} over the query parameter key-value pairs.
+     */
+    public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
+        return (CoreUtils.isNullOrEmpty(queryParameters))
+            ? Collections.emptyIterator()
+            : new ImplUtils.QueryParameterIterator(queryParameters);
+    }
+
+    /**
+     * Creates a type 4 (pseudo randomly generated) UUID.
+     * <p>
+     * The {@link UUID} is generated using a non-cryptographically strong pseudo random number generator.
+     *
+     * @return A randomly generated {@link UUID}.
+     */
+    public static UUID randomUuid() {
+        return randomUuid(ThreadLocalRandom.current().nextLong(), ThreadLocalRandom.current().nextLong());
+    }
+
+    static UUID randomUuid(long msb, long lsb) {
+        msb &= 0xffffffffffff0fffL; // Clear the UUID version.
+        msb |= 0x0000000000004000L; // Set the UUID version to 4.
+        lsb &= 0x3fffffffffffffffL; // Clear the variant.
+        lsb |= 0x8000000000000000L; // Set the variant to IETF.
+
+        // Use new UUID(long, long) instead of UUID.randomUUID as UUID.randomUUID may be blocking.
+        // For environments using Reactor's BlockHound this will raise an exception if called in non-blocking threads.
+        return new UUID(msb, lsb);
+    }
+
+    /**
+     * Calls {@link Future#get(long, TimeUnit)} and returns the value if the {@code future} completes before the timeout
+     * is triggered. If the timeout is triggered, the {@code future} is {@link Future#cancel(boolean) cancelled}
+     * interrupting the execution of the task that the {@link Future} represented.
+     * <p>
+     * If the timeout is {@link Duration#isZero()} or is {@link Duration#isNegative()} then the timeout will be ignored
+     * and an infinite timeout will be used.
+     *
+     * @param <T> The type of value returned by the {@code future}.
+     * @param future The {@link Future} to get the value from.
+     * @param timeout The timeout value. If the timeout is {@link Duration#isZero()} or is {@link Duration#isNegative()}
+     * then the timeout will be ignored and an infinite timeout will be used.
+     * @return The value from the {@code future}.
+     * @throws NullPointerException If {@code future} is null.
+     * @throws CancellationException If the computation was cancelled.
+     * @throws ExecutionException If the computation threw an exception.
+     * @throws InterruptedException If the current thread was interrupted while waiting.
+     * @throws TimeoutException If the wait timed out.
+     * @throws RuntimeException If the {@code future} threw an exception during processing.
+     * @throws Error If the {@code future} threw an {@link Error} during processing.
+     */
+    public static <T> T getResultWithTimeout(Future<T> future, Duration timeout)
+        throws InterruptedException, ExecutionException, TimeoutException {
+        Objects.requireNonNull(future, "'future' cannot be null.");
+
+        if (!hasTimeout(timeout)) {
+            return future.get();
+        }
+
+        try {
+            return future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
+        } catch (TimeoutException e) {
+            future.cancel(true);
+            throw e;
+        } catch (ExecutionException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof Error) {
+                throw (Error) cause;
+            } else if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            } else {
+                ImplUtils.sneakyThrows(cause);
+                throw e;
+            }
+        }
+    }
+
+    private static boolean hasTimeout(Duration timeout) {
+        return timeout != null && !timeout.isZero() && !timeout.isNegative();
     }
 }

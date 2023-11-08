@@ -23,6 +23,10 @@ public final class ResourceName {
     @JsonProperty(value = "type", required = true)
     private String type;
 
+    /** Creates an instance of ResourceName class. */
+    public ResourceName() {
+    }
+
     /**
      * Get the name property: Name of the resource.
      *

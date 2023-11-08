@@ -21,6 +21,10 @@ public final class JobInputs extends JobInput {
     @JsonProperty(value = "inputs")
     private List<JobInput> inputs;
 
+    /** Creates an instance of JobInputs class. */
+    public JobInputs() {
+    }
+
     /**
      * Get the inputs property: List of inputs to a Job.
      *

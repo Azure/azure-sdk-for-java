@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CassandraSourceReadConsistencyLevels. */
+/**
+ * The consistency level specifies how many Cassandra servers must respond to a read request before returning data to
+ * the client application. Cassandra checks the specified number of Cassandra servers for data to satisfy the read
+ * request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is case-insensitive.
+ */
 public final class CassandraSourceReadConsistencyLevels
         extends ExpandableStringEnum<CassandraSourceReadConsistencyLevels> {
     /** Static value ALL for CassandraSourceReadConsistencyLevels. */
@@ -42,6 +46,14 @@ public final class CassandraSourceReadConsistencyLevels
     public static final CassandraSourceReadConsistencyLevels LOCAL_SERIAL = fromString("LOCAL_SERIAL");
 
     /**
+     * Creates a new instance of CassandraSourceReadConsistencyLevels value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CassandraSourceReadConsistencyLevels() {}
+
+    /**
      * Creates or finds a CassandraSourceReadConsistencyLevels from its string representation.
      *
      * @param name a name to look for.
@@ -52,7 +64,11 @@ public final class CassandraSourceReadConsistencyLevels
         return fromString(name, CassandraSourceReadConsistencyLevels.class);
     }
 
-    /** @return known CassandraSourceReadConsistencyLevels values. */
+    /**
+     * Gets known CassandraSourceReadConsistencyLevels values.
+     *
+     * @return known CassandraSourceReadConsistencyLevels values.
+     */
     public static Collection<CassandraSourceReadConsistencyLevels> values() {
         return values(CassandraSourceReadConsistencyLevels.class);
     }

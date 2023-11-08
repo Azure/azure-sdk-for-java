@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelRank;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a sensitivity label. */
 @Fluent
 public final class SensitivityLabelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SensitivityLabelProperties.class);
-
     /*
      * The schema name.
      */
@@ -58,9 +54,8 @@ public final class SensitivityLabelProperties {
     private String informationTypeId;
 
     /*
-     * Is sensitivity recommendation disabled. Applicable for recommended
-     * sensitivity label only. Specifies whether the sensitivity recommendation
-     * on this column is disabled (dismissed) or not.
+     * Is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether the
+     * sensitivity recommendation on this column is disabled (dismissed) or not.
      */
     @JsonProperty(value = "isDisabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDisabled;
@@ -70,6 +65,10 @@ public final class SensitivityLabelProperties {
      */
     @JsonProperty(value = "rank")
     private SensitivityLabelRank rank;
+
+    /** Creates an instance of SensitivityLabelProperties class. */
+    public SensitivityLabelProperties() {
+    }
 
     /**
      * Get the schemaName property: The schema name.

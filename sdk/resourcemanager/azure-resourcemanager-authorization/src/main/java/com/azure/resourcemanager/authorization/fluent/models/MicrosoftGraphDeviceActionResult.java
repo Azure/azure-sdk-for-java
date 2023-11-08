@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,11 +13,13 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Device action result. */
+/**
+ * deviceActionResult
+ *
+ * <p>Device action result.
+ */
 @Fluent
 public final class MicrosoftGraphDeviceActionResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDeviceActionResult.class);
-
     /*
      * Action name
      */
@@ -26,7 +27,7 @@ public final class MicrosoftGraphDeviceActionResult {
     private String actionName;
 
     /*
-     * The actionState property.
+     * actionState
      */
     @JsonProperty(value = "actionState")
     private MicrosoftGraphActionState actionState;
@@ -47,6 +48,10 @@ public final class MicrosoftGraphDeviceActionResult {
      * Device action result
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDeviceActionResult class. */
+    public MicrosoftGraphDeviceActionResult() {
+    }
 
     /**
      * Get the actionName property: Action name.
@@ -69,7 +74,7 @@ public final class MicrosoftGraphDeviceActionResult {
     }
 
     /**
-     * Get the actionState property: The actionState property.
+     * Get the actionState property: actionState.
      *
      * @return the actionState value.
      */
@@ -78,7 +83,7 @@ public final class MicrosoftGraphDeviceActionResult {
     }
 
     /**
-     * Set the actionState property: The actionState property.
+     * Set the actionState property: actionState.
      *
      * @param actionState the actionState value to set.
      * @return the MicrosoftGraphDeviceActionResult object itself.

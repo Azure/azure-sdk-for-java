@@ -22,6 +22,10 @@ public final class EventHubEventSubscriptionDestination extends EventSubscriptio
     @JsonProperty(value = "properties")
     private EventHubEventSubscriptionDestinationProperties innerProperties;
 
+    /** Creates an instance of EventHubEventSubscriptionDestination class. */
+    public EventHubEventSubscriptionDestination() {
+    }
+
     /**
      * Get the innerProperties property: Event Hub Properties of the event subscription destination.
      *

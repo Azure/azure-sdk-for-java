@@ -17,6 +17,7 @@ import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareGetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareGetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareGetStatisticsOptions;
@@ -750,4 +751,126 @@ public class ShareJavaDocCodeSamples {
         shareClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues-Context
     }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#createIfNotExists()} and
+     * {@link ShareClient#createIfNotExistsWithResponse(ShareCreateOptions, Duration, Context)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareClient.createIfNotExists
+        shareClient.createIfNotExists();
+        System.out.println("Completed creating the share.");
+        // END: com.azure.storage.file.share.ShareClient.createIfNotExists
+
+        // BEGIN: ShareClient.createIfNotExistsWithResponse#ShareCreateOptions-Duration-Context
+        Response<ShareInfo> response = shareClient.createIfNotExistsWithResponse(new ShareCreateOptions()
+            .setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
+            .setAccessTier(ShareAccessTier.HOT), Duration.ofSeconds(1), new Context(key1, value1));
+
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
+        // END: ShareClient.createIfNotExistsWithResponse#ShareCreateOptions-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#deleteIfExists()} and
+     * {@link ShareClient#deleteIfExistsWithResponse(ShareDeleteOptions, Duration, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareClient.deleteIfExists
+        boolean result = shareClient.deleteIfExists();
+        System.out.println("Share deleted: " + result);
+        // END: com.azure.storage.file.share.ShareClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#ShareDeleteOptions-Duration-Context
+        Response<Boolean> response = shareClient.deleteIfExistsWithResponse(new ShareDeleteOptions()
+                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)),
+            Duration.ofSeconds(1), new Context(key1, value1));
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#ShareDeleteOptions-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#createDirectoryIfNotExists(String)} and
+     * {@link ShareClient#createDirectoryIfNotExistsWithResponse(String, ShareDirectoryCreateOptions, Duration, Context)}
+     */
+    public void createDirectoryIfNotExistsCodeSnippets() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExists#string
+        ShareDirectoryClient directoryClient = shareClient.createDirectoryIfNotExists("mydirectory");
+        System.out.println("Complete creating the directory.");
+        // END: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExists#string
+
+        // BEGIN: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions-Duration-Context
+        FileSmbProperties smbProperties = new FileSmbProperties();
+        String filePermission = "filePermission";
+        Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties).
+            setFilePermission(filePermission).setMetadata(metadata);
+        Response<ShareDirectoryClient> response = shareClient.createDirectoryIfNotExistsWithResponse("documents",
+            options, Duration.ofSeconds(1), new Context(key1, value1));
+
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.file.share.ShareClient.createDirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#deleteDirectoryIfExists(String)} and
+     * {@link ShareClient#deleteDirectoryIfExistsWithResponse(String, Duration, Context)}
+     */
+    public void deleteDirectoryIfExistsCodeSnippets() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExists#string
+        boolean result = shareClient.deleteDirectoryIfExists("mydirectory");
+        System.out.println("Directory deleted: " + result);
+        // END: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExists#string
+
+        // BEGIN: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExistsWithResponse#string-duration-context
+        Response<Boolean> response = shareClient.deleteDirectoryIfExistsWithResponse("mydirectory",
+            Duration.ofSeconds(1), new Context(key1, value1));
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.file.share.ShareClient.deleteDirectoryIfExistsWithResponse#string-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#deleteFileIfExists(String)} and
+     * {@link ShareClient#deleteFileIfExistsWithResponse(String, ShareRequestConditions, Duration, Context)}
+     */
+    public void deleteFileIfExistsCodeSnippets() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareClient.deleteFileIfExists#string
+        boolean result = shareClient.deleteFileIfExists("myfile");
+        System.out.println("File deleted: " + result);
+        // END: com.azure.storage.file.share.ShareClient.deleteFileIfExists#string
+
+        // BEGIN: com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions-duration-context
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+
+        Response<Boolean> response = shareClient.deleteFileIfExistsWithResponse("myfile", requestConditions,
+            Duration.ofSeconds(1), new Context(key1, value1));
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions-duration-context
+    }
+
 }

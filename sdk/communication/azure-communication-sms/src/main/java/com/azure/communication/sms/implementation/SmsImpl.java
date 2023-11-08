@@ -47,7 +47,7 @@ public final class SmsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationSM")
-    private interface SmsService {
+    public interface SmsService {
         @Post("/sms")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

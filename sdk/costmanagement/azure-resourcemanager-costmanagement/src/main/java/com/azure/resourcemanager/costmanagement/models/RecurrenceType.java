@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecurrenceType. */
+/** The schedule recurrence. */
 public final class RecurrenceType extends ExpandableStringEnum<RecurrenceType> {
     /** Static value Daily for RecurrenceType. */
     public static final RecurrenceType DAILY = fromString("Daily");
@@ -23,6 +23,15 @@ public final class RecurrenceType extends ExpandableStringEnum<RecurrenceType> {
     public static final RecurrenceType ANNUALLY = fromString("Annually");
 
     /**
+     * Creates a new instance of RecurrenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecurrenceType() {
+    }
+
+    /**
      * Creates or finds a RecurrenceType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class RecurrenceType extends ExpandableStringEnum<RecurrenceType> {
         return fromString(name, RecurrenceType.class);
     }
 
-    /** @return known RecurrenceType values. */
+    /**
+     * Gets known RecurrenceType values.
+     *
+     * @return known RecurrenceType values.
+     */
     public static Collection<RecurrenceType> values() {
         return values(RecurrenceType.class);
     }

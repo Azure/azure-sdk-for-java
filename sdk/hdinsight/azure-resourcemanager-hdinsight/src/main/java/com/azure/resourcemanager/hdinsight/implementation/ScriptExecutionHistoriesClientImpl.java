@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.ScriptExecutionHistoriesClient;
 import com.azure.resourcemanager.hdinsight.fluent.models.RuntimeScriptActionDetailInner;
 import com.azure.resourcemanager.hdinsight.models.ScriptActionExecutionHistoryList;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ScriptExecutionHistoriesClient. */
 public final class ScriptExecutionHistoriesClientImpl implements ScriptExecutionHistoriesClient {
-    private final ClientLogger logger = new ClientLogger(ScriptExecutionHistoriesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ScriptExecutionHistoriesService service;
 
@@ -60,11 +57,10 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      */
     @Host("{$host}")
     @ServiceInterface(name = "HDInsightManagementC")
-    private interface ScriptExecutionHistoriesService {
+    public interface ScriptExecutionHistoriesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/scriptExecutionHistory")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/scriptExecutionHistory")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScriptActionExecutionHistoryList>> listByCluster(
@@ -78,8 +74,7 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/scriptExecutionHistory/{scriptExecutionId}/promote")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/scriptExecutionHistory/{scriptExecutionId}/promote")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> promote(
@@ -111,7 +106,8 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RuntimeScriptActionDetailInner>> listByClusterSinglePageAsync(
@@ -169,7 +165,8 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RuntimeScriptActionDetailInner>> listByClusterSinglePageAsync(
@@ -223,7 +220,7 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RuntimeScriptActionDetailInner> listByClusterAsync(String resourceGroupName, String clusterName) {
@@ -241,7 +238,7 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RuntimeScriptActionDetailInner> listByClusterAsync(
@@ -259,7 +256,7 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuntimeScriptActionDetailInner> listByCluster(String resourceGroupName, String clusterName) {
@@ -275,7 +272,7 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuntimeScriptActionDetailInner> listByCluster(
@@ -292,7 +289,7 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> promoteWithResponseAsync(
@@ -347,7 +344,7 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> promoteWithResponseAsync(
@@ -398,12 +395,30 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> promoteAsync(String resourceGroupName, String clusterName, String scriptExecutionId) {
         return promoteWithResponseAsync(resourceGroupName, clusterName, scriptExecutionId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Promotes the specified ad-hoc script execution to a persisted script.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param scriptExecutionId The script execution Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> promoteWithResponse(
+        String resourceGroupName, String clusterName, String scriptExecutionId, Context context) {
+        return promoteWithResponseAsync(resourceGroupName, clusterName, scriptExecutionId, context).block();
     }
 
     /**
@@ -418,35 +433,19 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void promote(String resourceGroupName, String clusterName, String scriptExecutionId) {
-        promoteAsync(resourceGroupName, clusterName, scriptExecutionId).block();
-    }
-
-    /**
-     * Promotes the specified ad-hoc script execution to a persisted script.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param scriptExecutionId The script execution Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> promoteWithResponse(
-        String resourceGroupName, String clusterName, String scriptExecutionId, Context context) {
-        return promoteWithResponseAsync(resourceGroupName, clusterName, scriptExecutionId, context).block();
+        promoteWithResponse(resourceGroupName, clusterName, scriptExecutionId, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RuntimeScriptActionDetailInner>> listByClusterNextSinglePageAsync(String nextLink) {
@@ -477,12 +476,14 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RuntimeScriptActionDetailInner>> listByClusterNextSinglePageAsync(

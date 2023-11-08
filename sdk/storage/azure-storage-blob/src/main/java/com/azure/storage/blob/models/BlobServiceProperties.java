@@ -23,15 +23,13 @@ public final class BlobServiceProperties {
     private BlobAnalyticsLogging logging;
 
     /*
-     * a summary of request statistics grouped by API in hour or minute
-     * aggregates for blobs
+     * a summary of request statistics grouped by API in hour or minute aggregates for blobs
      */
     @JsonProperty(value = "HourMetrics")
     private BlobMetrics hourMetrics;
 
     /*
-     * a summary of request statistics grouped by API in hour or minute
-     * aggregates for blobs
+     * a summary of request statistics grouped by API in hour or minute aggregates for blobs
      */
     @JsonProperty(value = "MinuteMetrics")
     private BlobMetrics minuteMetrics;
@@ -53,16 +51,14 @@ public final class BlobServiceProperties {
     private CorsWrapper cors;
 
     /*
-     * The default version to use for requests to the Blob service if an
-     * incoming request's version is not specified. Possible values include
-     * version 2008-10-27 and all more recent versions
+     * The default version to use for requests to the Blob service if an incoming request's version is not specified.
+     * Possible values include version 2008-10-27 and all more recent versions
      */
     @JsonProperty(value = "DefaultServiceVersion")
     private String defaultServiceVersion;
 
     /*
-     * the retention policy which determines how long the associated data
-     * should persist
+     * the retention policy which determines how long the associated data should persist
      */
     @JsonProperty(value = "DeleteRetentionPolicy")
     private BlobRetentionPolicy deleteRetentionPolicy;
@@ -72,6 +68,9 @@ public final class BlobServiceProperties {
      */
     @JsonProperty(value = "StaticWebsite")
     private StaticWebsite staticWebsite;
+
+    /** Creates an instance of BlobServiceProperties class. */
+    public BlobServiceProperties() {}
 
     /**
      * Get the logging property: Azure Analytics Logging settings.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The amount. */
 @Fluent
 public final class Amount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Amount.class);
-
     /*
      * The currency for the amount value.
      */
@@ -25,6 +21,10 @@ public final class Amount {
      */
     @JsonProperty(value = "value")
     private Float value;
+
+    /** Creates an instance of Amount class. */
+    public Amount() {
+    }
 
     /**
      * Get the currency property: The currency for the amount value.

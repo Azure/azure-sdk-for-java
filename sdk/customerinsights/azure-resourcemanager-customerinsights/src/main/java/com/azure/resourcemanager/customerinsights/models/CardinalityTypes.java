@@ -7,7 +7,7 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CardinalityTypes. */
+/** The Relationship Cardinality. */
 public enum CardinalityTypes {
     /** Enum value OneToOne. */
     ONE_TO_ONE("OneToOne"),
@@ -33,6 +33,9 @@ public enum CardinalityTypes {
      */
     @JsonCreator
     public static CardinalityTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CardinalityTypes[] items = CardinalityTypes.values();
         for (CardinalityTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum CardinalityTypes {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

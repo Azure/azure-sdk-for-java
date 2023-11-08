@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The parameters that describes a set of credentials that will be used when a run is invoked. */
 @Fluent
 public final class Credentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Credentials.class);
-
     /*
      * Describes the credential parameters for accessing the source registry.
      */
@@ -23,16 +19,17 @@ public final class Credentials {
     private SourceRegistryCredentials sourceRegistry;
 
     /*
-     * Describes the credential parameters for accessing other custom
-     * registries. The key
-     * for the dictionary item will be the registry login server
-     * (myregistry.azurecr.io) and
-     * the value of the item will be the registry credentials for accessing the
-     * registry.
+     * Describes the credential parameters for accessing other custom registries. The key
+     * for the dictionary item will be the registry login server (myregistry.azurecr.io) and
+     * the value of the item will be the registry credentials for accessing the registry.
      */
     @JsonProperty(value = "customRegistries")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, CustomRegistryCredentials> customRegistries;
+
+    /** Creates an instance of Credentials class. */
+    public Credentials() {
+    }
 
     /**
      * Get the sourceRegistry property: Describes the credential parameters for accessing the source registry.

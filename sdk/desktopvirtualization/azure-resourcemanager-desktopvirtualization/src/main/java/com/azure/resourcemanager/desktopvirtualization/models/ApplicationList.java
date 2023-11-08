@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ApplicationList List of Application definitions. */
+/**
+ * ApplicationList
+ *
+ * <p>List of Application definitions.
+ */
 @Fluent
 public final class ApplicationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationList.class);
-
     /*
      * List of Application definitions.
      */
@@ -27,6 +27,10 @@ public final class ApplicationList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ApplicationList class. */
+    public ApplicationList() {
+    }
 
     /**
      * Get the value property: List of Application definitions.

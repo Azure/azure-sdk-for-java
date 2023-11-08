@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for Salesforce Service Cloud. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,18 +19,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class SalesforceServiceCloudLinkedService extends LinkedService {
     /*
-     * The URL of Salesforce Service Cloud instance. Default is
-     * 'https://login.salesforce.com'. To copy data from sandbox, specify
-     * 'https://test.salesforce.com'. To copy data from custom domain, specify,
-     * for example, 'https://[domain].my.salesforce.com'. Type: string (or
-     * Expression with resultType string).
+     * The URL of Salesforce Service Cloud instance. Default is 'https://login.salesforce.com'. To copy data from
+     * sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for example,
+     * 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.environmentUrl")
     private Object environmentUrl;
 
     /*
-     * The username for Basic authentication of the Salesforce instance. Type:
-     * string (or Expression with resultType string).
+     * The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.username")
     private Object username;
@@ -46,26 +46,26 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     private SecretBase securityToken;
 
     /*
-     * The Salesforce API version used in ADF. Type: string (or Expression with
-     * resultType string).
+     * The Salesforce API version used in ADF. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.apiVersion")
     private Object apiVersion;
 
     /*
-     * Extended properties appended to the connection string. Type: string (or
-     * Expression with resultType string).
+     * Extended properties appended to the connection string. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.extendedProperties")
     private Object extendedProperties;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of SalesforceServiceCloudLinkedService class. */
+    public SalesforceServiceCloudLinkedService() {}
 
     /**
      * Get the environmentUrl property: The URL of Salesforce Service Cloud instance. Default is
@@ -218,6 +218,34 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      */
     public SalesforceServiceCloudLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

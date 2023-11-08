@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Metric properties. */
 @Immutable
 public final class Properties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Properties.class);
-
     /*
      * The service specifications.
      */

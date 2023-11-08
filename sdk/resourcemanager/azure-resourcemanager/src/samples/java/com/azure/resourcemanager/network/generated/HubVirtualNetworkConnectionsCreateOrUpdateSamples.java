@@ -5,18 +5,19 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.HubVirtualNetworkConnectionInner;
 import com.azure.resourcemanager.network.models.PropagatedRouteTable;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.StaticRoute;
+import com.azure.resourcemanager.network.models.StaticRoutesConfig;
+import com.azure.resourcemanager.network.models.VnetLocalRouteOverrideCriteria;
 import com.azure.resourcemanager.network.models.VnetRoute;
 import java.util.Arrays;
 
 /** Samples for HubVirtualNetworkConnections CreateOrUpdate. */
 public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/HubVirtualNetworkConnectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/HubVirtualNetworkConnectionPut.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionPut.
@@ -56,6 +57,9 @@ public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
                                                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1"))))
                             .withVnetRoutes(
                                 new VnetRoute()
+                                    .withStaticRoutesConfig(
+                                        new StaticRoutesConfig()
+                                            .withVnetLocalRouteOverrideCriteria(VnetLocalRouteOverrideCriteria.EQUAL))
                                     .withStaticRoutes(
                                         Arrays
                                             .asList(
@@ -66,7 +70,15 @@ public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
                                                 new StaticRoute()
                                                     .withName("route2")
                                                     .withAddressPrefixes(Arrays.asList("10.3.0.0/16", "10.4.0.0/16"))
-                                                    .withNextHopIpAddress("10.0.0.65"))))),
-                Context.NONE);
+                                                    .withNextHopIpAddress("10.0.0.65"))))
+                            .withInboundRouteMap(
+                                new SubResource()
+                                    .withId(
+                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"))
+                            .withOutboundRouteMap(
+                                new SubResource()
+                                    .withId(
+                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"))),
+                com.azure.core.util.Context.NONE);
     }
 }

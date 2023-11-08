@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuName. */
+/** The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium). */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
     /** Static value Basic for SkuName. */
     public static final SkuName BASIC = fromString("Basic");
@@ -18,6 +18,15 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
 
     /** Static value Premium for SkuName. */
     public static final SkuName PREMIUM = fromString("Premium");
+
+    /**
+     * Creates a new instance of SkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuName() {
+    }
 
     /**
      * Creates or finds a SkuName from its string representation.
@@ -30,7 +39,11 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
         return fromString(name, SkuName.class);
     }
 
-    /** @return known SkuName values. */
+    /**
+     * Gets known SkuName values.
+     *
+     * @return known SkuName values.
+     */
     public static Collection<SkuName> values() {
         return values(SkuName.class);
     }

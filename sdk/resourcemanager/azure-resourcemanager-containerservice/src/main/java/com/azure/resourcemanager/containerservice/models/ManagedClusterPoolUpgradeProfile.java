@@ -25,8 +25,7 @@ public final class ManagedClusterPoolUpgradeProfile {
     private String name;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows.
-     * Default to Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     @JsonProperty(value = "osType", required = true)
     private OSType osType;
@@ -36,6 +35,10 @@ public final class ManagedClusterPoolUpgradeProfile {
      */
     @JsonProperty(value = "upgrades")
     private List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades;
+
+    /** Creates an instance of ManagedClusterPoolUpgradeProfile class. */
+    public ManagedClusterPoolUpgradeProfile() {
+    }
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).

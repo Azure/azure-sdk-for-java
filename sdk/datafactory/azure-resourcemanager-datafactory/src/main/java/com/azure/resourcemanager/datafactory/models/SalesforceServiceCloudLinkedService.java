@@ -25,6 +25,10 @@ public final class SalesforceServiceCloudLinkedService extends LinkedService {
     private SalesforceServiceCloudLinkedServiceTypeProperties innerTypeProperties =
         new SalesforceServiceCloudLinkedServiceTypeProperties();
 
+    /** Creates an instance of SalesforceServiceCloudLinkedService class. */
+    public SalesforceServiceCloudLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Salesforce Service Cloud linked service properties.
      *
@@ -214,22 +218,22 @@ public final class SalesforceServiceCloudLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceServiceCloudLinkedService object itself.
      */
-    public SalesforceServiceCloudLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public SalesforceServiceCloudLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SalesforceServiceCloudLinkedServiceTypeProperties();
         }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,13 +16,15 @@ import java.util.Map;
 @JsonTypeName("AzureWorkloadPointInTimeRestoreRequest")
 @Fluent
 public final class AzureWorkloadPointInTimeRestoreRequest extends AzureWorkloadRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadPointInTimeRestoreRequest.class);
-
     /*
      * PointInTime value
      */
     @JsonProperty(value = "pointInTime")
     private OffsetDateTime pointInTime;
+
+    /** Creates an instance of AzureWorkloadPointInTimeRestoreRequest class. */
+    public AzureWorkloadPointInTimeRestoreRequest() {
+    }
 
     /**
      * Get the pointInTime property: PointInTime value.

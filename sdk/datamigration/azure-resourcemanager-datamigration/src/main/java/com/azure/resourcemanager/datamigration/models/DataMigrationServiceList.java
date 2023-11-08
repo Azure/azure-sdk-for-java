@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.models.DataMigrationServiceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** OData page of service objects. */
 @Fluent
 public final class DataMigrationServiceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMigrationServiceList.class);
-
     /*
      * List of services
      */
@@ -27,6 +23,10 @@ public final class DataMigrationServiceList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of DataMigrationServiceList class. */
+    public DataMigrationServiceList() {
+    }
 
     /**
      * Get the value property: List of services.

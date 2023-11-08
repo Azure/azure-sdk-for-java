@@ -14,6 +14,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class AppConfigurationSample {
     private static final String AZURE_APP_CONFIGURATION_CONNECTION_STRING = System.getenv("AZURE_APP_CONFIGURATION_CONNECTION_STRING");
 
+    /**
+     * The method to run the app configuration sample.
+     */
     public static void runSample() {
         System.out.println("\n================================================================");
         System.out.println(" Starting App Configuration Sample");

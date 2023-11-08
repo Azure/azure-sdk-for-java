@@ -14,6 +14,7 @@ import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalInner;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalListResultInner;
+import com.azure.resourcemanager.kusto.models.CallerRole;
 import com.azure.resourcemanager.kusto.models.CheckNameRequest;
 import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.azure.resourcemanager.kusto.models.Database;
@@ -21,10 +22,9 @@ import com.azure.resourcemanager.kusto.models.DatabasePrincipal;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalListRequest;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalListResult;
 import com.azure.resourcemanager.kusto.models.Databases;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DatabasesImpl implements Databases {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DatabasesImpl.class);
 
     private final DatabasesClient innerClient;
 
@@ -33,17 +33,6 @@ public final class DatabasesImpl implements Databases {
     public DatabasesImpl(DatabasesClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
@@ -63,24 +52,27 @@ public final class DatabasesImpl implements Databases {
         }
     }
 
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<DatabaseInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
         return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<Database> listByCluster(
+        String resourceGroupName, String clusterName, Integer top, String skiptoken, Context context) {
         PagedIterable<DatabaseInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+            this.serviceClient().listByCluster(resourceGroupName, clusterName, top, skiptoken, context);
         return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
-    }
-
-    public Database get(String resourceGroupName, String clusterName, String databaseName) {
-        DatabaseInner inner = this.serviceClient().get(resourceGroupName, clusterName, databaseName);
-        if (inner != null) {
-            return new DatabaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<Database> getWithResponse(
@@ -98,6 +90,15 @@ public final class DatabasesImpl implements Databases {
         }
     }
 
+    public Database get(String resourceGroupName, String clusterName, String databaseName) {
+        DatabaseInner inner = this.serviceClient().get(resourceGroupName, clusterName, databaseName);
+        if (inner != null) {
+            return new DatabaseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Database createOrUpdate(
         String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
         DatabaseInner inner =
@@ -110,9 +111,16 @@ public final class DatabasesImpl implements Databases {
     }
 
     public Database createOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context) {
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole,
+        Context context) {
         DatabaseInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, clusterName, databaseName, parameters, context);
+            this
+                .serviceClient()
+                .createOrUpdate(resourceGroupName, clusterName, databaseName, parameters, callerRole, context);
         if (inner != null) {
             return new DatabaseImpl(inner, this.manager());
         } else {
@@ -131,9 +139,14 @@ public final class DatabasesImpl implements Databases {
     }
 
     public Database update(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context) {
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole,
+        Context context) {
         DatabaseInner inner =
-            this.serviceClient().update(resourceGroupName, clusterName, databaseName, parameters, context);
+            this.serviceClient().update(resourceGroupName, clusterName, databaseName, parameters, callerRole, context);
         if (inner != null) {
             return new DatabaseImpl(inner, this.manager());
         } else {
@@ -163,20 +176,6 @@ public final class DatabasesImpl implements Databases {
         return Utils.mapPage(inner, inner1 -> new DatabasePrincipalImpl(inner1, this.manager()));
     }
 
-    public DatabasePrincipalListResult addPrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd) {
-        DatabasePrincipalListResultInner inner =
-            this.serviceClient().addPrincipals(resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd);
-        if (inner != null) {
-            return new DatabasePrincipalListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DatabasePrincipalListResult> addPrincipalsWithResponse(
         String resourceGroupName,
         String clusterName,
@@ -199,15 +198,13 @@ public final class DatabasesImpl implements Databases {
         }
     }
 
-    public DatabasePrincipalListResult removePrincipals(
+    public DatabasePrincipalListResult addPrincipals(
         String resourceGroupName,
         String clusterName,
         String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove) {
+        DatabasePrincipalListRequest databasePrincipalsToAdd) {
         DatabasePrincipalListResultInner inner =
-            this
-                .serviceClient()
-                .removePrincipals(resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove);
+            this.serviceClient().addPrincipals(resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd);
         if (inner != null) {
             return new DatabasePrincipalListResultImpl(inner, this.manager());
         } else {
@@ -232,6 +229,22 @@ public final class DatabasesImpl implements Databases {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DatabasePrincipalListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DatabasePrincipalListResult removePrincipals(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabasePrincipalListRequest databasePrincipalsToRemove) {
+        DatabasePrincipalListResultInner inner =
+            this
+                .serviceClient()
+                .removePrincipals(resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove);
+        if (inner != null) {
+            return new DatabasePrincipalListResultImpl(inner, this.manager());
         } else {
             return null;
         }

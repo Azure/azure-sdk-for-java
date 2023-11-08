@@ -8,7 +8,15 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReliabilityLevel. */
+/**
+ * The reliability level sets the replica set size of system services. Learn about
+ * [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
+ *
+ * <p>- None - Run the System services with a target replica set count of 1. This should only be used for test clusters.
+ * - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters.
+ * - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a
+ * target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9.
+ */
 public final class ReliabilityLevel extends ExpandableStringEnum<ReliabilityLevel> {
     /** Static value None for ReliabilityLevel. */
     public static final ReliabilityLevel NONE = fromString("None");
@@ -26,6 +34,15 @@ public final class ReliabilityLevel extends ExpandableStringEnum<ReliabilityLeve
     public static final ReliabilityLevel PLATINUM = fromString("Platinum");
 
     /**
+     * Creates a new instance of ReliabilityLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReliabilityLevel() {
+    }
+
+    /**
      * Creates or finds a ReliabilityLevel from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +53,11 @@ public final class ReliabilityLevel extends ExpandableStringEnum<ReliabilityLeve
         return fromString(name, ReliabilityLevel.class);
     }
 
-    /** @return known ReliabilityLevel values. */
+    /**
+     * Gets known ReliabilityLevel values.
+     *
+     * @return known ReliabilityLevel values.
+     */
     public static Collection<ReliabilityLevel> values() {
         return values(ReliabilityLevel.class);
     }

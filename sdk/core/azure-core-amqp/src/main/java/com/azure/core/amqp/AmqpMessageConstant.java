@@ -122,7 +122,12 @@ public enum AmqpMessageConstant {
     /**
      * The identifier for deadletter reason.
      */
-    DEAD_LETTER_REASON_ANNOTATION_NAME("DeadLetterReason");
+    DEAD_LETTER_REASON_ANNOTATION_NAME("DeadLetterReason"),
+    /**
+     * The state of message.
+     */
+    MESSAGE_STATE_ANNOTATION_NAME("x-opt-message-state");
+
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;

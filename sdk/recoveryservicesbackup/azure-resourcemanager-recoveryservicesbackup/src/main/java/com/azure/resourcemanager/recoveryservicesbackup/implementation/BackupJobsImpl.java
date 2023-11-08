@@ -11,10 +11,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupJobsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.JobResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupJobs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupJobsImpl implements BackupJobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupJobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupJobsImpl.class);
 
     private final BackupJobsClient innerClient;
 

@@ -10,10 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ItemLevelRecoveryConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecoveryConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ItemLevelRecoveryConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ItemLevelRecoveryConnectionsImpl.class);
 
     private final ItemLevelRecoveryConnectionsClient innerClient;
 
@@ -24,26 +23,6 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public void provision(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        IlrRequestResource parameters) {
-        this
-            .serviceClient()
-            .provision(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters);
     }
 
     public Response<Void> provisionWithResponse(
@@ -68,16 +47,24 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
                 context);
     }
 
-    public void revoke(
+    public void provision(
         String vaultName,
         String resourceGroupName,
         String fabricName,
         String containerName,
         String protectedItemName,
-        String recoveryPointId) {
+        String recoveryPointId,
+        IlrRequestResource parameters) {
         this
             .serviceClient()
-            .revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
+            .provision(
+                vaultName,
+                resourceGroupName,
+                fabricName,
+                containerName,
+                protectedItemName,
+                recoveryPointId,
+                parameters);
     }
 
     public Response<Void> revokeWithResponse(
@@ -92,6 +79,18 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
             .serviceClient()
             .revokeWithResponse(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, context);
+    }
+
+    public void revoke(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        String recoveryPointId) {
+        this
+            .serviceClient()
+            .revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
     }
 
     private ItemLevelRecoveryConnectionsClient serviceClient() {

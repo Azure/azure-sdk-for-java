@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.fluent.SitesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner;
 import com.azure.resourcemanager.mobilenetwork.models.Site;
+import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
 import com.azure.resourcemanager.mobilenetwork.models.Sites;
 
 public final class SitesImpl implements Sites {
@@ -35,15 +36,6 @@ public final class SitesImpl implements Sites {
         this.serviceClient().delete(resourceGroupName, mobileNetworkName, siteName, context);
     }
 
-    public Site get(String resourceGroupName, String mobileNetworkName, String siteName) {
-        SiteInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, siteName);
-        if (inner != null) {
-            return new SiteImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Site> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String siteName, Context context) {
         Response<SiteInner> inner =
@@ -59,6 +51,15 @@ public final class SitesImpl implements Sites {
         }
     }
 
+    public Site get(String resourceGroupName, String mobileNetworkName, String siteName) {
+        SiteInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, siteName);
+        if (inner != null) {
+            return new SiteImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<Site> listByMobileNetwork(String resourceGroupName, String mobileNetworkName) {
         PagedIterable<SiteInner> inner = this.serviceClient().listByMobileNetwork(resourceGroupName, mobileNetworkName);
         return Utils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
@@ -69,6 +70,20 @@ public final class SitesImpl implements Sites {
         PagedIterable<SiteInner> inner =
             this.serviceClient().listByMobileNetwork(resourceGroupName, mobileNetworkName, context);
         return Utils.mapPage(inner, inner1 -> new SiteImpl(inner1, this.manager()));
+    }
+
+    public void deletePacketCore(
+        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters) {
+        this.serviceClient().deletePacketCore(resourceGroupName, mobileNetworkName, siteName, parameters);
+    }
+
+    public void deletePacketCore(
+        String resourceGroupName,
+        String mobileNetworkName,
+        String siteName,
+        SiteDeletePacketCore parameters,
+        Context context) {
+        this.serviceClient().deletePacketCore(resourceGroupName, mobileNetworkName, siteName, parameters, context);
     }
 
     public Site getById(String id) {

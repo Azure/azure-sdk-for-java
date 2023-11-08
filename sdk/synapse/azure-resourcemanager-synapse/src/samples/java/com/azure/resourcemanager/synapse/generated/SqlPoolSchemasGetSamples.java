@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolSchemas Get. */
 public final class SqlPoolSchemasGetSamples {
     /*
@@ -17,6 +15,8 @@ public final class SqlPoolSchemasGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getDatabaseSchema(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolSchemas().getWithResponse("myRG", "serverName", "myDatabase", "dbo", Context.NONE);
+        manager
+            .sqlPoolSchemas()
+            .getWithResponse("myRG", "serverName", "myDatabase", "dbo", com.azure.core.util.Context.NONE);
     }
 }

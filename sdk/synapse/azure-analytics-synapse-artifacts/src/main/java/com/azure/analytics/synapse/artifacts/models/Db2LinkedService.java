@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for DB2 data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,41 +19,36 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class Db2LinkedService extends LinkedService {
     /*
-     * The connection string. It is mutually exclusive with server, database,
-     * authenticationType, userName, packageCollection and
-     * certificateCommonName property. Type: string, SecureString or
+     * The connection string. It is mutually exclusive with server, database, authenticationType, userName,
+     * packageCollection and certificateCommonName property. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
 
     /*
-     * Server name for connection. It is mutually exclusive with
-     * connectionString property. Type: string (or Expression with resultType
-     * string).
+     * Server name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "typeProperties.server", required = true)
     private Object server;
 
     /*
-     * Database name for connection. It is mutually exclusive with
-     * connectionString property. Type: string (or Expression with resultType
-     * string).
+     * Database name for connection. It is mutually exclusive with connectionString property. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
     /*
-     * AuthenticationType to be used for connection. It is mutually exclusive
-     * with connectionString property.
+     * AuthenticationType to be used for connection. It is mutually exclusive with connectionString property.
      */
     @JsonProperty(value = "typeProperties.authenticationType")
     private Db2AuthenticationType authenticationType;
 
     /*
-     * Username for authentication. It is mutually exclusive with
-     * connectionString property. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. It is mutually exclusive with connectionString property. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private Object username;
@@ -63,29 +60,29 @@ public class Db2LinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * Under where packages are created when querying database. It is mutually
-     * exclusive with connectionString property. Type: string (or Expression
-     * with resultType string).
+     * Under where packages are created when querying database. It is mutually exclusive with connectionString
+     * property. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.packageCollection")
     private Object packageCollection;
 
     /*
-     * Certificate Common Name when TLS is enabled. It is mutually exclusive
-     * with connectionString property. Type: string (or Expression with
-     * resultType string).
+     * Certificate Common Name when TLS is enabled. It is mutually exclusive with connectionString property. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.certificateCommonName")
     private Object certificateCommonName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. It is
-     * mutually exclusive with connectionString property. Type: string (or
-     * Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. It is mutually exclusive with connectionString property. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of Db2LinkedService class. */
+    public Db2LinkedService() {}
 
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with server, database,
@@ -284,6 +281,34 @@ public class Db2LinkedService extends LinkedService {
      */
     public Db2LinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2LinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Db2LinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

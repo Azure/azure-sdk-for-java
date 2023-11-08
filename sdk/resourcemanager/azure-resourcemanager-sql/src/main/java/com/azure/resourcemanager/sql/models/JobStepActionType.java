@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobStepActionType. */
+/** Type of action being executed by the job step. */
 public final class JobStepActionType extends ExpandableStringEnum<JobStepActionType> {
     /** Static value TSql for JobStepActionType. */
     public static final JobStepActionType TSQL = fromString("TSql");
@@ -24,7 +24,11 @@ public final class JobStepActionType extends ExpandableStringEnum<JobStepActionT
         return fromString(name, JobStepActionType.class);
     }
 
-    /** @return known JobStepActionType values. */
+    /**
+     * Gets known JobStepActionType values.
+     *
+     * @return known JobStepActionType values.
+     */
     public static Collection<JobStepActionType> values() {
         return values(JobStepActionType.class);
     }

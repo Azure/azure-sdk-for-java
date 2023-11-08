@@ -20,7 +20,11 @@ public final class OrderBy {
      * Describes if results should be in ascending/descending order
      */
     @JsonProperty(value = "order")
-    private OrderByOrder order;
+    private FirewallPolicyIdpsQuerySortOrder order;
+
+    /** Creates an instance of OrderBy class. */
+    public OrderBy() {
+    }
 
     /**
      * Get the field property: Describes the actual column name to sort by.
@@ -47,7 +51,7 @@ public final class OrderBy {
      *
      * @return the order value.
      */
-    public OrderByOrder order() {
+    public FirewallPolicyIdpsQuerySortOrder order() {
         return this.order;
     }
 
@@ -57,7 +61,7 @@ public final class OrderBy {
      * @param order the order value to set.
      * @return the OrderBy object itself.
      */
-    public OrderBy withOrder(OrderByOrder order) {
+    public OrderBy withOrder(FirewallPolicyIdpsQuerySortOrder order) {
         this.order = order;
         return this;
     }

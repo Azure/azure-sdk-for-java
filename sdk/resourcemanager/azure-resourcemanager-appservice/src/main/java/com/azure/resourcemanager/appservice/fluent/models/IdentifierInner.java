@@ -17,6 +17,10 @@ public final class IdentifierInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private IdentifierProperties innerProperties;
 
+    /** Creates an instance of IdentifierInner class. */
+    public IdentifierInner() {
+    }
+
     /**
      * Get the innerProperties property: Identifier resource specific properties.
      *

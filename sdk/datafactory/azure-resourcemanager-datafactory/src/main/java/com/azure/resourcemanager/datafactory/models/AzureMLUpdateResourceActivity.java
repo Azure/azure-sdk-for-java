@@ -24,6 +24,10 @@ public final class AzureMLUpdateResourceActivity extends ExecutionActivity {
     private AzureMLUpdateResourceActivityTypeProperties innerTypeProperties =
         new AzureMLUpdateResourceActivityTypeProperties();
 
+    /** Creates an instance of AzureMLUpdateResourceActivity class. */
+    public AzureMLUpdateResourceActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure ML Update Resource management activity properties.
      *
@@ -58,6 +62,20 @@ public final class AzureMLUpdateResourceActivity extends ExecutionActivity {
     @Override
     public AzureMLUpdateResourceActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLUpdateResourceActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** KEK is encryption key for BEK. */
 @Fluent
 public final class KekDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KekDetails.class);
-
     /*
      * Key is KEK.
      */
@@ -31,6 +27,10 @@ public final class KekDetails {
      */
     @JsonProperty(value = "keyBackupData")
     private String keyBackupData;
+
+    /** Creates an instance of KekDetails class. */
+    public KekDetails() {
+    }
 
     /**
      * Get the keyUrl property: Key is KEK.

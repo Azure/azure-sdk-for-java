@@ -100,8 +100,7 @@ public final class CertificateProperties {
     private String publicKeyHash;
 
     /*
-     * Specification for the App Service Environment to use for the
-     * certificate.
+     * Specification for the App Service Environment to use for the certificate.
      */
     @JsonProperty(value = "hostingEnvironmentProfile", access = JsonProperty.Access.WRITE_ONLY)
     private HostingEnvironmentProfile hostingEnvironmentProfile;
@@ -126,8 +125,7 @@ public final class CertificateProperties {
 
     /*
      * Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      */
     @JsonProperty(value = "serverFarmId")
     private String serverFarmId;
@@ -143,6 +141,10 @@ public final class CertificateProperties {
      */
     @JsonProperty(value = "domainValidationMethod")
     private String domainValidationMethod;
+
+    /** Creates an instance of CertificateProperties class. */
+    public CertificateProperties() {
+    }
 
     /**
      * Get the password property: Certificate password.
@@ -364,8 +366,7 @@ public final class CertificateProperties {
 
     /**
      * Get the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @return the serverFarmId value.
      */
@@ -375,8 +376,7 @@ public final class CertificateProperties {
 
     /**
      * Set the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @param serverFarmId the serverFarmId value to set.
      * @return the CertificateProperties object itself.

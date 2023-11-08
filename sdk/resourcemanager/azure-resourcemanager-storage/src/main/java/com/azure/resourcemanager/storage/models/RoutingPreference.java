@@ -20,18 +20,20 @@ public final class RoutingPreference {
     private RoutingChoice routingChoice;
 
     /*
-     * A boolean flag which indicates whether microsoft routing storage
-     * endpoints are to be published
+     * A boolean flag which indicates whether microsoft routing storage endpoints are to be published
      */
     @JsonProperty(value = "publishMicrosoftEndpoints")
     private Boolean publishMicrosoftEndpoints;
 
     /*
-     * A boolean flag which indicates whether internet routing storage
-     * endpoints are to be published
+     * A boolean flag which indicates whether internet routing storage endpoints are to be published
      */
     @JsonProperty(value = "publishInternetEndpoints")
     private Boolean publishInternetEndpoints;
+
+    /** Creates an instance of RoutingPreference class. */
+    public RoutingPreference() {
+    }
 
     /**
      * Get the routingChoice property: Routing Choice defines the kind of network routing opted by the user.

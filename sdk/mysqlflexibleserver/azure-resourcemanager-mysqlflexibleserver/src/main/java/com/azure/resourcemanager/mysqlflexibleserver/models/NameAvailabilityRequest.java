@@ -23,6 +23,10 @@ public final class NameAvailabilityRequest {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of NameAvailabilityRequest class. */
+    public NameAvailabilityRequest() {
+    }
+
     /**
      * Get the name property: Resource name to verify.
      *

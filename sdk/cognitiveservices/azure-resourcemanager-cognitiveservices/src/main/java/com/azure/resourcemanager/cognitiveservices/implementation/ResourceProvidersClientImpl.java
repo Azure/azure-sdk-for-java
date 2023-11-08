@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.DomainAvailabilityInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.SkuAvailabilityListResultInner;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    private final ClientLogger logger = new ClientLogger(ResourceProvidersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceProvidersService service;
 
@@ -57,11 +54,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "CognitiveServicesMan")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}"
-                + "/checkSkuAvailability")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/checkSkuAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuAvailabilityListResultInner>> checkSkuAvailability(
@@ -94,7 +90,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check SKU availability result list.
+     * @return check SKU availability result list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuAvailabilityListResultInner>> checkSkuAvailabilityWithResponseAsync(
@@ -144,7 +140,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check SKU availability result list.
+     * @return check SKU availability result list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SkuAvailabilityListResultInner>> checkSkuAvailabilityWithResponseAsync(
@@ -190,20 +186,30 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check SKU availability result list.
+     * @return check SKU availability result list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SkuAvailabilityListResultInner> checkSkuAvailabilityAsync(
         String location, CheckSkuAvailabilityParameter parameters) {
         return checkSkuAvailabilityWithResponseAsync(location, parameters)
-            .flatMap(
-                (Response<SkuAvailabilityListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Check available SKUs.
+     *
+     * @param location Resource location.
+     * @param parameters Check SKU Availability POST body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return check SKU availability result list along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(
+        String location, CheckSkuAvailabilityParameter parameters, Context context) {
+        return checkSkuAvailabilityWithResponseAsync(location, parameters, context).block();
     }
 
     /**
@@ -219,24 +225,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuAvailabilityListResultInner checkSkuAvailability(
         String location, CheckSkuAvailabilityParameter parameters) {
-        return checkSkuAvailabilityAsync(location, parameters).block();
-    }
-
-    /**
-     * Check available SKUs.
-     *
-     * @param location Resource location.
-     * @param parameters Check SKU Availability POST body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check SKU availability result list.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(
-        String location, CheckSkuAvailabilityParameter parameters, Context context) {
-        return checkSkuAvailabilityWithResponseAsync(location, parameters, context).block();
+        return checkSkuAvailabilityWithResponse(location, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -246,7 +235,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability.
+     * @return domain availability along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DomainAvailabilityInner>> checkDomainAvailabilityWithResponseAsync(
@@ -291,7 +280,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability.
+     * @return domain availability along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DomainAvailabilityInner>> checkDomainAvailabilityWithResponseAsync(
@@ -332,19 +321,27 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability.
+     * @return domain availability on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DomainAvailabilityInner> checkDomainAvailabilityAsync(CheckDomainAvailabilityParameter parameters) {
-        return checkDomainAvailabilityWithResponseAsync(parameters)
-            .flatMap(
-                (Response<DomainAvailabilityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return checkDomainAvailabilityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param parameters Check Domain Availability parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain availability along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(
+        CheckDomainAvailabilityParameter parameters, Context context) {
+        return checkDomainAvailabilityWithResponseAsync(parameters, context).block();
     }
 
     /**
@@ -358,22 +355,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainAvailabilityInner checkDomainAvailability(CheckDomainAvailabilityParameter parameters) {
-        return checkDomainAvailabilityAsync(parameters).block();
-    }
-
-    /**
-     * Check whether a domain is available.
-     *
-     * @param parameters Check Domain Availability parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(
-        CheckDomainAvailabilityParameter parameters, Context context) {
-        return checkDomainAvailabilityWithResponseAsync(parameters, context).block();
+        return checkDomainAvailabilityWithResponse(parameters, Context.NONE).getValue();
     }
 }

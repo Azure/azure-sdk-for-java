@@ -15,18 +15,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class TumblingWindowTriggerDependencyReference extends TriggerDependencyReference {
     /*
-     * Timespan applied to the start time of a tumbling window when evaluating
-     * dependency.
+     * Timespan applied to the start time of a tumbling window when evaluating dependency.
      */
     @JsonProperty(value = "offset")
     private String offset;
 
     /*
-     * The size of the window when evaluating the dependency. If undefined the
-     * frequency of the tumbling window will be used.
+     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be
+     * used.
      */
     @JsonProperty(value = "size")
     private String size;
+
+    /** Creates an instance of TumblingWindowTriggerDependencyReference class. */
+    public TumblingWindowTriggerDependencyReference() {}
 
     /**
      * Get the offset property: Timespan applied to the start time of a tumbling window when evaluating dependency.
@@ -67,6 +69,13 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
      */
     public TumblingWindowTriggerDependencyReference setSize(String size) {
         this.size = size;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TumblingWindowTriggerDependencyReference setReferenceTrigger(TriggerReference referenceTrigger) {
+        super.setReferenceTrigger(referenceTrigger);
         return this;
     }
 }

@@ -33,6 +33,9 @@ public class CompressionReadSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CompressionReadSettings class. */
+    public CompressionReadSettings() {}
+
     /**
      * Get the additionalProperties property: Compression read settings.
      *

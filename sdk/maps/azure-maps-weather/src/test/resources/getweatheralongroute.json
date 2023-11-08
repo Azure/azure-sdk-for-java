@@ -1,0 +1,360 @@
+{
+    "summary": {
+        "iconCode": 12,
+        "hazards": {
+            "maxHazardIndex": 1,
+            "hazardDetails": [
+                {
+                    "hazardIndex": 1,
+                    "hazardCode": "LightRain",
+                    "shortPhrase": "Light Rain"
+                }
+            ]
+        }
+    },
+    "waypoints": [
+        {
+            "iconCode": 12,
+            "shortPhrase": "Light Rain",
+            "isDayTime": true,
+            "cloudCover": 100,
+            "temperature": {
+                "value": 12.0,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 95.0
+                },
+                "speed": {
+                    "value": 10.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 22.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "precipitation": {
+                "dbz": 20.2,
+                "type": "RAIN"
+            },
+            "lightningCount": 0,
+            "sunGlare": {
+                "calculatedVehicleHeading": 90,
+                "glareIndex": 0
+            },
+            "hazards": {
+                "maxHazardIndex": 1,
+                "hazardDetails": [
+                    {
+                        "hazardIndex": 1,
+                        "hazardCode": "LightRain",
+                        "shortPhrase": "Light Rain"
+                    }
+                ]
+            },
+            "notifications": [
+                {
+                    "type": "Onset",
+                    "hazardIndex": 1,
+                    "hazardCode": "LightRain",
+                    "shortPhrase": "Light Rain"
+                }
+            ]
+        },
+        {
+            "iconCode": 12,
+            "shortPhrase": "Light Rain",
+            "isDayTime": true,
+            "cloudCover": 100,
+            "temperature": {
+                "value": 12.0,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 93.0
+                },
+                "speed": {
+                    "value": 10.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 24.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "precipitation": {
+                "dbz": 20.7,
+                "type": "RAIN"
+            },
+            "lightningCount": 0,
+            "sunGlare": {
+                "calculatedVehicleHeading": 77,
+                "glareIndex": 0
+            },
+            "hazards": {
+                "maxHazardIndex": 1,
+                "hazardDetails": [
+                    {
+                        "hazardIndex": 1,
+                        "hazardCode": "LightRain",
+                        "shortPhrase": "Light Rain"
+                    }
+                ]
+            },
+            "notifications": []
+        },
+        {
+            "iconCode": 12,
+            "shortPhrase": "Light Rain",
+            "isDayTime": true,
+            "cloudCover": 100,
+            "temperature": {
+                "value": 11.1,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 91.0
+                },
+                "speed": {
+                    "value": 11.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 28.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "precipitation": {
+                "dbz": 18.6,
+                "type": "RAIN"
+            },
+            "lightningCount": 0,
+            "sunGlare": {
+                "calculatedVehicleHeading": 44,
+                "glareIndex": 0
+            },
+            "hazards": {
+                "maxHazardIndex": 1,
+                "hazardDetails": [
+                    {
+                        "hazardIndex": 1,
+                        "hazardCode": "LightRain",
+                        "shortPhrase": "Light Rain"
+                    }
+                ]
+            },
+            "notifications": []
+        },
+        {
+            "iconCode": 12,
+            "shortPhrase": "Light Rain",
+            "isDayTime": true,
+            "cloudCover": 100,
+            "temperature": {
+                "value": 10.4,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 89.0
+                },
+                "speed": {
+                    "value": 13.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 30.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "precipitation": {
+                "dbz": 19.7,
+                "type": "RAIN"
+            },
+            "lightningCount": 0,
+            "sunGlare": {
+                "calculatedVehicleHeading": 32,
+                "glareIndex": 0
+            },
+            "hazards": {
+                "maxHazardIndex": 1,
+                "hazardDetails": [
+                    {
+                        "hazardIndex": 1,
+                        "hazardCode": "LightRain",
+                        "shortPhrase": "Light Rain"
+                    }
+                ]
+            },
+            "notifications": []
+        },
+        {
+            "iconCode": 12,
+            "shortPhrase": "Light Rain",
+            "isDayTime": true,
+            "cloudCover": 100,
+            "temperature": {
+                "value": 9.0,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 85.0
+                },
+                "speed": {
+                    "value": 15.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 35.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "precipitation": {
+                "dbz": 22.3,
+                "type": "RAIN"
+            },
+            "lightningCount": 0,
+            "sunGlare": {
+                "calculatedVehicleHeading": 36,
+                "glareIndex": 0
+            },
+            "hazards": {
+                "maxHazardIndex": 1,
+                "hazardDetails": [
+                    {
+                        "hazardIndex": 1,
+                        "hazardCode": "LightRain",
+                        "shortPhrase": "Light Rain"
+                    }
+                ]
+            },
+            "notifications": []
+        },
+        {
+            "iconCode": 12,
+            "shortPhrase": "Light Rain",
+            "isDayTime": true,
+            "cloudCover": 100,
+            "temperature": {
+                "value": 9.1,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 86.0
+                },
+                "speed": {
+                    "value": 14.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 36.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "precipitation": {
+                "dbz": 22.6,
+                "type": "RAIN"
+            },
+            "lightningCount": 0,
+            "sunGlare": {
+                "calculatedVehicleHeading": 38,
+                "glareIndex": 0
+            },
+            "hazards": {
+                "maxHazardIndex": 1,
+                "hazardDetails": [
+                    {
+                        "hazardIndex": 1,
+                        "hazardCode": "LightRain",
+                        "shortPhrase": "Light Rain"
+                    }
+                ]
+            },
+            "notifications": []
+        },
+        {
+            "iconCode": 12,
+            "shortPhrase": "Light Rain",
+            "isDayTime": true,
+            "cloudCover": 100,
+            "temperature": {
+                "value": 8.9,
+                "unit": "C",
+                "unitType": 17
+            },
+            "wind": {
+                "direction": {
+                    "degrees": 85.0
+                },
+                "speed": {
+                    "value": 15.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "windGust": {
+                "speed": {
+                    "value": 38.0,
+                    "unit": "km/h",
+                    "unitType": 7
+                }
+            },
+            "precipitation": {
+                "dbz": 22.3,
+                "type": "RAIN"
+            },
+            "lightningCount": 0,
+            "sunGlare": {
+                "calculatedVehicleHeading": 43,
+                "glareIndex": 0
+            },
+            "hazards": {
+                "maxHazardIndex": 1,
+                "hazardDetails": [
+                    {
+                        "hazardIndex": 1,
+                        "hazardCode": "LightRain",
+                        "shortPhrase": "Light Rain"
+                    }
+                ]
+            },
+            "notifications": []
+        }
+    ]
+}

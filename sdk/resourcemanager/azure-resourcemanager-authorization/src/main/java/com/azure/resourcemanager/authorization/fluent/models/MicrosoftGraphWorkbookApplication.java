@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,11 +15,9 @@ import java.util.Map;
 /** workbookApplication. */
 @Fluent
 public final class MicrosoftGraphWorkbookApplication extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookApplication.class);
-
     /*
-     * Returns the calculation mode used in the workbook. Possible values are:
-     * Automatic, AutomaticExceptTables, Manual.
+     * Returns the calculation mode used in the workbook. Possible values are: Automatic, AutomaticExceptTables,
+     * Manual.
      */
     @JsonProperty(value = "calculationMode")
     private String calculationMode;
@@ -29,6 +26,10 @@ public final class MicrosoftGraphWorkbookApplication extends MicrosoftGraphEntit
      * workbookApplication
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookApplication class. */
+    public MicrosoftGraphWorkbookApplication() {
+    }
 
     /**
      * Get the calculationMode property: Returns the calculation mode used in the workbook. Possible values are:

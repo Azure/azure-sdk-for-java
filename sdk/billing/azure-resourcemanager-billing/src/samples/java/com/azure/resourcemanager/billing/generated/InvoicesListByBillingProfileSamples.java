@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Invoices ListByBillingProfile. */
 public final class InvoicesListByBillingProfileSamples {
     /*
@@ -20,7 +18,11 @@ public final class InvoicesListByBillingProfileSamples {
         manager
             .invoices()
             .listByBillingProfile(
-                "{billingAccountName}", "{billingProfileName}", "2018-01-01", "2018-06-30", Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "2018-01-01",
+                "2018-06-30",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,6 +38,10 @@ public final class InvoicesListByBillingProfileSamples {
         manager
             .invoices()
             .listByBillingProfile(
-                "{billingAccountName}", "{billingProfileName}", "2018-01-01", "2018-06-30", Context.NONE);
+                "{billingAccountName}",
+                "{billingProfileName}",
+                "2018-01-01",
+                "2018-06-30",
+                com.azure.core.util.Context.NONE);
     }
 }

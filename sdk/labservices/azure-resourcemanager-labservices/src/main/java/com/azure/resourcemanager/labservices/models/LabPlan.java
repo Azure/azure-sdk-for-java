@@ -56,6 +56,13 @@ public interface LabPlan {
     SystemData systemData();
 
     /**
+     * Gets the identity property: Managed Identity Information.
+     *
+     * @return the identity value.
+     */
+    Identity identity();
+
+    /**
      * Gets the provisioningState property: Current provisioning state of the lab plan.
      *
      * @return the provisioningState value.
@@ -133,6 +140,13 @@ public interface LabPlan {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.labservices.fluent.models.LabPlanInner object.
      *
      * @return the inner object.
@@ -185,6 +199,7 @@ public interface LabPlan {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithDefaultConnectionProfile,
                 DefinitionStages.WithDefaultAutoShutdownProfile,
                 DefinitionStages.WithDefaultNetworkProfile,
@@ -216,6 +231,16 @@ public interface LabPlan {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the LabPlan definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed Identity Information.
+             *
+             * @param identity Managed Identity Information.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(Identity identity);
         }
         /** The stage of the LabPlan definition allowing to specify defaultConnectionProfile. */
         interface WithDefaultConnectionProfile {
@@ -315,6 +340,7 @@ public interface LabPlan {
     /** The template for LabPlan update. */
     interface Update
         extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
             UpdateStages.WithDefaultConnectionProfile,
             UpdateStages.WithDefaultAutoShutdownProfile,
             UpdateStages.WithDefaultNetworkProfile,
@@ -348,6 +374,16 @@ public interface LabPlan {
              * @return the next definition stage.
              */
             Update withTags(List<String> tags);
+        }
+        /** The stage of the LabPlan update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed Identity Information.
+             *
+             * @param identity Managed Identity Information.
+             * @return the next definition stage.
+             */
+            Update withIdentity(Identity identity);
         }
         /** The stage of the LabPlan update allowing to specify defaultConnectionProfile. */
         interface WithDefaultConnectionProfile {
@@ -453,7 +489,9 @@ public interface LabPlan {
     LabPlan refresh(Context context);
 
     /**
-     * Saves an image from a lab VM to the attached shared image gallery.
+     * Save an image from a lab VM to the attached shared image gallery.
+     *
+     * <p>Saves an image from a lab VM to the attached shared image gallery.
      *
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,7 +501,9 @@ public interface LabPlan {
     void saveImage(SaveImageBody body);
 
     /**
-     * Saves an image from a lab VM to the attached shared image gallery.
+     * Save an image from a lab VM to the attached shared image gallery.
+     *
+     * <p>Saves an image from a lab VM to the attached shared image gallery.
      *
      * @param body The request body.
      * @param context The context to associate with this operation.

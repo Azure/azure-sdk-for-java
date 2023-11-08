@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReplicationState. */
+/** Replication state (PENDING, SEEDING, CATCHUP, SUSPENDED). */
 public final class ReplicationState extends ExpandableStringEnum<ReplicationState> {
     /** Static value PENDING for ReplicationState. */
     public static final ReplicationState PENDING = fromString("PENDING");
@@ -33,7 +33,11 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
         return fromString(name, ReplicationState.class);
     }
 
-    /** @return known ReplicationState values. */
+    /**
+     * Gets known ReplicationState values.
+     *
+     * @return known ReplicationState values.
+     */
     public static Collection<ReplicationState> values() {
         return values(ReplicationState.class);
     }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** The WebhookHookInfoPatch model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "hookType")
@@ -19,6 +20,9 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
      */
     @JsonProperty(value = "hookParameter")
     private WebhookHookParameterPatch hookParameter;
+
+    /** Creates an instance of WebhookHookInfoPatch class. */
+    public WebhookHookInfoPatch() {}
 
     /**
      * Get the hookParameter property: The hookParameter property.
@@ -37,6 +41,34 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
      */
     public WebhookHookInfoPatch setHookParameter(WebhookHookParameterPatch hookParameter) {
         this.hookParameter = hookParameter;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebhookHookInfoPatch setHookName(String hookName) {
+        super.setHookName(hookName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebhookHookInfoPatch setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebhookHookInfoPatch setExternalLink(String externalLink) {
+        super.setExternalLink(externalLink);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebhookHookInfoPatch setAdmins(List<String> admins) {
+        super.setAdmins(admins);
         return this;
     }
 }

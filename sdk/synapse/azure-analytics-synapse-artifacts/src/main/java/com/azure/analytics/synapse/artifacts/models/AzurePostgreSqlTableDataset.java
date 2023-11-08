@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Azure PostgreSQL dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,25 +19,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzurePostgreSqlTableDataset extends Dataset {
     /*
-     * The table name of the Azure PostgreSQL database which includes both
-     * schema and table. Type: string (or Expression with resultType string).
+     * The table name of the Azure PostgreSQL database which includes both schema and table. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The table name of the Azure PostgreSQL database. Type: string (or
-     * Expression with resultType string).
+     * The table name of the Azure PostgreSQL database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
     /*
-     * The schema name of the Azure PostgreSQL database. Type: string (or
-     * Expression with resultType string).
+     * The schema name of the Azure PostgreSQL database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
+
+    /** Creates an instance of AzurePostgreSqlTableDataset class. */
+    public AzurePostgreSqlTableDataset() {}
 
     /**
      * Get the tableName property: The table name of the Azure PostgreSQL database which includes both schema and table.
@@ -100,6 +103,55 @@ public class AzurePostgreSqlTableDataset extends Dataset {
      */
     public AzurePostgreSqlTableDataset setSchemaTypePropertiesSchema(Object schemaTypePropertiesSchema) {
         this.schemaTypePropertiesSchema = schemaTypePropertiesSchema;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzurePostgreSqlTableDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzurePostgreSqlTableDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzurePostgreSqlTableDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzurePostgreSqlTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzurePostgreSqlTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzurePostgreSqlTableDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzurePostgreSqlTableDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

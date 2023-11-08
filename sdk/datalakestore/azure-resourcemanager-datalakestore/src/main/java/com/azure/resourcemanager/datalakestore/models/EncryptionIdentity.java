@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** The encryption identity properties. */
 @Fluent
 public class EncryptionIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionIdentity.class);
-
     /*
-     * The type of encryption being used. Currently the only supported type is
-     * 'SystemAssigned'.
+     * The type of encryption being used. Currently the only supported type is 'SystemAssigned'.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "SystemAssigned";
 
     /*
      * The principal identifier associated with the encryption.

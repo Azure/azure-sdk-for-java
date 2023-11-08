@@ -18,6 +18,10 @@ public final class BackendAddressInboundNatRulePortMappingsInner {
     @JsonProperty(value = "inboundNatRulePortMappings")
     private List<InboundNatRulePortMapping> inboundNatRulePortMappings;
 
+    /** Creates an instance of BackendAddressInboundNatRulePortMappingsInner class. */
+    public BackendAddressInboundNatRulePortMappingsInner() {
+    }
+
     /**
      * Get the inboundNatRulePortMappings property: Collection of inbound NAT rule port mappings.
      *

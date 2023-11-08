@@ -5,186 +5,132 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.sql.models.ReplicationLinkType;
 import com.azure.resourcemanager.sql.models.ReplicationRole;
 import com.azure.resourcemanager.sql.models.ReplicationState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Represents a database replication link. */
-@JsonFlatten
+/** A replication link. */
 @Immutable
-public class ReplicationLinkInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationLinkInner.class);
-
+public final class ReplicationLinkInner extends ProxyResource {
     /*
-     * Location of the server that contains this firewall rule.
+     * Resource properties.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
+    @JsonProperty(value = "properties")
+    private ReplicationLinkProperties innerProperties;
 
-    /*
-     * Legacy value indicating whether termination is allowed.  Currently
-     * always returns true.
-     */
-    @JsonProperty(value = "properties.isTerminationAllowed", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isTerminationAllowed;
-
-    /*
-     * Replication mode of this replication link.
-     */
-    @JsonProperty(value = "properties.replicationMode", access = JsonProperty.Access.WRITE_ONLY)
-    private String replicationMode;
-
-    /*
-     * The name of the server hosting the partner database.
-     */
-    @JsonProperty(value = "properties.partnerServer", access = JsonProperty.Access.WRITE_ONLY)
-    private String partnerServer;
-
-    /*
-     * The name of the partner database.
-     */
-    @JsonProperty(value = "properties.partnerDatabase", access = JsonProperty.Access.WRITE_ONLY)
-    private String partnerDatabase;
-
-    /*
-     * The Azure Region of the partner database.
-     */
-    @JsonProperty(value = "properties.partnerLocation", access = JsonProperty.Access.WRITE_ONLY)
-    private String partnerLocation;
-
-    /*
-     * The role of the database in the replication link.
-     */
-    @JsonProperty(value = "properties.role", access = JsonProperty.Access.WRITE_ONLY)
-    private ReplicationRole role;
-
-    /*
-     * The role of the partner database in the replication link.
-     */
-    @JsonProperty(value = "properties.partnerRole", access = JsonProperty.Access.WRITE_ONLY)
-    private ReplicationRole partnerRole;
-
-    /*
-     * The start time for the replication link.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * The percentage of seeding complete for the replication link.
-     */
-    @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer percentComplete;
-
-    /*
-     * The replication state for the replication link.
-     */
-    @JsonProperty(value = "properties.replicationState", access = JsonProperty.Access.WRITE_ONLY)
-    private ReplicationState replicationState;
-
-    /**
-     * Get the location property: Location of the server that contains this firewall rule.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
+    /** Creates an instance of ReplicationLinkInner class. */
+    public ReplicationLinkInner() {
     }
 
     /**
-     * Get the isTerminationAllowed property: Legacy value indicating whether termination is allowed. Currently always
-     * returns true.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the isTerminationAllowed value.
+     * @return the innerProperties value.
      */
-    public Boolean isTerminationAllowed() {
-        return this.isTerminationAllowed;
+    private ReplicationLinkProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the replicationMode property: Replication mode of this replication link.
-     *
-     * @return the replicationMode value.
-     */
-    public String replicationMode() {
-        return this.replicationMode;
-    }
-
-    /**
-     * Get the partnerServer property: The name of the server hosting the partner database.
+     * Get the partnerServer property: Resource partner server.
      *
      * @return the partnerServer value.
      */
     public String partnerServer() {
-        return this.partnerServer;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerServer();
     }
 
     /**
-     * Get the partnerDatabase property: The name of the partner database.
+     * Get the partnerDatabase property: Resource partner database.
      *
      * @return the partnerDatabase value.
      */
     public String partnerDatabase() {
-        return this.partnerDatabase;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerDatabase();
     }
 
     /**
-     * Get the partnerLocation property: The Azure Region of the partner database.
+     * Get the partnerLocation property: Resource partner location.
      *
      * @return the partnerLocation value.
      */
     public String partnerLocation() {
-        return this.partnerLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerLocation();
     }
 
     /**
-     * Get the role property: The role of the database in the replication link.
+     * Get the role property: Local replication role.
      *
      * @return the role value.
      */
     public ReplicationRole role() {
-        return this.role;
+        return this.innerProperties() == null ? null : this.innerProperties().role();
     }
 
     /**
-     * Get the partnerRole property: The role of the partner database in the replication link.
+     * Get the partnerRole property: Partner replication role.
      *
      * @return the partnerRole value.
      */
     public ReplicationRole partnerRole() {
-        return this.partnerRole;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerRole();
     }
 
     /**
-     * Get the startTime property: The start time for the replication link.
+     * Get the replicationMode property: Replication mode.
+     *
+     * @return the replicationMode value.
+     */
+    public String replicationMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().replicationMode();
+    }
+
+    /**
+     * Get the startTime property: Time at which the link was created.
      *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
-     * Get the percentComplete property: The percentage of seeding complete for the replication link.
+     * Get the percentComplete property: Seeding completion percentage for the link.
      *
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
-        return this.percentComplete;
+        return this.innerProperties() == null ? null : this.innerProperties().percentComplete();
     }
 
     /**
-     * Get the replicationState property: The replication state for the replication link.
+     * Get the replicationState property: Replication state (PENDING, SEEDING, CATCHUP, SUSPENDED).
      *
      * @return the replicationState value.
      */
     public ReplicationState replicationState() {
-        return this.replicationState;
+        return this.innerProperties() == null ? null : this.innerProperties().replicationState();
+    }
+
+    /**
+     * Get the isTerminationAllowed property: Whether the user is currently allowed to terminate the link.
+     *
+     * @return the isTerminationAllowed value.
+     */
+    public Boolean isTerminationAllowed() {
+        return this.innerProperties() == null ? null : this.innerProperties().isTerminationAllowed();
+    }
+
+    /**
+     * Get the linkType property: Link type (GEO, NAMED, STANDBY).
+     *
+     * @return the linkType value.
+     */
+    public ReplicationLinkType linkType() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkType();
     }
 
     /**
@@ -193,5 +139,8 @@ public class ReplicationLinkInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

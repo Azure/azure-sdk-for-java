@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
-import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
+import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.SharingProfile;
 import com.azure.resourcemanager.compute.models.SharingStatus;
 import com.azure.resourcemanager.compute.models.SoftDeletePolicy;
@@ -22,6 +22,10 @@ public final class GalleryInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private GalleryProperties innerProperties;
+
+    /** Creates an instance of GalleryInner class. */
+    public GalleryInner() {
+    }
 
     /**
      * Get the innerProperties property: Describes the properties of a Shared Image Gallery.
@@ -93,12 +97,13 @@ public final class GalleryInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery. The provisioning state, which only appears
-     * in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact.
+     *
+     * <p>The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.appconfiguration.fluent.PrivateLinkResourcesCli
 import com.azure.resourcemanager.appconfiguration.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.appconfiguration.models.PrivateLinkResource;
 import com.azure.resourcemanager.appconfiguration.models.PrivateLinkResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesImpl.class);
 
     private final PrivateLinkResourcesClient innerClient;
 
@@ -43,15 +42,6 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PrivateLinkResource get(String resourceGroupName, String configStoreName, String groupName) {
-        PrivateLinkResourceInner inner = this.serviceClient().get(resourceGroupName, configStoreName, groupName);
-        if (inner != null) {
-            return new PrivateLinkResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateLinkResource> getWithResponse(
         String resourceGroupName, String configStoreName, String groupName, Context context) {
         Response<PrivateLinkResourceInner> inner =
@@ -62,6 +52,15 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateLinkResource get(String resourceGroupName, String configStoreName, String groupName) {
+        PrivateLinkResourceInner inner = this.serviceClient().get(resourceGroupName, configStoreName, groupName);
+        if (inner != null) {
+            return new PrivateLinkResourceImpl(inner, this.manager());
         } else {
             return null;
         }

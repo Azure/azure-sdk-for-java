@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -48,7 +49,13 @@ public class AddDatePolicyBenchmark {
         }
 
         @Override
+        @Deprecated
         public String getHeaderValue(String name) {
+            return null;
+        }
+
+        @Override
+        public String getHeaderValue(HttpHeaderName headerName) {
             return null;
         }
 
@@ -80,7 +87,7 @@ public class AddDatePolicyBenchmark {
 
     private static final HttpPipelinePolicy DATE_TIME_RFC_1123 = (context, next) -> Mono.defer(() -> {
         OffsetDateTime now = OffsetDateTime.now();
-        context.getHttpRequest().getHeaders().set("Date", DateTimeRfc1123.toRfc1123String(now));
+        context.getHttpRequest().getHeaders().set(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
         return next.process();
     });
 
@@ -91,7 +98,7 @@ public class AddDatePolicyBenchmark {
 
     private static final HttpPipelinePolicy DATE_TIME_FORMATTER = (context, next) -> Mono.defer(() -> {
         OffsetDateTime now = OffsetDateTime.now();
-        context.getHttpRequest().getHeaders().set("Date", FORMATTER.format(now));
+        context.getHttpRequest().getHeaders().set(HttpHeaderName.DATE, FORMATTER.format(now));
         return next.process();
     });
 

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Bookmarks Delete. */
 public final class BookmarksDeleteSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/bookmarks/DeleteBookmark.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/DeleteBookmark.json
      */
     /**
      * Sample code: Delete a bookmark.

@@ -8,10 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebHookActivityMethod. */
+/** The list of HTTP methods supported by a WebHook activity. */
 public final class WebHookActivityMethod extends ExpandableStringEnum<WebHookActivityMethod> {
     /** Static value POST for WebHookActivityMethod. */
     public static final WebHookActivityMethod POST = fromString("POST");
+
+    /**
+     * Creates a new instance of WebHookActivityMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebHookActivityMethod() {}
 
     /**
      * Creates or finds a WebHookActivityMethod from its string representation.
@@ -24,7 +32,11 @@ public final class WebHookActivityMethod extends ExpandableStringEnum<WebHookAct
         return fromString(name, WebHookActivityMethod.class);
     }
 
-    /** @return known WebHookActivityMethod values. */
+    /**
+     * Gets known WebHookActivityMethod values.
+     *
+     * @return known WebHookActivityMethod values.
+     */
     public static Collection<WebHookActivityMethod> values() {
         return values(WebHookActivityMethod.class);
     }

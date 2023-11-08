@@ -5,20 +5,23 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The Usage Names. */
 @Fluent
 public final class UsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageName.class);
-
     /*
      * The localized name of the resource.
      */
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
+
+    /*
+     * The instances of the resource.
+     */
+    @JsonProperty(value = "skuInstances")
+    private List<String> skuInstances;
 
     /*
      * The name of the resource.
@@ -43,6 +46,26 @@ public final class UsageName {
      */
     public UsageName withLocalizedValue(String localizedValue) {
         this.localizedValue = localizedValue;
+        return this;
+    }
+
+    /**
+     * Get the skuInstances property: The instances of the resource.
+     *
+     * @return the skuInstances value.
+     */
+    public List<String> skuInstances() {
+        return this.skuInstances;
+    }
+
+    /**
+     * Set the skuInstances property: The instances of the resource.
+     *
+     * @param skuInstances the skuInstances value to set.
+     * @return the UsageName object itself.
+     */
+    public UsageName withSkuInstances(List<String> skuInstances) {
+        this.skuInstances = skuInstances;
         return this;
     }
 

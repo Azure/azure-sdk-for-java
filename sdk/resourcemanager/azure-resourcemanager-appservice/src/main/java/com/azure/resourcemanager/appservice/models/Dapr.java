@@ -35,6 +35,10 @@ public final class Dapr {
     @JsonProperty(value = "components")
     private List<DaprComponent> components;
 
+    /** Creates an instance of Dapr class. */
+    public Dapr() {
+    }
+
     /**
      * Get the enabled property: Boolean indicating if the Dapr side car is enabled.
      *

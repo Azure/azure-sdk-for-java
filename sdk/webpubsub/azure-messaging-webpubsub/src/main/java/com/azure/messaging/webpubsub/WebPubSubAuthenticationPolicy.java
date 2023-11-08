@@ -91,6 +91,9 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
                 if (!CoreUtils.isNullOrEmpty(userId)) {
                     claimsBuilder.subject(userId);
                 }
+                if (!CoreUtils.isNullOrEmpty(options.getGroups())) {
+                    claimsBuilder.claim("webpubsub.group", options.getGroups());
+                }
             }
 
             claimsBuilder

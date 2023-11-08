@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Service level objectives for performance tier. */
 @Fluent
 public final class PerformanceTierServiceLevelObjectives {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceTierServiceLevelObjectives.class);
-
     /*
      * ID for the service level objective.
      */
@@ -61,6 +57,10 @@ public final class PerformanceTierServiceLevelObjectives {
      */
     @JsonProperty(value = "minStorageMB")
     private Integer minStorageMB;
+
+    /** Creates an instance of PerformanceTierServiceLevelObjectives class. */
+    public PerformanceTierServiceLevelObjectives() {
+    }
 
     /**
      * Get the id property: ID for the service level objective.

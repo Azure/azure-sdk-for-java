@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 public class PerfStressOptions {
     @Parameter(names = { "-d", "--duration" }, description = "duration of test in seconds")
-    private int duration = 10;
+    private int duration = 15;
 
     @Parameter(names = { "--insecure" }, description = "Allow untrusted SSL server certs")
     private boolean insecure = false;
@@ -35,7 +35,7 @@ public class PerfStressOptions {
     private int parallel = 1;
 
     @Parameter(names = { "-w", "--warmup" }, description = "duration of warmup in seconds")
-    private int warmup = 10;
+    private int warmup = 15;
 
     @Parameter(names = { "--sync" }, description = "Runs sync version of test")
     private boolean sync = false;
@@ -45,6 +45,9 @@ public class PerfStressOptions {
 
     @Parameter(names = { "-c", "--count" }, description = "Number of items")
     private int count = 10;
+
+    @Parameter(names = { "--http-client" }, description = "The http client to use. Can be netty, okhttp.")
+    private HttpClientType httpClient = HttpClientType.NETTY;
 
     /**
      * Get the configured count for performance test.
@@ -126,9 +129,21 @@ public class PerfStressOptions {
         return sync;
     }
 
+    /**
+     * The http client to use. Can be netty, okhttp.
+     * @return The http client to use.
+     */
+    public HttpClientType getHttpClient() {
+        return httpClient;
+    }
+
     private static class SemiColonSplitter implements IParameterSplitter {
         public List<String> split(String value) {
             return Arrays.asList(value.split(";"));
         }
+    }
+
+    public enum HttpClientType {
+        NETTY, OKHTTP
     }
 }

@@ -17,15 +17,14 @@ import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.converters.AnalyzeRequestConverter;
-import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
-import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
+import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
@@ -111,11 +110,12 @@ public final class SearchIndexAsyncClient {
      * @return a {@link SearchAsyncClient} created from the service client configuration
      */
     public SearchAsyncClient getSearchAsyncClient(String indexName) {
-        return getSearchClientBuilder(indexName)
+        return getSearchClientBuilder(indexName, endpoint, serviceVersion, httpPipeline, serializer)
             .buildAsyncClient();
     }
 
-    SearchClientBuilder getSearchClientBuilder(String indexName) {
+    static SearchClientBuilder getSearchClientBuilder(String indexName, String endpoint,
+        SearchServiceVersion serviceVersion, HttpPipeline httpPipeline, JsonSerializer serializer) {
         return new SearchClientBuilder()
             .endpoint(endpoint)
             .indexName(indexName)
@@ -138,7 +138,7 @@ public final class SearchIndexAsyncClient {
      *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
      * &#41;;
      * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.createIndex&#40;searchIndex&#41;
      *     .subscribe&#40;indexFromService -&gt;
      *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
      *         indexFromService.getETag&#40;&#41;&#41;&#41;;
@@ -168,7 +168,7 @@ public final class SearchIndexAsyncClient {
      * &#41;;
      * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
      *
-     * searchIndexAsyncClient.createIndexWithResponse&#40;searchIndex&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.createIndexWithResponse&#40;searchIndex&#41;
      *     .subscribe&#40;indexFromServiceResponse -&gt;
      *         System.out.printf&#40;&quot;The status code of the response is %s. The index name is %s.%n&quot;,
      *         indexFromServiceResponse.getStatusCode&#40;&#41;, indexFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
@@ -187,9 +187,8 @@ public final class SearchIndexAsyncClient {
         try {
             Objects.requireNonNull(index, "'Index' cannot be null");
             return restClient.getIndexes()
-                .createWithResponseAsync(SearchIndexConverter.map(index), null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndex);
+                .createWithResponseAsync(index, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -204,7 +203,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndex#String -->
      * <pre>
-     * searchIndexAsyncClient.getIndex&#40;&quot;searchIndex&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;
      *     .subscribe&#40;indexFromService -&gt;
      *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
      *             indexFromService.getETag&#40;&#41;&#41;&#41;;
@@ -228,7 +227,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String -->
      * <pre>
-     * searchIndexAsyncClient.getIndexWithResponse&#40;&quot;searchIndex&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getIndexWithResponse&#40;&quot;searchIndex&quot;&#41;
      *     .subscribe&#40;indexFromServiceResponse -&gt;
      *         System.out.printf&#40;&quot;The status code of the response is %s. The index name is %s.%n&quot;,
      *             indexFromServiceResponse.getStatusCode&#40;&#41;, indexFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
@@ -247,8 +246,7 @@ public final class SearchIndexAsyncClient {
         try {
             return restClient.getIndexes()
                 .getWithResponseAsync(indexName, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndex);
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -263,7 +261,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatistics#String -->
      * <pre>
-     * searchIndexAsyncClient.getIndexStatistics&#40;&quot;searchIndex&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getIndexStatistics&#40;&quot;searchIndex&quot;&#41;
      *     .subscribe&#40;statistics -&gt;
      *         System.out.printf&#40;&quot;There are %d documents and storage size of %d available in 'searchIndex'.%n&quot;,
      *         statistics.getDocumentCount&#40;&#41;, statistics.getStorageSize&#40;&#41;&#41;&#41;;
@@ -287,7 +285,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String -->
      * <pre>
-     * searchIndexAsyncClient.getIndexStatisticsWithResponse&#40;&quot;searchIndex&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getIndexStatisticsWithResponse&#40;&quot;searchIndex&quot;&#41;
      *     .subscribe&#40;statistics -&gt; System.out.printf&#40;&quot;The status code of the response is %s.%n&quot;
      *             + &quot;There are %d documents and storage size of %d available in 'searchIndex'.%n&quot;,
      *         statistics.getStatusCode&#40;&#41;, statistics.getValue&#40;&#41;.getDocumentCount&#40;&#41;,
@@ -323,7 +321,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexes -->
      * <pre>
-     * searchIndexAsyncClient.listIndexes&#40;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.listIndexes&#40;&#41;
      *     .subscribe&#40;index -&gt;
      *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, index.getName&#40;&#41;,
      *             index.getETag&#40;&#41;&#41;&#41;;
@@ -341,14 +339,6 @@ public final class SearchIndexAsyncClient {
         }
     }
 
-    PagedFlux<SearchIndex> listIndexes(Context context) {
-        try {
-            return new PagedFlux<>(() -> this.listIndexesWithResponse(null, context));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
     /**
      * Lists all indexes names for an Azure Cognitive Search service.
      *
@@ -358,7 +348,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexNames -->
      * <pre>
-     * searchIndexAsyncClient.listIndexNames&#40;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.listIndexNames&#40;&#41;
      *     .subscribe&#40;indexName -&gt; System.out.printf&#40;&quot;The index name is %s.%n&quot;, indexName&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexNames -->
@@ -375,20 +365,10 @@ public final class SearchIndexAsyncClient {
         }
     }
 
-    PagedFlux<String> listIndexNames(Context context) {
-        try {
-            return new PagedFlux<>(() -> this.listIndexesWithResponse("name", context)
-                .map(MappingUtils::mappingPagingSearchIndexNames));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
     private Mono<PagedResponse<SearchIndex>> listIndexesWithResponse(String select, Context context) {
         return restClient.getIndexes()
             .listSinglePageAsync(select, null, context)
-            .onErrorMap(MappingUtils::exceptionMapper)
-            .map(MappingUtils::mappingListingSearchIndex);
+            .onErrorMap(MappingUtils::exceptionMapper);
     }
 
     /**
@@ -400,10 +380,10 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndex#SearchIndex -->
      * <pre>
-     * searchIndexAsyncClient.getIndex&#40;&quot;searchIndex&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;
      *     .doOnNext&#40;indexFromService -&gt; indexFromService.setSuggesters&#40;Collections.singletonList&#40;
      *         new SearchSuggester&#40;&quot;sg&quot;, Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;&#41;&#41;&#41;
-     *     .flatMap&#40;searchIndexAsyncClient::createOrUpdateIndex&#41;
+     *     .flatMap&#40;SEARCH_INDEX_ASYNC_CLIENT::createOrUpdateIndex&#41;
      *     .subscribe&#40;updatedIndex -&gt;
      *         System.out.printf&#40;&quot;The index name is %s. The suggester name of index is %s.%n&quot;,
      *             updatedIndex.getName&#40;&#41;, updatedIndex.getSuggesters&#40;&#41;.get&#40;0&#41;.getName&#40;&#41;&#41;&#41;;
@@ -427,11 +407,11 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context -->
      * <pre>
-     * SearchIndex indexFromService = searchIndexClient.getIndex&#40;&quot;searchIndex&quot;&#41;;
+     * SearchIndex indexFromService = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;;
      * indexFromService.setSuggesters&#40;Collections.singletonList&#40;new SearchSuggester&#40;&quot;sg&quot;,
      *     Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;&#41;&#41;;
-     * Response&lt;SearchIndex&gt; updatedIndexResponse = searchIndexClient.createOrUpdateIndexWithResponse&#40;indexFromService, true,
-     *     false, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchIndex&gt; updatedIndexResponse = SEARCH_INDEX_CLIENT.createOrUpdateIndexWithResponse&#40;indexFromService, true,
+     *     false, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the normal response is %s.%n&quot;
      *         + &quot;The index name is %s. The ETag of index is %s.%n&quot;, updatedIndexResponse.getStatusCode&#40;&#41;,
      *     updatedIndexResponse.getValue&#40;&#41;.getName&#40;&#41;, updatedIndexResponse.getValue&#40;&#41;.getETag&#40;&#41;&#41;;
@@ -460,10 +440,9 @@ public final class SearchIndexAsyncClient {
             Objects.requireNonNull(index, "'Index' cannot null.");
             String ifMatch = onlyIfUnchanged ? index.getETag() : null;
             return restClient.getIndexes()
-                .createOrUpdateWithResponseAsync(index.getName(), SearchIndexConverter.map(index),
-                    allowIndexDowntime, ifMatch, null, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndex);
+                .createOrUpdateWithResponseAsync(index.getName(), index, allowIndexDowntime, ifMatch, null, null,
+                    context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -478,7 +457,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String -->
      * <pre>
-     * searchIndexAsyncClient.deleteIndex&#40;&quot;searchIndex&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.deleteIndex&#40;&quot;searchIndex&quot;&#41;
      *     .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String -->
@@ -500,8 +479,8 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean -->
      * <pre>
-     * searchIndexAsyncClient.getIndex&#40;&quot;searchIndex&quot;&#41;
-     *     .flatMap&#40;indexFromService -&gt; searchIndexAsyncClient.deleteIndexWithResponse&#40;indexFromService, true&#41;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;
+     *     .flatMap&#40;indexFromService -&gt; SEARCH_INDEX_ASYNC_CLIENT.deleteIndexWithResponse&#40;indexFromService, true&#41;&#41;
      *     .subscribe&#40;deleteResponse -&gt;
      *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
@@ -542,7 +521,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.analyzeText#String-AnalyzeTextOptions -->
      * <pre>
-     * searchIndexAsyncClient.analyzeText&#40;&quot;searchIndex&quot;,
+     * SEARCH_INDEX_ASYNC_CLIENT.analyzeText&#40;&quot;searchIndex&quot;,
      *     new AnalyzeTextOptions&#40;&quot;The quick brown fox&quot;, LexicalTokenizerName.CLASSIC&#41;&#41;
      *     .subscribe&#40;tokenInfo -&gt;
      *         System.out.printf&#40;&quot;The token emitted by the analyzer is %s.%n&quot;, tokenInfo.getToken&#40;&#41;&#41;&#41;;
@@ -558,15 +537,6 @@ public final class SearchIndexAsyncClient {
         try {
             return new PagedFlux<>(() -> withContext(context ->
                 analyzeTextWithResponse(indexName, analyzeTextOptions, context)));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
-    PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions,
-        Context context) {
-        try {
-            return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeTextOptions, context));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -591,7 +561,7 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMap&quot;,
      *     &quot;United States, United States of America, USA&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
-     * searchIndexAsyncClient.createSynonymMap&#40;synonymMap&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.createSynonymMap&#40;synonymMap&#41;
      *     .subscribe&#40;synonymMapFromService -&gt;
      *         System.out.printf&#40;&quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;,
      *         synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;&#41;;
@@ -617,7 +587,7 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMap&quot;,
      *     &quot;United States, United States of America, USA&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
-     * searchIndexAsyncClient.createSynonymMapWithResponse&#40;synonymMap&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.createSynonymMapWithResponse&#40;synonymMap&#41;
      *     .subscribe&#40;synonymMapFromService -&gt;
      *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;
      *             + &quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;,
@@ -654,7 +624,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String -->
      * <pre>
-     * searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
      *     .subscribe&#40;synonymMapFromService -&gt;
      *         System.out.printf&#40;&quot;The synonym map is %s. The ETag of synonym map is %s.%n&quot;,
      *             synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;&#41;;
@@ -678,7 +648,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String -->
      * <pre>
-     * searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
      *     .subscribe&#40;synonymMapFromService -&gt;
      *         System.out.printf&#40;&quot;The synonym map is %s. The ETag of synonym map is %s.%n&quot;,
      *             synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;&#41;;
@@ -712,7 +682,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps -->
      * <pre>
-     * searchIndexAsyncClient.listSynonymMaps&#40;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.listSynonymMaps&#40;&#41;
      *     .subscribe&#40;synonymMap -&gt; System.out.printf&#40;&quot;The synonymMap name is %s. The ETag of synonymMap is %s.%n&quot;,
      *         synonymMap.getName&#40;&#41;, synonymMap.getETag&#40;&#41;&#41;&#41;;
      * </pre>
@@ -730,15 +700,6 @@ public final class SearchIndexAsyncClient {
         }
     }
 
-    PagedFlux<SynonymMap> listSynonymMaps(Context context) {
-        try {
-            return new PagedFlux<>(() -> listSynonymMapsWithResponse(null, context)
-                .map(MappingUtils::mappingPagingSynonymMap));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
     /**
      * Lists all synonym map names for an Azure Cognitive Search service.
      *
@@ -748,7 +709,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMapNames -->
      * <pre>
-     * searchIndexAsyncClient.listSynonymMapNames&#40;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.listSynonymMapNames&#40;&#41;
      *     .subscribe&#40;synonymMap -&gt; System.out.printf&#40;&quot;The synonymMap name is %s.%n&quot;, synonymMap&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMapNames -->
@@ -759,15 +720,6 @@ public final class SearchIndexAsyncClient {
     public PagedFlux<String> listSynonymMapNames() {
         try {
             return new PagedFlux<>(() -> withContext(context -> listSynonymMapsWithResponse("name", context))
-                .map(MappingUtils::mappingPagingSynonymMapNames));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
-    PagedFlux<String> listSynonymMapNames(Context context) {
-        try {
-            return new PagedFlux<>(() -> listSynonymMapsWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSynonymMapNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
@@ -789,10 +741,10 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMap#SynonymMap -->
      * <pre>
-     * searchIndexAsyncClient.getSynonymMap&#40;&quot;searchIndex&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap&#40;&quot;searchIndex&quot;&#41;
      *     .doOnNext&#40;synonymMap -&gt; synonymMap
      *         .setSynonyms&#40;&quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;&#41;
-     *     .flatMap&#40;searchIndexAsyncClient::createOrUpdateSynonymMap&#41;
+     *     .flatMap&#40;SEARCH_INDEX_ASYNC_CLIENT::createOrUpdateSynonymMap&#41;
      *     .subscribe&#40;updatedSynonymMap -&gt;
      *         System.out.printf&#40;&quot;The synonym map name is %s. The synonyms are %s.%n&quot;, updatedSynonymMap.getName&#40;&#41;,
      *         updatedSynonymMap.getSynonyms&#40;&#41;&#41;&#41;;
@@ -816,11 +768,11 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context -->
      * <pre>
-     * searchIndexAsyncClient.getSynonymMap&#40;&quot;searchIndex&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap&#40;&quot;searchIndex&quot;&#41;
      *     .flatMap&#40;synonymMap -&gt; &#123;
      *         synonymMap.setSynonyms&#40;
      *             &quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
-     *         return searchIndexAsyncClient.createOrUpdateSynonymMapWithResponse&#40;synonymMap, true&#41;;
+     *         return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateSynonymMapWithResponse&#40;synonymMap, true&#41;;
      *     &#125;&#41;
      *     .subscribe&#40;updatedSynonymMap -&gt;
      *         System.out.printf&#40;&quot;The status code of the normal response is %s.%n&quot;
@@ -863,7 +815,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMap#String -->
      * <pre>
-     * searchIndexAsyncClient.deleteSynonymMap&#40;&quot;synonymMap&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.deleteSynonymMap&#40;&quot;synonymMap&quot;&#41;
      *     .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMap#String -->
@@ -886,8 +838,8 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean -->
      * <pre>
-     * searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
-     *     .flatMap&#40;synonymMap -&gt; searchIndexAsyncClient.deleteSynonymMapWithResponse&#40;synonymMap, true&#41;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
+     *     .flatMap&#40;synonymMap -&gt; SEARCH_INDEX_ASYNC_CLIENT.deleteSynonymMapWithResponse&#40;synonymMap, true&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;The status code of the response is&quot; + response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean -->
@@ -943,7 +895,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatistics -->
      * <pre>
-     * searchIndexAsyncClient.getServiceStatistics&#40;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getServiceStatistics&#40;&#41;
      *     .subscribe&#40;serviceStatistics -&gt; System.out.printf&#40;&quot;There are %s search indexes in your service.%n&quot;,
      *         serviceStatistics.getCounters&#40;&#41;.getIndexCounter&#40;&#41;&#41;&#41;;
      * </pre>
@@ -966,7 +918,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse -->
      * <pre>
-     * searchIndexAsyncClient.getServiceStatisticsWithResponse&#40;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getServiceStatisticsWithResponse&#40;&#41;
      *     .subscribe&#40;serviceStatistics -&gt;
      *         System.out.printf&#40;&quot;The status code of the response is %s.%n&quot;
      *                 + &quot;There are %s search indexes in your service.%n&quot;,
@@ -1000,7 +952,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias -->
      * <pre>
-     * searchIndexAsyncClient.createAlias&#40;new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.createAlias&#40;new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
      *     .subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;,
      *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
@@ -1022,7 +974,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias -->
      * <pre>
-     * searchIndexAsyncClient.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     * SEARCH_INDEX_ASYNC_CLIENT.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
      *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
      *     .subscribe&#40;response -&gt;
      *         System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
@@ -1054,13 +1006,13 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias -->
      * <pre>
-     * searchIndexAsyncClient.createOrUpdateAlias&#40;
+     * SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAlias&#40;
      *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
      *     .flatMap&#40;searchAlias -&gt; &#123;
      *         System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
      *             searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
      *
-     *         return searchIndexAsyncClient.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
+     *         return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
      *             Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;&#41;;
      *     &#125;&#41;.subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Updated alias '%s' to aliases index '%s'.&quot;,
      *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
@@ -1083,13 +1035,13 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean -->
      * <pre>
-     * searchIndexAsyncClient.createOrUpdateAliasWithResponse&#40;
+     * SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAliasWithResponse&#40;
      *         new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, false&#41;
      *     .flatMap&#40;response -&gt; &#123;
      *         System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
      *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
      *
-     *         return searchIndexAsyncClient.createOrUpdateAliasWithResponse&#40;
+     *         return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAliasWithResponse&#40;
      *             new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;
      *             .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true&#41;;
      *     &#125;&#41;.subscribe&#40;response -&gt;
@@ -1129,7 +1081,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String -->
      * <pre>
-     * searchIndexAsyncClient.getAlias&#40;&quot;my-alias&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;
      *     .subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Retrieved alias '%s' that aliases index '%s'.&quot;,
      *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
@@ -1151,7 +1103,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String -->
      * <pre>
-     * searchIndexAsyncClient.getAliasWithResponse&#40;&quot;my-alias&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getAliasWithResponse&#40;&quot;my-alias&quot;&#41;
      *     .subscribe&#40;response -&gt;
      *         System.out.printf&#40;&quot;Response status code %d. Retrieved alias '%s' that aliases index '%s'.&quot;,
      *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
@@ -1182,7 +1134,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String -->
      * <pre>
-     * searchIndexAsyncClient.deleteAlias&#40;&quot;my-alias&quot;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.deleteAlias&#40;&quot;my-alias&quot;&#41;
      *     .subscribe&#40;ignored -&gt; System.out.println&#40;&quot;Deleted alias 'my-alias'.&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String -->
@@ -1203,8 +1155,8 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean -->
      * <pre>
-     * searchIndexAsyncClient.getAlias&#40;&quot;my-alias&quot;&#41;
-     *     .flatMap&#40;searchAlias -&gt; searchIndexAsyncClient.deleteAliasWithResponse&#40;searchAlias, true&#41;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;
+     *     .flatMap&#40;searchAlias -&gt; SEARCH_INDEX_ASYNC_CLIENT.deleteAliasWithResponse&#40;searchAlias, true&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Response status code %d. Deleted alias 'my-alias'.&quot;,
      *         response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
@@ -1240,7 +1192,7 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases -->
      * <pre>
-     * searchIndexAsyncClient.listAliases&#40;&#41;
+     * SEARCH_INDEX_ASYNC_CLIENT.listAliases&#40;&#41;
      *     .doOnNext&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
      *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;
      *     .subscribe&#40;&#41;;
@@ -1253,14 +1205,6 @@ public final class SearchIndexAsyncClient {
         try {
             return new PagedFlux<>(
                 () -> withContext(context -> restClient.getAliases().listSinglePageAsync(null, context)));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
-    PagedFlux<SearchAlias> listAliases(Context context) {
-        try {
-            return new PagedFlux<>(() -> restClient.getAliases().listSinglePageAsync(null, context));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

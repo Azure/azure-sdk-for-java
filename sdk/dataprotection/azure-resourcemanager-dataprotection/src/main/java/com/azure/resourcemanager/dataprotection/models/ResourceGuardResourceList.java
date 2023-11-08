@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of ResourceGuard resources. */
 @Fluent
 public final class ResourceGuardResourceList extends DppTrackedResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardResourceList.class);
-
     /*
      * List of resources.
      */
     @JsonProperty(value = "value")
     private List<ResourceGuardResourceInner> value;
+
+    /** Creates an instance of ResourceGuardResourceList class. */
+    public ResourceGuardResourceList() {
+    }
 
     /**
      * Get the value property: List of resources.

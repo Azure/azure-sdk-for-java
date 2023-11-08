@@ -6,15 +6,12 @@ package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the body of a purge request for an App Insights Workspace. */
 @Fluent
 public final class WorkspacePurgeBody {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePurgeBody.class);
-
     /*
      * Table from which to purge data.
      */
@@ -22,11 +19,14 @@ public final class WorkspacePurgeBody {
     private String table;
 
     /*
-     * The set of columns and filters (queries) to run over them to purge the
-     * resulting data.
+     * The set of columns and filters (queries) to run over them to purge the resulting data.
      */
     @JsonProperty(value = "filters", required = true)
     private List<WorkspacePurgeBodyFilters> filters;
+
+    /** Creates an instance of WorkspacePurgeBody class. */
+    public WorkspacePurgeBody() {
+    }
 
     /**
      * Get the table property: Table from which to purge data.
@@ -75,16 +75,18 @@ public final class WorkspacePurgeBody {
      */
     public void validate() {
         if (table() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property table in model WorkspacePurgeBody"));
         }
         if (filters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property filters in model WorkspacePurgeBody"));
         } else {
             filters().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspacePurgeBody.class);
 }

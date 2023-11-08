@@ -17,6 +17,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -52,6 +53,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_IDENTIFIER;
+import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_RECEIVER_IDENTIFIER;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
@@ -92,7 +95,7 @@ public class ReactorSession implements AmqpSession {
 
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
-    private final Disposable.Composite connectionSubscriptions;
+    private final Disposable.Composite subscriptions = Disposables.composite();
 
     private final AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
     private final Flux<AmqpShutdownSignal> shutdownSignals;
@@ -144,10 +147,8 @@ public class ReactorSession implements AmqpSession {
             .cache(1);
 
         shutdownSignals = amqpConnection.getShutdownSignals();
-        connectionSubscriptions = Disposables.composite(
-            this.endpointStates.subscribe(),
-
-            shutdownSignals.flatMap(signal ->  closeAsync("Shutdown signal received", null, false)).subscribe());
+        subscriptions.add(this.endpointStates.subscribe());
+        subscriptions.add(shutdownSignals.flatMap(signal ->  closeAsync("Shutdown signal received", null, false)).subscribe());
 
         session.open();
     }
@@ -402,9 +403,9 @@ public class ReactorSession implements AmqpSession {
                     sink.error(e);
                 }
             }))
-            .onErrorResume(t -> Mono.defer(() -> {
+            .onErrorResume(t -> Mono.error(() -> {
                 tokenManager.close();
-                return Mono.error(t);
+                return t;
             }));
     }
 
@@ -413,8 +414,9 @@ public class ReactorSession implements AmqpSession {
      */
     protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
+        AmqpMetricsProvider metricsProvider = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath);
         return new ReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider.getReactorDispatcher(), retryOptions);
+            reactorProvider.getReactorDispatcher(), retryOptions, metricsProvider);
     }
 
     /**
@@ -525,14 +527,18 @@ public class ReactorSession implements AmqpSession {
 
         final Sender sender = session.sender(linkName);
         sender.setTarget(target);
-
-        final Source source = new Source();
-        sender.setSource(source);
         sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
 
+        final Source source = new Source();
         if (linkProperties != null && linkProperties.size() > 0) {
+            final String clientIdentifier = (String) linkProperties.get(CLIENT_IDENTIFIER);
+            if (!CoreUtils.isNullOrEmpty(clientIdentifier)) {
+                source.setAddress(clientIdentifier);
+                linkProperties.remove(CLIENT_IDENTIFIER);
+            }
             sender.setProperties(linkProperties);
         }
+        sender.setSource(source);
 
         final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(
             sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
@@ -541,7 +547,7 @@ public class ReactorSession implements AmqpSession {
         sender.open();
 
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, entityPath, sender, sendLinkHandler,
-            provider, tokenManager, messageSerializer, options, timeoutScheduler);
+            provider, tokenManager, messageSerializer, options, timeoutScheduler, handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath));
 
         //@formatter:off
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {
@@ -583,16 +589,19 @@ public class ReactorSession implements AmqpSession {
 
         receiver.setSource(source);
 
-        final Target target = new Target();
-        receiver.setTarget(target);
-
         // Use explicit settlement via dispositions (not pre-settled)
         receiver.setSenderSettleMode(senderSettleMode);
         receiver.setReceiverSettleMode(receiverSettleMode);
 
+        final Target target = new Target();
         if (receiverProperties != null && !receiverProperties.isEmpty()) {
             receiver.setProperties(receiverProperties);
+            final String clientIdentifier = (String) receiverProperties.get(CLIENT_RECEIVER_IDENTIFIER);
+            if (!CoreUtils.isNullOrEmpty(clientIdentifier)) {
+                target.setAddress(clientIdentifier);
+            }
         }
+        receiver.setTarget(target);
 
         if (receiverDesiredCapabilities != null && receiverDesiredCapabilities.length > 0) {
             receiver.setDesiredCapabilities(receiverDesiredCapabilities);
@@ -604,7 +613,7 @@ public class ReactorSession implements AmqpSession {
 
         receiver.open();
 
-        final ReactorReceiver reactorReceiver = createConsumer(entityPath, receiver, receiveLinkHandler,
+        final AmqpReceiveLink reactorReceiver = createConsumer(entityPath, receiver, receiveLinkHandler,
             tokenManager, provider);
 
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
@@ -735,10 +744,10 @@ public class ReactorSession implements AmqpSession {
                 });
 
                 sessionHandler.close();
-                connectionSubscriptions.dispose();
+                subscriptions.dispose();
             }));
 
-        connectionSubscriptions.add(closeLinksMono.subscribe());
+        subscriptions.add(closeLinksMono.subscribe());
     }
 
     private <T extends AmqpLink> boolean removeLink(ConcurrentMap<String, LinkSubscription<T>> openLinks, String key) {

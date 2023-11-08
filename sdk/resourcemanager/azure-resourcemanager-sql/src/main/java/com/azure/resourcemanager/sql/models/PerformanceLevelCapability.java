@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The performance level capability. */
 @Immutable
 public final class PerformanceLevelCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceLevelCapability.class);
-
     /*
      * Performance level value.
      */
@@ -25,6 +21,10 @@ public final class PerformanceLevelCapability {
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private PerformanceLevelUnit unit;
+
+    /** Creates an instance of PerformanceLevelCapability class. */
+    public PerformanceLevelCapability() {
+    }
 
     /**
      * Get the value property: Performance level value.

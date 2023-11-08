@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class for operation status errors. */
 @Immutable
 public final class OperationStatusError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusError.class);
-
     /*
      * The error code.
      */
@@ -38,6 +34,10 @@ public final class OperationStatusError {
      */
     @JsonProperty(value = "additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationErrorAdditionalInfo> additionalInfo;
+
+    /** Creates an instance of OperationStatusError class. */
+    public OperationStatusError() {
+    }
 
     /**
      * Get the code property: The error code.

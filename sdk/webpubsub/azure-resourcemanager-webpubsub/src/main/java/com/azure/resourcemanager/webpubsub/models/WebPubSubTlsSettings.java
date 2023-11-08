@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** TLS settings for the resource. */
 @Fluent
 public final class WebPubSubTlsSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubTlsSettings.class);
-
     /*
-     * Request client certificate during TLS handshake if enabled
+     * Request client certificate during TLS handshake if enabled. Not supported for free tier. Any input will be
+     * ignored for free tier.
      */
     @JsonProperty(value = "clientCertEnabled")
     private Boolean clientCertEnabled;
 
+    /** Creates an instance of WebPubSubTlsSettings class. */
+    public WebPubSubTlsSettings() {
+    }
+
     /**
-     * Get the clientCertEnabled property: Request client certificate during TLS handshake if enabled.
+     * Get the clientCertEnabled property: Request client certificate during TLS handshake if enabled. Not supported for
+     * free tier. Any input will be ignored for free tier.
      *
      * @return the clientCertEnabled value.
      */
@@ -30,7 +32,8 @@ public final class WebPubSubTlsSettings {
     }
 
     /**
-     * Set the clientCertEnabled property: Request client certificate during TLS handshake if enabled.
+     * Set the clientCertEnabled property: Request client certificate during TLS handshake if enabled. Not supported for
+     * free tier. Any input will be ignored for free tier.
      *
      * @param clientCertEnabled the clientCertEnabled value to set.
      * @return the WebPubSubTlsSettings object itself.

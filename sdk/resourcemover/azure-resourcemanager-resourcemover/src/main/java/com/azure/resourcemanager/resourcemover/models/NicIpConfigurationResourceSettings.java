@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines NIC IP configuration properties. */
 @Fluent
 public final class NicIpConfigurationResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NicIpConfigurationResourceSettings.class);
-
     /*
      * Gets or sets the IP configuration name.
      */
@@ -22,8 +18,7 @@ public final class NicIpConfigurationResourceSettings {
     private String name;
 
     /*
-     * Gets or sets the private IP address of the network interface IP
-     * Configuration.
+     * Gets or sets the private IP address of the network interface IP Configuration.
      */
     @JsonProperty(value = "privateIpAddress")
     private String privateIpAddress;
@@ -41,8 +36,7 @@ public final class NicIpConfigurationResourceSettings {
     private SubnetReference subnet;
 
     /*
-     * Gets or sets a value indicating whether this IP configuration is the
-     * primary.
+     * Gets or sets a value indicating whether this IP configuration is the primary.
      */
     @JsonProperty(value = "primary")
     private Boolean primary;
@@ -64,6 +58,10 @@ public final class NicIpConfigurationResourceSettings {
      */
     @JsonProperty(value = "publicIp")
     private PublicIpReference publicIp;
+
+    /** Creates an instance of NicIpConfigurationResourceSettings class. */
+    public NicIpConfigurationResourceSettings() {
+    }
 
     /**
      * Get the name property: Gets or sets the IP configuration name.

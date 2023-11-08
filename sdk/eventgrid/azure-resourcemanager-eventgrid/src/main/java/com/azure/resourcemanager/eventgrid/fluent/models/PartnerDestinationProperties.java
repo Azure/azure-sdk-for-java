@@ -27,8 +27,8 @@ public final class PartnerDestinationProperties {
     private String endpointServiceContext;
 
     /*
-     * Expiration time of the partner destination. If this timer expires and
-     * the partner destination was never activated,
+     * Expiration time of the partner destination. If this timer expires and the partner destination was never
+     * activated,
      * the partner destination and corresponding channel are deleted.
      */
     @JsonProperty(value = "expirationTimeIfNotActivatedUtc")
@@ -37,7 +37,7 @@ public final class PartnerDestinationProperties {
     /*
      * Provisioning state of the partner destination.
      */
-    @JsonProperty(value = "provisioningState")
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PartnerDestinationProvisioningState provisioningState;
 
     /*
@@ -57,6 +57,10 @@ public final class PartnerDestinationProperties {
      */
     @JsonProperty(value = "messageForActivation")
     private String messageForActivation;
+
+    /** Creates an instance of PartnerDestinationProperties class. */
+    public PartnerDestinationProperties() {
+    }
 
     /**
      * Get the partnerRegistrationImmutableId property: The immutable Id of the corresponding partner registration.
@@ -130,17 +134,6 @@ public final class PartnerDestinationProperties {
      */
     public PartnerDestinationProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Provisioning state of the partner destination.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the PartnerDestinationProperties object itself.
-     */
-    public PartnerDestinationProperties withProvisioningState(PartnerDestinationProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

@@ -4,10 +4,9 @@
 
 package com.azure.resourcemanager.synapse.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIntegrationRuntimeStatusTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,16 +16,18 @@ import java.util.List;
 /** Managed integration runtime status. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Managed")
-@Fluent
+@Immutable
 public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntimeStatus.class);
-
     /*
      * Managed integration runtime status type properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private ManagedIntegrationRuntimeStatusTypeProperties innerTypeProperties =
         new ManagedIntegrationRuntimeStatusTypeProperties();
+
+    /** Creates an instance of ManagedIntegrationRuntimeStatus class. */
+    public ManagedIntegrationRuntimeStatus() {
+    }
 
     /**
      * Get the innerTypeProperties property: Managed integration runtime status type properties.
@@ -82,7 +83,7 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ManagedIntegrationRuntimeStatus"));
@@ -90,4 +91,6 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedIntegrationRuntimeStatus.class);
 }

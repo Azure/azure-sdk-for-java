@@ -14,10 +14,9 @@ import com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsConfiguration;
 import com.azure.resourcemanager.frontdoor.models.FrontendEndpoint;
 import com.azure.resourcemanager.frontdoor.models.FrontendEndpoints;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class FrontendEndpointsImpl implements FrontendEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FrontendEndpointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FrontendEndpointsImpl.class);
 
     private final FrontendEndpointsClient innerClient;
 
@@ -42,15 +41,6 @@ public final class FrontendEndpointsImpl implements FrontendEndpoints {
         return Utils.mapPage(inner, inner1 -> new FrontendEndpointImpl(inner1, this.manager()));
     }
 
-    public FrontendEndpoint get(String resourceGroupName, String frontDoorName, String frontendEndpointName) {
-        FrontendEndpointInner inner = this.serviceClient().get(resourceGroupName, frontDoorName, frontendEndpointName);
-        if (inner != null) {
-            return new FrontendEndpointImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<FrontendEndpoint> getWithResponse(
         String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context) {
         Response<FrontendEndpointInner> inner =
@@ -61,6 +51,15 @@ public final class FrontendEndpointsImpl implements FrontendEndpoints {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new FrontendEndpointImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public FrontendEndpoint get(String resourceGroupName, String frontDoorName, String frontendEndpointName) {
+        FrontendEndpointInner inner = this.serviceClient().get(resourceGroupName, frontDoorName, frontendEndpointName);
+        if (inner != null) {
+            return new FrontendEndpointImpl(inner, this.manager());
         } else {
             return null;
         }

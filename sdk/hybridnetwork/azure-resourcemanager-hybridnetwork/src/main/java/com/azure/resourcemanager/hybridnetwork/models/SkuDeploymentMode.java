@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuDeploymentMode. */
+/** The sku deployment mode. */
 public final class SkuDeploymentMode extends ExpandableStringEnum<SkuDeploymentMode> {
     /** Static value Unknown for SkuDeploymentMode. */
     public static final SkuDeploymentMode UNKNOWN = fromString("Unknown");
@@ -30,7 +30,11 @@ public final class SkuDeploymentMode extends ExpandableStringEnum<SkuDeploymentM
         return fromString(name, SkuDeploymentMode.class);
     }
 
-    /** @return known SkuDeploymentMode values. */
+    /**
+     * Gets known SkuDeploymentMode values.
+     *
+     * @return known SkuDeploymentMode values.
+     */
     public static Collection<SkuDeploymentMode> values() {
         return values(SkuDeploymentMode.class);
     }

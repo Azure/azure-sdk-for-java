@@ -3,6 +3,7 @@
 
 package com.azure.core.experimental.http;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.serializer.JsonSerializerProviders;
@@ -81,7 +82,7 @@ public class DynamicRequestJavaDocCodeSnippets {
         // BEGIN: com.azure.core.experimental.http.dynamicrequest.postrequest
         DynamicResponse response = dynamicRequest
             .setUrl("https://petstore.example.com/pet") // may already be set if request is created from a client
-            .addHeader("Content-Type", "application/json")
+            .addHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             .setBody(requestBodyStr)
             .send(); // makes the service call
         // END: com.azure.core.experimental.http.dynamicrequest.postrequest

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.models.CertificateVerificationDescription;
 
 /** Samples for Certificates Verify. */
 public final class CertificatesVerifySamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_certverify.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_certverify.json
      */
     /**
      * Sample code: Certificates_Verify.
@@ -26,6 +25,6 @@ public final class CertificatesVerifySamples {
                 "cert",
                 "AAAAAAAADGk=",
                 new CertificateVerificationDescription().withCertificate("#####################################"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

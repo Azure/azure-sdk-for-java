@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automanage.fluent.ReportsClient;
 import com.azure.resourcemanager.automanage.fluent.models.ReportInner;
 import com.azure.resourcemanager.automanage.models.Report;
 import com.azure.resourcemanager.automanage.models.Reports;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReportsImpl implements Reports {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReportsImpl.class);
 
     private final ReportsClient innerClient;
 

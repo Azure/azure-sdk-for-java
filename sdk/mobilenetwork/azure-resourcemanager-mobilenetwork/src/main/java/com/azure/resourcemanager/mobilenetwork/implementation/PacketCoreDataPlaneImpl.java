@@ -66,6 +66,10 @@ public final class PacketCoreDataPlaneImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PacketCoreDataPlaneInner innerModel() {
         return this.innerObject;
     }

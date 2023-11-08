@@ -43,6 +43,10 @@ public final class AppServicePlanInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of AppServicePlanInner class. */
+    public AppServicePlanInner() {
+    }
+
     /**
      * Get the innerProperties property: AppServicePlan resource specific properties.
      *
@@ -200,6 +204,15 @@ public final class AppServicePlanInner extends Resource {
      */
     public Integer maximumNumberOfWorkers() {
         return this.innerProperties() == null ? null : this.innerProperties().maximumNumberOfWorkers();
+    }
+
+    /**
+     * Get the numberOfWorkers property: The number of instances that are assigned to this App Service plan.
+     *
+     * @return the numberOfWorkers value.
+     */
+    public Integer numberOfWorkers() {
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfWorkers();
     }
 
     /**

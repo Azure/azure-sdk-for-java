@@ -5,22 +5,21 @@
 package com.azure.resourcemanager.attestation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Client supplied parameters used to create a new attestation provider. */
 @Fluent
 public final class AttestationServiceCreationSpecificParams {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttestationServiceCreationSpecificParams.class);
-
     /*
-     * JSON Web Key Set defining a set of X.509 Certificates that will
-     * represent the parent certificate for the signing certificate used for
-     * policy operations
+     * JSON Web Key Set defining a set of X.509 Certificates that will represent the parent certificate for the signing
+     * certificate used for policy operations
      */
     @JsonProperty(value = "policySigningCertificates")
     private JsonWebKeySet policySigningCertificates;
+
+    /** Creates an instance of AttestationServiceCreationSpecificParams class. */
+    public AttestationServiceCreationSpecificParams() {
+    }
 
     /**
      * Get the policySigningCertificates property: JSON Web Key Set defining a set of X.509 Certificates that will

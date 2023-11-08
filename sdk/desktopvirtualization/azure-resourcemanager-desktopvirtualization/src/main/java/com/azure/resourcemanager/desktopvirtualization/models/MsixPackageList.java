@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.MsixPackageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** MsixPackageList List of MSIX Package definitions. */
+/**
+ * MsixPackageList
+ *
+ * <p>List of MSIX Package definitions.
+ */
 @Fluent
 public final class MsixPackageList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MsixPackageList.class);
-
     /*
      * List of MSIX Package definitions.
      */
@@ -27,6 +27,10 @@ public final class MsixPackageList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of MsixPackageList class. */
+    public MsixPackageList() {
+    }
 
     /**
      * Get the value property: List of MSIX Package definitions.

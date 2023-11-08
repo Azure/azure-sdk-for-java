@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataSourceKind. */
+/** The kind of the DataSource. */
 public final class DataSourceKind extends ExpandableStringEnum<DataSourceKind> {
     /** Static value WindowsEvent for DataSourceKind. */
     public static final DataSourceKind WINDOWS_EVENT = fromString("WindowsEvent");
@@ -115,6 +115,15 @@ public final class DataSourceKind extends ExpandableStringEnum<DataSourceKind> {
     public static final DataSourceKind SQL_DATA_CLASSIFICATION = fromString("SqlDataClassification");
 
     /**
+     * Creates a new instance of DataSourceKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataSourceKind() {
+    }
+
+    /**
      * Creates or finds a DataSourceKind from its string representation.
      *
      * @param name a name to look for.
@@ -125,7 +134,11 @@ public final class DataSourceKind extends ExpandableStringEnum<DataSourceKind> {
         return fromString(name, DataSourceKind.class);
     }
 
-    /** @return known DataSourceKind values. */
+    /**
+     * Gets known DataSourceKind values.
+     *
+     * @return known DataSourceKind values.
+     */
     public static Collection<DataSourceKind> values() {
         return values(DataSourceKind.class);
     }

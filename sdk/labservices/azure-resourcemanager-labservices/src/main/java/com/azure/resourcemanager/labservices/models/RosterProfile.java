@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The lab user list management profile. */
 @Fluent
 public final class RosterProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RosterProfile.class);
-
     /*
-     * The AAD group ID which this lab roster is populated from. Having this
-     * set enables AAD sync mode.
+     * The AAD group ID which this lab roster is populated from. Having this set enables AAD sync mode.
      */
     @JsonProperty(value = "activeDirectoryGroupId")
     private String activeDirectoryGroupId;
@@ -40,8 +35,7 @@ public final class RosterProfile {
     private String ltiClientId;
 
     /*
-     * The uri of the names and roles service endpoint on the lms for the class
-     * attached to this lab.
+     * The uri of the names and roles service endpoint on the lms for the class attached to this lab.
      */
     @JsonProperty(value = "ltiRosterEndpoint")
     private String ltiRosterEndpoint;

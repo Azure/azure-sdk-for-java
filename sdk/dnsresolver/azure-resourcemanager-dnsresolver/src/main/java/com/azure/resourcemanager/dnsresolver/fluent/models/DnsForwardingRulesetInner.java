@@ -10,7 +10,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** Describes a DNS forwarding ruleset. */
 @Fluent
 public final class DnsForwardingRulesetInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsForwardingRulesetInner.class);
-
     /*
      * ETag of the DNS forwarding ruleset.
      */
@@ -29,8 +26,8 @@ public final class DnsForwardingRulesetInner extends Resource {
     /*
      * Properties of the DNS forwarding ruleset.
      */
-    @JsonProperty(value = "properties")
-    private DnsForwardingRulesetProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private DnsForwardingRulesetProperties innerProperties = new DnsForwardingRulesetProperties();
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
@@ -129,8 +126,15 @@ public final class DnsForwardingRulesetInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model DnsForwardingRulesetInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DnsForwardingRulesetInner.class);
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.SecurityPolicyInner;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for SecurityPolicies Create. */
 public final class SecurityPoliciesCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/SecurityPolicies_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/SecurityPolicies_Create.json
      */
     /**
      * Sample code: SecurityPolicies_Create.
@@ -48,11 +47,11 @@ public final class SecurityPoliciesCreateSamples {
                                                     .asList(
                                                         new ActivatedResourceReference()
                                                             .withId(
-                                                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afddomains/testdomain1"),
+                                                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
                                                         new ActivatedResourceReference()
                                                             .withId(
-                                                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/afddomains/testdomain2")))
+                                                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2")))
                                             .withPatternsToMatch(Arrays.asList("/*"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description about the errors happen while performing migration validation. */
 @Immutable
 public final class ValidationError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidationError.class);
-
     /*
      * Error Text
      */
@@ -25,6 +21,10 @@ public final class ValidationError {
      */
     @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private Severity severity;
+
+    /** Creates an instance of ValidationError class. */
+    public ValidationError() {
+    }
 
     /**
      * Get the text property: Error Text.

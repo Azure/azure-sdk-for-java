@@ -15,18 +15,14 @@ import java.util.List;
 @Fluent
 public final class UntilActivityTypeProperties {
     /*
-     * An expression that would evaluate to Boolean. The loop will continue
-     * until this expression evaluates to true
+     * An expression that would evaluate to Boolean. The loop will continue until this expression evaluates to true
      */
     @JsonProperty(value = "expression", required = true)
     private Expression expression;
 
     /*
-     * Specifies the timeout for the activity to run. If there is no value
-     * specified, it takes the value of TimeSpan.FromDays(7) which is 1 week as
-     * default. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or
-     * Expression with resultType string), pattern:
+     * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of
+     * TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "timeout")
@@ -37,6 +33,10 @@ public final class UntilActivityTypeProperties {
      */
     @JsonProperty(value = "activities", required = true)
     private List<Activity> activities;
+
+    /** Creates an instance of UntilActivityTypeProperties class. */
+    public UntilActivityTypeProperties() {
+    }
 
     /**
      * Get the expression property: An expression that would evaluate to Boolean. The loop will continue until this
@@ -63,8 +63,7 @@ public final class UntilActivityTypeProperties {
     /**
      * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
      * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
-     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      *
      * @return the timeout value.
      */
@@ -75,8 +74,7 @@ public final class UntilActivityTypeProperties {
     /**
      * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
      * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
-     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      *
      * @param timeout the timeout value to set.
      * @return the UntilActivityTypeProperties object itself.

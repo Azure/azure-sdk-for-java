@@ -15,53 +15,47 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class TabularTranslator extends CopyTranslator {
     /*
-     * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name:
-     * MyName" Type: string (or Expression with resultType string). This
-     * property will be retired. Please use mappings property.
+     * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with
+     * resultType string). This property will be retired. Please use mappings property.
      */
     @JsonProperty(value = "columnMappings")
     private Object columnMappings;
 
     /*
-     * The schema mapping to map between tabular data and hierarchical data.
-     * Example: {"Column1": "$.Column1", "Column2": "$.Column2.Property1",
-     * "Column3": "$.Column2.Property2"}. Type: object (or Expression with
-     * resultType object). This property will be retired. Please use mappings
-     * property.
+     * The schema mapping to map between tabular data and hierarchical data. Example: {"Column1": "$.Column1",
+     * "Column2": "$.Column2.Property1", "Column3": "$.Column2.Property2"}. Type: object (or Expression with resultType
+     * object). This property will be retired. Please use mappings property.
      */
     @JsonProperty(value = "schemaMapping")
     private Object schemaMapping;
 
     /*
-     * The JSON Path of the Nested Array that is going to do cross-apply. Type:
-     * object (or Expression with resultType object).
+     * The JSON Path of the Nested Array that is going to do cross-apply. Type: object (or Expression with resultType
+     * object).
      */
     @JsonProperty(value = "collectionReference")
     private Object collectionReference;
 
     /*
-     * Whether to map complex (array and object) values to simple strings in
-     * json format. Type: boolean (or Expression with resultType boolean).
+     * Whether to map complex (array and object) values to simple strings in json format. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "mapComplexValuesToString")
     private Object mapComplexValuesToString;
 
     /*
      * Column mappings with logical types. Tabular->tabular example:
-     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}}"
-         + ",{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Hierarchical->tabular example:
-     * [{"source":{"path":"$"
-         + ".CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$"
-         + ".CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Type: object (or Expression with resultType object).
      */
     @JsonProperty(value = "mappings")
     private Object mappings;
 
     /*
-     * Whether to enable the advanced type conversion feature in the Copy
-     * activity. Type: boolean (or Expression with resultType boolean).
+     * Whether to enable the advanced type conversion feature in the Copy activity. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "typeConversion")
     private Object typeConversion;
@@ -71,6 +65,10 @@ public final class TabularTranslator extends CopyTranslator {
      */
     @JsonProperty(value = "typeConversionSettings")
     private TypeConversionSettings typeConversionSettings;
+
+    /** Creates an instance of TabularTranslator class. */
+    public TabularTranslator() {
+    }
 
     /**
      * Get the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type:
@@ -164,12 +162,9 @@ public final class TabularTranslator extends CopyTranslator {
 
     /**
      * Get the mappings property: Column mappings with logical types. Tabular-&gt;tabular example:
-     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}}"
-         + ",{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Hierarchical-&gt;tabular example:
-     * [{"source":{"path":"$"
-         + ".CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$"
-         + ".CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Type: object (or Expression with resultType object).
      *
      * @return the mappings value.
@@ -180,12 +175,9 @@ public final class TabularTranslator extends CopyTranslator {
 
     /**
      * Set the mappings property: Column mappings with logical types. Tabular-&gt;tabular example:
-     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}}"
-         + ",{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"name":"CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"name":"CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Hierarchical-&gt;tabular example:
-     * [{"source":{"path":"$"
-         + ".CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$"
-         + ".CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
+     * [{"source":{"path":"$.CustomerName","type":"String"},"sink":{"name":"ClientName","type":"String"}},{"source":{"path":"$.CustomerAddress","type":"String"},"sink":{"name":"ClientAddress","type":"String"}}].
      * Type: object (or Expression with resultType object).
      *
      * @param mappings the mappings value to set.

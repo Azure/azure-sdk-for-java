@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.powerbidedicated.fluent.AutoScaleVCoresClient;
 import com.azure.resourcemanager.powerbidedicated.fluent.models.AutoScaleVCoreInner;
 import com.azure.resourcemanager.powerbidedicated.models.AutoScaleVCoreListResult;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AutoScaleVCoresClient. */
 public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
-    private final ClientLogger logger = new ClientLogger(AutoScaleVCoresClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AutoScaleVCoresService service;
 
@@ -63,7 +60,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "PowerBIDedicatedAuto")
-    private interface AutoScaleVCoresService {
+    public interface AutoScaleVCoresService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated"
@@ -161,7 +158,8 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified auto scale v-core.
+     * @return details about the specified auto scale v-core along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutoScaleVCoreInner>> getByResourceGroupWithResponseAsync(
@@ -211,7 +209,8 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified auto scale v-core.
+     * @return details about the specified auto scale v-core along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutoScaleVCoreInner>> getByResourceGroupWithResponseAsync(
@@ -257,19 +256,30 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified auto scale v-core.
+     * @return details about the specified auto scale v-core on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutoScaleVCoreInner> getByResourceGroupAsync(String resourceGroupName, String vcoreName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vcoreName)
-            .flatMap(
-                (Response<AutoScaleVCoreInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets details about the specified auto scale v-core.
+     *
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     *     This name must be at least 1 character in length, and no more than 90.
+     * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified auto scale v-core along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AutoScaleVCoreInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String vcoreName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, vcoreName, context).block();
     }
 
     /**
@@ -285,25 +295,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoScaleVCoreInner getByResourceGroup(String resourceGroupName, String vcoreName) {
-        return getByResourceGroupAsync(resourceGroupName, vcoreName).block();
-    }
-
-    /**
-     * Gets details about the specified auto scale v-core.
-     *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified auto scale v-core.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutoScaleVCoreInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vcoreName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, vcoreName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, vcoreName, Context.NONE).getValue();
     }
 
     /**
@@ -316,7 +308,8 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of an auto scale v-core resource.
+     * @return represents an instance of an auto scale v-core resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutoScaleVCoreInner>> createWithResponseAsync(
@@ -374,7 +367,8 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of an auto scale v-core resource.
+     * @return represents an instance of an auto scale v-core resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutoScaleVCoreInner>> createWithResponseAsync(
@@ -428,20 +422,32 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of an auto scale v-core resource.
+     * @return represents an instance of an auto scale v-core resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutoScaleVCoreInner> createAsync(
         String resourceGroupName, String vcoreName, AutoScaleVCoreInner vCoreParameters) {
         return createWithResponseAsync(resourceGroupName, vcoreName, vCoreParameters)
-            .flatMap(
-                (Response<AutoScaleVCoreInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Provisions the specified auto scale v-core based on the configuration specified in the request.
+     *
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     *     This name must be at least 1 character in length, and no more than 90.
+     * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param vCoreParameters Contains the information used to provision the auto scale v-core.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an instance of an auto scale v-core resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AutoScaleVCoreInner> createWithResponse(
+        String resourceGroupName, String vcoreName, AutoScaleVCoreInner vCoreParameters, Context context) {
+        return createWithResponseAsync(resourceGroupName, vcoreName, vCoreParameters, context).block();
     }
 
     /**
@@ -458,26 +464,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoScaleVCoreInner create(String resourceGroupName, String vcoreName, AutoScaleVCoreInner vCoreParameters) {
-        return createAsync(resourceGroupName, vcoreName, vCoreParameters).block();
-    }
-
-    /**
-     * Provisions the specified auto scale v-core based on the configuration specified in the request.
-     *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
-     * @param vCoreParameters Contains the information used to provision the auto scale v-core.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of an auto scale v-core resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutoScaleVCoreInner> createWithResponse(
-        String resourceGroupName, String vcoreName, AutoScaleVCoreInner vCoreParameters, Context context) {
-        return createWithResponseAsync(resourceGroupName, vcoreName, vCoreParameters, context).block();
+        return createWithResponse(resourceGroupName, vcoreName, vCoreParameters, Context.NONE).getValue();
     }
 
     /**
@@ -489,7 +476,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vcoreName) {
@@ -538,7 +525,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vcoreName, Context context) {
@@ -583,11 +570,28 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vcoreName) {
-        return deleteWithResponseAsync(resourceGroupName, vcoreName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, vcoreName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes the specified auto scale v-core.
+     *
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     *     This name must be at least 1 character in length, and no more than 90.
+     * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String vcoreName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, vcoreName, context).block();
     }
 
     /**
@@ -602,24 +606,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vcoreName) {
-        deleteAsync(resourceGroupName, vcoreName).block();
-    }
-
-    /**
-     * Deletes the specified auto scale v-core.
-     *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String vcoreName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, vcoreName, context).block();
+        deleteWithResponse(resourceGroupName, vcoreName, Context.NONE);
     }
 
     /**
@@ -632,7 +619,8 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of an auto scale v-core resource.
+     * @return represents an instance of an auto scale v-core resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutoScaleVCoreInner>> updateWithResponseAsync(
@@ -690,7 +678,8 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of an auto scale v-core resource.
+     * @return represents an instance of an auto scale v-core resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutoScaleVCoreInner>> updateWithResponseAsync(
@@ -747,20 +736,35 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of an auto scale v-core resource.
+     * @return represents an instance of an auto scale v-core resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutoScaleVCoreInner> updateAsync(
         String resourceGroupName, String vcoreName, AutoScaleVCoreUpdateParameters vCoreUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, vcoreName, vCoreUpdateParameters)
-            .flatMap(
-                (Response<AutoScaleVCoreInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates the current state of the specified auto scale v-core.
+     *
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     *     This name must be at least 1 character in length, and no more than 90.
+     * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param vCoreUpdateParameters Request object that contains the updated information for the auto scale v-core.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an instance of an auto scale v-core resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AutoScaleVCoreInner> updateWithResponse(
+        String resourceGroupName,
+        String vcoreName,
+        AutoScaleVCoreUpdateParameters vCoreUpdateParameters,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, vcoreName, vCoreUpdateParameters, context).block();
     }
 
     /**
@@ -778,29 +782,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoScaleVCoreInner update(
         String resourceGroupName, String vcoreName, AutoScaleVCoreUpdateParameters vCoreUpdateParameters) {
-        return updateAsync(resourceGroupName, vcoreName, vCoreUpdateParameters).block();
-    }
-
-    /**
-     * Updates the current state of the specified auto scale v-core.
-     *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param vcoreName The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
-     * @param vCoreUpdateParameters Request object that contains the updated information for the auto scale v-core.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of an auto scale v-core resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutoScaleVCoreInner> updateWithResponse(
-        String resourceGroupName,
-        String vcoreName,
-        AutoScaleVCoreUpdateParameters vCoreUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, vcoreName, vCoreUpdateParameters, context).block();
+        return updateWithResponse(resourceGroupName, vcoreName, vCoreUpdateParameters, Context.NONE).getValue();
     }
 
     /**
@@ -811,7 +793,8 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the auto scale v-cores for the given resource group.
+     * @return all the auto scale v-cores for the given resource group along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoScaleVCoreInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -859,7 +842,8 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the auto scale v-cores for the given resource group.
+     * @return all the auto scale v-cores for the given resource group along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoScaleVCoreInner>> listByResourceGroupSinglePageAsync(
@@ -904,7 +888,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the auto scale v-cores for the given resource group.
+     * @return all the auto scale v-cores for the given resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutoScaleVCoreInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -920,7 +904,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the auto scale v-cores for the given resource group.
+     * @return all the auto scale v-cores for the given resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutoScaleVCoreInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -935,7 +919,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the auto scale v-cores for the given resource group.
+     * @return all the auto scale v-cores for the given resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoScaleVCoreInner> listByResourceGroup(String resourceGroupName) {
@@ -951,7 +935,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the auto scale v-cores for the given resource group.
+     * @return all the auto scale v-cores for the given resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoScaleVCoreInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -963,7 +947,8 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of auto scale v-core resources.
+     * @return an array of auto scale v-core resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoScaleVCoreInner>> listSinglePageAsync() {
@@ -1004,7 +989,8 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of auto scale v-core resources.
+     * @return an array of auto scale v-core resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoScaleVCoreInner>> listSinglePageAsync(Context context) {
@@ -1040,7 +1026,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of auto scale v-core resources.
+     * @return an array of auto scale v-core resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutoScaleVCoreInner> listAsync() {
@@ -1054,7 +1040,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of auto scale v-core resources.
+     * @return an array of auto scale v-core resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutoScaleVCoreInner> listAsync(Context context) {
@@ -1066,7 +1052,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of auto scale v-core resources.
+     * @return an array of auto scale v-core resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoScaleVCoreInner> list() {
@@ -1080,7 +1066,7 @@ public final class AutoScaleVCoresClientImpl implements AutoScaleVCoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of auto scale v-core resources.
+     * @return an array of auto scale v-core resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoScaleVCoreInner> list(Context context) {

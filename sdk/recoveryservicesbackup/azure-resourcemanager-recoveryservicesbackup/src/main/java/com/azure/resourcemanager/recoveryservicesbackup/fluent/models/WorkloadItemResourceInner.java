@@ -6,17 +6,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Base class for backup item. Workload-specific backup items are derived from this class. */
 @Fluent
 public final class WorkloadItemResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadItemResourceInner.class);
-
     /*
      * WorkloadItemResource properties
      */
@@ -28,6 +24,10 @@ public final class WorkloadItemResourceInner extends Resource {
      */
     @JsonProperty(value = "eTag")
     private String etag;
+
+    /** Creates an instance of WorkloadItemResourceInner class. */
+    public WorkloadItemResourceInner() {
+    }
 
     /**
      * Get the properties property: WorkloadItemResource properties.

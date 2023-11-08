@@ -6,22 +6,22 @@ package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the vault access policy. */
 @Fluent
 public final class VaultAccessPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultAccessPolicyProperties.class);
-
     /*
-     * An array of 0 to 16 identities that have access to the key vault. All
-     * identities in the array must use the same tenant ID as the key vault's
-     * tenant ID.
+     * An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same
+     * tenant ID as the key vault's tenant ID.
      */
     @JsonProperty(value = "accessPolicies", required = true)
     private List<AccessPolicyEntry> accessPolicies;
+
+    /** Creates an instance of VaultAccessPolicyProperties class. */
+    public VaultAccessPolicyProperties() {
+    }
 
     /**
      * Get the accessPolicies property: An array of 0 to 16 identities that have access to the key vault. All identities
@@ -52,7 +52,7 @@ public final class VaultAccessPolicyProperties {
      */
     public void validate() {
         if (accessPolicies() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property accessPolicies in model VaultAccessPolicyProperties"));
@@ -60,4 +60,6 @@ public final class VaultAccessPolicyProperties {
             accessPolicies().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VaultAccessPolicyProperties.class);
 }

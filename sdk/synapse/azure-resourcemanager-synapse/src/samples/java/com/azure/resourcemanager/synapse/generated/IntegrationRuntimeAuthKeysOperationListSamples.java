@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeAuthKeysOperation List. */
 public final class IntegrationRuntimeAuthKeysOperationListSamples {
     /*
@@ -19,6 +17,10 @@ public final class IntegrationRuntimeAuthKeysOperationListSamples {
     public static void listAuthKeys(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimeAuthKeysOperations()
-            .listWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+            .listWithResponse(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

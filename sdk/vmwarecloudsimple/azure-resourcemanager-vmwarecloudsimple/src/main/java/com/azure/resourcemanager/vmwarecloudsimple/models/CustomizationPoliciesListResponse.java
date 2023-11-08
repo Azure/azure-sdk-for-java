@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.CustomizationPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of customization polices response model. */
 @Fluent
 public final class CustomizationPoliciesListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomizationPoliciesListResponse.class);
-
     /*
      * Link for next list of the Customization policy
      */
@@ -27,6 +23,10 @@ public final class CustomizationPoliciesListResponse {
      */
     @JsonProperty(value = "value")
     private List<CustomizationPolicyInner> value;
+
+    /** Creates an instance of CustomizationPoliciesListResponse class. */
+    public CustomizationPoliciesListResponse() {
+    }
 
     /**
      * Get the nextLink property: Link for next list of the Customization policy.

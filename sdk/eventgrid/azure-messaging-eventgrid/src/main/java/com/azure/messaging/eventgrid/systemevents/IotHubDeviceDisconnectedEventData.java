@@ -4,11 +4,14 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /** Event data for Microsoft.Devices.DeviceDisconnected event. */
-@Immutable
+@Fluent
 public final class IotHubDeviceDisconnectedEventData extends DeviceConnectionStateEventProperties {
+    /** Creates an instance of IotHubDeviceDisconnectedEventData class. */
+    public IotHubDeviceDisconnectedEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public IotHubDeviceDisconnectedEventData setDeviceId(String deviceId) {

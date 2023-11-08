@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.storageimportexport.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a supported operation by the Storage Import/Export job API. */
-@JsonFlatten
 @Fluent
-public class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
+public final class OperationInner {
     /*
      * Name of the operation.
      */
@@ -23,28 +18,14 @@ public class OperationInner {
     private String name;
 
     /*
-     * The resource provider name to which the operation belongs.
+     * operation display properties
      */
-    @JsonProperty(value = "display.provider")
-    private String provider;
+    @JsonProperty(value = "display", required = true)
+    private OperationDisplay innerDisplay = new OperationDisplay();
 
-    /*
-     * The name of the resource to which the operation belongs.
-     */
-    @JsonProperty(value = "display.resource")
-    private String resource;
-
-    /*
-     * The display name of the operation.
-     */
-    @JsonProperty(value = "display.operation")
-    private String operation;
-
-    /*
-     * Short description of the operation.
-     */
-    @JsonProperty(value = "display.description")
-    private String description;
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: Name of the operation.
@@ -67,12 +48,21 @@ public class OperationInner {
     }
 
     /**
+     * Get the innerDisplay property: operation display properties.
+     *
+     * @return the innerDisplay value.
+     */
+    private OperationDisplay innerDisplay() {
+        return this.innerDisplay;
+    }
+
+    /**
      * Get the provider property: The resource provider name to which the operation belongs.
      *
      * @return the provider value.
      */
     public String provider() {
-        return this.provider;
+        return this.innerDisplay() == null ? null : this.innerDisplay().provider();
     }
 
     /**
@@ -82,7 +72,10 @@ public class OperationInner {
      * @return the OperationInner object itself.
      */
     public OperationInner withProvider(String provider) {
-        this.provider = provider;
+        if (this.innerDisplay() == null) {
+            this.innerDisplay = new OperationDisplay();
+        }
+        this.innerDisplay().withProvider(provider);
         return this;
     }
 
@@ -92,7 +85,7 @@ public class OperationInner {
      * @return the resource value.
      */
     public String resource() {
-        return this.resource;
+        return this.innerDisplay() == null ? null : this.innerDisplay().resource();
     }
 
     /**
@@ -102,7 +95,10 @@ public class OperationInner {
      * @return the OperationInner object itself.
      */
     public OperationInner withResource(String resource) {
-        this.resource = resource;
+        if (this.innerDisplay() == null) {
+            this.innerDisplay = new OperationDisplay();
+        }
+        this.innerDisplay().withResource(resource);
         return this;
     }
 
@@ -112,7 +108,7 @@ public class OperationInner {
      * @return the operation value.
      */
     public String operation() {
-        return this.operation;
+        return this.innerDisplay() == null ? null : this.innerDisplay().operation();
     }
 
     /**
@@ -122,7 +118,10 @@ public class OperationInner {
      * @return the OperationInner object itself.
      */
     public OperationInner withOperation(String operation) {
-        this.operation = operation;
+        if (this.innerDisplay() == null) {
+            this.innerDisplay = new OperationDisplay();
+        }
+        this.innerDisplay().withOperation(operation);
         return this;
     }
 
@@ -132,7 +131,7 @@ public class OperationInner {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerDisplay() == null ? null : this.innerDisplay().description();
     }
 
     /**
@@ -142,7 +141,10 @@ public class OperationInner {
      * @return the OperationInner object itself.
      */
     public OperationInner withDescription(String description) {
-        this.description = description;
+        if (this.innerDisplay() == null) {
+            this.innerDisplay = new OperationDisplay();
+        }
+        this.innerDisplay().withDescription(description);
         return this;
     }
 
@@ -153,9 +155,18 @@ public class OperationInner {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model OperationInner"));
         }
+        if (innerDisplay() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerDisplay in model OperationInner"));
+        } else {
+            innerDisplay().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationInner.class);
 }

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.databoxedge.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of operations used for the discovery of available provider operations. */
 @Fluent
 public final class OperationsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsList.class);
-
     /*
      * The value.
      */
@@ -27,6 +24,10 @@ public final class OperationsList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of OperationsList class. */
+    public OperationsList() {
+    }
 
     /**
      * Get the value property: The value.
@@ -75,11 +76,13 @@ public final class OperationsList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model OperationsList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsList.class);
 }

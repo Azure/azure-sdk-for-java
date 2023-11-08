@@ -20,6 +20,10 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
     @JsonProperty(value = "properties")
     private RemotePrivateEndpointConnectionArmResourceProperties innerProperties;
 
+    /** Creates an instance of RemotePrivateEndpointConnectionArmResourceInner class. */
+    public RemotePrivateEndpointConnectionArmResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: RemotePrivateEndpointConnectionARMResource resource specific properties.
      *

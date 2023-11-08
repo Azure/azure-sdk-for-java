@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,22 +17,18 @@ import java.util.Map;
 /** uploadSession. */
 @Fluent
 public final class MicrosoftGraphUploadSession {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphUploadSession.class);
-
     /*
-     * The date and time in UTC that the upload session will expire. The
-     * complete file must be uploaded before this expiration time is reached.
+     * The date and time in UTC that the upload session will expire. The complete file must be uploaded before this
+     * expiration time is reached.
      */
     @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
-     * A collection of byte ranges that the server is missing for the file.
-     * These ranges are zero indexed and of the format 'start-end' (e.g. '0-26'
-     * to indicate the first 27 bytes of the file). When uploading files as
-     * Outlook attachments, instead of a collection of ranges, this property
-     * always indicates a single value '{start}', the location in the file
-     * where the next upload should begin.
+     * A collection of byte ranges that the server is missing for the file. These ranges are zero indexed and of the
+     * format 'start-end' (e.g. '0-26' to indicate the first 27 bytes of the file). When uploading files as Outlook
+     * attachments, instead of a collection of ranges, this property always indicates a single value '{start}', the
+     * location in the file where the next upload should begin.
      */
     @JsonProperty(value = "nextExpectedRanges")
     private List<String> nextExpectedRanges;
@@ -48,6 +43,10 @@ public final class MicrosoftGraphUploadSession {
      * uploadSession
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphUploadSession class. */
+    public MicrosoftGraphUploadSession() {
+    }
 
     /**
      * Get the expirationDateTime property: The date and time in UTC that the upload session will expire. The complete

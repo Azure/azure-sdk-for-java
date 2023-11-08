@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Certificate model. */
 @Fluent
 public final class Certificate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Certificate.class);
-
     /*
      * PEM formatted public key.
      */
     @JsonProperty(value = "pem")
     private String pem;
+
+    /** Creates an instance of Certificate class. */
+    public Certificate() {
+    }
 
     /**
      * Get the pem property: PEM formatted public key.

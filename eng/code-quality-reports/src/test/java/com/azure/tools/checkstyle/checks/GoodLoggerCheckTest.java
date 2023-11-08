@@ -5,14 +5,13 @@ package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.azure.tools.checkstyle.checks.GoodLoggingCheck.LOGGER_NAME_ERROR;
 import static com.azure.tools.checkstyle.checks.GoodLoggingCheck.LOGGER_NAME_MISMATCH_ERROR;
 import static com.azure.tools.checkstyle.checks.GoodLoggingCheck.NOT_CLIENT_LOGGER_ERROR;
-import static com.azure.tools.checkstyle.checks.GoodLoggingCheck.STATIC_LOGGER_ERROR;
 
 /**
  * Tests for good logging practices, GoodLoggerCheck.
@@ -20,12 +19,12 @@ import static com.azure.tools.checkstyle.checks.GoodLoggingCheck.STATIC_LOGGER_E
 public class GoodLoggerCheckTest extends AbstractModuleTestSupport {
     private Checker checker;
 
-    @Before
+    @BeforeEach
     public void prepare() throws Exception {
         checker = createChecker(createModuleConfig(GoodLoggingCheck.class));
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         checker.destroy();
     }

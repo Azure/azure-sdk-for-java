@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datalakestore.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DataLakeStoreAccountState. */
+/** The state of the Data Lake Store account. */
 public enum DataLakeStoreAccountState {
     /** Enum value Active. */
     ACTIVE("Active"),
@@ -30,6 +30,9 @@ public enum DataLakeStoreAccountState {
      */
     @JsonCreator
     public static DataLakeStoreAccountState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DataLakeStoreAccountState[] items = DataLakeStoreAccountState.values();
         for (DataLakeStoreAccountState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum DataLakeStoreAccountState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MatchVariable. */
+/** Request variable to compare with. */
 public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
     /** Static value RemoteAddr for MatchVariable. */
     public static final MatchVariable REMOTE_ADDR = fromString("RemoteAddr");
@@ -38,6 +38,15 @@ public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
     public static final MatchVariable SOCKET_ADDR = fromString("SocketAddr");
 
     /**
+     * Creates a new instance of MatchVariable value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MatchVariable() {
+    }
+
+    /**
      * Creates or finds a MatchVariable from its string representation.
      *
      * @param name a name to look for.
@@ -48,7 +57,11 @@ public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
         return fromString(name, MatchVariable.class);
     }
 
-    /** @return known MatchVariable values. */
+    /**
+     * Gets known MatchVariable values.
+     *
+     * @return known MatchVariable values.
+     */
     public static Collection<MatchVariable> values() {
         return values(MatchVariable.class);
     }

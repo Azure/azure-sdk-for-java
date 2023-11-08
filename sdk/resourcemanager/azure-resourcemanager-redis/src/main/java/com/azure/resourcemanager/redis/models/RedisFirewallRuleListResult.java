@@ -24,6 +24,10 @@ public final class RedisFirewallRuleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RedisFirewallRuleListResult class. */
+    public RedisFirewallRuleListResult() {
+    }
+
     /**
      * Get the value property: Results of the list firewall rules operation.
      *

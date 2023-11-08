@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphRecurrencePatternType. */
+/** recurrencePatternType. */
 public final class MicrosoftGraphRecurrencePatternType
     extends ExpandableStringEnum<MicrosoftGraphRecurrencePatternType> {
     /** Static value daily for MicrosoftGraphRecurrencePatternType. */
@@ -30,6 +30,15 @@ public final class MicrosoftGraphRecurrencePatternType
     public static final MicrosoftGraphRecurrencePatternType RELATIVE_YEARLY = fromString("relativeYearly");
 
     /**
+     * Creates a new instance of MicrosoftGraphRecurrencePatternType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphRecurrencePatternType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphRecurrencePatternType from its string representation.
      *
      * @param name a name to look for.
@@ -40,7 +49,11 @@ public final class MicrosoftGraphRecurrencePatternType
         return fromString(name, MicrosoftGraphRecurrencePatternType.class);
     }
 
-    /** @return known MicrosoftGraphRecurrencePatternType values. */
+    /**
+     * Gets known MicrosoftGraphRecurrencePatternType values.
+     *
+     * @return known MicrosoftGraphRecurrencePatternType values.
+     */
     public static Collection<MicrosoftGraphRecurrencePatternType> values() {
         return values(MicrosoftGraphRecurrencePatternType.class);
     }

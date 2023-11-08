@@ -73,7 +73,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.5.0-beta.7</version>
+    <version>11.6.0-beta.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -95,15 +95,20 @@ See [choosing a pricing tier](https://docs.microsoft.com/azure/search/search-sku
 
 ### Authenticate the client
 
-In order to interact with the Azure Cognitive Search service you'll need to create an instance of the Search Client class.
-To make this possible you will need,
+To interact with the Search service, you'll need to create an instance of the appropriate client class: `SearchClient` 
+for searching indexed documents, `SearchIndexClient` for managing indexes, or `SearchIndexerClient` for crawling data 
+sources and loading search documents into an index. To instantiate a client object, you'll need an **endpoint** and 
+**API key**. You can refer to the documentation for more information on [supported authenticating approaches](https://learn.microsoft.com/azure/search/search-security-overview#authentication) 
+with the Search service.
 
-1. [URL endpoint](https://docs.microsoft.com/azure/search/search-create-service-portal#get-a-key-and-url-endpoint)
-1. [API key](https://docs.microsoft.com/azure/search/search-create-service-portal#get-a-key-and-url-endpoint)
+#### Get an API Key
 
-for your service. [The api-key is the sole mechanism for authenticating access to
-your search service endpoint.](https://docs.microsoft.com/azure/search/search-security-api-keys)
-You can obtain your api-key from the [Azure portal](https://portal.azure.com/) or via the Azure CLI:
+You can get the **endpoint** and an **API key** from the Search service in the [Azure Portal](https://portal.azure.com/). 
+Please refer the [documentation](https://docs.microsoft.com/azure/search/search-security-api-keys) for instructions on 
+how to get an API key.
+
+Alternatively, you can use the following [Azure CLI](https://learn.microsoft.com/cli/azure/) command to retrieve the 
+API key from the Search service:
 
 ```bash
 az search admin-key show --service-name <mysearch> --resource-group <mysearch-rg>
@@ -130,8 +135,8 @@ URL endpoint and admin key.
 
 ```java readme-sample-createIndexClient
 SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(API_KEY))
     .buildClient();
 ```
 
@@ -139,8 +144,8 @@ or
 
 ```java readme-sample-createIndexAsyncClient
 SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(API_KEY))
     .buildAsyncClient();
 ```
 
@@ -151,8 +156,8 @@ URL endpoint and admin key.
 
 ```java readme-sample-createIndexerClient
 SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(API_KEY))
     .buildClient();
 ```
 
@@ -160,8 +165,8 @@ or
 
 ```java readme-sample-createIndexerAsyncClient
 SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(apiKey))
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(API_KEY))
     .buildAsyncClient();
 ```
 
@@ -172,9 +177,9 @@ admin key, you can create the `SearchClient/SearchAsyncClient` with an existing 
 
 ```java readme-sample-createSearchClient
 SearchClient searchClient = new SearchClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(adminKey))
-    .indexName(indexName)
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(ADMIN_KEY))
+    .indexName(INDEX_NAME)
     .buildClient();
 ```
 
@@ -182,10 +187,50 @@ or
 
 ```java readme-sample-createAsyncSearchClient
 SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(adminKey))
-    .indexName(indexName)
+    .endpoint(ENDPOINT)
+    .credential(new AzureKeyCredential(ADMIN_KEY))
+    .indexName(INDEX_NAME)
     .buildAsyncClient();
+```
+
+#### Create a client using Azure Active Directory authentication
+
+You can also create a `SearchClient`, `SearchIndexClient`, or `SearchIndexerClient` using Azure Active Directory (AAD) 
+authentication. Your user or service principal must be assigned the "Search Index Data Reader" role.
+Using the [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential) 
+you can authenticate a service using Managed Identity or a service principal, authenticate as a developer working on an
+application, and more all without changing code. Please refer the [documentation](https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal%2Croles-portal%2Ctest-portal%2Ccustom-role-portal%2Cdisable-keys-portal) 
+for instructions on how to connect to Azure Cognitive Search using Azure role-based access control (Azure RBAC).
+
+Before you can use the `DefaultAzureCredential`, or any credential type from [Azure.Identity](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md), 
+you'll first need to [install the Azure.Identity package](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#include-the-package).
+
+To use `DefaultAzureCredential` with a client ID and secret, you'll need to set the `AZURE_TENANT_ID`, 
+`AZURE_CLIENT_ID`, and `AZURE_CLIENT_SECRET` environment variables; alternatively, you can pass those values
+to the `ClientSecretCredential` also in `azure-identity`.
+
+Make sure you use the right namespace for `DefaultAzureCredential` at the top of your source file:
+
+```java
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+```
+
+Then you can create an instance of `DefaultAzureCredential` and pass it to a new instance of your client:
+
+```java readme-sample-searchClientWithTokenCredential
+String indexName = "nycjobs";
+
+// Get the service endpoint from the environment
+String endpoint = Configuration.getGlobalConfiguration().get("SEARCH_ENDPOINT");
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+// Create a client
+SearchClient client = new SearchClientBuilder()
+    .endpoint(endpoint)
+    .indexName(indexName)
+    .credential(credential)
+    .buildClient();
 ```
 
 ### Send your first search query
@@ -220,6 +265,35 @@ tables.)_ The `azure-search-documents` client library exposes operations on thes
   * [Start indexers to automatically crawl data sources](https://docs.microsoft.com/rest/api/searchservice/indexer-operations)
   * [Define AI powered Skillsets to transform and enrich your data](https://docs.microsoft.com/rest/api/searchservice/skillset-operations)
 
+Azure Cognitive Search provides two powerful features:
+
+### Semantic Search
+
+Semantic search enhances the quality of search results for text-based queries. By enabling Semantic Search on your 
+search service, you can improve the relevance of search results in two ways:
+
+- It applies secondary ranking to the initial result set, promoting the most semantically relevant results to the top.
+- It extracts and returns captions and answers in the response, which can be displayed on a search page to enhance the 
+  user's search experience.
+
+To learn more about Semantic Search, you can refer to the [documentation](https://learn.microsoft.com/azure/search/vector-search-overview).
+
+### Vector Search
+
+Vector Search is an information retrieval technique that overcomes the limitations of traditional keyword-based search. 
+Instead of relying solely on lexical analysis and matching individual query terms, Vector Search utilizes machine 
+learning models to capture the contextual meaning of words and phrases. It represents documents and queries as vectors 
+in a high-dimensional space called an embedding. By understanding the intent behind the query, Vector Search can deliver 
+more relevant results that align with the user's requirements, even if the exact terms are not present in the document. 
+Moreover, Vector Search can be applied to various types of content, including images and videos, not just text.
+
+To learn how to index vector fields and perform vector search, you can refer to the [sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchExample.java). 
+This sample provides detailed guidance on indexing vector fields and demonstrates how to perform vector search.
+
+Additionally, for more comprehensive information about Vector Search, including its concepts and usage, you can refer 
+to the [documentation](https://learn.microsoft.com/azure/search/vector-search-overview). The documentation provides 
+in-depth explanations and guidance on leveraging the power of Vector Search in Azure Cognitive Search.
+
 ## Examples
 
 The following examples all use a simple [Hotel data set](https://github.com/Azure-Samples/azure-search-sample-data)
@@ -234,6 +308,7 @@ These are just a few of the basics - please [check out our Samples][samples_read
 * [Adding documents to your index](#adding-documents-to-your-index)
 * [Retrieving a specific document from your index](#retrieving-a-specific-document-from-your-index)
 * [Async APIs](#async-apis)
+* [Create a client that can authenticate in a national cloud](#authenticate-in-a-national-cloud)
 
 ### Querying
 
@@ -247,7 +322,7 @@ Let's explore them with a search for a "luxury" hotel.
 enumerate over the results, and extract data using `SearchDocument`'s dictionary indexer.
 
 ```java readme-sample-searchWithDynamicType
-for (SearchResult searchResult : searchClient.search("luxury")) {
+for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
     SearchDocument doc = searchResult.getDocument(SearchDocument.class);
     String id = (String) doc.get("hotelId");
     String name = (String) doc.get("hotelName");
@@ -287,7 +362,7 @@ public class Hotel {
 Use it in place of `SearchDocument` when querying.
 
 ```java readme-sample-searchWithStronglyType
-for (SearchResult searchResult : searchClient.search("luxury")) {
+for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
     Hotel doc = searchResult.getDocument(Hotel.class);
     String id = doc.getId();
     String name = doc.getName();
@@ -308,7 +383,7 @@ SearchOptions options = new SearchOptions()
     .setFilter("rating ge 4")
     .setOrderBy("rating desc")
     .setTop(5);
-SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);
+SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search("luxury", options, Context.NONE);
 // ...
 ```
 
@@ -324,7 +399,7 @@ to configure the field of model class.
 
 ```java readme-sample-createIndexUseFieldBuilder
 List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
-searchIndexClient.createIndex(new SearchIndex("index", searchFields));
+SEARCH_INDEX_CLIENT.createIndex(new SearchIndex("index", searchFields));
 ```
 
 For advanced scenarios, we can build search fields using `SearchField` directly.
@@ -376,7 +451,7 @@ SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList(
 // Prepare SearchIndex with index name and search fields.
 SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(suggester);
 // Create an index
-searchIndexClient.createIndex(index);
+SEARCH_INDEX_CLIENT.createIndex(index);
 ```
 
 ### Retrieving a specific document from your index
@@ -386,7 +461,7 @@ your index if you already know the key. You could get the key from a query, for 
 information about it or navigate your customer to that document.
 
 ```java readme-sample-retrieveDocuments
-Hotel hotel = searchClient.getDocument("1", Hotel.class);
+Hotel hotel = SEARCH_CLIENT.getDocument("1", Hotel.class);
 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
 ```
 
@@ -400,7 +475,7 @@ to be aware of.
 IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<>();
 batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
 batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
-searchClient.indexDocuments(batch);
+SEARCH_CLIENT.indexDocuments(batch);
 ```
 
 The request will throw `IndexBatchException` by default if any of the individual actions fail, and you can use
@@ -413,14 +488,36 @@ The examples so far have been using synchronous APIs, but we provide full suppor
 to use [SearchAsyncClient](#create-a-searchclient).
 
 ```java readme-sample-searchWithAsyncClient
-searchAsyncClient.search("luxury")
+SEARCH_ASYNC_CLIENT.search("luxury")
     .subscribe(result -> {
         Hotel hotel = result.getDocument(Hotel.class);
         System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
     });
 ```
 
+### Authenticate in a National Cloud
+
+To authenticate in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
+
+- Set the `AuthorityHost` in the credential options or via the `AZURE_AUTHORITY_HOST` environment variable
+- Set the `audience` in `SearchClientBuilder`, `SearchIndexClientBuilder`, or `SearchIndexerClientBuilder`
+
+```java readme-sample-nationalCloud
+// Create a SearchClient that will authenticate through AAD in the China national cloud.
+SearchClient searchClient = new SearchClientBuilder()
+    .endpoint(ENDPOINT)
+    .indexName(INDEX_NAME)
+    .credential(new DefaultAzureCredentialBuilder()
+        .authorityHost(AzureAuthorityHosts.AZURE_CHINA)
+        .build())
+    .audience(SearchAudience.AZURE_CHINA)
+    .buildClient();
+```
+
 ## Troubleshooting
+
+See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/TROUBLESHOOTING.md) 
+for details on how to diagnose various failure scenarios.
 
 ### General
 
@@ -435,7 +532,7 @@ Any Search API operation that fails will throw an [`HttpResponseException`][Http
 
 ```java readme-sample-handleErrorsWithSyncClient
 try {
-    Iterable<SearchResult> results = searchClient.search("hotel");
+    Iterable<SearchResult> results = SEARCH_CLIENT.search("hotel");
 } catch (HttpResponseException ex) {
     // The exception contains the HTTP status code and the detailed message
     // returned from the search service
@@ -485,7 +582,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [search_docs]: https://docs.microsoft.com/azure/search/
 [azure_subscription]: https://azure.microsoft.com/free/java
 [maven]: https://maven.apache.org/
-[package]: https://search.maven.org/artifact/com.azure/azure-search-documents
+[package]: https://central.sonatype.com/artifact/com.azure/azure-search-documents
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src/samples/
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src

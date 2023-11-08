@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,8 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SAPHanaDatabase")
 @Fluent
 public final class AzureVmWorkloadSapHanaDatabaseProtectableItem extends AzureVmWorkloadProtectableItem {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureVmWorkloadSapHanaDatabaseProtectableItem.class);
+    /** Creates an instance of AzureVmWorkloadSapHanaDatabaseProtectableItem class. */
+    public AzureVmWorkloadSapHanaDatabaseProtectableItem() {
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -72,6 +71,13 @@ public final class AzureVmWorkloadSapHanaDatabaseProtectableItem extends AzureVm
     public AzureVmWorkloadSapHanaDatabaseProtectableItem withPrebackupvalidation(
         PreBackupValidation prebackupvalidation) {
         super.withPrebackupvalidation(prebackupvalidation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSapHanaDatabaseProtectableItem withIsProtectable(Boolean isProtectable) {
+        super.withIsProtectable(isProtectable);
         return this;
     }
 

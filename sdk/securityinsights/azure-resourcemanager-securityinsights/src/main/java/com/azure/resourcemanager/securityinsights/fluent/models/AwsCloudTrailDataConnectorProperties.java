@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AwsCloudTrailDataConnectorProperties {
     /*
-     * The Aws Role Arn (with CloudTrailReadOnly policy) that is used to access
-     * the Aws account.
+     * The Aws Role Arn (with CloudTrailReadOnly policy) that is used to access the Aws account.
      */
     @JsonProperty(value = "awsRoleArn")
     private String awsRoleArn;

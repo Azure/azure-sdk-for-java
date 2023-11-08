@@ -24,6 +24,10 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of CertificateCreateOrUpdateParameters class. */
+    public CertificateCreateOrUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The properties associated with the certificate.
      *
@@ -43,7 +47,9 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Get the data property: The base64-encoded contents of the certificate. The maximum size is 10KB.
+     * Get the data property: The base64-encoded contents of the certificate.
+     *
+     * <p>The maximum size is 10KB.
      *
      * @return the data value.
      */
@@ -52,7 +58,9 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Set the data property: The base64-encoded contents of the certificate. The maximum size is 10KB.
+     * Set the data property: The base64-encoded contents of the certificate.
+     *
+     * <p>The maximum size is 10KB.
      *
      * @param data the data value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
@@ -66,8 +74,9 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Get the password property: The password to access the certificate's private key. This must not be specified if
-     * the certificate format is Cer.
+     * Get the password property: The password to access the certificate's private key.
+     *
+     * <p>This must not be specified if the certificate format is Cer.
      *
      * @return the password value.
      */
@@ -76,8 +85,9 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Set the password property: The password to access the certificate's private key. This must not be specified if
-     * the certificate format is Cer.
+     * Set the password property: The password to access the certificate's private key.
+     *
+     * <p>This must not be specified if the certificate format is Cer.
      *
      * @param password the password value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
@@ -91,8 +101,9 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Get the thumbprintAlgorithm property: The algorithm of the certificate thumbprint. This must match the first
-     * portion of the certificate name. Currently required to be 'SHA1'.
+     * Get the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
+     *
+     * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
      *
      * @return the thumbprintAlgorithm value.
      */
@@ -101,8 +112,9 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Set the thumbprintAlgorithm property: The algorithm of the certificate thumbprint. This must match the first
-     * portion of the certificate name. Currently required to be 'SHA1'.
+     * Set the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
+     *
+     * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
      *
      * @param thumbprintAlgorithm the thumbprintAlgorithm value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
@@ -116,7 +128,9 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Get the thumbprint property: The thumbprint of the certificate. This must match the thumbprint from the name.
+     * Get the thumbprint property: The thumbprint of the certificate.
+     *
+     * <p>This must match the thumbprint from the name.
      *
      * @return the thumbprint value.
      */
@@ -125,7 +139,9 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Set the thumbprint property: The thumbprint of the certificate. This must match the thumbprint from the name.
+     * Set the thumbprint property: The thumbprint of the certificate.
+     *
+     * <p>This must match the thumbprint from the name.
      *
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.

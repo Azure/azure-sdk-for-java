@@ -21,10 +21,14 @@ public final class SalesforceSource extends TabularSource {
     private Object query;
 
     /*
-     * The read behavior for the operation. Default is Query.
+     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "readBehavior")
-    private SalesforceSourceReadBehavior readBehavior;
+    private Object readBehavior;
+
+    /** Creates an instance of SalesforceSource class. */
+    public SalesforceSource() {}
 
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
@@ -47,22 +51,59 @@ public final class SalesforceSource extends TabularSource {
     }
 
     /**
-     * Get the readBehavior property: The read behavior for the operation. Default is Query.
+     * Get the readBehavior property: The read behavior for the operation. Default is Query. Allowed values:
+     * Query/QueryAll. Type: string (or Expression with resultType string).
      *
      * @return the readBehavior value.
      */
-    public SalesforceSourceReadBehavior getReadBehavior() {
+    public Object getReadBehavior() {
         return this.readBehavior;
     }
 
     /**
-     * Set the readBehavior property: The read behavior for the operation. Default is Query.
+     * Set the readBehavior property: The read behavior for the operation. Default is Query. Allowed values:
+     * Query/QueryAll. Type: string (or Expression with resultType string).
      *
      * @param readBehavior the readBehavior value to set.
      * @return the SalesforceSource object itself.
      */
-    public SalesforceSource setReadBehavior(SalesforceSourceReadBehavior readBehavior) {
+    public SalesforceSource setReadBehavior(Object readBehavior) {
         this.readBehavior = readBehavior;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

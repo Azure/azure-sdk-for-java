@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** physicalAddress. */
 @Fluent
 public final class MicrosoftGraphPhysicalAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPhysicalAddress.class);
-
     /*
      * The city.
      */
@@ -25,8 +22,7 @@ public final class MicrosoftGraphPhysicalAddress {
     private String city;
 
     /*
-     * The country or region. It's a free-format string value, for example,
-     * 'United States'.
+     * The country or region. It's a free-format string value, for example, 'United States'.
      */
     @JsonProperty(value = "countryOrRegion")
     private String countryOrRegion;
@@ -53,6 +49,10 @@ public final class MicrosoftGraphPhysicalAddress {
      * physicalAddress
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPhysicalAddress class. */
+    public MicrosoftGraphPhysicalAddress() {
+    }
 
     /**
      * Get the city property: The city.

@@ -14,10 +14,9 @@ import com.azure.resourcemanager.quota.fluent.models.CurrentUsagesBaseInner;
 import com.azure.resourcemanager.quota.models.CurrentUsagesBase;
 import com.azure.resourcemanager.quota.models.Usages;
 import com.azure.resourcemanager.quota.models.UsagesGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UsagesImpl implements Usages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UsagesImpl.class);
 
     private final UsagesClient innerClient;
 
@@ -28,15 +27,6 @@ public final class UsagesImpl implements Usages {
         this.serviceManager = serviceManager;
     }
 
-    public CurrentUsagesBase get(String resourceName, String scope) {
-        CurrentUsagesBaseInner inner = this.serviceClient().get(resourceName, scope);
-        if (inner != null) {
-            return new CurrentUsagesBaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CurrentUsagesBase> getWithResponse(String resourceName, String scope, Context context) {
         UsagesGetResponse inner = this.serviceClient().getWithResponse(resourceName, scope, context);
         if (inner != null) {
@@ -45,6 +35,15 @@ public final class UsagesImpl implements Usages {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CurrentUsagesBaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CurrentUsagesBase get(String resourceName, String scope) {
+        CurrentUsagesBaseInner inner = this.serviceClient().get(resourceName, scope);
+        if (inner != null) {
+            return new CurrentUsagesBaseImpl(inner, this.manager());
         } else {
             return null;
         }

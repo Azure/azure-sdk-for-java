@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionPolicyOperationStatusesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ProtectionPolicyOperationStatusesClient.
  */
 public final class ProtectionPolicyOperationStatusesClientImpl implements ProtectionPolicyOperationStatusesClient {
-    private final ClientLogger logger = new ClientLogger(ProtectionPolicyOperationStatusesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectionPolicyOperationStatusesService service;
 
@@ -59,11 +56,10 @@ public final class ProtectionPolicyOperationStatusesClientImpl implements Protec
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectionPolicyOperationStatusesService {
+    public interface ProtectionPolicyOperationStatusesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupPolicies/{policyName}/operations/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationStatusInner>> get(
@@ -214,33 +210,7 @@ public final class ProtectionPolicyOperationStatusesClientImpl implements Protec
     private Mono<OperationStatusInner> getAsync(
         String vaultName, String resourceGroupName, String policyName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName, operationId)
-            .flatMap(
-                (Response<OperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Provides the status of the asynchronous operations like backup, restore. The status can be in progress, completed
-     * or failed. You can refer to the Operation Status enum for all the possible states of an operation. Some
-     * operations create jobs. This method returns the list of jobs associated with operation.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param policyName Backup policy name whose operation's status needs to be fetched.
-     * @param operationId Operation ID which represents an operation whose status needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner get(String vaultName, String resourceGroupName, String policyName, String operationId) {
-        return getAsync(vaultName, resourceGroupName, policyName, operationId).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -262,5 +232,24 @@ public final class ProtectionPolicyOperationStatusesClientImpl implements Protec
     public Response<OperationStatusInner> getWithResponse(
         String vaultName, String resourceGroupName, String policyName, String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName, operationId, context).block();
+    }
+
+    /**
+     * Provides the status of the asynchronous operations like backup, restore. The status can be in progress, completed
+     * or failed. You can refer to the Operation Status enum for all the possible states of an operation. Some
+     * operations create jobs. This method returns the list of jobs associated with operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param policyName Backup policy name whose operation's status needs to be fetched.
+     * @param operationId Operation ID which represents an operation whose status needs to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusInner get(String vaultName, String resourceGroupName, String policyName, String operationId) {
+        return getWithResponse(vaultName, resourceGroupName, policyName, operationId, Context.NONE).getValue();
     }
 }

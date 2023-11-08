@@ -7,13 +7,11 @@ package com.azure.resourcemanager.videoanalyzer.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.models.VideoArchival;
 import com.azure.resourcemanager.videoanalyzer.models.VideoContentUrls;
 import com.azure.resourcemanager.videoanalyzer.models.VideoFlags;
 import com.azure.resourcemanager.videoanalyzer.models.VideoMediaInfo;
 import com.azure.resourcemanager.videoanalyzer.models.VideoType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -24,8 +22,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class VideoEntityInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoEntityInner.class);
-
     /*
      * The resource properties.
      */

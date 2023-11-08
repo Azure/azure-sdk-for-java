@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response contract for enable backup validation request. */
 @Fluent
 public final class PreValidateEnableBackupResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreValidateEnableBackupResponseInner.class);
-
     /*
      * Validation Status
      */
@@ -40,19 +36,22 @@ public final class PreValidateEnableBackupResponseInner {
     private String recommendation;
 
     /*
-     * Specifies the product specific container name. E.g.
-     * iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required
+     * Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is
+     * required
      * for portal
      */
     @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
-     * Specifies the product specific ds name. E.g.
-     * vm;iaasvmcontainer;rgname;vmname. This is required for portal
+     * Specifies the product specific ds name. E.g. vm;iaasvmcontainer;rgname;vmname. This is required for portal
      */
     @JsonProperty(value = "protectedItemName")
     private String protectedItemName;
+
+    /** Creates an instance of PreValidateEnableBackupResponseInner class. */
+    public PreValidateEnableBackupResponseInner() {
+    }
 
     /**
      * Get the status property: Validation Status.

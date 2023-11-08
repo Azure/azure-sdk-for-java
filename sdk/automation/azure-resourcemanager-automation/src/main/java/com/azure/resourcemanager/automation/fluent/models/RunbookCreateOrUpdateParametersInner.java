@@ -5,19 +5,21 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.ContentLink;
 import com.azure.resourcemanager.automation.models.RunbookTypeEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create or update runbook operation. */
-@JsonFlatten
 @Fluent
-public class RunbookCreateOrUpdateParametersInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunbookCreateOrUpdateParametersInner.class);
+public final class RunbookCreateOrUpdateParametersInner {
+    /*
+     * Gets or sets runbook create or update properties.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private RunbookCreateOrUpdatePropertiesInner innerProperties = new RunbookCreateOrUpdatePropertiesInner();
 
     /*
      * Gets or sets the name of the resource.
@@ -35,49 +37,17 @@ public class RunbookCreateOrUpdateParametersInner {
      * Gets or sets the tags attached to the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Gets or sets verbose log option.
+    /**
+     * Get the innerProperties property: Gets or sets runbook create or update properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.logVerbose")
-    private Boolean logVerbose;
-
-    /*
-     * Gets or sets progress log option.
-     */
-    @JsonProperty(value = "properties.logProgress")
-    private Boolean logProgress;
-
-    /*
-     * Gets or sets the type of the runbook.
-     */
-    @JsonProperty(value = "properties.runbookType", required = true)
-    private RunbookTypeEnum runbookType;
-
-    /*
-     * Gets or sets the draft runbook properties.
-     */
-    @JsonProperty(value = "properties.draft")
-    private RunbookDraftInner draft;
-
-    /*
-     * Gets or sets the published runbook content link.
-     */
-    @JsonProperty(value = "properties.publishContentLink")
-    private ContentLink publishContentLink;
-
-    /*
-     * Gets or sets the description of the runbook.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Gets or sets the activity-level tracing options of the runbook.
-     */
-    @JsonProperty(value = "properties.logActivityTrace")
-    private Integer logActivityTrace;
+    private RunbookCreateOrUpdatePropertiesInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Gets or sets the name of the resource.
@@ -145,7 +115,7 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
-        return this.logVerbose;
+        return this.innerProperties() == null ? null : this.innerProperties().logVerbose();
     }
 
     /**
@@ -155,7 +125,10 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the RunbookCreateOrUpdateParametersInner object itself.
      */
     public RunbookCreateOrUpdateParametersInner withLogVerbose(Boolean logVerbose) {
-        this.logVerbose = logVerbose;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookCreateOrUpdatePropertiesInner();
+        }
+        this.innerProperties().withLogVerbose(logVerbose);
         return this;
     }
 
@@ -165,7 +138,7 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the logProgress value.
      */
     public Boolean logProgress() {
-        return this.logProgress;
+        return this.innerProperties() == null ? null : this.innerProperties().logProgress();
     }
 
     /**
@@ -175,7 +148,10 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the RunbookCreateOrUpdateParametersInner object itself.
      */
     public RunbookCreateOrUpdateParametersInner withLogProgress(Boolean logProgress) {
-        this.logProgress = logProgress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookCreateOrUpdatePropertiesInner();
+        }
+        this.innerProperties().withLogProgress(logProgress);
         return this;
     }
 
@@ -185,7 +161,7 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the runbookType value.
      */
     public RunbookTypeEnum runbookType() {
-        return this.runbookType;
+        return this.innerProperties() == null ? null : this.innerProperties().runbookType();
     }
 
     /**
@@ -195,7 +171,10 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the RunbookCreateOrUpdateParametersInner object itself.
      */
     public RunbookCreateOrUpdateParametersInner withRunbookType(RunbookTypeEnum runbookType) {
-        this.runbookType = runbookType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookCreateOrUpdatePropertiesInner();
+        }
+        this.innerProperties().withRunbookType(runbookType);
         return this;
     }
 
@@ -205,7 +184,7 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the draft value.
      */
     public RunbookDraftInner draft() {
-        return this.draft;
+        return this.innerProperties() == null ? null : this.innerProperties().draft();
     }
 
     /**
@@ -215,7 +194,10 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the RunbookCreateOrUpdateParametersInner object itself.
      */
     public RunbookCreateOrUpdateParametersInner withDraft(RunbookDraftInner draft) {
-        this.draft = draft;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookCreateOrUpdatePropertiesInner();
+        }
+        this.innerProperties().withDraft(draft);
         return this;
     }
 
@@ -225,7 +207,7 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the publishContentLink value.
      */
     public ContentLink publishContentLink() {
-        return this.publishContentLink;
+        return this.innerProperties() == null ? null : this.innerProperties().publishContentLink();
     }
 
     /**
@@ -235,7 +217,10 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the RunbookCreateOrUpdateParametersInner object itself.
      */
     public RunbookCreateOrUpdateParametersInner withPublishContentLink(ContentLink publishContentLink) {
-        this.publishContentLink = publishContentLink;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookCreateOrUpdatePropertiesInner();
+        }
+        this.innerProperties().withPublishContentLink(publishContentLink);
         return this;
     }
 
@@ -245,7 +230,7 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -255,7 +240,10 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the RunbookCreateOrUpdateParametersInner object itself.
      */
     public RunbookCreateOrUpdateParametersInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookCreateOrUpdatePropertiesInner();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -265,7 +253,7 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the logActivityTrace value.
      */
     public Integer logActivityTrace() {
-        return this.logActivityTrace;
+        return this.innerProperties() == null ? null : this.innerProperties().logActivityTrace();
     }
 
     /**
@@ -275,7 +263,10 @@ public class RunbookCreateOrUpdateParametersInner {
      * @return the RunbookCreateOrUpdateParametersInner object itself.
      */
     public RunbookCreateOrUpdateParametersInner withLogActivityTrace(Integer logActivityTrace) {
-        this.logActivityTrace = logActivityTrace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookCreateOrUpdatePropertiesInner();
+        }
+        this.innerProperties().withLogActivityTrace(logActivityTrace);
         return this;
     }
 
@@ -285,17 +276,15 @@ public class RunbookCreateOrUpdateParametersInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (runbookType() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property runbookType in model RunbookCreateOrUpdateParametersInner"));
-        }
-        if (draft() != null) {
-            draft().validate();
-        }
-        if (publishContentLink() != null) {
-            publishContentLink().validate();
+                        "Missing required property innerProperties in model RunbookCreateOrUpdateParametersInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RunbookCreateOrUpdateParametersInner.class);
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphOnenotePatchActionType. */
+/** onenotePatchActionType. */
 public final class MicrosoftGraphOnenotePatchActionType
     extends ExpandableStringEnum<MicrosoftGraphOnenotePatchActionType> {
     /** Static value Replace for MicrosoftGraphOnenotePatchActionType. */
@@ -27,6 +27,15 @@ public final class MicrosoftGraphOnenotePatchActionType
     public static final MicrosoftGraphOnenotePatchActionType PREPEND = fromString("Prepend");
 
     /**
+     * Creates a new instance of MicrosoftGraphOnenotePatchActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphOnenotePatchActionType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphOnenotePatchActionType from its string representation.
      *
      * @param name a name to look for.
@@ -37,7 +46,11 @@ public final class MicrosoftGraphOnenotePatchActionType
         return fromString(name, MicrosoftGraphOnenotePatchActionType.class);
     }
 
-    /** @return known MicrosoftGraphOnenotePatchActionType values. */
+    /**
+     * Gets known MicrosoftGraphOnenotePatchActionType values.
+     *
+     * @return known MicrosoftGraphOnenotePatchActionType values.
+     */
     public static Collection<MicrosoftGraphOnenotePatchActionType> values() {
         return values(MicrosoftGraphOnenotePatchActionType.class);
     }

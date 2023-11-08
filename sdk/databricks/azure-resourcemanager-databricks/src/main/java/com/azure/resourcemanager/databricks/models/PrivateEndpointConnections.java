@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of PrivateEndpointConnections. */
 public interface PrivateEndpointConnections {
     /**
-     * List private endpoint connections of the workspace.
+     * List private endpoint connections
+     *
+     * <p>List private endpoint connections of the workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -19,12 +21,14 @@ public interface PrivateEndpointConnections {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private link connections.
+     * @return list of private link connections as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String workspaceName);
 
     /**
-     * List private endpoint connections of the workspace.
+     * List private endpoint connections
+     *
+     * <p>List private endpoint connections of the workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -33,12 +37,32 @@ public interface PrivateEndpointConnections {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private link connections.
+     * @return list of private link connections as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Get a private endpoint connection properties for a workspace.
+     * Get private endpoint connection
+     *
+     * <p>Get a private endpoint connection properties for a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection properties for a workspace along with {@link Response}.
+     */
+    Response<PrivateEndpointConnection> getWithResponse(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+
+    /**
+     * Get private endpoint connection
+     *
+     * <p>Get a private endpoint connection properties for a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -52,23 +76,9 @@ public interface PrivateEndpointConnections {
     PrivateEndpointConnection get(String resourceGroupName, String workspaceName, String privateEndpointConnectionName);
 
     /**
-     * Get a private endpoint connection properties for a workspace.
+     * Remove private endpoint connection
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection properties for a workspace.
-     */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
-
-    /**
-     * Remove private endpoint connection with the specified name.
+     * <p>Remove private endpoint connection with the specified name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -81,7 +91,9 @@ public interface PrivateEndpointConnections {
     void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName);
 
     /**
-     * Remove private endpoint connection with the specified name.
+     * Remove private endpoint connection
+     *
+     * <p>Remove private endpoint connection with the specified name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -95,19 +107,23 @@ public interface PrivateEndpointConnections {
     void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
 
     /**
-     * Get a private endpoint connection properties for a workspace.
+     * Get private endpoint connection
+     *
+     * <p>Get a private endpoint connection properties for a workspace.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection properties for a workspace.
+     * @return a private endpoint connection properties for a workspace along with {@link Response}.
      */
     PrivateEndpointConnection getById(String id);
 
     /**
-     * Get a private endpoint connection properties for a workspace.
+     * Get private endpoint connection
+     *
+     * <p>Get a private endpoint connection properties for a workspace.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -115,12 +131,14 @@ public interface PrivateEndpointConnections {
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection properties for a workspace.
+     * @return a private endpoint connection properties for a workspace along with {@link Response}.
      */
     Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context);
 
     /**
-     * Remove private endpoint connection with the specified name.
+     * Remove private endpoint connection
+     *
+     * <p>Remove private endpoint connection with the specified name.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +149,9 @@ public interface PrivateEndpointConnections {
     void deleteById(String id);
 
     /**
-     * Remove private endpoint connection with the specified name.
+     * Remove private endpoint connection
+     *
+     * <p>Remove private endpoint connection with the specified name.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

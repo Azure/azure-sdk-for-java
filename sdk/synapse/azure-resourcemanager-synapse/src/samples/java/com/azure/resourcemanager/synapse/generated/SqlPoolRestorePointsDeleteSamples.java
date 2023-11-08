@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolRestorePoints Delete. */
 public final class SqlPoolRestorePointsDeleteSamples {
     /*
@@ -19,6 +17,11 @@ public final class SqlPoolRestorePointsDeleteSamples {
     public static void deletesARestorePoint(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolRestorePoints()
-            .deleteWithResponse("Default-SQL-SouthEastAsia", "testws", "testpool", "131546477590000000", Context.NONE);
+            .deleteWithResponse(
+                "Default-SQL-SouthEastAsia",
+                "testws",
+                "testpool",
+                "131546477590000000",
+                com.azure.core.util.Context.NONE);
     }
 }

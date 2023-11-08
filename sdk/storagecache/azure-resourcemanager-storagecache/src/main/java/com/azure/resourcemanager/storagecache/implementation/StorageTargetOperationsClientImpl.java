@@ -55,11 +55,10 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageCacheManageme")
-    private interface StorageTargetOperationsService {
+    public interface StorageTargetOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches"
-                + "/{cacheName}/storageTargets/{storageTargetName}/flush")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/flush")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> flush(
@@ -74,8 +73,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches"
-                + "/{cacheName}/storageTargets/{storageTargetName}/suspend")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/suspend")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> suspend(
@@ -90,8 +88,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches"
-                + "/{cacheName}/storageTargets/{storageTargetName}/resume")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/resume")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resume(
@@ -106,8 +103,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches"
-                + "/{cacheName}/storageTargets/{storageTargetName}/invalidate")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/invalidate")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> invalidate(
@@ -125,8 +121,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,8 +177,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -235,8 +231,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,8 +254,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -283,8 +279,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,15 +291,15 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(
         String resourceGroupName, String cacheName, String storageTargetName) {
-        return beginFlushAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
+        return this.beginFlushAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
     }
 
     /**
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -315,15 +311,15 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        return beginFlushAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
+        return this.beginFlushAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
     }
 
     /**
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -342,8 +338,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -364,8 +360,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -381,8 +377,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -398,8 +394,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Suspends client access to a storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,8 +449,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Suspends client access to a storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -506,8 +502,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Suspends client access to a storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -529,8 +525,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Suspends client access to a storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -553,8 +549,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Suspends client access to a storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -565,14 +561,14 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String cacheName, String storageTargetName) {
-        return beginSuspendAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
+        return this.beginSuspendAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
     }
 
     /**
      * Suspends client access to a storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -584,14 +580,14 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        return beginSuspendAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
+        return this.beginSuspendAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
     }
 
     /**
      * Suspends client access to a storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -609,8 +605,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Suspends client access to a storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -630,8 +626,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Suspends client access to a storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -646,8 +642,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Suspends client access to a storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -663,8 +659,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Resumes client access to a previously suspended storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -718,8 +714,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Resumes client access to a previously suspended storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -771,8 +767,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Resumes client access to a previously suspended storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -794,8 +790,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Resumes client access to a previously suspended storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -818,8 +814,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Resumes client access to a previously suspended storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -830,14 +826,14 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String cacheName, String storageTargetName) {
-        return beginResumeAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
     }
 
     /**
      * Resumes client access to a previously suspended storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -849,14 +845,14 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        return beginResumeAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
+        return this.beginResumeAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
     }
 
     /**
      * Resumes client access to a previously suspended storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -874,8 +870,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Resumes client access to a previously suspended storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -895,8 +891,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Resumes client access to a previously suspended storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -911,8 +907,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     /**
      * Resumes client access to a previously suspended storage target.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -929,8 +925,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -985,8 +981,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -1039,8 +1035,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1063,8 +1059,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -1088,8 +1084,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1100,15 +1096,15 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInvalidate(
         String resourceGroupName, String cacheName, String storageTargetName) {
-        return beginInvalidateAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
+        return this.beginInvalidateAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
     }
 
     /**
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -1120,15 +1116,15 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginInvalidate(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
-        return beginInvalidateAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
+        return this.beginInvalidateAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
     }
 
     /**
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1147,8 +1143,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
@@ -1169,8 +1165,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1186,8 +1182,8 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
      *
-     * @param resourceGroupName Target resource group.
-     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
      *     [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.

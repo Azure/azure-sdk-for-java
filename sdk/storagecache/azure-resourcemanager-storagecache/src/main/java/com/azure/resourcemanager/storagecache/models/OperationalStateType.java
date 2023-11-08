@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationalStateType. */
+/** Storage target operational state. */
 public final class OperationalStateType extends ExpandableStringEnum<OperationalStateType> {
     /** Static value Ready for OperationalStateType. */
     public static final OperationalStateType READY = fromString("Ready");
@@ -23,6 +23,15 @@ public final class OperationalStateType extends ExpandableStringEnum<Operational
     public static final OperationalStateType FLUSHING = fromString("Flushing");
 
     /**
+     * Creates a new instance of OperationalStateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationalStateType() {
+    }
+
+    /**
      * Creates or finds a OperationalStateType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class OperationalStateType extends ExpandableStringEnum<Operational
         return fromString(name, OperationalStateType.class);
     }
 
-    /** @return known OperationalStateType values. */
+    /**
+     * Gets known OperationalStateType values.
+     *
+     * @return known OperationalStateType values.
+     */
     public static Collection<OperationalStateType> values() {
         return values(OperationalStateType.class);
     }

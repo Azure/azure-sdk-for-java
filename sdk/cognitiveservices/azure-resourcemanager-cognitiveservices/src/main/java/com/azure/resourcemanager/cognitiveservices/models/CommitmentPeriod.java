@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cognitive Services account commitment period. */
 @Fluent
 public final class CommitmentPeriod {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommitmentPeriod.class);
-
     /*
      * Commitment period commitment tier.
      */
@@ -43,6 +39,10 @@ public final class CommitmentPeriod {
      */
     @JsonProperty(value = "endDate", access = JsonProperty.Access.WRITE_ONLY)
     private String endDate;
+
+    /** Creates an instance of CommitmentPeriod class. */
+    public CommitmentPeriod() {
+    }
 
     /**
      * Get the tier property: Commitment period commitment tier.

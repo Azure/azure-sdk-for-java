@@ -29,14 +29,6 @@ public class BenchmarkHelper {
             return iterationCount < maxNumberOfOperations;
         }
 
-        if (startTimeMillis + maxDurationTime.toMillis() < System.currentTimeMillis()) {
-            return false;
-        }
-
-        if (maxNumberOfOperations < 0) {
-            return true;
-        }
-
-        return iterationCount < maxNumberOfOperations;
+        return startTimeMillis + maxDurationTime.toMillis() > System.currentTimeMillis();
     }
 }

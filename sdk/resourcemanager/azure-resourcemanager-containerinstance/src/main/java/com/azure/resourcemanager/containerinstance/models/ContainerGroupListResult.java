@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The container group list response that contains the container group properties. */
 @Fluent
 public final class ContainerGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupListResult.class);
-
     /*
      * The list of container groups.
      */
@@ -27,6 +23,10 @@ public final class ContainerGroupListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ContainerGroupListResult class. */
+    public ContainerGroupListResult() {
+    }
 
     /**
      * Get the value property: The list of container groups.

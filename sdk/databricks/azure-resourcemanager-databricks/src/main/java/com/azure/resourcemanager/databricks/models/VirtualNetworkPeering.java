@@ -111,6 +111,13 @@ public interface VirtualNetworkPeering {
     PeeringProvisioningState provisioningState();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.databricks.fluent.models.VirtualNetworkPeeringInner object.
      *
      * @return the inner object.

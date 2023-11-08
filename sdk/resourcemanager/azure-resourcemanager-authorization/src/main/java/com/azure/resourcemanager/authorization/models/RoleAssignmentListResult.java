@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Role assignment list operation result. */
 @Fluent
 public final class RoleAssignmentListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentListResult.class);
-
     /*
      * Role assignment list.
      */
@@ -23,10 +19,14 @@ public final class RoleAssignmentListResult {
     private List<RoleAssignmentInner> value;
 
     /*
-     * The URL to use for getting the next set of results.
+     * The skipToken to use for getting the next set of results.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of RoleAssignmentListResult class. */
+    public RoleAssignmentListResult() {
+    }
 
     /**
      * Get the value property: Role assignment list.
@@ -49,7 +49,7 @@ public final class RoleAssignmentListResult {
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of results.
+     * Get the nextLink property: The skipToken to use for getting the next set of results.
      *
      * @return the nextLink value.
      */

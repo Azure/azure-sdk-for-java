@@ -7,15 +7,12 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.ComplianceResultInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of compliance results response. */
 @Fluent
 public final class ComplianceResultList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComplianceResultList.class);
-
     /*
      * List of compliance results
      */
@@ -27,6 +24,10 @@ public final class ComplianceResultList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ComplianceResultList class. */
+    public ComplianceResultList() {
+    }
 
     /**
      * Get the value property: List of compliance results.
@@ -64,11 +65,13 @@ public final class ComplianceResultList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ComplianceResultList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ComplianceResultList.class);
 }

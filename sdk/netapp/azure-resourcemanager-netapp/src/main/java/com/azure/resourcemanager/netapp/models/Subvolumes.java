@@ -11,9 +11,11 @@ import com.azure.core.util.Context;
 /** Resource collection API of Subvolumes. */
 public interface Subvolumes {
     /**
-     * Returns a list of the subvolumes in the volume.
+     * List of all the subvolumes
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Returns a list of the subvolumes in the volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -26,9 +28,11 @@ public interface Subvolumes {
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * Returns a list of the subvolumes in the volume.
+     * List of all the subvolumes
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Returns a list of the subvolumes in the volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -42,25 +46,11 @@ public interface Subvolumes {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Returns the path associated with the subvolumeName provided.
+     * Get the path associated with the subvolumeName
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties.
-     */
-    SubvolumeInfo get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
-
-    /**
-     * Returns the path associated with the subvolumeName provided.
+     * <p>Returns the path associated with the subvolumeName provided.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -80,9 +70,29 @@ public interface Subvolumes {
         Context context);
 
     /**
-     * Delete subvolume.
+     * Get the path associated with the subvolumeName
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Returns the path associated with the subvolumeName provided.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param subvolumeName The name of the subvolume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subvolume Information properties.
+     */
+    SubvolumeInfo get(
+        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
+
+    /**
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -94,9 +104,11 @@ public interface Subvolumes {
     void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Delete subvolume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -115,9 +127,11 @@ public interface Subvolumes {
         Context context);
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Get details of the specified subvolume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -131,9 +145,11 @@ public interface Subvolumes {
         String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Get details of the specified subvolume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -153,7 +169,9 @@ public interface Subvolumes {
         Context context);
 
     /**
-     * Returns the path associated with the subvolumeName provided.
+     * Get the path associated with the subvolumeName
+     *
+     * <p>Returns the path associated with the subvolumeName provided.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,7 +182,9 @@ public interface Subvolumes {
     SubvolumeInfo getById(String id);
 
     /**
-     * Returns the path associated with the subvolumeName provided.
+     * Get the path associated with the subvolumeName
+     *
+     * <p>Returns the path associated with the subvolumeName provided.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -176,7 +196,9 @@ public interface Subvolumes {
     Response<SubvolumeInfo> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,7 +208,9 @@ public interface Subvolumes {
     void deleteById(String id);
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

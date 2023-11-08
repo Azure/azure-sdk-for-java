@@ -25,6 +25,10 @@ public final class TopLevelDomainCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of TopLevelDomainCollection class. */
+    public TopLevelDomainCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DhcpTypeEnum. */
+/** Type of DHCP: SERVER or RELAY. */
 public final class DhcpTypeEnum extends ExpandableStringEnum<DhcpTypeEnum> {
     /** Static value SERVER for DhcpTypeEnum. */
     public static final DhcpTypeEnum SERVER = fromString("SERVER");
 
     /** Static value RELAY for DhcpTypeEnum. */
     public static final DhcpTypeEnum RELAY = fromString("RELAY");
+
+    /**
+     * Creates a new instance of DhcpTypeEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DhcpTypeEnum() {
+    }
 
     /**
      * Creates or finds a DhcpTypeEnum from its string representation.
@@ -27,7 +36,11 @@ public final class DhcpTypeEnum extends ExpandableStringEnum<DhcpTypeEnum> {
         return fromString(name, DhcpTypeEnum.class);
     }
 
-    /** @return known DhcpTypeEnum values. */
+    /**
+     * Gets known DhcpTypeEnum values.
+     *
+     * @return known DhcpTypeEnum values.
+     */
     public static Collection<DhcpTypeEnum> values() {
         return values(DhcpTypeEnum.class);
     }

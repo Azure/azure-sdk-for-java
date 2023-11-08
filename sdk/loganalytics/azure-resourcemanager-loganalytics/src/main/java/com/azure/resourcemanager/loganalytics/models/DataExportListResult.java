@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.models.DataExportInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of the request to list data exports. */
 @Fluent
 public final class DataExportListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataExportListResult.class);
-
     /*
      * List of data export instances within a workspace..
      */
     @JsonProperty(value = "value")
     private List<DataExportInner> value;
+
+    /** Creates an instance of DataExportListResult class. */
+    public DataExportListResult() {
+    }
 
     /**
      * Get the value property: List of data export instances within a workspace..

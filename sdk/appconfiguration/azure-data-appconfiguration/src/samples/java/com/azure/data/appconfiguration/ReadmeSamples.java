@@ -2,16 +2,28 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollOperationDetails;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -19,6 +31,10 @@ import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -217,6 +233,239 @@ public class ReadmeSamples {
             .httpClient(httpClient)
             .buildAsyncClient();
         // END: readme-sample-createClientWithProxyOption
+    }
+
+    public void createFeatureFlagConfigurationSetting() {
+        // BEGIN: readme-sample-addFeatureFlagConfigurationSetting
+        String key = "some_key";
+        String filterName = "{filter_name}"; // such as "Microsoft.Percentage"
+        String filterParameterKey = "{filter_parameter_key}"; // "Value"
+        Object filterParameterValue = 30; // Any value. Could be String, primitive value, or Json Object
+        FeatureFlagFilter percentageFilter = new FeatureFlagFilter(filterName)
+                                                 .addParameter(filterParameterKey, filterParameterValue);
+        FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
+            new FeatureFlagConfigurationSetting(key, true)
+                .setClientFilters(Arrays.asList(percentageFilter));
+
+        FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+            configurationClient.addConfigurationSetting(featureFlagConfigurationSetting);
+        // END: readme-sample-addFeatureFlagConfigurationSetting
+    }
+
+    public void updateFeatureFlagConfigurationSetting() {
+        String key = "some_key";
+        String filterName = "{filter_name}"; // such as "Microsoft.Percentage"
+        String filterParameterKey = "{filter_parameter_key}"; // "Value"
+        Object filterParameterValue = 30; // Any value. Could be String, primitive value, or Json Object
+        FeatureFlagFilter percentageFilter = new FeatureFlagFilter(filterName)
+                                                 .addParameter(filterParameterKey, filterParameterValue);
+        FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
+            new FeatureFlagConfigurationSetting(key, true)
+                .setClientFilters(Arrays.asList(percentageFilter));
+
+        // BEGIN: readme-sample-updateFeatureFlagConfigurationSetting
+        FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+            configurationClient.setConfigurationSetting(featureFlagConfigurationSetting);
+        // END: readme-sample-updateFeatureFlagConfigurationSetting
+    }
+
+    public void getFeatureFlagConfigurationSetting() {
+        String key = "some_key";
+        String filterName = "{filter_name}"; // such as "Microsoft.Percentage"
+        String filterParameterKey = "{filter_parameter_key}"; // "Value"
+        Object filterParameterValue = 30; // Any value. Could be String, primitive value, or Json Object
+        FeatureFlagFilter percentageFilter = new FeatureFlagFilter(filterName)
+                                                 .addParameter(filterParameterKey, filterParameterValue);
+        FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
+            new FeatureFlagConfigurationSetting(key, true)
+                .setClientFilters(Arrays.asList(percentageFilter));
+
+        // BEGIN: readme-sample-getFeatureFlagConfigurationSetting
+        FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+            configurationClient.getConfigurationSetting(featureFlagConfigurationSetting);
+        // END: readme-sample-getFeatureFlagConfigurationSetting
+    }
+
+    public void deleteFeatureFlagConfigurationSetting() {
+        String key = "some_key";
+        String filterName = "{filter_name}"; // such as "Microsoft.Percentage"
+        String filterParameterKey = "{filter_parameter_key}"; // "Value"
+        Object filterParameterValue = 30; // Any value. Could be String, primitive value, or Json Object
+        FeatureFlagFilter percentageFilter = new FeatureFlagFilter(filterName)
+                                                 .addParameter(filterParameterKey, filterParameterValue);
+        FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
+            new FeatureFlagConfigurationSetting(key, true)
+                .setClientFilters(Arrays.asList(percentageFilter));
+
+        // BEGIN: readme-sample-deleteFeatureFlagConfigurationSetting
+        FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+            configurationClient.deleteConfigurationSetting(featureFlagConfigurationSetting);
+        // END: readme-sample-deleteFeatureFlagConfigurationSetting
+    }
+
+    public void addSecretReferenceConfigurationSetting() {
+        // BEGIN: readme-sample-addSecretReferenceConfigurationSetting
+        String key = "{some_key}";
+        String keyVaultReference = "{key_vault_reference}";
+
+        SecretReferenceConfigurationSetting referenceConfigurationSetting =
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
+
+        SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+            configurationClient.addConfigurationSetting(referenceConfigurationSetting);
+        // END: readme-sample-addSecretReferenceConfigurationSetting
+    }
+
+    public void updateSecretReferenceConfigurationSetting() {
+        String key = "{some_key}";
+        String keyVaultReference = "{key_vault_reference}";
+
+        SecretReferenceConfigurationSetting referenceConfigurationSetting =
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
+
+        // BEGIN: readme-sample-updateSecretReferenceConfigurationSetting
+        SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+            configurationClient.setConfigurationSetting(referenceConfigurationSetting);
+        // END: readme-sample-updateSecretReferenceConfigurationSetting
+    }
+
+    public void getSecretReferenceConfigurationSetting() {
+        String key = "{some_key}";
+        String keyVaultReference = "{key_vault_reference}";
+
+        SecretReferenceConfigurationSetting referenceConfigurationSetting =
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
+
+        // BEGIN: readme-sample-getSecretReferenceConfigurationSetting
+        SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+            configurationClient.getConfigurationSetting(referenceConfigurationSetting);
+        // END: readme-sample-getSecretReferenceConfigurationSetting
+    }
+
+    public void deleteSecretReferenceConfigurationSetting() {
+        String key = "{some_key}";
+        String keyVaultReference = "{key_vault_reference}";
+
+        SecretReferenceConfigurationSetting referenceConfigurationSetting =
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
+
+        // BEGIN: readme-sample-deleteSecretReferenceConfigurationSetting
+        SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+            configurationClient.deleteConfigurationSetting(referenceConfigurationSetting);
+        // END: readme-sample-deleteSecretReferenceConfigurationSetting
+    }
+
+    public void enableHttpLogging() {
+        // BEGIN: readme-sample-enablehttplogging
+        ConfigurationClient configurationClient = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // or
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        ConfigurationClient configurationClientAad = new ConfigurationClientBuilder()
+                .credential(credential)
+                .endpoint(endpoint)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // END: readme-sample-enablehttplogging
+
+    }
+
+    public void troubleshootingExceptions() {
+        ConfigurationClient client = new ConfigurationClientBuilder()
+                                                      .buildClient();
+        // BEGIN: readme-sample-troubleshootingExceptions
+        try {
+            ConfigurationSetting setting = new ConfigurationSetting().setKey("myKey").setValue("myValue");
+            client.getConfigurationSetting(setting);
+        } catch (HttpResponseException e) {
+            System.out.println(e.getMessage());
+            // Do something with the exception
+        }
+        // END: readme-sample-troubleshootingExceptions
+
+        ConfigurationAsyncClient asyncClient = new ConfigurationClientBuilder()
+                                         .buildAsyncClient();
+        // BEGIN: readme-sample-troubleshootingExceptions-async
+        ConfigurationSetting setting = new ConfigurationSetting().setKey("myKey").setValue("myValue");
+        asyncClient.getConfigurationSetting(setting)
+            .doOnSuccess(ignored -> System.out.println("Success!"))
+            .doOnError(
+                error -> error instanceof ResourceNotFoundException,
+                error -> System.out.println("Exception: 'getConfigurationSetting' could not be performed."));
+        // END: readme-sample-troubleshootingExceptions-async
+    }
+
+    public void createSnapshot() {
+        // BEGIN: readme-sample-createSnapshot
+        String snapshotName = "{snapshotName}";
+        // Prepare the snapshot filters
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
+        // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
+        filters.add(new ConfigurationSettingsFilter("Test*"));
+        SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
+            configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
+        poller.setPollInterval(Duration.ofSeconds(10));
+        poller.waitForCompletion();
+        ConfigurationSnapshot snapshot = poller.getFinalResult();
+        System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+            snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
+        // END: readme-sample-createSnapshot
+    }
+
+    public void getSnapshot() {
+        // BEGIN: readme-sample-getSnapshot
+        String snapshotName = "{snapshotName}";
+        ConfigurationSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
+        System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+            getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
+        // END: readme-sample-getSnapshot
+    }
+
+    public void archiveSnapshot() {
+        // BEGIN: readme-sample-archiveSnapshot
+        String snapshotName = "{snapshotName}";
+        ConfigurationSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
+        System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
+            archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
+        // END: readme-sample-archiveSnapshot
+    }
+
+    public void recoverSnapshot() {
+        // BEGIN: readme-sample-recoverSnapshot
+        String snapshotName = "{snapshotName}";
+        ConfigurationSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
+        System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
+            recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
+        // END: readme-sample-recoverSnapshot
+    }
+
+    public void listSnapshot() {
+        // BEGIN: readme-sample-getAllSnapshots
+        String snapshotNameProduct = "{snapshotNameInProduct}";
+        SnapshotSelector snapshotSelector = new SnapshotSelector().setNameFilter(snapshotNameProduct);
+        PagedIterable<ConfigurationSnapshot> configurationSnapshots =
+            configurationClient.listSnapshots(snapshotSelector);
+        for (ConfigurationSnapshot snapshot : configurationSnapshots) {
+            System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
+                snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
+        }
+        // END: readme-sample-getAllSnapshots
+    }
+
+    public void listSettingInSnapshot() {
+        // BEGIN: readme-sample-listSettingsInSnapshot
+        String snapshotNameProduct = "{snapshotNameInProduct}";
+        PagedIterable<ConfigurationSetting> configurationSettings =
+            configurationClient.listConfigurationSettingsForSnapshot(snapshotNameProduct);
+
+        for (ConfigurationSetting setting : configurationSettings) {
+            System.out.printf("[ConfigurationSetting in snapshot] Key: %s, Value: %s%n",
+                setting.getKey(), setting.getValue());
+        }
+        // END: readme-sample-listSettingsInSnapshot
+
     }
 
     private void updateConfiguration(ConfigurationSetting setting) {

@@ -23,6 +23,18 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
     @JsonProperty(value = "bypassTrafficSettings")
     private List<FirewallPolicyIntrusionDetectionBypassTrafficSpecifications> bypassTrafficSettings;
 
+    /*
+     * IDPS Private IP address ranges are used to identify traffic direction (i.e. inbound, outbound, etc.). By
+     * default, only ranges defined by IANA RFC 1918 are considered private IP addresses. To modify default ranges,
+     * specify your Private IP address ranges with this property
+     */
+    @JsonProperty(value = "privateRanges")
+    private List<String> privateRanges;
+
+    /** Creates an instance of FirewallPolicyIntrusionDetectionConfiguration class. */
+    public FirewallPolicyIntrusionDetectionConfiguration() {
+    }
+
     /**
      * Get the signatureOverrides property: List of specific signatures states.
      *
@@ -62,6 +74,30 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
     public FirewallPolicyIntrusionDetectionConfiguration withBypassTrafficSettings(
         List<FirewallPolicyIntrusionDetectionBypassTrafficSpecifications> bypassTrafficSettings) {
         this.bypassTrafficSettings = bypassTrafficSettings;
+        return this;
+    }
+
+    /**
+     * Get the privateRanges property: IDPS Private IP address ranges are used to identify traffic direction (i.e.
+     * inbound, outbound, etc.). By default, only ranges defined by IANA RFC 1918 are considered private IP addresses.
+     * To modify default ranges, specify your Private IP address ranges with this property.
+     *
+     * @return the privateRanges value.
+     */
+    public List<String> privateRanges() {
+        return this.privateRanges;
+    }
+
+    /**
+     * Set the privateRanges property: IDPS Private IP address ranges are used to identify traffic direction (i.e.
+     * inbound, outbound, etc.). By default, only ranges defined by IANA RFC 1918 are considered private IP addresses.
+     * To modify default ranges, specify your Private IP address ranges with this property.
+     *
+     * @param privateRanges the privateRanges value to set.
+     * @return the FirewallPolicyIntrusionDetectionConfiguration object itself.
+     */
+    public FirewallPolicyIntrusionDetectionConfiguration withPrivateRanges(List<String> privateRanges) {
+        this.privateRanges = privateRanges;
         return this;
     }
 

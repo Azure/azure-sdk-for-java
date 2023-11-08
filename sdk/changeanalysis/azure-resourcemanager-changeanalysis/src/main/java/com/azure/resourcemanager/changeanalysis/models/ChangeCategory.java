@@ -7,7 +7,7 @@ package com.azure.resourcemanager.changeanalysis.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ChangeCategory. */
+/** The change category. */
 public enum ChangeCategory {
     /** Enum value User. */
     USER("User"),
@@ -30,6 +30,9 @@ public enum ChangeCategory {
      */
     @JsonCreator
     public static ChangeCategory fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ChangeCategory[] items = ChangeCategory.values();
         for (ChangeCategory item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ChangeCategory {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

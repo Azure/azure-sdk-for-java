@@ -18,10 +18,10 @@ public interface JobsClient {
     /**
      * Returns all active and completed jobs in a subscription.
      *
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobResponseInner> list();
@@ -33,10 +33,10 @@ public interface JobsClient {
      * @param filter Can be used to restrict the results to certain conditions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobResponseInner> list(Long top, String filter, Context context);
@@ -47,10 +47,10 @@ public interface JobsClient {
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobResponseInner> listByResourceGroup(String resourceGroupName);
@@ -64,10 +64,10 @@ public interface JobsClient {
      * @param filter Can be used to restrict the results to certain conditions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list jobs response.
+     * @return list jobs response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobResponseInner> listByResourceGroup(
@@ -79,8 +79,25 @@ public interface JobsClient {
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
      * @param jobName The name of the import/export job.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about an existing job along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<JobResponseInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String jobName, Context context);
+
+    /**
+     * Gets information about an existing job.
+     *
+     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
+     *     subscription.
+     * @param jobName The name of the import/export job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about an existing job.
@@ -89,41 +106,6 @@ public interface JobsClient {
     JobResponseInner getByResourceGroup(String resourceGroupName, String jobName);
 
     /**
-     * Gets information about an existing job.
-     *
-     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
-     * @param jobName The name of the import/export job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an existing job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobResponseInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String jobName, Context context);
-
-    /**
-     * Updates specific properties of a job. You can call this operation to notify the Import/Export service that the
-     * hard drives comprising the import or export job have been shipped to the Microsoft data center. It can also be
-     * used to cancel an existing job.
-     *
-     * @param jobName The name of the import/export job.
-     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
-     *     subscription.
-     * @param body The parameters to update in the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobResponseInner update(String jobName, String resourceGroupName, UpdateJobParameters body);
-
-    /**
      * Updates specific properties of a job. You can call this operation to notify the Import/Export service that the
      * hard drives comprising the import or export job have been shipped to the Microsoft data center. It can also be
      * used to cancel an existing job.
@@ -134,30 +116,32 @@ public interface JobsClient {
      * @param body The parameters to update in the job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
+     * @return contains the job information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobResponseInner> updateWithResponse(
         String jobName, String resourceGroupName, UpdateJobParameters body, Context context);
 
     /**
-     * Creates a new job or updates an existing job in the specified subscription.
+     * Updates specific properties of a job. You can call this operation to notify the Import/Export service that the
+     * hard drives comprising the import or export job have been shipped to the Microsoft data center. It can also be
+     * used to cancel an existing job.
      *
      * @param jobName The name of the import/export job.
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
-     * @param body The parameters used for creating the job.
+     * @param body The parameters to update in the job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains the job information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobResponseInner create(String jobName, String resourceGroupName, PutJobParameters body);
+    JobResponseInner update(String jobName, String resourceGroupName, UpdateJobParameters body);
 
     /**
      * Creates a new job or updates an existing job in the specified subscription.
@@ -169,28 +153,30 @@ public interface JobsClient {
      * @param clientTenantId The tenant ID of the client making the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains the job information.
+     * @return contains the job information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobResponseInner> createWithResponse(
         String jobName, String resourceGroupName, PutJobParameters body, String clientTenantId, Context context);
 
     /**
-     * Deletes an existing job. Only jobs in the Creating or Completed states can be deleted.
+     * Creates a new job or updates an existing job in the specified subscription.
      *
+     * @param jobName The name of the import/export job.
      * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
      *     subscription.
-     * @param jobName The name of the import/export job.
+     * @param body The parameters used for creating the job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains the job information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String jobName);
+    JobResponseInner create(String jobName, String resourceGroupName, PutJobParameters body);
 
     /**
      * Deletes an existing job. Only jobs in the Creating or Completed states can be deleted.
@@ -200,11 +186,25 @@ public interface JobsClient {
      * @param jobName The name of the import/export job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseException thrown if the request is
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String jobName, Context context);
+
+    /**
+     * Deletes an existing job. Only jobs in the Creating or Completed states can be deleted.
+     *
+     * @param resourceGroupName The resource group name uniquely identifies the resource group within the user
+     *     subscription.
+     * @param jobName The name of the import/export job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String jobName);
 }

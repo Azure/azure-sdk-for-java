@@ -451,9 +451,6 @@ public interface CapacityReservationsClient {
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
-     *     properties of the capacity reservation that is managed by the platform and can change outside of control
-     *     plane operations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -461,39 +458,6 @@ public interface CapacityReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CapacityReservationInner> getAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationInstanceViewTypes expand);
-
-    /**
-     * The operation that retrieves information about the capacity reservation.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CapacityReservationInner> getAsync(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
-
-    /**
-     * The operation that retrieves information about the capacity reservation.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationInner get(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
 
     /**
@@ -518,6 +482,21 @@ public interface CapacityReservationsClient {
         String capacityReservationName,
         CapacityReservationInstanceViewTypes expand,
         Context context);
+
+    /**
+     * The operation that retrieves information about the capacity reservation.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CapacityReservationInner get(
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
 
     /**
      * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in

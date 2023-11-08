@@ -16,6 +16,17 @@ public final class ArchiveStatus extends ExpandableStringEnum<ArchiveStatus> {
     /** Static value rehydrate-pending-to-cool for ArchiveStatus. */
     public static final ArchiveStatus REHYDRATE_PENDING_TO_COOL = fromString("rehydrate-pending-to-cool");
 
+    /** Static value rehydrate-pending-to-cold for ArchiveStatus. */
+    public static final ArchiveStatus REHYDRATE_PENDING_TO_COLD = fromString("rehydrate-pending-to-cold");
+
+    /**
+     * Creates a new instance of ArchiveStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArchiveStatus() {}
+
     /**
      * Creates or finds a ArchiveStatus from its string representation.
      *
@@ -27,7 +38,11 @@ public final class ArchiveStatus extends ExpandableStringEnum<ArchiveStatus> {
         return fromString(name, ArchiveStatus.class);
     }
 
-    /** @return known ArchiveStatus values. */
+    /**
+     * Gets known ArchiveStatus values.
+     *
+     * @return known ArchiveStatus values.
+     */
     public static Collection<ArchiveStatus> values() {
         return values(ArchiveStatus.class);
     }

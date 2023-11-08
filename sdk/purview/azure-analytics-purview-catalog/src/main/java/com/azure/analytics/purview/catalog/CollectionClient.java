@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.catalog;
 
+import com.azure.analytics.purview.catalog.implementation.CollectionsImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -19,16 +20,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = CollectionClientBuilder.class)
 public final class CollectionClient {
-    @Generated private final CollectionAsyncClient asyncClient;
+    @Generated private final CollectionsImpl serviceClient;
 
     /**
      * Initializes an instance of CollectionClient class.
      *
-     * @param asyncClient the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    CollectionClient(CollectionAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    CollectionClient(CollectionsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -36,90 +37,92 @@ public final class CollectionClient {
      * its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     referredEntities: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
+     *     referredEntities (Optional): {
+     *         String (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             businessAttributes (Optional): {
+     *                 String: Object (Optional)
+     *             }
+     *             classifications (Optional): [
+     *                  (Optional){
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
+     *                     entityGuid: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     removePropagationsOnEntityDelete: Boolean (Optional)
+     *                     validityPeriods (Optional): [
+     *                          (Optional){
+     *                             endTime: String (Optional)
+     *                             startTime: String (Optional)
+     *                             timeZone: String (Optional)
      *                         }
      *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
+     *                     source: String (Optional)
+     *                     sourceDetails (Optional): {
+     *                         String: Object (Optional)
      *                     }
      *                 }
      *             ]
-     *             createTime: Float
-     *             createdBy: String
-     *             guid: String
-     *             homeId: String
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             customAttributes (Optional): {
+     *                 String: String (Optional)
+     *             }
+     *             guid: String (Optional)
+     *             homeId: String (Optional)
+     *             isIncomplete: Boolean (Optional)
+     *             labels (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             meanings (Optional): [
+     *                  (Optional){
+     *                     confidence: Integer (Optional)
+     *                     createdBy: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     expression: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     source: String (Optional)
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                     steward: String (Optional)
+     *                     termGuid: String (Optional)
      *                 }
      *             ]
-     *             provenanceType: Float
-     *             proxy: Boolean
-     *             relationshipAttributes: {
-     *                 String: Object
+     *             provenanceType: Float (Optional)
+     *             proxy: Boolean (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             status: String(ACTIVE/DELETED)
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             status: String(ACTIVE/DELETED) (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             contacts: {
-     *                 String: [
-     *                     {
-     *                         id: String
-     *                         info: String
+     *             contacts (Optional): {
+     *                 String (Optional): [
+     *                      (Optional){
+     *                         id: String (Optional)
+     *                         info: String (Optional)
      *                     }
      *                 ]
      *             }
      *         }
      *     }
-     *     entity: (recursive schema, see entity above)
+     *     entity (Optional): (recursive schema, see entity above)
      * }
      * }</pre>
      *
@@ -127,67 +130,71 @@ public final class CollectionClient {
      *
      * <pre>{@code
      * {
-     *     guidAssignments: {
-     *         String: String
+     *     guidAssignments (Optional): {
+     *         String: String (Optional)
      *     }
-     *     mutatedEntities: {
-     *         String: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *     mutatedEntities (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 classificationNames: [
-     *                     String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 classificationNames (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 classifications: [
-     *                     {
-     *                         attributes: {
-     *                             String: Object
+     *                 classifications (Optional): [
+     *                      (Optional){
+     *                         attributes (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         typeName: String
-     *                         lastModifiedTS: String
-     *                         entityGuid: String
-     *                         entityStatus: String(ACTIVE/DELETED)
-     *                         removePropagationsOnEntityDelete: Boolean
-     *                         validityPeriods: [
-     *                             {
-     *                                 endTime: String
-     *                                 startTime: String
-     *                                 timeZone: String
+     *                         typeName: String (Optional)
+     *                         lastModifiedTS: String (Optional)
+     *                         entityGuid: String (Optional)
+     *                         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                         removePropagationsOnEntityDelete: Boolean (Optional)
+     *                         validityPeriods (Optional): [
+     *                              (Optional){
+     *                                 endTime: String (Optional)
+     *                                 startTime: String (Optional)
+     *                                 timeZone: String (Optional)
      *                             }
      *                         ]
-     *                         source: String
-     *                         sourceDetails: {
-     *                             String: Object
+     *                         source: String (Optional)
+     *                         sourceDetails (Optional): {
+     *                             String: Object (Optional)
      *                         }
      *                     }
      *                 ]
-     *                 displayText: String
-     *                 guid: String
-     *                 meaningNames: [
-     *                     String
+     *                 displayText: String (Optional)
+     *                 guid: String (Optional)
+     *                 isIncomplete: Boolean (Optional)
+     *                 labels (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 meanings: [
-     *                     {
-     *                         confidence: Integer
-     *                         createdBy: String
-     *                         description: String
-     *                         displayText: String
-     *                         expression: String
-     *                         relationGuid: String
-     *                         source: String
-     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                         steward: String
-     *                         termGuid: String
+     *                 meaningNames (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 meanings (Optional): [
+     *                      (Optional){
+     *                         confidence: Integer (Optional)
+     *                         createdBy: String (Optional)
+     *                         description: String (Optional)
+     *                         displayText: String (Optional)
+     *                         expression: String (Optional)
+     *                         relationGuid: String (Optional)
+     *                         source: String (Optional)
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                         steward: String (Optional)
+     *                         termGuid: String (Optional)
      *                     }
      *                 ]
-     *                 status: String(ACTIVE/DELETED)
+     *                 status: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
      *     }
-     *     partialUpdatedEntities: [
+     *     partialUpdatedEntities (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -206,7 +213,7 @@ public final class CollectionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
             String collection, BinaryData entity, RequestOptions requestOptions) {
-        return this.asyncClient.createOrUpdateWithResponse(collection, entity, requestOptions).block();
+        return this.serviceClient.createOrUpdateWithResponse(collection, entity, requestOptions);
     }
 
     /**
@@ -214,90 +221,92 @@ public final class CollectionClient {
      * or by its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     referredEntities: {
-     *         String: {
-     *             attributes: {
-     *                 String: Object
+     *     referredEntities (Optional): {
+     *         String (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             classifications: [
-     *                 {
-     *                     attributes: {
-     *                         String: Object
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             businessAttributes (Optional): {
+     *                 String: Object (Optional)
+     *             }
+     *             classifications (Optional): [
+     *                  (Optional){
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
-     *                     entityGuid: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     removePropagationsOnEntityDelete: Boolean
-     *                     validityPeriods: [
-     *                         {
-     *                             endTime: String
-     *                             startTime: String
-     *                             timeZone: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
+     *                     entityGuid: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     removePropagationsOnEntityDelete: Boolean (Optional)
+     *                     validityPeriods (Optional): [
+     *                          (Optional){
+     *                             endTime: String (Optional)
+     *                             startTime: String (Optional)
+     *                             timeZone: String (Optional)
      *                         }
      *                     ]
-     *                     source: String
-     *                     sourceDetails: {
-     *                         String: Object
+     *                     source: String (Optional)
+     *                     sourceDetails (Optional): {
+     *                         String: Object (Optional)
      *                     }
      *                 }
      *             ]
-     *             createTime: Float
-     *             createdBy: String
-     *             guid: String
-     *             homeId: String
-     *             meanings: [
-     *                 {
-     *                     confidence: Integer
-     *                     createdBy: String
-     *                     description: String
-     *                     displayText: String
-     *                     expression: String
-     *                     relationGuid: String
-     *                     source: String
-     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                     steward: String
-     *                     termGuid: String
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             customAttributes (Optional): {
+     *                 String: String (Optional)
+     *             }
+     *             guid: String (Optional)
+     *             homeId: String (Optional)
+     *             isIncomplete: Boolean (Optional)
+     *             labels (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             meanings (Optional): [
+     *                  (Optional){
+     *                     confidence: Integer (Optional)
+     *                     createdBy: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     expression: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     source: String (Optional)
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                     steward: String (Optional)
+     *                     termGuid: String (Optional)
      *                 }
      *             ]
-     *             provenanceType: Float
-     *             proxy: Boolean
-     *             relationshipAttributes: {
-     *                 String: Object
+     *             provenanceType: Float (Optional)
+     *             proxy: Boolean (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             status: String(ACTIVE/DELETED)
-     *             updateTime: Float
-     *             updatedBy: String
-     *             version: Float
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             status: String(ACTIVE/DELETED) (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             version: Float (Optional)
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             contacts: {
-     *                 String: [
-     *                     {
-     *                         id: String
-     *                         info: String
+     *             contacts (Optional): {
+     *                 String (Optional): [
+     *                      (Optional){
+     *                         id: String (Optional)
+     *                         info: String (Optional)
      *                     }
      *                 ]
      *             }
      *         }
      *     }
-     *     entities: [
+     *     entities (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -307,67 +316,71 @@ public final class CollectionClient {
      *
      * <pre>{@code
      * {
-     *     guidAssignments: {
-     *         String: String
+     *     guidAssignments (Optional): {
+     *         String: String (Optional)
      *     }
-     *     mutatedEntities: {
-     *         String: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *     mutatedEntities (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 classificationNames: [
-     *                     String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 classificationNames (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 classifications: [
-     *                     {
-     *                         attributes: {
-     *                             String: Object
+     *                 classifications (Optional): [
+     *                      (Optional){
+     *                         attributes (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         typeName: String
-     *                         lastModifiedTS: String
-     *                         entityGuid: String
-     *                         entityStatus: String(ACTIVE/DELETED)
-     *                         removePropagationsOnEntityDelete: Boolean
-     *                         validityPeriods: [
-     *                             {
-     *                                 endTime: String
-     *                                 startTime: String
-     *                                 timeZone: String
+     *                         typeName: String (Optional)
+     *                         lastModifiedTS: String (Optional)
+     *                         entityGuid: String (Optional)
+     *                         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                         removePropagationsOnEntityDelete: Boolean (Optional)
+     *                         validityPeriods (Optional): [
+     *                              (Optional){
+     *                                 endTime: String (Optional)
+     *                                 startTime: String (Optional)
+     *                                 timeZone: String (Optional)
      *                             }
      *                         ]
-     *                         source: String
-     *                         sourceDetails: {
-     *                             String: Object
+     *                         source: String (Optional)
+     *                         sourceDetails (Optional): {
+     *                             String: Object (Optional)
      *                         }
      *                     }
      *                 ]
-     *                 displayText: String
-     *                 guid: String
-     *                 meaningNames: [
-     *                     String
+     *                 displayText: String (Optional)
+     *                 guid: String (Optional)
+     *                 isIncomplete: Boolean (Optional)
+     *                 labels (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 meanings: [
-     *                     {
-     *                         confidence: Integer
-     *                         createdBy: String
-     *                         description: String
-     *                         displayText: String
-     *                         expression: String
-     *                         relationGuid: String
-     *                         source: String
-     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                         steward: String
-     *                         termGuid: String
+     *                 meaningNames (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 meanings (Optional): [
+     *                      (Optional){
+     *                         confidence: Integer (Optional)
+     *                         createdBy: String (Optional)
+     *                         description: String (Optional)
+     *                         displayText: String (Optional)
+     *                         expression: String (Optional)
+     *                         relationGuid: String (Optional)
+     *                         source: String (Optional)
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                         steward: String (Optional)
+     *                         termGuid: String (Optional)
      *                     }
      *                 ]
-     *                 status: String(ACTIVE/DELETED)
+     *                 status: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
      *     }
-     *     partialUpdatedEntities: [
+     *     partialUpdatedEntities (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -386,26 +399,18 @@ public final class CollectionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateBulkWithResponse(
             String collection, BinaryData entities, RequestOptions requestOptions) {
-        return this.asyncClient.createOrUpdateBulkWithResponse(collection, entities, requestOptions).block();
+        return this.serviceClient.createOrUpdateBulkWithResponse(collection, entities, requestOptions);
     }
 
     /**
      * Move existing entities to the target collection.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     entityGuids: [
-     *         String
+     *     entityGuids (Optional): [
+     *         String (Optional)
      *     ]
      * }
      * }</pre>
@@ -414,67 +419,71 @@ public final class CollectionClient {
      *
      * <pre>{@code
      * {
-     *     guidAssignments: {
-     *         String: String
+     *     guidAssignments (Optional): {
+     *         String: String (Optional)
      *     }
-     *     mutatedEntities: {
-     *         String: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *     mutatedEntities (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 classificationNames: [
-     *                     String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 classificationNames (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 classifications: [
-     *                     {
-     *                         attributes: {
-     *                             String: Object
+     *                 classifications (Optional): [
+     *                      (Optional){
+     *                         attributes (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         typeName: String
-     *                         lastModifiedTS: String
-     *                         entityGuid: String
-     *                         entityStatus: String(ACTIVE/DELETED)
-     *                         removePropagationsOnEntityDelete: Boolean
-     *                         validityPeriods: [
-     *                             {
-     *                                 endTime: String
-     *                                 startTime: String
-     *                                 timeZone: String
+     *                         typeName: String (Optional)
+     *                         lastModifiedTS: String (Optional)
+     *                         entityGuid: String (Optional)
+     *                         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                         removePropagationsOnEntityDelete: Boolean (Optional)
+     *                         validityPeriods (Optional): [
+     *                              (Optional){
+     *                                 endTime: String (Optional)
+     *                                 startTime: String (Optional)
+     *                                 timeZone: String (Optional)
      *                             }
      *                         ]
-     *                         source: String
-     *                         sourceDetails: {
-     *                             String: Object
+     *                         source: String (Optional)
+     *                         sourceDetails (Optional): {
+     *                             String: Object (Optional)
      *                         }
      *                     }
      *                 ]
-     *                 displayText: String
-     *                 guid: String
-     *                 meaningNames: [
-     *                     String
+     *                 displayText: String (Optional)
+     *                 guid: String (Optional)
+     *                 isIncomplete: Boolean (Optional)
+     *                 labels (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 meanings: [
-     *                     {
-     *                         confidence: Integer
-     *                         createdBy: String
-     *                         description: String
-     *                         displayText: String
-     *                         expression: String
-     *                         relationGuid: String
-     *                         source: String
-     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
-     *                         steward: String
-     *                         termGuid: String
+     *                 meaningNames (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 meanings (Optional): [
+     *                      (Optional){
+     *                         confidence: Integer (Optional)
+     *                         createdBy: String (Optional)
+     *                         description: String (Optional)
+     *                         displayText: String (Optional)
+     *                         expression: String (Optional)
+     *                         relationGuid: String (Optional)
+     *                         source: String (Optional)
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                         steward: String (Optional)
+     *                         termGuid: String (Optional)
      *                     }
      *                 ]
-     *                 status: String(ACTIVE/DELETED)
+     *                 status: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
      *     }
-     *     partialUpdatedEntities: [
+     *     partialUpdatedEntities (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -493,8 +502,6 @@ public final class CollectionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> moveEntitiesToCollectionWithResponse(
             String collection, BinaryData moveEntitiesRequest, RequestOptions requestOptions) {
-        return this.asyncClient
-                .moveEntitiesToCollectionWithResponse(collection, moveEntitiesRequest, requestOptions)
-                .block();
+        return this.serviceClient.moveEntitiesToCollectionWithResponse(collection, moveEntitiesRequest, requestOptions);
     }
 }

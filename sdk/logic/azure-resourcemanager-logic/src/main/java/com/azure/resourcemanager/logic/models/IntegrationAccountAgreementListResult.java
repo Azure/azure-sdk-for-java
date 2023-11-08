@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountAgreementInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of integration account agreements. */
 @Fluent
 public final class IntegrationAccountAgreementListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountAgreementListResult.class);
-
     /*
      * The list of integration account agreements.
      */
@@ -27,6 +23,10 @@ public final class IntegrationAccountAgreementListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of IntegrationAccountAgreementListResult class. */
+    public IntegrationAccountAgreementListResult() {
+    }
 
     /**
      * Get the value property: The list of integration account agreements.

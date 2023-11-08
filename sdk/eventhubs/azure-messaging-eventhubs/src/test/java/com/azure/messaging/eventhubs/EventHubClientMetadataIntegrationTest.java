@@ -13,6 +13,8 @@ import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -24,6 +26,7 @@ import java.util.stream.IntStream;
  * Tests the metadata operations such as fetching partition properties and event hub properties.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     private final List<String> expectedPartitionIds;
     private EventHubAsyncClient client;
@@ -59,7 +62,9 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                 Assertions.assertNotNull(properties);
                 Assertions.assertEquals(eventHubName, properties.getName());
                 Assertions.assertEquals(expectedPartitionIds.size(), properties.getPartitionIds().stream().count());
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -70,7 +75,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         StepVerifier.create(client.getPartitionIds())
             .expectNextCount(expectedPartitionIds.size())
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -85,7 +91,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                     Assertions.assertEquals(eventHubName, properties.getEventHubName());
                     Assertions.assertEquals(partitionId, properties.getId());
                 })
-                .verifyComplete();
+                .expectComplete()
+                .verify(TIMEOUT);
         }
     }
 
@@ -107,7 +114,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -133,7 +141,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                     Assertions.assertFalse(exception.isTransient());
                     Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
                 })
-                .verify();
+                .verify(TIMEOUT);
         }
     }
 
@@ -160,7 +168,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
                     Assertions.assertFalse(exception.isTransient());
                     Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
                 })
-                .verify();
+                .verify(TIMEOUT);
         }
     }
 }

@@ -5,31 +5,29 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a secret object value. */
 @Fluent
 public final class SecretObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretObject.class);
-
     /*
      * The value of the secret. The format of this value will be determined
-     * based on the type of the secret object. If the type is Opaque, the value
-     * will be
+     * based on the type of the secret object. If the type is Opaque, the value will be
      * used as is without any modification.
      */
     @JsonProperty(value = "value")
     private String value;
 
     /*
-     * The type of the secret object which determines how the value of the
-     * secret object has to be
+     * The type of the secret object which determines how the value of the secret object has to be
      * interpreted.
      */
     @JsonProperty(value = "type")
     private SecretObjectType type;
+
+    /** Creates an instance of SecretObject class. */
+    public SecretObject() {
+    }
 
     /**
      * Get the value property: The value of the secret. The format of this value will be determined based on the type of

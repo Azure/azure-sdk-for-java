@@ -6,19 +6,20 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UpgradableVersionsDescription model. */
 @Fluent
 public final class UpgradableVersionsDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpgradableVersionsDescription.class);
-
     /*
      * The target code version.
      */
     @JsonProperty(value = "targetVersion", required = true)
     private String targetVersion;
+
+    /** Creates an instance of UpgradableVersionsDescription class. */
+    public UpgradableVersionsDescription() {
+    }
 
     /**
      * Get the targetVersion property: The target code version.
@@ -47,10 +48,12 @@ public final class UpgradableVersionsDescription {
      */
     public void validate() {
         if (targetVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetVersion in model UpgradableVersionsDescription"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UpgradableVersionsDescription.class);
 }

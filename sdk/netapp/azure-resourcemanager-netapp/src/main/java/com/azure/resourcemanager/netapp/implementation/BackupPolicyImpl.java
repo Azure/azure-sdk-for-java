@@ -98,6 +98,10 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public BackupPolicyInner innerModel() {
         return this.innerObject;
     }

@@ -1,15 +1,313 @@
 # Release History
 
-## 5.2.0-beta.3 (Unreleased)
+## 5.5.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added interfaces from `com.azure.core.client.traits` to `TextAnalyticsClientBuilder`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.4.0 (2023-10-19)
+
+### Features Added
+- Added new default constructor to existing models for compatible with JDK 21. [#36371](https://github.com/Azure/azure-sdk-for-java/pull/36371/files#diff-97ab179febbd379931e540173f1655dca32fb9794ff5acb90c593e08bca67939R37)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+## 5.3.3 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 5.3.2 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 5.3.1 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
+
+## 5.3.0 (2023-06-15)
+
+This version of the client library defaults to the service API version 2023-04-01.
+
+### Features Added
+- Added `values()` methods to all ExpandableStringEnum models.
+- Added more values to enum class: `HealthcareEntityCategory` and `HealthcareEntityRelationType`.
+
+### Breaking Changes
+> Note: The following changes are only breaking from the previous beta. They are not breaking against previous stable versions.
+- Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resoluton`, and `Healthcare FHIR` features,
+  which were introduced in the previous beta releases.
+- Renamed class:
+  `SummaryContext` to `AbstractiveSummaryContext`,
+  `SummarySentence` to `ExtractiveSummarySentence`,
+  `SummarySentencesOrder` to `ExtractiveSummarySentencesOrder`,
+  `ExtractSummaryOptions` to `ExtractiveSummaryOptions`,
+  `ExtractSummaryAction` to `ExtractiveSummaryAction`,
+  `ExtractSummaryActionResult` to `ExtractiveSummaryActionResult`,
+  `ExtractSummaryResult` to `ExtractiveSummaryResult`,
+  `ExtractSummaryResultCollection` to `ExtractiveSummaryResultCollection`,
+  `ExtractSummaryOperationDetail` to `ExtractiveSummaryOperationDetail`,
+  `ExtractSummaryPagedFlux` to `ExtractiveSummaryPagedFlux`,
+  `ExtractSummaryPagedIterable` to `ExtractiveSummaryPagedIterable`,
+  `AbstractSummaryOptions` to `AbstractiveSummaryOptions`,
+  `AbstractSummaryAction` to `AbstractiveSummaryAction`,
+  `AbstractSummaryActionResult` to `AbtractiveSummaryActionResult`,
+  `AbstractSummaryResultCollection` to `AbstractiveSummaryResultCollection`
+  `AbstractSummaryResult` to `AbstractiveSummaryResult`,
+  `AbstractSummaryOperationDetail` to `AbstractiveSummaryOperationDetail`,
+  `AbstractSummaryPagedFlux` to `AbstractiveSummaryPagedFlux`,
+  `AbstractSummaryPagedIterable` to `AbstractiveSummaryPagedIterable`,
+- Renamed methods:
+  `getExtractSummaryActions()` to `getExtractiveSummaryActions()`,
+  `getAbstractSummaryActions()` to `getAbstractiveSummaryActions()`,
+  `setAbstractSummaryActions(AbstractSummaryAction... abstractSummaryActions)` to 
+  `setAbstractiveSummaryActions(AbstractiveSummaryAction... abstractiveSummaryActions)`,
+  `setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions)` to
+  `setExtractiveSummaryActions(ExtractiveSummaryAction... extractiveSummaryActions)`,
+  `getAbstractSummaryResults` to `getAbstractiveSummaryResults`,
+  `getExtractSummaryResults` to `getExtractiveSummaryResults`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 5.2.7 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 5.2.6 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+
+## 5.2.5 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 5.3.0-beta.2 (2023-03-07)
+
+### Features Added
+- Added the following methods for performing abstractive summarization and extractive summarization actions:
+    - `beginAbstractSummary(...)`
+    - `beginExtractSummary(...)`
+- Added the following types for the newly added methods
+    - `AbstractSummaryOperationDetail`, `AbstractSummaryOptions`, `AbstractSummaryPagedFlux`, `AbstractSummaryPagedIterable`
+    - `ExtractSummaryOperationDetail`, `ExtractSummaryOptions`, `ExtractSummaryPagedFlux`, `ExtractSummaryPagedIterable`
+
+### Breaking Changes
+- Changed `dynamic classify categories` as a required parameter in dynamic text classification methods.
+- Renamed naming phrase `DynamicClassficationXXX` to `DynamicClassifyXXX` in class name, method name.
+- Changed `BaseResolution` to an abstract class.
+- Removed class `BooleanResolution` and enum value `BooleanResolution` in the class `ResolutionKind`.
+- Renamed `maxSentenceCount` to `sentenceCount` in abstractive summarization.
+
+### Other Changes
+- Integrate synchronous workflow for sync clients so that they do not block on async client APIs. 
+  It simplifies stack traces and improves debugging experience.
+
+## 5.2.4 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+
+## 5.2.3 (2023-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.35.0`.
+- Updated `azure-core-http-netty` to `1.12.8`.
+
+## 5.3.0-beta.1 (2022-11-18)
+
+### Features Added
+- This version of the client library marks a beta release and defaults to the service API version `2022-10-01-preview`.
+- Added properties `fhirVersion` and `documentType` to `AnalyzeHealthcareEntitiesOptions` and `AnalyzeHealthcareEntitiesAction`.
+- Added property `fhirBundle` to `AnalyzeHealthcareEntitiesResult`.
+- Added property `confidenceScore` to `HealthcareEntityRelation`.
+- Added enum `HealthcareDocumentType` and `FhirVersion`.
+- Added property `resolutions` to `CategorizedEntity`.
+- Added models and enums related to resolutions: `BaseResolution`, `ResolutionKind`, `AgeResolution`, `AreaResolution`,
+  `BooleanResolution`, `CurrencyResolution`, `DateTimeResolution`, `InformationResolution`, `LengthResolution`,
+  `NumberResolution`, `NumericRangeResolution`, `OrdinalResolution`, `SpeedResolution`, `TemperatureResolution`,
+  `TemporalSpanResolution`, `VolumeResolution`, `WeightResolution`, `AgeUnit`, `AreaUnit`, `TemporalModifier`,
+  `InformationUnit`, `LengthUnit`, `NumberKind`, `RangeKind`, `RelativeTo`, `SpeedUnit`, `TemperatureUnit`,
+  `VolumeUnit`, and `WeightUnit`.
+- Added the Extractive Summarization feature and related models: `ExtractSummaryAction`, `ExtractSummaryActionResult`,
+  `ExtractSummaryResultCollection`, `ExtractSummaryResult`, `SummarySentence` and `SummarySentencesOrder`. 
+  Access the feature through the `beginAnalyzeActions` API.
+- Added the Abstractive Summarization feature and related models: `AbstractSummaryAction`, `AbstractSummaryActionResult`,
+ `AbstractSummaryResultCollection`, `AbstractSummaryResult`, `AbstractiveSummary`, and `SummaryContext`. 
+  Access the feature through the `beginAnalyzeActions` API.
+- Added the dynamic text classification on documents without needing to train a model. The feature can be used by calling:
+    - Synchronous API: `Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context)`
+    - Asynchronous API: `Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassificationBatchWithResponse(Iterable<TextDocumentInput> documents, DynamicClassificationOptions options)`.
+    - Added new models: `ClassificationType`, `DynamicClassificationOptions` and `DynamicClassifyDocumentResultCollection`.
+- Added automatic language detection to long-running operation APIs. Pass `auto` into the document `language` hint to use this feature.
+- Added property `detectedLanguage` to `RecognizeEntitiesResult`, `RecognizePiiEntitiesResult`, `AnalyzeHealthcareEntitiesResult`,
+  `ExtractKeyPhrasesResult`, `RecognizeLinkedEntitiesResult`, `AnalyzeSentimentResult`, `RecognizeCustomEntitiesResult`,
+  `ClassifyDocumentResult`, `ExtractSummaryResult`, and `AbstractSummaryResult` to indicate the language detected by automatic language detection.
+- Added property `script` to `DetectedLanguage` to indicate the script of the input document, and new enum model `ScriptKind`.
+
+## 5.2.2 (2022-11-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.34.0`.
+- Updated `azure-core-http-netty` to `1.12.7`.
+
+## 5.2.1 (2022-10-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.33.0`.
+- Updated `azure-core-http-netty` to `1.12.6`.
+
+## 5.2.0 (2022-09-08)
+
+### Features Added
+- This version of the client library marks a stable release and defaults to the service API version `2022-05-01`.
+- Added overload methods to take only required input parameter for all existing long-running operations:
+  - `beginAnalyzeActions(Iterable<String> documents, TextAnalyticsActions actions)`
+  - `beginAnalyzeHealthcareEntities(Iterable<String> documents)`
+  - `beginMultiLabelClassify(Iterable<String> documents, String projectName, String deploymentName)`
+  - `beginRecognizeCustomEntities(Iterable<String> documents, String projectName, String deploymentName)`
+  - `beginSingleLabelClassify(Iterable<String> documents, String projectName, String deploymentName)`
+- Added `displayName` property which is the name of long-running operation, to the following classes to 
+  set the optional display name:
+    - `AnalyzeHealthcareEntitiesOptions`
+    - `MultiLabelClassifyOptions`
+    - `RecognizeCustomEntitiesOptions`
+    - `SingleLabelClassifyOptions`
+- Added `displayName` property to the following operations to read the optional display name set on options classes above:
+    - `AnalyzeHealthcareEntitiesOperationDetail` from `AnalyzeHealthcareEntitiesOptions`
+    - `ClassifyDocumentOperationDetail` from `MultiLabelClassifyOptions` and `SingleLabelClassifyOptions`
+    - `RecognizeCustomEntitiesOperationDetail` from `RecognizeCustomEntitiesOptions`
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.32.0`.
+- Updated `azure-core-http-netty` to `1.12.5`.
+
+## 5.2.0-beta.4 (2022-08-12)
+### Features Added
+- We are now targeting the service's `2022-05-01` API as the default.
+- Added bespoke methods for the custom entity recognition, and single-label and multi-label classification features,
+  such as, `beginRecognizeCustomEntities()`, `beginSingleLabelClassify()` and `beginMultiLabelClassify()`.
+
+### Breaking Changes
+- Removed support for `Healthcare FHIR`, and `Extractive Summarization` features.
+- Renamed
+  `SingleCategoryClassifyAction` to `SingleLabelClassifyAction`,
+  `MultiCategoryClassifyAction` to `MultiLabelClassifyAction`.
+- Merged
+  `SingleCategoryClassifyResultCollection` and `SingleCategoryClassifyResultCollection` to `ClassifyDocumentResultCollection`,
+  `MultiCategoryClassifyResult` and `SingleCategoryClassifyResult` to `ClassifyDocumentResult`.
+
+## 5.1.12 (2022-08-11)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-core-http-netty` to `1.12.4`.
+
+## 5.1.11 (2022-07-07)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.30.0`.
+- Updated `azure-core-http-netty` to `1.12.3`.
+
+## 5.1.10 (2022-06-09)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-core-http-netty` to `1.12.2`.
+
+## 5.2.0-beta.3 (2022-05-18)
+Note that this is the first version of the client library that targets the Azure Cognitive Service for Language APIs
+which includes the existing text analysis and natural language processing features found in the Text Analytics client
+library. In addition, the service API has changed from semantic to date-based versioning. This version of the client 
+library defaults to the latest supported API version, which currently is `2022-04-01-preview`. Support for 
+`v3.2-preview.2` is removed, however, all functionalities are included in the latest version.
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `TextAnalyticsClientBuilder`. 
+- Added support for Healthcare Entities Analysis through the `beginAnalyzeActions` API with the `AnalyzeHealthcareEntitiesAction` type. 
+- Added property `fhirVersion` to `AnalyzeHealthcareEntitiesOptions` and `AnalyzeHealthcareEntitiesAction`. 
+  Use the keyword to indicate the version for the `fhirBundle` contained on the `AnalyzeHealthcareEntitiesResult`.
+- Added property `fhirBundle` to `AnalyzeHealthcareEntitiesResult`.
+
+## 5.1.9 (2022-05-11)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.28.0`.
+- Updated `azure-core-http-netty` to `1.12.0`.
+
+## 5.1.8 (2022-04-07)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.27.0`.
+- Updated `azure-core-http-netty` to `1.11.9`.
+
+## 5.1.7 (2022-03-09)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.26.0`.
+- Updated `azure-core-http-netty` to `1.11.8`.
 
 ## 5.1.6 (2022-02-09)
 ### Other Changes

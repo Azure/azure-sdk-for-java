@@ -9,10 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RestoresClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Restores;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RestoresImpl implements Restores {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoresImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RestoresImpl.class);
 
     private final RestoresClient innerClient;
 

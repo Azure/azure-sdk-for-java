@@ -12,10 +12,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.ServiceRunnersClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ServiceRunnerInner;
 import com.azure.resourcemanager.devtestlabs.models.ServiceRunner;
 import com.azure.resourcemanager.devtestlabs.models.ServiceRunners;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServiceRunnersImpl implements ServiceRunners {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceRunnersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceRunnersImpl.class);
 
     private final ServiceRunnersClient innerClient;
 
@@ -25,15 +24,6 @@ public final class ServiceRunnersImpl implements ServiceRunners {
         ServiceRunnersClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ServiceRunner get(String resourceGroupName, String labName, String name) {
-        ServiceRunnerInner inner = this.serviceClient().get(resourceGroupName, labName, name);
-        if (inner != null) {
-            return new ServiceRunnerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ServiceRunner> getWithResponse(
@@ -51,18 +41,27 @@ public final class ServiceRunnersImpl implements ServiceRunners {
         }
     }
 
-    public void delete(String resourceGroupName, String labName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, name);
+    public ServiceRunner get(String resourceGroupName, String labName, String name) {
+        ServiceRunnerInner inner = this.serviceClient().get(resourceGroupName, labName, name);
+        if (inner != null) {
+            return new ServiceRunnerImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String name, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, labName, name, context);
     }
 
+    public void delete(String resourceGroupName, String labName, String name) {
+        this.serviceClient().delete(resourceGroupName, labName, name);
+    }
+
     public ServiceRunner getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -70,14 +69,14 @@ public final class ServiceRunnersImpl implements ServiceRunners {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "servicerunners");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,7 +88,7 @@ public final class ServiceRunnersImpl implements ServiceRunners {
     public Response<ServiceRunner> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -97,14 +96,14 @@ public final class ServiceRunnersImpl implements ServiceRunners {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "servicerunners");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,7 +115,7 @@ public final class ServiceRunnersImpl implements ServiceRunners {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,26 +123,26 @@ public final class ServiceRunnersImpl implements ServiceRunners {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "servicerunners");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'servicerunners'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, labName, name, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,14 +150,14 @@ public final class ServiceRunnersImpl implements ServiceRunners {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "servicerunners");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -1,35 +1,50 @@
 # Azure Communication Identity library for Java
 
 > see https://aka.ms/autorest
+
+This is the AutoRest configuration file for Communication Identity
+---
 ## Getting Started
 
-To build the SDK for Communication Identity library, simply Install AutoRest and in this folder, run:
+To build the SDK for Communication Identity library, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
+> `autorest --java`
+
+To see additional help and options, run:
+> `autorest --help`
 
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
 ### Generation
-
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.2X
+autorest --java
 ```
 
 ### Code generation settings
 ``` yaml
-tag: package-preview-2021-10
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/6f40b65610a4fad7a03f3fe8c57e8c0a9c3b77d0/specification/communication/data-plane/Identity/readme.md
+java: true
+output-folder: ..\
+use: '@autorest/java@4.1.14'
+tag: package-2022-10
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a8c4340400f1ab1ae6a43b10e8d635ecb9c49a2a/specification/communication/data-plane/Identity/readme.md
 add-context-parameter: true
-custom-types: CommunicationTokenScope
+license-header: MICROSOFT_MIT_SMALL
+namespace: com.azure.communication.identity
+custom-types: CommunicationTokenScope,TeamsUserExchangeTokenRequest
 custom-types-subpackage: models
 models-subpackage: implementation.models
+customization-class: src/main/java/TeamsUserExchangeTokenRequestCustomization.java
+custom-strongly-typed-header-deserialization: true
+generic-response-type: true
+sync-methods: all
+disable-client-builder: true
+generate-client-as-impl: true
+service-interface-as-public: true
+context-client-method-parameter: true
+enable-sync-stack: true
 ```
 
 ### Rename CommunicationIdentityTokenScope to CommunicationTokenScope
@@ -39,17 +54,4 @@ directive:
     where: $.definitions.CommunicationIdentityTokenScope
     transform: >
       $["x-ms-enum"].name = "CommunicationTokenScope";
-```
-
-### Code generation settings
-
-``` yaml
-java: true
-output-folder: ..\
-license-header: MICROSOFT_MIT_SMALL
-namespace: com.azure.communication.identity
-generate-client-as-impl: true
-custom-types-subpackage: models
-sync-methods: all
-context-client-method-parameter: true
 ```

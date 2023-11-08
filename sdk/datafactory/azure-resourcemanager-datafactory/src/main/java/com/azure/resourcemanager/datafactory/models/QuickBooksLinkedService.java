@@ -24,6 +24,10 @@ public final class QuickBooksLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private QuickBooksLinkedServiceTypeProperties innerTypeProperties = new QuickBooksLinkedServiceTypeProperties();
 
+    /** Creates an instance of QuickBooksLinkedService class. */
+    public QuickBooksLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: QuickBooks server linked service properties.
      *
@@ -251,22 +255,22 @@ public final class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the QuickBooksLinkedService object itself.
      */
-    public QuickBooksLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public QuickBooksLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new QuickBooksLinkedServiceTypeProperties();
         }

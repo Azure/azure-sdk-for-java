@@ -23,6 +23,10 @@ public final class ValidationActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ValidationActivityTypeProperties innerTypeProperties = new ValidationActivityTypeProperties();
 
+    /** Creates an instance of ValidationActivity class. */
+    public ValidationActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Validation activity properties.
      *
@@ -43,6 +47,20 @@ public final class ValidationActivity extends ControlActivity {
     @Override
     public ValidationActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ValidationActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

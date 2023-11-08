@@ -81,6 +81,13 @@ public interface WorkloadNetworkSegment {
     Long revision();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner object.
      *
      * @return the inner object.
@@ -91,11 +98,13 @@ public interface WorkloadNetworkSegment {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The WorkloadNetworkSegment definition stages. */
     interface DefinitionStages {
         /** The first stage of the WorkloadNetworkSegment definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the WorkloadNetworkSegment definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -107,6 +116,7 @@ public interface WorkloadNetworkSegment {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the WorkloadNetworkSegment definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -131,6 +141,7 @@ public interface WorkloadNetworkSegment {
              */
             WorkloadNetworkSegment create(Context context);
         }
+
         /** The stage of the WorkloadNetworkSegment definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -141,6 +152,7 @@ public interface WorkloadNetworkSegment {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the WorkloadNetworkSegment definition allowing to specify connectedGateway. */
         interface WithConnectedGateway {
             /**
@@ -151,6 +163,7 @@ public interface WorkloadNetworkSegment {
              */
             WithCreate withConnectedGateway(String connectedGateway);
         }
+
         /** The stage of the WorkloadNetworkSegment definition allowing to specify subnet. */
         interface WithSubnet {
             /**
@@ -161,6 +174,7 @@ public interface WorkloadNetworkSegment {
              */
             WithCreate withSubnet(WorkloadNetworkSegmentSubnet subnet);
         }
+
         /** The stage of the WorkloadNetworkSegment definition allowing to specify revision. */
         interface WithRevision {
             /**
@@ -172,6 +186,7 @@ public interface WorkloadNetworkSegment {
             WithCreate withRevision(Long revision);
         }
     }
+
     /**
      * Begins update for the WorkloadNetworkSegment resource.
      *
@@ -200,6 +215,7 @@ public interface WorkloadNetworkSegment {
          */
         WorkloadNetworkSegment apply(Context context);
     }
+
     /** The WorkloadNetworkSegment update stages. */
     interface UpdateStages {
         /** The stage of the WorkloadNetworkSegment update allowing to specify displayName. */
@@ -212,6 +228,7 @@ public interface WorkloadNetworkSegment {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the WorkloadNetworkSegment update allowing to specify connectedGateway. */
         interface WithConnectedGateway {
             /**
@@ -222,6 +239,7 @@ public interface WorkloadNetworkSegment {
              */
             Update withConnectedGateway(String connectedGateway);
         }
+
         /** The stage of the WorkloadNetworkSegment update allowing to specify subnet. */
         interface WithSubnet {
             /**
@@ -232,6 +250,7 @@ public interface WorkloadNetworkSegment {
              */
             Update withSubnet(WorkloadNetworkSegmentSubnet subnet);
         }
+
         /** The stage of the WorkloadNetworkSegment update allowing to specify revision. */
         interface WithRevision {
             /**
@@ -243,6 +262,7 @@ public interface WorkloadNetworkSegment {
             Update withRevision(Long revision);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

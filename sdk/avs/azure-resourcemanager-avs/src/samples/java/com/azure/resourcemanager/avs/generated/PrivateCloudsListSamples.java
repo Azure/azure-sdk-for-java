@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds List. */
 public final class PrivateCloudsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_ListInSubscription.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_ListInSubscription.json
      */
     /**
      * Sample code: PrivateClouds_ListInSubscription.
@@ -17,11 +15,11 @@ public final class PrivateCloudsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsListInSubscription(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().list(Context.NONE);
+        manager.privateClouds().list(com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/PrivateClouds_ListInSubscription_Stretched.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_ListInSubscription_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_ListInSubscription_Stretched.
@@ -29,6 +27,6 @@ public final class PrivateCloudsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsListInSubscriptionStretched(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().list(Context.NONE);
+        manager.privateClouds().list(com.azure.core.util.Context.NONE);
     }
 }

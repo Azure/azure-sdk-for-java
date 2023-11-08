@@ -24,8 +24,7 @@ public final class NotebookResource {
     private String name;
 
     /*
-     * The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     * Microsoft.Storage/storageAccounts.
+     * The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
@@ -41,6 +40,9 @@ public final class NotebookResource {
      */
     @JsonProperty(value = "properties", required = true)
     private Notebook properties;
+
+    /** Creates an instance of NotebookResource class. */
+    public NotebookResource() {}
 
     /**
      * Get the id property: Fully qualified resource Id for the resource. Ex -

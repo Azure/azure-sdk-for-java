@@ -6,14 +6,11 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object sent for a kusto pool check name availability request. */
 @Fluent
 public final class KustoPoolCheckNameRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolCheckNameRequest.class);
-
     /*
      * Kusto Pool name.
      */
@@ -78,9 +75,11 @@ public final class KustoPoolCheckNameRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model KustoPoolCheckNameRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KustoPoolCheckNameRequest.class);
 }

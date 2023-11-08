@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagepool.fluent.models.Sku;
 import com.azure.resourcemanager.storagepool.models.Disk;
 import com.azure.resourcemanager.storagepool.models.DiskPool;
@@ -26,7 +25,7 @@ public final class DiskPoolsUpdateSamples {
         DiskPool resource =
             manager
                 .diskPools()
-                .getByResourceGroupWithResponse("myResourceGroup", "myDiskPool", Context.NONE)
+                .getByResourceGroupWithResponse("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

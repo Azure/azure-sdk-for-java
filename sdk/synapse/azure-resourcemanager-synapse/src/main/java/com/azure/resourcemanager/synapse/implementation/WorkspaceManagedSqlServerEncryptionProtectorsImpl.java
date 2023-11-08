@@ -14,12 +14,11 @@ import com.azure.resourcemanager.synapse.fluent.models.EncryptionProtectorInner;
 import com.azure.resourcemanager.synapse.models.EncryptionProtector;
 import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerEncryptionProtectors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
     implements WorkspaceManagedSqlServerEncryptionProtectors {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WorkspaceManagedSqlServerEncryptionProtectorsImpl.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(WorkspaceManagedSqlServerEncryptionProtectorsImpl.class);
 
     private final WorkspaceManagedSqlServerEncryptionProtectorsClient innerClient;
 
@@ -30,17 +29,6 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public EncryptionProtector get(
-        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName) {
-        EncryptionProtectorInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, encryptionProtectorName);
-        if (inner != null) {
-            return new EncryptionProtectorImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<EncryptionProtector> getWithResponse(
@@ -56,6 +44,17 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EncryptionProtectorImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EncryptionProtector get(
+        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName) {
+        EncryptionProtectorInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, encryptionProtectorName);
+        if (inner != null) {
+            return new EncryptionProtectorImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -88,7 +87,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
     public EncryptionProtector getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -96,28 +95,29 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        EncryptionProtectorName encryptionProtectorName =
-            EncryptionProtectorName.fromString(Utils.getValueFromIdByName(id, "encryptionProtector"));
-        if (encryptionProtectorName == null) {
-            throw logger
+        String encryptionProtectorNameLocal = Utils.getValueFromIdByName(id, "encryptionProtector");
+        if (encryptionProtectorNameLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'encryptionProtector'.", id)));
         }
+        EncryptionProtectorName encryptionProtectorName =
+            EncryptionProtectorName.fromString(encryptionProtectorNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, encryptionProtectorName, Context.NONE).getValue();
     }
 
     public Response<EncryptionProtector> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,21 +125,22 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        EncryptionProtectorName encryptionProtectorName =
-            EncryptionProtectorName.fromString(Utils.getValueFromIdByName(id, "encryptionProtector"));
-        if (encryptionProtectorName == null) {
-            throw logger
+        String encryptionProtectorNameLocal = Utils.getValueFromIdByName(id, "encryptionProtector");
+        if (encryptionProtectorNameLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'encryptionProtector'.", id)));
         }
+        EncryptionProtectorName encryptionProtectorName =
+            EncryptionProtectorName.fromString(encryptionProtectorNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, encryptionProtectorName, context);
     }
 

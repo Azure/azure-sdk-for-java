@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphMessageActionFlag. */
+/** messageActionFlag. */
 public final class MicrosoftGraphMessageActionFlag extends ExpandableStringEnum<MicrosoftGraphMessageActionFlag> {
     /** Static value any for MicrosoftGraphMessageActionFlag. */
     public static final MicrosoftGraphMessageActionFlag ANY = fromString("any");
@@ -44,6 +44,15 @@ public final class MicrosoftGraphMessageActionFlag extends ExpandableStringEnum<
     public static final MicrosoftGraphMessageActionFlag REVIEW = fromString("review");
 
     /**
+     * Creates a new instance of MicrosoftGraphMessageActionFlag value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphMessageActionFlag() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphMessageActionFlag from its string representation.
      *
      * @param name a name to look for.
@@ -54,7 +63,11 @@ public final class MicrosoftGraphMessageActionFlag extends ExpandableStringEnum<
         return fromString(name, MicrosoftGraphMessageActionFlag.class);
     }
 
-    /** @return known MicrosoftGraphMessageActionFlag values. */
+    /**
+     * Gets known MicrosoftGraphMessageActionFlag values.
+     *
+     * @return known MicrosoftGraphMessageActionFlag values.
+     */
     public static Collection<MicrosoftGraphMessageActionFlag> values() {
         return values(MicrosoftGraphMessageActionFlag.class);
     }

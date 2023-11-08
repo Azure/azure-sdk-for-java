@@ -13,18 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesGetTermTemplateDefByGuid {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.typesgettermtemplatedefbyguid.typesgettermtemplatedefbyguid
         TypesClient typesClient =
                 new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.typesgettermtemplatedefbyguid.typesgettermtemplatedefbyguid
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 typesClient.getTermTemplateDefByGuidWithResponse(
                         "d776af9c-985c-4168-abb2-477523dbfc70", requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.typesgettermtemplatedefbyguid.typesgettermtemplatedefbyguid
+        // END:com.azure.analytics.purview.catalog.generated.typesgettermtemplatedefbyguid.typesgettermtemplatedefbyguid
     }
 }

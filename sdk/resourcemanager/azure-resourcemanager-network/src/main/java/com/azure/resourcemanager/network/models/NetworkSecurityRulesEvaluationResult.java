@@ -46,6 +46,10 @@ public final class NetworkSecurityRulesEvaluationResult {
     @JsonProperty(value = "destinationPortMatched")
     private Boolean destinationPortMatched;
 
+    /** Creates an instance of NetworkSecurityRulesEvaluationResult class. */
+    public NetworkSecurityRulesEvaluationResult() {
+    }
+
     /**
      * Get the name property: Name of the network security rule.
      *

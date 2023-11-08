@@ -23,6 +23,10 @@ public final class AvailabilityZonePeers {
     @JsonProperty(value = "peers")
     private List<Peers> peers;
 
+    /** Creates an instance of AvailabilityZonePeers class. */
+    public AvailabilityZonePeers() {
+    }
+
     /**
      * Get the availabilityZone property: The availabilityZone.
      *

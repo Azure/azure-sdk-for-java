@@ -70,11 +70,10 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface DataFlowDebugSessionsService {
+    public interface DataFlowDebugSessionsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/createDataFlowDebugSession")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/createDataFlowDebugSession")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -89,8 +88,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/queryDataFlowDebugSessions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryDataFlowDebugSessions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QueryDataFlowDebugSessionsResponse>> queryByFactory(
@@ -104,8 +102,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/addDataFlowToDebugSession")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/addDataFlowToDebugSession")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AddDataFlowToDebugSessionResponseInner>> addDataFlow(
@@ -120,8 +117,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/deleteDataFlowDebugSession")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/deleteDataFlowDebugSession")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -136,8 +132,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/executeDataFlowDebugCommand")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/executeDataFlowDebugCommand")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> executeCommand(
@@ -339,7 +334,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request) {
-        return beginCreateAsync(resourceGroupName, factoryName, request).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, factoryName, request).getSyncPoller();
     }
 
     /**
@@ -358,7 +353,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(
             String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request, Context context) {
-        return beginCreateAsync(resourceGroupName, factoryName, request, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, factoryName, request, context).getSyncPoller();
     }
 
     /**
@@ -742,31 +737,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     private Mono<AddDataFlowToDebugSessionResponseInner> addDataFlowAsync(
         String resourceGroupName, String factoryName, DataFlowDebugPackage request) {
         return addDataFlowWithResponseAsync(resourceGroupName, factoryName, request)
-            .flatMap(
-                (Response<AddDataFlowToDebugSessionResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Add a data flow into debug session.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition with debug content.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for starting data flow debug session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddDataFlowToDebugSessionResponseInner addDataFlow(
-        String resourceGroupName, String factoryName, DataFlowDebugPackage request) {
-        return addDataFlowAsync(resourceGroupName, factoryName, request).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -785,6 +756,23 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     public Response<AddDataFlowToDebugSessionResponseInner> addDataFlowWithResponse(
         String resourceGroupName, String factoryName, DataFlowDebugPackage request, Context context) {
         return addDataFlowWithResponseAsync(resourceGroupName, factoryName, request, context).block();
+    }
+
+    /**
+     * Add a data flow into debug session.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param request Data flow debug session definition with debug content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for starting data flow debug session.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddDataFlowToDebugSessionResponseInner addDataFlow(
+        String resourceGroupName, String factoryName, DataFlowDebugPackage request) {
+        return addDataFlowWithResponse(resourceGroupName, factoryName, request, Context.NONE).getValue();
     }
 
     /**
@@ -909,23 +897,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
         String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, request)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a data flow debug session.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition for deletion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request) {
-        deleteAsync(resourceGroupName, factoryName, request).block();
+        return deleteWithResponseAsync(resourceGroupName, factoryName, request).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -944,6 +916,21 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request, Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, request, context).block();
+    }
+
+    /**
+     * Deletes a data flow debug session.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param request Data flow debug session definition for deletion.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request) {
+        deleteWithResponse(resourceGroupName, factoryName, request, Context.NONE);
     }
 
     /**
@@ -1128,7 +1115,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommand(String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request) {
-        return beginExecuteCommandAsync(resourceGroupName, factoryName, request).getSyncPoller();
+        return this.beginExecuteCommandAsync(resourceGroupName, factoryName, request).getSyncPoller();
     }
 
     /**
@@ -1148,7 +1135,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommand(
             String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request, Context context) {
-        return beginExecuteCommandAsync(resourceGroupName, factoryName, request, context).getSyncPoller();
+        return this.beginExecuteCommandAsync(resourceGroupName, factoryName, request, context).getSyncPoller();
     }
 
     /**
@@ -1230,7 +1217,8 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1266,7 +1254,8 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

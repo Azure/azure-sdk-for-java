@@ -23,6 +23,9 @@ public final class HookList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<HookInfo> value;
 
+    /** Creates an instance of HookList class. */
+    public HookList() {}
+
     /**
      * Get the nextLink property: The @nextLink property.
      *

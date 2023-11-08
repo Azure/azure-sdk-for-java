@@ -6,14 +6,11 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the link mapping of prediction. */
 @Fluent
 public final class PredictionMappings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PredictionMappings.class);
-
     /*
      * The score of the link mapping.
      */
@@ -31,6 +28,10 @@ public final class PredictionMappings {
      */
     @JsonProperty(value = "reason", required = true)
     private String reason;
+
+    /** Creates an instance of PredictionMappings class. */
+    public PredictionMappings() {
+    }
 
     /**
      * Get the score property: The score of the link mapping.
@@ -99,19 +100,21 @@ public final class PredictionMappings {
      */
     public void validate() {
         if (score() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property score in model PredictionMappings"));
         }
         if (grade() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property grade in model PredictionMappings"));
         }
         if (reason() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property reason in model PredictionMappings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PredictionMappings.class);
 }

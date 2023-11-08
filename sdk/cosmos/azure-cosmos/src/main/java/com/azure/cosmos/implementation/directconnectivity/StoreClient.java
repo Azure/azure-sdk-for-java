@@ -5,16 +5,18 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.InternalServerErrorException;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceType;
@@ -25,12 +27,16 @@ import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
@@ -58,7 +64,8 @@ public class StoreClient implements IStoreClient {
             SessionContainer sessionContainer,
             GatewayServiceConfigurationReader serviceConfigurationReader, IAuthorizationTokenProvider userTokenProvider,
             TransportClient transportClient,
-            boolean useMultipleWriteLocations) {
+            boolean useMultipleWriteLocations,
+            SessionRetryOptions sessionRetryOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.transportClient = transportClient;
         this.sessionContainer = sessionContainer;
@@ -71,8 +78,10 @@ public class StoreClient implements IStoreClient {
             this.transportClient,
             serviceConfigurationReader,
             userTokenProvider,
-            false,
-            useMultipleWriteLocations);
+            useMultipleWriteLocations,
+            sessionRetryOptions);
+
+        addressResolver.setOpenConnectionsProcessor(this.transportClient.getProactiveOpenConnectionsProcessor());
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -112,6 +121,9 @@ public class StoreClient implements IStoreClient {
                 } catch (Throwable throwable) {
                     logger.error("Unexpected failure in handling orig [{}]", e.getMessage(), e);
                     logger.error("Unexpected failure in handling orig [{}] : new [{}]", e.getMessage(), throwable.getMessage(), throwable);
+                    if (throwable instanceof Error) {
+                        throw (Error) throwable;
+                    }
                 }
             }
         );
@@ -123,6 +135,24 @@ public class StoreClient implements IStoreClient {
                 return Mono.error(e);
             }
         });
+    }
+
+    @Override
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.replicatedResourceClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
+    }
+
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        this.replicatedResourceClient.configureFaultInjectorProvider(injectorProvider);
+    }
+
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.replicatedResourceClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
+    }
+
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.replicatedResourceClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
     private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosException exception) {
@@ -138,6 +168,7 @@ public class StoreClient implements IStoreClient {
     private RxDocumentServiceResponse completeResponse(
         StoreResponse storeResponse,
         RxDocumentServiceRequest request) throws InternalServerErrorException {
+
         if (storeResponse.getResponseHeaderNames().length != storeResponse.getResponseHeaderValues().length) {
             throw new InternalServerErrorException(RMResources.InvalidBackendResponse);
         }
@@ -153,8 +184,10 @@ public class StoreClient implements IStoreClient {
         this.updateResponseHeader(request, headers);
         this.captureSessionToken(request, headers);
         BridgeInternal.recordRetryContextEndTime(request.requestContext.cosmosDiagnostics);
-        storeResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
-        return new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
+        RxDocumentServiceResponse rxDocumentServiceResponse =
+            new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
+        rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+        return rxDocumentServiceResponse;
     }
 
     private long getLSN(Map<String, String> headers) {

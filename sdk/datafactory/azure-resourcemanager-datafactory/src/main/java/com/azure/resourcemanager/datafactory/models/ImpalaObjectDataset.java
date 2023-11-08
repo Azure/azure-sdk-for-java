@@ -23,6 +23,10 @@ public final class ImpalaObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private ImpalaDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of ImpalaObjectDataset class. */
+    public ImpalaObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

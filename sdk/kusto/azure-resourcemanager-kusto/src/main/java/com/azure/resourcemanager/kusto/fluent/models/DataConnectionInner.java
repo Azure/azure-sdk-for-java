@@ -6,11 +6,10 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.kusto.models.CosmosDbDataConnection;
 import com.azure.resourcemanager.kusto.models.EventGridDataConnection;
 import com.azure.resourcemanager.kusto.models.EventHubDataConnection;
 import com.azure.resourcemanager.kusto.models.IotHubDataConnection;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,17 +25,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "EventHub", value = EventHubDataConnection.class),
     @JsonSubTypes.Type(name = "IotHub", value = IotHubDataConnection.class),
-    @JsonSubTypes.Type(name = "EventGrid", value = EventGridDataConnection.class)
+    @JsonSubTypes.Type(name = "EventGrid", value = EventGridDataConnection.class),
+    @JsonSubTypes.Type(name = "CosmosDb", value = CosmosDbDataConnection.class)
 })
 @Fluent
 public class DataConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectionInner.class);
-
     /*
      * Resource location.
      */
     @JsonProperty(value = "location")
     private String location;
+
+    /** Creates an instance of DataConnectionInner class. */
+    public DataConnectionInner() {
+    }
 
     /**
      * Get the location property: Resource location.

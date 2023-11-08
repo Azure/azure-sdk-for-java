@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Azure Data Explorer command activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,19 +18,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /*
-     * A control command, according to the Azure Data Explorer command syntax.
-     * Type: string (or Expression with resultType string).
+     * A control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.command", required = true)
     private Object command;
 
     /*
-     * Control command timeout. Type: string (or Expression with resultType
-     * string), pattern:
+     * Control command timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
      */
     @JsonProperty(value = "typeProperties.commandTimeout")
     private Object commandTimeout;
+
+    /** Creates an instance of AzureDataExplorerCommandActivity class. */
+    public AzureDataExplorerCommandActivity() {}
 
     /**
      * Get the command property: A control command, according to the Azure Data Explorer command syntax. Type: string
@@ -72,6 +75,62 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
      */
     public AzureDataExplorerCommandActivity setCommandTimeout(Object commandTimeout) {
         this.commandTimeout = commandTimeout;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerCommandActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

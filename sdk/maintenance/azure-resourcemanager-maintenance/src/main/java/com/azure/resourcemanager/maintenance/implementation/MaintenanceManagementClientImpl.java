@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -24,6 +25,9 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.maintenance.fluent.ApplyUpdateForResourceGroupsClient;
 import com.azure.resourcemanager.maintenance.fluent.ApplyUpdatesClient;
 import com.azure.resourcemanager.maintenance.fluent.ConfigurationAssignmentsClient;
+import com.azure.resourcemanager.maintenance.fluent.ConfigurationAssignmentsForResourceGroupsClient;
+import com.azure.resourcemanager.maintenance.fluent.ConfigurationAssignmentsForSubscriptionsClient;
+import com.azure.resourcemanager.maintenance.fluent.ConfigurationAssignmentsWithinSubscriptionsClient;
 import com.azure.resourcemanager.maintenance.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.maintenance.fluent.MaintenanceConfigurationsForResourceGroupsClient;
 import com.azure.resourcemanager.maintenance.fluent.MaintenanceManagementClient;
@@ -36,15 +40,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the MaintenanceManagementClientImpl type. */
 @ServiceClient(builder = MaintenanceManagementClientBuilder.class)
 public final class MaintenanceManagementClientImpl implements MaintenanceManagementClient {
-    private final ClientLogger logger = new ClientLogger(MaintenanceManagementClientImpl.class);
-
     /**
      * Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -193,6 +194,42 @@ public final class MaintenanceManagementClientImpl implements MaintenanceManagem
         return this.applyUpdateForResourceGroups;
     }
 
+    /** The ConfigurationAssignmentsWithinSubscriptionsClient object to access its operations. */
+    private final ConfigurationAssignmentsWithinSubscriptionsClient configurationAssignmentsWithinSubscriptions;
+
+    /**
+     * Gets the ConfigurationAssignmentsWithinSubscriptionsClient object to access its operations.
+     *
+     * @return the ConfigurationAssignmentsWithinSubscriptionsClient object.
+     */
+    public ConfigurationAssignmentsWithinSubscriptionsClient getConfigurationAssignmentsWithinSubscriptions() {
+        return this.configurationAssignmentsWithinSubscriptions;
+    }
+
+    /** The ConfigurationAssignmentsForSubscriptionsClient object to access its operations. */
+    private final ConfigurationAssignmentsForSubscriptionsClient configurationAssignmentsForSubscriptions;
+
+    /**
+     * Gets the ConfigurationAssignmentsForSubscriptionsClient object to access its operations.
+     *
+     * @return the ConfigurationAssignmentsForSubscriptionsClient object.
+     */
+    public ConfigurationAssignmentsForSubscriptionsClient getConfigurationAssignmentsForSubscriptions() {
+        return this.configurationAssignmentsForSubscriptions;
+    }
+
+    /** The ConfigurationAssignmentsForResourceGroupsClient object to access its operations. */
+    private final ConfigurationAssignmentsForResourceGroupsClient configurationAssignmentsForResourceGroups;
+
+    /**
+     * Gets the ConfigurationAssignmentsForResourceGroupsClient object to access its operations.
+     *
+     * @return the ConfigurationAssignmentsForResourceGroupsClient object.
+     */
+    public ConfigurationAssignmentsForResourceGroupsClient getConfigurationAssignmentsForResourceGroups() {
+        return this.configurationAssignmentsForResourceGroups;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -240,7 +277,7 @@ public final class MaintenanceManagementClientImpl implements MaintenanceManagem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-05-01";
+        this.apiVersion = "2023-04-01";
         this.publicMaintenanceConfigurations = new PublicMaintenanceConfigurationsClientImpl(this);
         this.applyUpdates = new ApplyUpdatesClientImpl(this);
         this.configurationAssignments = new ConfigurationAssignmentsClientImpl(this);
@@ -248,6 +285,10 @@ public final class MaintenanceManagementClientImpl implements MaintenanceManagem
         this.maintenanceConfigurationsForResourceGroups =
             new MaintenanceConfigurationsForResourceGroupsClientImpl(this);
         this.applyUpdateForResourceGroups = new ApplyUpdateForResourceGroupsClientImpl(this);
+        this.configurationAssignmentsWithinSubscriptions =
+            new ConfigurationAssignmentsWithinSubscriptionsClientImpl(this);
+        this.configurationAssignmentsForSubscriptions = new ConfigurationAssignmentsForSubscriptionsClientImpl(this);
+        this.configurationAssignmentsForResourceGroups = new ConfigurationAssignmentsForResourceGroupsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.updates = new UpdatesClientImpl(this);
     }
@@ -268,10 +309,7 @@ public final class MaintenanceManagementClientImpl implements MaintenanceManagem
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -335,7 +373,7 @@ public final class MaintenanceManagementClientImpl implements MaintenanceManagem
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -394,4 +432,6 @@ public final class MaintenanceManagementClientImpl implements MaintenanceManagem
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MaintenanceManagementClientImpl.class);
 }

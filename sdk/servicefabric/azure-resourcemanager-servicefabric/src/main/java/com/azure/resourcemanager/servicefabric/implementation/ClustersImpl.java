@@ -17,10 +17,9 @@ import com.azure.resourcemanager.servicefabric.models.ClusterListResult;
 import com.azure.resourcemanager.servicefabric.models.Clusters;
 import com.azure.resourcemanager.servicefabric.models.UpgradableVersionPathResult;
 import com.azure.resourcemanager.servicefabric.models.UpgradableVersionsDescription;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ClustersImpl implements Clusters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClustersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ClustersImpl.class);
 
     private final ClustersClient innerClient;
 
@@ -30,15 +29,6 @@ public final class ClustersImpl implements Clusters {
         ClustersClient innerClient, com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public Cluster getByResourceGroup(String resourceGroupName, String clusterName) {
-        ClusterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, clusterName);
-        if (inner != null) {
-            return new ClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<Cluster> getByResourceGroupWithResponse(
@@ -56,21 +46,22 @@ public final class ClustersImpl implements Clusters {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String clusterName) {
-        this.serviceClient().delete(resourceGroupName, clusterName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String clusterName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, clusterName, context);
-    }
-
-    public ClusterListResult listByResourceGroup(String resourceGroupName) {
-        ClusterListResultInner inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+    public Cluster getByResourceGroup(String resourceGroupName, String clusterName) {
+        ClusterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, clusterName);
         if (inner != null) {
-            return new ClusterListResultImpl(inner, this.manager());
+            return new ClusterImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String clusterName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, clusterName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String clusterName) {
+        this.serviceClient().delete(resourceGroupName, clusterName);
     }
 
     public Response<ClusterListResult> listByResourceGroupWithResponse(String resourceGroupName, Context context) {
@@ -87,8 +78,8 @@ public final class ClustersImpl implements Clusters {
         }
     }
 
-    public ClusterListResult list() {
-        ClusterListResultInner inner = this.serviceClient().list();
+    public ClusterListResult listByResourceGroup(String resourceGroupName) {
+        ClusterListResultInner inner = this.serviceClient().listByResourceGroup(resourceGroupName);
         if (inner != null) {
             return new ClusterListResultImpl(inner, this.manager());
         } else {
@@ -109,11 +100,10 @@ public final class ClustersImpl implements Clusters {
         }
     }
 
-    public UpgradableVersionPathResult listUpgradableVersions(String resourceGroupName, String clusterName) {
-        UpgradableVersionPathResultInner inner =
-            this.serviceClient().listUpgradableVersions(resourceGroupName, clusterName);
+    public ClusterListResult list() {
+        ClusterListResultInner inner = this.serviceClient().list();
         if (inner != null) {
-            return new UpgradableVersionPathResultImpl(inner, this.manager());
+            return new ClusterListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -139,10 +129,20 @@ public final class ClustersImpl implements Clusters {
         }
     }
 
+    public UpgradableVersionPathResult listUpgradableVersions(String resourceGroupName, String clusterName) {
+        UpgradableVersionPathResultInner inner =
+            this.serviceClient().listUpgradableVersions(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new UpgradableVersionPathResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Cluster getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,7 +150,7 @@ public final class ClustersImpl implements Clusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
@@ -161,7 +161,7 @@ public final class ClustersImpl implements Clusters {
     public Response<Cluster> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +169,7 @@ public final class ClustersImpl implements Clusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
@@ -180,7 +180,7 @@ public final class ClustersImpl implements Clusters {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,18 +188,18 @@ public final class ClustersImpl implements Clusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,12 +207,12 @@ public final class ClustersImpl implements Clusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, clusterName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, clusterName, context);
     }
 
     private ClustersClient serviceClient() {

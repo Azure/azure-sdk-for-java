@@ -23,6 +23,10 @@ public final class RestorePointInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RestorePointProperties innerProperties;
 
+    /** Creates an instance of RestorePointInner class. */
+    public RestorePointInner() {
+    }
+
     /**
      * Get the innerProperties property: The restore point properties.
      *
@@ -67,6 +71,20 @@ public final class RestorePointInner extends ProxyResource {
     }
 
     /**
+     * Set the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
+     *
+     * @param sourceMetadata the sourceMetadata value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withSourceMetadata(RestorePointSourceMetadata sourceMetadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withSourceMetadata(sourceMetadata);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Gets the provisioning state of the restore point.
      *
      * @return the provisioningState value.
@@ -76,13 +94,30 @@ public final class RestorePointInner extends ProxyResource {
     }
 
     /**
-     * Get the consistencyMode property: Gets the consistency mode for the restore point. Please refer to
+     * Get the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
+     * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
      * https://aka.ms/RestorePoints for more details.
      *
      * @return the consistencyMode value.
      */
     public ConsistencyModeTypes consistencyMode() {
         return this.innerProperties() == null ? null : this.innerProperties().consistencyMode();
+    }
+
+    /**
+     * Set the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
+     * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
+     * https://aka.ms/RestorePoints for more details.
+     *
+     * @param consistencyMode the consistencyMode value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withConsistencyMode(ConsistencyModeTypes consistencyMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withConsistencyMode(consistencyMode);
+        return this;
     }
 
     /**

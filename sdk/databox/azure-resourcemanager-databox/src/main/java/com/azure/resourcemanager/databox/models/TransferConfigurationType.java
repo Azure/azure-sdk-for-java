@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TransferConfigurationType. */
+/** Type of the configuration for transfer. */
 public enum TransferConfigurationType {
     /** Enum value TransferAll. */
     TRANSFER_ALL("TransferAll"),
@@ -30,6 +30,9 @@ public enum TransferConfigurationType {
      */
     @JsonCreator
     public static TransferConfigurationType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TransferConfigurationType[] items = TransferConfigurationType.values();
         for (TransferConfigurationType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum TransferConfigurationType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

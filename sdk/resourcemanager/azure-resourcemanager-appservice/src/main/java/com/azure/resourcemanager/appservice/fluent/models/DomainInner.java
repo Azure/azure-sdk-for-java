@@ -8,11 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.resourcemanager.appservice.models.Contact;
 import com.azure.resourcemanager.appservice.models.DnsType;
-import com.azure.resourcemanager.appservice.models.DomainPropertiesDomainNotRenewableReasonsItem;
 import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
 import com.azure.resourcemanager.appservice.models.DomainStatus;
 import com.azure.resourcemanager.appservice.models.Hostname;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
+import com.azure.resourcemanager.appservice.models.ResourceNotRenewableReason;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -32,6 +32,10 @@ public final class DomainInner extends Resource {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /** Creates an instance of DomainInner class. */
+    public DomainInner() {
+    }
 
     /**
      * Get the innerProperties property: Domain resource specific properties.
@@ -320,7 +324,7 @@ public final class DomainInner extends Resource {
      *
      * @return the domainNotRenewableReasons value.
      */
-    public List<DomainPropertiesDomainNotRenewableReasonsItem> domainNotRenewableReasons() {
+    public List<ResourceNotRenewableReason> domainNotRenewableReasons() {
         return this.innerProperties() == null ? null : this.innerProperties().domainNotRenewableReasons();
     }
 

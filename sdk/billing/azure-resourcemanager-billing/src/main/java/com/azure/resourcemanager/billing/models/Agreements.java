@@ -17,7 +17,7 @@ public interface Agreements {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing agreements.
+     * @return result of listing agreements as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Agreement> listByBillingAccount(String billingAccountName);
 
@@ -30,9 +30,24 @@ public interface Agreements {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing agreements.
+     * @return result of listing agreements as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Agreement> listByBillingAccount(String billingAccountName, String expand, Context context);
+
+    /**
+     * Gets an agreement by ID.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param agreementName The ID that uniquely identifies an agreement.
+     * @param expand May be used to expand the participants.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an agreement by ID along with {@link Response}.
+     */
+    Response<Agreement> getWithResponse(
+        String billingAccountName, String agreementName, String expand, Context context);
 
     /**
      * Gets an agreement by ID.
@@ -45,19 +60,4 @@ public interface Agreements {
      * @return an agreement by ID.
      */
     Agreement get(String billingAccountName, String agreementName);
-
-    /**
-     * Gets an agreement by ID.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param agreementName The ID that uniquely identifies an agreement.
-     * @param expand May be used to expand the participants.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agreement by ID.
-     */
-    Response<Agreement> getWithResponse(
-        String billingAccountName, String agreementName, String expand, Context context);
 }

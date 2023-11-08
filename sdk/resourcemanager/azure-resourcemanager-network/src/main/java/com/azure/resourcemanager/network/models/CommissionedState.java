@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CommissionedState. */
+/** The commissioned state of the Custom IP Prefix. */
 public final class CommissionedState extends ExpandableStringEnum<CommissionedState> {
     /** Static value Provisioning for CommissionedState. */
     public static final CommissionedState PROVISIONING = fromString("Provisioning");
@@ -19,6 +19,10 @@ public final class CommissionedState extends ExpandableStringEnum<CommissionedSt
     /** Static value Commissioning for CommissionedState. */
     public static final CommissionedState COMMISSIONING = fromString("Commissioning");
 
+    /** Static value CommissionedNoInternetAdvertise for CommissionedState. */
+    public static final CommissionedState COMMISSIONED_NO_INTERNET_ADVERTISE =
+        fromString("CommissionedNoInternetAdvertise");
+
     /** Static value Commissioned for CommissionedState. */
     public static final CommissionedState COMMISSIONED = fromString("Commissioned");
 
@@ -27,6 +31,18 @@ public final class CommissionedState extends ExpandableStringEnum<CommissionedSt
 
     /** Static value Deprovisioning for CommissionedState. */
     public static final CommissionedState DEPROVISIONING = fromString("Deprovisioning");
+
+    /** Static value Deprovisioned for CommissionedState. */
+    public static final CommissionedState DEPROVISIONED = fromString("Deprovisioned");
+
+    /**
+     * Creates a new instance of CommissionedState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CommissionedState() {
+    }
 
     /**
      * Creates or finds a CommissionedState from its string representation.
@@ -39,7 +55,11 @@ public final class CommissionedState extends ExpandableStringEnum<CommissionedSt
         return fromString(name, CommissionedState.class);
     }
 
-    /** @return known CommissionedState values. */
+    /**
+     * Gets known CommissionedState values.
+     *
+     * @return known CommissionedState values.
+     */
     public static Collection<CommissionedState> values() {
         return values(CommissionedState.class);
     }

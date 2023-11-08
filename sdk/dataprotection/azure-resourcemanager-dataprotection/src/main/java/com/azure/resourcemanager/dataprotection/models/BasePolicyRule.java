@@ -6,13 +6,16 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** BasePolicyRule BasePolicy Rule. */
+/**
+ * BasePolicyRule
+ *
+ * <p>BasePolicy Rule.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -25,13 +28,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class BasePolicyRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BasePolicyRule.class);
-
     /*
      * The name property.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /** Creates an instance of BasePolicyRule class. */
+    public BasePolicyRule() {
+    }
 
     /**
      * Get the name property: The name property.
@@ -60,9 +65,11 @@ public class BasePolicyRule {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model BasePolicyRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BasePolicyRule.class);
 }

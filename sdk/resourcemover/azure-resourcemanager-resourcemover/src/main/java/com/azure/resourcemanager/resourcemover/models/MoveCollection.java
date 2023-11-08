@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveCollectionInner;
 import java.util.Map;
@@ -68,6 +69,13 @@ public interface MoveCollection {
     MoveCollectionProperties properties();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -80,6 +88,13 @@ public interface MoveCollection {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.resourcemover.fluent.models.MoveCollectionInner object.
@@ -95,11 +110,13 @@ public interface MoveCollection {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The MoveCollection definition stages. */
     interface DefinitionStages {
         /** The first stage of the MoveCollection definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the MoveCollection definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -118,6 +135,7 @@ public interface MoveCollection {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the MoveCollection definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -128,6 +146,7 @@ public interface MoveCollection {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the MoveCollection definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -149,6 +168,7 @@ public interface MoveCollection {
              */
             MoveCollection create(Context context);
         }
+
         /** The stage of the MoveCollection definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -159,6 +179,7 @@ public interface MoveCollection {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the MoveCollection definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -169,6 +190,7 @@ public interface MoveCollection {
              */
             WithCreate withIdentity(Identity identity);
         }
+
         /** The stage of the MoveCollection definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -180,6 +202,7 @@ public interface MoveCollection {
             WithCreate withProperties(MoveCollectionProperties properties);
         }
     }
+
     /**
      * Begins update for the MoveCollection resource.
      *
@@ -204,6 +227,7 @@ public interface MoveCollection {
          */
         MoveCollection apply(Context context);
     }
+
     /** The MoveCollection update stages. */
     interface UpdateStages {
         /** The stage of the MoveCollection update allowing to specify tags. */
@@ -216,6 +240,7 @@ public interface MoveCollection {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the MoveCollection update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -227,6 +252,7 @@ public interface MoveCollection {
             Update withIdentity(Identity identity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -241,20 +267,6 @@ public interface MoveCollection {
      * @return the refreshed resource.
      */
     MoveCollection refresh(Context context);
-
-    /**
-     * Initiates prepare for the set of resources included in the request body. The prepare operation is on the
-     * moveResources that are in the moveState 'PreparePending' or 'PrepareFailed', on a successful completion the
-     * moveResource moveState do a transition to MovePending. To aid the user to prerequisite the operation the client
-     * can call operation with validateOnly property set to true.
-     *
-     * @param body Defines the request body for initiate prepare operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
-     */
-    OperationStatus prepare(PrepareRequest body);
 
     /**
      * Initiates prepare for the set of resources included in the request body. The prepare operation is on the
@@ -289,20 +301,6 @@ public interface MoveCollection {
      * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
      *
-     * @param body Defines the request body for resource move operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
-     */
-    OperationStatus initiateMove(ResourceMoveRequest body);
-
-    /**
-     * Moves the set of resources included in the request body. The move operation is triggered after the moveResources
-     * are in the moveState 'MovePending' or 'MoveFailed', on a successful completion the moveResource moveState do a
-     * transition to CommitPending. To aid the user to prerequisite the operation the client can call operation with
-     * validateOnly property set to true.
-     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
@@ -330,20 +328,6 @@ public interface MoveCollection {
      * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
      * validateOnly property set to true.
      *
-     * @param body Defines the request body for commit operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
-     */
-    OperationStatus commit(CommitRequest body);
-
-    /**
-     * Commits the set of resources included in the request body. The commit operation is triggered on the moveResources
-     * in the moveState 'CommitPending' or 'CommitFailed', on a successful completion the moveResource moveState do a
-     * transition to Committed. To aid the user to prerequisite the operation the client can call operation with
-     * validateOnly property set to true.
-     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
@@ -364,20 +348,6 @@ public interface MoveCollection {
      * @return operation status REST resource.
      */
     OperationStatus commit(CommitRequest body, Context context);
-
-    /**
-     * Discards the set of resources included in the request body. The discard operation is triggered on the
-     * moveResources in the moveState 'CommitPending' or 'DiscardFailed', on a successful completion the moveResource
-     * moveState do a transition to MovePending. To aid the user to prerequisite the operation the client can call
-     * operation with validateOnly property set to true.
-     *
-     * @param body Defines the request body for discard operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
-     */
-    OperationStatus discard(DiscardRequest body);
 
     /**
      * Discards the set of resources included in the request body. The discard operation is triggered on the
@@ -425,19 +395,6 @@ public interface MoveCollection {
      * @return operation status REST resource.
      */
     OperationStatus resolveDependencies(Context context);
-
-    /**
-     * Removes the set of move resources included in the request body from move collection. The orchestration is done by
-     * service. To aid the user to prerequisite the operation the client can call operation with validateOnly property
-     * set to true.
-     *
-     * @param body Defines the request body for bulk remove of move resources operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status REST resource.
-     */
-    OperationStatus bulkRemove(BulkRemoveRequest body);
 
     /**
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by

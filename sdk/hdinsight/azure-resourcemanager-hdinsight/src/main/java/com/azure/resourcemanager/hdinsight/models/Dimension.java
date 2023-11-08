@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of Dimension. */
 @Fluent
 public final class Dimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dimension.class);
-
     /*
      * The name of the dimension.
      */
@@ -33,11 +29,14 @@ public final class Dimension {
     private String internalName;
 
     /*
-     * The flag indicates whether the metric will be exported for shoebox or
-     * not.
+     * The flag indicates whether the metric will be exported for shoebox or not.
      */
     @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
+
+    /** Creates an instance of Dimension class. */
+    public Dimension() {
+    }
 
     /**
      * Get the name property: The name of the dimension.

@@ -44,6 +44,9 @@ public final class PeekedMessageItemInternal {
     @JsonProperty(value = "MessageText", required = true)
     private String messageText;
 
+    /** Creates an instance of PeekedMessageItemInternal class. */
+    public PeekedMessageItemInternal() {}
+
     /**
      * Get the messageId property: The Id of the Message.
      *

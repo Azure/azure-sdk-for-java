@@ -27,6 +27,10 @@ public final class ApplicationGatewayPrivateEndpointConnectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ApplicationGatewayPrivateEndpointConnectionListResult class. */
+    public ApplicationGatewayPrivateEndpointConnectionListResult() {
+    }
+
     /**
      * Get the value property: List of private endpoint connections on an application gateway.
      *

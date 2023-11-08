@@ -11,12 +11,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Available NetworkVirtualApplianceSkus Definition of the NetworkVirtualApplianceSkus resource. */
+/**
+ * Available NetworkVirtualApplianceSkus
+ *
+ * <p>Definition of the NetworkVirtualApplianceSkus resource.
+ */
 @Fluent
 public final class NetworkVirtualApplianceSkuInner extends Resource {
     /*
-     * Network Virtual Appliance Sku Properties NetworkVirtualApplianceSku
-     * properties.
+     * Network Virtual Appliance Sku Properties
+     *
+     * NetworkVirtualApplianceSku properties.
      */
     @JsonProperty(value = "properties")
     private NetworkVirtualApplianceSkuPropertiesFormat innerProperties;
@@ -33,8 +38,14 @@ public final class NetworkVirtualApplianceSkuInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of NetworkVirtualApplianceSkuInner class. */
+    public NetworkVirtualApplianceSkuInner() {
+    }
+
     /**
-     * Get the innerProperties property: Network Virtual Appliance Sku Properties NetworkVirtualApplianceSku properties.
+     * Get the innerProperties property: Network Virtual Appliance Sku Properties
+     *
+     * <p>NetworkVirtualApplianceSku properties.
      *
      * @return the innerProperties value.
      */

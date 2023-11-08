@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An existing operation for replacing the firewall rules. */
 @Fluent
 public final class ReplaceAllFirewallRulesOperationResponseInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ReplaceAllFirewallRulesOperationResponseInner.class);
-
     /*
      * The operation ID
      */
     @JsonProperty(value = "operationId")
     private String operationId;
+
+    /** Creates an instance of ReplaceAllFirewallRulesOperationResponseInner class. */
+    public ReplaceAllFirewallRulesOperationResponseInner() {
+    }
 
     /**
      * Get the operationId property: The operation ID.

@@ -6,6 +6,8 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliaryMode;
+import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
@@ -29,8 +31,7 @@ public final class NetworkInterfacePropertiesFormatInner {
     private NetworkSecurityGroupInner networkSecurityGroup;
 
     /*
-     * A reference to the private endpoint to which the network interface is
-     * linked.
+     * A reference to the private endpoint to which the network interface is linked.
      */
     @JsonProperty(value = "privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointInner privateEndpoint;
@@ -72,10 +73,17 @@ public final class NetworkInterfacePropertiesFormatInner {
     private Boolean vnetEncryptionSupported;
 
     /*
-     * If the network interface is accelerated networking enabled.
+     * If the network interface is configured for accelerated networking. Not applicable to VM sizes which require
+     * accelerated networking.
      */
     @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;
+
+    /*
+     * Indicates whether to disable tcp state tracking.
+     */
+    @JsonProperty(value = "disableTcpStateTracking")
+    private Boolean disableTcpStateTracking;
 
     /*
      * Indicates whether IP forwarding is enabled on this network interface.
@@ -90,8 +98,7 @@ public final class NetworkInterfacePropertiesFormatInner {
     private List<String> hostedWorkloads;
 
     /*
-     * A reference to the dscp configuration to which the network interface is
-     * linked.
+     * A reference to the dscp configuration to which the network interface is linked.
      */
     @JsonProperty(value = "dscpConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource dscpConfiguration;
@@ -131,6 +138,22 @@ public final class NetworkInterfacePropertiesFormatInner {
      */
     @JsonProperty(value = "migrationPhase")
     private NetworkInterfaceMigrationPhase migrationPhase;
+
+    /*
+     * Auxiliary mode of Network Interface resource.
+     */
+    @JsonProperty(value = "auxiliaryMode")
+    private NetworkInterfaceAuxiliaryMode auxiliaryMode;
+
+    /*
+     * Auxiliary sku of Network Interface resource.
+     */
+    @JsonProperty(value = "auxiliarySku")
+    private NetworkInterfaceAuxiliarySku auxiliarySku;
+
+    /** Creates an instance of NetworkInterfacePropertiesFormatInner class. */
+    public NetworkInterfacePropertiesFormatInner() {
+    }
 
     /**
      * Get the virtualMachine property: The reference to a virtual machine.
@@ -250,7 +273,8 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
-     * Get the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
+     * Get the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
+     * Not applicable to VM sizes which require accelerated networking.
      *
      * @return the enableAcceleratedNetworking value.
      */
@@ -259,13 +283,34 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
-     * Set the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
+     * Set the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
+     * Not applicable to VM sizes which require accelerated networking.
      *
      * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
     public NetworkInterfacePropertiesFormatInner withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.disableTcpStateTracking;
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
+        this.disableTcpStateTracking = disableTcpStateTracking;
         return this;
     }
 
@@ -403,6 +448,46 @@ public final class NetworkInterfacePropertiesFormatInner {
      */
     public NetworkInterfacePropertiesFormatInner withMigrationPhase(NetworkInterfaceMigrationPhase migrationPhase) {
         this.migrationPhase = migrationPhase;
+        return this;
+    }
+
+    /**
+     * Get the auxiliaryMode property: Auxiliary mode of Network Interface resource.
+     *
+     * @return the auxiliaryMode value.
+     */
+    public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
+        return this.auxiliaryMode;
+    }
+
+    /**
+     * Set the auxiliaryMode property: Auxiliary mode of Network Interface resource.
+     *
+     * @param auxiliaryMode the auxiliaryMode value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withAuxiliaryMode(NetworkInterfaceAuxiliaryMode auxiliaryMode) {
+        this.auxiliaryMode = auxiliaryMode;
+        return this;
+    }
+
+    /**
+     * Get the auxiliarySku property: Auxiliary sku of Network Interface resource.
+     *
+     * @return the auxiliarySku value.
+     */
+    public NetworkInterfaceAuxiliarySku auxiliarySku() {
+        return this.auxiliarySku;
+    }
+
+    /**
+     * Set the auxiliarySku property: Auxiliary sku of Network Interface resource.
+     *
+     * @param auxiliarySku the auxiliarySku value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withAuxiliarySku(NetworkInterfaceAuxiliarySku auxiliarySku) {
+        this.auxiliarySku = auxiliarySku;
         return this;
     }
 

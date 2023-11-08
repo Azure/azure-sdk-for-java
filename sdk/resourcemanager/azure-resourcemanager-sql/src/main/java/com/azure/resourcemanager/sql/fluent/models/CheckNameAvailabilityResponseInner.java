@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of a name availability check. */
 @Immutable
 public final class CheckNameAvailabilityResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResponseInner.class);
-
     /*
      * The name whose availability was checked.
      */
@@ -28,18 +24,20 @@ public final class CheckNameAvailabilityResponseInner {
     private Boolean available;
 
     /*
-     * The reason code explaining why the name is unavailable. Will be
-     * undefined if the name is available.
+     * The reason code explaining why the name is unavailable. Will be undefined if the name is available.
      */
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private CheckNameAvailabilityReason reason;
 
     /*
-     * A message explaining why the name is unavailable. Will be undefined if
-     * the name is available.
+     * A message explaining why the name is unavailable. Will be undefined if the name is available.
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
+
+    /** Creates an instance of CheckNameAvailabilityResponseInner class. */
+    public CheckNameAvailabilityResponseInner() {
+    }
 
     /**
      * Get the name property: The name whose availability was checked.

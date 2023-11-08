@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertSeverity. */
+/**
+ * The risk level of the threat that was detected. Learn more:
+ * https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
+ */
 public final class AlertSeverity extends ExpandableStringEnum<AlertSeverity> {
     /** Static value Informational for AlertSeverity. */
     public static final AlertSeverity INFORMATIONAL = fromString("Informational");
@@ -23,6 +26,15 @@ public final class AlertSeverity extends ExpandableStringEnum<AlertSeverity> {
     public static final AlertSeverity HIGH = fromString("High");
 
     /**
+     * Creates a new instance of AlertSeverity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertSeverity() {
+    }
+
+    /**
      * Creates or finds a AlertSeverity from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +45,11 @@ public final class AlertSeverity extends ExpandableStringEnum<AlertSeverity> {
         return fromString(name, AlertSeverity.class);
     }
 
-    /** @return known AlertSeverity values. */
+    /**
+     * Gets known AlertSeverity values.
+     *
+     * @return known AlertSeverity values.
+     */
     public static Collection<AlertSeverity> values() {
         return values(AlertSeverity.class);
     }

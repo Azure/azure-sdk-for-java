@@ -37,6 +37,13 @@ public interface OperationResultsDescription {
     String startTime();
 
     /**
+     * Gets the endTime property: The time that the operation finished.
+     *
+     * @return the endTime value.
+     */
+    String endTime();
+
+    /**
      * Gets the properties property: Additional properties of the operation result.
      *
      * @return the properties value.

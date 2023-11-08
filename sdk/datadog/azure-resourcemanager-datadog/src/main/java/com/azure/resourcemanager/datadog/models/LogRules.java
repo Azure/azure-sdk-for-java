@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Set of rules for sending logs for the Monitor resource. */
 @Fluent
 public final class LogRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogRules.class);
-
     /*
      * Flag specifying if AAD logs should be sent for the Monitor resource.
      */
@@ -22,29 +18,29 @@ public final class LogRules {
     private Boolean sendAadLogs;
 
     /*
-     * Flag specifying if Azure subscription logs should be sent for the
-     * Monitor resource.
+     * Flag specifying if Azure subscription logs should be sent for the Monitor resource.
      */
     @JsonProperty(value = "sendSubscriptionLogs")
     private Boolean sendSubscriptionLogs;
 
     /*
-     * Flag specifying if Azure resource logs should be sent for the Monitor
-     * resource.
+     * Flag specifying if Azure resource logs should be sent for the Monitor resource.
      */
     @JsonProperty(value = "sendResourceLogs")
     private Boolean sendResourceLogs;
 
     /*
-     * List of filtering tags to be used for capturing logs. This only takes
-     * effect if SendResourceLogs flag is enabled. If empty, all resources will
-     * be captured. If only Exclude action is specified, the rules will apply
-     * to the list of all available resources. If Include actions are
-     * specified, the rules will only include resources with the associated
-     * tags.
+     * List of filtering tags to be used for capturing logs. This only takes effect if SendResourceLogs flag is
+     * enabled. If empty, all resources will be captured. If only Exclude action is specified, the rules will apply to
+     * the list of all available resources. If Include actions are specified, the rules will only include resources
+     * with the associated tags.
      */
     @JsonProperty(value = "filteringTags")
     private List<FilteringTag> filteringTags;
+
+    /** Creates an instance of LogRules class. */
+    public LogRules() {
+    }
 
     /**
      * Get the sendAadLogs property: Flag specifying if AAD logs should be sent for the Monitor resource.

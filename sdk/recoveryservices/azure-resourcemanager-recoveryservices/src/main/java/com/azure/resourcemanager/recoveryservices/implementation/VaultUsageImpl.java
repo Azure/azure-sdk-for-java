@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservices.implementation;
 
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultUsageInner;
 import com.azure.resourcemanager.recoveryservices.models.NameInfo;
 import com.azure.resourcemanager.recoveryservices.models.UsagesUnit;
@@ -14,9 +13,11 @@ import java.time.OffsetDateTime;
 public final class VaultUsageImpl implements VaultUsage {
     private VaultUsageInner innerObject;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    VaultUsageImpl(VaultUsageInner innerObject, RecoveryServicesManager serviceManager) {
+    VaultUsageImpl(
+        VaultUsageInner innerObject,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -49,7 +50,7 @@ public final class VaultUsageImpl implements VaultUsage {
         return this.innerObject;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }

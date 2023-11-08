@@ -25,6 +25,10 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
     private HDInsightMapReduceActivityTypeProperties innerTypeProperties =
         new HDInsightMapReduceActivityTypeProperties();
 
+    /** Creates an instance of HDInsightMapReduceActivity class. */
+    public HDInsightMapReduceActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: HDInsight MapReduce activity properties.
      *
@@ -59,6 +63,20 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
     @Override
     public HDInsightMapReduceActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightMapReduceActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightMapReduceActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that represents the operation. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
-     * Service provider: Microsoft.ResourceProvider
+     * Service provider: ex Microsoft.Databricks
      */
     @JsonProperty(value = "provider")
     private String provider;
@@ -32,8 +28,18 @@ public final class OperationDisplay {
     @JsonProperty(value = "operation")
     private String operation;
 
+    /*
+     * Description for the resource operation.
+     */
+    @JsonProperty(value = "description")
+    private String description;
+
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
+
     /**
-     * Get the provider property: Service provider: Microsoft.ResourceProvider.
+     * Get the provider property: Service provider: ex Microsoft.Databricks.
      *
      * @return the provider value.
      */
@@ -42,7 +48,7 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the provider property: Service provider: Microsoft.ResourceProvider.
+     * Set the provider property: Service provider: ex Microsoft.Databricks.
      *
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.
@@ -89,6 +95,26 @@ public final class OperationDisplay {
      */
     public OperationDisplay withOperation(String operation) {
         this.operation = operation;
+        return this;
+    }
+
+    /**
+     * Get the description property: Description for the resource operation.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Description for the resource operation.
+     *
+     * @param description the description value to set.
+     * @return the OperationDisplay object itself.
+     */
+    public OperationDisplay withDescription(String description) {
+        this.description = description;
         return this;
     }
 

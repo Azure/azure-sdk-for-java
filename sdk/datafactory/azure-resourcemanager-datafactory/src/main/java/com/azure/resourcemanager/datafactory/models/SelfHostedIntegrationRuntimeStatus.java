@@ -27,6 +27,10 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties =
         new SelfHostedIntegrationRuntimeStatusTypeProperties();
 
+    /** Creates an instance of SelfHostedIntegrationRuntimeStatus class. */
+    public SelfHostedIntegrationRuntimeStatus() {
+    }
+
     /**
      * Get the innerTypeProperties property: Self-hosted integration runtime status type properties.
      *
@@ -211,6 +215,18 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
      */
     public OffsetDateTime autoUpdateEta() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().autoUpdateEta();
+    }
+
+    /**
+     * Get the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     *
+     * @return the selfContainedInteractiveAuthoringEnabled value.
+     */
+    public Boolean selfContainedInteractiveAuthoringEnabled() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().selfContainedInteractiveAuthoringEnabled();
     }
 
     /**

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dimension of blobs, possibly be blob type or access tier. */
 @Fluent
 public final class Dimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dimension.class);
-
     /*
      * Display name of dimension.
      */
@@ -25,6 +21,10 @@ public final class Dimension {
      */
     @JsonProperty(value = "displayName")
     private String displayName;
+
+    /** Creates an instance of Dimension class. */
+    public Dimension() {
+    }
 
     /**
      * Get the name property: Display name of dimension.

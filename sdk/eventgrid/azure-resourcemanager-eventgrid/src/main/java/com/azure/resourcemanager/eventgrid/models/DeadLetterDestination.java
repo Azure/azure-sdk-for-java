@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "StorageBlob", value = StorageBlobDeadLetterDestination.class)})
 @Immutable
 public class DeadLetterDestination {
+    /** Creates an instance of DeadLetterDestination class. */
+    public DeadLetterDestination() {
+    }
+
     /**
      * Validates the instance.
      *

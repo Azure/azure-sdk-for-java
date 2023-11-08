@@ -3,8 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.implementation.jackson.ObjectMapperShim;
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +26,12 @@ public final class JacksonJsonSerializerBuilder {
     private ObjectMapperShim objectMapper;
 
     /**
+     * Creates an instance of {@link JacksonJsonSerializerBuilder}.
+     */
+    public JacksonJsonSerializerBuilder() {
+    }
+
+    /**
      * Constructs a new instance of {@link JacksonJsonSerializer} with the configurations set in this builder.
      *
      * @return A new instance of {@link JacksonJsonSerializer}.
@@ -40,7 +45,7 @@ public final class JacksonJsonSerializerBuilder {
     /**
      * Sets the {@link ObjectMapper} that will be used during serialization.
      * <p>
-     * If this is set to {@code null} {@link JacksonAdapter#serializer()} with default visibility and non-null inclusion
+     * If this is set to {@code null} an internal implementation with default visibility and non-null inclusion
      * will be used as the default.
      *
      * @param objectMapper {@link ObjectMapper} that will be used during serialization.

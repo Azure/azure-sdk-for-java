@@ -24,6 +24,10 @@ public final class ProviderResourceTypeListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ProviderResourceTypeListResultInner class. */
+    public ProviderResourceTypeListResultInner() {
+    }
+
     /**
      * Get the value property: An array of resource types.
      *

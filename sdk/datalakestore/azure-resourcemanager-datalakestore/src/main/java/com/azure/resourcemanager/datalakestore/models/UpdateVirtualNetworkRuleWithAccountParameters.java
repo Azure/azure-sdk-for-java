@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.UpdateVirtualNetworkRuleProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to update a virtual network rule while updating a Data Lake Store account. */
-@JsonFlatten
 @Fluent
-public class UpdateVirtualNetworkRuleWithAccountParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UpdateVirtualNetworkRuleWithAccountParameters.class);
-
+public final class UpdateVirtualNetworkRuleWithAccountParameters {
     /*
      * The unique name of the virtual network rule to update.
      */
@@ -24,10 +19,14 @@ public class UpdateVirtualNetworkRuleWithAccountParameters {
     private String name;
 
     /*
-     * The resource identifier for the subnet.
+     * The virtual network rule properties to use when updating a virtual network rule.
      */
-    @JsonProperty(value = "properties.subnetId")
-    private String subnetId;
+    @JsonProperty(value = "properties")
+    private UpdateVirtualNetworkRuleProperties innerProperties;
+
+    /** Creates an instance of UpdateVirtualNetworkRuleWithAccountParameters class. */
+    public UpdateVirtualNetworkRuleWithAccountParameters() {
+    }
 
     /**
      * Get the name property: The unique name of the virtual network rule to update.
@@ -50,12 +49,22 @@ public class UpdateVirtualNetworkRuleWithAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The virtual network rule properties to use when updating a virtual network
+     * rule.
+     *
+     * @return the innerProperties value.
+     */
+    private UpdateVirtualNetworkRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the subnetId property: The resource identifier for the subnet.
      *
      * @return the subnetId value.
      */
     public String subnetId() {
-        return this.subnetId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
     }
 
     /**
@@ -65,7 +74,10 @@ public class UpdateVirtualNetworkRuleWithAccountParameters {
      * @return the UpdateVirtualNetworkRuleWithAccountParameters object itself.
      */
     public UpdateVirtualNetworkRuleWithAccountParameters withSubnetId(String subnetId) {
-        this.subnetId = subnetId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateVirtualNetworkRuleProperties();
+        }
+        this.innerProperties().withSubnetId(subnetId);
         return this;
     }
 
@@ -76,10 +88,15 @@ public class UpdateVirtualNetworkRuleWithAccountParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model UpdateVirtualNetworkRuleWithAccountParameters"));
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UpdateVirtualNetworkRuleWithAccountParameters.class);
 }

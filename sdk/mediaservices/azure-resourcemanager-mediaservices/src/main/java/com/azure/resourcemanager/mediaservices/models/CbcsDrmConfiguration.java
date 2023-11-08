@@ -28,6 +28,10 @@ public final class CbcsDrmConfiguration {
     @JsonProperty(value = "widevine")
     private StreamingPolicyWidevineConfiguration widevine;
 
+    /** Creates an instance of CbcsDrmConfiguration class. */
+    public CbcsDrmConfiguration() {
+    }
+
     /**
      * Get the fairPlay property: FairPlay configurations.
      *

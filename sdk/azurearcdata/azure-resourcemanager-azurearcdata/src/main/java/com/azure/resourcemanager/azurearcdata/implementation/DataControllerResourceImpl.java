@@ -66,6 +66,10 @@ public final class DataControllerResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DataControllerResourceInner innerModel() {
         return this.innerObject;
     }

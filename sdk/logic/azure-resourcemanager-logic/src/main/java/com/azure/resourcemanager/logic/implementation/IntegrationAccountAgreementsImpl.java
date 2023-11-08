@@ -16,10 +16,9 @@ import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 import com.azure.resourcemanager.logic.models.IntegrationAccountAgreement;
 import com.azure.resourcemanager.logic.models.IntegrationAccountAgreements;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerCallbackUrl;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountAgreementsImpl implements IntegrationAccountAgreements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountAgreementsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountAgreementsImpl.class);
 
     private final IntegrationAccountAgreementsClient innerClient;
 
@@ -44,17 +43,6 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         return Utils.mapPage(inner, inner1 -> new IntegrationAccountAgreementImpl(inner1, this.manager()));
     }
 
-    public IntegrationAccountAgreement get(
-        String resourceGroupName, String integrationAccountName, String agreementName) {
-        IntegrationAccountAgreementInner inner =
-            this.serviceClient().get(resourceGroupName, integrationAccountName, agreementName);
-        if (inner != null) {
-            return new IntegrationAccountAgreementImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationAccountAgreement> getWithResponse(
         String resourceGroupName, String integrationAccountName, String agreementName, Context context) {
         Response<IntegrationAccountAgreementInner> inner =
@@ -70,8 +58,15 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         }
     }
 
-    public void delete(String resourceGroupName, String integrationAccountName, String agreementName) {
-        this.serviceClient().delete(resourceGroupName, integrationAccountName, agreementName);
+    public IntegrationAccountAgreement get(
+        String resourceGroupName, String integrationAccountName, String agreementName) {
+        IntegrationAccountAgreementInner inner =
+            this.serviceClient().get(resourceGroupName, integrationAccountName, agreementName);
+        if (inner != null) {
+            return new IntegrationAccountAgreementImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -81,21 +76,8 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
             .deleteWithResponse(resourceGroupName, integrationAccountName, agreementName, context);
     }
 
-    public WorkflowTriggerCallbackUrl listContentCallbackUrl(
-        String resourceGroupName,
-        String integrationAccountName,
-        String agreementName,
-        GetCallbackUrlParameters listContentCallbackUrl) {
-        WorkflowTriggerCallbackUrlInner inner =
-            this
-                .serviceClient()
-                .listContentCallbackUrl(
-                    resourceGroupName, integrationAccountName, agreementName, listContentCallbackUrl);
-        if (inner != null) {
-            return new WorkflowTriggerCallbackUrlImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String integrationAccountName, String agreementName) {
+        this.serviceClient().delete(resourceGroupName, integrationAccountName, agreementName);
     }
 
     public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
@@ -120,10 +102,27 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         }
     }
 
+    public WorkflowTriggerCallbackUrl listContentCallbackUrl(
+        String resourceGroupName,
+        String integrationAccountName,
+        String agreementName,
+        GetCallbackUrlParameters listContentCallbackUrl) {
+        WorkflowTriggerCallbackUrlInner inner =
+            this
+                .serviceClient()
+                .listContentCallbackUrl(
+                    resourceGroupName, integrationAccountName, agreementName, listContentCallbackUrl);
+        if (inner != null) {
+            return new WorkflowTriggerCallbackUrlImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public IntegrationAccountAgreement getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,7 +139,7 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         }
         String agreementName = Utils.getValueFromIdByName(id, "agreements");
         if (agreementName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'agreements'.", id)));
@@ -151,7 +150,7 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
     public Response<IntegrationAccountAgreement> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,7 +158,7 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,7 +167,7 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         }
         String agreementName = Utils.getValueFromIdByName(id, "agreements");
         if (agreementName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'agreements'.", id)));
@@ -179,7 +178,7 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,7 +186,7 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,18 +195,18 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         }
         String agreementName = Utils.getValueFromIdByName(id, "agreements");
         if (agreementName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'agreements'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, integrationAccountName, agreementName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, integrationAccountName, agreementName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -215,7 +214,7 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -224,7 +223,7 @@ public final class IntegrationAccountAgreementsImpl implements IntegrationAccoun
         }
         String agreementName = Utils.getValueFromIdByName(id, "agreements");
         if (agreementName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'agreements'.", id)));

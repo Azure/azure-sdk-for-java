@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The name of a metric. */
 @Fluent
 public final class MetricName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricName.class);
-
     /*
      * The system name of the metric.
      */
@@ -25,6 +21,10 @@ public final class MetricName {
      */
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
+
+    /** Creates an instance of MetricName class. */
+    public MetricName() {
+    }
 
     /**
      * Get the value property: The system name of the metric.

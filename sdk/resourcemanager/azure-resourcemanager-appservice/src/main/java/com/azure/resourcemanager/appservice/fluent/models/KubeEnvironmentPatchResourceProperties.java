@@ -61,8 +61,8 @@ public final class KubeEnvironmentPatchResourceProperties {
     private AppLogsConfiguration appLogsConfiguration;
 
     /*
-     * Cluster configuration for Container Apps Environments to configure Dapr
-     * Instrumentation Key and VNET Configuration
+     * Cluster configuration for Container Apps Environments to configure Dapr Instrumentation Key and VNET
+     * Configuration
      */
     @JsonProperty(value = "containerAppsConfiguration")
     private ContainerAppsConfiguration containerAppsConfiguration;
@@ -72,6 +72,10 @@ public final class KubeEnvironmentPatchResourceProperties {
      */
     @JsonProperty(value = "aksResourceID")
     private String aksResourceId;
+
+    /** Creates an instance of KubeEnvironmentPatchResourceProperties class. */
+    public KubeEnvironmentPatchResourceProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the Kubernetes Environment.

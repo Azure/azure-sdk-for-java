@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.AvailableOperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of available operations. */
 @Fluent
 public final class AvailableOperationsListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableOperationsListResponse.class);
-
     /*
      * Link for next list of available operations
      */
@@ -27,6 +23,10 @@ public final class AvailableOperationsListResponse {
      */
     @JsonProperty(value = "value")
     private List<AvailableOperationInner> value;
+
+    /** Creates an instance of AvailableOperationsListResponse class. */
+    public AvailableOperationsListResponse() {
+    }
 
     /**
      * Get the nextLink property: Link for next list of available operations.

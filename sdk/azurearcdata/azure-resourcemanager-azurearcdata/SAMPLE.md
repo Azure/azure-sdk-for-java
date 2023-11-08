@@ -34,8 +34,6 @@
 ### DataControllers_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataControllers Delete. */
 public final class DataControllersDeleteSamples {
     /*
@@ -47,7 +45,7 @@ public final class DataControllersDeleteSamples {
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void deleteADataController(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.dataControllers().delete("testrg", "testdataController", Context.NONE);
+        manager.dataControllers().delete("testrg", "testdataController", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -55,8 +53,6 @@ public final class DataControllersDeleteSamples {
 ### DataControllers_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataControllers GetByResourceGroup. */
 public final class DataControllersGetByResourceGroupSamples {
     /*
@@ -68,7 +64,9 @@ public final class DataControllersGetByResourceGroupSamples {
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void getADataController(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.dataControllers().getByResourceGroupWithResponse("testrg", "testdataController", Context.NONE);
+        manager
+            .dataControllers()
+            .getByResourceGroupWithResponse("testrg", "testdataController", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -76,8 +74,6 @@ public final class DataControllersGetByResourceGroupSamples {
 ### DataControllers_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataControllers List. */
 public final class DataControllersListSamples {
     /*
@@ -90,7 +86,7 @@ public final class DataControllersListSamples {
      */
     public static void getsAllDataControllersInASubscription(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.dataControllers().list(Context.NONE);
+        manager.dataControllers().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -98,8 +94,6 @@ public final class DataControllersListSamples {
 ### DataControllers_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for DataControllers ListByResourceGroup. */
 public final class DataControllersListByResourceGroupSamples {
     /*
@@ -112,7 +106,7 @@ public final class DataControllersListByResourceGroupSamples {
      */
     public static void getsAllDataControllersInAResourceGroup(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.dataControllers().listByResourceGroup("testrg", Context.NONE);
+        manager.dataControllers().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -120,7 +114,6 @@ public final class DataControllersListByResourceGroupSamples {
 ### DataControllers_PatchDataController
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurearcdata.models.DataControllerResource;
 import java.util.HashMap;
 import java.util.Map;
@@ -139,7 +132,7 @@ public final class DataControllersPatchDataControllerSamples {
         DataControllerResource resource =
             manager
                 .dataControllers()
-                .getByResourceGroupWithResponse("testrg", "testdataController1", Context.NONE)
+                .getByResourceGroupWithResponse("testrg", "testdataController1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }
@@ -197,24 +190,24 @@ public final class DataControllersPutDataControllerSamples {
                     .withOnPremiseProperty(
                         new OnPremiseProperty()
                             .withId(UUID.fromString("12345678-1234-1234-ab12-1a2b3c4d5e6f"))
-                            .withPublicSigningKey("publicOnPremSigningKey"))
+                            .withPublicSigningKey("fakeTokenPlaceholder"))
                     .withUploadWatermark(
                         new UploadWatermark()
                             .withMetrics(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z"))
                             .withLogs(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z"))
                             .withUsages(OffsetDateTime.parse("2020-01-01T17:18:19.1234567Z")))
                     .withBasicLoginInformation(
-                        new BasicLoginInformation().withUsername("username").withPassword("********"))
+                        new BasicLoginInformation().withUsername("username").withPassword("fakeTokenPlaceholder"))
                     .withLogAnalyticsWorkspaceConfig(
                         new LogAnalyticsWorkspaceConfig()
                             .withWorkspaceId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
-                            .withPrimaryKey("********"))
+                            .withPrimaryKey("fakeTokenPlaceholder"))
                     .withUploadServicePrincipal(
                         new UploadServicePrincipal()
                             .withClientId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
                             .withTenantId(UUID.fromString("00000000-1111-2222-3333-444444444444"))
                             .withAuthority("https://login.microsoftonline.com/")
-                            .withClientSecret("********"))
+                            .withClientSecret("fakeTokenPlaceholder"))
                     .withClusterId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s")
                     .withExtensionId(
@@ -244,8 +237,6 @@ public final class DataControllersPutDataControllerSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -258,7 +249,7 @@ public final class OperationsListSamples {
      */
     public static void listsAllOfTheAvailableAzureDataServicesOnAzureArcAPIOperations(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -336,7 +327,7 @@ public final class SqlManagedInstancesCreateSamples {
                                     .withAdditionalProperties(mapOf()))
                             .withAdditionalProperties(mapOf("additionalProperty", 1234)))
                     .withBasicLoginInformation(
-                        new BasicLoginInformation().withUsername("username").withPassword("********"))
+                        new BasicLoginInformation().withUsername("username").withPassword("fakeTokenPlaceholder"))
                     .withLicenseType(ArcSqlManagedInstanceLicenseType.LICENSE_INCLUDED)
                     .withClusterId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s")
@@ -368,8 +359,6 @@ public final class SqlManagedInstancesCreateSamples {
 ### SqlManagedInstances_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlManagedInstances Delete. */
 public final class SqlManagedInstancesDeleteSamples {
     /*
@@ -381,7 +370,7 @@ public final class SqlManagedInstancesDeleteSamples {
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void deleteASQLInstance(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.sqlManagedInstances().delete("testrg", "testsqlManagedInstance", Context.NONE);
+        manager.sqlManagedInstances().delete("testrg", "testsqlManagedInstance", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -389,8 +378,6 @@ public final class SqlManagedInstancesDeleteSamples {
 ### SqlManagedInstances_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlManagedInstances GetByResourceGroup. */
 public final class SqlManagedInstancesGetByResourceGroupSamples {
     /*
@@ -402,7 +389,9 @@ public final class SqlManagedInstancesGetByResourceGroupSamples {
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void updatesASQLInstanceTags(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.sqlManagedInstances().getByResourceGroupWithResponse("testrg", "testsqlManagedInstance", Context.NONE);
+        manager
+            .sqlManagedInstances()
+            .getByResourceGroupWithResponse("testrg", "testsqlManagedInstance", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -410,8 +399,6 @@ public final class SqlManagedInstancesGetByResourceGroupSamples {
 ### SqlManagedInstances_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlManagedInstances List. */
 public final class SqlManagedInstancesListSamples {
     /*
@@ -424,7 +411,7 @@ public final class SqlManagedInstancesListSamples {
      */
     public static void getsAllSQLInstanceInASubscription(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.sqlManagedInstances().list(Context.NONE);
+        manager.sqlManagedInstances().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -432,8 +419,6 @@ public final class SqlManagedInstancesListSamples {
 ### SqlManagedInstances_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlManagedInstances ListByResourceGroup. */
 public final class SqlManagedInstancesListByResourceGroupSamples {
     /*
@@ -446,7 +431,7 @@ public final class SqlManagedInstancesListByResourceGroupSamples {
      */
     public static void getsAllSQLInstanceInAResourceGroup(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.sqlManagedInstances().listByResourceGroup("testrg", Context.NONE);
+        manager.sqlManagedInstances().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -454,7 +439,6 @@ public final class SqlManagedInstancesListByResourceGroupSamples {
 ### SqlManagedInstances_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstance;
 import java.util.HashMap;
 import java.util.Map;
@@ -473,7 +457,7 @@ public final class SqlManagedInstancesUpdateSamples {
         SqlManagedInstance resource =
             manager
                 .sqlManagedInstances()
-                .getByResourceGroupWithResponse("testrg", "testsqlManagedInstance", Context.NONE)
+                .getByResourceGroupWithResponse("testrg", "testsqlManagedInstance", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }
@@ -558,8 +542,6 @@ public final class SqlServerInstancesCreateSamples {
 ### SqlServerInstances_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlServerInstances Delete. */
 public final class SqlServerInstancesDeleteSamples {
     /*
@@ -571,7 +553,7 @@ public final class SqlServerInstancesDeleteSamples {
      * @param manager Entry point to AzureArcDataManager.
      */
     public static void deleteASQLServerInstance(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.sqlServerInstances().delete("testrg", "testsqlServerInstance", Context.NONE);
+        manager.sqlServerInstances().delete("testrg", "testsqlServerInstance", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -579,8 +561,6 @@ public final class SqlServerInstancesDeleteSamples {
 ### SqlServerInstances_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlServerInstances GetByResourceGroup. */
 public final class SqlServerInstancesGetByResourceGroupSamples {
     /*
@@ -593,7 +573,9 @@ public final class SqlServerInstancesGetByResourceGroupSamples {
      */
     public static void updatesASQLServerInstanceTags(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.sqlServerInstances().getByResourceGroupWithResponse("testrg", "testsqlServerInstance", Context.NONE);
+        manager
+            .sqlServerInstances()
+            .getByResourceGroupWithResponse("testrg", "testsqlServerInstance", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -601,8 +583,6 @@ public final class SqlServerInstancesGetByResourceGroupSamples {
 ### SqlServerInstances_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlServerInstances List. */
 public final class SqlServerInstancesListSamples {
     /*
@@ -615,7 +595,7 @@ public final class SqlServerInstancesListSamples {
      */
     public static void getsAllSQLServerInstanceInASubscription(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.sqlServerInstances().list(Context.NONE);
+        manager.sqlServerInstances().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -623,8 +603,6 @@ public final class SqlServerInstancesListSamples {
 ### SqlServerInstances_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlServerInstances ListByResourceGroup. */
 public final class SqlServerInstancesListByResourceGroupSamples {
     /*
@@ -637,7 +615,7 @@ public final class SqlServerInstancesListByResourceGroupSamples {
      */
     public static void getsAllSQLServerInstanceInAResourceGroup(
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager.sqlServerInstances().listByResourceGroup("testrg", Context.NONE);
+        manager.sqlServerInstances().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -645,7 +623,6 @@ public final class SqlServerInstancesListByResourceGroupSamples {
 ### SqlServerInstances_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstance;
 import java.util.HashMap;
 import java.util.Map;
@@ -665,7 +642,7 @@ public final class SqlServerInstancesUpdateSamples {
         SqlServerInstance resource =
             manager
                 .sqlServerInstances()
-                .getByResourceGroupWithResponse("testrg", "testsqlServerInstance", Context.NONE)
+                .getByResourceGroupWithResponse("testrg", "testsqlServerInstance", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }

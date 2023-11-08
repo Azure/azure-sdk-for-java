@@ -24,6 +24,10 @@ public final class AzureSearchLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureSearchLinkedServiceTypeProperties innerTypeProperties = new AzureSearchLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureSearchLinkedService class. */
+    public AzureSearchLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Windows Azure Search Service linked service properties.
      *
@@ -109,22 +113,22 @@ public final class AzureSearchLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureSearchLinkedService object itself.
      */
-    public AzureSearchLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureSearchLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureSearchLinkedServiceTypeProperties();
         }

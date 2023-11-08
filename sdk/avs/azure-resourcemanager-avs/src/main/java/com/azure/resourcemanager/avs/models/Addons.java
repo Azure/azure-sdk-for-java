@@ -18,7 +18,7 @@ public interface Addons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of addons.
+     * @return a paged list of addons as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Addon> list(String resourceGroupName, String privateCloudName);
 
@@ -31,9 +31,24 @@ public interface Addons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of addons.
+     * @return a paged list of addons as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Addon> list(String resourceGroupName, String privateCloudName, Context context);
+
+    /**
+     * Get an addon by name in a private cloud.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param addonName Name of the addon for the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an addon by name in a private cloud along with {@link Response}.
+     */
+    Response<Addon> getWithResponse(
+        String resourceGroupName, String privateCloudName, String addonName, Context context);
 
     /**
      * Get an addon by name in a private cloud.
@@ -47,21 +62,6 @@ public interface Addons {
      * @return an addon by name in a private cloud.
      */
     Addon get(String resourceGroupName, String privateCloudName, String addonName);
-
-    /**
-     * Get an addon by name in a private cloud.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param addonName Name of the addon for the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon by name in a private cloud.
-     */
-    Response<Addon> getWithResponse(
-        String resourceGroupName, String privateCloudName, String addonName, Context context);
 
     /**
      * Delete a addon in a private cloud.
@@ -95,7 +95,7 @@ public interface Addons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon by name in a private cloud.
+     * @return an addon by name in a private cloud along with {@link Response}.
      */
     Addon getById(String id);
 
@@ -107,7 +107,7 @@ public interface Addons {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an addon by name in a private cloud.
+     * @return an addon by name in a private cloud along with {@link Response}.
      */
     Response<Addon> getByIdWithResponse(String id, Context context);
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,41 +16,36 @@ import java.util.Map;
 /** recurrencePattern. */
 @Fluent
 public final class MicrosoftGraphRecurrencePattern {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphRecurrencePattern.class);
-
     /*
-     * The day of the month on which the event occurs. Required if type is
-     * absoluteMonthly or absoluteYearly.
+     * The day of the month on which the event occurs. Required if type is absoluteMonthly or absoluteYearly.
      */
     @JsonProperty(value = "dayOfMonth")
     private Integer dayOfMonth;
 
     /*
-     * A collection of the days of the week on which the event occurs. The
-     * possible values are: sunday, monday, tuesday, wednesday, thursday,
-     * friday, saturday. If type is relativeMonthly or relativeYearly, and
-     * daysOfWeek specifies more than one day, the event falls on the first day
-     * that satisfies the pattern.  Required if type is weekly,
-     * relativeMonthly, or relativeYearly.
+     * A collection of the days of the week on which the event occurs. The possible values are: sunday, monday,
+     * tuesday, wednesday, thursday, friday, saturday. If type is relativeMonthly or relativeYearly, and daysOfWeek
+     * specifies more than one day, the event falls on the first day that satisfies the pattern.  Required if type is
+     * weekly, relativeMonthly, or relativeYearly.
      */
     @JsonProperty(value = "daysOfWeek")
     private List<MicrosoftGraphDayOfWeek> daysOfWeek;
 
     /*
-     * The firstDayOfWeek property.
+     * dayOfWeek
      */
     @JsonProperty(value = "firstDayOfWeek")
     private MicrosoftGraphDayOfWeek firstDayOfWeek;
 
     /*
-     * The index property.
+     * weekIndex
      */
     @JsonProperty(value = "index")
     private MicrosoftGraphWeekIndex index;
 
     /*
-     * The number of units between occurrences, where units can be in days,
-     * weeks, months, or years, depending on the type. Required.
+     * The number of units between occurrences, where units can be in days, weeks, months, or years, depending on the
+     * type. Required.
      */
     @JsonProperty(value = "interval")
     private Integer interval;
@@ -63,7 +57,7 @@ public final class MicrosoftGraphRecurrencePattern {
     private Integer month;
 
     /*
-     * The type property.
+     * recurrencePatternType
      */
     @JsonProperty(value = "type")
     private MicrosoftGraphRecurrencePatternType type;
@@ -72,6 +66,10 @@ public final class MicrosoftGraphRecurrencePattern {
      * recurrencePattern
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphRecurrencePattern class. */
+    public MicrosoftGraphRecurrencePattern() {
+    }
 
     /**
      * Get the dayOfMonth property: The day of the month on which the event occurs. Required if type is absoluteMonthly
@@ -122,7 +120,7 @@ public final class MicrosoftGraphRecurrencePattern {
     }
 
     /**
-     * Get the firstDayOfWeek property: The firstDayOfWeek property.
+     * Get the firstDayOfWeek property: dayOfWeek.
      *
      * @return the firstDayOfWeek value.
      */
@@ -131,7 +129,7 @@ public final class MicrosoftGraphRecurrencePattern {
     }
 
     /**
-     * Set the firstDayOfWeek property: The firstDayOfWeek property.
+     * Set the firstDayOfWeek property: dayOfWeek.
      *
      * @param firstDayOfWeek the firstDayOfWeek value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.
@@ -142,7 +140,7 @@ public final class MicrosoftGraphRecurrencePattern {
     }
 
     /**
-     * Get the index property: The index property.
+     * Get the index property: weekIndex.
      *
      * @return the index value.
      */
@@ -151,7 +149,7 @@ public final class MicrosoftGraphRecurrencePattern {
     }
 
     /**
-     * Set the index property: The index property.
+     * Set the index property: weekIndex.
      *
      * @param index the index value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.
@@ -204,7 +202,7 @@ public final class MicrosoftGraphRecurrencePattern {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: recurrencePatternType.
      *
      * @return the type value.
      */
@@ -213,7 +211,7 @@ public final class MicrosoftGraphRecurrencePattern {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: recurrencePatternType.
      *
      * @param type the type value to set.
      * @return the MicrosoftGraphRecurrencePattern object itself.

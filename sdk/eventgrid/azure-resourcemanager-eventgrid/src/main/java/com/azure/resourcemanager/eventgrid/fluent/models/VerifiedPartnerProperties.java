@@ -49,6 +49,10 @@ public final class VerifiedPartnerProperties {
     @JsonProperty(value = "provisioningState")
     private VerifiedPartnerProvisioningState provisioningState;
 
+    /** Creates an instance of VerifiedPartnerProperties class. */
+    public VerifiedPartnerProperties() {
+    }
+
     /**
      * Get the partnerRegistrationImmutableId property: ImmutableId of the corresponding partner registration.
      *

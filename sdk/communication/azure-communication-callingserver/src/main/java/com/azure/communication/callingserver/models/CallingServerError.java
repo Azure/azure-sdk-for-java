@@ -89,7 +89,7 @@ public final class CallingServerError {
      * @param details Additional details
      * @param innerError The inner error
      */
-    public CallingServerError(
+    CallingServerError(
         String message,
         String code, String target,
         List<CallingServerError> details,

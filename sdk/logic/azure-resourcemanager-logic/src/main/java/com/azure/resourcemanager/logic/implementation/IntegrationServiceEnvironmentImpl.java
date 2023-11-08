@@ -11,6 +11,7 @@ import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironme
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironment;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentProperties;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSku;
+import com.azure.resourcemanager.logic.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
 
@@ -55,12 +56,20 @@ public final class IntegrationServiceEnvironmentImpl
         return this.innerModel().sku();
     }
 
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroup;
     }
 
     public IntegrationServiceEnvironmentInner innerModel() {
@@ -155,14 +164,14 @@ public final class IntegrationServiceEnvironmentImpl
         return this;
     }
 
-    public void restart() {
-        serviceManager.integrationServiceEnvironments().restart(resourceGroup, integrationServiceEnvironmentName);
-    }
-
     public Response<Void> restartWithResponse(Context context) {
         return serviceManager
             .integrationServiceEnvironments()
             .restartWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
+    }
+
+    public void restart() {
+        serviceManager.integrationServiceEnvironments().restart(resourceGroup, integrationServiceEnvironmentName);
     }
 
     public IntegrationServiceEnvironmentImpl withRegion(Region location) {
@@ -187,6 +196,11 @@ public final class IntegrationServiceEnvironmentImpl
 
     public IntegrationServiceEnvironmentImpl withSku(IntegrationServiceEnvironmentSku sku) {
         this.innerModel().withSku(sku);
+        return this;
+    }
+
+    public IntegrationServiceEnvironmentImpl withIdentity(ManagedServiceIdentity identity) {
+        this.innerModel().withIdentity(identity);
         return this;
     }
 }

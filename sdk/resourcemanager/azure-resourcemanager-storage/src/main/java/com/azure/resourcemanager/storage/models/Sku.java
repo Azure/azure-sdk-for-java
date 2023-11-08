@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Sku {
     /*
-     * The SKU name. Required for account creation; optional for update. Note
-     * that in older versions, SKU name was called accountType.
+     * The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was
+     * called accountType.
      */
     @JsonProperty(value = "name", required = true)
     private SkuName name;
@@ -23,6 +23,10 @@ public final class Sku {
      */
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the name property: The SKU name. Required for account creation; optional for update. Note that in older

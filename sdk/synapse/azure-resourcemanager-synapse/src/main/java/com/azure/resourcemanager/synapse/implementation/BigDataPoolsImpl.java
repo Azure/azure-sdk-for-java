@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.BigDataPoolsClient;
 import com.azure.resourcemanager.synapse.fluent.models.BigDataPoolResourceInfoInner;
 import com.azure.resourcemanager.synapse.models.BigDataPoolResourceInfo;
 import com.azure.resourcemanager.synapse.models.BigDataPools;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BigDataPoolsImpl implements BigDataPools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BigDataPoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BigDataPoolsImpl.class);
 
     private final BigDataPoolsClient innerClient;
 
@@ -26,16 +25,6 @@ public final class BigDataPoolsImpl implements BigDataPools {
         BigDataPoolsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public BigDataPoolResourceInfo get(String resourceGroupName, String workspaceName, String bigDataPoolName) {
-        BigDataPoolResourceInfoInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, bigDataPoolName);
-        if (inner != null) {
-            return new BigDataPoolResourceInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<BigDataPoolResourceInfo> getWithResponse(
@@ -53,12 +42,35 @@ public final class BigDataPoolsImpl implements BigDataPools {
         }
     }
 
-    public Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName) {
-        return this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName);
+    public BigDataPoolResourceInfo get(String resourceGroupName, String workspaceName, String bigDataPoolName) {
+        BigDataPoolResourceInfoInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, bigDataPoolName);
+        if (inner != null) {
+            return new BigDataPoolResourceInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName, Context context) {
-        return this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName, context);
+    public BigDataPoolResourceInfo delete(String resourceGroupName, String workspaceName, String bigDataPoolName) {
+        BigDataPoolResourceInfoInner inner =
+            this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName);
+        if (inner != null) {
+            return new BigDataPoolResourceInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BigDataPoolResourceInfo delete(
+        String resourceGroupName, String workspaceName, String bigDataPoolName, Context context) {
+        BigDataPoolResourceInfoInner inner =
+            this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName, context);
+        if (inner != null) {
+            return new BigDataPoolResourceInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public PagedIterable<BigDataPoolResourceInfo> listByWorkspace(String resourceGroupName, String workspaceName) {
@@ -77,7 +89,7 @@ public final class BigDataPoolsImpl implements BigDataPools {
     public BigDataPoolResourceInfo getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,14 +97,14 @@ public final class BigDataPoolsImpl implements BigDataPools {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String bigDataPoolName = Utils.getValueFromIdByName(id, "bigDataPools");
         if (bigDataPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'bigDataPools'.", id)));
@@ -103,7 +115,7 @@ public final class BigDataPoolsImpl implements BigDataPools {
     public Response<BigDataPoolResourceInfo> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,14 +123,14 @@ public final class BigDataPoolsImpl implements BigDataPools {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String bigDataPoolName = Utils.getValueFromIdByName(id, "bigDataPools");
         if (bigDataPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'bigDataPools'.", id)));
@@ -126,10 +138,10 @@ public final class BigDataPoolsImpl implements BigDataPools {
         return this.getWithResponse(resourceGroupName, workspaceName, bigDataPoolName, context);
     }
 
-    public Object deleteById(String id) {
+    public BigDataPoolResourceInfo deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,14 +149,14 @@ public final class BigDataPoolsImpl implements BigDataPools {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String bigDataPoolName = Utils.getValueFromIdByName(id, "bigDataPools");
         if (bigDataPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'bigDataPools'.", id)));
@@ -152,10 +164,10 @@ public final class BigDataPoolsImpl implements BigDataPools {
         return this.delete(resourceGroupName, workspaceName, bigDataPoolName, Context.NONE);
     }
 
-    public Object deleteByIdWithResponse(String id, Context context) {
+    public BigDataPoolResourceInfo deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,14 +175,14 @@ public final class BigDataPoolsImpl implements BigDataPools {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String bigDataPoolName = Utils.getValueFromIdByName(id, "bigDataPools");
         if (bigDataPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'bigDataPools'.", id)));

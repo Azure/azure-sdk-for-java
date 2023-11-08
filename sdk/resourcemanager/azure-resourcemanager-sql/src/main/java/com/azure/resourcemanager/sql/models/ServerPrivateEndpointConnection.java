@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.PrivateEndpointConnectionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A private endpoint connection under a server. */
 @Immutable
 public final class ServerPrivateEndpointConnection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPrivateEndpointConnection.class);
-
     /*
      * Resource ID.
      */
@@ -25,6 +22,10 @@ public final class ServerPrivateEndpointConnection {
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointConnectionProperties properties;
+
+    /** Creates an instance of ServerPrivateEndpointConnection class. */
+    public ServerPrivateEndpointConnection() {
+    }
 
     /**
      * Get the id property: Resource ID.

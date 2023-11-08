@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ColumnDataType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sql pool column properties. */
 @Fluent
 public final class SqlPoolColumnProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolColumnProperties.class);
-
     /*
      * The column data type.
      */
@@ -26,6 +22,10 @@ public final class SqlPoolColumnProperties {
      */
     @JsonProperty(value = "isComputed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isComputed;
+
+    /** Creates an instance of SqlPoolColumnProperties class. */
+    public SqlPoolColumnProperties() {
+    }
 
     /**
      * Get the columnType property: The column data type.

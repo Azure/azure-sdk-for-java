@@ -43,8 +43,14 @@ public final class PatchUtil {
             operationJsonSerializable.set(PatchConstants.PropertyNames_OperationType, patchOperation.getOperationType().getOperationValue());
 
             if (patchOperation instanceof PatchOperationCore) {
-                operationJsonSerializable.set(PatchConstants.PropertyNames_Path, ((PatchOperationCore)patchOperation).getPath());
-                operationJsonSerializable.set(PatchConstants.PropertyNames_Value, ((PatchOperationCore)patchOperation).getResource());
+                if (patchOperation.getOperationType() == PatchOperationType.MOVE) {
+                    operationJsonSerializable.set(PatchConstants.PropertyNames_Path, ((PatchOperationCore)patchOperation).getPath());
+                    operationJsonSerializable.set(PatchConstants.PropertyNames_From, ((PatchOperationCore)patchOperation).getFrom());
+                }
+                else {
+                    operationJsonSerializable.set(PatchConstants.PropertyNames_Path, ((PatchOperationCore)patchOperation).getPath());
+                    operationJsonSerializable.set(PatchConstants.PropertyNames_Value, ((PatchOperationCore)patchOperation).getResource());
+                }
             } else {
                 throw new IllegalArgumentException("Invalid patch operation type");
             }

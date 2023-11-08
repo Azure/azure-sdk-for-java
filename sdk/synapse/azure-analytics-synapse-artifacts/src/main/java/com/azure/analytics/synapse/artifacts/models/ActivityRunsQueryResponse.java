@@ -18,11 +18,13 @@ public final class ActivityRunsQueryResponse {
     private List<ActivityRun> value;
 
     /*
-     * The continuation token for getting the next page of results, if any
-     * remaining results exist, null otherwise.
+     * The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
      */
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
+
+    /** Creates an instance of ActivityRunsQueryResponse class. */
+    public ActivityRunsQueryResponse() {}
 
     /**
      * Get the value property: List of activity runs.

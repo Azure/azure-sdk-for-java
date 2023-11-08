@@ -9,7 +9,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,6 +23,12 @@ public final class ServerPropertiesForUpdate {
      */
     @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
+
+    /*
+     * Server version.
+     */
+    @JsonProperty(value = "version")
+    private ServerVersion version;
 
     /*
      * Storage related properties of a server.
@@ -58,6 +66,16 @@ public final class ServerPropertiesForUpdate {
     @JsonProperty(value = "dataEncryption")
     private DataEncryption dataEncryption;
 
+    /*
+     * Network related properties of a server
+     */
+    @JsonProperty(value = "network")
+    private Network network;
+
+    /** Creates an instance of ServerPropertiesForUpdate class. */
+    public ServerPropertiesForUpdate() {
+    }
+
     /**
      * Get the administratorLoginPassword property: The password of the administrator login.
      *
@@ -75,6 +93,26 @@ public final class ServerPropertiesForUpdate {
      */
     public ServerPropertiesForUpdate withAdministratorLoginPassword(String administratorLoginPassword) {
         this.administratorLoginPassword = administratorLoginPassword;
+        return this;
+    }
+
+    /**
+     * Get the version property: Server version.
+     *
+     * @return the version value.
+     */
+    public ServerVersion version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: Server version.
+     *
+     * @param version the version value to set.
+     * @return the ServerPropertiesForUpdate object itself.
+     */
+    public ServerPropertiesForUpdate withVersion(ServerVersion version) {
+        this.version = version;
         return this;
     }
 
@@ -199,6 +237,26 @@ public final class ServerPropertiesForUpdate {
     }
 
     /**
+     * Get the network property: Network related properties of a server.
+     *
+     * @return the network value.
+     */
+    public Network network() {
+        return this.network;
+    }
+
+    /**
+     * Set the network property: Network related properties of a server.
+     *
+     * @param network the network value to set.
+     * @return the ServerPropertiesForUpdate object itself.
+     */
+    public ServerPropertiesForUpdate withNetwork(Network network) {
+        this.network = network;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -218,6 +276,9 @@ public final class ServerPropertiesForUpdate {
         }
         if (dataEncryption() != null) {
             dataEncryption().validate();
+        }
+        if (network() != null) {
+            network().validate();
         }
     }
 }

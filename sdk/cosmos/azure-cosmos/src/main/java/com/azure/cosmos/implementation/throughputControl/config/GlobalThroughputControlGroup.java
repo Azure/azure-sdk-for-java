@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.throughputControl.config;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.models.PriorityLevel;
 
 import java.time.Duration;
 
@@ -21,12 +22,14 @@ public class GlobalThroughputControlGroup extends ThroughputControlGroupInternal
         CosmosAsyncContainer targetContainer,
         Integer targetThroughput,
         Double targetThroughputThreshold,
+        PriorityLevel priorityLevel,
         boolean isDefault,
+        boolean continueOnInitError,
         CosmosAsyncContainer globalControlContainer,
         Duration controlItemRenewInterval,
         Duration controlItemExpireInterval) {
 
-        super (groupName, targetContainer, targetThroughput, targetThroughputThreshold, isDefault);
+        super (groupName, targetContainer, targetThroughput, targetThroughputThreshold, priorityLevel, isDefault, continueOnInitError);
 
         checkNotNull(globalControlContainer, "Global control container can not be null");
 

@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.hanaonazure.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hanaonazure.models.Display;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** HANA operation information. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
-     * The name of the operation being performed on this particular object.
-     * This name should match the action name that appears in RBAC / the event
-     * service.
+     * The name of the operation being performed on this particular object. This name should match the action name that
+     * appears in RBAC / the event service.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
@@ -28,6 +23,16 @@ public final class OperationInner {
      */
     @JsonProperty(value = "display")
     private Display display;
+
+    /*
+     * Indicates whether the operation applies to data-plane.
+     */
+    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isDataAction;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: The name of the operation being performed on this particular object. This name should
@@ -57,6 +62,15 @@ public final class OperationInner {
     public OperationInner withDisplay(Display display) {
         this.display = display;
         return this;
+    }
+
+    /**
+     * Get the isDataAction property: Indicates whether the operation applies to data-plane.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
     }
 
     /**

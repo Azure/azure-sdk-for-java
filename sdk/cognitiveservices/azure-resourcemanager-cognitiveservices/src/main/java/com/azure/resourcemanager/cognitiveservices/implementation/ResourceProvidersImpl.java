@@ -16,10 +16,9 @@ import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityPa
 import com.azure.resourcemanager.cognitiveservices.models.DomainAvailability;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceProviders;
 import com.azure.resourcemanager.cognitiveservices.models.SkuAvailabilityListResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 
@@ -30,15 +29,6 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public SkuAvailabilityListResult checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters) {
-        SkuAvailabilityListResultInner inner = this.serviceClient().checkSkuAvailability(location, parameters);
-        if (inner != null) {
-            return new SkuAvailabilityListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SkuAvailabilityListResult> checkSkuAvailabilityWithResponse(
@@ -56,10 +46,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public DomainAvailability checkDomainAvailability(CheckDomainAvailabilityParameter parameters) {
-        DomainAvailabilityInner inner = this.serviceClient().checkDomainAvailability(parameters);
+    public SkuAvailabilityListResult checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters) {
+        SkuAvailabilityListResultInner inner = this.serviceClient().checkSkuAvailability(location, parameters);
         if (inner != null) {
-            return new DomainAvailabilityImpl(inner, this.manager());
+            return new SkuAvailabilityListResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -75,6 +65,15 @@ public final class ResourceProvidersImpl implements ResourceProviders {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DomainAvailabilityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DomainAvailability checkDomainAvailability(CheckDomainAvailabilityParameter parameters) {
+        DomainAvailabilityInner inner = this.serviceClient().checkDomainAvailability(parameters);
+        if (inner != null) {
+            return new DomainAvailabilityImpl(inner, this.manager());
         } else {
             return null;
         }

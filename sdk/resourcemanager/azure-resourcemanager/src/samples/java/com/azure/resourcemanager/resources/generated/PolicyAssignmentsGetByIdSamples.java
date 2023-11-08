@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyAssignments GetById. */
 public final class PolicyAssignmentsGetByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyAssignmentById.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentById.json
      */
     /**
      * Sample code: Retrieve a policy assignment by ID.
@@ -24,11 +22,11 @@ public final class PolicyAssignmentsGetByIdSamples {
             .getPolicyAssignments()
             .getByIdWithResponse(
                 "providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyAssignmentWithIdentityById.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithIdentityById.json
      */
     /**
      * Sample code: Retrieve a policy assignment with a managed identity by ID.
@@ -44,6 +42,6 @@ public final class PolicyAssignmentsGetByIdSamples {
             .getPolicyAssignments()
             .getByIdWithResponse(
                 "providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/LowCostStorage",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

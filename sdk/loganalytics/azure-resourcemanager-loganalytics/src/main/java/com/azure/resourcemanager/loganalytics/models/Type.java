@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Type. */
+/** The type of the destination resource. */
 public final class Type extends ExpandableStringEnum<Type> {
     /** Static value StorageAccount for Type. */
     public static final Type STORAGE_ACCOUNT = fromString("StorageAccount");
 
     /** Static value EventHub for Type. */
     public static final Type EVENT_HUB = fromString("EventHub");
+
+    /**
+     * Creates a new instance of Type value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Type() {
+    }
 
     /**
      * Creates or finds a Type from its string representation.
@@ -27,7 +36,11 @@ public final class Type extends ExpandableStringEnum<Type> {
         return fromString(name, Type.class);
     }
 
-    /** @return known Type values. */
+    /**
+     * Gets known Type values.
+     *
+     * @return known Type values.
+     */
     public static Collection<Type> values() {
         return values(Type.class);
     }

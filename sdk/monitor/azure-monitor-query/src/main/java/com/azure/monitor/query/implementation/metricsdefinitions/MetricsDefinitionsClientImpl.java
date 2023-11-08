@@ -12,7 +12,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the MetricsDefinitionsClient type. */
+/** Initializes a new instance of the MonitorManagementClient type. */
 public final class MetricsDefinitionsClientImpl {
     /** server parameter. */
     private final String host;
@@ -62,20 +62,20 @@ public final class MetricsDefinitionsClientImpl {
         return this.serializerAdapter;
     }
 
-    /** The MetricDefinitionsImpl object to access its operations. */
+    /** The MetricDefinitions object to access its operations. */
     private final MetricDefinitionsImpl metricDefinitions;
 
     /**
-     * Gets the MetricDefinitionsImpl object to access its operations.
+     * Gets the MetricDefinitions object to access its operations.
      *
-     * @return the MetricDefinitionsImpl object.
+     * @return the MetricDefinitions object.
      */
     public MetricDefinitionsImpl getMetricDefinitions() {
         return this.metricDefinitions;
     }
 
     /**
-     * Initializes an instance of MetricsDefinitionsClient client.
+     * Initializes an instance of MonitorManagementClient client.
      *
      * @param host server parameter.
      * @param apiVersion Api Version.
@@ -91,7 +91,7 @@ public final class MetricsDefinitionsClientImpl {
     }
 
     /**
-     * Initializes an instance of MetricsDefinitionsClient client.
+     * Initializes an instance of MonitorManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param host server parameter.
@@ -102,7 +102,7 @@ public final class MetricsDefinitionsClientImpl {
     }
 
     /**
-     * Initializes an instance of MetricsDefinitionsClient client.
+     * Initializes an instance of MonitorManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.

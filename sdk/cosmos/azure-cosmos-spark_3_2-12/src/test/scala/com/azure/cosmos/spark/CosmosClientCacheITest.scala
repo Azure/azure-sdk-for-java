@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
+import com.azure.cosmos.spark.catalog.CosmosCatalogCosmosSDKClient
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import org.apache.spark.broadcast.Broadcast
-import org.mockito.Mockito.{mock, verify}
+import org.mockito.Mockito.mock
 
 class CosmosClientCacheITest
   extends IntegrationSpec
@@ -24,7 +25,7 @@ class CosmosClientCacheITest
     "spark.cosmos.database" -> cosmosDatabase,
     "spark.cosmos.container" -> cosmosContainer
   )
-  private val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true)
+  private val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true, sparkEnvironmentInfo = "")
 
   "CosmosClientCache" should "get cached object with same config" in {
 
@@ -36,55 +37,88 @@ class CosmosClientCacheITest
           "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
           "spark.cosmos.accountKey" -> cosmosMasterKey
         ),
-        useEventualConsistency = true)
+        useEventualConsistency = true,
+        sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithoutPreferredRegions",
         CosmosClientConfiguration(
-        cosmosEndpoint,
-        cosmosMasterKey,
-        "SampleApplicationName",
-        useGatewayMode = true,
-        useEventualConsistency = true,
-        enableClientTelemetry = false,
-        clientTelemetryEndpoint = None,
-        preferredRegionsList = None)
+          cosmosEndpoint,
+          "SampleDatabaseAccountName",
+          CosmosMasterKeyAuthConfig(cosmosMasterKey),
+          Some("SampleApplicationName"),
+          "SampleApplicationName",
+          useGatewayMode = true,
+          useEventualConsistency = true,
+          enableClientTelemetry = false,
+          disableTcpConnectionEndpointRediscovery = false,
+          clientTelemetryEndpoint = None,
+          preferredRegionsList = None,
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE,
+          sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
         CosmosClientConfiguration(
           cosmosEndpoint,
-          cosmosMasterKey,
+          "SampleDatabaseAccountName",
+          CosmosMasterKeyAuthConfig(cosmosMasterKey),
+          Some("SampleApplicationName"),
           "SampleApplicationName",
           useGatewayMode = true,
           useEventualConsistency = true,
           enableClientTelemetry = false,
+          disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
-          preferredRegionsList = Some(Array[String]()))
+          preferredRegionsList = Some(Array[String]()),
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE,
+          sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithOnePreferredRegion",
         CosmosClientConfiguration(
-        cosmosEndpoint,
-        cosmosMasterKey,
-        "SampleApplicationName",
-        useGatewayMode = true,
-        useEventualConsistency = true,
-        enableClientTelemetry = false,
-        clientTelemetryEndpoint = None,
-        preferredRegionsList = Some(Array[String]("North Europe")))
+          cosmosEndpoint,
+          "SampleDatabaseAccountName",
+          CosmosMasterKeyAuthConfig(cosmosMasterKey),
+          None,
+          "SampleApplicationName",
+          useGatewayMode = true,
+          useEventualConsistency = true,
+          enableClientTelemetry = false,
+          disableTcpConnectionEndpointRediscovery = false,
+          clientTelemetryEndpoint = None,
+          preferredRegionsList = Some(Array[String]("North Europe")),
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE,
+          sparkEnvironmentInfo = "")
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
         CosmosClientConfiguration(
           cosmosEndpoint,
-          cosmosMasterKey,
+          "SampleDatabaseAccountName",
+          CosmosMasterKeyAuthConfig(cosmosMasterKey),
+          None,
           "SampleApplicationName",
           useGatewayMode = true,
           useEventualConsistency = true,
           enableClientTelemetry = false,
+          disableTcpConnectionEndpointRediscovery = false,
           clientTelemetryEndpoint = None,
-          preferredRegionsList = Some(Array[String]("North Europe", "West Europe")))
+          preferredRegionsList = Some(Array[String]("North Europe", "West Europe")),
+          subscriptionId = None,
+          tenantId = None,
+          resourceGroupName = None,
+          azureEnvironment = AzureEnvironment.AZURE,
+          sparkEnvironmentInfo = "")
       )
     )
 
@@ -94,33 +128,49 @@ class CosmosClientCacheITest
       val userConfig = userConfigPair._2
       val userConfigShallowCopy = CosmosClientConfiguration(
         userConfig.endpoint,
-        userConfig.key,
+        userConfig.databaseAccountName,
+        userConfig.authConfig,
+        userConfig.customApplicationNameSuffix,
         userConfig.applicationName,
         userConfig.useGatewayMode,
         userConfig.useEventualConsistency,
         enableClientTelemetry = false,
+        disableTcpConnectionEndpointRediscovery = false,
         clientTelemetryEndpoint = None,
         userConfig.preferredRegionsList match {
           case Some(array) => Some(array.clone())
           case None => None
-        }
+        },
+        userConfig.subscriptionId,
+        userConfig.tenantId,
+        userConfig.resourceGroupName,
+        userConfig.azureEnvironment,
+        sparkEnvironmentInfo = ""
       )
 
       logInfo(s"TestCase: {$testCaseName}")
 
-      Loan(CosmosClientCache(userConfig, None, s"$testCaseName-CosmosClientCacheITest-01"))
-        .to(client1 => {
-          Loan(CosmosClientCache(userConfigShallowCopy, None, s"$testCaseName-CosmosClientCacheITest-02"))
-            .to(client2 => {
-              client2.client should be theSameInstanceAs client1.client
+      Loan(
+       List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache(userConfig, None, s"$testCaseName-CosmosClientCacheITest-01"))
+       ))
+        .to(clients => {
+          Loan(
+           List[Option[CosmosClientCacheItem]](
+            Some(CosmosClientCache(userConfigShallowCopy, None, s"$testCaseName-CosmosClientCacheITest-02"))
+           ))
+           .to(clients2 => {
+             clients2(0).get.cosmosClient should be theSameInstanceAs clients(0).get.cosmosClient
+             clients2(0).get.sparkCatalogClient.isInstanceOf[CosmosCatalogCosmosSDKClient] should be
+             clients(0).get.sparkCatalogClient.isInstanceOf[CosmosCatalogCosmosSDKClient] should be
 
-              val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
-              logInfo(s"$testCaseName-OwnerInfo $ownerInfo")
-              ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-01") shouldEqual true
-              ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-02") shouldEqual true
-              ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-03") shouldEqual false
-              CosmosClientCache.purge(userConfig)
-            })
+               val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
+             logInfo(s"$testCaseName-OwnerInfo $ownerInfo")
+             ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-01") shouldEqual true
+             ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-02") shouldEqual true
+             ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-03") shouldEqual false
+             CosmosClientCache.purge(userConfig)
+           })
         })
     })
   }
@@ -129,41 +179,53 @@ class CosmosClientCacheITest
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
-    ), useEventualConsistency = true)
+    ), useEventualConsistency = true, sparkEnvironmentInfo = "")
 
-    Loan(CosmosClientCache(userConfig, None, "CosmosClientCacheITest-03"))
-      .to(client1 => {
-        CosmosClientCache.purge(userConfig)
-        Loan(CosmosClientCache(userConfig, None, "CosmosClientCacheITest-04"))
-          .to(client2 => {
+    Loan(
+     List[Option[CosmosClientCacheItem]](
+      Some(CosmosClientCache(userConfig, None, "CosmosClientCacheITest-03"))
+     ))
+     .to(clients => {
+       CosmosClientCache.purge(userConfig)
+       Loan(
+        List[Option[CosmosClientCacheItem]](
+         Some(CosmosClientCache(userConfig, None, "CosmosClientCacheITest-04"))
+        ))
+        .to(clients2 => {
 
-            client2 shouldNot be theSameInstanceAs client1
-            CosmosClientCache.purge(userConfig)
-          })
-      })
+         clients2(0).get shouldNot be theSameInstanceAs clients(0).get
+          CosmosClientCache.purge(userConfig)
+        })
+     })
   }
 
   it should "use state during initialization" in {
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey
-    ), useEventualConsistency = true)
+    ), useEventualConsistency = true, sparkEnvironmentInfo = "")
 
-    val broadcast = mock(classOf[Broadcast[CosmosClientMetadataCachesSnapshot]])
-    Loan(CosmosClientCache(userConfig, Option(broadcast), "CosmosClientCacheITest-05"))
-      .to(client1 => {
-        verify(broadcast).value
-        client1 shouldBe a[CosmosClientCacheItem]
-        client1.client shouldBe a[CosmosAsyncClient]
-        CosmosClientCache.purge(userConfig)
-      })
+    val cosmosClientCacheSnapshot = mock(classOf[CosmosClientMetadataCachesSnapshot])
+    Loan(
+     List[Option[CosmosClientCacheItem]](
+      Some(CosmosClientCache(userConfig, Option(cosmosClientCacheSnapshot), "CosmosClientCacheITest-05"))
+     ))
+     .to(clients => {
+       clients(0).get shouldBe a[CosmosClientCacheItem]
+       clients(0).get.cosmosClient shouldBe a[CosmosAsyncClient]
+       CosmosClientCache.purge(userConfig)
+     })
   }
 
   it should "purge all Cosmos clients on SparkContext shutdown on driver" in {
 
-    Loan(CosmosClientCache.apply(clientConfig, None, "CreateDummyClient"))
-      .to(_ => {
-      })
+    Loan(
+     List[Option[CosmosClientCacheItem]](
+      Some(CosmosClientCache.apply(clientConfig, None, "CreateDummyClient")),
+      Some(CosmosClientCache.apply(clientConfig, None, "CreateDummyClient"))
+     ))
+     .to(_ => {
+     })
 
     CosmosClientCache.isStillReferenced(clientConfig) shouldEqual true
 

@@ -23,16 +23,16 @@ public final class DataLakeStoreAccountInformationImpl implements DataLakeStoreA
         return this.innerModel().id();
     }
 
-    public String suffix() {
-        return this.innerModel().suffix();
-    }
-
     public String name() {
         return this.innerModel().name();
     }
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String suffix() {
+        return this.innerModel().suffix();
     }
 
     public DataLakeStoreAccountInformationInner innerModel() {

@@ -21,7 +21,7 @@ public interface WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow runs.
+     * @return a list of workflow runs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkflowRunInner> list(String resourceGroupName, String workflowName);
@@ -38,11 +38,27 @@ public interface WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow runs.
+     * @return a list of workflow runs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkflowRunInner> list(
         String resourceGroupName, String workflowName, Integer top, String filter, Context context);
+
+    /**
+     * Gets a workflow run.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow run along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkflowRunInner> getWithResponse(
+        String resourceGroupName, String workflowName, String runName, Context context);
 
     /**
      * Gets a workflow run.
@@ -59,7 +75,7 @@ public interface WorkflowRunsClient {
     WorkflowRunInner get(String resourceGroupName, String workflowName, String runName);
 
     /**
-     * Gets a workflow run.
+     * Cancels a workflow run.
      *
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
@@ -68,11 +84,10 @@ public interface WorkflowRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowRunInner> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, Context context);
+    Response<Void> cancelWithResponse(String resourceGroupName, String workflowName, String runName, Context context);
 
     /**
      * Cancels a workflow run.
@@ -86,19 +101,4 @@ public interface WorkflowRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void cancel(String resourceGroupName, String workflowName, String runName);
-
-    /**
-     * Cancels a workflow run.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> cancelWithResponse(String resourceGroupName, String workflowName, String runName, Context context);
 }

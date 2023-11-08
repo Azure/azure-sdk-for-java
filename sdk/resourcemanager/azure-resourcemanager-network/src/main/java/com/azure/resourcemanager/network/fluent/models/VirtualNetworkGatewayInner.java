@@ -9,9 +9,12 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.AdminState;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
@@ -47,6 +50,10 @@ public final class VirtualNetworkGatewayInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of VirtualNetworkGatewayInner class. */
+    public VirtualNetworkGatewayInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the virtual network gateway.
@@ -117,6 +124,30 @@ public final class VirtualNetworkGatewayInner extends Resource {
     @Override
     public VirtualNetworkGatewayInner withTags(Map<String, String> tags) {
         super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
+     *
+     * @return the autoScaleConfiguration value.
+     */
+    public VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoScaleConfiguration();
+    }
+
+    /**
+     * Set the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
+     *
+     * @param autoScaleConfiguration the autoScaleConfiguration value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withAutoScaleConfiguration(
+        VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withAutoScaleConfiguration(autoScaleConfiguration);
         return this;
     }
 
@@ -385,6 +416,32 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
+     * Get the virtualNetworkGatewayPolicyGroups property: The reference to the VirtualNetworkGatewayPolicyGroup
+     * resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
+     *
+     * @return the virtualNetworkGatewayPolicyGroups value.
+     */
+    public List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkGatewayPolicyGroups();
+    }
+
+    /**
+     * Set the virtualNetworkGatewayPolicyGroups property: The reference to the VirtualNetworkGatewayPolicyGroup
+     * resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
+     *
+     * @param virtualNetworkGatewayPolicyGroups the virtualNetworkGatewayPolicyGroups value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withVirtualNetworkGatewayPolicyGroups(
+        List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withVirtualNetworkGatewayPolicyGroups(virtualNetworkGatewayPolicyGroups);
+        return this;
+    }
+
+    /**
      * Get the bgpSettings property: Virtual network gateway's BGP speaker settings.
      *
      * @return the bgpSettings value.
@@ -551,6 +608,81 @@ public final class VirtualNetworkGatewayInner extends Resource {
             this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
         }
         this.innerProperties().withEnableBgpRouteTranslationForNat(enableBgpRouteTranslationForNat);
+        return this;
+    }
+
+    /**
+     * Get the allowVirtualWanTraffic property: Configures this gateway to accept traffic from remote Virtual WAN
+     * networks.
+     *
+     * @return the allowVirtualWanTraffic value.
+     */
+    public Boolean allowVirtualWanTraffic() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowVirtualWanTraffic();
+    }
+
+    /**
+     * Set the allowVirtualWanTraffic property: Configures this gateway to accept traffic from remote Virtual WAN
+     * networks.
+     *
+     * @param allowVirtualWanTraffic the allowVirtualWanTraffic value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withAllowVirtualWanTraffic(Boolean allowVirtualWanTraffic) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withAllowVirtualWanTraffic(allowVirtualWanTraffic);
+        return this;
+    }
+
+    /**
+     * Get the allowRemoteVnetTraffic property: Configure this gateway to accept traffic from other Azure Virtual
+     * Networks. This configuration does not support connectivity to Azure Virtual WAN.
+     *
+     * @return the allowRemoteVnetTraffic value.
+     */
+    public Boolean allowRemoteVnetTraffic() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowRemoteVnetTraffic();
+    }
+
+    /**
+     * Set the allowRemoteVnetTraffic property: Configure this gateway to accept traffic from other Azure Virtual
+     * Networks. This configuration does not support connectivity to Azure Virtual WAN.
+     *
+     * @param allowRemoteVnetTraffic the allowRemoteVnetTraffic value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withAllowRemoteVnetTraffic(Boolean allowRemoteVnetTraffic) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withAllowRemoteVnetTraffic(allowRemoteVnetTraffic);
+        return this;
+    }
+
+    /**
+     * Get the adminState property: Property to indicate if the Express Route Gateway serves traffic when there are
+     * multiple Express Route Gateways in the vnet.
+     *
+     * @return the adminState value.
+     */
+    public AdminState adminState() {
+        return this.innerProperties() == null ? null : this.innerProperties().adminState();
+    }
+
+    /**
+     * Set the adminState property: Property to indicate if the Express Route Gateway serves traffic when there are
+     * multiple Express Route Gateways in the vnet.
+     *
+     * @param adminState the adminState value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withAdminState(AdminState adminState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withAdminState(adminState);
         return this;
     }
 

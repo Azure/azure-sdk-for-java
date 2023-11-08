@@ -341,15 +341,15 @@ public final class RemoteRenderingAsyncClient {
             pollingContext -> {
                 Mono<AssetConversion> response = impl.getRemoteRenderings().getConversionWithResponseAsync(accountId, conversionId, context).map(c -> ModelTranslator.fromGenerated(c.getValue()));
                 return response.map(conversion -> {
-                    final AssetConversionStatus convStatus = conversion.getStatus();
+                    final AssetConversionStatus conversionStatus = conversion.getStatus();
                     LongRunningOperationStatus lroStatus;
-                    if ((convStatus == AssetConversionStatus.RUNNING) || (convStatus == AssetConversionStatus.NOT_STARTED)) {
+                    if ((conversionStatus == AssetConversionStatus.RUNNING) || (conversionStatus == AssetConversionStatus.NOT_STARTED)) {
                         lroStatus = LongRunningOperationStatus.IN_PROGRESS;
-                    } else if (convStatus == AssetConversionStatus.FAILED) {
+                    } else if (conversionStatus == AssetConversionStatus.FAILED) {
                         lroStatus = LongRunningOperationStatus.FAILED;
-                    } else if (convStatus == AssetConversionStatus.SUCCEEDED) {
+                    } else if (conversionStatus == AssetConversionStatus.SUCCEEDED) {
                         lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                    } else if (convStatus == AssetConversionStatus.CANCELLED) {
+                    } else if (conversionStatus == AssetConversionStatus.CANCELLED) {
                         lroStatus = LongRunningOperationStatus.USER_CANCELLED;
                     } else {
                         lroStatus = LongRunningOperationStatus.FAILED;

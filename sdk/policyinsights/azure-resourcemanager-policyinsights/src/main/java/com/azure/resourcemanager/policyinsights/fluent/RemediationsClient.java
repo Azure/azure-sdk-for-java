@@ -22,7 +22,8 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at management group scope.
+     * @return all deployments for a remediation at management group scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationDeploymentInner> listDeploymentsAtManagementGroup(
@@ -38,11 +39,27 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at management group scope.
+     * @return all deployments for a remediation at management group scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationDeploymentInner> listDeploymentsAtManagementGroup(
         String managementGroupId, String remediationName, Integer top, Context context);
+
+    /**
+     * Cancels a remediation at management group scope.
+     *
+     * @param managementGroupId Management group ID.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RemediationInner> cancelAtManagementGroupWithResponse(
+        String managementGroupId, String remediationName, Context context);
 
     /**
      * Cancels a remediation at management group scope.
@@ -58,28 +75,13 @@ public interface RemediationsClient {
     RemediationInner cancelAtManagementGroup(String managementGroupId, String remediationName);
 
     /**
-     * Cancels a remediation at management group scope.
-     *
-     * @param managementGroupId Management group ID.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> cancelAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, Context context);
-
-    /**
      * Gets all remediations for the management group.
      *
      * @param managementGroupId Management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the management group.
+     * @return all remediations for the management group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationInner> listForManagementGroup(String managementGroupId);
@@ -94,11 +96,27 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the management group.
+     * @return all remediations for the management group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationInner> listForManagementGroup(
         String managementGroupId, Integer top, String filter, Context context);
+
+    /**
+     * Creates or updates a remediation at management group scope.
+     *
+     * @param managementGroupId Management group ID.
+     * @param remediationName The name of the remediation.
+     * @param parameters The remediation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RemediationInner> createOrUpdateAtManagementGroupWithResponse(
+        String managementGroupId, String remediationName, RemediationInner parameters, Context context);
 
     /**
      * Creates or updates a remediation at management group scope.
@@ -116,20 +134,19 @@ public interface RemediationsClient {
         String managementGroupId, String remediationName, RemediationInner parameters);
 
     /**
-     * Creates or updates a remediation at management group scope.
+     * Gets an existing remediation at management group scope.
      *
      * @param managementGroupId Management group ID.
      * @param remediationName The name of the remediation.
-     * @param parameters The remediation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return an existing remediation at management group scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> createOrUpdateAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, RemediationInner parameters, Context context);
+    Response<RemediationInner> getAtManagementGroupWithResponse(
+        String managementGroupId, String remediationName, Context context);
 
     /**
      * Gets an existing remediation at management group scope.
@@ -145,7 +162,7 @@ public interface RemediationsClient {
     RemediationInner getAtManagementGroup(String managementGroupId, String remediationName);
 
     /**
-     * Gets an existing remediation at management group scope.
+     * Deletes an existing remediation at management group scope.
      *
      * @param managementGroupId Management group ID.
      * @param remediationName The name of the remediation.
@@ -153,10 +170,10 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at management group scope.
+     * @return the remediation definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> getAtManagementGroupWithResponse(
+    Response<RemediationInner> deleteAtManagementGroupWithResponse(
         String managementGroupId, String remediationName, Context context);
 
     /**
@@ -173,28 +190,13 @@ public interface RemediationsClient {
     RemediationInner deleteAtManagementGroup(String managementGroupId, String remediationName);
 
     /**
-     * Deletes an existing remediation at management group scope.
-     *
-     * @param managementGroupId Management group ID.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> deleteAtManagementGroupWithResponse(
-        String managementGroupId, String remediationName, Context context);
-
-    /**
      * Gets all deployments for a remediation at subscription scope.
      *
      * @param remediationName The name of the remediation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at subscription scope.
+     * @return all deployments for a remediation at subscription scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationDeploymentInner> listDeploymentsAtSubscription(String remediationName);
@@ -208,11 +210,24 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at subscription scope.
+     * @return all deployments for a remediation at subscription scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationDeploymentInner> listDeploymentsAtSubscription(
         String remediationName, Integer top, Context context);
+
+    /**
+     * Cancels a remediation at subscription scope.
+     *
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RemediationInner> cancelAtSubscriptionWithResponse(String remediationName, Context context);
 
     /**
      * Cancels a remediation at subscription scope.
@@ -227,24 +242,11 @@ public interface RemediationsClient {
     RemediationInner cancelAtSubscription(String remediationName);
 
     /**
-     * Cancels a remediation at subscription scope.
-     *
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> cancelAtSubscriptionWithResponse(String remediationName, Context context);
-
-    /**
      * Gets all remediations for the subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationInner> list();
@@ -258,10 +260,25 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationInner> list(Integer top, String filter, Context context);
+
+    /**
+     * Creates or updates a remediation at subscription scope.
+     *
+     * @param remediationName The name of the remediation.
+     * @param parameters The remediation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RemediationInner> createOrUpdateAtSubscriptionWithResponse(
+        String remediationName, RemediationInner parameters, Context context);
 
     /**
      * Creates or updates a remediation at subscription scope.
@@ -277,19 +294,17 @@ public interface RemediationsClient {
     RemediationInner createOrUpdateAtSubscription(String remediationName, RemediationInner parameters);
 
     /**
-     * Creates or updates a remediation at subscription scope.
+     * Gets an existing remediation at subscription scope.
      *
      * @param remediationName The name of the remediation.
-     * @param parameters The remediation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return an existing remediation at subscription scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> createOrUpdateAtSubscriptionWithResponse(
-        String remediationName, RemediationInner parameters, Context context);
+    Response<RemediationInner> getAtSubscriptionWithResponse(String remediationName, Context context);
 
     /**
      * Gets an existing remediation at subscription scope.
@@ -304,17 +319,17 @@ public interface RemediationsClient {
     RemediationInner getAtSubscription(String remediationName);
 
     /**
-     * Gets an existing remediation at subscription scope.
+     * Deletes an existing remediation at subscription scope.
      *
      * @param remediationName The name of the remediation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at subscription scope.
+     * @return the remediation definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> getAtSubscriptionWithResponse(String remediationName, Context context);
+    Response<RemediationInner> deleteAtSubscriptionWithResponse(String remediationName, Context context);
 
     /**
      * Deletes an existing remediation at subscription scope.
@@ -329,19 +344,6 @@ public interface RemediationsClient {
     RemediationInner deleteAtSubscription(String remediationName);
 
     /**
-     * Deletes an existing remediation at subscription scope.
-     *
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> deleteAtSubscriptionWithResponse(String remediationName, Context context);
-
-    /**
      * Gets all deployments for a remediation at resource group scope.
      *
      * @param resourceGroupName Resource group name.
@@ -349,7 +351,8 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource group scope.
+     * @return all deployments for a remediation at resource group scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationDeploymentInner> listDeploymentsAtResourceGroup(
@@ -365,11 +368,27 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource group scope.
+     * @return all deployments for a remediation at resource group scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationDeploymentInner> listDeploymentsAtResourceGroup(
         String resourceGroupName, String remediationName, Integer top, Context context);
+
+    /**
+     * Cancels a remediation at resource group scope.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RemediationInner> cancelAtResourceGroupWithResponse(
+        String resourceGroupName, String remediationName, Context context);
 
     /**
      * Cancels a remediation at resource group scope.
@@ -385,28 +404,13 @@ public interface RemediationsClient {
     RemediationInner cancelAtResourceGroup(String resourceGroupName, String remediationName);
 
     /**
-     * Cancels a remediation at resource group scope.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> cancelAtResourceGroupWithResponse(
-        String resourceGroupName, String remediationName, Context context);
-
-    /**
      * Gets all remediations for the subscription.
      *
      * @param resourceGroupName Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationInner> listByResourceGroup(String resourceGroupName);
@@ -421,11 +425,27 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for the subscription.
+     * @return all remediations for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationInner> listByResourceGroup(
         String resourceGroupName, Integer top, String filter, Context context);
+
+    /**
+     * Creates or updates a remediation at resource group scope.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param remediationName The name of the remediation.
+     * @param parameters The remediation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RemediationInner> createOrUpdateAtResourceGroupWithResponse(
+        String resourceGroupName, String remediationName, RemediationInner parameters, Context context);
 
     /**
      * Creates or updates a remediation at resource group scope.
@@ -443,20 +463,19 @@ public interface RemediationsClient {
         String resourceGroupName, String remediationName, RemediationInner parameters);
 
     /**
-     * Creates or updates a remediation at resource group scope.
+     * Gets an existing remediation at resource group scope.
      *
      * @param resourceGroupName Resource group name.
      * @param remediationName The name of the remediation.
-     * @param parameters The remediation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return an existing remediation at resource group scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> createOrUpdateAtResourceGroupWithResponse(
-        String resourceGroupName, String remediationName, RemediationInner parameters, Context context);
+    Response<RemediationInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String remediationName, Context context);
 
     /**
      * Gets an existing remediation at resource group scope.
@@ -472,7 +491,7 @@ public interface RemediationsClient {
     RemediationInner getByResourceGroup(String resourceGroupName, String remediationName);
 
     /**
-     * Gets an existing remediation at resource group scope.
+     * Deletes an existing remediation at resource group scope.
      *
      * @param resourceGroupName Resource group name.
      * @param remediationName The name of the remediation.
@@ -480,11 +499,10 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at resource group scope.
+     * @return the remediation definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String remediationName, Context context);
+    Response<RemediationInner> deleteWithResponse(String resourceGroupName, String remediationName, Context context);
 
     /**
      * Deletes an existing remediation at resource group scope.
@@ -500,20 +518,6 @@ public interface RemediationsClient {
     RemediationInner delete(String resourceGroupName, String remediationName);
 
     /**
-     * Deletes an existing remediation at resource group scope.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> deleteWithResponse(String resourceGroupName, String remediationName, Context context);
-
-    /**
      * Gets all deployments for a remediation at resource scope.
      *
      * @param resourceId Resource ID.
@@ -521,7 +525,7 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource scope.
+     * @return all deployments for a remediation at resource scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationDeploymentInner> listDeploymentsAtResource(String resourceId, String remediationName);
@@ -536,11 +540,25 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all deployments for a remediation at resource scope.
+     * @return all deployments for a remediation at resource scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationDeploymentInner> listDeploymentsAtResource(
         String resourceId, String remediationName, Integer top, Context context);
+
+    /**
+     * Cancel a remediation at resource scope.
+     *
+     * @param resourceId Resource ID.
+     * @param remediationName The name of the remediation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RemediationInner> cancelAtResourceWithResponse(String resourceId, String remediationName, Context context);
 
     /**
      * Cancel a remediation at resource scope.
@@ -556,27 +574,13 @@ public interface RemediationsClient {
     RemediationInner cancelAtResource(String resourceId, String remediationName);
 
     /**
-     * Cancel a remediation at resource scope.
-     *
-     * @param resourceId Resource ID.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> cancelAtResourceWithResponse(String resourceId, String remediationName, Context context);
-
-    /**
      * Gets all remediations for a resource.
      *
      * @param resourceId Resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for a resource.
+     * @return all remediations for a resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationInner> listForResource(String resourceId);
@@ -591,10 +595,26 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all remediations for a resource.
+     * @return all remediations for a resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RemediationInner> listForResource(String resourceId, Integer top, String filter, Context context);
+
+    /**
+     * Creates or updates a remediation at resource scope.
+     *
+     * @param resourceId Resource ID.
+     * @param remediationName The name of the remediation.
+     * @param parameters The remediation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RemediationInner> createOrUpdateAtResourceWithResponse(
+        String resourceId, String remediationName, RemediationInner parameters, Context context);
 
     /**
      * Creates or updates a remediation at resource scope.
@@ -611,20 +631,18 @@ public interface RemediationsClient {
     RemediationInner createOrUpdateAtResource(String resourceId, String remediationName, RemediationInner parameters);
 
     /**
-     * Creates or updates a remediation at resource scope.
+     * Gets an existing remediation at resource scope.
      *
      * @param resourceId Resource ID.
      * @param remediationName The name of the remediation.
-     * @param parameters The remediation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
+     * @return an existing remediation at resource scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> createOrUpdateAtResourceWithResponse(
-        String resourceId, String remediationName, RemediationInner parameters, Context context);
+    Response<RemediationInner> getAtResourceWithResponse(String resourceId, String remediationName, Context context);
 
     /**
      * Gets an existing remediation at resource scope.
@@ -640,7 +658,7 @@ public interface RemediationsClient {
     RemediationInner getAtResource(String resourceId, String remediationName);
 
     /**
-     * Gets an existing remediation at resource scope.
+     * Deletes an existing remediation at individual resource scope.
      *
      * @param resourceId Resource ID.
      * @param remediationName The name of the remediation.
@@ -648,10 +666,10 @@ public interface RemediationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing remediation at resource scope.
+     * @return the remediation definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> getAtResourceWithResponse(String resourceId, String remediationName, Context context);
+    Response<RemediationInner> deleteAtResourceWithResponse(String resourceId, String remediationName, Context context);
 
     /**
      * Deletes an existing remediation at individual resource scope.
@@ -665,18 +683,4 @@ public interface RemediationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RemediationInner deleteAtResource(String resourceId, String remediationName);
-
-    /**
-     * Deletes an existing remediation at individual resource scope.
-     *
-     * @param resourceId Resource ID.
-     * @param remediationName The name of the remediation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remediation definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemediationInner> deleteAtResourceWithResponse(String resourceId, String remediationName, Context context);
 }

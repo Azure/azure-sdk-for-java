@@ -13,18 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityCreateOrUpdateEntities {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.entitycreateorupdateentities.entitycreateorupdateentities
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitycreateorupdateentities.entitycreateorupdateentities
         BinaryData entities =
                 BinaryData.fromString(
                         "{\"entities\":[{\"attributes\":{\"name\":\"ExampleStorageAccount1\",\"description\":null,\"createTime\":0,\"modifiedTime\":0,\"owner\":\"ExampleOwner\",\"publicAccessLevel\":null,\"qualifiedName\":\"exampleaccount1\"},\"contacts\":{\"Expert\":[{\"info\":\"Example Expert Info\",\"id\":\"30435ff9-9b96-44af-a5a9-e05c8b1ae2df\"}],\"Owner\":[{\"info\":\"Example Owner Info\",\"id\":\"30435ff9-9b96-44af-a5a9-e05c8b1ae2df\"}]},\"createdBy\":\"ExampleCreator\",\"status\":\"ACTIVE\",\"typeName\":\"azure_storage_account\",\"updatedBy\":\"ExampleUpdator\",\"version\":0},{\"attributes\":{\"name\":\"ExampleStorageAccount2\",\"description\":\"Example Description\",\"createTime\":0,\"modifiedTime\":0,\"owner\":\"ExampleOwner\",\"publicAccessLevel\":null,\"qualifiedName\":\"exampleaccount2\"},\"contacts\":{\"Expert\":[{\"info\":\"Example Expert Info\",\"id\":\"30435ff9-9b96-44af-a5a9-e05c8b1ae2df\"}],\"Owner\":[{\"info\":\"Example Owner Info\",\"id\":\"30435ff9-9b96-44af-a5a9-e05c8b1ae2df\"}]},\"createdBy\":\"ExampleCreator\",\"status\":\"ACTIVE\",\"typeName\":\"azure_storage_account\",\"updatedBy\":\"ExampleUpdator\",\"version\":0}],\"referredEntities\":{}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = entityClient.createOrUpdateEntitiesWithResponse(entities, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.entitycreateorupdateentities.entitycreateorupdateentities
+        // END:com.azure.analytics.purview.catalog.generated.entitycreateorupdateentities.entitycreateorupdateentities
     }
 }

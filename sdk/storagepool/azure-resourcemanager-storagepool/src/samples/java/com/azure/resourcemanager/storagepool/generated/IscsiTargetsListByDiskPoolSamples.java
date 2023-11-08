@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IscsiTargets ListByDiskPool. */
 public final class IscsiTargetsListByDiskPoolSamples {
     /*
@@ -17,6 +15,6 @@ public final class IscsiTargetsListByDiskPoolSamples {
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listDiskPoolsByResourceGroup(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.iscsiTargets().listByDiskPool("myResourceGroup", "myDiskPool", Context.NONE);
+        manager.iscsiTargets().listByDiskPool("myResourceGroup", "myDiskPool", com.azure.core.util.Context.NONE);
     }
 }

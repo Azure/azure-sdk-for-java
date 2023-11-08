@@ -25,6 +25,10 @@ public final class AzureDataExplorerLinkedService extends LinkedService {
     private AzureDataExplorerLinkedServiceTypeProperties innerTypeProperties =
         new AzureDataExplorerLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureDataExplorerLinkedService class. */
+    public AzureDataExplorerLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Data Explorer (Kusto) linked service properties.
      *

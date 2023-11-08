@@ -20,6 +20,10 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SiteLogsConfigProperties innerProperties;
 
+    /** Creates an instance of SiteLogsConfigInner class. */
+    public SiteLogsConfigInner() {
+    }
+
     /**
      * Get the innerProperties property: SiteLogsConfig resource specific properties.
      *

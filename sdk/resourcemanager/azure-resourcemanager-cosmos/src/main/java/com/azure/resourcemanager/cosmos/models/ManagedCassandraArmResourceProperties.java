@@ -6,21 +6,21 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The core properties of ARM resources. */
 @Fluent
 public class ManagedCassandraArmResourceProperties extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedCassandraArmResourceProperties.class);
-
     /*
      * Identity for the resource.
      */
     @JsonProperty(value = "identity")
     private ManagedCassandraManagedServiceIdentity identity;
+
+    /** Creates an instance of ManagedCassandraArmResourceProperties class. */
+    public ManagedCassandraArmResourceProperties() {
+    }
 
     /**
      * Get the identity property: Identity for the resource.

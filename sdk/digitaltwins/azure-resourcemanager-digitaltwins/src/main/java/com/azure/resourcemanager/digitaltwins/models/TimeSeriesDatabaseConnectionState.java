@@ -8,13 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TimeSeriesDatabaseConnectionState. */
+/** The provisioning state. */
 public final class TimeSeriesDatabaseConnectionState extends ExpandableStringEnum<TimeSeriesDatabaseConnectionState> {
     /** Static value Provisioning for TimeSeriesDatabaseConnectionState. */
     public static final TimeSeriesDatabaseConnectionState PROVISIONING = fromString("Provisioning");
 
     /** Static value Deleting for TimeSeriesDatabaseConnectionState. */
     public static final TimeSeriesDatabaseConnectionState DELETING = fromString("Deleting");
+
+    /** Static value Updating for TimeSeriesDatabaseConnectionState. */
+    public static final TimeSeriesDatabaseConnectionState UPDATING = fromString("Updating");
 
     /** Static value Succeeded for TimeSeriesDatabaseConnectionState. */
     public static final TimeSeriesDatabaseConnectionState SUCCEEDED = fromString("Succeeded");
@@ -44,6 +47,15 @@ public final class TimeSeriesDatabaseConnectionState extends ExpandableStringEnu
     public static final TimeSeriesDatabaseConnectionState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of TimeSeriesDatabaseConnectionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TimeSeriesDatabaseConnectionState() {
+    }
+
+    /**
      * Creates or finds a TimeSeriesDatabaseConnectionState from its string representation.
      *
      * @param name a name to look for.
@@ -54,7 +66,11 @@ public final class TimeSeriesDatabaseConnectionState extends ExpandableStringEnu
         return fromString(name, TimeSeriesDatabaseConnectionState.class);
     }
 
-    /** @return known TimeSeriesDatabaseConnectionState values. */
+    /**
+     * Gets known TimeSeriesDatabaseConnectionState values.
+     *
+     * @return known TimeSeriesDatabaseConnectionState values.
+     */
     public static Collection<TimeSeriesDatabaseConnectionState> values() {
         return values(TimeSeriesDatabaseConnectionState.class);
     }

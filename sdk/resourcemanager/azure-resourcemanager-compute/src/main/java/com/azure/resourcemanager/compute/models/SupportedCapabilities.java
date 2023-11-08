@@ -11,8 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SupportedCapabilities {
     /*
-     * True if the image from which the OS disk is created supports accelerated
-     * networking.
+     * The disk controllers that an OS disk supports. If set it can be SCSI or SCSI, NVME or NVME, SCSI.
+     */
+    @JsonProperty(value = "diskControllerTypes")
+    private String diskControllerTypes;
+
+    /*
+     * True if the image from which the OS disk is created supports accelerated networking.
      */
     @JsonProperty(value = "acceleratedNetwork")
     private Boolean acceleratedNetwork;
@@ -22,6 +27,32 @@ public final class SupportedCapabilities {
      */
     @JsonProperty(value = "architecture")
     private Architecture architecture;
+
+    /** Creates an instance of SupportedCapabilities class. */
+    public SupportedCapabilities() {
+    }
+
+    /**
+     * Get the diskControllerTypes property: The disk controllers that an OS disk supports. If set it can be SCSI or
+     * SCSI, NVME or NVME, SCSI.
+     *
+     * @return the diskControllerTypes value.
+     */
+    public String diskControllerTypes() {
+        return this.diskControllerTypes;
+    }
+
+    /**
+     * Set the diskControllerTypes property: The disk controllers that an OS disk supports. If set it can be SCSI or
+     * SCSI, NVME or NVME, SCSI.
+     *
+     * @param diskControllerTypes the diskControllerTypes value to set.
+     * @return the SupportedCapabilities object itself.
+     */
+    public SupportedCapabilities withDiskControllerTypes(String diskControllerTypes) {
+        this.diskControllerTypes = diskControllerTypes;
+        return this;
+    }
 
     /**
      * Get the acceleratedNetwork property: True if the image from which the OS disk is created supports accelerated

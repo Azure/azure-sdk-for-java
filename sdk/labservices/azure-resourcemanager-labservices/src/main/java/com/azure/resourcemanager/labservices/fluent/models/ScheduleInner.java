@@ -10,15 +10,12 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RecurrencePattern;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Schedule for automatically turning virtual machines in a lab on and off at specified times. */
 @Fluent
 public final class ScheduleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the schedule.
      */
@@ -184,11 +181,13 @@ public final class ScheduleInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model ScheduleInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScheduleInner.class);
 }

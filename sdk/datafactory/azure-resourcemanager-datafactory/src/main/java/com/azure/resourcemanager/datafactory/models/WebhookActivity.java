@@ -23,6 +23,10 @@ public final class WebhookActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private WebhookActivityTypeProperties innerTypeProperties = new WebhookActivityTypeProperties();
 
+    /** Creates an instance of WebhookActivity class. */
+    public WebhookActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: WebHook activity properties.
      *
@@ -43,6 +47,20 @@ public final class WebhookActivity extends ControlActivity {
     @Override
     public WebhookActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebhookActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebhookActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

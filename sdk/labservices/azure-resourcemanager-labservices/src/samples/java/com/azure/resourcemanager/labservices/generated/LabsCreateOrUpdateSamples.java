@@ -22,7 +22,7 @@ import java.time.Duration;
 /** Samples for Labs CreateOrUpdate. */
 public final class LabsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Labs/putLab.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Labs/putLab.json
      */
     /**
      * Sample code: putLab.
@@ -44,9 +44,9 @@ public final class LabsCreateOrUpdateSamples {
                     .withShutdownOnDisconnect(EnableState.ENABLED)
                     .withShutdownWhenNotConnected(EnableState.ENABLED)
                     .withShutdownOnIdle(ShutdownOnIdleMode.USER_ABSENCE)
-                    .withDisconnectDelay(Duration.parse("00:05"))
-                    .withNoConnectDelay(Duration.parse("01:00"))
-                    .withIdleDelay(Duration.parse("01:00")))
+                    .withDisconnectDelay(Duration.parse("PT5M"))
+                    .withNoConnectDelay(Duration.parse("PT5M"))
+                    .withIdleDelay(Duration.parse("PT5M")))
             .withConnectionProfile(
                 new ConnectionProfile()
                     .withWebSshAccess(ConnectionType.NONE)
@@ -65,7 +65,7 @@ public final class LabsCreateOrUpdateSamples {
                     .withSku(new Sku().withName("Medium"))
                     .withAdditionalCapabilities(
                         new VirtualMachineAdditionalCapabilities().withInstallGpuDrivers(EnableState.DISABLED))
-                    .withUsageQuota(Duration.parse("10:00"))
+                    .withUsageQuota(Duration.parse("PT10H"))
                     .withUseSharedPassword(EnableState.DISABLED)
                     .withAdminUser(new Credentials().withUsername("test-user")))
             .withSecurityProfile(new SecurityProfile().withOpenAccess(EnableState.DISABLED))

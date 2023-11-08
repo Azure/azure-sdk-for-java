@@ -5,63 +5,34 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.models.AlertErrorDetails;
 import com.azure.resourcemanager.databoxedge.models.AlertSeverity;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Alert on the data box edge/gateway device. */
-@JsonFlatten
 @Immutable
-public class AlertInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertInner.class);
-
+public final class AlertInner extends ArmBaseModel {
     /*
-     * Alert title.
+     * Properties of alert.
      */
-    @JsonProperty(value = "properties.title", access = JsonProperty.Access.WRITE_ONLY)
-    private String title;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private AlertProperties innerProperties;
 
-    /*
-     * Alert type.
-     */
-    @JsonProperty(value = "properties.alertType", access = JsonProperty.Access.WRITE_ONLY)
-    private String alertType;
+    /** Creates an instance of AlertInner class. */
+    public AlertInner() {
+    }
 
-    /*
-     * UTC time when the alert appeared.
+    /**
+     * Get the innerProperties property: Properties of alert.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.appearedAtDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime appearedAtDateTime;
-
-    /*
-     * Alert recommendation.
-     */
-    @JsonProperty(value = "properties.recommendation", access = JsonProperty.Access.WRITE_ONLY)
-    private String recommendation;
-
-    /*
-     * Severity of the alert.
-     */
-    @JsonProperty(value = "properties.severity", access = JsonProperty.Access.WRITE_ONLY)
-    private AlertSeverity severity;
-
-    /*
-     * Error details of the alert.
-     */
-    @JsonProperty(value = "properties.errorDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private AlertErrorDetails errorDetails;
-
-    /*
-     * Alert details.
-     */
-    @JsonProperty(value = "properties.detailedInformation", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, String> detailedInformation;
+    private AlertProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the title property: Alert title.
@@ -69,7 +40,7 @@ public class AlertInner extends ArmBaseModel {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -78,7 +49,7 @@ public class AlertInner extends ArmBaseModel {
      * @return the alertType value.
      */
     public String alertType() {
-        return this.alertType;
+        return this.innerProperties() == null ? null : this.innerProperties().alertType();
     }
 
     /**
@@ -87,7 +58,7 @@ public class AlertInner extends ArmBaseModel {
      * @return the appearedAtDateTime value.
      */
     public OffsetDateTime appearedAtDateTime() {
-        return this.appearedAtDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().appearedAtDateTime();
     }
 
     /**
@@ -96,7 +67,7 @@ public class AlertInner extends ArmBaseModel {
      * @return the recommendation value.
      */
     public String recommendation() {
-        return this.recommendation;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendation();
     }
 
     /**
@@ -105,7 +76,7 @@ public class AlertInner extends ArmBaseModel {
      * @return the severity value.
      */
     public AlertSeverity severity() {
-        return this.severity;
+        return this.innerProperties() == null ? null : this.innerProperties().severity();
     }
 
     /**
@@ -114,7 +85,7 @@ public class AlertInner extends ArmBaseModel {
      * @return the errorDetails value.
      */
     public AlertErrorDetails errorDetails() {
-        return this.errorDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().errorDetails();
     }
 
     /**
@@ -123,7 +94,7 @@ public class AlertInner extends ArmBaseModel {
      * @return the detailedInformation value.
      */
     public Map<String, String> detailedInformation() {
-        return this.detailedInformation;
+        return this.innerProperties() == null ? null : this.innerProperties().detailedInformation();
     }
 
     /**
@@ -134,8 +105,8 @@ public class AlertInner extends ArmBaseModel {
     @Override
     public void validate() {
         super.validate();
-        if (errorDetails() != null) {
-            errorDetails().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

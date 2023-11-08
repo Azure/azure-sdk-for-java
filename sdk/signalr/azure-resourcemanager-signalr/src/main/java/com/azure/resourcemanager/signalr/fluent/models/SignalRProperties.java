@@ -5,23 +5,21 @@
 package com.azure.resourcemanager.signalr.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.signalr.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.azure.resourcemanager.signalr.models.ResourceLogConfiguration;
+import com.azure.resourcemanager.signalr.models.ServerlessSettings;
 import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.SignalRCorsSettings;
 import com.azure.resourcemanager.signalr.models.SignalRFeature;
 import com.azure.resourcemanager.signalr.models.SignalRNetworkACLs;
 import com.azure.resourcemanager.signalr.models.SignalRTlsSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A class that describes the properties of the resource. */
 @Fluent
 public final class SignalRProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRProperties.class);
-
     /*
      * Provisioning state of the resource.
      */
@@ -41,22 +39,19 @@ public final class SignalRProperties {
     private String hostname;
 
     /*
-     * The publicly accessible port of the resource which is designed for
-     * browser/client side usage.
+     * The publicly accessible port of the resource which is designed for browser/client side usage.
      */
     @JsonProperty(value = "publicPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer publicPort;
 
     /*
-     * The publicly accessible port of the resource which is designed for
-     * customer server side usage.
+     * The publicly accessible port of the resource which is designed for customer server side usage.
      */
     @JsonProperty(value = "serverPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer serverPort;
 
     /*
-     * Version of the resource. Probably you need the same or higher version of
-     * client SDKs.
+     * Version of the resource. Probably you need the same or higher version of client SDKs.
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
@@ -74,7 +69,7 @@ public final class SignalRProperties {
     private List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources;
 
     /*
-     * TLS settings.
+     * TLS settings for the resource
      */
     @JsonProperty(value = "tls")
     private SignalRTlsSettings tls;
@@ -88,23 +83,22 @@ public final class SignalRProperties {
     /*
      * List of the featureFlags.
      *
-     * FeatureFlags that are not included in the parameters for the update
-     * operation will not be modified.
+     * FeatureFlags that are not included in the parameters for the update operation will not be modified.
      * And the response will only include featureFlags that are explicitly set.
-     * When a featureFlag is not explicitly set, its globally default value
-     * will be used
-     * But keep in mind, the default value doesn't mean "false". It varies in
-     * terms of different FeatureFlags.
+     * When a featureFlag is not explicitly set, its globally default value will be used
+     * But keep in mind, the default value doesn't mean "false". It varies in terms of different FeatureFlags.
      */
     @JsonProperty(value = "features")
     private List<SignalRFeature> features;
 
     /*
+     * Live trace configuration of a Microsoft.SignalRService resource.
+     */
+    @JsonProperty(value = "liveTraceConfiguration")
+    private LiveTraceConfiguration liveTraceConfiguration;
+
+    /*
      * Resource log configuration of a Microsoft.SignalRService resource.
-     * If resourceLogConfiguration isn't null or empty, it will override
-     * options "EnableConnectivityLog" and "EnableMessagingLogs" in features.
-     * Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs"
-     * in features.
      */
     @JsonProperty(value = "resourceLogConfiguration")
     private ResourceLogConfiguration resourceLogConfiguration;
@@ -116,13 +110,19 @@ public final class SignalRProperties {
     private SignalRCorsSettings cors;
 
     /*
-     * Upstream settings when the service is in server-less mode.
+     * Serverless settings.
+     */
+    @JsonProperty(value = "serverless")
+    private ServerlessSettings serverless;
+
+    /*
+     * The settings for the Upstream when the service is in server-less mode.
      */
     @JsonProperty(value = "upstream")
     private ServerlessUpstreamSettings upstream;
 
     /*
-     * Network ACLs
+     * Network ACLs for the resource
      */
     @JsonProperty(value = "networkACLs")
     private SignalRNetworkACLs networkACLs;
@@ -130,8 +130,7 @@ public final class SignalRProperties {
     /*
      * Enable or disable public network access. Default to "Enabled".
      * When it's Enabled, network ACLs still apply.
-     * When it's Disabled, public network access is always disabled no matter
-     * what you set in network ACLs.
+     * When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private String publicNetworkAccess;
@@ -151,6 +150,27 @@ public final class SignalRProperties {
      */
     @JsonProperty(value = "disableAadAuth")
     private Boolean disableAadAuth;
+
+    /*
+     * Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not
+     * be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     */
+    @JsonProperty(value = "regionEndpointEnabled")
+    private String regionEndpointEnabled;
+
+    /*
+     * Stop or start the resource.  Default to "False".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     */
+    @JsonProperty(value = "resourceStopped")
+    private String resourceStopped;
+
+    /** Creates an instance of SignalRProperties class. */
+    public SignalRProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
@@ -227,7 +247,7 @@ public final class SignalRProperties {
     }
 
     /**
-     * Get the tls property: TLS settings.
+     * Get the tls property: TLS settings for the resource.
      *
      * @return the tls value.
      */
@@ -236,7 +256,7 @@ public final class SignalRProperties {
     }
 
     /**
-     * Set the tls property: TLS settings.
+     * Set the tls property: TLS settings for the resource.
      *
      * @param tls the tls value to set.
      * @return the SignalRProperties object itself.
@@ -286,10 +306,27 @@ public final class SignalRProperties {
     }
 
     /**
-     * Get the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
-     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
-     * features.
+     * Get the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
+     *
+     * @return the liveTraceConfiguration value.
+     */
+    public LiveTraceConfiguration liveTraceConfiguration() {
+        return this.liveTraceConfiguration;
+    }
+
+    /**
+     * Set the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
+     *
+     * @param liveTraceConfiguration the liveTraceConfiguration value to set.
+     * @return the SignalRProperties object itself.
+     */
+    public SignalRProperties withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration) {
+        this.liveTraceConfiguration = liveTraceConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
      *
      * @return the resourceLogConfiguration value.
      */
@@ -298,10 +335,7 @@ public final class SignalRProperties {
     }
 
     /**
-     * Set the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
-     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
-     * features.
+     * Set the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
      *
      * @param resourceLogConfiguration the resourceLogConfiguration value to set.
      * @return the SignalRProperties object itself.
@@ -332,7 +366,27 @@ public final class SignalRProperties {
     }
 
     /**
-     * Get the upstream property: Upstream settings when the service is in server-less mode.
+     * Get the serverless property: Serverless settings.
+     *
+     * @return the serverless value.
+     */
+    public ServerlessSettings serverless() {
+        return this.serverless;
+    }
+
+    /**
+     * Set the serverless property: Serverless settings.
+     *
+     * @param serverless the serverless value to set.
+     * @return the SignalRProperties object itself.
+     */
+    public SignalRProperties withServerless(ServerlessSettings serverless) {
+        this.serverless = serverless;
+        return this;
+    }
+
+    /**
+     * Get the upstream property: The settings for the Upstream when the service is in server-less mode.
      *
      * @return the upstream value.
      */
@@ -341,7 +395,7 @@ public final class SignalRProperties {
     }
 
     /**
-     * Set the upstream property: Upstream settings when the service is in server-less mode.
+     * Set the upstream property: The settings for the Upstream when the service is in server-less mode.
      *
      * @param upstream the upstream value to set.
      * @return the SignalRProperties object itself.
@@ -352,7 +406,7 @@ public final class SignalRProperties {
     }
 
     /**
-     * Get the networkACLs property: Network ACLs.
+     * Get the networkACLs property: Network ACLs for the resource.
      *
      * @return the networkACLs value.
      */
@@ -361,7 +415,7 @@ public final class SignalRProperties {
     }
 
     /**
-     * Set the networkACLs property: Network ACLs.
+     * Set the networkACLs property: Network ACLs for the resource.
      *
      * @param networkACLs the networkACLs value to set.
      * @return the SignalRProperties object itself.
@@ -440,6 +494,52 @@ public final class SignalRProperties {
     }
 
     /**
+     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @return the regionEndpointEnabled value.
+     */
+    public String regionEndpointEnabled() {
+        return this.regionEndpointEnabled;
+    }
+
+    /**
+     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @param regionEndpointEnabled the regionEndpointEnabled value to set.
+     * @return the SignalRProperties object itself.
+     */
+    public SignalRProperties withRegionEndpointEnabled(String regionEndpointEnabled) {
+        this.regionEndpointEnabled = regionEndpointEnabled;
+        return this;
+    }
+
+    /**
+     * Get the resourceStopped property: Stop or start the resource. Default to "False". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @return the resourceStopped value.
+     */
+    public String resourceStopped() {
+        return this.resourceStopped;
+    }
+
+    /**
+     * Set the resourceStopped property: Stop or start the resource. Default to "False". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @param resourceStopped the resourceStopped value to set.
+     * @return the SignalRProperties object itself.
+     */
+    public SignalRProperties withResourceStopped(String resourceStopped) {
+        this.resourceStopped = resourceStopped;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -457,11 +557,17 @@ public final class SignalRProperties {
         if (features() != null) {
             features().forEach(e -> e.validate());
         }
+        if (liveTraceConfiguration() != null) {
+            liveTraceConfiguration().validate();
+        }
         if (resourceLogConfiguration() != null) {
             resourceLogConfiguration().validate();
         }
         if (cors() != null) {
             cors().validate();
+        }
+        if (serverless() != null) {
+            serverless().validate();
         }
         if (upstream() != null) {
             upstream().validate();

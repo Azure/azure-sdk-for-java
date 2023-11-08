@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Supported auto pause delay time range. */
 @Immutable
 public final class AutoPauseDelayTimeRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoPauseDelayTimeRange.class);
-
     /*
      * Minimum value
      */
@@ -27,8 +23,7 @@ public final class AutoPauseDelayTimeRange {
     private Integer maxValue;
 
     /*
-     * Step value for discrete values between the minimum value and the maximum
-     * value.
+     * Step value for discrete values between the minimum value and the maximum value.
      */
     @JsonProperty(value = "stepSize", access = JsonProperty.Access.WRITE_ONLY)
     private Integer stepSize;
@@ -50,6 +45,10 @@ public final class AutoPauseDelayTimeRange {
      */
     @JsonProperty(value = "doNotPauseValue", access = JsonProperty.Access.WRITE_ONLY)
     private Integer doNotPauseValue;
+
+    /** Creates an instance of AutoPauseDelayTimeRange class. */
+    public AutoPauseDelayTimeRange() {
+    }
 
     /**
      * Get the minValue property: Minimum value.

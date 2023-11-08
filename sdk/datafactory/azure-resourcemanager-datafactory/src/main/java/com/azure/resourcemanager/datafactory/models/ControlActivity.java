@@ -33,6 +33,10 @@ import java.util.List;
 })
 @Fluent
 public class ControlActivity extends Activity {
+    /** Creates an instance of ControlActivity class. */
+    public ControlActivity() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ControlActivity withName(String name) {
@@ -44,6 +48,20 @@ public class ControlActivity extends Activity {
     @Override
     public ControlActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ControlActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ControlActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

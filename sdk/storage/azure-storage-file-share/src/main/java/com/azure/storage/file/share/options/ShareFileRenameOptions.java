@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -15,6 +16,7 @@ import java.util.Map;
  */
 @Fluent
 public final class ShareFileRenameOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(ShareFileRenameOptions.class);
 
     private final String destinationPath;
     private Boolean replaceIfExists;
@@ -24,6 +26,7 @@ public final class ShareFileRenameOptions {
     private String filePermission;
     private FileSmbProperties smbProperties;
     private Map<String, String> metadata;
+    private String contentType;
 
     /**
      * Creates a {@code ShareFileRenameOptions} object.
@@ -168,6 +171,26 @@ public final class ShareFileRenameOptions {
      */
     public ShareFileRenameOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Gets the content type.
+     *
+     * @return The content type.
+     */
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Sets the content type.
+     *
+     * @param contentType the content type.
+     * @return The updated options.
+     */
+    public ShareFileRenameOptions setContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 }

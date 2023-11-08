@@ -4,14 +4,20 @@
 
 package com.azure.monitor.query.implementation.logs.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains details when the response code indicates an error. */
-@Fluent
+/**
+ * Error details.
+ *
+ * <p>Contains details when the response code indicates an error.
+ */
+@Immutable
 public final class ErrorResponse {
     /*
+     * The code and message for an error.
+     *
      * The error details.
      */
     @JsonProperty(value = "error", required = true)
@@ -28,7 +34,9 @@ public final class ErrorResponse {
     }
 
     /**
-     * Get the error property: The error details.
+     * Get the error property: The code and message for an error.
+     *
+     * <p>The error details.
      *
      * @return the error value.
      */

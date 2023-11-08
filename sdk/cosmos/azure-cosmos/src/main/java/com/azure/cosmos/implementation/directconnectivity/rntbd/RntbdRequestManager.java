@@ -23,9 +23,14 @@ import com.azure.cosmos.implementation.RequestEntityTooLargeException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -42,7 +47,10 @@ import io.netty.channel.pool.ChannelHealthChecker;
 import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.ssl.SslHandler;
+import io.netty.handler.ssl.SslHandshakeCompletionEvent;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCounted;
 import io.netty.util.Timeout;
 import io.netty.util.concurrent.DefaultEventExecutor;
@@ -53,8 +61,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
+import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
+import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +73,9 @@ import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
@@ -84,6 +98,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private static final ClosedChannelException ON_DEREGISTER =
         ThrowableUtil.unknownStackTrace(new ClosedChannelException(), RntbdRequestManager.class, "deregister");
 
+    private static final String FAULT_INJECTION_RULE_ID_KEY_NAME = "faultInjectionRuleId";
+    private static final AttributeKey<String> FAULT_INJECTION_RULE_ID_KEY = AttributeKey.newInstance(
+        FAULT_INJECTION_RULE_ID_KEY_NAME);
+
     private static final EventExecutor requestExpirationExecutor = new DefaultEventExecutor(new RntbdThreadFactory(
         "request-expirator",
         true,
@@ -97,13 +115,23 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private final int pendingRequestLimit;
     private final ConcurrentHashMap<Long, RntbdRequestRecord> pendingRequests;
     private final Timestamps timestamps = new Timestamps();
+    private final RntbdConnectionStateListener rntbdConnectionStateListener;
+    private final long idleConnectionTimerResolutionInNanos;
+    private final long tcpNetworkRequestTimeoutInNanos;
+    private final RntbdServerErrorInjector serverErrorInjector;
 
     private boolean closingExceptionally = false;
     private CoalescingBufferQueue pendingWrites;
 
     // endregion
 
-    public RntbdRequestManager(final ChannelHealthChecker healthChecker, final int pendingRequestLimit) {
+    public RntbdRequestManager(
+        final ChannelHealthChecker healthChecker,
+        final int pendingRequestLimit,
+        final RntbdConnectionStateListener connectionStateListener,
+        final long idleConnectionTimerResolutionInNanos,
+        final RntbdServerErrorInjector serverErrorInjector,
+        final long tcpNetworkRequestTimeoutInNanos) {
 
         checkArgument(pendingRequestLimit > 0, "pendingRequestLimit: %s", pendingRequestLimit);
         checkNotNull(healthChecker, "healthChecker");
@@ -111,6 +139,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.pendingRequests = new ConcurrentHashMap<>(pendingRequestLimit);
         this.pendingRequestLimit = pendingRequestLimit;
         this.healthChecker = healthChecker;
+        this.rntbdConnectionStateListener = connectionStateListener;
+        this.idleConnectionTimerResolutionInNanos = idleConnectionTimerResolutionInNanos;
+        this.tcpNetworkRequestTimeoutInNanos = tcpNetworkRequestTimeoutInNanos;
+        this.serverErrorInjector = serverErrorInjector;
     }
 
     // region ChannelHandler methods
@@ -174,10 +206,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     public void channelRead(final ChannelHandlerContext context, final Object message) {
 
         this.traceOperation(context, "channelRead");
+        this.timestamps.channelReadCompleted();
 
         try {
             if (message.getClass() == RntbdResponse.class) {
-
                 try {
                     this.messageReceived(context, (RntbdResponse) message);
                 } catch (CorruptedFrameException error) {
@@ -218,7 +250,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     @Override
     public void channelReadComplete(final ChannelHandlerContext context) {
         this.traceOperation(context, "channelReadComplete");
-        this.timestamps.channelReadCompleted();
         context.fireChannelReadComplete();
     }
 
@@ -298,7 +329,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, cause);
-            logger.debug("{} closing due to:", context, cause);
+            if (logger.isDebugEnabled()) {
+                logger.debug("{} closing due to:", context, cause);
+            }
             context.flush().close();
         }
     }
@@ -320,34 +353,108 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             if (event instanceof IdleStateEvent) {
                 // NOTE: if the connection is killed this may not receive any event
-                this.healthChecker.isHealthy(context.channel()).addListener((Future<Boolean> future) -> {
+                if (this.healthChecker instanceof RntbdClientChannelHealthChecker) {
+                    ((RntbdClientChannelHealthChecker) this.healthChecker)
+                        .isHealthyWithFailureReason(context.channel()).addListener((Future<String> future) -> {
 
-                    final Throwable cause;
+                        final Throwable cause;
 
-                    if (future.isSuccess()) {
-                        if (future.get()) {
-                            return;
+                        if (future.isSuccess()) {
+                            if (RntbdConstants.RntbdHealthCheckResults.SuccessValue.equals(future.get())) {
+                                return;
+                            }
+                            cause = new UnhealthyChannelException(future.get());
+                        } else {
+                            cause = future.cause();
                         }
-                        cause = UnhealthyChannelException.INSTANCE;
-                    } else {
-                        cause = future.cause();
-                    }
 
-                    this.exceptionCaught(context, cause);
-                });
+                        this.exceptionCaught(context, cause);
+                    });
+                } else {
+                    this.healthChecker.isHealthy(context.channel()).addListener((Future<Boolean> future) -> {
+
+                        final Throwable cause;
+
+                        if (future.isSuccess()) {
+                            if (future.get()) {
+                                return;
+                            }
+                            cause = new UnhealthyChannelException(
+                                MessageFormat.format(
+                                    "Custom ChannelHealthChecker {0} failed.",
+                                    this.healthChecker.getClass().getSimpleName()));
+                        } else {
+                            cause = future.cause();
+                        }
+
+                        this.exceptionCaught(context, cause);
+                    });
+                }
 
                 return;
             }
             if (event instanceof RntbdContext) {
                 this.contextFuture.complete((RntbdContext) event);
                 this.removeContextNegotiatorAndFlushPendingWrites(context);
+
+                // Important: currently the RntbdContext negotiation response will not be captured during channelRead
+                // need to mark the timestamp here
+                this.timestamps.channelReadCompleted();
                 return;
             }
             if (event instanceof RntbdContextException) {
                 this.contextFuture.completeExceptionally((RntbdContextException) event);
-                context.pipeline().flush().close();
+                this.exceptionCaught(context, (RntbdContextException)event);
                 return;
             }
+
+            if (event instanceof SslHandshakeCompletionEvent) {
+                SslHandshakeCompletionEvent sslHandshakeCompletionEvent = (SslHandshakeCompletionEvent) event;
+
+                if (sslHandshakeCompletionEvent.isSuccess()) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("SslHandshake completed, adding idleStateHandler");
+                    }
+
+                    context.pipeline().addAfter(
+                            SslHandler.class.toString(),
+                            IdleStateHandler.class.toString(),
+                            new IdleStateHandler(
+                                this.idleConnectionTimerResolutionInNanos,
+                                this.idleConnectionTimerResolutionInNanos,
+                                0,
+                                TimeUnit.NANOSECONDS));
+                } else {
+                    // Even if we do not capture here, the channel will still be closed properly,
+                    // but we will lose the inner exception: the request will fail with closeChannelException instead sslHandshake related exception.
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("SslHandshake failed", sslHandshakeCompletionEvent.cause());
+                    }
+                    this.exceptionCaught(context, sslHandshakeCompletionEvent.cause());
+                    return;
+                }
+            }
+
+            if (event instanceof RntbdFaultInjectionConnectionResetEvent) {
+                logger.warn(
+                    "Inject Connection reset with ruleId {} ",
+                    ((RntbdFaultInjectionConnectionResetEvent) event).getFaultInjectionRuleId());
+
+                context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).set(((RntbdFaultInjectionConnectionResetEvent) event).getFaultInjectionRuleId());
+                this.exceptionCaught(context, new IOException("Fault Injection Connection Reset"));
+                return;
+            }
+
+            if (event instanceof RntbdFaultInjectionConnectionCloseEvent) {
+                logger.warn(
+                    "Inject Connection close with ruleId {} ",
+                    ((RntbdFaultInjectionConnectionCloseEvent) event).getFaultInjectionRuleId());
+
+                context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).set(((RntbdFaultInjectionConnectionCloseEvent) event).getFaultInjectionRuleId());
+                context.close();
+                return;
+            }
+
             context.fireUserEventTriggered(event);
 
         } catch (Throwable error) {
@@ -513,15 +620,35 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (message instanceof RntbdRequestRecord) {
 
             final RntbdRequestRecord record = (RntbdRequestRecord) message;
-            this.timestamps.channelWriteAttempted();
-            record.setSendingRequestHasStarted();
+            record.setTimestamps(this.timestamps);
 
-            context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
-                record.stage(RntbdRequestRecord.Stage.SENT);
-                if (completed.isSuccess()) {
-                    this.timestamps.channelWriteCompleted();
+            if (!record.isCancelled()) {
+                record.setSendingRequestHasStarted();
+                this.timestamps.channelWriteAttempted();
+
+                if (this.serverErrorInjector != null) {
+                    if (this.serverErrorInjector.injectRntbdServerResponseError(record)) {
+                        this.timestamps.channelWriteCompleted();
+                        this.timestamps.channelReadCompleted();
+                        return;
+                    }
+
+                    Consumer<Duration> writeRequestWithInjectedDelayConsumer =
+                        (delay) -> this.writeRequestWithInjectedDelay(context, record, promise, delay);
+                    if (this.serverErrorInjector.injectRntbdServerResponseDelayBeforeProcessing(
+                        record, writeRequestWithInjectedDelayConsumer)) {
+
+                        return;
+                    }
                 }
-            });
+
+                context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
+                    record.stage(RntbdRequestRecord.Stage.SENT);
+                    if (completed.isSuccess()) {
+                        this.timestamps.channelWriteCompleted();
+                    }
+                });
+            }
 
             return;
         }
@@ -545,6 +672,90 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.exceptionCaught(context, error);
     }
 
+    private void writeRequestWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final ChannelPromise promise,
+        Duration delay) {
+
+        // Start the timer but delay the write
+        // The ultimate effect will be similar to reduce the request timeout
+        // But if the configured delay > networkRequestTimeout, then do not bother to send the request
+        this.addPendingRequestRecord(context, rntbdRequestRecord);
+        rntbdRequestRecord.stage(RntbdRequestRecord.Stage.SENT);
+        this.timestamps.channelWriteCompleted();
+
+        // Since this is to simulate a response delay, mark write completed
+        this.timestamps.channelWriteCompleted();
+
+        long effectiveDelayInNanos = Math.min(this.tcpNetworkRequestTimeoutInNanos, delay.toNanos());
+        context.executor().schedule(
+            () -> {
+                if (this.tcpNetworkRequestTimeoutInNanos <= delay.toNanos()) {
+                    return;
+                }
+                context.write(rntbdRequestRecord, promise);
+            },
+            effectiveDelayInNanos,
+            TimeUnit.NANOSECONDS
+        );
+    }
+
+    private void completeWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final StoreResponse storeResponse,
+        Duration delay) {
+
+        long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
+        if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
+            return;
+        }
+
+        context.executor().schedule(
+            () -> {
+
+                rntbdRequestRecord.complete(storeResponse);
+            },
+            delay.toNanos(),
+            TimeUnit.NANOSECONDS
+        );
+    }
+
+    private void completeExceptionallyWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final CosmosException cause,
+        Duration delay) {
+
+        long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
+        if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
+            return;
+        }
+
+        context.executor().schedule(
+            () -> {
+
+                rntbdRequestRecord.completeExceptionally(cause);
+            },
+            delay.toNanos(),
+            TimeUnit.NANOSECONDS
+        );
+    }
+
+    public RntbdChannelStatistics getChannelStatistics(
+        Channel channel,
+        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        return new RntbdChannelStatistics()
+            .channelId(channel.id().toString())
+            .pendingRequestsCount(this.pendingRequests.size())
+            .channelTaskQueueSize(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()))
+            .lastReadTime(this.timestamps.lastChannelReadTime())
+            .transitTimeoutCount(this.timestamps.transitTimeoutCount())
+            .transitTimeoutStartingTime(this.timestamps.transitTimeoutStartingTime())
+            .waitForConnectionInit(channelAcquisitionTimeline.isWaitForChannelInit());
+    }
+
     // endregion
 
     // region Package private methods
@@ -554,7 +765,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     Optional<RntbdContext> rntbdContext() {
-        return Optional.of(this.contextFuture.getNow(null));
+        return Optional.ofNullable(this.contextFuture.getNow(null));
     }
 
     CompletableFuture<RntbdContextRequest> rntbdContextRequestFuture() {
@@ -587,6 +798,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.pendingWrites.add(out, promise);
     }
 
+    public Timestamps getTimestamps() {
+        return this.timestamps;
+    }
+
     Timestamps snapshotTimestamps() {
         return new Timestamps(this.timestamps);
     }
@@ -597,30 +812,36 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     private RntbdRequestRecord addPendingRequestRecord(final ChannelHandlerContext context, final RntbdRequestRecord record) {
 
-        return this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
+        AtomicReference<Timeout> pendingRequestTimeout = new AtomicReference<>();
+        this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
 
             reportIssueUnless(current == null, context, "id: {}, current: {}, request: {}", record);
-            record.pendingRequestQueueSize(pendingRequests.size());
-
-            final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
+            pendingRequestTimeout.set(record.newTimeout(timeout -> {
 
                 // We don't wish to complete on the timeout thread, but rather on a thread doled out by our executor
                 requestExpirationExecutor.execute(record::expire);
-            });
-
-            record.whenComplete((response, error) -> {
-                this.pendingRequests.remove(id);
-                pendingRequestTimeout.cancel();
-            });
+            }));
 
             return record;
-
         });
+
+        // NOTE: please do not put the following logic inside the compute block. It may cause dead lock when a record is cancelled early
+        record.whenComplete((response, error) -> {
+            this.pendingRequests.remove(record.transportRequestId());
+            if (pendingRequestTimeout.get() != null) {
+                pendingRequestTimeout.get().cancel();
+            }
+
+            if (record.isCancelled()) {
+                this.timestamps.cancellation();
+            }
+        });
+
+        return record;
     }
 
     private void completeAllPendingRequestsExceptionally(
-        final ChannelHandlerContext context, final Throwable throwable
-    ) {
+        final ChannelHandlerContext context, final Throwable throwable) {
 
         reportIssueUnless(!this.closingExceptionally, context, "", throwable);
         this.closingExceptionally = true;
@@ -628,6 +849,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (this.pendingWrites != null && !this.pendingWrites.isEmpty()) {
             // an expensive call that fires at least one exceptionCaught event
             this.pendingWrites.releaseAndFailAll(context, throwable);
+        }
+
+        if (this.rntbdConnectionStateListener != null) {
+            this.rntbdConnectionStateListener.onException(throwable);
         }
 
         if (this.pendingRequests.isEmpty()) {
@@ -697,13 +922,26 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 : new ChannelException(throwable);
         }
 
+        String faultInjectionRuleId = StringUtils.EMPTY;
+        if (context.channel().hasAttr(FAULT_INJECTION_RULE_ID_KEY)) {
+            faultInjectionRuleId = context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).getAndSet(StringUtils.EMPTY);
+        }
+
         for (RntbdRequestRecord record : this.pendingRequests.values()) {
 
             final Map<String, String> requestHeaders = record.args().serviceRequest().getHeaders();
-            final String requestUri = record.args().physicalAddress().toString();
+            final String requestUri = record.args().physicalAddressUri().getURI().toString();
 
-            final GoneException error = new GoneException(message, cause, null, requestUri);
+            final GoneException error = new GoneException(message, cause, null, requestUri, SubStatusCodes.UNKNOWN);
             BridgeInternal.setRequestHeaders(error, requestHeaders);
+
+            if (StringUtils.isNotEmpty(faultInjectionRuleId)) {
+                record
+                    .args()
+                    .serviceRequest()
+                    .faultInjectionRequestContext
+                    .applyFaultInjectionRule(record.transportRequestId(), faultInjectionRuleId);
+            }
 
             record.completeExceptionally(error);
         }
@@ -731,6 +969,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return;
         }
 
+        final RxDocumentServiceRequest serviceRequest = requestRecord.args().serviceRequest();
+
         requestRecord.stage(RntbdRequestRecord.Stage.DECODE_STARTED, response.getDecodeStartTime());
 
         // When decode completed, it means sdk has received the full response from server
@@ -748,6 +988,17 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
+
+            if (this.serverErrorInjector != null) {
+                Consumer<Duration> completeWithInjectedDelayConsumer =
+                    (delay) -> this.completeWithInjectedDelay(context, requestRecord, storeResponse, delay);
+                if (this.serverErrorInjector.injectRntbdServerResponseDelayAfterProcessing(
+                    requestRecord, completeWithInjectedDelayConsumer)) {
+
+                    return;
+                }
+            }
+
             requestRecord.complete(storeResponse);
 
         } else {
@@ -775,8 +1026,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             // ..Create CosmosException based on status and sub-status codes
 
-            final String resourceAddress = requestRecord.args().physicalAddress() != null ?
-                requestRecord.args().physicalAddress().toString() : null;
+            final String resourceAddress = requestRecord.args().physicalAddressUri() != null ?
+                requestRecord.args().physicalAddressUri().getURI().toString() : null;
 
             switch (status.code()) {
 
@@ -797,23 +1048,32 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     final int subStatusCode = Math.toIntExact(response.getHeader(RntbdResponseHeader.SubStatus));
 
                     switch (subStatusCode) {
-                        case SubStatusCodes.COMPLETING_SPLIT:
+                        case SubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
                             cause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.COMPLETING_PARTITION_MIGRATION:
                             cause = new PartitionIsMigratingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.NAME_CACHE_IS_STALE:
                             cause = new InvalidPartitionException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         default:
                             GoneException goneExceptionFromService =
-                                new GoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                                new GoneException(error, lsn, partitionKeyRangeId, responseHeaders,
+                                    SubStatusCodes.SERVER_GENERATED_410);
                             goneExceptionFromService.setIsBasedOn410ResponseFromService();
                             cause = goneExceptionFromService;
+                            handleGoneException(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                     }
                     break;
@@ -844,7 +1104,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                 case StatusCodes.REQUEST_TIMEOUT:
                     Exception inner = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
-                    cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner);
+                    cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner,
+                        SubStatusCodes.SERVER_GENERATED_408);
                     break;
 
                 case StatusCodes.RETRY_WITH:
@@ -852,7 +1113,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 case StatusCodes.SERVICE_UNAVAILABLE:
-                    cause = new ServiceUnavailableException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new ServiceUnavailableException(error, lsn, partitionKeyRangeId, responseHeaders,
+                        SubStatusCodes.SERVER_GENERATED_503);
                     break;
 
                 case StatusCodes.TOO_MANY_REQUESTS:
@@ -869,7 +1131,38 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             }
             BridgeInternal.setResourceAddress(cause, resourceAddress);
 
+            if (this.serverErrorInjector != null) {
+                Consumer<Duration> completeWithInjectedDelayConsumer =
+                    (delay) -> this.completeExceptionallyWithInjectedDelay(context, requestRecord, cause, delay);
+                if (this.serverErrorInjector.injectRntbdServerResponseDelayAfterProcessing(
+                    requestRecord, completeWithInjectedDelayConsumer)) {
+
+                    return;
+                }
+            }
+
             requestRecord.completeExceptionally(cause);
+        }
+    }
+
+    private void handleGoneException(RxDocumentServiceRequest request, Exception exception) {
+
+        if (request.requestContext == null) {
+            return;
+        }
+
+        if (exception instanceof PartitionIsMigratingException) {
+            request.forceCollectionRoutingMapRefresh = true;
+            request.requestContext.forceRefreshAddressCache = true;
+        } else if (exception instanceof InvalidPartitionException) {
+            request.forceNameCacheRefresh = true;
+            request.requestContext.resolvedPartitionKeyRange = null;
+        } else if (exception instanceof PartitionKeyRangeIsSplittingException) {
+            request.requestContext.resolvedPartitionKeyRange = null;
+            request.forcePartitionKeyRangeRefresh = true;
+            request.requestContext.forceRefreshAddressCache = true;
+        } else if (exception instanceof GoneException) {
+            request.requestContext.forceRefreshAddressCache = true;
         }
     }
 
@@ -882,6 +1175,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (!this.pendingWrites.isEmpty()) {
             this.pendingWrites.writeAndRemoveAll(context);
             context.flush();
+        }
+    }
+
+    private void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request, CosmosException cause) {
+        if (rntbdConnectionStateListener != null) {
+            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(request, cause);
         }
     }
 
@@ -903,12 +1202,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     // region Types
 
-    private static final class UnhealthyChannelException extends ChannelException {
+    public final static class UnhealthyChannelException extends ChannelException {
 
-        static final UnhealthyChannelException INSTANCE = new UnhealthyChannelException();
-
-        private UnhealthyChannelException() {
-            super("health check failed");
+        public UnhealthyChannelException(String reason) {
+            super("health check failed, reason: " + reason);
         }
 
         @Override

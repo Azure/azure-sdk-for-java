@@ -24,6 +24,10 @@ public final class AmazonS3Dataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private AmazonS3DatasetTypeProperties innerTypeProperties = new AmazonS3DatasetTypeProperties();
 
+    /** Creates an instance of AmazonS3Dataset class. */
+    public AmazonS3Dataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Amazon S3 dataset properties.
      *

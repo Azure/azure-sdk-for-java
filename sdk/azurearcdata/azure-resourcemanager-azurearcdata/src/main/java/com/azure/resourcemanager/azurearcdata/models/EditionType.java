@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EditionType. */
+/** SQL Server edition. */
 public final class EditionType extends ExpandableStringEnum<EditionType> {
     /** Static value Evaluation for EditionType. */
     public static final EditionType EVALUATION = fromString("Evaluation");
@@ -29,6 +29,15 @@ public final class EditionType extends ExpandableStringEnum<EditionType> {
     public static final EditionType EXPRESS = fromString("Express");
 
     /**
+     * Creates a new instance of EditionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EditionType() {
+    }
+
+    /**
      * Creates or finds a EditionType from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class EditionType extends ExpandableStringEnum<EditionType> {
         return fromString(name, EditionType.class);
     }
 
-    /** @return known EditionType values. */
+    /**
+     * Gets known EditionType values.
+     *
+     * @return known EditionType values.
+     */
     public static Collection<EditionType> values() {
         return values(EditionType.class);
     }

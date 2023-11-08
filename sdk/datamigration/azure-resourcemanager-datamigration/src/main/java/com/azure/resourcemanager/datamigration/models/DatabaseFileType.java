@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabaseFileType. */
+/** An enumeration of SQL Server database file types. */
 public final class DatabaseFileType extends ExpandableStringEnum<DatabaseFileType> {
     /** Static value Rows for DatabaseFileType. */
     public static final DatabaseFileType ROWS = fromString("Rows");
@@ -26,6 +26,15 @@ public final class DatabaseFileType extends ExpandableStringEnum<DatabaseFileTyp
     public static final DatabaseFileType FULLTEXT = fromString("Fulltext");
 
     /**
+     * Creates a new instance of DatabaseFileType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseFileType() {
+    }
+
+    /**
      * Creates or finds a DatabaseFileType from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class DatabaseFileType extends ExpandableStringEnum<DatabaseFileTyp
         return fromString(name, DatabaseFileType.class);
     }
 
-    /** @return known DatabaseFileType values. */
+    /**
+     * Gets known DatabaseFileType values.
+     *
+     * @return known DatabaseFileType values.
+     */
     public static Collection<DatabaseFileType> values() {
         return values(DatabaseFileType.class);
     }

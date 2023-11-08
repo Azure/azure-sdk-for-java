@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.operationsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** the list of ManagementAssociation response. */
 @Fluent
 public final class ManagementAssociationPropertiesListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementAssociationPropertiesListInner.class);
-
     /*
      * List of Management Association properties within the subscription.
      */
     @JsonProperty(value = "value")
     private List<ManagementAssociationInner> value;
+
+    /** Creates an instance of ManagementAssociationPropertiesListInner class. */
+    public ManagementAssociationPropertiesListInner() {
+    }
 
     /**
      * Get the value property: List of Management Association properties within the subscription.

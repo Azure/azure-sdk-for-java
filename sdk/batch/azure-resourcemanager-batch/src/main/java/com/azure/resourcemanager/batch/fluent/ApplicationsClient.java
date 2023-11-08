@@ -19,20 +19,6 @@ public interface ApplicationsClient {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in a Batch account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInner create(String resourceGroupName, String accountName, String applicationName);
-
-    /**
-     * Adds an application to the specified Batch account.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param applicationName The name of the application. This must be unique within the account.
      * @param parameters The parameters for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +35,7 @@ public interface ApplicationsClient {
         Context context);
 
     /**
-     * Deletes an application.
+     * Adds an application to the specified Batch account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -57,9 +43,10 @@ public interface ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about an application in a Batch account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String accountName, String applicationName);
+    ApplicationInner create(String resourceGroupName, String accountName, String applicationName);
 
     /**
      * Deletes an application.
@@ -78,7 +65,7 @@ public interface ApplicationsClient {
         String resourceGroupName, String accountName, String applicationName, Context context);
 
     /**
-     * Gets information about the specified application.
+     * Deletes an application.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -86,10 +73,9 @@ public interface ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInner get(String resourceGroupName, String accountName, String applicationName);
+    void delete(String resourceGroupName, String accountName, String applicationName);
 
     /**
      * Gets information about the specified application.
@@ -108,20 +94,18 @@ public interface ApplicationsClient {
         String resourceGroupName, String accountName, String applicationName, Context context);
 
     /**
-     * Updates settings for the specified application.
+     * Gets information about the specified application.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
-     * @param parameters The parameters for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in a Batch account.
+     * @return information about the specified application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInner update(
-        String resourceGroupName, String accountName, String applicationName, ApplicationInner parameters);
+    ApplicationInner get(String resourceGroupName, String accountName, String applicationName);
 
     /**
      * Updates settings for the specified application.
@@ -143,6 +127,22 @@ public interface ApplicationsClient {
         String applicationName,
         ApplicationInner parameters,
         Context context);
+
+    /**
+     * Updates settings for the specified application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param applicationName The name of the application. This must be unique within the account.
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about an application in a Batch account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplicationInner update(
+        String resourceGroupName, String accountName, String applicationName, ApplicationInner parameters);
 
     /**
      * Lists all of the applications in the specified account.

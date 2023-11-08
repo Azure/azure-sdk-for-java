@@ -14,7 +14,7 @@ import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.TracerProxy;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
@@ -40,7 +40,6 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain asynchronously.
@@ -159,6 +158,7 @@ public final class EventGridPublisherAsyncClient<T> {
     private final ClientLogger logger = new ClientLogger(EventGridPublisherAsyncClient.class);
 
     private final Class<T> eventClass;
+    private final Tracer tracer;
 
     private static final DateTimeFormatter SAS_DATE_TIME_FORMATER = DateTimeFormatter.ofPattern("M/d/yyyy h:m:s a");
     private static final String HMAC_SHA256 = "hmacSHA256";
@@ -174,6 +174,7 @@ public final class EventGridPublisherAsyncClient<T> {
             .buildClient();
         this.hostname = hostname;
         this.eventClass = eventClass;
+        this.tracer = pipeline.getTracer();
     }
 
     /**
@@ -282,10 +283,33 @@ public final class EventGridPublisherAsyncClient<T> {
         return withContext(context -> this.sendEventsWithResponse(events, context));
     }
 
+    /**
+     * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
+     * @param events the events to publish.
+     * @param channelName the channel name to send to Event Grid service. This is only applicable for sending
+     *   Cloud Events to a partner topic in partner namespace. For more details, refer to
+     *   <a href=https://docs.microsoft.com/azure/event-grid/partner-events-overview>Partner Events Overview.</a>
+     * @return the response from the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, String channelName) {
+        return withContext(context -> this.sendEventsWithResponse(events, channelName, context));
+    }
+
     @SuppressWarnings("unchecked")
     Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, Context context) {
+        return sendEventsWithResponse(events, null, context);
+    }
+
+    @SuppressWarnings("unchecked")
+    Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, String channelName, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         if (this.eventClass == CloudEvent.class) {
-            return this.sendCloudEventsWithResponse((Iterable<CloudEvent>) events, context);
+            return this.sendCloudEventsWithResponse((Iterable<CloudEvent>) events, channelName, context);
         } else if (this.eventClass == EventGridEvent.class) {
             return this.sendEventGridEventsWithResponse((Iterable<EventGridEvent>) events, context);
         } else {
@@ -314,8 +338,7 @@ public final class EventGridPublisherAsyncClient<T> {
         return Flux.fromIterable(events)
             .map(EventGridEvent::toImpl)
             .collectList()
-            .flatMap(list -> this.impl.publishEventsAsync(this.hostname, list,
-                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+            .flatMap(list -> this.impl.publishEventGridEventsAsync(this.hostname, list, finalContext));
     }
 
     Mono<Void> sendCloudEvents(Iterable<CloudEvent> events, Context context) {
@@ -326,8 +349,7 @@ public final class EventGridPublisherAsyncClient<T> {
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
             .collectList()
-            .flatMap(list -> this.impl.publishCloudEventEventsAsync(this.hostname, list,
-                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+            .flatMap(list -> this.impl.publishCloudEventEventsAsync(this.hostname, list, null, finalContext));
     }
 
     Mono<Void> sendCustomEvents(Iterable<BinaryData> events, Context context) {
@@ -338,8 +360,7 @@ public final class EventGridPublisherAsyncClient<T> {
         return Flux.fromIterable(events)
             .map(event -> (Object) new RawValue(event.toString()))
             .collectList()
-            .flatMap(list -> this.impl.publishCustomEventEventsAsync(this.hostname, list,
-                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+            .flatMap(list -> this.impl.publishCustomEventEventsAsync(this.hostname, list, finalContext));
     }
 
     Mono<Response<Void>> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
@@ -350,11 +371,10 @@ public final class EventGridPublisherAsyncClient<T> {
         return Flux.fromIterable(events)
             .map(EventGridEvent::toImpl)
             .collectList()
-            .flatMap(list -> this.impl.publishEventsWithResponseAsync(this.hostname, list,
-                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+            .flatMap(list -> this.impl.publishEventGridEventsWithResponseAsync(this.hostname, list, finalContext));
     }
 
-    Mono<Response<Void>> sendCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
+    Mono<Response<Void>> sendCloudEventsWithResponse(Iterable<CloudEvent> events, String channelName, Context context) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
@@ -362,8 +382,7 @@ public final class EventGridPublisherAsyncClient<T> {
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
             .collectList()
-            .flatMap(list -> this.impl.publishCloudEventEventsWithResponseAsync(this.hostname, list,
-                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+            .flatMap(list -> this.impl.publishCloudEventEventsWithResponseAsync(this.hostname, list, channelName, finalContext));
     }
 
     Mono<Response<Void>> sendCustomEventsWithResponse(Iterable<BinaryData> events, Context context) {
@@ -374,12 +393,11 @@ public final class EventGridPublisherAsyncClient<T> {
         return Flux.fromIterable(events)
             .map(event -> (Object) new RawValue(event.toString()))
             .collectList()
-            .flatMap(list -> this.impl.publishCustomEventEventsWithResponseAsync(this.hostname, list,
-                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
+            .flatMap(list -> this.impl.publishCustomEventEventsWithResponseAsync(this.hostname, list, finalContext));
     }
 
     private void addCloudEventTracePlaceHolder(Iterable<CloudEvent> events) {
-        if (TracerProxy.isTracingEnabled()) {
+        if (tracer.isEnabled()) {
             for (CloudEvent event : events) {
                 if (event.getExtensionAttributes() == null
                     || (event.getExtensionAttributes().get(Constants.TRACE_PARENT) == null

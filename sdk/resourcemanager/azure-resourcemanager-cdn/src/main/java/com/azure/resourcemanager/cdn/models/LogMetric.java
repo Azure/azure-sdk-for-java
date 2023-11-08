@@ -29,6 +29,15 @@ public final class LogMetric extends ExpandableStringEnum<LogMetric> {
     public static final LogMetric TOTAL_LATENCY = fromString("totalLatency");
 
     /**
+     * Creates a new instance of LogMetric value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogMetric() {
+    }
+
+    /**
      * Creates or finds a LogMetric from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class LogMetric extends ExpandableStringEnum<LogMetric> {
         return fromString(name, LogMetric.class);
     }
 
-    /** @return known LogMetric values. */
+    /**
+     * Gets known LogMetric values.
+     *
+     * @return known LogMetric values.
+     */
     public static Collection<LogMetric> values() {
         return values(LogMetric.class);
     }

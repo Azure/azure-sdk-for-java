@@ -34,6 +34,10 @@ public final class EdgeModuleEntityImpl
         return this.innerModel().edgeModuleId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public EdgeModuleEntityInner innerModel() {
         return this.innerObject;
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProtectionStatus. */
+/** Specifies whether the container is registered or not. */
 public final class ProtectionStatus extends ExpandableStringEnum<ProtectionStatus> {
     /** Static value Invalid for ProtectionStatus. */
     public static final ProtectionStatus INVALID = fromString("Invalid");
@@ -26,6 +26,15 @@ public final class ProtectionStatus extends ExpandableStringEnum<ProtectionStatu
     public static final ProtectionStatus PROTECTION_FAILED = fromString("ProtectionFailed");
 
     /**
+     * Creates a new instance of ProtectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProtectionStatus() {
+    }
+
+    /**
      * Creates or finds a ProtectionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class ProtectionStatus extends ExpandableStringEnum<ProtectionStatu
         return fromString(name, ProtectionStatus.class);
     }
 
-    /** @return known ProtectionStatus values. */
+    /**
+     * Gets known ProtectionStatus values.
+     *
+     * @return known ProtectionStatus values.
+     */
     public static Collection<ProtectionStatus> values() {
         return values(ProtectionStatus.class);
     }

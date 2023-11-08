@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A private endpoint class. */
 @Fluent
 public final class PrivateEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
-
     /*
      * The private endpoint identifier.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of PrivateEndpoint class. */
+    public PrivateEndpoint() {
+    }
 
     /**
      * Get the id property: The private endpoint identifier.

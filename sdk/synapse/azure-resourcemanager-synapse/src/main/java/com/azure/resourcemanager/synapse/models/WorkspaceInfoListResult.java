@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of workspaces. */
 @Fluent
 public final class WorkspaceInfoListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceInfoListResult.class);
-
     /*
      * Link to the next page of results
      */
@@ -27,6 +23,10 @@ public final class WorkspaceInfoListResult {
      */
     @JsonProperty(value = "value")
     private List<WorkspaceInner> value;
+
+    /** Creates an instance of WorkspaceInfoListResult class. */
+    public WorkspaceInfoListResult() {
+    }
 
     /**
      * Get the nextLink property: Link to the next page of results.

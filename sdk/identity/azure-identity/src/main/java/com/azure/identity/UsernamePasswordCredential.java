@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.util.LoggingUtil;
@@ -20,9 +21,40 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * An AAD credential that acquires a token with a username and a password. Users with 2FA/MFA (Multi-factored auth)
- * turned on will not be able to use this credential. Please use {@link DeviceCodeCredential} or {@link
- * InteractiveBrowserCredential} instead, or create a service principal if you want to authenticate silently.
+ * <p>Username password authentication is a common type of authentication flow used by many applications and services,
+ * including <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * With username password authentication, users enter their username and password credentials to sign
+ * in to an application or service.
+ * The UsernamePasswordCredential authenticates a public client application and acquires a token using the
+ * user credentials that don't require 2FA/MFA (Multi-factored) authentication. For more information refer to the
+ * <a href="https://aka.ms/azsdk/java/identity/usernamepasswordcredential/docs">conceptual knowledge and configuration
+ * details</a>.</p>
+ *
+ * <p>In the scenario where 2FA/MFA (Multi-factored) authentication is turned on, please use
+ * {@link DeviceCodeCredential} or {@link InteractiveBrowserCredential} instead.</p>
+ *
+ * <p><strong>Sample: Construct UsernamePasswordCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link UsernamePasswordCredential},
+ * using the {@link UsernamePasswordCredentialBuilder} to configure it. The {@code clientId},
+ * {@code username} and {@code password} parameters are required to create
+ * {@link UsernamePasswordCredential}. Once this credential is created, it may be passed into the
+ * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.usernamepasswordcredential.construct -->
+ * <pre>
+ * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
+ *     .clientId&#40;&quot;&lt;your app client ID&gt;&quot;&#41;
+ *     .username&#40;&quot;&lt;your username&gt;&quot;&#41;
+ *     .password&#40;&quot;&lt;your password&gt;&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.usernamepasswordcredential.construct -->
+ *
+ * @see com.azure.identity
+ * @see UsernamePasswordCredentialBuilder
+ * @see DeviceCodeCredential
+ * @see InteractiveBrowserCredential
  */
 @Immutable
 public class UsernamePasswordCredential implements TokenCredential {
@@ -31,8 +63,12 @@ public class UsernamePasswordCredential implements TokenCredential {
     private final String username;
     private final String password;
     private final IdentityClient identityClient;
+    private final IdentitySyncClient identitySyncClient;
     private final String authorityHost;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
+    private boolean isCaeEnabledRequestCached;
+    private boolean isCaeDisabledRequestCached;
+    private boolean isCachePopulated;
 
     /**
      * Creates a UserCredential with the given identity client options.
@@ -49,12 +85,15 @@ public class UsernamePasswordCredential implements TokenCredential {
         Objects.requireNonNull(password, "'password' cannot be null.");
         this.username = username;
         this.password = password;
-        identityClient =
+        IdentityClientBuilder builder =
             new IdentityClientBuilder()
                 .tenantId(tenantId)
                 .clientId(clientId)
-                .identityClientOptions(identityClientOptions)
-                .build();
+                .identityClientOptions(identityClientOptions);
+
+        identityClient = builder.build();
+        identitySyncClient = builder.buildSyncClient();
+
         cachedToken = new AtomicReference<>();
         this.authorityHost = identityClientOptions.getAuthorityHost();
     }
@@ -62,17 +101,45 @@ public class UsernamePasswordCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
-            if (cachedToken.get() != null) {
+            isCachePopulated = isCachePopulated(request);
+            if (isCachePopulated) {
                 return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
         }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
-            .map(this::updateCache)
+            .map(msalToken -> {
+                AccessToken accessToken = updateCache(msalToken);
+                if (request.isCaeEnabled()) {
+                    isCaeEnabledRequestCached = true;
+                } else {
+                    isCaeDisabledRequestCached = true;
+                }
+                return accessToken;
+            })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
                 request, error));
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        if (cachedToken.get() != null) {
+            try {
+                return identitySyncClient.authenticateWithPublicClientCache(request, cachedToken.get());
+            } catch (Exception e) { }
+        }
+
+        try {
+            MsalToken accessToken = identitySyncClient.authenticateWithUsernamePassword(request, username, password);
+            updateCache(accessToken);
+            LoggingUtil.logTokenSuccess(LOGGER, request);
+            return accessToken;
+        } catch (Exception e) {
+            LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
+            throw e;
+        }
     }
 
     /**
@@ -110,5 +177,10 @@ public class UsernamePasswordCredential implements TokenCredential {
                                 identityClient.getTenantId(), identityClient.getClientId()),
                     msalToken.getAccount().getTenantProfiles()));
         return msalToken;
+    }
+
+    private boolean isCachePopulated(TokenRequestContext request) {
+        return (cachedToken.get() != null) && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
+            || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

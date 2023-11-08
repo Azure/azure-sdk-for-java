@@ -26,6 +26,10 @@ public final class IfConditionActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private IfConditionActivityTypeProperties innerTypeProperties = new IfConditionActivityTypeProperties();
 
+    /** Creates an instance of IfConditionActivity class. */
+    public IfConditionActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: IfCondition activity properties.
      *
@@ -46,6 +50,20 @@ public final class IfConditionActivity extends ControlActivity {
     @Override
     public IfConditionActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IfConditionActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IfConditionActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

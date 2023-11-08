@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Restore file specs like file path, type and target folder path info. */
 @Fluent
 public final class RestoreFileSpecs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreFileSpecs.class);
-
     /*
      * Source File/Folder path
      */
@@ -31,6 +27,10 @@ public final class RestoreFileSpecs {
      */
     @JsonProperty(value = "targetFolderPath")
     private String targetFolderPath;
+
+    /** Creates an instance of RestoreFileSpecs class. */
+    public RestoreFileSpecs() {
+    }
 
     /**
      * Get the path property: Source File/Folder path.

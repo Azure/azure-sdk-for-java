@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the move collection properties. */
 @Fluent
 public final class MoveCollectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveCollectionProperties.class);
-
     /*
      * Gets or sets the source region.
      */
-    @JsonProperty(value = "sourceRegion", required = true)
+    @JsonProperty(value = "sourceRegion")
     private String sourceRegion;
 
     /*
      * Gets or sets the target region.
      */
-    @JsonProperty(value = "targetRegion", required = true)
+    @JsonProperty(value = "targetRegion")
     private String targetRegion;
+
+    /*
+     * Gets or sets the move region which indicates the region where the VM Regional to Zonal move will be conducted.
+     */
+    @JsonProperty(value = "moveRegion")
+    private String moveRegion;
 
     /*
      * Defines the provisioning states.
@@ -33,10 +35,26 @@ public final class MoveCollectionProperties {
     private ProvisioningState provisioningState;
 
     /*
+     * Gets or sets the version of move collection.
+     */
+    @JsonProperty(value = "version")
+    private String version;
+
+    /*
+     * Defines the MoveType.
+     */
+    @JsonProperty(value = "moveType")
+    private MoveType moveType;
+
+    /*
      * Defines the move collection errors.
      */
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private MoveCollectionPropertiesErrors errors;
+
+    /** Creates an instance of MoveCollectionProperties class. */
+    public MoveCollectionProperties() {
+    }
 
     /**
      * Get the sourceRegion property: Gets or sets the source region.
@@ -79,12 +97,74 @@ public final class MoveCollectionProperties {
     }
 
     /**
+     * Get the moveRegion property: Gets or sets the move region which indicates the region where the VM Regional to
+     * Zonal move will be conducted.
+     *
+     * @return the moveRegion value.
+     */
+    public String moveRegion() {
+        return this.moveRegion;
+    }
+
+    /**
+     * Set the moveRegion property: Gets or sets the move region which indicates the region where the VM Regional to
+     * Zonal move will be conducted.
+     *
+     * @param moveRegion the moveRegion value to set.
+     * @return the MoveCollectionProperties object itself.
+     */
+    public MoveCollectionProperties withMoveRegion(String moveRegion) {
+        this.moveRegion = moveRegion;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Defines the provisioning states.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the version property: Gets or sets the version of move collection.
+     *
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: Gets or sets the version of move collection.
+     *
+     * @param version the version value to set.
+     * @return the MoveCollectionProperties object itself.
+     */
+    public MoveCollectionProperties withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the moveType property: Defines the MoveType.
+     *
+     * @return the moveType value.
+     */
+    public MoveType moveType() {
+        return this.moveType;
+    }
+
+    /**
+     * Set the moveType property: Defines the MoveType.
+     *
+     * @param moveType the moveType value to set.
+     * @return the MoveCollectionProperties object itself.
+     */
+    public MoveCollectionProperties withMoveType(MoveType moveType) {
+        this.moveType = moveType;
+        return this;
     }
 
     /**
@@ -102,18 +182,6 @@ public final class MoveCollectionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sourceRegion() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceRegion in model MoveCollectionProperties"));
-        }
-        if (targetRegion() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetRegion in model MoveCollectionProperties"));
-        }
         if (errors() != null) {
             errors().validate();
         }

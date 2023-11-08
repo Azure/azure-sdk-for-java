@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ArmIdentity model. */
 @Fluent
-public class ArmIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmIdentity.class);
-
+public final class ArmIdentity {
     /*
      * Principal Id
      */
@@ -29,10 +25,9 @@ public class ArmIdentity {
     private String tenantId;
 
     /*
-     * The type of identity used for the resource. The type 'SystemAssigned,
-     * UserAssigned' includes both an implicitly created identity and a set of
-     * user assigned identities. The type 'None' will remove any identities
-     * from the service.
+     * The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly
+     * created identity and a set of user assigned identities. The type 'None' will remove any identities from the
+     * service.
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
@@ -43,6 +38,10 @@ public class ArmIdentity {
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ArmUserIdentity> userAssignedIdentities;
+
+    /** Creates an instance of ArmIdentity class. */
+    public ArmIdentity() {
+    }
 
     /**
      * Get the principalId property: Principal Id.

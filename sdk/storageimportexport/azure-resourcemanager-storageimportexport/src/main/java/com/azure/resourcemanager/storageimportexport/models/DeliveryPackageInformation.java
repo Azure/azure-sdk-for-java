@@ -6,17 +6,13 @@ package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about the delivery package being shipped by the customer to the Microsoft data center. */
 @Fluent
 public final class DeliveryPackageInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryPackageInformation.class);
-
     /*
-     * The name of the carrier that is used to ship the import or export
-     * drives.
+     * The name of the carrier that is used to ship the import or export drives.
      */
     @JsonProperty(value = "carrierName", required = true)
     private String carrierName;
@@ -38,6 +34,10 @@ public final class DeliveryPackageInformation {
      */
     @JsonProperty(value = "shipDate")
     private String shipDate;
+
+    /** Creates an instance of DeliveryPackageInformation class. */
+    public DeliveryPackageInformation() {
+    }
 
     /**
      * Get the carrierName property: The name of the carrier that is used to ship the import or export drives.
@@ -126,16 +126,18 @@ public final class DeliveryPackageInformation {
      */
     public void validate() {
         if (carrierName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property carrierName in model DeliveryPackageInformation"));
         }
         if (trackingNumber() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property trackingNumber in model DeliveryPackageInformation"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeliveryPackageInformation.class);
 }

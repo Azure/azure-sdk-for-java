@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The image definition. */
 @Fluent
 public final class ImageDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDefinitionInner.class);
-
     /*
      * Whether image exists already.
      */
@@ -31,6 +27,10 @@ public final class ImageDefinitionInner {
      */
     @JsonProperty(value = "relativePath")
     private String relativePath;
+
+    /** Creates an instance of ImageDefinitionInner class. */
+    public ImageDefinitionInner() {
+    }
 
     /**
      * Get the imageExists property: Whether image exists already.

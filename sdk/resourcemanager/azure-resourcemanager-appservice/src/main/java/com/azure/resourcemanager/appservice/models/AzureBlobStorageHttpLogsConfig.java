@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureBlobStorageHttpLogsConfig {
     /*
-     * SAS url to a azure blob container with read/write/list/delete
-     * permissions.
+     * SAS url to a azure blob container with read/write/list/delete permissions.
      */
     @JsonProperty(value = "sasUrl")
     private String sasUrl;
@@ -26,11 +25,14 @@ public final class AzureBlobStorageHttpLogsConfig {
     private Integer retentionInDays;
 
     /*
-     * True if configuration is enabled, false if it is disabled and null if
-     * configuration is not set.
+     * True if configuration is enabled, false if it is disabled and null if configuration is not set.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
+
+    /** Creates an instance of AzureBlobStorageHttpLogsConfig class. */
+    public AzureBlobStorageHttpLogsConfig() {
+    }
 
     /**
      * Get the sasUrl property: SAS url to a azure blob container with read/write/list/delete permissions.

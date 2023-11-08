@@ -7,7 +7,6 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** alternativeSecurityId. */
 @Fluent
 public final class MicrosoftGraphAlternativeSecurityId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphAlternativeSecurityId.class);
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * For internal use only
@@ -42,6 +41,10 @@ public final class MicrosoftGraphAlternativeSecurityId {
      * alternativeSecurityId
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAlternativeSecurityId class. */
+    public MicrosoftGraphAlternativeSecurityId() {
+    }
 
     /**
      * Get the identityProvider property: For internal use only.
@@ -70,7 +73,7 @@ public final class MicrosoftGraphAlternativeSecurityId {
      */
     public byte[] key() {
         if (this.key == null) {
-            return null;
+            return EMPTY_BYTE_ARRAY;
         }
         return this.key.decodedBytes();
     }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StatusCodeCount model. */
+/** The status code and count of the cloud service instance view statuses. */
 @Immutable
 public final class StatusCodeCount {
     /*
@@ -21,6 +21,10 @@ public final class StatusCodeCount {
      */
     @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
+
+    /** Creates an instance of StatusCodeCount class. */
+    public StatusCodeCount() {
+    }
 
     /**
      * Get the code property: The instance view status code.

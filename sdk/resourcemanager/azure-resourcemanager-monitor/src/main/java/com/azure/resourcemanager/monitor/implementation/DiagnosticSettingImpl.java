@@ -12,12 +12,16 @@ import com.azure.resourcemanager.monitor.models.LogSettings;
 import com.azure.resourcemanager.monitor.models.MetricSettings;
 import com.azure.resourcemanager.monitor.models.RetentionPolicy;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import reactor.core.publisher.Mono;
 
 /** The Azure metric definition entries are of type DiagnosticSetting. */
@@ -32,6 +36,7 @@ class DiagnosticSettingImpl
     private String resourceId;
     private TreeMap<String, MetricSettings> metricSet;
     private TreeMap<String, LogSettings> logSet;
+    private TreeMap<String, LogSettings> logCategoryGroupSet;
     private final MonitorManager myManager;
 
     DiagnosticSettingImpl(
@@ -188,7 +193,7 @@ class DiagnosticSettingImpl
     @Override
     public List<MetricSettings> metrics() {
         if (this.innerModel().metrics() == null) {
-            return null;
+            return Collections.emptyList();
         }
         return Collections.unmodifiableList(this.innerModel().metrics());
     }
@@ -196,7 +201,7 @@ class DiagnosticSettingImpl
     @Override
     public List<LogSettings> logs() {
         if (this.innerModel().logs() == null) {
-            return null;
+            return Collections.emptyList();
         }
         return Collections.unmodifiableList(this.innerModel().logs());
     }
@@ -218,19 +223,23 @@ class DiagnosticSettingImpl
 
     @Override
     public Mono<DiagnosticSetting> createResourceAsync() {
-        this.innerModel().withLogs(new ArrayList<>(logSet.values()));
+        this.innerModel()
+            .withLogs(new ArrayList<>(
+                Stream.concat(logSet.values().stream(),
+                logCategoryGroupSet.values().stream()).distinct().collect(Collectors.toList())));
         this.innerModel().withMetrics(new ArrayList<>(metricSet.values()));
         return this
             .manager()
             .serviceClient()
-            .getDiagnosticSettings()
-            .createOrUpdateAsync(this.resourceId, this.name(), this.innerModel())
+            .getDiagnosticSettingsOperations()
+            .createOrUpdateAsync(ResourceUtils.encodeResourceId(this.resourceId), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<DiagnosticSettingsResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getDiagnosticSettings().getAsync(this.resourceId, this.name());
+        return this.manager().serviceClient().getDiagnosticSettingsOperations()
+            .getAsync(ResourceUtils.encodeResourceId(this.resourceId), this.name());
     }
 
     @Override
@@ -247,11 +256,17 @@ class DiagnosticSettingImpl
                         0,
                         this.innerModel().id().length()
                             - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.innerModel().name()).length());
-            for (MetricSettings ms : this.innerModel().metrics()) {
-                this.metricSet.put(ms.category(), ms);
+            for (MetricSettings ms : this.metrics()) {
+                if (ms.category() != null) {
+                    this.metricSet.put(ms.category(), ms);
+                }
             }
-            for (LogSettings ls : this.innerModel().logs()) {
-                this.logSet.put(ls.category(), ls);
+            for (LogSettings ls : this.logs()) {
+                if (ls.category() != null) {
+                    this.logSet.put(ls.category(), ls);
+                } else if (ls.categoryGroup() != null) {
+                    this.logCategoryGroupSet.put(ls.categoryGroup(), ls);
+                }
             }
         }
     }
@@ -262,6 +277,9 @@ class DiagnosticSettingImpl
         }
         if (this.logSet == null) {
             this.logSet = new TreeMap<>();
+        }
+        if (this.logCategoryGroupSet == null) {
+            this.logCategoryGroupSet = new TreeMap<>();
         }
     }
 }

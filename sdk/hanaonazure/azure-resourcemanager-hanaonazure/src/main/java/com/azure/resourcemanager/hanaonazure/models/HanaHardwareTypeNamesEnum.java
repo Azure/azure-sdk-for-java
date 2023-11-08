@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HanaHardwareTypeNamesEnum. */
+/** Name of the hardware type (vendor and/or their product name). */
 public final class HanaHardwareTypeNamesEnum extends ExpandableStringEnum<HanaHardwareTypeNamesEnum> {
     /** Static value Cisco_UCS for HanaHardwareTypeNamesEnum. */
     public static final HanaHardwareTypeNamesEnum CISCO_UCS = fromString("Cisco_UCS");
 
     /** Static value HPE for HanaHardwareTypeNamesEnum. */
     public static final HanaHardwareTypeNamesEnum HPE = fromString("HPE");
+
+    /**
+     * Creates a new instance of HanaHardwareTypeNamesEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HanaHardwareTypeNamesEnum() {
+    }
 
     /**
      * Creates or finds a HanaHardwareTypeNamesEnum from its string representation.
@@ -27,7 +36,11 @@ public final class HanaHardwareTypeNamesEnum extends ExpandableStringEnum<HanaHa
         return fromString(name, HanaHardwareTypeNamesEnum.class);
     }
 
-    /** @return known HanaHardwareTypeNamesEnum values. */
+    /**
+     * Gets known HanaHardwareTypeNamesEnum values.
+     *
+     * @return known HanaHardwareTypeNamesEnum values.
+     */
     public static Collection<HanaHardwareTypeNamesEnum> values() {
         return values(HanaHardwareTypeNamesEnum.class);
     }

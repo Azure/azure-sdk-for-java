@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.mixedreality.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mixedreality.models.Identity;
 import com.azure.resourcemanager.mixedreality.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** RemoteRenderingAccount Response. */
-@JsonFlatten
 @Fluent
-public class RemoteRenderingAccountInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemoteRenderingAccountInner.class);
+public final class RemoteRenderingAccountInner extends Resource {
+    /*
+     * Property bag.
+     */
+    @JsonProperty(value = "properties")
+    private MixedRealityAccountProperties innerProperties;
 
     /*
      * The identity associated with this account
@@ -51,23 +51,18 @@ public class RemoteRenderingAccountInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * The name of the storage account associated with this accountId
-     */
-    @JsonProperty(value = "properties.storageAccountName")
-    private String storageAccountName;
+    /** Creates an instance of RemoteRenderingAccountInner class. */
+    public RemoteRenderingAccountInner() {
+    }
 
-    /*
-     * unique id of certain account.
+    /**
+     * Get the innerProperties property: Property bag.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.accountId", access = JsonProperty.Access.WRITE_ONLY)
-    private String accountId;
-
-    /*
-     * Correspond domain name of certain Spatial Anchors Account
-     */
-    @JsonProperty(value = "properties.accountDomain", access = JsonProperty.Access.WRITE_ONLY)
-    private String accountDomain;
+    private MixedRealityAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the identity property: The identity associated with this account.
@@ -158,44 +153,6 @@ public class RemoteRenderingAccountInner extends Resource {
         return this.systemData;
     }
 
-    /**
-     * Get the storageAccountName property: The name of the storage account associated with this accountId.
-     *
-     * @return the storageAccountName value.
-     */
-    public String storageAccountName() {
-        return this.storageAccountName;
-    }
-
-    /**
-     * Set the storageAccountName property: The name of the storage account associated with this accountId.
-     *
-     * @param storageAccountName the storageAccountName value to set.
-     * @return the RemoteRenderingAccountInner object itself.
-     */
-    public RemoteRenderingAccountInner withStorageAccountName(String storageAccountName) {
-        this.storageAccountName = storageAccountName;
-        return this;
-    }
-
-    /**
-     * Get the accountId property: unique id of certain account.
-     *
-     * @return the accountId value.
-     */
-    public String accountId() {
-        return this.accountId;
-    }
-
-    /**
-     * Get the accountDomain property: Correspond domain name of certain Spatial Anchors Account.
-     *
-     * @return the accountDomain value.
-     */
-    public String accountDomain() {
-        return this.accountDomain;
-    }
-
     /** {@inheritDoc} */
     @Override
     public RemoteRenderingAccountInner withLocation(String location) {
@@ -211,11 +168,55 @@ public class RemoteRenderingAccountInner extends Resource {
     }
 
     /**
+     * Get the storageAccountName property: The name of the storage account associated with this accountId.
+     *
+     * @return the storageAccountName value.
+     */
+    public String storageAccountName() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountName();
+    }
+
+    /**
+     * Set the storageAccountName property: The name of the storage account associated with this accountId.
+     *
+     * @param storageAccountName the storageAccountName value to set.
+     * @return the RemoteRenderingAccountInner object itself.
+     */
+    public RemoteRenderingAccountInner withStorageAccountName(String storageAccountName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MixedRealityAccountProperties();
+        }
+        this.innerProperties().withStorageAccountName(storageAccountName);
+        return this;
+    }
+
+    /**
+     * Get the accountId property: unique id of certain account.
+     *
+     * @return the accountId value.
+     */
+    public String accountId() {
+        return this.innerProperties() == null ? null : this.innerProperties().accountId();
+    }
+
+    /**
+     * Get the accountDomain property: Correspond domain name of certain Spatial Anchors Account.
+     *
+     * @return the accountDomain value.
+     */
+    public String accountDomain() {
+        return this.innerProperties() == null ? null : this.innerProperties().accountDomain();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }

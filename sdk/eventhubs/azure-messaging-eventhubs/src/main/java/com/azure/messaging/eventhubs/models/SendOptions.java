@@ -9,11 +9,20 @@ import com.azure.messaging.eventhubs.EventData;
 /**
  * The set of options that can be specified when sending a set of events to influence the way in which events are sent
  * to the Event Hubs service.
+ *
+ * @see com.azure.messaging.eventhubs.EventHubProducerClient#send(Iterable, SendOptions)
+ * @see com.azure.messaging.eventhubs.EventHubProducerAsyncClient#send(Iterable, SendOptions)
  */
 @Fluent
 public class SendOptions {
     private String partitionKey;
     private String partitionId;
+
+    /**
+     * Creates a new instance.
+     */
+    public SendOptions() {
+    }
 
     /**
      * Sets a hashing key to be provided for the batch of events, which instructs the Event Hubs service to map this key

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** HDInsight ondemand linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -18,46 +19,40 @@ import java.util.List;
 @Fluent
 public class HDInsightOnDemandLinkedService extends LinkedService {
     /*
-     * Number of worker/data nodes in the cluster. Suggestion value: 4. Type:
-     * string (or Expression with resultType string).
+     * Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.clusterSize", required = true)
     private Object clusterSize;
 
     /*
-     * The allowed idle time for the on-demand HDInsight cluster. Specifies how
-     * long the on-demand HDInsight cluster stays alive after completion of an
-     * activity run if there are no other active jobs in the cluster. The
-     * minimum value is 5 mins. Type: string (or Expression with resultType
-     * string).
+     * The allowed idle time for the on-demand HDInsight cluster. Specifies how long the on-demand HDInsight cluster
+     * stays alive after completion of an activity run if there are no other active jobs in the cluster. The minimum
+     * value is 5 mins. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.timeToLive", required = true)
     private Object timeToLive;
 
     /*
-     * Version of the HDInsight cluster.  Type: string (or Expression with
-     * resultType string).
+     * Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.version", required = true)
     private Object version;
 
     /*
-     * Azure Storage linked service to be used by the on-demand cluster for
-     * storing and processing data.
+     * Azure Storage linked service to be used by the on-demand cluster for storing and processing data.
      */
     @JsonProperty(value = "typeProperties.linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The customer’s subscription to host the cluster. Type: string (or
-     * Expression with resultType string).
+     * The customer’s subscription to host the cluster. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.hostSubscriptionId", required = true)
     private Object hostSubscriptionId;
 
     /*
-     * The service principal id for the hostSubscriptionId. Type: string (or
-     * Expression with resultType string).
+     * The service principal id for the hostSubscriptionId. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
@@ -69,29 +64,26 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The Tenant id/name to which the service principal belongs. Type: string
-     * (or Expression with resultType string).
+     * The Tenant id/name to which the service principal belongs. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tenant", required = true)
     private Object tenant;
 
     /*
-     * The resource group where the cluster belongs. Type: string (or
-     * Expression with resultType string).
+     * The resource group where the cluster belongs. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.clusterResourceGroup", required = true)
     private Object clusterResourceGroup;
 
     /*
-     * The prefix of cluster name, postfix will be distinct with timestamp.
-     * Type: string (or Expression with resultType string).
+     * The prefix of cluster name, postfix will be distinct with timestamp. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.clusterNamePrefix")
     private Object clusterNamePrefix;
 
     /*
-     * The username to access the cluster. Type: string (or Expression with
-     * resultType string).
+     * The username to access the cluster. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.clusterUserName")
     private Object clusterUserName;
@@ -103,8 +95,8 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private SecretBase clusterPassword;
 
     /*
-     * The username to SSH remotely connect to cluster’s node (for Linux).
-     * Type: string (or Expression with resultType string).
+     * The username to SSH remotely connect to cluster’s node (for Linux). Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.clusterSshUserName")
     private Object clusterSshUserName;
@@ -116,16 +108,15 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private SecretBase clusterSshPassword;
 
     /*
-     * Specifies additional storage accounts for the HDInsight linked service
-     * so that the Data Factory service can register them on your behalf.
+     * Specifies additional storage accounts for the HDInsight linked service so that the Data Factory service can
+     * register them on your behalf.
      */
     @JsonProperty(value = "typeProperties.additionalLinkedServiceNames")
     private List<LinkedServiceReference> additionalLinkedServiceNames;
 
     /*
-     * The name of Azure SQL linked service that point to the HCatalog
-     * database. The on-demand HDInsight cluster is created by using the Azure
-     * SQL database as the metastore.
+     * The name of Azure SQL linked service that point to the HCatalog database. The on-demand HDInsight cluster is
+     * created by using the Azure SQL database as the metastore.
      */
     @JsonProperty(value = "typeProperties.hcatalogLinkedServiceName")
     private LinkedServiceReference hcatalogLinkedServiceName;
@@ -137,72 +128,62 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private Object clusterType;
 
     /*
-     * The version of spark if the cluster type is 'spark'. Type: string (or
-     * Expression with resultType string).
+     * The version of spark if the cluster type is 'spark'. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.sparkVersion")
     private Object sparkVersion;
 
     /*
-     * Specifies the core configuration parameters (as in core-site.xml) for
-     * the HDInsight cluster to be created.
+     * Specifies the core configuration parameters (as in core-site.xml) for the HDInsight cluster to be created.
      */
     @JsonProperty(value = "typeProperties.coreConfiguration")
     private Object coreConfiguration;
 
     /*
-     * Specifies the HBase configuration parameters (hbase-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the HBase configuration parameters (hbase-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "typeProperties.hBaseConfiguration")
     private Object hBaseConfiguration;
 
     /*
-     * Specifies the HDFS configuration parameters (hdfs-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the HDFS configuration parameters (hdfs-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "typeProperties.hdfsConfiguration")
     private Object hdfsConfiguration;
 
     /*
-     * Specifies the hive configuration parameters (hive-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the hive configuration parameters (hive-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "typeProperties.hiveConfiguration")
     private Object hiveConfiguration;
 
     /*
-     * Specifies the MapReduce configuration parameters (mapred-site.xml) for
-     * the HDInsight cluster.
+     * Specifies the MapReduce configuration parameters (mapred-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "typeProperties.mapReduceConfiguration")
     private Object mapReduceConfiguration;
 
     /*
-     * Specifies the Oozie configuration parameters (oozie-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the Oozie configuration parameters (oozie-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "typeProperties.oozieConfiguration")
     private Object oozieConfiguration;
 
     /*
-     * Specifies the Storm configuration parameters (storm-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the Storm configuration parameters (storm-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "typeProperties.stormConfiguration")
     private Object stormConfiguration;
 
     /*
-     * Specifies the Yarn configuration parameters (yarn-site.xml) for the
-     * HDInsight cluster.
+     * Specifies the Yarn configuration parameters (yarn-site.xml) for the HDInsight cluster.
      */
     @JsonProperty(value = "typeProperties.yarnConfiguration")
     private Object yarnConfiguration;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
@@ -226,27 +207,34 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private Object zookeeperNodeSize;
 
     /*
-     * Custom script actions to run on HDI ondemand cluster once it's up.
-     * Please refer to
+     * Custom script actions to run on HDI ondemand cluster once it's up. Please refer to
      * https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
      */
     @JsonProperty(value = "typeProperties.scriptActions")
     private List<ScriptAction> scriptActions;
 
     /*
-     * The ARM resource ID for the vNet to which the cluster should be joined
-     * after creation. Type: string (or Expression with resultType string).
+     * The ARM resource ID for the vNet to which the cluster should be joined after creation. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.virtualNetworkId")
     private Object virtualNetworkId;
 
     /*
-     * The ARM resource ID for the subnet in the vNet. If virtualNetworkId was
-     * specified, then this property is required. Type: string (or Expression
-     * with resultType string).
+     * The ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified, then this property is
+     * required. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.subnetName")
     private Object subnetName;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
+    /** Creates an instance of HDInsightOnDemandLinkedService class. */
+    public HDInsightOnDemandLinkedService() {}
 
     /**
      * Get the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or
@@ -961,6 +949,54 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      */
     public HDInsightOnDemandLinkedService setSubnetName(Object subnetName) {
         this.subnetName = subnetName;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the HDInsightOnDemandLinkedService object itself.
+     */
+    public HDInsightOnDemandLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightOnDemandLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightOnDemandLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightOnDemandLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightOnDemandLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

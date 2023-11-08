@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Features List. */
 public final class FeaturesListSamples {
     /*
@@ -22,6 +20,6 @@ public final class FeaturesListSamples {
             .manager()
             .featureClient()
             .getFeatures()
-            .list("Resource Provider Namespace", Context.NONE);
+            .list("Resource Provider Namespace", com.azure.core.util.Context.NONE);
     }
 }

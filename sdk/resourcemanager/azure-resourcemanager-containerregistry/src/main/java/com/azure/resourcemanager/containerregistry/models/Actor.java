@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -14,14 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class Actor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Actor.class);
-
     /*
-     * The subject or username associated with the request context that
-     * generated the event.
+     * The subject or username associated with the request context that generated the event.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of Actor class. */
+    public Actor() {
+    }
 
     /**
      * Get the name property: The subject or username associated with the request context that generated the event.

@@ -16,6 +16,10 @@ public final class DetectorResponseProperties {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of DetectorResponseProperties class. */
+    public DetectorResponseProperties() {
+    }
+
     /**
      * Get the value property: A base64 encoded string that represents the content of a detector.
      *

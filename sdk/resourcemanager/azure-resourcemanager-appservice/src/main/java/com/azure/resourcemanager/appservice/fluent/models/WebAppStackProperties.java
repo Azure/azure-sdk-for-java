@@ -37,6 +37,10 @@ public final class WebAppStackProperties {
     @JsonProperty(value = "preferredOs", access = JsonProperty.Access.WRITE_ONLY)
     private StackPreferredOs preferredOs;
 
+    /** Creates an instance of WebAppStackProperties class. */
+    public WebAppStackProperties() {
+    }
+
     /**
      * Get the displayText property: Web App stack (display only).
      *

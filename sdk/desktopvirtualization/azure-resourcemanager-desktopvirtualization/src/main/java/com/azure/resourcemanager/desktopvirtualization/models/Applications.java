@@ -16,6 +16,21 @@ public interface Applications {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application along with {@link Response}.
+     */
+    Response<Application> getWithResponse(
+        String resourceGroupName, String applicationGroupName, String applicationName, Context context);
+
+    /**
+     * Get an application.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param applicationName The name of the application within the specified application group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,7 +39,7 @@ public interface Applications {
     Application get(String resourceGroupName, String applicationGroupName, String applicationName);
 
     /**
-     * Get an application.
+     * Remove an application.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
@@ -33,9 +48,9 @@ public interface Applications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application.
+     * @return the {@link Response}.
      */
-    Response<Application> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String applicationGroupName, String applicationName, Context context);
 
     /**
@@ -51,21 +66,6 @@ public interface Applications {
     void delete(String resourceGroupName, String applicationGroupName, String applicationName);
 
     /**
-     * Remove an application.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String applicationGroupName, String applicationName, Context context);
-
-    /**
      * List applications.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -73,7 +73,7 @@ public interface Applications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationList.
+     * @return applicationList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Application> list(String resourceGroupName, String applicationGroupName);
 
@@ -82,13 +82,22 @@ public interface Applications {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return applicationList.
+     * @return applicationList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Application> list(String resourceGroupName, String applicationGroupName, Context context);
+    PagedIterable<Application> list(
+        String resourceGroupName,
+        String applicationGroupName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context);
 
     /**
      * Get an application.
@@ -97,7 +106,7 @@ public interface Applications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application.
+     * @return an application along with {@link Response}.
      */
     Application getById(String id);
 
@@ -109,7 +118,7 @@ public interface Applications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application.
+     * @return an application along with {@link Response}.
      */
     Response<Application> getByIdWithResponse(String id, Context context);
 
@@ -131,7 +140,7 @@ public interface Applications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.generated;
 /** Samples for BookmarkRelations CreateOrUpdate. */
 public final class BookmarkRelationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/bookmarks/relations/CreateBookmarkRelation.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/bookmarks/relations/CreateBookmarkRelation.json
      */
     /**
      * Sample code: Creates or updates a bookmark relation.

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.EdgeNodesClient;
 import com.azure.resourcemanager.cdn.fluent.models.EdgeNodeInner;
 import com.azure.resourcemanager.cdn.models.EdgenodeResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EdgeNodesClient. */
 public final class EdgeNodesClientImpl implements EdgeNodesClient {
-    private final ClientLogger logger = new ClientLogger(EdgeNodesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EdgeNodesService service;
 
@@ -58,7 +55,7 @@ public final class EdgeNodesClientImpl implements EdgeNodesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientE")
-    private interface EdgeNodesService {
+    public interface EdgeNodesService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Cdn/edgenodes")
         @ExpectedResponses({200})
@@ -201,7 +198,8 @@ public final class EdgeNodesClientImpl implements EdgeNodesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -237,7 +235,8 @@ public final class EdgeNodesClientImpl implements EdgeNodesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

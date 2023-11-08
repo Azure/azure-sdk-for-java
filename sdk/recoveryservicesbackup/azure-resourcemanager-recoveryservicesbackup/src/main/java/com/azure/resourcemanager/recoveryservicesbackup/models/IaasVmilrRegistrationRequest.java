@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,18 +14,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("IaasVMILRRegistrationRequest")
 @Fluent
 public final class IaasVmilrRegistrationRequest extends IlrRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaasVmilrRegistrationRequest.class);
-
     /*
-     * ID of the IaaS VM backup copy from where the files/folders have to be
-     * restored.
+     * ID of the IaaS VM backup copy from where the files/folders have to be restored.
      */
     @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
     /*
-     * Fully qualified ARM ID of the virtual machine whose the files / folders
-     * have to be restored.
+     * Fully qualified ARM ID of the virtual machine whose the files / folders have to be restored.
      */
     @JsonProperty(value = "virtualMachineId")
     private String virtualMachineId;
@@ -43,6 +37,10 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
      */
     @JsonProperty(value = "renewExistingRegistration")
     private Boolean renewExistingRegistration;
+
+    /** Creates an instance of IaasVmilrRegistrationRequest class. */
+    public IaasVmilrRegistrationRequest() {
+    }
 
     /**
      * Get the recoveryPointId property: ID of the IaaS VM backup copy from where the files/folders have to be restored.

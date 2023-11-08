@@ -23,6 +23,10 @@ public final class ServerVersionCapability {
     @JsonProperty(value = "supportedSkus", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> supportedSkus;
 
+    /** Creates an instance of ServerVersionCapability class. */
+    public ServerVersionCapability() {
+    }
+
     /**
      * Get the name property: server version.
      *

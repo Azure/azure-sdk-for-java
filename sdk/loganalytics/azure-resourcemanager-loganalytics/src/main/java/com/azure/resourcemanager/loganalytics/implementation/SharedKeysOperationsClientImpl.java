@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.SharedKeysOperationsClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.SharedKeysInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SharedKeysOperationsClient. */
 public final class SharedKeysOperationsClientImpl implements SharedKeysOperationsClient {
-    private final ClientLogger logger = new ClientLogger(SharedKeysOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SharedKeysOperationsService service;
 
@@ -54,11 +51,10 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
-    private interface SharedKeysOperationsService {
+    public interface SharedKeysOperationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/sharedKeys")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/sharedKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SharedKeysInner>> getSharedKeys(
@@ -72,8 +68,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/regenerateSharedKey")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/regenerateSharedKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SharedKeysInner>> regenerate(
@@ -94,7 +89,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
+     * @return the shared keys for a workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedKeysInner>> getSharedKeysWithResponseAsync(
@@ -118,6 +113,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -127,7 +123,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -143,7 +139,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
+     * @return the shared keys for a workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedKeysInner>> getSharedKeysWithResponseAsync(
@@ -167,6 +163,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -174,7 +171,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -188,19 +185,29 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
+     * @return the shared keys for a workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SharedKeysInner> getSharedKeysAsync(String resourceGroupName, String workspaceName) {
         return getSharedKeysWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<SharedKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the shared keys for a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared keys for a workspace along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SharedKeysInner> getSharedKeysWithResponse(
+        String resourceGroupName, String workspaceName, Context context) {
+        return getSharedKeysWithResponseAsync(resourceGroupName, workspaceName, context).block();
     }
 
     /**
@@ -215,24 +222,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedKeysInner getSharedKeys(String resourceGroupName, String workspaceName) {
-        return getSharedKeysAsync(resourceGroupName, workspaceName).block();
-    }
-
-    /**
-     * Gets the shared keys for a workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SharedKeysInner> getSharedKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        return getSharedKeysWithResponseAsync(resourceGroupName, workspaceName, context).block();
+        return getSharedKeysWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
     }
 
     /**
@@ -244,7 +234,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
+     * @return the shared keys for a workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedKeysInner>> regenerateWithResponseAsync(
@@ -268,6 +258,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -278,7 +269,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -294,7 +285,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
+     * @return the shared keys for a workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedKeysInner>> regenerateWithResponseAsync(
@@ -318,6 +309,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -326,7 +318,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -340,19 +332,30 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
+     * @return the shared keys for a workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SharedKeysInner> regenerateAsync(String resourceGroupName, String workspaceName) {
         return regenerateWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<SharedKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
+     * Insights agents to the workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared keys for a workspace along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SharedKeysInner> regenerateWithResponse(
+        String resourceGroupName, String workspaceName, Context context) {
+        return regenerateWithResponseAsync(resourceGroupName, workspaceName, context).block();
     }
 
     /**
@@ -368,24 +371,6 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedKeysInner regenerate(String resourceGroupName, String workspaceName) {
-        return regenerateAsync(resourceGroupName, workspaceName).block();
-    }
-
-    /**
-     * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
-     * Insights agents to the workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SharedKeysInner> regenerateWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        return regenerateWithResponseAsync(resourceGroupName, workspaceName, context).block();
+        return regenerateWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
     }
 }

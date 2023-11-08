@@ -13,10 +13,9 @@ import com.azure.resourcemanager.mariadb.fluent.RecommendedActionsClient;
 import com.azure.resourcemanager.mariadb.fluent.models.RecommendationActionInner;
 import com.azure.resourcemanager.mariadb.models.RecommendationAction;
 import com.azure.resourcemanager.mariadb.models.RecommendedActions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecommendedActionsImpl implements RecommendedActions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedActionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecommendedActionsImpl.class);
 
     private final RecommendedActionsClient innerClient;
 
@@ -26,17 +25,6 @@ public final class RecommendedActionsImpl implements RecommendedActions {
         RecommendedActionsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public RecommendationAction get(
-        String resourceGroupName, String serverName, String advisorName, String recommendedActionName) {
-        RecommendationActionInner inner =
-            this.serviceClient().get(resourceGroupName, serverName, advisorName, recommendedActionName);
-        if (inner != null) {
-            return new RecommendationActionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<RecommendationAction> getWithResponse(
@@ -55,6 +43,17 @@ public final class RecommendedActionsImpl implements RecommendedActions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RecommendationActionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RecommendationAction get(
+        String resourceGroupName, String serverName, String advisorName, String recommendedActionName) {
+        RecommendationActionInner inner =
+            this.serviceClient().get(resourceGroupName, serverName, advisorName, recommendedActionName);
+        if (inner != null) {
+            return new RecommendationActionImpl(inner, this.manager());
         } else {
             return null;
         }

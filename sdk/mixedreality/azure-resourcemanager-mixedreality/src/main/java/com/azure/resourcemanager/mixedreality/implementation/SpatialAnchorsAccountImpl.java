@@ -88,6 +88,10 @@ public final class SpatialAnchorsAccountImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SpatialAnchorsAccountInner innerModel() {
         return this.innerObject;
     }
@@ -184,22 +188,22 @@ public final class SpatialAnchorsAccountImpl
         return this;
     }
 
-    public AccountKeys listKeys() {
-        return serviceManager.spatialAnchorsAccounts().listKeys(resourceGroupName, accountName);
-    }
-
     public Response<AccountKeys> listKeysWithResponse(Context context) {
         return serviceManager.spatialAnchorsAccounts().listKeysWithResponse(resourceGroupName, accountName, context);
     }
 
-    public AccountKeys regenerateKeys(AccountKeyRegenerateRequest regenerate) {
-        return serviceManager.spatialAnchorsAccounts().regenerateKeys(resourceGroupName, accountName, regenerate);
+    public AccountKeys listKeys() {
+        return serviceManager.spatialAnchorsAccounts().listKeys(resourceGroupName, accountName);
     }
 
     public Response<AccountKeys> regenerateKeysWithResponse(AccountKeyRegenerateRequest regenerate, Context context) {
         return serviceManager
             .spatialAnchorsAccounts()
             .regenerateKeysWithResponse(resourceGroupName, accountName, regenerate, context);
+    }
+
+    public AccountKeys regenerateKeys(AccountKeyRegenerateRequest regenerate) {
+        return serviceManager.spatialAnchorsAccounts().regenerateKeys(resourceGroupName, accountName, regenerate);
     }
 
     public SpatialAnchorsAccountImpl withRegion(Region location) {

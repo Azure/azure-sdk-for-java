@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolReplicationLinksClient;
 import com.azure.resourcemanager.synapse.fluent.models.ReplicationLinkInner;
 import com.azure.resourcemanager.synapse.models.ReplicationLinkListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolReplicationLinksClient. */
 public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicationLinksClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolReplicationLinksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolReplicationLinksService service;
 
@@ -59,7 +56,7 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolReplicationLinksService {
+    public interface SqlPoolReplicationLinksService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -105,7 +102,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     }
 
     /**
-     * Lists a Sql pool's replication links.
+     * Get SQL pool replication links
+     *
+     * <p>Lists a Sql pool's replication links.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -169,7 +168,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     }
 
     /**
-     * Lists a Sql pool's replication links.
+     * Get SQL pool replication links
+     *
+     * <p>Lists a Sql pool's replication links.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -231,7 +232,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     }
 
     /**
-     * Lists a Sql pool's replication links.
+     * Get SQL pool replication links
+     *
+     * <p>Lists a Sql pool's replication links.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -239,7 +242,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List Sql pool replication link request.
+     * @return represents the response to a List Sql pool replication link request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReplicationLinkInner> listAsync(
@@ -250,7 +254,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     }
 
     /**
-     * Lists a Sql pool's replication links.
+     * Get SQL pool replication links
+     *
+     * <p>Lists a Sql pool's replication links.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -259,7 +265,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List Sql pool replication link request.
+     * @return represents the response to a List Sql pool replication link request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReplicationLinkInner> listAsync(
@@ -270,7 +277,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     }
 
     /**
-     * Lists a Sql pool's replication links.
+     * Get SQL pool replication links
+     *
+     * <p>Lists a Sql pool's replication links.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -278,7 +287,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List Sql pool replication link request.
+     * @return represents the response to a List Sql pool replication link request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationLinkInner> list(
@@ -287,7 +297,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     }
 
     /**
-     * Lists a Sql pool's replication links.
+     * Get SQL pool replication links
+     *
+     * <p>Lists a Sql pool's replication links.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -296,7 +308,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List Sql pool replication link request.
+     * @return represents the response to a List Sql pool replication link request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationLinkInner> list(
@@ -305,7 +318,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     }
 
     /**
-     * Get SQL pool replication link by name.
+     * Get SQL pool replication link by name
+     *
+     * <p>Get SQL pool replication link by name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -364,7 +379,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     }
 
     /**
-     * Get SQL pool replication link by name.
+     * Get SQL pool replication link by name
+     *
+     * <p>Get SQL pool replication link by name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -421,7 +438,9 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     }
 
     /**
-     * Get SQL pool replication link by name.
+     * Get SQL pool replication link by name
+     *
+     * <p>Get SQL pool replication link by name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -436,36 +455,13 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     private Mono<ReplicationLinkInner> getByNameAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
         return getByNameWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, linkId)
-            .flatMap(
-                (Response<ReplicationLinkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get SQL pool replication link by name.
+     * Get SQL pool replication link by name
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param linkId The ID of the replication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool replication link by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationLinkInner getByName(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
-        return getByNameAsync(resourceGroupName, workspaceName, sqlPoolName, linkId).block();
-    }
-
-    /**
-     * Get SQL pool replication link by name.
+     * <p>Get SQL pool replication link by name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -484,9 +480,30 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     }
 
     /**
+     * Get SQL pool replication link by name
+     *
+     * <p>Get SQL pool replication link by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param linkId The ID of the replication link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sQL pool replication link by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicationLinkInner getByName(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
+        return getByNameWithResponse(resourceGroupName, workspaceName, sqlPoolName, linkId, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -522,7 +539,8 @@ public final class SqlPoolReplicationLinksClientImpl implements SqlPoolReplicati
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

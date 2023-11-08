@@ -34,6 +34,10 @@ public final class AvailableServiceAliasInner {
     @JsonProperty(value = "resourceName")
     private String resourceName;
 
+    /** Creates an instance of AvailableServiceAliasInner class. */
+    public AvailableServiceAliasInner() {
+    }
+
     /**
      * Get the name property: The name of the service alias.
      *

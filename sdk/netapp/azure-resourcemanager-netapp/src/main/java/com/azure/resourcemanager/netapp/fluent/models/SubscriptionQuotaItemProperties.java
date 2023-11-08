@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SubscriptionQuotaItem Properties. */
 @Immutable
 public final class SubscriptionQuotaItemProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionQuotaItemProperties.class);
-
     /*
      * The current quota value.
      */
@@ -25,6 +21,10 @@ public final class SubscriptionQuotaItemProperties {
      */
     @JsonProperty(value = "default", access = JsonProperty.Access.WRITE_ONLY)
     private Integer defaultProperty;
+
+    /** Creates an instance of SubscriptionQuotaItemProperties class. */
+    public SubscriptionQuotaItemProperties() {
+    }
 
     /**
      * Get the current property: The current quota value.

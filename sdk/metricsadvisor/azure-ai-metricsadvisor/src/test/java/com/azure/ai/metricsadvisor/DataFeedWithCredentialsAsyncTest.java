@@ -42,7 +42,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     @Override
     public void testSqlServer(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         List<String> credIds = new ArrayList<>();
 
         final AtomicReference<DataFeed> dataFeed = new AtomicReference<>(initDataFeed());
@@ -193,7 +193,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     @Override
     public void testDataLakeGen2(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         List<String> credIds = new ArrayList<>();
 
         final AtomicReference<DataFeed> dataFeed = new AtomicReference<>(initDataFeed());
@@ -336,7 +336,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     @Override
     public void testDataExplorer(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         List<String> credIds = new ArrayList<>();
 
         final AtomicReference<DataFeed> dataFeed = new AtomicReference<>(initDataFeed());
@@ -456,7 +456,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     @Override
     public void testBlobStorage(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         final AtomicReference<DataFeed> dataFeed = new AtomicReference<>(initDataFeed());
         try {
             // Create BlobFeed with basic credentials in connection string.

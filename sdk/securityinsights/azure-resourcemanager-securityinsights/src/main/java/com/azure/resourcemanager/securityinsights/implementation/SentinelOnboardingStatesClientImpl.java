@@ -249,14 +249,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
     private Mono<SentinelOnboardingStateInner> getAsync(
         String resourceGroupName, String workspaceName, String sentinelOnboardingStateName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sentinelOnboardingStateName)
-            .flatMap(
-                (Response<SentinelOnboardingStateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -441,14 +434,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
         SentinelOnboardingStateInner sentinelOnboardingStateParameter) {
         return createWithResponseAsync(
                 resourceGroupName, workspaceName, sentinelOnboardingStateName, sentinelOnboardingStateParameter)
-            .flatMap(
-                (Response<SentinelOnboardingStateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -468,14 +454,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
         final SentinelOnboardingStateInner sentinelOnboardingStateParameter = null;
         return createWithResponseAsync(
                 resourceGroupName, workspaceName, sentinelOnboardingStateName, sentinelOnboardingStateParameter)
-            .flatMap(
-                (Response<SentinelOnboardingStateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -651,7 +630,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String sentinelOnboardingStateName) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, sentinelOnboardingStateName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -793,15 +772,7 @@ public final class SentinelOnboardingStatesClientImpl implements SentinelOnboard
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SentinelOnboardingStatesListInner> listAsync(String resourceGroupName, String workspaceName) {
-        return listWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<SentinelOnboardingStatesListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, workspaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SessionHostLoadBalancingAlgorithm. */
+/** Load balancing algorithm for ramp up period. */
 public final class SessionHostLoadBalancingAlgorithm extends ExpandableStringEnum<SessionHostLoadBalancingAlgorithm> {
     /** Static value BreadthFirst for SessionHostLoadBalancingAlgorithm. */
     public static final SessionHostLoadBalancingAlgorithm BREADTH_FIRST = fromString("BreadthFirst");
 
     /** Static value DepthFirst for SessionHostLoadBalancingAlgorithm. */
     public static final SessionHostLoadBalancingAlgorithm DEPTH_FIRST = fromString("DepthFirst");
+
+    /**
+     * Creates a new instance of SessionHostLoadBalancingAlgorithm value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SessionHostLoadBalancingAlgorithm() {
+    }
 
     /**
      * Creates or finds a SessionHostLoadBalancingAlgorithm from its string representation.
@@ -27,7 +36,11 @@ public final class SessionHostLoadBalancingAlgorithm extends ExpandableStringEnu
         return fromString(name, SessionHostLoadBalancingAlgorithm.class);
     }
 
-    /** @return known SessionHostLoadBalancingAlgorithm values. */
+    /**
+     * Gets known SessionHostLoadBalancingAlgorithm values.
+     *
+     * @return known SessionHostLoadBalancingAlgorithm values.
+     */
     public static Collection<SessionHostLoadBalancingAlgorithm> values() {
         return values(SessionHostLoadBalancingAlgorithm.class);
     }

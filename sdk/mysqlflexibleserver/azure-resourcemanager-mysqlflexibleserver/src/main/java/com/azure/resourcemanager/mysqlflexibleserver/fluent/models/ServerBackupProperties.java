@@ -29,6 +29,10 @@ public final class ServerBackupProperties {
     @JsonProperty(value = "source")
     private String source;
 
+    /** Creates an instance of ServerBackupProperties class. */
+    public ServerBackupProperties() {
+    }
+
     /**
      * Get the backupType property: Backup type.
      *

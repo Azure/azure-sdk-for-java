@@ -16,12 +16,15 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsCategoriesClient;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceInner;
@@ -29,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DiagnosticSettingsCategoriesClient. */
 public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticSettingsCategoriesClient {
-    private final ClientLogger logger = new ClientLogger(DiagnosticSettingsCategoriesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DiagnosticSettingsCategoriesService service;
 
@@ -56,7 +57,7 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientDiagnos")
-    private interface DiagnosticSettingsCategoriesService {
+    public interface DiagnosticSettingsCategoriesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories/{name}")
         @ExpectedResponses({200})
@@ -89,7 +90,8 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic settings category for the specified resource.
+     * @return the diagnostic settings category for the specified resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiagnosticSettingsCategoryResourceInner>> getWithResponseAsync(
@@ -106,7 +108,7 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String apiVersion = "2017-05-01-preview";
+        final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -123,7 +125,8 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic settings category for the specified resource.
+     * @return the diagnostic settings category for the specified resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiagnosticSettingsCategoryResourceInner>> getWithResponseAsync(
@@ -140,7 +143,7 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String apiVersion = "2017-05-01-preview";
+        final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context);
@@ -154,19 +157,28 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic settings category for the specified resource.
+     * @return the diagnostic settings category for the specified resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiagnosticSettingsCategoryResourceInner> getAsync(String resourceUri, String name) {
-        return getWithResponseAsync(resourceUri, name)
-            .flatMap(
-                (Response<DiagnosticSettingsCategoryResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceUri, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the diagnostic settings category for the specified resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param name The name of the diagnostic setting.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the diagnostic settings category for the specified resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DiagnosticSettingsCategoryResourceInner> getWithResponse(
+        String resourceUri, String name, Context context) {
+        return getWithResponseAsync(resourceUri, name, context).block();
     }
 
     /**
@@ -181,24 +193,7 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnosticSettingsCategoryResourceInner get(String resourceUri, String name) {
-        return getAsync(resourceUri, name).block();
-    }
-
-    /**
-     * Gets the diagnostic settings category for the specified resource.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @param name The name of the diagnostic setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic settings category for the specified resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticSettingsCategoryResourceInner> getWithResponse(
-        String resourceUri, String name, Context context) {
-        return getWithResponseAsync(resourceUri, name, context).block();
+        return getWithResponse(resourceUri, name, Context.NONE).getValue();
     }
 
     /**
@@ -208,10 +203,11 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of diagnostic setting category resources.
+     * @return represents a collection of diagnostic setting category resources along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DiagnosticSettingsCategoryResourceCollectionInner>> listWithResponseAsync(String resourceUri) {
+    private Mono<PagedResponse<DiagnosticSettingsCategoryResourceInner>> listSinglePageAsync(String resourceUri) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -221,10 +217,14 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        final String apiVersion = "2017-05-01-preview";
+        final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context))
+            .<PagedResponse<DiagnosticSettingsCategoryResourceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -236,10 +236,11 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of diagnostic setting category resources.
+     * @return represents a collection of diagnostic setting category resources along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticSettingsCategoryResourceCollectionInner>> listWithResponseAsync(
+    private Mono<PagedResponse<DiagnosticSettingsCategoryResourceInner>> listSinglePageAsync(
         String resourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -250,10 +251,15 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        final String apiVersion = "2017-05-01-preview";
+        final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context);
+        return service
+            .list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -263,33 +269,12 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of diagnostic setting category resources.
+     * @return represents a collection of diagnostic setting category resources as paginated response with {@link
+     *     PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiagnosticSettingsCategoryResourceCollectionInner> listAsync(String resourceUri) {
-        return listWithResponseAsync(resourceUri)
-            .flatMap(
-                (Response<DiagnosticSettingsCategoryResourceCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Lists the diagnostic settings categories for the specified resource.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of diagnostic setting category resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnosticSettingsCategoryResourceCollectionInner list(String resourceUri) {
-        return listAsync(resourceUri).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DiagnosticSettingsCategoryResourceInner> listAsync(String resourceUri) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri));
     }
 
     /**
@@ -300,11 +285,42 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of diagnostic setting category resources.
+     * @return represents a collection of diagnostic setting category resources as paginated response with {@link
+     *     PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticSettingsCategoryResourceCollectionInner> listWithResponse(
-        String resourceUri, Context context) {
-        return listWithResponseAsync(resourceUri, context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<DiagnosticSettingsCategoryResourceInner> listAsync(String resourceUri, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, context));
+    }
+
+    /**
+     * Lists the diagnostic settings categories for the specified resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of diagnostic setting category resources as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DiagnosticSettingsCategoryResourceInner> list(String resourceUri) {
+        return new PagedIterable<>(listAsync(resourceUri));
+    }
+
+    /**
+     * Lists the diagnostic settings categories for the specified resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of diagnostic setting category resources as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DiagnosticSettingsCategoryResourceInner> list(String resourceUri, Context context) {
+        return new PagedIterable<>(listAsync(resourceUri, context));
     }
 }

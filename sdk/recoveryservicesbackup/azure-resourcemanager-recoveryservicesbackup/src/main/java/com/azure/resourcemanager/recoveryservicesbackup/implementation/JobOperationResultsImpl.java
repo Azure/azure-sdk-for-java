@@ -9,10 +9,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobOperationResults;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobOperationResultsImpl implements JobOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobOperationResultsImpl.class);
 
     private final JobOperationResultsClient innerClient;
 
@@ -25,13 +24,13 @@ public final class JobOperationResultsImpl implements JobOperationResults {
         this.serviceManager = serviceManager;
     }
 
-    public void get(String vaultName, String resourceGroupName, String jobName, String operationId) {
-        this.serviceClient().get(vaultName, resourceGroupName, jobName, operationId);
-    }
-
     public Response<Void> getWithResponse(
         String vaultName, String resourceGroupName, String jobName, String operationId, Context context) {
         return this.serviceClient().getWithResponse(vaultName, resourceGroupName, jobName, operationId, context);
+    }
+
+    public void get(String vaultName, String resourceGroupName, String jobName, String operationId) {
+        this.serviceClient().get(vaultName, resourceGroupName, jobName, operationId);
     }
 
     private JobOperationResultsClient serviceClient() {

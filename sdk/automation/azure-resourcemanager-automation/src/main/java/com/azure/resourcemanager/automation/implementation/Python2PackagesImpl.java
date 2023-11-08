@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.Python2PackagesClient;
 import com.azure.resourcemanager.automation.fluent.models.ModuleInner;
 import com.azure.resourcemanager.automation.models.Module;
 import com.azure.resourcemanager.automation.models.Python2Packages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class Python2PackagesImpl implements Python2Packages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Python2PackagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Python2PackagesImpl.class);
 
     private final Python2PackagesClient innerClient;
 
@@ -77,7 +76,7 @@ public final class Python2PackagesImpl implements Python2Packages {
     public Module getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,7 +84,7 @@ public final class Python2PackagesImpl implements Python2Packages {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class Python2PackagesImpl implements Python2Packages {
         }
         String packageName = Utils.getValueFromIdByName(id, "python2Packages");
         if (packageName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,7 +105,7 @@ public final class Python2PackagesImpl implements Python2Packages {
     public Response<Module> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,7 +113,7 @@ public final class Python2PackagesImpl implements Python2Packages {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -123,7 +122,7 @@ public final class Python2PackagesImpl implements Python2Packages {
         }
         String packageName = Utils.getValueFromIdByName(id, "python2Packages");
         if (packageName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,7 +134,7 @@ public final class Python2PackagesImpl implements Python2Packages {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class Python2PackagesImpl implements Python2Packages {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -152,19 +151,19 @@ public final class Python2PackagesImpl implements Python2Packages {
         }
         String packageName = Utils.getValueFromIdByName(id, "python2Packages");
         if (packageName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'python2Packages'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, packageName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, packageName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -172,7 +171,7 @@ public final class Python2PackagesImpl implements Python2Packages {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,7 +180,7 @@ public final class Python2PackagesImpl implements Python2Packages {
         }
         String packageName = Utils.getValueFromIdByName(id, "python2Packages");
         if (packageName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

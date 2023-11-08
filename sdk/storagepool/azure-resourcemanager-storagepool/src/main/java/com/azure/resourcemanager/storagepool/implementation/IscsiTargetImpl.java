@@ -108,6 +108,10 @@ public final class IscsiTargetImpl implements IscsiTarget, IscsiTarget.Definitio
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IscsiTargetInner innerModel() {
         return this.innerObject;
     }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The current state of a private endpoint connection. */
 @Fluent
 public class ConnectionState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionState.class);
-
     /*
      * The status of a private endpoint connection.
      */
@@ -31,6 +28,10 @@ public class ConnectionState {
      */
     @JsonProperty(value = "actionsRequired")
     private String actionsRequired;
+
+    /** Creates an instance of ConnectionState class. */
+    public ConnectionState() {
+    }
 
     /**
      * Get the status property: The status of a private endpoint connection.
@@ -99,14 +100,16 @@ public class ConnectionState {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property status in model ConnectionState"));
         }
         if (description() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property description in model ConnectionState"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionState.class);
 }

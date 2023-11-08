@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,13 +12,15 @@ import java.util.List;
 /** The DailySchedule model. */
 @Fluent
 public final class DailySchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DailySchedule.class);
-
     /*
      * List of times of day this schedule has to be run.
      */
     @JsonProperty(value = "scheduleRunTimes")
     private List<OffsetDateTime> scheduleRunTimes;
+
+    /** Creates an instance of DailySchedule class. */
+    public DailySchedule() {
+    }
 
     /**
      * Get the scheduleRunTimes property: List of times of day this schedule has to be run.

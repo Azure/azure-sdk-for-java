@@ -5,134 +5,36 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Registration information. */
-@JsonFlatten
 @Fluent
-public class RegistrationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistrationInner.class);
-
+public final class RegistrationInner extends Resource {
     /*
-     * The object identifier associated with the Azure Stack connecting to
-     * Azure.
+     * Registration resource.
      */
-    @JsonProperty(value = "properties.objectId")
-    private String objectId;
+    @JsonProperty(value = "properties")
+    private RegistrationProperties innerProperties;
 
     /*
-     * The identifier of the registered Azure Stack.
-     */
-    @JsonProperty(value = "properties.cloudId")
-    private String cloudId;
-
-    /*
-     * Specifies the billing mode for the Azure Stack registration.
-     */
-    @JsonProperty(value = "properties.billingModel")
-    private String billingModel;
-
-    /*
-     * The kind of the resource.
-     */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
-    private String kind;
-
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /*
-     * The entity tag used for optimistic concurrency when modifying the
-     * resource.
+     * The entity tag used for optimistic concurrency when modifying the resource.
      */
     @JsonProperty(value = "etag")
     private String etag;
 
-    /**
-     * Get the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
-     *
-     * @return the objectId value.
-     */
-    public String objectId() {
-        return this.objectId;
+    /** Creates an instance of RegistrationInner class. */
+    public RegistrationInner() {
     }
 
     /**
-     * Set the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
+     * Get the innerProperties property: Registration resource.
      *
-     * @param objectId the objectId value to set.
-     * @return the RegistrationInner object itself.
+     * @return the innerProperties value.
      */
-    public RegistrationInner withObjectId(String objectId) {
-        this.objectId = objectId;
-        return this;
-    }
-
-    /**
-     * Get the cloudId property: The identifier of the registered Azure Stack.
-     *
-     * @return the cloudId value.
-     */
-    public String cloudId() {
-        return this.cloudId;
-    }
-
-    /**
-     * Set the cloudId property: The identifier of the registered Azure Stack.
-     *
-     * @param cloudId the cloudId value to set.
-     * @return the RegistrationInner object itself.
-     */
-    public RegistrationInner withCloudId(String cloudId) {
-        this.cloudId = cloudId;
-        return this;
-    }
-
-    /**
-     * Get the billingModel property: Specifies the billing mode for the Azure Stack registration.
-     *
-     * @return the billingModel value.
-     */
-    public String billingModel() {
-        return this.billingModel;
-    }
-
-    /**
-     * Set the billingModel property: Specifies the billing mode for the Azure Stack registration.
-     *
-     * @param billingModel the billingModel value to set.
-     * @return the RegistrationInner object itself.
-     */
-    public RegistrationInner withBillingModel(String billingModel) {
-        this.billingModel = billingModel;
-        return this;
-    }
-
-    /**
-     * Get the kind property: The kind of the resource.
-     *
-     * @return the kind value.
-     */
-    public String kind() {
-        return this.kind;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
+    private RegistrationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -170,10 +72,82 @@ public class RegistrationInner extends Resource {
     }
 
     /**
+     * Get the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
+     *
+     * @return the objectId value.
+     */
+    public String objectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().objectId();
+    }
+
+    /**
+     * Set the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
+     *
+     * @param objectId the objectId value to set.
+     * @return the RegistrationInner object itself.
+     */
+    public RegistrationInner withObjectId(String objectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistrationProperties();
+        }
+        this.innerProperties().withObjectId(objectId);
+        return this;
+    }
+
+    /**
+     * Get the cloudId property: The identifier of the registered Azure Stack.
+     *
+     * @return the cloudId value.
+     */
+    public String cloudId() {
+        return this.innerProperties() == null ? null : this.innerProperties().cloudId();
+    }
+
+    /**
+     * Set the cloudId property: The identifier of the registered Azure Stack.
+     *
+     * @param cloudId the cloudId value to set.
+     * @return the RegistrationInner object itself.
+     */
+    public RegistrationInner withCloudId(String cloudId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistrationProperties();
+        }
+        this.innerProperties().withCloudId(cloudId);
+        return this;
+    }
+
+    /**
+     * Get the billingModel property: Specifies the billing mode for the Azure Stack registration.
+     *
+     * @return the billingModel value.
+     */
+    public String billingModel() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingModel();
+    }
+
+    /**
+     * Set the billingModel property: Specifies the billing mode for the Azure Stack registration.
+     *
+     * @param billingModel the billingModel value to set.
+     * @return the RegistrationInner object itself.
+     */
+    public RegistrationInner withBillingModel(String billingModel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistrationProperties();
+        }
+        this.innerProperties().withBillingModel(billingModel);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

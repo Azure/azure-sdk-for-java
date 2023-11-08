@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RelationshipStatus. */
+/** Status of the mirror relationship. */
 public final class RelationshipStatus extends ExpandableStringEnum<RelationshipStatus> {
     /** Static value Idle for RelationshipStatus. */
     public static final RelationshipStatus IDLE = fromString("Idle");
 
     /** Static value Transferring for RelationshipStatus. */
     public static final RelationshipStatus TRANSFERRING = fromString("Transferring");
+
+    /**
+     * Creates a new instance of RelationshipStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RelationshipStatus() {
+    }
 
     /**
      * Creates or finds a RelationshipStatus from its string representation.
@@ -27,7 +36,11 @@ public final class RelationshipStatus extends ExpandableStringEnum<RelationshipS
         return fromString(name, RelationshipStatus.class);
     }
 
-    /** @return known RelationshipStatus values. */
+    /**
+     * Gets known RelationshipStatus values.
+     *
+     * @return known RelationshipStatus values.
+     */
     public static Collection<RelationshipStatus> values() {
         return values(RelationshipStatus.class);
     }

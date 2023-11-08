@@ -37,6 +37,10 @@ public final class ManagedVirtualNetworkResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of ManagedVirtualNetworkResourceInner class. */
+    public ManagedVirtualNetworkResourceInner() {
+    }
+
     /**
      * Get the properties property: Managed Virtual Network properties.
      *

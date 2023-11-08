@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** workingHours. */
 @Fluent
 public final class MicrosoftGraphWorkingHours {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkingHours.class);
-
     /*
      * The days of the week on which the user works.
      */
@@ -47,6 +44,10 @@ public final class MicrosoftGraphWorkingHours {
      * workingHours
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkingHours class. */
+    public MicrosoftGraphWorkingHours() {
+    }
 
     /**
      * Get the daysOfWeek property: The days of the week on which the user works.

@@ -33,8 +33,8 @@ public final class QueueMessageItemInternal {
     private DateTimeRfc1123 expirationTime;
 
     /*
-     * This value is required to delete the Message. If deletion fails using
-     * this popreceipt then the message has been dequeued by another client.
+     * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been
+     * dequeued by another client.
      */
     @JsonProperty(value = "PopReceipt", required = true)
     private String popReceipt;
@@ -56,6 +56,9 @@ public final class QueueMessageItemInternal {
      */
     @JsonProperty(value = "MessageText", required = true)
     private String messageText;
+
+    /** Creates an instance of QueueMessageItemInternal class. */
+    public QueueMessageItemInternal() {}
 
     /**
      * Get the messageId property: The Id of the Message.

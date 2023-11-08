@@ -11,16 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PartnerTopicInfo {
     /*
-     * Azure subscription ID of the subscriber. The partner topic associated
-     * with the channel will be
+     * Azure subscription ID of the subscriber. The partner topic associated with the channel will be
      * created under this Azure subscription.
      */
     @JsonProperty(value = "azureSubscriptionId")
     private String azureSubscriptionId;
 
     /*
-     * Azure Resource Group of the subscriber. The partner topic associated
-     * with the channel will be
+     * Azure Resource Group of the subscriber. The partner topic associated with the channel will be
      * created under this resource group.
      */
     @JsonProperty(value = "resourceGroupName")
@@ -33,22 +31,24 @@ public final class PartnerTopicInfo {
     private String name;
 
     /*
-     * Event Type Information for the partner topic. This information is
-     * provided by the publisher and can be used by the
+     * Event Type Information for the partner topic. This information is provided by the publisher and can be used by
+     * the
      * subscriber to view different types of events that are published.
      */
     @JsonProperty(value = "eventTypeInfo")
     private EventTypeInfo eventTypeInfo;
 
     /*
-     * The source information is provided by the publisher to determine the
-     * scope or context from which the events
-     * are originating. This information can be used by the subscriber during
-     * the approval process of the
+     * The source information is provided by the publisher to determine the scope or context from which the events
+     * are originating. This information can be used by the subscriber during the approval process of the
      * created partner topic.
      */
     @JsonProperty(value = "source")
     private String source;
+
+    /** Creates an instance of PartnerTopicInfo class. */
+    public PartnerTopicInfo() {
+    }
 
     /**
      * Get the azureSubscriptionId property: Azure subscription ID of the subscriber. The partner topic associated with

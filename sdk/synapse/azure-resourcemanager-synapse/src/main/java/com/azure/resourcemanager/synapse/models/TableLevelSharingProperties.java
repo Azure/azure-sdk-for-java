@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Tables that will be included and excluded in the follower database. */
 @Fluent
 public final class TableLevelSharingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TableLevelSharingProperties.class);
-
     /*
      * List of tables to include in the follower database
      */
@@ -50,6 +46,10 @@ public final class TableLevelSharingProperties {
      */
     @JsonProperty(value = "materializedViewsToExclude")
     private List<String> materializedViewsToExclude;
+
+    /** Creates an instance of TableLevelSharingProperties class. */
+    public TableLevelSharingProperties() {
+    }
 
     /**
      * Get the tablesToInclude property: List of tables to include in the follower database.

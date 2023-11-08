@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ExpressionEvaluationOptions {
     /*
-     * The scope to be used for evaluation of parameters, variables and
-     * functions in a nested template.
+     * The scope to be used for evaluation of parameters, variables and functions in a nested template.
      */
     @JsonProperty(value = "scope")
     private ExpressionEvaluationOptionsScopeType scope;
+
+    /** Creates an instance of ExpressionEvaluationOptions class. */
+    public ExpressionEvaluationOptions() {
+    }
 
     /**
      * Get the scope property: The scope to be used for evaluation of parameters, variables and functions in a nested

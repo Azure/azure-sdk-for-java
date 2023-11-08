@@ -20,10 +20,9 @@ import com.azure.resourcemanager.datamigration.models.DataMigrationServiceStatus
 import com.azure.resourcemanager.datamigration.models.NameAvailabilityRequest;
 import com.azure.resourcemanager.datamigration.models.NameAvailabilityResponse;
 import com.azure.resourcemanager.datamigration.models.Services;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServicesImpl implements Services {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
 
     private final ServicesClient innerClient;
 
@@ -33,15 +32,6 @@ public final class ServicesImpl implements Services {
         ServicesClient innerClient, com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public DataMigrationService getByResourceGroup(String groupName, String serviceName) {
-        DataMigrationServiceInner inner = this.serviceClient().getByResourceGroup(groupName, serviceName);
-        if (inner != null) {
-            return new DataMigrationServiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<DataMigrationService> getByResourceGroupWithResponse(
@@ -59,8 +49,13 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public void delete(String groupName, String serviceName, Boolean deleteRunningTasks) {
-        this.serviceClient().delete(groupName, serviceName, deleteRunningTasks);
+    public DataMigrationService getByResourceGroup(String groupName, String serviceName) {
+        DataMigrationServiceInner inner = this.serviceClient().getByResourceGroup(groupName, serviceName);
+        if (inner != null) {
+            return new DataMigrationServiceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String groupName, String serviceName) {
@@ -69,15 +64,6 @@ public final class ServicesImpl implements Services {
 
     public void delete(String groupName, String serviceName, Boolean deleteRunningTasks, Context context) {
         this.serviceClient().delete(groupName, serviceName, deleteRunningTasks, context);
-    }
-
-    public DataMigrationServiceStatusResponse checkStatus(String groupName, String serviceName) {
-        DataMigrationServiceStatusResponseInner inner = this.serviceClient().checkStatus(groupName, serviceName);
-        if (inner != null) {
-            return new DataMigrationServiceStatusResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<DataMigrationServiceStatusResponse> checkStatusWithResponse(
@@ -90,6 +76,15 @@ public final class ServicesImpl implements Services {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DataMigrationServiceStatusResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DataMigrationServiceStatusResponse checkStatus(String groupName, String serviceName) {
+        DataMigrationServiceStatusResponseInner inner = this.serviceClient().checkStatus(groupName, serviceName);
+        if (inner != null) {
+            return new DataMigrationServiceStatusResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -121,17 +116,6 @@ public final class ServicesImpl implements Services {
         return Utils.mapPage(inner, inner1 -> new AvailableServiceSkuImpl(inner1, this.manager()));
     }
 
-    public NameAvailabilityResponse nestedCheckNameAvailability(
-        String groupName, String serviceName, NameAvailabilityRequest parameters) {
-        NameAvailabilityResponseInner inner =
-            this.serviceClient().nestedCheckNameAvailability(groupName, serviceName, parameters);
-        if (inner != null) {
-            return new NameAvailabilityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
         String groupName, String serviceName, NameAvailabilityRequest parameters, Context context) {
         Response<NameAvailabilityResponseInner> inner =
@@ -142,6 +126,17 @@ public final class ServicesImpl implements Services {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NameAvailabilityResponse nestedCheckNameAvailability(
+        String groupName, String serviceName, NameAvailabilityRequest parameters) {
+        NameAvailabilityResponseInner inner =
+            this.serviceClient().nestedCheckNameAvailability(groupName, serviceName, parameters);
+        if (inner != null) {
+            return new NameAvailabilityResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -167,15 +162,6 @@ public final class ServicesImpl implements Services {
         return Utils.mapPage(inner, inner1 -> new DataMigrationServiceImpl(inner1, this.manager()));
     }
 
-    public NameAvailabilityResponse checkNameAvailability(String location, NameAvailabilityRequest parameters) {
-        NameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(location, parameters);
-        if (inner != null) {
-            return new NameAvailabilityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<NameAvailabilityResponse> checkNameAvailabilityWithResponse(
         String location, NameAvailabilityRequest parameters, Context context) {
         Response<NameAvailabilityResponseInner> inner =
@@ -191,10 +177,19 @@ public final class ServicesImpl implements Services {
         }
     }
 
+    public NameAvailabilityResponse checkNameAvailability(String location, NameAvailabilityRequest parameters) {
+        NameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(location, parameters);
+        if (inner != null) {
+            return new NameAvailabilityResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public DataMigrationService getById(String id) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -202,7 +197,7 @@ public final class ServicesImpl implements Services {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
@@ -213,7 +208,7 @@ public final class ServicesImpl implements Services {
     public Response<DataMigrationService> getByIdWithResponse(String id, Context context) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -221,7 +216,7 @@ public final class ServicesImpl implements Services {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
@@ -232,7 +227,7 @@ public final class ServicesImpl implements Services {
     public void deleteById(String id) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -240,7 +235,7 @@ public final class ServicesImpl implements Services {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
@@ -252,7 +247,7 @@ public final class ServicesImpl implements Services {
     public void deleteByIdWithResponse(String id, Boolean deleteRunningTasks, Context context) {
         String groupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (groupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -260,7 +255,7 @@ public final class ServicesImpl implements Services {
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));

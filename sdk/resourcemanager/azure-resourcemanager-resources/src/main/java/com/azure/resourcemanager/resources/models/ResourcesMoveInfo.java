@@ -23,6 +23,10 @@ public final class ResourcesMoveInfo {
     @JsonProperty(value = "targetResourceGroup")
     private String targetResourceGroup;
 
+    /** Creates an instance of ResourcesMoveInfo class. */
+    public ResourcesMoveInfo() {
+    }
+
     /**
      * Get the resources property: The IDs of the resources.
      *

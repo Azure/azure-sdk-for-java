@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** The ApplicationsCheckMemberGroupsRequestBody model. */
 @Fluent
 public final class ApplicationsCheckMemberGroupsRequestBody {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationsCheckMemberGroupsRequestBody.class);
-
     /*
      * The groupIds property.
      */
@@ -26,9 +23,13 @@ public final class ApplicationsCheckMemberGroupsRequestBody {
     private List<String> groupIds;
 
     /*
-     * Dictionary of <any>
+     * Dictionary of <AnyObject>
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of ApplicationsCheckMemberGroupsRequestBody class. */
+    public ApplicationsCheckMemberGroupsRequestBody() {
+    }
 
     /**
      * Get the groupIds property: The groupIds property.
@@ -51,7 +52,7 @@ public final class ApplicationsCheckMemberGroupsRequestBody {
     }
 
     /**
-     * Get the additionalProperties property: Dictionary of &lt;any&gt;.
+     * Get the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
      *
      * @return the additionalProperties value.
      */
@@ -61,7 +62,7 @@ public final class ApplicationsCheckMemberGroupsRequestBody {
     }
 
     /**
-     * Set the additionalProperties property: Dictionary of &lt;any&gt;.
+     * Set the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the ApplicationsCheckMemberGroupsRequestBody object itself.

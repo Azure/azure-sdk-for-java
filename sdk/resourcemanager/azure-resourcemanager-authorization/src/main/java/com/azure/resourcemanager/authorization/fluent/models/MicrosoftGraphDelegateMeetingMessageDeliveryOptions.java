@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphDelegateMeetingMessageDeliveryOptions. */
+/** delegateMeetingMessageDeliveryOptions. */
 public final class MicrosoftGraphDelegateMeetingMessageDeliveryOptions
     extends ExpandableStringEnum<MicrosoftGraphDelegateMeetingMessageDeliveryOptions> {
     /** Static value sendToDelegateAndInformationToPrincipal for MicrosoftGraphDelegateMeetingMessageDeliveryOptions. */
@@ -24,6 +24,15 @@ public final class MicrosoftGraphDelegateMeetingMessageDeliveryOptions
         fromString("sendToDelegateOnly");
 
     /**
+     * Creates a new instance of MicrosoftGraphDelegateMeetingMessageDeliveryOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphDelegateMeetingMessageDeliveryOptions() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphDelegateMeetingMessageDeliveryOptions from its string representation.
      *
      * @param name a name to look for.
@@ -34,7 +43,11 @@ public final class MicrosoftGraphDelegateMeetingMessageDeliveryOptions
         return fromString(name, MicrosoftGraphDelegateMeetingMessageDeliveryOptions.class);
     }
 
-    /** @return known MicrosoftGraphDelegateMeetingMessageDeliveryOptions values. */
+    /**
+     * Gets known MicrosoftGraphDelegateMeetingMessageDeliveryOptions values.
+     *
+     * @return known MicrosoftGraphDelegateMeetingMessageDeliveryOptions values.
+     */
     public static Collection<MicrosoftGraphDelegateMeetingMessageDeliveryOptions> values() {
         return values(MicrosoftGraphDelegateMeetingMessageDeliveryOptions.class);
     }

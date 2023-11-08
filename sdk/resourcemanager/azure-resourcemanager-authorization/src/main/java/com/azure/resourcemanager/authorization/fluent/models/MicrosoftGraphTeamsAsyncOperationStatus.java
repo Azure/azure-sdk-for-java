@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphTeamsAsyncOperationStatus. */
+/** teamsAsyncOperationStatus. */
 public final class MicrosoftGraphTeamsAsyncOperationStatus
     extends ExpandableStringEnum<MicrosoftGraphTeamsAsyncOperationStatus> {
     /** Static value invalid for MicrosoftGraphTeamsAsyncOperationStatus. */
@@ -30,6 +30,15 @@ public final class MicrosoftGraphTeamsAsyncOperationStatus
     public static final MicrosoftGraphTeamsAsyncOperationStatus UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphTeamsAsyncOperationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphTeamsAsyncOperationStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphTeamsAsyncOperationStatus from its string representation.
      *
      * @param name a name to look for.
@@ -40,7 +49,11 @@ public final class MicrosoftGraphTeamsAsyncOperationStatus
         return fromString(name, MicrosoftGraphTeamsAsyncOperationStatus.class);
     }
 
-    /** @return known MicrosoftGraphTeamsAsyncOperationStatus values. */
+    /**
+     * Gets known MicrosoftGraphTeamsAsyncOperationStatus values.
+     *
+     * @return known MicrosoftGraphTeamsAsyncOperationStatus values.
+     */
     public static Collection<MicrosoftGraphTeamsAsyncOperationStatus> values() {
         return values(MicrosoftGraphTeamsAsyncOperationStatus.class);
     }

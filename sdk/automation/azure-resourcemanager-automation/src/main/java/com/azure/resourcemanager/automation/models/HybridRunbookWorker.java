@@ -4,126 +4,189 @@
 
 package com.azure.resourcemanager.automation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.automation.fluent.models.HybridRunbookWorkerInner;
 import java.time.OffsetDateTime;
 
-/** Definition of hybrid runbook worker. */
-@Fluent
-public final class HybridRunbookWorker {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridRunbookWorker.class);
-
-    /*
-     * Gets or sets the worker machine name.
+/** An immutable client-side representation of HybridRunbookWorker. */
+public interface HybridRunbookWorker {
+    /**
+     * Gets the id property: Fully qualified resource Id for the resource.
+     *
+     * @return the id value.
      */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /*
-     * Gets or sets the assigned machine IP address.
-     */
-    @JsonProperty(value = "ip")
-    private String ip;
-
-    /*
-     * Gets or sets the registration time of the worker machine.
-     */
-    @JsonProperty(value = "registrationTime")
-    private OffsetDateTime registrationTime;
-
-    /*
-     * Last Heartbeat from the Worker
-     */
-    @JsonProperty(value = "lastSeenDateTime")
-    private OffsetDateTime lastSeenDateTime;
+    String id();
 
     /**
-     * Get the name property: Gets or sets the worker machine name.
+     * Gets the name property: The name of the resource.
      *
      * @return the name value.
      */
-    public String name() {
-        return this.name;
-    }
+    String name();
 
     /**
-     * Set the name property: Gets or sets the worker machine name.
+     * Gets the type property: The type of the resource.
      *
-     * @param name the name value to set.
-     * @return the HybridRunbookWorker object itself.
+     * @return the type value.
      */
-    public HybridRunbookWorker withName(String name) {
-        this.name = name;
-        return this;
-    }
+    String type();
 
     /**
-     * Get the ip property: Gets or sets the assigned machine IP address.
+     * Gets the systemData property: Resource system metadata.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the ip property: Gets or sets the assigned machine IP address.
      *
      * @return the ip value.
      */
-    public String ip() {
-        return this.ip;
-    }
+    String ip();
 
     /**
-     * Set the ip property: Gets or sets the assigned machine IP address.
+     * Gets the registeredDateTime property: Gets or sets the registration time of the worker machine.
      *
-     * @param ip the ip value to set.
-     * @return the HybridRunbookWorker object itself.
+     * @return the registeredDateTime value.
      */
-    public HybridRunbookWorker withIp(String ip) {
-        this.ip = ip;
-        return this;
-    }
+    OffsetDateTime registeredDateTime();
 
     /**
-     * Get the registrationTime property: Gets or sets the registration time of the worker machine.
-     *
-     * @return the registrationTime value.
-     */
-    public OffsetDateTime registrationTime() {
-        return this.registrationTime;
-    }
-
-    /**
-     * Set the registrationTime property: Gets or sets the registration time of the worker machine.
-     *
-     * @param registrationTime the registrationTime value to set.
-     * @return the HybridRunbookWorker object itself.
-     */
-    public HybridRunbookWorker withRegistrationTime(OffsetDateTime registrationTime) {
-        this.registrationTime = registrationTime;
-        return this;
-    }
-
-    /**
-     * Get the lastSeenDateTime property: Last Heartbeat from the Worker.
+     * Gets the lastSeenDateTime property: Last Heartbeat from the Worker.
      *
      * @return the lastSeenDateTime value.
      */
-    public OffsetDateTime lastSeenDateTime() {
-        return this.lastSeenDateTime;
-    }
+    OffsetDateTime lastSeenDateTime();
 
     /**
-     * Set the lastSeenDateTime property: Last Heartbeat from the Worker.
+     * Gets the vmResourceId property: Azure Resource Manager Id for a virtual machine.
      *
-     * @param lastSeenDateTime the lastSeenDateTime value to set.
-     * @return the HybridRunbookWorker object itself.
+     * @return the vmResourceId value.
      */
-    public HybridRunbookWorker withLastSeenDateTime(OffsetDateTime lastSeenDateTime) {
-        this.lastSeenDateTime = lastSeenDateTime;
-        return this;
-    }
+    String vmResourceId();
 
     /**
-     * Validates the instance.
+     * Gets the workerType property: Type of the HybridWorker.
      *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the workerType value.
      */
-    public void validate() {
+    WorkerType workerType();
+
+    /**
+     * Gets the workerName property: Name of the HybridWorker.
+     *
+     * @return the workerName value.
+     */
+    String workerName();
+
+    /**
+     * Gets the inner com.azure.resourcemanager.automation.fluent.models.HybridRunbookWorkerInner object.
+     *
+     * @return the inner object.
+     */
+    HybridRunbookWorkerInner innerModel();
+
+    /** The entirety of the HybridRunbookWorker definition. */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+    /** The HybridRunbookWorker definition stages. */
+    interface DefinitionStages {
+        /** The first stage of the HybridRunbookWorker definition. */
+        interface Blank extends WithParentResource {
+        }
+        /** The stage of the HybridRunbookWorker definition allowing to specify parent resource. */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName.
+             *
+             * @param resourceGroupName Name of an Azure Resource group.
+             * @param automationAccountName The name of the automation account.
+             * @param hybridRunbookWorkerGroupName The hybrid runbook worker group name.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingHybridRunbookWorkerGroup(
+                String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName);
+        }
+        /**
+         * The stage of the HybridRunbookWorker definition which contains all the minimum required properties for the
+         * resource to be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithName, DefinitionStages.WithVmResourceId {
+            /**
+             * Executes the create request.
+             *
+             * @return the created resource.
+             */
+            HybridRunbookWorker create();
+
+            /**
+             * Executes the create request.
+             *
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            HybridRunbookWorker create(Context context);
+        }
+        /** The stage of the HybridRunbookWorker definition allowing to specify name. */
+        interface WithName {
+            /**
+             * Specifies the name property: Gets or sets the name of the resource..
+             *
+             * @param name Gets or sets the name of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withName(String name);
+        }
+        /** The stage of the HybridRunbookWorker definition allowing to specify vmResourceId. */
+        interface WithVmResourceId {
+            /**
+             * Specifies the vmResourceId property: Azure Resource Manager Id for a virtual machine..
+             *
+             * @param vmResourceId Azure Resource Manager Id for a virtual machine.
+             * @return the next definition stage.
+             */
+            WithCreate withVmResourceId(String vmResourceId);
+        }
+    }
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @return the refreshed resource.
+     */
+    HybridRunbookWorker refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    HybridRunbookWorker refresh(Context context);
+
+    /**
+     * Move a hybrid worker to a different group.
+     *
+     * @param hybridRunbookWorkerMoveParameters The hybrid runbook worker move parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void move(HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters);
+
+    /**
+     * Move a hybrid worker to a different group.
+     *
+     * @param hybridRunbookWorkerMoveParameters The hybrid runbook worker move parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> moveWithResponse(
+        HybridRunbookWorkerMoveParameters hybridRunbookWorkerMoveParameters, Context context);
 }

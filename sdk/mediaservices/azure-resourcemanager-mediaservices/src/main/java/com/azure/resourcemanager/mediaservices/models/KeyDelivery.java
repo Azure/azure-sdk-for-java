@@ -16,6 +16,10 @@ public final class KeyDelivery {
     @JsonProperty(value = "accessControl")
     private AccessControl accessControl;
 
+    /** Creates an instance of KeyDelivery class. */
+    public KeyDelivery() {
+    }
+
     /**
      * Get the accessControl property: The access control properties for Key Delivery.
      *

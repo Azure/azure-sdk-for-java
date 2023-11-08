@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the data lake storage account associated with the workspace. */
 @Fluent
 public final class DataLakeStorageAccountDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeStorageAccountDetails.class);
-
     /*
      * Account URL
      */
@@ -37,6 +33,10 @@ public final class DataLakeStorageAccountDetails {
      */
     @JsonProperty(value = "createManagedPrivateEndpoint")
     private Boolean createManagedPrivateEndpoint;
+
+    /** Creates an instance of DataLakeStorageAccountDetails class. */
+    public DataLakeStorageAccountDetails() {
+    }
 
     /**
      * Get the accountUrl property: Account URL.

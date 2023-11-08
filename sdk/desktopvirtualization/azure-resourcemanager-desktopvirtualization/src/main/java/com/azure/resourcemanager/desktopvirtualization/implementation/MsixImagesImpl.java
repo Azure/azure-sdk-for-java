@@ -12,10 +12,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.ExpandMsixI
 import com.azure.resourcemanager.desktopvirtualization.models.ExpandMsixImage;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixImageUri;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixImages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MsixImagesImpl implements MsixImages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MsixImagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MsixImagesImpl.class);
 
     private final MsixImagesClient innerClient;
 

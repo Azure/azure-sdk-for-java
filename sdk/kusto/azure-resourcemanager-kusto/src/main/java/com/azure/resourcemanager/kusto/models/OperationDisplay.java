@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that describes the operation. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * Friendly name of the resource provider.
      */
@@ -21,7 +17,9 @@ public final class OperationDisplay {
     private String provider;
 
     /*
-     * The operation type. For example: read, write, delete.
+     * The operation type.
+     *
+     * For example: read, write, delete.
      */
     @JsonProperty(value = "operation")
     private String operation;
@@ -37,6 +35,10 @@ public final class OperationDisplay {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
 
     /**
      * Get the provider property: Friendly name of the resource provider.
@@ -59,7 +61,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the operation property: The operation type. For example: read, write, delete.
+     * Get the operation property: The operation type.
+     *
+     * <p>For example: read, write, delete.
      *
      * @return the operation value.
      */
@@ -68,7 +72,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the operation property: The operation type. For example: read, write, delete.
+     * Set the operation property: The operation type.
+     *
+     * <p>For example: read, write, delete.
      *
      * @param operation the operation value to set.
      * @return the OperationDisplay object itself.

@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Contains the tables, columns &amp; rows resulting from a query. */
+/**
+ * A query response for a single query in a batch.
+ *
+ * <p>Contains the tables, columns &amp; rows resulting from a query.
+ */
 @Fluent
 public final class BatchQueryResults {
     /*
@@ -34,6 +38,9 @@ public final class BatchQueryResults {
      */
     @JsonProperty(value = "error")
     private ErrorInfo error;
+
+    /** Creates an instance of BatchQueryResults class. */
+    public BatchQueryResults() {}
 
     /**
      * Get the tables property: The list of tables, columns and rows.

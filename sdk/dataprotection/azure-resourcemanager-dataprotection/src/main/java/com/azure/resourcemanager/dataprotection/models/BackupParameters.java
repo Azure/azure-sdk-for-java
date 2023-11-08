@@ -5,13 +5,15 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** BackupParameters BackupParameters base. */
+/**
+ * BackupParameters
+ *
+ * <p>BackupParameters base.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,7 +23,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "AzureBackupParams", value = AzureBackupParams.class)})
 @Immutable
 public class BackupParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupParameters.class);
+    /** Creates an instance of BackupParameters class. */
+    public BackupParameters() {
+    }
 
     /**
      * Validates the instance.

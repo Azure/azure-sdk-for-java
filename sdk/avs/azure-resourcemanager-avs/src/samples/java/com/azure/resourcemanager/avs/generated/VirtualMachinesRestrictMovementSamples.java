@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovement;
 import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovementState;
 
 /** Samples for VirtualMachines RestrictMovement. */
 public final class VirtualMachinesRestrictMovementSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/VirtualMachines_RestrictMovement.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/VirtualMachines_RestrictMovement.json
      */
     /**
      * Sample code: VirtualMachine_RestrictMovement.
@@ -27,6 +26,6 @@ public final class VirtualMachinesRestrictMovementSamples {
                 "cluster1",
                 "vm-209",
                 new VirtualMachineRestrictMovement().withRestrictMovement(VirtualMachineRestrictMovementState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

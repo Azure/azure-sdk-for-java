@@ -5,39 +5,39 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** The ManifestListAttributes model. */
 @Fluent
-public final class ManifestListAttributes {
+public final class ManifestListAttributes implements JsonSerializable<ManifestListAttributes> {
     /*
-     * The MIME type of the referenced object. This will generally be
-     * application/vnd.docker.image.manifest.v2+json, but it could also be
-     * application/vnd.docker.image.manifest.v1+json
+     * The MIME type of the referenced object. This will generally be application/vnd.docker.image.manifest.v2+json,
+     * but it could also be application/vnd.docker.image.manifest.v1+json
      */
-    @JsonProperty(value = "mediaType")
     private String mediaType;
 
     /*
      * The size in bytes of the object
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
-     * The digest of the content, as defined by the Registry V2 HTTP API
-     * Specification
+     * The digest of the content, as defined by the Registry V2 HTTP API Specification
      */
-    @JsonProperty(value = "digest")
     private String digest;
 
     /*
-     * The platform object describes the platform which the image in the
-     * manifest runs on. A full list of valid operating system and architecture
-     * values are listed in the Go language documentation for $GOOS and $GOARCH
+     * The platform object describes the platform which the image in the manifest runs on. A full list of valid
+     * operating system and architecture values are listed in the Go language documentation for $GOOS and $GOARCH
      */
-    @JsonProperty(value = "platform")
     private Platform platform;
+
+    /** Creates an instance of ManifestListAttributes class. */
+    public ManifestListAttributes() {}
 
     /**
      * Get the mediaType property: The MIME type of the referenced object. This will generally be
@@ -125,5 +125,48 @@ public final class ManifestListAttributes {
     public ManifestListAttributes setPlatform(Platform platform) {
         this.platform = platform;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mediaType", this.mediaType);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeStringField("digest", this.digest);
+        jsonWriter.writeJsonField("platform", this.platform);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManifestListAttributes from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManifestListAttributes if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManifestListAttributes.
+     */
+    public static ManifestListAttributes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    ManifestListAttributes deserializedManifestListAttributes = new ManifestListAttributes();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("mediaType".equals(fieldName)) {
+                            deserializedManifestListAttributes.mediaType = reader.getString();
+                        } else if ("size".equals(fieldName)) {
+                            deserializedManifestListAttributes.size = reader.getNullable(JsonReader::getLong);
+                        } else if ("digest".equals(fieldName)) {
+                            deserializedManifestListAttributes.digest = reader.getString();
+                        } else if ("platform".equals(fieldName)) {
+                            deserializedManifestListAttributes.platform = Platform.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedManifestListAttributes;
+                });
     }
 }

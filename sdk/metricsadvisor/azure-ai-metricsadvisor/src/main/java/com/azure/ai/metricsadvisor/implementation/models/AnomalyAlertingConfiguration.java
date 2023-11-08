@@ -33,8 +33,7 @@ public final class AnomalyAlertingConfiguration {
     /*
      * cross metrics operator
      *
-     * should be specified when setting up multiple metric alerting
-     * configurations
+     * should be specified when setting up multiple metric alerting configurations
      */
     @JsonProperty(value = "crossMetricsOperator")
     private AnomalyAlertingConfigurationLogicType crossMetricsOperator;
@@ -56,6 +55,9 @@ public final class AnomalyAlertingConfiguration {
      */
     @JsonProperty(value = "metricAlertingConfigurations", required = true)
     private List<MetricAlertingConfiguration> metricAlertingConfigurations;
+
+    /** Creates an instance of AnomalyAlertingConfiguration class. */
+    public AnomalyAlertingConfiguration() {}
 
     /**
      * Get the anomalyAlertingConfigurationId property: anomaly alerting configuration unique id.

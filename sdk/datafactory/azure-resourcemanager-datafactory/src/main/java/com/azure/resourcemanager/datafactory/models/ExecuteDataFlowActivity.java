@@ -23,6 +23,10 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ExecuteDataFlowActivityTypeProperties innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
 
+    /** Creates an instance of ExecuteDataFlowActivity class. */
+    public ExecuteDataFlowActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Execute data flow activity properties.
      *
@@ -57,6 +61,20 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     @Override
     public ExecuteDataFlowActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
@@ -238,6 +256,31 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
             this.innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
         }
         this.innerTypeProperties().withRunConcurrently(runConcurrently);
+        return this;
+    }
+
+    /**
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @return the sourceStagingConcurrency value.
+     */
+    public Object sourceStagingConcurrency() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sourceStagingConcurrency();
+    }
+
+    /**
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity withSourceStagingConcurrency(Object sourceStagingConcurrency) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSourceStagingConcurrency(sourceStagingConcurrency);
         return this;
     }
 

@@ -8,13 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptActivityLogDestination. */
+/** The destination of logs. Type: string. */
 public final class ScriptActivityLogDestination extends ExpandableStringEnum<ScriptActivityLogDestination> {
     /** Static value ActivityOutput for ScriptActivityLogDestination. */
     public static final ScriptActivityLogDestination ACTIVITY_OUTPUT = fromString("ActivityOutput");
 
     /** Static value ExternalStore for ScriptActivityLogDestination. */
     public static final ScriptActivityLogDestination EXTERNAL_STORE = fromString("ExternalStore");
+
+    /**
+     * Creates a new instance of ScriptActivityLogDestination value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptActivityLogDestination() {}
 
     /**
      * Creates or finds a ScriptActivityLogDestination from its string representation.
@@ -27,7 +35,11 @@ public final class ScriptActivityLogDestination extends ExpandableStringEnum<Scr
         return fromString(name, ScriptActivityLogDestination.class);
     }
 
-    /** @return known ScriptActivityLogDestination values. */
+    /**
+     * Gets known ScriptActivityLogDestination values.
+     *
+     * @return known ScriptActivityLogDestination values.
+     */
     public static Collection<ScriptActivityLogDestination> values() {
         return values(ScriptActivityLogDestination.class);
     }

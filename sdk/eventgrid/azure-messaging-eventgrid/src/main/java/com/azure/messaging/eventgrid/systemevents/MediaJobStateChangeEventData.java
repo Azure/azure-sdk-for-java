@@ -29,6 +29,9 @@ public class MediaJobStateChangeEventData {
     @JsonProperty(value = "correlationData")
     private Map<String, String> correlationData;
 
+    /** Creates an instance of MediaJobStateChangeEventData class. */
+    public MediaJobStateChangeEventData() {}
+
     /**
      * Get the previousState property: The previous state of the Job.
      *

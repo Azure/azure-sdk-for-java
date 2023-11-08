@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** workbook. */
 @Fluent
 public final class MicrosoftGraphWorkbook extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbook.class);
-
     /*
      * workbookApplication
      */
@@ -38,30 +35,26 @@ public final class MicrosoftGraphWorkbook extends MicrosoftGraphEntity {
     private MicrosoftGraphWorkbookFunctions functions;
 
     /*
-     * Represents a collection of workbook scoped named items (named ranges and
-     * constants). Read-only.
+     * Represents a collection of workbook scoped named items (named ranges and constants). Read-only.
      */
     @JsonProperty(value = "names")
     private List<MicrosoftGraphWorkbookNamedItem> names;
 
     /*
-     * The status of workbook operations. Getting an operation collection is
-     * not supported, but you can get the status of a long-running operation if
-     * the Location header is returned in the response. Read-only.
+     * The status of workbook operations. Getting an operation collection is not supported, but you can get the status
+     * of a long-running operation if the Location header is returned in the response. Read-only.
      */
     @JsonProperty(value = "operations")
     private List<MicrosoftGraphWorkbookOperation> operations;
 
     /*
-     * Represents a collection of tables associated with the workbook.
-     * Read-only.
+     * Represents a collection of tables associated with the workbook. Read-only.
      */
     @JsonProperty(value = "tables")
     private List<MicrosoftGraphWorkbookTable> tables;
 
     /*
-     * Represents a collection of worksheets associated with the workbook.
-     * Read-only.
+     * Represents a collection of worksheets associated with the workbook. Read-only.
      */
     @JsonProperty(value = "worksheets")
     private List<MicrosoftGraphWorkbookWorksheet> worksheets;
@@ -70,6 +63,10 @@ public final class MicrosoftGraphWorkbook extends MicrosoftGraphEntity {
      * workbook
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbook class. */
+    public MicrosoftGraphWorkbook() {
+    }
 
     /**
      * Get the application property: workbookApplication.

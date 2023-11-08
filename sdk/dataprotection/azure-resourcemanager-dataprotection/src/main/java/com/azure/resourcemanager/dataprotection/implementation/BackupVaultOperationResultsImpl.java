@@ -13,10 +13,9 @@ import com.azure.resourcemanager.dataprotection.fluent.models.BackupVaultResourc
 import com.azure.resourcemanager.dataprotection.models.BackupVaultOperationResults;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultOperationResultsGetResponse;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupVaultOperationResultsImpl implements BackupVaultOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupVaultOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupVaultOperationResultsImpl.class);
 
     private final BackupVaultOperationResultsClient innerClient;
 
@@ -29,25 +28,25 @@ public final class BackupVaultOperationResultsImpl implements BackupVaultOperati
         this.serviceManager = serviceManager;
     }
 
-    public BackupVaultResource get(String vaultName, String resourceGroupName, String operationId) {
-        BackupVaultResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, operationId);
-        if (inner != null) {
-            return new BackupVaultResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BackupVaultResource> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
+        String resourceGroupName, String vaultName, String operationId, Context context) {
         BackupVaultOperationResultsGetResponse inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
+            this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BackupVaultResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BackupVaultResource get(String resourceGroupName, String vaultName, String operationId) {
+        BackupVaultResourceInner inner = this.serviceClient().get(resourceGroupName, vaultName, operationId);
+        if (inner != null) {
+            return new BackupVaultResourceImpl(inner, this.manager());
         } else {
             return null;
         }

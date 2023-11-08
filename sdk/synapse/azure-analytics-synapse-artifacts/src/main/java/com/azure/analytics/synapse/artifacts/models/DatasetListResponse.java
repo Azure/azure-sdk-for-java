@@ -23,6 +23,9 @@ public final class DatasetListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DatasetListResponse class. */
+    public DatasetListResponse() {}
+
     /**
      * Get the value property: List of datasets.
      *

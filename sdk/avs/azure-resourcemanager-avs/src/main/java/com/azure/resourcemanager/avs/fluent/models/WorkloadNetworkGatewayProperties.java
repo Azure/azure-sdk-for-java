@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a NSX Gateway. */
 @Fluent
 public final class WorkloadNetworkGatewayProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkGatewayProperties.class);
-
     /*
      * Display name of the DHCP entity.
      */
@@ -25,6 +21,10 @@ public final class WorkloadNetworkGatewayProperties {
      */
     @JsonProperty(value = "path", access = JsonProperty.Access.WRITE_ONLY)
     private String path;
+
+    /** Creates an instance of WorkloadNetworkGatewayProperties class. */
+    public WorkloadNetworkGatewayProperties() {
+    }
 
     /**
      * Get the displayName property: Display name of the DHCP entity.

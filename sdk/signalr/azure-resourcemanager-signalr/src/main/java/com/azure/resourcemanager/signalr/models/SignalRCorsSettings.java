@@ -5,23 +5,22 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Cross-Origin Resource Sharing (CORS) settings. */
 @Fluent
 public final class SignalRCorsSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRCorsSettings.class);
-
     /*
-     * Gets or sets the list of origins that should be allowed to make
-     * cross-origin calls (for example: http://example.com:12345). Use "*" to
-     * allow all. If omitted, allow all by default.
+     * Gets or sets the list of origins that should be allowed to make cross-origin calls (for example:
+     * http://example.com:12345). Use "*" to allow all. If omitted, allow all by default.
      */
     @JsonProperty(value = "allowedOrigins")
     private List<String> allowedOrigins;
+
+    /** Creates an instance of SignalRCorsSettings class. */
+    public SignalRCorsSettings() {
+    }
 
     /**
      * Get the allowedOrigins property: Gets or sets the list of origins that should be allowed to make cross-origin

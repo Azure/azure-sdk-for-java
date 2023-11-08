@@ -7,7 +7,10 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DomainType. */
+/**
+ * Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing
+ * this domain will simply restore it and this operation will not cost anything.
+ */
 public enum DomainType {
     /** Enum value Regular. */
     REGULAR("Regular"),
@@ -30,6 +33,9 @@ public enum DomainType {
      */
     @JsonCreator
     public static DomainType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DomainType[] items = DomainType.values();
         for (DomainType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +45,7 @@ public enum DomainType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

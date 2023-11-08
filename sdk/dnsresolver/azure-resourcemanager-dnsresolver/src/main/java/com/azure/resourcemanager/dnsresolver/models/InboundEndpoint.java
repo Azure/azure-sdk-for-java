@@ -99,6 +99,13 @@ public interface InboundEndpoint {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.dnsresolver.fluent.models.InboundEndpointInner object.
      *
      * @return the inner object.
@@ -110,6 +117,7 @@ public interface InboundEndpoint {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithParentResource,
+            DefinitionStages.WithIpConfigurations,
             DefinitionStages.WithCreate {
     }
     /** The InboundEndpoint definition stages. */
@@ -144,17 +152,24 @@ public interface InboundEndpoint {
              * @param dnsResolverName The name of the DNS resolver.
              * @return the next definition stage.
              */
-            WithCreate withExistingDnsResolver(String resourceGroupName, String dnsResolverName);
+            WithIpConfigurations withExistingDnsResolver(String resourceGroupName, String dnsResolverName);
+        }
+        /** The stage of the InboundEndpoint definition allowing to specify ipConfigurations. */
+        interface WithIpConfigurations {
+            /**
+             * Specifies the ipConfigurations property: IP configurations for the inbound endpoint..
+             *
+             * @param ipConfigurations IP configurations for the inbound endpoint.
+             * @return the next definition stage.
+             */
+            WithCreate withIpConfigurations(List<IpConfiguration> ipConfigurations);
         }
         /**
          * The stage of the InboundEndpoint definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIpConfigurations,
-                DefinitionStages.WithIfMatch,
-                DefinitionStages.WithIfNoneMatch {
+            extends DefinitionStages.WithTags, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              *
@@ -179,16 +194,6 @@ public interface InboundEndpoint {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the InboundEndpoint definition allowing to specify ipConfigurations. */
-        interface WithIpConfigurations {
-            /**
-             * Specifies the ipConfigurations property: IP configurations for the inbound endpoint..
-             *
-             * @param ipConfigurations IP configurations for the inbound endpoint.
-             * @return the next definition stage.
-             */
-            WithCreate withIpConfigurations(List<IpConfiguration> ipConfigurations);
         }
         /** The stage of the InboundEndpoint definition allowing to specify ifMatch. */
         interface WithIfMatch {

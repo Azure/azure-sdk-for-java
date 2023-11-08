@@ -14,6 +14,15 @@ public final class SyncRemoteAddressSpace extends ExpandableStringEnum<SyncRemot
     public static final SyncRemoteAddressSpace TRUE = fromString("true");
 
     /**
+     * Creates a new instance of SyncRemoteAddressSpace value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncRemoteAddressSpace() {
+    }
+
+    /**
      * Creates or finds a SyncRemoteAddressSpace from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class SyncRemoteAddressSpace extends ExpandableStringEnum<SyncRemot
         return fromString(name, SyncRemoteAddressSpace.class);
     }
 
-    /** @return known SyncRemoteAddressSpace values. */
+    /**
+     * Gets known SyncRemoteAddressSpace values.
+     *
+     * @return known SyncRemoteAddressSpace values.
+     */
     public static Collection<SyncRemoteAddressSpace> values() {
         return values(SyncRemoteAddressSpace.class);
     }

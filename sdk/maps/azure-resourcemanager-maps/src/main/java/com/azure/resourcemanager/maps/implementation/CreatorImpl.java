@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.maps.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.CreatorInner;
+import com.azure.resourcemanager.maps.fluent.models.CreatorProperties;
 import com.azure.resourcemanager.maps.models.Creator;
-import com.azure.resourcemanager.maps.models.CreatorProperties;
 import com.azure.resourcemanager.maps.models.CreatorUpdateParameters;
 import java.util.Collections;
 import java.util.Map;
@@ -47,12 +48,20 @@ public final class CreatorImpl implements Creator, Creator.Definition, Creator.U
         return this.innerModel().properties();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public CreatorInner innerModel() {
@@ -183,7 +192,7 @@ public final class CreatorImpl implements Creator, Creator.Definition, Creator.U
         }
     }
 
-    public CreatorImpl withStorageUnits(Integer storageUnits) {
+    public CreatorImpl withStorageUnits(int storageUnits) {
         this.updateCreatorUpdateParameters.withStorageUnits(storageUnits);
         return this;
     }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** folder. */
 @Fluent
 public final class MicrosoftGraphFolder {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphFolder.class);
-
     /*
      * Number of children contained immediately within this container.
      */
@@ -34,6 +31,10 @@ public final class MicrosoftGraphFolder {
      * folder
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphFolder class. */
+    public MicrosoftGraphFolder() {
+    }
 
     /**
      * Get the childCount property: Number of children contained immediately within this container.

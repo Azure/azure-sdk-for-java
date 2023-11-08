@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.models.UserUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** User of a lab that can register for and use virtual machines within the lab. Used for updates. */
 @Fluent
 public final class UserUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserUpdate.class);
-
     /*
      * User resource properties
      */

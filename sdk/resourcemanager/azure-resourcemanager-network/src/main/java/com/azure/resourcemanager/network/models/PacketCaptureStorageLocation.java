@@ -11,27 +11,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PacketCaptureStorageLocation {
     /*
-     * The ID of the storage account to save the packet capture session.
-     * Required if no local file path is provided.
+     * The ID of the storage account to save the packet capture session. Required if no local file path is provided.
      */
     @JsonProperty(value = "storageId")
     private String storageId;
 
     /*
-     * The URI of the storage path to save the packet capture. Must be a
-     * well-formed URI describing the location to save the packet capture.
+     * The URI of the storage path to save the packet capture. Must be a well-formed URI describing the location to
+     * save the packet capture.
      */
     @JsonProperty(value = "storagePath")
     private String storagePath;
 
     /*
-     * A valid local path on the targeting VM. Must include the name of the
-     * capture file (*.cap). For linux virtual machine it must start with
-     * /var/captures. Required if no storage ID is provided, otherwise
-     * optional.
+     * A valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux virtual
+     * machine it must start with /var/captures. Required if no storage ID is provided, otherwise optional.
      */
     @JsonProperty(value = "filePath")
     private String filePath;
+
+    /** Creates an instance of PacketCaptureStorageLocation class. */
+    public PacketCaptureStorageLocation() {
+    }
 
     /**
      * Get the storageId property: The ID of the storage account to save the packet capture session. Required if no

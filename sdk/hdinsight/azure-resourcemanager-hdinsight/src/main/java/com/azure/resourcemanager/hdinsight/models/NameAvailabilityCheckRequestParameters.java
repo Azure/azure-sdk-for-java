@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request spec of checking name availability. */
 @Fluent
 public final class NameAvailabilityCheckRequestParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityCheckRequestParameters.class);
-
     /*
      * The resource name.
      */
@@ -25,6 +21,10 @@ public final class NameAvailabilityCheckRequestParameters {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of NameAvailabilityCheckRequestParameters class. */
+    public NameAvailabilityCheckRequestParameters() {
+    }
 
     /**
      * Get the name property: The resource name.

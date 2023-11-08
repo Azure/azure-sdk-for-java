@@ -24,6 +24,10 @@ public final class DataPolicyManifestListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DataPolicyManifestListResult class. */
+    public DataPolicyManifestListResult() {
+    }
+
     /**
      * Get the value property: An array of data policy manifests.
      *

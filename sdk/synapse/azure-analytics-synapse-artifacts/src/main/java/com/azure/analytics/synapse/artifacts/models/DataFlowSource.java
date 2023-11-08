@@ -16,6 +16,9 @@ public final class DataFlowSource extends Transformation {
     @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
 
+    /** Creates an instance of DataFlowSource class. */
+    public DataFlowSource() {}
+
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
      *
@@ -33,6 +36,41 @@ public final class DataFlowSource extends Transformation {
      */
     public DataFlowSource setSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
         this.schemaLinkedService = schemaLinkedService;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSource setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSource setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSource setDataset(DatasetReference dataset) {
+        super.setDataset(dataset);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSource setLinkedService(LinkedServiceReference linkedService) {
+        super.setLinkedService(linkedService);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSource setFlowlet(DataFlowReference flowlet) {
+        super.setFlowlet(flowlet);
         return this;
     }
 }

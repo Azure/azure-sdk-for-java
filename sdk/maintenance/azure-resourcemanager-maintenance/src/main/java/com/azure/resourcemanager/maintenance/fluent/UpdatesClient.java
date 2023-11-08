@@ -13,7 +13,9 @@ import com.azure.resourcemanager.maintenance.fluent.models.UpdateInner;
 /** An instance of this class provides access to all the operations defined in UpdatesClient. */
 public interface UpdatesClient {
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -24,7 +26,7 @@ public interface UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UpdateInner> listParent(
@@ -36,7 +38,9 @@ public interface UpdatesClient {
         String resourceName);
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -48,7 +52,7 @@ public interface UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UpdateInner> listParent(
@@ -61,7 +65,9 @@ public interface UpdatesClient {
         Context context);
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -70,14 +76,16 @@ public interface UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UpdateInner> list(
         String resourceGroupName, String providerName, String resourceType, String resourceName);
 
     /**
-     * Get updates to resources.
+     * Get Updates to resource
+     *
+     * <p>Get updates to resources.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -87,7 +95,7 @@ public interface UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UpdateInner> list(

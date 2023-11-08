@@ -1,4 +1,5 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
 trigger:
   branches:
     include:
@@ -11,6 +12,7 @@ trigger:
     exclude:
       - sdk/agrifood/pom.xml
       - sdk/agrifood/azure-verticals-agrifood-farming/pom.xml
+      - sdk/agrifood/azure-resourcemanager-agrifood/pom.xml
 
 pr:
   branches:
@@ -25,12 +27,29 @@ pr:
     exclude:
       - sdk/agrifood/pom.xml
       - sdk/agrifood/azure-verticals-agrifood-farming/pom.xml
+      - sdk/agrifood/azure-resourcemanager-agrifood/pom.xml
+
+parameters:
+- name: release_azureverticalsagrifoodfarming
+  displayName: 'azure-verticals-agrifood-farming'
+  type: boolean
+  default: true
+- name: release_azureresourcemanageragrifood
+  displayName: 'azure-resourcemanager-agrifood'
+  type: boolean
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: agrifood
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-verticals-agrifood-farming
         groupId: com.azure
         safeName: azureverticalsagrifoodfarming
+        releaseInBatch: ${{ parameters.release_azureverticalsagrifoodfarming }}
+      - name: azure-resourcemanager-agrifood
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageragrifood
+        releaseInBatch: ${{ parameters.release_azureresourcemanageragrifood }}

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +12,15 @@ import java.util.Map;
 /** List Restore Ranges Request. */
 @Fluent
 public final class AzureBackupFindRestorableTimeRangesRequestResource extends DppWorkerRequest {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureBackupFindRestorableTimeRangesRequestResource.class);
-
     /*
      * AzureBackupFindRestorableTimeRangesRequestResource content
      */
     @JsonProperty(value = "content")
     private AzureBackupFindRestorableTimeRangesRequest content;
+
+    /** Creates an instance of AzureBackupFindRestorableTimeRangesRequestResource class. */
+    public AzureBackupFindRestorableTimeRangesRequestResource() {
+    }
 
     /**
      * Get the content property: AzureBackupFindRestorableTimeRangesRequestResource content.

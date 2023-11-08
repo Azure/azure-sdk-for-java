@@ -3,6 +3,7 @@
 
 module com.azure.core.test.perf {
     requires com.azure.core;
+    requires com.azure.core.http.okhttp;
     requires com.azure.http.netty;
     requires reactor.core;
     requires org.reactivestreams;
@@ -14,4 +15,5 @@ module com.azure.core.test.perf {
     requires io.netty.handler;
     requires reactor.netty.core;
     requires io.netty.codec.http;
+    requires okhttp3;
 }

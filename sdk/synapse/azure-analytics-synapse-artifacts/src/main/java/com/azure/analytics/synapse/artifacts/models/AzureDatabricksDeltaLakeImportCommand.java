@@ -15,18 +15,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings {
     /*
-     * Specify the date format for csv in Azure Databricks Delta Lake Copy.
-     * Type: string (or Expression with resultType string).
+     * Specify the date format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "dateFormat")
     private Object dateFormat;
 
     /*
-     * Specify the timestamp format for csv in Azure Databricks Delta Lake
-     * Copy. Type: string (or Expression with resultType string).
+     * Specify the timestamp format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "timestampFormat")
     private Object timestampFormat;
+
+    /** Creates an instance of AzureDatabricksDeltaLakeImportCommand class. */
+    public AzureDatabricksDeltaLakeImportCommand() {}
 
     /**
      * Get the dateFormat property: Specify the date format for csv in Azure Databricks Delta Lake Copy. Type: string

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlDataDirectoryType. */
+/** Type of data directory mapping. */
 public final class SqlDataDirectoryType extends ExpandableStringEnum<SqlDataDirectoryType> {
     /** Static value Invalid for SqlDataDirectoryType. */
     public static final SqlDataDirectoryType INVALID = fromString("Invalid");
@@ -18,6 +18,15 @@ public final class SqlDataDirectoryType extends ExpandableStringEnum<SqlDataDire
 
     /** Static value Log for SqlDataDirectoryType. */
     public static final SqlDataDirectoryType LOG = fromString("Log");
+
+    /**
+     * Creates a new instance of SqlDataDirectoryType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlDataDirectoryType() {
+    }
 
     /**
      * Creates or finds a SqlDataDirectoryType from its string representation.
@@ -30,7 +39,11 @@ public final class SqlDataDirectoryType extends ExpandableStringEnum<SqlDataDire
         return fromString(name, SqlDataDirectoryType.class);
     }
 
-    /** @return known SqlDataDirectoryType values. */
+    /**
+     * Gets known SqlDataDirectoryType values.
+     *
+     * @return known SqlDataDirectoryType values.
+     */
     public static Collection<SqlDataDirectoryType> values() {
         return values(SqlDataDirectoryType.class);
     }

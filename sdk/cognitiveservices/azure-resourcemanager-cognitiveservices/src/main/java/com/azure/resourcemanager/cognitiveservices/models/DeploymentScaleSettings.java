@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of Cognitive Services account deployment model. */
 @Fluent
 public final class DeploymentScaleSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentScaleSettings.class);
-
     /*
      * Deployment scale type.
      */
@@ -25,6 +21,17 @@ public final class DeploymentScaleSettings {
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
+
+    /*
+     * Deployment active capacity. This value might be different from `capacity` if customer recently updated
+     * `capacity`.
+     */
+    @JsonProperty(value = "activeCapacity", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer activeCapacity;
+
+    /** Creates an instance of DeploymentScaleSettings class. */
+    public DeploymentScaleSettings() {
+    }
 
     /**
      * Get the scaleType property: Deployment scale type.
@@ -64,6 +71,16 @@ public final class DeploymentScaleSettings {
     public DeploymentScaleSettings withCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
+    }
+
+    /**
+     * Get the activeCapacity property: Deployment active capacity. This value might be different from `capacity` if
+     * customer recently updated `capacity`.
+     *
+     * @return the activeCapacity value.
+     */
+    public Integer activeCapacity() {
+        return this.activeCapacity;
     }
 
     /**

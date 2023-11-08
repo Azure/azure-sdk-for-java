@@ -29,6 +29,10 @@ public final class StaticRoute {
     @JsonProperty(value = "nextHopIpAddress")
     private String nextHopIpAddress;
 
+    /** Creates an instance of StaticRoute class. */
+    public StaticRoute() {
+    }
+
     /**
      * Get the name property: The name of the StaticRoute that is unique within a VnetRoute.
      *

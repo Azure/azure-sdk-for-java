@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** What is this?. */
 @Fluent
 public final class OperationMetaMetricDimensionSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetaMetricDimensionSpecification.class);
-
     /*
      * Dimension display name
      */
@@ -31,6 +27,10 @@ public final class OperationMetaMetricDimensionSpecification {
      */
     @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
+
+    /** Creates an instance of OperationMetaMetricDimensionSpecification class. */
+    public OperationMetaMetricDimensionSpecification() {
+    }
 
     /**
      * Get the displayName property: Dimension display name.

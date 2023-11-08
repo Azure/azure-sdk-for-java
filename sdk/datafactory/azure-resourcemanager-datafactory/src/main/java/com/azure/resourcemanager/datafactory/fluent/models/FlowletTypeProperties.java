@@ -44,6 +44,10 @@ public final class FlowletTypeProperties {
     @JsonProperty(value = "scriptLines")
     private List<String> scriptLines;
 
+    /** Creates an instance of FlowletTypeProperties class. */
+    public FlowletTypeProperties() {
+    }
+
     /**
      * Get the sources property: List of sources in Flowlet.
      *

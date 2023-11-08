@@ -7,7 +7,10 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for FrequencyUnit. */
+/**
+ * The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day and
+ * FrequencyInterval should be set to 7).
+ */
 public enum FrequencyUnit {
     /** Enum value Day. */
     DAY("Day"),
@@ -30,6 +33,9 @@ public enum FrequencyUnit {
      */
     @JsonCreator
     public static FrequencyUnit fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FrequencyUnit[] items = FrequencyUnit.values();
         for (FrequencyUnit item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +45,7 @@ public enum FrequencyUnit {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

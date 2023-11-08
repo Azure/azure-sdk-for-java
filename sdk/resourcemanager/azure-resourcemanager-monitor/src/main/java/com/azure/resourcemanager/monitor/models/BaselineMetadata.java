@@ -6,14 +6,11 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a baseline metadata value. */
 @Fluent
 public final class BaselineMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaselineMetadata.class);
-
     /*
      * Name of the baseline metadata.
      */
@@ -25,6 +22,10 @@ public final class BaselineMetadata {
      */
     @JsonProperty(value = "value", required = true)
     private String value;
+
+    /** Creates an instance of BaselineMetadata class. */
+    public BaselineMetadata() {
+    }
 
     /**
      * Get the name property: Name of the baseline metadata.
@@ -73,14 +74,16 @@ public final class BaselineMetadata {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model BaselineMetadata"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model BaselineMetadata"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BaselineMetadata.class);
 }

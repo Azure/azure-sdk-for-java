@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list Kusto pools operation response. */
 @Fluent
 public final class KustoPoolListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolListResultInner.class);
-
     /*
      * The list of Kusto pools.
      */
     @JsonProperty(value = "value")
     private List<KustoPoolInner> value;
+
+    /** Creates an instance of KustoPoolListResultInner class. */
+    public KustoPoolListResultInner() {
+    }
 
     /**
      * Get the value property: The list of Kusto pools.

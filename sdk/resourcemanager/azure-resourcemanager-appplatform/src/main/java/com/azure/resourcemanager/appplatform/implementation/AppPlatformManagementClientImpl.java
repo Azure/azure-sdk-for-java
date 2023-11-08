@@ -7,28 +7,37 @@ package com.azure.resourcemanager.appplatform.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.appplatform.fluent.ApiPortalCustomDomainsClient;
+import com.azure.resourcemanager.appplatform.fluent.ApiPortalsClient;
 import com.azure.resourcemanager.appplatform.fluent.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.AppsClient;
 import com.azure.resourcemanager.appplatform.fluent.BindingsClient;
+import com.azure.resourcemanager.appplatform.fluent.BuildServiceAgentPoolsClient;
+import com.azure.resourcemanager.appplatform.fluent.BuildServiceBuildersClient;
+import com.azure.resourcemanager.appplatform.fluent.BuildServicesClient;
+import com.azure.resourcemanager.appplatform.fluent.BuildpackBindingsClient;
 import com.azure.resourcemanager.appplatform.fluent.CertificatesClient;
 import com.azure.resourcemanager.appplatform.fluent.ConfigServersClient;
+import com.azure.resourcemanager.appplatform.fluent.ConfigurationServicesClient;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.appplatform.fluent.DeploymentsClient;
+import com.azure.resourcemanager.appplatform.fluent.GatewayCustomDomainsClient;
+import com.azure.resourcemanager.appplatform.fluent.GatewayRouteConfigsClient;
+import com.azure.resourcemanager.appplatform.fluent.GatewaysClient;
 import com.azure.resourcemanager.appplatform.fluent.MonitoringSettingsClient;
 import com.azure.resourcemanager.appplatform.fluent.OperationsClient;
 import com.azure.resourcemanager.appplatform.fluent.RuntimeVersionsClient;
+import com.azure.resourcemanager.appplatform.fluent.ServiceRegistriesClient;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
 import com.azure.resourcemanager.appplatform.fluent.SkusClient;
+import com.azure.resourcemanager.appplatform.fluent.StoragesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
 /** Initializes a new instance of the AppPlatformManagementClientImpl type. */
 @ServiceClient(builder = AppPlatformManagementClientBuilder.class)
 public final class AppPlatformManagementClientImpl extends AzureServiceClient implements AppPlatformManagementClient {
-    private final ClientLogger logger = new ClientLogger(AppPlatformManagementClientImpl.class);
-
     /**
      * Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -129,6 +138,78 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
         return this.configServers;
     }
 
+    /** The ConfigurationServicesClient object to access its operations. */
+    private final ConfigurationServicesClient configurationServices;
+
+    /**
+     * Gets the ConfigurationServicesClient object to access its operations.
+     *
+     * @return the ConfigurationServicesClient object.
+     */
+    public ConfigurationServicesClient getConfigurationServices() {
+        return this.configurationServices;
+    }
+
+    /** The ServiceRegistriesClient object to access its operations. */
+    private final ServiceRegistriesClient serviceRegistries;
+
+    /**
+     * Gets the ServiceRegistriesClient object to access its operations.
+     *
+     * @return the ServiceRegistriesClient object.
+     */
+    public ServiceRegistriesClient getServiceRegistries() {
+        return this.serviceRegistries;
+    }
+
+    /** The BuildServicesClient object to access its operations. */
+    private final BuildServicesClient buildServices;
+
+    /**
+     * Gets the BuildServicesClient object to access its operations.
+     *
+     * @return the BuildServicesClient object.
+     */
+    public BuildServicesClient getBuildServices() {
+        return this.buildServices;
+    }
+
+    /** The BuildpackBindingsClient object to access its operations. */
+    private final BuildpackBindingsClient buildpackBindings;
+
+    /**
+     * Gets the BuildpackBindingsClient object to access its operations.
+     *
+     * @return the BuildpackBindingsClient object.
+     */
+    public BuildpackBindingsClient getBuildpackBindings() {
+        return this.buildpackBindings;
+    }
+
+    /** The BuildServiceBuildersClient object to access its operations. */
+    private final BuildServiceBuildersClient buildServiceBuilders;
+
+    /**
+     * Gets the BuildServiceBuildersClient object to access its operations.
+     *
+     * @return the BuildServiceBuildersClient object.
+     */
+    public BuildServiceBuildersClient getBuildServiceBuilders() {
+        return this.buildServiceBuilders;
+    }
+
+    /** The BuildServiceAgentPoolsClient object to access its operations. */
+    private final BuildServiceAgentPoolsClient buildServiceAgentPools;
+
+    /**
+     * Gets the BuildServiceAgentPoolsClient object to access its operations.
+     *
+     * @return the BuildServiceAgentPoolsClient object.
+     */
+    public BuildServiceAgentPoolsClient getBuildServiceAgentPools() {
+        return this.buildServiceAgentPools;
+    }
+
     /** The MonitoringSettingsClient object to access its operations. */
     private final MonitoringSettingsClient monitoringSettings;
 
@@ -163,6 +244,18 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
      */
     public BindingsClient getBindings() {
         return this.bindings;
+    }
+
+    /** The StoragesClient object to access its operations. */
+    private final StoragesClient storages;
+
+    /**
+     * Gets the StoragesClient object to access its operations.
+     *
+     * @return the StoragesClient object.
+     */
+    public StoragesClient getStorages() {
+        return this.storages;
     }
 
     /** The CertificatesClient object to access its operations. */
@@ -237,6 +330,66 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
         return this.skus;
     }
 
+    /** The GatewaysClient object to access its operations. */
+    private final GatewaysClient gateways;
+
+    /**
+     * Gets the GatewaysClient object to access its operations.
+     *
+     * @return the GatewaysClient object.
+     */
+    public GatewaysClient getGateways() {
+        return this.gateways;
+    }
+
+    /** The GatewayRouteConfigsClient object to access its operations. */
+    private final GatewayRouteConfigsClient gatewayRouteConfigs;
+
+    /**
+     * Gets the GatewayRouteConfigsClient object to access its operations.
+     *
+     * @return the GatewayRouteConfigsClient object.
+     */
+    public GatewayRouteConfigsClient getGatewayRouteConfigs() {
+        return this.gatewayRouteConfigs;
+    }
+
+    /** The GatewayCustomDomainsClient object to access its operations. */
+    private final GatewayCustomDomainsClient gatewayCustomDomains;
+
+    /**
+     * Gets the GatewayCustomDomainsClient object to access its operations.
+     *
+     * @return the GatewayCustomDomainsClient object.
+     */
+    public GatewayCustomDomainsClient getGatewayCustomDomains() {
+        return this.gatewayCustomDomains;
+    }
+
+    /** The ApiPortalsClient object to access its operations. */
+    private final ApiPortalsClient apiPortals;
+
+    /**
+     * Gets the ApiPortalsClient object to access its operations.
+     *
+     * @return the ApiPortalsClient object.
+     */
+    public ApiPortalsClient getApiPortals() {
+        return this.apiPortals;
+    }
+
+    /** The ApiPortalCustomDomainsClient object to access its operations. */
+    private final ApiPortalCustomDomainsClient apiPortalCustomDomains;
+
+    /**
+     * Gets the ApiPortalCustomDomainsClient object to access its operations.
+     *
+     * @return the ApiPortalCustomDomainsClient object.
+     */
+    public ApiPortalCustomDomainsClient getApiPortalCustomDomains() {
+        return this.apiPortalCustomDomains;
+    }
+
     /**
      * Initializes an instance of AppPlatformManagementClient client.
      *
@@ -261,17 +414,29 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-11-01-preview";
+        this.apiVersion = "2022-12-01";
         this.services = new ServicesClientImpl(this);
         this.configServers = new ConfigServersClientImpl(this);
+        this.configurationServices = new ConfigurationServicesClientImpl(this);
+        this.serviceRegistries = new ServiceRegistriesClientImpl(this);
+        this.buildServices = new BuildServicesClientImpl(this);
+        this.buildpackBindings = new BuildpackBindingsClientImpl(this);
+        this.buildServiceBuilders = new BuildServiceBuildersClientImpl(this);
+        this.buildServiceAgentPools = new BuildServiceAgentPoolsClientImpl(this);
         this.monitoringSettings = new MonitoringSettingsClientImpl(this);
         this.apps = new AppsClientImpl(this);
         this.bindings = new BindingsClientImpl(this);
+        this.storages = new StoragesClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
         this.customDomains = new CustomDomainsClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.runtimeVersions = new RuntimeVersionsClientImpl(this);
         this.skus = new SkusClientImpl(this);
+        this.gateways = new GatewaysClientImpl(this);
+        this.gatewayRouteConfigs = new GatewayRouteConfigsClientImpl(this);
+        this.gatewayCustomDomains = new GatewayCustomDomainsClientImpl(this);
+        this.apiPortals = new ApiPortalsClientImpl(this);
+        this.apiPortalCustomDomains = new ApiPortalCustomDomainsClientImpl(this);
     }
 }

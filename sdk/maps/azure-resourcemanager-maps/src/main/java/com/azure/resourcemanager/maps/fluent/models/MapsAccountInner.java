@@ -9,17 +9,14 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maps.models.Kind;
-import com.azure.resourcemanager.maps.models.MapsAccountProperties;
+import com.azure.resourcemanager.maps.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.maps.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure resource which represents access to a suite of Maps REST APIs. */
 @Fluent
 public final class MapsAccountInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MapsAccountInner.class);
-
     /*
      * The SKU of this account.
      */
@@ -33,16 +30,26 @@ public final class MapsAccountInner extends Resource {
     private Kind kind;
 
     /*
-     * The system meta data relating to this resource.
+     * Metadata pertaining to creation and last modification of the resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Managed service identity (system assigned and/or user assigned identities)
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /*
      * The map account properties.
      */
     @JsonProperty(value = "properties")
     private MapsAccountProperties properties;
+
+    /** Creates an instance of MapsAccountInner class. */
+    public MapsAccountInner() {
+    }
 
     /**
      * Get the sku property: The SKU of this account.
@@ -85,12 +92,32 @@ public final class MapsAccountInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the MapsAccountInner object itself.
+     */
+    public MapsAccountInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -134,14 +161,19 @@ public final class MapsAccountInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model MapsAccountInner"));
         } else {
             sku().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
         if (properties() != null) {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MapsAccountInner.class);
 }

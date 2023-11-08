@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.MatchedRoute;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of testing all routes. */
 @Fluent
 public final class TestAllRoutesResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TestAllRoutesResultInner.class);
-
     /*
      * JSON-serialized array of matched routes
      */
     @JsonProperty(value = "routes")
     private List<MatchedRoute> routes;
+
+    /** Creates an instance of TestAllRoutesResultInner class. */
+    public TestAllRoutesResultInner() {
+    }
 
     /**
      * Get the routes property: JSON-serialized array of matched routes.

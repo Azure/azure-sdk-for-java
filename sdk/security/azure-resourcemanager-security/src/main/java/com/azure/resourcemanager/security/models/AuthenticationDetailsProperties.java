@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -27,8 +25,6 @@ import java.util.List;
 })
 @Immutable
 public class AuthenticationDetailsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthenticationDetailsProperties.class);
-
     /*
      * State of the multi-cloud connector
      */
@@ -40,6 +36,10 @@ public class AuthenticationDetailsProperties {
      */
     @JsonProperty(value = "grantedPermissions", access = JsonProperty.Access.WRITE_ONLY)
     private List<PermissionProperty> grantedPermissions;
+
+    /** Creates an instance of AuthenticationDetailsProperties class. */
+    public AuthenticationDetailsProperties() {
+    }
 
     /**
      * Get the authenticationProvisioningState property: State of the multi-cloud connector.

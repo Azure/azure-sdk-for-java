@@ -461,14 +461,16 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     }
 
     /**
+     * Gets a synchronous blocking poller.
+     *
      * @return a synchronous blocking poller.
      */
     public SyncPoller<T, U> getSyncPoller() {
-        return new DefaultSyncPoller<>(this.pollInterval,
-                this.syncActivationOperation,
-                this.pollOperation,
-                this.cancelOperation,
-                this.fetchResultOperation);
+        return new SyncOverAsyncPoller<>(this.pollInterval,
+            this.syncActivationOperation,
+            this.pollOperation,
+            this.cancelOperation,
+            this.fetchResultOperation);
     }
 
     /**
@@ -488,8 +490,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                 // or duration specified in the last retry-after response header elapses.
                 return pollOnceMono.delaySubscription(getDelay(cxt.getLatestResponse()));
             })
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new IllegalStateException(
-                    "PollOperation returned Mono.empty()."))))
+                .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
                 .repeat()
                 .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                 .concatMap(currentPollResponse -> {
@@ -511,22 +512,16 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      */
     private Duration getDelay(PollResponse<T> pollResponse) {
         Duration retryAfter = pollResponse.getRetryAfter();
-        if (retryAfter == null) {
-            return this.pollInterval;
-        } else {
-            return retryAfter.compareTo(Duration.ZERO) > 0
-                ? retryAfter
-                : this.pollInterval;
-        }
+        return (retryAfter == null || retryAfter.isNegative() || retryAfter.isZero()) ? this.pollInterval : retryAfter;
     }
 
     /**
      * A utility to get One-Time-Executable-Mono that execute an activation function at most once.
-     *
+     * <p>
      * When subscribed to such a Mono it internally subscribes to a Mono that perform an activation
      * function. The One-Time-Executable-Mono caches the result of activation function as a PollResponse
      * in {@code rootContext}, this cached response will be used by any future subscriptions.
-     *
+     * <p>
      * Note: The standard cache() operator can't be used to achieve one time execution, because it caches
      * error terminal signal and forward it to any future subscriptions. If there is an error while executing
      * activation function then error should not be cached but it should be forward it to subscription that
@@ -534,7 +529,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * instead activation function should again invoked. Once a subscription result in successful execution
      * of activation function then it will be cached in {@code rootContext} and will be used by any future
      * subscriptions.
-     *
+     * <p>
      * The One-Time-Executable-Mono handles concurrent calls to activation. Only one of them will be able
      * to execute the activation function and other subscriptions will keep resubscribing until it sees
      * a activation happened or get a chance to call activation as the one previously entered the critical
@@ -593,8 +588,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                     }
                     return activationMono
                         .map(this.activationPollResponseMapper)
-                        .switchIfEmpty(Mono.defer(() ->
-                            Mono.just(new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null))))
+                        .switchIfEmpty(Mono.fromSupplier(() ->
+                            new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null)))
                         .map(activationResponse -> {
                             this.rootContext.setOnetimeActivationResponse(activationResponse);
                             this.activated = true;

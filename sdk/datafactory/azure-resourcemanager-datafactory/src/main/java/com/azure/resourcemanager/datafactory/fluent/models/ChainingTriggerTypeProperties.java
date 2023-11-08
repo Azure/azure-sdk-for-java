@@ -25,6 +25,10 @@ public final class ChainingTriggerTypeProperties {
     @JsonProperty(value = "runDimension", required = true)
     private String runDimension;
 
+    /** Creates an instance of ChainingTriggerTypeProperties class. */
+    public ChainingTriggerTypeProperties() {
+    }
+
     /**
      * Get the dependsOn property: Upstream Pipelines.
      *

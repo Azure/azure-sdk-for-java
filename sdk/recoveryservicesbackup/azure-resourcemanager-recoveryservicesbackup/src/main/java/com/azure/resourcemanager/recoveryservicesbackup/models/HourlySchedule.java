@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The HourlySchedule model. */
 @Fluent
 public final class HourlySchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HourlySchedule.class);
-
     /*
      * Interval at which backup needs to be triggered. For hourly the value
      * can be 4/6/8/12
@@ -33,6 +29,10 @@ public final class HourlySchedule {
      */
     @JsonProperty(value = "scheduleWindowDuration")
     private Integer scheduleWindowDuration;
+
+    /** Creates an instance of HourlySchedule class. */
+    public HourlySchedule() {
+    }
 
     /**
      * Get the interval property: Interval at which backup needs to be triggered. For hourly the value can be 4/6/8/12.

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -14,8 +14,6 @@ import java.util.Map;
 /** Represents a single status change. */
 @Fluent
 public final class OrderStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrderStatus.class);
-
     /*
      * Status of the order as per the allowed status types.
      */
@@ -39,7 +37,12 @@ public final class OrderStatus {
      * by the already existing properties
      */
     @JsonProperty(value = "additionalOrderDetails", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> additionalOrderDetails;
+
+    /** Creates an instance of OrderStatus class. */
+    public OrderStatus() {
+    }
 
     /**
      * Get the status property: Status of the order as per the allowed status types.
@@ -107,9 +110,11 @@ public final class OrderStatus {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property status in model OrderStatus"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrderStatus.class);
 }

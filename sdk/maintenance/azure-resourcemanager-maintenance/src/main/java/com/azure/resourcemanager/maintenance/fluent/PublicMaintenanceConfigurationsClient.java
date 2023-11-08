@@ -18,7 +18,7 @@ public interface PublicMaintenanceConfigurationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration records.
+     * @return public Maintenance Configuration records as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MaintenanceConfigurationInner> list();
@@ -30,10 +30,23 @@ public interface PublicMaintenanceConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration records.
+     * @return public Maintenance Configuration records as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MaintenanceConfigurationInner> list(Context context);
+
+    /**
+     * Get Public Maintenance Configuration record.
+     *
+     * @param resourceName Maintenance Configuration Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public Maintenance Configuration record along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MaintenanceConfigurationInner> getWithResponse(String resourceName, Context context);
 
     /**
      * Get Public Maintenance Configuration record.
@@ -46,17 +59,4 @@ public interface PublicMaintenanceConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MaintenanceConfigurationInner get(String resourceName);
-
-    /**
-     * Get Public Maintenance Configuration record.
-     *
-     * @param resourceName Maintenance Configuration Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public Maintenance Configuration record.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MaintenanceConfigurationInner> getWithResponse(String resourceName, Context context);
 }

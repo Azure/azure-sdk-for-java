@@ -13,10 +13,9 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.DedicatedCloudNodesCli
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.DedicatedCloudNodeInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudNode;
 import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudNodes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCloudNodesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DedicatedCloudNodesImpl.class);
 
     private final DedicatedCloudNodesClient innerClient;
 
@@ -51,16 +50,6 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
         return Utils.mapPage(inner, inner1 -> new DedicatedCloudNodeImpl(inner1, this.manager()));
     }
 
-    public DedicatedCloudNode getByResourceGroup(String resourceGroupName, String dedicatedCloudNodeName) {
-        DedicatedCloudNodeInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCloudNodeName);
-        if (inner != null) {
-            return new DedicatedCloudNodeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DedicatedCloudNode> getByResourceGroupWithResponse(
         String resourceGroupName, String dedicatedCloudNodeName, Context context) {
         Response<DedicatedCloudNodeInner> inner =
@@ -76,18 +65,29 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String dedicatedCloudNodeName) {
-        this.serviceClient().delete(resourceGroupName, dedicatedCloudNodeName);
+    public DedicatedCloudNode getByResourceGroup(String resourceGroupName, String dedicatedCloudNodeName) {
+        DedicatedCloudNodeInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCloudNodeName);
+        if (inner != null) {
+            return new DedicatedCloudNodeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String dedicatedCloudNodeName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String dedicatedCloudNodeName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, dedicatedCloudNodeName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String dedicatedCloudNodeName) {
+        this.serviceClient().delete(resourceGroupName, dedicatedCloudNodeName);
     }
 
     public DedicatedCloudNode getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -95,7 +95,7 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
         }
         String dedicatedCloudNodeName = Utils.getValueFromIdByName(id, "dedicatedCloudNodes");
         if (dedicatedCloudNodeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,7 +108,7 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
     public Response<DedicatedCloudNode> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,7 +116,7 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
         }
         String dedicatedCloudNodeName = Utils.getValueFromIdByName(id, "dedicatedCloudNodes");
         if (dedicatedCloudNodeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,7 +129,7 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,20 +137,20 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
         }
         String dedicatedCloudNodeName = Utils.getValueFromIdByName(id, "dedicatedCloudNodes");
         if (dedicatedCloudNodeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudNodes'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, dedicatedCloudNodeName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,14 +158,14 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
         }
         String dedicatedCloudNodeName = Utils.getValueFromIdByName(id, "dedicatedCloudNodes");
         if (dedicatedCloudNodeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudNodes'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, dedicatedCloudNodeName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, context);
     }
 
     private DedicatedCloudNodesClient serviceClient() {

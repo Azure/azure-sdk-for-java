@@ -6,17 +6,13 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Azure Automation Runbook notification receiver. */
 @Fluent
 public final class AutomationRunbookReceiver {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationRunbookReceiver.class);
-
     /*
-     * The Azure automation account Id which holds this runbook and
-     * authenticate to Azure resource.
+     * The Azure automation account Id which holds this runbook and authenticate to Azure resource.
      */
     @JsonProperty(value = "automationAccountId", required = true)
     private String automationAccountId;
@@ -56,6 +52,10 @@ public final class AutomationRunbookReceiver {
      */
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
+
+    /** Creates an instance of AutomationRunbookReceiver class. */
+    public AutomationRunbookReceiver() {
+    }
 
     /**
      * Get the automationAccountId property: The Azure automation account Id which holds this runbook and authenticate
@@ -206,22 +206,24 @@ public final class AutomationRunbookReceiver {
      */
     public void validate() {
         if (automationAccountId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property automationAccountId in model AutomationRunbookReceiver"));
         }
         if (runbookName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property runbookName in model AutomationRunbookReceiver"));
         }
         if (webhookResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property webhookResourceId in model AutomationRunbookReceiver"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutomationRunbookReceiver.class);
 }

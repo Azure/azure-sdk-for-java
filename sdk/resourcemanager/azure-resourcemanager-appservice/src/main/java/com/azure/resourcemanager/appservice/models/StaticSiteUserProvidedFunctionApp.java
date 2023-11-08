@@ -18,6 +18,10 @@ public final class StaticSiteUserProvidedFunctionApp extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private StaticSiteUserProvidedFunctionAppProperties innerProperties;
 
+    /** Creates an instance of StaticSiteUserProvidedFunctionApp class. */
+    public StaticSiteUserProvidedFunctionApp() {
+    }
+
     /**
      * Get the innerProperties property: StaticSiteUserProvidedFunctionApp resource specific properties.
      *

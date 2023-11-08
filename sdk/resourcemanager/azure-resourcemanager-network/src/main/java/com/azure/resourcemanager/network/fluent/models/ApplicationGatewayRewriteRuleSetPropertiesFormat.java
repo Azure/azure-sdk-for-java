@@ -25,6 +25,10 @@ public final class ApplicationGatewayRewriteRuleSetPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewayRewriteRuleSetPropertiesFormat class. */
+    public ApplicationGatewayRewriteRuleSetPropertiesFormat() {
+    }
+
     /**
      * Get the rewriteRules property: Rewrite rules in the rewrite rule set.
      *

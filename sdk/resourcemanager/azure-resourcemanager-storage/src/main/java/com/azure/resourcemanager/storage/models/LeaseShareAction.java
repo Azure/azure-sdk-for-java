@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LeaseShareAction. */
+/** Specifies the lease action. Can be one of the available actions. */
 public final class LeaseShareAction extends ExpandableStringEnum<LeaseShareAction> {
     /** Static value Acquire for LeaseShareAction. */
     public static final LeaseShareAction ACQUIRE = fromString("Acquire");
@@ -26,6 +26,15 @@ public final class LeaseShareAction extends ExpandableStringEnum<LeaseShareActio
     public static final LeaseShareAction BREAK = fromString("Break");
 
     /**
+     * Creates a new instance of LeaseShareAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LeaseShareAction() {
+    }
+
+    /**
      * Creates or finds a LeaseShareAction from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class LeaseShareAction extends ExpandableStringEnum<LeaseShareActio
         return fromString(name, LeaseShareAction.class);
     }
 
-    /** @return known LeaseShareAction values. */
+    /**
+     * Gets known LeaseShareAction values.
+     *
+     * @return known LeaseShareAction values.
+     */
     public static Collection<LeaseShareAction> values() {
         return values(LeaseShareAction.class);
     }

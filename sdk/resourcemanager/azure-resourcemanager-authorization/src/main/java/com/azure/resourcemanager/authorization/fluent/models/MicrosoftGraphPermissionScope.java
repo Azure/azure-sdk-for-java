@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,35 +16,30 @@ import java.util.UUID;
 /** permissionScope. */
 @Fluent
 public final class MicrosoftGraphPermissionScope {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPermissionScope.class);
-
     /*
-     * A description of the delegated permissions, intended to be read by an
-     * administrator granting the permission on behalf of all users. This text
-     * appears in tenant-wide admin consent experiences.
+     * A description of the delegated permissions, intended to be read by an administrator granting the permission on
+     * behalf of all users. This text appears in tenant-wide admin consent experiences.
      */
     @JsonProperty(value = "adminConsentDescription")
     private String adminConsentDescription;
 
     /*
-     * The permission's title, intended to be read by an administrator granting
-     * the permission on behalf of all users.
+     * The permission's title, intended to be read by an administrator granting the permission on behalf of all users.
      */
     @JsonProperty(value = "adminConsentDisplayName")
     private String adminConsentDisplayName;
 
     /*
-     * Unique delegated permission identifier inside the collection of
-     * delegated permissions defined for a resource application.
+     * Unique delegated permission identifier inside the collection of delegated permissions defined for a resource
+     * application.
      */
     @JsonProperty(value = "id")
     private UUID id;
 
     /*
-     * When creating or updating a permission, this property must be set to
-     * true (which is the default). To delete a permission, this property must
-     * first be set to false.  At that point, in a subsequent call, the
-     * permission may be removed.
+     * When creating or updating a permission, this property must be set to true (which is the default). To delete a
+     * permission, this property must first be set to false.  At that point, in a subsequent call, the permission may
+     * be removed.
      */
     @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
@@ -57,39 +51,32 @@ public final class MicrosoftGraphPermissionScope {
     private String origin;
 
     /*
-     * Specifies whether this delegated permission should be considered safe
-     * for non-admin users to consent to on behalf of themselves, or whether an
-     * administrator should be required for consent to the permissions. This
-     * will be the default behavior, but each customer can choose to customize
-     * the behavior in their organization (by allowing, restricting or limiting
-     * user consent to this delegated permission.)
+     * Specifies whether this delegated permission should be considered safe for non-admin users to consent to on
+     * behalf of themselves, or whether an administrator should be required for consent to the permissions. This will
+     * be the default behavior, but each customer can choose to customize the behavior in their organization (by
+     * allowing, restricting or limiting user consent to this delegated permission.)
      */
     @JsonProperty(value = "type")
     private String type;
 
     /*
-     * A description of the delegated permissions, intended to be read by a
-     * user granting the permission on their own behalf. This text appears in
-     * consent experiences where the user is consenting only on behalf of
-     * themselves.
+     * A description of the delegated permissions, intended to be read by a user granting the permission on their own
+     * behalf. This text appears in consent experiences where the user is consenting only on behalf of themselves.
      */
     @JsonProperty(value = "userConsentDescription")
     private String userConsentDescription;
 
     /*
-     * A title for the permission, intended to be read by a user granting the
-     * permission on their own behalf. This text appears in consent experiences
-     * where the user is consenting only on behalf of themselves.
+     * A title for the permission, intended to be read by a user granting the permission on their own behalf. This text
+     * appears in consent experiences where the user is consenting only on behalf of themselves.
      */
     @JsonProperty(value = "userConsentDisplayName")
     private String userConsentDisplayName;
 
     /*
-     * Specifies the value to include in the scp (scope) claim in access
-     * tokens. Must not exceed 120 characters in length. Allowed characters are
-     * : ! # $ % & ' ( ) * + , - . / : ;  =  ? @ [ ] ^ + _  {  } ~, as well as
-     * characters in the ranges 0-9, A-Z and a-z. Any other character,
-     * including the space character, are not allowed.
+     * Specifies the value to include in the scp (scope) claim in access tokens. Must not exceed 120 characters in
+     * length. Allowed characters are : ! # $ % & ' ( ) * + , - . / : ;  =  ? @ [ ] ^ + _  {  } ~, as well as
+     * characters in the ranges 0-9, A-Z and a-z. Any other character, including the space character, are not allowed.
      */
     @JsonProperty(value = "value")
     private String value;
@@ -98,6 +85,10 @@ public final class MicrosoftGraphPermissionScope {
      * permissionScope
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPermissionScope class. */
+    public MicrosoftGraphPermissionScope() {
+    }
 
     /**
      * Get the adminConsentDescription property: A description of the delegated permissions, intended to be read by an

@@ -11,31 +11,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PublicIpAddressDnsSettings {
     /*
-     * The domain name label. The concatenation of the domain name label and
-     * the regionalized DNS zone make up the fully qualified domain name
-     * associated with the public IP address. If a domain name label is
-     * specified, an A DNS record is created for the public IP in the Microsoft
-     * Azure DNS system.
+     * The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the
+     * fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS
+     * record is created for the public IP in the Microsoft Azure DNS system.
      */
     @JsonProperty(value = "domainNameLabel")
     private String domainNameLabel;
 
     /*
-     * The Fully Qualified Domain Name of the A DNS record associated with the
-     * public IP. This is the concatenation of the domainNameLabel and the
-     * regionalized DNS zone.
+     * The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record
+     * is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN.
+     */
+    @JsonProperty(value = "domainNameLabelScope")
+    private PublicIpAddressDnsSettingsDomainNameLabelScope domainNameLabelScope;
+
+    /*
+     * The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of
+     * the domainNameLabel and the regionalized DNS zone.
      */
     @JsonProperty(value = "fqdn")
     private String fqdn;
 
     /*
-     * The reverse FQDN. A user-visible, fully qualified domain name that
-     * resolves to this public IP address. If the reverseFqdn is specified,
-     * then a PTR DNS record is created pointing from the IP address in the
-     * in-addr.arpa domain to the reverse FQDN.
+     * The reverse FQDN. A user-visible, fully qualified domain name that resolves to this public IP address. If the
+     * reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa
+     * domain to the reverse FQDN.
      */
     @JsonProperty(value = "reverseFqdn")
     private String reverseFqdn;
+
+    /** Creates an instance of PublicIpAddressDnsSettings class. */
+    public PublicIpAddressDnsSettings() {
+    }
 
     /**
      * Get the domainNameLabel property: The domain name label. The concatenation of the domain name label and the
@@ -58,6 +65,31 @@ public final class PublicIpAddressDnsSettings {
      */
     public PublicIpAddressDnsSettings withDomainNameLabel(String domainNameLabel) {
         this.domainNameLabel = domainNameLabel;
+        return this;
+    }
+
+    /**
+     * Get the domainNameLabelScope property: The domain name label scope. If a domain name label and a domain name
+     * label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a
+     * hashed value includes in FQDN.
+     *
+     * @return the domainNameLabelScope value.
+     */
+    public PublicIpAddressDnsSettingsDomainNameLabelScope domainNameLabelScope() {
+        return this.domainNameLabelScope;
+    }
+
+    /**
+     * Set the domainNameLabelScope property: The domain name label scope. If a domain name label and a domain name
+     * label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a
+     * hashed value includes in FQDN.
+     *
+     * @param domainNameLabelScope the domainNameLabelScope value to set.
+     * @return the PublicIpAddressDnsSettings object itself.
+     */
+    public PublicIpAddressDnsSettings withDomainNameLabelScope(
+        PublicIpAddressDnsSettingsDomainNameLabelScope domainNameLabelScope) {
+        this.domainNameLabelScope = domainNameLabelScope;
         return this;
     }
 

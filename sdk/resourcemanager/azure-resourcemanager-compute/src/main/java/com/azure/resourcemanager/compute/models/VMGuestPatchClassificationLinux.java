@@ -20,6 +20,15 @@ public final class VMGuestPatchClassificationLinux extends ExpandableStringEnum<
     public static final VMGuestPatchClassificationLinux OTHER = fromString("Other");
 
     /**
+     * Creates a new instance of VMGuestPatchClassificationLinux value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMGuestPatchClassificationLinux() {
+    }
+
+    /**
      * Creates or finds a VMGuestPatchClassificationLinux from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +39,11 @@ public final class VMGuestPatchClassificationLinux extends ExpandableStringEnum<
         return fromString(name, VMGuestPatchClassificationLinux.class);
     }
 
-    /** @return known VMGuestPatchClassificationLinux values. */
+    /**
+     * Gets known VMGuestPatchClassificationLinux values.
+     *
+     * @return known VMGuestPatchClassificationLinux values.
+     */
     public static Collection<VMGuestPatchClassificationLinux> values() {
         return values(VMGuestPatchClassificationLinux.class);
     }

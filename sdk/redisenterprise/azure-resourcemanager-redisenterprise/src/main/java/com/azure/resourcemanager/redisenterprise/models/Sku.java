@@ -6,28 +6,27 @@ package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU parameters supplied to the create RedisEnterprise operation. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
-     * The type of RedisEnterprise cluster to deploy. Possible values:
-     * (Enterprise_E10, EnterpriseFlash_F300 etc.)
+     * The type of RedisEnterprise cluster to deploy. Possible values: (Enterprise_E10, EnterpriseFlash_F300 etc.)
      */
     @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
-     * The size of the RedisEnterprise cluster. Defaults to 2 or 3 depending on
-     * SKU. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15,
-     * ...) for Flash SKUs.
+     * The size of the RedisEnterprise cluster. Defaults to 2 or 3 depending on SKU. Valid values are (2, 4, 6, ...)
+     * for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the name property: The type of RedisEnterprise cluster to deploy. Possible values: (Enterprise_E10,
@@ -80,8 +79,10 @@ public final class Sku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
 }

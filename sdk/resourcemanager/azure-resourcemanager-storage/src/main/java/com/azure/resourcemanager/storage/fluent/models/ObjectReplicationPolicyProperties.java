@@ -27,15 +27,13 @@ public final class ObjectReplicationPolicyProperties {
     private OffsetDateTime enabledTime;
 
     /*
-     * Required. Source account name. It should be full resource id if
-     * allowCrossTenantReplication set to false.
+     * Required. Source account name. It should be full resource id if allowCrossTenantReplication set to false.
      */
     @JsonProperty(value = "sourceAccount", required = true)
     private String sourceAccount;
 
     /*
-     * Required. Destination account name. It should be full resource id if
-     * allowCrossTenantReplication set to false.
+     * Required. Destination account name. It should be full resource id if allowCrossTenantReplication set to false.
      */
     @JsonProperty(value = "destinationAccount", required = true)
     private String destinationAccount;
@@ -45,6 +43,10 @@ public final class ObjectReplicationPolicyProperties {
      */
     @JsonProperty(value = "rules")
     private List<ObjectReplicationPolicyRule> rules;
+
+    /** Creates an instance of ObjectReplicationPolicyProperties class. */
+    public ObjectReplicationPolicyProperties() {
+    }
 
     /**
      * Get the policyId property: A unique id for object replication policy.

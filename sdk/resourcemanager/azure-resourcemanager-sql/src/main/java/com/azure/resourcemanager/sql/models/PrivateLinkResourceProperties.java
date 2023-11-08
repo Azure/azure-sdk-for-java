@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a private link resource. */
 @Immutable
 public final class PrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
-
     /*
      * The private link resource group id.
      */
@@ -26,6 +22,16 @@ public final class PrivateLinkResourceProperties {
      */
     @JsonProperty(value = "requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredMembers;
+
+    /*
+     * The private link resource required zone names.
+     */
+    @JsonProperty(value = "requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> requiredZoneNames;
+
+    /** Creates an instance of PrivateLinkResourceProperties class. */
+    public PrivateLinkResourceProperties() {
+    }
 
     /**
      * Get the groupId property: The private link resource group id.
@@ -43,6 +49,15 @@ public final class PrivateLinkResourceProperties {
      */
     public List<String> requiredMembers() {
         return this.requiredMembers;
+    }
+
+    /**
+     * Get the requiredZoneNames property: The private link resource required zone names.
+     *
+     * @return the requiredZoneNames value.
+     */
+    public List<String> requiredZoneNames() {
+        return this.requiredZoneNames;
     }
 
     /**

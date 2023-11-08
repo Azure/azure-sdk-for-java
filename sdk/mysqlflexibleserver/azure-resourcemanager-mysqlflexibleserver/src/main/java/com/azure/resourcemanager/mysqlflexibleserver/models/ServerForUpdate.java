@@ -38,6 +38,10 @@ public final class ServerForUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ServerForUpdate class. */
+    public ServerForUpdate() {
+    }
+
     /**
      * Get the identity property: The cmk identity for the server.
      *
@@ -127,6 +131,29 @@ public final class ServerForUpdate {
             this.innerProperties = new ServerPropertiesForUpdate();
         }
         this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
+        return this;
+    }
+
+    /**
+     * Get the version property: Server version.
+     *
+     * @return the version value.
+     */
+    public ServerVersion version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Set the version property: Server version.
+     *
+     * @param version the version value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withVersion(ServerVersion version) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -265,6 +292,29 @@ public final class ServerForUpdate {
             this.innerProperties = new ServerPropertiesForUpdate();
         }
         this.innerProperties().withDataEncryption(dataEncryption);
+        return this;
+    }
+
+    /**
+     * Get the network property: Network related properties of a server.
+     *
+     * @return the network value.
+     */
+    public Network network() {
+        return this.innerProperties() == null ? null : this.innerProperties().network();
+    }
+
+    /**
+     * Set the network property: Network related properties of a server.
+     *
+     * @param network the network value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withNetwork(Network network) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withNetwork(network);
         return this;
     }
 

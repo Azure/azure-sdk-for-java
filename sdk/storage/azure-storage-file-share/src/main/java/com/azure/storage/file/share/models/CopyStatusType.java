@@ -36,6 +36,9 @@ public enum CopyStatusType {
      */
     @JsonCreator
     public static CopyStatusType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CopyStatusType[] items = CopyStatusType.values();
         for (CopyStatusType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum CopyStatusType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -41,6 +41,10 @@ public final class InstanceViewStatus {
     @JsonProperty(value = "time")
     private OffsetDateTime time;
 
+    /** Creates an instance of InstanceViewStatus class. */
+    public InstanceViewStatus() {
+    }
+
     /**
      * Get the code property: The status code.
      *

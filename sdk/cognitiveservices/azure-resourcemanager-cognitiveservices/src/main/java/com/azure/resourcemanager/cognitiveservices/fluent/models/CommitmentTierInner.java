@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentCost;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentQuota;
 import com.azure.resourcemanager.cognitiveservices.models.HostingModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cognitive Services account commitment tier. */
 @Fluent
 public final class CommitmentTierInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommitmentTierInner.class);
-
     /*
      * The Kind of the resource.
      */
@@ -64,6 +60,10 @@ public final class CommitmentTierInner {
      */
     @JsonProperty(value = "cost")
     private CommitmentCost cost;
+
+    /** Creates an instance of CommitmentTierInner class. */
+    public CommitmentTierInner() {
+    }
 
     /**
      * Get the kind property: The Kind of the resource.

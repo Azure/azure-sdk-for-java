@@ -23,6 +23,10 @@ public final class FirewallRuleProperties {
     @JsonProperty(value = "endIpAddress", required = true)
     private String endIpAddress;
 
+    /** Creates an instance of FirewallRuleProperties class. */
+    public FirewallRuleProperties() {
+    }
+
     /**
      * Get the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
      *

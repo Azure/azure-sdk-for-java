@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,11 +15,8 @@ import java.util.Map;
 /** itemReference. */
 @Fluent
 public final class MicrosoftGraphItemReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphItemReference.class);
-
     /*
-     * Unique identifier of the drive instance that contains the item.
-     * Read-only.
+     * Unique identifier of the drive instance that contains the item. Read-only.
      */
     @JsonProperty(value = "driveId")
     private String driveId;
@@ -50,8 +46,7 @@ public final class MicrosoftGraphItemReference {
     private String path;
 
     /*
-     * A unique identifier for a shared resource that can be accessed via the
-     * [Shares][] API.
+     * A unique identifier for a shared resource that can be accessed via the [Shares][] API.
      */
     @JsonProperty(value = "shareId")
     private String shareId;
@@ -72,6 +67,10 @@ public final class MicrosoftGraphItemReference {
      * itemReference
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphItemReference class. */
+    public MicrosoftGraphItemReference() {
+    }
 
     /**
      * Get the driveId property: Unique identifier of the drive instance that contains the item. Read-only.

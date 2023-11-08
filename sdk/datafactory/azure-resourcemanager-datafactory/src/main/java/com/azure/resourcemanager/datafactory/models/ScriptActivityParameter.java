@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ScriptActivityParameter {
     /*
-     * The name of the parameter. Type: string (or Expression with resultType
-     * string).
+     * The name of the parameter. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "name")
     private Object name;
@@ -24,7 +23,7 @@ public final class ScriptActivityParameter {
     private ScriptActivityParameterType type;
 
     /*
-     * The value of the parameter.
+     * The value of the parameter. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value")
     private Object value;
@@ -40,6 +39,10 @@ public final class ScriptActivityParameter {
      */
     @JsonProperty(value = "size")
     private Integer size;
+
+    /** Creates an instance of ScriptActivityParameter class. */
+    public ScriptActivityParameter() {
+    }
 
     /**
      * Get the name property: The name of the parameter. Type: string (or Expression with resultType string).
@@ -82,7 +85,7 @@ public final class ScriptActivityParameter {
     }
 
     /**
-     * Get the value property: The value of the parameter.
+     * Get the value property: The value of the parameter. Type: string (or Expression with resultType string).
      *
      * @return the value value.
      */
@@ -91,7 +94,7 @@ public final class ScriptActivityParameter {
     }
 
     /**
-     * Set the value property: The value of the parameter.
+     * Set the value property: The value of the parameter. Type: string (or Expression with resultType string).
      *
      * @param value the value value to set.
      * @return the ScriptActivityParameter object itself.

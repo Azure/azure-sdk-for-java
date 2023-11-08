@@ -52,6 +52,10 @@ public final class AssetFilterImpl implements AssetFilter, AssetFilter.Definitio
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AssetFilterInner innerModel() {
         return this.innerObject;
     }

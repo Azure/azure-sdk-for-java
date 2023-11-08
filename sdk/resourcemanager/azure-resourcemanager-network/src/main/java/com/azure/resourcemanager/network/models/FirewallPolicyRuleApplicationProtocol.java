@@ -22,6 +22,10 @@ public final class FirewallPolicyRuleApplicationProtocol {
     @JsonProperty(value = "port")
     private Integer port;
 
+    /** Creates an instance of FirewallPolicyRuleApplicationProtocol class. */
+    public FirewallPolicyRuleApplicationProtocol() {
+    }
+
     /**
      * Get the protocolType property: Protocol type.
      *

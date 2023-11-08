@@ -32,6 +32,15 @@ public final class ScalingScheduleDaysOfWeekItem extends ExpandableStringEnum<Sc
     public static final ScalingScheduleDaysOfWeekItem SATURDAY = fromString("Saturday");
 
     /**
+     * Creates a new instance of ScalingScheduleDaysOfWeekItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScalingScheduleDaysOfWeekItem() {
+    }
+
+    /**
      * Creates or finds a ScalingScheduleDaysOfWeekItem from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class ScalingScheduleDaysOfWeekItem extends ExpandableStringEnum<Sc
         return fromString(name, ScalingScheduleDaysOfWeekItem.class);
     }
 
-    /** @return known ScalingScheduleDaysOfWeekItem values. */
+    /**
+     * Gets known ScalingScheduleDaysOfWeekItem values.
+     *
+     * @return known ScalingScheduleDaysOfWeekItem values.
+     */
     public static Collection<ScalingScheduleDaysOfWeekItem> values() {
         return values(ScalingScheduleDaysOfWeekItem.class);
     }

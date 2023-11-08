@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.keyvault.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a private link resource. */
 @Fluent
 public final class PrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
-
     /*
      * Group identifier of private link resource.
      */
@@ -32,6 +28,10 @@ public final class PrivateLinkResourceProperties {
      */
     @JsonProperty(value = "requiredZoneNames")
     private List<String> requiredZoneNames;
+
+    /** Creates an instance of PrivateLinkResourceProperties class. */
+    public PrivateLinkResourceProperties() {
+    }
 
     /**
      * Get the groupId property: Group identifier of private link resource.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** workbookChartAxisTitle. */
 @Fluent
 public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookChartAxisTitle.class);
-
     /*
      * Represents the axis title.
      */
@@ -40,6 +37,10 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
      * workbookChartAxisTitle
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookChartAxisTitle class. */
+    public MicrosoftGraphWorkbookChartAxisTitle() {
+    }
 
     /**
      * Get the text property: Represents the axis title.

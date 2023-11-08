@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The HTTP header. */
 @Fluent
 public final class HttpHeader {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpHeader.class);
-
     /*
      * The header name.
      */
@@ -25,6 +21,10 @@ public final class HttpHeader {
      */
     @JsonProperty(value = "value")
     private String value;
+
+    /** Creates an instance of HttpHeader class. */
+    public HttpHeader() {
+    }
 
     /**
      * Get the name property: The header name.

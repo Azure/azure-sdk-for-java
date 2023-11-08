@@ -15,10 +15,9 @@ import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoEntityInner;
 import com.azure.resourcemanager.videoanalyzer.models.VideoContentToken;
 import com.azure.resourcemanager.videoanalyzer.models.VideoEntity;
 import com.azure.resourcemanager.videoanalyzer.models.Videos;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VideosImpl implements Videos {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideosImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VideosImpl.class);
 
     private final VideosClient innerClient;
 
@@ -100,7 +99,7 @@ public final class VideosImpl implements Videos {
     public VideoEntity getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,7 +107,7 @@ public final class VideosImpl implements Videos {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,7 +115,7 @@ public final class VideosImpl implements Videos {
         }
         String videoName = Utils.getValueFromIdByName(id, "videos");
         if (videoName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'videos'.", id)));
@@ -127,7 +126,7 @@ public final class VideosImpl implements Videos {
     public Response<VideoEntity> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,7 +134,7 @@ public final class VideosImpl implements Videos {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class VideosImpl implements Videos {
         }
         String videoName = Utils.getValueFromIdByName(id, "videos");
         if (videoName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'videos'.", id)));
@@ -154,7 +153,7 @@ public final class VideosImpl implements Videos {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,7 +161,7 @@ public final class VideosImpl implements Videos {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -170,18 +169,18 @@ public final class VideosImpl implements Videos {
         }
         String videoName = Utils.getValueFromIdByName(id, "videos");
         if (videoName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'videos'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, videoName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, videoName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -189,7 +188,7 @@ public final class VideosImpl implements Videos {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -197,7 +196,7 @@ public final class VideosImpl implements Videos {
         }
         String videoName = Utils.getValueFromIdByName(id, "videos");
         if (videoName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'videos'.", id)));

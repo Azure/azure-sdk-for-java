@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operations discovery class. */
 @Fluent
 public final class OperationsDiscovery {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsDiscovery.class);
-
     /*
      * Gets or sets Name of the API.
-     * The name of the operation being performed on this particular object. It
-     * should
+     * The name of the operation being performed on this particular object. It should
      * match the action name that appears in RBAC / the event service.
      * Examples of operations include:
      * * Microsoft.Compute/virtualMachine/capture/action
@@ -27,20 +22,15 @@ public final class OperationsDiscovery {
      * * Microsoft.Compute/virtualMachine/delete
      * Each action should include, in order:
      * (1) Resource Provider Namespace
-     * (2) Type hierarchy for which the action applies (e.g. server/databases
-     * for a SQL
+     * (2) Type hierarchy for which the action applies (e.g. server/databases for a SQL
      * Azure database)
-     * (3) Read, Write, Action or Delete indicating which type applies. If it
-     * is a PUT/PATCH
+     * (3) Read, Write, Action or Delete indicating which type applies. If it is a PUT/PATCH
      * on a collection or named value, Write should be used.
-     * If it is a GET, Read should be used. If it is a DELETE, Delete should be
-     * used. If it
+     * If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it
      * is a POST, Action should be used.
-     * As a note: all resource providers would need to include the "{Resource
-     * Provider
+     * As a note: all resource providers would need to include the "{Resource Provider
      * Namespace}/register/action" operation in their response.
-     * This API is used to register for their service, and should include
-     * details about the
+     * This API is used to register for their service, and should include details about the
      * operation (e.g. a localized name for the resource provider + any special
      * considerations like PII release).
      */
@@ -54,8 +44,7 @@ public final class OperationsDiscovery {
     private Boolean isDataAction;
 
     /*
-     * Contains the localized display information for this particular operation
-     * / action. These
+     * Contains the localized display information for this particular operation / action. These
      * value will be used by several clients for
      * (1) custom role definitions for RBAC;
      * (2) complex query filters for the event service; and
@@ -66,8 +55,7 @@ public final class OperationsDiscovery {
 
     /*
      * Gets or sets Origin.
-     * The intended executor of the operation; governs the display of the
-     * operation in the
+     * The intended executor of the operation; governs the display of the operation in the
      * RBAC UX and the audit logs UX.
      * Default value is "user,system".
      */
@@ -75,10 +63,14 @@ public final class OperationsDiscovery {
     private String origin;
 
     /*
-     * Any object
+     * ClientDiscovery properties.
      */
     @JsonProperty(value = "properties")
     private Object properties;
+
+    /** Creates an instance of OperationsDiscovery class. */
+    public OperationsDiscovery() {
+    }
 
     /**
      * Get the name property: Gets or sets Name of the API. The name of the operation being performed on this particular
@@ -189,7 +181,7 @@ public final class OperationsDiscovery {
     }
 
     /**
-     * Get the properties property: Any object.
+     * Get the properties property: ClientDiscovery properties.
      *
      * @return the properties value.
      */
@@ -198,7 +190,7 @@ public final class OperationsDiscovery {
     }
 
     /**
-     * Set the properties property: Any object.
+     * Set the properties property: ClientDiscovery properties.
      *
      * @param properties the properties value to set.
      * @return the OperationsDiscovery object itself.

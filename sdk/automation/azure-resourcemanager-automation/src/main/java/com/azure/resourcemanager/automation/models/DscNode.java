@@ -95,11 +95,11 @@ public interface DscNode {
     List<DscNodeExtensionHandlerAssociationProperty> extensionHandler();
 
     /**
-     * Gets the namePropertiesNodeConfigurationName property: Gets or sets the name of the dsc node configuration.
+     * Gets the namePropertiesName property: Gets or sets the name of the dsc node configuration.
      *
-     * @return the namePropertiesNodeConfigurationName value.
+     * @return the namePropertiesName value.
      */
-    String namePropertiesNodeConfigurationName();
+    String namePropertiesName();
 
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.DscNodeInner object.

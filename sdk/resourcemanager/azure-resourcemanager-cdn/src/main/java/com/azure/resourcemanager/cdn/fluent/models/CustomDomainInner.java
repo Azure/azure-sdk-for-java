@@ -6,13 +6,10 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.CustomDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.CustomDomainResourceState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningSubstate;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,20 +18,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class CustomDomainInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainInner.class);
-
     /*
-     * The JSON object that contains the properties of the custom domain to
-     * create.
+     * The JSON object that contains the properties of the custom domain to create.
      */
     @JsonProperty(value = "properties")
     private CustomDomainProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of CustomDomainInner class. */
+    public CustomDomainInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the custom domain to create.
@@ -43,15 +35,6 @@ public final class CustomDomainInner extends ProxyResource {
      */
     private CustomDomainProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -87,7 +70,7 @@ public final class CustomDomainInner extends ProxyResource {
     }
 
     /**
-     * Get the customHttpsProvisioningState property: Provisioning status of Custom Https of the custom domain.
+     * Get the customHttpsProvisioningState property: Provisioning status of the custom domain.
      *
      * @return the customHttpsProvisioningState value.
      */
@@ -156,11 +139,11 @@ public final class CustomDomainInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning status of the custom domain.
+     * Get the provisioningState property: Provisioning status of Custom Https of the custom domain.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public CustomHttpsProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

@@ -17,8 +17,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
@@ -44,69 +42,71 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     *     <tr><td>ignoreTermsAndCategories</td><td>String</td><td>No</td><td>Whether ignore terms and categories</td></tr>
+     *     <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         language: String
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         language: String (Optional)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         usage: String
+     *         usage: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -132,58 +132,58 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -191,63 +191,63 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
-     * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
-     *     anchor attribute when creating the Term/Category.
+     * @param atlasGlossary Glossary definition, terms &amp; categories can be anchored to a glossary. Using the anchor
+     *     attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -269,61 +269,61 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         childrenCategories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         parentCategory (Optional): (recursive schema, see parentCategory above)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
      *     }
@@ -334,61 +334,61 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         childrenCategories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         parentCategory (Optional): (recursive schema, see parentCategory above)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
      *     }
@@ -418,60 +418,60 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -481,60 +481,60 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -563,60 +563,60 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -645,60 +645,60 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -708,60 +708,60 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -808,7 +808,7 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     String: String
+     *     String: String (Required)
      * }
      * }</pre>
      *
@@ -816,60 +816,60 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     childrenCategories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     childrenCategories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     parentCategory: (recursive schema, see parentCategory above)
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     parentCategory (Optional): (recursive schema, see parentCategory above)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -902,22 +902,24 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     String (Required): [
+     *          (Required){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -947,24 +949,26 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         description: String
-     *         displayText: String
-     *         expression: String
-     *         relationGuid: String
-     *         source: String
-     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         steward: String
-     *         termGuid: String
+     *      (Required){
+     *         description: String (Optional)
+     *         displayText: String (Optional)
+     *         expression: String (Optional)
+     *         relationGuid: String (Optional)
+     *         source: String (Optional)
+     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *         steward: String (Optional)
+     *         termGuid: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -993,155 +997,157 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -1151,148 +1157,148 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -1322,155 +1328,158 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of relationship types which need to be excluded. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -1494,152 +1503,162 @@ public final class GlossaryAsyncClient {
     /**
      * Update the given glossary term by its GUID.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -1649,148 +1668,148 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -1837,14 +1856,16 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: String
+     *     String: String (Required)
      * }
      * }</pre>
      *
@@ -1852,148 +1873,148 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     abbreviation: String
-     *     templateName: [
-     *         Object
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     abbreviation: String (Optional)
+     *     templateName (Optional): [
+     *         Object (Optional)
      *     ]
-     *     anchor: {
-     *         displayText: String
-     *         glossaryGuid: String
-     *         relationGuid: String
+     *     anchor (Optional): {
+     *         displayText: String (Optional)
+     *         glossaryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
-     *     antonyms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     antonyms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     createTime: Float
-     *     createdBy: String
-     *     updateTime: Float
-     *     updatedBy: String
-     *     status: String(Draft/Approved/Alert/Expired)
-     *     resources: [
-     *         {
-     *             displayName: String
-     *             url: String
+     *     createTime: Float (Optional)
+     *     createdBy: String (Optional)
+     *     updateTime: Float (Optional)
+     *     updatedBy: String (Optional)
+     *     status: String(Draft/Approved/Alert/Expired) (Optional)
+     *     resources (Optional): [
+     *          (Optional){
+     *             displayName: String (Optional)
+     *             url: String (Optional)
      *         }
      *     ]
-     *     contacts: {
-     *         String: [
-     *             {
-     *                 id: String
-     *                 info: String
+     *     contacts (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 info: String (Optional)
      *             }
      *         ]
      *     }
-     *     attributes: {
-     *         String: {
-     *             String: Object
+     *     attributes (Optional): {
+     *         String (Optional): {
+     *             String: Object (Optional)
      *         }
      *     }
-     *     assignedEntities: [
-     *         {
-     *             guid: String
-     *             typeName: String
-     *             uniqueAttributes: {
-     *                 String: Object
+     *     assignedEntities (Optional): [
+     *          (Optional){
+     *             guid: String (Optional)
+     *             typeName: String (Optional)
+     *             uniqueAttributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             displayText: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             relationshipType: String
-     *             relationshipAttributes: {
-     *                 attributes: {
-     *                     String: Object
+     *             displayText: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             relationshipType: String (Optional)
+     *             relationshipAttributes (Optional): {
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
      *             }
-     *             relationshipGuid: String
-     *             relationshipStatus: String(ACTIVE/DELETED)
+     *             relationshipGuid: String (Optional)
+     *             relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *         }
      *     ]
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             relationGuid: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             relationGuid: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *         }
      *     ]
-     *     classifies: [
+     *     classifies (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     examples: [
-     *         String
+     *     examples (Optional): [
+     *         String (Optional)
      *     ]
-     *     isA: [
+     *     isA (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredTerms: [
+     *     preferredTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     preferredToTerms: [
+     *     preferredToTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacedBy: [
+     *     replacedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     replacementTerms: [
+     *     replacementTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     seeAlso: [
+     *     seeAlso (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     synonyms: [
+     *     synonyms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translatedTerms: [
+     *     translatedTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     translationTerms: [
+     *     translationTerms (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     usage: String
-     *     validValues: [
+     *     usage: String (Optional)
+     *     validValues (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     validValuesFor: [
+     *     validValuesFor (Optional): [
      *         (recursive schema, see above)
      *     ]
      * }
@@ -2024,156 +2045,158 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -2184,149 +2207,149 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -2357,33 +2380,35 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -2411,24 +2436,24 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -2456,24 +2481,24 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -2502,24 +2527,24 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         typeName: String
-     *         uniqueAttributes: {
-     *             String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         typeName: String (Optional)
+     *         uniqueAttributes (Optional): {
+     *             String: Object (Optional)
      *         }
-     *         displayText: String
-     *         entityStatus: String(ACTIVE/DELETED)
-     *         relationshipType: String
-     *         relationshipAttributes: {
-     *             attributes: {
-     *                 String: Object
+     *         displayText: String (Optional)
+     *         entityStatus: String(ACTIVE/DELETED) (Optional)
+     *         relationshipType: String (Optional)
+     *         relationshipAttributes (Optional): {
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
      *         }
-     *         relationshipGuid: String
-     *         relationshipStatus: String(ACTIVE/DELETED)
+     *         relationshipGuid: String (Optional)
+     *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
      * }</pre>
@@ -2550,25 +2575,27 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     String (Required): [
+     *          (Required){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
      * }
@@ -2596,58 +2623,58 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -2672,58 +2699,58 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -2731,58 +2758,58 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -2827,70 +2854,72 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         childrenCategories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 parentCategoryGuid: String
-     *                 relationGuid: String
+     *         childrenCategories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 parentCategoryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
      *         ]
-     *         parentCategory: (recursive schema, see parentCategory above)
-     *         terms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         parentCategory (Optional): (recursive schema, see parentCategory above)
+     *         terms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
      *     }
@@ -2921,21 +2950,23 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         categoryGuid: String
-     *         description: String
-     *         displayText: String
-     *         parentCategoryGuid: String
-     *         relationGuid: String
+     *      (Required){
+     *         categoryGuid: String (Optional)
+     *         description: String (Optional)
+     *         displayText: String (Optional)
+     *         parentCategoryGuid: String (Optional)
+     *         relationGuid: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -2964,201 +2995,203 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
-     *     categoryInfo: {
-     *         String: {
-     *             guid: String
-     *             classifications: [
+     *     usage: String (Optional)
+     *     categoryInfo (Optional): {
+     *         String (Optional): {
+     *             guid: String (Optional)
+     *             classifications (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             longDescription: String
-     *             name: String
-     *             qualifiedName: String
-     *             shortDescription: String
-     *             lastModifiedTS: String
-     *             anchor: {
-     *                 displayText: String
-     *                 glossaryGuid: String
-     *                 relationGuid: String
+     *             longDescription: String (Optional)
+     *             name: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             shortDescription: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             anchor (Optional): {
+     *                 displayText: String (Optional)
+     *                 glossaryGuid: String (Optional)
+     *                 relationGuid: String (Optional)
      *             }
-     *             childrenCategories: [
+     *             childrenCategories (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             parentCategory: (recursive schema, see parentCategory above)
-     *             terms: [
+     *             parentCategory (Optional): (recursive schema, see parentCategory above)
+     *             terms (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
      *     }
-     *     termInfo: {
-     *         String: {
-     *             guid: String
-     *             classifications: [
+     *     termInfo (Optional): {
+     *         String (Optional): {
+     *             guid: String (Optional)
+     *             classifications (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             longDescription: String
-     *             name: String
-     *             qualifiedName: String
-     *             shortDescription: String
-     *             lastModifiedTS: String
-     *             abbreviation: String
-     *             templateName: [
-     *                 Object
+     *             longDescription: String (Optional)
+     *             name: String (Optional)
+     *             qualifiedName: String (Optional)
+     *             shortDescription: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             abbreviation: String (Optional)
+     *             templateName (Optional): [
+     *                 Object (Optional)
      *             ]
-     *             anchor: (recursive schema, see anchor above)
-     *             antonyms: [
+     *             anchor (Optional): (recursive schema, see anchor above)
+     *             antonyms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             createTime: Float
-     *             createdBy: String
-     *             updateTime: Float
-     *             updatedBy: String
-     *             status: String(Draft/Approved/Alert/Expired)
-     *             resources: [
-     *                 {
-     *                     displayName: String
-     *                     url: String
+     *             createTime: Float (Optional)
+     *             createdBy: String (Optional)
+     *             updateTime: Float (Optional)
+     *             updatedBy: String (Optional)
+     *             status: String(Draft/Approved/Alert/Expired) (Optional)
+     *             resources (Optional): [
+     *                  (Optional){
+     *                     displayName: String (Optional)
+     *                     url: String (Optional)
      *                 }
      *             ]
-     *             contacts: {
-     *                 String: [
-     *                     {
-     *                         id: String
-     *                         info: String
+     *             contacts (Optional): {
+     *                 String (Optional): [
+     *                      (Optional){
+     *                         id: String (Optional)
+     *                         info: String (Optional)
      *                     }
      *                 ]
      *             }
-     *             attributes: {
-     *                 String: {
-     *                     String: Object
+     *             attributes (Optional): {
+     *                 String (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
-     *             assignedEntities: [
-     *                 {
-     *                     guid: String
-     *                     typeName: String
-     *                     uniqueAttributes: {
-     *                         String: Object
+     *             assignedEntities (Optional): [
+     *                  (Optional){
+     *                     guid: String (Optional)
+     *                     typeName: String (Optional)
+     *                     uniqueAttributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     displayText: String
-     *                     entityStatus: String(ACTIVE/DELETED)
-     *                     relationshipType: String
-     *                     relationshipAttributes: {
-     *                         attributes: {
-     *                             String: Object
+     *                     displayText: String (Optional)
+     *                     entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                     relationshipType: String (Optional)
+     *                     relationshipAttributes (Optional): {
+     *                         attributes (Optional): {
+     *                             String: Object (Optional)
      *                         }
-     *                         typeName: String
-     *                         lastModifiedTS: String
+     *                         typeName: String (Optional)
+     *                         lastModifiedTS: String (Optional)
      *                     }
-     *                     relationshipGuid: String
-     *                     relationshipStatus: String(ACTIVE/DELETED)
+     *                     relationshipGuid: String (Optional)
+     *                     relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *                 }
      *             ]
-     *             categories: [
-     *                 {
-     *                     categoryGuid: String
-     *                     description: String
-     *                     displayText: String
-     *                     relationGuid: String
-     *                     status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             categories (Optional): [
+     *                  (Optional){
+     *                     categoryGuid: String (Optional)
+     *                     description: String (Optional)
+     *                     displayText: String (Optional)
+     *                     relationGuid: String (Optional)
+     *                     status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *                 }
      *             ]
-     *             classifies: [
+     *             classifies (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             examples: [
-     *                 String
+     *             examples (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isA: [
+     *             isA (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             preferredTerms: [
+     *             preferredTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             preferredToTerms: [
+     *             preferredToTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             replacedBy: [
+     *             replacedBy (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             replacementTerms: [
+     *             replacementTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             seeAlso: [
+     *             seeAlso (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             synonyms: [
+     *             synonyms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             translatedTerms: [
+     *             translatedTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             translationTerms: [
+     *             translationTerms (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             usage: String
-     *             validValues: [
+     *             usage: String (Optional)
+     *             validValues (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             validValuesFor: [
+     *             validValuesFor (Optional): [
      *                 (recursive schema, see above)
      *             ]
      *         }
@@ -3190,14 +3223,16 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     String: String
+     *     String: String (Required)
      * }
      * }</pre>
      *
@@ -3205,58 +3240,58 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * {
-     *     guid: String
-     *     classifications: [
-     *         {
-     *             attributes: {
-     *                 String: Object
+     *     guid: String (Optional)
+     *     classifications (Optional): [
+     *          (Optional){
+     *             attributes (Optional): {
+     *                 String: Object (Optional)
      *             }
-     *             typeName: String
-     *             lastModifiedTS: String
-     *             entityGuid: String
-     *             entityStatus: String(ACTIVE/DELETED)
-     *             removePropagationsOnEntityDelete: Boolean
-     *             validityPeriods: [
-     *                 {
-     *                     endTime: String
-     *                     startTime: String
-     *                     timeZone: String
+     *             typeName: String (Optional)
+     *             lastModifiedTS: String (Optional)
+     *             entityGuid: String (Optional)
+     *             entityStatus: String(ACTIVE/DELETED) (Optional)
+     *             removePropagationsOnEntityDelete: Boolean (Optional)
+     *             validityPeriods (Optional): [
+     *                  (Optional){
+     *                     endTime: String (Optional)
+     *                     startTime: String (Optional)
+     *                     timeZone: String (Optional)
      *                 }
      *             ]
-     *             source: String
-     *             sourceDetails: {
-     *                 String: Object
+     *             source: String (Optional)
+     *             sourceDetails (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
      *     ]
-     *     longDescription: String
-     *     name: String
-     *     qualifiedName: String
-     *     shortDescription: String
-     *     lastModifiedTS: String
-     *     categories: [
-     *         {
-     *             categoryGuid: String
-     *             description: String
-     *             displayText: String
-     *             parentCategoryGuid: String
-     *             relationGuid: String
+     *     longDescription: String (Optional)
+     *     name: String (Optional)
+     *     qualifiedName: String (Optional)
+     *     shortDescription: String (Optional)
+     *     lastModifiedTS: String (Optional)
+     *     categories (Optional): [
+     *          (Optional){
+     *             categoryGuid: String (Optional)
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             parentCategoryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
      *     ]
-     *     language: String
-     *     terms: [
-     *         {
-     *             description: String
-     *             displayText: String
-     *             expression: String
-     *             relationGuid: String
-     *             source: String
-     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *             steward: String
-     *             termGuid: String
+     *     language: String (Optional)
+     *     terms (Optional): [
+     *          (Optional){
+     *             description: String (Optional)
+     *             displayText: String (Optional)
+     *             expression: String (Optional)
+     *             relationGuid: String (Optional)
+     *             source: String (Optional)
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *             steward: String (Optional)
+     *             termGuid: String (Optional)
      *         }
      *     ]
-     *     usage: String
+     *     usage: String (Optional)
      * }
      * }</pre>
      *
@@ -3284,159 +3319,161 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
@@ -3467,24 +3504,26 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         description: String
-     *         displayText: String
-     *         expression: String
-     *         relationGuid: String
-     *         source: String
-     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *         steward: String
-     *         termGuid: String
+     *      (Required){
+     *         description: String (Optional)
+     *         displayText: String (Optional)
+     *         expression: String (Optional)
+     *         relationGuid: String (Optional)
+     *         source: String (Optional)
+     *         status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *         steward: String (Optional)
+     *         termGuid: String (Optional)
      *     }
      * ]
      * }</pre>
@@ -3513,100 +3552,32 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param file The csv file to import glossary terms from.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponse(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions);
-    }
-
-    /**
-     * Import Glossary Terms from local csv file.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
-     *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -3635,101 +3606,32 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param glossaryName The name of the glossary.
-     * @param file The csv file to import glossary terms from.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponse(
-            String glossaryName, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-                glossaryName, file, requestOptions);
-    }
-
-    /**
-     * Import Glossary Terms from local csv file by glossaryName.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
-     *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -3753,29 +3655,21 @@ public final class GlossaryAsyncClient {
     /**
      * Get the status of import csv operation.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
+     *     id: String (Optional)
+     *     status: String(NotStarted/Succeeded/Failed/Running) (Optional)
+     *     createTime: String (Optional)
+     *     lastUpdateTime: String (Optional)
+     *     properties (Optional): {
+     *         importedTerms: String (Optional)
+     *         totalTermsDetected: String (Optional)
      *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
+     *     error (Optional): {
+     *         errorCode: Integer (Optional)
+     *         errorMessage: String (Optional)
      *     }
      * }
      * }</pre>
@@ -3803,22 +3697,23 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     String
+     *     String (Required)
      * ]
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Flux<ByteBuffer>
+     * BinaryData
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
@@ -3832,7 +3727,7 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponse(
+    public Mono<Response<BinaryData>> exportGlossaryTermsAsCsvWithResponse(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
         return this.serviceClient.exportGlossaryTermsAsCsvWithResponseAsync(glossaryGuid, termGuids, requestOptions);
     }
@@ -3845,159 +3740,160 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         guid: String
-     *         classifications: [
-     *             {
-     *                 attributes: {
-     *                     String: Object
+     *      (Required){
+     *         guid: String (Optional)
+     *         classifications (Optional): [
+     *              (Optional){
+     *                 attributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 typeName: String
-     *                 lastModifiedTS: String
-     *                 entityGuid: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 removePropagationsOnEntityDelete: Boolean
-     *                 validityPeriods: [
-     *                     {
-     *                         endTime: String
-     *                         startTime: String
-     *                         timeZone: String
+     *                 typeName: String (Optional)
+     *                 lastModifiedTS: String (Optional)
+     *                 entityGuid: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 removePropagationsOnEntityDelete: Boolean (Optional)
+     *                 validityPeriods (Optional): [
+     *                      (Optional){
+     *                         endTime: String (Optional)
+     *                         startTime: String (Optional)
+     *                         timeZone: String (Optional)
      *                     }
      *                 ]
-     *                 source: String
-     *                 sourceDetails: {
-     *                     String: Object
+     *                 source: String (Optional)
+     *                 sourceDetails (Optional): {
+     *                     String: Object (Optional)
      *                 }
      *             }
      *         ]
-     *         longDescription: String
-     *         name: String
-     *         qualifiedName: String
-     *         shortDescription: String
-     *         lastModifiedTS: String
-     *         abbreviation: String
-     *         templateName: [
-     *             Object
+     *         longDescription: String (Optional)
+     *         name: String (Optional)
+     *         qualifiedName: String (Optional)
+     *         shortDescription: String (Optional)
+     *         lastModifiedTS: String (Optional)
+     *         abbreviation: String (Optional)
+     *         templateName (Optional): [
+     *             Object (Optional)
      *         ]
-     *         anchor: {
-     *             displayText: String
-     *             glossaryGuid: String
-     *             relationGuid: String
+     *         anchor (Optional): {
+     *             displayText: String (Optional)
+     *             glossaryGuid: String (Optional)
+     *             relationGuid: String (Optional)
      *         }
-     *         antonyms: [
-     *             {
-     *                 description: String
-     *                 displayText: String
-     *                 expression: String
-     *                 relationGuid: String
-     *                 source: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
-     *                 steward: String
-     *                 termGuid: String
+     *         antonyms (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 expression: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 source: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
+     *                 steward: String (Optional)
+     *                 termGuid: String (Optional)
      *             }
      *         ]
-     *         createTime: Float
-     *         createdBy: String
-     *         updateTime: Float
-     *         updatedBy: String
-     *         status: String(Draft/Approved/Alert/Expired)
-     *         resources: [
-     *             {
-     *                 displayName: String
-     *                 url: String
+     *         createTime: Float (Optional)
+     *         createdBy: String (Optional)
+     *         updateTime: Float (Optional)
+     *         updatedBy: String (Optional)
+     *         status: String(Draft/Approved/Alert/Expired) (Optional)
+     *         resources (Optional): [
+     *              (Optional){
+     *                 displayName: String (Optional)
+     *                 url: String (Optional)
      *             }
      *         ]
-     *         contacts: {
-     *             String: [
-     *                 {
-     *                     id: String
-     *                     info: String
+     *         contacts (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     id: String (Optional)
+     *                     info: String (Optional)
      *                 }
      *             ]
      *         }
-     *         attributes: {
-     *             String: {
-     *                 String: Object
+     *         attributes (Optional): {
+     *             String (Optional): {
+     *                 String: Object (Optional)
      *             }
      *         }
-     *         assignedEntities: [
-     *             {
-     *                 guid: String
-     *                 typeName: String
-     *                 uniqueAttributes: {
-     *                     String: Object
+     *         assignedEntities (Optional): [
+     *              (Optional){
+     *                 guid: String (Optional)
+     *                 typeName: String (Optional)
+     *                 uniqueAttributes (Optional): {
+     *                     String: Object (Optional)
      *                 }
-     *                 displayText: String
-     *                 entityStatus: String(ACTIVE/DELETED)
-     *                 relationshipType: String
-     *                 relationshipAttributes: {
-     *                     attributes: {
-     *                         String: Object
+     *                 displayText: String (Optional)
+     *                 entityStatus: String(ACTIVE/DELETED) (Optional)
+     *                 relationshipType: String (Optional)
+     *                 relationshipAttributes (Optional): {
+     *                     attributes (Optional): {
+     *                         String: Object (Optional)
      *                     }
-     *                     typeName: String
-     *                     lastModifiedTS: String
+     *                     typeName: String (Optional)
+     *                     lastModifiedTS: String (Optional)
      *                 }
-     *                 relationshipGuid: String
-     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *                 relationshipGuid: String (Optional)
+     *                 relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *             }
      *         ]
-     *         categories: [
-     *             {
-     *                 categoryGuid: String
-     *                 description: String
-     *                 displayText: String
-     *                 relationGuid: String
-     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         categories (Optional): [
+     *              (Optional){
+     *                 categoryGuid: String (Optional)
+     *                 description: String (Optional)
+     *                 displayText: String (Optional)
+     *                 relationGuid: String (Optional)
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER) (Optional)
      *             }
      *         ]
-     *         classifies: [
+     *         classifies (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         examples: [
-     *             String
+     *         examples (Optional): [
+     *             String (Optional)
      *         ]
-     *         isA: [
+     *         isA (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredTerms: [
+     *         preferredTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         preferredToTerms: [
+     *         preferredToTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacedBy: [
+     *         replacedBy (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         replacementTerms: [
+     *         replacementTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         seeAlso: [
+     *         seeAlso (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         synonyms: [
+     *         synonyms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translatedTerms: [
+     *         translatedTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         translationTerms: [
+     *         translationTerms (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         usage: String
-     *         validValues: [
+     *         usage: String (Optional)
+     *         validValues (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         validValuesFor: [
+     *         validValuesFor (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }

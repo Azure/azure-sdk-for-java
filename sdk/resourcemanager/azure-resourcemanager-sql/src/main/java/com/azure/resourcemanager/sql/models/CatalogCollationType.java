@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CatalogCollationType. */
+/** Collation of the metadata catalog. */
 public final class CatalogCollationType extends ExpandableStringEnum<CatalogCollationType> {
     /** Static value DATABASE_DEFAULT for CatalogCollationType. */
     public static final CatalogCollationType DATABASE_DEFAULT = fromString("DATABASE_DEFAULT");
@@ -27,7 +27,11 @@ public final class CatalogCollationType extends ExpandableStringEnum<CatalogColl
         return fromString(name, CatalogCollationType.class);
     }
 
-    /** @return known CatalogCollationType values. */
+    /**
+     * Gets known CatalogCollationType values.
+     *
+     * @return known CatalogCollationType values.
+     */
     public static Collection<CatalogCollationType> values() {
         return values(CatalogCollationType.class);
     }

@@ -14,10 +14,9 @@ import com.azure.resourcemanager.loganalytics.fluent.models.LinkedStorageAccount
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 import com.azure.resourcemanager.loganalytics.models.LinkedStorageAccounts;
 import com.azure.resourcemanager.loganalytics.models.LinkedStorageAccountsResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedStorageAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedStorageAccountsImpl.class);
 
     private final LinkedStorageAccountsClient innerClient;
 
@@ -30,24 +29,13 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String workspaceName, DataSourceType dataSourceType) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, dataSourceType);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, DataSourceType dataSourceType, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, dataSourceType, context);
     }
 
-    public LinkedStorageAccountsResource get(
-        String resourceGroupName, String workspaceName, DataSourceType dataSourceType) {
-        LinkedStorageAccountsResourceInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, dataSourceType);
-        if (inner != null) {
-            return new LinkedStorageAccountsResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String workspaceName, DataSourceType dataSourceType) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, dataSourceType);
     }
 
     public Response<LinkedStorageAccountsResource> getWithResponse(
@@ -60,6 +48,17 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LinkedStorageAccountsResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LinkedStorageAccountsResource get(
+        String resourceGroupName, String workspaceName, DataSourceType dataSourceType) {
+        LinkedStorageAccountsResourceInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, dataSourceType);
+        if (inner != null) {
+            return new LinkedStorageAccountsResourceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -82,7 +81,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
     public LinkedStorageAccountsResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,15 +89,14 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        DataSourceType dataSourceType =
-            DataSourceType.fromString(Utils.getValueFromIdByName(id, "linkedStorageAccounts"));
-        if (dataSourceType == null) {
-            throw logger
+        String dataSourceTypeLocal = Utils.getValueFromIdByName(id, "linkedStorageAccounts");
+        if (dataSourceTypeLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,13 +104,14 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
                                 "The resource ID '%s' is not valid. Missing path segment 'linkedStorageAccounts'.",
                                 id)));
         }
+        DataSourceType dataSourceType = DataSourceType.fromString(dataSourceTypeLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, dataSourceType, Context.NONE).getValue();
     }
 
     public Response<LinkedStorageAccountsResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -120,15 +119,14 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        DataSourceType dataSourceType =
-            DataSourceType.fromString(Utils.getValueFromIdByName(id, "linkedStorageAccounts"));
-        if (dataSourceType == null) {
-            throw logger
+        String dataSourceTypeLocal = Utils.getValueFromIdByName(id, "linkedStorageAccounts");
+        if (dataSourceTypeLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,13 +134,14 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
                                 "The resource ID '%s' is not valid. Missing path segment 'linkedStorageAccounts'.",
                                 id)));
         }
+        DataSourceType dataSourceType = DataSourceType.fromString(dataSourceTypeLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, dataSourceType, context);
     }
 
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,15 +149,14 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        DataSourceType dataSourceType =
-            DataSourceType.fromString(Utils.getValueFromIdByName(id, "linkedStorageAccounts"));
-        if (dataSourceType == null) {
-            throw logger
+        String dataSourceTypeLocal = Utils.getValueFromIdByName(id, "linkedStorageAccounts");
+        if (dataSourceTypeLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,13 +164,14 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
                                 "The resource ID '%s' is not valid. Missing path segment 'linkedStorageAccounts'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, workspaceName, dataSourceType, Context.NONE).getValue();
+        DataSourceType dataSourceType = DataSourceType.fromString(dataSourceTypeLocal);
+        this.deleteWithResponse(resourceGroupName, workspaceName, dataSourceType, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,15 +179,14 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        DataSourceType dataSourceType =
-            DataSourceType.fromString(Utils.getValueFromIdByName(id, "linkedStorageAccounts"));
-        if (dataSourceType == null) {
-            throw logger
+        String dataSourceTypeLocal = Utils.getValueFromIdByName(id, "linkedStorageAccounts");
+        if (dataSourceTypeLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,6 +194,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
                                 "The resource ID '%s' is not valid. Missing path segment 'linkedStorageAccounts'.",
                                 id)));
         }
+        DataSourceType dataSourceType = DataSourceType.fromString(dataSourceTypeLocal);
         return this.deleteWithResponse(resourceGroupName, workspaceName, dataSourceType, context);
     }
 

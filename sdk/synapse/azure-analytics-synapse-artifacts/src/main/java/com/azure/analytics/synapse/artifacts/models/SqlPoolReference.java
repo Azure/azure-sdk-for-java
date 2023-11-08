@@ -22,6 +22,9 @@ public final class SqlPoolReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
+    /** Creates an instance of SqlPoolReference class. */
+    public SqlPoolReference() {}
+
     /**
      * Get the type property: SQL pool reference type.
      *

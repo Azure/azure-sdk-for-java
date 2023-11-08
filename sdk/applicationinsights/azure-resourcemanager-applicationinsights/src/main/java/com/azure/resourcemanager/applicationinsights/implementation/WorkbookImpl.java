@@ -8,11 +8,11 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookInner;
-import com.azure.resourcemanager.applicationinsights.models.Kind;
-import com.azure.resourcemanager.applicationinsights.models.SharedTypeKind;
 import com.azure.resourcemanager.applicationinsights.models.Workbook;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookResourceIdentity;
+import com.azure.resourcemanager.applicationinsights.models.WorkbookSharedTypeKind;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookUpdateParameters;
+import com.azure.resourcemanager.applicationinsights.models.WorkbookUpdateSharedTypeKind;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +52,7 @@ public final class WorkbookImpl implements Workbook, Workbook.Definition, Workbo
         return this.innerModel().identity();
     }
 
-    public Kind kind() {
+    public WorkbookSharedTypeKind kind() {
         return this.innerModel().kind();
     }
 
@@ -119,6 +119,10 @@ public final class WorkbookImpl implements Workbook, Workbook.Definition, Workbo
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public WorkbookInner innerModel() {
@@ -256,7 +260,7 @@ public final class WorkbookImpl implements Workbook, Workbook.Definition, Workbo
         return this;
     }
 
-    public WorkbookImpl withKind(Kind kind) {
+    public WorkbookImpl withKind(WorkbookSharedTypeKind kind) {
         this.innerModel().withKind(kind);
         return this;
     }
@@ -341,7 +345,7 @@ public final class WorkbookImpl implements Workbook, Workbook.Definition, Workbo
         return this;
     }
 
-    public WorkbookImpl withKind(SharedTypeKind kind) {
+    public WorkbookImpl withKind(WorkbookUpdateSharedTypeKind kind) {
         this.updateWorkbookUpdateParameters.withKind(kind);
         return this;
     }

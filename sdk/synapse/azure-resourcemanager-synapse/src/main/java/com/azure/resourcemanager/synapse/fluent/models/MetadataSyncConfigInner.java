@@ -6,20 +6,24 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Metadata sync configuration Configuration for metadata sync. */
+/**
+ * Metadata sync configuration
+ *
+ * <p>Configuration for metadata sync.
+ */
 @Fluent
 public final class MetadataSyncConfigInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataSyncConfigInner.class);
-
     /*
      * Metadata Sync Config properties
      */
     @JsonProperty(value = "properties")
     private MetadataSyncConfigProperties innerProperties;
+
+    /** Creates an instance of MetadataSyncConfigInner class. */
+    public MetadataSyncConfigInner() {
+    }
 
     /**
      * Get the innerProperties property: Metadata Sync Config properties.

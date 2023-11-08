@@ -35,6 +35,10 @@ public final class KubeEnvironmentInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of KubeEnvironmentInner class. */
+    public KubeEnvironmentInner() {
+    }
+
     /**
      * Get the innerProperties property: KubeEnvironment resource specific properties.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes. */
+/** chatMessagePolicyViolationVerdictDetailsTypes. */
 public final class MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes
     extends ExpandableStringEnum<MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes> {
     /** Static value none for MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes. */
@@ -29,6 +29,15 @@ public final class MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes
         fromString("allowOverrideWithJustification");
 
     /**
+     * Creates a new instance of MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes
         return fromString(name, MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes.class);
     }
 
-    /** @return known MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes values. */
+    /**
+     * Gets known MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes values.
+     *
+     * @return known MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes values.
+     */
     public static Collection<MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes> values() {
         return values(MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes.class);
     }

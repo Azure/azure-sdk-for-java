@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.VpnConnectionInner;
 import com.azure.resourcemanager.network.fluent.models.VpnGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.VpnGatewayNatRuleInner;
@@ -23,7 +22,7 @@ import java.util.Map;
 /** Samples for VpnGateways CreateOrUpdate. */
 public final class VpnGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/VpnGatewayPut.json
      */
     /**
      * Sample code: VpnGatewayPut.
@@ -41,7 +40,7 @@ public final class VpnGatewaysCreateOrUpdateSamples {
                 "gateway1",
                 new VpnGatewayInner()
                     .withLocation("westcentralus")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withVirtualHub(
                         new SubResource()
                             .withId(
@@ -67,7 +66,7 @@ public final class VpnGatewaysCreateOrUpdateSamples {
                                                     .withVpnConnectionProtocolType(
                                                         VirtualNetworkGatewayConnectionProtocol.IKEV2)
                                                     .withConnectionBandwidth(200)
-                                                    .withSharedKey("key")
+                                                    .withSharedKey("fakeTokenPlaceholder")
                                                     .withEgressNatRules(
                                                         Arrays
                                                             .asList(
@@ -101,9 +100,10 @@ public final class VpnGatewaysCreateOrUpdateSamples {
                                     .withExternalMappings(
                                         Arrays.asList(new VpnNatRuleMapping().withAddressSpace("192.168.0.0/26")))
                                     .withIpConfigurationId(""))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

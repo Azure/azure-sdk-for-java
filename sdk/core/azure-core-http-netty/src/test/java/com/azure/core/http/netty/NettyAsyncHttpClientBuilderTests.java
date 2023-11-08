@@ -6,10 +6,11 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.test.http.LocalTestServer;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.azure.core.util.ConfigurationBuilder;
+import com.azure.core.util.ConfigurationSource;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
@@ -24,13 +25,17 @@ import io.netty.handler.proxy.Socks5ProxyHandler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
 
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -43,6 +48,8 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -52,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Tests {@link NettyAsyncHttpClientBuilder}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class NettyAsyncHttpClientBuilderTests {
     private static final String DEFAULT_PATH = "/default";
     private static final String PREBUILT_CLIENT_PATH = "/prebuiltClient";
@@ -66,8 +74,9 @@ public class NettyAsyncHttpClientBuilderTests {
     private static final String JAVA_HTTP_PROXY_PORT = "http.proxyPort";
     private static final String JAVA_HTTP_PROXY_USER = "http.proxyUser";
     private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
+    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
-    private static WireMockServer server;
+    private static LocalTestServer server;
     private static String defaultUrl;
     private static String prebuiltClientUrl;
 
@@ -75,26 +84,36 @@ public class NettyAsyncHttpClientBuilderTests {
         + "cannot connect to remote hosts eagerly. This is exception is expected.");
 
     @BeforeAll
-    public static void setupWireMock() {
-        server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
+    public static void startTestServer() {
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            String path = req.getServletPath();
+            boolean get = "GET".equalsIgnoreCase(req.getMethod());
 
-        // Mocked endpoint to test building a client with a prebuilt Netty HttpClient.
-        server.stubFor(WireMock.get(PREBUILT_CLIENT_PATH).withCookie(COOKIE_NAME, WireMock.matching(COOKIE_VALUE))
-            .willReturn(WireMock.aResponse().withStatus(200)));
+            if (get && DEFAULT_PATH.equals(path)) {
+                resp.setStatus(200);
+            } else if (get && PREBUILT_CLIENT_PATH.equals(path)) {
+                boolean hasCookie = req.getCookies() != null && Arrays.stream(req.getCookies())
+                    .anyMatch(cookie -> "test".equals(cookie.getName()) && "success".equals(cookie.getValue()));
 
-        // Mocked endpoint to test building a client with a set port.
-        server.stubFor(WireMock.get(DEFAULT_PATH).willReturn(WireMock.aResponse().withStatus(200)));
+                // Mocked endpoint to test building a client with a set port.
+                if (!hasCookie) {
+                    throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
+                }
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
+            }
+        });
 
         server.start();
 
-        defaultUrl = "http://localhost:" + server.port() + DEFAULT_PATH;
-        prebuiltClientUrl = "http://localhost:" + server.port() + PREBUILT_CLIENT_PATH;
+        defaultUrl = server.getHttpUri() + DEFAULT_PATH;
+        prebuiltClientUrl = server.getHttpUri() + PREBUILT_CLIENT_PATH;
     }
 
     @AfterAll
-    public static void shutdownWireMock() {
-        if (server.isRunning()) {
-            server.shutdown();
+    public static void stopTestServer() {
+        if (server != null) {
+            server.stop();
         }
     }
 
@@ -114,8 +133,8 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     /**
-     * Tests that passing a {@code null} Netty {@link HttpClient} into the builder will throw a {@link
-     * NullPointerException}.
+     * Tests that passing a {@code null} Netty {@link HttpClient} into the builder will throw a
+     * {@link NullPointerException}.
      */
     @Test
     public void startingWithNullClientThrows() {
@@ -240,8 +259,8 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     @ParameterizedTest
-    @MethodSource("buildWithConfigurationProxySupplier")
-    public void buildWithConfigurationProxy(boolean shouldHaveProxy, boolean usesAzureHttpProxyHandler,
+    @MethodSource("buildWithEnvConfigurationProxySupplier")
+    public void buildWithEnvConfigurationProxy(boolean shouldHaveProxy, boolean usesAzureHttpProxyHandler,
         Configuration configuration, String requestUrl) {
         HttpClient validatorClient = nettyHttpClientWithProxyValidation(shouldHaveProxy, ProxyOptions.Type.HTTP,
             usesAzureHttpProxyHandler);
@@ -254,8 +273,23 @@ public class NettyAsyncHttpClientBuilderTests {
             .verifyErrorMatches(throwable -> throwable == EXPECTED_EXCEPTION);
     }
 
-    private static Stream<Arguments> buildWithConfigurationProxySupplier() {
-        Supplier<Configuration> baseJavaProxyConfigurationSupplier = () -> new Configuration()
+    @ParameterizedTest
+    @MethodSource("buildWithExplicitConfigurationProxySupplier")
+    public void buildWithExplicitConfigurationProxy(boolean shouldHaveProxy, boolean usesAzureHttpProxyHandler,
+        Configuration configuration, String requestUrl) {
+        HttpClient validatorClient = nettyHttpClientWithProxyValidation(shouldHaveProxy, ProxyOptions.Type.HTTP,
+            usesAzureHttpProxyHandler);
+
+        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
+            .configuration(configuration)
+            .build();
+
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, requestUrl)))
+            .verifyErrorMatches(throwable -> throwable == EXPECTED_EXCEPTION);
+    }
+
+    private static Stream<Arguments> buildWithEnvConfigurationProxySupplier() {
+        Supplier<TestConfigurationSource> baseJavaProxyConfigurationSupplier = () -> new TestConfigurationSource()
             .put(JAVA_HTTP_PROXY_HOST, "localhost")
             .put(JAVA_HTTP_PROXY_PORT, "12345");
 
@@ -264,24 +298,26 @@ public class NettyAsyncHttpClientBuilderTests {
         /*
          * Simple non-authenticated HTTP proxies.
          */
-        arguments.add(Arguments.of(true, false, baseJavaProxyConfigurationSupplier.get(), defaultUrl));
+        arguments.add(Arguments.of(true, false, new ConfigurationBuilder(EMPTY_SOURCE, baseJavaProxyConfigurationSupplier.get(), EMPTY_SOURCE).build(), defaultUrl));
 
-        Configuration simpleEnvProxy = new Configuration()
+        Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
+            .build();
         arguments.add(Arguments.of(true, false, simpleEnvProxy, defaultUrl));
 
         /*
          * HTTP proxy with authentication configured.
          */
-        Configuration javaProxyWithAuthentication = baseJavaProxyConfigurationSupplier.get()
+        TestConfigurationSource javaProxyWithAuthentication = baseJavaProxyConfigurationSupplier.get()
             .put(JAVA_HTTP_PROXY_USER, "1")
             .put(JAVA_HTTP_PROXY_PASSWORD, "1");
-        arguments.add(Arguments.of(true, true, javaProxyWithAuthentication, defaultUrl));
+        arguments.add(Arguments.of(true, true, new ConfigurationBuilder(EMPTY_SOURCE, javaProxyWithAuthentication, EMPTY_SOURCE).build(), defaultUrl));
 
-        Configuration envProxyWithAuthentication = new Configuration()
+        Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
+            .build();
         arguments.add(Arguments.of(true, true, envProxyWithAuthentication, defaultUrl));
 
         /*
@@ -301,48 +337,115 @@ public class NettyAsyncHttpClientBuilderTests {
         /*
          * HTTP proxies with non-proxy hosts configured.
          */
-        Supplier<Configuration> javaNonProxyHostsSupplier = () -> baseJavaProxyConfigurationSupplier.get()
+        Supplier<TestConfigurationSource> javaNonProxyHostsSupplier = () -> baseJavaProxyConfigurationSupplier.get()
             .put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
-        Supplier<Configuration> envNonProxyHostsSupplier = () -> new Configuration()
+        Supplier<TestConfigurationSource> envNonProxyHostsSupplier = () -> new TestConfigurationSource()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
             .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
             .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
-        List<Supplier<Configuration>> nonProxyHostsSuppliers = Arrays.asList(javaNonProxyHostsSupplier,
+        List<Supplier<TestConfigurationSource>> nonProxyHostsSuppliers = Arrays.asList(javaNonProxyHostsSupplier,
             envNonProxyHostsSupplier);
 
-        for (Supplier<Configuration> configurationSupplier : nonProxyHostsSuppliers) {
+        for (Supplier<TestConfigurationSource> configurationSupplier : nonProxyHostsSuppliers) {
             for (String requestUrl : requestUrlsWithoutProxying) {
-                arguments.add(Arguments.of(false, false, configurationSupplier.get(), requestUrl));
+                arguments.add(Arguments.of(false, false, new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(), requestUrl));
             }
 
             for (String requestUrl : requestUrlsWithProxying) {
-                arguments.add(Arguments.of(true, false, configurationSupplier.get(), requestUrl));
+                arguments.add(Arguments.of(true, false, new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(), requestUrl));
             }
         }
 
         /*
          * HTTP proxies with authentication and non-proxy hosts configured.
          */
-        Supplier<Configuration> authenticatedJavaNonProxyHostsSupplier = () -> javaNonProxyHostsSupplier.get()
+        Supplier<TestConfigurationSource> authenticatedJavaNonProxyHostsSupplier = () -> javaNonProxyHostsSupplier.get()
             .put(JAVA_HTTP_PROXY_USER, "1")
             .put(JAVA_HTTP_PROXY_PASSWORD, "1");
-        Supplier<Configuration> authenticatedEnvNonProxyHostsSupplier = () -> new Configuration()
+        Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier = () -> new TestConfigurationSource()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
             .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
             .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
-        List<Supplier<Configuration>> authenticatedNonProxyHostsSuppliers = Arrays.asList(
+        List<Supplier<TestConfigurationSource>> authenticatedNonProxyHostsSuppliers = Arrays.asList(
             authenticatedJavaNonProxyHostsSupplier, authenticatedEnvNonProxyHostsSupplier);
 
-        for (Supplier<Configuration> configurationSupplier : authenticatedNonProxyHostsSuppliers) {
+        for (Supplier<TestConfigurationSource> configurationSupplier : authenticatedNonProxyHostsSuppliers) {
             for (String requestUrl : requestUrlsWithoutProxying) {
-                arguments.add(Arguments.of(false, true, configurationSupplier.get(), requestUrl));
+                arguments.add(Arguments.of(false, true, new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(), requestUrl));
             }
 
             for (String requestUrl : requestUrlsWithProxying) {
-                arguments.add(Arguments.of(true, true, configurationSupplier.get(), requestUrl));
+                arguments.add(Arguments.of(true, true, new ConfigurationBuilder(EMPTY_SOURCE, configurationSupplier.get(), EMPTY_SOURCE).build(), requestUrl));
             }
+        }
+
+        return arguments.stream();
+    }
+
+    private static Stream<Arguments> buildWithExplicitConfigurationProxySupplier() {
+        Supplier<ConfigurationBuilder> baseHttpProxy = () -> new ConfigurationBuilder()
+            .putProperty("http.proxy.hostname", "localhost")
+            .putProperty("http.proxy.port", "12345");
+
+        List<Arguments> arguments = new ArrayList<>();
+
+        /*
+         * Simple non-authenticated HTTP proxies.
+         */
+        arguments.add(Arguments.of(true, false, baseHttpProxy.get().build(), defaultUrl));
+
+        /*
+         * HTTP proxy with authentication configured.
+         */
+        Configuration httpProxyWithAuthentication = baseHttpProxy.get()
+            .putProperty("http.proxy.username", "1")
+            .putProperty("http.proxy.password", "1")
+            .build();
+
+        arguments.add(Arguments.of(true, true, httpProxyWithAuthentication, defaultUrl));
+
+        /*
+         * Information for non-proxy hosts testing.
+         */
+        String rawJavaNonProxyHosts = String.join("|", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
+        String rawEnvNonProxyHosts = String.join(",", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
+
+        String[] requestUrlsWithoutProxying = new String[]{
+            "http://localhost", "http://127.0.0.1", "http://azure.microsoft.com", "http://careers.linkedin.com"
+        };
+
+        String[] requestUrlsWithProxying = new String[]{
+            "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
+        };
+
+        /*
+         * HTTP proxies with non-proxy hosts configured.
+         */
+        Supplier<ConfigurationBuilder> javaNonProxyHostsSupplier = () -> baseHttpProxy.get()
+            .putProperty("http.proxy.non-proxy-hosts", rawJavaNonProxyHosts);
+        for (String requestUrl : requestUrlsWithoutProxying) {
+            arguments.add(Arguments.of(false, false, javaNonProxyHostsSupplier.get().build(), requestUrl));
+        }
+
+        for (String requestUrl : requestUrlsWithProxying) {
+            arguments.add(Arguments.of(true, false, javaNonProxyHostsSupplier.get().build(), requestUrl));
+        }
+
+        /*
+         * HTTP proxies with authentication and non-proxy hosts configured.
+         */
+        Supplier<ConfigurationBuilder> authenticatedJavaNonProxyHostsSupplier = () -> javaNonProxyHostsSupplier.get()
+            .putProperty("http.proxy.username", "1")
+            .putProperty("http.proxy.password", "1");
+
+        for (String requestUrl : requestUrlsWithoutProxying) {
+            arguments.add(Arguments.of(false, true, authenticatedJavaNonProxyHostsSupplier.get().build(), requestUrl));
+        }
+
+        for (String requestUrl : requestUrlsWithProxying) {
+            arguments.add(Arguments.of(true, true, authenticatedJavaNonProxyHostsSupplier.get().build(), requestUrl));
         }
 
         return arguments.stream();
@@ -435,12 +538,12 @@ public class NettyAsyncHttpClientBuilderTests {
     @Test
     public void buildPortClient() {
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
-            .port(server.port())
+            .port(server.getHttpPort())
             .build();
 
-        StepVerifier.create(nettyClient.nettyClient.get().uri(DEFAULT_PATH).response())
-            .assertNext(response -> assertEquals(200, response.status().code()))
-            .verifyComplete();
+        SocketAddress remoteAddress = nettyClient.nettyClient.configuration().remoteAddress().get();
+        InetSocketAddress socketAddress = assertInstanceOf(InetSocketAddress.class, remoteAddress);
+        assertEquals(server.getHttpPort(), socketAddress.getPort());
     }
 
     /**
@@ -483,5 +586,22 @@ public class NettyAsyncHttpClientBuilderTests {
             Arguments.of(Duration.ofSeconds(120), TimeUnit.SECONDS.toMillis(120)),
             Arguments.of(Duration.ofNanos(1), TimeUnit.MILLISECONDS.toMillis(1))
         );
+    }
+
+    @Test
+    @SuppressWarnings("deprecation") // maxChunkSize is deprecated in a future version of Reactor Netty
+    public void preconfiguredHttpResponseDecoderIsMaintained() {
+        HttpClient nettyHttpClient = HttpClient.create()
+            .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxChunkSize(64 * 1024)
+                .validateHeaders(true));
+
+        NettyAsyncHttpClient azureHttpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(nettyHttpClient)
+            .build();
+
+        HttpResponseDecoderSpec spec = azureHttpClient.nettyClient.configuration().decoder();
+
+        // Header validation is explicitly set to false.
+        assertFalse(spec.validateHeaders());
+        assertEquals(64 * 1024, spec.maxChunkSize());
     }
 }

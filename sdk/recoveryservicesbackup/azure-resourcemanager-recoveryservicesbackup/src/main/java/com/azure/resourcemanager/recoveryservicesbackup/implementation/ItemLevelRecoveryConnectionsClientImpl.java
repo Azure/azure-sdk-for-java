@@ -22,15 +22,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ItemLevelRecoveryConnectionsClient. */
 public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRecoveryConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(ItemLevelRecoveryConnectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ItemLevelRecoveryConnectionsService service;
 
@@ -56,12 +53,10 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ItemLevelRecoveryConnectionsService {
+    public interface ItemLevelRecoveryConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems"
-                + "/{protectedItemName}/recoveryPoints/{recoveryPointId}/provisionInstantItemRecovery")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/provisionInstantItemRecovery")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> provision(
@@ -80,9 +75,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems"
-                + "/{protectedItemName}/recoveryPoints/{recoveryPointId}/revokeInstantItemRecovery")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/revokeInstantItemRecovery")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> revoke(
@@ -299,38 +292,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         IlrRequestResource parameters) {
         return provisionWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Provisions a script which invokes an iSCSI connection to the backup data. Executing this script opens a file
-     * explorer displaying all the recoverable files and folders. This is an asynchronous operation. To know the status
-     * of provisioning, call GetProtectedItemOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param containerName Container name associated with the backed up items.
-     * @param protectedItemName Backed up item name whose files/folders are to be restored.
-     * @param recoveryPointId Recovery point ID which represents backed up data. iSCSI connection will be provisioned
-     *     for this backed up data.
-     * @param parameters resource ILR request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void provision(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        IlrRequestResource parameters) {
-        provisionAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -372,6 +334,43 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
                 parameters,
                 context)
             .block();
+    }
+
+    /**
+     * Provisions a script which invokes an iSCSI connection to the backup data. Executing this script opens a file
+     * explorer displaying all the recoverable files and folders. This is an asynchronous operation. To know the status
+     * of provisioning, call GetProtectedItemOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backed up items.
+     * @param containerName Container name associated with the backed up items.
+     * @param protectedItemName Backed up item name whose files/folders are to be restored.
+     * @param recoveryPointId Recovery point ID which represents backed up data. iSCSI connection will be provisioned
+     *     for this backed up data.
+     * @param parameters resource ILR request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void provision(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        String recoveryPointId,
+        IlrRequestResource parameters) {
+        provisionWithResponse(
+            vaultName,
+            resourceGroupName,
+            fabricName,
+            containerName,
+            protectedItemName,
+            recoveryPointId,
+            parameters,
+            Context.NONE);
     }
 
     /**
@@ -553,34 +552,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         String recoveryPointId) {
         return revokeWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Revokes an iSCSI connection which can be used to download a script. Executing this script opens a file explorer
-     * displaying all recoverable files and folders. This is an asynchronous operation.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backed up items.
-     * @param containerName Container name associated with the backed up items.
-     * @param protectedItemName Backed up item name whose files/folders are to be restored.
-     * @param recoveryPointId Recovery point ID which represents backed up data. iSCSI connection will be revoked for
-     *     this backed up data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revoke(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId) {
-        revokeAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId)
-            .block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -612,5 +584,32 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         return revokeWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, context)
             .block();
+    }
+
+    /**
+     * Revokes an iSCSI connection which can be used to download a script. Executing this script opens a file explorer
+     * displaying all recoverable files and folders. This is an asynchronous operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backed up items.
+     * @param containerName Container name associated with the backed up items.
+     * @param protectedItemName Backed up item name whose files/folders are to be restored.
+     * @param recoveryPointId Recovery point ID which represents backed up data. iSCSI connection will be revoked for
+     *     this backed up data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void revoke(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        String recoveryPointId) {
+        revokeWithResponse(
+            vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, Context.NONE);
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity properties. */
 @Fluent
 public final class IdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProperties.class);
-
     /*
      * The identity ID.
      */
@@ -31,6 +27,10 @@ public final class IdentityProperties {
      */
     @JsonProperty(value = "type")
     private ManagedIdentityTypes type;
+
+    /** Creates an instance of IdentityProperties class. */
+    public IdentityProperties() {
+    }
 
     /**
      * Get the principalId property: The identity ID.

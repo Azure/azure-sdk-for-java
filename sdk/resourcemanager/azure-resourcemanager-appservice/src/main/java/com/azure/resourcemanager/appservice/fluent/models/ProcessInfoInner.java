@@ -20,6 +20,10 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private ProcessInfoProperties innerProperties;
 
+    /** Creates an instance of ProcessInfoInner class. */
+    public ProcessInfoInner() {
+    }
+
     /**
      * Get the innerProperties property: ProcessInfo resource specific properties.
      *

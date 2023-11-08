@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabaseState. */
+/** An enumeration of SQL Server Database states. */
 public final class DatabaseState extends ExpandableStringEnum<DatabaseState> {
     /** Static value Online for DatabaseState. */
     public static final DatabaseState ONLINE = fromString("Online");
@@ -38,6 +38,15 @@ public final class DatabaseState extends ExpandableStringEnum<DatabaseState> {
     public static final DatabaseState OFFLINE_SECONDARY = fromString("OfflineSecondary");
 
     /**
+     * Creates a new instance of DatabaseState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseState() {
+    }
+
+    /**
      * Creates or finds a DatabaseState from its string representation.
      *
      * @param name a name to look for.
@@ -48,7 +57,11 @@ public final class DatabaseState extends ExpandableStringEnum<DatabaseState> {
         return fromString(name, DatabaseState.class);
     }
 
-    /** @return known DatabaseState values. */
+    /**
+     * Gets known DatabaseState values.
+     *
+     * @return known DatabaseState values.
+     */
     public static Collection<DatabaseState> values() {
         return values(DatabaseState.class);
     }

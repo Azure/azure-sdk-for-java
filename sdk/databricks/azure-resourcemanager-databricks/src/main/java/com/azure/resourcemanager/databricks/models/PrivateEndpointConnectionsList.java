@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databricks.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of private link connections. */
 @Fluent
 public final class PrivateEndpointConnectionsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsList.class);
-
     /*
      * The list of returned private endpoint connection.
      */
@@ -27,6 +23,10 @@ public final class PrivateEndpointConnectionsList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PrivateEndpointConnectionsList class. */
+    public PrivateEndpointConnectionsList() {
+    }
 
     /**
      * Get the value property: The list of returned private endpoint connection.

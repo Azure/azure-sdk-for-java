@@ -13,10 +13,9 @@ import com.azure.resourcemanager.maintenance.fluent.PublicMaintenanceConfigurati
 import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationInner;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.maintenance.models.PublicMaintenanceConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PublicMaintenanceConfigurationsImpl implements PublicMaintenanceConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicMaintenanceConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PublicMaintenanceConfigurationsImpl.class);
 
     private final PublicMaintenanceConfigurationsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class PublicMaintenanceConfigurationsImpl implements PublicMaintena
         return Utils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
     }
 
-    public MaintenanceConfiguration get(String resourceName) {
-        MaintenanceConfigurationInner inner = this.serviceClient().get(resourceName);
-        if (inner != null) {
-            return new MaintenanceConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MaintenanceConfiguration> getWithResponse(String resourceName, Context context) {
         Response<MaintenanceConfigurationInner> inner = this.serviceClient().getWithResponse(resourceName, context);
         if (inner != null) {
@@ -56,6 +46,15 @@ public final class PublicMaintenanceConfigurationsImpl implements PublicMaintena
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new MaintenanceConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MaintenanceConfiguration get(String resourceName) {
+        MaintenanceConfigurationInner inner = this.serviceClient().get(resourceName);
+        if (inner != null) {
+            return new MaintenanceConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

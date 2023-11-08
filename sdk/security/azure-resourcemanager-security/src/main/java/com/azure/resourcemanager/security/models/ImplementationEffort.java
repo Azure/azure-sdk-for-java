@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImplementationEffort. */
+/** The implementation effort required to remediate this assessment. */
 public final class ImplementationEffort extends ExpandableStringEnum<ImplementationEffort> {
     /** Static value Low for ImplementationEffort. */
     public static final ImplementationEffort LOW = fromString("Low");
@@ -18,6 +18,15 @@ public final class ImplementationEffort extends ExpandableStringEnum<Implementat
 
     /** Static value High for ImplementationEffort. */
     public static final ImplementationEffort HIGH = fromString("High");
+
+    /**
+     * Creates a new instance of ImplementationEffort value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImplementationEffort() {
+    }
 
     /**
      * Creates or finds a ImplementationEffort from its string representation.
@@ -30,7 +39,11 @@ public final class ImplementationEffort extends ExpandableStringEnum<Implementat
         return fromString(name, ImplementationEffort.class);
     }
 
-    /** @return known ImplementationEffort values. */
+    /**
+     * Gets known ImplementationEffort values.
+     *
+     * @return known ImplementationEffort values.
+     */
     public static Collection<ImplementationEffort> values() {
         return values(ImplementationEffort.class);
     }

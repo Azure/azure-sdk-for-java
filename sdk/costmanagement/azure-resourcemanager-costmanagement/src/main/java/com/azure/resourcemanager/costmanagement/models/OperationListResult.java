@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.costmanagement.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.costmanagement.fluent.models.CostManagementOperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,14 +15,11 @@ import java.util.List;
  */
 @Immutable
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
-     * List of cost management operations supported by the
-     * Microsoft.CostManagement resource provider.
+     * List of cost management operations supported by the Microsoft.CostManagement resource provider.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<OperationInner> value;
+    private List<CostManagementOperationInner> value;
 
     /*
      * URL to get the next set of operation list results if there are any.
@@ -32,13 +27,17 @@ public final class OperationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of OperationListResult class. */
+    public OperationListResult() {
+    }
+
     /**
      * Get the value property: List of cost management operations supported by the Microsoft.CostManagement resource
      * provider.
      *
      * @return the value value.
      */
-    public List<OperationInner> value() {
+    public List<CostManagementOperationInner> value() {
         return this.value;
     }
 

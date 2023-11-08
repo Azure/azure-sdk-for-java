@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,8 +23,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class PlacementPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PlacementPolicyProperties.class);
-
     /*
      * Whether the placement policy is enabled or disabled
      */
@@ -44,6 +40,10 @@ public class PlacementPolicyProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PlacementPolicyProvisioningState provisioningState;
+
+    /** Creates an instance of PlacementPolicyProperties class. */
+    public PlacementPolicyProperties() {
+    }
 
     /**
      * Get the state property: Whether the placement policy is enabled or disabled.

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,11 +24,8 @@ import java.time.OffsetDateTime;
 })
 @Fluent
 public class AzureWorkloadContainer extends ProtectionContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadContainer.class);
-
     /*
-     * ARM ID of the virtual machine represented by this Azure Workload
-     * Container
+     * ARM ID of the virtual machine represented by this Azure Workload Container
      */
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
@@ -58,6 +53,10 @@ public class AzureWorkloadContainer extends ProtectionContainer {
      */
     @JsonProperty(value = "operationType")
     private OperationType operationType;
+
+    /** Creates an instance of AzureWorkloadContainer class. */
+    public AzureWorkloadContainer() {
+    }
 
     /**
      * Get the sourceResourceId property: ARM ID of the virtual machine represented by this Azure Workload Container.

@@ -39,6 +39,10 @@ public final class PrivateEndpointConnectionResourceImpl
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PrivateEndpointConnectionResourceInner innerModel() {
         return this.innerObject;
     }

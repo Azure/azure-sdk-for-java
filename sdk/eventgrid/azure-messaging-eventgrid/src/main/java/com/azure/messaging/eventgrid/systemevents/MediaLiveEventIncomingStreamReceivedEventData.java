@@ -67,6 +67,9 @@ public final class MediaLiveEventIncomingStreamReceivedEventData {
     @JsonProperty(value = "timescale", access = JsonProperty.Access.WRITE_ONLY)
     private String timescale;
 
+    /** Creates an instance of MediaLiveEventIncomingStreamReceivedEventData class. */
+    public MediaLiveEventIncomingStreamReceivedEventData() {}
+
     /**
      * Get the ingestUrl property: Gets the ingest URL provided by the live event.
      *

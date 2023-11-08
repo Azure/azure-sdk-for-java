@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class NfsAccessPolicy {
     /*
-     * Name identifying this policy. Access Policy names are not case
-     * sensitive.
+     * Name identifying this policy. Access Policy names are not case sensitive.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -24,6 +23,10 @@ public final class NfsAccessPolicy {
      */
     @JsonProperty(value = "accessRules", required = true)
     private List<NfsAccessRule> accessRules;
+
+    /** Creates an instance of NfsAccessPolicy class. */
+    public NfsAccessPolicy() {
+    }
 
     /**
      * Get the name property: Name identifying this policy. Access Policy names are not case sensitive.

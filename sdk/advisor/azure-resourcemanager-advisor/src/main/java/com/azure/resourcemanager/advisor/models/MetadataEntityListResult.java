@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.advisor.fluent.models.MetadataEntityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of metadata entities. */
 @Fluent
 public final class MetadataEntityListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataEntityListResult.class);
-
     /*
      * The list of metadata entities.
      */
@@ -27,6 +23,10 @@ public final class MetadataEntityListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of MetadataEntityListResult class. */
+    public MetadataEntityListResult() {
+    }
 
     /**
      * Get the value property: The list of metadata entities.

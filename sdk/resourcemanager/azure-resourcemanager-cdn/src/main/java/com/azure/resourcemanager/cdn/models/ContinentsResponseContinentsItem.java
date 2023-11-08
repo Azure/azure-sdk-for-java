@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContinentsResponseContinentsItem model. */
 @Fluent
 public final class ContinentsResponseContinentsItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContinentsResponseContinentsItem.class);
-
     /*
      * The id property.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ContinentsResponseContinentsItem class. */
+    public ContinentsResponseContinentsItem() {
+    }
 
     /**
      * Get the id property: The id property.

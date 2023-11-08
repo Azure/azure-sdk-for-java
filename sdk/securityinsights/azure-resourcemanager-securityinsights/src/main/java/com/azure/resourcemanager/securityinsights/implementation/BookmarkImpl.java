@@ -125,6 +125,10 @@ public final class BookmarkImpl implements Bookmark, Bookmark.Definition, Bookma
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public BookmarkInner innerModel() {
         return this.innerObject;
     }

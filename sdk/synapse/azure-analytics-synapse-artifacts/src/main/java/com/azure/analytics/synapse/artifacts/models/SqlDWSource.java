@@ -15,32 +15,36 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SqlDWSource extends TabularSource {
     /*
-     * SQL Data Warehouse reader query. Type: string (or Expression with
-     * resultType string).
+     * SQL Data Warehouse reader query. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlReaderQuery")
     private Object sqlReaderQuery;
 
     /*
-     * Name of the stored procedure for a SQL Data Warehouse source. This
-     * cannot be used at the same time as SqlReaderQuery. Type: string (or
-     * Expression with resultType string).
+     * Name of the stored procedure for a SQL Data Warehouse source. This cannot be used at the same time as
+     * SqlReaderQuery. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlReaderStoredProcedureName")
     private Object sqlReaderStoredProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}". Type: object (or Expression
-     * with resultType object), itemType: StoredProcedureParameter.
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
+     * Type: object (or Expression with resultType object), itemType: StoredProcedureParameter.
      */
     @JsonProperty(value = "storedProcedureParameters")
     private Object storedProcedureParameters;
 
     /*
-     * The partition mechanism that will be used for Sql read in parallel.
-     * Possible values include: "None", "PhysicalPartitionsOfTable",
-     * "DynamicRange".
+     * Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "isolationLevel")
+    private Object isolationLevel;
+
+    /*
+     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -50,6 +54,9 @@ public final class SqlDWSource extends TabularSource {
      */
     @JsonProperty(value = "partitionSettings")
     private SqlPartitionSettings partitionSettings;
+
+    /** Creates an instance of SqlDWSource class. */
+    public SqlDWSource() {}
 
     /**
      * Get the sqlReaderQuery property: SQL Data Warehouse reader query. Type: string (or Expression with resultType
@@ -120,6 +127,30 @@ public final class SqlDWSource extends TabularSource {
     }
 
     /**
+     * Get the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the isolationLevel value.
+     */
+    public Object getIsolationLevel() {
+        return this.isolationLevel;
+    }
+
+    /**
+     * Set the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param isolationLevel the isolationLevel value to set.
+     * @return the SqlDWSource object itself.
+     */
+    public SqlDWSource setIsolationLevel(Object isolationLevel) {
+        this.isolationLevel = isolationLevel;
+        return this;
+    }
+
+    /**
      * Get the partitionOption property: The partition mechanism that will be used for Sql read in parallel. Possible
      * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
      *
@@ -158,6 +189,41 @@ public final class SqlDWSource extends TabularSource {
      */
     public SqlDWSource setPartitionSettings(SqlPartitionSettings partitionSettings) {
         this.partitionSettings = partitionSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDWSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

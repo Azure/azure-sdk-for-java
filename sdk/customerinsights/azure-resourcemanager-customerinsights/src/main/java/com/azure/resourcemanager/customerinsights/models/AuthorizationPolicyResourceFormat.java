@@ -61,6 +61,13 @@ public interface AuthorizationPolicyResourceFormat {
     String secondaryKey();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.customerinsights.fluent.models.AuthorizationPolicyResourceFormatInner
      * object.
      *
@@ -217,6 +224,17 @@ public interface AuthorizationPolicyResourceFormat {
     /**
      * Regenerates the primary policy key of the specified authorization policy.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization policy along with {@link Response}.
+     */
+    Response<AuthorizationPolicy> regeneratePrimaryKeyWithResponse(Context context);
+
+    /**
+     * Regenerates the primary policy key of the specified authorization policy.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the authorization policy.
@@ -224,15 +242,15 @@ public interface AuthorizationPolicyResourceFormat {
     AuthorizationPolicy regeneratePrimaryKey();
 
     /**
-     * Regenerates the primary policy key of the specified authorization policy.
+     * Regenerates the secondary policy key of the specified authorization policy.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy.
+     * @return the authorization policy along with {@link Response}.
      */
-    Response<AuthorizationPolicy> regeneratePrimaryKeyWithResponse(Context context);
+    Response<AuthorizationPolicy> regenerateSecondaryKeyWithResponse(Context context);
 
     /**
      * Regenerates the secondary policy key of the specified authorization policy.
@@ -242,15 +260,4 @@ public interface AuthorizationPolicyResourceFormat {
      * @return the authorization policy.
      */
     AuthorizationPolicy regenerateSecondaryKey();
-
-    /**
-     * Regenerates the secondary policy key of the specified authorization policy.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy.
-     */
-    Response<AuthorizationPolicy> regenerateSecondaryKeyWithResponse(Context context);
 }

@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostHealthCheckReport;
 import com.azure.resourcemanager.desktopvirtualization.models.Status;
 import com.azure.resourcemanager.desktopvirtualization.models.UpdateState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 /** Schema for SessionHost properties. */
 @Fluent
 public final class SessionHostProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SessionHostProperties.class);
-
     /*
      * ObjectId of SessionHost. (internal use)
      */
@@ -68,6 +64,12 @@ public final class SessionHostProperties {
     private String assignedUser;
 
     /*
+     * Friendly name of SessionHost
+     */
+    @JsonProperty(value = "friendlyName")
+    private String friendlyName;
+
+    /*
      * Status for a SessionHost.
      */
     @JsonProperty(value = "status")
@@ -114,6 +116,10 @@ public final class SessionHostProperties {
      */
     @JsonProperty(value = "sessionHostHealthCheckResults", access = JsonProperty.Access.WRITE_ONLY)
     private List<SessionHostHealthCheckReport> sessionHostHealthCheckResults;
+
+    /** Creates an instance of SessionHostProperties class. */
+    public SessionHostProperties() {
+    }
 
     /**
      * Get the objectId property: ObjectId of SessionHost. (internal use).
@@ -239,6 +245,26 @@ public final class SessionHostProperties {
      */
     public SessionHostProperties withAssignedUser(String assignedUser) {
         this.assignedUser = assignedUser;
+        return this;
+    }
+
+    /**
+     * Get the friendlyName property: Friendly name of SessionHost.
+     *
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Set the friendlyName property: Friendly name of SessionHost.
+     *
+     * @param friendlyName the friendlyName value to set.
+     * @return the SessionHostProperties object itself.
+     */
+    public SessionHostProperties withFriendlyName(String friendlyName) {
+        this.friendlyName = friendlyName;
         return this;
     }
 

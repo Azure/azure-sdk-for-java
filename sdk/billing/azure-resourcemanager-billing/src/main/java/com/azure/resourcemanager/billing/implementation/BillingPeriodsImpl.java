@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.BillingPeriodsClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingPeriodInner;
 import com.azure.resourcemanager.billing.models.BillingPeriod;
 import com.azure.resourcemanager.billing.models.BillingPeriods;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingPeriodsImpl implements BillingPeriods {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPeriodsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingPeriodsImpl.class);
 
     private final BillingPeriodsClient innerClient;
 
@@ -38,15 +37,6 @@ public final class BillingPeriodsImpl implements BillingPeriods {
         return Utils.mapPage(inner, inner1 -> new BillingPeriodImpl(inner1, this.manager()));
     }
 
-    public BillingPeriod get(String billingPeriodName) {
-        BillingPeriodInner inner = this.serviceClient().get(billingPeriodName);
-        if (inner != null) {
-            return new BillingPeriodImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BillingPeriod> getWithResponse(String billingPeriodName, Context context) {
         Response<BillingPeriodInner> inner = this.serviceClient().getWithResponse(billingPeriodName, context);
         if (inner != null) {
@@ -55,6 +45,15 @@ public final class BillingPeriodsImpl implements BillingPeriods {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BillingPeriodImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BillingPeriod get(String billingPeriodName) {
+        BillingPeriodInner inner = this.serviceClient().get(billingPeriodName);
+        if (inner != null) {
+            return new BillingPeriodImpl(inner, this.manager());
         } else {
             return null;
         }

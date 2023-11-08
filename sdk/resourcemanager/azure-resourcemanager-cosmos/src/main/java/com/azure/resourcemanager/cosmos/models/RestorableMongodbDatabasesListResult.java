@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableMongodbDatabaseGetResultInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List operation response, that contains the MongoDB database events and their properties. */
 @Immutable
 public final class RestorableMongodbDatabasesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableMongodbDatabasesListResult.class);
-
     /*
      * List of MongoDB database events and their properties.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableMongodbDatabaseGetResultInner> value;
+
+    /** Creates an instance of RestorableMongodbDatabasesListResult class. */
+    public RestorableMongodbDatabasesListResult() {
+    }
 
     /**
      * Get the value property: List of MongoDB database events and their properties.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Terms properties. */
 @Fluent
 public final class DatadogAgreementProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogAgreementProperties.class);
-
     /*
      * Publisher identifier string.
      */
@@ -46,8 +42,7 @@ public final class DatadogAgreementProperties {
     private String privacyPolicyLink;
 
     /*
-     * Date and time in UTC of when the terms were accepted. This is empty if
-     * Accepted is false.
+     * Date and time in UTC of when the terms were accepted. This is empty if Accepted is false.
      */
     @JsonProperty(value = "retrieveDatetime")
     private OffsetDateTime retrieveDatetime;
@@ -63,6 +58,10 @@ public final class DatadogAgreementProperties {
      */
     @JsonProperty(value = "accepted")
     private Boolean accepted;
+
+    /** Creates an instance of DatadogAgreementProperties class. */
+    public DatadogAgreementProperties() {
+    }
 
     /**
      * Get the publisher property: Publisher identifier string.

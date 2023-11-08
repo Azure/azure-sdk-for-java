@@ -11,10 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.MobileNetworkInner;
-import com.azure.resourcemanager.mobilenetwork.fluent.models.SimIdListResultInner;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetwork;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworks;
-import com.azure.resourcemanager.mobilenetwork.models.SimIdListResult;
 
 public final class MobileNetworksImpl implements MobileNetworks {
     private static final ClientLogger LOGGER = new ClientLogger(MobileNetworksImpl.class);
@@ -37,15 +35,6 @@ public final class MobileNetworksImpl implements MobileNetworks {
         this.serviceClient().delete(resourceGroupName, mobileNetworkName, context);
     }
 
-    public MobileNetwork getByResourceGroup(String resourceGroupName, String mobileNetworkName) {
-        MobileNetworkInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, mobileNetworkName);
-        if (inner != null) {
-            return new MobileNetworkImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MobileNetwork> getByResourceGroupWithResponse(
         String resourceGroupName, String mobileNetworkName, Context context) {
         Response<MobileNetworkInner> inner =
@@ -56,6 +45,15 @@ public final class MobileNetworksImpl implements MobileNetworks {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new MobileNetworkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MobileNetwork getByResourceGroup(String resourceGroupName, String mobileNetworkName) {
+        MobileNetworkInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, mobileNetworkName);
+        if (inner != null) {
+            return new MobileNetworkImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -79,24 +77,6 @@ public final class MobileNetworksImpl implements MobileNetworks {
     public PagedIterable<MobileNetwork> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<MobileNetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new MobileNetworkImpl(inner1, this.manager()));
-    }
-
-    public SimIdListResult listSimIds(String resourceGroupName, String mobileNetworkName) {
-        SimIdListResultInner inner = this.serviceClient().listSimIds(resourceGroupName, mobileNetworkName);
-        if (inner != null) {
-            return new SimIdListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public SimIdListResult listSimIds(String resourceGroupName, String mobileNetworkName, Context context) {
-        SimIdListResultInner inner = this.serviceClient().listSimIds(resourceGroupName, mobileNetworkName, context);
-        if (inner != null) {
-            return new SimIdListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public MobileNetwork getById(String id) {

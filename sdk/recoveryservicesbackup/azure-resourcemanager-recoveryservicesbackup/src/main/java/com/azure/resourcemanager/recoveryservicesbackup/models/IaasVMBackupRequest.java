@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,13 +15,15 @@ import java.time.OffsetDateTime;
 @JsonTypeName("IaasVMBackupRequest")
 @Fluent
 public final class IaasVMBackupRequest extends BackupRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaasVMBackupRequest.class);
-
     /*
      * Backup copy will expire after the time specified (UTC).
      */
     @JsonProperty(value = "recoveryPointExpiryTimeInUTC")
     private OffsetDateTime recoveryPointExpiryTimeInUtc;
+
+    /** Creates an instance of IaasVMBackupRequest class. */
+    public IaasVMBackupRequest() {
+    }
 
     /**
      * Get the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).

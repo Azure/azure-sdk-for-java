@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ApplicationGroup properties that can be patched. */
 @Fluent
 public final class ApplicationGroupPatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGroupPatchProperties.class);
-
     /*
      * Description of ApplicationGroup.
      */
@@ -25,6 +21,16 @@ public final class ApplicationGroupPatchProperties {
      */
     @JsonProperty(value = "friendlyName")
     private String friendlyName;
+
+    /*
+     * Boolean representing whether the applicationGroup is show in the feed.
+     */
+    @JsonProperty(value = "showInFeed")
+    private Boolean showInFeed;
+
+    /** Creates an instance of ApplicationGroupPatchProperties class. */
+    public ApplicationGroupPatchProperties() {
+    }
 
     /**
      * Get the description property: Description of ApplicationGroup.
@@ -63,6 +69,26 @@ public final class ApplicationGroupPatchProperties {
      */
     public ApplicationGroupPatchProperties withFriendlyName(String friendlyName) {
         this.friendlyName = friendlyName;
+        return this;
+    }
+
+    /**
+     * Get the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @return the showInFeed value.
+     */
+    public Boolean showInFeed() {
+        return this.showInFeed;
+    }
+
+    /**
+     * Set the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @param showInFeed the showInFeed value to set.
+     * @return the ApplicationGroupPatchProperties object itself.
+     */
+    public ApplicationGroupPatchProperties withShowInFeed(Boolean showInFeed) {
+        this.showInFeed = showInFeed;
         return this;
     }
 

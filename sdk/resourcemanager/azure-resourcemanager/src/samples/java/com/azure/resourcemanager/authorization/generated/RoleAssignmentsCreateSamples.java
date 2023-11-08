@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.models.PrincipalType;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentCreateParameters;
 
 /** Samples for RoleAssignments Create. */
 public final class RoleAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-08-01-preview/examples/RoleAssignments_CreateForSubscription.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/RoleAssignments_CreateForSubscription.json
      */
     /**
      * Sample code: Create role assignment for subscription.
@@ -33,11 +32,11 @@ public final class RoleAssignmentsCreateSamples {
                         "/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleDefinitions/0b5fe924-9a61-425c-96af-cfe6e287ca2d")
                     .withPrincipalId("ce2ce14e-85d7-4629-bdbc-454d0519d987")
                     .withPrincipalType(PrincipalType.USER),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-08-01-preview/examples/RoleAssignments_CreateForResourceGroup.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/RoleAssignments_CreateForResourceGroup.json
      */
     /**
      * Sample code: Create role assignment for resource group.
@@ -59,11 +58,11 @@ public final class RoleAssignmentsCreateSamples {
                         "/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleDefinitions/0b5fe924-9a61-425c-96af-cfe6e287ca2d")
                     .withPrincipalId("ce2ce14e-85d7-4629-bdbc-454d0519d987")
                     .withPrincipalType(PrincipalType.USER),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2020-08-01-preview/examples/RoleAssignments_CreateForResource.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/RoleAssignments_CreateForResource.json
      */
     /**
      * Sample code: Create role assignment for resource.
@@ -85,6 +84,6 @@ public final class RoleAssignmentsCreateSamples {
                         "/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleDefinitions/0b5fe924-9a61-425c-96af-cfe6e287ca2d")
                     .withPrincipalId("ce2ce14e-85d7-4629-bdbc-454d0519d987")
                     .withPrincipalType(PrincipalType.USER),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

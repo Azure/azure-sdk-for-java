@@ -16,6 +16,9 @@ public final class AppEventTypeDetail {
     @JsonProperty(value = "action")
     private AppAction action;
 
+    /** Creates an instance of AppEventTypeDetail class. */
+    public AppEventTypeDetail() {}
+
     /**
      * Get the action property: Type of action of the operation.
      *

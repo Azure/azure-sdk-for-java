@@ -7,16 +7,12 @@ package com.azure.resourcemanager.logz.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logz.models.LogzSingleSignOnProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The LogzSingleSignOnResource model. */
 @Fluent
 public final class LogzSingleSignOnResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogzSingleSignOnResourceInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
@@ -28,6 +24,10 @@ public final class LogzSingleSignOnResourceInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private LogzSingleSignOnProperties properties;
+
+    /** Creates an instance of LogzSingleSignOnResourceInner class. */
+    public LogzSingleSignOnResourceInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.

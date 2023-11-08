@@ -18,6 +18,10 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     @JsonProperty(value = "properties")
     private GalleryImageVersionProperties innerProperties;
 
+    /** Creates an instance of GalleryImageVersionUpdate class. */
+    public GalleryImageVersionUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a gallery image version.
      *
@@ -58,12 +62,13 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image version. The provisioning state, which
-     * only appears in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact.
+     *
+     * <p>The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryImageVersionPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
@@ -87,6 +92,29 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
             this.innerProperties = new GalleryImageVersionProperties();
         }
         this.innerProperties().withStorageProfile(storageProfile);
+        return this;
+    }
+
+    /**
+     * Get the safetyProfile property: This is the safety profile of the Gallery Image Version.
+     *
+     * @return the safetyProfile value.
+     */
+    public GalleryImageVersionSafetyProfile safetyProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().safetyProfile();
+    }
+
+    /**
+     * Set the safetyProfile property: This is the safety profile of the Gallery Image Version.
+     *
+     * @param safetyProfile the safetyProfile value to set.
+     * @return the GalleryImageVersionUpdate object itself.
+     */
+    public GalleryImageVersionUpdate withSafetyProfile(GalleryImageVersionSafetyProfile safetyProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageVersionProperties();
+        }
+        this.innerProperties().withSafetyProfile(safetyProfile);
         return this;
     }
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The name of the entity last modified it. */
 @Fluent
 public final class Principal {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Principal.class);
-
     /*
      * The id of the principal made changes
      */
@@ -37,6 +33,10 @@ public final class Principal {
      */
     @JsonProperty(value = "email")
     private String email;
+
+    /** Creates an instance of Principal class. */
+    public Principal() {
+    }
 
     /**
      * Get the id property: The id of the principal made changes.

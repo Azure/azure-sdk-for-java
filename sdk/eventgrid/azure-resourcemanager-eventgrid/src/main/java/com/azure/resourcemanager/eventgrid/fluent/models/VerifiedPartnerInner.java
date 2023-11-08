@@ -27,6 +27,10 @@ public final class VerifiedPartnerInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of VerifiedPartnerInner class. */
+    public VerifiedPartnerInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the verified partner.
      *

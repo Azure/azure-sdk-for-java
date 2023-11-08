@@ -14,6 +14,15 @@ public final class RestorePointExpandOptions extends ExpandableStringEnum<Restor
     public static final RestorePointExpandOptions INSTANCE_VIEW = fromString("instanceView");
 
     /**
+     * Creates a new instance of RestorePointExpandOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestorePointExpandOptions() {
+    }
+
+    /**
      * Creates or finds a RestorePointExpandOptions from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class RestorePointExpandOptions extends ExpandableStringEnum<Restor
         return fromString(name, RestorePointExpandOptions.class);
     }
 
-    /** @return known RestorePointExpandOptions values. */
+    /**
+     * Gets known RestorePointExpandOptions values.
+     *
+     * @return known RestorePointExpandOptions values.
+     */
     public static Collection<RestorePointExpandOptions> values() {
         return values(RestorePointExpandOptions.class);
     }

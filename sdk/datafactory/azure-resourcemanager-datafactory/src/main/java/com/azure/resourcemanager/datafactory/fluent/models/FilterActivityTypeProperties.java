@@ -24,6 +24,10 @@ public final class FilterActivityTypeProperties {
     @JsonProperty(value = "condition", required = true)
     private Expression condition;
 
+    /** Creates an instance of FilterActivityTypeProperties class. */
+    public FilterActivityTypeProperties() {
+    }
+
     /**
      * Get the items property: Input array on which filter should be applied.
      *

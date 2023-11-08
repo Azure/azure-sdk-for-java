@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.MetadataSyncConfigInner;
 
 /** Samples for SqlPoolMetadataSyncConfigs Create. */
@@ -26,6 +25,6 @@ public final class SqlPoolMetadataSyncConfigsCreateSamples {
                 "ExampleWorkspace",
                 "ExampleSqlPool",
                 new MetadataSyncConfigInner().withEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

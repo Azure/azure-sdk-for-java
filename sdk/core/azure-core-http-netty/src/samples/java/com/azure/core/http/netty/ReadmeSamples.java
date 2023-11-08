@@ -58,4 +58,26 @@ public class ReadmeSamples {
             .build();
         // END: readme-sample-useHttp2OnlyWithConfiguredNettyClient
     }
+
+    /**
+     * Sample code for creating an async Netty HTTP client with a customized max chunk size.
+     * <p>
+     * Max chunk size is used to determine the maximum size of the ByteBuf, later converted to ByteBuffer for use
+     * throughout the rest of the SDKs and for compatibility with JDK APIs, returned by Netty. Changing this can
+     * positively impact the performance of some APIs such as Storage's download to file methods provided in Blobs,
+     * Datalake, and Files.
+     */
+    @SuppressWarnings("deprecation") // maxChunkSize is deprecated in a future version of Reactor Netty
+    public void largerMaxChunkSizeWithConfiguredNettyClient() {
+        // BEGIN: readme-sample-customMaxChunkSize
+        // Constructs an HttpClient with a modified max chunk size.
+        // Max chunk size modifies the maximum size of ByteBufs returned by Netty (later converted to ByteBuffer).
+        // Changing the chunk size can positively impact performance of APIs such as Storage's download to file methods
+        // provided in azure-storage-blob, azure-storage-file-datalake, and azure-storage-file-shares (32KB - 64KB have
+        // shown the most consistent improvement).
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
+            .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxChunkSize(64 * 1024)))
+            .build();
+        // END: readme-sample-customMaxChunkSize
+    }
 }

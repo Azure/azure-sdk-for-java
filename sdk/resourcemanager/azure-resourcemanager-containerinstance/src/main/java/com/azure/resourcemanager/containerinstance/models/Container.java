@@ -7,15 +7,12 @@ package com.azure.resourcemanager.containerinstance.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A container instance. */
 @Fluent
 public final class Container {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Container.class);
-
     /*
      * The user-provided name of the container instance.
      */
@@ -27,6 +24,10 @@ public final class Container {
      */
     @JsonProperty(value = "properties", required = true)
     private ContainerProperties innerProperties = new ContainerProperties();
+
+    /** Creates an instance of Container class. */
+    public Container() {
+    }
 
     /**
      * Get the name property: The user-provided name of the container instance.
@@ -251,21 +252,46 @@ public final class Container {
     }
 
     /**
+     * Get the securityContext property: The container security properties.
+     *
+     * @return the securityContext value.
+     */
+    public SecurityContextDefinition securityContext() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityContext();
+    }
+
+    /**
+     * Set the securityContext property: The container security properties.
+     *
+     * @param securityContext the securityContext value to set.
+     * @return the Container object itself.
+     */
+    public Container withSecurityContext(SecurityContextDefinition securityContext) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withSecurityContext(securityContext);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Container"));
         }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model Container"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Container.class);
 }

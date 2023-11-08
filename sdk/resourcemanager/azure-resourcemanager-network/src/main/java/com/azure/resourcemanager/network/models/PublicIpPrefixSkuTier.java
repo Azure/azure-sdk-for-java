@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicIpPrefixSkuTier. */
+/** Tier of a public IP prefix SKU. */
 public final class PublicIpPrefixSkuTier extends ExpandableStringEnum<PublicIpPrefixSkuTier> {
     /** Static value Regional for PublicIpPrefixSkuTier. */
     public static final PublicIpPrefixSkuTier REGIONAL = fromString("Regional");
 
     /** Static value Global for PublicIpPrefixSkuTier. */
     public static final PublicIpPrefixSkuTier GLOBAL = fromString("Global");
+
+    /**
+     * Creates a new instance of PublicIpPrefixSkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicIpPrefixSkuTier() {
+    }
 
     /**
      * Creates or finds a PublicIpPrefixSkuTier from its string representation.
@@ -27,7 +36,11 @@ public final class PublicIpPrefixSkuTier extends ExpandableStringEnum<PublicIpPr
         return fromString(name, PublicIpPrefixSkuTier.class);
     }
 
-    /** @return known PublicIpPrefixSkuTier values. */
+    /**
+     * Gets known PublicIpPrefixSkuTier values.
+     *
+     * @return known PublicIpPrefixSkuTier values.
+     */
     public static Collection<PublicIpPrefixSkuTier> values() {
         return values(PublicIpPrefixSkuTier.class);
     }

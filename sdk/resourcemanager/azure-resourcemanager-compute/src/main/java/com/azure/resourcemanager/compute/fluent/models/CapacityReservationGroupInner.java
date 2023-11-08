@@ -14,8 +14,8 @@ import java.util.Map;
 
 /**
  * Specifies information about the capacity reservation group that the capacity reservations should be assigned to.
- * &lt;br&gt;&lt;br&gt; Currently, a capacity reservation can only be added to a capacity reservation group at creation
- * time. An existing capacity reservation cannot be added or moved to another capacity reservation group.
+ * Currently, a capacity reservation can only be added to a capacity reservation group at creation time. An existing
+ * capacity reservation cannot be added or moved to another capacity reservation group.
  */
 @Fluent
 public final class CapacityReservationGroupInner extends Resource {
@@ -26,13 +26,16 @@ public final class CapacityReservationGroupInner extends Resource {
     private CapacityReservationGroupProperties innerProperties;
 
     /*
-     * Availability Zones to use for this capacity reservation group. The zones
-     * can be assigned only during creation. If not provided, the group
-     * supports only regional resources in the region. If provided, enforces
-     * each capacity reservation in the group to be in one of the zones.
+     * Availability Zones to use for this capacity reservation group. The zones can be assigned only during creation.
+     * If not provided, the group supports only regional resources in the region. If provided, enforces each capacity
+     * reservation in the group to be in one of the zones.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /** Creates an instance of CapacityReservationGroupInner class. */
+    public CapacityReservationGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: capacity reservation group Properties.

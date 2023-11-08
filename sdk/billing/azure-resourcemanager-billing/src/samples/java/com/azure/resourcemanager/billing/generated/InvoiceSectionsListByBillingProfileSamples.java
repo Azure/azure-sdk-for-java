@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for InvoiceSections ListByBillingProfile. */
 public final class InvoiceSectionsListByBillingProfileSamples {
     /*
@@ -17,6 +15,8 @@ public final class InvoiceSectionsListByBillingProfileSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void invoiceSectionsListByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoiceSections().listByBillingProfile("{billingAccountName}", "{billingProfileName}", Context.NONE);
+        manager
+            .invoiceSections()
+            .listByBillingProfile("{billingAccountName}", "{billingProfileName}", com.azure.core.util.Context.NONE);
     }
 }

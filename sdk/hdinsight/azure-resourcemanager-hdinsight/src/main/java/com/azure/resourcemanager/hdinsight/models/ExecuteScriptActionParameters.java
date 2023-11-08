@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The parameters for the script actions to execute on a running cluster. */
 @Fluent
 public final class ExecuteScriptActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecuteScriptActionParameters.class);
-
     /*
      * The list of run time script actions.
      */
@@ -26,6 +22,10 @@ public final class ExecuteScriptActionParameters {
      */
     @JsonProperty(value = "persistOnSuccess", required = true)
     private boolean persistOnSuccess;
+
+    /** Creates an instance of ExecuteScriptActionParameters class. */
+    public ExecuteScriptActionParameters() {
+    }
 
     /**
      * Get the scriptActions property: The list of run time script actions.

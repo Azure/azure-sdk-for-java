@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
@@ -28,32 +29,68 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.WORK_ID_KEY;
 
 /**
- * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
- * topic on Azure Service Bus.
+ * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a queue or
+ * topic/subscription on Azure Service Bus.
  *
- * <p><strong>Create an instance of receiver</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.instantiation -->
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Create a receiver and receive messages</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation and use of the synchronous client
+ * {@link com.azure.messaging.servicebus.ServiceBusReceiverClient} to receive messages from a Service Bus subscription.
+ * The receive operation returns when either 10 messages are received or 30 seconds has elapsed.  By default, messages
+ * are received using {@link com.azure.messaging.servicebus.models.ServiceBusReceiveMode#PEEK_LOCK} and customers must
+ * settle their messages using one of the settlement methods on the receiver client.
+ * "<a href="https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock">
+ *     "Settling receive operations</a>" provides additional information about message settlement.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.receiveMessages-int-duration -->
  * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusReceiverClient receiver = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .receiver&#40;&#41;
- *     .queueName&#40;queueName&#41;
+ *     .topicName&#40;topicName&#41;
+ *     .subscriptionName&#40;subscriptionName&#41;
  *     .buildClient&#40;&#41;;
  *
- * &#47;&#47; Use the receiver and finally close it.
+ * &#47;&#47; Receives a batch of messages when 10 messages are received or until 30 seconds have elapsed, whichever
+ * &#47;&#47; happens first.
+ * IterableStream&lt;ServiceBusReceivedMessage&gt; messages = receiver.receiveMessages&#40;10, Duration.ofSeconds&#40;30&#41;&#41;;
+ * messages.forEach&#40;message -&gt; &#123;
+ *     System.out.printf&#40;&quot;Id: %s. Contents: %s%n&quot;, message.getMessageId&#40;&#41;, message.getBody&#40;&#41;&#41;;
+ *
+ *     &#47;&#47; If able to process message, complete it. Otherwise, abandon it and allow it to be
+ *     &#47;&#47; redelivered.
+ *     if &#40;isMessageProcessed&#41; &#123;
+ *         receiver.complete&#40;message&#41;;
+ *     &#125; else &#123;
+ *         receiver.abandon&#40;message&#41;;
+ *     &#125;
+ * &#125;&#41;;
+ *
+ * &#47;&#47; When program ends, or you're done receiving all messages, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they
+ * &#47;&#47; require resources and time to establish a connection to the service.
  * receiver.close&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.receiveMessages-int-duration -->
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverAsyncClient To communicate with a Service Bus resource using an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusReceiverClient implements AutoCloseable {
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverClient.class);
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
@@ -64,6 +101,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /* To ensure synchronousMessageSubscriber is subscribed only once. */
     private final AtomicBoolean syncSubscribed = new AtomicBoolean(false);
 
+    private final ServiceBusTracer tracer;
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
      *
@@ -77,6 +115,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.isPrefetchDisabled = isPrefetchDisabled;
+        this.tracer = asyncClient.getInstrumentation().getTracer();
     }
 
     /**
@@ -99,6 +138,24 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
+     * Gets the SessionId of the session if this receiver is a session receiver.
+     *
+     * @return The SessionId or null if this is not a session receiver.
+     */
+    public String getSessionId() {
+        return asyncClient.getSessionId();
+    }
+
+    /**
+     * Gets the identifier of the instance of {@link ServiceBusReceiverClient}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusReceiverClient}.
+     */
+    public String getIdentifier() {
+        return asyncClient.getIdentifier();
+    }
+
+    /**
      * Abandons a {@link ServiceBusReceivedMessage message}. This will make the message available again for processing.
      * Abandoning a message will increase the delivery count on the message.
      *
@@ -110,6 +167,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be abandoned.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      */
     public void abandon(ServiceBusReceivedMessage message) {
         asyncClient.abandon(message).block(operationTimeout);
@@ -128,7 +186,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if the message is already settled.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      * @throws ServiceBusException if the message could not be abandoned.
      */
     public void abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
@@ -145,7 +203,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if the message is already settled.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      * @throws ServiceBusException if the message could not be completed.
      */
     public void complete(ServiceBusReceivedMessage message) {
@@ -164,7 +222,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if the message is already settled.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      * @throws ServiceBusException if the message could not be completed.
      */
     public void complete(ServiceBusReceivedMessage message, CompleteOptions options) {
@@ -182,7 +240,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be deferred.
-     * @throws IllegalArgumentException if the message is already settled.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
@@ -204,6 +262,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be deferred.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
@@ -222,6 +281,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be dead-lettered.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
@@ -244,6 +304,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if the receiver is already disposed of.
      * @throws ServiceBusException if the message could not be dead-lettered.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
@@ -261,7 +322,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session state could not be acquired.
      */
     public byte[] getSessionState() {
-        return this.getSessionState(asyncClient.getReceiverOptions().getSessionId());
+        return asyncClient.getSessionState().block(operationTimeout);
     }
 
     /**
@@ -288,7 +349,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the message to peek from. {@code null} if there is no session.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
+     *
      * @throws IllegalStateException if receiver is already disposed or the receiver is a non-session receiver.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     ServiceBusReceivedMessage peekMessage(String sessionId) {
@@ -320,7 +384,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the message to peek from. {@code null} if there is no session.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
+     *
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     ServiceBusReceivedMessage peekMessage(long sequenceNumber, String sessionId) {
@@ -351,23 +418,23 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the messages to peek from. {@code null} if there is no session.
      *
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage messages} that are peeked.
+     *
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
         if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessages(maxMessages, sessionId)
-            .timeout(operationTimeout);
+        final Flux<ServiceBusReceivedMessage> messages = tracer.traceSyncReceive("ServiceBus.peekMessages",
+            asyncClient.peekMessages(maxMessages, sessionId).timeout(operationTimeout));
 
-        // Subscribe so we can kick off this operation.
-        messages.subscribe();
-
-        return new IterableStream<>(messages);
+        return fromFluxAndSubscribe(messages);
     }
 
     /**
@@ -398,29 +465,43 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the messages to peek from. {@code null} if there is no session.
      *
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage} peeked.
+     *
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber, String sessionId) {
         if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessages(maxMessages, sequenceNumber,
-            sessionId).timeout(operationTimeout);
+        final Flux<ServiceBusReceivedMessage> messages = tracer.traceSyncReceive("ServiceBus.peekMessages",
+                asyncClient.peekMessages(maxMessages, sequenceNumber, sessionId).timeout(operationTimeout));
 
-        // Subscribe so we can kick off this operation.
-        messages.subscribe();
-
-        return new IterableStream<>(messages);
+        return fromFluxAndSubscribe(messages);
     }
 
     /**
      * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
      * receive operation will wait for a default 1 minute for receiving a message before it times out. You can
      * override it by using {@link #receiveMessages(int, Duration)}.
+     *
+     * <p>
+     * The client uses an AMQP link underneath to receive the messages; the client will transparently transition
+     * to a new AMQP link if the current one encounters a retriable error. When the client experiences a non-retriable
+     * error or exhausts the retries, the iteration (e.g., forEach) on the {@link IterableStream} returned by the further
+     * invocations of receiveMessages API will throw the error to the application. Once the application receives
+     * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
+     * and create a new client to continue receiving messages.
+     * </p>
+     * <p>
+     * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
+     * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
+     * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
+     * </p>
      *
      * @param maxMessages The maximum number of messages to receive.
      *
@@ -429,6 +510,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is zero or a negative value.
      * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if an error occurs while receiving messages.
+     *
      * @see <a href="https://aka.ms/azsdk/java/servicebus/sync-receive/prefetch">Synchronous receive and prefetch</a>
      */
     public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages) {
@@ -440,6 +522,20 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * default receive mode is {@link ServiceBusReceiveMode#PEEK_LOCK } unless it is changed during creation of {@link
      * ServiceBusReceiverClient} using {@link ServiceBusReceiverClientBuilder#receiveMode(ServiceBusReceiveMode)}.
      *
+     * <p>
+     * The client uses an AMQP link underneath to receive the messages; the client will transparently transition
+     * to a new AMQP link if the current one encounters a retriable error. When the client experiences a non-retriable
+     * error or exhausts the retries, the iteration (e.g., forEach) on the {@link IterableStream} returned by the further
+     * invocations of receiveMessages API will throw the error to the application. Once the application receives
+     * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
+     * and create a new client to continue receiving messages.
+     * </p>
+     * <p>
+     * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
+     * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
+     * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
+     * </p>
+     *
      * @param maxMessages The maximum number of messages to receive.
      * @param maxWaitTime The time the client waits for receiving a message before it times out.
      *
@@ -447,18 +543,19 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
      * @throws IllegalStateException if the receiver is already disposed.
+     * @throws NullPointerException if {@code maxWaitTime} is null.
      * @throws ServiceBusException if an error occurs while receiving messages.
      * @see <a href="https://aka.ms/azsdk/java/servicebus/sync-receive/prefetch">Synchronous receive and prefetch</a>
      */
     public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages, Duration maxWaitTime) {
         if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         } else if (Objects.isNull(maxWaitTime)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new NullPointerException("'maxWaitTime' cannot be null."));
         } else if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
@@ -466,9 +563,14 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         // SynchronousReceiverWork.start() and the other is the IterableStream(emitter.asFlux());
         // Since the subscriptions may happen at different times, we want to replay results to downstream subscribers.
         final Sinks.Many<ServiceBusReceivedMessage> emitter = Sinks.many().replay().all();
+
         queueWork(maxMessages, maxWaitTime, emitter);
 
-        return new IterableStream<>(emitter.asFlux());
+        final Flux<ServiceBusReceivedMessage> messagesFlux =  tracer.traceSyncReceive("ServiceBus.receiveMessages", emitter.asFlux());
+        // messagesFlux is already a hot publisher, so it's ok to subscribe
+        messagesFlux.subscribe();
+
+        return new IterableStream<>(messagesFlux);
     }
 
     /**
@@ -496,7 +598,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the deferred message.
      *
      * @return A deferred message with the matching {@code sequenceNumber}.
+     *
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if deferred message cannot be received.
      */
     ServiceBusReceivedMessage receiveDeferredMessage(long sequenceNumber, String sessionId) {
         return asyncClient.receiveDeferredMessage(sequenceNumber, sessionId).block(operationTimeout);
@@ -526,17 +630,18 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the deferred messages. {@code null} if there is no session.
      *
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
+     *
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
+     * @throws ServiceBusException if deferred message cannot be received.
      */
     IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
         String sessionId) {
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.receiveDeferredMessages(sequenceNumbers,
-            sessionId).timeout(operationTimeout);
 
-        // Subscribe so we can kick off this operation.
-        messages.subscribe();
+        final Flux<ServiceBusReceivedMessage> messages = tracer.traceSyncReceive("ServiceBus.receiveDeferredMessageBatch",
+            asyncClient.receiveDeferredMessages(sequenceNumbers, sessionId).timeout(operationTimeout));
 
-        return new IterableStream<>(messages);
+        return fromFluxAndSubscribe(messages);
     }
 
     /**
@@ -567,7 +672,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
      * @param onError A function to call when an error occurs during lock renewal.
      *
-     * @throws NullPointerException if {@code message} or {@code maxLockRenewalDuration} is null.
+     * @throws NullPointerException if {@code message}, {@code message.getLockToken()}, or
+     *      {@code maxLockRenewalDuration} is null.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      * @throws ServiceBusException If the message cannot be renewed.
@@ -577,12 +683,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final String lockToken = message != null ? message.getLockToken() : "null";
         final Consumer<Throwable> throwableConsumer = onError != null
             ? onError
-            : error -> logger.atWarning().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Exception occurred while renewing lock token.", error);
+            : error -> LOGGER.atWarning().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Exception occurred while renewing lock token.", error);
 
         asyncClient.renewMessageLock(message, maxLockRenewalDuration).subscribe(
-            v -> logger.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Completed renewing lock token."),
+            v -> LOGGER.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Completed renewing lock token."),
             throwableConsumer,
-            () -> logger.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Auto message lock renewal operation completed"));
+            () -> LOGGER.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Auto message lock renewal operation completed"));
     }
 
     /**
@@ -593,7 +699,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session lock cannot be renewed.
      */
     public OffsetDateTime renewSessionLock() {
-        return asyncClient.renewSessionLock(asyncClient.getReceiverOptions().getSessionId()).block(operationTimeout);
+        return asyncClient.renewSessionLock().block(operationTimeout);
     }
 
     /**
@@ -603,8 +709,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param onError A function to call when an error occurs during lock renewal.
      *
      * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
-     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string or {@code maxLockRenewalDuration} is negative.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
+     * @throws ServiceBusException if the session lock renewal operation cannot be started.
      */
     public void renewSessionLock(Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
         this.renewSessionLock(asyncClient.getReceiverOptions().getSessionId(), maxLockRenewalDuration, onError);
@@ -619,14 +726,14 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session state cannot be set.
      */
     public void setSessionState(byte[] sessionState) {
-        this.setSessionState(asyncClient.getReceiverOptions().getSessionId(), sessionState);
+        asyncClient.setSessionState(sessionState).block(operationTimeout);
     }
 
     /**
      * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along to all
      * operations that need to be in this transaction.
      *
-     * <p><strong>Creating and using a transaction</strong></p>
+     * <p><strong>Sample: Creating and using a transaction</strong></p>
      * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
      * <pre>
      * ServiceBusTransactionContext transaction = receiver.createTransaction&#40;&#41;;
@@ -692,7 +799,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param transactionContext The transaction to be rollback.
      *
-     * @throws IllegalStateException if the receiver is alread disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
      * @throws ServiceBusException if the transaction could not be rolled back.
      */
@@ -705,7 +812,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     @Override
     public void close() {
-        SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.getAndSet(null);
+        SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
         if (messageSubscriber != null && !messageSubscriber.isDisposed()) {
             messageSubscriber.dispose();
         }
@@ -754,7 +861,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             messageSubscriber.queueWork(work);
         }
 
-        logger.atVerbose()
+        LOGGER.atVerbose()
             .addKeyValue(WORK_ID_KEY, work.getId())
             .log("Receive request queued up.");
     }
@@ -762,19 +869,19 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
         final Consumer<Throwable> throwableConsumer = onError != null
             ? onError
-            : error -> logger.atWarning().addKeyValue(SESSION_ID_KEY, sessionId).log("Exception occurred while renewing session.", error);
+            : error -> LOGGER.atWarning().addKeyValue(SESSION_ID_KEY, sessionId).log("Exception occurred while renewing session.", error);
 
         asyncClient.renewSessionLock(maxLockRenewalDuration).subscribe(
-            v -> logger.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Completed renewing session"),
+            v -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Completed renewing session"),
             throwableConsumer,
-            () -> logger.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Auto session lock renewal operation completed."));
+            () -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Auto session lock renewal operation completed."));
     }
 
-    void setSessionState(String sessionId, byte[] sessionState) {
-        asyncClient.setSessionState(sessionId, sessionState).block(operationTimeout);
-    }
+    private <T> IterableStream<T> fromFluxAndSubscribe(Flux<T> flux)  {
+        Flux<T> cached = flux.cache();
 
-    byte[] getSessionState(String sessionId) {
-        return asyncClient.getSessionState(sessionId).block(operationTimeout);
+        // Subscribe to message flux so we can kick off this operation
+        cached.subscribe();
+        return new IterableStream<>(cached);
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Range of route errors. */
 @Fluent
 public final class RouteErrorRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteErrorRange.class);
-
     /*
      * Start where the route error happened
      */
@@ -25,6 +21,10 @@ public final class RouteErrorRange {
      */
     @JsonProperty(value = "end")
     private RouteErrorPosition end;
+
+    /** Creates an instance of RouteErrorRange class. */
+    public RouteErrorRange() {
+    }
 
     /**
      * Get the start property: Start where the route error happened.

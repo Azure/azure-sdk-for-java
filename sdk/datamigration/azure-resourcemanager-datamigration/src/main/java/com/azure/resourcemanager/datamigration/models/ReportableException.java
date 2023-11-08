@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Exception object for all custom exceptions. */
 @Fluent
 public final class ReportableException {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportableException.class);
-
     /*
      * Error message
      */
@@ -49,6 +45,10 @@ public final class ReportableException {
      */
     @JsonProperty(value = "stackTrace", access = JsonProperty.Access.WRITE_ONLY)
     private String stackTrace;
+
+    /** Creates an instance of ReportableException class. */
+    public ReportableException() {
+    }
 
     /**
      * Get the message property: Error message.

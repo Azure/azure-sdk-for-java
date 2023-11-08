@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Log specification of operation. */
 @Fluent
 public final class LogSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSpecification.class);
-
     /*
      * Name of log specification.
      */
@@ -37,6 +33,10 @@ public final class LogSpecification {
      */
     @JsonProperty(value = "logFilterPattern")
     private String logFilterPattern;
+
+    /** Creates an instance of LogSpecification class. */
+    public LogSpecification() {
+    }
 
     /**
      * Get the name property: Name of log specification.

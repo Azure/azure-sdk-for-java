@@ -22,8 +22,12 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.implementation.http.policy.InstrumentationPolicy;
 import com.azure.core.perf.models.MockHttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
@@ -39,8 +43,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -61,22 +64,34 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     private final WireMockServer wireMockServer;
 
     public RestProxyTestBase(TOptions options) {
-        this(options, null);
+        this(options, null, null);
     }
 
     public RestProxyTestBase(TOptions options, Function<HttpRequest, HttpResponse> mockResponseSupplier) {
+        this(options, mockResponseSupplier, null);
+    }
+
+    public RestProxyTestBase(TOptions options, Function<HttpRequest, HttpResponse> mockResponseSupplier, Tracer tracer) {
         super(options);
         if (options.getBackendType() == CorePerfStressOptions.BackendType.WIREMOCK) {
             wireMockServer = createWireMockServer(mockResponseSupplier);
             endpoint = wireMockServer.baseUrl();
+        } else if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
+            String containerSASUrl = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_CONTAINER_SAS_URL");
+            if (CoreUtils.isNullOrEmpty(containerSASUrl)) {
+                throw new IllegalStateException("Environment variable AZURE_STORAGE_CONTAINER_SAS_URL must be set");
+            }
+            wireMockServer = null;
+            endpoint= containerSASUrl;
         } else {
             wireMockServer = null;
-            endpoint = Objects.requireNonNull(options.getEndpoint(), "endpoint must not be null");
+            endpoint = "http://unused";
         }
         HttpClient httpClient = createHttpClient(options, mockResponseSupplier);
         httpPipeline = new HttpPipelineBuilder()
             .policies(createPipelinePolicies(options))
             .httpClient(httpClient)
+            .tracer(tracer)
             .build();
 
         service = RestProxy.create(MyRestProxyService.class, httpPipeline);
@@ -95,7 +110,10 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     private HttpPipelinePolicy[] createPipelinePolicies(TOptions options) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
-            policies.add(new AddHeadersPolicy(new HttpHeaders().add("x-ms-blob-type", "BlockBlob")));
+            policies.add(new AddHeadersPolicy(
+                new HttpHeaders()
+                    .add("x-ms-blob-type", "BlockBlob")
+                    .add("x-ms-version", "2021-08-06")));
         }
 
         if (options.isIncludePipelinePolicies()) {
@@ -105,6 +123,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             policies.add(new UserAgentPolicy());
             policies.add(new RetryPolicy());
             policies.add(new RequestIdPolicy());
+            policies.add(new InstrumentationPolicy());
             policies.add(new HttpLoggingPolicy(new HttpLogOptions()));
         }
 
@@ -150,7 +169,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     }
 
     public static HttpResponse createMockResponse(HttpRequest httpRequest, String contentType, byte[] bodyBytes) {
-        HttpHeaders headers = new HttpHeaders().put("Content-Type", contentType);
+        HttpHeaders headers = new HttpHeaders().set("Content-Type", contentType);
         HttpResponse res = new MockHttpResponse(httpRequest, 200, headers, bodyBytes);
         return res;
     }
@@ -165,28 +184,32 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     }
 
     public static Supplier<BinaryData> createBinaryDataSupplier(CorePerfStressOptions options) {
+        long size = options.getSize();
         switch (options.getBinaryDataSource()) {
             case BYTES:
-                byte[] bytes = new byte[(int) options.getSize()];
-                new Random().nextBytes(bytes);
+                byte[] bytes = new byte[(int) size];
+                ThreadLocalRandom.current().nextBytes(bytes);
                 return  () -> BinaryData.fromBytes(bytes);
             case FILE:
                 try {
                     Path tempFile = Files.createTempFile("binarydataforperftest", null);
                     tempFile.toFile().deleteOnExit();
                     String tempFilePath = tempFile.toString();
-                    TestDataCreationHelper.writeToFile(tempFilePath, options.getSize(), 8192);
+                    TestDataCreationHelper.writeToFile(tempFilePath, size, 8192);
                     return () -> BinaryData.fromFile(tempFile);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            case FLUX:
+                return () -> BinaryData.fromFlux(
+                    TestDataCreationHelper.createRandomByteBufferFlux(size), size, false).block();
             case STREAM:
                 RepeatingInputStream inputStream =
-                    (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
+                    (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(size);
                 inputStream.mark(Long.MAX_VALUE);
                 return () -> {
                     inputStream.reset();
-                    return BinaryData.fromStream(inputStream);
+                    return BinaryData.fromStream(inputStream, size);
                 };
             default:
                 throw new IllegalArgumentException("Unknown binary data source " + options.getBinaryDataSource());

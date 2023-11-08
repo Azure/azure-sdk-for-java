@@ -29,6 +29,10 @@ public class DeliveryAttributeMapping {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of DeliveryAttributeMapping class. */
+    public DeliveryAttributeMapping() {
+    }
+
     /**
      * Get the name property: Name of the delivery attribute or header.
      *

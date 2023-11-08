@@ -11,10 +11,9 @@ import com.azure.resourcemanager.mariadb.fluent.LocationBasedPerformanceTiersCli
 import com.azure.resourcemanager.mariadb.fluent.models.PerformanceTierPropertiesInner;
 import com.azure.resourcemanager.mariadb.models.LocationBasedPerformanceTiers;
 import com.azure.resourcemanager.mariadb.models.PerformanceTierProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationBasedPerformanceTiersImpl implements LocationBasedPerformanceTiers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationBasedPerformanceTiersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationBasedPerformanceTiersImpl.class);
 
     private final LocationBasedPerformanceTiersClient innerClient;
 

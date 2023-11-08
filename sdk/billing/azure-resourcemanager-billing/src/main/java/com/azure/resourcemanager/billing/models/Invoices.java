@@ -21,7 +21,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingAccount(
         String billingAccountName, String periodStartDate, String periodEndDate);
@@ -37,7 +37,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingAccount(
         String billingAccountName, String periodStartDate, String periodEndDate, Context context);
@@ -53,7 +53,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingProfile(
         String billingAccountName, String billingProfileName, String periodStartDate, String periodEndDate);
@@ -70,7 +70,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingProfile(
         String billingAccountName,
@@ -78,6 +78,20 @@ public interface Invoices {
         String periodStartDate,
         String periodEndDate,
         Context context);
+
+    /**
+     * Gets an invoice by billing account name and ID. The operation is supported for billing accounts with agreement
+     * type Microsoft Partner Agreement or Microsoft Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an invoice by billing account name and ID along with {@link Response}.
+     */
+    Response<Invoice> getWithResponse(String billingAccountName, String invoiceName, Context context);
 
     /**
      * Gets an invoice by billing account name and ID. The operation is supported for billing accounts with agreement
@@ -93,18 +107,17 @@ public interface Invoices {
     Invoice get(String billingAccountName, String invoiceName);
 
     /**
-     * Gets an invoice by billing account name and ID. The operation is supported for billing accounts with agreement
-     * type Microsoft Partner Agreement or Microsoft Customer Agreement.
+     * Gets an invoice by ID. The operation is supported for billing accounts with agreement type Microsoft Partner
+     * Agreement or Microsoft Customer Agreement.
      *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param invoiceName The ID that uniquely identifies an invoice.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by billing account name and ID.
+     * @return an invoice by ID along with {@link Response}.
      */
-    Response<Invoice> getWithResponse(String billingAccountName, String invoiceName, Context context);
+    Response<Invoice> getByIdWithResponse(String invoiceName, Context context);
 
     /**
      * Gets an invoice by ID. The operation is supported for billing accounts with agreement type Microsoft Partner
@@ -117,19 +130,6 @@ public interface Invoices {
      * @return an invoice by ID.
      */
     Invoice getById(String invoiceName);
-
-    /**
-     * Gets an invoice by ID. The operation is supported for billing accounts with agreement type Microsoft Partner
-     * Agreement or Microsoft Customer Agreement.
-     *
-     * @param invoiceName The ID that uniquely identifies an invoice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by ID.
-     */
-    Response<Invoice> getByIdWithResponse(String invoiceName, Context context);
 
     /**
      * Gets a URL to download an invoice. The operation is supported for billing accounts with agreement type Microsoft
@@ -198,7 +198,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingSubscription(String periodStartDate, String periodEndDate);
 
@@ -211,9 +211,21 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingSubscription(String periodStartDate, String periodEndDate, Context context);
+
+    /**
+     * Gets an invoice by subscription ID and invoice ID.
+     *
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an invoice by subscription ID and invoice ID along with {@link Response}.
+     */
+    Response<Invoice> getBySubscriptionAndInvoiceIdWithResponse(String invoiceName, Context context);
 
     /**
      * Gets an invoice by subscription ID and invoice ID.
@@ -225,18 +237,6 @@ public interface Invoices {
      * @return an invoice by subscription ID and invoice ID.
      */
     Invoice getBySubscriptionAndInvoiceId(String invoiceName);
-
-    /**
-     * Gets an invoice by subscription ID and invoice ID.
-     *
-     * @param invoiceName The ID that uniquely identifies an invoice.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by subscription ID and invoice ID.
-     */
-    Response<Invoice> getBySubscriptionAndInvoiceIdWithResponse(String invoiceName, Context context);
 
     /**
      * Gets a URL to download an invoice.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
+/** deviceManagementExchangeAccessStateReason. */
 public final class MicrosoftGraphDeviceManagementExchangeAccessStateReason
     extends ExpandableStringEnum<MicrosoftGraphDeviceManagementExchangeAccessStateReason> {
     /** Static value none for MicrosoftGraphDeviceManagementExchangeAccessStateReason. */
@@ -72,6 +72,15 @@ public final class MicrosoftGraphDeviceManagementExchangeAccessStateReason
         fromString("deviceNotKnownWithManagedApp");
 
     /**
+     * Creates a new instance of MicrosoftGraphDeviceManagementExchangeAccessStateReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphDeviceManagementExchangeAccessStateReason() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphDeviceManagementExchangeAccessStateReason from its string representation.
      *
      * @param name a name to look for.
@@ -82,7 +91,11 @@ public final class MicrosoftGraphDeviceManagementExchangeAccessStateReason
         return fromString(name, MicrosoftGraphDeviceManagementExchangeAccessStateReason.class);
     }
 
-    /** @return known MicrosoftGraphDeviceManagementExchangeAccessStateReason values. */
+    /**
+     * Gets known MicrosoftGraphDeviceManagementExchangeAccessStateReason values.
+     *
+     * @return known MicrosoftGraphDeviceManagementExchangeAccessStateReason values.
+     */
     public static Collection<MicrosoftGraphDeviceManagementExchangeAccessStateReason> values() {
         return values(MicrosoftGraphDeviceManagementExchangeAccessStateReason.class);
     }

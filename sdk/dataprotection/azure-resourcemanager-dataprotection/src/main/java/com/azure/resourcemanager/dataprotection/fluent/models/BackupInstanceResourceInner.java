@@ -5,22 +5,27 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
-import com.azure.resourcemanager.dataprotection.models.DppResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.dataprotection.models.DppProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** BackupInstanceResource BackupInstance Resource. */
+/**
+ * BackupInstanceResource
+ *
+ * <p>BackupInstance Resource.
+ */
 @Fluent
-public final class BackupInstanceResourceInner extends DppResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupInstanceResourceInner.class);
-
+public final class BackupInstanceResourceInner extends DppProxyResource {
     /*
      * BackupInstanceResource properties
      */
     @JsonProperty(value = "properties")
     private BackupInstance properties;
+
+    /** Creates an instance of BackupInstanceResourceInner class. */
+    public BackupInstanceResourceInner() {
+    }
 
     /**
      * Get the properties property: BackupInstanceResource properties.
@@ -39,6 +44,13 @@ public final class BackupInstanceResourceInner extends DppResource {
      */
     public BackupInstanceResourceInner withProperties(BackupInstance properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BackupInstanceResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

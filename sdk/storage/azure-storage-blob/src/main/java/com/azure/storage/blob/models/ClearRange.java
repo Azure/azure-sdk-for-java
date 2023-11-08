@@ -24,6 +24,9 @@ public final class ClearRange {
     @JsonProperty(value = "End", required = true)
     private long end;
 
+    /** Creates an instance of ClearRange class. */
+    public ClearRange() {}
+
     /**
      * Get the start property: The Start property.
      *

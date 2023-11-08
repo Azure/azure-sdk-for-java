@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual network subnet usage parameter. */
 @Fluent
 public final class VirtualNetworkSubnetUsageParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkSubnetUsageParameter.class);
-
     /*
      * Virtual network resource id.
      */
     @JsonProperty(value = "virtualNetworkArmResourceId")
     private String virtualNetworkArmResourceId;
+
+    /** Creates an instance of VirtualNetworkSubnetUsageParameter class. */
+    public VirtualNetworkSubnetUsageParameter() {
+    }
 
     /**
      * Get the virtualNetworkArmResourceId property: Virtual network resource id.

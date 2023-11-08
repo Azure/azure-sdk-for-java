@@ -5,29 +5,36 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.PythonPackageCreateProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create or update module operation. */
-@JsonFlatten
 @Fluent
-public class PythonPackageCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PythonPackageCreateParameters.class);
+public final class PythonPackageCreateParameters {
+    /*
+     * Gets or sets the module create properties.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private PythonPackageCreateProperties innerProperties = new PythonPackageCreateProperties();
 
     /*
      * Gets or sets the tags attached to the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Gets or sets the module content link.
+    /**
+     * Get the innerProperties property: Gets or sets the module create properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.contentLink", required = true)
-    private ContentLink contentLink;
+    private PythonPackageCreateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Gets or sets the tags attached to the resource.
@@ -55,7 +62,7 @@ public class PythonPackageCreateParameters {
      * @return the contentLink value.
      */
     public ContentLink contentLink() {
-        return this.contentLink;
+        return this.innerProperties() == null ? null : this.innerProperties().contentLink();
     }
 
     /**
@@ -65,7 +72,10 @@ public class PythonPackageCreateParameters {
      * @return the PythonPackageCreateParameters object itself.
      */
     public PythonPackageCreateParameters withContentLink(ContentLink contentLink) {
-        this.contentLink = contentLink;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PythonPackageCreateProperties();
+        }
+        this.innerProperties().withContentLink(contentLink);
         return this;
     }
 
@@ -75,13 +85,15 @@ public class PythonPackageCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (contentLink() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property contentLink in model PythonPackageCreateParameters"));
+                        "Missing required property innerProperties in model PythonPackageCreateParameters"));
         } else {
-            contentLink().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PythonPackageCreateParameters.class);
 }

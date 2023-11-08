@@ -17,11 +17,14 @@ public final class RecoveryWalkResponseInner {
     private Boolean walkPerformed;
 
     /*
-     * The next update domain that needs to be walked. Null means walk spanning
-     * all update domains has been completed
+     * The next update domain that needs to be walked. Null means walk spanning all update domains has been completed
      */
     @JsonProperty(value = "nextPlatformUpdateDomain", access = JsonProperty.Access.WRITE_ONLY)
     private Integer nextPlatformUpdateDomain;
+
+    /** Creates an instance of RecoveryWalkResponseInner class. */
+    public RecoveryWalkResponseInner() {
+    }
 
     /**
      * Get the walkPerformed property: Whether the recovery walk was performed.

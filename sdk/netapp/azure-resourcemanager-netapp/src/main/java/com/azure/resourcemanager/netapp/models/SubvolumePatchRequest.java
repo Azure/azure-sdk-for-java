@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.SubvolumePatchParams;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subvolume Patch Request properties. */
 @Fluent
 public final class SubvolumePatchRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubvolumePatchRequest.class);
-
     /*
      * Subvolume Properties
      */
     @JsonProperty(value = "properties")
     private SubvolumePatchParams innerProperties;
+
+    /** Creates an instance of SubvolumePatchRequest class. */
+    public SubvolumePatchRequest() {
+    }
 
     /**
      * Get the innerProperties property: Subvolume Properties.
@@ -31,7 +31,9 @@ public final class SubvolumePatchRequest {
     }
 
     /**
-     * Get the size property: size Truncate subvolume to the provided size in bytes.
+     * Get the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @return the size value.
      */
@@ -40,7 +42,9 @@ public final class SubvolumePatchRequest {
     }
 
     /**
-     * Set the size property: size Truncate subvolume to the provided size in bytes.
+     * Set the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @param size the size value to set.
      * @return the SubvolumePatchRequest object itself.
@@ -54,7 +58,9 @@ public final class SubvolumePatchRequest {
     }
 
     /**
-     * Get the path property: path path to the subvolume.
+     * Get the path property: path
+     *
+     * <p>path to the subvolume.
      *
      * @return the path value.
      */
@@ -63,7 +69,9 @@ public final class SubvolumePatchRequest {
     }
 
     /**
-     * Set the path property: path path to the subvolume.
+     * Set the path property: path
+     *
+     * <p>path to the subvolume.
      *
      * @param path the path value to set.
      * @return the SubvolumePatchRequest object itself.

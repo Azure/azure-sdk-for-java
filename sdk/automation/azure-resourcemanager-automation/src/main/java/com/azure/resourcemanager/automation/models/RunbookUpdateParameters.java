@@ -5,17 +5,19 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.RunbookUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the update runbook operation. */
-@JsonFlatten
 @Fluent
-public class RunbookUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunbookUpdateParameters.class);
+public final class RunbookUpdateParameters {
+    /*
+     * Gets or sets the runbook update properties.
+     */
+    @JsonProperty(value = "properties")
+    private RunbookUpdateProperties innerProperties;
 
     /*
      * Gets or sets the name of the resource.
@@ -33,31 +35,17 @@ public class RunbookUpdateParameters {
      * Gets or sets the tags attached to the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Gets or sets the description of the runbook.
+    /**
+     * Get the innerProperties property: Gets or sets the runbook update properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Gets or sets verbose log option.
-     */
-    @JsonProperty(value = "properties.logVerbose")
-    private Boolean logVerbose;
-
-    /*
-     * Gets or sets progress log option.
-     */
-    @JsonProperty(value = "properties.logProgress")
-    private Boolean logProgress;
-
-    /*
-     * Gets or sets the activity-level tracing options of the runbook.
-     */
-    @JsonProperty(value = "properties.logActivityTrace")
-    private Integer logActivityTrace;
+    private RunbookUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Gets or sets the name of the resource.
@@ -125,7 +113,7 @@ public class RunbookUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -135,7 +123,10 @@ public class RunbookUpdateParameters {
      * @return the RunbookUpdateParameters object itself.
      */
     public RunbookUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -145,7 +136,7 @@ public class RunbookUpdateParameters {
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
-        return this.logVerbose;
+        return this.innerProperties() == null ? null : this.innerProperties().logVerbose();
     }
 
     /**
@@ -155,7 +146,10 @@ public class RunbookUpdateParameters {
      * @return the RunbookUpdateParameters object itself.
      */
     public RunbookUpdateParameters withLogVerbose(Boolean logVerbose) {
-        this.logVerbose = logVerbose;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookUpdateProperties();
+        }
+        this.innerProperties().withLogVerbose(logVerbose);
         return this;
     }
 
@@ -165,7 +159,7 @@ public class RunbookUpdateParameters {
      * @return the logProgress value.
      */
     public Boolean logProgress() {
-        return this.logProgress;
+        return this.innerProperties() == null ? null : this.innerProperties().logProgress();
     }
 
     /**
@@ -175,7 +169,10 @@ public class RunbookUpdateParameters {
      * @return the RunbookUpdateParameters object itself.
      */
     public RunbookUpdateParameters withLogProgress(Boolean logProgress) {
-        this.logProgress = logProgress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookUpdateProperties();
+        }
+        this.innerProperties().withLogProgress(logProgress);
         return this;
     }
 
@@ -185,7 +182,7 @@ public class RunbookUpdateParameters {
      * @return the logActivityTrace value.
      */
     public Integer logActivityTrace() {
-        return this.logActivityTrace;
+        return this.innerProperties() == null ? null : this.innerProperties().logActivityTrace();
     }
 
     /**
@@ -195,7 +192,10 @@ public class RunbookUpdateParameters {
      * @return the RunbookUpdateParameters object itself.
      */
     public RunbookUpdateParameters withLogActivityTrace(Integer logActivityTrace) {
-        this.logActivityTrace = logActivityTrace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunbookUpdateProperties();
+        }
+        this.innerProperties().withLogActivityTrace(logActivityTrace);
         return this;
     }
 
@@ -205,5 +205,8 @@ public class RunbookUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

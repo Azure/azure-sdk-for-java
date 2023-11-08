@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionVendorConfiguration;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
 import com.azure.resourcemanager.hybridnetwork.models.SkuType;
 import com.azure.resourcemanager.hybridnetwork.models.VendorProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Vendor network function properties. */
 @Fluent
 public final class VendorNetworkFunctionPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorNetworkFunctionPropertiesFormat.class);
-
     /*
      * The provisioning state of the vendor network function sub resource.
      */
@@ -48,6 +44,10 @@ public final class VendorNetworkFunctionPropertiesFormat {
      */
     @JsonProperty(value = "networkFunctionVendorConfigurations")
     private List<NetworkFunctionVendorConfiguration> networkFunctionVendorConfigurations;
+
+    /** Creates an instance of VendorNetworkFunctionPropertiesFormat class. */
+    public VendorNetworkFunctionPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the vendor network function sub resource.

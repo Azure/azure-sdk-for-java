@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertRuleKind. */
+/** The kind of the alert rule. */
 public final class AlertRuleKind extends ExpandableStringEnum<AlertRuleKind> {
     /** Static value Scheduled for AlertRuleKind. */
     public static final AlertRuleKind SCHEDULED = fromString("Scheduled");
@@ -40,7 +40,11 @@ public final class AlertRuleKind extends ExpandableStringEnum<AlertRuleKind> {
         return fromString(name, AlertRuleKind.class);
     }
 
-    /** @return known AlertRuleKind values. */
+    /**
+     * Gets known AlertRuleKind values.
+     *
+     * @return known AlertRuleKind values.
+     */
     public static Collection<AlertRuleKind> values() {
         return values(AlertRuleKind.class);
     }

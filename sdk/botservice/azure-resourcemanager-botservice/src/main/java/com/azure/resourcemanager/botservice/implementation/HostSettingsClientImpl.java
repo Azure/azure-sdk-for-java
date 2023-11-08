@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.fluent.HostSettingsClient;
 import com.azure.resourcemanager.botservice.fluent.models.HostSettingsResponseInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HostSettingsClient. */
 public final class HostSettingsClientImpl implements HostSettingsClient {
-    private final ClientLogger logger = new ClientLogger(HostSettingsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final HostSettingsService service;
 
@@ -147,15 +144,7 @@ public final class HostSettingsClientImpl implements HostSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HostSettingsResponseInner> getAsync() {
-        return getWithResponseAsync()
-            .flatMap(
-                (Response<HostSettingsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

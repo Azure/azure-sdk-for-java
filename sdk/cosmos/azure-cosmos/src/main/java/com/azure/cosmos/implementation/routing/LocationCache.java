@@ -4,7 +4,9 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.ResourceType;
@@ -28,6 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +46,7 @@ public class LocationCache {
     private final Object lockObject;
     private final Duration unavailableLocationsExpirationTime;
     private final ConcurrentHashMap<URI, LocationUnavailabilityInfo> locationUnavailabilityInfoByEndpoint;
+    private final ConnectionPolicy connectionPolicy;
 
     private DatabaseAccountLocationsInfo locationInfo;
 
@@ -50,24 +54,28 @@ public class LocationCache {
     private boolean enableMultipleWriteLocations;
 
     public LocationCache(
-            List<String> preferredLocations,
+            ConnectionPolicy connectionPolicy,
             URI defaultEndpoint,
-            boolean enableEndpointDiscovery,
-            boolean useMultipleWriteLocations,
             Configs configs) {
+
+        List<String> preferredLocations = new ArrayList<>(connectionPolicy.getPreferredRegions() != null ?
+            connectionPolicy.getPreferredRegions() :
+            Collections.emptyList()
+        );
+
         this.locationInfo = new DatabaseAccountLocationsInfo(preferredLocations, defaultEndpoint);
         this.defaultEndpoint = defaultEndpoint;
-        this.enableEndpointDiscovery = enableEndpointDiscovery;
-        this.useMultipleWriteLocations = useMultipleWriteLocations;
+        this.enableEndpointDiscovery = connectionPolicy.isEndpointDiscoveryEnabled();
+        this.useMultipleWriteLocations = connectionPolicy.isMultipleWriteRegionsEnabled();
 
         this.lockObject = new Object();
-
 
         this.locationUnavailabilityInfoByEndpoint = new ConcurrentHashMap<>();
 
         this.lastCacheUpdateTimestamp = Instant.MIN;
         this.enableMultipleWriteLocations = false;
         this.unavailableLocationsExpirationTime = Duration.ofSeconds(configs.getUnavailableLocationsExpirationTimeInSeconds());
+        this.connectionPolicy = connectionPolicy;
     }
 
     /**
@@ -99,6 +107,29 @@ public class LocationCache {
         }
 
         return this.locationInfo.writeEndpoints;
+    }
+
+
+    /***
+     * Get the list of available read endpoints.
+     * The list will not be filtered by preferred region list.
+     *
+     * This method is ONLY used for fault injection.
+     * @return
+     */
+    public List<URI> getAvailableReadEndpoints() {
+        return this.locationInfo.availableReadEndpointByLocation.values().stream().collect(Collectors.toList());
+    }
+
+    /***
+     * Get the list of available write endpoints.
+     * The list will not be filtered by preferred region list.
+     *
+     * This method is ONLY used for fault injection.
+     * @return
+     */
+    public List<URI> getAvailableWriteEndpoints() {
+        return this.locationInfo.availableWriteEndpointByLocation.values().stream().collect(Collectors.toList());
     }
 
     /**
@@ -174,9 +205,114 @@ public class LocationCache {
                 return this.defaultEndpoint;
             }
         } else {
-            UnmodifiableList<URI> endpoints = request.getOperationType().isWriteOperation()? this.getWriteEndpoints() : this.getReadEndpoints();
+            UnmodifiableList<URI> endpoints =
+                request.getOperationType().isWriteOperation()? this.getApplicableWriteEndpoints(request) : this.getApplicableReadEndpoints(request);
             return endpoints.get(locationIndex % endpoints.size());
         }
+    }
+
+    public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+        return this.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
+    }
+
+    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegionsOnRequest) {
+
+        UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
+        Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
+
+        List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
+            new ArrayList<>(excludedRegionsSupplier.get().getExcludedRegions()) : Collections.emptyList();
+
+        if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludedRegions)) {
+            return writeEndpoints;
+        }
+
+        if (excludedRegionsOnRequest != null && !excludedRegionsOnRequest.isEmpty()) {
+            effectiveExcludedRegions = excludedRegionsOnRequest;
+        }
+
+        // filter regions based on the exclude region config
+        return this.getApplicableEndpoints(
+            writeEndpoints,
+            this.locationInfo.regionNameByWriteEndpoint,
+            this.defaultEndpoint,
+            effectiveExcludedRegions);
+    }
+
+    public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+        return this.getApplicableReadEndpoints(request.requestContext.getExcludeRegions());
+    }
+
+    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegionsOnRequest) {
+        UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
+        Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
+
+        List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
+            new ArrayList<>(excludedRegionsSupplier.get().getExcludedRegions()) : Collections.emptyList();
+
+        if (!isExcludeRegionsConfigured(excludedRegionsOnRequest, effectiveExcludedRegions)) {
+            return readEndpoints;
+        }
+
+        if (excludedRegionsOnRequest != null && !excludedRegionsOnRequest.isEmpty()) {
+            effectiveExcludedRegions = excludedRegionsOnRequest;
+        }
+
+        // filter regions based on the exclude region config
+        return this.getApplicableEndpoints(
+            readEndpoints,
+            this.locationInfo.regionNameByReadEndpoint,
+            this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
+            effectiveExcludedRegions);
+    }
+
+    private UnmodifiableList<URI> getApplicableEndpoints(
+        UnmodifiableList<URI> endpoints,
+        UnmodifiableMap<URI, String> regionNameByEndpoint,
+        URI fallbackEndpoint,
+        List<String> excludeRegionList) {
+
+        List<URI> applicableEndpoints = new ArrayList<>();
+        for (URI endpoint : endpoints) {
+            Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
+            if (Utils.tryGetValue(regionNameByEndpoint, endpoint, regionName)) {
+                if (!excludeRegionList.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
+                    applicableEndpoints.add(endpoint);
+                }
+            }
+        }
+
+        if (applicableEndpoints.isEmpty()) {
+            applicableEndpoints.add(fallbackEndpoint);
+        }
+
+        return new UnmodifiableList<>(applicableEndpoints);
+    }
+
+    private boolean isExcludeRegionsConfigured(List<String> excludedRegionsOnRequest, List<String> excludedRegionsOnClient) {
+        boolean isExcludedRegionsConfiguredOnRequest = !(excludedRegionsOnRequest == null || excludedRegionsOnRequest.isEmpty());
+        boolean isExcludedRegionsConfiguredOnClient = !(excludedRegionsOnClient == null || excludedRegionsOnClient.isEmpty());
+
+        return isExcludedRegionsConfiguredOnRequest || isExcludedRegionsConfiguredOnClient;
+    }
+
+    public URI resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
+        Utils.ValueHolder<URI> endpointValueHolder = new Utils.ValueHolder<>();
+        if (writeOnly) {
+            Utils.tryGetValue(this.locationInfo.availableWriteEndpointByLocation, region, endpointValueHolder);
+        } else {
+            Utils.tryGetValue(this.locationInfo.availableReadEndpointByLocation, region, endpointValueHolder);
+        }
+
+        if (endpointValueHolder.v != null) {
+            return endpointValueHolder.v;
+        }
+
+        throw new IllegalArgumentException("Can not find service endpoint for region " + region);
+    }
+
+    public URI getDefaultEndpoint() {
+        return this.defaultEndpoint;
     }
 
     public boolean shouldRefreshEndpoints(Utils.ValueHolder<Boolean> canRefreshInBackground) {
@@ -303,14 +439,14 @@ public class LocationCache {
 
                 if (Utils.tryGetValue(this.locationUnavailabilityInfoByEndpoint, unavailableEndpoint, unavailabilityInfoHolder)
                         &&
-                        durationPassed(Instant.now(), unavailabilityInfoHolder.v.LastUnavailabilityCheckTimeStamp,
+                        durationPassed(Instant.now(), unavailabilityInfoHolder.v.lastUnavailabilityCheckTimeStamp,
                                 this.unavailableLocationsExpirationTime)
 
                         && Utils.tryRemove(this.locationUnavailabilityInfoByEndpoint, unavailableEndpoint, removedHolder)) {
                     logger.debug(
                             "Removed endpoint [{}] unavailable for operations [{}] from unavailableEndpoints",
                             unavailableEndpoint,
-                            unavailabilityInfoHolder.v.UnavailableOperations);
+                            unavailabilityInfoHolder.v.unavailableOperations);
                 }
             }
         }
@@ -321,16 +457,16 @@ public class LocationCache {
 
         if (expectedAvailableOperations == OperationType.None
                 || !Utils.tryGetValue(this.locationUnavailabilityInfoByEndpoint, endpoint, unavailabilityInfoHolder)
-                || !unavailabilityInfoHolder.v.UnavailableOperations.supports(expectedAvailableOperations)) {
+                || !unavailabilityInfoHolder.v.unavailableOperations.supports(expectedAvailableOperations)) {
             return false;
         } else {
-            if (durationPassed(Instant.now(), unavailabilityInfoHolder.v.LastUnavailabilityCheckTimeStamp, this.unavailableLocationsExpirationTime)) {
+            if (durationPassed(Instant.now(), unavailabilityInfoHolder.v.lastUnavailabilityCheckTimeStamp, this.unavailableLocationsExpirationTime)) {
                 return false;
             } else {
                 logger.debug(
                         "Endpoint [{}] unavailable for operations [{}] present in unavailableEndpoints",
                         endpoint,
-                        unavailabilityInfoHolder.v.UnavailableOperations);
+                        unavailabilityInfoHolder.v.unavailableOperations);
                 // Unexpired entry present. Endpoint is unavailable
                 return true;
             }
@@ -363,8 +499,8 @@ public class LocationCache {
                             return new LocationUnavailabilityInfo(currentTime, unavailableOperationType);
                         } else {
                             // already present, update
-                            info.LastUnavailabilityCheckTimeStamp = currentTime;
-                            info.UnavailableOperations = OperationType.combine(info.UnavailableOperations, unavailableOperationType);
+                            info.lastUnavailabilityCheckTimeStamp = currentTime;
+                            info.unavailableOperations = OperationType.combine(info.unavailableOperations, unavailableOperationType);
                             return info;
                         }
 
@@ -377,7 +513,7 @@ public class LocationCache {
                 "Endpoint [{}] unavailable for [{}] added/updated to unavailableEndpoints with timestamp [{}]",
                 unavailableEndpoint,
                 unavailableOperationType,
-                updatedInfo.LastUnavailabilityCheckTimeStamp);
+                updatedInfo.lastUnavailabilityCheckTimeStamp);
     }
 
     private void updateLocationCache(){
@@ -509,7 +645,7 @@ public class LocationCache {
         return (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(endpointsByLocation);
     }
 
-    private boolean canUseMultipleWriteLocations() {
+    public boolean canUseMultipleWriteLocations() {
         return this.useMultipleWriteLocations && this.enableMultipleWriteLocations;
     }
 
@@ -523,12 +659,12 @@ public class LocationCache {
 
     private static class LocationUnavailabilityInfo {
         LocationUnavailabilityInfo(Instant instant, OperationType type) {
-            this.LastUnavailabilityCheckTimeStamp = instant;
-            this.UnavailableOperations = type;
+            this.lastUnavailabilityCheckTimeStamp = instant;
+            this.unavailableOperations = type;
         }
 
-        public Instant LastUnavailabilityCheckTimeStamp;
-        public OperationType UnavailableOperations;
+        public Instant lastUnavailabilityCheckTimeStamp;
+        public OperationType unavailableOperations;
     }
 
     private enum OperationType {
@@ -575,6 +711,10 @@ public class LocationCache {
 
     private boolean unavailableLocationsExpirationTimePassed() {
         return durationPassed(Instant.now(), this.lastCacheUpdateTimestamp, this.unavailableLocationsExpirationTime);
+    }
+
+    private static boolean isExcludedRegionsSupplierConfigured(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
+        return excludedRegionsSupplier != null && excludedRegionsSupplier.get() != null;
     }
 
     static class DatabaseAccountLocationsInfo {

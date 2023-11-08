@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TestDataFactory {
 
@@ -51,9 +51,8 @@ public class TestDataFactory {
     private static String genreateRandomString(int targetLength) {
         int begin = 97; // letter 'a'
         int end = 122; // letter 'z'
-        Random random = new Random();
 
-        return random.ints(begin, end + 1)
+        return ThreadLocalRandom.current().ints(begin, end + 1)
                    .limit(targetLength)
                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                    .toString();

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotHubResource GetKeysForKeyName. */
 public final class IotHubResourceGetKeysForKeyNameSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_getkey.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_getkey.json
      */
     /**
      * Sample code: IotHubResource_GetKeysForKeyName.
@@ -19,6 +17,7 @@ public final class IotHubResourceGetKeysForKeyNameSamples {
     public static void iotHubResourceGetKeysForKeyName(com.azure.resourcemanager.iothub.IotHubManager manager) {
         manager
             .iotHubResources()
-            .getKeysForKeyNameWithResponse("myResourceGroup", "testHub", "iothubowner", Context.NONE);
+            .getKeysForKeyNameWithResponse(
+                "myResourceGroup", "testHub", "iothubowner", com.azure.core.util.Context.NONE);
     }
 }

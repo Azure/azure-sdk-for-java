@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataConnectorLicenseState. */
+/** Describes the state of user's license for a connector kind. */
 public final class DataConnectorLicenseState extends ExpandableStringEnum<DataConnectorLicenseState> {
     /** Static value Valid for DataConnectorLicenseState. */
     public static final DataConnectorLicenseState VALID = fromString("Valid");
@@ -30,7 +30,11 @@ public final class DataConnectorLicenseState extends ExpandableStringEnum<DataCo
         return fromString(name, DataConnectorLicenseState.class);
     }
 
-    /** @return known DataConnectorLicenseState values. */
+    /**
+     * Gets known DataConnectorLicenseState values.
+     *
+     * @return known DataConnectorLicenseState values.
+     */
     public static Collection<DataConnectorLicenseState> values() {
         return values(DataConnectorLicenseState.class);
     }

@@ -24,6 +24,10 @@ public final class RedisListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RedisListResult class. */
+    public RedisListResult() {
+    }
+
     /**
      * Get the value property: List of Redis cache instances.
      *

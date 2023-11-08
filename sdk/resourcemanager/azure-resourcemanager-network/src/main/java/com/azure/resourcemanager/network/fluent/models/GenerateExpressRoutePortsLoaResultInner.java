@@ -16,6 +16,10 @@ public final class GenerateExpressRoutePortsLoaResultInner {
     @JsonProperty(value = "encodedContent")
     private String encodedContent;
 
+    /** Creates an instance of GenerateExpressRoutePortsLoaResultInner class. */
+    public GenerateExpressRoutePortsLoaResultInner() {
+    }
+
     /**
      * Get the encodedContent property: The content as a base64 encoded string.
      *

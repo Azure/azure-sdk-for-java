@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.DedicatedCloudServiceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of dedicated cloud services. */
 @Fluent
 public final class DedicatedCloudServiceListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCloudServiceListResponse.class);
-
     /*
      * Link for next list of DedicatedCloudNode
      */
@@ -27,6 +23,10 @@ public final class DedicatedCloudServiceListResponse {
      */
     @JsonProperty(value = "value")
     private List<DedicatedCloudServiceInner> value;
+
+    /** Creates an instance of DedicatedCloudServiceListResponse class. */
+    public DedicatedCloudServiceListResponse() {
+    }
 
     /**
      * Get the nextLink property: Link for next list of DedicatedCloudNode.

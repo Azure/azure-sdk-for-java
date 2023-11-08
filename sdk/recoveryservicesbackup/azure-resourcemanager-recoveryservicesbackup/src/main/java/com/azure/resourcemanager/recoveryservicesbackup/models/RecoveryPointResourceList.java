@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of RecoveryPoint resources. */
 @Fluent
 public final class RecoveryPointResourceList extends ResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointResourceList.class);
-
     /*
      * List of resources.
      */
     @JsonProperty(value = "value")
     private List<RecoveryPointResourceInner> value;
+
+    /** Creates an instance of RecoveryPointResourceList class. */
+    public RecoveryPointResourceList() {
+    }
 
     /**
      * Get the value property: List of resources.

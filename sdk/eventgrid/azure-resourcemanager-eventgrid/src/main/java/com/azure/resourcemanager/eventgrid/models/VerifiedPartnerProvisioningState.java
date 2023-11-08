@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VerifiedPartnerProvisioningState. */
+/** Provisioning state of the verified partner. */
 public final class VerifiedPartnerProvisioningState extends ExpandableStringEnum<VerifiedPartnerProvisioningState> {
     /** Static value Creating for VerifiedPartnerProvisioningState. */
     public static final VerifiedPartnerProvisioningState CREATING = fromString("Creating");
@@ -29,6 +29,15 @@ public final class VerifiedPartnerProvisioningState extends ExpandableStringEnum
     public static final VerifiedPartnerProvisioningState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of VerifiedPartnerProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VerifiedPartnerProvisioningState() {
+    }
+
+    /**
      * Creates or finds a VerifiedPartnerProvisioningState from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class VerifiedPartnerProvisioningState extends ExpandableStringEnum
         return fromString(name, VerifiedPartnerProvisioningState.class);
     }
 
-    /** @return known VerifiedPartnerProvisioningState values. */
+    /**
+     * Gets known VerifiedPartnerProvisioningState values.
+     *
+     * @return known VerifiedPartnerProvisioningState values.
+     */
     public static Collection<VerifiedPartnerProvisioningState> values() {
         return values(VerifiedPartnerProvisioningState.class);
     }

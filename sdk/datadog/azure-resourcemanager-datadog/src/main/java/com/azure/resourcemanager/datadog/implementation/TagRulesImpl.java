@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datadog.fluent.TagRulesClient;
 import com.azure.resourcemanager.datadog.fluent.models.MonitoringTagRulesInner;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRules;
 import com.azure.resourcemanager.datadog.models.TagRules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TagRulesImpl implements TagRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagRulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TagRulesImpl.class);
 
     private final TagRulesClient innerClient;
 
@@ -39,15 +38,6 @@ public final class TagRulesImpl implements TagRules {
         return Utils.mapPage(inner, inner1 -> new MonitoringTagRulesImpl(inner1, this.manager()));
     }
 
-    public MonitoringTagRules get(String resourceGroupName, String monitorName, String ruleSetName) {
-        MonitoringTagRulesInner inner = this.serviceClient().get(resourceGroupName, monitorName, ruleSetName);
-        if (inner != null) {
-            return new MonitoringTagRulesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MonitoringTagRules> getWithResponse(
         String resourceGroupName, String monitorName, String ruleSetName, Context context) {
         Response<MonitoringTagRulesInner> inner =
@@ -63,10 +53,19 @@ public final class TagRulesImpl implements TagRules {
         }
     }
 
+    public MonitoringTagRules get(String resourceGroupName, String monitorName, String ruleSetName) {
+        MonitoringTagRulesInner inner = this.serviceClient().get(resourceGroupName, monitorName, ruleSetName);
+        if (inner != null) {
+            return new MonitoringTagRulesImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public MonitoringTagRules getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -74,14 +73,14 @@ public final class TagRulesImpl implements TagRules {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String ruleSetName = Utils.getValueFromIdByName(id, "tagRules");
         if (ruleSetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
@@ -92,7 +91,7 @@ public final class TagRulesImpl implements TagRules {
     public Response<MonitoringTagRules> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -100,14 +99,14 @@ public final class TagRulesImpl implements TagRules {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String ruleSetName = Utils.getValueFromIdByName(id, "tagRules");
         if (ruleSetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ChartType. */
+/** Chart type of the main view in Cost Analysis. Required. */
 public final class ChartType extends ExpandableStringEnum<ChartType> {
     /** Static value Area for ChartType. */
     public static final ChartType AREA = fromString("Area");
@@ -26,6 +26,15 @@ public final class ChartType extends ExpandableStringEnum<ChartType> {
     public static final ChartType TABLE = fromString("Table");
 
     /**
+     * Creates a new instance of ChartType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ChartType() {
+    }
+
+    /**
      * Creates or finds a ChartType from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class ChartType extends ExpandableStringEnum<ChartType> {
         return fromString(name, ChartType.class);
     }
 
-    /** @return known ChartType values. */
+    /**
+     * Gets known ChartType values.
+     *
+     * @return known ChartType values.
+     */
     public static Collection<ChartType> values() {
         return values(ChartType.class);
     }

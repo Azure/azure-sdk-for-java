@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Private Endpoint Connection For Private Link Hub - Basic. */
 @Fluent
 public final class PrivateEndpointConnectionForPrivateLinkHubBasic {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionForPrivateLinkHubBasic.class);
-
     /*
      * identifier
      */
@@ -27,6 +22,10 @@ public final class PrivateEndpointConnectionForPrivateLinkHubBasic {
      */
     @JsonProperty(value = "properties")
     private PrivateEndpointConnectionProperties innerProperties;
+
+    /** Creates an instance of PrivateEndpointConnectionForPrivateLinkHubBasic class. */
+    public PrivateEndpointConnectionForPrivateLinkHubBasic() {
+    }
 
     /**
      * Get the id property: identifier.

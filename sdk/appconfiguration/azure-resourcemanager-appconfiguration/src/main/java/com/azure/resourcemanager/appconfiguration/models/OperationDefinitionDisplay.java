@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The display information for a configuration store operation. */
 @Fluent
 public final class OperationDefinitionDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDefinitionDisplay.class);
-
     /*
      * The resource provider name: Microsoft App Configuration."
      */
@@ -37,6 +33,10 @@ public final class OperationDefinitionDisplay {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of OperationDefinitionDisplay class. */
+    public OperationDefinitionDisplay() {
+    }
 
     /**
      * Get the provider property: The resource provider name: Microsoft App Configuration.".

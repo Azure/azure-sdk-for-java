@@ -27,11 +27,15 @@ public final class DiskEncryptionSetUpdate {
     private Map<String, String> tags;
 
     /*
-     * The managed identity for the disk encryption set. It should be given
-     * permission on the key vault before it can be used to encrypt disks.
+     * The managed identity for the disk encryption set. It should be given permission on the key vault before it can
+     * be used to encrypt disks.
      */
     @JsonProperty(value = "identity")
     private EncryptionSetIdentity identity;
+
+    /** Creates an instance of DiskEncryptionSetUpdate class. */
+    public DiskEncryptionSetUpdate() {
+    }
 
     /**
      * Get the innerProperties property: disk encryption set resource update properties.
@@ -154,6 +158,31 @@ public final class DiskEncryptionSetUpdate {
             this.innerProperties = new DiskEncryptionSetUpdateProperties();
         }
         this.innerProperties().withRotationToLatestKeyVersionEnabled(rotationToLatestKeyVersionEnabled);
+        return this;
+    }
+
+    /**
+     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @return the federatedClientId value.
+     */
+    public String federatedClientId() {
+        return this.innerProperties() == null ? null : this.innerProperties().federatedClientId();
+    }
+
+    /**
+     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the DiskEncryptionSetUpdate object itself.
+     */
+    public DiskEncryptionSetUpdate withFederatedClientId(String federatedClientId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskEncryptionSetUpdateProperties();
+        }
+        this.innerProperties().withFederatedClientId(federatedClientId);
         return this;
     }
 

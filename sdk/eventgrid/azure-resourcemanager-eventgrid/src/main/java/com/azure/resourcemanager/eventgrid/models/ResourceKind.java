@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceKind. */
+/** Kind of the resource. */
 public final class ResourceKind extends ExpandableStringEnum<ResourceKind> {
     /** Static value Azure for ResourceKind. */
     public static final ResourceKind AZURE = fromString("Azure");
 
     /** Static value AzureArc for ResourceKind. */
     public static final ResourceKind AZURE_ARC = fromString("AzureArc");
+
+    /**
+     * Creates a new instance of ResourceKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceKind() {
+    }
 
     /**
      * Creates or finds a ResourceKind from its string representation.
@@ -27,7 +36,11 @@ public final class ResourceKind extends ExpandableStringEnum<ResourceKind> {
         return fromString(name, ResourceKind.class);
     }
 
-    /** @return known ResourceKind values. */
+    /**
+     * Gets known ResourceKind values.
+     *
+     * @return known ResourceKind values.
+     */
     public static Collection<ResourceKind> values() {
         return values(ResourceKind.class);
     }

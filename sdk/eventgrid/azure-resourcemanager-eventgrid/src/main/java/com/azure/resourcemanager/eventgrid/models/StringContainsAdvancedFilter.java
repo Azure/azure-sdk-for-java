@@ -21,6 +21,10 @@ public final class StringContainsAdvancedFilter extends AdvancedFilter {
     @JsonProperty(value = "values")
     private List<String> values;
 
+    /** Creates an instance of StringContainsAdvancedFilter class. */
+    public StringContainsAdvancedFilter() {
+    }
+
     /**
      * Get the values property: The set of filter values.
      *

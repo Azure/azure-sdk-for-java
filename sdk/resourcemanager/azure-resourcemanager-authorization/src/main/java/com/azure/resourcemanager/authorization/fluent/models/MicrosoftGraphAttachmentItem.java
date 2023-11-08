@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** attachmentItem. */
 @Fluent
 public final class MicrosoftGraphAttachmentItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphAttachmentItem.class);
-
     /*
      * attachmentType
      */
@@ -31,15 +28,14 @@ public final class MicrosoftGraphAttachmentItem {
     private String contentType;
 
     /*
-     * true if the attachment is an inline attachment; otherwise, false.
-     * Optional.
+     * true if the attachment is an inline attachment; otherwise, false. Optional.
      */
     @JsonProperty(value = "isInline")
     private Boolean isInline;
 
     /*
-     * The display name of the attachment. This can be a descriptive string and
-     * does not have to be the actual file name. Required.
+     * The display name of the attachment. This can be a descriptive string and does not have to be the actual file
+     * name. Required.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -54,6 +50,10 @@ public final class MicrosoftGraphAttachmentItem {
      * attachmentItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAttachmentItem class. */
+    public MicrosoftGraphAttachmentItem() {
+    }
 
     /**
      * Get the attachmentType property: attachmentType.

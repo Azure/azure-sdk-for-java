@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -29,17 +27,17 @@ import java.util.Map;
 })
 @Fluent
 public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadSqlRecoveryPoint.class);
-
     /*
-     * Extended Info that provides data directory details. Will be populated in
-     * two cases:
+     * Extended Info that provides data directory details. Will be populated in two cases:
      * When a specific recovery point is accessed using GetRecoveryPoint
-     * Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo
-     * query filter
+     * Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter
      */
     @JsonProperty(value = "extendedInfo")
     private AzureWorkloadSqlRecoveryPointExtendedInfo extendedInfo;
+
+    /** Creates an instance of AzureWorkloadSqlRecoveryPoint class. */
+    public AzureWorkloadSqlRecoveryPoint() {
+    }
 
     /**
      * Get the extendedInfo property: Extended Info that provides data directory details. Will be populated in two
@@ -92,6 +90,13 @@ public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
     public AzureWorkloadSqlRecoveryPoint withRecoveryPointMoveReadinessInfo(
         Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
         super.withRecoveryPointMoveReadinessInfo(recoveryPointMoveReadinessInfo);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSqlRecoveryPoint withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
+        super.withRecoveryPointProperties(recoveryPointProperties);
         return this;
     }
 

@@ -25,6 +25,10 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     private DataLakeAnalyticsUsqlActivityTypeProperties innerTypeProperties =
         new DataLakeAnalyticsUsqlActivityTypeProperties();
 
+    /** Creates an instance of DataLakeAnalyticsUsqlActivity class. */
+    public DataLakeAnalyticsUsqlActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Data Lake Analytics U-SQL activity properties.
      *
@@ -59,6 +63,20 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     @Override
     public DataLakeAnalyticsUsqlActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalyticsUsqlActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalyticsUsqlActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

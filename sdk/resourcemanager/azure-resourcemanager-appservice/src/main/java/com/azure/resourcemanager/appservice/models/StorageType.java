@@ -30,6 +30,9 @@ public enum StorageType {
      */
     @JsonCreator
     public static StorageType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StorageType[] items = StorageType.values();
         for (StorageType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum StorageType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

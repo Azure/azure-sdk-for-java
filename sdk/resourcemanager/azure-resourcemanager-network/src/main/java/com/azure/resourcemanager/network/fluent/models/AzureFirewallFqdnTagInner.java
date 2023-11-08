@@ -31,6 +31,10 @@ public final class AzureFirewallFqdnTagInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of AzureFirewallFqdnTagInner class. */
+    public AzureFirewallFqdnTagInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the azure firewall FQDN tag.
      *

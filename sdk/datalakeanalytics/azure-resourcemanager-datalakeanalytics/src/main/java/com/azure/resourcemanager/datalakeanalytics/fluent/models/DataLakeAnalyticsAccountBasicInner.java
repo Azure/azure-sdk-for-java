@@ -4,13 +4,10 @@
 
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeAnalyticsAccountState;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeAnalyticsAccountStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -20,99 +17,26 @@ import java.util.UUID;
  * A Data Lake Analytics account object, containing all information associated with the named Data Lake Analytics
  * account.
  */
-@JsonFlatten
-@Immutable
-public class DataLakeAnalyticsAccountBasicInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeAnalyticsAccountBasicInner.class);
-
+@Fluent
+public final class DataLakeAnalyticsAccountBasicInner extends Resource {
     /*
-     * The unique identifier associated with this Data Lake Analytics account.
+     * The properties defined by Data Lake Analytics all properties are specific to each resource provider.
      */
-    @JsonProperty(value = "properties.accountId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID accountId;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private DataLakeAnalyticsAccountPropertiesBasic innerProperties;
 
-    /*
-     * The provisioning status of the Data Lake Analytics account.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private DataLakeAnalyticsAccountStatus provisioningState;
-
-    /*
-     * The state of the Data Lake Analytics account.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private DataLakeAnalyticsAccountState state;
-
-    /*
-     * The account creation time.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * The account last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * The full CName endpoint for this account.
-     */
-    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String endpoint;
-
-    /**
-     * Get the accountId property: The unique identifier associated with this Data Lake Analytics account.
-     *
-     * @return the accountId value.
-     */
-    public UUID accountId() {
-        return this.accountId;
+    /** Creates an instance of DataLakeAnalyticsAccountBasicInner class. */
+    public DataLakeAnalyticsAccountBasicInner() {
     }
 
     /**
-     * Get the provisioningState property: The provisioning status of the Data Lake Analytics account.
+     * Get the innerProperties property: The properties defined by Data Lake Analytics all properties are specific to
+     * each resource provider.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public DataLakeAnalyticsAccountStatus provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the state property: The state of the Data Lake Analytics account.
-     *
-     * @return the state value.
-     */
-    public DataLakeAnalyticsAccountState state() {
-        return this.state;
-    }
-
-    /**
-     * Get the creationTime property: The account creation time.
-     *
-     * @return the creationTime value.
-     */
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
-    }
-
-    /**
-     * Get the lastModifiedTime property: The account last modified time.
-     *
-     * @return the lastModifiedTime value.
-     */
-    public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
-    }
-
-    /**
-     * Get the endpoint property: The full CName endpoint for this account.
-     *
-     * @return the endpoint value.
-     */
-    public String endpoint() {
-        return this.endpoint;
+    private DataLakeAnalyticsAccountPropertiesBasic innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -130,10 +54,67 @@ public class DataLakeAnalyticsAccountBasicInner extends Resource {
     }
 
     /**
+     * Get the accountId property: The unique identifier associated with this Data Lake Analytics account.
+     *
+     * @return the accountId value.
+     */
+    public UUID accountId() {
+        return this.innerProperties() == null ? null : this.innerProperties().accountId();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the Data Lake Analytics account.
+     *
+     * @return the provisioningState value.
+     */
+    public DataLakeAnalyticsAccountStatus provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the state property: The state of the Data Lake Analytics account.
+     *
+     * @return the state value.
+     */
+    public DataLakeAnalyticsAccountState state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Get the creationTime property: The account creation time.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime creationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
+    }
+
+    /**
+     * Get the lastModifiedTime property: The account last modified time.
+     *
+     * @return the lastModifiedTime value.
+     */
+    public OffsetDateTime lastModifiedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
+    }
+
+    /**
+     * Get the endpoint property: The full CName endpoint for this account.
+     *
+     * @return the endpoint value.
+     */
+    public String endpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

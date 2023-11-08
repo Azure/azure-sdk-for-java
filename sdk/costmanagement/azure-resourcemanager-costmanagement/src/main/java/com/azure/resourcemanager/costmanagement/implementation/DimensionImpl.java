@@ -34,6 +34,10 @@ public final class DimensionImpl implements Dimension {
         return this.innerModel().type();
     }
 
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public Map<String, String> tags() {
         Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
@@ -41,6 +45,14 @@ public final class DimensionImpl implements Dimension {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String sku() {
+        return this.innerModel().sku();
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public String description() {

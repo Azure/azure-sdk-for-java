@@ -24,8 +24,7 @@ public class ForEachActivity extends ControlActivity {
     private Boolean isSequential;
 
     /*
-     * Batch count to be used for controlling the number of parallel execution
-     * (when isSequential is set to false).
+     * Batch count to be used for controlling the number of parallel execution (when isSequential is set to false).
      */
     @JsonProperty(value = "typeProperties.batchCount")
     private Integer batchCount;
@@ -41,6 +40,9 @@ public class ForEachActivity extends ControlActivity {
      */
     @JsonProperty(value = "typeProperties.activities", required = true)
     private List<Activity> activities;
+
+    /** Creates an instance of ForEachActivity class. */
+    public ForEachActivity() {}
 
     /**
      * Get the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
@@ -121,6 +123,48 @@ public class ForEachActivity extends ControlActivity {
      */
     public ForEachActivity setActivities(List<Activity> activities) {
         this.activities = activities;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

@@ -34,6 +34,10 @@ public final class ApiOperationDisplay {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ApiOperationDisplay class. */
+    public ApiOperationDisplay() {
+    }
+
     /**
      * Get the operation property: Operation type: Read, write, delete, etc.
      *

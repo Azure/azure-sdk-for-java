@@ -9,18 +9,21 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
-@ServiceClient(builder = PurviewAccountClientBuilder.class)
+@ServiceClient(builder = AccountsClientBuilder.class)
 public final class AccountsClient {
     @Generated private final AccountsImpl serviceClient;
 
     /**
-     * Initializes an instance of Accounts client.
+     * Initializes an instance of AccountsClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -32,87 +35,82 @@ public final class AccountsClient {
     /**
      * Get an account.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     identity: {
-     *         principalId: String
-     *         tenantId: String
-     *         type: String(SystemAssigned)
+     *     id: String (Optional)
+     *     identity (Optional): {
+     *         principalId: String (Optional)
+     *         tenantId: String (Optional)
+     *         type: String(SystemAssigned) (Optional)
      *     }
-     *     location: String
-     *     name: String
-     *     properties: {
-     *         cloudConnectors: {
-     *             awsExternalId: String
+     *     location: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         cloudConnectors (Optional): {
+     *             awsExternalId: String (Optional)
      *         }
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByObjectId: String
-     *         endpoints: {
-     *             catalog: String
-     *             guardian: String
-     *             scan: String
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByObjectId: String (Optional)
+     *         endpoints (Optional): {
+     *             catalog: String (Optional)
+     *             guardian: String (Optional)
+     *             scan: String (Optional)
      *         }
-     *         friendlyName: String
-     *         managedResourceGroupName: String
-     *         managedResources: {
-     *             eventHubNamespace: String
-     *             resourceGroup: String
-     *             storageAccount: String
+     *         friendlyName: String (Optional)
+     *         managedResourceGroupName: String (Optional)
+     *         managedResources (Optional): {
+     *             eventHubNamespace: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             storageAccount: String (Optional)
      *         }
-     *         privateEndpointConnections: [
-     *             {
-     *                 id: String
-     *                 name: String
-     *                 properties: {
-     *                     privateEndpoint: {
-     *                         id: String
+     *         privateEndpointConnections (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 properties (Optional): {
+     *                     privateEndpoint (Optional): {
+     *                         id: String (Optional)
      *                     }
-     *                     privateLinkServiceConnectionState: {
-     *                         actionsRequired: String
-     *                         description: String
-     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     privateLinkServiceConnectionState (Optional): {
+     *                         actionsRequired: String (Optional)
+     *                         description: String (Optional)
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected) (Optional)
      *                     }
-     *                     provisioningState: String
+     *                     provisioningState: String (Optional)
      *                 }
-     *                 type: String
+     *                 type: String (Optional)
      *             }
      *         ]
-     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
-     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled) (Optional)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled) (Optional)
      *     }
-     *     sku: {
-     *         capacity: Integer
-     *         name: String(Standard)
+     *     sku (Optional): {
+     *         capacity: Integer (Optional)
+     *         name: String(Standard) (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
-     *     tags: {
-     *         String: String
+     *     tags (Optional): {
+     *         String: String (Optional)
      *     }
-     *     type: String
+     *     type: String (Optional)
      * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an account along with {@link Response}.
      */
     @Generated
@@ -124,19 +122,11 @@ public final class AccountsClient {
     /**
      * Updates an account.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     friendlyName: String
+     *     friendlyName: String (Optional)
      * }
      * }</pre>
      *
@@ -144,76 +134,79 @@ public final class AccountsClient {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     identity: {
-     *         principalId: String
-     *         tenantId: String
-     *         type: String(SystemAssigned)
+     *     id: String (Optional)
+     *     identity (Optional): {
+     *         principalId: String (Optional)
+     *         tenantId: String (Optional)
+     *         type: String(SystemAssigned) (Optional)
      *     }
-     *     location: String
-     *     name: String
-     *     properties: {
-     *         cloudConnectors: {
-     *             awsExternalId: String
+     *     location: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         cloudConnectors (Optional): {
+     *             awsExternalId: String (Optional)
      *         }
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByObjectId: String
-     *         endpoints: {
-     *             catalog: String
-     *             guardian: String
-     *             scan: String
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByObjectId: String (Optional)
+     *         endpoints (Optional): {
+     *             catalog: String (Optional)
+     *             guardian: String (Optional)
+     *             scan: String (Optional)
      *         }
-     *         friendlyName: String
-     *         managedResourceGroupName: String
-     *         managedResources: {
-     *             eventHubNamespace: String
-     *             resourceGroup: String
-     *             storageAccount: String
+     *         friendlyName: String (Optional)
+     *         managedResourceGroupName: String (Optional)
+     *         managedResources (Optional): {
+     *             eventHubNamespace: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             storageAccount: String (Optional)
      *         }
-     *         privateEndpointConnections: [
-     *             {
-     *                 id: String
-     *                 name: String
-     *                 properties: {
-     *                     privateEndpoint: {
-     *                         id: String
+     *         privateEndpointConnections (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 properties (Optional): {
+     *                     privateEndpoint (Optional): {
+     *                         id: String (Optional)
      *                     }
-     *                     privateLinkServiceConnectionState: {
-     *                         actionsRequired: String
-     *                         description: String
-     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     privateLinkServiceConnectionState (Optional): {
+     *                         actionsRequired: String (Optional)
+     *                         description: String (Optional)
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected) (Optional)
      *                     }
-     *                     provisioningState: String
+     *                     provisioningState: String (Optional)
      *                 }
-     *                 type: String
+     *                 type: String (Optional)
      *             }
      *         ]
-     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
-     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled) (Optional)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled) (Optional)
      *     }
-     *     sku: {
-     *         capacity: Integer
-     *         name: String(Standard)
+     *     sku (Optional): {
+     *         capacity: Integer (Optional)
+     *         name: String(Standard) (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
-     *     tags: {
-     *         String: String
+     *     tags (Optional): {
+     *         String: String (Optional)
      *     }
-     *     type: String
+     *     type: String (Optional)
      * }
      * }</pre>
      *
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return account resource along with {@link Response}.
      */
     @Generated
@@ -226,25 +219,20 @@ public final class AccountsClient {
     /**
      * List the authorization keys associated with this account.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     atlasKafkaPrimaryEndpoint: String
-     *     atlasKafkaSecondaryEndpoint: String
+     *     atlasKafkaPrimaryEndpoint: String (Optional)
+     *     atlasKafkaSecondaryEndpoint: String (Optional)
      * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the Account access keys along with {@link Response}.
      */
     @Generated
@@ -256,19 +244,11 @@ public final class AccountsClient {
     /**
      * Regenerate the authorization keys associated with this data catalog.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey)
+     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey) (Optional)
      * }
      * }</pre>
      *
@@ -276,14 +256,17 @@ public final class AccountsClient {
      *
      * <pre>{@code
      * {
-     *     atlasKafkaPrimaryEndpoint: String
-     *     atlasKafkaSecondaryEndpoint: String
+     *     atlasKafkaPrimaryEndpoint: String (Optional)
+     *     atlasKafkaSecondaryEndpoint: String (Optional)
      * }
      * }</pre>
      *
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the Account access keys along with {@link Response}.
      */
     @Generated

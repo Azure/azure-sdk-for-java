@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Singleton")
 @Immutable
 public final class SingletonPartitionSchemeDescription extends PartitionSchemeDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SingletonPartitionSchemeDescription.class);
+    /** Creates an instance of SingletonPartitionSchemeDescription class. */
+    public SingletonPartitionSchemeDescription() {
+    }
 
     /**
      * Validates the instance.

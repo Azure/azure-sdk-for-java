@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("EncodedTask")
 @Fluent
 public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncodedTaskStepUpdateParameters.class);
-
     /*
      * Base64 encoded value of the template/definition file content.
      */
@@ -95,6 +91,20 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
      */
     public EncodedTaskStepUpdateParameters withValues(List<SetValue> values) {
         this.values = values;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskStepUpdateParameters withContextPath(String contextPath) {
+        super.withContextPath(contextPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskStepUpdateParameters withContextAccessToken(String contextAccessToken) {
+        super.withContextAccessToken(contextAccessToken);
         return this;
     }
 

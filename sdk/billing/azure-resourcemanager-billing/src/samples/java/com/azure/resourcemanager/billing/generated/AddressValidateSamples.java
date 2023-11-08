@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 
 /** Samples for Address Validate. */
@@ -26,8 +25,8 @@ public final class AddressValidateSamples {
                     .withCity("bellevue")
                     .withRegion("wa")
                     .withCountry("us")
-                    .withPostalCode("12345"),
-                Context.NONE);
+                    .withPostalCode("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -47,7 +46,7 @@ public final class AddressValidateSamples {
                     .withCity("bellevue")
                     .withRegion("wa")
                     .withCountry("us")
-                    .withPostalCode("12345"),
-                Context.NONE);
+                    .withPostalCode("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

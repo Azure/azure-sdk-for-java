@@ -45,6 +45,13 @@ public interface LinkedServiceResource {
     String etag();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.LinkedServiceResourceInner object.
      *
      * @return the inner object.
@@ -58,11 +65,13 @@ public interface LinkedServiceResource {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The LinkedServiceResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the LinkedServiceResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the LinkedServiceResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -74,6 +83,7 @@ public interface LinkedServiceResource {
              */
             WithProperties withExistingFactory(String resourceGroupName, String factoryName);
         }
+
         /** The stage of the LinkedServiceResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -84,6 +94,7 @@ public interface LinkedServiceResource {
              */
             WithCreate withProperties(LinkedService properties);
         }
+
         /**
          * The stage of the LinkedServiceResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -104,6 +115,7 @@ public interface LinkedServiceResource {
              */
             LinkedServiceResource create(Context context);
         }
+
         /** The stage of the LinkedServiceResource definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -117,6 +129,7 @@ public interface LinkedServiceResource {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the LinkedServiceResource resource.
      *
@@ -141,6 +154,7 @@ public interface LinkedServiceResource {
          */
         LinkedServiceResource apply(Context context);
     }
+
     /** The LinkedServiceResource update stages. */
     interface UpdateStages {
         /** The stage of the LinkedServiceResource update allowing to specify properties. */
@@ -153,6 +167,7 @@ public interface LinkedServiceResource {
              */
             Update withProperties(LinkedService properties);
         }
+
         /** The stage of the LinkedServiceResource update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -166,6 +181,7 @@ public interface LinkedServiceResource {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

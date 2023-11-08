@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Azure")
 @Immutable
 public final class AzureResourceDetails extends ResourceDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureResourceDetails.class);
-
     /*
      * Azure resource Id of the assessed resource
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
+
+    /** Creates an instance of AzureResourceDetails class. */
+    public AzureResourceDetails() {
+    }
 
     /**
      * Get the id property: Azure resource Id of the assessed resource.

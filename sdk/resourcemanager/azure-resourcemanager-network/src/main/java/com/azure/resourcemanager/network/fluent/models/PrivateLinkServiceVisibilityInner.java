@@ -16,6 +16,10 @@ public final class PrivateLinkServiceVisibilityInner {
     @JsonProperty(value = "visible")
     private Boolean visible;
 
+    /** Creates an instance of PrivateLinkServiceVisibilityInner class. */
+    public PrivateLinkServiceVisibilityInner() {
+    }
+
     /**
      * Get the visible property: Private Link Service Visibility (True/False).
      *

@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureSearchLinkedServiceTypeProperties {
     /*
-     * URL for Azure Search service. Type: string (or Expression with
-     * resultType string).
+     * URL for Azure Search service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -26,12 +25,15 @@ public final class AzureSearchLinkedServiceTypeProperties {
     private SecretBase key;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of AzureSearchLinkedServiceTypeProperties class. */
+    public AzureSearchLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
@@ -75,22 +77,22 @@ public final class AzureSearchLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureSearchLinkedServiceTypeProperties object itself.
      */
-    public AzureSearchLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureSearchLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

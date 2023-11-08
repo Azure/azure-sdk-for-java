@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of private link resources. */
 @Fluent
 public final class PrivateLinkResourceListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceListResultInner.class);
-
     /*
      * Array of private link resources
      */
     @JsonProperty(value = "value")
     private List<PrivateLinkResource> value;
+
+    /** Creates an instance of PrivateLinkResourceListResultInner class. */
+    public PrivateLinkResourceListResultInner() {
+    }
 
     /**
      * Get the value property: Array of private link resources.

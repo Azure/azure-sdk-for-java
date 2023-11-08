@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobErrorCode. */
+/** Error codes returned by the service. */
 public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value AccountAlreadyExists for BlobErrorCode. */
     public static final BlobErrorCode ACCOUNT_ALREADY_EXISTS = fromString("AccountAlreadyExists");
@@ -200,9 +200,9 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value IncrementalCopyBlobMismatch for BlobErrorCode. */
     public static final BlobErrorCode INCREMENTAL_COPY_BLOB_MISMATCH = fromString("IncrementalCopyBlobMismatch");
 
-    /** Static value IncrementalCopyOfEralierVersionSnapshotNotAllowed for BlobErrorCode. */
-    public static final BlobErrorCode INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED =
-            fromString("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
+    /** Static value IncrementalCopyOfEarlierVersionSnapshotNotAllowed for BlobErrorCode. */
+    public static final BlobErrorCode INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED =
+            fromString("IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
 
     /** Static value IncrementalCopySourceMustBeSnapshot for BlobErrorCode. */
     public static final BlobErrorCode INCREMENTAL_COPY_SOURCE_MUST_BE_SNAPSHOT =
@@ -326,12 +326,6 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value SnapshotCountExceeded for BlobErrorCode. */
     public static final BlobErrorCode SNAPSHOT_COUNT_EXCEEDED = fromString("SnapshotCountExceeded");
 
-    /** Static value SnapshotOperationRateExceeded for BlobErrorCode.
-     * @deprecated Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}
-     */
-    @Deprecated
-    public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
-
     /** Static value SnapshotOperationRateExceeded for BlobErrorCode. */
     public static final BlobErrorCode SNAPSHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
 
@@ -376,6 +370,31 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
             fromString("AuthorizationResourceTypeMismatch");
 
     /**
+     * Static value SnapshotOperationRateExceeded for BlobErrorCode.
+     *
+     * @deprecated Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}
+     */
+    @Deprecated
+    public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
+
+    /**
+     * Static value IncrementalCopyOfEralierVersionSnapshotNotAllowed for BlobErrorCode.
+     *
+     * @deprecated Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED}
+     */
+    @Deprecated
+    public static final BlobErrorCode INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED =
+            fromString("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
+
+    /**
+     * Creates a new instance of BlobErrorCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobErrorCode() {}
+
+    /**
      * Creates or finds a BlobErrorCode from its string representation.
      *
      * @param name a name to look for.
@@ -386,7 +405,11 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
         return fromString(name, BlobErrorCode.class);
     }
 
-    /** @return known BlobErrorCode values. */
+    /**
+     * Gets known BlobErrorCode values.
+     *
+     * @return known BlobErrorCode values.
+     */
     public static Collection<BlobErrorCode> values() {
         return values(BlobErrorCode.class);
     }

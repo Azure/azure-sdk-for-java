@@ -1,16 +1,198 @@
 # Release History
 
-## 1.0.0-beta.11 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed a bug that caused deserialize operation to throw `SchemaParseException` when multiple messages with same schema 
-  were deserialized (https://github.com/Azure/azure-sdk-for-java/issues/27602).
 
 ### Other Changes
+
+## 1.1.11 (2023-10-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-data-schemaregistry` from `1.3.10` to version `1.4.0`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+## 1.1.10 (2023-09-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-data-schemaregistry` from `1.3.9` to version `1.3.10`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 1.1.9 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-data-schemaregistry` from `1.3.8` to version `1.4.0-beta.3`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 1.1.8 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-data-schemaregistry` from `1.3.7` to version `1.4.0-beta.3`.
+
+## 1.1.7 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-data-schemaregistry` from `1.3.6` to version `1.3.7`.
+
+## 1.1.6 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-data-schemaregistry` from `1.3.5` to version `1.3.6`.
+
+## 1.1.5 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-data-schemaregistry` from `1.3.4` to version `1.3.5`.
+
+## 1.1.4 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-data-schemaregistry` from `1.3.3` to version `1.3.4`.
+- Upgraded `jackson-core` from `2.13.4` to version `2.13.5`.
+- Upgraded `jackson-databind` from `2.13.4.2` to version `2.13.5`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 1.1.3 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-data-schemaregistry` from `1.3.2` to version `1.3.3`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
+## 1.2.0-beta.1 (2023-01-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.4.0-beta.1`.
+
+## 1.1.2 (2023-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.35.0`.
+- Update `azure-data-schemaregistry` dependency to `1.3.2`.
+
+## 1.1.1 (2022-11-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.34.0`.
+- Update `azure-data-schemaregistry` dependency to `1.3.1`.
+
+## 1.1.0 (2022-10-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.33.0`.
+- Update `azure-data-schemaregistry` dependency to `1.3.0`.
+
+## 1.0.4 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.32.0`.
+- Update `azure-data-schemaregistry` dependency to `1.2.4`.
+
+## 1.0.3 (2022-08-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.31.0`.
+- Update `azure-data-schemaregistry` dependency to `1.2.3`.
+
+## 1.0.2 (2022-07-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.2.2`.
+
+## 1.0.1 (2022-06-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.2.1`.
+
+## 1.0.0 (2022-05-13)
+
+### Features Added
+
+- Cache parsed and fetched schemas.
+
+### Breaking Changes
+
+- Renamed `autoRegisterSchema` to `autoRegisterSchemas` in `SchemaRegistryApacheAvroSerializerBuilder`.
+- Removed "MessageData" from `serializeMessageData`, `deserializeMessageData`, `serializeMessageDataAsync`, `deserializeMessageDataAsync`.
+- Removed old support for preamble deserialization.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.2.0`.
+
+## 1.0.0-beta.11 (2022-04-07)
+
+### Bugs Fixed
+
+- Fixed a bug that caused deserialize operation to throw `SchemaParseException` when multiple messages with same schema
+  were deserialized (https://github.com/Azure/azure-sdk-for-java/issues/27602).
+- Wrap Apache Avro exceptions with new exception type, `SchemaRegistryApacheAvroException`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.1.1`.
 
 ## 1.0.0-beta.10 (2022-03-15)
 
@@ -24,13 +206,13 @@
 
 #### Dependency Updates
 
-- Update `azure-data-schemaregistry` dependency to `1.0.3`.
+- Update `azure-data-schemaregistry` dependency to `1.1.0`.
 
 ## 1.0.0-beta.9 (2022-02-12)
 
 ### Features Added
 
-- Changed `SchemaRegistryApacheAvroEncoder` to deserialize `MessageWithMetadata` rather than tied to a binary format
+- Changed `SchemaRegistryApacheAvroEncoder` to deserialize `MessageContent` rather than tied to a binary format
   with preamble. Backwards compatibility with preamble format supported for this release. See issue #26449.
 
 ### Breaking Changes

@@ -1,0 +1,1 @@
+com.azure.spring.messaging.implementation.annotation.AzureListenerAnnotationBeanPostProcessorAdapter=com.azure.spring.messaging.servicebus.implementation.core.annotation.ServiceBusListenerAnnotationBeanPostProcessor

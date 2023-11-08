@@ -6,16 +6,12 @@ package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.models.ProjectTaskProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A task resource. */
 @Fluent
 public final class ProjectTaskInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProjectTaskInner.class);
-
     /*
      * HTTP strong entity tag value. This is ignored if submitted.
      */
@@ -27,6 +23,10 @@ public final class ProjectTaskInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private ProjectTaskProperties properties;
+
+    /** Creates an instance of ProjectTaskInner class. */
+    public ProjectTaskInner() {
+    }
 
     /**
      * Get the etag property: HTTP strong entity tag value. This is ignored if submitted.

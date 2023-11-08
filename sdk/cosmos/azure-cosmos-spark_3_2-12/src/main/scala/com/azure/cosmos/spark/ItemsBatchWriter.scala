@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.write.streaming.{StreamingDataWriterFactory, StreamingWrite}
@@ -13,8 +12,9 @@ private class ItemsBatchWriter
 (
   userConfig: Map[String, String],
   inputSchema: StructType,
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
-  diagnosticsConfig: DiagnosticsConfig
+  cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
+  diagnosticsConfig: DiagnosticsConfig,
+  sparkEnvironmentInfo: String
 )
   extends BatchWrite
     with StreamingWrite {
@@ -23,11 +23,21 @@ private class ItemsBatchWriter
   log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createBatchWriterFactory(physicalWriteInfo: PhysicalWriteInfo): DataWriterFactory = {
-    new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandle, diagnosticsConfig)
+    new ItemsDataWriteFactory(
+      userConfig,
+      inputSchema,
+      cosmosClientStateHandles,
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
   }
 
   override def createStreamingWriterFactory(physicalWriteInfo: PhysicalWriteInfo): StreamingDataWriterFactory = {
-    new ItemsDataWriteFactory(userConfig, inputSchema, cosmosClientStateHandle, diagnosticsConfig)
+    new ItemsDataWriteFactory(
+      userConfig,
+      inputSchema,
+      cosmosClientStateHandles,
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
   }
 
   override def commit(writerCommitMessages: Array[WriterCommitMessage]): Unit = {

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The tracking event error info. */
 @Fluent
 public final class TrackingEventErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackingEventErrorInfo.class);
-
     /*
      * The message.
      */
@@ -25,6 +21,10 @@ public final class TrackingEventErrorInfo {
      */
     @JsonProperty(value = "code")
     private String code;
+
+    /** Creates an instance of TrackingEventErrorInfo class. */
+    public TrackingEventErrorInfo() {
+    }
 
     /**
      * Get the message property: The message.

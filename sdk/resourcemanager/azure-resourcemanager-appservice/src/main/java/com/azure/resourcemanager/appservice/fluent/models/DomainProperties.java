@@ -8,11 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.Contact;
 import com.azure.resourcemanager.appservice.models.DnsType;
-import com.azure.resourcemanager.appservice.models.DomainPropertiesDomainNotRenewableReasonsItem;
 import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
 import com.azure.resourcemanager.appservice.models.DomainStatus;
 import com.azure.resourcemanager.appservice.models.Hostname;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
+import com.azure.resourcemanager.appservice.models.ResourceNotRenewableReason;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -63,8 +63,7 @@ public final class DomainProperties {
     private List<String> nameServers;
 
     /*
-     * <code>true</code> if domain privacy is enabled for this domain;
-     * otherwise, <code>false</code>.
+     * <code>true</code> if domain privacy is enabled for this domain; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "privacy")
     private Boolean privacy;
@@ -88,16 +87,14 @@ public final class DomainProperties {
     private OffsetDateTime lastRenewedTime;
 
     /*
-     * <code>true</code> if the domain should be automatically renewed;
-     * otherwise, <code>false</code>.
+     * <code>true</code> if the domain should be automatically renewed; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "autoRenew")
     private Boolean autoRenew;
 
     /*
-     * <code>true</code> if Azure can assign this domain to App Service apps;
-     * otherwise, <code>false</code>. This value will be <code>true</code> if
-     * domain registration status is active and
+     * <code>true</code> if Azure can assign this domain to App Service apps; otherwise, <code>false</code>. This value
+     * will be <code>true</code> if domain registration status is active and
      * it is hosted on name servers Azure has programmatic access to.
      */
     @JsonProperty(value = "readyForDnsRecordManagement", access = JsonProperty.Access.WRITE_ONLY)
@@ -119,7 +116,7 @@ public final class DomainProperties {
      * Reasons why domain is not renewable.
      */
     @JsonProperty(value = "domainNotRenewableReasons", access = JsonProperty.Access.WRITE_ONLY)
-    private List<DomainPropertiesDomainNotRenewableReasonsItem> domainNotRenewableReasons;
+    private List<ResourceNotRenewableReason> domainNotRenewableReasons;
 
     /*
      * Current DNS type
@@ -144,6 +141,10 @@ public final class DomainProperties {
      */
     @JsonProperty(value = "authCode")
     private String authCode;
+
+    /** Creates an instance of DomainProperties class. */
+    public DomainProperties() {
+    }
 
     /**
      * Get the contactAdmin property: Administrative contact.
@@ -368,7 +369,7 @@ public final class DomainProperties {
      *
      * @return the domainNotRenewableReasons value.
      */
-    public List<DomainPropertiesDomainNotRenewableReasonsItem> domainNotRenewableReasons() {
+    public List<ResourceNotRenewableReason> domainNotRenewableReasons() {
         return this.domainNotRenewableReasons;
     }
 

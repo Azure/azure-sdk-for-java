@@ -25,7 +25,6 @@ public class StorageBlobFeature implements GraalVMFeature {
             interfaces("com.azure.storage.blob.implementation.BlobsImpl$BlobsService"),
             interfaces("com.azure.storage.blob.implementation.BlockBlobsImpl$BlockBlobsService"),
             interfaces("com.azure.storage.blob.implementation.ContainersImpl$ContainersService"),
-            interfaces("com.azure.storage.blob.implementation.DirectoriesImpl$DirectoriesService"),
             interfaces("com.azure.storage.blob.implementation.PageBlobsImpl$PageBlobsService"),
             interfaces("com.azure.storage.blob.implementation.ServicesImpl$ServicesService")
         );

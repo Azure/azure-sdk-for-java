@@ -6,23 +6,19 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Replication properties. */
 @Fluent
 public final class ReplicationObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationObject.class);
-
     /*
      * Id
      */
-    @JsonProperty(value = "replicationId")
+    @JsonProperty(value = "replicationId", access = JsonProperty.Access.WRITE_ONLY)
     private String replicationId;
 
     /*
-     * Indicates whether the local volume is the source or destination for the
-     * Volume Replication
+     * Indicates whether the local volume is the source or destination for the Volume Replication
      */
     @JsonProperty(value = "endpointType")
     private EndpointType endpointType;
@@ -45,6 +41,10 @@ public final class ReplicationObject {
     @JsonProperty(value = "remoteVolumeRegion")
     private String remoteVolumeRegion;
 
+    /** Creates an instance of ReplicationObject class. */
+    public ReplicationObject() {
+    }
+
     /**
      * Get the replicationId property: Id.
      *
@@ -52,17 +52,6 @@ public final class ReplicationObject {
      */
     public String replicationId() {
         return this.replicationId;
-    }
-
-    /**
-     * Set the replicationId property: Id.
-     *
-     * @param replicationId the replicationId value to set.
-     * @return the ReplicationObject object itself.
-     */
-    public ReplicationObject withReplicationId(String replicationId) {
-        this.replicationId = replicationId;
-        return this;
     }
 
     /**
@@ -154,10 +143,12 @@ public final class ReplicationObject {
      */
     public void validate() {
         if (remoteVolumeResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property remoteVolumeResourceId in model ReplicationObject"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReplicationObject.class);
 }

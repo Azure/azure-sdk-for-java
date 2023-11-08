@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** a summary of request statistics grouped by API in hour or minute aggregates for blobs. */
-@Fluent
 @JacksonXmlRootElement(localName = "Metrics")
+@Fluent
 public final class BlobMetrics {
 
     /*
@@ -25,18 +25,19 @@ public final class BlobMetrics {
     private boolean enabled;
 
     /*
-     * Indicates whether metrics should generate summary statistics for called
-     * API operations.
+     * Indicates whether metrics should generate summary statistics for called API operations.
      */
     @JsonProperty(value = "IncludeAPIs")
     private Boolean includeApis;
 
     /*
-     * the retention policy which determines how long the associated data
-     * should persist
+     * the retention policy which determines how long the associated data should persist
      */
     @JsonProperty(value = "RetentionPolicy")
     private BlobRetentionPolicy retentionPolicy;
+
+    /** Creates an instance of BlobMetrics class. */
+    public BlobMetrics() {}
 
     /**
      * Get the version property: The version of Storage Analytics to configure.

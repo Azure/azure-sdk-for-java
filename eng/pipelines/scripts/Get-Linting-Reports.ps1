@@ -9,15 +9,15 @@ CSV.
 
 For each SDK containing non-empty linting reports, found in /target after running build verification, a folder with the
 SDK name will be created. The sub-folder may contain a processed Checkstyle report, processed Spotbugs report, and the
-default RevApi report. To prevent potential collisions of SDKs the sub-folder will use <SDK group>-<SDK>, so for azure-core
-it will be core_azure-core.
+default RevApi report. To prevent potential collisions of SDKs the sub-folder will use <SDK group>-<SDK>, so for
+azure-core it will be core_azure-core.
 
 The searched for reports are /target/checkstyle-result.xml, /target/revapi.json, and /target/spotbugs.xml. There is no
 guarantee that each, or any, of these reports will exist, so if processing is safe if the file doesn't exist.
 
-For Checkstyle the XML report will have the file name, line number, column number, linting error message, and linting error
-reported. For Spotbugs the XML will have the file name, line number, linting error message, and linting error reported, Spotbugs
-doesn't report the column number.
+For Checkstyle the XML report will have the file name, line number, column number, linting error message, and linting
+error reported. For Spotbugs the XML will have the file name, line number, linting error message, and linting error
+reported, Spotbugs doesn't report the column number.
 
 .PARAMETER OutputDirectory
 Where the linting report retrieval and processing will be output.
@@ -67,6 +67,7 @@ function WriteCheckstyleProcessedReport($CheckstyleXmlReport, $ReportOutputFolde
   if ($reportBuilder.Length -gt 0) {
     $reportBuilder.Insert(0, "File Name,Line Number,Column Number,Message,Type`n")
     NewFolderIfNotExists($ReportOutputFolder)
+    Write-Host $reportBuilder
     New-Item -Path (Join-Path $ReportOutputFolder "checkstyle-report.csv") -ItemType File -Value $reportBuilder | Out-Null
   }
 }
@@ -96,6 +97,7 @@ function WriteSpotbugsProcessedReport($SpotbugsXmlReport, $ReportOutputFolder) {
   if ($reportBuilder.Length -gt 0) {
     $reportBuilder.Insert(0, "Class Name,Line Number,Message,Type`n")
     NewFolderIfNotExists($ReportOutputFolder)
+    Write-Host $reportBuilder
     New-Item -Path (Join-Path $ReportOutputFolder "spotbugs-report.csv") -ItemType File -Value $reportBuilder | Out-Null
   }
 }
@@ -136,6 +138,7 @@ foreach ($targetFolder in (Get-ChildItem -Path $path -Filter "target" -Directory
     # Only include the RevApi report if it contains an errors.
     if ($json.RootElement.GetArrayLength() -gt 0) {
       NewFolderIfNotExists($reportOutputFolder)
+      Get-Content $revapiReport | Write-Host
       Copy-Item -Path $revapiReport -Destination (Join-Path $reportOutputFolder "revapi-report.json")
     }
   }

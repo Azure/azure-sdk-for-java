@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list Kusto database principal assignments operation response. */
 @Fluent
 public final class DatabasePrincipalAssignmentListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasePrincipalAssignmentListResult.class);
-
     /*
      * The list of Kusto database principal assignments.
      */
     @JsonProperty(value = "value")
     private List<DatabasePrincipalAssignmentInner> value;
+
+    /** Creates an instance of DatabasePrincipalAssignmentListResult class. */
+    public DatabasePrincipalAssignmentListResult() {
+    }
 
     /**
      * Get the value property: The list of Kusto database principal assignments.

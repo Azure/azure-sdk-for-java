@@ -4,17 +4,47 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Fluent credential builder for instantiating a {@link UsernamePasswordCredential}.
+ *
+ * <p>Username password authentication is a common type of authentication flow used by many applications and services,
+ * including <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * With username password authentication, users enter their username and password credentials to sign
+ * in to an application or service.
+ * The {@link UsernamePasswordCredential} authenticates a public client application and acquires a token using the
+ * user credentials that don't require 2FA/MFA (Multi-factored) authentication. For more information refer to the
+ * <a href="https://aka.ms/azsdk/java/identity/usernamepasswordcredential/docs">conceptual knowledge and configuration
+ * details</a>.</p>
+ *
+ * <p><strong>Sample: Construct UsernamePasswordCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link UsernamePasswordCredential},
+ * using the {@link UsernamePasswordCredentialBuilder} to configure it. The {@code clientId},
+ * {@code username} and {@code password} parameters are required to create
+ * {@link UsernamePasswordCredential}. Once this credential is created, it may be passed into the
+ * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.usernamepasswordcredential.construct -->
+ * <pre>
+ * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
+ *     .clientId&#40;&quot;&lt;your app client ID&gt;&quot;&#41;
+ *     .username&#40;&quot;&lt;your username&gt;&quot;&#41;
+ *     .password&#40;&quot;&lt;your password&gt;&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.usernamepasswordcredential.construct -->
  *
  * @see UsernamePasswordCredential
  */
 public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<UsernamePasswordCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(UsernamePasswordCredentialBuilder.class);
+    private static final String CLASS_NAME = UsernamePasswordCredentialBuilder.class.getSimpleName();
 
     private String username;
     private String password;
@@ -77,16 +107,44 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
     }
 
     /**
+     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
+     * If no value is specified for TenantId this option will have no effect, and the credential will
+     * acquire tokens for any requested tenant.
+     *
+     * @param additionallyAllowedTenants the additionally allowed tenants.
+     * @return An updated instance of this builder with the additional tenants configured.
+     */
+    @Override
+    public UsernamePasswordCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        return this;
+    }
+
+    /**
+     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
+     * If no value is specified for TenantId this option will have no effect, and the credential will
+     * acquire tokens for any requested tenant.
+     *
+     * @param additionallyAllowedTenants the additionally allowed tenants.
+     * @return An updated instance of this builder with the additional tenants configured.
+     */
+    @Override
+    public UsernamePasswordCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
+        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        return this;
+    }
+
+    /**
      * Creates a new {@link UsernamePasswordCredential} with the current configurations.
      *
      * @return a {@link UsernamePasswordCredential} with the current configurations.
      */
     public UsernamePasswordCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-                put("username", username);
-                put("password", password);
-            }}, LOGGER);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "username", username, "password", password);
+
         return new UsernamePasswordCredential(clientId, tenantId, username, password, identityClientOptions);
     }
 }

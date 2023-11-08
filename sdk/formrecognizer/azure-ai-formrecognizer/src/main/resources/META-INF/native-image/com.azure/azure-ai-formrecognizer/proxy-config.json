@@ -1,0 +1,8 @@
+[
+  [
+    "com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl$FormRecognizerClientService"
+  ],
+  [
+    "com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl$FormRecognizerClientService"
+  ]
+]

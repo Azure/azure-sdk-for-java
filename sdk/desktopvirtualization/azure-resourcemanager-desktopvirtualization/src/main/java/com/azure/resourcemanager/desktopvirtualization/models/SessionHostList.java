@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.SessionHostInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** SessionHostList List of SessionHost definitions. */
+/**
+ * SessionHostList
+ *
+ * <p>List of SessionHost definitions.
+ */
 @Fluent
 public final class SessionHostList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SessionHostList.class);
-
     /*
      * List of SessionHost definitions.
      */
@@ -27,6 +27,10 @@ public final class SessionHostList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of SessionHostList class. */
+    public SessionHostList() {
+    }
 
     /**
      * Get the value property: List of SessionHost definitions.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Schedule-based autoscale request parameters. */
 @Fluent
 public final class AutoscaleRecurrence {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleRecurrence.class);
-
     /*
      * The time zone for the autoscale schedule times
      */
@@ -26,6 +22,10 @@ public final class AutoscaleRecurrence {
      */
     @JsonProperty(value = "schedule")
     private List<AutoscaleSchedule> schedule;
+
+    /** Creates an instance of AutoscaleRecurrence class. */
+    public AutoscaleRecurrence() {
+    }
 
     /**
      * Get the timeZone property: The time zone for the autoscale schedule times.

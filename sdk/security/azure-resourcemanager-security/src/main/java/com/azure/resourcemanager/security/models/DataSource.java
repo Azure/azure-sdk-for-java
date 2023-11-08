@@ -14,6 +14,15 @@ public final class DataSource extends ExpandableStringEnum<DataSource> {
     public static final DataSource TWIN_DATA = fromString("TwinData");
 
     /**
+     * Creates a new instance of DataSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataSource() {
+    }
+
+    /**
      * Creates or finds a DataSource from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class DataSource extends ExpandableStringEnum<DataSource> {
         return fromString(name, DataSource.class);
     }
 
-    /** @return known DataSource values. */
+    /**
+     * Gets known DataSource values.
+     *
+     * @return known DataSource values.
+     */
     public static Collection<DataSource> values() {
         return values(DataSource.class);
     }

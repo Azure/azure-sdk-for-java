@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EntityRelations GetRelation. */
 public final class EntityRelationsGetRelationSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/entities/relations/GetEntityRelationByName.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/entities/relations/GetEntityRelationByName.json
      */
     /**
      * Sample code: Get an entity relation.

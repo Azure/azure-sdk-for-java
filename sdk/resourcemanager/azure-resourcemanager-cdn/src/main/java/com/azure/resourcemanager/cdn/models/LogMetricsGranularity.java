@@ -20,6 +20,15 @@ public final class LogMetricsGranularity extends ExpandableStringEnum<LogMetrics
     public static final LogMetricsGranularity P1D = fromString("P1D");
 
     /**
+     * Creates a new instance of LogMetricsGranularity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogMetricsGranularity() {
+    }
+
+    /**
      * Creates or finds a LogMetricsGranularity from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +39,11 @@ public final class LogMetricsGranularity extends ExpandableStringEnum<LogMetrics
         return fromString(name, LogMetricsGranularity.class);
     }
 
-    /** @return known LogMetricsGranularity values. */
+    /**
+     * Gets known LogMetricsGranularity values.
+     *
+     * @return known LogMetricsGranularity values.
+     */
     public static Collection<LogMetricsGranularity> values() {
         return values(LogMetricsGranularity.class);
     }

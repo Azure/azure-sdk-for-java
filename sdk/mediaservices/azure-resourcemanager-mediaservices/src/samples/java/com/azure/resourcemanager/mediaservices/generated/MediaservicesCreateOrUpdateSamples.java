@@ -4,10 +4,13 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
+import com.azure.resourcemanager.mediaservices.models.AccessControl;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryptionKeyType;
-import com.azure.resourcemanager.mediaservices.models.KeyVaultProperties;
+import com.azure.resourcemanager.mediaservices.models.DefaultAction;
+import com.azure.resourcemanager.mediaservices.models.KeyDelivery;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
+import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mediaservices.models.ResourceIdentity;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
 import com.azure.resourcemanager.mediaservices.models.StorageAccountType;
@@ -20,7 +23,7 @@ import java.util.Map;
 /** Samples for Mediaservices CreateOrUpdate. */
 public final class MediaservicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-06-01/examples/accounts-create.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/async-accounts-create.json
      */
     /**
      * Sample code: Create a Media Services account.
@@ -33,40 +36,67 @@ public final class MediaservicesCreateOrUpdateSamples {
             .mediaservices()
             .define("contososports")
             .withRegion("South Central US")
-            .withExistingResourceGroup("contoso")
+            .withExistingResourceGroup("contosorg")
+            .withTags(mapOf("key1", "value1", "key2", "value2"))
+            .withStorageAccounts(
+                Arrays
+                    .asList(
+                        new StorageAccount()
+                            .withId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosorg/providers/Microsoft.Storage/storageAccounts/teststorageaccount")
+                            .withType(StorageAccountType.PRIMARY)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/async-accounts-create-managed-identity.json
+     */
+    /**
+     * Sample code: Create a Media Services account-managed-identity.
+     *
+     * @param manager Entry point to MediaServicesManager.
+     */
+    public static void createAMediaServicesAccountManagedIdentity(
+        com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
+        manager
+            .mediaservices()
+            .define("contososports")
+            .withRegion("South Central US")
+            .withExistingResourceGroup("contosorg")
             .withTags(mapOf("key1", "value1", "key2", "value2"))
             .withIdentity(
                 new MediaServiceIdentity()
                     .withType("UserAssigned")
                     .withUserAssignedIdentities(
                         mapOf(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosorg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
                             new UserAssignedManagedIdentity(),
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosorg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
                             new UserAssignedManagedIdentity())))
             .withStorageAccounts(
                 Arrays
                     .asList(
                         new StorageAccount()
                             .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Storage/storageAccounts/contososportsstore")
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosorg/providers/Microsoft.Storage/storageAccounts/contososportsstore")
                             .withType(StorageAccountType.PRIMARY)
                             .withIdentity(
                                 new ResourceIdentity()
                                     .withUserAssignedIdentity(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1")
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosorg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1")
                                     .withUseSystemAssignedIdentity(false))))
             .withStorageAuthentication(StorageAuthentication.MANAGED_IDENTITY)
             .withEncryption(
                 new AccountEncryption()
                     .withType(AccountEncryptionKeyType.CUSTOMER_KEY)
-                    .withKeyVaultProperties(
-                        new KeyVaultProperties().withKeyIdentifier("https://keyvault.vault.azure.net/keys/key1"))
                     .withIdentity(
                         new ResourceIdentity()
                             .withUserAssignedIdentity(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1")
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contosorg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1")
                             .withUseSystemAssignedIdentity(false)))
+            .withKeyDelivery(
+                new KeyDelivery().withAccessControl(new AccessControl().withDefaultAction(DefaultAction.ALLOW)))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .create();
     }
 

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServer;
 
 /** Samples for WorkloadNetworks UpdateDhcp. */
 public final class WorkloadNetworksUpdateDhcpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_UpdateDhcpConfigurations.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateDhcpConfigurations.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDhcp.
@@ -20,7 +19,10 @@ public final class WorkloadNetworksUpdateDhcpSamples {
      */
     public static void workloadNetworksUpdateDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkDhcp resource =
-            manager.workloadNetworks().getDhcpWithResponse("group1", "dhcp1", "cloud1", Context.NONE).getValue();
+            manager
+                .workloadNetworks()
+                .getDhcpWithResponse("group1", "dhcp1", "cloud1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withProperties(

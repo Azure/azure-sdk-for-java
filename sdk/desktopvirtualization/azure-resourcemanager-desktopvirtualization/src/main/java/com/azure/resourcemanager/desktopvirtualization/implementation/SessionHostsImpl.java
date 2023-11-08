@@ -14,10 +14,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.SessionHost
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHost;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHosts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SessionHostsImpl implements SessionHosts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SessionHostsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SessionHostsImpl.class);
 
     private final SessionHostsClient innerClient;
 
@@ -28,15 +27,6 @@ public final class SessionHostsImpl implements SessionHosts {
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public SessionHost get(String resourceGroupName, String hostPoolName, String sessionHostname) {
-        SessionHostInner inner = this.serviceClient().get(resourceGroupName, hostPoolName, sessionHostname);
-        if (inner != null) {
-            return new SessionHostImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SessionHost> getWithResponse(
@@ -54,8 +44,13 @@ public final class SessionHostsImpl implements SessionHosts {
         }
     }
 
-    public void delete(String resourceGroupName, String hostPoolName, String sessionHostname) {
-        this.serviceClient().delete(resourceGroupName, hostPoolName, sessionHostname);
+    public SessionHost get(String resourceGroupName, String hostPoolName, String sessionHostname) {
+        SessionHostInner inner = this.serviceClient().get(resourceGroupName, hostPoolName, sessionHostname);
+        if (inner != null) {
+            return new SessionHostImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -65,13 +60,8 @@ public final class SessionHostsImpl implements SessionHosts {
             .deleteWithResponse(resourceGroupName, hostPoolName, sessionHostname, force, context);
     }
 
-    public SessionHost update(String resourceGroupName, String hostPoolName, String sessionHostname) {
-        SessionHostInner inner = this.serviceClient().update(resourceGroupName, hostPoolName, sessionHostname);
-        if (inner != null) {
-            return new SessionHostImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String hostPoolName, String sessionHostname) {
+        this.serviceClient().delete(resourceGroupName, hostPoolName, sessionHostname);
     }
 
     public Response<SessionHost> updateWithResponse(
@@ -96,13 +86,29 @@ public final class SessionHostsImpl implements SessionHosts {
         }
     }
 
+    public SessionHost update(String resourceGroupName, String hostPoolName, String sessionHostname) {
+        SessionHostInner inner = this.serviceClient().update(resourceGroupName, hostPoolName, sessionHostname);
+        if (inner != null) {
+            return new SessionHostImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<SessionHost> list(String resourceGroupName, String hostPoolName) {
         PagedIterable<SessionHostInner> inner = this.serviceClient().list(resourceGroupName, hostPoolName);
         return Utils.mapPage(inner, inner1 -> new SessionHostImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SessionHost> list(String resourceGroupName, String hostPoolName, Context context) {
-        PagedIterable<SessionHostInner> inner = this.serviceClient().list(resourceGroupName, hostPoolName, context);
+    public PagedIterable<SessionHost> list(
+        String resourceGroupName,
+        String hostPoolName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
+        PagedIterable<SessionHostInner> inner =
+            this.serviceClient().list(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new SessionHostImpl(inner1, this.manager()));
     }
 

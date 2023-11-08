@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BuildStatus. */
+/** The status of the static site build. */
 public final class BuildStatus extends ExpandableStringEnum<BuildStatus> {
     /** Static value WaitingForDeployment for BuildStatus. */
     public static final BuildStatus WAITING_FOR_DEPLOYMENT = fromString("WaitingForDeployment");
@@ -32,6 +32,15 @@ public final class BuildStatus extends ExpandableStringEnum<BuildStatus> {
     public static final BuildStatus DETACHED = fromString("Detached");
 
     /**
+     * Creates a new instance of BuildStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BuildStatus() {
+    }
+
+    /**
      * Creates or finds a BuildStatus from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class BuildStatus extends ExpandableStringEnum<BuildStatus> {
         return fromString(name, BuildStatus.class);
     }
 
-    /** @return known BuildStatus values. */
+    /**
+     * Gets known BuildStatus values.
+     *
+     * @return known BuildStatus values.
+     */
     public static Collection<BuildStatus> values() {
         return values(BuildStatus.class);
     }

@@ -28,7 +28,11 @@ public final class UsagesListNextResponse extends ResponseBase<UsagesListNextHea
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public UsagesLimits getValue() {
         return super.getValue();

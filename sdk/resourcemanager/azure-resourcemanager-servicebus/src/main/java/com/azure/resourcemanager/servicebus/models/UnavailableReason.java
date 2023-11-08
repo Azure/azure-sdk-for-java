@@ -7,7 +7,7 @@ package com.azure.resourcemanager.servicebus.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for UnavailableReason. */
+/** Specifies the reason for the unavailability of the service. */
 public enum UnavailableReason {
     /** Enum value None. */
     NONE("None"),
@@ -42,6 +42,9 @@ public enum UnavailableReason {
      */
     @JsonCreator
     public static UnavailableReason fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         UnavailableReason[] items = UnavailableReason.values();
         for (UnavailableReason item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum UnavailableReason {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

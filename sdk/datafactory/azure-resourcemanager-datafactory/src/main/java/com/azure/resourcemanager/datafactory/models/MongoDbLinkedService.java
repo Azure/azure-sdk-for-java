@@ -24,6 +24,10 @@ public final class MongoDbLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MongoDbLinkedServiceTypeProperties innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
 
+    /** Creates an instance of MongoDbLinkedService class. */
+    public MongoDbLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: MongoDB linked service properties.
      *
@@ -282,22 +286,22 @@ public final class MongoDbLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MongoDbLinkedService object itself.
      */
-    public MongoDbLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public MongoDbLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new MongoDbLinkedServiceTypeProperties();
         }

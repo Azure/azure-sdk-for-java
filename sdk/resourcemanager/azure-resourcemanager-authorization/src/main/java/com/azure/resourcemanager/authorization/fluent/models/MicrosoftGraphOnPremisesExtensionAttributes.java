@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** onPremisesExtensionAttributes. */
 @Fluent
 public final class MicrosoftGraphOnPremisesExtensionAttributes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnPremisesExtensionAttributes.class);
-
     /*
      * First customizable extension attribute.
      */
@@ -112,6 +109,10 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
      * onPremisesExtensionAttributes
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnPremisesExtensionAttributes class. */
+    public MicrosoftGraphOnPremisesExtensionAttributes() {
+    }
 
     /**
      * Get the extensionAttribute1 property: First customizable extension attribute.

@@ -7,18 +7,18 @@ package com.azure.resourcemanager.signalr.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.signalr.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.signalr.models.ManagedIdentity;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.azure.resourcemanager.signalr.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.signalr.models.ResourceSku;
+import com.azure.resourcemanager.signalr.models.ServerlessSettings;
 import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.ServiceKind;
 import com.azure.resourcemanager.signalr.models.SignalRCorsSettings;
 import com.azure.resourcemanager.signalr.models.SignalRFeature;
 import com.azure.resourcemanager.signalr.models.SignalRNetworkACLs;
 import com.azure.resourcemanager.signalr.models.SignalRTlsSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -26,41 +26,42 @@ import java.util.Map;
 /** A class represent a resource. */
 @Fluent
 public final class SignalRResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRResourceInner.class);
-
     /*
-     * The billing information of the resource.(e.g. Free, Standard)
+     * The billing information of the resource.
      */
     @JsonProperty(value = "sku")
     private ResourceSku sku;
 
     /*
-     * Settings used to provision or configure the resource
+     * A class that describes the properties of the resource
      */
     @JsonProperty(value = "properties")
     private SignalRProperties innerProperties;
 
     /*
-     * The kind of the service - e.g. "SignalR" for
-     * "Microsoft.SignalRService/SignalR"
+     * The kind of the service
      */
     @JsonProperty(value = "kind")
     private ServiceKind kind;
 
     /*
-     * The managed identity response
+     * A class represent managed identities used for request and response
      */
     @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of SignalRResourceInner class. */
+    public SignalRResourceInner() {
+    }
+
     /**
-     * Get the sku property: The billing information of the resource.(e.g. Free, Standard).
+     * Get the sku property: The billing information of the resource.
      *
      * @return the sku value.
      */
@@ -69,7 +70,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the sku property: The billing information of the resource.(e.g. Free, Standard).
+     * Set the sku property: The billing information of the resource.
      *
      * @param sku the sku value to set.
      * @return the SignalRResourceInner object itself.
@@ -80,7 +81,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Settings used to provision or configure the resource.
+     * Get the innerProperties property: A class that describes the properties of the resource.
      *
      * @return the innerProperties value.
      */
@@ -89,7 +90,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the kind property: The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR".
+     * Get the kind property: The kind of the service.
      *
      * @return the kind value.
      */
@@ -98,7 +99,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the kind property: The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR".
+     * Set the kind property: The kind of the service.
      *
      * @param kind the kind value to set.
      * @return the SignalRResourceInner object itself.
@@ -109,7 +110,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the identity property: The managed identity response.
+     * Get the identity property: A class represent managed identities used for request and response.
      *
      * @return the identity value.
      */
@@ -118,7 +119,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the identity property: The managed identity response.
+     * Set the identity property: A class represent managed identities used for request and response.
      *
      * @param identity the identity value to set.
      * @return the SignalRResourceInner object itself.
@@ -129,7 +130,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -226,7 +227,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the tls property: TLS settings.
+     * Get the tls property: TLS settings for the resource.
      *
      * @return the tls value.
      */
@@ -235,7 +236,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the tls property: TLS settings.
+     * Set the tls property: TLS settings for the resource.
      *
      * @param tls the tls value to set.
      * @return the SignalRResourceInner object itself.
@@ -291,10 +292,30 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
-     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
-     * features.
+     * Get the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
+     *
+     * @return the liveTraceConfiguration value.
+     */
+    public LiveTraceConfiguration liveTraceConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().liveTraceConfiguration();
+    }
+
+    /**
+     * Set the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
+     *
+     * @param liveTraceConfiguration the liveTraceConfiguration value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withLiveTraceConfiguration(liveTraceConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
      *
      * @return the resourceLogConfiguration value.
      */
@@ -303,10 +324,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
-     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
-     * features.
+     * Set the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
      *
      * @param resourceLogConfiguration the resourceLogConfiguration value to set.
      * @return the SignalRResourceInner object itself.
@@ -343,7 +361,30 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the upstream property: Upstream settings when the service is in server-less mode.
+     * Get the serverless property: Serverless settings.
+     *
+     * @return the serverless value.
+     */
+    public ServerlessSettings serverless() {
+        return this.innerProperties() == null ? null : this.innerProperties().serverless();
+    }
+
+    /**
+     * Set the serverless property: Serverless settings.
+     *
+     * @param serverless the serverless value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withServerless(ServerlessSettings serverless) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withServerless(serverless);
+        return this;
+    }
+
+    /**
+     * Get the upstream property: The settings for the Upstream when the service is in server-less mode.
      *
      * @return the upstream value.
      */
@@ -352,7 +393,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the upstream property: Upstream settings when the service is in server-less mode.
+     * Set the upstream property: The settings for the Upstream when the service is in server-less mode.
      *
      * @param upstream the upstream value to set.
      * @return the SignalRResourceInner object itself.
@@ -366,7 +407,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the networkACLs property: Network ACLs.
+     * Get the networkACLs property: Network ACLs for the resource.
      *
      * @return the networkACLs value.
      */
@@ -375,7 +416,7 @@ public final class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the networkACLs property: Network ACLs.
+     * Set the networkACLs property: Network ACLs for the resource.
      *
      * @param networkACLs the networkACLs value to set.
      * @return the SignalRResourceInner object itself.
@@ -462,6 +503,58 @@ public final class SignalRResourceInner extends Resource {
             this.innerProperties = new SignalRProperties();
         }
         this.innerProperties().withDisableAadAuth(disableAadAuth);
+        return this;
+    }
+
+    /**
+     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @return the regionEndpointEnabled value.
+     */
+    public String regionEndpointEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().regionEndpointEnabled();
+    }
+
+    /**
+     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @param regionEndpointEnabled the regionEndpointEnabled value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withRegionEndpointEnabled(String regionEndpointEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withRegionEndpointEnabled(regionEndpointEnabled);
+        return this;
+    }
+
+    /**
+     * Get the resourceStopped property: Stop or start the resource. Default to "False". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @return the resourceStopped value.
+     */
+    public String resourceStopped() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceStopped();
+    }
+
+    /**
+     * Set the resourceStopped property: Stop or start the resource. Default to "False". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @param resourceStopped the resourceStopped value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withResourceStopped(String resourceStopped) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withResourceStopped(resourceStopped);
         return this;
     }
 

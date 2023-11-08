@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReplicationSchedule. */
+/** Schedule. */
 public final class ReplicationSchedule extends ExpandableStringEnum<ReplicationSchedule> {
     /** Static value _10minutely for ReplicationSchedule. */
     public static final ReplicationSchedule ONE_ZEROMINUTELY = fromString("_10minutely");
@@ -18,6 +18,15 @@ public final class ReplicationSchedule extends ExpandableStringEnum<ReplicationS
 
     /** Static value daily for ReplicationSchedule. */
     public static final ReplicationSchedule DAILY = fromString("daily");
+
+    /**
+     * Creates a new instance of ReplicationSchedule value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReplicationSchedule() {
+    }
 
     /**
      * Creates or finds a ReplicationSchedule from its string representation.
@@ -30,7 +39,11 @@ public final class ReplicationSchedule extends ExpandableStringEnum<ReplicationS
         return fromString(name, ReplicationSchedule.class);
     }
 
-    /** @return known ReplicationSchedule values. */
+    /**
+     * Gets known ReplicationSchedule values.
+     *
+     * @return known ReplicationSchedule values.
+     */
     public static Collection<ReplicationSchedule> values() {
         return values(ReplicationSchedule.class);
     }

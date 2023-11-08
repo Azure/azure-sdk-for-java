@@ -5,29 +5,23 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.ElasticPoolLicenseType;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
 import com.azure.resourcemanager.sql.models.ElasticPoolState;
 import com.azure.resourcemanager.sql.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** An elastic pool. */
-@JsonFlatten
 @Fluent
-public class ElasticPoolInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolInner.class);
-
+public final class ElasticPoolInner extends Resource {
     /*
      * The elastic pool SKU.
      *
-     * The list of SKUs may vary by region and support offer. To determine the
-     * SKUs (including the SKU name, tier/edition, family, and capacity) that
-     * are available to your subscription in an Azure region, use the
+     * The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
+     * tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or the following command:
      *
      * ```azurecli
@@ -39,49 +33,20 @@ public class ElasticPoolInner extends Resource {
     private Sku sku;
 
     /*
-     * Kind of elastic pool. This is metadata used for the Azure portal
-     * experience.
+     * Kind of elastic pool. This is metadata used for the Azure portal experience.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
-     * The state of the elastic pool.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private ElasticPoolState state;
+    @JsonProperty(value = "properties")
+    private ElasticPoolProperties innerProperties;
 
-    /*
-     * The creation date of the elastic pool (ISO8601 format).
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
-
-    /*
-     * The storage limit for the database elastic pool in bytes.
-     */
-    @JsonProperty(value = "properties.maxSizeBytes")
-    private Long maxSizeBytes;
-
-    /*
-     * The per database settings for the elastic pool.
-     */
-    @JsonProperty(value = "properties.perDatabaseSettings")
-    private ElasticPoolPerDatabaseSettings perDatabaseSettings;
-
-    /*
-     * Whether or not this elastic pool is zone redundant, which means the
-     * replicas of this elastic pool will be spread across multiple
-     * availability zones.
-     */
-    @JsonProperty(value = "properties.zoneRedundant")
-    private Boolean zoneRedundant;
-
-    /*
-     * The license type to apply for this elastic pool.
-     */
-    @JsonProperty(value = "properties.licenseType")
-    private ElasticPoolLicenseType licenseType;
+    /** Creates an instance of ElasticPoolInner class. */
+    public ElasticPoolInner() {
+    }
 
     /**
      * Get the sku property: The elastic pool SKU.
@@ -125,12 +90,35 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ElasticPoolProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ElasticPoolInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ElasticPoolInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the state property: The state of the elastic pool.
      *
      * @return the state value.
      */
     public ElasticPoolState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -139,7 +127,7 @@ public class ElasticPoolInner extends Resource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -148,7 +136,7 @@ public class ElasticPoolInner extends Resource {
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
-        return this.maxSizeBytes;
+        return this.innerProperties() == null ? null : this.innerProperties().maxSizeBytes();
     }
 
     /**
@@ -158,7 +146,33 @@ public class ElasticPoolInner extends Resource {
      * @return the ElasticPoolInner object itself.
      */
     public ElasticPoolInner withMaxSizeBytes(Long maxSizeBytes) {
-        this.maxSizeBytes = maxSizeBytes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolProperties();
+        }
+        this.innerProperties().withMaxSizeBytes(maxSizeBytes);
+        return this;
+    }
+
+    /**
+     * Get the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
+     *
+     * @return the minCapacity value.
+     */
+    public Double minCapacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().minCapacity();
+    }
+
+    /**
+     * Set the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
+     *
+     * @param minCapacity the minCapacity value to set.
+     * @return the ElasticPoolInner object itself.
+     */
+    public ElasticPoolInner withMinCapacity(Double minCapacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolProperties();
+        }
+        this.innerProperties().withMinCapacity(minCapacity);
         return this;
     }
 
@@ -168,7 +182,7 @@ public class ElasticPoolInner extends Resource {
      * @return the perDatabaseSettings value.
      */
     public ElasticPoolPerDatabaseSettings perDatabaseSettings() {
-        return this.perDatabaseSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().perDatabaseSettings();
     }
 
     /**
@@ -178,7 +192,10 @@ public class ElasticPoolInner extends Resource {
      * @return the ElasticPoolInner object itself.
      */
     public ElasticPoolInner withPerDatabaseSettings(ElasticPoolPerDatabaseSettings perDatabaseSettings) {
-        this.perDatabaseSettings = perDatabaseSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolProperties();
+        }
+        this.innerProperties().withPerDatabaseSettings(perDatabaseSettings);
         return this;
     }
 
@@ -189,7 +206,7 @@ public class ElasticPoolInner extends Resource {
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
-        return this.zoneRedundant;
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
     }
 
     /**
@@ -200,7 +217,10 @@ public class ElasticPoolInner extends Resource {
      * @return the ElasticPoolInner object itself.
      */
     public ElasticPoolInner withZoneRedundant(Boolean zoneRedundant) {
-        this.zoneRedundant = zoneRedundant;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
         return this;
     }
 
@@ -210,7 +230,7 @@ public class ElasticPoolInner extends Resource {
      * @return the licenseType value.
      */
     public ElasticPoolLicenseType licenseType() {
-        return this.licenseType;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -220,7 +240,60 @@ public class ElasticPoolInner extends Resource {
      * @return the ElasticPoolInner object itself.
      */
     public ElasticPoolInner withLicenseType(ElasticPoolLicenseType licenseType) {
-        this.licenseType = licenseType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolProperties();
+        }
+        this.innerProperties().withLicenseType(licenseType);
+        return this;
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
+     * configuration defines the period when the maintenance updates will will occur.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
+     * configuration defines the period when the maintenance updates will will occur.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the ElasticPoolInner object itself.
+     */
+    public ElasticPoolInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
+     * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
+     * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
+     *
+     * @return the highAvailabilityReplicaCount value.
+     */
+    public Integer highAvailabilityReplicaCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().highAvailabilityReplicaCount();
+    }
+
+    /**
+     * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
+     * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
+     *
+     * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
+     * @return the ElasticPoolInner object itself.
+     */
+    public ElasticPoolInner withHighAvailabilityReplicaCount(Integer highAvailabilityReplicaCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolProperties();
+        }
+        this.innerProperties().withHighAvailabilityReplicaCount(highAvailabilityReplicaCount);
         return this;
     }
 
@@ -233,8 +306,8 @@ public class ElasticPoolInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
-        if (perDatabaseSettings() != null) {
-            perDatabaseSettings().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

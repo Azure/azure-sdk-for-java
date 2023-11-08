@@ -5,89 +5,43 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /** The TasksStateTasks model. */
 @Fluent
-public final class TasksStateTasks {
+public final class TasksStateTasks implements JsonSerializable<TasksStateTasks> {
     /*
      * The completed property.
      */
-    @JsonProperty(value = "completed", required = true)
     private int completed;
 
     /*
      * The failed property.
      */
-    @JsonProperty(value = "failed", required = true)
     private int failed;
 
     /*
      * The inProgress property.
      */
-    @JsonProperty(value = "inProgress", required = true)
     private int inProgress;
 
     /*
      * The total property.
      */
-    @JsonProperty(value = "total", required = true)
     private int total;
 
     /*
-     * The entityRecognitionTasks property.
+     * The items property.
      */
-    @JsonProperty(value = "entityRecognitionTasks")
-    private List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasks;
+    private List<AnalyzeTextLROResult> items;
 
-    /*
-     * The entityRecognitionPiiTasks property.
-     */
-    @JsonProperty(value = "entityRecognitionPiiTasks")
-    private List<TasksStateTasksEntityRecognitionPiiTasksItem> entityRecognitionPiiTasks;
-
-    /*
-     * The keyPhraseExtractionTasks property.
-     */
-    @JsonProperty(value = "keyPhraseExtractionTasks")
-    private List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks;
-
-    /*
-     * The entityLinkingTasks property.
-     */
-    @JsonProperty(value = "entityLinkingTasks")
-    private List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks;
-
-    /*
-     * The sentimentAnalysisTasks property.
-     */
-    @JsonProperty(value = "sentimentAnalysisTasks")
-    private List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks;
-
-    /*
-     * The extractiveSummarizationTasks property.
-     */
-    @JsonProperty(value = "extractiveSummarizationTasks")
-    private List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasks;
-
-    /*
-     * The customEntityRecognitionTasks property.
-     */
-    @JsonProperty(value = "customEntityRecognitionTasks")
-    private List<TasksStateTasksCustomEntityRecognitionTasksItem> customEntityRecognitionTasks;
-
-    /*
-     * The customSingleClassificationTasks property.
-     */
-    @JsonProperty(value = "customSingleClassificationTasks")
-    private List<TasksStateTasksCustomSingleClassificationTasksItem> customSingleClassificationTasks;
-
-    /*
-     * The customMultiClassificationTasks property.
-     */
-    @JsonProperty(value = "customMultiClassificationTasks")
-    private List<TasksStateTasksCustomMultiClassificationTasksItem> customMultiClassificationTasks;
+    /** Creates an instance of TasksStateTasks class. */
+    public TasksStateTasks() {}
 
     /**
      * Get the completed property: The completed property.
@@ -170,190 +124,71 @@ public final class TasksStateTasks {
     }
 
     /**
-     * Get the entityRecognitionTasks property: The entityRecognitionTasks property.
+     * Get the items property: The items property.
      *
-     * @return the entityRecognitionTasks value.
+     * @return the items value.
      */
-    public List<TasksStateTasksEntityRecognitionTasksItem> getEntityRecognitionTasks() {
-        return this.entityRecognitionTasks;
+    public List<AnalyzeTextLROResult> getItems() {
+        return this.items;
     }
 
     /**
-     * Set the entityRecognitionTasks property: The entityRecognitionTasks property.
+     * Set the items property: The items property.
      *
-     * @param entityRecognitionTasks the entityRecognitionTasks value to set.
+     * @param items the items value to set.
      * @return the TasksStateTasks object itself.
      */
-    public TasksStateTasks setEntityRecognitionTasks(
-            List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasks) {
-        this.entityRecognitionTasks = entityRecognitionTasks;
+    public TasksStateTasks setItems(List<AnalyzeTextLROResult> items) {
+        this.items = items;
         return this;
     }
 
-    /**
-     * Get the entityRecognitionPiiTasks property: The entityRecognitionPiiTasks property.
-     *
-     * @return the entityRecognitionPiiTasks value.
-     */
-    public List<TasksStateTasksEntityRecognitionPiiTasksItem> getEntityRecognitionPiiTasks() {
-        return this.entityRecognitionPiiTasks;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("completed", this.completed);
+        jsonWriter.writeIntField("failed", this.failed);
+        jsonWriter.writeIntField("inProgress", this.inProgress);
+        jsonWriter.writeIntField("total", this.total);
+        jsonWriter.writeArrayField("items", this.items, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Set the entityRecognitionPiiTasks property: The entityRecognitionPiiTasks property.
+     * Reads an instance of TasksStateTasks from the JsonReader.
      *
-     * @param entityRecognitionPiiTasks the entityRecognitionPiiTasks value to set.
-     * @return the TasksStateTasks object itself.
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TasksStateTasks if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TasksStateTasks.
      */
-    public TasksStateTasks setEntityRecognitionPiiTasks(
-            List<TasksStateTasksEntityRecognitionPiiTasksItem> entityRecognitionPiiTasks) {
-        this.entityRecognitionPiiTasks = entityRecognitionPiiTasks;
-        return this;
-    }
+    public static TasksStateTasks fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    TasksStateTasks deserializedTasksStateTasks = new TasksStateTasks();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-    /**
-     * Get the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks property.
-     *
-     * @return the keyPhraseExtractionTasks value.
-     */
-    public List<TasksStateTasksKeyPhraseExtractionTasksItem> getKeyPhraseExtractionTasks() {
-        return this.keyPhraseExtractionTasks;
-    }
+                        if ("completed".equals(fieldName)) {
+                            deserializedTasksStateTasks.completed = reader.getInt();
+                        } else if ("failed".equals(fieldName)) {
+                            deserializedTasksStateTasks.failed = reader.getInt();
+                        } else if ("inProgress".equals(fieldName)) {
+                            deserializedTasksStateTasks.inProgress = reader.getInt();
+                        } else if ("total".equals(fieldName)) {
+                            deserializedTasksStateTasks.total = reader.getInt();
+                        } else if ("items".equals(fieldName)) {
+                            List<AnalyzeTextLROResult> items =
+                                    reader.readArray(reader1 -> AnalyzeTextLROResult.fromJson(reader1));
+                            deserializedTasksStateTasks.items = items;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-    /**
-     * Set the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks property.
-     *
-     * @param keyPhraseExtractionTasks the keyPhraseExtractionTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setKeyPhraseExtractionTasks(
-            List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks) {
-        this.keyPhraseExtractionTasks = keyPhraseExtractionTasks;
-        return this;
-    }
-
-    /**
-     * Get the entityLinkingTasks property: The entityLinkingTasks property.
-     *
-     * @return the entityLinkingTasks value.
-     */
-    public List<TasksStateTasksEntityLinkingTasksItem> getEntityLinkingTasks() {
-        return this.entityLinkingTasks;
-    }
-
-    /**
-     * Set the entityLinkingTasks property: The entityLinkingTasks property.
-     *
-     * @param entityLinkingTasks the entityLinkingTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setEntityLinkingTasks(List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks) {
-        this.entityLinkingTasks = entityLinkingTasks;
-        return this;
-    }
-
-    /**
-     * Get the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
-     *
-     * @return the sentimentAnalysisTasks value.
-     */
-    public List<TasksStateTasksSentimentAnalysisTasksItem> getSentimentAnalysisTasks() {
-        return this.sentimentAnalysisTasks;
-    }
-
-    /**
-     * Set the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
-     *
-     * @param sentimentAnalysisTasks the sentimentAnalysisTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setSentimentAnalysisTasks(
-            List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks) {
-        this.sentimentAnalysisTasks = sentimentAnalysisTasks;
-        return this;
-    }
-
-    /**
-     * Get the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
-     *
-     * @return the extractiveSummarizationTasks value.
-     */
-    public List<TasksStateTasksExtractiveSummarizationTasksItem> getExtractiveSummarizationTasks() {
-        return this.extractiveSummarizationTasks;
-    }
-
-    /**
-     * Set the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
-     *
-     * @param extractiveSummarizationTasks the extractiveSummarizationTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setExtractiveSummarizationTasks(
-            List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasks) {
-        this.extractiveSummarizationTasks = extractiveSummarizationTasks;
-        return this;
-    }
-
-    /**
-     * Get the customEntityRecognitionTasks property: The customEntityRecognitionTasks property.
-     *
-     * @return the customEntityRecognitionTasks value.
-     */
-    public List<TasksStateTasksCustomEntityRecognitionTasksItem> getCustomEntityRecognitionTasks() {
-        return this.customEntityRecognitionTasks;
-    }
-
-    /**
-     * Set the customEntityRecognitionTasks property: The customEntityRecognitionTasks property.
-     *
-     * @param customEntityRecognitionTasks the customEntityRecognitionTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setCustomEntityRecognitionTasks(
-            List<TasksStateTasksCustomEntityRecognitionTasksItem> customEntityRecognitionTasks) {
-        this.customEntityRecognitionTasks = customEntityRecognitionTasks;
-        return this;
-    }
-
-    /**
-     * Get the customSingleClassificationTasks property: The customSingleClassificationTasks property.
-     *
-     * @return the customSingleClassificationTasks value.
-     */
-    public List<TasksStateTasksCustomSingleClassificationTasksItem> getCustomSingleClassificationTasks() {
-        return this.customSingleClassificationTasks;
-    }
-
-    /**
-     * Set the customSingleClassificationTasks property: The customSingleClassificationTasks property.
-     *
-     * @param customSingleClassificationTasks the customSingleClassificationTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setCustomSingleClassificationTasks(
-            List<TasksStateTasksCustomSingleClassificationTasksItem> customSingleClassificationTasks) {
-        this.customSingleClassificationTasks = customSingleClassificationTasks;
-        return this;
-    }
-
-    /**
-     * Get the customMultiClassificationTasks property: The customMultiClassificationTasks property.
-     *
-     * @return the customMultiClassificationTasks value.
-     */
-    public List<TasksStateTasksCustomMultiClassificationTasksItem> getCustomMultiClassificationTasks() {
-        return this.customMultiClassificationTasks;
-    }
-
-    /**
-     * Set the customMultiClassificationTasks property: The customMultiClassificationTasks property.
-     *
-     * @param customMultiClassificationTasks the customMultiClassificationTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setCustomMultiClassificationTasks(
-            List<TasksStateTasksCustomMultiClassificationTasksItem> customMultiClassificationTasks) {
-        this.customMultiClassificationTasks = customMultiClassificationTasks;
-        return this;
+                    return deserializedTasksStateTasks;
+                });
     }
 }

@@ -11,19 +11,23 @@ import com.azure.core.util.Context;
 /** Resource collection API of ResourcePools. */
 public interface ResourcePools {
     /**
-     * Returns list of resource pools in region for private cloud.
+     * Implements get of resource pools list
+     *
+     * <p>Returns list of resource pools in region for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource pools response model.
+     * @return list of resource pools response model as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourcePool> list(String regionId, String pcName);
 
     /**
-     * Returns list of resource pools in region for private cloud.
+     * Implements get of resource pools list
+     *
+     * <p>Returns list of resource pools in region for private cloud.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -31,12 +35,30 @@ public interface ResourcePools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource pools response model.
+     * @return list of resource pools response model as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourcePool> list(String regionId, String pcName, Context context);
 
     /**
-     * Returns resource pool templates by its name.
+     * Implements get of resource pool
+     *
+     * <p>Returns resource pool templates by its name.
+     *
+     * @param regionId The region Id (westus, eastus).
+     * @param pcName The private cloud name.
+     * @param resourcePoolName resource pool id (vsphereId).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource pool model along with {@link Response}.
+     */
+    Response<ResourcePool> getWithResponse(String regionId, String pcName, String resourcePoolName, Context context);
+
+    /**
+     * Implements get of resource pool
+     *
+     * <p>Returns resource pool templates by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -47,18 +69,4 @@ public interface ResourcePools {
      * @return resource pool model.
      */
     ResourcePool get(String regionId, String pcName, String resourcePoolName);
-
-    /**
-     * Returns resource pool templates by its name.
-     *
-     * @param regionId The region Id (westus, eastus).
-     * @param pcName The private cloud name.
-     * @param resourcePoolName resource pool id (vsphereId).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource pool model.
-     */
-    Response<ResourcePool> getWithResponse(String regionId, String pcName, String resourcePoolName, Context context);
 }

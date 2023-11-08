@@ -13,29 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CassandraLinkedServiceTypeProperties {
     /*
-     * Host name for connection. Type: string (or Expression with resultType
-     * string).
+     * Host name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
-     * AuthenticationType to be used for connection. Type: string (or
-     * Expression with resultType string).
+     * AuthenticationType to be used for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The port for the connection. Type: integer (or Expression with
-     * resultType integer).
+     * The port for the connection. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "port")
     private Object port;
 
     /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -47,12 +43,15 @@ public final class CassandraLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of CassandraLinkedServiceTypeProperties class. */
+    public CassandraLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the host property: Host name for connection. Type: string (or Expression with resultType string).
@@ -158,22 +157,22 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
-    public CassandraLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public CassandraLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

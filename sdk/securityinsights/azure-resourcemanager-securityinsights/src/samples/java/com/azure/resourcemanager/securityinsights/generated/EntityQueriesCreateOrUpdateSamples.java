@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for EntityQueries CreateOrUpdate. */
 public final class EntityQueriesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/entityQueries/CreateEntityQueryActivity.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/entityQueries/CreateEntityQueryActivity.json
      */
     /**
      * Sample code: Creates or updates an Activity entity query.

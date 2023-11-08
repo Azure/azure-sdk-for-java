@@ -27,6 +27,10 @@ public final class ExtensionsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ExtensionsList class. */
+    public ExtensionsList() {
+    }
+
     /**
      * Get the value property: List of Extensions within a Kubernetes cluster.
      *

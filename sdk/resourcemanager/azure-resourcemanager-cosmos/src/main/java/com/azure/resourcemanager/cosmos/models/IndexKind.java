@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IndexKind. */
+/** Indicates the type of index. */
 public final class IndexKind extends ExpandableStringEnum<IndexKind> {
     /** Static value Hash for IndexKind. */
     public static final IndexKind HASH = fromString("Hash");
@@ -18,6 +18,15 @@ public final class IndexKind extends ExpandableStringEnum<IndexKind> {
 
     /** Static value Spatial for IndexKind. */
     public static final IndexKind SPATIAL = fromString("Spatial");
+
+    /**
+     * Creates a new instance of IndexKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IndexKind() {
+    }
 
     /**
      * Creates or finds a IndexKind from its string representation.
@@ -30,7 +39,11 @@ public final class IndexKind extends ExpandableStringEnum<IndexKind> {
         return fromString(name, IndexKind.class);
     }
 
-    /** @return known IndexKind values. */
+    /**
+     * Gets known IndexKind values.
+     *
+     * @return known IndexKind values.
+     */
     public static Collection<IndexKind> values() {
         return values(IndexKind.class);
     }

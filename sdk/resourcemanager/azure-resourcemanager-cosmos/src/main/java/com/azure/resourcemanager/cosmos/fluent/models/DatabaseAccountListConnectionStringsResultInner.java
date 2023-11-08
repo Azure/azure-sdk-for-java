@@ -5,23 +5,22 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountConnectionString;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The connection strings for the given database account. */
 @Fluent
 public final class DatabaseAccountListConnectionStringsResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DatabaseAccountListConnectionStringsResultInner.class);
-
     /*
      * An array that contains the connection strings for the Cosmos DB account.
      */
     @JsonProperty(value = "connectionStrings")
     private List<DatabaseAccountConnectionString> connectionStrings;
+
+    /** Creates an instance of DatabaseAccountListConnectionStringsResultInner class. */
+    public DatabaseAccountListConnectionStringsResultInner() {
+    }
 
     /**
      * Get the connectionStrings property: An array that contains the connection strings for the Cosmos DB account.

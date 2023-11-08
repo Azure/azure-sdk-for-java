@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.ApplyUpdatesClient;
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
 import com.azure.resourcemanager.maintenance.models.ListApplyUpdate;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApplyUpdatesClient. */
 public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
-    private final ClientLogger logger = new ClientLogger(ApplyUpdatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApplyUpdatesService service;
 
@@ -59,21 +56,19 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MaintenanceManagemen")
-    private interface ApplyUpdatesService {
+    public interface ApplyUpdatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
-                + "/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Maintenance/applyUpdates/{applyUpdateName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/{applyUpdateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplyUpdateInner>> getParent(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("providerName") String providerName,
             @PathParam("resourceParentType") String resourceParentType,
             @PathParam("resourceParentName") String resourceParentName,
-            @PathParam("providerName") String providerName,
             @PathParam("resourceType") String resourceType,
             @PathParam("resourceName") String resourceName,
             @PathParam("applyUpdateName") String applyUpdateName,
@@ -83,8 +78,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/{applyUpdateName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/{applyUpdateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplyUpdateInner>> get(
@@ -101,10 +95,8 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
-                + "/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Maintenance/applyUpdates/default")
-        @ExpectedResponses({200})
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/default")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplyUpdateInner>> createOrUpdateParent(
             @HostParam("$host") String endpoint,
@@ -121,9 +113,8 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/default")
-        @ExpectedResponses({200})
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/default")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplyUpdateInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -149,26 +140,28 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     }
 
     /**
-     * Track maintenance updates to resource with parent.
+     * Track Updates to resource with parent
+     *
+     * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplyUpdateInner>> getParentWithResponseAsync(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName) {
@@ -188,6 +181,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
         if (resourceParentType == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceParentType is required and cannot be null."));
@@ -195,9 +191,6 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
         if (resourceParentName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceParentName is required and cannot be null."));
-        }
-        if (providerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
         }
         if (resourceType == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
@@ -218,9 +211,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
+                            providerName,
                             resourceParentType,
                             resourceParentName,
-                            providerName,
                             resourceType,
                             resourceName,
                             applyUpdateName,
@@ -231,12 +224,14 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     }
 
     /**
-     * Track maintenance updates to resource with parent.
+     * Track Updates to resource with parent
+     *
+     * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
@@ -244,14 +239,14 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplyUpdateInner>> getParentWithResponseAsync(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName,
@@ -272,6 +267,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
         if (resourceParentType == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceParentType is required and cannot be null."));
@@ -279,9 +277,6 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
         if (resourceParentName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceParentName is required and cannot be null."));
-        }
-        if (providerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
         }
         if (resourceType == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
@@ -300,9 +295,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
+                providerName,
                 resourceParentType,
                 resourceParentName,
-                providerName,
                 resourceType,
                 resourceName,
                 applyUpdateName,
@@ -312,54 +307,91 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     }
 
     /**
-     * Track maintenance updates to resource with parent.
+     * Track Updates to resource with parent
+     *
+     * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplyUpdateInner> getParentAsync(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName) {
         return getParentWithResponseAsync(
                 resourceGroupName,
+                providerName,
                 resourceParentType,
                 resourceParentName,
-                providerName,
                 resourceType,
                 resourceName,
                 applyUpdateName)
-            .flatMap(
-                (Response<ApplyUpdateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track maintenance updates to resource with parent.
+     * Track Updates to resource with parent
+     *
+     * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param applyUpdateName applyUpdate Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return apply Update request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ApplyUpdateInner> getParentWithResponse(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String applyUpdateName,
+        Context context) {
+        return getParentWithResponseAsync(
+                resourceGroupName,
+                providerName,
+                resourceParentType,
+                resourceParentName,
+                resourceType,
+                resourceName,
+                applyUpdateName,
+                context)
+            .block();
+    }
+
+    /**
+     * Track Updates to resource with parent
+     *
+     * <p>Track maintenance updates to resource with parent.
+     *
+     * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
@@ -371,63 +403,28 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplyUpdateInner getParent(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName) {
-        return getParentAsync(
+        return getParentWithResponse(
                 resourceGroupName,
+                providerName,
                 resourceParentType,
                 resourceParentName,
-                providerName,
-                resourceType,
-                resourceName,
-                applyUpdateName)
-            .block();
-    }
-
-    /**
-     * Track maintenance updates to resource with parent.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param applyUpdateName applyUpdate Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplyUpdateInner> getParentWithResponse(
-        String resourceGroupName,
-        String resourceParentType,
-        String resourceParentName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String applyUpdateName,
-        Context context) {
-        return getParentWithResponseAsync(
-                resourceGroupName,
-                resourceParentType,
-                resourceParentName,
-                providerName,
                 resourceType,
                 resourceName,
                 applyUpdateName,
-                context)
-            .block();
+                Context.NONE)
+            .getValue();
     }
 
     /**
-     * Track maintenance updates to resource.
+     * Track Updates to resource
+     *
+     * <p>Track maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -437,7 +434,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplyUpdateInner>> getWithResponseAsync(
@@ -495,7 +492,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     }
 
     /**
-     * Track maintenance updates to resource.
+     * Track Updates to resource
+     *
+     * <p>Track maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -506,7 +505,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplyUpdateInner>> getWithResponseAsync(
@@ -562,7 +561,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     }
 
     /**
-     * Track maintenance updates to resource.
+     * Track Updates to resource
+     *
+     * <p>Track maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -572,7 +573,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplyUpdateInner> getAsync(
@@ -582,18 +583,42 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
         String resourceName,
         String applyUpdateName) {
         return getWithResponseAsync(resourceGroupName, providerName, resourceType, resourceName, applyUpdateName)
-            .flatMap(
-                (Response<ApplyUpdateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Track maintenance updates to resource.
+     * Track Updates to resource
+     *
+     * <p>Track maintenance updates to resource.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param applyUpdateName applyUpdate Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return apply Update request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ApplyUpdateInner> getWithResponse(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String applyUpdateName,
+        Context context) {
+        return getWithResponseAsync(
+                resourceGroupName, providerName, resourceType, resourceName, applyUpdateName, context)
+            .block();
+    }
+
+    /**
+     * Track Updates to resource
+     *
+     * <p>Track maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -612,38 +637,15 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
         String resourceType,
         String resourceName,
         String applyUpdateName) {
-        return getAsync(resourceGroupName, providerName, resourceType, resourceName, applyUpdateName).block();
+        return getWithResponse(
+                resourceGroupName, providerName, resourceType, resourceName, applyUpdateName, Context.NONE)
+            .getValue();
     }
 
     /**
-     * Track maintenance updates to resource.
+     * Apply Updates to resource with parent
      *
-     * @param resourceGroupName Resource group name.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param applyUpdateName applyUpdate Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplyUpdateInner> getWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String applyUpdateName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, providerName, resourceType, resourceName, applyUpdateName, context)
-            .block();
-    }
-
-    /**
-     * Apply maintenance updates to resource with parent.
+     * <p>Apply maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -654,7 +656,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplyUpdateInner>> createOrUpdateParentWithResponseAsync(
@@ -718,7 +720,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     }
 
     /**
-     * Apply maintenance updates to resource with parent.
+     * Apply Updates to resource with parent
+     *
+     * <p>Apply maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -730,7 +734,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplyUpdateInner>> createOrUpdateParentWithResponseAsync(
@@ -792,7 +796,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     }
 
     /**
-     * Apply maintenance updates to resource with parent.
+     * Apply Updates to resource with parent
+     *
+     * <p>Apply maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -803,7 +809,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplyUpdateInner> createOrUpdateParentAsync(
@@ -815,45 +821,13 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
         String resourceName) {
         return createOrUpdateParentWithResponseAsync(
                 resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName)
-            .flatMap(
-                (Response<ApplyUpdateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Apply maintenance updates to resource with parent.
+     * Apply Updates to resource with parent
      *
-     * @param resourceGroupName Resource group name.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent identifier.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplyUpdateInner createOrUpdateParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName) {
-        return createOrUpdateParentAsync(
-                resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName)
-            .block();
-    }
-
-    /**
-     * Apply maintenance updates to resource with parent.
+     * <p>Apply maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -865,7 +839,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplyUpdateInner> createOrUpdateParentWithResponse(
@@ -888,7 +862,44 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     }
 
     /**
-     * Apply maintenance updates to resource.
+     * Apply Updates to resource with parent
+     *
+     * <p>Apply maintenance updates to resource with parent.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return apply Update request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplyUpdateInner createOrUpdateParent(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName) {
+        return createOrUpdateParentWithResponse(
+                resourceGroupName,
+                providerName,
+                resourceParentType,
+                resourceParentName,
+                resourceType,
+                resourceName,
+                Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Apply Updates to resource
+     *
+     * <p>Apply maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -897,7 +908,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplyUpdateInner>> createOrUpdateWithResponseAsync(
@@ -946,7 +957,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     }
 
     /**
-     * Apply maintenance updates to resource.
+     * Apply Updates to resource
+     *
+     * <p>Apply maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -956,7 +969,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplyUpdateInner>> createOrUpdateWithResponseAsync(
@@ -1002,7 +1015,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     }
 
     /**
-     * Apply maintenance updates to resource.
+     * Apply Updates to resource
+     *
+     * <p>Apply maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -1011,24 +1026,41 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
+     * @return apply Update request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplyUpdateInner> createOrUpdateAsync(
         String resourceGroupName, String providerName, String resourceType, String resourceName) {
         return createOrUpdateWithResponseAsync(resourceGroupName, providerName, resourceType, resourceName)
-            .flatMap(
-                (Response<ApplyUpdateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Apply maintenance updates to resource.
+     * Apply Updates to resource
+     *
+     * <p>Apply maintenance updates to resource.
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return apply Update request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ApplyUpdateInner> createOrUpdateWithResponse(
+        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, providerName, resourceType, resourceName, context)
+            .block();
+    }
+
+    /**
+     * Apply Updates to resource
+     *
+     * <p>Apply maintenance updates to resource.
      *
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
@@ -1042,27 +1074,8 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplyUpdateInner createOrUpdate(
         String resourceGroupName, String providerName, String resourceType, String resourceName) {
-        return createOrUpdateAsync(resourceGroupName, providerName, resourceType, resourceName).block();
-    }
-
-    /**
-     * Apply maintenance updates to resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplyUpdateInner> createOrUpdateWithResponse(
-        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, providerName, resourceType, resourceName, context)
-            .block();
+        return createOrUpdateWithResponse(resourceGroupName, providerName, resourceType, resourceName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1070,7 +1083,8 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplyUpdateInner>> listSinglePageAsync() {
@@ -1111,7 +1125,8 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplyUpdateInner>> listSinglePageAsync(Context context) {
@@ -1147,7 +1162,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplyUpdateInner> listAsync() {
@@ -1161,7 +1176,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplyUpdateInner> listAsync(Context context) {
@@ -1173,7 +1188,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplyUpdateInner> list() {
@@ -1187,7 +1202,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplyUpdateInner> list(Context context) {

@@ -4,12 +4,15 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import java.time.OffsetDateTime;
 
 /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartPushed event. */
-@Immutable
+@Fluent
 public final class ContainerRegistryChartPushedEventData extends ContainerRegistryArtifactEventData {
+    /** Creates an instance of ContainerRegistryChartPushedEventData class. */
+    public ContainerRegistryChartPushedEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public ContainerRegistryChartPushedEventData setId(String id) {

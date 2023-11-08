@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Json dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -23,12 +25,10 @@ public class JsonDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The code page name of the preferred encoding. If not specified, the
-     * default value is UTF-8, unless BOM denotes another Unicode encoding.
-     * Refer to the name column of the table in the following link to set
-     * supported values:
-     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type:
-     * string (or Expression with resultType string).
+     * The code page name of the preferred encoding. If not specified, the default value is UTF-8, unless BOM denotes
+     * another Unicode encoding. Refer to the name column of the table in the following link to set supported values:
+     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.encodingName")
     private Object encodingName;
@@ -38,6 +38,9 @@ public class JsonDataset extends Dataset {
      */
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
+
+    /** Creates an instance of JsonDataset class. */
+    public JsonDataset() {}
 
     /**
      * Get the location property: The location of the json data storage.
@@ -102,6 +105,55 @@ public class JsonDataset extends Dataset {
      */
     public JsonDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public JsonDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public JsonDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public JsonDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public JsonDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public JsonDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public JsonDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public JsonDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

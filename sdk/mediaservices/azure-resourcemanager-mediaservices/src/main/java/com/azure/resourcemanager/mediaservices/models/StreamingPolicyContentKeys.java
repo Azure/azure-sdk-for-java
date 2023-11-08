@@ -23,6 +23,10 @@ public final class StreamingPolicyContentKeys {
     @JsonProperty(value = "keyToTrackMappings")
     private List<StreamingPolicyContentKey> keyToTrackMappings;
 
+    /** Creates an instance of StreamingPolicyContentKeys class. */
+    public StreamingPolicyContentKeys() {
+    }
+
     /**
      * Get the defaultKey property: Default content key for an encryption scheme.
      *

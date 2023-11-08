@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,12 +13,13 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Event representing an general failure. */
+/**
+ * deviceManagementTroubleshootingEvent
+ *
+ * <p>Event representing an general failure.
+ */
 @Fluent
 public final class MicrosoftGraphDeviceManagementTroubleshootingEvent extends MicrosoftGraphEntity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphDeviceManagementTroubleshootingEvent.class);
-
     /*
      * Id used for tracing the failure in the service.
      */
@@ -36,6 +36,10 @@ public final class MicrosoftGraphDeviceManagementTroubleshootingEvent extends Mi
      * Event representing an general failure.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDeviceManagementTroubleshootingEvent class. */
+    public MicrosoftGraphDeviceManagementTroubleshootingEvent() {
+    }
 
     /**
      * Get the correlationId property: Id used for tracing the failure in the service.

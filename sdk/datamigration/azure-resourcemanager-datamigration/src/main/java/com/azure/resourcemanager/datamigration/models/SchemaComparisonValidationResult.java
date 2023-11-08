@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Results for schema comparison between the source and target. */
 @Fluent
 public final class SchemaComparisonValidationResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemaComparisonValidationResult.class);
-
     /*
      * List of schema differences between the source and target databases
      */
@@ -31,13 +28,19 @@ public final class SchemaComparisonValidationResult {
      * Count of source database objects
      */
     @JsonProperty(value = "sourceDatabaseObjectCount")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Long> sourceDatabaseObjectCount;
 
     /*
      * Count of target database objects
      */
     @JsonProperty(value = "targetDatabaseObjectCount")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Long> targetDatabaseObjectCount;
+
+    /** Creates an instance of SchemaComparisonValidationResult class. */
+    public SchemaComparisonValidationResult() {
+    }
 
     /**
      * Get the schemaDifferences property: List of schema differences between the source and target databases.

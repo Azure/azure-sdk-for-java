@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.msi.fluent.SystemAssignedIdentitiesClient;
 import com.azure.resourcemanager.msi.fluent.models.SystemAssignedIdentityInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SystemAssignedIdentitiesClient. */
 public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedIdentitiesClient {
-    private final ClientLogger logger = new ClientLogger(SystemAssignedIdentitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SystemAssignedIdentitiesService service;
 
@@ -54,7 +51,7 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
      */
     @Host("{$host}")
     @ServiceInterface(name = "ManagedServiceIdenti")
-    private interface SystemAssignedIdentitiesService {
+    public interface SystemAssignedIdentitiesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.ManagedIdentity/identities/default")
         @ExpectedResponses({200})
@@ -74,7 +71,8 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the systemAssignedIdentity available under the specified RP scope.
+     * @return the systemAssignedIdentity available under the specified RP scope along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SystemAssignedIdentityInner>> getByScopeWithResponseAsync(String scope) {
@@ -103,7 +101,8 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the systemAssignedIdentity available under the specified RP scope.
+     * @return the systemAssignedIdentity available under the specified RP scope along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SystemAssignedIdentityInner>> getByScopeWithResponseAsync(String scope, Context context) {
@@ -128,19 +127,27 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the systemAssignedIdentity available under the specified RP scope.
+     * @return the systemAssignedIdentity available under the specified RP scope on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SystemAssignedIdentityInner> getByScopeAsync(String scope) {
-        return getByScopeWithResponseAsync(scope)
-            .flatMap(
-                (Response<SystemAssignedIdentityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByScopeWithResponseAsync(scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the systemAssignedIdentity available under the specified RP scope.
+     *
+     * @param scope The resource provider scope of the resource. Parent resource being extended by Managed Identities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the systemAssignedIdentity available under the specified RP scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SystemAssignedIdentityInner> getByScopeWithResponse(String scope, Context context) {
+        return getByScopeWithResponseAsync(scope, context).block();
     }
 
     /**
@@ -154,21 +161,6 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SystemAssignedIdentityInner getByScope(String scope) {
-        return getByScopeAsync(scope).block();
-    }
-
-    /**
-     * Gets the systemAssignedIdentity available under the specified RP scope.
-     *
-     * @param scope The resource provider scope of the resource. Parent resource being extended by Managed Identities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the systemAssignedIdentity available under the specified RP scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SystemAssignedIdentityInner> getByScopeWithResponse(String scope, Context context) {
-        return getByScopeWithResponseAsync(scope, context).block();
+        return getByScopeWithResponse(scope, Context.NONE).getValue();
     }
 }

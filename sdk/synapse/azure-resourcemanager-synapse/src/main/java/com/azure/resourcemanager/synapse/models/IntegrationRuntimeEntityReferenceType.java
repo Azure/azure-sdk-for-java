@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeEntityReferenceType. */
+/** The type of this referenced entity. */
 public final class IntegrationRuntimeEntityReferenceType
     extends ExpandableStringEnum<IntegrationRuntimeEntityReferenceType> {
     /** Static value IntegrationRuntimeReference for IntegrationRuntimeEntityReferenceType. */
@@ -18,6 +18,15 @@ public final class IntegrationRuntimeEntityReferenceType
     /** Static value LinkedServiceReference for IntegrationRuntimeEntityReferenceType. */
     public static final IntegrationRuntimeEntityReferenceType LINKED_SERVICE_REFERENCE =
         fromString("LinkedServiceReference");
+
+    /**
+     * Creates a new instance of IntegrationRuntimeEntityReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeEntityReferenceType() {
+    }
 
     /**
      * Creates or finds a IntegrationRuntimeEntityReferenceType from its string representation.
@@ -30,7 +39,11 @@ public final class IntegrationRuntimeEntityReferenceType
         return fromString(name, IntegrationRuntimeEntityReferenceType.class);
     }
 
-    /** @return known IntegrationRuntimeEntityReferenceType values. */
+    /**
+     * Gets known IntegrationRuntimeEntityReferenceType values.
+     *
+     * @return known IntegrationRuntimeEntityReferenceType values.
+     */
     public static Collection<IntegrationRuntimeEntityReferenceType> values() {
         return values(IntegrationRuntimeEntityReferenceType.class);
     }

@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CloudConnectors model. */
+/** External Cloud Service connectors. */
 @Immutable
 public final class CloudConnectors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudConnectors.class);
-
     /*
      * AWS external identifier.
      * Configured in AWS to allow use of the role arn used for scanning
      */
     @JsonProperty(value = "awsExternalId", access = JsonProperty.Access.WRITE_ONLY)
     private String awsExternalId;
+
+    /** Creates an instance of CloudConnectors class. */
+    public CloudConnectors() {
+    }
 
     /**
      * Get the awsExternalId property: AWS external identifier. Configured in AWS to allow use of the role arn used for

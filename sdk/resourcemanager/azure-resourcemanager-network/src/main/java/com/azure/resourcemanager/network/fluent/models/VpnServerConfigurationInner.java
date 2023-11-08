@@ -40,6 +40,10 @@ public final class VpnServerConfigurationInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of VpnServerConfigurationInner class. */
+    public VpnServerConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the P2SVpnServer configuration.
      *
@@ -394,6 +398,30 @@ public final class VpnServerConfigurationInner extends Resource {
      */
     public List<P2SVpnGatewayInner> p2SVpnGateways() {
         return this.innerProperties() == null ? null : this.innerProperties().p2SVpnGateways();
+    }
+
+    /**
+     * Get the configurationPolicyGroups property: List of all VpnServerConfigurationPolicyGroups.
+     *
+     * @return the configurationPolicyGroups value.
+     */
+    public List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationPolicyGroups();
+    }
+
+    /**
+     * Set the configurationPolicyGroups property: List of all VpnServerConfigurationPolicyGroups.
+     *
+     * @param configurationPolicyGroups the configurationPolicyGroups value to set.
+     * @return the VpnServerConfigurationInner object itself.
+     */
+    public VpnServerConfigurationInner withConfigurationPolicyGroups(
+        List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnServerConfigurationProperties();
+        }
+        this.innerProperties().withConfigurationPolicyGroups(configurationPolicyGroups);
+        return this;
     }
 
     /**

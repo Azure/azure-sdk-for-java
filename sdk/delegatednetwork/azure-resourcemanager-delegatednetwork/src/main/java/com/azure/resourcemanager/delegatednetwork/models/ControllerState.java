@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ControllerState. */
+/** The current state of dnc controller resource. */
 public final class ControllerState extends ExpandableStringEnum<ControllerState> {
     /** Static value Deleting for ControllerState. */
     public static final ControllerState DELETING = fromString("Deleting");
@@ -23,6 +23,15 @@ public final class ControllerState extends ExpandableStringEnum<ControllerState>
     public static final ControllerState PROVISIONING = fromString("Provisioning");
 
     /**
+     * Creates a new instance of ControllerState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ControllerState() {
+    }
+
+    /**
      * Creates or finds a ControllerState from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ControllerState extends ExpandableStringEnum<ControllerState>
         return fromString(name, ControllerState.class);
     }
 
-    /** @return known ControllerState values. */
+    /**
+     * Gets known ControllerState values.
+     *
+     * @return known ControllerState values.
+     */
     public static Collection<ControllerState> values() {
         return values(ControllerState.class);
     }

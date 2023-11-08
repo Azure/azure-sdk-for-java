@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of a list-all operation. */
 @Fluent
 public final class DatabaseList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseList.class);
-
     /*
      * List of databases
      */
@@ -27,6 +23,10 @@ public final class DatabaseList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of DatabaseList class. */
+    public DatabaseList() {
+    }
 
     /**
      * Get the value property: List of databases.

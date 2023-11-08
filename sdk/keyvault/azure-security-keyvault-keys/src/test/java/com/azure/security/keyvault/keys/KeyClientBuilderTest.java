@@ -32,7 +32,7 @@ public class KeyClientBuilderTest {
     public void setUp() {
         vaultUrl = "https://key-vault-url.vault.azure.net/";
         keyName = "TestKey";
-        serviceVersion = KeyServiceVersion.V7_2;
+        serviceVersion = KeyServiceVersion.V7_3;
     }
 
     @Test

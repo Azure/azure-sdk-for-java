@@ -18,6 +18,10 @@ public final class ChannelUpdateParameters {
     @JsonProperty(value = "properties")
     private ChannelUpdateParametersProperties innerProperties;
 
+    /** Creates an instance of ChannelUpdateParameters class. */
+    public ChannelUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the channel update parameters.
      *
@@ -28,9 +32,9 @@ public final class ChannelUpdateParameters {
     }
 
     /**
-     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the event channel. If this timer expires
-     * while the corresponding partner topic or partner destination is never activated, the channel and corresponding
-     * partner topic or partner destination are deleted.
+     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
+     * corresponding partner topic or partner destination is never activated, the channel and corresponding partner
+     * topic or partner destination are deleted.
      *
      * @return the expirationTimeIfNotActivatedUtc value.
      */
@@ -39,9 +43,9 @@ public final class ChannelUpdateParameters {
     }
 
     /**
-     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the event channel. If this timer expires
-     * while the corresponding partner topic or partner destination is never activated, the channel and corresponding
-     * partner topic or partner destination are deleted.
+     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
+     * corresponding partner topic or partner destination is never activated, the channel and corresponding partner
+     * topic or partner destination are deleted.
      *
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
      * @return the ChannelUpdateParameters object itself.

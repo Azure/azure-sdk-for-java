@@ -11,15 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureActiveDirectory {
     /*
-     * <code>false</code> if the Azure Active Directory provider should not be
-     * enabled despite the set registration; otherwise, <code>true</code>.
+     * <code>false</code> if the Azure Active Directory provider should not be enabled despite the set registration;
+     * otherwise, <code>true</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * The configuration settings of the Azure Active Directory app
-     * registration.
+     * The configuration settings of the Azure Active Directory app registration.
      */
     @JsonProperty(value = "registration")
     private AzureActiveDirectoryRegistration registration;
@@ -31,21 +30,22 @@ public final class AzureActiveDirectory {
     private AzureActiveDirectoryLogin login;
 
     /*
-     * The configuration settings of the Azure Active Directory token
-     * validation flow.
+     * The configuration settings of the Azure Active Directory token validation flow.
      */
     @JsonProperty(value = "validation")
     private AzureActiveDirectoryValidation validation;
 
     /*
-     * Gets a value indicating whether the Azure AD configuration was
-     * auto-provisioned using 1st party tooling.
-     * This is an internal flag primarily intended to support the Azure
-     * Management Portal. Users should not
+     * Gets a value indicating whether the Azure AD configuration was auto-provisioned using 1st party tooling.
+     * This is an internal flag primarily intended to support the Azure Management Portal. Users should not
      * read or write to this property.
      */
     @JsonProperty(value = "isAutoProvisioned")
     private Boolean isAutoProvisioned;
+
+    /** Creates an instance of AzureActiveDirectory class. */
+    public AzureActiveDirectory() {
+    }
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Azure Active Directory provider should not be

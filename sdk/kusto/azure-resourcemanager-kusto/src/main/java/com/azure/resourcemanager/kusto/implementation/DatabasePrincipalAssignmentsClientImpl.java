@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.kusto.fluent.DatabasePrincipalAssignmentsClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabasePrincipalAssignmentsClient. */
 public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePrincipalAssignmentsClient {
-    private final ClientLogger logger = new ClientLogger(DatabasePrincipalAssignmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DatabasePrincipalAssignmentsService service;
 
@@ -71,11 +68,10 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface DatabasePrincipalAssignmentsService {
+    public interface DatabasePrincipalAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/checkPrincipalAssignmentNameAvailability")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/checkPrincipalAssignmentNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(
@@ -91,8 +87,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabasePrincipalAssignmentInner>> get(
@@ -108,8 +103,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -126,8 +120,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments/{principalAssignmentName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -143,8 +136,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/principalAssignments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/principalAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabasePrincipalAssignmentListResult>> list(
@@ -161,7 +153,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Checks that the database principal assignment is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the resource.
@@ -227,7 +219,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Checks that the database principal assignment is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the resource.
@@ -292,7 +284,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Checks that the database principal assignment is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the resource.
@@ -309,42 +301,13 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
         DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
         return checkNameAvailabilityWithResponseAsync(
                 resourceGroupName, clusterName, databaseName, principalAssignmentName)
-            .flatMap(
-                (Response<CheckNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param principalAssignmentName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        return checkNameAvailabilityAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName)
-            .block();
-    }
-
-    /**
-     * Checks that the database principal assignment is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the resource.
@@ -367,9 +330,32 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     }
 
     /**
+     * Checks that the database principal assignment is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param principalAssignmentName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameResultInner checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        return checkNameAvailabilityWithResponse(
+                resourceGroupName, clusterName, databaseName, principalAssignmentName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Gets a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -430,7 +416,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Gets a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -493,7 +479,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Gets a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -506,38 +492,13 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     private Mono<DatabasePrincipalAssignmentInner> getAsync(
         String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName)
-            .flatMap(
-                (Response<DatabasePrincipalAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param principalAssignmentName The name of the Kusto principalAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster database principalAssignment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabasePrincipalAssignmentInner get(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
-        return getAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName).block();
-    }
-
-    /**
-     * Gets a Kusto cluster database principalAssignment.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -559,9 +520,28 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     }
 
     /**
+     * Gets a Kusto cluster database principalAssignment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param principalAssignmentName The name of the Kusto principalAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto cluster database principalAssignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabasePrincipalAssignmentInner get(
+        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
+        return getWithResponse(resourceGroupName, clusterName, databaseName, principalAssignmentName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -633,7 +613,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -704,7 +684,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -738,7 +718,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -775,7 +755,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -793,15 +773,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
             String databaseName,
             String principalAssignmentName,
             DatabasePrincipalAssignmentInner parameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -821,7 +801,8 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
             String principalAssignmentName,
             DatabasePrincipalAssignmentInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, clusterName, databaseName, principalAssignmentName, parameters, context)
             .getSyncPoller();
     }
@@ -829,7 +810,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -855,7 +836,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -883,7 +864,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -907,7 +888,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Creates a Kusto cluster database principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -934,7 +915,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -994,7 +975,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1056,7 +1037,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1079,7 +1060,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1107,7 +1088,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1119,13 +1100,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName)
+            .getSyncPoller();
     }
 
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1142,14 +1125,15 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
         String databaseName,
         String principalAssignmentName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, clusterName, databaseName, principalAssignmentName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1169,7 +1153,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1194,7 +1178,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1211,7 +1195,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Deletes a Kusto principalAssignment.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1233,7 +1217,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Lists all Kusto cluster database principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1291,7 +1275,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Lists all Kusto cluster database principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1347,7 +1331,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Lists all Kusto cluster database principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1365,7 +1349,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Lists all Kusto cluster database principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -1384,7 +1368,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Lists all Kusto cluster database principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1402,7 +1386,7 @@ public final class DatabasePrincipalAssignmentsClientImpl implements DatabasePri
     /**
      * Lists all Kusto cluster database principalAssignments.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.

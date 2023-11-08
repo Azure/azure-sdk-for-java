@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.Status;
 import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a replication. */
 @Fluent
 public final class ReplicationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationProperties.class);
-
     /*
-     * The provisioning state of the replication at the time the operation was
-     * called.
+     * The provisioning state of the replication at the time the operation was called.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -31,20 +26,21 @@ public final class ReplicationProperties {
     private Status status;
 
     /*
-     * Specifies whether the replication's regional endpoint is enabled.
-     * Requests will not be routed to a replication whose regional endpoint is
-     * disabled, however its data will continue to be synced with other
-     * replications.
+     * Specifies whether the replication's regional endpoint is enabled. Requests will not be routed to a replication
+     * whose regional endpoint is disabled, however its data will continue to be synced with other replications.
      */
     @JsonProperty(value = "regionEndpointEnabled")
     private Boolean regionEndpointEnabled;
 
     /*
-     * Whether or not zone redundancy is enabled for this container registry
-     * replication
+     * Whether or not zone redundancy is enabled for this container registry replication
      */
     @JsonProperty(value = "zoneRedundancy")
     private ZoneRedundancy zoneRedundancy;
+
+    /** Creates an instance of ReplicationProperties class. */
+    public ReplicationProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the replication at the time the operation was

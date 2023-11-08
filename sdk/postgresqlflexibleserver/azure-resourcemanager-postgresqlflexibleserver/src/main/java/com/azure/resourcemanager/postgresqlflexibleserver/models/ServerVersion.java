@@ -8,8 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServerVersion. */
+/** The version of a server. */
 public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
+    /** Static value 14 for ServerVersion. */
+    public static final ServerVersion ONE_FOUR = fromString("14");
+
     /** Static value 13 for ServerVersion. */
     public static final ServerVersion ONE_THREE = fromString("13");
 
@@ -18,6 +21,15 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
 
     /** Static value 11 for ServerVersion. */
     public static final ServerVersion ONE_ONE = fromString("11");
+
+    /**
+     * Creates a new instance of ServerVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerVersion() {
+    }
 
     /**
      * Creates or finds a ServerVersion from its string representation.
@@ -30,7 +42,11 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
         return fromString(name, ServerVersion.class);
     }
 
-    /** @return known ServerVersion values. */
+    /**
+     * Gets known ServerVersion values.
+     *
+     * @return known ServerVersion values.
+     */
     public static Collection<ServerVersion> values() {
         return values(ServerVersion.class);
     }

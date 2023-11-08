@@ -21,7 +21,7 @@ public interface CompliancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Compliance objects response.
+     * @return list of Compliance objects response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ComplianceInner> list(String scope);
@@ -35,10 +35,25 @@ public interface CompliancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Compliance objects response.
+     * @return list of Compliance objects response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ComplianceInner> list(String scope, Context context);
+
+    /**
+     * Details of a specific Compliance.
+     *
+     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * @param complianceName name of the Compliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return compliance of a scope along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ComplianceInner> getWithResponse(String scope, String complianceName, Context context);
 
     /**
      * Details of a specific Compliance.
@@ -53,19 +68,4 @@ public interface CompliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ComplianceInner get(String scope, String complianceName);
-
-    /**
-     * Details of a specific Compliance.
-     *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param complianceName name of the Compliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compliance of a scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ComplianceInner> getWithResponse(String scope, String complianceName, Context context);
 }

@@ -18,11 +18,13 @@ public final class PipelineRunsQueryResponse {
     private List<PipelineRun> value;
 
     /*
-     * The continuation token for getting the next page of results, if any
-     * remaining results exist, null otherwise.
+     * The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
      */
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
+
+    /** Creates an instance of PipelineRunsQueryResponse class. */
+    public PipelineRunsQueryResponse() {}
 
     /**
      * Get the value property: List of pipeline runs.

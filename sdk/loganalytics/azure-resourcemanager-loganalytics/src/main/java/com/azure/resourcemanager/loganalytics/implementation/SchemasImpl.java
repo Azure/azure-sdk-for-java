@@ -12,10 +12,9 @@ import com.azure.resourcemanager.loganalytics.fluent.SchemasClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.SearchGetSchemaResponseInner;
 import com.azure.resourcemanager.loganalytics.models.Schemas;
 import com.azure.resourcemanager.loganalytics.models.SearchGetSchemaResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SchemasImpl implements Schemas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SchemasImpl.class);
 
     private final SchemasClient innerClient;
 
@@ -25,15 +24,6 @@ public final class SchemasImpl implements Schemas {
         SchemasClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public SearchGetSchemaResponse get(String resourceGroupName, String workspaceName) {
-        SearchGetSchemaResponseInner inner = this.serviceClient().get(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new SearchGetSchemaResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SearchGetSchemaResponse> getWithResponse(
@@ -46,6 +36,15 @@ public final class SchemasImpl implements Schemas {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SearchGetSchemaResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SearchGetSchemaResponse get(String resourceGroupName, String workspaceName) {
+        SearchGetSchemaResponseInner inner = this.serviceClient().get(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new SearchGetSchemaResponseImpl(inner, this.manager());
         } else {
             return null;
         }

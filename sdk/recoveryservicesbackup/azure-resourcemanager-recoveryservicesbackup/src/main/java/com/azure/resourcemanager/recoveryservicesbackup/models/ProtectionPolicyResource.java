@@ -75,6 +75,13 @@ public interface ProtectionPolicyResource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionPolicyResourceInner
      * object.
      *
@@ -89,11 +96,13 @@ public interface ProtectionPolicyResource {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The ProtectionPolicyResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ProtectionPolicyResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ProtectionPolicyResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -112,6 +121,7 @@ public interface ProtectionPolicyResource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ProtectionPolicyResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -123,6 +133,7 @@ public interface ProtectionPolicyResource {
              */
             WithCreate withExistingVault(String vaultName, String resourceGroupName);
         }
+
         /**
          * The stage of the ProtectionPolicyResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -144,6 +155,7 @@ public interface ProtectionPolicyResource {
              */
             ProtectionPolicyResource create(Context context);
         }
+
         /** The stage of the ProtectionPolicyResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -154,6 +166,7 @@ public interface ProtectionPolicyResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ProtectionPolicyResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -164,6 +177,7 @@ public interface ProtectionPolicyResource {
              */
             WithCreate withProperties(ProtectionPolicy properties);
         }
+
         /** The stage of the ProtectionPolicyResource definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -175,6 +189,7 @@ public interface ProtectionPolicyResource {
             WithCreate withEtag(String etag);
         }
     }
+
     /**
      * Begins update for the ProtectionPolicyResource resource.
      *
@@ -199,6 +214,7 @@ public interface ProtectionPolicyResource {
          */
         ProtectionPolicyResource apply(Context context);
     }
+
     /** The ProtectionPolicyResource update stages. */
     interface UpdateStages {
         /** The stage of the ProtectionPolicyResource update allowing to specify tags. */
@@ -211,6 +227,7 @@ public interface ProtectionPolicyResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ProtectionPolicyResource update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -221,6 +238,7 @@ public interface ProtectionPolicyResource {
              */
             Update withProperties(ProtectionPolicy properties);
         }
+
         /** The stage of the ProtectionPolicyResource update allowing to specify etag. */
         interface WithEtag {
             /**
@@ -232,6 +250,7 @@ public interface ProtectionPolicyResource {
             Update withEtag(String etag);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

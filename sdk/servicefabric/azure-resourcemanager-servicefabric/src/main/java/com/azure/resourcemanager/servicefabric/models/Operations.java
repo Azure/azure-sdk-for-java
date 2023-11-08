@@ -10,22 +10,28 @@ import com.azure.core.util.Context;
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * Get the list of available Service Fabric resource provider API operations.
+     * Lists all of the available Service Fabric resource provider API operations.
+     *
+     * <p>Get the list of available Service Fabric resource provider API operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available Service Fabric resource provider API operations.
+     * @return the list of available Service Fabric resource provider API operations as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<OperationResult> list();
 
     /**
-     * Get the list of available Service Fabric resource provider API operations.
+     * Lists all of the available Service Fabric resource provider API operations.
+     *
+     * <p>Get the list of available Service Fabric resource provider API operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available Service Fabric resource provider API operations.
+     * @return the list of available Service Fabric resource provider API operations as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<OperationResult> list(Context context);
 }

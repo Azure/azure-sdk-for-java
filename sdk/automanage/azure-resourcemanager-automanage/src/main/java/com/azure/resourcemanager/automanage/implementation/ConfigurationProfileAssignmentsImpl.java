@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automanage.fluent.ConfigurationProfileAssignmen
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileAssignmentInner;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileAssignment;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileAssignments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationProfileAssignmentsImpl implements ConfigurationProfileAssignments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationProfileAssignmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationProfileAssignmentsImpl.class);
 
     private final ConfigurationProfileAssignmentsClient innerClient;
 
@@ -68,6 +67,20 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
             .deleteWithResponse(resourceGroupName, configurationProfileAssignmentName, vmName, context);
     }
 
+    public PagedIterable<ConfigurationProfileAssignment> listByVirtualMachines(
+        String resourceGroupName, String vmName) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner =
+            this.serviceClient().listByVirtualMachines(resourceGroupName, vmName);
+        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ConfigurationProfileAssignment> listByVirtualMachines(
+        String resourceGroupName, String vmName, Context context) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner =
+            this.serviceClient().listByVirtualMachines(resourceGroupName, vmName, context);
+        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    }
+
     public PagedIterable<ConfigurationProfileAssignment> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ConfigurationProfileAssignmentInner> inner =
             this.serviceClient().listByResourceGroup(resourceGroupName);
@@ -91,10 +104,38 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
         return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
     }
 
+    public PagedIterable<ConfigurationProfileAssignment> listByMachineName(
+        String resourceGroupName, String machineName) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner =
+            this.serviceClient().listByMachineName(resourceGroupName, machineName);
+        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ConfigurationProfileAssignment> listByMachineName(
+        String resourceGroupName, String machineName, Context context) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner =
+            this.serviceClient().listByMachineName(resourceGroupName, machineName, context);
+        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ConfigurationProfileAssignment> listByClusterName(
+        String resourceGroupName, String clusterName) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner =
+            this.serviceClient().listByClusterName(resourceGroupName, clusterName);
+        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ConfigurationProfileAssignment> listByClusterName(
+        String resourceGroupName, String clusterName, Context context) {
+        PagedIterable<ConfigurationProfileAssignmentInner> inner =
+            this.serviceClient().listByClusterName(resourceGroupName, clusterName, context);
+        return Utils.mapPage(inner, inner1 -> new ConfigurationProfileAssignmentImpl(inner1, this.manager()));
+    }
+
     public ConfigurationProfileAssignment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -102,7 +143,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
         }
         String configurationProfileAssignmentName = Utils.getValueFromIdByName(id, "configurationProfileAssignments");
         if (configurationProfileAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,7 +154,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
         }
         String vmName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (vmName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -127,7 +168,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
     public Response<ConfigurationProfileAssignment> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,7 +176,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
         }
         String configurationProfileAssignmentName = Utils.getValueFromIdByName(id, "configurationProfileAssignments");
         if (configurationProfileAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,7 +187,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
         }
         String vmName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (vmName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,7 +199,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +207,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
         }
         String configurationProfileAssignmentName = Utils.getValueFromIdByName(id, "configurationProfileAssignments");
         if (configurationProfileAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,7 +218,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
         }
         String vmName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (vmName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -189,7 +230,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -197,7 +238,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
         }
         String configurationProfileAssignmentName = Utils.getValueFromIdByName(id, "configurationProfileAssignments");
         if (configurationProfileAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -208,7 +249,7 @@ public final class ConfigurationProfileAssignmentsImpl implements ConfigurationP
         }
         String vmName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (vmName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

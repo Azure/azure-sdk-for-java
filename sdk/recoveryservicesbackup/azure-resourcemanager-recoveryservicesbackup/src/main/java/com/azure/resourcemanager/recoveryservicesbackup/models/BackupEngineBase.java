@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,8 +23,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class BackupEngineBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupEngineBase.class);
-
     /*
      * Friendly name of the backup engine.
      */
@@ -40,15 +36,13 @@ public class BackupEngineBase {
     private BackupManagementType backupManagementType;
 
     /*
-     * Registration status of the backup engine with the Recovery Services
-     * Vault.
+     * Registration status of the backup engine with the Recovery Services Vault.
      */
     @JsonProperty(value = "registrationStatus")
     private String registrationStatus;
 
     /*
-     * Status of the backup engine with the Recovery Services Vault. =
-     * {Active/Deleting/DeleteFailed}
+     * Status of the backup engine with the Recovery Services Vault. = {Active/Deleting/DeleteFailed}
      */
     @JsonProperty(value = "backupEngineState")
     private String backupEngineState;
@@ -60,8 +54,7 @@ public class BackupEngineBase {
     private String healthStatus;
 
     /*
-     * Flag indicating if the backup engine be registered, once already
-     * registered.
+     * Flag indicating if the backup engine be registered, once already registered.
      */
     @JsonProperty(value = "canReRegister")
     private Boolean canReRegister;
@@ -101,6 +94,10 @@ public class BackupEngineBase {
      */
     @JsonProperty(value = "extendedInfo")
     private BackupEngineExtendedInfo extendedInfo;
+
+    /** Creates an instance of BackupEngineBase class. */
+    public BackupEngineBase() {
+    }
 
     /**
      * Get the friendlyName property: Friendly name of the backup engine.

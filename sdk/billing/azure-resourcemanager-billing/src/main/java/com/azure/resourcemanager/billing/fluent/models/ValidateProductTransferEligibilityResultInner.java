@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.ValidateProductTransferEligibilityError;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Result of the product transfer eligibility validation. */
 @Fluent
 public final class ValidateProductTransferEligibilityResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ValidateProductTransferEligibilityResultInner.class);
-
     /*
      * Specifies whether the transfer is eligible or not.
      */
@@ -27,6 +22,10 @@ public final class ValidateProductTransferEligibilityResultInner {
      */
     @JsonProperty(value = "errorDetails")
     private ValidateProductTransferEligibilityError errorDetails;
+
+    /** Creates an instance of ValidateProductTransferEligibilityResultInner class. */
+    public ValidateProductTransferEligibilityResultInner() {
+    }
 
     /**
      * Get the isMoveEligible property: Specifies whether the transfer is eligible or not.

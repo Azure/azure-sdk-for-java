@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LastBackupStatus. */
+/** Last backup operation status. Possible values: Healthy, Unhealthy. */
 public final class LastBackupStatus extends ExpandableStringEnum<LastBackupStatus> {
     /** Static value Invalid for LastBackupStatus. */
     public static final LastBackupStatus INVALID = fromString("Invalid");
@@ -23,6 +23,15 @@ public final class LastBackupStatus extends ExpandableStringEnum<LastBackupStatu
     public static final LastBackupStatus IRPENDING = fromString("IRPending");
 
     /**
+     * Creates a new instance of LastBackupStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LastBackupStatus() {
+    }
+
+    /**
      * Creates or finds a LastBackupStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class LastBackupStatus extends ExpandableStringEnum<LastBackupStatu
         return fromString(name, LastBackupStatus.class);
     }
 
-    /** @return known LastBackupStatus values. */
+    /**
+     * Gets known LastBackupStatus values.
+     *
+     * @return known LastBackupStatus values.
+     */
     public static Collection<LastBackupStatus> values() {
         return values(LastBackupStatus.class);
     }

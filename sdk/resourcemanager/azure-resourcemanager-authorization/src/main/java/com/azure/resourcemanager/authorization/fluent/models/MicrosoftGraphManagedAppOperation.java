@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,11 +13,13 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Represents an operation applied against an app registration. */
+/**
+ * managedAppOperation
+ *
+ * <p>Represents an operation applied against an app registration.
+ */
 @Fluent
 public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphManagedAppOperation.class);
-
     /*
      * The operation name.
      */
@@ -47,6 +48,10 @@ public final class MicrosoftGraphManagedAppOperation extends MicrosoftGraphEntit
      * Represents an operation applied against an app registration.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphManagedAppOperation class. */
+    public MicrosoftGraphManagedAppOperation() {
+    }
 
     /**
      * Get the displayName property: The operation name.

@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Base for all lists of resources. */
 @Fluent
 public class ResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceList.class);
-
     /*
-     * The uri to fetch the next page of resources. Call ListNext() fetches
-     * next page of resources.
+     * The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ResourceList class. */
+    public ResourceList() {
+    }
 
     /**
      * Get the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of

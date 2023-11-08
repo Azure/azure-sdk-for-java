@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link LinkedEntity} model.
+ * The {@code LinkedEntity} model.
  */
 @Immutable
 public final class LinkedEntity {
@@ -45,12 +45,12 @@ public final class LinkedEntity {
     /*
      * Bing Entity Search unique identifier of the recognized entity. Use in conjunction with
      * the Bing Entity Search API to fetch additional relevant information. Only available for API version
-     * v3.1 and up.
+     * v3.1 and newer.
      */
     private String bingEntitySearchApiId;
 
     /**
-     * Creates a {@link LinkedEntity} model that describes linked entity.
+     * Creates a {@code LinkedEntity} model that describes linked entity.
      *
      * @param name The entity Linking formal name.
      * @param matches A list of instances this entity appears in the text.
@@ -89,7 +89,7 @@ public final class LinkedEntity {
      * @return The linked entities matched value.
      */
     public IterableStream<LinkedEntityMatch> getMatches() {
-        return this.matches;
+        return this.matches == null ? IterableStream.of(null) : this.matches;
     }
 
     /**
@@ -131,7 +131,7 @@ public final class LinkedEntity {
     /**
      * Gets the bingEntitySearchApiId property: Bing Entity Search unique identifier of the recognized entity.
      * Use in conjunction with the Bing Entity Search SDK to fetch additional relevant information. Only available
-     * for API version v3.1 and up.
+     * for API version v3.1 and newer.
      *
      * @return The bingEntitySearchApiId value.
      */

@@ -5,127 +5,43 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.automation.models.GroupTypeEnum;
-import com.azure.resourcemanager.automation.models.HybridRunbookWorker;
 import com.azure.resourcemanager.automation.models.RunAsCredentialAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Definition of hybrid runbook worker group. */
 @Fluent
-public final class HybridRunbookWorkerGroupInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridRunbookWorkerGroupInner.class);
+public final class HybridRunbookWorkerGroupInner extends ProxyResource {
+    /*
+     * Gets or sets the hybrid worker group properties.
+     */
+    @JsonProperty(value = "properties")
+    private HybridRunbookWorkerGroupProperties innerProperties;
 
     /*
-     * Gets or sets the id of the resource.
+     * Resource system metadata.
      */
-    @JsonProperty(value = "id")
-    private String id;
-
-    /*
-     * Gets or sets the name of the group.
-     */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /*
-     * Gets or sets the list of hybrid runbook workers.
-     */
-    @JsonProperty(value = "hybridRunbookWorkers")
-    private List<HybridRunbookWorker> hybridRunbookWorkers;
-
-    /*
-     * Sets the credential of a worker group.
-     */
-    @JsonProperty(value = "credential")
-    private RunAsCredentialAssociationProperty credential;
-
-    /*
-     * Type of the HybridWorkerGroup.
-     */
-    @JsonProperty(value = "groupType")
-    private GroupTypeEnum groupType;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
-     * Get the id property: Gets or sets the id of the resource.
+     * Get the innerProperties property: Gets or sets the hybrid worker group properties.
      *
-     * @return the id value.
+     * @return the innerProperties value.
      */
-    public String id() {
-        return this.id;
+    private HybridRunbookWorkerGroupProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the id property: Gets or sets the id of the resource.
+     * Get the systemData property: Resource system metadata.
      *
-     * @param id the id value to set.
-     * @return the HybridRunbookWorkerGroupInner object itself.
+     * @return the systemData value.
      */
-    public HybridRunbookWorkerGroupInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the name property: Gets or sets the name of the group.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: Gets or sets the name of the group.
-     *
-     * @param name the name value to set.
-     * @return the HybridRunbookWorkerGroupInner object itself.
-     */
-    public HybridRunbookWorkerGroupInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the hybridRunbookWorkers property: Gets or sets the list of hybrid runbook workers.
-     *
-     * @return the hybridRunbookWorkers value.
-     */
-    public List<HybridRunbookWorker> hybridRunbookWorkers() {
-        return this.hybridRunbookWorkers;
-    }
-
-    /**
-     * Set the hybridRunbookWorkers property: Gets or sets the list of hybrid runbook workers.
-     *
-     * @param hybridRunbookWorkers the hybridRunbookWorkers value to set.
-     * @return the HybridRunbookWorkerGroupInner object itself.
-     */
-    public HybridRunbookWorkerGroupInner withHybridRunbookWorkers(List<HybridRunbookWorker> hybridRunbookWorkers) {
-        this.hybridRunbookWorkers = hybridRunbookWorkers;
-        return this;
-    }
-
-    /**
-     * Get the credential property: Sets the credential of a worker group.
-     *
-     * @return the credential value.
-     */
-    public RunAsCredentialAssociationProperty credential() {
-        return this.credential;
-    }
-
-    /**
-     * Set the credential property: Sets the credential of a worker group.
-     *
-     * @param credential the credential value to set.
-     * @return the HybridRunbookWorkerGroupInner object itself.
-     */
-    public HybridRunbookWorkerGroupInner withCredential(RunAsCredentialAssociationProperty credential) {
-        this.credential = credential;
-        return this;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -134,7 +50,7 @@ public final class HybridRunbookWorkerGroupInner {
      * @return the groupType value.
      */
     public GroupTypeEnum groupType() {
-        return this.groupType;
+        return this.innerProperties() == null ? null : this.innerProperties().groupType();
     }
 
     /**
@@ -144,7 +60,33 @@ public final class HybridRunbookWorkerGroupInner {
      * @return the HybridRunbookWorkerGroupInner object itself.
      */
     public HybridRunbookWorkerGroupInner withGroupType(GroupTypeEnum groupType) {
-        this.groupType = groupType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridRunbookWorkerGroupProperties();
+        }
+        this.innerProperties().withGroupType(groupType);
+        return this;
+    }
+
+    /**
+     * Get the credential property: Sets the credential of a worker group.
+     *
+     * @return the credential value.
+     */
+    public RunAsCredentialAssociationProperty credential() {
+        return this.innerProperties() == null ? null : this.innerProperties().credential();
+    }
+
+    /**
+     * Set the credential property: Sets the credential of a worker group.
+     *
+     * @param credential the credential value to set.
+     * @return the HybridRunbookWorkerGroupInner object itself.
+     */
+    public HybridRunbookWorkerGroupInner withCredential(RunAsCredentialAssociationProperty credential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridRunbookWorkerGroupProperties();
+        }
+        this.innerProperties().withCredential(credential);
         return this;
     }
 
@@ -154,11 +96,8 @@ public final class HybridRunbookWorkerGroupInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (hybridRunbookWorkers() != null) {
-            hybridRunbookWorkers().forEach(e -> e.validate());
-        }
-        if (credential() != null) {
-            credential().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

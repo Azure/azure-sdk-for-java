@@ -6,14 +6,15 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DatasourceSet DatasourceSet details of datasource to be backed up. */
+/**
+ * DatasourceSet
+ *
+ * <p>DatasourceSet details of datasource to be backed up.
+ */
 @Fluent
 public final class DatasourceSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatasourceSet.class);
-
     /*
      * DatasourceType of the resource.
      */
@@ -27,9 +28,8 @@ public final class DatasourceSet {
     private String objectType;
 
     /*
-     * Full ARM ID of the resource. For azure resources, this is ARM ID. For
-     * non azure resources, this will be the ID created by backup service via
-     * Fabric/Vault.
+     * Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure resources, this will be the ID
+     * created by backup service via Fabric/Vault.
      */
     @JsonProperty(value = "resourceID", required = true)
     private String resourceId;
@@ -57,6 +57,16 @@ public final class DatasourceSet {
      */
     @JsonProperty(value = "resourceUri")
     private String resourceUri;
+
+    /*
+     * Properties specific to data source set
+     */
+    @JsonProperty(value = "resourceProperties")
+    private BaseResourceProperties resourceProperties;
+
+    /** Creates an instance of DatasourceSet class. */
+    public DatasourceSet() {
+    }
 
     /**
      * Get the datasourceType property: DatasourceType of the resource.
@@ -201,15 +211,40 @@ public final class DatasourceSet {
     }
 
     /**
+     * Get the resourceProperties property: Properties specific to data source set.
+     *
+     * @return the resourceProperties value.
+     */
+    public BaseResourceProperties resourceProperties() {
+        return this.resourceProperties;
+    }
+
+    /**
+     * Set the resourceProperties property: Properties specific to data source set.
+     *
+     * @param resourceProperties the resourceProperties value to set.
+     * @return the DatasourceSet object itself.
+     */
+    public DatasourceSet withResourceProperties(BaseResourceProperties resourceProperties) {
+        this.resourceProperties = resourceProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property resourceId in model DatasourceSet"));
         }
+        if (resourceProperties() != null) {
+            resourceProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatasourceSet.class);
 }

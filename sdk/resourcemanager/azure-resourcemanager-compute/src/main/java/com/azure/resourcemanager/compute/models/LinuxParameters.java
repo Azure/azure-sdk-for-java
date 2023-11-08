@@ -18,25 +18,26 @@ public final class LinuxParameters {
     private List<VMGuestPatchClassificationLinux> classificationsToInclude;
 
     /*
-     * packages to include in the patch operation. Format:
-     * packageName_packageVersion
+     * packages to include in the patch operation. Format: packageName_packageVersion
      */
     @JsonProperty(value = "packageNameMasksToInclude")
     private List<String> packageNameMasksToInclude;
 
     /*
-     * packages to exclude in the patch operation. Format:
-     * packageName_packageVersion
+     * packages to exclude in the patch operation. Format: packageName_packageVersion
      */
     @JsonProperty(value = "packageNameMasksToExclude")
     private List<String> packageNameMasksToExclude;
 
     /*
-     * This is used as a maintenance run identifier for Auto VM Guest Patching
-     * in Linux.
+     * This is used as a maintenance run identifier for Auto VM Guest Patching in Linux.
      */
     @JsonProperty(value = "maintenanceRunId")
     private String maintenanceRunId;
+
+    /** Creates an instance of LinuxParameters class. */
+    public LinuxParameters() {
+    }
 
     /**
      * Get the classificationsToInclude property: The update classifications to select when installing patches for

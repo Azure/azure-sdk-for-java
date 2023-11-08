@@ -13,10 +13,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.FormulasClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.FormulaInner;
 import com.azure.resourcemanager.devtestlabs.models.Formula;
 import com.azure.resourcemanager.devtestlabs.models.Formulas;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class FormulasImpl implements Formulas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FormulasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FormulasImpl.class);
 
     private final FormulasClient innerClient;
 
@@ -46,15 +45,6 @@ public final class FormulasImpl implements Formulas {
         return Utils.mapPage(inner, inner1 -> new FormulaImpl(inner1, this.manager()));
     }
 
-    public Formula get(String resourceGroupName, String labName, String name) {
-        FormulaInner inner = this.serviceClient().get(resourceGroupName, labName, name);
-        if (inner != null) {
-            return new FormulaImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Formula> getWithResponse(
         String resourceGroupName, String labName, String name, String expand, Context context) {
         Response<FormulaInner> inner =
@@ -70,18 +60,27 @@ public final class FormulasImpl implements Formulas {
         }
     }
 
-    public void delete(String resourceGroupName, String labName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, name);
+    public Formula get(String resourceGroupName, String labName, String name) {
+        FormulaInner inner = this.serviceClient().get(resourceGroupName, labName, name);
+        if (inner != null) {
+            return new FormulaImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String name, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, labName, name, context);
     }
 
+    public void delete(String resourceGroupName, String labName, String name) {
+        this.serviceClient().delete(resourceGroupName, labName, name);
+    }
+
     public Formula getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,14 +88,14 @@ public final class FormulasImpl implements Formulas {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "formulas");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'formulas'.", id)));
@@ -108,7 +107,7 @@ public final class FormulasImpl implements Formulas {
     public Response<Formula> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,14 +115,14 @@ public final class FormulasImpl implements Formulas {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "formulas");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'formulas'.", id)));
@@ -134,7 +133,7 @@ public final class FormulasImpl implements Formulas {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,25 +141,25 @@ public final class FormulasImpl implements Formulas {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "formulas");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'formulas'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, labName, name, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,14 +167,14 @@ public final class FormulasImpl implements Formulas {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "formulas");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'formulas'.", id)));

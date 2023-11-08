@@ -23,6 +23,8 @@ import static java.util.logging.Level.WARNING;
 
 /**
  * The Azure Key Vault variant of the X509ExtendedKeyManager.
+ *
+ * @see X509ExtendedKeyManager
  */
 public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
@@ -44,8 +46,8 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
     /**
      * Constructor.
      *
-     * @param keystore the keystore.
-     * @param password the password.
+     * @param keystore the keystore
+     * @param password the password
      */
     public KeyVaultKeyManager(KeyStore keystore, char[] password) {
         LOGGER.entering("KeyVaultKeyManager", "<init>", new Object[] { keystore, password });
@@ -58,6 +60,14 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
         }
     }
 
+    /**
+     * Choose client alias.
+     *
+     * @param keyType the keyType
+     * @param issuers the issuers
+     * @param socket the socket
+     * @return alias the client alias
+     */
     @Override
     public String chooseClientAlias(String[] keyType, Principal[] issuers, Socket socket) {
         LOGGER.entering(
@@ -68,7 +78,7 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
         String alias = null;
         try {
             /*
-             * If we only have one alias and the keystore type is not 
+             * If we only have one alias and the keystore type is not
              * 'AzureKeyVault' return that alias as a match.
              */
             if (!keystore.getProvider().getName().equals(KeyVaultJcaProvider.PROVIDER_NAME)
@@ -82,6 +92,14 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
         return alias;
     }
 
+    /**
+     * Choose server alias.
+     *
+     * @param keyType the keyType
+     * @param issuers the issuers
+     * @param socket the socket
+     * @return alias the server alias
+     */
     @Override
     public String chooseServerAlias(String keyType, Principal[] issuers, Socket socket) {
         LOGGER.entering(
@@ -92,7 +110,7 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
         String alias = null;
         try {
             /*
-             * If we only have one alias and the keystore type is not 
+             * If we only have one alias and the keystore type is not
              * 'AzureKeyVault' return that alias as a match.
              */
             if (!keystore.getProvider().getName().equals(KeyVaultJcaProvider.PROVIDER_NAME)
@@ -106,6 +124,13 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
         return alias;
     }
 
+    /**
+     * Get client alias.
+     *
+     * @param keyType the keyType
+     * @param issuers the issuers
+     * @return alias the client alias
+     */
     @Override
     public String[] getClientAliases(String keyType, Principal[] issuers) {
         LOGGER.log(INFO, "KeyVaultKeyManager.getClientAliases: {0}, {1}",
@@ -120,6 +145,12 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
         return aliases;
     }
 
+    /**
+     * Get certificate chain.
+     *
+     * @param alias the alias
+     * @return chain the certificate chain
+     */
     @Override
     public X509Certificate[] getCertificateChain(String alias) {
         LOGGER.entering("KeyVaultKeyManager", "getCertificateChain", alias);
@@ -142,6 +173,12 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
         return chain.toArray(new X509Certificate[0]);
     }
 
+    /**
+     * Get private key.
+     *
+     * @param alias the alias
+     * @return privateKey the private key
+     */
     @Override
     public PrivateKey getPrivateKey(String alias) {
         LOGGER.entering("KeyVaultKeyManager", "getPrivateKey", alias);
@@ -155,6 +192,13 @@ public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
         return privateKey;
     }
 
+    /**
+     * Get server alias.
+     *
+     * @param keyType the keyType
+     * @param issuers the issuers
+     * @return alias the server alias
+     */
     @Override
     public String[] getServerAliases(String keyType, Principal[] issuers) {
         LOGGER.entering("KeyVaultKeyManager", "getServerAliases", new Object[] { keyType, issuers });

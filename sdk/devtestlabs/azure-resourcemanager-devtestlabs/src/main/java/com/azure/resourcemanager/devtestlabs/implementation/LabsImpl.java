@@ -21,10 +21,9 @@ import com.azure.resourcemanager.devtestlabs.models.Lab;
 import com.azure.resourcemanager.devtestlabs.models.LabVhd;
 import com.azure.resourcemanager.devtestlabs.models.LabVirtualMachineCreationParameter;
 import com.azure.resourcemanager.devtestlabs.models.Labs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LabsImpl implements Labs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LabsImpl.class);
 
     private final LabsClient innerClient;
 
@@ -57,15 +56,6 @@ public final class LabsImpl implements Labs {
         return Utils.mapPage(inner, inner1 -> new LabImpl(inner1, this.manager()));
     }
 
-    public Lab getByResourceGroup(String resourceGroupName, String name) {
-        LabInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, name);
-        if (inner != null) {
-            return new LabImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Lab> getByResourceGroupWithResponse(
         String resourceGroupName, String name, String expand, Context context) {
         Response<LabInner> inner =
@@ -76,6 +66,15 @@ public final class LabsImpl implements Labs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LabImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Lab getByResourceGroup(String resourceGroupName, String name) {
+        LabInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, name);
+        if (inner != null) {
+            return new LabImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -123,17 +122,6 @@ public final class LabsImpl implements Labs {
         this.serviceClient().exportResourceUsage(resourceGroupName, name, exportResourceUsageParameters, context);
     }
 
-    public GenerateUploadUriResponse generateUploadUri(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter) {
-        GenerateUploadUriResponseInner inner =
-            this.serviceClient().generateUploadUri(resourceGroupName, name, generateUploadUriParameter);
-        if (inner != null) {
-            return new GenerateUploadUriResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
         String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter, Context context) {
         Response<GenerateUploadUriResponseInner> inner =
@@ -146,6 +134,17 @@ public final class LabsImpl implements Labs {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new GenerateUploadUriResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public GenerateUploadUriResponse generateUploadUri(
+        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter) {
+        GenerateUploadUriResponseInner inner =
+            this.serviceClient().generateUploadUri(resourceGroupName, name, generateUploadUriParameter);
+        if (inner != null) {
+            return new GenerateUploadUriResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -177,7 +176,7 @@ public final class LabsImpl implements Labs {
     public Lab getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -185,7 +184,7 @@ public final class LabsImpl implements Labs {
         }
         String name = Utils.getValueFromIdByName(id, "labs");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
@@ -197,7 +196,7 @@ public final class LabsImpl implements Labs {
     public Response<Lab> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -205,7 +204,7 @@ public final class LabsImpl implements Labs {
         }
         String name = Utils.getValueFromIdByName(id, "labs");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
@@ -216,7 +215,7 @@ public final class LabsImpl implements Labs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -224,7 +223,7 @@ public final class LabsImpl implements Labs {
         }
         String name = Utils.getValueFromIdByName(id, "labs");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
@@ -235,7 +234,7 @@ public final class LabsImpl implements Labs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -243,7 +242,7 @@ public final class LabsImpl implements Labs {
         }
         String name = Utils.getValueFromIdByName(id, "labs");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));

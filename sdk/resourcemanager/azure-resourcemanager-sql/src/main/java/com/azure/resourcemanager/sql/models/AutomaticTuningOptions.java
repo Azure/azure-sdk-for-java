@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Automatic tuning properties for individual advisors. */
 @Fluent
 public final class AutomaticTuningOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomaticTuningOptions.class);
-
     /*
      * Automatic tuning option desired state.
      */
@@ -37,6 +33,10 @@ public final class AutomaticTuningOptions {
      */
     @JsonProperty(value = "reasonDesc", access = JsonProperty.Access.WRITE_ONLY)
     private AutomaticTuningDisabledReason reasonDesc;
+
+    /** Creates an instance of AutomaticTuningOptions class. */
+    public AutomaticTuningOptions() {
+    }
 
     /**
      * Get the desiredState property: Automatic tuning option desired state.

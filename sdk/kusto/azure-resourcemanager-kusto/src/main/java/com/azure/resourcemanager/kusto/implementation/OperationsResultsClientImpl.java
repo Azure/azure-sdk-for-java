@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.OperationsResultsClient;
 import com.azure.resourcemanager.kusto.fluent.models.OperationResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationsResultsClient. */
 public final class OperationsResultsClientImpl implements OperationsResultsClient {
-    private final ClientLogger logger = new ClientLogger(OperationsResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationsResultsService service;
 
@@ -53,11 +50,10 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface OperationsResultsService {
+    public interface OperationsResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationResults"
-                + "/{operationId}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationResults/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationResultInner>> get(
@@ -73,8 +69,8 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
     /**
      * Returns operation results.
      *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -119,8 +115,8 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
     /**
      * Returns operation results.
      *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -164,8 +160,8 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
     /**
      * Returns operation results.
      *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -173,37 +169,14 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultInner> getAsync(String location, String operationId) {
-        return getWithResponseAsync(location, operationId)
-            .flatMap(
-                (Response<OperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns operation results.
      *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Result Entity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationResultInner get(String location, String operationId) {
-        return getAsync(location, operationId).block();
-    }
-
-    /**
-     * Returns operation results.
-     *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -213,5 +186,20 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationResultInner> getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
+    }
+
+    /**
+     * Returns operation results.
+     *
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation Result Entity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationResultInner get(String location, String operationId) {
+        return getWithResponse(location, operationId, Context.NONE).getValue();
     }
 }

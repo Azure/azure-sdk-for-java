@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -23,12 +24,16 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.mobilenetwork.fluent.AttachedDataNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.DataNetworksClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.DiagnosticsPackagesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworkManagementClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.OperationsClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.PacketCapturesClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlaneVersionsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlanesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreDataPlanesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.ServicesClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.SimGroupsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimPoliciesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SitesClient;
@@ -39,18 +44,17 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the MobileNetworkManagementClientImpl type. */
 @ServiceClient(builder = MobileNetworkManagementClientBuilder.class)
 public final class MobileNetworkManagementClientImpl implements MobileNetworkManagementClient {
-    /** The ID of the target subscription. */
+    /** The ID of the target subscription. The value must be an UUID. */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -142,6 +146,18 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         return this.dataNetworks;
     }
 
+    /** The DiagnosticsPackagesClient object to access its operations. */
+    private final DiagnosticsPackagesClient diagnosticsPackages;
+
+    /**
+     * Gets the DiagnosticsPackagesClient object to access its operations.
+     *
+     * @return the DiagnosticsPackagesClient object.
+     */
+    public DiagnosticsPackagesClient getDiagnosticsPackages() {
+        return this.diagnosticsPackages;
+    }
+
     /** The MobileNetworksClient object to access its operations. */
     private final MobileNetworksClient mobileNetworks;
 
@@ -152,30 +168,6 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      */
     public MobileNetworksClient getMobileNetworks() {
         return this.mobileNetworks;
-    }
-
-    /** The SitesClient object to access its operations. */
-    private final SitesClient sites;
-
-    /**
-     * Gets the SitesClient object to access its operations.
-     *
-     * @return the SitesClient object.
-     */
-    public SitesClient getSites() {
-        return this.sites;
-    }
-
-    /** The SimsClient object to access its operations. */
-    private final SimsClient sims;
-
-    /**
-     * Gets the SimsClient object to access its operations.
-     *
-     * @return the SimsClient object.
-     */
-    public SimsClient getSims() {
-        return this.sims;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -190,6 +182,18 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         return this.operations;
     }
 
+    /** The PacketCapturesClient object to access its operations. */
+    private final PacketCapturesClient packetCaptures;
+
+    /**
+     * Gets the PacketCapturesClient object to access its operations.
+     *
+     * @return the PacketCapturesClient object.
+     */
+    public PacketCapturesClient getPacketCaptures() {
+        return this.packetCaptures;
+    }
+
     /** The PacketCoreControlPlanesClient object to access its operations. */
     private final PacketCoreControlPlanesClient packetCoreControlPlanes;
 
@@ -200,6 +204,18 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      */
     public PacketCoreControlPlanesClient getPacketCoreControlPlanes() {
         return this.packetCoreControlPlanes;
+    }
+
+    /** The PacketCoreControlPlaneVersionsClient object to access its operations. */
+    private final PacketCoreControlPlaneVersionsClient packetCoreControlPlaneVersions;
+
+    /**
+     * Gets the PacketCoreControlPlaneVersionsClient object to access its operations.
+     *
+     * @return the PacketCoreControlPlaneVersionsClient object.
+     */
+    public PacketCoreControlPlaneVersionsClient getPacketCoreControlPlaneVersions() {
+        return this.packetCoreControlPlaneVersions;
     }
 
     /** The PacketCoreDataPlanesClient object to access its operations. */
@@ -226,6 +242,30 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         return this.services;
     }
 
+    /** The SimsClient object to access its operations. */
+    private final SimsClient sims;
+
+    /**
+     * Gets the SimsClient object to access its operations.
+     *
+     * @return the SimsClient object.
+     */
+    public SimsClient getSims() {
+        return this.sims;
+    }
+
+    /** The SimGroupsClient object to access its operations. */
+    private final SimGroupsClient simGroups;
+
+    /**
+     * Gets the SimGroupsClient object to access its operations.
+     *
+     * @return the SimGroupsClient object.
+     */
+    public SimGroupsClient getSimGroups() {
+        return this.simGroups;
+    }
+
     /** The SimPoliciesClient object to access its operations. */
     private final SimPoliciesClient simPolicies;
 
@@ -236,6 +276,18 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      */
     public SimPoliciesClient getSimPolicies() {
         return this.simPolicies;
+    }
+
+    /** The SitesClient object to access its operations. */
+    private final SitesClient sites;
+
+    /**
+     * Gets the SitesClient object to access its operations.
+     *
+     * @return the SitesClient object.
+     */
+    public SitesClient getSites() {
+        return this.sites;
     }
 
     /** The SlicesClient object to access its operations. */
@@ -257,7 +309,7 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     MobileNetworkManagementClientImpl(
@@ -272,17 +324,21 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-03-01-preview";
+        this.apiVersion = "2023-06-01";
         this.attachedDataNetworks = new AttachedDataNetworksClientImpl(this);
         this.dataNetworks = new DataNetworksClientImpl(this);
+        this.diagnosticsPackages = new DiagnosticsPackagesClientImpl(this);
         this.mobileNetworks = new MobileNetworksClientImpl(this);
-        this.sites = new SitesClientImpl(this);
-        this.sims = new SimsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.packetCaptures = new PacketCapturesClientImpl(this);
         this.packetCoreControlPlanes = new PacketCoreControlPlanesClientImpl(this);
+        this.packetCoreControlPlaneVersions = new PacketCoreControlPlaneVersionsClientImpl(this);
         this.packetCoreDataPlanes = new PacketCoreDataPlanesClientImpl(this);
         this.services = new ServicesClientImpl(this);
+        this.sims = new SimsClientImpl(this);
+        this.simGroups = new SimGroupsClientImpl(this);
         this.simPolicies = new SimPoliciesClientImpl(this);
+        this.sites = new SitesClientImpl(this);
         this.slices = new SlicesClientImpl(this);
     }
 
@@ -302,10 +358,7 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**

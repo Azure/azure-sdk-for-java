@@ -6,8 +6,10 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.util.Collection;
+
 /**
- * Defines values for {@link PiiEntityDomain}.
+ * Defines values for {@code PiiEntityDomain}.
  */
 @Immutable
 public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain> {
@@ -22,12 +24,30 @@ public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain>
     public static final PiiEntityDomain NONE = fromString("none");
 
     /**
-     * Creates or finds a {@link PiiEntityDomain} from its string representation.
+     * Creates a new instance of {@code PiiEntityDomain} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PiiEntityDomain() {
+    }
+
+    /**
+     * Creates or finds a {@code PiiEntityDomain} from its string representation.
      *
      * @param name The string name to look for.
-     * @return The corresponding {@link PiiEntityDomain}.
+     * @return The corresponding {@code PiiEntityDomain}.
      */
     public static PiiEntityDomain fromString(String name) {
         return fromString(name, PiiEntityDomain.class);
+    }
+
+    /**
+     * All known PiiEntityDomain values.
+     *
+     * @return known PiiEntityDomain values.
+     */
+    public static Collection<PiiEntityDomain> values() {
+        return values(PiiEntityDomain.class);
     }
 }

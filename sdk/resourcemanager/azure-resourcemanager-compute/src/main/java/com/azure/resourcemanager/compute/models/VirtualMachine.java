@@ -25,6 +25,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -413,6 +414,33 @@ public interface VirtualMachine
      */
     boolean isHibernationEnabled();
 
+    /** @return the {@link SecurityTypes} of the virtual machine */
+    SecurityTypes securityType();
+
+    /** @return whether secure boot is enabled on the virtual machine */
+    boolean isSecureBootEnabled();
+
+    /** @return whether vTPM is enabled on the virtual machine */
+    boolean isVTpmEnabled();
+
+    /** @return the time at which the Virtual Machine resource was created */
+    OffsetDateTime timeCreated();
+
+    /**
+     * Gets the delete options for the primary network interface.
+     *
+     * @return the delete options for the primary network interface
+     */
+    DeleteOptions primaryNetworkInterfaceDeleteOptions();
+
+    /**
+     * Gets the delete options for the given network interface.
+     *
+     * @param networkInterfaceId resource ID of the network interface
+     * @return the delete options for the network interface
+     */
+    DeleteOptions networkInterfaceDeleteOptions(String networkInterfaceId);
+
     // Setters
     //
 
@@ -427,6 +455,7 @@ public interface VirtualMachine
             DefinitionStages.WithPrimaryNetworkInterface,
             DefinitionStages.WithOS,
             DefinitionStages.WithProximityPlacementGroup,
+            DefinitionStages.WithSecurityFeatures,
             DefinitionStages.WithCreate {
     }
 
@@ -861,7 +890,7 @@ public interface VirtualMachine
             /**
              * Specifies the SSH public key.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
@@ -880,7 +909,7 @@ public interface VirtualMachine
             /**
              * Specifies an SSH public key.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManaged withSsh(String publicKey);
@@ -899,7 +928,7 @@ public interface VirtualMachine
             /**
              * Specifies an SSH public key.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateUnmanaged withSsh(String publicKey);
@@ -1037,7 +1066,7 @@ public interface VirtualMachine
             /**
              * Specifies an SSH public key.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateManagedOrUnmanaged withSsh(String publicKey);
@@ -1067,7 +1096,7 @@ public interface VirtualMachine
             /**
              * Specifies an SSH public key.
              *
-             * @param publicKey an SSH public key in the PEM format.
+             * @param publicKey an SSH public key at least 2048-bit and in ssh-rsa format.
              * @return the next stage of the definition
              */
             WithLinuxCreateUnmanaged withSsh(String publicKey);
@@ -1873,6 +1902,38 @@ public interface VirtualMachine
             WithCreate enableHibernation();
         }
 
+        /** The stage of the definition allowing to specify the SecurityType for the virtual machine. */
+        interface WithSecurityTypes {
+            /**
+             * Enables trusted launch.
+             * <p>
+             * Trusted launch only supports generation 2 VMs.
+             * </p>
+             *
+             * @see <a href="https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch#limitations">Limitations</a>
+             *      for supported VM sizes, images and regions.
+             * @return the next stage of the definition
+             */
+            WithSecurityFeatures withTrustedLaunch();
+        }
+
+        /** The stage of the definition allowing to specify the security features for the virtual machine. */
+        interface WithSecurityFeatures extends WithCreate {
+            /**
+             * Enables secure boot feature.
+             *
+             * @return the next stage of the definition
+             */
+            WithSecurityFeatures withSecureBoot();
+
+            /**
+             * Enables vTPM feature.
+             *
+             * @return the next stage of the definition
+             */
+            WithSecurityFeatures withVTpm();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -1896,7 +1957,8 @@ public interface VirtualMachine
                 DefinitionStages.WithAdditionalCapacities,
                 DefinitionStages.WithNetworkInterfaceDeleteOptions,
                 DefinitionStages.WithEphemeralOSDisk,
-                DefinitionStages.WithScaleSet {
+                DefinitionStages.WithScaleSet,
+                DefinitionStages.WithSecurityTypes {
 
             /**
              * Begins creating the virtual machine resource.
@@ -2369,6 +2431,123 @@ public interface VirtualMachine
              */
             Update disableHibernation();
         }
+
+        /** The stage of the VM update allowing to swap os disk. */
+        interface WithOSDisk {
+            /**
+             * Swaps the OS disk of the virtual machine for the specified managed disk.
+             * <p>Note:</p>
+             * <p>- Both the original OS disk and the disk to swap for have to be managed disks.</p>
+             * <p>- You cannot switch the OS Type of the VM
+             *      (i.e. Swap an OS Disk with Linux for an OS Disk with Windows).</p>
+             * <p>- Make sure that the VM size and storage type are compatible with the disk you want to attach.
+             *      For example, if the disk you want to use is in Premium Storage, then the VM needs to be capable of
+             *      Premium Storage (like a DS-series size).</p>
+             * @param diskId id of the managed disk to swap OS disk for
+             * @return the next stage of the update
+             */
+            Update withOSDisk(String diskId);
+
+            /**
+             * Swaps the OS disk of the virtual machine for the specified managed disk.
+             * <p>Note:</p>
+             * <p>- Both the original OS disk and the disk to swap for have to be managed disks.</p>
+             * <p>- You cannot switch the OS Type of the VM
+             *      (i.e. Swap an OS Disk with Linux for an OS Disk with Windows).</p>
+             * <p>- Make sure that the VM size and storage type are compatible with the disk you want to attach.
+             *      For example, if the disk you want to use is in Premium Storage, then the VM needs to be capable of
+             *      Premium Storage (like a DS-series size).</p>
+             * @param disk the managed disk to swap OS disk for
+             * @return the next stage of the update
+             */
+            Update withOSDisk(Disk disk);
+        }
+
+        /** The stage of the VM update allowing to change security features. */
+        interface WithSecurityFeatures {
+            /**
+             * Enables secure boot feature.
+             * <p>
+             * Your VM's security type should be set in order to enable this feature.
+             * After changing security features, a restart is required for your VM to take effect.
+             * </p>
+             *
+             * @return the next stage of the update
+             */
+            Update withSecureBoot();
+
+            /**
+             * Disables secure boot feature.
+             * <p>
+             * After changing security features, a restart is required for your VM to take effect.
+             * </p>
+             *
+             * @return the next stage of the update
+             */
+            Update withoutSecureBoot();
+
+            /**
+             * Enables vTPM feature.
+             * <p>
+             * Your VM's security type should be set in order to enable this feature.
+             * After changing security features, a restart is required for your VM to take effect.
+             * </p>
+             *
+             * @return the next stage of the update
+             */
+            Update withVTpm();
+
+            /**
+             * Disables vTPM feature.
+             * <p>
+             * After changing security features, a restart is required for your VM to take effect.
+             * </p>
+             *
+             * @return the next stage of the update
+             */
+            Update withoutVTpm();
+        }
+
+        /** The stage of the VM update allowing to change delete options of resources attached to this VM . */
+        interface WithDeleteOptions {
+            /**
+             * Specifies delete options for the OS disk of the VM.
+             *
+             * @param deleteOptions delete options for the OS disk
+             * @return the next stage of the update
+             */
+            Update withOsDiskDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies delete options for the primary network interface of the VM.
+             *
+             * @param deleteOptions delete options for the primary network interface
+             * @return the next stage of the update
+             */
+            Update withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies delete options for the network interfaces attached to the VM.
+             * <p>This operation only affects existing <strong>attached</strong> network interfaces. Any newly-attached
+             * network interfaces that appear before {@link Update#apply()} won't be affected.</p>
+             *
+             * @param deleteOptions delete options for the network interfaces
+             * @param nicIds resource IDs of the network interfaces
+             * @return the next stage of the update
+             */
+            Update withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions, String... nicIds);
+
+            /**
+             * Specifies delete options for the existing data disk attached to the VM.
+             * <p>This operation only affects existing <strong>attached</strong> data disks. Any newly-attached data disks
+             * that appear before {@link Update#apply()} won't be affected.</p>
+             *
+             * @param deleteOptions delete options for the data disk
+             * @param luns the disk LUNs to update
+             * @return the next stage of the update
+             */
+            Update withDataDisksDeleteOptions(DeleteOptions deleteOptions, Integer... luns);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -2385,7 +2564,10 @@ public interface VirtualMachine
             UpdateStages.WithSystemAssignedManagedServiceIdentity,
             UpdateStages.WithUserAssignedManagedServiceIdentity,
             UpdateStages.WithLicenseType,
-            UpdateStages.WithAdditionalCapacities {
+            UpdateStages.WithAdditionalCapacities,
+            UpdateStages.WithOSDisk,
+            UpdateStages.WithSecurityFeatures,
+            UpdateStages.WithDeleteOptions {
         /**
          * Specifies the encryption settings for the OS Disk.
          *

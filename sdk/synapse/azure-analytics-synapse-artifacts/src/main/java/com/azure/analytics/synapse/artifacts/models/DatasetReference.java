@@ -29,6 +29,9 @@ public final class DatasetReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
+    /** Creates an instance of DatasetReference class. */
+    public DatasetReference() {}
+
     /**
      * Get the type property: Dataset reference type.
      *

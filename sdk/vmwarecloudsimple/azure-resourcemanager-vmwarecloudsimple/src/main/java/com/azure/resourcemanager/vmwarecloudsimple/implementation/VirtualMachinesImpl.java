@@ -15,10 +15,9 @@ import com.azure.resourcemanager.vmwarecloudsimple.models.StopMode;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachine;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachineStopMode;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachinesImpl implements VirtualMachines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinesImpl.class);
 
     private final VirtualMachinesClient innerClient;
 
@@ -53,15 +52,6 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
     }
 
-    public VirtualMachine getByResourceGroup(String resourceGroupName, String virtualMachineName) {
-        VirtualMachineInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, virtualMachineName);
-        if (inner != null) {
-            return new VirtualMachineImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VirtualMachine> getByResourceGroupWithResponse(
         String resourceGroupName, String virtualMachineName, Context context) {
         Response<VirtualMachineInner> inner =
@@ -77,39 +67,49 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String virtualMachineName) {
-        this.serviceClient().delete(resourceGroupName, virtualMachineName);
+    public VirtualMachine getByResourceGroup(String resourceGroupName, String virtualMachineName) {
+        VirtualMachineInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, virtualMachineName);
+        if (inner != null) {
+            return new VirtualMachineImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String virtualMachineName, Context context) {
-        this.serviceClient().delete(resourceGroupName, virtualMachineName, context);
+    public void delete(String resourceGroupName, String referer, String virtualMachineName) {
+        this.serviceClient().delete(resourceGroupName, referer, virtualMachineName);
     }
 
-    public void start(String resourceGroupName, String virtualMachineName) {
-        this.serviceClient().start(resourceGroupName, virtualMachineName);
+    public void delete(String resourceGroupName, String referer, String virtualMachineName, Context context) {
+        this.serviceClient().delete(resourceGroupName, referer, virtualMachineName, context);
     }
 
-    public void start(String resourceGroupName, String virtualMachineName, Context context) {
-        this.serviceClient().start(resourceGroupName, virtualMachineName, context);
+    public void start(String resourceGroupName, String referer, String virtualMachineName) {
+        this.serviceClient().start(resourceGroupName, referer, virtualMachineName);
     }
 
-    public void stop(String resourceGroupName, String virtualMachineName, StopMode mode, VirtualMachineStopMode m) {
-        this.serviceClient().stop(resourceGroupName, virtualMachineName, mode, m);
+    public void start(String resourceGroupName, String referer, String virtualMachineName, Context context) {
+        this.serviceClient().start(resourceGroupName, referer, virtualMachineName, context);
     }
 
-    public void stop(String resourceGroupName, String virtualMachineName) {
-        this.serviceClient().stop(resourceGroupName, virtualMachineName);
+    public void stop(String resourceGroupName, String referer, String virtualMachineName) {
+        this.serviceClient().stop(resourceGroupName, referer, virtualMachineName);
     }
 
     public void stop(
-        String resourceGroupName, String virtualMachineName, StopMode mode, VirtualMachineStopMode m, Context context) {
-        this.serviceClient().stop(resourceGroupName, virtualMachineName, mode, m, context);
+        String resourceGroupName,
+        String referer,
+        String virtualMachineName,
+        StopMode mode,
+        VirtualMachineStopMode m,
+        Context context) {
+        this.serviceClient().stop(resourceGroupName, referer, virtualMachineName, mode, m, context);
     }
 
     public VirtualMachine getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +117,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,7 +129,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public Response<VirtualMachine> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +137,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +149,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,19 +157,20 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        this.delete(resourceGroupName, virtualMachineName, Context.NONE);
+        String localReferer = null;
+        this.delete(resourceGroupName, localReferer, virtualMachineName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, String referer, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,13 +178,13 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        this.delete(resourceGroupName, virtualMachineName, context);
+        this.delete(resourceGroupName, referer, virtualMachineName, context);
     }
 
     private VirtualMachinesClient serviceClient() {

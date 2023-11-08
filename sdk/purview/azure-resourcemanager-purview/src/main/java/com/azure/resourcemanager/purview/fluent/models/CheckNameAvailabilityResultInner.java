@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.purview.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.models.Reason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response payload for CheckNameAvailability API. */
 @Fluent
 public final class CheckNameAvailabilityResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResultInner.class);
-
     /*
      * Error message
      */
@@ -32,6 +28,10 @@ public final class CheckNameAvailabilityResultInner {
      */
     @JsonProperty(value = "reason")
     private Reason reason;
+
+    /** Creates an instance of CheckNameAvailabilityResultInner class. */
+    public CheckNameAvailabilityResultInner() {
+    }
 
     /**
      * Get the message property: Error message.

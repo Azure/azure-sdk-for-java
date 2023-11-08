@@ -2,22 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.util.Beta;
-
 import java.time.Duration;
 
 /**
  * Dedicated Gateway Request Options
  */
-@Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class DedicatedGatewayRequestOptions {
 
     private Duration maxIntegratedCacheStaleness;
 
+    private boolean integratedCacheBypassed;
+
     /**
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public DedicatedGatewayRequestOptions() {
 
     }
@@ -33,7 +31,6 @@ public final class DedicatedGatewayRequestOptions {
      *
      * @return Duration of maxIntegratedCacheStaleness
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getMaxIntegratedCacheStaleness() {
         return maxIntegratedCacheStaleness;
     }
@@ -50,9 +47,32 @@ public final class DedicatedGatewayRequestOptions {
      * @param maxIntegratedCacheStaleness Max Integrated Cache Staleness duration
      * @return this DedicatedGatewayRequestOptions
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public DedicatedGatewayRequestOptions setMaxIntegratedCacheStaleness(Duration maxIntegratedCacheStaleness) {
         this.maxIntegratedCacheStaleness = maxIntegratedCacheStaleness;
+        return this;
+    }
+
+    /**
+     * Gets if the integrated cache is enabled or bypassed with the request in Azure CosmosDB service.
+     *
+     * <p>Default value is false</p>
+     *
+     * @return bypassIntegratedCache boolean value
+     */
+    public boolean isIntegratedCacheBypassed() {
+        return integratedCacheBypassed;
+    }
+
+    /**
+     * Sets if integrated cache should be enabled or bypassed for the request in Azure CosmosDB service.
+     *
+     * <p>Default value is false</p>
+     *
+     * @param bypassIntegratedCache boolean value
+     * @return this DedicatedGatewayRequestOptions
+     */
+    public DedicatedGatewayRequestOptions setIntegratedCacheBypassed(boolean bypassIntegratedCache) {
+        this.integratedCacheBypassed = bypassIntegratedCache;
         return this;
     }
 }

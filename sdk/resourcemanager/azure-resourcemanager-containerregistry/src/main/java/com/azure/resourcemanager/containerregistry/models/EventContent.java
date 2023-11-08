@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The content of the event request message. */
 @Fluent
 public final class EventContent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventContent.class);
-
     /*
      * The event ID.
      */
@@ -46,18 +42,22 @@ public final class EventContent {
     private Request request;
 
     /*
-     * The agent that initiated the event. For most situations, this could be
-     * from the authorization context of the request.
+     * The agent that initiated the event. For most situations, this could be from the authorization context of the
+     * request.
      */
     @JsonProperty(value = "actor")
     private Actor actor;
 
     /*
-     * The registry node that generated the event. Put differently, while the
-     * actor initiates the event, the source generates it.
+     * The registry node that generated the event. Put differently, while the actor initiates the event, the source
+     * generates it.
      */
     @JsonProperty(value = "source")
     private Source source;
+
+    /** Creates an instance of EventContent class. */
+    public EventContent() {
+    }
 
     /**
      * Get the id property: The event ID.

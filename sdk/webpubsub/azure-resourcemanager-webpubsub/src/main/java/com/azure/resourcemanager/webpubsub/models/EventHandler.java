@@ -6,49 +6,45 @@ package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of event handler. */
 @Fluent
 public final class EventHandler {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHandler.class);
-
     /*
-     * Gets or sets the EventHandler URL template. You can use a predefined
-     * parameter {hub} and {event} inside the template, the value of the
-     * EventHandler URL is dynamically calculated when the client request comes
-     * in.
-     * For example, UrlTemplate can be `http://example.com/api/{hub}/{event}`.
-     * The host part can't contains parameters.
+     * Gets or sets the EventHandler URL template. You can use a predefined parameter {hub} and {event} inside the
+     * template, the value of the EventHandler URL is dynamically calculated when the client request comes in.
+     * For example, UrlTemplate can be `http://example.com/api/{hub}/{event}`. The host part can't contains parameters.
      */
     @JsonProperty(value = "urlTemplate", required = true)
     private String urlTemplate;
 
     /*
      * Gets or sets the matching pattern for event names.
-     * There are 3 kind of patterns supported:
-     * 1. "*", it to matches any event name
-     * 2. Combine multiple events with ",", for example "event1,event2", it
-     * matches event "event1" and "event2"
-     * 3. The single event name, for example, "event1", it matches "event1"
+     * There are 3 kinds of patterns supported:
+     * 1. "*", it matches any event name
+     * 2. Combine multiple events with ",", for example "event1,event2", it matches event "event1" and "event2"
+     * 3. A single event name, for example, "event1", it matches "event1"
      */
     @JsonProperty(value = "userEventPattern")
     private String userEventPattern;
 
     /*
-     * Gets ot sets the list of system events.
+     * Gets or sets the list of system events.
      */
     @JsonProperty(value = "systemEvents")
     private List<String> systemEvents;
 
     /*
-     * Gets or sets the auth settings for an event handler. If not set, no auth
-     * is used.
+     * Upstream auth settings. If not set, no auth is used for upstream messages.
      */
     @JsonProperty(value = "auth")
     private UpstreamAuthSettings auth;
+
+    /** Creates an instance of EventHandler class. */
+    public EventHandler() {
+    }
 
     /**
      * Get the urlTemplate property: Gets or sets the EventHandler URL template. You can use a predefined parameter
@@ -77,10 +73,10 @@ public final class EventHandler {
     }
 
     /**
-     * Get the userEventPattern property: Gets or sets the matching pattern for event names. There are 3 kind of
-     * patterns supported: 1. "*", it to matches any event name 2. Combine multiple events with ",", for example
-     * "event1,event2", it matches event "event1" and "event2" 3. The single event name, for example, "event1", it
-     * matches "event1".
+     * Get the userEventPattern property: Gets or sets the matching pattern for event names. There are 3 kinds of
+     * patterns supported: 1. "*", it matches any event name 2. Combine multiple events with ",", for example
+     * "event1,event2", it matches event "event1" and "event2" 3. A single event name, for example, "event1", it matches
+     * "event1".
      *
      * @return the userEventPattern value.
      */
@@ -89,10 +85,10 @@ public final class EventHandler {
     }
 
     /**
-     * Set the userEventPattern property: Gets or sets the matching pattern for event names. There are 3 kind of
-     * patterns supported: 1. "*", it to matches any event name 2. Combine multiple events with ",", for example
-     * "event1,event2", it matches event "event1" and "event2" 3. The single event name, for example, "event1", it
-     * matches "event1".
+     * Set the userEventPattern property: Gets or sets the matching pattern for event names. There are 3 kinds of
+     * patterns supported: 1. "*", it matches any event name 2. Combine multiple events with ",", for example
+     * "event1,event2", it matches event "event1" and "event2" 3. A single event name, for example, "event1", it matches
+     * "event1".
      *
      * @param userEventPattern the userEventPattern value to set.
      * @return the EventHandler object itself.
@@ -103,7 +99,7 @@ public final class EventHandler {
     }
 
     /**
-     * Get the systemEvents property: Gets ot sets the list of system events.
+     * Get the systemEvents property: Gets or sets the list of system events.
      *
      * @return the systemEvents value.
      */
@@ -112,7 +108,7 @@ public final class EventHandler {
     }
 
     /**
-     * Set the systemEvents property: Gets ot sets the list of system events.
+     * Set the systemEvents property: Gets or sets the list of system events.
      *
      * @param systemEvents the systemEvents value to set.
      * @return the EventHandler object itself.
@@ -123,7 +119,7 @@ public final class EventHandler {
     }
 
     /**
-     * Get the auth property: Gets or sets the auth settings for an event handler. If not set, no auth is used.
+     * Get the auth property: Upstream auth settings. If not set, no auth is used for upstream messages.
      *
      * @return the auth value.
      */
@@ -132,7 +128,7 @@ public final class EventHandler {
     }
 
     /**
-     * Set the auth property: Gets or sets the auth settings for an event handler. If not set, no auth is used.
+     * Set the auth property: Upstream auth settings. If not set, no auth is used for upstream messages.
      *
      * @param auth the auth value to set.
      * @return the EventHandler object itself.
@@ -149,7 +145,7 @@ public final class EventHandler {
      */
     public void validate() {
         if (urlTemplate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property urlTemplate in model EventHandler"));
         }
@@ -157,4 +153,6 @@ public final class EventHandler {
             auth().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventHandler.class);
 }

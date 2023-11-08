@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -27,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.JobCredentialsClient;
 import com.azure.resourcemanager.sql.fluent.models.JobCredentialInner;
 import com.azure.resourcemanager.sql.models.JobCredentialListResult;
@@ -35,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobCredentialsClient. */
 public final class JobCredentialsClientImpl implements JobCredentialsClient {
-    private final ClientLogger logger = new ClientLogger(JobCredentialsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobCredentialsService service;
 
@@ -60,8 +58,8 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
-    private interface JobCredentialsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+    public interface JobCredentialsService {
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/credentials")
@@ -74,9 +72,10 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             @PathParam("jobAgentName") String jobAgentName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
@@ -90,9 +89,10 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             @PathParam("credentialName") String credentialName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
@@ -107,6 +107,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") JobCredentialInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -125,12 +126,15 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobCredentialListResult>> listByAgentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -143,7 +147,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs credentials.
+     * @return a list of jobs credentials along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobCredentialInner>> listByAgentSinglePageAsync(
@@ -170,7 +174,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -181,7 +185,8 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                             serverName,
                             jobAgentName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<JobCredentialInner>>map(
                 res ->
@@ -192,7 +197,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -206,7 +211,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs credentials.
+     * @return a list of jobs credentials along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobCredentialInner>> listByAgentSinglePageAsync(
@@ -233,7 +238,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByAgent(
@@ -242,7 +247,8 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                 serverName,
                 jobAgentName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -265,7 +271,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs credentials.
+     * @return a list of jobs credentials as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobCredentialInner> listByAgentAsync(
@@ -286,7 +292,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs credentials.
+     * @return a list of jobs credentials as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobCredentialInner> listByAgentAsync(
@@ -306,7 +312,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs credentials.
+     * @return a list of jobs credentials as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobCredentialInner> listByAgent(
@@ -325,7 +331,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs credentials.
+     * @return a list of jobs credentials as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobCredentialInner> listByAgent(
@@ -344,7 +350,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a jobs credential.
+     * @return a jobs credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobCredentialInner>> getWithResponseAsync(
@@ -374,7 +380,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -386,9 +392,10 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                             jobAgentName,
                             credentialName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -403,7 +410,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a jobs credential.
+     * @return a jobs credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobCredentialInner>> getWithResponseAsync(
@@ -433,7 +440,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -443,7 +450,8 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                 jobAgentName,
                 credentialName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -458,20 +466,33 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a jobs credential.
+     * @return a jobs credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobCredentialInner> getAsync(
         String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName)
-            .flatMap(
-                (Response<JobCredentialInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a jobs credential.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a jobs credential along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<JobCredentialInner> getWithResponse(
+        String resourceGroupName, String serverName, String jobAgentName, String credentialName, Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName, context).block();
     }
 
     /**
@@ -490,27 +511,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobCredentialInner get(
         String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
-        return getAsync(resourceGroupName, serverName, jobAgentName, credentialName).block();
-    }
-
-    /**
-     * Gets a jobs credential.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param credentialName The name of the credential.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a jobs credential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobCredentialInner> getWithResponse(
-        String resourceGroupName, String serverName, String jobAgentName, String credentialName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName, context).block();
+        return getWithResponse(resourceGroupName, serverName, jobAgentName, credentialName, Context.NONE).getValue();
     }
 
     /**
@@ -521,11 +522,12 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
-     * @param parameters A stored credential that can be used by a job to connect to target databases.
+     * @param parameters The requested job credential state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored credential that can be used by a job to connect to target databases.
+     * @return a stored credential that can be used by a job to connect to target databases along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobCredentialInner>> createOrUpdateWithResponseAsync(
@@ -564,7 +566,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -576,10 +578,11 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                             jobAgentName,
                             credentialName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -590,12 +593,13 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
-     * @param parameters A stored credential that can be used by a job to connect to target databases.
+     * @param parameters The requested job credential state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored credential that can be used by a job to connect to target databases.
+     * @return a stored credential that can be used by a job to connect to target databases along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobCredentialInner>> createOrUpdateWithResponseAsync(
@@ -635,7 +639,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -645,8 +649,9 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                 jobAgentName,
                 credentialName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -658,11 +663,12 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
-     * @param parameters A stored credential that can be used by a job to connect to target databases.
+     * @param parameters The requested job credential state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored credential that can be used by a job to connect to target databases.
+     * @return a stored credential that can be used by a job to connect to target databases on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobCredentialInner> createOrUpdateAsync(
@@ -672,14 +678,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
         String credentialName,
         JobCredentialInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName, parameters)
-            .flatMap(
-                (Response<JobCredentialInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -690,36 +689,12 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
-     * @param parameters A stored credential that can be used by a job to connect to target databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored credential that can be used by a job to connect to target databases.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobCredentialInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String credentialName,
-        JobCredentialInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, credentialName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a job credential.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param credentialName The name of the credential.
-     * @param parameters A stored credential that can be used by a job to connect to target databases.
+     * @param parameters The requested job credential state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored credential that can be used by a job to connect to target databases.
+     * @return a stored credential that can be used by a job to connect to target databases along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobCredentialInner> createOrUpdateWithResponse(
@@ -735,6 +710,32 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
     }
 
     /**
+     * Creates or updates a job credential.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
+     * @param parameters The requested job credential state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a stored credential that can be used by a job to connect to target databases.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobCredentialInner createOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String credentialName,
+        JobCredentialInner parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, serverName, jobAgentName, credentialName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Deletes a job credential.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -745,7 +746,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -775,7 +776,6 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -787,9 +787,9 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                             jobAgentName,
                             credentialName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -804,7 +804,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -834,7 +834,6 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -844,7 +843,7 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                 jobAgentName,
                 credentialName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -859,13 +858,33 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
         return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a job credential.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String serverName, String jobAgentName, String credentialName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName, context).block();
     }
 
     /**
@@ -882,45 +901,33 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
-        deleteAsync(resourceGroupName, serverName, jobAgentName, credentialName).block();
-    }
-
-    /**
-     * Deletes a job credential.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param credentialName The name of the credential.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serverName, String jobAgentName, String credentialName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, credentialName, context).block();
+        deleteWithResponse(resourceGroupName, serverName, jobAgentName, credentialName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job credentials.
+     * @return a list of job credentials along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobCredentialInner>> listByAgentNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByAgentNext(nextLink, context))
+            .withContext(context -> service.listByAgentNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<JobCredentialInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -930,27 +937,35 @@ public final class JobCredentialsClientImpl implements JobCredentialsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job credentials.
+     * @return a list of job credentials along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobCredentialInner>> listByAgentNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAgentNext(nextLink, context)
+            .listByAgentNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

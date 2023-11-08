@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** User Assigned Managed Identity. */
 @Immutable
 public class UserAssignedManagedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedManagedIdentity.class);
-
     /*
      * The client ID.
      */
@@ -26,6 +22,10 @@ public class UserAssignedManagedIdentity {
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
+
+    /** Creates an instance of UserAssignedManagedIdentity class. */
+    public UserAssignedManagedIdentity() {
+    }
 
     /**
      * Get the clientId property: The client ID.

@@ -36,10 +36,12 @@
 ### DpsCertificate_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateProperties;
+
 /** Samples for DpsCertificate CreateOrUpdate. */
 public final class DpsCertificateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSCertificateCreateOrUpdate.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCertificateCreateOrUpdate.json
      */
     /**
      * Sample code: DPSCreateOrUpdateCertificate.
@@ -52,7 +54,8 @@ public final class DpsCertificateCreateOrUpdateSamples {
             .dpsCertificates()
             .define("cert")
             .withExistingProvisioningService("myResourceGroup", "myFirstProvisioningService")
-            .withCertificate("############################################")
+            .withProperties(
+                new CertificateProperties().withCertificate("############################################".getBytes()))
             .create();
     }
 }
@@ -66,7 +69,7 @@ import com.azure.core.util.Context;
 /** Samples for DpsCertificate Delete. */
 public final class DpsCertificateDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSDeleteCertificate.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSDeleteCertificate.json
      */
     /**
      * Sample code: DPSDeleteCertificate.
@@ -103,7 +106,7 @@ import com.azure.core.util.Context;
 /** Samples for DpsCertificate GenerateVerificationCode. */
 public final class DpsCertificateGenerateVerificationCodeSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGenerateVerificationCode.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGenerateVerificationCode.json
      */
     /**
      * Sample code: DPSGenerateVerificationCode.
@@ -140,7 +143,7 @@ import com.azure.core.util.Context;
 /** Samples for DpsCertificate Get. */
 public final class DpsCertificateGetSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGetCertificate.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetCertificate.json
      */
     /**
      * Sample code: DPSGetCertificate.
@@ -163,7 +166,7 @@ import com.azure.core.util.Context;
 /** Samples for DpsCertificate List. */
 public final class DpsCertificateListSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGetCertificates.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetCertificates.json
      */
     /**
      * Sample code: DPSGetCertificates.
@@ -185,7 +188,7 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.VerificationC
 /** Samples for DpsCertificate VerifyCertificate. */
 public final class DpsCertificateVerifyCertificateSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSVerifyCertificate.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSVerifyCertificate.json
      */
     /**
      * Sample code: DPSVerifyCertificate.
@@ -222,9 +225,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.models.OperationInputs;
 
 /** Samples for IotDpsResource CheckProvisioningServiceNameAvailability. */
-public final class IotDpsResourceCheckProvisioningServiceNameAvailabilitySamples {
+public final class IotDpsResourceCheckProvisioningServiceNameAvailabilit {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSCheckNameAvailability.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCheckNameAvailability.json
      */
     /**
      * Sample code: DPSCheckName.
@@ -252,7 +255,7 @@ import java.util.Map;
 /** Samples for IotDpsResource CreateOrUpdate. */
 public final class IotDpsResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSCreate.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCreate.json
      */
     /**
      * Sample code: DPSCreate.
@@ -292,9 +295,9 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateLinkSe
 import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateLinkServiceConnectionStatus;
 
 /** Samples for IotDpsResource CreateOrUpdatePrivateEndpointConnection. */
-public final class IotDpsResourceCreateOrUpdatePrivateEndpointConnectionSamples {
+public final class IotDpsResourceCreateOrUpdatePrivateEndpointConnection {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSCreateOrUpdatePrivateEndpointConnection.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSCreateOrUpdatePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_CreateOrUpdate.
@@ -326,7 +329,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource Delete. */
 public final class IotDpsResourceDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSDelete.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSDelete.json
      */
     /**
      * Sample code: DPSDelete.
@@ -347,7 +350,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource DeletePrivateEndpointConnection. */
 public final class IotDpsResourceDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSDeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Delete.
@@ -372,7 +375,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource GetByResourceGroup. */
 public final class IotDpsResourceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGet.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGet.json
      */
     /**
      * Sample code: DPSGet.
@@ -395,7 +398,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource GetOperationResult. */
 public final class IotDpsResourceGetOperationResultSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGetOperationResult.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetOperationResult.json
      */
     /**
      * Sample code: DPSGetOperationResult.
@@ -424,7 +427,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource GetPrivateEndpointConnection. */
 public final class IotDpsResourceGetPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Get.
@@ -449,7 +452,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource GetPrivateLinkResources. */
 public final class IotDpsResourceGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGetPrivateLinkResources.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetPrivateLinkResources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -474,7 +477,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource List. */
 public final class IotDpsResourceListSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListBySubscription.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListBySubscription.json
      */
     /**
      * Sample code: DPSListBySubscription.
@@ -496,7 +499,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource ListByResourceGroup. */
 public final class IotDpsResourceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListByResourceGroup.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListByResourceGroup.json
      */
     /**
      * Sample code: DPSListByResourceGroup.
@@ -518,7 +521,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource ListKeys. */
 public final class IotDpsResourceListKeysSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListKeys.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListKeys.json
      */
     /**
      * Sample code: DPSListKeys.
@@ -539,7 +542,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource ListKeysForKeyName. */
 public final class IotDpsResourceListKeysForKeyNameSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGetKey.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetKey.json
      */
     /**
      * Sample code: DPSGetKey.
@@ -562,7 +565,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource ListPrivateEndpointConnections. */
 public final class IotDpsResourceListPrivateEndpointConnectionsSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListPrivateEndpointConnections.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListPrivateEndpointConnections.json
      */
     /**
      * Sample code: PrivateEndpointConnections_List.
@@ -586,7 +589,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource ListPrivateLinkResources. */
 public final class IotDpsResourceListPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListPrivateLinkResources.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListPrivateLinkResources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -610,7 +613,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource ListValidSkus. */
 public final class IotDpsResourceListValidSkusSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGetValidSku.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetValidSku.json
      */
     /**
      * Sample code: DPSGetValidSku.
@@ -634,7 +637,7 @@ import java.util.Map;
 /** Samples for IotDpsResource Update. */
 public final class IotDpsResourceUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSPatch.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSPatch.json
      */
     /**
      * Sample code: DPSPatch.
@@ -671,7 +674,7 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSOperations.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSOperations.json
      */
     /**
      * Sample code: DPSOperations.

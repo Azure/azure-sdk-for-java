@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.models.QuotaName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a quota for or usage details about a resource. */
 @Fluent
 public final class QuotaInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaInner.class);
-
     /*
-     * The current value of the quota. If null or missing, the current value
-     * cannot be determined in the context of the request.
+     * The current value of the quota. If null or missing, the current value cannot be determined in the context of the
+     * request.
      */
     @JsonProperty(value = "currentValue")
     private Double currentValue;
@@ -29,8 +25,8 @@ public final class QuotaInner {
     private String id;
 
     /*
-     * The maximum value of the quota. If null or missing, the quota has no
-     * maximum, in which case it merely tracks usage.
+     * The maximum value of the quota. If null or missing, the quota has no maximum, in which case it merely tracks
+     * usage.
      */
     @JsonProperty(value = "limit")
     private Double limit;
@@ -46,6 +42,10 @@ public final class QuotaInner {
      */
     @JsonProperty(value = "unit")
     private String unit;
+
+    /** Creates an instance of QuotaInner class. */
+    public QuotaInner() {
+    }
 
     /**
      * Get the currentValue property: The current value of the quota. If null or missing, the current value cannot be

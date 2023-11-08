@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.models.UnavailableReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a Check Name availability request properties. */
 @Fluent
 public final class CheckNameAvailabilityResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResultInner.class);
-
     /*
      * The detailed info regarding the reason associated with the namespace.
      */
@@ -22,8 +18,7 @@ public final class CheckNameAvailabilityResultInner {
     private String message;
 
     /*
-     * Value indicating namespace is availability, true if the namespace is
-     * available; otherwise, false.
+     * Value indicating namespace is availability, true if the namespace is available; otherwise, false.
      */
     @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;

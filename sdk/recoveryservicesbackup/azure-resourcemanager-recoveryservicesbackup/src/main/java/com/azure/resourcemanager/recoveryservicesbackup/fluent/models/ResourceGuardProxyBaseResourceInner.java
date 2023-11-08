@@ -6,17 +6,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ResourceGuardProxyBaseResource model. */
 @Fluent
 public final class ResourceGuardProxyBaseResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardProxyBaseResourceInner.class);
-
     /*
      * ResourceGuardProxyBaseResource properties
      */
@@ -28,6 +24,10 @@ public final class ResourceGuardProxyBaseResourceInner extends Resource {
      */
     @JsonProperty(value = "eTag")
     private String etag;
+
+    /** Creates an instance of ResourceGuardProxyBaseResourceInner class. */
+    public ResourceGuardProxyBaseResourceInner() {
+    }
 
     /**
      * Get the properties property: ResourceGuardProxyBaseResource properties.

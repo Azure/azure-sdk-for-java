@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual network model. */
-@JsonFlatten
 @Fluent
-public class VirtualNetworkInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkInner.class);
-
+public final class VirtualNetworkInner {
     /*
      * can be used in vm creation/deletion
      */
@@ -41,16 +36,20 @@ public class VirtualNetworkInner {
     private String name;
 
     /*
+     * Virtual Network properties
+     */
+    @JsonProperty(value = "properties")
+    private VirtualNetworkProperties innerProperties;
+
+    /*
      * {resourceProviderNamespace}/{resourceType}
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The Private Cloud id
-     */
-    @JsonProperty(value = "properties.privateCloudId", access = JsonProperty.Access.WRITE_ONLY)
-    private String privateCloudId;
+    /** Creates an instance of VirtualNetworkInner class. */
+    public VirtualNetworkInner() {
+    }
 
     /**
      * Get the assignable property: can be used in vm creation/deletion.
@@ -100,6 +99,15 @@ public class VirtualNetworkInner {
     }
 
     /**
+     * Get the innerProperties property: Virtual Network properties.
+     *
+     * @return the innerProperties value.
+     */
+    private VirtualNetworkProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the type property: {resourceProviderNamespace}/{resourceType}.
      *
      * @return the type value.
@@ -114,7 +122,7 @@ public class VirtualNetworkInner {
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
-        return this.privateCloudId;
+        return this.innerProperties() == null ? null : this.innerProperties().privateCloudId();
     }
 
     /**
@@ -124,9 +132,14 @@ public class VirtualNetworkInner {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model VirtualNetworkInner"));
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkInner.class);
 }

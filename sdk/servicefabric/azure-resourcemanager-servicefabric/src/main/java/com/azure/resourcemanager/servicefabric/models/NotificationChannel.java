@@ -8,13 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NotificationChannel. */
+/**
+ * The notification channel indicates the type of receivers subscribed to the notification, either user or subscription.
+ */
 public final class NotificationChannel extends ExpandableStringEnum<NotificationChannel> {
     /** Static value EmailUser for NotificationChannel. */
     public static final NotificationChannel EMAIL_USER = fromString("EmailUser");
 
     /** Static value EmailSubscription for NotificationChannel. */
     public static final NotificationChannel EMAIL_SUBSCRIPTION = fromString("EmailSubscription");
+
+    /**
+     * Creates a new instance of NotificationChannel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotificationChannel() {
+    }
 
     /**
      * Creates or finds a NotificationChannel from its string representation.
@@ -27,7 +38,11 @@ public final class NotificationChannel extends ExpandableStringEnum<Notification
         return fromString(name, NotificationChannel.class);
     }
 
-    /** @return known NotificationChannel values. */
+    /**
+     * Gets known NotificationChannel values.
+     *
+     * @return known NotificationChannel values.
+     */
     public static Collection<NotificationChannel> values() {
         return values(NotificationChannel.class);
     }

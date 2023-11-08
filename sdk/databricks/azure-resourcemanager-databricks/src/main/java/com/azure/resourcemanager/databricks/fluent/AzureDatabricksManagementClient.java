@@ -66,9 +66,23 @@ public interface AzureDatabricksManagementClient {
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
+     * Gets the OutboundNetworkDependenciesEndpointsClient object to access its operations.
+     *
+     * @return the OutboundNetworkDependenciesEndpointsClient object.
+     */
+    OutboundNetworkDependenciesEndpointsClient getOutboundNetworkDependenciesEndpoints();
+
+    /**
      * Gets the VNetPeeringsClient object to access its operations.
      *
      * @return the VNetPeeringsClient object.
      */
     VNetPeeringsClient getVNetPeerings();
+
+    /**
+     * Gets the AccessConnectorsClient object to access its operations.
+     *
+     * @return the AccessConnectorsClient object.
+     */
+    AccessConnectorsClient getAccessConnectors();
 }

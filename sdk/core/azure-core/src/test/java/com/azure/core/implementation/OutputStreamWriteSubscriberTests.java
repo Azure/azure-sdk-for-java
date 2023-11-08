@@ -3,67 +3,85 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.mocking.MockMonoSink;
+import com.azure.core.util.mocking.MockOutputStream;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link OutputStreamWriteSubscriber}.
  */
 public class OutputStreamWriteSubscriberTests {
-    @SuppressWarnings("unchecked")
+    private static final ClientLogger LOGGER = new ClientLogger(OutputStreamWriteSubscriberTests.class);
+
     @Test
-    public void multipleSubscriptionsCancelsLaterSubscriptions() throws IOException {
-        ClientLogger clientLogger = mock(ClientLogger.class);
-        OutputStream stream = mock(OutputStream.class);
-        doAnswer(invocation -> null).when(stream).write(any(), anyInt(), anyInt());
+    public void multipleSubscriptionsCancelsLaterSubscriptions() {
+        OutputStream stream = new MockOutputStream() {
+            @Override
+            public void write(byte[] b, int off, int len) {
+            }
+        };
 
-        MonoSink<Void> sink = (MonoSink<Void>) mock(MonoSink.class);
-
-        OutputStreamWriteSubscriber subscriber = new OutputStreamWriteSubscriber(sink, stream, clientLogger);
-        Subscription subscription1 = mock(Subscription.class);
-        Subscription subscription2 = mock(Subscription.class);
+        OutputStreamWriteSubscriber subscriber = new OutputStreamWriteSubscriber(null, stream, LOGGER);
+        CountingSubscription subscription1 = new CountingSubscription();
+        CountingSubscription subscription2 = new CountingSubscription();
 
         subscriber.onSubscribe(subscription1);
         subscriber.onSubscribe(subscription2);
 
-        verify(subscription1, times(1)).request(1);
-        verify(subscription1, never()).cancel();
+        assertEquals(1, subscription1.requestOneCalls.get());
+        assertEquals(0, subscription1.cancelCalls.get());
 
-        verify(subscription2, never()).request(1);
-        verify(subscription2, times(1)).cancel();
+        assertEquals(0, subscription2.requestOneCalls.get());
+        assertEquals(1, subscription2.cancelCalls.get());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
-    public void errorDuringWritingCancelsSubscription() throws IOException {
-        ClientLogger clientLogger = new ClientLogger(OutputStreamWriteSubscriberTests.class);
-        OutputStream stream = mock(OutputStream.class);
-        MonoSink<Void> sink = (MonoSink<Void>) mock(MonoSink.class);
+    public void errorDuringWritingCancelsSubscription() {
+        OutputStream stream = new MockOutputStream();
+        CountingSubscription subscription = new CountingSubscription();
 
-        OutputStreamWriteSubscriber subscriber = new OutputStreamWriteSubscriber(sink, stream, clientLogger);
+        AtomicReference<Throwable> error = new AtomicReference<>();
+        MonoSink<Void> sink = new MockMonoSink<Void>() {
+            @Override
+            public void error(Throwable e) {
+                error.set(e);
+            }
+        };
 
-        Subscription subscription = mock(Subscription.class);
-
+        OutputStreamWriteSubscriber subscriber = new OutputStreamWriteSubscriber(sink, stream, LOGGER);
         subscriber.onSubscribe(subscription);
 
         IOException ioException = new IOException();
         subscriber.onError(ioException);
 
-        verify(subscription, times(1)).request(1);
-        verify(subscription, times(1)).cancel();
+        assertEquals(1, subscription.requestOneCalls.get());
+        assertEquals(1, subscription.cancelCalls.get());
+        assertEquals(ioException, error.get());
+    }
 
-        verify(sink, times(1)).error(ioException);
+    private static final class CountingSubscription implements Subscription {
+        private final AtomicInteger requestOneCalls = new AtomicInteger();
+        private final AtomicInteger cancelCalls = new AtomicInteger();
+
+        @Override
+        public void request(long n) {
+            if (n == 1) {
+                requestOneCalls.incrementAndGet();
+            }
+        }
+
+        @Override
+        public void cancel() {
+            cancelCalls.incrementAndGet();
+        }
     }
 }

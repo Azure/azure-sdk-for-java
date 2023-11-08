@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The entity reference. */
 @Fluent
 public final class EntityReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityReference.class);
-
     /*
      * The type of this referenced entity.
      */
@@ -25,6 +21,10 @@ public final class EntityReference {
      */
     @JsonProperty(value = "referenceName")
     private String referenceName;
+
+    /** Creates an instance of EntityReference class. */
+    public EntityReference() {
+    }
 
     /**
      * Get the type property: The type of this referenced entity.

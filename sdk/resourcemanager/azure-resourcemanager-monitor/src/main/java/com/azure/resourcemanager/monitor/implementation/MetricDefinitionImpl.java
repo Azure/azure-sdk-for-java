@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.AggregationType;
 import com.azure.resourcemanager.monitor.models.LocalizableString;
@@ -13,6 +14,7 @@ import com.azure.resourcemanager.monitor.models.ResultType;
 import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
 import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
 import com.azure.resourcemanager.monitor.models.Unit;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -179,8 +181,8 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
             .manager()
             .serviceClient()
             .getMetrics()
-            .listAsync(
-                this.inner.resourceId(),
+            .listWithResponseAsync(
+                ResourceUtils.encodeResourceId(this.inner.resourceId()),
                 String
                     .format(
                         "%s/%s",
@@ -194,6 +196,7 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
                 this.odataFilter,
                 this.resultType,
                 this.namespaceFilter)
+            .map(Response::getValue)
             .map(MetricCollectionImpl::new);
     }
 }

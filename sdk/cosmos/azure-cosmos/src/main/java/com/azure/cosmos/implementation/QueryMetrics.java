@@ -2,41 +2,31 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRange;
-import com.azure.cosmos.implementation.query.metrics.QueryMetricsTextWriter;
 import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
+
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
  * Query metrics in the Azure Cosmos database service.
  * This metric represents a moving average for a set of queries whose metrics have been aggregated together.
  */
 public final class QueryMetrics {
-    public final static QueryMetrics ZERO = new QueryMetrics(
-        new ArrayList<>(), /* */
-        0, /* retrievedDocumentCount */
-        0, /* retrievedDocumentSize */
-        0, /* outputDocumentCount */
-        0, /* outputDocumentSize */
-        0, /* indexHitCount */
-        Duration.ZERO,
-        QueryPreparationTimes.ZERO,
-        Duration.ZERO,
-        Duration.ZERO,
-        Duration.ZERO,
-        RuntimeExecutionTimes.ZERO,
-        Duration.ZERO,
-        ClientSideMetrics.ZERO,
-        IndexUtilizationInfo.ZERO);
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryMetrics.class);
     private final long retrievedDocumentCount;
     private final long retrievedDocumentSize;
     private final long outputDocumentCount;
@@ -189,13 +179,8 @@ public final class QueryMetrics {
         return this.clientSideMetrics.getRetries();
     }
 
-    public QueryMetrics add(QueryMetrics... queryMetricsArgs) {
-        ArrayList<QueryMetrics> queryMetricsList = new ArrayList<QueryMetrics>();
-        for (QueryMetrics queryMetrics : queryMetricsArgs) {
-            queryMetricsList.add(queryMetrics);
-        }
-
-        queryMetricsList.add(this);
+    public static QueryMetrics addQueryMetrics(QueryMetrics... additionalQueryMetrics) {
+        List<QueryMetrics> queryMetricsList = new ArrayList<>(Arrays.asList(additionalQueryMetrics));
 
         return QueryMetrics.createFromCollection(queryMetricsList);
     }
@@ -205,21 +190,16 @@ public final class QueryMetrics {
      * @param base metrics map which will be updated with new values.
      * @param addOn metrics map whose values will be merge in base map.
      */
-    public static void mergeQueryMetricsMap(ConcurrentMap<String, QueryMetrics> base, ConcurrentMap<String, QueryMetrics> addOn) {
-        for (ConcurrentMap.Entry<String, QueryMetrics> entry : addOn.entrySet()) {
-            if (base.containsKey(entry.getKey())) {
-                base.get(entry.getKey()).add(entry.getValue());
-            } else {
-                base.put(entry.getKey(), entry.getValue());
-            }
+    public static void mergeQueryMetricsMap(Map<String, QueryMetrics> base, Map<String, QueryMetrics> addOn) {
+        for (Map.Entry<String, QueryMetrics> entry : addOn.entrySet()) {
+            base.compute(entry.getKey(), (key, value) -> {
+                if (value == null) {
+                    return entry.getValue();
+                } else {
+                    return QueryMetrics.addQueryMetrics(value, entry.getValue());
+                }
+            });
         }
-    }
-
-    private String toTextString(int indentLevel) {
-        StringBuilder stringBuilder = new StringBuilder();
-        QueryMetricsTextWriter queryMetricsTextWriter = new QueryMetricsTextWriter(stringBuilder);
-        queryMetricsTextWriter.writeQueryMetrics(this);
-        return stringBuilder.toString();
     }
 
     public static QueryMetrics createFromCollection(Collection<QueryMetrics> queryMetricsCollection) {
@@ -269,7 +249,6 @@ public final class QueryMetrics {
     }
 
     public static QueryMetrics createFromDelimitedString(String delimitedString) {
-        HashMap<String, Double> metrics = QueryMetricsUtils.parseDelimitedString(delimitedString);
         return QueryMetrics.createFromDelimitedStringAndClientSideMetrics(delimitedString,
                 new ClientSideMetrics(0, 0, new ArrayList<FetchExecutionRange>(),
                         new ArrayList<ImmutablePair<String, SchedulingTimeSpan>>()), "", "");
@@ -315,6 +294,15 @@ public final class QueryMetrics {
 
     @Override
     public String toString() {
-        return toTextString(0);
+        try {
+            return Utils.getDurationEnabledObjectMapper().writeValueAsString(this);
+        } catch (final JsonProcessingException error) {
+            LOGGER.debug("could not convert {} value to JSON due to:", this.getClass(), error);
+            try {
+                return lenientFormat("{\"error\":%s}", Utils.getDurationEnabledObjectMapper().writeValueAsString(error.toString()));
+            } catch (final JsonProcessingException exception) {
+                return "null";
+            }
+        }
     }
 }

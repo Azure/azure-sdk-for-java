@@ -14,12 +14,11 @@ import com.azure.resourcemanager.synapse.fluent.models.ServerBlobAuditingPolicyI
 import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyName;
 import com.azure.resourcemanager.synapse.models.ServerBlobAuditingPolicy;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerBlobAuditingPolicies;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceManagedSqlServerBlobAuditingPoliciesImpl
     implements WorkspaceManagedSqlServerBlobAuditingPolicies {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WorkspaceManagedSqlServerBlobAuditingPoliciesImpl.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(WorkspaceManagedSqlServerBlobAuditingPoliciesImpl.class);
 
     private final WorkspaceManagedSqlServerBlobAuditingPoliciesClient innerClient;
 
@@ -30,17 +29,6 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesImpl
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ServerBlobAuditingPolicy get(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
-        ServerBlobAuditingPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, blobAuditingPolicyName);
-        if (inner != null) {
-            return new ServerBlobAuditingPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ServerBlobAuditingPolicy> getWithResponse(
@@ -56,6 +44,17 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ServerBlobAuditingPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ServerBlobAuditingPolicy get(
+        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
+        ServerBlobAuditingPolicyInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, blobAuditingPolicyName);
+        if (inner != null) {
+            return new ServerBlobAuditingPolicyImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -77,7 +76,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesImpl
     public ServerBlobAuditingPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,28 +84,28 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesImpl
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        BlobAuditingPolicyName blobAuditingPolicyName =
-            BlobAuditingPolicyName.fromString(Utils.getValueFromIdByName(id, "auditingSettings"));
-        if (blobAuditingPolicyName == null) {
-            throw logger
+        String blobAuditingPolicyNameLocal = Utils.getValueFromIdByName(id, "auditingSettings");
+        if (blobAuditingPolicyNameLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'auditingSettings'.", id)));
         }
+        BlobAuditingPolicyName blobAuditingPolicyName = BlobAuditingPolicyName.fromString(blobAuditingPolicyNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, Context.NONE).getValue();
     }
 
     public Response<ServerBlobAuditingPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,21 +113,21 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesImpl
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        BlobAuditingPolicyName blobAuditingPolicyName =
-            BlobAuditingPolicyName.fromString(Utils.getValueFromIdByName(id, "auditingSettings"));
-        if (blobAuditingPolicyName == null) {
-            throw logger
+        String blobAuditingPolicyNameLocal = Utils.getValueFromIdByName(id, "auditingSettings");
+        if (blobAuditingPolicyNameLocal == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'auditingSettings'.", id)));
         }
+        BlobAuditingPolicyName blobAuditingPolicyName = BlobAuditingPolicyName.fromString(blobAuditingPolicyNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, context);
     }
 

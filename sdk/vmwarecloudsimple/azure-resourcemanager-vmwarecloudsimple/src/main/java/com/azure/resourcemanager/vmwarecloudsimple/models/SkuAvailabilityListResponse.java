@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.SkuAvailabilityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of SKU availabilities. */
 @Fluent
 public final class SkuAvailabilityListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuAvailabilityListResponse.class);
-
     /*
      * Link for next list of DedicatedCloudNode
      */
@@ -27,6 +23,10 @@ public final class SkuAvailabilityListResponse {
      */
     @JsonProperty(value = "value")
     private List<SkuAvailabilityInner> value;
+
+    /** Creates an instance of SkuAvailabilityListResponse class. */
+    public SkuAvailabilityListResponse() {
+    }
 
     /**
      * Get the nextLink property: Link for next list of DedicatedCloudNode.

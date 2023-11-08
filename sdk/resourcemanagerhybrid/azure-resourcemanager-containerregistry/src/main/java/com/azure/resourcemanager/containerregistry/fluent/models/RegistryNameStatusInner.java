@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of a request to check the availability of a container registry name. */
 @Fluent
 public final class RegistryNameStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryNameStatusInner.class);
-
     /*
      * The value that indicates whether the name is available.
      */

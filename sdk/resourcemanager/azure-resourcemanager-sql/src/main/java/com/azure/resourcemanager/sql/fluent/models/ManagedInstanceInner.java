@@ -5,24 +5,25 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.ManagedInstanceExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLicenseType;
+import com.azure.resourcemanager.sql.models.ManagedInstancePecProperty;
+import com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState;
 import com.azure.resourcemanager.sql.models.ManagedInstanceProxyOverride;
 import com.azure.resourcemanager.sql.models.ManagedServerCreateMode;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
+import com.azure.resourcemanager.sql.models.ServicePrincipal;
 import com.azure.resourcemanager.sql.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 
 /** An Azure SQL managed instance. */
-@JsonFlatten
 @Fluent
-public class ManagedInstanceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceInner.class);
-
+public final class ManagedInstanceInner extends Resource {
     /*
      * The Azure Active Directory identity of the managed instance.
      */
@@ -30,150 +31,20 @@ public class ManagedInstanceInner extends Resource {
     private ResourceIdentity identity;
 
     /*
-     * Managed instance SKU. Allowed values for sku.name: GP_Gen4, GP_Gen5,
-     * BC_Gen4, BC_Gen5
+     * Managed instance SKU. Allowed values for sku.name: GP_Gen5, GP_G8IM, GP_G8IH, BC_Gen5, BC_G8IM, BC_G8IH
      */
     @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * Specifies the mode of database creation.
-     *
-     * Default: Regular instance creation.
-     *
-     * Restore: Creates an instance by restoring a set of backups to specific
-     * point in time. RestorePointInTime and SourceManagedInstanceId must be
-     * specified.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.managedInstanceCreateMode")
-    private ManagedServerCreateMode managedInstanceCreateMode;
+    @JsonProperty(value = "properties")
+    private ManagedInstanceProperties innerProperties;
 
-    /*
-     * The fully qualified domain name of the managed instance.
-     */
-    @JsonProperty(value = "properties.fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
-    private String fullyQualifiedDomainName;
-
-    /*
-     * Administrator username for the managed instance. Can only be specified
-     * when the managed instance is being created (and is required for
-     * creation).
-     */
-    @JsonProperty(value = "properties.administratorLogin")
-    private String administratorLogin;
-
-    /*
-     * The administrator login password (required for managed instance
-     * creation).
-     */
-    @JsonProperty(value = "properties.administratorLoginPassword")
-    private String administratorLoginPassword;
-
-    /*
-     * Subnet resource ID for the managed instance.
-     */
-    @JsonProperty(value = "properties.subnetId")
-    private String subnetId;
-
-    /*
-     * The state of the managed instance.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private String state;
-
-    /*
-     * The license type. Possible values are 'LicenseIncluded' (regular price
-     * inclusive of a new SQL license) and 'BasePrice' (discounted AHB price
-     * for bringing your own SQL licenses).
-     */
-    @JsonProperty(value = "properties.licenseType")
-    private ManagedInstanceLicenseType licenseType;
-
-    /*
-     * The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
-     */
-    @JsonProperty(value = "properties.vCores")
-    private Integer vCores;
-
-    /*
-     * Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments
-     * of 32 GB allowed only.
-     */
-    @JsonProperty(value = "properties.storageSizeInGB")
-    private Integer storageSizeInGB;
-
-    /*
-     * Collation of the managed instance.
-     */
-    @JsonProperty(value = "properties.collation")
-    private String collation;
-
-    /*
-     * The Dns Zone that the managed instance is in.
-     */
-    @JsonProperty(value = "properties.dnsZone", access = JsonProperty.Access.WRITE_ONLY)
-    private String dnsZone;
-
-    /*
-     * The resource id of another managed instance whose DNS zone this managed
-     * instance will share after creation.
-     */
-    @JsonProperty(value = "properties.dnsZonePartner")
-    private String dnsZonePartner;
-
-    /*
-     * Whether or not the public data endpoint is enabled.
-     */
-    @JsonProperty(value = "properties.publicDataEndpointEnabled")
-    private Boolean publicDataEndpointEnabled;
-
-    /*
-     * The resource identifier of the source managed instance associated with
-     * create operation of this instance.
-     */
-    @JsonProperty(value = "properties.sourceManagedInstanceId")
-    private String sourceManagedInstanceId;
-
-    /*
-     * Specifies the point in time (ISO8601 format) of the source database that
-     * will be restored to create the new database.
-     */
-    @JsonProperty(value = "properties.restorePointInTime")
-    private OffsetDateTime restorePointInTime;
-
-    /*
-     * Connection type used for connecting to the instance.
-     */
-    @JsonProperty(value = "properties.proxyOverride")
-    private ManagedInstanceProxyOverride proxyOverride;
-
-    /*
-     * Id of the timezone. Allowed values are timezones supported by Windows.
-     * Windows keeps details on supported timezones, including the id, in
-     * registry under
-     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
-     * Zones.
-     * You can get those registry values via SQL Server by querying SELECT name
-     * AS timezone_id FROM sys.time_zone_info.
-     * List of Ids can also be obtained by executing
-     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
-     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe
-     * Standard Time".
-     */
-    @JsonProperty(value = "properties.timezoneId")
-    private String timezoneId;
-
-    /*
-     * The Id of the instance pool this managed server belongs to.
-     */
-    @JsonProperty(value = "properties.instancePoolId")
-    private String instancePoolId;
-
-    /*
-     * Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
-     */
-    @JsonProperty(value = "properties.minimalTlsVersion")
-    private String minimalTlsVersion;
+    /** Creates an instance of ManagedInstanceInner class. */
+    public ManagedInstanceInner() {
+    }
 
     /**
      * Get the identity property: The Azure Active Directory identity of the managed instance.
@@ -196,7 +67,8 @@ public class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Get the sku property: Managed instance SKU. Allowed values for sku.name: GP_Gen4, GP_Gen5, BC_Gen4, BC_Gen5.
+     * Get the sku property: Managed instance SKU. Allowed values for sku.name: GP_Gen5, GP_G8IM, GP_G8IH, BC_Gen5,
+     * BC_G8IM, BC_G8IH.
      *
      * @return the sku value.
      */
@@ -205,7 +77,8 @@ public class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Set the sku property: Managed instance SKU. Allowed values for sku.name: GP_Gen4, GP_Gen5, BC_Gen4, BC_Gen5.
+     * Set the sku property: Managed instance SKU. Allowed values for sku.name: GP_Gen5, GP_G8IM, GP_G8IH, BC_Gen5,
+     * BC_G8IM, BC_G8IH.
      *
      * @param sku the sku value to set.
      * @return the ManagedInstanceInner object itself.
@@ -213,6 +86,38 @@ public class ManagedInstanceInner extends Resource {
     public ManagedInstanceInner withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ManagedInstanceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedInstanceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedInstanceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioningState property.
+     *
+     * @return the provisioningState value.
+     */
+    public ManagedInstancePropertiesProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -226,7 +131,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the managedInstanceCreateMode value.
      */
     public ManagedServerCreateMode managedInstanceCreateMode() {
-        return this.managedInstanceCreateMode;
+        return this.innerProperties() == null ? null : this.innerProperties().managedInstanceCreateMode();
     }
 
     /**
@@ -241,7 +146,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withManagedInstanceCreateMode(ManagedServerCreateMode managedInstanceCreateMode) {
-        this.managedInstanceCreateMode = managedInstanceCreateMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withManagedInstanceCreateMode(managedInstanceCreateMode);
         return this;
     }
 
@@ -251,7 +159,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
-        return this.fullyQualifiedDomainName;
+        return this.innerProperties() == null ? null : this.innerProperties().fullyQualifiedDomainName();
     }
 
     /**
@@ -261,7 +169,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
-        return this.administratorLogin;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLogin();
     }
 
     /**
@@ -272,7 +180,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withAdministratorLogin(String administratorLogin) {
-        this.administratorLogin = administratorLogin;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withAdministratorLogin(administratorLogin);
         return this;
     }
 
@@ -283,7 +194,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
-        return this.administratorLoginPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLoginPassword();
     }
 
     /**
@@ -294,7 +205,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withAdministratorLoginPassword(String administratorLoginPassword) {
-        this.administratorLoginPassword = administratorLoginPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
 
@@ -304,7 +218,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the subnetId value.
      */
     public String subnetId() {
-        return this.subnetId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
     }
 
     /**
@@ -314,7 +228,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withSubnetId(String subnetId) {
-        this.subnetId = subnetId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withSubnetId(subnetId);
         return this;
     }
 
@@ -324,7 +241,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the state value.
      */
     public String state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -334,7 +251,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the licenseType value.
      */
     public ManagedInstanceLicenseType licenseType() {
-        return this.licenseType;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -345,7 +262,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withLicenseType(ManagedInstanceLicenseType licenseType) {
-        this.licenseType = licenseType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -355,7 +275,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the vCores value.
      */
     public Integer vCores() {
-        return this.vCores;
+        return this.innerProperties() == null ? null : this.innerProperties().vCores();
     }
 
     /**
@@ -365,29 +285,35 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withVCores(Integer vCores) {
-        this.vCores = vCores;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withVCores(vCores);
         return this;
     }
 
     /**
-     * Get the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB
-     * allowed only.
+     * Get the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
+     * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
      *
      * @return the storageSizeInGB value.
      */
     public Integer storageSizeInGB() {
-        return this.storageSizeInGB;
+        return this.innerProperties() == null ? null : this.innerProperties().storageSizeInGB();
     }
 
     /**
-     * Set the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB
-     * allowed only.
+     * Set the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
+     * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
      *
      * @param storageSizeInGB the storageSizeInGB value to set.
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withStorageSizeInGB(Integer storageSizeInGB) {
-        this.storageSizeInGB = storageSizeInGB;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withStorageSizeInGB(storageSizeInGB);
         return this;
     }
 
@@ -397,7 +323,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the collation value.
      */
     public String collation() {
-        return this.collation;
+        return this.innerProperties() == null ? null : this.innerProperties().collation();
     }
 
     /**
@@ -407,7 +333,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withCollation(String collation) {
-        this.collation = collation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withCollation(collation);
         return this;
     }
 
@@ -417,7 +346,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the dnsZone value.
      */
     public String dnsZone() {
-        return this.dnsZone;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsZone();
     }
 
     /**
@@ -427,7 +356,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the dnsZonePartner value.
      */
     public String dnsZonePartner() {
-        return this.dnsZonePartner;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsZonePartner();
     }
 
     /**
@@ -438,7 +367,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withDnsZonePartner(String dnsZonePartner) {
-        this.dnsZonePartner = dnsZonePartner;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withDnsZonePartner(dnsZonePartner);
         return this;
     }
 
@@ -448,7 +380,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the publicDataEndpointEnabled value.
      */
     public Boolean publicDataEndpointEnabled() {
-        return this.publicDataEndpointEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().publicDataEndpointEnabled();
     }
 
     /**
@@ -458,7 +390,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withPublicDataEndpointEnabled(Boolean publicDataEndpointEnabled) {
-        this.publicDataEndpointEnabled = publicDataEndpointEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withPublicDataEndpointEnabled(publicDataEndpointEnabled);
         return this;
     }
 
@@ -469,7 +404,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the sourceManagedInstanceId value.
      */
     public String sourceManagedInstanceId() {
-        return this.sourceManagedInstanceId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceManagedInstanceId();
     }
 
     /**
@@ -480,7 +415,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withSourceManagedInstanceId(String sourceManagedInstanceId) {
-        this.sourceManagedInstanceId = sourceManagedInstanceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withSourceManagedInstanceId(sourceManagedInstanceId);
         return this;
     }
 
@@ -491,7 +429,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
-        return this.restorePointInTime;
+        return this.innerProperties() == null ? null : this.innerProperties().restorePointInTime();
     }
 
     /**
@@ -502,7 +440,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withRestorePointInTime(OffsetDateTime restorePointInTime) {
-        this.restorePointInTime = restorePointInTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withRestorePointInTime(restorePointInTime);
         return this;
     }
 
@@ -512,7 +453,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the proxyOverride value.
      */
     public ManagedInstanceProxyOverride proxyOverride() {
-        return this.proxyOverride;
+        return this.innerProperties() == null ? null : this.innerProperties().proxyOverride();
     }
 
     /**
@@ -522,7 +463,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withProxyOverride(ManagedInstanceProxyOverride proxyOverride) {
-        this.proxyOverride = proxyOverride;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withProxyOverride(proxyOverride);
         return this;
     }
 
@@ -537,7 +481,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the timezoneId value.
      */
     public String timezoneId() {
-        return this.timezoneId;
+        return this.innerProperties() == null ? null : this.innerProperties().timezoneId();
     }
 
     /**
@@ -552,7 +496,10 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withTimezoneId(String timezoneId) {
-        this.timezoneId = timezoneId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withTimezoneId(timezoneId);
         return this;
     }
 
@@ -562,7 +509,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the instancePoolId value.
      */
     public String instancePoolId() {
-        return this.instancePoolId;
+        return this.innerProperties() == null ? null : this.innerProperties().instancePoolId();
     }
 
     /**
@@ -572,8 +519,45 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withInstancePoolId(String instancePoolId) {
-        this.instancePoolId = instancePoolId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withInstancePoolId(instancePoolId);
         return this;
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections on a managed instance.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<ManagedInstancePecProperty> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**
@@ -582,7 +566,7 @@ public class ManagedInstanceInner extends Resource {
      * @return the minimalTlsVersion value.
      */
     public String minimalTlsVersion() {
-        return this.minimalTlsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
     /**
@@ -592,7 +576,166 @@ public class ManagedInstanceInner extends Resource {
      * @return the ManagedInstanceInner object itself.
      */
     public ManagedInstanceInner withMinimalTlsVersion(String minimalTlsVersion) {
-        this.minimalTlsVersion = minimalTlsVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
+        return this;
+    }
+
+    /**
+     * Get the currentBackupStorageRedundancy property: The storage account type used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     *
+     * @return the currentBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy currentBackupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentBackupStorageRedundancy();
+    }
+
+    /**
+     * Get the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     *
+     * @return the requestedBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy requestedBackupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().requestedBackupStorageRedundancy();
+    }
+
+    /**
+     * Set the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     *
+     * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withRequestedBackupStorageRedundancy(
+        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withRequestedBackupStorageRedundancy(requestedBackupStorageRedundancy);
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundant property: Whether or not the multi-az is enabled.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
+    }
+
+    /**
+     * Set the zoneRedundant property: Whether or not the multi-az is enabled.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withZoneRedundant(Boolean zoneRedundant) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
+        return this;
+    }
+
+    /**
+     * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     *
+     * @return the primaryUserAssignedIdentityId value.
+     */
+    public String primaryUserAssignedIdentityId() {
+        return this.innerProperties() == null ? null : this.innerProperties().primaryUserAssignedIdentityId();
+    }
+
+    /**
+     * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     *
+     * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withPrimaryUserAssignedIdentityId(String primaryUserAssignedIdentityId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withPrimaryUserAssignedIdentityId(primaryUserAssignedIdentityId);
+        return this;
+    }
+
+    /**
+     * Get the keyId property: A CMK URI of the key to use for encryption.
+     *
+     * @return the keyId value.
+     */
+    public String keyId() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyId();
+    }
+
+    /**
+     * Set the keyId property: A CMK URI of the key to use for encryption.
+     *
+     * @param keyId the keyId value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withKeyId(String keyId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withKeyId(keyId);
+        return this;
+    }
+
+    /**
+     * Get the administrators property: The Azure Active Directory administrator of the server.
+     *
+     * @return the administrators value.
+     */
+    public ManagedInstanceExternalAdministrator administrators() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrators();
+    }
+
+    /**
+     * Set the administrators property: The Azure Active Directory administrator of the server.
+     *
+     * @param administrators the administrators value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withAdministrators(ManagedInstanceExternalAdministrator administrators) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withAdministrators(administrators);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipal property: The managed instance's service principal.
+     *
+     * @return the servicePrincipal value.
+     */
+    public ServicePrincipal servicePrincipal() {
+        return this.innerProperties() == null ? null : this.innerProperties().servicePrincipal();
+    }
+
+    /**
+     * Set the servicePrincipal property: The managed instance's service principal.
+     *
+     * @param servicePrincipal the servicePrincipal value to set.
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withServicePrincipal(ServicePrincipal servicePrincipal) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withServicePrincipal(servicePrincipal);
         return this;
     }
 
@@ -607,6 +750,9 @@ public class ManagedInstanceInner extends Resource {
         }
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of an available operation. */
 @Fluent
 public final class AvailableRpOperationDisplayInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableRpOperationDisplayInfo.class);
-
     /*
      * Operation description
      */
@@ -37,6 +33,10 @@ public final class AvailableRpOperationDisplayInfo {
      */
     @JsonProperty(value = "operation")
     private String operation;
+
+    /** Creates an instance of AvailableRpOperationDisplayInfo class. */
+    public AvailableRpOperationDisplayInfo() {
+    }
 
     /**
      * Get the description property: Operation description.

@@ -6,10 +6,12 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
 import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
@@ -18,35 +20,73 @@ import reactor.core.publisher.FluxSink;
 
 import java.io.Closeable;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
 /**
- * A <b>synchronous</b> consumer responsible for reading {@link EventData} from an Event Hub partition in the context of
- * a specific consumer group.
+ * <p>A <b>synchronous</b> consumer responsible for reading {@link EventData} from an Event Hub partition in the context of
+ * a specific consumer group.</p>
  *
- * <p><strong>Creating a synchronous consumer</strong></p>
- * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
+ * <p>Most receive operations contain a parameter {@code maxWaitTime}.  The iterable is returned when either
+ * {@code maxWaitTime} has elapsed or {@code numberOfEvents} have been received.  It is possible to have an empty
+ * iterable if no events were received in that time frame.  {@link #receiveFromPartition(String, int, EventPosition)}
+ * does not have a parameter for {@code maxWaitTime}, consequently, it can take a long time to return results if
+ * {@code numberOfEvents} is too high and there is low traffic in that Event Hub.</p>
+ *
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Creating a synchronous consumer</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous client {@link EventHubConsumerClient}.
+ * The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name. It is listed under the "Essentials"
+ * panel after navigating to the Event Hubs Namespace via Azure Portal. The {@code consumerGroup} is found by
+ * navigating to the Event Hub instance, and selecting "Consumer groups" under the "Entities" panel.  The
+ * {@link EventHubClientBuilder#consumerGroup(String)} is required for creating consumer clients. </p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.construct -->
  * <pre>
- * &#47;&#47; The required parameters are `consumerGroup`, and a way to authenticate with Event Hubs using credentials.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
  * EventHubConsumerClient consumer = new EventHubClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;&quot;
- *         + &quot;SharedAccessKey=&#123;key&#125;;Entity-Path=&#123;hub-name&#125;&quot;&#41;
- *     .consumerGroup&#40;&quot;$DEFAULT&quot;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
  *     .buildConsumerClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.construct -->
  *
- * <p><strong>Consuming events from a single partition</strong></p>
+ * <p><strong>Sample: Consuming events from a single partition</strong></p>
+ *
  * <p>Events from a single partition can be consumed using {@link #receiveFromPartition(String, int, EventPosition)} or
  * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to {@code receiveFromPartition}
  * completes and returns an {@link IterableStream} when either the maximum number of events is received, or the
- * timeout has elapsed.</p>
+ * timeout has elapsed.  It is possible to have an empty iterable returned if there were no events received in that
+ * duration.</p>
  *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration -->
  * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventHubConsumerClient consumer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+ *     .buildConsumerClient&#40;&#41;;
+ *
  * Instant twelveHoursAgo = Instant.now&#40;&#41;.minus&#40;Duration.ofHours&#40;12&#41;&#41;;
  * EventPosition startingPosition = EventPosition.fromEnqueuedTime&#40;twelveHoursAgo&#41;;
  * String partitionId = &quot;0&quot;;
@@ -74,21 +114,26 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * &#125;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration -->
+ *
+ * @see com.azure.messaging.eventhubs
+ * @see EventHubClientBuilder
  */
 @ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubConsumerClient implements Closeable {
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerClient.class);
 
     private final EventHubConsumerAsyncClient consumer;
     private final ReceiveOptions defaultReceiveOptions = new ReceiveOptions();
     private final Duration timeout;
     private final AtomicInteger idGenerator = new AtomicInteger();
+    private final EventHubsTracer tracer;
 
     EventHubConsumerClient(EventHubConsumerAsyncClient consumer, Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
 
         this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");
         this.timeout = tryTimeout;
+        this.tracer = consumer.getInstrumentation().getTracer();
     }
 
     /**
@@ -196,29 +241,32 @@ public class EventHubConsumerClient implements Closeable {
     public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
         EventPosition startingPosition, Duration maximumWaitTime) {
         if (Objects.isNull(maximumWaitTime)) {
-            throw logger.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
         } else if (Objects.isNull(startingPosition)) {
-            throw logger.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
         } else if (Objects.isNull(partitionId)) {
-            throw logger.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
         }
 
         if (partitionId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
         }
         if (maximumMessageCount < 1) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
         } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
-        final Flux<PartitionEvent> events = Flux.create(emitter -> {
+        Instant startTime = tracer.isEnabled() ? Instant.now() : null;
+
+        Flux<PartitionEvent> events = Flux.create(emitter -> {
             queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, defaultReceiveOptions,
                 emitter);
         });
 
+        events = tracer.reportSyncReceiveSpan("EventHubs.receiveFromPartition", startTime, events, Context.NONE);
         return new IterableStream<>(events);
     }
 
@@ -244,30 +292,31 @@ public class EventHubConsumerClient implements Closeable {
     public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
         EventPosition startingPosition, Duration maximumWaitTime, ReceiveOptions receiveOptions) {
         if (Objects.isNull(maximumWaitTime)) {
-            throw logger.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
         } else if (Objects.isNull(startingPosition)) {
-            throw logger.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
         } else if (Objects.isNull(partitionId)) {
-            throw logger.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
         } else if (Objects.isNull(receiveOptions)) {
-            throw logger.logExceptionAsError(new NullPointerException("'receiveOptions' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'receiveOptions' cannot be null."));
         }
 
         if (partitionId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
         }
         if (maximumMessageCount < 1) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
         } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
-        final Flux<PartitionEvent> events = Flux.create(emitter -> {
+        Instant startTime = tracer.isEnabled() ? Instant.now() : null;
+        Flux<PartitionEvent> events = Flux.create(emitter -> {
             queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, receiveOptions, emitter);
         });
-
+        events = tracer.reportSyncReceiveSpan("EventHubs.receiveFromPartition", startTime, events, Context.NONE);
         return new IterableStream<>(events);
     }
 
@@ -289,10 +338,19 @@ public class EventHubConsumerClient implements Closeable {
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
             emitter);
         final SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber(work);
-        logger.atInfo()
+        LOGGER.atInfo()
             .addKeyValue(PARTITION_ID_KEY, partitionId)
             .log("Started synchronous event subscriber.");
 
         consumer.receiveFromPartition(partitionId, startingPosition, receiveOptions).subscribeWith(syncSubscriber);
+    }
+
+    /**
+     * Gets the client identifier.
+     *
+     * @return The unique identifier string for current client.
+     */
+    public String getIdentifier() {
+        return this.consumer.getIdentifier();
     }
 }

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.redis.models.RedisInstanceDetails;
 import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
+import com.azure.resourcemanager.redis.models.UpdateChannel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +45,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     private Integer sslPort;
 
     /*
-     * The keys of the Redis cache - not set if this object is not the response
-     * to Create or Update redis cache
+     * The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
      */
     @JsonProperty(value = "accessKeys", access = JsonProperty.Access.WRITE_ONLY)
     private RedisAccessKeysInner accessKeys;
@@ -63,11 +63,14 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     private List<RedisInstanceDetails> instances;
 
     /*
-     * List of private endpoint connection associated with the specified redis
-     * cache
+     * List of private endpoint connection associated with the specified redis cache
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /** Creates an instance of RedisPropertiesInner class. */
+    public RedisPropertiesInner() {
+    }
 
     /**
      * Get the provisioningState property: Redis instance provisioning status.
@@ -224,6 +227,13 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     @Override
     public RedisPropertiesInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisPropertiesInner withUpdateChannel(UpdateChannel updateChannel) {
+        super.withUpdateChannel(updateChannel);
         return this;
     }
 

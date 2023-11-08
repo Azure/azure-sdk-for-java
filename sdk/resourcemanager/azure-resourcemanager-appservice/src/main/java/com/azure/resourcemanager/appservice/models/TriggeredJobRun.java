@@ -77,6 +77,10 @@ public final class TriggeredJobRun {
     @JsonProperty(value = "trigger")
     private String trigger;
 
+    /** Creates an instance of TriggeredJobRun class. */
+    public TriggeredJobRun() {
+    }
+
     /**
      * Get the webJobId property: Job ID.
      *

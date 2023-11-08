@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the Resource ID for a Routing Rule. */
 @Fluent
 public final class RoutingRuleLink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingRuleLink.class);
-
     /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of RoutingRuleLink class. */
+    public RoutingRuleLink() {
+    }
 
     /**
      * Get the id property: Resource ID.

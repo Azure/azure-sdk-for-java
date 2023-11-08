@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifications of the Dimension of metrics. */
 @Fluent
 public final class MetricDimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDimension.class);
-
     /*
      * Name of the dimension
      */
@@ -31,6 +27,10 @@ public final class MetricDimension {
      */
     @JsonProperty(value = "internalName")
     private String internalName;
+
+    /** Creates an instance of MetricDimension class. */
+    public MetricDimension() {
+    }
 
     /**
      * Get the name property: Name of the dimension.

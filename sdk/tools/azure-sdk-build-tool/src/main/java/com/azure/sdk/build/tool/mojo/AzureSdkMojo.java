@@ -1,14 +1,21 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool.mojo;
 
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter;
+import com.azure.core.util.BinaryData;
 import com.azure.sdk.build.tool.ReportGenerator;
 import com.azure.sdk.build.tool.Tools;
+import com.azure.sdk.build.tool.implementation.ApplicationInsightsClient;
+import com.azure.sdk.build.tool.implementation.ApplicationInsightsClientBuilder;
+import com.azure.sdk.build.tool.implementation.models.MonitorBase;
+import com.azure.sdk.build.tool.implementation.models.TelemetryEventData;
+import com.azure.sdk.build.tool.implementation.models.TelemetryItem;
+import com.azure.sdk.build.tool.models.BuildError;
+import com.azure.sdk.build.tool.models.BuildErrorLevel;
 import com.azure.sdk.build.tool.models.BuildReport;
-import com.azure.sdk.build.tool.models.PingSpanData;
-import com.azure.sdk.build.tool.util.logging.Logger;
-import edu.emory.mathcs.backport.java.util.Collections;
-import io.opentelemetry.sdk.common.CompletableResultCode;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -18,21 +25,30 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
-import java.util.concurrent.TimeUnit;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Azure SDK build tools Maven plugin Mojo for analyzing Maven configuration of an application to provide Azure
  * SDK-specific recommendations.
  */
 @Mojo(name = "run",
-        defaultPhase = LifecyclePhase.PREPARE_PACKAGE,
-        requiresDependencyCollection = ResolutionScope.RUNTIME,
-        requiresDependencyResolution = ResolutionScope.RUNTIME)
+    defaultPhase = LifecyclePhase.PREPARE_PACKAGE,
+    requiresDependencyCollection = ResolutionScope.RUNTIME,
+    requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class AzureSdkMojo extends AbstractMojo {
 
-    public static AzureSdkMojo MOJO;
-    private static final Logger LOGGER = Logger.getInstance();
-    private static final String APP_INSIGHTS_CONNECTION_STRING = "InstrumentationKey=bccfcc21-ff29-4316-9d65-dc40e7934e59;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/";
+    public static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {
+    };
+    private static AzureSdkMojo mojo;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final String APP_INSIGHTS_INSTRUMENTATION_KEY = "1d377c0e-44f8-4d56-bee7-7f13a3fef594";
+    private static final String APP_INSIGHTS_ENDPOINT = "https://centralus-2.in.applicationinsights.azure.com/";
+    private static final String AZURE_SDK_BUILD_TOOL = "azure-sdk-build-tool";
+    private final ApplicationInsightsClient applicationInsightsClient;
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
@@ -52,6 +68,9 @@ public class AzureSdkMojo extends AbstractMojo {
     @Parameter(property = "validateNoBetaApiUsed", defaultValue = "true")
     private boolean validateNoBetaApiUsed;
 
+    @Parameter(property = "validateLatestBomVersionUsed", defaultValue = "true")
+    private boolean validateLatestBomVersionUsed;
+
     @Parameter(property = "reportFile", defaultValue = "")
     private String reportFile;
 
@@ -64,12 +83,24 @@ public class AzureSdkMojo extends AbstractMojo {
      * Creates an instance of Azure SDK build tool Mojo.
      */
     public AzureSdkMojo() {
-        MOJO = this;
+        mojo = this;
         this.buildReport = new BuildReport();
+        applicationInsightsClient = new ApplicationInsightsClientBuilder()
+            .host(APP_INSIGHTS_ENDPOINT)
+            .buildClient();
+    }
+
+    /**
+     * The {@link AzureSdkMojo} instance.
+     * @return The {@link AzureSdkMojo} instance.
+     */
+    public static AzureSdkMojo getMojo() {
+        return mojo;
     }
 
     /**
      * Returns the build report.
+     *
      * @return The build report.
      */
     public BuildReport getReport() {
@@ -82,42 +113,69 @@ public class AzureSdkMojo extends AbstractMojo {
         getLog().info("= Running the Azure SDK Maven Build Tool                               =");
         getLog().info("========================================================================");
 
-        // Run all of the tools. They will collect their results in the report.
-        if (sendToMicrosoft) {
-            // front-load pinging App Insights asynchronously to avoid any blocking at the end of the plugin execution
-            pingAppInsights();
-        }
         Tools.getTools().forEach(Runnable::run);
         ReportGenerator reportGenerator = new ReportGenerator(buildReport);
         reportGenerator.generateReport();
-    }
+        BuildReport report = reportGenerator.getReport();
+        if (sendToMicrosoft) {
+            sendReportToAppInsights(report);
+        }
 
-    private void pingAppInsights() {
-        try {
-            LOGGER.info("Sending ping message to Application Insights");
-            AzureMonitorTraceExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
-                    .connectionString(APP_INSIGHTS_CONNECTION_STRING)
-                    .buildTraceExporter();
-
-            PingSpanData pingSpanData = new PingSpanData();
-            CompletableResultCode completionCode =
-                    azureMonitorExporter.export(Collections.singletonList(pingSpanData)).join(30, TimeUnit.SECONDS);
-            if (completionCode.isSuccess()) {
-                LOGGER.info("Successfully sent ping message to Application Insights");
-            } else {
-                if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn("Failed to send ping message to Application Insights");
-                }
-            }
-        } catch (Exception ex) {
-            if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn("Unable to send ping message to Application Insights. " + ex.getMessage());
+        StringBuilder sb = new StringBuilder("Build failure for the following reasons:\n");
+        boolean hasErrors = false;
+        for (BuildError error : report.getErrors()) {
+            if (BuildErrorLevel.WARNING.equals(error.getLevel())) {
+                getLog().warn(error.getMessage());
+            } else if (BuildErrorLevel.ERROR.equals(error.getLevel())) {
+                hasErrors = true;
+                sb.append(" - " + error.getMessage() + "\n");
             }
         }
+        // we throw a single runtime exception encapsulating all failure messages into one
+        if (hasErrors) {
+            throw new RuntimeException(sb.toString());
+        }
+    }
+
+    private void sendReportToAppInsights(BuildReport report) {
+        try {
+            TelemetryItem telemetryItem = new TelemetryItem();
+            telemetryItem.setTime(OffsetDateTime.now());
+            telemetryItem.setName(AZURE_SDK_BUILD_TOOL);
+            telemetryItem.setInstrumentationKey(APP_INSIGHTS_INSTRUMENTATION_KEY);
+            TelemetryEventData data = new TelemetryEventData();
+            Map<String, String> customEventProperties = getCustomEventProperties(report);
+            data.setProperties(customEventProperties);
+            MonitorBase monitorBase = new MonitorBase();
+            monitorBase.setBaseData(data).setBaseType("EventData");
+            data.setName("azure-sdk-java-build-telemetry");
+            telemetryItem.setData(monitorBase);
+            List<TelemetryItem> telemetryItems = new ArrayList<>();
+            telemetryItems.add(telemetryItem);
+            applicationInsightsClient.trackAsync(telemetryItems).block();
+        } catch (Exception ex) {
+            getLog().warn("Unable to send report to Application Insights. " + ex.getMessage());
+        }
+    }
+
+    private Map<String, String> getCustomEventProperties(BuildReport report) {
+        Map<String, Object> properties = OBJECT_MAPPER.convertValue(report, MAP_TYPE_REFERENCE);
+        Map<String, String> customEventProperties = new HashMap<>(properties.size());
+        // AppInsights customEvents table does not support nested JSON objects in "properties" field
+        // So, we have to convert the nested objects to strings
+        properties.forEach((key, value) -> {
+            if (value instanceof String) {
+                customEventProperties.put(key, (String) value);
+            } else {
+                customEventProperties.put(key, BinaryData.fromObject(value).toString());
+            }
+        });
+        return customEventProperties;
     }
 
     /**
      * Returns the Maven project.
+     *
      * @return The Maven project.
      */
     public MavenProject getProject() {
@@ -137,6 +195,7 @@ public class AzureSdkMojo extends AbstractMojo {
     /**
      * If this validation is enabled, build will fail if the application uses deprecated Microsoft libraries. By
      * default, this is set to {@code true}.
+     *
      * @return {@code true} if validation is enabled.
      */
     public boolean isValidateNoDeprecatedMicrosoftLibraryUsed() {
@@ -156,6 +215,7 @@ public class AzureSdkMojo extends AbstractMojo {
     /**
      * If this validation is enabled, build will fail if a beta (preview) version of Azure library is used. By
      * default, this is set to {@code true}.
+     *
      * @return {@code true} if this validation is enabled.
      */
     public boolean isValidateNoBetaLibraryUsed() {
@@ -165,6 +225,7 @@ public class AzureSdkMojo extends AbstractMojo {
     /**
      * If this validation is enabled, build will fail if any method annotated with @Beta is called. By
      * default, this is set to {@code true}.
+     *
      * @return {@code true} if this validation is enabled.
      */
     public boolean isValidateNoBetaApiUsed() {
@@ -172,7 +233,18 @@ public class AzureSdkMojo extends AbstractMojo {
     }
 
     /**
+     * If this validation is enabled, build will fail if the latest version of Azure SDK BOM is not used. By default,
+     * this is set to {@code true}.
+     *
+     * @return {@code true} if the latest version of Azure SDK BOM is used.
+     */
+    public boolean isValidateLatestBomVersionUsed() {
+        return validateLatestBomVersionUsed;
+    }
+
+    /**
      * The report file to which the build report is written to.
+     *
      * @return The report file.
      */
     public String getReportFile() {

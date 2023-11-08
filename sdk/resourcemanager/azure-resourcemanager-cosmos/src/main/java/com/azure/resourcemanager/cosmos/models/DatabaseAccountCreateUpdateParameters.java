@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountCreateUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -15,11 +14,8 @@ import java.util.Map;
 /** Parameters to create and update Cosmos DB database accounts. */
 @Fluent
 public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountCreateUpdateParameters.class);
-
     /*
-     * Indicates the type of database account. This can only be set at database
-     * account creation.
+     * Indicates the type of database account. This can only be set at database account creation.
      */
     @JsonProperty(value = "kind")
     private DatabaseAccountKind kind;
@@ -35,6 +31,10 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
      */
     @JsonProperty(value = "properties", required = true)
     private DatabaseAccountCreateUpdateProperties innerProperties = new DatabaseAccountCreateUpdateProperties();
+
+    /** Creates an instance of DatabaseAccountCreateUpdateParameters class. */
+    public DatabaseAccountCreateUpdateParameters() {
+    }
 
     /**
      * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
@@ -746,6 +746,66 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
+     * Get the keysMetadata property: This property is ignored during the update/create operation, as the metadata is
+     * read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
+     *
+     * @return the keysMetadata value.
+     */
+    public DatabaseAccountKeysMetadata keysMetadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().keysMetadata();
+    }
+
+    /**
+     * Get the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
+     * account.
+     *
+     * @return the enablePartitionMerge value.
+     */
+    public Boolean enablePartitionMerge() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePartitionMerge();
+    }
+
+    /**
+     * Set the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
+     * account.
+     *
+     * @param enablePartitionMerge the enablePartitionMerge value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withEnablePartitionMerge(Boolean enablePartitionMerge) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withEnablePartitionMerge(enablePartitionMerge);
+        return this;
+    }
+
+    /**
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersion minimalTlsVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -757,7 +817,7 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
             identity().validate();
         }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model DatabaseAccountCreateUpdateParameters"));
@@ -765,4 +825,6 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabaseAccountCreateUpdateParameters.class);
 }

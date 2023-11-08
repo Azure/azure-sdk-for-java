@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SQLDataDirectory info. */
 @Fluent
 public final class SqlDataDirectory {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlDataDirectory.class);
-
     /*
      * Type of data directory mapping
      */
@@ -31,6 +27,10 @@ public final class SqlDataDirectory {
      */
     @JsonProperty(value = "logicalName")
     private String logicalName;
+
+    /** Creates an instance of SqlDataDirectory class. */
+    public SqlDataDirectory() {
+    }
 
     /**
      * Get the type property: Type of data directory mapping.

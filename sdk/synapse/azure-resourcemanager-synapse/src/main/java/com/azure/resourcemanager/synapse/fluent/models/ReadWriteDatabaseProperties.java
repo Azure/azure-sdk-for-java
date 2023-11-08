@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DatabaseStatistics;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Class representing the Kusto database properties. */
 @Fluent
 public final class ReadWriteDatabaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadWriteDatabaseProperties.class);
-
     /*
      * The provisioned state of the resource.
      */
@@ -24,8 +20,7 @@ public final class ReadWriteDatabaseProperties {
     private ResourceProvisioningState provisioningState;
 
     /*
-     * The time the data should be kept before it stops being accessible to
-     * queries in TimeSpan.
+     * The time the data should be kept before it stops being accessible to queries in TimeSpan.
      */
     @JsonProperty(value = "softDeletePeriod")
     private Duration softDeletePeriod;
@@ -47,6 +42,10 @@ public final class ReadWriteDatabaseProperties {
      */
     @JsonProperty(value = "isFollowed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isFollowed;
+
+    /** Creates an instance of ReadWriteDatabaseProperties class. */
+    public ReadWriteDatabaseProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.

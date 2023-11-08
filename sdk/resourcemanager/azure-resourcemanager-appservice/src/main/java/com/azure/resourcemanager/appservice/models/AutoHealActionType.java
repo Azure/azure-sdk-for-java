@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AutoHealActionType. */
+/** Predefined action to be taken. */
 public enum AutoHealActionType {
     /** Enum value Recycle. */
     RECYCLE("Recycle"),
@@ -33,6 +33,9 @@ public enum AutoHealActionType {
      */
     @JsonCreator
     public static AutoHealActionType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AutoHealActionType[] items = AutoHealActionType.values();
         for (AutoHealActionType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum AutoHealActionType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

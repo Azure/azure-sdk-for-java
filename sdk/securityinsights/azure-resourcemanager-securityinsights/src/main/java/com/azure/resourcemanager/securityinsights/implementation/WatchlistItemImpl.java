@@ -88,6 +88,10 @@ public final class WatchlistItemImpl implements WatchlistItem, WatchlistItem.Def
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WatchlistItemInner innerModel() {
         return this.innerObject;
     }

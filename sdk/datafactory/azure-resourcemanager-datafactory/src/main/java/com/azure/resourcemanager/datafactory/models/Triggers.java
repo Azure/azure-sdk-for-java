@@ -41,20 +41,6 @@ public interface Triggers {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the triggers.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a query of triggers.
-     */
-    TriggerQueryResponse queryByFactory(
-        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters);
-
-    /**
-     * Query triggers.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the triggers.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,17 +51,18 @@ public interface Triggers {
         String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters, Context context);
 
     /**
-     * Gets a trigger.
+     * Query triggers.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param triggerName The trigger name.
+     * @param filterParameters Parameters to filter the triggers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger.
+     * @return a query of triggers.
      */
-    TriggerResource get(String resourceGroupName, String factoryName, String triggerName);
+    TriggerQueryResponse queryByFactory(
+        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters);
 
     /**
      * Gets a trigger.
@@ -95,7 +82,7 @@ public interface Triggers {
         String resourceGroupName, String factoryName, String triggerName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a trigger.
+     * Gets a trigger.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -103,8 +90,9 @@ public interface Triggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger.
      */
-    void delete(String resourceGroupName, String factoryName, String triggerName);
+    TriggerResource get(String resourceGroupName, String factoryName, String triggerName);
 
     /**
      * Deletes a trigger.
@@ -122,6 +110,18 @@ public interface Triggers {
         String resourceGroupName, String factoryName, String triggerName, Context context);
 
     /**
+     * Deletes a trigger.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String factoryName, String triggerName);
+
+    /**
      * Subscribe event trigger to events.
      *
      * @param resourceGroupName The resource group name.
@@ -149,20 +149,6 @@ public interface Triggers {
      */
     TriggerSubscriptionOperationStatus subscribeToEvents(
         String resourceGroupName, String factoryName, String triggerName, Context context);
-
-    /**
-     * Get a trigger's event subscription status.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status.
-     */
-    TriggerSubscriptionOperationStatus getEventSubscriptionStatus(
-        String resourceGroupName, String factoryName, String triggerName);
 
     /**
      * Get a trigger's event subscription status.
@@ -178,6 +164,20 @@ public interface Triggers {
      */
     Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(
         String resourceGroupName, String factoryName, String triggerName, Context context);
+
+    /**
+     * Get a trigger's event subscription status.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger's event subscription status.
+     */
+    TriggerSubscriptionOperationStatus getEventSubscriptionStatus(
+        String resourceGroupName, String factoryName, String triggerName);
 
     /**
      * Unsubscribe event trigger from events.

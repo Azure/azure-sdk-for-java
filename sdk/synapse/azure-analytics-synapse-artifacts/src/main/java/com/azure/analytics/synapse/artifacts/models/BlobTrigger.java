@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Trigger that runs every time the selected Blob container changes. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -33,6 +34,9 @@ public class BlobTrigger extends MultiplePipelineTrigger {
      */
     @JsonProperty(value = "typeProperties.linkedService", required = true)
     private LinkedServiceReference linkedService;
+
+    /** Creates an instance of BlobTrigger class. */
+    public BlobTrigger() {}
 
     /**
      * Get the folderPath property: The path of the container/folder that will trigger the pipeline.
@@ -91,6 +95,27 @@ public class BlobTrigger extends MultiplePipelineTrigger {
      */
     public BlobTrigger setLinkedService(LinkedServiceReference linkedService) {
         this.linkedService = linkedService;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
+        super.setPipelines(pipelines);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobTrigger setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobTrigger setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

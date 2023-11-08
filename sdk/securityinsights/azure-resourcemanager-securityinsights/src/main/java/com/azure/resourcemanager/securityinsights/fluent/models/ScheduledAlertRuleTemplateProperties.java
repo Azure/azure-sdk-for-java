@@ -114,8 +114,7 @@ public final class ScheduledAlertRuleTemplateProperties {
     private List<String> techniques;
 
     /*
-     * The version of this template - in format <a.b.c>, where all are numbers.
-     * For example <1.0.2>.
+     * The version of this template - in format <a.b.c>, where all are numbers. For example <1.0.2>.
      */
     @JsonProperty(value = "version")
     private String version;
@@ -127,8 +126,7 @@ public final class ScheduledAlertRuleTemplateProperties {
     private EventGroupingSettings eventGroupingSettings;
 
     /*
-     * Dictionary of string key-value pairs of columns to be attached to the
-     * alert
+     * Dictionary of string key-value pairs of columns to be attached to the alert
      */
     @JsonProperty(value = "customDetails")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

@@ -6,19 +6,20 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** File source details. */
 @Fluent
 public final class FileSourceInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileSourceInfo.class);
-
     /*
      * File share ID.
      */
     @JsonProperty(value = "shareId", required = true)
     private String shareId;
+
+    /** Creates an instance of FileSourceInfo class. */
+    public FileSourceInfo() {
+    }
 
     /**
      * Get the shareId property: File share ID.
@@ -47,9 +48,11 @@ public final class FileSourceInfo {
      */
     public void validate() {
         if (shareId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property shareId in model FileSourceInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FileSourceInfo.class);
 }

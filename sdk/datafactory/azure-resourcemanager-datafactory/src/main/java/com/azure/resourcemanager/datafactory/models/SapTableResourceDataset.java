@@ -24,6 +24,10 @@ public final class SapTableResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private SapTableResourceDatasetTypeProperties innerTypeProperties = new SapTableResourceDatasetTypeProperties();
 
+    /** Creates an instance of SapTableResourceDataset class. */
+    public SapTableResourceDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: SAP Table Resource properties.
      *

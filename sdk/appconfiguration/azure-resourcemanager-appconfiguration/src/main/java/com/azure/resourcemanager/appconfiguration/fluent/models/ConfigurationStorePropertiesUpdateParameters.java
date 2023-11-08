@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.models.EncryptionProperties;
 import com.azure.resourcemanager.appconfiguration.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties for updating a configuration store. */
 @Fluent
 public final class ConfigurationStorePropertiesUpdateParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConfigurationStorePropertiesUpdateParameters.class);
-
     /*
      * The encryption settings of the configuration store.
      */
@@ -30,18 +25,20 @@ public final class ConfigurationStorePropertiesUpdateParameters {
     private Boolean disableLocalAuth;
 
     /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * Property specifying whether protection against purge is enabled for this
-     * configuration store.
+     * Property specifying whether protection against purge is enabled for this configuration store.
      */
     @JsonProperty(value = "enablePurgeProtection")
     private Boolean enablePurgeProtection;
+
+    /** Creates an instance of ConfigurationStorePropertiesUpdateParameters class. */
+    public ConfigurationStorePropertiesUpdateParameters() {
+    }
 
     /**
      * Get the encryption property: The encryption settings of the configuration store.

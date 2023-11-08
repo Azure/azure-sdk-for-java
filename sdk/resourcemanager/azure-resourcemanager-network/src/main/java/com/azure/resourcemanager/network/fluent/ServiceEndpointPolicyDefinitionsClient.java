@@ -170,21 +170,6 @@ public interface ServiceEndpointPolicyDefinitionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service endpoint policy definitions from service endpoint policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceEndpointPolicyDefinitionInner get(
-        String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName);
-
-    /**
-     * Get the specified service endpoint policy definitions from service endpoint policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy name.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -198,6 +183,21 @@ public interface ServiceEndpointPolicyDefinitionsClient {
         String serviceEndpointPolicyName,
         String serviceEndpointPolicyDefinitionName,
         Context context);
+
+    /**
+     * Get the specified service endpoint policy definitions from service endpoint policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceEndpointPolicyName The name of the service endpoint policy name.
+     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified service endpoint policy definitions from service endpoint policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceEndpointPolicyDefinitionInner get(
+        String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName);
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.

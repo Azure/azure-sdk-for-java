@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,20 +18,21 @@ import java.util.Map;
  */
 @Fluent
 public final class K8SSchedulingOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(K8SSchedulingOptions.class);
-
     /*
-     * The kubernetes resource limits and requests used to restrict or reserve
-     * resource usage.
+     * The kubernetes resource limits and requests used to restrict or reserve resource usage.
      */
     @JsonProperty(value = "resources")
     private K8SResourceRequirements resources;
 
     /*
-     * The kubernetes scheduling options. It describes restrictions used to
-     * help Kubernetes select appropriate nodes to host the database service
+     * The kubernetes scheduling options. It describes restrictions used to help Kubernetes select appropriate nodes to
+     * host the database service
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of K8SSchedulingOptions class. */
+    public K8SSchedulingOptions() {
+    }
 
     /**
      * Get the resources property: The kubernetes resource limits and requests used to restrict or reserve resource

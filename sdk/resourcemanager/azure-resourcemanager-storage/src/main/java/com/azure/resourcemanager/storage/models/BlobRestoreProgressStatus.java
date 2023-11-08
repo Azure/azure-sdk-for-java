@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobRestoreProgressStatus. */
+/**
+ * The status of blob restore progress. Possible values are: - InProgress: Indicates that blob restore is ongoing. -
+ * Complete: Indicates that blob restore has been completed successfully. - Failed: Indicates that blob restore is
+ * failed.
+ */
 public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRestoreProgressStatus> {
     /** Static value InProgress for BlobRestoreProgressStatus. */
     public static final BlobRestoreProgressStatus IN_PROGRESS = fromString("InProgress");
@@ -18,6 +22,15 @@ public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRe
 
     /** Static value Failed for BlobRestoreProgressStatus. */
     public static final BlobRestoreProgressStatus FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of BlobRestoreProgressStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobRestoreProgressStatus() {
+    }
 
     /**
      * Creates or finds a BlobRestoreProgressStatus from its string representation.
@@ -30,7 +43,11 @@ public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRe
         return fromString(name, BlobRestoreProgressStatus.class);
     }
 
-    /** @return known BlobRestoreProgressStatus values. */
+    /**
+     * Gets known BlobRestoreProgressStatus values.
+     *
+     * @return known BlobRestoreProgressStatus values.
+     */
     public static Collection<BlobRestoreProgressStatus> values() {
         return values(BlobRestoreProgressStatus.class);
     }

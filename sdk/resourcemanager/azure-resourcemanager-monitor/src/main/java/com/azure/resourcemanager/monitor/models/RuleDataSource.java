@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "odata\\.type",
+    property = "odata.type",
     defaultImpl = RuleDataSource.class)
 @JsonTypeName("RuleDataSource")
 @JsonSubTypes({
@@ -28,21 +25,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         name = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource",
         value = RuleManagementEventDataSource.class)
 })
-@JsonFlatten
 @Fluent
 public class RuleDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleDataSource.class);
-
     /*
-     * the resource identifier of the resource the rule monitors. **NOTE**:
-     * this property cannot be updated for an existing rule.
+     * the resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an
+     * existing rule.
      */
     @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
     /*
-     * the legacy resource identifier of the resource the rule monitors.
-     * **NOTE**: this property cannot be updated for an existing rule.
+     * the legacy resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for
+     * an existing rule.
      */
     @JsonProperty(value = "legacyResourceId")
     private String legacyResourceId;
@@ -58,6 +52,10 @@ public class RuleDataSource {
      */
     @JsonProperty(value = "metricNamespace")
     private String metricNamespace;
+
+    /** Creates an instance of RuleDataSource class. */
+    public RuleDataSource() {
+    }
 
     /**
      * Get the resourceUri property: the resource identifier of the resource the rule monitors. **NOTE**: this property

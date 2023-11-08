@@ -27,6 +27,34 @@ public final class TenantIdDescriptionImpl implements TenantIdDescription {
         return this.innerModel().tenantId();
     }
 
+    public String tenantCategory() {
+        return this.innerModel().tenantCategory();
+    }
+
+    public String country() {
+        return this.innerModel().country();
+    }
+
+    public String countryCode() {
+        return this.innerModel().countryCode();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public String domains() {
+        return this.innerModel().domains();
+    }
+
+    public String defaultDomain() {
+        return this.innerModel().defaultDomain();
+    }
+
+    public String tenantType() {
+        return this.innerModel().tenantType();
+    }
+
     public TenantIdDescriptionInner innerModel() {
         return this.innerObject;
     }

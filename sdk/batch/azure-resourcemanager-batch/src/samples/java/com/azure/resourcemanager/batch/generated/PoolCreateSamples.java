@@ -37,6 +37,7 @@ import com.azure.resourcemanager.batch.models.MetadataItem;
 import com.azure.resourcemanager.batch.models.NetworkConfiguration;
 import com.azure.resourcemanager.batch.models.NetworkSecurityGroupRule;
 import com.azure.resourcemanager.batch.models.NetworkSecurityGroupRuleAccess;
+import com.azure.resourcemanager.batch.models.NodeCommunicationMode;
 import com.azure.resourcemanager.batch.models.NodePlacementConfiguration;
 import com.azure.resourcemanager.batch.models.NodePlacementPolicyType;
 import com.azure.resourcemanager.batch.models.OSDisk;
@@ -63,7 +64,7 @@ import java.util.Map;
 /** Samples for Pool Create. */
 public final class PoolCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_SharedImageGallery.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_SharedImageGallery.json
      */
     /**
      * Sample code: CreatePool - Custom Image.
@@ -89,7 +90,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_CloudServiceConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_CloudServiceConfiguration.json
      */
     /**
      * Sample code: CreatePool - Full CloudServiceConfiguration.
@@ -135,13 +136,13 @@ public final class PoolCreateSamples {
                     .asList(
                         new UserAccount()
                             .withName("username1")
-                            .withPassword("<ExamplePassword>")
+                            .withPassword("fakeTokenPlaceholder")
                             .withElevationLevel(ElevationLevel.ADMIN)
                             .withLinuxUserConfiguration(
                                 new LinuxUserConfiguration()
                                     .withUid(1234)
                                     .withGid(4567)
-                                    .withSshPrivateKey("sshprivatekeyvalue"))))
+                                    .withSshPrivateKey("fakeTokenPlaceholder"))))
             .withMetadata(
                 Arrays
                     .asList(
@@ -188,7 +189,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_MinimalCloudServiceConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_MinimalCloudServiceConfiguration.json
      */
     /**
      * Sample code: CreatePool - Minimal CloudServiceConfiguration.
@@ -210,7 +211,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_MinimalVirtualMachineConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_MinimalVirtualMachineConfiguration.json
      */
     /**
      * Sample code: CreatePool - Minimal VirtualMachineConfiguration.
@@ -245,7 +246,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_NoPublicIPAddresses.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_NoPublicIPAddresses.json
      */
     /**
      * Sample code: CreatePool - No public IP.
@@ -278,7 +279,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_VirtualMachineConfiguration_Extensions.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_VirtualMachineConfiguration_Extensions.json
      */
     /**
      * Sample code: CreatePool - VirtualMachineConfiguration Extensions.
@@ -307,22 +308,16 @@ public final class PoolCreateSamples {
                                     .asList(
                                         new VMExtension()
                                             .withName("batchextension1")
-                                            .withPublisher("Microsoft.Azure.Security.Monitoring")
-                                            .withType("SecurityMonitoringForLinux")
-                                            .withTypeHandlerVersion("1.0")
+                                            .withPublisher("Microsoft.Azure.KeyVault")
+                                            .withType("KeyVaultForLinux")
+                                            .withTypeHandlerVersion("2.0")
                                             .withAutoUpgradeMinorVersion(true)
+                                            .withEnableAutomaticUpgrade(true)
                                             .withSettings(
                                                 SerializerFactory
                                                     .createDefaultManagementSerializerAdapter()
                                                     .deserialize(
-                                                        "{\"settingsKey\":\"settingsValue\"}",
-                                                        Object.class,
-                                                        SerializerEncoding.JSON))
-                                            .withProtectedSettings(
-                                                SerializerFactory
-                                                    .createDefaultManagementSerializerAdapter()
-                                                    .deserialize(
-                                                        "{\"protectedSettingsKey\":\"protectedSettingsValue\"}",
+                                                        "{\"authenticationSettingsKey\":\"authenticationSettingsValue\",\"secretsManagementSettingsKey\":\"secretsManagementSettingsValue\"}",
                                                         Object.class,
                                                         SerializerEncoding.JSON))))))
             .withScaleSettings(
@@ -331,11 +326,12 @@ public final class PoolCreateSamples {
                         new AutoScaleSettings()
                             .withFormula("$TargetDedicatedNodes=1")
                             .withEvaluationInterval(Duration.parse("PT5M"))))
+            .withTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT)
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_UserAssignedIdentities.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_UserAssignedIdentities.json
      */
     /**
      * Sample code: CreatePool - UserAssignedIdentities.
@@ -378,7 +374,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_PublicIPs.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_PublicIPs.json
      */
     /**
      * Sample code: CreatePool - Public IPs.
@@ -415,7 +411,43 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_VirtualMachineConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_AcceleratedNetworking.json
+     */
+    /**
+     * Sample code: CreatePool - accelerated networking.
+     *
+     * @param manager Entry point to BatchManager.
+     */
+    public static void createPoolAcceleratedNetworking(com.azure.resourcemanager.batch.BatchManager manager) {
+        manager
+            .pools()
+            .define("testpool")
+            .withExistingBatchAccount("default-azurebatch-japaneast", "sampleacct")
+            .withVmSize("STANDARD_D1_V2")
+            .withDeploymentConfiguration(
+                new DeploymentConfiguration()
+                    .withVirtualMachineConfiguration(
+                        new VirtualMachineConfiguration()
+                            .withImageReference(
+                                new ImageReference()
+                                    .withPublisher("MicrosoftWindowsServer")
+                                    .withOffer("WindowsServer")
+                                    .withSku("2016-datacenter-smalldisk")
+                                    .withVersion("latest"))
+                            .withNodeAgentSkuId("batch.node.windows amd64")))
+            .withScaleSettings(
+                new ScaleSettings()
+                    .withFixedScale(new FixedScaleSettings().withTargetDedicatedNodes(1).withTargetLowPriorityNodes(0)))
+            .withNetworkConfiguration(
+                new NetworkConfiguration()
+                    .withSubnetId(
+                        "/subscriptions/subid/resourceGroups/rg1234/providers/Microsoft.Network/virtualNetworks/network1234/subnets/subnet123")
+                    .withEnableAcceleratedNetworking(true))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolCreate_VirtualMachineConfiguration.json
      */
     /**
      * Sample code: CreatePool - Full VirtualMachineConfiguration.

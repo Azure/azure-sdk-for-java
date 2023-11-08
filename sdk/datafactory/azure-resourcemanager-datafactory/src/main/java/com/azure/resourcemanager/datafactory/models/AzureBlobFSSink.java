@@ -16,20 +16,25 @@ import java.util.List;
 @Fluent
 public final class AzureBlobFSSink extends CopySink {
     /*
-     * The type of copy behavior for copy sink.
+     * The type of copy behavior for copy sink. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
 
     /*
-     * Specify the custom metadata to be added to sink data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType
+     * array of objects).
      */
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
+    /** Creates an instance of AzureBlobFSSink class. */
+    public AzureBlobFSSink() {
+    }
+
     /**
-     * Get the copyBehavior property: The type of copy behavior for copy sink.
+     * Get the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
+     * resultType string).
      *
      * @return the copyBehavior value.
      */
@@ -38,7 +43,8 @@ public final class AzureBlobFSSink extends CopySink {
     }
 
     /**
-     * Set the copyBehavior property: The type of copy behavior for copy sink.
+     * Set the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
+     * resultType string).
      *
      * @param copyBehavior the copyBehavior value to set.
      * @return the AzureBlobFSSink object itself.

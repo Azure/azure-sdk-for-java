@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the additional workspaces. */
 @Fluent
 public final class AdditionalWorkspacesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalWorkspacesProperties.class);
-
     /*
      * Workspace resource id
      */
@@ -32,6 +28,10 @@ public final class AdditionalWorkspacesProperties {
      */
     @JsonProperty(value = "dataTypes")
     private List<AdditionalWorkspaceDataType> dataTypes;
+
+    /** Creates an instance of AdditionalWorkspacesProperties class. */
+    public AdditionalWorkspacesProperties() {
+    }
 
     /**
      * Get the workspace property: Workspace resource id.

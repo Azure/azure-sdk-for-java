@@ -19,8 +19,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     private AzureFirewallIpConfigurationPropertiesFormat innerProperties;
 
     /*
-     * Name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -36,6 +35,10 @@ public final class AzureFirewallIpConfiguration extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of AzureFirewallIpConfiguration class. */
+    public AzureFirewallIpConfiguration() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the azure firewall IP configuration.

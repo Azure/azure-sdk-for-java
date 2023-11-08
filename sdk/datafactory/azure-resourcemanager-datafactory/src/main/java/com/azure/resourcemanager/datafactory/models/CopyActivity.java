@@ -35,6 +35,10 @@ public final class CopyActivity extends ExecutionActivity {
     @JsonProperty(value = "outputs")
     private List<DatasetReference> outputs;
 
+    /** Creates an instance of CopyActivity class. */
+    public CopyActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Copy activity properties.
      *
@@ -109,6 +113,20 @@ public final class CopyActivity extends ExecutionActivity {
     @Override
     public CopyActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CopyActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CopyActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

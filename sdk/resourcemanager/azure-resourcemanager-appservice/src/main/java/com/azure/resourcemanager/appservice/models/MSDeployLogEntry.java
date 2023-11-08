@@ -29,6 +29,10 @@ public final class MSDeployLogEntry {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of MSDeployLogEntry class. */
+    public MSDeployLogEntry() {
+    }
+
     /**
      * Get the time property: Timestamp of log entry.
      *

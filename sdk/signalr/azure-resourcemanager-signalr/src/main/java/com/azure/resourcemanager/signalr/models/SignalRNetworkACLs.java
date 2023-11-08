@@ -5,24 +5,20 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network ACLs for the resource. */
 @Fluent
 public final class SignalRNetworkACLs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRNetworkACLs.class);
-
     /*
-     * Default action when no other rule matches
+     * Azure Networking ACL Action.
      */
     @JsonProperty(value = "defaultAction")
     private AclAction defaultAction;
 
     /*
-     * ACL for requests from public network
+     * Network ACL
      */
     @JsonProperty(value = "publicNetwork")
     private NetworkAcl publicNetwork;
@@ -33,8 +29,18 @@ public final class SignalRNetworkACLs {
     @JsonProperty(value = "privateEndpoints")
     private List<PrivateEndpointAcl> privateEndpoints;
 
+    /*
+     * IP rules for filtering public traffic
+     */
+    @JsonProperty(value = "ipRules")
+    private List<IpRule> ipRules;
+
+    /** Creates an instance of SignalRNetworkACLs class. */
+    public SignalRNetworkACLs() {
+    }
+
     /**
-     * Get the defaultAction property: Default action when no other rule matches.
+     * Get the defaultAction property: Azure Networking ACL Action.
      *
      * @return the defaultAction value.
      */
@@ -43,7 +49,7 @@ public final class SignalRNetworkACLs {
     }
 
     /**
-     * Set the defaultAction property: Default action when no other rule matches.
+     * Set the defaultAction property: Azure Networking ACL Action.
      *
      * @param defaultAction the defaultAction value to set.
      * @return the SignalRNetworkACLs object itself.
@@ -54,7 +60,7 @@ public final class SignalRNetworkACLs {
     }
 
     /**
-     * Get the publicNetwork property: ACL for requests from public network.
+     * Get the publicNetwork property: Network ACL.
      *
      * @return the publicNetwork value.
      */
@@ -63,7 +69,7 @@ public final class SignalRNetworkACLs {
     }
 
     /**
-     * Set the publicNetwork property: ACL for requests from public network.
+     * Set the publicNetwork property: Network ACL.
      *
      * @param publicNetwork the publicNetwork value to set.
      * @return the SignalRNetworkACLs object itself.
@@ -94,6 +100,26 @@ public final class SignalRNetworkACLs {
     }
 
     /**
+     * Get the ipRules property: IP rules for filtering public traffic.
+     *
+     * @return the ipRules value.
+     */
+    public List<IpRule> ipRules() {
+        return this.ipRules;
+    }
+
+    /**
+     * Set the ipRules property: IP rules for filtering public traffic.
+     *
+     * @param ipRules the ipRules value to set.
+     * @return the SignalRNetworkACLs object itself.
+     */
+    public SignalRNetworkACLs withIpRules(List<IpRule> ipRules) {
+        this.ipRules = ipRules;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -104,6 +130,9 @@ public final class SignalRNetworkACLs {
         }
         if (privateEndpoints() != null) {
             privateEndpoints().forEach(e -> e.validate());
+        }
+        if (ipRules() != null) {
+            ipRules().forEach(e -> e.validate());
         }
     }
 }

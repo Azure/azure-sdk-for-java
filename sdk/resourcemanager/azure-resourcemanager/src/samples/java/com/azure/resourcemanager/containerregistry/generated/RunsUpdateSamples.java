@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.RunUpdateParameters;
 
 /** Samples for Runs Update. */
 public final class RunsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsUpdate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsUpdate.json
      */
     /**
      * Sample code: Runs_Update.
@@ -28,6 +27,6 @@ public final class RunsUpdateSamples {
                 "myRegistry",
                 "0accec26-d6de-4757-8e74-d080f38eaaab",
                 new RunUpdateParameters().withIsArchiveEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

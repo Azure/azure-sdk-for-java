@@ -17,6 +17,10 @@ public final class RedisRegenerateKeyParameters {
     @JsonProperty(value = "keyType", required = true)
     private RedisKeyType keyType;
 
+    /** Creates an instance of RedisRegenerateKeyParameters class. */
+    public RedisRegenerateKeyParameters() {
+    }
+
     /**
      * Get the keyType property: The Redis access key to regenerate.
      *

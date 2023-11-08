@@ -17,6 +17,10 @@ public final class ResourceHealthMetadataInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private ResourceHealthMetadataProperties innerProperties;
 
+    /** Creates an instance of ResourceHealthMetadataInner class. */
+    public ResourceHealthMetadataInner() {
+    }
+
     /**
      * Get the innerProperties property: ResourceHealthMetadata resource specific properties.
      *

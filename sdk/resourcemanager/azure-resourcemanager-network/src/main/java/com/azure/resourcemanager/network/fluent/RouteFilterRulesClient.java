@@ -157,20 +157,6 @@ public interface RouteFilterRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified rule from a route filter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteFilterRuleInner get(String resourceGroupName, String routeFilterName, String ruleName);
-
-    /**
-     * Gets the specified rule from a route filter.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeFilterName The name of the route filter.
-     * @param ruleName The name of the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,6 +166,20 @@ public interface RouteFilterRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RouteFilterRuleInner> getWithResponse(
         String resourceGroupName, String routeFilterName, String ruleName, Context context);
+
+    /**
+     * Gets the specified rule from a route filter.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified rule from a route filter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouteFilterRuleInner get(String resourceGroupName, String routeFilterName, String ruleName);
 
     /**
      * Creates or updates a route in the specified route filter.

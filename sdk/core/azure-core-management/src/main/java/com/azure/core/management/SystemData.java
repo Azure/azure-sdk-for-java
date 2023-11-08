@@ -29,6 +29,12 @@ public final class SystemData {
     private OffsetDateTime lastModifiedAt;
 
     /**
+     * Creates an instance of {@link SystemData}.
+     */
+    public SystemData() {
+    }
+
+    /**
      * Get the identity that created the resource.
      *
      * @return the identity that created the resource.

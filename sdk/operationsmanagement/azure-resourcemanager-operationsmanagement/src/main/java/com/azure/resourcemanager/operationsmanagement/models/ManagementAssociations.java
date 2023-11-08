@@ -11,7 +11,22 @@ import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAs
 /** Resource collection API of ManagementAssociations. */
 public interface ManagementAssociations {
     /**
-     * Retrieves the ManagementAssociations list.
+     * Retrieves the ManagementAssociations list for the subscription
+     *
+     * <p>Retrieves the ManagementAssociations list.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of ManagementAssociation response along with {@link Response}.
+     */
+    Response<ManagementAssociationPropertiesList> listBySubscriptionWithResponse(Context context);
+
+    /**
+     * Retrieves the ManagementAssociations list for the subscription
+     *
+     * <p>Retrieves the ManagementAssociations list.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -20,18 +35,35 @@ public interface ManagementAssociations {
     ManagementAssociationPropertiesList listBySubscription();
 
     /**
-     * Retrieves the ManagementAssociations list.
+     * Create/Update ManagementAssociation.
      *
+     * <p>Creates or updates the ManagementAssociation.
+     *
+     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @param providerName Provider name for the parent resource.
+     * @param resourceType Resource type for the parent resource.
+     * @param resourceName Parent resource name.
+     * @param managementAssociationName User ManagementAssociation Name.
+     * @param parameters The parameters required to create ManagementAssociation extension.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ManagementAssociation response.
+     * @return the container for solution along with {@link Response}.
      */
-    Response<ManagementAssociationPropertiesList> listBySubscriptionWithResponse(Context context);
+    Response<ManagementAssociation> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String managementAssociationName,
+        ManagementAssociationInner parameters,
+        Context context);
 
     /**
-     * Creates or updates the ManagementAssociation.
+     * Create/Update ManagementAssociation.
+     *
+     * <p>Creates or updates the ManagementAssociation.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
@@ -53,31 +85,33 @@ public interface ManagementAssociations {
         ManagementAssociationInner parameters);
 
     /**
-     * Creates or updates the ManagementAssociation.
+     * Deletes the ManagementAssociation
+     *
+     * <p>Deletes the ManagementAssociation in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
      * @param resourceName Parent resource name.
      * @param managementAssociationName User ManagementAssociation Name.
-     * @param parameters The parameters required to create ManagementAssociation extension.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the {@link Response}.
      */
-    Response<ManagementAssociation> createOrUpdateWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName,
         String providerName,
         String resourceType,
         String resourceName,
         String managementAssociationName,
-        ManagementAssociationInner parameters,
         Context context);
 
     /**
-     * Deletes the ManagementAssociation in the subscription.
+     * Deletes the ManagementAssociation
+     *
+     * <p>Deletes the ManagementAssociation in the subscription.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
@@ -96,7 +130,9 @@ public interface ManagementAssociations {
         String managementAssociationName);
 
     /**
-     * Deletes the ManagementAssociation in the subscription.
+     * Retrieve ManagementAssociation.
+     *
+     * <p>Retrieves the user ManagementAssociation.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
@@ -107,9 +143,9 @@ public interface ManagementAssociations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the container for solution along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
+    Response<ManagementAssociation> getWithResponse(
         String resourceGroupName,
         String providerName,
         String resourceType,
@@ -118,7 +154,9 @@ public interface ManagementAssociations {
         Context context);
 
     /**
-     * Retrieves the user ManagementAssociation.
+     * Retrieve ManagementAssociation.
+     *
+     * <p>Retrieves the user ManagementAssociation.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
@@ -136,26 +174,4 @@ public interface ManagementAssociations {
         String resourceType,
         String resourceName,
         String managementAssociationName);
-
-    /**
-     * Retrieves the user ManagementAssociation.
-     *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param providerName Provider name for the parent resource.
-     * @param resourceType Resource type for the parent resource.
-     * @param resourceName Parent resource name.
-     * @param managementAssociationName User ManagementAssociation Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
-     */
-    Response<ManagementAssociation> getWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        Context context);
 }

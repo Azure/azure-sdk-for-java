@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkServiceConnectionState;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkService
 /** Samples for PrivateEndpointConnections UpdateByWorkspace. */
 public final class PrivateEndpointConnectionsUpdateByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/PrivateEndpointConnection_UpdateByWorkspace.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/PrivateEndpointConnection_UpdateByWorkspace.json
      */
     /**
      * Sample code: PrivateEndpointConnection_UpdateByWorkspace.
@@ -33,6 +32,6 @@ public final class PrivateEndpointConnectionsUpdateByWorkspaceSamples {
                             .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
                             .withDescription("Approved by admin@consoto.com")
                             .withActionsRequired("None")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

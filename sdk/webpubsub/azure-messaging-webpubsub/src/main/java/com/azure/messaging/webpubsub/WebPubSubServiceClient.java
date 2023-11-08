@@ -8,7 +8,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -20,8 +23,6 @@ import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 
-import java.util.stream.Collectors;
-
 /** Initializes a new instance of the synchronous AzureWebPubSubServiceRestAPI type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class)
 public final class WebPubSubServiceClient {
@@ -29,19 +30,17 @@ public final class WebPubSubServiceClient {
     private final String endpoint;
     private final AzureKeyCredential keyCredential;
     private final String hub;
-    private final WebPubSubServiceVersion version;
 
     /**
      * Initializes an instance of WebPubSubs client.
      * @param serviceClient the service client implementation.
      */
     WebPubSubServiceClient(WebPubSubsImpl serviceClient, String hub, String endpoint,
-                           AzureKeyCredential keyCredential, WebPubSubServiceVersion version) {
+                           AzureKeyCredential keyCredential) {
         this.serviceClient = serviceClient;
         this.endpoint = endpoint;
         this.keyCredential = keyCredential;
         this.hub = hub;
-        this.version = version;
     }
 
     /**
@@ -59,10 +58,12 @@ public final class WebPubSubServiceClient {
             if (options.getExpiresAfter() != null) {
                 requestOptions.addQueryParam("minutesToExpire", String.valueOf(options.getExpiresAfter().toMinutes()));
             }
-            if (CoreUtils.isNullOrEmpty(options.getRoles())) {
-                requestOptions.addQueryParam("role", options.getRoles().stream().collect(Collectors.joining(",")));
+            if (!CoreUtils.isNullOrEmpty(options.getRoles())) {
+                options.getRoles().stream().forEach(roleName -> requestOptions.addQueryParam("role", roleName));
             }
-            requestOptions.addQueryParam("api-version", version.getVersion());
+            if (!CoreUtils.isNullOrEmpty(options.getGroups())) {
+                options.getGroups().stream().forEach(groupName -> requestOptions.addQueryParam("group", groupName));
+            }
             return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
                     .map(Response::getValue)
                     .map(binaryData -> {
@@ -85,9 +86,9 @@ public final class WebPubSubServiceClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
-     *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
-     *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>No</td><td>Api Version</td></tr>
+     *     <tr><td>role</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Roles that the connection with the generated token will have. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minutesToExpire</td><td>Integer</td><td>No</td><td>The expire time of the generated token.</td></tr>
+     *     <tr><td>group</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Groups that the connection will join when it connects. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -133,7 +134,7 @@ public final class WebPubSubServiceClient {
         requestOptions.setHeader("Content-Type", contentType.toString());
         requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToAllWithResponse(
-                hub, message, requestOptions);
+                hub, "", message, requestOptions);
     }
 
     /**
@@ -162,7 +163,7 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToAllWithResponse(
             BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToAllWithResponse(hub, message, requestOptions);
+        return this.serviceClient.sendToAllWithResponse(hub, "", message, requestOptions);
     }
 
     /**
@@ -220,7 +221,7 @@ public final class WebPubSubServiceClient {
         requestOptions.setHeader("Content-Type", contentType.toString());
         requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToConnectionWithResponse(
-                hub, connectionId, message, requestOptions);
+                hub, connectionId, "", message, requestOptions);
     }
 
     /**
@@ -252,7 +253,7 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToConnectionWithResponse(
             String connectionId, BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToConnectionWithResponse(hub, connectionId, message, requestOptions);
+        return this.serviceClient.sendToConnectionWithResponse(hub, connectionId, "", message, requestOptions);
     }
 
     /**
@@ -295,7 +296,7 @@ public final class WebPubSubServiceClient {
         requestOptions.setHeader("Content-Type", contentType.toString());
         requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToGroupWithResponse(
-                hub, group, message, requestOptions);
+                hub, group, "", message, requestOptions);
     }
 
     /**
@@ -326,7 +327,7 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToGroupWithResponse(
             String group, BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToGroupWithResponse(hub, group, message, requestOptions);
+        return this.serviceClient.sendToGroupWithResponse(hub, group, "", message, requestOptions);
     }
 
     /**
@@ -360,6 +361,24 @@ public final class WebPubSubServiceClient {
             String group, String connectionId, RequestOptions requestOptions) {
         return this.serviceClient.removeConnectionFromGroupWithResponse(
                 hub, group, connectionId, requestOptions);
+    }
+
+    /**
+     * Remove a connection from all groups.
+     *
+     * @param connectionId Target connection Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> removeConnectionFromAllGroupsWithResponse(
+        String connectionId, RequestOptions requestOptions) {
+        return this.serviceClient.removeConnectionFromAllGroupsWithResponse(hub, connectionId, requestOptions);
     }
 
     /**
@@ -402,7 +421,7 @@ public final class WebPubSubServiceClient {
         requestOptions.setHeader("Content-Type", contentType.toString());
         requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToUserWithResponse(
-                hub, userId, message, requestOptions);
+                hub, userId, "", message, requestOptions);
     }
 
     /**
@@ -433,7 +452,7 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToUserWithResponse(
             String userId, BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToUserWithResponse(hub, userId, message, requestOptions);
+        return this.serviceClient.sendToUserWithResponse(hub, userId, "", message, requestOptions);
     }
 
     /**

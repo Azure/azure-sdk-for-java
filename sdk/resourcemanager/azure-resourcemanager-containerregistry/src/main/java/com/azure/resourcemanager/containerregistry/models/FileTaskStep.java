@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("FileTask")
 @Fluent
 public final class FileTaskStep extends TaskStepProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileTaskStep.class);
-
     /*
      * The task template/definition file path relative to the source context.
      */
@@ -32,11 +29,14 @@ public final class FileTaskStep extends TaskStepProperties {
     private String valuesFilePath;
 
     /*
-     * The collection of overridable values that can be passed when running a
-     * task.
+     * The collection of overridable values that can be passed when running a task.
      */
     @JsonProperty(value = "values")
     private List<SetValue> values;
+
+    /** Creates an instance of FileTaskStep class. */
+    public FileTaskStep() {
+    }
 
     /**
      * Get the taskFilePath property: The task template/definition file path relative to the source context.
@@ -121,7 +121,7 @@ public final class FileTaskStep extends TaskStepProperties {
     public void validate() {
         super.validate();
         if (taskFilePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property taskFilePath in model FileTaskStep"));
         }
@@ -129,4 +129,6 @@ public final class FileTaskStep extends TaskStepProperties {
             values().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FileTaskStep.class);
 }

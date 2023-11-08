@@ -16,6 +16,9 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
     @JsonProperty(value = "properties", required = true)
     private DataFlow properties;
 
+    /** Creates an instance of DataFlowDebugResource class. */
+    public DataFlowDebugResource() {}
+
     /**
      * Get the properties property: Data flow properties.
      *
@@ -33,6 +36,13 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
      */
     public DataFlowDebugResource setProperties(DataFlow properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowDebugResource setName(String name) {
+        super.setName(name);
         return this;
     }
 }

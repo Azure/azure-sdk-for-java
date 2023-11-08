@@ -21,13 +21,14 @@ public final class GeoReplication {
     private GeoReplicationStatus status;
 
     /*
-     * A GMT date/time value, to the second. All primary writes preceding this
-     * value are guaranteed to be available for read operations at the
-     * secondary. Primary writes after this point in time may or may not be
-     * available for reads.
+     * A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for
+     * read operations at the secondary. Primary writes after this point in time may or may not be available for reads.
      */
     @JsonProperty(value = "LastSyncTime", required = true)
     private DateTimeRfc1123 lastSyncTime;
+
+    /** Creates an instance of GeoReplication class. */
+    public GeoReplication() {}
 
     /**
      * Get the status property: The status of the secondary location.

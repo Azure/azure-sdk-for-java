@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.MetricName;
 import com.azure.resourcemanager.cosmos.models.UnitType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The usage data for a usage request. */
 @Immutable
 public class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
-
     /*
      * The unit of the metric.
      */
@@ -45,6 +41,10 @@ public class UsageInner {
      */
     @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Long currentValue;
+
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
 
     /**
      * Get the unit property: The unit of the metric.

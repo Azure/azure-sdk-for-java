@@ -5,99 +5,52 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
-/** The PiiTaskParameters model. */
+/** Supported parameters for a PII Entities Recognition task. */
 @Fluent
-public final class PiiTaskParameters {
+public final class PiiTaskParameters extends PreBuiltTaskParameters {
     /*
-     * The domain property.
+     * The PII domain used for PII Entity Recognition.
      */
-    @JsonProperty(value = "domain")
-    private PiiTaskParametersDomain domain;
-
-    /*
-     * The model-version property.
-     */
-    @JsonProperty(value = "model-version")
-    private String modelVersion;
-
-    /*
-     * The loggingOptOut property.
-     */
-    @JsonProperty(value = "loggingOptOut")
-    private Boolean loggingOptOut;
+    private PiiDomain domain;
 
     /*
      * (Optional) describes the PII categories to return
      */
-    @JsonProperty(value = "piiCategories")
     private List<PiiCategory> piiCategories;
 
     /*
-     * The stringIndexType property.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
+     * Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
-    @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
+    /** Creates an instance of PiiTaskParameters class. */
+    public PiiTaskParameters() {}
+
     /**
-     * Get the domain property: The domain property.
+     * Get the domain property: The PII domain used for PII Entity Recognition.
      *
      * @return the domain value.
      */
-    public PiiTaskParametersDomain getDomain() {
+    public PiiDomain getDomain() {
         return this.domain;
     }
 
     /**
-     * Set the domain property: The domain property.
+     * Set the domain property: The PII domain used for PII Entity Recognition.
      *
      * @param domain the domain value to set.
      * @return the PiiTaskParameters object itself.
      */
-    public PiiTaskParameters setDomain(PiiTaskParametersDomain domain) {
+    public PiiTaskParameters setDomain(PiiDomain domain) {
         this.domain = domain;
-        return this;
-    }
-
-    /**
-     * Get the modelVersion property: The model-version property.
-     *
-     * @return the modelVersion value.
-     */
-    public String getModelVersion() {
-        return this.modelVersion;
-    }
-
-    /**
-     * Set the modelVersion property: The model-version property.
-     *
-     * @param modelVersion the modelVersion value to set.
-     * @return the PiiTaskParameters object itself.
-     */
-    public PiiTaskParameters setModelVersion(String modelVersion) {
-        this.modelVersion = modelVersion;
-        return this;
-    }
-
-    /**
-     * Get the loggingOptOut property: The loggingOptOut property.
-     *
-     * @return the loggingOptOut value.
-     */
-    public Boolean isLoggingOptOut() {
-        return this.loggingOptOut;
-    }
-
-    /**
-     * Set the loggingOptOut property: The loggingOptOut property.
-     *
-     * @param loggingOptOut the loggingOptOut value to set.
-     * @return the PiiTaskParameters object itself.
-     */
-    public PiiTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
-        this.loggingOptOut = loggingOptOut;
         return this;
     }
 
@@ -122,7 +75,9 @@ public final class PiiTaskParameters {
     }
 
     /**
-     * Get the stringIndexType property: The stringIndexType property.
+     * Get the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
+     * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     * https://aka.ms/text-analytics-offsets.
      *
      * @return the stringIndexType value.
      */
@@ -131,7 +86,9 @@ public final class PiiTaskParameters {
     }
 
     /**
-     * Set the stringIndexType property: The stringIndexType property.
+     * Set the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
+     * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     * https://aka.ms/text-analytics-offsets.
      *
      * @param stringIndexType the stringIndexType value to set.
      * @return the PiiTaskParameters object itself.
@@ -139,5 +96,71 @@ public final class PiiTaskParameters {
     public PiiTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiTaskParameters setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
+        return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("loggingOptOut", isLoggingOptOut());
+        jsonWriter.writeStringField("modelVersion", getModelVersion());
+        jsonWriter.writeStringField("domain", Objects.toString(this.domain, null));
+        jsonWriter.writeArrayField(
+                "piiCategories",
+                this.piiCategories,
+                (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeStringField("stringIndexType", Objects.toString(this.stringIndexType, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PiiTaskParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PiiTaskParameters if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PiiTaskParameters.
+     */
+    public static PiiTaskParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    PiiTaskParameters deserializedPiiTaskParameters = new PiiTaskParameters();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("loggingOptOut".equals(fieldName)) {
+                            deserializedPiiTaskParameters.setLoggingOptOut(reader.getNullable(JsonReader::getBoolean));
+                        } else if ("modelVersion".equals(fieldName)) {
+                            deserializedPiiTaskParameters.setModelVersion(reader.getString());
+                        } else if ("domain".equals(fieldName)) {
+                            deserializedPiiTaskParameters.domain = PiiDomain.fromString(reader.getString());
+                        } else if ("piiCategories".equals(fieldName)) {
+                            List<PiiCategory> piiCategories =
+                                    reader.readArray(reader1 -> PiiCategory.fromString(reader1.getString()));
+                            deserializedPiiTaskParameters.piiCategories = piiCategories;
+                        } else if ("stringIndexType".equals(fieldName)) {
+                            deserializedPiiTaskParameters.stringIndexType =
+                                    StringIndexType.fromString(reader.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedPiiTaskParameters;
+                });
     }
 }

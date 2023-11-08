@@ -4,41 +4,39 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines Deallocate. */
 public final class VirtualMachinesDeallocateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Deallocate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_Deallocate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_Deallocate_MinimumSet_Gen.
+     * Sample code: VirtualMachine_Deallocate_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesDeallocateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void virtualMachineDeallocateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .deallocate("rgcompute", "aaaaaaaaaaaaaaaa", null, Context.NONE);
+            .deallocate("rgcompute", "aaaaaaaaaa", true, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Deallocate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_Deallocate_MaximumSet_Gen.
+     * Sample code: VirtualMachine_Deallocate_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesDeallocateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void virtualMachineDeallocateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .deallocate("rgcompute", "aaaaaaaaaa", true, Context.NONE);
+            .deallocate("rgcompute", "aaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 }

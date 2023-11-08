@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphChatMessageType. */
+/** chatMessageType. */
 public final class MicrosoftGraphChatMessageType extends ExpandableStringEnum<MicrosoftGraphChatMessageType> {
     /** Static value message for MicrosoftGraphChatMessageType. */
     public static final MicrosoftGraphChatMessageType MESSAGE = fromString("message");
@@ -23,6 +23,15 @@ public final class MicrosoftGraphChatMessageType extends ExpandableStringEnum<Mi
     public static final MicrosoftGraphChatMessageType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphChatMessageType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphChatMessageType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphChatMessageType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class MicrosoftGraphChatMessageType extends ExpandableStringEnum<Mi
         return fromString(name, MicrosoftGraphChatMessageType.class);
     }
 
-    /** @return known MicrosoftGraphChatMessageType values. */
+    /**
+     * Gets known MicrosoftGraphChatMessageType values.
+     *
+     * @return known MicrosoftGraphChatMessageType values.
+     */
     public static Collection<MicrosoftGraphChatMessageType> values() {
         return values(MicrosoftGraphChatMessageType.class);
     }

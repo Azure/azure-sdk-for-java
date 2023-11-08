@@ -38,6 +38,10 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ApplicationGatewayProbeInner class. */
+    public ApplicationGatewayProbeInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway probe.
      *
@@ -265,6 +269,31 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
+     * Get the pickHostnameFromBackendSettings property: Whether the server name indication should be picked from the
+     * backend settings for Tls protocol. Default value is false.
+     *
+     * @return the pickHostnameFromBackendSettings value.
+     */
+    public Boolean pickHostnameFromBackendSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().pickHostnameFromBackendSettings();
+    }
+
+    /**
+     * Set the pickHostnameFromBackendSettings property: Whether the server name indication should be picked from the
+     * backend settings for Tls protocol. Default value is false.
+     *
+     * @param pickHostnameFromBackendSettings the pickHostnameFromBackendSettings value to set.
+     * @return the ApplicationGatewayProbeInner object itself.
+     */
+    public ApplicationGatewayProbeInner withPickHostnameFromBackendSettings(Boolean pickHostnameFromBackendSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withPickHostnameFromBackendSettings(pickHostnameFromBackendSettings);
+        return this;
+    }
+
+    /**
      * Get the minServers property: Minimum number of servers that are always marked healthy. Default value is 0.
      *
      * @return the minServers value.
@@ -321,8 +350,8 @@ public final class ApplicationGatewayProbeInner extends SubResource {
 
     /**
      * Get the port property: Custom port which will be used for probing the backend servers. The valid value ranges
-     * from 1 to 65535. In case not set, port from http settings will be used. This property is valid for Standard_v2
-     * and WAF_v2 only.
+     * from 1 to 65535. In case not set, port from http settings will be used. This property is valid for Basic,
+     * Standard_v2 and WAF_v2 only.
      *
      * @return the port value.
      */
@@ -332,8 +361,8 @@ public final class ApplicationGatewayProbeInner extends SubResource {
 
     /**
      * Set the port property: Custom port which will be used for probing the backend servers. The valid value ranges
-     * from 1 to 65535. In case not set, port from http settings will be used. This property is valid for Standard_v2
-     * and WAF_v2 only.
+     * from 1 to 65535. In case not set, port from http settings will be used. This property is valid for Basic,
+     * Standard_v2 and WAF_v2 only.
      *
      * @param port the port value to set.
      * @return the ApplicationGatewayProbeInner object itself.

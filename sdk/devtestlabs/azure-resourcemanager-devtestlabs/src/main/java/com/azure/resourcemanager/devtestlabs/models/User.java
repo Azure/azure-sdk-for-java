@@ -97,6 +97,13 @@ public interface User {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.UserInner object.
      *
      * @return the inner object.
@@ -110,11 +117,13 @@ public interface User {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The User definition stages. */
     interface DefinitionStages {
         /** The first stage of the User definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the User definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -133,6 +142,7 @@ public interface User {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the User definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -144,6 +154,7 @@ public interface User {
              */
             WithCreate withExistingLab(String resourceGroupName, String labName);
         }
+
         /**
          * The stage of the User definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -165,6 +176,7 @@ public interface User {
              */
             User create(Context context);
         }
+
         /** The stage of the User definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -175,6 +187,7 @@ public interface User {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the User definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -185,6 +198,7 @@ public interface User {
              */
             WithCreate withIdentity(UserIdentity identity);
         }
+
         /** The stage of the User definition allowing to specify secretStore. */
         interface WithSecretStore {
             /**
@@ -196,6 +210,7 @@ public interface User {
             WithCreate withSecretStore(UserSecretStore secretStore);
         }
     }
+
     /**
      * Begins update for the User resource.
      *
@@ -220,6 +235,7 @@ public interface User {
          */
         User apply(Context context);
     }
+
     /** The User update stages. */
     interface UpdateStages {
         /** The stage of the User update allowing to specify tags. */
@@ -233,6 +249,7 @@ public interface User {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

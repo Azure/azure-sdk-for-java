@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,9 +16,6 @@ import java.util.List;
 @JsonTypeName("MigrationLevelOutput")
 @Immutable
 public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends MigrateSqlServerSqlDbTaskOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MigrateSqlServerSqlDbTaskOutputMigrationLevel.class);
-
     /*
      * Migration start time
      */
@@ -70,8 +65,7 @@ public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends Migrate
     private String databaseSummary;
 
     /*
-     * Migration Report Result, provides unique url for downloading your
-     * migration report.
+     * Migration Report Result, provides unique url for downloading your migration report.
      */
     @JsonProperty(value = "migrationReport", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationReportResult migrationReport;
@@ -105,6 +99,10 @@ public final class MigrateSqlServerSqlDbTaskOutputMigrationLevel extends Migrate
      */
     @JsonProperty(value = "exceptionsAndWarnings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> exceptionsAndWarnings;
+
+    /** Creates an instance of MigrateSqlServerSqlDbTaskOutputMigrationLevel class. */
+    public MigrateSqlServerSqlDbTaskOutputMigrationLevel() {
+    }
 
     /**
      * Get the startedOn property: Migration start time.

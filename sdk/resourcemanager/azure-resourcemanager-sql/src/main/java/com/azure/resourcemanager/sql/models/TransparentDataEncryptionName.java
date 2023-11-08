@@ -24,7 +24,11 @@ public final class TransparentDataEncryptionName extends ExpandableStringEnum<Tr
         return fromString(name, TransparentDataEncryptionName.class);
     }
 
-    /** @return known TransparentDataEncryptionName values. */
+    /**
+     * Gets known TransparentDataEncryptionName values.
+     *
+     * @return known TransparentDataEncryptionName values.
+     */
     public static Collection<TransparentDataEncryptionName> values() {
         return values(TransparentDataEncryptionName.class);
     }

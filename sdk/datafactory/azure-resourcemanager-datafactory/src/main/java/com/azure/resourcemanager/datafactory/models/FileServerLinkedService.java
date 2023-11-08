@@ -24,6 +24,10 @@ public final class FileServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private FileServerLinkedServiceTypeProperties innerTypeProperties = new FileServerLinkedServiceTypeProperties();
 
+    /** Creates an instance of FileServerLinkedService class. */
+    public FileServerLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: File system linked service properties.
      *
@@ -132,22 +136,22 @@ public final class FileServerLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the FileServerLinkedService object itself.
      */
-    public FileServerLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public FileServerLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new FileServerLinkedServiceTypeProperties();
         }

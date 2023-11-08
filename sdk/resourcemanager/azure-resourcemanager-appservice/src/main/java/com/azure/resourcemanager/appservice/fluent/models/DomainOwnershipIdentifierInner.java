@@ -17,6 +17,10 @@ public final class DomainOwnershipIdentifierInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DomainOwnershipIdentifierProperties innerProperties;
 
+    /** Creates an instance of DomainOwnershipIdentifierInner class. */
+    public DomainOwnershipIdentifierInner() {
+    }
+
     /**
      * Get the innerProperties property: DomainOwnershipIdentifier resource specific properties.
      *

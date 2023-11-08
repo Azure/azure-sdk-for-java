@@ -14,6 +14,15 @@ public final class TransparentDataEncryptionName extends ExpandableStringEnum<Tr
     public static final TransparentDataEncryptionName CURRENT = fromString("current");
 
     /**
+     * Creates a new instance of TransparentDataEncryptionName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TransparentDataEncryptionName() {
+    }
+
+    /**
      * Creates or finds a TransparentDataEncryptionName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class TransparentDataEncryptionName extends ExpandableStringEnum<Tr
         return fromString(name, TransparentDataEncryptionName.class);
     }
 
-    /** @return known TransparentDataEncryptionName values. */
+    /**
+     * Gets known TransparentDataEncryptionName values.
+     *
+     * @return known TransparentDataEncryptionName values.
+     */
     public static Collection<TransparentDataEncryptionName> values() {
         return values(TransparentDataEncryptionName.class);
     }

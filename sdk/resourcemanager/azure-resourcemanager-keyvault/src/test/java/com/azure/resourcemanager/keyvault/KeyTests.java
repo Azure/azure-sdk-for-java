@@ -4,12 +4,13 @@
 package com.azure.resourcemanager.keyvault;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
@@ -17,22 +18,23 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.Signature;
 import java.time.Duration;
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class KeyTests extends KeyVaultManagementTest {
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDKey() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -107,7 +109,7 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canImportKey() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -128,7 +130,7 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canBackupAndRestore() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -151,6 +153,12 @@ public class KeyTests extends KeyVaultManagementTest {
         vault.keys().deleteById(key.id());
         Assertions.assertEquals(0, TestUtilities.getSize(vault.keys().list()));
 
+        Response<Void> response = vault.keyClient().purgeDeletedKeyWithResponse(keyName).block();
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(2, response.getStatusCode() / 100);
+        // To ensure file is purged server-side.
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
         vault.keys().restore(backup);
         PagedIterable<Key> keys = vault.keys().list();
         Assertions.assertEquals(1, TestUtilities.getSize(keys));
@@ -159,7 +167,7 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canEncryptAndDecrypt() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -194,7 +202,7 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canSignAndVerify() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -226,7 +234,7 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canWrapAndUnwrap() throws Exception {
         if (skipInPlayback()) {
             return;

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.OperationDisplayDefinition;
 import com.azure.resourcemanager.containerregistry.models.OperationServiceSpecificationDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of a container registry operation. */
 @Fluent
 public final class OperationDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDefinitionInner.class);
-
     /*
      * The origin information of the container registry operation.
      */
@@ -47,6 +43,10 @@ public final class OperationDefinitionInner {
      */
     @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
+
+    /** Creates an instance of OperationDefinitionInner class. */
+    public OperationDefinitionInner() {
+    }
 
     /**
      * Get the origin property: The origin information of the container registry operation.

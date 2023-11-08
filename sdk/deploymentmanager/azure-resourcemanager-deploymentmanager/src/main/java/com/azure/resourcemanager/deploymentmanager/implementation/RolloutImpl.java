@@ -54,27 +54,6 @@ public final class RolloutImpl implements Rollout {
         return this.innerModel().identity();
     }
 
-    public String buildVersion() {
-        return this.innerModel().buildVersion();
-    }
-
-    public String artifactSourceId() {
-        return this.innerModel().artifactSourceId();
-    }
-
-    public String targetServiceTopologyId() {
-        return this.innerModel().targetServiceTopologyId();
-    }
-
-    public List<StepGroup> stepGroups() {
-        List<StepGroup> inner = this.innerModel().stepGroups();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public String status() {
         return this.innerModel().status();
     }
@@ -89,6 +68,27 @@ public final class RolloutImpl implements Rollout {
 
     public List<Service> services() {
         List<Service> inner = this.innerModel().services();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String buildVersion() {
+        return this.innerModel().buildVersion();
+    }
+
+    public String artifactSourceId() {
+        return this.innerModel().artifactSourceId();
+    }
+
+    public String targetServiceTopologyId() {
+        return this.innerModel().targetServiceTopologyId();
+    }
+
+    public List<StepGroup> stepGroups() {
+        List<StepGroup> inner = this.innerModel().stepGroups();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {

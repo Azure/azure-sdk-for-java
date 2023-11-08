@@ -24,6 +24,10 @@ public final class MongoDbAtlasLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MongoDbAtlasLinkedServiceTypeProperties innerTypeProperties = new MongoDbAtlasLinkedServiceTypeProperties();
 
+    /** Creates an instance of MongoDbAtlasLinkedService class. */
+    public MongoDbAtlasLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: MongoDB Atlas linked service properties.
      *
@@ -108,6 +112,31 @@ public final class MongoDbAtlasLinkedService extends LinkedService {
             this.innerTypeProperties = new MongoDbAtlasLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the driverVersion value.
+     */
+    public Object driverVersion() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().driverVersion();
+    }
+
+    /**
+     * Set the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param driverVersion the driverVersion value to set.
+     * @return the MongoDbAtlasLinkedService object itself.
+     */
+    public MongoDbAtlasLinkedService withDriverVersion(Object driverVersion) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MongoDbAtlasLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDriverVersion(driverVersion);
         return this;
     }
 

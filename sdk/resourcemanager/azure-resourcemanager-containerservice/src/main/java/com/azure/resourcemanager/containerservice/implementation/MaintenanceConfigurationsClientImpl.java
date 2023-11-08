@@ -60,11 +60,10 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface MaintenanceConfigurationsService {
+    public interface MaintenanceConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationListResult>> listByManagedCluster(
@@ -78,8 +77,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> get(
@@ -94,9 +92,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
-        @ExpectedResponses({200})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -111,8 +108,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -169,7 +165,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -229,7 +225,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -363,7 +359,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -419,7 +415,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -449,30 +445,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     public Mono<MaintenanceConfigurationInner> getAsync(
         String resourceGroupName, String resourceName, String configName) {
         return getWithResponseAsync(resourceGroupName, resourceName, configName)
-            .flatMap(
-                (Response<MaintenanceConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified maintenance configuration of a managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MaintenanceConfigurationInner get(String resourceGroupName, String resourceName, String configName) {
-        return getAsync(resourceGroupName, resourceName, configName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -491,6 +464,22 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     public Response<MaintenanceConfigurationInner> getWithResponse(
         String resourceGroupName, String resourceName, String configName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, configName, context).block();
+    }
+
+    /**
+     * Gets the specified maintenance configuration of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param configName The name of the maintenance configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified maintenance configuration of a managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MaintenanceConfigurationInner get(String resourceGroupName, String resourceName, String configName) {
+        return getWithResponse(resourceGroupName, resourceName, configName, Context.NONE).getValue();
     }
 
     /**
@@ -536,7 +525,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -603,7 +592,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -636,32 +625,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     public Mono<MaintenanceConfigurationInner> createOrUpdateAsync(
         String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configName, parameters)
-            .flatMap(
-                (Response<MaintenanceConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a maintenance configuration in the specified managed cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
-     * @param parameters The maintenance configuration to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MaintenanceConfigurationInner createOrUpdate(
-        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, resourceName, configName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -687,6 +651,25 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configName, parameters, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a maintenance configuration in the specified managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param configName The name of the maintenance configuration.
+     * @param parameters The maintenance configuration to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MaintenanceConfigurationInner createOrUpdate(
+        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, configName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -725,7 +708,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -780,7 +763,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -808,23 +791,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String configName) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, configName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a maintenance configuration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String configName) {
-        deleteAsync(resourceGroupName, resourceName, configName).block();
+        return deleteWithResponseAsync(resourceGroupName, resourceName, configName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -846,9 +813,25 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     }
 
     /**
+     * Deletes a maintenance configuration.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param configName The name of the maintenance configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String resourceName, String configName) {
+        deleteWithResponse(resourceGroupName, resourceName, configName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -886,7 +869,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

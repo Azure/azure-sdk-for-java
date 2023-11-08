@@ -13,6 +13,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,6 +27,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
+import static com.azure.core.test.models.TestProxySanitizerType.BODY_KEY;
 
 /**
  * Utility class for common methods and constants used in test classes.
@@ -176,6 +178,14 @@ public final class TestUtils {
                 TestUtils::shouldServiceVersionBeTested)
                 .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
+    }
+
+    static List<TestProxySanitizer> getEmailSanitizers() {
+        return Arrays.asList(
+            // TODO (savaity) https://github.com/Azure/azure-sdk-for-java/issues/34506
+            new TestProxySanitizer("admins", "^[_A-Za-z0-9-\\\\+]+(\\\\.[_A-Za-z0-9-]+)*@", "REDACTED.",
+                BODY_KEY),
+            new TestProxySanitizer("$..userPrincipal", "^[_A-Za-z0-9-\\\\+]+(\\\\.[_A-Za-z0-9-]+)*@", "REDACTED.", BODY_KEY));
     }
 
     /**

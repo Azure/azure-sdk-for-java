@@ -24,7 +24,11 @@ public final class GeoBackupPolicyName extends ExpandableStringEnum<GeoBackupPol
         return fromString(name, GeoBackupPolicyName.class);
     }
 
-    /** @return known GeoBackupPolicyName values. */
+    /**
+     * Gets known GeoBackupPolicyName values.
+     *
+     * @return known GeoBackupPolicyName values.
+     */
     public static Collection<GeoBackupPolicyName> values() {
         return values(GeoBackupPolicyName.class);
     }

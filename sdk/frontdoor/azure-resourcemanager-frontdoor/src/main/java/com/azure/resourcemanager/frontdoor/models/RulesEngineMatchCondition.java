@@ -6,15 +6,12 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Define a match condition. */
 @Fluent
 public final class RulesEngineMatchCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RulesEngineMatchCondition.class);
-
     /*
      * Match Variable
      */
@@ -40,9 +37,8 @@ public final class RulesEngineMatchCondition {
     private Boolean negateCondition;
 
     /*
-     * Match values to match against. The operator will apply to each value in
-     * here with OR semantics. If any of them match the variable with the given
-     * operator this match condition is considered a match.
+     * Match values to match against. The operator will apply to each value in here with OR semantics. If any of them
+     * match the variable with the given operator this match condition is considered a match.
      */
     @JsonProperty(value = "rulesEngineMatchValue", required = true)
     private List<String> rulesEngineMatchValue;
@@ -52,6 +48,10 @@ public final class RulesEngineMatchCondition {
      */
     @JsonProperty(value = "transforms")
     private List<Transform> transforms;
+
+    /** Creates an instance of RulesEngineMatchCondition class. */
+    public RulesEngineMatchCondition() {
+    }
 
     /**
      * Get the rulesEngineMatchVariable property: Match Variable.
@@ -184,22 +184,24 @@ public final class RulesEngineMatchCondition {
      */
     public void validate() {
         if (rulesEngineMatchVariable() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rulesEngineMatchVariable in model RulesEngineMatchCondition"));
         }
         if (rulesEngineOperator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rulesEngineOperator in model RulesEngineMatchCondition"));
         }
         if (rulesEngineMatchValue() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rulesEngineMatchValue in model RulesEngineMatchCondition"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RulesEngineMatchCondition.class);
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LiveEventResourceState. */
+/** The resource state of the live event. See https://go.microsoft.com/fwlink/?linkid=2139012 for more information. */
 public final class LiveEventResourceState extends ExpandableStringEnum<LiveEventResourceState> {
     /** Static value Stopped for LiveEventResourceState. */
     public static final LiveEventResourceState STOPPED = fromString("Stopped");
@@ -32,6 +32,15 @@ public final class LiveEventResourceState extends ExpandableStringEnum<LiveEvent
     public static final LiveEventResourceState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of LiveEventResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LiveEventResourceState() {
+    }
+
+    /**
      * Creates or finds a LiveEventResourceState from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class LiveEventResourceState extends ExpandableStringEnum<LiveEvent
         return fromString(name, LiveEventResourceState.class);
     }
 
-    /** @return known LiveEventResourceState values. */
+    /**
+     * Gets known LiveEventResourceState values.
+     *
+     * @return known LiveEventResourceState values.
+     */
     public static Collection<LiveEventResourceState> values() {
         return values(LiveEventResourceState.class);
     }

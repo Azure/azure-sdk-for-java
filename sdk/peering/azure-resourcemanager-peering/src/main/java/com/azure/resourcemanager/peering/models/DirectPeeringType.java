@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DirectPeeringType. */
+/** The type of direct peering. */
 public final class DirectPeeringType extends ExpandableStringEnum<DirectPeeringType> {
     /** Static value Edge for DirectPeeringType. */
     public static final DirectPeeringType EDGE = fromString("Edge");
@@ -28,6 +28,18 @@ public final class DirectPeeringType extends ExpandableStringEnum<DirectPeeringT
     /** Static value IxRs for DirectPeeringType. */
     public static final DirectPeeringType IX_RS = fromString("IxRs");
 
+    /** Static value Voice for DirectPeeringType. */
+    public static final DirectPeeringType VOICE = fromString("Voice");
+
+    /**
+     * Creates a new instance of DirectPeeringType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DirectPeeringType() {
+    }
+
     /**
      * Creates or finds a DirectPeeringType from its string representation.
      *
@@ -39,7 +51,11 @@ public final class DirectPeeringType extends ExpandableStringEnum<DirectPeeringT
         return fromString(name, DirectPeeringType.class);
     }
 
-    /** @return known DirectPeeringType values. */
+    /**
+     * Gets known DirectPeeringType values.
+     *
+     * @return known DirectPeeringType values.
+     */
     public static Collection<DirectPeeringType> values() {
         return values(DirectPeeringType.class);
     }

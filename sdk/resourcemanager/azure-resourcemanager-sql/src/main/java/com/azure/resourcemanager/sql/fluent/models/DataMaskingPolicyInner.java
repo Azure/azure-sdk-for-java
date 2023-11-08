@@ -5,19 +5,13 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.DataMaskingState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a database data masking policy. */
-@JsonFlatten
+/** A database data masking policy. */
 @Fluent
-public class DataMaskingPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMaskingPolicyInner.class);
-
+public final class DataMaskingPolicyInner extends ProxyResource {
     /*
      * The location of the data masking policy.
      */
@@ -25,38 +19,20 @@ public class DataMaskingPolicyInner extends ProxyResource {
     private String location;
 
     /*
-     * The kind of data masking policy. Metadata, used for Azure portal.
+     * The kind of Data Masking Policy. Metadata, used for Azure portal.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
-     * The state of the data masking policy.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.dataMaskingState")
-    private DataMaskingState dataMaskingState;
+    @JsonProperty(value = "properties")
+    private DataMaskingPolicyProperties innerProperties;
 
-    /*
-     * The list of the exempt principals. Specifies the semicolon-separated
-     * list of database users for which the data masking policy does not apply.
-     * The specified users receive data results without masking for all of the
-     * database queries.
-     */
-    @JsonProperty(value = "properties.exemptPrincipals")
-    private String exemptPrincipals;
-
-    /*
-     * The list of the application principals. This is a legacy parameter and
-     * is no longer used.
-     */
-    @JsonProperty(value = "properties.applicationPrincipals", access = JsonProperty.Access.WRITE_ONLY)
-    private String applicationPrincipals;
-
-    /*
-     * The masking level. This is a legacy parameter and is no longer used.
-     */
-    @JsonProperty(value = "properties.maskingLevel", access = JsonProperty.Access.WRITE_ONLY)
-    private String maskingLevel;
+    /** Creates an instance of DataMaskingPolicyInner class. */
+    public DataMaskingPolicyInner() {
+    }
 
     /**
      * Get the location property: The location of the data masking policy.
@@ -68,7 +44,7 @@ public class DataMaskingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the kind property: The kind of data masking policy. Metadata, used for Azure portal.
+     * Get the kind property: The kind of Data Masking Policy. Metadata, used for Azure portal.
      *
      * @return the kind value.
      */
@@ -77,12 +53,21 @@ public class DataMaskingPolicyInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private DataMaskingPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the dataMaskingState property: The state of the data masking policy.
      *
      * @return the dataMaskingState value.
      */
     public DataMaskingState dataMaskingState() {
-        return this.dataMaskingState;
+        return this.innerProperties() == null ? null : this.innerProperties().dataMaskingState();
     }
 
     /**
@@ -92,7 +77,10 @@ public class DataMaskingPolicyInner extends ProxyResource {
      * @return the DataMaskingPolicyInner object itself.
      */
     public DataMaskingPolicyInner withDataMaskingState(DataMaskingState dataMaskingState) {
-        this.dataMaskingState = dataMaskingState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingPolicyProperties();
+        }
+        this.innerProperties().withDataMaskingState(dataMaskingState);
         return this;
     }
 
@@ -104,7 +92,7 @@ public class DataMaskingPolicyInner extends ProxyResource {
      * @return the exemptPrincipals value.
      */
     public String exemptPrincipals() {
-        return this.exemptPrincipals;
+        return this.innerProperties() == null ? null : this.innerProperties().exemptPrincipals();
     }
 
     /**
@@ -116,7 +104,10 @@ public class DataMaskingPolicyInner extends ProxyResource {
      * @return the DataMaskingPolicyInner object itself.
      */
     public DataMaskingPolicyInner withExemptPrincipals(String exemptPrincipals) {
-        this.exemptPrincipals = exemptPrincipals;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingPolicyProperties();
+        }
+        this.innerProperties().withExemptPrincipals(exemptPrincipals);
         return this;
     }
 
@@ -127,7 +118,7 @@ public class DataMaskingPolicyInner extends ProxyResource {
      * @return the applicationPrincipals value.
      */
     public String applicationPrincipals() {
-        return this.applicationPrincipals;
+        return this.innerProperties() == null ? null : this.innerProperties().applicationPrincipals();
     }
 
     /**
@@ -136,7 +127,7 @@ public class DataMaskingPolicyInner extends ProxyResource {
      * @return the maskingLevel value.
      */
     public String maskingLevel() {
-        return this.maskingLevel;
+        return this.innerProperties() == null ? null : this.innerProperties().maskingLevel();
     }
 
     /**
@@ -145,5 +136,8 @@ public class DataMaskingPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -18,6 +18,9 @@ public final class TableServiceStats {
     @JsonProperty(value = "GeoReplication")
     private GeoReplication geoReplication;
 
+    /** Creates an instance of TableServiceStats class. */
+    public TableServiceStats() {}
+
     /**
      * Get the geoReplication property: Geo-Replication information for the Secondary Storage Service.
      *

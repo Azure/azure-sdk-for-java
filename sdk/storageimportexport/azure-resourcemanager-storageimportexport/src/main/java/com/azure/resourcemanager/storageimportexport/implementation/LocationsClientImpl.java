@@ -24,17 +24,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageimportexport.fluent.LocationsClient;
 import com.azure.resourcemanager.storageimportexport.fluent.models.LocationInner;
-import com.azure.resourcemanager.storageimportexport.models.ErrorResponseException;
+import com.azure.resourcemanager.storageimportexport.models.ErrorResponseErrorException;
 import com.azure.resourcemanager.storageimportexport.models.LocationsResponse;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LocationsClient. */
 public final class LocationsClientImpl implements LocationsClient {
-    private final ClientLogger logger = new ClientLogger(LocationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LocationsService service;
 
@@ -58,11 +55,11 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageImportExportL")
-    private interface LocationsService {
+    public interface LocationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.ImportExport/locations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<LocationsResponse>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
@@ -73,7 +70,7 @@ public final class LocationsClientImpl implements LocationsClient {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.ImportExport/locations/{locationName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseErrorException.class)
         Mono<Response<LocationInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("locationName") String locationName,
@@ -87,9 +84,9 @@ public final class LocationsClientImpl implements LocationsClient {
      * Returns a list of locations to which you can ship the disks associated with an import or export job. A location
      * is a Microsoft data center region.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return locations response.
+     * @return locations response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocationInner>> listSinglePageAsync() {
@@ -123,9 +120,9 @@ public final class LocationsClientImpl implements LocationsClient {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return locations response.
+     * @return locations response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocationInner>> listSinglePageAsync(Context context) {
@@ -154,9 +151,9 @@ public final class LocationsClientImpl implements LocationsClient {
      * Returns a list of locations to which you can ship the disks associated with an import or export job. A location
      * is a Microsoft data center region.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return locations response.
+     * @return locations response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LocationInner> listAsync() {
@@ -169,9 +166,9 @@ public final class LocationsClientImpl implements LocationsClient {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return locations response.
+     * @return locations response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LocationInner> listAsync(Context context) {
@@ -182,9 +179,9 @@ public final class LocationsClientImpl implements LocationsClient {
      * Returns a list of locations to which you can ship the disks associated with an import or export job. A location
      * is a Microsoft data center region.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return locations response.
+     * @return locations response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationInner> list() {
@@ -197,9 +194,9 @@ public final class LocationsClientImpl implements LocationsClient {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return locations response.
+     * @return locations response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationInner> list(Context context) {
@@ -212,9 +209,10 @@ public final class LocationsClientImpl implements LocationsClient {
      *
      * @param locationName The name of the location. For example, West US or westus.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provides information about an Azure data center location.
+     * @return provides information about an Azure data center location along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LocationInner>> getWithResponseAsync(String locationName) {
@@ -249,9 +247,10 @@ public final class LocationsClientImpl implements LocationsClient {
      * @param locationName The name of the location. For example, West US or westus.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provides information about an Azure data center location.
+     * @return provides information about an Azure data center location along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LocationInner>> getWithResponseAsync(String locationName, Context context) {
@@ -282,36 +281,13 @@ public final class LocationsClientImpl implements LocationsClient {
      *
      * @param locationName The name of the location. For example, West US or westus.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provides information about an Azure data center location.
+     * @return provides information about an Azure data center location on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LocationInner> getAsync(String locationName) {
-        return getWithResponseAsync(locationName)
-            .flatMap(
-                (Response<LocationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns the details about a location to which you can ship the disks associated with an import or export job. A
-     * location is an Azure region.
-     *
-     * @param locationName The name of the location. For example, West US or westus.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provides information about an Azure data center location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocationInner get(String locationName) {
-        return getAsync(locationName).block();
+        return getWithResponseAsync(locationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -321,12 +297,27 @@ public final class LocationsClientImpl implements LocationsClient {
      * @param locationName The name of the location. For example, West US or westus.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provides information about an Azure data center location.
+     * @return provides information about an Azure data center location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocationInner> getWithResponse(String locationName, Context context) {
         return getWithResponseAsync(locationName, context).block();
+    }
+
+    /**
+     * Returns the details about a location to which you can ship the disks associated with an import or export job. A
+     * location is an Azure region.
+     *
+     * @param locationName The name of the location. For example, West US or westus.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides information about an Azure data center location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LocationInner get(String locationName) {
+        return getWithResponse(locationName, Context.NONE).getValue();
     }
 }

@@ -61,7 +61,7 @@ class QueueAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<QueueAuthoriz
                 this.namespaceName(),
                 this.queueName(),
                 this.name(),
-                this.innerModel().rights())
+                this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return self;

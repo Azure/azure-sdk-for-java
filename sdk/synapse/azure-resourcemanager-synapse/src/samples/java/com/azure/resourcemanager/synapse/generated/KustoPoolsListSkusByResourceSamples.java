@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools ListSkusByResource. */
 public final class KustoPoolsListSkusByResourceSamples {
     /*
@@ -19,6 +17,7 @@ public final class KustoPoolsListSkusByResourceSamples {
     public static void kustoPoolsListResourceSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .kustoPools()
-            .listSkusByResource("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE);
+            .listSkusByResource(
+                "synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }

@@ -55,18 +55,11 @@ public interface DedicatedCapacity {
     CapacitySku sku();
 
     /**
-     * Gets the administration property: A collection of Dedicated capacity administrators.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
-     * @return the administration value.
+     * @return the systemData value.
      */
-    DedicatedCapacityAdministrators administration();
-
-    /**
-     * Gets the mode property: The capacity mode.
-     *
-     * @return the mode value.
-     */
-    Mode mode();
+    SystemData systemData();
 
     /**
      * Gets the state property: The current state of PowerBI Dedicated resource. The state is to indicate more states
@@ -85,11 +78,34 @@ public interface DedicatedCapacity {
     CapacityProvisioningState provisioningState();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the administration property: A collection of Dedicated capacity administrators.
      *
-     * @return the systemData value.
+     * @return the administration value.
      */
-    SystemData systemData();
+    DedicatedCapacityAdministrators administration();
+
+    /**
+     * Gets the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
+     * default value 'Gen2' is used. [Learn
+     * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
+     *
+     * @return the mode value.
+     */
+    Mode mode();
+
+    /**
+     * Gets the tenantId property: Tenant ID for the capacity. Used for creating Pro Plus capacity.
+     *
+     * @return the tenantId value.
+     */
+    String tenantId();
+
+    /**
+     * Gets the friendlyName property: Capacity name.
+     *
+     * @return the friendlyName value.
+     */
+    String friendlyName();
 
     /**
      * Gets the region of the resource.
@@ -104,6 +120,13 @@ public interface DedicatedCapacity {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.powerbidedicated.fluent.models.DedicatedCapacityInner object.
@@ -170,9 +193,9 @@ public interface DedicatedCapacity {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithSystemData,
                 DefinitionStages.WithAdministration,
-                DefinitionStages.WithMode,
-                DefinitionStages.WithSystemData {
+                DefinitionStages.WithMode {
             /**
              * Executes the create request.
              *
@@ -198,6 +221,17 @@ public interface DedicatedCapacity {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+        /** The stage of the DedicatedCapacity definition allowing to specify systemData. */
+        interface WithSystemData {
+            /**
+             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
+             * resource..
+             *
+             * @param systemData Metadata pertaining to creation and last modification of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withSystemData(SystemData systemData);
+        }
         /** The stage of the DedicatedCapacity definition allowing to specify administration. */
         interface WithAdministration {
             /**
@@ -211,23 +245,16 @@ public interface DedicatedCapacity {
         /** The stage of the DedicatedCapacity definition allowing to specify mode. */
         interface WithMode {
             /**
-             * Specifies the mode property: The capacity mode..
+             * Specifies the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is
+             * specified, the default value 'Gen2' is used. [Learn
+             * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
              *
-             * @param mode The capacity mode.
+             * @param mode Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
+             *     default value 'Gen2' is used. [Learn
+             *     More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
              * @return the next definition stage.
              */
             WithCreate withMode(Mode mode);
-        }
-        /** The stage of the DedicatedCapacity definition allowing to specify systemData. */
-        interface WithSystemData {
-            /**
-             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
-             * resource..
-             *
-             * @param systemData Metadata pertaining to creation and last modification of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withSystemData(SystemData systemData);
         }
     }
     /**
@@ -290,9 +317,13 @@ public interface DedicatedCapacity {
         /** The stage of the DedicatedCapacity update allowing to specify mode. */
         interface WithMode {
             /**
-             * Specifies the mode property: The capacity mode..
+             * Specifies the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is
+             * specified, the default value 'Gen2' is used. [Learn
+             * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
              *
-             * @param mode The capacity mode.
+             * @param mode Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
+             *     default value 'Gen2' is used. [Learn
+             *     More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
              * @return the next definition stage.
              */
             Update withMode(Mode mode);

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.models.RouteProperties;
 import com.azure.resourcemanager.iothub.models.RoutingMessage;
 import com.azure.resourcemanager.iothub.models.RoutingSource;
@@ -16,7 +15,7 @@ import java.util.Map;
 /** Samples for IotHubResource TestRoute. */
 public final class IotHubResourceTestRouteSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_testnewroute.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_testnewroute.json
      */
     /**
      * Sample code: IotHubResource_TestRoute.
@@ -33,17 +32,18 @@ public final class IotHubResourceTestRouteSamples {
                     .withMessage(
                         new RoutingMessage()
                             .withBody("Body of message")
-                            .withAppProperties(mapOf("key1", "value1"))
-                            .withSystemProperties(mapOf("key1", "value1")))
+                            .withAppProperties(mapOf("key1", "fakeTokenPlaceholder"))
+                            .withSystemProperties(mapOf("key1", "fakeTokenPlaceholder")))
                     .withRoute(
                         new RouteProperties()
                             .withName("Routeid")
                             .withSource(RoutingSource.DEVICE_MESSAGES)
                             .withEndpointNames(Arrays.asList("id1"))
                             .withIsEnabled(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -19,6 +19,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "AzureAD", value = AzureADPartnerClientAuthentication.class)})
 @Immutable
 public class PartnerClientAuthentication {
+    /** Creates an instance of PartnerClientAuthentication class. */
+    public PartnerClientAuthentication() {
+    }
+
     /**
      * Validates the instance.
      *

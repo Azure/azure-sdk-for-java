@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This is used to represent the various nodes of the distributed container. */
 @Fluent
 public final class DistributedNodesInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DistributedNodesInfo.class);
-
     /*
      * Name of the node under a distributed container.
      */
@@ -32,6 +28,16 @@ public final class DistributedNodesInfo {
      */
     @JsonProperty(value = "errorDetail")
     private ErrorDetail errorDetail;
+
+    /*
+     * ARM resource id of the node
+     */
+    @JsonProperty(value = "sourceResourceId")
+    private String sourceResourceId;
+
+    /** Creates an instance of DistributedNodesInfo class. */
+    public DistributedNodesInfo() {
+    }
 
     /**
      * Get the nodeName property: Name of the node under a distributed container.
@@ -90,6 +96,26 @@ public final class DistributedNodesInfo {
      */
     public DistributedNodesInfo withErrorDetail(ErrorDetail errorDetail) {
         this.errorDetail = errorDetail;
+        return this;
+    }
+
+    /**
+     * Get the sourceResourceId property: ARM resource id of the node.
+     *
+     * @return the sourceResourceId value.
+     */
+    public String sourceResourceId() {
+        return this.sourceResourceId;
+    }
+
+    /**
+     * Set the sourceResourceId property: ARM resource id of the node.
+     *
+     * @param sourceResourceId the sourceResourceId value to set.
+     * @return the DistributedNodesInfo object itself.
+     */
+    public DistributedNodesInfo withSourceResourceId(String sourceResourceId) {
+        this.sourceResourceId = sourceResourceId;
         return this;
     }
 

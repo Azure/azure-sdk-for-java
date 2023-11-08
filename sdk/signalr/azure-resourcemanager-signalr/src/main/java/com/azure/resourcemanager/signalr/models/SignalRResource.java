@@ -50,28 +50,28 @@ public interface SignalRResource {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The billing information of the resource.(e.g. Free, Standard).
+     * Gets the sku property: The billing information of the resource.
      *
      * @return the sku value.
      */
     ResourceSku sku();
 
     /**
-     * Gets the kind property: The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR".
+     * Gets the kind property: The kind of the service.
      *
      * @return the kind value.
      */
     ServiceKind kind();
 
     /**
-     * Gets the identity property: The managed identity response.
+     * Gets the identity property: A class represent managed identities used for request and response.
      *
      * @return the identity value.
      */
     ManagedIdentity identity();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -136,7 +136,7 @@ public interface SignalRResource {
     List<SharedPrivateLinkResource> sharedPrivateLinkResources();
 
     /**
-     * Gets the tls property: TLS settings.
+     * Gets the tls property: TLS settings for the resource.
      *
      * @return the tls value.
      */
@@ -162,10 +162,14 @@ public interface SignalRResource {
     List<SignalRFeature> features();
 
     /**
-     * Gets the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
-     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
-     * features.
+     * Gets the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
+     *
+     * @return the liveTraceConfiguration value.
+     */
+    LiveTraceConfiguration liveTraceConfiguration();
+
+    /**
+     * Gets the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
      *
      * @return the resourceLogConfiguration value.
      */
@@ -179,14 +183,21 @@ public interface SignalRResource {
     SignalRCorsSettings cors();
 
     /**
-     * Gets the upstream property: Upstream settings when the service is in server-less mode.
+     * Gets the serverless property: Serverless settings.
+     *
+     * @return the serverless value.
+     */
+    ServerlessSettings serverless();
+
+    /**
+     * Gets the upstream property: The settings for the Upstream when the service is in server-less mode.
      *
      * @return the upstream value.
      */
     ServerlessUpstreamSettings upstream();
 
     /**
-     * Gets the networkACLs property: Network ACLs.
+     * Gets the networkACLs property: Network ACLs for the resource.
      *
      * @return the networkACLs value.
      */
@@ -218,6 +229,23 @@ public interface SignalRResource {
     Boolean disableAadAuth();
 
     /**
+     * Gets the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @return the regionEndpointEnabled value.
+     */
+    String regionEndpointEnabled();
+
+    /**
+     * Gets the resourceStopped property: Stop or start the resource. Default to "False". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @return the resourceStopped value.
+     */
+    String resourceStopped();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -230,6 +258,13 @@ public interface SignalRResource {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.signalr.fluent.models.SignalRResourceInner object.
@@ -245,11 +280,13 @@ public interface SignalRResource {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The SignalRResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the SignalRResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the SignalRResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -268,17 +305,18 @@ public interface SignalRResource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the SignalRResource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this
-             *     value from the Azure Resource Manager API or the portal.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the SignalRResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -290,13 +328,17 @@ public interface SignalRResource {
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithTls,
                 DefinitionStages.WithFeatures,
+                DefinitionStages.WithLiveTraceConfiguration,
                 DefinitionStages.WithResourceLogConfiguration,
                 DefinitionStages.WithCors,
+                DefinitionStages.WithServerless,
                 DefinitionStages.WithUpstream,
                 DefinitionStages.WithNetworkACLs,
                 DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithDisableLocalAuth,
-                DefinitionStages.WithDisableAadAuth {
+                DefinitionStages.WithDisableAadAuth,
+                DefinitionStages.WithRegionEndpointEnabled,
+                DefinitionStages.WithResourceStopped {
             /**
              * Executes the create request.
              *
@@ -312,6 +354,7 @@ public interface SignalRResource {
              */
             SignalRResource create(Context context);
         }
+
         /** The stage of the SignalRResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -322,47 +365,51 @@ public interface SignalRResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the SignalRResource definition allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: The billing information of the resource.(e.g. Free, Standard).
+             * Specifies the sku property: The billing information of the resource..
              *
-             * @param sku The billing information of the resource.(e.g. Free, Standard).
+             * @param sku The billing information of the resource.
              * @return the next definition stage.
              */
             WithCreate withSku(ResourceSku sku);
         }
+
         /** The stage of the SignalRResource definition allowing to specify kind. */
         interface WithKind {
             /**
-             * Specifies the kind property: The kind of the service - e.g. "SignalR" for
-             * "Microsoft.SignalRService/SignalR".
+             * Specifies the kind property: The kind of the service.
              *
-             * @param kind The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR".
+             * @param kind The kind of the service.
              * @return the next definition stage.
              */
             WithCreate withKind(ServiceKind kind);
         }
+
         /** The stage of the SignalRResource definition allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The managed identity response.
+             * Specifies the identity property: A class represent managed identities used for request and response.
              *
-             * @param identity The managed identity response.
+             * @param identity A class represent managed identities used for request and response.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedIdentity identity);
         }
+
         /** The stage of the SignalRResource definition allowing to specify tls. */
         interface WithTls {
             /**
-             * Specifies the tls property: TLS settings..
+             * Specifies the tls property: TLS settings for the resource.
              *
-             * @param tls TLS settings.
+             * @param tls TLS settings for the resource.
              * @return the next definition stage.
              */
             WithCreate withTls(SignalRTlsSettings tls);
         }
+
         /** The stage of the SignalRResource definition allowing to specify features. */
         interface WithFeatures {
             /**
@@ -382,22 +429,31 @@ public interface SignalRResource {
              */
             WithCreate withFeatures(List<SignalRFeature> features);
         }
+
+        /** The stage of the SignalRResource definition allowing to specify liveTraceConfiguration. */
+        interface WithLiveTraceConfiguration {
+            /**
+             * Specifies the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService
+             * resource..
+             *
+             * @param liveTraceConfiguration Live trace configuration of a Microsoft.SignalRService resource.
+             * @return the next definition stage.
+             */
+            WithCreate withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
+        }
+
         /** The stage of the SignalRResource definition allowing to specify resourceLogConfiguration. */
         interface WithResourceLogConfiguration {
             /**
              * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
-             * resource. If resourceLogConfiguration isn't null or empty, it will override options
-             * "EnableConnectivityLog" and "EnableMessagingLogs" in features. Otherwise, use options
-             * "EnableConnectivityLog" and "EnableMessagingLogs" in features..
+             * resource..
              *
-             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource. If
-             *     resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-             *     "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and
-             *     "EnableMessagingLogs" in features.
+             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource.
              * @return the next definition stage.
              */
             WithCreate withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
         }
+
         /** The stage of the SignalRResource definition allowing to specify cors. */
         interface WithCors {
             /**
@@ -408,26 +464,40 @@ public interface SignalRResource {
              */
             WithCreate withCors(SignalRCorsSettings cors);
         }
+
+        /** The stage of the SignalRResource definition allowing to specify serverless. */
+        interface WithServerless {
+            /**
+             * Specifies the serverless property: Serverless settings..
+             *
+             * @param serverless Serverless settings.
+             * @return the next definition stage.
+             */
+            WithCreate withServerless(ServerlessSettings serverless);
+        }
+
         /** The stage of the SignalRResource definition allowing to specify upstream. */
         interface WithUpstream {
             /**
-             * Specifies the upstream property: Upstream settings when the service is in server-less mode..
+             * Specifies the upstream property: The settings for the Upstream when the service is in server-less mode..
              *
-             * @param upstream Upstream settings when the service is in server-less mode.
+             * @param upstream The settings for the Upstream when the service is in server-less mode.
              * @return the next definition stage.
              */
             WithCreate withUpstream(ServerlessUpstreamSettings upstream);
         }
+
         /** The stage of the SignalRResource definition allowing to specify networkACLs. */
         interface WithNetworkACLs {
             /**
-             * Specifies the networkACLs property: Network ACLs.
+             * Specifies the networkACLs property: Network ACLs for the resource.
              *
-             * @param networkACLs Network ACLs.
+             * @param networkACLs Network ACLs for the resource.
              * @return the next definition stage.
              */
             WithCreate withNetworkACLs(SignalRNetworkACLs networkACLs);
         }
+
         /** The stage of the SignalRResource definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -442,6 +512,7 @@ public interface SignalRResource {
              */
             WithCreate withPublicNetworkAccess(String publicNetworkAccess);
         }
+
         /** The stage of the SignalRResource definition allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -454,6 +525,7 @@ public interface SignalRResource {
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
         /** The stage of the SignalRResource definition allowing to specify disableAadAuth. */
         interface WithDisableAadAuth {
             /**
@@ -466,7 +538,38 @@ public interface SignalRResource {
              */
             WithCreate withDisableAadAuth(Boolean disableAadAuth);
         }
+
+        /** The stage of the SignalRResource definition allowing to specify regionEndpointEnabled. */
+        interface WithRegionEndpointEnabled {
+            /**
+             * Specifies the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to
+             * "Enabled". When it's Disabled, new connections will not be routed to this endpoint, however existing
+             * connections will not be affected. This property is replica specific. Disable the regional endpoint
+             * without replica is not allowed..
+             *
+             * @param regionEndpointEnabled Enable or disable the regional endpoint. Default to "Enabled". When it's
+             *     Disabled, new connections will not be routed to this endpoint, however existing connections will not
+             *     be affected. This property is replica specific. Disable the regional endpoint without replica is not
+             *     allowed.
+             * @return the next definition stage.
+             */
+            WithCreate withRegionEndpointEnabled(String regionEndpointEnabled);
+        }
+
+        /** The stage of the SignalRResource definition allowing to specify resourceStopped. */
+        interface WithResourceStopped {
+            /**
+             * Specifies the resourceStopped property: Stop or start the resource. Default to "False". When it's true,
+             * the data plane of the resource is shutdown. When it's false, the data plane of the resource is started..
+             *
+             * @param resourceStopped Stop or start the resource. Default to "False". When it's true, the data plane of
+             *     the resource is shutdown. When it's false, the data plane of the resource is started.
+             * @return the next definition stage.
+             */
+            WithCreate withResourceStopped(String resourceStopped);
+        }
     }
+
     /**
      * Begins update for the SignalRResource resource.
      *
@@ -481,13 +584,17 @@ public interface SignalRResource {
             UpdateStages.WithIdentity,
             UpdateStages.WithTls,
             UpdateStages.WithFeatures,
+            UpdateStages.WithLiveTraceConfiguration,
             UpdateStages.WithResourceLogConfiguration,
             UpdateStages.WithCors,
+            UpdateStages.WithServerless,
             UpdateStages.WithUpstream,
             UpdateStages.WithNetworkACLs,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithDisableLocalAuth,
-            UpdateStages.WithDisableAadAuth {
+            UpdateStages.WithDisableAadAuth,
+            UpdateStages.WithRegionEndpointEnabled,
+            UpdateStages.WithResourceStopped {
         /**
          * Executes the update request.
          *
@@ -503,6 +610,7 @@ public interface SignalRResource {
          */
         SignalRResource apply(Context context);
     }
+
     /** The SignalRResource update stages. */
     interface UpdateStages {
         /** The stage of the SignalRResource update allowing to specify tags. */
@@ -515,36 +623,40 @@ public interface SignalRResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the SignalRResource update allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: The billing information of the resource.(e.g. Free, Standard).
+             * Specifies the sku property: The billing information of the resource..
              *
-             * @param sku The billing information of the resource.(e.g. Free, Standard).
+             * @param sku The billing information of the resource.
              * @return the next definition stage.
              */
             Update withSku(ResourceSku sku);
         }
+
         /** The stage of the SignalRResource update allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The managed identity response.
+             * Specifies the identity property: A class represent managed identities used for request and response.
              *
-             * @param identity The managed identity response.
+             * @param identity A class represent managed identities used for request and response.
              * @return the next definition stage.
              */
             Update withIdentity(ManagedIdentity identity);
         }
+
         /** The stage of the SignalRResource update allowing to specify tls. */
         interface WithTls {
             /**
-             * Specifies the tls property: TLS settings..
+             * Specifies the tls property: TLS settings for the resource.
              *
-             * @param tls TLS settings.
+             * @param tls TLS settings for the resource.
              * @return the next definition stage.
              */
             Update withTls(SignalRTlsSettings tls);
         }
+
         /** The stage of the SignalRResource update allowing to specify features. */
         interface WithFeatures {
             /**
@@ -564,22 +676,31 @@ public interface SignalRResource {
              */
             Update withFeatures(List<SignalRFeature> features);
         }
+
+        /** The stage of the SignalRResource update allowing to specify liveTraceConfiguration. */
+        interface WithLiveTraceConfiguration {
+            /**
+             * Specifies the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService
+             * resource..
+             *
+             * @param liveTraceConfiguration Live trace configuration of a Microsoft.SignalRService resource.
+             * @return the next definition stage.
+             */
+            Update withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
+        }
+
         /** The stage of the SignalRResource update allowing to specify resourceLogConfiguration. */
         interface WithResourceLogConfiguration {
             /**
              * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
-             * resource. If resourceLogConfiguration isn't null or empty, it will override options
-             * "EnableConnectivityLog" and "EnableMessagingLogs" in features. Otherwise, use options
-             * "EnableConnectivityLog" and "EnableMessagingLogs" in features..
+             * resource..
              *
-             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource. If
-             *     resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
-             *     "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and
-             *     "EnableMessagingLogs" in features.
+             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource.
              * @return the next definition stage.
              */
             Update withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
         }
+
         /** The stage of the SignalRResource update allowing to specify cors. */
         interface WithCors {
             /**
@@ -590,26 +711,40 @@ public interface SignalRResource {
              */
             Update withCors(SignalRCorsSettings cors);
         }
+
+        /** The stage of the SignalRResource update allowing to specify serverless. */
+        interface WithServerless {
+            /**
+             * Specifies the serverless property: Serverless settings..
+             *
+             * @param serverless Serverless settings.
+             * @return the next definition stage.
+             */
+            Update withServerless(ServerlessSettings serverless);
+        }
+
         /** The stage of the SignalRResource update allowing to specify upstream. */
         interface WithUpstream {
             /**
-             * Specifies the upstream property: Upstream settings when the service is in server-less mode..
+             * Specifies the upstream property: The settings for the Upstream when the service is in server-less mode..
              *
-             * @param upstream Upstream settings when the service is in server-less mode.
+             * @param upstream The settings for the Upstream when the service is in server-less mode.
              * @return the next definition stage.
              */
             Update withUpstream(ServerlessUpstreamSettings upstream);
         }
+
         /** The stage of the SignalRResource update allowing to specify networkACLs. */
         interface WithNetworkACLs {
             /**
-             * Specifies the networkACLs property: Network ACLs.
+             * Specifies the networkACLs property: Network ACLs for the resource.
              *
-             * @param networkACLs Network ACLs.
+             * @param networkACLs Network ACLs for the resource.
              * @return the next definition stage.
              */
             Update withNetworkACLs(SignalRNetworkACLs networkACLs);
         }
+
         /** The stage of the SignalRResource update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -624,6 +759,7 @@ public interface SignalRResource {
              */
             Update withPublicNetworkAccess(String publicNetworkAccess);
         }
+
         /** The stage of the SignalRResource update allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -636,6 +772,7 @@ public interface SignalRResource {
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
         /** The stage of the SignalRResource update allowing to specify disableAadAuth. */
         interface WithDisableAadAuth {
             /**
@@ -648,7 +785,38 @@ public interface SignalRResource {
              */
             Update withDisableAadAuth(Boolean disableAadAuth);
         }
+
+        /** The stage of the SignalRResource update allowing to specify regionEndpointEnabled. */
+        interface WithRegionEndpointEnabled {
+            /**
+             * Specifies the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to
+             * "Enabled". When it's Disabled, new connections will not be routed to this endpoint, however existing
+             * connections will not be affected. This property is replica specific. Disable the regional endpoint
+             * without replica is not allowed..
+             *
+             * @param regionEndpointEnabled Enable or disable the regional endpoint. Default to "Enabled". When it's
+             *     Disabled, new connections will not be routed to this endpoint, however existing connections will not
+             *     be affected. This property is replica specific. Disable the regional endpoint without replica is not
+             *     allowed.
+             * @return the next definition stage.
+             */
+            Update withRegionEndpointEnabled(String regionEndpointEnabled);
+        }
+
+        /** The stage of the SignalRResource update allowing to specify resourceStopped. */
+        interface WithResourceStopped {
+            /**
+             * Specifies the resourceStopped property: Stop or start the resource. Default to "False". When it's true,
+             * the data plane of the resource is shutdown. When it's false, the data plane of the resource is started..
+             *
+             * @param resourceStopped Stop or start the resource. Default to "False". When it's true, the data plane of
+             *     the resource is shutdown. When it's false, the data plane of the resource is started.
+             * @return the next definition stage.
+             */
+            Update withResourceStopped(String resourceStopped);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -667,22 +835,22 @@ public interface SignalRResource {
     /**
      * Get the access keys of the resource.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys of the resource along with {@link Response}.
+     */
+    Response<SignalRKeys> listKeysWithResponse(Context context);
+
+    /**
+     * Get the access keys of the resource.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys of the resource.
      */
     SignalRKeys listKeys();
-
-    /**
-     * Get the access keys of the resource.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the resource.
-     */
-    Response<SignalRKeys> listKeysWithResponse(Context context);
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,11 +15,8 @@ import java.util.Map;
 /** geoCoordinates. */
 @Fluent
 public final class MicrosoftGraphGeoCoordinates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphGeoCoordinates.class);
-
     /*
-     * Optional. The altitude (height), in feet,  above sea level for the item.
-     * Read-only.
+     * Optional. The altitude (height), in feet,  above sea level for the item. Read-only.
      */
     @JsonProperty(value = "altitude")
     private Double altitude;
@@ -41,6 +37,10 @@ public final class MicrosoftGraphGeoCoordinates {
      * geoCoordinates
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphGeoCoordinates class. */
+    public MicrosoftGraphGeoCoordinates() {
+    }
 
     /**
      * Get the altitude property: Optional. The altitude (height), in feet, above sea level for the item. Read-only.

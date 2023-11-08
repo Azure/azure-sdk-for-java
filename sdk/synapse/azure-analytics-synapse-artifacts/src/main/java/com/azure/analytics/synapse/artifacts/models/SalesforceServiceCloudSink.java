@@ -21,24 +21,24 @@ public final class SalesforceServiceCloudSink extends CopySink {
     private SalesforceSinkWriteBehavior writeBehavior;
 
     /*
-     * The name of the external ID field for upsert operation. Default value is
-     * 'Id' column. Type: string (or Expression with resultType string).
+     * The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "externalIdFieldName")
     private Object externalIdFieldName;
 
     /*
-     * The flag indicating whether or not to ignore null values from input
-     * dataset (except key fields) during write operation. Default value is
-     * false. If set it to true, it means ADF will leave the data in the
-     * destination object unchanged when doing upsert/update operation and
-     * insert defined default value when doing insert operation, versus ADF
-     * will update the data in the destination object to NULL when doing
-     * upsert/update operation and insert NULL value when doing insert
-     * operation. Type: boolean (or Expression with resultType boolean).
+     * The flag indicating whether or not to ignore null values from input dataset (except key fields) during write
+     * operation. Default value is false. If set it to true, it means ADF will leave the data in the destination object
+     * unchanged when doing upsert/update operation and insert defined default value when doing insert operation,
+     * versus ADF will update the data in the destination object to NULL when doing upsert/update operation and insert
+     * NULL value when doing insert operation. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
+
+    /** Creates an instance of SalesforceServiceCloudSink class. */
+    public SalesforceServiceCloudSink() {}
 
     /**
      * Get the writeBehavior property: The write behavior for the operation. Default is Insert.
@@ -109,6 +109,41 @@ public final class SalesforceServiceCloudSink extends CopySink {
      */
     public SalesforceServiceCloudSink setIgnoreNullValues(Object ignoreNullValues) {
         this.ignoreNullValues = ignoreNullValues;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

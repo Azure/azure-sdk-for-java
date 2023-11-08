@@ -1,0 +1,658 @@
+{
+    "summary": {
+        "query": "starbucks",
+        "queryType": "NON_NEAR",
+        "queryTime": 50,
+        "numResults": 10,
+        "offset": 0,
+        "totalResults": 23582,
+        "fuzzyLevel": 1
+    },
+    "results": [
+        {
+            "type": "Street",
+            "id": "AU/STR/p0/458525",
+            "score": 2.0962057114,
+            "address": {
+                "streetName": "Starbucks Road",
+                "municipality": "Rupanyup",
+                "countrySecondarySubdivision": "Wimmera",
+                "countrySubdivision": "Victoria",
+                "countryCode": "AU",
+                "country": "Australia",
+                "countryCodeISO3": "AUS",
+                "freeformAddress": "Starbucks Road, RupanyupVictoria,",
+                "localName": "Rupanyup"
+            },
+            "position": {
+                "lat": -36.66683,
+                "lon": 142.64887
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": -36.65885,
+                    "lon": 142.63763
+                },
+                "btmRightPoint": {
+                    "lat": -36.67684,
+                    "lon": 142.66005
+                }
+            }
+        },
+        {
+            "type": "Street",
+            "id": "US/STR/p2/6100530",
+            "score": 2.0754508972,
+            "address": {
+                "streetName": "Starbucks Way",
+                "municipality": "Minden",
+                "countrySecondarySubdivision": "Douglas",
+                "countrySubdivision": "NV",
+                "countrySubdivisionName": "Nevada",
+                "postalCode": "89423",
+                "extendedPostalCode": "89423-8957",
+                "countryCode": "US",
+                "country": "United States",
+                "countryCodeISO3": "USA",
+                "freeformAddress": "Starbucks Way, Minden, NV 89423",
+                "localName": "Minden"
+            },
+            "position": {
+                "lat": 39.0151,
+                "lon": -119.74721
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 39.01985,
+                    "lon": -119.74845
+                },
+                "btmRightPoint": {
+                    "lat": 39.01419,
+                    "lon": -119.7437
+                }
+            }
+        },
+        {
+            "type": "POI",
+            "id": "020009000021527",
+            "score": 2.0745999813,
+            "info": "search:ta:020009000021527-AD",
+            "poi": {
+                "name": "Starbucks",
+                "brands": [
+                    {
+                        "name": "Starbucks"
+                    }
+                ],
+                "categorySet": [
+                    {
+                        "id": 9376006
+                    }
+                ],
+                "categories": [
+                    "café/pub",
+                    "coffee shop"
+                ],
+                "classifications": [
+                    {
+                        "code": "CAFE_PUB",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "coffee shop"
+                            },
+                            {
+                                "nameLocale": "en-US",
+                                "name": "café/pub"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "streetName": "Passatge d'Europa",
+                "municipality": "Andorra La Vella",
+                "postalCode": "AD500",
+                "countryCode": "AD",
+                "country": "Andorra",
+                "countryCodeISO3": "AND",
+                "freeformAddress": "Passatge d'Europa, Andorra La Vella, AD500",
+                "localName": "Andorra La Vella"
+            },
+            "position": {
+                "lat": 42.50808,
+                "lon": 1.53142
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 42.50898,
+                    "lon": 1.5302
+                },
+                "btmRightPoint": {
+                    "lat": 42.50718,
+                    "lon": 1.53264
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 42.5081,
+                        "lon": 1.53149
+                    }
+                }
+            ],
+            "dataSources": {
+                "poiDetails": [
+                    {
+                        "id": "Rm91cnNxdWFyZTo1NzQ1YTljYzQ5OGU0ZjBmOWE3OWRiODU=",
+                        "sourceName": "Foursquare"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "POI",
+            "id": "784009000058115",
+            "score": 2.0745999813,
+            "info": "search:ta:784009000058115-AE",
+            "poi": {
+                "name": "Starbucks",
+                "brands": [
+                    {
+                        "name": "Starbucks"
+                    }
+                ],
+                "categorySet": [
+                    {
+                        "id": 9376006
+                    }
+                ],
+                "categories": [
+                    "café/pub",
+                    "coffee shop"
+                ],
+                "classifications": [
+                    {
+                        "code": "CAFE_PUB",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "coffee shop"
+                            },
+                            {
+                                "nameLocale": "en-US",
+                                "name": "café/pub"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "streetName": "Al Azya-a St",
+                "municipalitySubdivision": "Ugdat Al Ameriya",
+                "municipality": "Al Ain",
+                "countrySubdivision": "Abu Dhabi",
+                "countryCode": "AE",
+                "country": "United Arab Emirates",
+                "countryCodeISO3": "ARE",
+                "freeformAddress": "Al Azya-a St, Al Ain, Abu Dhabi",
+                "localName": "Al Ain"
+            },
+            "position": {
+                "lat": 24.24387,
+                "lon": 55.72759
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 24.24477,
+                    "lon": 55.7266
+                },
+                "btmRightPoint": {
+                    "lat": 24.24297,
+                    "lon": 55.72858
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 24.24347,
+                        "lon": 55.72772
+                    }
+                }
+            ]
+        },
+        {
+            "type": "POI",
+            "id": "784009000271716",
+            "score": 2.0745999813,
+            "info": "search:ta:784009000271716-AE",
+            "poi": {
+                "name": "Starbucks",
+                "brands": [
+                    {
+                        "name": "Starbucks"
+                    }
+                ],
+                "categorySet": [
+                    {
+                        "id": 9376006
+                    }
+                ],
+                "categories": [
+                    "café/pub",
+                    "coffee shop"
+                ],
+                "classifications": [
+                    {
+                        "code": "CAFE_PUB",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "coffee shop"
+                            },
+                            {
+                                "nameLocale": "en-US",
+                                "name": "café/pub"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "streetName": "Sheikh Humaid Bin Rashid Al Nuaimi Street",
+                "municipalitySubdivision": "Rumaila 2",
+                "municipality": "Ajman",
+                "countrySubdivision": "Ajman",
+                "countryCode": "AE",
+                "country": "United Arab Emirates",
+                "countryCodeISO3": "ARE",
+                "freeformAddress": "Sheikh Humaid Bin Rashid Al Nuaimi Street, Ajman, Ajman",
+                "localName": "Ajman"
+            },
+            "position": {
+                "lat": 25.4034,
+                "lon": 55.4292
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 25.4043,
+                    "lon": 55.4282
+                },
+                "btmRightPoint": {
+                    "lat": 25.4025,
+                    "lon": 55.4302
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 25.40349,
+                        "lon": 55.42905
+                    }
+                }
+            ]
+        },
+        {
+            "type": "POI",
+            "id": "784009000048069",
+            "score": 2.0745999813,
+            "info": "search:ta:784009000048069-AE",
+            "poi": {
+                "name": "Starbucks",
+                "brands": [
+                    {
+                        "name": "Starbucks"
+                    }
+                ],
+                "categorySet": [
+                    {
+                        "id": 9376006
+                    }
+                ],
+                "categories": [
+                    "café/pub",
+                    "coffee shop"
+                ],
+                "classifications": [
+                    {
+                        "code": "CAFE_PUB",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "coffee shop"
+                            },
+                            {
+                                "nameLocale": "en-US",
+                                "name": "café/pub"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "municipalitySubdivision": "Jurf 2",
+                "municipality": "Ajman",
+                "countrySubdivision": "Ajman",
+                "countryCode": "AE",
+                "country": "United Arab Emirates",
+                "countryCodeISO3": "ARE",
+                "freeformAddress": "Ajman, Ajman",
+                "localName": "Ajman"
+            },
+            "position": {
+                "lat": 25.40029,
+                "lon": 55.48033
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 25.40119,
+                    "lon": 55.47933
+                },
+                "btmRightPoint": {
+                    "lat": 25.39939,
+                    "lon": 55.48133
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 25.40016,
+                        "lon": 55.48061
+                    }
+                }
+            ]
+        },
+        {
+            "type": "POI",
+            "id": "784009000158713",
+            "score": 2.0745999813,
+            "info": "search:ta:784009000158713-AE",
+            "poi": {
+                "name": "Starbucks",
+                "phone": "+971 4 330 3363",
+                "brands": [
+                    {
+                        "name": "Starbucks"
+                    }
+                ],
+                "categorySet": [
+                    {
+                        "id": 9376006
+                    }
+                ],
+                "url": "www.starbucks.co",
+                "categories": [
+                    "café/pub",
+                    "coffee shop"
+                ],
+                "classifications": [
+                    {
+                        "code": "CAFE_PUB",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "coffee shop"
+                            },
+                            {
+                                "nameLocale": "en-US",
+                                "name": "café/pub"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "municipalitySubdivision": "Trade Centre Second",
+                "municipality": "Dubai",
+                "countrySubdivision": "Dubai",
+                "countryCode": "AE",
+                "country": "United Arab Emirates",
+                "countryCodeISO3": "ARE",
+                "freeformAddress": "Dubai, Dubai",
+                "localName": "Dubai"
+            },
+            "position": {
+                "lat": 25.2171,
+                "lon": 55.2827
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 25.218,
+                    "lon": 55.28171
+                },
+                "btmRightPoint": {
+                    "lat": 25.2162,
+                    "lon": 55.28369
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 25.21691,
+                        "lon": 55.28252
+                    }
+                }
+            ]
+        },
+        {
+            "type": "POI",
+            "id": "784009000044303",
+            "score": 2.0745999813,
+            "info": "search:ta:784009000044303-AE",
+            "poi": {
+                "name": "Starbucks",
+                "brands": [
+                    {
+                        "name": "Starbucks"
+                    }
+                ],
+                "categorySet": [
+                    {
+                        "id": 9376006
+                    }
+                ],
+                "categories": [
+                    "café/pub",
+                    "coffee shop"
+                ],
+                "classifications": [
+                    {
+                        "code": "CAFE_PUB",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "coffee shop"
+                            },
+                            {
+                                "nameLocale": "en-US",
+                                "name": "café/pub"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "streetName": "Baydawi Street",
+                "municipalitySubdivision": "Markaziyah 12",
+                "municipality": "Abu Dhabi",
+                "countrySubdivision": "Abu Dhabi",
+                "countryCode": "AE",
+                "country": "United Arab Emirates",
+                "countryCodeISO3": "ARE",
+                "freeformAddress": "Baydawi Street, Abu Dhabi, Abu Dhabi",
+                "localName": "Abu Dhabi"
+            },
+            "position": {
+                "lat": 24.48832,
+                "lon": 54.35729
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 24.48922,
+                    "lon": 54.3563
+                },
+                "btmRightPoint": {
+                    "lat": 24.48742,
+                    "lon": 54.35828
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 24.48841,
+                        "lon": 54.35742
+                    }
+                }
+            ]
+        },
+        {
+            "type": "POI",
+            "id": "784001000081525",
+            "score": 2.0745999813,
+            "info": "search:ta:784001000081525-AE",
+            "poi": {
+                "name": "Starbucks",
+                "brands": [
+                    {
+                        "name": "Starbucks"
+                    }
+                ],
+                "categorySet": [
+                    {
+                        "id": 9376006
+                    }
+                ],
+                "categories": [
+                    "café/pub",
+                    "coffee shop"
+                ],
+                "classifications": [
+                    {
+                        "code": "CAFE_PUB",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "coffee shop"
+                            },
+                            {
+                                "nameLocale": "en-US",
+                                "name": "café/pub"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "streetName": "Al Satr Street",
+                "municipalitySubdivision": "Madinat Zayed 54",
+                "municipality": "Abu Dhabi",
+                "countrySubdivision": "Abu Dhabi",
+                "countryCode": "AE",
+                "country": "United Arab Emirates",
+                "countryCodeISO3": "ARE",
+                "freeformAddress": "Al Satr Street, Abu Dhabi, Abu Dhabi",
+                "localName": "Abu Dhabi"
+            },
+            "position": {
+                "lat": 24.48906,
+                "lon": 54.37401
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 24.48996,
+                    "lon": 54.37302
+                },
+                "btmRightPoint": {
+                    "lat": 24.48816,
+                    "lon": 54.375
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 24.48918,
+                        "lon": 54.37416
+                    }
+                }
+            ]
+        },
+        {
+            "type": "POI",
+            "id": "784001000029719",
+            "score": 2.0745999813,
+            "info": "search:ta:784001000029719-AE",
+            "poi": {
+                "name": "Starbucks",
+                "brands": [
+                    {
+                        "name": "Starbucks"
+                    }
+                ],
+                "categorySet": [
+                    {
+                        "id": 9376006
+                    }
+                ],
+                "categories": [
+                    "café/pub",
+                    "coffee shop"
+                ],
+                "classifications": [
+                    {
+                        "code": "CAFE_PUB",
+                        "names": [
+                            {
+                                "nameLocale": "en-US",
+                                "name": "coffee shop"
+                            },
+                            {
+                                "nameLocale": "en-US",
+                                "name": "café/pub"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "address": {
+                "municipalitySubdivision": "Al Dhafrah 35",
+                "municipality": "Abu Dhabi",
+                "countrySubdivision": "Abu Dhabi",
+                "countryCode": "AE",
+                "country": "United Arab Emirates",
+                "countryCodeISO3": "ARE",
+                "freeformAddress": "Abu Dhabi, Abu Dhabi",
+                "localName": "Abu Dhabi"
+            },
+            "position": {
+                "lat": 24.47763,
+                "lon": 54.37202
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 24.47853,
+                    "lon": 54.37103
+                },
+                "btmRightPoint": {
+                    "lat": 24.47673,
+                    "lon": 54.37301
+                }
+            },
+            "entryPoints": [
+                {
+                    "type": "main",
+                    "position": {
+                        "lat": 24.47757,
+                        "lon": 54.37195
+                    }
+                }
+            ]
+        }
+    ]
+}

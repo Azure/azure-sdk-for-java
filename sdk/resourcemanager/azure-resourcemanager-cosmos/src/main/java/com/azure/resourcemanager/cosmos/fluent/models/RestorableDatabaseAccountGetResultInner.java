@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ApiType;
 import com.azure.resourcemanager.cosmos.models.RestorableLocationResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** A Azure Cosmos DB restorable database account. */
 @Fluent
 public final class RestorableDatabaseAccountGetResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDatabaseAccountGetResultInner.class);
-
     /*
      * The properties of a restorable database account.
      */
@@ -47,6 +43,10 @@ public final class RestorableDatabaseAccountGetResultInner {
      */
     @JsonProperty(value = "location")
     private String location;
+
+    /** Creates an instance of RestorableDatabaseAccountGetResultInner class. */
+    public RestorableDatabaseAccountGetResultInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a restorable database account.
@@ -172,6 +172,31 @@ public final class RestorableDatabaseAccountGetResultInner {
             this.innerProperties = new RestorableDatabaseAccountProperties();
         }
         this.innerProperties().withDeletionTime(deletionTime);
+        return this;
+    }
+
+    /**
+     * Get the oldestRestorableTime property: The least recent time at which the database account can be restored to
+     * (ISO-8601 format).
+     *
+     * @return the oldestRestorableTime value.
+     */
+    public OffsetDateTime oldestRestorableTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().oldestRestorableTime();
+    }
+
+    /**
+     * Set the oldestRestorableTime property: The least recent time at which the database account can be restored to
+     * (ISO-8601 format).
+     *
+     * @param oldestRestorableTime the oldestRestorableTime value to set.
+     * @return the RestorableDatabaseAccountGetResultInner object itself.
+     */
+    public RestorableDatabaseAccountGetResultInner withOldestRestorableTime(OffsetDateTime oldestRestorableTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDatabaseAccountProperties();
+        }
+        this.innerProperties().withOldestRestorableTime(oldestRestorableTime);
         return this;
     }
 

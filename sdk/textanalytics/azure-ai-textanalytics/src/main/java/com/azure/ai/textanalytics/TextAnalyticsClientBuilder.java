@@ -4,6 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.Constants;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -36,9 +38,12 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -48,15 +53,13 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link TextAnalyticsClient TextAnalyticsClients}
- * and {@link TextAnalyticsAsyncClient TextAnalyticsAsyncClients}, call {@link #buildClient()} buildClient} and {@link
+ * This class provides a fluent builder API to help instantiation of {@link TextAnalyticsClient TextAnalyticsClient}
+ * and {@link TextAnalyticsAsyncClient TextAnalyticsAsyncClient}, call {@link #buildClient()} buildClient} and {@link
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
- * <p>
- * The client needs the service endpoint of the Azure Text Analytics to access the resource service. {@link
+ * <p>The client needs the service endpoint of the Azure Text Analytics to access the resource service. {@link
  * #credential(AzureKeyCredential)} or {@link #credential(TokenCredential) credential(TokenCredential)} give the builder
- * access credential.
- * </p>
+ * access credential.</p>
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  *
@@ -80,12 +83,10 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.instantiation -->
  *
- * <p>
- * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
+ * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
  * way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and set the service
  * endpoint with {@link #endpoint(String) this}. Using a pipeline requires additional setup but allows for finer control
- * on how the {@link TextAnalyticsClient} and {@link TextAnalyticsAsyncClient} is built.
- * </p>
+ * on how the {@link TextAnalyticsClient} and {@link TextAnalyticsAsyncClient} is built.</p>
  *
  * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.pipeline.instantiation -->
  * <pre>
@@ -121,7 +122,7 @@ public final class TextAnalyticsClientBuilder implements
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
     private static final HttpHeaders DEFAULT_HTTP_HEADERS = new HttpHeaders();
-
+    private static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     private final ClientLogger logger = new ClientLogger(TextAnalyticsClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -147,6 +148,13 @@ public final class TextAnalyticsClientBuilder implements
         Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
         CLIENT_NAME = properties.getOrDefault(NAME, "UnknownName");
         CLIENT_VERSION = properties.getOrDefault(VERSION, "UnknownVersion");
+    }
+
+    /**
+     * Construct a {@link TextAnalyticsClientBuilder} object.
+     */
+    public TextAnalyticsClientBuilder() {
+
     }
 
     /**
@@ -244,20 +252,41 @@ public final class TextAnalyticsClientBuilder implements
 
             policies.add(new HttpLoggingPolicy(buildLogOptions));
 
+            TracingOptions tracingOptions = null;
+            if (clientOptions != null) {
+                tracingOptions = clientOptions.getTracingOptions();
+            }
+
+            Tracer tracer = TracerProvider.getDefaultProvider()
+                .createTracer(CLIENT_NAME, CLIENT_VERSION, COGNITIVE_TRACING_NAMESPACE_VALUE, tracingOptions);
+
             pipeline = new HttpPipelineBuilder()
                 .clientOptions(buildClientOptions)
                 .httpClient(httpClient)
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .tracer(tracer)
                 .build();
         }
 
-        final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
+        if (!isConsolidatedServiceVersion(version)) {
+            final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
+                                                                 .endpoint(endpoint)
+                                                                 .apiVersion(serviceVersion.getVersion())
+                                                                 .pipeline(pipeline)
+                                                                 .buildClient();
 
-        return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
+            return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
+        } else {
+            final MicrosoftCognitiveLanguageServiceTextAnalysisImpl batchApiTextAnalyticsClient =
+                new MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder()
+                    .endpoint(endpoint)
+                    .apiVersion(serviceVersion.getVersion())
+                    .pipeline(pipeline)
+                    .buildClient();
+
+            return new TextAnalyticsAsyncClient(batchApiTextAnalyticsClient, serviceVersion,
+                defaultCountryHint, defaultLanguage);
+        }
     }
 
     /**
@@ -534,5 +563,13 @@ public final class TextAnalyticsClientBuilder implements
     public TextAnalyticsClientBuilder serviceVersion(TextAnalyticsServiceVersion version) {
         this.version = version;
         return this;
+    }
+
+    private boolean isConsolidatedServiceVersion(TextAnalyticsServiceVersion serviceVersion) {
+        if (serviceVersion == null) {
+            serviceVersion = TextAnalyticsServiceVersion.V2022_05_01;
+        }
+        return !(TextAnalyticsServiceVersion.V3_0 == serviceVersion
+                     || TextAnalyticsServiceVersion.V3_1 == serviceVersion);
     }
 }

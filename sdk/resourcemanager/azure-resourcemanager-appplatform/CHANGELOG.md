@@ -1,6 +1,6 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.33.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,195 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.30.0 (2023-08-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.29.0 (2023-07-28)
+
+### Bugs Fixed
+
+- Fixed `SpringApp` creation failure for some pricing tiers with default settings.
+- Fixed a bug that calling `withActivation` multiple times during `SpringAppDeployment` creation would result in
+  multiple REST API calls.
+
+## 2.29.0-beta.1 (2023-07-21)
+
+- Use preview `api-version` `2023-03-01-preview`.
+
+## 2.28.0 (2023-06-25)
+
+### Breaking Changes
+
+- Removed `withFqdn` from `AppResourceProperties` as it's never functional in the backend.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-12-01`.
+
+## 2.27.0 (2023-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.26.0-beta.1 (2023-04-17)
+
+Preview release for api-version `2023-03-01-preview`.
+
+## 2.25.0 (2023-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.22.0 (2022-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.21.0 (2022-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.20.0 (2022-10-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.19.0 (2022-09-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.18.0 (2022-08-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.17.0 (2022-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.16.0 (2022-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.15.0 (2022-05-25)
+
+### Features Added
+
+- Supported Enterprise Tier `Configuration Service`.
+- Supported Enterprise Tier `Build Service`.
+- Supported Enterprise Tier binding `Spring App` to `Configuration Service`.
+- Supported Enterprise Tier `Spring App Deployment` with `Jar` and `Maven Source Code`.
+- Supported `Java_17` runtime for all tiers.
+- Supported `jvmOptions()` in `SpringAppDeployment` for all tiers.
+- Supported Enterprise Tier `runtimeVersion()` in `SpringAppDeployment`.
+- Supported Enterprise Tier binding `Spring App` to `Service Registry`.
+
+### Breaking Changes
+
+- Removed `createdTime` from `AppResourceProperties` and `DeploymentResourceProperties`.
+- Removed `activeDeploymentName` from `AppResourceProperties`.
+- Removed `appName` from `DeploymentResourceProperties`.
+- Removed `type` from `UserSourceInfo`.
+- Moved `relativePath` from `UserSourceInfo` to `UploadedUserSourceInfo`.
+- Moved `runtimeVersion` from `DeploymentSettings` to `JarUploadedUserSourceInfo`, `SourceUploadedUserSourceInfo` and `NetCoreZipUploadedUserSourceInfo`.
+- Moved `artifactSelector` from `UserSourceInfo` to `SourceUploadedUserSourceInfo`.
+- Moved `jvmOptions` from `DeploymentSettings` to `JarUploadedUserSourceInfo`.
+- Moved `cpu` from `DeploymentSettings` to `ResourceRequests` and changed type from `Integer` to `String`.
+- Moved `memoryInGB` from `DeploymentSettings` to `ResourceRequests`, renamed to `memory` and changed type from `Integer` to `String`.
+- Added a new parameter for PATCH in `SpringService` update.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-04-01`.
+
+## 2.14.0 (2022-04-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.13.0 (2022-03-11)
 

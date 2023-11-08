@@ -15,33 +15,41 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.support.fluent.ChatTranscriptsClient;
+import com.azure.resourcemanager.support.fluent.ChatTranscriptsNoSubscriptionsClient;
 import com.azure.resourcemanager.support.fluent.CommunicationsClient;
+import com.azure.resourcemanager.support.fluent.CommunicationsNoSubscriptionsClient;
+import com.azure.resourcemanager.support.fluent.FileWorkspacesClient;
+import com.azure.resourcemanager.support.fluent.FileWorkspacesNoSubscriptionsClient;
+import com.azure.resourcemanager.support.fluent.FilesClient;
+import com.azure.resourcemanager.support.fluent.FilesNoSubscriptionsClient;
 import com.azure.resourcemanager.support.fluent.MicrosoftSupport;
 import com.azure.resourcemanager.support.fluent.OperationsClient;
 import com.azure.resourcemanager.support.fluent.ProblemClassificationsClient;
 import com.azure.resourcemanager.support.fluent.ServicesClient;
+import com.azure.resourcemanager.support.fluent.SupportTicketChatTranscriptsNoSubscriptionsClient;
+import com.azure.resourcemanager.support.fluent.SupportTicketCommunicationsNoSubscriptionsClient;
 import com.azure.resourcemanager.support.fluent.SupportTicketsClient;
+import com.azure.resourcemanager.support.fluent.SupportTicketsNoSubscriptionsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the MicrosoftSupportImpl type. */
 @ServiceClient(builder = MicrosoftSupportBuilder.class)
 public final class MicrosoftSupportImpl implements MicrosoftSupport {
-    private final ClientLogger logger = new ClientLogger(MicrosoftSupportImpl.class);
-
     /** Azure subscription Id. */
     private final String subscriptionId;
 
@@ -162,6 +170,18 @@ public final class MicrosoftSupportImpl implements MicrosoftSupport {
         return this.supportTickets;
     }
 
+    /** The SupportTicketsNoSubscriptionsClient object to access its operations. */
+    private final SupportTicketsNoSubscriptionsClient supportTicketsNoSubscriptions;
+
+    /**
+     * Gets the SupportTicketsNoSubscriptionsClient object to access its operations.
+     *
+     * @return the SupportTicketsNoSubscriptionsClient object.
+     */
+    public SupportTicketsNoSubscriptionsClient getSupportTicketsNoSubscriptions() {
+        return this.supportTicketsNoSubscriptions;
+    }
+
     /** The CommunicationsClient object to access its operations. */
     private final CommunicationsClient communications;
 
@@ -172,6 +192,114 @@ public final class MicrosoftSupportImpl implements MicrosoftSupport {
      */
     public CommunicationsClient getCommunications() {
         return this.communications;
+    }
+
+    /** The CommunicationsNoSubscriptionsClient object to access its operations. */
+    private final CommunicationsNoSubscriptionsClient communicationsNoSubscriptions;
+
+    /**
+     * Gets the CommunicationsNoSubscriptionsClient object to access its operations.
+     *
+     * @return the CommunicationsNoSubscriptionsClient object.
+     */
+    public CommunicationsNoSubscriptionsClient getCommunicationsNoSubscriptions() {
+        return this.communicationsNoSubscriptions;
+    }
+
+    /** The SupportTicketCommunicationsNoSubscriptionsClient object to access its operations. */
+    private final SupportTicketCommunicationsNoSubscriptionsClient supportTicketCommunicationsNoSubscriptions;
+
+    /**
+     * Gets the SupportTicketCommunicationsNoSubscriptionsClient object to access its operations.
+     *
+     * @return the SupportTicketCommunicationsNoSubscriptionsClient object.
+     */
+    public SupportTicketCommunicationsNoSubscriptionsClient getSupportTicketCommunicationsNoSubscriptions() {
+        return this.supportTicketCommunicationsNoSubscriptions;
+    }
+
+    /** The ChatTranscriptsClient object to access its operations. */
+    private final ChatTranscriptsClient chatTranscripts;
+
+    /**
+     * Gets the ChatTranscriptsClient object to access its operations.
+     *
+     * @return the ChatTranscriptsClient object.
+     */
+    public ChatTranscriptsClient getChatTranscripts() {
+        return this.chatTranscripts;
+    }
+
+    /** The SupportTicketChatTranscriptsNoSubscriptionsClient object to access its operations. */
+    private final SupportTicketChatTranscriptsNoSubscriptionsClient supportTicketChatTranscriptsNoSubscriptions;
+
+    /**
+     * Gets the SupportTicketChatTranscriptsNoSubscriptionsClient object to access its operations.
+     *
+     * @return the SupportTicketChatTranscriptsNoSubscriptionsClient object.
+     */
+    public SupportTicketChatTranscriptsNoSubscriptionsClient getSupportTicketChatTranscriptsNoSubscriptions() {
+        return this.supportTicketChatTranscriptsNoSubscriptions;
+    }
+
+    /** The ChatTranscriptsNoSubscriptionsClient object to access its operations. */
+    private final ChatTranscriptsNoSubscriptionsClient chatTranscriptsNoSubscriptions;
+
+    /**
+     * Gets the ChatTranscriptsNoSubscriptionsClient object to access its operations.
+     *
+     * @return the ChatTranscriptsNoSubscriptionsClient object.
+     */
+    public ChatTranscriptsNoSubscriptionsClient getChatTranscriptsNoSubscriptions() {
+        return this.chatTranscriptsNoSubscriptions;
+    }
+
+    /** The FileWorkspacesClient object to access its operations. */
+    private final FileWorkspacesClient fileWorkspaces;
+
+    /**
+     * Gets the FileWorkspacesClient object to access its operations.
+     *
+     * @return the FileWorkspacesClient object.
+     */
+    public FileWorkspacesClient getFileWorkspaces() {
+        return this.fileWorkspaces;
+    }
+
+    /** The FileWorkspacesNoSubscriptionsClient object to access its operations. */
+    private final FileWorkspacesNoSubscriptionsClient fileWorkspacesNoSubscriptions;
+
+    /**
+     * Gets the FileWorkspacesNoSubscriptionsClient object to access its operations.
+     *
+     * @return the FileWorkspacesNoSubscriptionsClient object.
+     */
+    public FileWorkspacesNoSubscriptionsClient getFileWorkspacesNoSubscriptions() {
+        return this.fileWorkspacesNoSubscriptions;
+    }
+
+    /** The FilesClient object to access its operations. */
+    private final FilesClient files;
+
+    /**
+     * Gets the FilesClient object to access its operations.
+     *
+     * @return the FilesClient object.
+     */
+    public FilesClient getFiles() {
+        return this.files;
+    }
+
+    /** The FilesNoSubscriptionsClient object to access its operations. */
+    private final FilesNoSubscriptionsClient filesNoSubscriptions;
+
+    /**
+     * Gets the FilesNoSubscriptionsClient object to access its operations.
+     *
+     * @return the FilesNoSubscriptionsClient object.
+     */
+    public FilesNoSubscriptionsClient getFilesNoSubscriptions() {
+        return this.filesNoSubscriptions;
     }
 
     /**
@@ -196,12 +324,24 @@ public final class MicrosoftSupportImpl implements MicrosoftSupport {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-04-01";
+        this.apiVersion = "2022-09-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.services = new ServicesClientImpl(this);
         this.problemClassifications = new ProblemClassificationsClientImpl(this);
         this.supportTickets = new SupportTicketsClientImpl(this);
+        this.supportTicketsNoSubscriptions = new SupportTicketsNoSubscriptionsClientImpl(this);
         this.communications = new CommunicationsClientImpl(this);
+        this.communicationsNoSubscriptions = new CommunicationsNoSubscriptionsClientImpl(this);
+        this.supportTicketCommunicationsNoSubscriptions =
+            new SupportTicketCommunicationsNoSubscriptionsClientImpl(this);
+        this.chatTranscripts = new ChatTranscriptsClientImpl(this);
+        this.supportTicketChatTranscriptsNoSubscriptions =
+            new SupportTicketChatTranscriptsNoSubscriptionsClientImpl(this);
+        this.chatTranscriptsNoSubscriptions = new ChatTranscriptsNoSubscriptionsClientImpl(this);
+        this.fileWorkspaces = new FileWorkspacesClientImpl(this);
+        this.fileWorkspacesNoSubscriptions = new FileWorkspacesNoSubscriptionsClientImpl(this);
+        this.files = new FilesClientImpl(this);
+        this.filesNoSubscriptions = new FilesNoSubscriptionsClientImpl(this);
     }
 
     /**
@@ -220,10 +360,7 @@ public final class MicrosoftSupportImpl implements MicrosoftSupport {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -287,7 +424,7 @@ public final class MicrosoftSupportImpl implements MicrosoftSupport {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -346,4 +483,6 @@ public final class MicrosoftSupportImpl implements MicrosoftSupport {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MicrosoftSupportImpl.class);
 }

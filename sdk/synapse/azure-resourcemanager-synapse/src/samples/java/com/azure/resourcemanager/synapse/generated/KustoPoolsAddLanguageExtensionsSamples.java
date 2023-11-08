@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.LanguageExtensionInner;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionName;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
@@ -33,6 +32,6 @@ public final class KustoPoolsAddLanguageExtensionsSamples {
                             .asList(
                                 new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
                                 new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

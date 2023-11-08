@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Dynamics AX linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,50 +19,47 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class DynamicsAXLinkedService extends LinkedService {
     /*
-     * The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData
-     * endpoint.
+     * The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
-     * Specify the application's client ID. Type: string (or Expression with
-     * resultType string).
+     * Specify the application's client ID. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId", required = true)
     private Object servicePrincipalId;
 
     /*
-     * Specify the application's key. Mark this field as a SecureString to
-     * store it securely in Data Factory, or reference a secret stored in Azure
-     * Key Vault. Type: string (or Expression with resultType string).
+     * Specify the application's key. Mark this field as a SecureString to store it securely in Data Factory, or
+     * reference a secret stored in Azure Key Vault. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalKey", required = true)
     private SecretBase servicePrincipalKey;
 
     /*
-     * Specify the tenant information (domain name or tenant ID) under which
-     * your application resides. Retrieve it by hovering the mouse in the
-     * top-right corner of the Azure portal. Type: string (or Expression with
-     * resultType string).
+     * Specify the tenant information (domain name or tenant ID) under which your application resides. Retrieve it by
+     * hovering the mouse in the top-right corner of the Azure portal. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.tenant", required = true)
     private Object tenant;
 
     /*
-     * Specify the resource you are requesting authorization. Type: string (or
-     * Expression with resultType string).
+     * Specify the resource you are requesting authorization. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.aadResourceId", required = true)
     private Object aadResourceId;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of DynamicsAXLinkedService class. */
+    public DynamicsAXLinkedService() {}
 
     /**
      * Get the url property: The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
@@ -193,6 +192,34 @@ public class DynamicsAXLinkedService extends LinkedService {
      */
     public DynamicsAXLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsAXLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsAXLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsAXLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsAXLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

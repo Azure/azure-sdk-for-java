@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.models.QueryTextInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of query texts. */
 @Immutable
 public final class QueryTextsResultList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTextsResultList.class);
-
     /*
      * The list of query texts.
      */
@@ -27,6 +23,10 @@ public final class QueryTextsResultList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of QueryTextsResultList class. */
+    public QueryTextsResultList() {
+    }
 
     /**
      * Get the value property: The list of query texts.

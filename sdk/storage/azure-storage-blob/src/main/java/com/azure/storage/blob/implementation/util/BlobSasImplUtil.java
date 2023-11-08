@@ -254,7 +254,7 @@ public class BlobSasImplUtil {
      * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
      * https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
      */
-    private void ensureState() {
+    public void ensureState() {
         if (identifier == null) {
             if (expiryTime == null || permissions == null) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
@@ -297,8 +297,8 @@ public class BlobSasImplUtil {
         // Container: "/blob/account/containername"
         // Blob:      "/blob/account/containername/blobname"
         return CoreUtils.isNullOrEmpty(blobName)
-            ? String.format("/blob/%s/%s", account, containerName)
-            : String.format("/blob/%s/%s/%s", account, containerName, blobName.replace("\\", "/"));
+            ? "/blob/" + account + "/" + containerName
+            : "/blob/" + account + "/" + containerName + "/" + blobName.replace('\\', '/');
     }
 
     private String stringToSign(String canonicalName) {
@@ -422,5 +422,21 @@ public class BlobSasImplUtil {
                 this.contentType == null ? "" : this.contentType
             );
         }
+    }
+
+    /**
+     * Gets the resource string for SAS token signing.
+     * @return
+     */
+    public String getResource() {
+        return this.resource;
+    }
+
+    /**
+     * Gets the permissions string for SAS token signing.
+     * @return
+     */
+    public String getPermissions() {
+        return this.permissions;
     }
 }

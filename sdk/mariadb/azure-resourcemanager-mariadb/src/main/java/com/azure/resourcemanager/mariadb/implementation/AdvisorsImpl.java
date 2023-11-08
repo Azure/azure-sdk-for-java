@@ -13,10 +13,9 @@ import com.azure.resourcemanager.mariadb.fluent.AdvisorsClient;
 import com.azure.resourcemanager.mariadb.fluent.models.AdvisorInner;
 import com.azure.resourcemanager.mariadb.models.Advisor;
 import com.azure.resourcemanager.mariadb.models.Advisors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AdvisorsImpl implements Advisors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvisorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AdvisorsImpl.class);
 
     private final AdvisorsClient innerClient;
 
@@ -25,15 +24,6 @@ public final class AdvisorsImpl implements Advisors {
     public AdvisorsImpl(AdvisorsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public Advisor get(String resourceGroupName, String serverName, String advisorName) {
-        AdvisorInner inner = this.serviceClient().get(resourceGroupName, serverName, advisorName);
-        if (inner != null) {
-            return new AdvisorImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<Advisor> getWithResponse(
@@ -46,6 +36,15 @@ public final class AdvisorsImpl implements Advisors {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AdvisorImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Advisor get(String resourceGroupName, String serverName, String advisorName) {
+        AdvisorInner inner = this.serviceClient().get(resourceGroupName, serverName, advisorName);
+        if (inner != null) {
+            return new AdvisorImpl(inner, this.manager());
         } else {
             return null;
         }

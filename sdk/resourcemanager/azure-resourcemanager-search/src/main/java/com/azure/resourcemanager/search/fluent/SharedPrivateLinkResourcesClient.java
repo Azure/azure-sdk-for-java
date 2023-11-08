@@ -14,7 +14,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.search.fluent.models.SharedPrivateLinkResourceInner;
-import com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProperties;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -28,26 +27,25 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return describes a Shared Private Link Resource managed by the search service along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
-        UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties);
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
+        UUID clientRequestId);
 
     /**
      * Initiates the creation or update of a shared private link resource managed by the search service in the given
@@ -55,26 +53,25 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return the {@link PollerFlux} for polling of describes a Shared Private Link Resource managed by the search
+     *     service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
-        UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties);
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
+        UUID clientRequestId);
 
     /**
      * Initiates the creation or update of a shared private link resource managed by the search service in the given
@@ -82,26 +79,45 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return the {@link PollerFlux} for polling of describes a Shared Private Link Resource managed by the search
+     *     service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String searchServiceName,
+        String sharedPrivateLinkResourceName,
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource);
+
+    /**
+     * Initiates the creation or update of a shared private link resource managed by the search service in the given
+     * resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     *     value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes a Shared Private Link Resource managed by the search
+     *     service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
-        UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties);
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource);
 
     /**
      * Initiates the creation or update of a shared private link resource managed by the search service in the given
@@ -109,27 +125,26 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return the {@link SyncPoller} for polling of describes a Shared Private Link Resource managed by the search
+     *     service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
         UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties,
         Context context);
 
     /**
@@ -138,26 +153,25 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return describes a Shared Private Link Resource managed by the search service on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SharedPrivateLinkResourceInner> createOrUpdateAsync(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
-        UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties);
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
+        UUID clientRequestId);
 
     /**
      * Initiates the creation or update of a shared private link resource managed by the search service in the given
@@ -165,18 +179,22 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return describes a Shared Private Link Resource managed by the search service on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SharedPrivateLinkResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName);
+        String resourceGroupName,
+        String searchServiceName,
+        String sharedPrivateLinkResourceName,
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource);
 
     /**
      * Initiates the creation or update of a shared private link resource managed by the search service in the given
@@ -184,26 +202,21 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return describes a Shared Private Link Resource managed by the search service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SharedPrivateLinkResourceInner createOrUpdate(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
-        UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties);
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource);
 
     /**
      * Initiates the creation or update of a shared private link resource managed by the search service in the given
@@ -211,46 +224,25 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedPrivateLinkResourceInner createOrUpdate(
-        String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName);
-
-    /**
-     * Initiates the creation or update of a shared private link resource managed by the search service in the given
-     * resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return describes a Shared Private Link Resource managed by the search service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SharedPrivateLinkResourceInner createOrUpdate(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
         UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties,
         Context context);
 
     /**
@@ -258,17 +250,16 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource
-     *     group.
+     * @return the details of the shared private link resource managed by the search service in the given resource group
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(
@@ -279,36 +270,14 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource
-     *     group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SharedPrivateLinkResourceInner> getAsync(
-        String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName, UUID clientRequestId);
-
-    /**
-     * Gets the details of the shared private link resource managed by the search service in the given resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource
-     *     group.
+     * @return the details of the shared private link resource managed by the search service in the given resource group
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SharedPrivateLinkResourceInner> getAsync(
@@ -319,10 +288,34 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
+     *     included in response information as a way to track the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the shared private link resource managed by the search service in the given resource group
+     *     along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SharedPrivateLinkResourceInner> getWithResponse(
+        String resourceGroupName,
+        String searchServiceName,
+        String sharedPrivateLinkResourceName,
+        UUID clientRequestId,
+        Context context);
+
+    /**
+     * Gets the details of the shared private link resource managed by the search service in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     *     value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -334,46 +327,19 @@ public interface SharedPrivateLinkResourcesClient {
         String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName);
 
     /**
-     * Gets the details of the shared private link resource managed by the search service in the given resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource
-     *     group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedPrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName,
-        String searchServiceName,
-        String sharedPrivateLinkResourceName,
-        UUID clientRequestId,
-        Context context);
-
-    /**
      * Initiates the deletion of the shared private link resource from the search service.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -384,18 +350,17 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName, UUID clientRequestId);
 
@@ -404,39 +369,52 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName, UUID clientRequestId);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName);
 
     /**
      * Initiates the deletion of the shared private link resource from the search service.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName);
+
+    /**
+     * Initiates the deletion of the shared private link resource from the search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
+     *     value from the Azure Resource Manager API or the portal.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String searchServiceName,
@@ -449,16 +427,15 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(
@@ -469,14 +446,13 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName);
@@ -486,29 +462,9 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName, UUID clientRequestId);
-
-    /**
-     * Initiates the deletion of the shared private link resource from the search service.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -521,10 +477,9 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
-     *     Search service within the specified resource group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
+     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the search service
+     *     within the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @param context The context to associate with this operation.
@@ -545,14 +500,14 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SharedPrivateLinkResourceInner> listByServiceAsync(
@@ -563,12 +518,12 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SharedPrivateLinkResourceInner> listByServiceAsync(String resourceGroupName, String searchServiceName);
@@ -578,12 +533,12 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SharedPrivateLinkResourceInner> listByService(String resourceGroupName, String searchServiceName);
@@ -593,15 +548,15 @@ public interface SharedPrivateLinkResourcesClient {
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
+     * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SharedPrivateLinkResourceInner> listByService(

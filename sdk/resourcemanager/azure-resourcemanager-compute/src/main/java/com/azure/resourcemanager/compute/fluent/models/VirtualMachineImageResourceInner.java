@@ -28,8 +28,8 @@ public class VirtualMachineImageResourceInner extends SubResource {
     private String location;
 
     /*
-     * Specifies the tags that are assigned to the virtual machine. For more
-     * information about using tags, see [Using tags to organize your Azure
+     * Specifies the tags that are assigned to the virtual machine. For more information about using tags, see [Using
+     * tags to organize your Azure
      * resources](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md).
      */
     @JsonProperty(value = "tags")
@@ -41,6 +41,10 @@ public class VirtualMachineImageResourceInner extends SubResource {
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
+
+    /** Creates an instance of VirtualMachineImageResourceInner class. */
+    public VirtualMachineImageResourceInner() {
+    }
 
     /**
      * Get the name property: The name of the resource.

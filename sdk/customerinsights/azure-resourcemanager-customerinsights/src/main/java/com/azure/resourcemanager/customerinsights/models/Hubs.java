@@ -38,6 +38,19 @@ public interface Hubs {
      *
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified hub along with {@link Response}.
+     */
+    Response<Hub> getByResourceGroupWithResponse(String resourceGroupName, String hubName, Context context);
+
+    /**
+     * Gets information about the specified hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -46,26 +59,13 @@ public interface Hubs {
     Hub getByResourceGroup(String resourceGroupName, String hubName);
 
     /**
-     * Gets information about the specified hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified hub.
-     */
-    Response<Hub> getByResourceGroupWithResponse(String resourceGroupName, String hubName, Context context);
-
-    /**
      * Gets all the hubs in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hubs in a resource group.
+     * @return all the hubs in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Hub> listByResourceGroup(String resourceGroupName);
 
@@ -77,7 +77,7 @@ public interface Hubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hubs in a resource group.
+     * @return all the hubs in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Hub> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -86,7 +86,7 @@ public interface Hubs {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hubs in the specified subscription.
+     * @return all hubs in the specified subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Hub> list();
 
@@ -97,7 +97,7 @@ public interface Hubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hubs in the specified subscription.
+     * @return all hubs in the specified subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Hub> list(Context context);
 
@@ -108,7 +108,7 @@ public interface Hubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified hub.
+     * @return information about the specified hub along with {@link Response}.
      */
     Hub getById(String id);
 
@@ -120,7 +120,7 @@ public interface Hubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified hub.
+     * @return information about the specified hub along with {@link Response}.
      */
     Response<Hub> getByIdWithResponse(String id, Context context);
 

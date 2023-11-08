@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The LogzSingleSignOnProperties model. */
 @Fluent
 public final class LogzSingleSignOnProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogzSingleSignOnProperties.class);
-
     /*
      * Various states of the SSO resource
      */
@@ -37,6 +33,10 @@ public final class LogzSingleSignOnProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of LogzSingleSignOnProperties class. */
+    public LogzSingleSignOnProperties() {
+    }
 
     /**
      * Get the singleSignOnState property: Various states of the SSO resource.

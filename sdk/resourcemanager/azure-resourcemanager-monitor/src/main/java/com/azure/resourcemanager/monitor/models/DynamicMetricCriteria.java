@@ -6,7 +6,6 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import java.util.List;
 @JsonTypeName("DynamicThresholdCriterion")
 @Fluent
 public final class DynamicMetricCriteria extends MultiMetricCriteria {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicMetricCriteria.class);
-
     /*
      * The operator used to compare the metric value against the threshold.
      */
@@ -27,25 +24,28 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
     private DynamicThresholdOperator operator;
 
     /*
-     * The extent of deviation required to trigger an alert. This will affect
-     * how tight the threshold is to the metric series pattern.
+     * The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric
+     * series pattern.
      */
     @JsonProperty(value = "alertSensitivity", required = true)
     private DynamicThresholdSensitivity alertSensitivity;
 
     /*
-     * The minimum number of violations required within the selected lookback
-     * time window required to raise an alert.
+     * The minimum number of violations required within the selected lookback time window required to raise an alert.
      */
     @JsonProperty(value = "failingPeriods", required = true)
     private DynamicThresholdFailingPeriods failingPeriods;
 
     /*
-     * Use this option to set the date from which to start learning the metric
-     * historical data and calculate the dynamic thresholds (in ISO8601 format)
+     * Use this option to set the date from which to start learning the metric historical data and calculate the
+     * dynamic thresholds (in ISO8601 format)
      */
     @JsonProperty(value = "ignoreDataBefore")
     private OffsetDateTime ignoreDataBefore;
+
+    /** Creates an instance of DynamicMetricCriteria class. */
+    public DynamicMetricCriteria() {
+    }
 
     /**
      * Get the operator property: The operator used to compare the metric value against the threshold.
@@ -184,18 +184,18 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
     public void validate() {
         super.validate();
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model DynamicMetricCriteria"));
         }
         if (alertSensitivity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property alertSensitivity in model DynamicMetricCriteria"));
         }
         if (failingPeriods() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property failingPeriods in model DynamicMetricCriteria"));
@@ -203,4 +203,6 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
             failingPeriods().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DynamicMetricCriteria.class);
 }

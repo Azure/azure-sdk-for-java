@@ -8,19 +8,20 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsEndpointResourceProperties;
 import com.azure.resourcemanager.digitaltwins.models.ExternalResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** DigitalTwinsInstance endpoint resource. */
 @Fluent
 public final class DigitalTwinsEndpointResourceInner extends ExternalResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DigitalTwinsEndpointResourceInner.class);
-
     /*
      * DigitalTwinsInstance endpoint resource properties.
      */
     @JsonProperty(value = "properties", required = true)
     private DigitalTwinsEndpointResourceProperties properties;
+
+    /** Creates an instance of DigitalTwinsEndpointResourceInner class. */
+    public DigitalTwinsEndpointResourceInner() {
+    }
 
     /**
      * Get the properties property: DigitalTwinsInstance endpoint resource properties.
@@ -51,7 +52,7 @@ public final class DigitalTwinsEndpointResourceInner extends ExternalResource {
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model DigitalTwinsEndpointResourceInner"));
@@ -59,4 +60,6 @@ public final class DigitalTwinsEndpointResourceInner extends ExternalResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DigitalTwinsEndpointResourceInner.class);
 }

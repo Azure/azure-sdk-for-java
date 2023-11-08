@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The name of usage. */
 @Fluent
 public final class NameInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameInfo.class);
-
     /*
      * Value of usage.
      */
@@ -25,6 +21,10 @@ public final class NameInfo {
      */
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
+
+    /** Creates an instance of NameInfo class. */
+    public NameInfo() {
+    }
 
     /**
      * Get the value property: Value of usage.

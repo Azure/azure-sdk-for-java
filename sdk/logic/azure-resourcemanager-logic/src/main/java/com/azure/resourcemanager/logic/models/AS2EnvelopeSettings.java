@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AS2 agreement envelope settings. */
 @Fluent
 public final class AS2EnvelopeSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2EnvelopeSettings.class);
-
     /*
      * The message content type.
      */
@@ -33,8 +30,7 @@ public final class AS2EnvelopeSettings {
     private String fileNameTemplate;
 
     /*
-     * The value indicating whether to suspend message on file name generation
-     * error.
+     * The value indicating whether to suspend message on file name generation error.
      */
     @JsonProperty(value = "suspendMessageOnFileNameGenerationError", required = true)
     private boolean suspendMessageOnFileNameGenerationError;
@@ -44,6 +40,10 @@ public final class AS2EnvelopeSettings {
      */
     @JsonProperty(value = "autogenerateFileName", required = true)
     private boolean autogenerateFileName;
+
+    /** Creates an instance of AS2EnvelopeSettings class. */
+    public AS2EnvelopeSettings() {
+    }
 
     /**
      * Get the messageContentType property: The message content type.
@@ -155,16 +155,18 @@ public final class AS2EnvelopeSettings {
      */
     public void validate() {
         if (messageContentType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageContentType in model AS2EnvelopeSettings"));
         }
         if (fileNameTemplate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property fileNameTemplate in model AS2EnvelopeSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AS2EnvelopeSettings.class);
 }

@@ -11,18 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of VerifiedPartners. */
 public interface VerifiedPartners {
     /**
-     * Get properties of a verified partner.
+     * Get a verified partner.
      *
-     * @param verifiedPartnerName Name of the verified partner.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a verified partner.
-     */
-    VerifiedPartner get(String verifiedPartnerName);
-
-    /**
-     * Get properties of a verified partner.
+     * <p>Get properties of a verified partner.
      *
      * @param verifiedPartnerName Name of the verified partner.
      * @param context The context to associate with this operation.
@@ -34,7 +25,22 @@ public interface VerifiedPartners {
     Response<VerifiedPartner> getWithResponse(String verifiedPartnerName, Context context);
 
     /**
-     * Get a list of all verified partners.
+     * Get a verified partner.
+     *
+     * <p>Get properties of a verified partner.
+     *
+     * @param verifiedPartnerName Name of the verified partner.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a verified partner.
+     */
+    VerifiedPartner get(String verifiedPartnerName);
+
+    /**
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -43,7 +49,9 @@ public interface VerifiedPartners {
     PagedIterable<VerifiedPartner> list();
 
     /**
-     * Get a list of all verified partners.
+     * List all verified partners.
+     *
+     * <p>Get a list of all verified partners.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'

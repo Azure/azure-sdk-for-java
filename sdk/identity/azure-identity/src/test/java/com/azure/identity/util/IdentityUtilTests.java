@@ -5,40 +5,154 @@ package com.azure.identity.util;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.test.utils.TestConfigurationSource;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-@RunWith(PowerMockRunner.class)
 public class IdentityUtilTests {
 
-    public void testMultiTenantAuthenticationEnabled() throws Exception {
+    @Test
+    public void testMultiTenantAuthenticationEnabled() {
         String currentTenant = "tenant";
         String newTenant = "tenant-new";
         TokenRequestContext trc = new TokenRequestContext()
             .setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
-        IdentityClientOptions options = new IdentityClientOptions();
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setAdditionallyAllowedTenants(Arrays.asList(newTenant));
 
-        Assert.assertEquals(newTenant, IdentityUtil.resolveTenantId(currentTenant, trc, options));
+        Assertions.assertEquals(newTenant, IdentityUtil.resolveTenantId(currentTenant, trc, options));
     }
 
-    @Test(expected = ClientAuthenticationException.class)
-    public void testMultiTenantAuthenticationDisabled() throws Exception {
+    @Test
+    public void testMultiTenantAuthenticationDisabled() {
         String currentTenant = "tenant";
-        String newTenant = "tenant-new";
         TokenRequestContext trc = new TokenRequestContext()
             .setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId("newTenant");
         IdentityClientOptions options = new IdentityClientOptions();
         options.disableMultiTenantAuthentication();
 
-        IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assertions.assertThrows(ClientAuthenticationException.class,
+            () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
+    }
+
+    @Test
+    public void testAdditionallyAllowedTenants() {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+        IdentityClientOptions options = new IdentityClientOptions();
+        options.setAdditionallyAllowedTenants(Arrays.asList(IdentityUtil.ALL_TENANTS));
+
+        String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assertions.assertEquals(newTenant, resolvedTenant);
+    }
+
+    @Test
+    public void testAdditionallyAllowedTenantsCaseInsensitive() {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+        IdentityClientOptions options = new IdentityClientOptions();
+        options.setAdditionallyAllowedTenants(Arrays.asList("newtenant"));
+
+        String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assertions.assertEquals(newTenant, resolvedTenant);
+    }
+
+    @Test
+    public void testAlienTenantWithAdditionallyAllowedTenants() {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+        IdentityClientOptions options = new IdentityClientOptions();
+        options.setAdditionallyAllowedTenants(Arrays.asList("tenant"));
+
+        Assertions.assertThrows(ClientAuthenticationException.class,
+            () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
+    }
+
+    @Test
+    public void testAlienTenantWithAdditionallyAllowedNotConfigured() {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+        IdentityClientOptions options = new IdentityClientOptions();
+
+        Assertions.assertThrows(ClientAuthenticationException.class,
+            () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
+    }
+
+    @Test
+    public void testTenantWithAdditionalTenantsFromEnv() {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        String allowedTenants = "newTenant;oldTenant";
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
+
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(configuration));
+
+        String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assertions.assertEquals(newTenant, resolvedTenant);
+
+    }
+
+    @Test
+    public void testTenantWithWildCardAdditionalTenantsFromEnv() {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        String allowedTenants = "*;randomTenant";
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
+
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(configuration));
+
+        String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assertions.assertEquals(newTenant, resolvedTenant);
+
+    }
+
+    @Test
+    public void testAlienTenantWithAdditionalTenantsFromEnv() {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        String allowedTenants = "randomTenant";
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(configuration));
+
+        Assertions.assertThrows(ClientAuthenticationException.class,
+            () -> IdentityUtil.resolveTenantId(currentTenant, trc, options));
     }
 
 }

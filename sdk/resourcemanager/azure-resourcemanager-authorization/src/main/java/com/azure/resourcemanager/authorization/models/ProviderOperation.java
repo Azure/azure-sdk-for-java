@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation. */
 @Fluent
 public final class ProviderOperation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderOperation.class);
-
     /*
      * The operation name.
      */
@@ -49,6 +45,10 @@ public final class ProviderOperation {
      */
     @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
+
+    /** Creates an instance of ProviderOperation class. */
+    public ProviderOperation() {
+    }
 
     /**
      * Get the name property: The operation name.

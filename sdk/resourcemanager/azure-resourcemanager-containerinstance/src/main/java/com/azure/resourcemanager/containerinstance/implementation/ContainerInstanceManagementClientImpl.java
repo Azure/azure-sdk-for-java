@@ -7,13 +7,13 @@ package com.azure.resourcemanager.containerinstance.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerInstanceManagementClient;
 import com.azure.resourcemanager.containerinstance.fluent.ContainersClient;
 import com.azure.resourcemanager.containerinstance.fluent.LocationsClient;
 import com.azure.resourcemanager.containerinstance.fluent.OperationsClient;
+import com.azure.resourcemanager.containerinstance.fluent.SubnetServiceAssociationLinksClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -21,8 +21,6 @@ import java.time.Duration;
 @ServiceClient(builder = ContainerInstanceManagementClientBuilder.class)
 public final class ContainerInstanceManagementClientImpl extends AzureServiceClient
     implements ContainerInstanceManagementClient {
-    private final ClientLogger logger = new ClientLogger(ContainerInstanceManagementClientImpl.class);
-
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -147,6 +145,18 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
         return this.containers;
     }
 
+    /** The SubnetServiceAssociationLinksClient object to access its operations. */
+    private final SubnetServiceAssociationLinksClient subnetServiceAssociationLinks;
+
+    /**
+     * Gets the SubnetServiceAssociationLinksClient object to access its operations.
+     *
+     * @return the SubnetServiceAssociationLinksClient object.
+     */
+    public SubnetServiceAssociationLinksClient getSubnetServiceAssociationLinks() {
+        return this.subnetServiceAssociationLinks;
+    }
+
     /**
      * Initializes an instance of ContainerInstanceManagementClient client.
      *
@@ -171,10 +181,11 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-09-01";
+        this.apiVersion = "2023-05-01";
         this.containerGroups = new ContainerGroupsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
         this.containers = new ContainersClientImpl(this);
+        this.subnetServiceAssociationLinks = new SubnetServiceAssociationLinksClientImpl(this);
     }
 }

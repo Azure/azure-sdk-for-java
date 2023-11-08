@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupType. */
+/** Enum of the different backup types. */
 public final class BackupType extends ExpandableStringEnum<BackupType> {
     /** Static value Database for BackupType. */
     public static final BackupType DATABASE = fromString("Database");
@@ -32,6 +32,15 @@ public final class BackupType extends ExpandableStringEnum<BackupType> {
     public static final BackupType DIFFERENTIAL_PARTIAL = fromString("DifferentialPartial");
 
     /**
+     * Creates a new instance of BackupType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupType() {
+    }
+
+    /**
      * Creates or finds a BackupType from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class BackupType extends ExpandableStringEnum<BackupType> {
         return fromString(name, BackupType.class);
     }
 
-    /** @return known BackupType values. */
+    /**
+     * Gets known BackupType values.
+     *
+     * @return known BackupType values.
+     */
     public static Collection<BackupType> values() {
         return values(BackupType.class);
     }

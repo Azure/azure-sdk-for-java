@@ -12,13 +12,12 @@ import com.azure.resourcemanager.loganalytics.fluent.IntelligencePacksClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.IntelligencePackInner;
 import com.azure.resourcemanager.loganalytics.models.IntelligencePack;
 import com.azure.resourcemanager.loganalytics.models.IntelligencePacks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class IntelligencePacksImpl implements IntelligencePacks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntelligencePacksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntelligencePacksImpl.class);
 
     private final IntelligencePacksClient innerClient;
 
@@ -31,10 +30,6 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
         this.serviceManager = serviceManager;
     }
 
-    public void disable(String resourceGroupName, String workspaceName, String intelligencePackName) {
-        this.serviceClient().disable(resourceGroupName, workspaceName, intelligencePackName);
-    }
-
     public Response<Void> disableWithResponse(
         String resourceGroupName, String workspaceName, String intelligencePackName, Context context) {
         return this
@@ -42,8 +37,8 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
             .disableWithResponse(resourceGroupName, workspaceName, intelligencePackName, context);
     }
 
-    public void enable(String resourceGroupName, String workspaceName, String intelligencePackName) {
-        this.serviceClient().enable(resourceGroupName, workspaceName, intelligencePackName);
+    public void disable(String resourceGroupName, String workspaceName, String intelligencePackName) {
+        this.serviceClient().disable(resourceGroupName, workspaceName, intelligencePackName);
     }
 
     public Response<Void> enableWithResponse(
@@ -51,18 +46,8 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
         return this.serviceClient().enableWithResponse(resourceGroupName, workspaceName, intelligencePackName, context);
     }
 
-    public List<IntelligencePack> list(String resourceGroupName, String workspaceName) {
-        List<IntelligencePackInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new IntelligencePackImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
+    public void enable(String resourceGroupName, String workspaceName, String intelligencePackName) {
+        this.serviceClient().enable(resourceGroupName, workspaceName, intelligencePackName);
     }
 
     public Response<List<IntelligencePack>> listWithResponse(
@@ -81,6 +66,20 @@ public final class IntelligencePacksImpl implements IntelligencePacks {
                     .collect(Collectors.toList()));
         } else {
             return null;
+        }
+    }
+
+    public List<IntelligencePack> list(String resourceGroupName, String workspaceName) {
+        List<IntelligencePackInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new IntelligencePackImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
         }
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,12 +15,9 @@ import java.util.Map;
 /** package. */
 @Fluent
 public final class MicrosoftGraphPackage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPackage.class);
-
     /*
-     * A string indicating the type of package. While oneNote is the only
-     * currently defined value, you should expect other package types to be
-     * returned and handle them accordingly.
+     * A string indicating the type of package. While oneNote is the only currently defined value, you should expect
+     * other package types to be returned and handle them accordingly.
      */
     @JsonProperty(value = "type")
     private String type;
@@ -30,6 +26,10 @@ public final class MicrosoftGraphPackage {
      * package
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPackage class. */
+    public MicrosoftGraphPackage() {
+    }
 
     /**
      * Get the type property: A string indicating the type of package. While oneNote is the only currently defined

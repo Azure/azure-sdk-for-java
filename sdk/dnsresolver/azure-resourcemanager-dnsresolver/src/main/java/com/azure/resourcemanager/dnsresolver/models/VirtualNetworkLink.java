@@ -70,6 +70,13 @@ public interface VirtualNetworkLink {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkLinkInner object.
      *
      * @return the inner object.
@@ -78,7 +85,10 @@ public interface VirtualNetworkLink {
 
     /** The entirety of the VirtualNetworkLink definition. */
     interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithParentResource,
+            DefinitionStages.WithVirtualNetwork,
+            DefinitionStages.WithCreate {
     }
     /** The VirtualNetworkLink definition stages. */
     interface DefinitionStages {
@@ -94,17 +104,26 @@ public interface VirtualNetworkLink {
              * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
              * @return the next definition stage.
              */
-            WithCreate withExistingDnsForwardingRuleset(String resourceGroupName, String dnsForwardingRulesetName);
+            WithVirtualNetwork withExistingDnsForwardingRuleset(
+                String resourceGroupName, String dnsForwardingRulesetName);
+        }
+        /** The stage of the VirtualNetworkLink definition allowing to specify virtualNetwork. */
+        interface WithVirtualNetwork {
+            /**
+             * Specifies the virtualNetwork property: The reference to the virtual network. This cannot be changed after
+             * creation..
+             *
+             * @param virtualNetwork The reference to the virtual network. This cannot be changed after creation.
+             * @return the next definition stage.
+             */
+            WithCreate withVirtualNetwork(SubResource virtualNetwork);
         }
         /**
          * The stage of the VirtualNetworkLink definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithVirtualNetwork,
-                DefinitionStages.WithMetadata,
-                DefinitionStages.WithIfMatch,
-                DefinitionStages.WithIfNoneMatch {
+            extends DefinitionStages.WithMetadata, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              *
@@ -119,17 +138,6 @@ public interface VirtualNetworkLink {
              * @return the created resource.
              */
             VirtualNetworkLink create(Context context);
-        }
-        /** The stage of the VirtualNetworkLink definition allowing to specify virtualNetwork. */
-        interface WithVirtualNetwork {
-            /**
-             * Specifies the virtualNetwork property: The reference to the virtual network. This cannot be changed after
-             * creation..
-             *
-             * @param virtualNetwork The reference to the virtual network. This cannot be changed after creation.
-             * @return the next definition stage.
-             */
-            WithCreate withVirtualNetwork(SubResource virtualNetwork);
         }
         /** The stage of the VirtualNetworkLink definition allowing to specify metadata. */
         interface WithMetadata {

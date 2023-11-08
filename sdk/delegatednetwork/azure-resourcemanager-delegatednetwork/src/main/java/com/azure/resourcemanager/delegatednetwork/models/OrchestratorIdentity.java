@@ -5,36 +5,33 @@
 package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OrchestratorIdentity model. */
 @Fluent
 public class OrchestratorIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestratorIdentity.class);
-
     /*
-     * The principal id of the system assigned identity which is used by
-     * orchestrator.
+     * The principal id of the system assigned identity which is used by orchestrator.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant id of the system assigned identity which is used by
-     * orchestrator.
+     * The tenant id of the system assigned identity which is used by orchestrator.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The type of identity used for orchestrator cluster. Type
-     * 'SystemAssigned' will use an implicitly created identity orchestrator
-     * clusters
+     * The type of identity used for orchestrator cluster. Type 'SystemAssigned' will use an implicitly created
+     * identity orchestrator clusters
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
+
+    /** Creates an instance of OrchestratorIdentity class. */
+    public OrchestratorIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal id of the system assigned identity which is used by orchestrator.

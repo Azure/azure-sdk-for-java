@@ -12,12 +12,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automanage.fluent.ConfigurationProfilesVersionsClient;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileInner;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfile;
-import com.azure.resourcemanager.automanage.models.ConfigurationProfileUpdate;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfilesVersions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationProfilesVersionsImpl implements ConfigurationProfilesVersions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationProfilesVersionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationProfilesVersionsImpl.class);
 
     private final ConfigurationProfilesVersionsClient innerClient;
 
@@ -100,41 +98,6 @@ public final class ConfigurationProfilesVersionsImpl implements ConfigurationPro
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, configurationProfileName, versionName, context);
-    }
-
-    public ConfigurationProfile update(
-        String configurationProfileName,
-        String versionName,
-        String resourceGroupName,
-        ConfigurationProfileUpdate parameters) {
-        ConfigurationProfileInner inner =
-            this.serviceClient().update(configurationProfileName, versionName, resourceGroupName, parameters);
-        if (inner != null) {
-            return new ConfigurationProfileImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ConfigurationProfile> updateWithResponse(
-        String configurationProfileName,
-        String versionName,
-        String resourceGroupName,
-        ConfigurationProfileUpdate parameters,
-        Context context) {
-        Response<ConfigurationProfileInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(configurationProfileName, versionName, resourceGroupName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ConfigurationProfileImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
     }
 
     public PagedIterable<ConfigurationProfile> listChildResources(

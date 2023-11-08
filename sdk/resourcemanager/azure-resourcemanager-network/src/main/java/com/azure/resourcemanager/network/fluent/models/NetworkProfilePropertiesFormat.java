@@ -38,6 +38,10 @@ public final class NetworkProfilePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of NetworkProfilePropertiesFormat class. */
+    public NetworkProfilePropertiesFormat() {
+    }
+
     /**
      * Get the containerNetworkInterfaces property: List of child container network interfaces.
      *

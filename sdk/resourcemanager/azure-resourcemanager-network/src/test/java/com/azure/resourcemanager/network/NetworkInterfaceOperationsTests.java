@@ -3,33 +3,38 @@
 
 package com.azure.resourcemanager.network;
 
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.network.fluent.models.NatGatewayInner;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.NatGatewaySku;
+import com.azure.resourcemanager.network.models.NatGatewaySkuName;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
 import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.models.ResourceGroups;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroups;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
@@ -423,5 +428,97 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             throw new RuntimeException(exception);
         }
         Assertions.assertEquals(counter.intValue(), 1);
+    }
+
+    @Test
+    public void canListSubnetAvailableIpAddresses() {
+        String networkName = generateRandomResourceName("vnet", 10);
+        String subnetName = "subnet1";
+        String nicName = generateRandomResourceName("nic", 10);
+
+        Network network = networkManager.networks()
+            .define(networkName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .withSubnet(subnetName, "10.0.0.0/29")
+            .create();
+
+        Subnet subnet = network.subnets().get(subnetName);
+        Set<String> availableIps = subnet.listAvailablePrivateIPAddresses();
+        Assertions.assertTrue(availableIps.size() > 0);
+
+        String availableIp = availableIps.iterator().next();
+
+        // occupy the available ip address
+        NetworkInterface nic = networkManager.networkInterfaces()
+            .define(nicName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressStatic(availableIp)
+            .create();
+
+        availableIps = subnet.listAvailablePrivateIPAddresses();
+        Assertions.assertFalse(availableIps.contains(availableIp));
+    }
+
+    @Test
+    public void canAssociateNatGateway() {
+        String networkName = generateRandomResourceName("vnet", 10);
+        String subnetName = "subnet1";
+        String subnet2Name = "subnet2";
+
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
+            .withRegion(Region.US_EAST)
+            .create();
+
+        NatGatewayInner gateway1 = createNatGateway();
+
+        Network network = networkManager.networks()
+            .define(networkName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/16")
+            .defineSubnet(subnetName)
+                .withAddressPrefix("10.0.0.0/24")
+                .withExistingNatGateway(gateway1.id())
+                .attach()
+            .create();
+
+        Subnet subnet = network.subnets().get(subnetName);
+        Assertions.assertEquals(gateway1.id(), subnet.natGatewayId());
+
+        NatGatewayInner gateway2 = createNatGateway();
+
+        network.update()
+            .updateSubnet(subnetName)
+                .withExistingNatGateway(gateway2.id())
+                .parent()
+            .defineSubnet(subnet2Name)
+                .withAddressPrefix("10.0.1.0/24")
+                .withExistingNatGateway(gateway2.id())
+                .attach()
+            .apply();
+
+        subnet = network.subnets().get(subnetName);
+        Assertions.assertEquals(gateway2.id(), subnet.natGatewayId());
+
+        Subnet subnet2 = network.subnets().get(subnet2Name);
+        Assertions.assertEquals(gateway2.id(), subnet2.natGatewayId());
+    }
+
+    private NatGatewayInner createNatGateway() {
+        String natGatewayName = generateRandomResourceName("natgw", 10);
+        return networkManager.serviceClient()
+            .getNatGateways()
+            .createOrUpdate(
+                rgName,
+                natGatewayName,
+                new NatGatewayInner()
+                    .withLocation(Region.US_EAST.toString())
+                    .withSku(new NatGatewaySku().withName(NatGatewaySkuName.STANDARD))
+            );
     }
 }

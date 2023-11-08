@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.models.LinkedServiceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list linked service operation response. */
 @Fluent
 public final class LinkedServiceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedServiceListResult.class);
-
     /*
      * The list of linked service instances
      */
     @JsonProperty(value = "value")
     private List<LinkedServiceInner> value;
+
+    /** Creates an instance of LinkedServiceListResult class. */
+    public LinkedServiceListResult() {
+    }
 
     /**
      * Get the value property: The list of linked service instances.

@@ -11,10 +11,9 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.SkusAvailabilitiesClie
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.SkuAvailabilityInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.SkuAvailability;
 import com.azure.resourcemanager.vmwarecloudsimple.models.SkusAvailabilities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SkusAvailabilitiesImpl implements SkusAvailabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkusAvailabilitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SkusAvailabilitiesImpl.class);
 
     private final SkusAvailabilitiesClient innerClient;
 

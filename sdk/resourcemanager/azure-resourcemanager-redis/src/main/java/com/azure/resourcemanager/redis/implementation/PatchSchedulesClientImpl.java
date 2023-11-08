@@ -59,11 +59,10 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RedisManagementClien")
-    private interface PatchSchedulesService {
+    public interface PatchSchedulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/patchSchedules")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/patchSchedules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisPatchScheduleListResult>> listByRedisResource(
@@ -77,8 +76,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/patchSchedules/{default}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/patchSchedules/{default}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisPatchScheduleInner>> createOrUpdate(
@@ -94,8 +92,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/patchSchedules/{default}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/patchSchedules/{default}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -110,8 +107,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/patchSchedules/{default}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/patchSchedules/{default}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisPatchScheduleInner>> get(
@@ -138,7 +134,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -196,7 +192,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,7 +248,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -270,7 +266,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,7 +286,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -306,7 +302,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -324,7 +320,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Create or replace the patching schedule for Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param parameters Parameters to set the patching schedule for Redis cache.
@@ -386,7 +382,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Create or replace the patching schedule for Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param parameters Parameters to set the patching schedule for Redis cache.
@@ -450,7 +446,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Create or replace the patching schedule for Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param parameters Parameters to set the patching schedule for Redis cache.
@@ -463,38 +459,13 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     public Mono<RedisPatchScheduleInner> createOrUpdateAsync(
         String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, name, defaultParameter, parameters)
-            .flatMap(
-                (Response<RedisPatchScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or replace the patching schedule for Redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param parameters Parameters to set the patching schedule for Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to put/get patch schedules for Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisPatchScheduleInner createOrUpdate(
-        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, name, defaultParameter, parameters).block();
-    }
-
-    /**
-     * Create or replace the patching schedule for Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param parameters Parameters to set the patching schedule for Redis cache.
@@ -515,9 +486,28 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     }
 
     /**
+     * Create or replace the patching schedule for Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Redis cache.
+     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response to put/get patch schedules for Redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RedisPatchScheduleInner createOrUpdate(
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, name, defaultParameter, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Deletes the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -571,7 +561,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Deletes the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param context The context to associate with this operation.
@@ -623,7 +613,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Deletes the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -633,29 +623,13 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name, DefaultName defaultParameter) {
-        return deleteWithResponseAsync(resourceGroupName, name, defaultParameter)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, name, defaultParameter).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name, DefaultName defaultParameter) {
-        deleteAsync(resourceGroupName, name, defaultParameter).block();
-    }
-
-    /**
-     * Deletes the patching schedule of a redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param context The context to associate with this operation.
@@ -671,9 +645,24 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     }
 
     /**
+     * Deletes the patching schedule of a redis cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the redis cache.
+     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String name, DefaultName defaultParameter) {
+        deleteWithResponse(resourceGroupName, name, defaultParameter, Context.NONE);
+    }
+
+    /**
      * Gets the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -728,7 +717,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Gets the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param context The context to associate with this operation.
@@ -781,7 +770,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Gets the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -792,36 +781,13 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisPatchScheduleInner> getAsync(String resourceGroupName, String name, DefaultName defaultParameter) {
         return getWithResponseAsync(resourceGroupName, name, defaultParameter)
-            .flatMap(
-                (Response<RedisPatchScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the patching schedule of a redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the patching schedule of a redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisPatchScheduleInner get(String resourceGroupName, String name, DefaultName defaultParameter) {
-        return getAsync(resourceGroupName, name, defaultParameter).block();
-    }
-
-    /**
-     * Gets the patching schedule of a redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @param context The context to associate with this operation.
@@ -837,9 +803,26 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     }
 
     /**
+     * Gets the patching schedule of a redis cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the redis cache.
+     * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the patching schedule of a redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RedisPatchScheduleInner get(String resourceGroupName, String name, DefaultName defaultParameter) {
+        return getWithResponse(resourceGroupName, name, defaultParameter, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -876,7 +859,8 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

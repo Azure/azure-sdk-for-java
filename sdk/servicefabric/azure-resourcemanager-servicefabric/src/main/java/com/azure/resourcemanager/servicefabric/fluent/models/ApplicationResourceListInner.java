@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of application resources. */
 @Fluent
 public final class ApplicationResourceListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationResourceListInner.class);
-
     /*
      * The value property.
      */
@@ -26,6 +22,10 @@ public final class ApplicationResourceListInner {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ApplicationResourceListInner class. */
+    public ApplicationResourceListInner() {
+    }
 
     /**
      * Get the value property: The value property.

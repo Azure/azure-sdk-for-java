@@ -6,15 +6,12 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties for updating a source based trigger. */
 @Fluent
 public final class SourceTriggerUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceTriggerUpdateParameters.class);
-
     /*
      * The properties that describes the source(code) for the task.
      */
@@ -129,10 +126,12 @@ public final class SourceTriggerUpdateParameters {
             sourceRepository().validate();
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model SourceTriggerUpdateParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SourceTriggerUpdateParameters.class);
 }

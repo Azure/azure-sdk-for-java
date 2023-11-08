@@ -19,11 +19,15 @@ public final class TransformCollection {
     private List<TransformInner> value;
 
     /*
-     * A link to the next page of the collection (when the collection contains
-     * too many results to return in one response).
+     * A link to the next page of the collection (when the collection contains too many results to return in one
+     * response).
      */
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
+
+    /** Creates an instance of TransformCollection class. */
+    public TransformCollection() {
+    }
 
     /**
      * Get the value property: A collection of Transform items.

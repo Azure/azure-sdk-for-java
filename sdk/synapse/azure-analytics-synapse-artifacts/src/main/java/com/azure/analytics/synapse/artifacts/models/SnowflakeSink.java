@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SnowflakeSink extends CopySink {
     /*
-     * SQL pre-copy script. Type: string (or Expression with resultType
-     * string).
+     * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
@@ -26,6 +25,9 @@ public final class SnowflakeSink extends CopySink {
      */
     @JsonProperty(value = "importSettings")
     private SnowflakeImportCopyCommand importSettings;
+
+    /** Creates an instance of SnowflakeSink class. */
+    public SnowflakeSink() {}
 
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
@@ -64,6 +66,41 @@ public final class SnowflakeSink extends CopySink {
      */
     public SnowflakeSink setImportSettings(SnowflakeImportCopyCommand importSettings) {
         this.importSettings = importSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

@@ -24,6 +24,10 @@ public final class PaypalLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private PaypalLinkedServiceTypeProperties innerTypeProperties = new PaypalLinkedServiceTypeProperties();
 
+    /** Creates an instance of PaypalLinkedService class. */
+    public PaypalLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Paypal Service linked service properties.
      *
@@ -62,7 +66,7 @@ public final class PaypalLinkedService extends LinkedService {
     }
 
     /**
-     * Get the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
+     * Get the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
      *
      * @return the host value.
      */
@@ -71,7 +75,7 @@ public final class PaypalLinkedService extends LinkedService {
     }
 
     /**
-     * Set the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
+     * Set the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
      *
      * @param host the host value to set.
      * @return the PaypalLinkedService object itself.
@@ -207,22 +211,22 @@ public final class PaypalLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PaypalLinkedService object itself.
      */
-    public PaypalLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public PaypalLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new PaypalLinkedServiceTypeProperties();
         }

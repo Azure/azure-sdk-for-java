@@ -6,17 +6,14 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the client certificate details using thumbprint. */
 @Fluent
 public final class ClientCertificateThumbprint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientCertificateThumbprint.class);
-
     /*
-     * Indicates if the client certificate has admin access to the cluster. Non
-     * admin clients can perform only read only operations on the cluster.
+     * Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read
+     * only operations on the cluster.
      */
     @JsonProperty(value = "isAdmin", required = true)
     private boolean isAdmin;
@@ -26,6 +23,10 @@ public final class ClientCertificateThumbprint {
      */
     @JsonProperty(value = "certificateThumbprint", required = true)
     private String certificateThumbprint;
+
+    /** Creates an instance of ClientCertificateThumbprint class. */
+    public ClientCertificateThumbprint() {
+    }
 
     /**
      * Get the isAdmin property: Indicates if the client certificate has admin access to the cluster. Non admin clients
@@ -76,10 +77,12 @@ public final class ClientCertificateThumbprint {
      */
     public void validate() {
         if (certificateThumbprint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property certificateThumbprint in model ClientCertificateThumbprint"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClientCertificateThumbprint.class);
 }

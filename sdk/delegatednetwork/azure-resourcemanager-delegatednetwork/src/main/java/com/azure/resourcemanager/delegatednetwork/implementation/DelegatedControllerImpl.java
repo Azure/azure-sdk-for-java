@@ -8,8 +8,8 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedControllerInner;
 import com.azure.resourcemanager.delegatednetwork.models.ControllerResourceUpdateParameters;
-import com.azure.resourcemanager.delegatednetwork.models.ControllerState;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedController;
+import com.azure.resourcemanager.delegatednetwork.models.DelegatedControllerProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -44,24 +44,8 @@ public final class DelegatedControllerImpl
         }
     }
 
-    public String resourceGuid() {
-        return this.innerModel().resourceGuid();
-    }
-
-    public ControllerState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String dncAppId() {
-        return this.innerModel().dncAppId();
-    }
-
-    public String dncTenantId() {
-        return this.innerModel().dncTenantId();
-    }
-
-    public String dncEndpoint() {
-        return this.innerModel().dncEndpoint();
+    public DelegatedControllerProperties properties() {
+        return this.innerModel().properties();
     }
 
     public Region region() {
@@ -70,6 +54,10 @@ public final class DelegatedControllerImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public DelegatedControllerInner innerModel() {

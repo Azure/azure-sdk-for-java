@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** onenotePatchContentCommand. */
 @Fluent
 public final class MicrosoftGraphOnenotePatchContentCommand {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenotePatchContentCommand.class);
-
     /*
      * onenotePatchActionType
      */
@@ -25,9 +22,8 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
     private MicrosoftGraphOnenotePatchActionType action;
 
     /*
-     * A string of well-formed HTML to add to the page, and any image or file
-     * binary data. If the content contains binary data, the request must be
-     * sent using the multipart/form-data content type with a 'Commands' part.
+     * A string of well-formed HTML to add to the page, and any image or file binary data. If the content contains
+     * binary data, the request must be sent using the multipart/form-data content type with a 'Commands' part.
      */
     @JsonProperty(value = "content")
     private String content;
@@ -39,8 +35,8 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
     private MicrosoftGraphOnenotePatchInsertPosition position;
 
     /*
-     * The element to update. Must be the #<data-id> or the generated <id> of
-     * the element, or the body or title keyword.
+     * The element to update. Must be the #<data-id> or the generated <id> of the element, or the body or title
+     * keyword.
      */
     @JsonProperty(value = "target")
     private String target;
@@ -49,6 +45,10 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
      * onenotePatchContentCommand
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnenotePatchContentCommand class. */
+    public MicrosoftGraphOnenotePatchContentCommand() {
+    }
 
     /**
      * Get the action property: onenotePatchActionType.

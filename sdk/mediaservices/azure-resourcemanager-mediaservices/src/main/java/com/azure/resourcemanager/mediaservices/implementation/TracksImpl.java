@@ -39,15 +39,6 @@ public final class TracksImpl implements Tracks {
         return Utils.mapPage(inner, inner1 -> new AssetTrackImpl(inner1, this.manager()));
     }
 
-    public AssetTrack get(String resourceGroupName, String accountName, String assetName, String trackName) {
-        AssetTrackInner inner = this.serviceClient().get(resourceGroupName, accountName, assetName, trackName);
-        if (inner != null) {
-            return new AssetTrackImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AssetTrack> getWithResponse(
         String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
         Response<AssetTrackInner> inner =
@@ -58,6 +49,15 @@ public final class TracksImpl implements Tracks {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AssetTrackImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AssetTrack get(String resourceGroupName, String accountName, String assetName, String trackName) {
+        AssetTrackInner inner = this.serviceClient().get(resourceGroupName, accountName, assetName, trackName);
+        if (inner != null) {
+            return new AssetTrackImpl(inner, this.manager());
         } else {
             return null;
         }

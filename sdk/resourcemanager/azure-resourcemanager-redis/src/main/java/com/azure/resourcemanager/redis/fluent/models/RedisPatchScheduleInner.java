@@ -26,6 +26,10 @@ public final class RedisPatchScheduleInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
+    /** Creates an instance of RedisPatchScheduleInner class. */
+    public RedisPatchScheduleInner() {
+    }
+
     /**
      * Get the innerProperties property: List of patch schedules for a Redis cache.
      *

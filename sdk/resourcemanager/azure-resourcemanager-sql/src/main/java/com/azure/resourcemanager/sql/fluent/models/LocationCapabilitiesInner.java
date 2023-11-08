@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.CapabilityStatus;
 import com.azure.resourcemanager.sql.models.ManagedInstanceVersionCapability;
 import com.azure.resourcemanager.sql.models.ServerVersionCapability;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The location capability. */
 @Fluent
 public final class LocationCapabilitiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationCapabilitiesInner.class);
-
     /*
      * The location name.
      */
@@ -47,6 +43,10 @@ public final class LocationCapabilitiesInner {
      */
     @JsonProperty(value = "reason")
     private String reason;
+
+    /** Creates an instance of LocationCapabilitiesInner class. */
+    public LocationCapabilitiesInner() {
+    }
 
     /**
      * Get the name property: The location name.

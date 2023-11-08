@@ -17,12 +17,17 @@ public final class ManagedClusterSku {
     private ManagedClusterSkuName name;
 
     /*
-     * The tier of a managed cluster SKU. If not specified, the default is
-     * 'Free'. See [uptime
-     * SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for more details.
+     * The tier of a managed cluster SKU.
+     *
+     * If not specified, the default is 'Free'. See [AKS Pricing
+     * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      */
     @JsonProperty(value = "tier")
     private ManagedClusterSkuTier tier;
+
+    /** Creates an instance of ManagedClusterSku class. */
+    public ManagedClusterSku() {
+    }
 
     /**
      * Get the name property: The name of a managed cluster SKU.
@@ -45,8 +50,10 @@ public final class ManagedClusterSku {
     }
 
     /**
-     * Get the tier property: The tier of a managed cluster SKU. If not specified, the default is 'Free'. See [uptime
-     * SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for more details.
+     * Get the tier property: The tier of a managed cluster SKU.
+     *
+     * <p>If not specified, the default is 'Free'. See [AKS Pricing
+     * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      *
      * @return the tier value.
      */
@@ -55,8 +62,10 @@ public final class ManagedClusterSku {
     }
 
     /**
-     * Set the tier property: The tier of a managed cluster SKU. If not specified, the default is 'Free'. See [uptime
-     * SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for more details.
+     * Set the tier property: The tier of a managed cluster SKU.
+     *
+     * <p>If not specified, the default is 'Free'. See [AKS Pricing
+     * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      *
      * @param tier the tier value to set.
      * @return the ManagedClusterSku object itself.

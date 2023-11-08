@@ -71,6 +71,10 @@ public final class SqlManagedInstanceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SqlManagedInstanceInner innerModel() {
         return this.innerObject;
     }

@@ -16,22 +16,19 @@ import java.util.Map;
 @Fluent
 public final class SqlServerSink extends CopySink {
     /*
-     * SQL writer stored procedure name. Type: string (or Expression with
-     * resultType string).
+     * SQL writer stored procedure name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlWriterStoredProcedureName")
     private Object sqlWriterStoredProcedureName;
 
     /*
-     * SQL writer table type. Type: string (or Expression with resultType
-     * string).
+     * SQL writer table type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlWriterTableType")
     private Object sqlWriterTableType;
 
     /*
-     * SQL pre-copy script. Type: string (or Expression with resultType
-     * string).
+     * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
@@ -43,19 +40,20 @@ public final class SqlServerSink extends CopySink {
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
 
     /*
-     * The stored procedure parameter name of the table type. Type: string (or
-     * Expression with resultType string).
+     * The stored procedure parameter name of the table type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "storedProcedureTableTypeParameterName")
     private Object storedProcedureTableTypeParameterName;
 
     /*
-     * The option to handle sink table, such as autoCreate. For now only
-     * 'autoCreate' value is supported. Type: string (or Expression with
-     * resultType string).
+     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "tableOption")
     private Object tableOption;
+
+    /** Creates an instance of SqlServerSink class. */
+    public SqlServerSink() {}
 
     /**
      * Get the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression with
@@ -180,6 +178,41 @@ public final class SqlServerSink extends CopySink {
      */
     public SqlServerSink setTableOption(Object tableOption) {
         this.tableOption = tableOption;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

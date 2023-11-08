@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolMaintenanceWindowsClient;
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowsInner;
 import com.azure.resourcemanager.synapse.models.MaintenanceWindows;
 import com.azure.resourcemanager.synapse.models.SqlPoolMaintenanceWindows;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolMaintenanceWindowsImpl implements SqlPoolMaintenanceWindows {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolMaintenanceWindowsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolMaintenanceWindowsImpl.class);
 
     private final SqlPoolMaintenanceWindowsClient innerClient;
 
@@ -25,17 +24,6 @@ public final class SqlPoolMaintenanceWindowsImpl implements SqlPoolMaintenanceWi
         SqlPoolMaintenanceWindowsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public MaintenanceWindows get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
-        MaintenanceWindowsInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName);
-        if (inner != null) {
-            return new MaintenanceWindowsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<MaintenanceWindows> getWithResponse(
@@ -59,15 +47,15 @@ public final class SqlPoolMaintenanceWindowsImpl implements SqlPoolMaintenanceWi
         }
     }
 
-    public void createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters) {
-        this
-            .serviceClient()
-            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters);
+    public MaintenanceWindows get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
+        MaintenanceWindowsInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName);
+        if (inner != null) {
+            return new MaintenanceWindowsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> createOrUpdateWithResponse(
@@ -81,6 +69,17 @@ public final class SqlPoolMaintenanceWindowsImpl implements SqlPoolMaintenanceWi
             .serviceClient()
             .createOrUpdateWithResponse(
                 resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters, context);
+    }
+
+    public void createOrUpdate(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String maintenanceWindowName,
+        MaintenanceWindowsInner parameters) {
+        this
+            .serviceClient()
+            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters);
     }
 
     private SqlPoolMaintenanceWindowsClient serviceClient() {

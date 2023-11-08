@@ -93,6 +93,10 @@ public final class ConnectorMappingResourceFormatImpl
         return this.innerModel().tenantId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConnectorMappingResourceFormatInner innerModel() {
         return this.innerObject;
     }

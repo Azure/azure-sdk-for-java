@@ -7,14 +7,11 @@ package com.azure.resourcemanager.digitaltwins.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.digitaltwins.models.GroupIdInformationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The group information for creating a private endpoint on Digital Twin. */
 @Fluent
 public final class GroupIdInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupIdInformationInner.class);
-
     /*
      * The group information properties.
      */
@@ -38,6 +35,10 @@ public final class GroupIdInformationInner {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of GroupIdInformationInner class. */
+    public GroupIdInformationInner() {
+    }
 
     /**
      * Get the properties property: The group information properties.
@@ -104,7 +105,7 @@ public final class GroupIdInformationInner {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model GroupIdInformationInner"));
@@ -112,4 +113,6 @@ public final class GroupIdInformationInner {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GroupIdInformationInner.class);
 }

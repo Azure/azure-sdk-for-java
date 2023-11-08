@@ -3,10 +3,10 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
@@ -27,9 +27,19 @@ public class AddHeadersPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        for (HttpHeader header : headers) {
-            context.getHttpRequest().setHeader(header.getName(), header.getValue());
-        }
+        setHeaders(context.getHttpRequest().getHeaders(), headers);
+
         return next.process();
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        setHeaders(context.getHttpRequest().getHeaders(), headers);
+
+        return next.processSync();
+    }
+
+    private static void setHeaders(HttpHeaders requestHeaders, HttpHeaders policyHeaders) {
+        requestHeaders.setAllHttpHeaders(policyHeaders);
     }
 }

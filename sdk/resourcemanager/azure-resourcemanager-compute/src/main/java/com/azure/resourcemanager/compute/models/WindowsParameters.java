@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class WindowsParameters {
     /*
-     * The update classifications to select when installing patches for
-     * Windows.
+     * The update classifications to select when installing patches for Windows.
      */
     @JsonProperty(value = "classificationsToInclude")
     private List<VMGuestPatchClassificationWindows> classificationsToInclude;
@@ -32,18 +31,20 @@ public final class WindowsParameters {
     private List<String> kbNumbersToExclude;
 
     /*
-     * Filters out Kbs that don't have an InstallationRebootBehavior of
-     * 'NeverReboots' when this is set to true.
+     * Filters out Kbs that don't have an InstallationRebootBehavior of 'NeverReboots' when this is set to true.
      */
     @JsonProperty(value = "excludeKbsRequiringReboot")
     private Boolean excludeKbsRequiringReboot;
 
     /*
-     * This is used to install patches that were published on or before this
-     * given max published date.
+     * This is used to install patches that were published on or before this given max published date.
      */
     @JsonProperty(value = "maxPatchPublishDate")
     private OffsetDateTime maxPatchPublishDate;
+
+    /** Creates an instance of WindowsParameters class. */
+    public WindowsParameters() {
+    }
 
     /**
      * Get the classificationsToInclude property: The update classifications to select when installing patches for

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServicePlacementPolicyType. */
+/** The type of placement policy for a service fabric service. Following are the possible values. */
 public final class ServicePlacementPolicyType extends ExpandableStringEnum<ServicePlacementPolicyType> {
     /** Static value Invalid for ServicePlacementPolicyType. */
     public static final ServicePlacementPolicyType INVALID = fromString("Invalid");
@@ -30,6 +30,15 @@ public final class ServicePlacementPolicyType extends ExpandableStringEnum<Servi
     public static final ServicePlacementPolicyType NON_PARTIALLY_PLACE_SERVICE = fromString("NonPartiallyPlaceService");
 
     /**
+     * Creates a new instance of ServicePlacementPolicyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServicePlacementPolicyType() {
+    }
+
+    /**
      * Creates or finds a ServicePlacementPolicyType from its string representation.
      *
      * @param name a name to look for.
@@ -40,7 +49,11 @@ public final class ServicePlacementPolicyType extends ExpandableStringEnum<Servi
         return fromString(name, ServicePlacementPolicyType.class);
     }
 
-    /** @return known ServicePlacementPolicyType values. */
+    /**
+     * Gets known ServicePlacementPolicyType values.
+     *
+     * @return known ServicePlacementPolicyType values.
+     */
     public static Collection<ServicePlacementPolicyType> values() {
         return values(ServicePlacementPolicyType.class);
     }

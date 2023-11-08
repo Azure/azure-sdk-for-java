@@ -18,7 +18,7 @@ public interface AccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AccessPolicyEntity> list(String resourceGroupName, String accountName);
 
@@ -33,7 +33,7 @@ public interface AccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AccessPolicyEntity> list(String resourceGroupName, String accountName, Integer top, Context context);
 
@@ -60,7 +60,8 @@ public interface AccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response}.
      */
     Response<AccessPolicyEntity> getWithResponse(
         String resourceGroupName, String accountName, String accessPolicyName, Context context);
@@ -87,7 +88,7 @@ public interface AccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String accessPolicyName, Context context);
@@ -99,7 +100,8 @@ public interface AccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response}.
      */
     AccessPolicyEntity getById(String id);
 
@@ -111,7 +113,8 @@ public interface AccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response}.
      */
     Response<AccessPolicyEntity> getByIdWithResponse(String id, Context context);
 
@@ -133,7 +136,7 @@ public interface AccessPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

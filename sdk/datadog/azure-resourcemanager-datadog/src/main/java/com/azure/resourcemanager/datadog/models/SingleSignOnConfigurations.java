@@ -18,7 +18,7 @@ public interface SingleSignOnConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatadogSingleSignOnResource> list(String resourceGroupName, String monitorName);
 
@@ -31,9 +31,24 @@ public interface SingleSignOnConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatadogSingleSignOnResource> list(String resourceGroupName, String monitorName, Context context);
+
+    /**
+     * Gets the datadog single sign-on resource for the given Monitor.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param configurationName Configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the datadog single sign-on resource for the given Monitor along with {@link Response}.
+     */
+    Response<DatadogSingleSignOnResource> getWithResponse(
+        String resourceGroupName, String monitorName, String configurationName, Context context);
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
@@ -51,26 +66,11 @@ public interface SingleSignOnConfigurations {
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName Configuration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the datadog single sign-on resource for the given Monitor.
-     */
-    Response<DatadogSingleSignOnResource> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
-
-    /**
-     * Gets the datadog single sign-on resource for the given Monitor.
-     *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the datadog single sign-on resource for the given Monitor.
+     * @return the datadog single sign-on resource for the given Monitor along with {@link Response}.
      */
     DatadogSingleSignOnResource getById(String id);
 
@@ -82,7 +82,7 @@ public interface SingleSignOnConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the datadog single sign-on resource for the given Monitor.
+     * @return the datadog single sign-on resource for the given Monitor along with {@link Response}.
      */
     Response<DatadogSingleSignOnResource> getByIdWithResponse(String id, Context context);
 

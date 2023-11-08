@@ -11,10 +11,9 @@ import com.azure.resourcemanager.maps.fluent.MapsClient;
 import com.azure.resourcemanager.maps.fluent.models.OperationDetailInner;
 import com.azure.resourcemanager.maps.models.Maps;
 import com.azure.resourcemanager.maps.models.OperationDetail;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MapsImpl implements Maps {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MapsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MapsImpl.class);
 
     private final MapsClient innerClient;
 
@@ -32,6 +31,16 @@ public final class MapsImpl implements Maps {
 
     public PagedIterable<OperationDetail> listOperations(Context context) {
         PagedIterable<OperationDetailInner> inner = this.serviceClient().listOperations(context);
+        return Utils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<OperationDetail> list() {
+        PagedIterable<OperationDetailInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<OperationDetail> list(Context context) {
+        PagedIterable<OperationDetailInner> inner = this.serviceClient().list(context);
         return Utils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
     }
 

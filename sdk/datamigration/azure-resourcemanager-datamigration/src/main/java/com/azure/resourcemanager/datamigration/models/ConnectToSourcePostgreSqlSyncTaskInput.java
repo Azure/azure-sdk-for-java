@@ -6,19 +6,20 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input for the task that validates connection to PostgreSQL and source server requirements. */
 @Fluent
 public final class ConnectToSourcePostgreSqlSyncTaskInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToSourcePostgreSqlSyncTaskInput.class);
-
     /*
      * Connection information for source PostgreSQL server
      */
     @JsonProperty(value = "sourceConnectionInfo", required = true)
     private PostgreSqlConnectionInfo sourceConnectionInfo;
+
+    /** Creates an instance of ConnectToSourcePostgreSqlSyncTaskInput class. */
+    public ConnectToSourcePostgreSqlSyncTaskInput() {
+    }
 
     /**
      * Get the sourceConnectionInfo property: Connection information for source PostgreSQL server.
@@ -48,7 +49,7 @@ public final class ConnectToSourcePostgreSqlSyncTaskInput {
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceConnectionInfo in model"
@@ -57,4 +58,6 @@ public final class ConnectToSourcePostgreSqlSyncTaskInput {
             sourceConnectionInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectToSourcePostgreSqlSyncTaskInput.class);
 }

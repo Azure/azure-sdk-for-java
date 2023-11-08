@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HealthCheckName. */
+/** Represents the name of the health check operation performed. */
 public final class HealthCheckName extends ExpandableStringEnum<HealthCheckName> {
     /** Static value DomainJoinedCheck for HealthCheckName. */
     public static final HealthCheckName DOMAIN_JOINED_CHECK = fromString("DomainJoinedCheck");
@@ -44,6 +44,15 @@ public final class HealthCheckName extends ExpandableStringEnum<HealthCheckName>
     public static final HealthCheckName APP_ATTACH_HEALTH_CHECK = fromString("AppAttachHealthCheck");
 
     /**
+     * Creates a new instance of HealthCheckName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HealthCheckName() {
+    }
+
+    /**
      * Creates or finds a HealthCheckName from its string representation.
      *
      * @param name a name to look for.
@@ -54,7 +63,11 @@ public final class HealthCheckName extends ExpandableStringEnum<HealthCheckName>
         return fromString(name, HealthCheckName.class);
     }
 
-    /** @return known HealthCheckName values. */
+    /**
+     * Gets known HealthCheckName values.
+     *
+     * @return known HealthCheckName values.
+     */
     public static Collection<HealthCheckName> values() {
         return values(HealthCheckName.class);
     }

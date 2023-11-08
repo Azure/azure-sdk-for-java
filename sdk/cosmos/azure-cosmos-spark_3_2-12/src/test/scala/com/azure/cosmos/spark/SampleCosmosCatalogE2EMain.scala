@@ -33,6 +33,9 @@ object SampleCosmosCatalogE2EMain {
       .appName("spark connector sample")
       .master("local")
       .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
+
     spark.conf.set(s"spark.sql.catalog.mycatalog", "com.azure.cosmos.spark.CosmosCatalog")
     spark.conf.set(s"spark.sql.catalog.mycatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
     spark.conf.set(s"spark.sql.catalog.mycatalog.spark.cosmos.accountKey", cosmosMasterKey)

@@ -6,19 +6,20 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the custom domain to create. */
 @Fluent
 public final class CustomDomainPropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainPropertiesParameters.class);
-
     /*
      * The host name of the custom domain. Must be a domain name.
      */
     @JsonProperty(value = "hostName", required = true)
     private String hostname;
+
+    /** Creates an instance of CustomDomainPropertiesParameters class. */
+    public CustomDomainPropertiesParameters() {
+    }
 
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
@@ -47,10 +48,12 @@ public final class CustomDomainPropertiesParameters {
      */
     public void validate() {
         if (hostname() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property hostname in model CustomDomainPropertiesParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomDomainPropertiesParameters.class);
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SparkBatchJobResultType. */
+/** The Spark batch job result. */
 public final class SparkBatchJobResultType extends ExpandableStringEnum<SparkBatchJobResultType> {
     /** Static value Uncertain for SparkBatchJobResultType. */
     public static final SparkBatchJobResultType UNCERTAIN = fromString("Uncertain");
@@ -23,6 +23,14 @@ public final class SparkBatchJobResultType extends ExpandableStringEnum<SparkBat
     public static final SparkBatchJobResultType CANCELLED = fromString("Cancelled");
 
     /**
+     * Creates a new instance of SparkBatchJobResultType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkBatchJobResultType() {}
+
+    /**
      * Creates or finds a SparkBatchJobResultType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +41,11 @@ public final class SparkBatchJobResultType extends ExpandableStringEnum<SparkBat
         return fromString(name, SparkBatchJobResultType.class);
     }
 
-    /** @return known SparkBatchJobResultType values. */
+    /**
+     * Gets known SparkBatchJobResultType values.
+     *
+     * @return known SparkBatchJobResultType values.
+     */
     public static Collection<SparkBatchJobResultType> values() {
         return values(SparkBatchJobResultType.class);
     }

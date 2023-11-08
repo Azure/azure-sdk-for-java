@@ -1,0 +1,20 @@
+[
+  [
+    "com.azure.storage.blob.implementation.BlobsImpl$BlobsService"
+  ],
+  [
+    "com.azure.storage.blob.implementation.AppendBlobsImpl$AppendBlobsService"
+  ],
+  [
+    "com.azure.storage.blob.implementation.BlockBlobsImpl$BlockBlobsService"
+  ],
+  [
+    "com.azure.storage.blob.implementation.ContainersImpl$ContainersService"
+  ],
+  [
+    "com.azure.storage.blob.implementation.PageBlobsImpl$PageBlobsService"
+  ],
+  [
+    "com.azure.storage.blob.implementation.ServicesImpl$ServicesService"
+  ]
+]

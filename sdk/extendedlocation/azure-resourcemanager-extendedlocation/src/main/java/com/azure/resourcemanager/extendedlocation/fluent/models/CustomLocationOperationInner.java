@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.extendedlocation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Custom Locations operation. */
 @Fluent
 public final class CustomLocationOperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomLocationOperationInner.class);
-
     /*
      * Describes the properties of a Custom Locations Operation Value Display.
      */

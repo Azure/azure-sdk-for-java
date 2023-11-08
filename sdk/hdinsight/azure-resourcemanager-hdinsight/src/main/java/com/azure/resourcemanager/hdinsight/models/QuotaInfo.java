@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The quota properties for the cluster. */
 @Fluent
 public final class QuotaInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaInfo.class);
-
     /*
      * The cores used by the cluster.
      */
     @JsonProperty(value = "coresUsed")
     private Integer coresUsed;
+
+    /** Creates an instance of QuotaInfo class. */
+    public QuotaInfo() {
+    }
 
     /**
      * Get the coresUsed property: The cores used by the cluster.

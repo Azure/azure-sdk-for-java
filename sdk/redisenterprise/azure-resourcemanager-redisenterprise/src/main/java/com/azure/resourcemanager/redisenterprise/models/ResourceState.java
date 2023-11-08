@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceState. */
+/** Current resource status. */
 public final class ResourceState extends ExpandableStringEnum<ResourceState> {
     /** Static value Running for ResourceState. */
     public static final ResourceState RUNNING = fromString("Running");
@@ -47,6 +47,15 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
     public static final ResourceState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of ResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceState() {
+    }
+
+    /**
      * Creates or finds a ResourceState from its string representation.
      *
      * @param name a name to look for.
@@ -57,7 +66,11 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
         return fromString(name, ResourceState.class);
     }
 
-    /** @return known ResourceState values. */
+    /**
+     * Gets known ResourceState values.
+     *
+     * @return known ResourceState values.
+     */
     public static Collection<ResourceState> values() {
         return values(ResourceState.class);
     }

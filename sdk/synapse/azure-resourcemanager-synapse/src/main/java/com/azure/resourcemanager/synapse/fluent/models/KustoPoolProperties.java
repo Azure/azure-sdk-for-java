@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
 import com.azure.resourcemanager.synapse.models.OptimizedAutoscale;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
 import com.azure.resourcemanager.synapse.models.State;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing the Kusto pool properties. */
 @Fluent
 public final class KustoPoolProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolProperties.class);
-
     /*
      * The state of the resource.
      */
@@ -77,6 +73,10 @@ public final class KustoPoolProperties {
      */
     @JsonProperty(value = "workspaceUID")
     private String workspaceUid;
+
+    /** Creates an instance of KustoPoolProperties class. */
+    public KustoPoolProperties() {
+    }
 
     /**
      * Get the state property: The state of the resource.

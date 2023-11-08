@@ -47,4 +47,39 @@ class StorageSharedKeyCredentialTest extends Specification {
         signature1 != signature2
         signature2 == expectedSignature
     }
+
+    def "Can parse valid connection string"() {
+        when:
+        def storageSharedKeyCredential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+
+        then:
+        storageSharedKeyCredential.getAccountName() == "teststorage"
+
+        where:
+        connectionString || _
+        "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net" || _
+        "DefaultEndpointsProtocol=https;accountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net" || _
+        "DefaultEndpointsProtocol=https;AccountName=teststorage;accountKey=atestaccountkey;EndpointSuffix=core.windows.net" || _
+        "DefaultEndpointsProtocol=https;Accountname=teststorage;accountKey=atestaccountkey;EndpointSuffix=core.windows.net" || _
+        "DefaultEndpointsProtocol=https;AccountName=teststorage;accountkey=atestaccountkey;EndpointSuffix=core.windows.net" || _
+        "DefaultEndpointsProtocol=https;accountname=teststorage;accountkey=atestaccountkey;EndpointSuffix=core.windows.net" || _
+    }
+
+    def "Cannot parse invalid connection string"() {
+        when:
+        StorageSharedKeyCredential.fromConnectionString(connectionString)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        connectionString                                                                                                     || _
+        "DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net"                                                     || _
+        "DefaultEndpointsProtocol=https;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"                          || _
+        "DefaultEndpointsProtocol=https;AccountName=teststorage;EndpointSuffix=core.windows.net"                             || _
+        "DefaultEndpointsProtocol=https;AccountName =teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net" || _
+        "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey =atestaccountkey;EndpointSuffix=core.windows.net" || _
+        "DefaultEndpointsProtocol=https;Account Name=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net" || _
+        "DefaultEndpointsProtocol=https;AccountName=teststorage;Account Key=atestaccountkey;EndpointSuffix=core.windows.net" || _
+    }
 }

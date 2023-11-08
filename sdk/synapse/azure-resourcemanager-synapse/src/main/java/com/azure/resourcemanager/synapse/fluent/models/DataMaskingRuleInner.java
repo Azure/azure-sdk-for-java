@@ -6,17 +6,13 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DataMaskingFunction;
 import com.azure.resourcemanager.synapse.models.DataMaskingRuleState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a Sql pool data masking rule. */
 @Fluent
 public final class DataMaskingRuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMaskingRuleInner.class);
-
     /*
      * The properties of the resource.
      */
@@ -34,6 +30,10 @@ public final class DataMaskingRuleInner extends ProxyResource {
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
+
+    /** Creates an instance of DataMaskingRuleInner class. */
+    public DataMaskingRuleInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the resource.

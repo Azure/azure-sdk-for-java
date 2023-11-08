@@ -7,7 +7,6 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** certificateAuthority. */
 @Fluent
 public final class MicrosoftGraphCertificateAuthority {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphCertificateAuthority.class);
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * Required. The base64 encoded string representing the public certificate.
@@ -33,29 +32,27 @@ public final class MicrosoftGraphCertificateAuthority {
     private String certificateRevocationListUrl;
 
     /*
-     * The URL contains the list of all revoked certificates since the last
-     * time a full certificate revocaton list was created.
+     * The URL contains the list of all revoked certificates since the last time a full certificate revocaton list was
+     * created.
      */
     @JsonProperty(value = "deltaCertificateRevocationListUrl")
     private String deltaCertificateRevocationListUrl;
 
     /*
-     * Required. true if the trusted certificate is a root authority, false if
-     * the trusted certificate is an intermediate authority.
+     * Required. true if the trusted certificate is a root authority, false if the trusted certificate is an
+     * intermediate authority.
      */
     @JsonProperty(value = "isRootAuthority")
     private Boolean isRootAuthority;
 
     /*
-     * The issuer of the certificate, calculated from the certificate value.
-     * Read-only.
+     * The issuer of the certificate, calculated from the certificate value. Read-only.
      */
     @JsonProperty(value = "issuer")
     private String issuer;
 
     /*
-     * The subject key identifier of the certificate, calculated from the
-     * certificate value. Read-only.
+     * The subject key identifier of the certificate, calculated from the certificate value. Read-only.
      */
     @JsonProperty(value = "issuerSki")
     private String issuerSki;
@@ -65,6 +62,10 @@ public final class MicrosoftGraphCertificateAuthority {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphCertificateAuthority class. */
+    public MicrosoftGraphCertificateAuthority() {
+    }
+
     /**
      * Get the certificate property: Required. The base64 encoded string representing the public certificate.
      *
@@ -72,7 +73,7 @@ public final class MicrosoftGraphCertificateAuthority {
      */
     public byte[] certificate() {
         if (this.certificate == null) {
-            return null;
+            return EMPTY_BYTE_ARRAY;
         }
         return this.certificate.decodedBytes();
     }

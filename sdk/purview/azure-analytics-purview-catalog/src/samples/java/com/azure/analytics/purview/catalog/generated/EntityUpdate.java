@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityUpdate {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.entitycreateorupdate.entityupdate
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitycreateorupdate.entityupdate
         BinaryData entity =
                 BinaryData.fromString(
                         "{\"entity\":{\"attributes\":{\"name\":\"ExampleStorageAccount\",\"description\":null,\"createTime\":0,\"modifiedTime\":0,\"owner\":\"ExampleOwner\",\"publicAccessLevel\":null,\"qualifiedName\":\"exampleaccount\"},\"contacts\":{\"Expert\":[{\"info\":\"Example Expert Info\",\"id\":\"30435ff9-9b96-44af-a5a9-e05c8b1ae2df\"}],\"Owner\":[{\"info\":\"Example Owner Info\",\"id\":\"30435ff9-9b96-44af-a5a9-e05c8b1ae2df\"}]},\"createdBy\":\"ExampleCreator\",\"status\":\"ACTIVE\",\"typeName\":\"azure_storage_account\",\"updatedBy\":\"ExampleUpdator\",\"version\":0},\"referredEntities\":{}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = entityClient.createOrUpdateWithResponse(entity, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.entitycreateorupdate.entityupdate
+        // END:com.azure.analytics.purview.catalog.generated.entitycreateorupdate.entityupdate
     }
 }

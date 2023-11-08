@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnabledProtocols. */
+/** The authentication protocol that is used for the file share. Can only be specified when creating a share. */
 public final class EnabledProtocols extends ExpandableStringEnum<EnabledProtocols> {
     /** Static value SMB for EnabledProtocols. */
     public static final EnabledProtocols SMB = fromString("SMB");
 
     /** Static value NFS for EnabledProtocols. */
     public static final EnabledProtocols NFS = fromString("NFS");
+
+    /**
+     * Creates a new instance of EnabledProtocols value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnabledProtocols() {
+    }
 
     /**
      * Creates or finds a EnabledProtocols from its string representation.
@@ -27,7 +36,11 @@ public final class EnabledProtocols extends ExpandableStringEnum<EnabledProtocol
         return fromString(name, EnabledProtocols.class);
     }
 
-    /** @return known EnabledProtocols values. */
+    /**
+     * Gets known EnabledProtocols values.
+     *
+     * @return known EnabledProtocols values.
+     */
     public static Collection<EnabledProtocols> values() {
         return values(EnabledProtocols.class);
     }

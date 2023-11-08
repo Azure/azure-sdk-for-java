@@ -42,6 +42,10 @@ public final class CsmUsageQuotaInner {
     @JsonProperty(value = "name")
     private LocalizableString name;
 
+    /** Creates an instance of CsmUsageQuotaInner class. */
+    public CsmUsageQuotaInner() {
+    }
+
     /**
      * Get the unit property: Units of measurement for the quota resource.
      *

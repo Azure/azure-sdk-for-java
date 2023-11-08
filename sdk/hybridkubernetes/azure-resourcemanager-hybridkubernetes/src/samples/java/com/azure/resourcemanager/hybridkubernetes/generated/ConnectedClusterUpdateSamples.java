@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hybridkubernetes.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedCluster;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +23,7 @@ public final class ConnectedClusterUpdateSamples {
         ConnectedCluster resource =
             manager
                 .connectedClusters()
-                .getByResourceGroupWithResponse("k8sc-rg", "testCluster", Context.NONE)
+                .getByResourceGroupWithResponse("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }

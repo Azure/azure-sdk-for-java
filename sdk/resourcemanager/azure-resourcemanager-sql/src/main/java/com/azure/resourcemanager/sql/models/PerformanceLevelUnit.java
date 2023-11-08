@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PerformanceLevelUnit. */
+/** Unit type used to measure performance level. */
 public final class PerformanceLevelUnit extends ExpandableStringEnum<PerformanceLevelUnit> {
     /** Static value DTU for PerformanceLevelUnit. */
     public static final PerformanceLevelUnit DTU = fromString("DTU");
@@ -27,7 +27,11 @@ public final class PerformanceLevelUnit extends ExpandableStringEnum<Performance
         return fromString(name, PerformanceLevelUnit.class);
     }
 
-    /** @return known PerformanceLevelUnit values. */
+    /**
+     * Gets known PerformanceLevelUnit values.
+     *
+     * @return known PerformanceLevelUnit values.
+     */
     public static Collection<PerformanceLevelUnit> values() {
         return values(PerformanceLevelUnit.class);
     }

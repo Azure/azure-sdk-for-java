@@ -13,12 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class SystemScanRulesetsGet {
     public static void main(String[] args) {
-        SystemScanRulesetsClient client =
+        SystemScanRulesetsClient systemScanRulesetsClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildSystemScanRulesetsClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.systemscanrulesetsget.systemscanrulesetsget
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getWithResponse("AzureStorage", requestOptions);
+        Response<BinaryData> response = systemScanRulesetsClient.getWithResponse("AzureStorage", requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.systemscanrulesetsget.systemscanrulesetsget
     }
 }

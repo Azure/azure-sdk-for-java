@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TimerTriggerDescriptor model. */
 @Fluent
 public final class TimerTriggerDescriptor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimerTriggerDescriptor.class);
-
     /*
      * The timer trigger name that caused the run.
      */
@@ -25,6 +21,10 @@ public final class TimerTriggerDescriptor {
      */
     @JsonProperty(value = "scheduleOccurrence")
     private String scheduleOccurrence;
+
+    /** Creates an instance of TimerTriggerDescriptor class. */
+    public TimerTriggerDescriptor() {
+    }
 
     /**
      * Get the timerTriggerName property: The timer trigger name that caused the run.

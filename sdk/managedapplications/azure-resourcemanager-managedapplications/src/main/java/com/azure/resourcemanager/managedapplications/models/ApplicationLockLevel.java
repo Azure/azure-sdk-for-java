@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managedapplications.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ApplicationLockLevel. */
+/** The managed application lock level. */
 public enum ApplicationLockLevel {
     /** Enum value CanNotDelete. */
     CAN_NOT_DELETE("CanNotDelete"),
@@ -33,6 +33,9 @@ public enum ApplicationLockLevel {
      */
     @JsonCreator
     public static ApplicationLockLevel fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ApplicationLockLevel[] items = ApplicationLockLevel.values();
         for (ApplicationLockLevel item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ApplicationLockLevel {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

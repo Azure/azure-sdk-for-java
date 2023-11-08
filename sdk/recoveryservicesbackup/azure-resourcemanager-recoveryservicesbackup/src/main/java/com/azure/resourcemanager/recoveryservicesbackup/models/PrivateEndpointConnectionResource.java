@@ -75,6 +75,13 @@ public interface PrivateEndpointConnectionResource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner
      * com.azure.resourcemanager.recoveryservicesbackup.fluent.models.PrivateEndpointConnectionResourceInner object.
      *
@@ -89,11 +96,13 @@ public interface PrivateEndpointConnectionResource {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The PrivateEndpointConnectionResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the PrivateEndpointConnectionResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the PrivateEndpointConnectionResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -112,6 +121,7 @@ public interface PrivateEndpointConnectionResource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the PrivateEndpointConnectionResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -123,6 +133,7 @@ public interface PrivateEndpointConnectionResource {
              */
             WithCreate withExistingVault(String vaultName, String resourceGroupName);
         }
+
         /**
          * The stage of the PrivateEndpointConnectionResource definition which contains all the minimum required
          * properties for the resource to be created, but also allows for any other optional properties to be specified.
@@ -144,6 +155,7 @@ public interface PrivateEndpointConnectionResource {
              */
             PrivateEndpointConnectionResource create(Context context);
         }
+
         /** The stage of the PrivateEndpointConnectionResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -154,6 +166,7 @@ public interface PrivateEndpointConnectionResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the PrivateEndpointConnectionResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -164,6 +177,7 @@ public interface PrivateEndpointConnectionResource {
              */
             WithCreate withProperties(PrivateEndpointConnection properties);
         }
+
         /** The stage of the PrivateEndpointConnectionResource definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -175,6 +189,7 @@ public interface PrivateEndpointConnectionResource {
             WithCreate withEtag(String etag);
         }
     }
+
     /**
      * Begins update for the PrivateEndpointConnectionResource resource.
      *
@@ -199,6 +214,7 @@ public interface PrivateEndpointConnectionResource {
          */
         PrivateEndpointConnectionResource apply(Context context);
     }
+
     /** The PrivateEndpointConnectionResource update stages. */
     interface UpdateStages {
         /** The stage of the PrivateEndpointConnectionResource update allowing to specify tags. */
@@ -211,6 +227,7 @@ public interface PrivateEndpointConnectionResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the PrivateEndpointConnectionResource update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -221,6 +238,7 @@ public interface PrivateEndpointConnectionResource {
              */
             Update withProperties(PrivateEndpointConnection properties);
         }
+
         /** The stage of the PrivateEndpointConnectionResource update allowing to specify etag. */
         interface WithEtag {
             /**
@@ -232,6 +250,7 @@ public interface PrivateEndpointConnectionResource {
             Update withEtag(String etag);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

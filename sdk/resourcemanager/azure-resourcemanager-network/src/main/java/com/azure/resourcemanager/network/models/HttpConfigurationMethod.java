@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HttpConfigurationMethod. */
+/** The HTTP method to use. */
 public final class HttpConfigurationMethod extends ExpandableStringEnum<HttpConfigurationMethod> {
     /** Static value Get for HttpConfigurationMethod. */
     public static final HttpConfigurationMethod GET = fromString("Get");
 
     /** Static value Post for HttpConfigurationMethod. */
     public static final HttpConfigurationMethod POST = fromString("Post");
+
+    /**
+     * Creates a new instance of HttpConfigurationMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HttpConfigurationMethod() {
+    }
 
     /**
      * Creates or finds a HttpConfigurationMethod from its string representation.
@@ -27,7 +36,11 @@ public final class HttpConfigurationMethod extends ExpandableStringEnum<HttpConf
         return fromString(name, HttpConfigurationMethod.class);
     }
 
-    /** @return known HttpConfigurationMethod values. */
+    /**
+     * Gets known HttpConfigurationMethod values.
+     *
+     * @return known HttpConfigurationMethod values.
+     */
     public static Collection<HttpConfigurationMethod> values() {
         return values(HttpConfigurationMethod.class);
     }

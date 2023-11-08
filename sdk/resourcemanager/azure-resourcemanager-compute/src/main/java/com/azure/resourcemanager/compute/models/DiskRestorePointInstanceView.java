@@ -20,7 +20,11 @@ public final class DiskRestorePointInstanceView {
      * The disk restore point replication status information.
      */
     @JsonProperty(value = "replicationStatus")
-    private Object replicationStatus;
+    private DiskRestorePointReplicationStatus replicationStatus;
+
+    /** Creates an instance of DiskRestorePointInstanceView class. */
+    public DiskRestorePointInstanceView() {
+    }
 
     /**
      * Get the id property: Disk restore point Id.
@@ -47,7 +51,7 @@ public final class DiskRestorePointInstanceView {
      *
      * @return the replicationStatus value.
      */
-    public Object replicationStatus() {
+    public DiskRestorePointReplicationStatus replicationStatus() {
         return this.replicationStatus;
     }
 
@@ -57,7 +61,7 @@ public final class DiskRestorePointInstanceView {
      * @param replicationStatus the replicationStatus value to set.
      * @return the DiskRestorePointInstanceView object itself.
      */
-    public DiskRestorePointInstanceView withReplicationStatus(Object replicationStatus) {
+    public DiskRestorePointInstanceView withReplicationStatus(DiskRestorePointReplicationStatus replicationStatus) {
         this.replicationStatus = replicationStatus;
         return this;
     }
@@ -68,5 +72,8 @@ public final class DiskRestorePointInstanceView {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (replicationStatus() != null) {
+            replicationStatus().validate();
+        }
     }
 }

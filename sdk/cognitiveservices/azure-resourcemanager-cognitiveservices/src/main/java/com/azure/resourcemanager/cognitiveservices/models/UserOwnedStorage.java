@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The user owned storage for Cognitive Services account. */
 @Fluent
 public final class UserOwnedStorage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserOwnedStorage.class);
-
     /*
      * Full resource id of a Microsoft.Storage resource.
      */
@@ -25,6 +21,10 @@ public final class UserOwnedStorage {
      */
     @JsonProperty(value = "identityClientId")
     private String identityClientId;
+
+    /** Creates an instance of UserOwnedStorage class. */
+    public UserOwnedStorage() {
+    }
 
     /**
      * Get the resourceId property: Full resource id of a Microsoft.Storage resource.

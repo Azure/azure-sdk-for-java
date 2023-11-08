@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Datasets Delete. */
 public final class DatasetsDeleteSamples {
     /*
@@ -19,6 +17,7 @@ public final class DatasetsDeleteSamples {
     public static void datasetsDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .datasets()
-            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset", Context.NONE);
+            .deleteWithResponse(
+                "exampleResourceGroup", "exampleFactoryName", "exampleDataset", com.azure.core.util.Context.NONE);
     }
 }

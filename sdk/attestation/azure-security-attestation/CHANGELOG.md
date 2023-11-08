@@ -5,10 +5,149 @@
 ### Features Added
 
 ### Breaking Changes
+- Changed `attestTpm` to match `attestOpenEnclave` and `attestSgxEnclave`
+- Added `TpmAttestationResult.java` to make the attestTpm return type more consistency.
+- Changed `attestTpm` parameter from String to Binary Data
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.18 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+## 1.1.17 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 1.1.16 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 1.1.15 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
+## 1.1.14 (2023-06-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 1.1.13 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 1.1.12 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `nimbus-jose-jwt` from `9.22` to version `9.31`.
+
+## 1.1.11 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 1.1.10 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
+## 1.1.9 (2023-01-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+
+## 1.1.8 (2022-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.34.0`.
+
+## 1.1.7 (2022-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.33.0`.
+
+## 1.1.6 (2022-09-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.32.0`.
+
+## 1.1.5 (2022-08-16)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.31.0`.
+
+## 1.1.4 (2022-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.30.0`.
+
+## 1.1.3 (2022-06-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.29.1`.
+
+## 1.1.2 (2022-05-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.28.0`.
+
+## 1.1.1 (2022-04-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
 
 ## 1.1.0 (2022-03-11)
 

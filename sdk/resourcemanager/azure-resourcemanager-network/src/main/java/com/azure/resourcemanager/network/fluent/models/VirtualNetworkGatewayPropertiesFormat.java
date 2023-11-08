@@ -7,8 +7,11 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.AdminState;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
@@ -20,6 +23,12 @@ import java.util.List;
 /** VirtualNetworkGateway properties. */
 @Fluent
 public final class VirtualNetworkGatewayPropertiesFormat {
+    /*
+     * Autoscale configuration for virutal network gateway
+     */
+    @JsonProperty(value = "autoScaleConfiguration")
+    private VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration;
+
     /*
      * IP configurations for virtual network gateway.
      */
@@ -39,8 +48,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private VpnType vpnType;
 
     /*
-     * The generation for this VirtualNetworkGateway. Must be None if
-     * gatewayType is not VPN.
+     * The generation for this VirtualNetworkGateway. Must be None if gatewayType is not VPN.
      */
     @JsonProperty(value = "vpnGatewayGeneration")
     private VpnGatewayGeneration vpnGatewayGeneration;
@@ -52,8 +60,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private Boolean enableBgp;
 
     /*
-     * Whether private IP needs to be enabled on this gateway for connections
-     * or not.
+     * Whether private IP needs to be enabled on this gateway for connections or not.
      */
     @JsonProperty(value = "enablePrivateIpAddress")
     private Boolean enablePrivateIpAddress;
@@ -71,26 +78,31 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private Boolean disableIpSecReplayProtection;
 
     /*
-     * The reference to the LocalNetworkGateway resource which represents local
-     * network site having default routes. Assign Null value in case of
-     * removing existing default site setting.
+     * The reference to the LocalNetworkGateway resource which represents local network site having default routes.
+     * Assign Null value in case of removing existing default site setting.
      */
     @JsonProperty(value = "gatewayDefaultSite")
     private SubResource gatewayDefaultSite;
 
     /*
-     * The reference to the VirtualNetworkGatewaySku resource which represents
-     * the SKU selected for Virtual network gateway.
+     * The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected for Virtual network
+     * gateway.
      */
     @JsonProperty(value = "sku")
     private VirtualNetworkGatewaySku sku;
 
     /*
-     * The reference to the VpnClientConfiguration resource which represents
-     * the P2S VpnClient configurations.
+     * The reference to the VpnClientConfiguration resource which represents the P2S VpnClient configurations.
      */
     @JsonProperty(value = "vpnClientConfiguration")
     private VpnClientConfiguration vpnClientConfiguration;
+
+    /*
+     * The reference to the VirtualNetworkGatewayPolicyGroup resource which represents the available
+     * VirtualNetworkGatewayPolicyGroup for the gateway.
+     */
+    @JsonProperty(value = "virtualNetworkGatewayPolicyGroups")
+    private List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups;
 
     /*
      * Virtual network gateway's BGP speaker settings.
@@ -99,9 +111,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private BgpSettings bgpSettings;
 
     /*
-     * The reference to the address space resource which represents the custom
-     * routes address space specified by the customer for virtual network
-     * gateway and VpnClient.
+     * The reference to the address space resource which represents the custom routes address space specified by the
+     * customer for virtual network gateway and VpnClient.
      */
     @JsonProperty(value = "customRoutes")
     private AddressSpace customRoutes;
@@ -125,15 +136,13 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private Boolean enableDnsForwarding;
 
     /*
-     * The IP address allocated by the gateway to which dns requests can be
-     * sent.
+     * The IP address allocated by the gateway to which dns requests can be sent.
      */
     @JsonProperty(value = "inboundDnsForwardingEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String inboundDnsForwardingEndpoint;
 
     /*
-     * Customer vnet resource id. VirtualNetworkGateway of type local gateway
-     * is associated with the customer vnet.
+     * Customer vnet resource id. VirtualNetworkGateway of type local gateway is associated with the customer vnet.
      */
     @JsonProperty(value = "vNetExtendedLocationResourceId")
     private String vNetExtendedLocationResourceId;
@@ -149,6 +158,51 @@ public final class VirtualNetworkGatewayPropertiesFormat {
      */
     @JsonProperty(value = "enableBgpRouteTranslationForNat")
     private Boolean enableBgpRouteTranslationForNat;
+
+    /*
+     * Configures this gateway to accept traffic from remote Virtual WAN networks.
+     */
+    @JsonProperty(value = "allowVirtualWanTraffic")
+    private Boolean allowVirtualWanTraffic;
+
+    /*
+     * Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support
+     * connectivity to Azure Virtual WAN.
+     */
+    @JsonProperty(value = "allowRemoteVnetTraffic")
+    private Boolean allowRemoteVnetTraffic;
+
+    /*
+     * Property to indicate if the Express Route Gateway serves traffic when there are multiple Express Route Gateways
+     * in the vnet
+     */
+    @JsonProperty(value = "adminState")
+    private AdminState adminState;
+
+    /** Creates an instance of VirtualNetworkGatewayPropertiesFormat class. */
+    public VirtualNetworkGatewayPropertiesFormat() {
+    }
+
+    /**
+     * Get the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
+     *
+     * @return the autoScaleConfiguration value.
+     */
+    public VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration() {
+        return this.autoScaleConfiguration;
+    }
+
+    /**
+     * Set the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
+     *
+     * @param autoScaleConfiguration the autoScaleConfiguration value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withAutoScaleConfiguration(
+        VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration) {
+        this.autoScaleConfiguration = autoScaleConfiguration;
+        return this;
+    }
 
     /**
      * Get the ipConfigurations property: IP configurations for virtual network gateway.
@@ -384,6 +438,29 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
+     * Get the virtualNetworkGatewayPolicyGroups property: The reference to the VirtualNetworkGatewayPolicyGroup
+     * resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
+     *
+     * @return the virtualNetworkGatewayPolicyGroups value.
+     */
+    public List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups() {
+        return this.virtualNetworkGatewayPolicyGroups;
+    }
+
+    /**
+     * Set the virtualNetworkGatewayPolicyGroups property: The reference to the VirtualNetworkGatewayPolicyGroup
+     * resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
+     *
+     * @param virtualNetworkGatewayPolicyGroups the virtualNetworkGatewayPolicyGroups value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withVirtualNetworkGatewayPolicyGroups(
+        List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups) {
+        this.virtualNetworkGatewayPolicyGroups = virtualNetworkGatewayPolicyGroups;
+        return this;
+    }
+
+    /**
      * Get the bgpSettings property: Virtual network gateway's BGP speaker settings.
      *
      * @return the bgpSettings value.
@@ -538,11 +615,80 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
+     * Get the allowVirtualWanTraffic property: Configures this gateway to accept traffic from remote Virtual WAN
+     * networks.
+     *
+     * @return the allowVirtualWanTraffic value.
+     */
+    public Boolean allowVirtualWanTraffic() {
+        return this.allowVirtualWanTraffic;
+    }
+
+    /**
+     * Set the allowVirtualWanTraffic property: Configures this gateway to accept traffic from remote Virtual WAN
+     * networks.
+     *
+     * @param allowVirtualWanTraffic the allowVirtualWanTraffic value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withAllowVirtualWanTraffic(Boolean allowVirtualWanTraffic) {
+        this.allowVirtualWanTraffic = allowVirtualWanTraffic;
+        return this;
+    }
+
+    /**
+     * Get the allowRemoteVnetTraffic property: Configure this gateway to accept traffic from other Azure Virtual
+     * Networks. This configuration does not support connectivity to Azure Virtual WAN.
+     *
+     * @return the allowRemoteVnetTraffic value.
+     */
+    public Boolean allowRemoteVnetTraffic() {
+        return this.allowRemoteVnetTraffic;
+    }
+
+    /**
+     * Set the allowRemoteVnetTraffic property: Configure this gateway to accept traffic from other Azure Virtual
+     * Networks. This configuration does not support connectivity to Azure Virtual WAN.
+     *
+     * @param allowRemoteVnetTraffic the allowRemoteVnetTraffic value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withAllowRemoteVnetTraffic(Boolean allowRemoteVnetTraffic) {
+        this.allowRemoteVnetTraffic = allowRemoteVnetTraffic;
+        return this;
+    }
+
+    /**
+     * Get the adminState property: Property to indicate if the Express Route Gateway serves traffic when there are
+     * multiple Express Route Gateways in the vnet.
+     *
+     * @return the adminState value.
+     */
+    public AdminState adminState() {
+        return this.adminState;
+    }
+
+    /**
+     * Set the adminState property: Property to indicate if the Express Route Gateway serves traffic when there are
+     * multiple Express Route Gateways in the vnet.
+     *
+     * @param adminState the adminState value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withAdminState(AdminState adminState) {
+        this.adminState = adminState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (autoScaleConfiguration() != null) {
+            autoScaleConfiguration().validate();
+        }
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }
@@ -551,6 +697,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
         }
         if (vpnClientConfiguration() != null) {
             vpnClientConfiguration().validate();
+        }
+        if (virtualNetworkGatewayPolicyGroups() != null) {
+            virtualNetworkGatewayPolicyGroups().forEach(e -> e.validate());
         }
         if (bgpSettings() != null) {
             bgpSettings().validate();

@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for ResourceManagementClient class. */
 public interface ResourceManagementClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The Microsoft Azure subscription ID.
      *
      * @return the subscriptionId value.
      */

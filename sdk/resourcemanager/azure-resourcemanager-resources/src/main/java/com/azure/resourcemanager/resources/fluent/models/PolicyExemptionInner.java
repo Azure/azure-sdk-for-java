@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.models.AssignmentScopeValidation;
 import com.azure.resourcemanager.resources.models.ExemptionCategory;
+import com.azure.resourcemanager.resources.models.ResourceSelector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,11 +25,14 @@ public final class PolicyExemptionInner extends ProxyResource {
     private PolicyExemptionProperties innerProperties = new PolicyExemptionProperties();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of PolicyExemptionInner class. */
+    public PolicyExemptionInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties for the policy exemption.
@@ -211,6 +216,54 @@ public final class PolicyExemptionInner extends ProxyResource {
             this.innerProperties = new PolicyExemptionProperties();
         }
         this.innerProperties().withMetadata(metadata);
+        return this;
+    }
+
+    /**
+     * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
+     *
+     * @return the resourceSelectors value.
+     */
+    public List<ResourceSelector> resourceSelectors() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceSelectors();
+    }
+
+    /**
+     * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
+     *
+     * @param resourceSelectors the resourceSelectors value to set.
+     * @return the PolicyExemptionInner object itself.
+     */
+    public PolicyExemptionInner withResourceSelectors(List<ResourceSelector> resourceSelectors) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionProperties();
+        }
+        this.innerProperties().withResourceSelectors(resourceSelectors);
+        return this;
+    }
+
+    /**
+     * Get the assignmentScopeValidation property: The option whether validate the exemption is at or under the
+     * assignment scope.
+     *
+     * @return the assignmentScopeValidation value.
+     */
+    public AssignmentScopeValidation assignmentScopeValidation() {
+        return this.innerProperties() == null ? null : this.innerProperties().assignmentScopeValidation();
+    }
+
+    /**
+     * Set the assignmentScopeValidation property: The option whether validate the exemption is at or under the
+     * assignment scope.
+     *
+     * @param assignmentScopeValidation the assignmentScopeValidation value to set.
+     * @return the PolicyExemptionInner object itself.
+     */
+    public PolicyExemptionInner withAssignmentScopeValidation(AssignmentScopeValidation assignmentScopeValidation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionProperties();
+        }
+        this.innerProperties().withAssignmentScopeValidation(assignmentScopeValidation);
         return this;
     }
 

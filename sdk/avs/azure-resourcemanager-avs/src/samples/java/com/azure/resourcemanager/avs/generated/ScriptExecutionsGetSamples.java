@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ScriptExecutions Get. */
 public final class ScriptExecutionsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/ScriptExecutions_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_Get.json
      */
     /**
      * Sample code: ScriptExecutions_Get.
@@ -17,6 +15,8 @@ public final class ScriptExecutionsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptExecutionsGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptExecutions().getWithResponse("group1", "cloud1", "addSsoServer", Context.NONE);
+        manager
+            .scriptExecutions()
+            .getWithResponse("group1", "cloud1", "addSsoServer", com.azure.core.util.Context.NONE);
     }
 }

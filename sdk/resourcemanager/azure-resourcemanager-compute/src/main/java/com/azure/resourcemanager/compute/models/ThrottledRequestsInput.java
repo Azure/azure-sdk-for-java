@@ -10,6 +10,10 @@ import java.time.OffsetDateTime;
 /** Api request input for LogAnalytics getThrottledRequests Api. */
 @Fluent
 public final class ThrottledRequestsInput extends LogAnalyticsInputBase {
+    /** Creates an instance of ThrottledRequestsInput class. */
+    public ThrottledRequestsInput() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ThrottledRequestsInput withBlobContainerSasUri(String blobContainerSasUri) {

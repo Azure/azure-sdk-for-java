@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Lookup activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -29,11 +30,14 @@ public class LookupActivity extends ExecutionActivity {
     private DatasetReference dataset;
 
     /*
-     * Whether to return first row or all rows. Default value is true. Type:
-     * boolean (or Expression with resultType boolean).
+     * Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "typeProperties.firstRowOnly")
     private Object firstRowOnly;
+
+    /** Creates an instance of LookupActivity class. */
+    public LookupActivity() {}
 
     /**
      * Get the source property: Dataset-specific source properties, same as copy activity source.
@@ -94,6 +98,62 @@ public class LookupActivity extends ExecutionActivity {
      */
     public LookupActivity setFirstRowOnly(Object firstRowOnly) {
         this.firstRowOnly = firstRowOnly;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

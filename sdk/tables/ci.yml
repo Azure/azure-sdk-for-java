@@ -33,7 +33,14 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: tables
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-data-tables
         groupId: com.azure
         safeName: azuredatatables
+    AdditionalModules:
+      - name: azure-data-tables-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

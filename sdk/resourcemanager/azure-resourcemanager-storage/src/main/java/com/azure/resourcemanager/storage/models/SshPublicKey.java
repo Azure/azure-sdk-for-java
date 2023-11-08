@@ -17,11 +17,14 @@ public final class SshPublicKey {
     private String description;
 
     /*
-     * Ssh public key base64 encoded. The format should be: '<keyType>
-     * <keyData>', e.g. ssh-rsa AAAABBBB
+     * Ssh public key base64 encoded. The format should be: '<keyType> <keyData>', e.g. ssh-rsa AAAABBBB
      */
     @JsonProperty(value = "key")
     private String key;
+
+    /** Creates an instance of SshPublicKey class. */
+    public SshPublicKey() {
+    }
 
     /**
      * Get the description property: Optional. It is used to store the function/usage of the key.

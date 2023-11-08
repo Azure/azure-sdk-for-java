@@ -23,6 +23,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * A credential provider that provides token credentials from the MSAL shared token cache.
  * Requires a username and client ID. If a username is not provided, then the
  * {@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME} environment variable will be used.
+ *
+ * <p>This credential is a legacy mechanism for authenticating clients using credentials provided to Visual Studio Code.
+ * This mechanism for Visual Studio authentication has been replaced by the {@link VisualStudioCodeCredential}/>.</p>
+ *
+ * @see com.azure.identity
+ * @see VisualStudioCodeCredential
  */
 public class SharedTokenCacheCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(SharedTokenCacheCredential.class);
@@ -95,7 +101,14 @@ public class SharedTokenCacheCredential implements TokenCredential {
             .map(this::updateCache)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error));
+                request, error))
+            .onErrorMap(error -> {
+                if (identityClient.getIdentityClientOptions().isChained()) {
+                    return new CredentialUnavailableException(error.getMessage(), error);
+                } else {
+                    return error;
+                }
+            });
     }
 
     private AccessToken updateCache(MsalToken msalToken) {

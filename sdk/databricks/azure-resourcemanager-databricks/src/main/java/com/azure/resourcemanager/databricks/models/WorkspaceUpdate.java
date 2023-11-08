@@ -5,21 +5,23 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An update to a workspace. */
 @Fluent
 public final class WorkspaceUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceUpdate.class);
-
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of WorkspaceUpdate class. */
+    public WorkspaceUpdate() {
+    }
 
     /**
      * Get the tags property: Resource tags.

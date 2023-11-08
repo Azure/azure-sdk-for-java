@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualWanSecurityProviderType. */
+/** The virtual wan security provider type. */
 public final class VirtualWanSecurityProviderType extends ExpandableStringEnum<VirtualWanSecurityProviderType> {
     /** Static value External for VirtualWanSecurityProviderType. */
     public static final VirtualWanSecurityProviderType EXTERNAL = fromString("External");
 
     /** Static value Native for VirtualWanSecurityProviderType. */
     public static final VirtualWanSecurityProviderType NATIVE = fromString("Native");
+
+    /**
+     * Creates a new instance of VirtualWanSecurityProviderType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualWanSecurityProviderType() {
+    }
 
     /**
      * Creates or finds a VirtualWanSecurityProviderType from its string representation.
@@ -27,7 +36,11 @@ public final class VirtualWanSecurityProviderType extends ExpandableStringEnum<V
         return fromString(name, VirtualWanSecurityProviderType.class);
     }
 
-    /** @return known VirtualWanSecurityProviderType values. */
+    /**
+     * Gets known VirtualWanSecurityProviderType values.
+     *
+     * @return known VirtualWanSecurityProviderType values.
+     */
     public static Collection<VirtualWanSecurityProviderType> values() {
         return values(VirtualWanSecurityProviderType.class);
     }

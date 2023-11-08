@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TriggerRuns Rerun. */
 public final class TriggerRunsRerunSamples {
     /*
@@ -24,6 +22,6 @@ public final class TriggerRunsRerunSamples {
                 "exampleFactoryName",
                 "exampleTrigger",
                 "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.EntityResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,18 +15,22 @@ import java.util.Map;
 /** SparkConfiguration response details. */
 @Fluent
 public final class SparkConfigurationResourceInner extends EntityResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SparkConfigurationResourceInner.class);
-
     /*
      * Information about a SparkConfiguration created at the workspace level.
+     *
      * SparkConfiguration properties.
      */
     @JsonProperty(value = "properties", required = true)
     private SparkConfigurationInfo innerProperties = new SparkConfigurationInfo();
 
+    /** Creates an instance of SparkConfigurationResourceInner class. */
+    public SparkConfigurationResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Information about a SparkConfiguration created at the workspace level.
-     * SparkConfiguration properties.
+     *
+     * <p>SparkConfiguration properties.
      *
      * @return the innerProperties value.
      */
@@ -174,6 +177,29 @@ public final class SparkConfigurationResourceInner extends EntityResource {
     }
 
     /**
+     * Get the configMergeRule property: SparkConfiguration merge configs.
+     *
+     * @return the configMergeRule value.
+     */
+    public Map<String, String> configMergeRule() {
+        return this.innerProperties() == null ? null : this.innerProperties().configMergeRule();
+    }
+
+    /**
+     * Set the configMergeRule property: SparkConfiguration merge configs.
+     *
+     * @param configMergeRule the configMergeRule value to set.
+     * @return the SparkConfigurationResourceInner object itself.
+     */
+    public SparkConfigurationResourceInner withConfigMergeRule(Map<String, String> configMergeRule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SparkConfigurationInfo();
+        }
+        this.innerProperties().withConfigMergeRule(configMergeRule);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -182,7 +208,7 @@ public final class SparkConfigurationResourceInner extends EntityResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model SparkConfigurationResourceInner"));
@@ -190,4 +216,6 @@ public final class SparkConfigurationResourceInner extends EntityResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SparkConfigurationResourceInner.class);
 }

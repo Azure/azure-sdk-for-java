@@ -25,6 +25,10 @@ public final class WebJobCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of WebJobCollection class. */
+    public WebJobCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

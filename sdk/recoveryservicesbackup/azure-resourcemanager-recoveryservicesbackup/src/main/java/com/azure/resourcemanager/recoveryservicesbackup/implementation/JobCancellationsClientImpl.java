@@ -21,14 +21,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobCancellationsClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobCancellationsClient. */
 public final class JobCancellationsClientImpl implements JobCancellationsClient {
-    private final ClientLogger logger = new ClientLogger(JobCancellationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobCancellationsService service;
 
@@ -52,11 +49,10 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface JobCancellationsService {
+    public interface JobCancellationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupJobs/{jobName}/cancel")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupJobs/{jobName}/cancel")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> trigger(
@@ -189,24 +185,7 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerAsync(String vaultName, String resourceGroupName, String jobName) {
-        return triggerWithResponseAsync(vaultName, resourceGroupName, jobName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
-     * GetCancelOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param jobName Name of the job to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trigger(String vaultName, String resourceGroupName, String jobName) {
-        triggerAsync(vaultName, resourceGroupName, jobName).block();
+        return triggerWithResponseAsync(vaultName, resourceGroupName, jobName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -226,5 +205,21 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
     public Response<Void> triggerWithResponse(
         String vaultName, String resourceGroupName, String jobName, Context context) {
         return triggerWithResponseAsync(vaultName, resourceGroupName, jobName, context).block();
+    }
+
+    /**
+     * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
+     * GetCancelOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param jobName Name of the job to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void trigger(String vaultName, String resourceGroupName, String jobName) {
+        triggerWithResponse(vaultName, resourceGroupName, jobName, Context.NONE);
     }
 }

@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -18,12 +18,9 @@ import java.util.Map;
 /** drive. */
 @Fluent
 public final class MicrosoftGraphDrive extends MicrosoftGraphBaseItemInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDrive.class);
-
     /*
-     * Describes the type of drive represented by this resource. OneDrive
-     * personal drives will return personal. OneDrive for Business will return
-     * business. SharePoint document libraries will return documentLibrary.
+     * Describes the type of drive represented by this resource. OneDrive personal drives will return personal.
+     * OneDrive for Business will return business. SharePoint document libraries will return documentLibrary.
      * Read-only.
      */
     @JsonProperty(value = "driveType")
@@ -51,6 +48,7 @@ public final class MicrosoftGraphDrive extends MicrosoftGraphBaseItemInner {
      * systemFacet
      */
     @JsonProperty(value = "system")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> system;
 
     /*
@@ -87,6 +85,10 @@ public final class MicrosoftGraphDrive extends MicrosoftGraphBaseItemInner {
      * drive
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDrive class. */
+    public MicrosoftGraphDrive() {
+    }
 
     /**
      * Get the driveType property: Describes the type of drive represented by this resource. OneDrive personal drives

@@ -31,6 +31,10 @@ public final class NetworkWatcherInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of NetworkWatcherInner class. */
+    public NetworkWatcherInner() {
+    }
+
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *

@@ -17,6 +17,10 @@ public final class PrivateLinkConnectionApprovalRequest {
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkConnectionState privateLinkServiceConnectionState;
 
+    /** Creates an instance of PrivateLinkConnectionApprovalRequest class. */
+    public PrivateLinkConnectionApprovalRequest() {
+    }
+
     /**
      * Get the privateLinkServiceConnectionState property: The state of a private link connection.
      *

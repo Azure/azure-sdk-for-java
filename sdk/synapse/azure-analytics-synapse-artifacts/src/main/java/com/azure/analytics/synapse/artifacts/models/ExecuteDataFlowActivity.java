@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Execute data flow activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -41,28 +42,35 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     private ExecuteDataFlowActivityTypePropertiesCompute compute;
 
     /*
-     * Trace level setting used for data flow monitoring output. Supported
-     * values are: 'coarse', 'fine', and 'none'. Type: string (or Expression
-     * with resultType string)
+     * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'.
+     * Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "typeProperties.traceLevel")
     private Object traceLevel;
 
     /*
-     * Continue on error setting used for data flow execution. Enables
-     * processing to continue if a sink fails. Type: boolean (or Expression
-     * with resultType boolean)
+     * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type:
+     * boolean (or Expression with resultType boolean)
      */
     @JsonProperty(value = "typeProperties.continueOnError")
     private Object continueOnError;
 
     /*
-     * Concurrent run setting used for data flow execution. Allows sinks with
-     * the same save order to be processed concurrently. Type: boolean (or
-     * Expression with resultType boolean)
+     * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed
+     * concurrently. Type: boolean (or Expression with resultType boolean)
      */
     @JsonProperty(value = "typeProperties.runConcurrently")
     private Object runConcurrently;
+
+    /*
+     * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with
+     * resultType integer)
+     */
+    @JsonProperty(value = "typeProperties.sourceStagingConcurrency")
+    private Object sourceStagingConcurrency;
+
+    /** Creates an instance of ExecuteDataFlowActivity class. */
+    public ExecuteDataFlowActivity() {}
 
     /**
      * Get the dataflow property: Data flow reference.
@@ -207,6 +215,84 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      */
     public ExecuteDataFlowActivity setRunConcurrently(Object runConcurrently) {
         this.runConcurrently = runConcurrently;
+        return this;
+    }
+
+    /**
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @return the sourceStagingConcurrency value.
+     */
+    public Object getSourceStagingConcurrency() {
+        return this.sourceStagingConcurrency;
+    }
+
+    /**
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity setSourceStagingConcurrency(Object sourceStagingConcurrency) {
+        this.sourceStagingConcurrency = sourceStagingConcurrency;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

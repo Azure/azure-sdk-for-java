@@ -5,54 +5,32 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A long term retention backup for a managed database. */
-@JsonFlatten
 @Immutable
-public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceLongTermRetentionBackupInner.class);
-
+public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
     /*
-     * The managed instance that the backup database belongs to.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.managedInstanceName", access = JsonProperty.Access.WRITE_ONLY)
-    private String managedInstanceName;
+    @JsonProperty(value = "properties")
+    private ManagedInstanceLongTermRetentionBackupProperties innerProperties;
 
-    /*
-     * The create time of the instance.
-     */
-    @JsonProperty(value = "properties.managedInstanceCreateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime managedInstanceCreateTime;
+    /** Creates an instance of ManagedInstanceLongTermRetentionBackupInner class. */
+    public ManagedInstanceLongTermRetentionBackupInner() {
+    }
 
-    /*
-     * The name of the database the backup belong to
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.databaseName", access = JsonProperty.Access.WRITE_ONLY)
-    private String databaseName;
-
-    /*
-     * The delete time of the database
-     */
-    @JsonProperty(value = "properties.databaseDeletionTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime databaseDeletionTime;
-
-    /*
-     * The time the backup was taken
-     */
-    @JsonProperty(value = "properties.backupTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime backupTime;
-
-    /*
-     * The time the long term retention backup will expire.
-     */
-    @JsonProperty(value = "properties.backupExpirationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime backupExpirationTime;
+    private ManagedInstanceLongTermRetentionBackupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the managedInstanceName property: The managed instance that the backup database belongs to.
@@ -60,7 +38,7 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
      * @return the managedInstanceName value.
      */
     public String managedInstanceName() {
-        return this.managedInstanceName;
+        return this.innerProperties() == null ? null : this.innerProperties().managedInstanceName();
     }
 
     /**
@@ -69,7 +47,7 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
      * @return the managedInstanceCreateTime value.
      */
     public OffsetDateTime managedInstanceCreateTime() {
-        return this.managedInstanceCreateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().managedInstanceCreateTime();
     }
 
     /**
@@ -78,7 +56,7 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
      * @return the databaseName value.
      */
     public String databaseName() {
-        return this.databaseName;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
     }
 
     /**
@@ -87,7 +65,7 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
      * @return the databaseDeletionTime value.
      */
     public OffsetDateTime databaseDeletionTime() {
-        return this.databaseDeletionTime;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseDeletionTime();
     }
 
     /**
@@ -96,7 +74,7 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
      * @return the backupTime value.
      */
     public OffsetDateTime backupTime() {
-        return this.backupTime;
+        return this.innerProperties() == null ? null : this.innerProperties().backupTime();
     }
 
     /**
@@ -105,7 +83,16 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
      * @return the backupExpirationTime value.
      */
     public OffsetDateTime backupExpirationTime() {
-        return this.backupExpirationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().backupExpirationTime();
+    }
+
+    /**
+     * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
+     *
+     * @return the backupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy backupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().backupStorageRedundancy();
     }
 
     /**
@@ -114,5 +101,8 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

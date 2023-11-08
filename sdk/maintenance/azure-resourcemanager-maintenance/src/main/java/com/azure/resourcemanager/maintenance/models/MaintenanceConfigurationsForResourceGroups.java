@@ -16,7 +16,8 @@ public interface MaintenanceConfigurationsForResourceGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group.
+     * @return configuration records within a subscription and resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<MaintenanceConfiguration> listByResourceGroup(String resourceGroupName);
 
@@ -28,7 +29,8 @@ public interface MaintenanceConfigurationsForResourceGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group.
+     * @return configuration records within a subscription and resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<MaintenanceConfiguration> listByResourceGroup(String resourceGroupName, Context context);
 }

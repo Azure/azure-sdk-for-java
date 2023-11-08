@@ -12,33 +12,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AmazonS3LinkedServiceTypeProperties {
     /*
-     * The authentication type of S3. Allowed value: AccessKey (default) or
-     * TemporarySecurityCredentials. Type: string (or Expression with
-     * resultType string).
+     * The authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The access key identifier of the Amazon S3 Identity and Access
-     * Management (IAM) user. Type: string (or Expression with resultType
-     * string).
+     * The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "accessKeyId")
     private Object accessKeyId;
 
     /*
-     * The secret access key of the Amazon S3 Identity and Access Management
-     * (IAM) user.
+     * The secret access key of the Amazon S3 Identity and Access Management (IAM) user.
      */
     @JsonProperty(value = "secretAccessKey")
     private SecretBase secretAccessKey;
 
     /*
-     * This value specifies the endpoint to access with the S3 Connector. This
-     * is an optional property; change it only if you want to try a different
-     * service endpoint or want to switch between https and http. Type: string
-     * (or Expression with resultType string).
+     * This value specifies the endpoint to access with the S3 Connector. This is an optional property; change it only
+     * if you want to try a different service endpoint or want to switch between https and http. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "serviceUrl")
     private Object serviceUrl;
@@ -50,12 +46,15 @@ public final class AmazonS3LinkedServiceTypeProperties {
     private SecretBase sessionToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of AmazonS3LinkedServiceTypeProperties class. */
+    public AmazonS3LinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the authenticationType property: The authentication type of S3. Allowed value: AccessKey (default) or
@@ -169,22 +168,22 @@ public final class AmazonS3LinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonS3LinkedServiceTypeProperties object itself.
      */
-    public AmazonS3LinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AmazonS3LinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

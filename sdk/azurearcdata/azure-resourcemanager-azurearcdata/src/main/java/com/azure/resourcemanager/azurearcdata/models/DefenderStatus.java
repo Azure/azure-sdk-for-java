@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DefenderStatus. */
+/** Status of Azure Defender. */
 public final class DefenderStatus extends ExpandableStringEnum<DefenderStatus> {
     /** Static value Protected for DefenderStatus. */
     public static final DefenderStatus PROTECTED = fromString("Protected");
@@ -18,6 +18,15 @@ public final class DefenderStatus extends ExpandableStringEnum<DefenderStatus> {
 
     /** Static value Unknown for DefenderStatus. */
     public static final DefenderStatus UNKNOWN = fromString("Unknown");
+
+    /**
+     * Creates a new instance of DefenderStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DefenderStatus() {
+    }
 
     /**
      * Creates or finds a DefenderStatus from its string representation.
@@ -30,7 +39,11 @@ public final class DefenderStatus extends ExpandableStringEnum<DefenderStatus> {
         return fromString(name, DefenderStatus.class);
     }
 
-    /** @return known DefenderStatus values. */
+    /**
+     * Gets known DefenderStatus values.
+     *
+     * @return known DefenderStatus values.
+     */
     public static Collection<DefenderStatus> values() {
         return values(DefenderStatus.class);
     }

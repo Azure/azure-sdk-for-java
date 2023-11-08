@@ -40,9 +40,6 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
-
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -127,8 +124,10 @@ public final class QueueServiceAsyncClient {
      * @return QueueAsyncClient that interacts with the specified queue
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
-        return new QueueAsyncClient(client, queueName, accountName, serviceVersion,
-            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+        QueueClient queueClient = new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding,
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
+        return new QueueAsyncClient(client, queueName, accountName, serviceVersion, messageEncoding,
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, queueClient);
     }
 
     /**
@@ -196,8 +195,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Context context) {
-        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName, accountName,
-            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+        QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
 
         return queueAsyncClient.createWithResponse(metadata, context)
             .map(response -> new SimpleResponse<>(response, queueAsyncClient));
@@ -256,9 +254,8 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
-        return new QueueAsyncClient(client, queueName, accountName,
-            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler)
-            .deleteWithResponse(context);
+        QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
+        return queueAsyncClient.deleteWithResponse(context);
     }
 
     /**
@@ -427,8 +424,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().getPropertiesWithResponseAsync(null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return client.getServices().getPropertiesWithResponseAsync(null, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -552,8 +548,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().setPropertiesWithResponseAsync(properties, null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return client.getServices().setPropertiesWithResponseAsync(properties, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -618,8 +613,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().getStatisticsWithResponseAsync(null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return client.getServices().getStatisticsWithResponseAsync(null, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -706,6 +700,10 @@ public final class QueueServiceAsyncClient {
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
         return new AccountSasImplUtil(accountSasSignatureValues, null)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+    }
+
+    AzureQueueStorageImpl getAzureQueueStorage() {
+        return client;
     }
 
 }

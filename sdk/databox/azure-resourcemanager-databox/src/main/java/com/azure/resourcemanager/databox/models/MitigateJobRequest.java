@@ -5,20 +5,29 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The Mitigate Job captured from request body for Mitigate API. */
 @Fluent
 public final class MitigateJobRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MitigateJobRequest.class);
-
     /*
      * Resolution code for the job
      */
-    @JsonProperty(value = "customerResolutionCode", required = true)
+    @JsonProperty(value = "customerResolutionCode")
     private CustomerResolutionCode customerResolutionCode;
+
+    /*
+     * Serial number and the customer resolution code corresponding to each serial number
+     */
+    @JsonProperty(value = "serialNumberCustomerResolutionMap")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, CustomerResolutionCode> serialNumberCustomerResolutionMap;
+
+    /** Creates an instance of MitigateJobRequest class. */
+    public MitigateJobRequest() {
+    }
 
     /**
      * Get the customerResolutionCode property: Resolution code for the job.
@@ -41,16 +50,33 @@ public final class MitigateJobRequest {
     }
 
     /**
+     * Get the serialNumberCustomerResolutionMap property: Serial number and the customer resolution code corresponding
+     * to each serial number.
+     *
+     * @return the serialNumberCustomerResolutionMap value.
+     */
+    public Map<String, CustomerResolutionCode> serialNumberCustomerResolutionMap() {
+        return this.serialNumberCustomerResolutionMap;
+    }
+
+    /**
+     * Set the serialNumberCustomerResolutionMap property: Serial number and the customer resolution code corresponding
+     * to each serial number.
+     *
+     * @param serialNumberCustomerResolutionMap the serialNumberCustomerResolutionMap value to set.
+     * @return the MitigateJobRequest object itself.
+     */
+    public MitigateJobRequest withSerialNumberCustomerResolutionMap(
+        Map<String, CustomerResolutionCode> serialNumberCustomerResolutionMap) {
+        this.serialNumberCustomerResolutionMap = serialNumberCustomerResolutionMap;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (customerResolutionCode() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customerResolutionCode in model MitigateJobRequest"));
-        }
     }
 }

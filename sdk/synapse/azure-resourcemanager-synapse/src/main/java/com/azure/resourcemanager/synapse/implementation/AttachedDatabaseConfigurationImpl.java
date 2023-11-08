@@ -80,6 +80,10 @@ public final class AttachedDatabaseConfigurationImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AttachedDatabaseConfigurationInner innerModel() {
         return this.innerObject;
     }

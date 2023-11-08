@@ -12,16 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SshPublicKeyGenerateKeyPairResultInner {
     /*
-     * Private key portion of the key pair used to authenticate to a virtual
-     * machine through ssh. The private key is returned in RFC3447 format and
-     * should be treated as a secret.
+     * Private key portion of the key pair used to authenticate to a virtual machine through ssh. The private key is
+     * returned in RFC3447 format and should be treated as a secret.
      */
     @JsonProperty(value = "privateKey", required = true)
     private String privateKey;
 
     /*
-     * Public key portion of the key pair used to authenticate to a virtual
-     * machine through ssh. The public key is in ssh-rsa format.
+     * Public key portion of the key pair used to authenticate to a virtual machine through ssh. The public key is in
+     * ssh-rsa format.
      */
     @JsonProperty(value = "publicKey", required = true)
     private String publicKey;
@@ -32,6 +31,10 @@ public final class SshPublicKeyGenerateKeyPairResultInner {
      */
     @JsonProperty(value = "id", required = true)
     private String id;
+
+    /** Creates an instance of SshPublicKeyGenerateKeyPairResultInner class. */
+    public SshPublicKeyGenerateKeyPairResultInner() {
+    }
 
     /**
      * Get the privateKey property: Private key portion of the key pair used to authenticate to a virtual machine

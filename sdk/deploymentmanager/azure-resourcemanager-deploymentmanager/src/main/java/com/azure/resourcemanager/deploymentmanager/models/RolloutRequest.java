@@ -100,6 +100,13 @@ public interface RolloutRequest {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.deploymentmanager.fluent.models.RolloutRequestInner object.
      *
      * @return the inner object.
@@ -331,7 +338,22 @@ public interface RolloutRequest {
         }
     }
     /**
-     * Only running rollouts can be canceled.
+     * Stops a running rollout.
+     *
+     * <p>Only running rollouts can be canceled.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the rollout along with {@link Response}.
+     */
+    Response<Rollout> cancelWithResponse(Context context);
+
+    /**
+     * Stops a running rollout.
+     *
+     * <p>Only running rollouts can be canceled.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -340,27 +362,9 @@ public interface RolloutRequest {
     Rollout cancel();
 
     /**
-     * Only running rollouts can be canceled.
+     * Restarts a failed rollout and optionally skips all succeeded steps.
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
-     */
-    Response<Rollout> cancelWithResponse(Context context);
-
-    /**
-     * Only failed rollouts can be restarted.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
-     */
-    Rollout restart();
-
-    /**
-     * Only failed rollouts can be restarted.
+     * <p>Only failed rollouts can be restarted.
      *
      * @param skipSucceeded If true, will skip all succeeded steps so far in the rollout. If false, will execute the
      *     entire rollout again regardless of the current state of individual resources. Defaults to false if not
@@ -369,7 +373,18 @@ public interface RolloutRequest {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout along with {@link Response}.
      */
     Response<Rollout> restartWithResponse(Boolean skipSucceeded, Context context);
+
+    /**
+     * Restarts a failed rollout and optionally skips all succeeded steps.
+     *
+     * <p>Only failed rollouts can be restarted.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the rollout.
+     */
+    Rollout restart();
 }

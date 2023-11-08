@@ -14,10 +14,9 @@ import com.azure.resourcemanager.automation.fluent.models.DscNodeInner;
 import com.azure.resourcemanager.automation.models.DscNode;
 import com.azure.resourcemanager.automation.models.DscNodeUpdateParameters;
 import com.azure.resourcemanager.automation.models.DscNodes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DscNodesImpl implements DscNodes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscNodesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DscNodesImpl.class);
 
     private final DscNodesClient innerClient;
 

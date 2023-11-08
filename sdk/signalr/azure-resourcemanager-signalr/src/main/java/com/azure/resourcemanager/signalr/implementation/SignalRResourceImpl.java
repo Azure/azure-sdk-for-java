@@ -11,12 +11,14 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.signalr.fluent.models.SharedPrivateLinkResourceInner;
 import com.azure.resourcemanager.signalr.fluent.models.SignalRResourceInner;
+import com.azure.resourcemanager.signalr.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.signalr.models.ManagedIdentity;
 import com.azure.resourcemanager.signalr.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
 import com.azure.resourcemanager.signalr.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.signalr.models.ResourceSku;
+import com.azure.resourcemanager.signalr.models.ServerlessSettings;
 import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.ServiceKind;
 import com.azure.resourcemanager.signalr.models.SharedPrivateLinkResource;
@@ -146,12 +148,20 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         }
     }
 
+    public LiveTraceConfiguration liveTraceConfiguration() {
+        return this.innerModel().liveTraceConfiguration();
+    }
+
     public ResourceLogConfiguration resourceLogConfiguration() {
         return this.innerModel().resourceLogConfiguration();
     }
 
     public SignalRCorsSettings cors() {
         return this.innerModel().cors();
+    }
+
+    public ServerlessSettings serverless() {
+        return this.innerModel().serverless();
     }
 
     public ServerlessUpstreamSettings upstream() {
@@ -174,12 +184,24 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this.innerModel().disableAadAuth();
     }
 
+    public String regionEndpointEnabled() {
+        return this.innerModel().regionEndpointEnabled();
+    }
+
+    public String resourceStopped() {
+        return this.innerModel().resourceStopped();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public SignalRResourceInner innerModel() {
@@ -273,12 +295,12 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this;
     }
 
-    public SignalRKeys listKeys() {
-        return serviceManager.signalRs().listKeys(resourceGroupName, resourceName);
-    }
-
     public Response<SignalRKeys> listKeysWithResponse(Context context) {
         return serviceManager.signalRs().listKeysWithResponse(resourceGroupName, resourceName, context);
+    }
+
+    public SignalRKeys listKeys() {
+        return serviceManager.signalRs().listKeys(resourceGroupName, resourceName);
     }
 
     public SignalRKeys regenerateKey(RegenerateKeyParameters parameters) {
@@ -337,6 +359,11 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this;
     }
 
+    public SignalRResourceImpl withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration) {
+        this.innerModel().withLiveTraceConfiguration(liveTraceConfiguration);
+        return this;
+    }
+
     public SignalRResourceImpl withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration) {
         this.innerModel().withResourceLogConfiguration(resourceLogConfiguration);
         return this;
@@ -344,6 +371,11 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
 
     public SignalRResourceImpl withCors(SignalRCorsSettings cors) {
         this.innerModel().withCors(cors);
+        return this;
+    }
+
+    public SignalRResourceImpl withServerless(ServerlessSettings serverless) {
+        this.innerModel().withServerless(serverless);
         return this;
     }
 
@@ -369,6 +401,16 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
 
     public SignalRResourceImpl withDisableAadAuth(Boolean disableAadAuth) {
         this.innerModel().withDisableAadAuth(disableAadAuth);
+        return this;
+    }
+
+    public SignalRResourceImpl withRegionEndpointEnabled(String regionEndpointEnabled) {
+        this.innerModel().withRegionEndpointEnabled(regionEndpointEnabled);
+        return this;
+    }
+
+    public SignalRResourceImpl withResourceStopped(String resourceStopped) {
+        this.innerModel().withResourceStopped(resourceStopped);
         return this;
     }
 }

@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hanaonazure.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of HANA operations. */
 @Fluent
 public final class OperationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationList.class);
-
     /*
      * List of HANA operations
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
+
+    /** Creates an instance of OperationList class. */
+    public OperationList() {
+    }
 
     /**
      * Get the value property: List of HANA operations.

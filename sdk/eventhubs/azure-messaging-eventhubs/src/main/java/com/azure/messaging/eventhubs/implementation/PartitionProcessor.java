@@ -35,7 +35,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  */
 public abstract class PartitionProcessor {
 
-    private final ClientLogger logger = new ClientLogger(PartitionProcessor.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PartitionProcessor.class);
 
     /**
      * This method is called when this {@link EventProcessorClient} takes ownership of a new partition and before any
@@ -44,7 +44,7 @@ public abstract class PartitionProcessor {
      * @param initializationContext The initialization context before events from the partition are processed.
      */
     public void initialize(InitializationContext initializationContext) {
-        logger.atInfo()
+        LOGGER.atInfo()
             .addKeyValue(PARTITION_ID_KEY, initializationContext.getPartitionContext().getPartitionId())
             .log("Initializing partition processor for partition");
     }
@@ -64,7 +64,7 @@ public abstract class PartitionProcessor {
      * @param eventBatchContext The event batch context containing the batch of events along with partition information.
      */
     public void processEventBatch(EventBatchContext eventBatchContext) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Processing event batch not implemented"));
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Processing event batch not implemented"));
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class PartitionProcessor {
      * events is closed.
      */
     public void close(CloseContext closeContext) {
-        logger.atInfo()
+        LOGGER.atInfo()
             .addKeyValue(PARTITION_ID_KEY, closeContext.getPartitionContext().getPartitionId())
             .log("Closing partition processor with close reason {}", closeContext.getCloseReason());
     }

@@ -23,6 +23,9 @@ public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThr
     @JsonProperty(value = "deleteTime")
     private OffsetDateTime deleteTime;
 
+    /** Creates an instance of AcsChatThreadDeletedEventData class. */
+    public AcsChatThreadDeletedEventData() {}
+
     /**
      * Get the deletedByCommunicationIdentifier property: The communication identifier of the user who deleted the
      * thread.

@@ -70,6 +70,10 @@ public final class HubImpl implements Hub, Hub.Definition, Hub.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public HubInner innerModel() {
         return this.innerObject;
     }

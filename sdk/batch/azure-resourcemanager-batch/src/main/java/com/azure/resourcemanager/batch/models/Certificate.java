@@ -84,15 +84,18 @@ public interface Certificate {
     DeleteCertificateError deleteCertificateError();
 
     /**
-     * Gets the thumbprintAlgorithm property: The algorithm of the certificate thumbprint. This must match the first
-     * portion of the certificate name. Currently required to be 'SHA1'.
+     * Gets the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
+     *
+     * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
      *
      * @return the thumbprintAlgorithm value.
      */
     String thumbprintAlgorithm();
 
     /**
-     * Gets the thumbprint property: The thumbprint of the certificate. This must match the thumbprint from the name.
+     * Gets the thumbprint property: The thumbprint of the certificate.
+     *
+     * <p>This must match the thumbprint from the name.
      *
      * @return the thumbprint value.
      */
@@ -106,6 +109,13 @@ public interface Certificate {
     CertificateFormat format();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.CertificateInner object.
      *
      * @return the inner object.
@@ -116,11 +126,13 @@ public interface Certificate {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Certificate definition stages. */
     interface DefinitionStages {
         /** The first stage of the Certificate definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Certificate definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -132,13 +144,13 @@ public interface Certificate {
              */
             WithCreate withExistingBatchAccount(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the Certificate definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithData,
-                DefinitionStages.WithPassword,
+            extends DefinitionStages.WithPassword,
                 DefinitionStages.WithThumbprintAlgorithm,
                 DefinitionStages.WithThumbprint,
                 DefinitionStages.WithFormat,
@@ -159,51 +171,49 @@ public interface Certificate {
              */
             Certificate create(Context context);
         }
-        /** The stage of the Certificate definition allowing to specify data. */
-        interface WithData {
-            /**
-             * Specifies the data property: The base64-encoded contents of the certificate. The maximum size is 10KB..
-             *
-             * @param data The base64-encoded contents of the certificate. The maximum size is 10KB.
-             * @return the next definition stage.
-             */
-            WithCreate withData(String data);
-        }
+
         /** The stage of the Certificate definition allowing to specify password. */
         interface WithPassword {
             /**
-             * Specifies the password property: The password to access the certificate's private key. This must not be
-             * specified if the certificate format is Cer..
+             * Specifies the password property: The password to access the certificate's private key.
              *
-             * @param password The password to access the certificate's private key. This must not be specified if the
-             *     certificate format is Cer.
+             * <p>This must not be specified if the certificate format is Cer..
+             *
+             * @param password The password to access the certificate's private key.
+             *     <p>This must not be specified if the certificate format is Cer.
              * @return the next definition stage.
              */
             WithCreate withPassword(String password);
         }
+
         /** The stage of the Certificate definition allowing to specify thumbprintAlgorithm. */
         interface WithThumbprintAlgorithm {
             /**
-             * Specifies the thumbprintAlgorithm property: The algorithm of the certificate thumbprint. This must match
-             * the first portion of the certificate name. Currently required to be 'SHA1'..
+             * Specifies the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
              *
-             * @param thumbprintAlgorithm The algorithm of the certificate thumbprint. This must match the first portion
-             *     of the certificate name. Currently required to be 'SHA1'.
+             * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'..
+             *
+             * @param thumbprintAlgorithm The algorithm of the certificate thumbprint.
+             *     <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
              * @return the next definition stage.
              */
             WithCreate withThumbprintAlgorithm(String thumbprintAlgorithm);
         }
+
         /** The stage of the Certificate definition allowing to specify thumbprint. */
         interface WithThumbprint {
             /**
-             * Specifies the thumbprint property: The thumbprint of the certificate. This must match the thumbprint from
-             * the name..
+             * Specifies the thumbprint property: The thumbprint of the certificate.
              *
-             * @param thumbprint The thumbprint of the certificate. This must match the thumbprint from the name.
+             * <p>This must match the thumbprint from the name..
+             *
+             * @param thumbprint The thumbprint of the certificate.
+             *     <p>This must match the thumbprint from the name.
              * @return the next definition stage.
              */
             WithCreate withThumbprint(String thumbprint);
         }
+
         /** The stage of the Certificate definition allowing to specify format. */
         interface WithFormat {
             /**
@@ -215,6 +225,7 @@ public interface Certificate {
              */
             WithCreate withFormat(CertificateFormat format);
         }
+
         /** The stage of the Certificate definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -229,6 +240,7 @@ public interface Certificate {
              */
             WithCreate withIfMatch(String ifMatch);
         }
+
         /** The stage of the Certificate definition allowing to specify ifNoneMatch. */
         interface WithIfNoneMatch {
             /**
@@ -242,6 +254,7 @@ public interface Certificate {
             WithCreate withIfNoneMatch(String ifNoneMatch);
         }
     }
+
     /**
      * Begins update for the Certificate resource.
      *
@@ -272,53 +285,65 @@ public interface Certificate {
          */
         Certificate apply(Context context);
     }
+
     /** The Certificate update stages. */
     interface UpdateStages {
         /** The stage of the Certificate update allowing to specify data. */
         interface WithData {
             /**
-             * Specifies the data property: The base64-encoded contents of the certificate. The maximum size is 10KB..
+             * Specifies the data property: The base64-encoded contents of the certificate.
              *
-             * @param data The base64-encoded contents of the certificate. The maximum size is 10KB.
+             * <p>The maximum size is 10KB..
+             *
+             * @param data The base64-encoded contents of the certificate.
+             *     <p>The maximum size is 10KB.
              * @return the next definition stage.
              */
             Update withData(String data);
         }
+
         /** The stage of the Certificate update allowing to specify password. */
         interface WithPassword {
             /**
-             * Specifies the password property: The password to access the certificate's private key. This must not be
-             * specified if the certificate format is Cer..
+             * Specifies the password property: The password to access the certificate's private key.
              *
-             * @param password The password to access the certificate's private key. This must not be specified if the
-             *     certificate format is Cer.
+             * <p>This must not be specified if the certificate format is Cer..
+             *
+             * @param password The password to access the certificate's private key.
+             *     <p>This must not be specified if the certificate format is Cer.
              * @return the next definition stage.
              */
             Update withPassword(String password);
         }
+
         /** The stage of the Certificate update allowing to specify thumbprintAlgorithm. */
         interface WithThumbprintAlgorithm {
             /**
-             * Specifies the thumbprintAlgorithm property: The algorithm of the certificate thumbprint. This must match
-             * the first portion of the certificate name. Currently required to be 'SHA1'..
+             * Specifies the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
              *
-             * @param thumbprintAlgorithm The algorithm of the certificate thumbprint. This must match the first portion
-             *     of the certificate name. Currently required to be 'SHA1'.
+             * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'..
+             *
+             * @param thumbprintAlgorithm The algorithm of the certificate thumbprint.
+             *     <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
              * @return the next definition stage.
              */
             Update withThumbprintAlgorithm(String thumbprintAlgorithm);
         }
+
         /** The stage of the Certificate update allowing to specify thumbprint. */
         interface WithThumbprint {
             /**
-             * Specifies the thumbprint property: The thumbprint of the certificate. This must match the thumbprint from
-             * the name..
+             * Specifies the thumbprint property: The thumbprint of the certificate.
              *
-             * @param thumbprint The thumbprint of the certificate. This must match the thumbprint from the name.
+             * <p>This must match the thumbprint from the name..
+             *
+             * @param thumbprint The thumbprint of the certificate.
+             *     <p>This must match the thumbprint from the name.
              * @return the next definition stage.
              */
             Update withThumbprint(String thumbprint);
         }
+
         /** The stage of the Certificate update allowing to specify format. */
         interface WithFormat {
             /**
@@ -330,6 +355,7 @@ public interface Certificate {
              */
             Update withFormat(CertificateFormat format);
         }
+
         /** The stage of the Certificate update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -343,6 +369,7 @@ public interface Certificate {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -359,24 +386,16 @@ public interface Certificate {
     Certificate refresh(Context context);
 
     /**
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
+     * Cancels a failed deletion of a certificate from the specified account.
+     *
+     * <p>If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
      * changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this
      * operation to set the status of the certificate back to active. If you intend to delete the certificate, you do
      * not need to run this operation after the deletion failed. You must make sure that the certificate is not being
      * used by any resources, and then you can try again to delete the certificate.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a certificate.
-     */
-    Certificate cancelDeletion();
-
-    /**
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
-     * changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this
-     * operation to set the status of the certificate back to active. If you intend to delete the certificate, you do
-     * not need to run this operation after the deletion failed. You must make sure that the certificate is not being
-     * used by any resources, and then you can try again to delete the certificate.
+     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -385,4 +404,22 @@ public interface Certificate {
      * @return contains information about a certificate.
      */
     Response<Certificate> cancelDeletionWithResponse(Context context);
+
+    /**
+     * Cancels a failed deletion of a certificate from the specified account.
+     *
+     * <p>If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
+     * changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this
+     * operation to set the status of the certificate back to active. If you intend to delete the certificate, you do
+     * not need to run this operation after the deletion failed. You must make sure that the certificate is not being
+     * used by any resources, and then you can try again to delete the certificate.
+     *
+     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a certificate.
+     */
+    Certificate cancelDeletion();
 }

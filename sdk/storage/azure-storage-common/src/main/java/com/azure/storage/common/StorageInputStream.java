@@ -160,7 +160,9 @@ public abstract class StorageInputStream extends InputStream {
      */
     private synchronized void checkStreamState() {
         if (this.streamFaulted) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
+            // TODO (alzimmer): Should this throw the lastError as is? This is adding another layer of exception
+            //  wrapping that may be unnecessary.
+            throw LOGGER.logExceptionAsError(new RuntimeException(this.lastError.getMessage(), this.lastError));
         }
     }
 

@@ -1,4 +1,6 @@
-# Azure Video Analyzer Edge client library for Java
+# Deprecated. Azure Video Analyzer Edge client library for Java
+
+Deprecated. We’re retiring the Azure Video Analyzer preview service, you're advised to transition your applications off of Video Analyzer by 01 December 2022. This SDK is not longer maintained. 
 
 Azure Video Analyzer is an [Azure Applied AI Service][applied-ai-service] that provides a platform for you to build intelligent video applications that can span both edge and cloud infrastructures. The platform offers the capability to capture, record, and analyze live video along with publishing the results, video and video analytics, to Azure services at the edge or in the cloud. It is designed to be an extensible platform, enabling you to connect different video inferencing edge modules such as Cognitive services modules, or custom inferencing modules that have been trained with your own data using either open-source machine learning or [Azure Machine Learning][machine-learning].
 
@@ -200,10 +202,10 @@ additional questions or comments.
 [package]: https://aka.ms/ava/sdk/client/java
 [samples]: https://aka.ms/video-analyzer-sample
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/videoanalyzer
-[doc_direct_methods]: https://go.microsoft.com/fwlink/?linkid=2162396
-[doc_pipelines]: https://go.microsoft.com/fwlink/?linkid=2162396
-[doc_product]: https://go.microsoft.com/fwlink/?linkid=2162396
-[iot-device-sdk]: https://search.maven.org/search?q=a:iot-service-client
+[doc_direct_methods]: https://learn.microsoft.com/previous-versions/azure/azure-video-analyzer/video-analyzer-docs/articles/azure-video-analyzer/video-analyzer-docs/edge/direct-methods
+[doc_pipelines]: https://learn.microsoft.com/previous-versions/azure/azure-video-analyzer/video-analyzer-docs/articles/azure-video-analyzer/video-analyzer-docs/pipeline
+[doc_product]: https://learn.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/
+[iot-device-sdk]: https://central.sonatype.com/artifact/com.microsoft.azure.sdk.iot/iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
 [github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
 [applied-ai-service]: https://azure.microsoft.com/product-categories/applied-ai-services/#services

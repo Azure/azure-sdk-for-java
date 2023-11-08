@@ -6,14 +6,11 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The participant property reference. */
 @Fluent
 public final class ParticipantPropertyReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParticipantPropertyReference.class);
-
     /*
      * The source property that maps to the target property.
      */
@@ -25,6 +22,10 @@ public final class ParticipantPropertyReference {
      */
     @JsonProperty(value = "targetPropertyName", required = true)
     private String targetPropertyName;
+
+    /** Creates an instance of ParticipantPropertyReference class. */
+    public ParticipantPropertyReference() {
+    }
 
     /**
      * Get the sourcePropertyName property: The source property that maps to the target property.
@@ -73,16 +74,18 @@ public final class ParticipantPropertyReference {
      */
     public void validate() {
         if (sourcePropertyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourcePropertyName in model ParticipantPropertyReference"));
         }
         if (targetPropertyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetPropertyName in model ParticipantPropertyReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ParticipantPropertyReference.class);
 }

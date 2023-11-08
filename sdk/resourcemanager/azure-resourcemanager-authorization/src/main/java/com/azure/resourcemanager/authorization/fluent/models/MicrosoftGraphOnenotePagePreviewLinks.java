@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** onenotePagePreviewLinks. */
 @Fluent
 public final class MicrosoftGraphOnenotePagePreviewLinks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenotePagePreviewLinks.class);
-
     /*
      * externalLink
      */
@@ -28,6 +25,10 @@ public final class MicrosoftGraphOnenotePagePreviewLinks {
      * onenotePagePreviewLinks
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnenotePagePreviewLinks class. */
+    public MicrosoftGraphOnenotePagePreviewLinks() {
+    }
 
     /**
      * Get the previewImageUrl property: externalLink.

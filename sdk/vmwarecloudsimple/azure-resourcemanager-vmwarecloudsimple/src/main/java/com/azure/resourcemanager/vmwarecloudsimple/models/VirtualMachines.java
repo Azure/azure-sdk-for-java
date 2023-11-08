@@ -11,16 +11,20 @@ import com.azure.core.util.Context;
 /** Resource collection API of VirtualMachines. */
 public interface VirtualMachines {
     /**
-     * Returns list virtual machine within subscription.
+     * Implements list virtual machine within subscription method
+     *
+     * <p>Returns list virtual machine within subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machines.
+     * @return list of virtual machines as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualMachine> list();
 
     /**
-     * Returns list virtual machine within subscription.
+     * Implements list virtual machine within subscription method
+     *
+     * <p>Returns list virtual machine within subscription.
      *
      * @param filter The filter to apply on the list operation.
      * @param top The maximum number of record sets to return.
@@ -29,23 +33,27 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machines.
+     * @return list of virtual machines as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualMachine> list(String filter, Integer top, String skipToken, Context context);
 
     /**
-     * Returns list of virtual machine within resource group.
+     * Implements list virtual machine within RG method
+     *
+     * <p>Returns list of virtual machine within resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machines.
+     * @return list of virtual machines as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualMachine> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Returns list of virtual machine within resource group.
+     * Implements list virtual machine within RG method
+     *
+     * <p>Returns list of virtual machine within resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation.
@@ -55,13 +63,31 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machines.
+     * @return list of virtual machines as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualMachine> listByResourceGroup(
         String resourceGroupName, String filter, Integer top, String skipToken, Context context);
 
     /**
-     * Get virtual machine.
+     * Implements virtual machine GET method
+     *
+     * <p>Get virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineName virtual machine name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual machine along with {@link Response}.
+     */
+    Response<VirtualMachine> getByResourceGroupWithResponse(
+        String resourceGroupName, String virtualMachineName, Context context);
+
+    /**
+     * Implements virtual machine GET method
+     *
+     * <p>Get virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineName virtual machine name.
@@ -73,93 +99,84 @@ public interface VirtualMachines {
     VirtualMachine getByResourceGroup(String resourceGroupName, String virtualMachineName);
 
     /**
-     * Get virtual machine.
+     * Implements virtual machine DELETE method
+     *
+     * <p>Delete virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineName virtual machine name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual machine.
-     */
-    Response<VirtualMachine> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context);
-
-    /**
-     * Delete virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param virtualMachineName virtual machine name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByResourceGroup(String resourceGroupName, String virtualMachineName);
+    void delete(String resourceGroupName, String referer, String virtualMachineName);
 
     /**
-     * Delete virtual machine.
+     * Implements virtual machine DELETE method
+     *
+     * <p>Delete virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param virtualMachineName virtual machine name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String virtualMachineName, Context context);
+    void delete(String resourceGroupName, String referer, String virtualMachineName, Context context);
 
     /**
-     * Power on virtual machine.
+     * Implements a start method for a virtual machine
+     *
+     * <p>Power on virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param virtualMachineName virtual machine name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void start(String resourceGroupName, String virtualMachineName);
+    void start(String resourceGroupName, String referer, String virtualMachineName);
 
     /**
-     * Power on virtual machine.
+     * Implements a start method for a virtual machine
+     *
+     * <p>Power on virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param virtualMachineName virtual machine name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void start(String resourceGroupName, String virtualMachineName, Context context);
+    void start(String resourceGroupName, String referer, String virtualMachineName, Context context);
 
     /**
-     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * Implements shutdown, poweroff, and suspend method for a virtual machine
+     *
+     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineName virtual machine name.
-     * @param mode query stop mode parameter (reboot, shutdown, etc...).
-     * @param m body stop mode parameter (reboot, shutdown, etc...).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void stop(String resourceGroupName, String virtualMachineName, StopMode mode, VirtualMachineStopMode m);
-
-    /**
-     * Power off virtual machine, options: shutdown, poweroff, and suspend.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param virtualMachineName virtual machine name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stop(String resourceGroupName, String virtualMachineName);
+    void stop(String resourceGroupName, String referer, String virtualMachineName);
 
     /**
-     * Power off virtual machine, options: shutdown, poweroff, and suspend.
+     * Implements shutdown, poweroff, and suspend method for a virtual machine
+     *
+     * <p>Power off virtual machine, options: shutdown, poweroff, and suspend.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param referer referer url.
      * @param virtualMachineName virtual machine name.
      * @param mode query stop mode parameter (reboot, shutdown, etc...).
      * @param m body stop mode parameter (reboot, shutdown, etc...).
@@ -169,33 +186,44 @@ public interface VirtualMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void stop(
-        String resourceGroupName, String virtualMachineName, StopMode mode, VirtualMachineStopMode m, Context context);
+        String resourceGroupName,
+        String referer,
+        String virtualMachineName,
+        StopMode mode,
+        VirtualMachineStopMode m,
+        Context context);
 
     /**
-     * Get virtual machine.
+     * Implements virtual machine GET method
+     *
+     * <p>Get virtual machine.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual machine.
+     * @return virtual machine along with {@link Response}.
      */
     VirtualMachine getById(String id);
 
     /**
-     * Get virtual machine.
+     * Implements virtual machine GET method
+     *
+     * <p>Get virtual machine.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual machine.
+     * @return virtual machine along with {@link Response}.
      */
     Response<VirtualMachine> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete virtual machine.
+     * Implements virtual machine DELETE method
+     *
+     * <p>Delete virtual machine.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,15 +233,18 @@ public interface VirtualMachines {
     void deleteById(String id);
 
     /**
-     * Delete virtual machine.
+     * Implements virtual machine DELETE method
+     *
+     * <p>Delete virtual machine.
      *
      * @param id the resource ID.
+     * @param referer referer url.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, String referer, Context context);
 
     /**
      * Begins definition for a new VirtualMachine resource.

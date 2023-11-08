@@ -23,6 +23,9 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
     @JsonProperty(value = "version")
     private Long version;
 
+    /** Creates an instance of AcsChatThreadEventBaseProperties class. */
+    public AcsChatThreadEventBaseProperties() {}
+
     /**
      * Get the createTime property: The original creation time of the thread.
      *

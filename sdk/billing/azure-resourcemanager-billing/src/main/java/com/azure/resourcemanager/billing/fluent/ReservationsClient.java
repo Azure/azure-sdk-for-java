@@ -19,7 +19,8 @@ public interface ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReservationInner> listByBillingAccount(String billingAccountName);
@@ -38,7 +39,8 @@ public interface ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReservationInner> listByBillingAccount(
@@ -57,7 +59,8 @@ public interface ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReservationInner> listByBillingProfile(String billingAccountName, String billingProfileName);
@@ -77,7 +80,8 @@ public interface ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state.
+     * @return the list of reservations and summary of roll out count of reservations in each state as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReservationInner> listByBillingProfile(

@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RestoresClient;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestoresClient. */
 public final class RestoresClientImpl implements RestoresClient {
-    private final ClientLogger logger = new ClientLogger(RestoresClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RestoresService service;
 
@@ -58,12 +55,10 @@ public final class RestoresClientImpl implements RestoresClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface RestoresService {
+    public interface RestoresService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems"
-                + "/{protectedItemName}/recoveryPoints/{recoveryPointId}/restore")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/restore")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> trigger(
@@ -356,7 +351,8 @@ public final class RestoresClientImpl implements RestoresClient {
         String protectedItemName,
         String recoveryPointId,
         RestoreRequestResource parameters) {
-        return beginTriggerAsync(
+        return this
+            .beginTriggerAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
             .getSyncPoller();
     }
@@ -388,7 +384,8 @@ public final class RestoresClientImpl implements RestoresClient {
         String recoveryPointId,
         RestoreRequestResource parameters,
         Context context) {
-        return beginTriggerAsync(
+        return this
+            .beginTriggerAsync(
                 vaultName,
                 resourceGroupName,
                 fabricName,

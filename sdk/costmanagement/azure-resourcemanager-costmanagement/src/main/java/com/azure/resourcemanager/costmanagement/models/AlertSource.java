@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertSource. */
+/** Source of alert. */
 public final class AlertSource extends ExpandableStringEnum<AlertSource> {
     /** Static value Preset for AlertSource. */
     public static final AlertSource PRESET = fromString("Preset");
 
     /** Static value User for AlertSource. */
     public static final AlertSource USER = fromString("User");
+
+    /**
+     * Creates a new instance of AlertSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertSource() {
+    }
 
     /**
      * Creates or finds a AlertSource from its string representation.
@@ -27,7 +36,11 @@ public final class AlertSource extends ExpandableStringEnum<AlertSource> {
         return fromString(name, AlertSource.class);
     }
 
-    /** @return known AlertSource values. */
+    /**
+     * Gets known AlertSource values.
+     *
+     * @return known AlertSource values.
+     */
     public static Collection<AlertSource> values() {
         return values(AlertSource.class);
     }

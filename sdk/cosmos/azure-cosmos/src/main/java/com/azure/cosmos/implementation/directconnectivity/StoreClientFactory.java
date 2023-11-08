@@ -3,9 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -30,7 +32,8 @@ public class StoreClientFactory implements AutoCloseable {
         ConnectionPolicy connectionPolicy,
         UserAgentContainer userAgent,
         boolean enableTransportClientSharing,
-        ClientTelemetry clientTelemetry) {
+        ClientTelemetry clientTelemetry,
+        GlobalEndpointManager globalEndpointManager) {
 
         this.configs = configs;
         Protocol protocol = configs.getProtocol();
@@ -42,16 +45,23 @@ public class StoreClientFactory implements AutoCloseable {
                 userAgent,
                 diagnosticsClientConfig,
                 addressResolver,
-                clientTelemetry);
+                clientTelemetry,
+                globalEndpointManager);
         } else {
             if (protocol == Protocol.HTTPS) {
-                this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
+                this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent, globalEndpointManager);
             } else if (protocol == Protocol.TCP) {
 
                 RntbdTransportClient.Options rntbdOptions =
                     new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
-                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver, clientTelemetry);
-                diagnosticsClientConfig.withRntbdOptions(rntbdOptions);
+                this.transportClient =
+                    new RntbdTransportClient(
+                        rntbdOptions,
+                        configs.getSslContext(),
+                        addressResolver,
+                        clientTelemetry,
+                        globalEndpointManager);
+                diagnosticsClientConfig.withRntbdOptions(rntbdOptions.toDiagnosticsString());
 
             } else {
                 throw new IllegalArgumentException(String.format("protocol: %s", protocol));
@@ -73,7 +83,8 @@ public class StoreClientFactory implements AutoCloseable {
         SessionContainer sessionContainer,
         GatewayServiceConfigurationReader serviceConfigurationReader,
         IAuthorizationTokenProvider authorizationTokenProvider,
-        boolean useMultipleWriteLocations) {
+        boolean useMultipleWriteLocations,
+        SessionRetryOptions sessionRetryOptions) {
         this.throwIfClosed();
 
         return new StoreClient(diagnosticsClientContext,
@@ -83,7 +94,8 @@ public class StoreClientFactory implements AutoCloseable {
             serviceConfigurationReader,
             authorizationTokenProvider,
             this.transportClient,
-            useMultipleWriteLocations);
+            useMultipleWriteLocations,
+            sessionRetryOptions);
     }
 
     private void throwIfClosed() {

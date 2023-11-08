@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.models.DataSourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list data source by workspace operation response. */
 @Fluent
 public final class DataSourceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataSourceListResult.class);
-
     /*
      * A list of datasources.
      */
@@ -27,6 +23,10 @@ public final class DataSourceListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of DataSourceListResult class. */
+    public DataSourceListResult() {
+    }
 
     /**
      * Get the value property: A list of datasources.

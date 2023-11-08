@@ -32,7 +32,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
@@ -52,8 +51,6 @@ public final class ContainerGroupsClientImpl
         InnerSupportsListing<ContainerGroupInner>,
         InnerSupportsDelete<ContainerGroupInner>,
         ContainerGroupsClient {
-    private final ClientLogger logger = new ClientLogger(ContainerGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ContainerGroupsService service;
 
@@ -77,7 +74,7 @@ public final class ContainerGroupsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerInstanceMan")
-    private interface ContainerGroupsService {
+    public interface ContainerGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups")
         @ExpectedResponses({200})
@@ -91,8 +88,7 @@ public final class ContainerGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerGroupListResult>> listByResourceGroup(
@@ -105,8 +101,7 @@ public final class ContainerGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerGroupInner>> getByResourceGroup(
@@ -120,8 +115,7 @@ public final class ContainerGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -136,8 +130,7 @@ public final class ContainerGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerGroupInner>> update(
@@ -152,8 +145,7 @@ public final class ContainerGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -167,8 +159,7 @@ public final class ContainerGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}/restart")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/restart")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(
@@ -182,8 +173,7 @@ public final class ContainerGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}/stop")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/stop")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> stop(
@@ -197,9 +187,8 @@ public final class ContainerGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}/start")
-        @ExpectedResponses({202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/start")
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
             @HostParam("$host") String endpoint,
@@ -212,8 +201,7 @@ public final class ContainerGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
-                + "/containerGroups/{containerGroupName}/outboundNetworkDependenciesEndpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/outboundNetworkDependenciesEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpoints(
@@ -247,13 +235,16 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
+     * Get a list of container groups in the specified subscription.
+     *
+     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
+     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
+     * state, and volumes.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription.
+     * @return a list of container groups in the specified subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listSinglePageAsync() {
@@ -293,15 +284,18 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
+     * Get a list of container groups in the specified subscription.
+     *
+     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
+     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
+     * state, and volumes.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription.
+     * @return a list of container groups in the specified subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listSinglePageAsync(Context context) {
@@ -338,13 +332,15 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
+     * Get a list of container groups in the specified subscription.
+     *
+     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
+     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
+     * state, and volumes.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription.
+     * @return a list of container groups in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ContainerGroupInner> listAsync() {
@@ -352,15 +348,17 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
+     * Get a list of container groups in the specified subscription.
+     *
+     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
+     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
+     * state, and volumes.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription.
+     * @return a list of container groups in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ContainerGroupInner> listAsync(Context context) {
@@ -369,13 +367,16 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
+     * Get a list of container groups in the specified subscription.
+     *
+     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
+     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
+     * state, and volumes.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription.
+     * @return a list of container groups in the specified subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerGroupInner> list() {
@@ -383,15 +384,18 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in the specified subscription. This operation returns properties of each container
-     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
-     * volumes.
+     * Get a list of container groups in the specified subscription.
+     *
+     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
+     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
+     * state, and volumes.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription.
+     * @return a list of container groups in the specified subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerGroupInner> list(Context context) {
@@ -399,15 +403,18 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
+     * Get a list of container groups in the specified subscription and resource group.
+     *
+     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
+     * properties of each container group including containers, image registry credentials, restart policy, IP address
+     * type, OS type, state, and volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group.
+     * @return a list of container groups in a specified subscription and resource group along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -452,16 +459,19 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
+     * Get a list of container groups in the specified subscription and resource group.
+     *
+     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
+     * properties of each container group including containers, image registry credentials, restart policy, IP address
+     * type, OS type, state, and volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group.
+     * @return a list of container groups in a specified subscription and resource group along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupSinglePageAsync(
@@ -504,15 +514,18 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
+     * Get a list of container groups in the specified subscription and resource group.
+     *
+     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
+     * properties of each container group including containers, image registry credentials, restart policy, IP address
+     * type, OS type, state, and volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group.
+     * @return a list of container groups in a specified subscription and resource group as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -522,16 +535,19 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
+     * Get a list of container groups in the specified subscription and resource group.
+     *
+     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
+     * properties of each container group including containers, image registry credentials, restart policy, IP address
+     * type, OS type, state, and volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group.
+     * @return a list of container groups in a specified subscription and resource group as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -541,15 +557,18 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
+     * Get a list of container groups in the specified subscription and resource group.
+     *
+     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
+     * properties of each container group including containers, image registry credentials, restart policy, IP address
+     * type, OS type, state, and volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group.
+     * @return a list of container groups in a specified subscription and resource group as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName) {
@@ -557,16 +576,19 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
-     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
-     * type, state, and volumes.
+     * Get a list of container groups in the specified subscription and resource group.
+     *
+     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
+     * properties of each container group including containers, image registry credentials, restart policy, IP address
+     * type, OS type, state, and volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group.
+     * @return a list of container groups in a specified subscription and resource group as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -574,7 +596,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
+     * Get the properties of the specified container group.
+     *
+     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      *
@@ -583,7 +607,8 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified container group in the specified subscription and resource group.
+     * @return the properties of the specified container group in the specified subscription and resource group along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerGroupInner>> getByResourceGroupWithResponseAsync(
@@ -625,7 +650,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
+     * Get the properties of the specified container group.
+     *
+     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      *
@@ -635,7 +662,8 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified container group in the specified subscription and resource group.
+     * @return the properties of the specified container group in the specified subscription and resource group along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContainerGroupInner>> getByResourceGroupWithResponseAsync(
@@ -674,7 +702,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
+     * Get the properties of the specified container group.
+     *
+     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      *
@@ -683,23 +713,41 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified container group in the specified subscription and resource group.
+     * @return the properties of the specified container group in the specified subscription and resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupInner> getByResourceGroupAsync(String resourceGroupName, String containerGroupName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, containerGroupName)
-            .flatMap(
-                (Response<ContainerGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
+     * Get the properties of the specified container group.
+     *
+     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
+     * operation returns the properties of each container group including containers, image registry credentials,
+     * restart policy, IP address type, OS type, state, and volumes.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified container group in the specified subscription and resource group along
+     *     with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ContainerGroupInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String containerGroupName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, containerGroupName, context).block();
+    }
+
+    /**
+     * Get the properties of the specified container group.
+     *
+     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      *
@@ -712,30 +760,13 @@ public final class ContainerGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerGroupInner getByResourceGroup(String resourceGroupName, String containerGroupName) {
-        return getByResourceGroupAsync(resourceGroupName, containerGroupName).block();
+        return getByResourceGroupWithResponse(resourceGroupName, containerGroupName, Context.NONE).getValue();
     }
 
     /**
-     * Gets the properties of the specified container group in the specified subscription and resource group. The
-     * operation returns the properties of each container group including containers, image registry credentials,
-     * restart policy, IP address type, OS type, state, and volumes.
+     * Create or update container groups.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified container group in the specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerGroupInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String containerGroupName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, containerGroupName, context).block();
-    }
-
-    /**
-     * Create or update container groups with specified configurations.
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -743,7 +774,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -791,7 +822,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -800,7 +833,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -845,7 +878,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -853,7 +888,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return the {@link PollerFlux} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
@@ -871,7 +906,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -880,7 +917,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return the {@link PollerFlux} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
@@ -895,7 +932,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -903,16 +942,18 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return the {@link SyncPoller} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup).getSyncPoller();
     }
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -921,16 +962,20 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return the {@link SyncPoller} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context)
+            .getSyncPoller();
     }
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -938,7 +983,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupInner> createOrUpdateAsync(
@@ -949,7 +994,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -958,7 +1005,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ContainerGroupInner> createOrUpdateAsync(
@@ -969,7 +1016,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -986,7 +1035,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Create or update container groups with specified configurations.
+     * Create or update container groups.
+     *
+     * <p>Create or update container groups with specified configurations.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1004,7 +1055,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Updates container group tags with specified values.
+     * Update container groups.
+     *
+     * <p>Updates container group tags with specified values.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1012,7 +1065,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerGroupInner>> updateWithResponseAsync(
@@ -1058,7 +1111,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Updates container group tags with specified values.
+     * Update container groups.
+     *
+     * <p>Updates container group tags with specified values.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1067,7 +1122,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContainerGroupInner>> updateWithResponseAsync(
@@ -1110,7 +1165,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Updates container group tags with specified values.
+     * Update container groups.
+     *
+     * <p>Updates container group tags with specified values.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1118,24 +1175,39 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupInner> updateAsync(
         String resourceGroupName, String containerGroupName, Resource resource) {
         return updateWithResponseAsync(resourceGroupName, containerGroupName, resource)
-            .flatMap(
-                (Response<ContainerGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Updates container group tags with specified values.
+     * Update container groups.
+     *
+     * <p>Updates container group tags with specified values.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param resource The container group resource with just the tags to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container group along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ContainerGroupInner> updateWithResponse(
+        String resourceGroupName, String containerGroupName, Resource resource, Context context) {
+        return updateWithResponseAsync(resourceGroupName, containerGroupName, resource, context).block();
+    }
+
+    /**
+     * Update container groups.
+     *
+     * <p>Updates container group tags with specified values.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1147,29 +1219,13 @@ public final class ContainerGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerGroupInner update(String resourceGroupName, String containerGroupName, Resource resource) {
-        return updateAsync(resourceGroupName, containerGroupName, resource).block();
+        return updateWithResponse(resourceGroupName, containerGroupName, resource, Context.NONE).getValue();
     }
 
     /**
-     * Updates container group tags with specified values.
+     * Delete the specified container group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param resource The container group resource with just the tags to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerGroupInner> updateWithResponse(
-        String resourceGroupName, String containerGroupName, Resource resource, Context context) {
-        return updateWithResponseAsync(resourceGroupName, containerGroupName, resource, context).block();
-    }
-
-    /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1177,7 +1233,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1219,7 +1275,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1228,7 +1286,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1267,7 +1325,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1275,7 +1335,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return the {@link PollerFlux} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
@@ -1292,7 +1352,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1301,7 +1363,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return the {@link PollerFlux} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
@@ -1315,7 +1377,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1323,16 +1387,18 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return the {@link SyncPoller} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
         String resourceGroupName, String containerGroupName) {
-        return beginDeleteAsync(resourceGroupName, containerGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, containerGroupName).getSyncPoller();
     }
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1341,16 +1407,18 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return the {@link SyncPoller} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
         String resourceGroupName, String containerGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
     }
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1358,7 +1426,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupInner> deleteAsync(String resourceGroupName, String containerGroupName) {
@@ -1368,7 +1436,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1377,7 +1447,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group.
+     * @return a container group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ContainerGroupInner> deleteAsync(
@@ -1388,7 +1458,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1404,7 +1476,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Delete the specified container group in the specified subscription and resource group. The operation does not
+     * Delete the specified container group.
+     *
+     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1421,7 +1495,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1429,7 +1505,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -1471,7 +1547,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1480,7 +1558,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -1519,7 +1597,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1527,7 +1607,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String containerGroupName) {
@@ -1539,7 +1619,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1548,7 +1630,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
@@ -1562,7 +1644,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1570,15 +1654,17 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String containerGroupName) {
-        return beginRestartAsync(resourceGroupName, containerGroupName).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, containerGroupName).getSyncPoller();
     }
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1587,16 +1673,18 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String containerGroupName, Context context) {
-        return beginRestartAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
     }
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1604,7 +1692,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restartAsync(String resourceGroupName, String containerGroupName) {
@@ -1614,7 +1702,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1623,7 +1713,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> restartAsync(String resourceGroupName, String containerGroupName, Context context) {
@@ -1633,7 +1723,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1648,7 +1740,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * Restarts all containers in a container group.
+     *
+     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1664,14 +1758,16 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * Stops all containers in a container group.
+     *
+     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String containerGroupName) {
@@ -1712,7 +1808,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * Stops all containers in a container group.
+     *
+     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1720,7 +1818,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> stopWithResponseAsync(
@@ -1759,23 +1857,44 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * Stops all containers in a container group.
+     *
+     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String containerGroupName) {
-        return stopWithResponseAsync(resourceGroupName, containerGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return stopWithResponseAsync(resourceGroupName, containerGroupName).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * Stops all containers in a container group.
+     *
+     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopWithResponse(String resourceGroupName, String containerGroupName, Context context) {
+        return stopWithResponseAsync(resourceGroupName, containerGroupName, context).block();
+    }
+
+    /**
+     * Stops all containers in a container group.
+     *
+     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1785,34 +1904,20 @@ public final class ContainerGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String containerGroupName) {
-        stopAsync(resourceGroupName, containerGroupName).block();
+        stopWithResponse(resourceGroupName, containerGroupName, Context.NONE);
     }
 
     /**
-     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * Starts all containers in a container group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopWithResponse(String resourceGroupName, String containerGroupName, Context context) {
-        return stopWithResponseAsync(resourceGroupName, containerGroupName, context).block();
-    }
-
-    /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1854,7 +1959,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1862,7 +1969,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1901,14 +2008,16 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String containerGroupName) {
@@ -1920,7 +2029,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1928,7 +2039,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
@@ -1941,22 +2052,26 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String containerGroupName) {
-        return beginStartAsync(resourceGroupName, containerGroupName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, containerGroupName).getSyncPoller();
     }
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1964,23 +2079,25 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String containerGroupName, Context context) {
-        return beginStartAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
     }
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String containerGroupName) {
@@ -1990,7 +2107,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -1998,7 +2117,7 @@ public final class ContainerGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String containerGroupName, Context context) {
@@ -2008,7 +2127,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -2022,7 +2143,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * Starts all containers in a container group.
+     *
+     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
      *
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
@@ -2037,7 +2160,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * Get all network dependencies for container group.
+     *
+     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      *
      * @param resourceGroupName The name of the resource group.
@@ -2046,7 +2171,7 @@ public final class ContainerGroupsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network dependencies for this container group to allow complete control of network setting and
-     *     configuration.
+     *     configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpointsWithResponseAsync(
@@ -2088,7 +2213,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * Get all network dependencies for container group.
+     *
+     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      *
      * @param resourceGroupName The name of the resource group.
@@ -2098,7 +2225,7 @@ public final class ContainerGroupsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network dependencies for this container group to allow complete control of network setting and
-     *     configuration.
+     *     configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpointsWithResponseAsync(
@@ -2137,7 +2264,9 @@ public final class ContainerGroupsClientImpl
     }
 
     /**
-     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * Get all network dependencies for container group.
+     *
+     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      *
      * @param resourceGroupName The name of the resource group.
@@ -2146,24 +2275,41 @@ public final class ContainerGroupsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network dependencies for this container group to allow complete control of network setting and
-     *     configuration.
+     *     configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> getOutboundNetworkDependenciesEndpointsAsync(
         String resourceGroupName, String containerGroupName) {
         return getOutboundNetworkDependenciesEndpointsWithResponseAsync(resourceGroupName, containerGroupName)
-            .flatMap(
-                (Response<List<String>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets all the network dependencies for this container group to allow complete control of network setting and
+     * Get all network dependencies for container group.
+     *
+     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
+     * configuration. For container groups, this will always be an empty list.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param containerGroupName The name of the container group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the network dependencies for this container group to allow complete control of network setting and
+     *     configuration along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<String>> getOutboundNetworkDependenciesEndpointsWithResponse(
+        String resourceGroupName, String containerGroupName, Context context) {
+        return getOutboundNetworkDependenciesEndpointsWithResponseAsync(resourceGroupName, containerGroupName, context)
+            .block();
+    }
+
+    /**
+     * Get all network dependencies for container group.
+     *
+     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      *
      * @param resourceGroupName The name of the resource group.
@@ -2176,37 +2322,20 @@ public final class ContainerGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> getOutboundNetworkDependenciesEndpoints(String resourceGroupName, String containerGroupName) {
-        return getOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, containerGroupName).block();
-    }
-
-    /**
-     * Gets all the network dependencies for this container group to allow complete control of network setting and
-     * configuration. For container groups, this will always be an empty list.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param containerGroupName The name of the container group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the network dependencies for this container group to allow complete control of network setting and
-     *     configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<String>> getOutboundNetworkDependenciesEndpointsWithResponse(
-        String resourceGroupName, String containerGroupName, Context context) {
-        return getOutboundNetworkDependenciesEndpointsWithResponseAsync(resourceGroupName, containerGroupName, context)
-            .block();
+        return getOutboundNetworkDependenciesEndpointsWithResponse(resourceGroupName, containerGroupName, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties.
+     * @return the container group list response that contains the container group properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -2237,12 +2366,14 @@ public final class ContainerGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties.
+     * @return the container group list response that contains the container group properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2273,11 +2404,13 @@ public final class ContainerGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties.
+     * @return the container group list response that contains the container group properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2309,12 +2442,14 @@ public final class ContainerGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties.
+     * @return the container group list response that contains the container group properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupNextSinglePageAsync(

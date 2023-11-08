@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("GenericRecoveryPoint")
 @Fluent
 public final class GenericRecoveryPoint extends RecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericRecoveryPoint.class);
-
     /*
      * Friendly name of the backup copy.
      */
@@ -42,6 +38,16 @@ public final class GenericRecoveryPoint extends RecoveryPoint {
      */
     @JsonProperty(value = "recoveryPointAdditionalInfo")
     private String recoveryPointAdditionalInfo;
+
+    /*
+     * Properties of Recovery Point
+     */
+    @JsonProperty(value = "recoveryPointProperties")
+    private RecoveryPointProperties recoveryPointProperties;
+
+    /** Creates an instance of GenericRecoveryPoint class. */
+    public GenericRecoveryPoint() {
+    }
 
     /**
      * Get the friendlyName property: Friendly name of the backup copy.
@@ -124,6 +130,26 @@ public final class GenericRecoveryPoint extends RecoveryPoint {
     }
 
     /**
+     * Get the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @return the recoveryPointProperties value.
+     */
+    public RecoveryPointProperties recoveryPointProperties() {
+        return this.recoveryPointProperties;
+    }
+
+    /**
+     * Set the recoveryPointProperties property: Properties of Recovery Point.
+     *
+     * @param recoveryPointProperties the recoveryPointProperties value to set.
+     * @return the GenericRecoveryPoint object itself.
+     */
+    public GenericRecoveryPoint withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
+        this.recoveryPointProperties = recoveryPointProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -131,5 +157,8 @@ public final class GenericRecoveryPoint extends RecoveryPoint {
     @Override
     public void validate() {
         super.validate();
+        if (recoveryPointProperties() != null) {
+            recoveryPointProperties().validate();
+        }
     }
 }

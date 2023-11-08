@@ -8,13 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ZendeskAuthenticationType. */
+/** The authentication type to use. */
 public final class ZendeskAuthenticationType extends ExpandableStringEnum<ZendeskAuthenticationType> {
     /** Static value Basic for ZendeskAuthenticationType. */
     public static final ZendeskAuthenticationType BASIC = fromString("Basic");
 
     /** Static value Token for ZendeskAuthenticationType. */
     public static final ZendeskAuthenticationType TOKEN = fromString("Token");
+
+    /**
+     * Creates a new instance of ZendeskAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ZendeskAuthenticationType() {}
 
     /**
      * Creates or finds a ZendeskAuthenticationType from its string representation.
@@ -27,7 +35,11 @@ public final class ZendeskAuthenticationType extends ExpandableStringEnum<Zendes
         return fromString(name, ZendeskAuthenticationType.class);
     }
 
-    /** @return known ZendeskAuthenticationType values. */
+    /**
+     * Gets known ZendeskAuthenticationType values.
+     *
+     * @return known ZendeskAuthenticationType values.
+     */
     public static Collection<ZendeskAuthenticationType> values() {
         return values(ZendeskAuthenticationType.class);
     }

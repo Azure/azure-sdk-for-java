@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The operation meta service specification. */
 @Fluent
 public final class OperationMetaServiceSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetaServiceSpecification.class);
-
     /*
      * log specifications for the operation
      */
@@ -26,6 +22,10 @@ public final class OperationMetaServiceSpecification {
      */
     @JsonProperty(value = "metricSpecifications")
     private List<OperationMetaMetricSpecification> metricSpecifications;
+
+    /** Creates an instance of OperationMetaServiceSpecification class. */
+    public OperationMetaServiceSpecification() {
+    }
 
     /**
      * Get the logSpecifications property: log specifications for the operation.

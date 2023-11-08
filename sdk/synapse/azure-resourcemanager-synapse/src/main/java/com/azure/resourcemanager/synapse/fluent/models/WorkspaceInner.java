@@ -6,7 +6,6 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.CspWorkspaceAdminProperties;
 import com.azure.resourcemanager.synapse.models.DataLakeStorageAccountDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.synapse.models.PurviewConfiguration;
 import com.azure.resourcemanager.synapse.models.VirtualNetworkProfile;
 import com.azure.resourcemanager.synapse.models.WorkspacePublicNetworkAccess;
 import com.azure.resourcemanager.synapse.models.WorkspaceRepositoryConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +23,6 @@ import java.util.UUID;
 /** A workspace. */
 @Fluent
 public final class WorkspaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceInner.class);
-
     /*
      * Workspace resource properties
      */
@@ -38,6 +34,10 @@ public final class WorkspaceInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private ManagedIdentity identity;
+
+    /** Creates an instance of WorkspaceInner class. */
+    public WorkspaceInner() {
+    }
 
     /**
      * Get the innerProperties property: Workspace resource properties.
@@ -222,20 +222,6 @@ public final class WorkspaceInner extends Resource {
     }
 
     /**
-     * Set the connectivityEndpoints property: Connectivity endpoints.
-     *
-     * @param connectivityEndpoints the connectivityEndpoints value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withConnectivityEndpoints(Map<String, String> connectivityEndpoints) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WorkspaceProperties();
-        }
-        this.innerProperties().withConnectivityEndpoints(connectivityEndpoints);
-        return this;
-    }
-
-    /**
      * Get the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
      * is in a virtual network managed on behalf of the user.
      *
@@ -321,7 +307,7 @@ public final class WorkspaceInner extends Resource {
      *
      * @return the extraProperties value.
      */
-    public Map<String, Object> extraProperties() {
+    public Object extraProperties() {
         return this.innerProperties() == null ? null : this.innerProperties().extraProperties();
     }
 

@@ -5,13 +5,11 @@
 package com.azure.resourcemanager.purview.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purview.models.AccountPropertiesEndpoints;
 import com.azure.resourcemanager.purview.models.AccountPropertiesManagedResources;
 import com.azure.resourcemanager.purview.models.CloudConnectors;
 import com.azure.resourcemanager.purview.models.ProvisioningState;
 import com.azure.resourcemanager.purview.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,8 +17,6 @@ import java.util.List;
 /** The account properties. */
 @Fluent
 public final class AccountProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountProperties.class);
-
     /*
      * Cloud connectors.
      * External cloud identifier used as part of scanning configuration.
@@ -87,6 +83,10 @@ public final class AccountProperties {
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
+
+    /** Creates an instance of AccountProperties class. */
+    public AccountProperties() {
+    }
 
     /**
      * Get the cloudConnectors property: Cloud connectors. External cloud identifier used as part of scanning

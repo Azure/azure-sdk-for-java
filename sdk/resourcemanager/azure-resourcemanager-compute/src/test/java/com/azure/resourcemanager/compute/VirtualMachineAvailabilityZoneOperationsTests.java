@@ -130,10 +130,10 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withStaticIP()
                 // Optionals
                 .withAvailabilityZone(
-                    AvailabilityZoneId.ZONE_1) // since the SKU is BASIC and VM is zoned, PIP must be zoned
+                    AvailabilityZoneId.ZONE_1) // since the SKU is STANDARD and VM is zoned, PIP must be zoned
                 .withSku(
                     PublicIPSkuType
-                        .BASIC) // Basic sku is never zone resilient, so if you want it zoned, specify explicitly as
+                        .STANDARD) // Only standard sku supports zone resiliency, so if you want it zoned, specify explicitly as
                                 // above.
                 // Create PIP
                 .create();
@@ -181,7 +181,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         //
         publicIPAddress = virtualMachine.getPrimaryPublicIPAddress();
         Assertions.assertNotNull(publicIPAddress.sku());
-        Assertions.assertTrue(publicIPAddress.sku().equals(PublicIPSkuType.BASIC));
+        Assertions.assertTrue(publicIPAddress.sku().equals(PublicIPSkuType.STANDARD));
         Assertions.assertNotNull(publicIPAddress.availabilityZones());
         Assertions.assertFalse(publicIPAddress.availabilityZones().isEmpty());
         Assertions.assertTrue(publicIPAddress.availabilityZones().contains(AvailabilityZoneId.ZONE_1));

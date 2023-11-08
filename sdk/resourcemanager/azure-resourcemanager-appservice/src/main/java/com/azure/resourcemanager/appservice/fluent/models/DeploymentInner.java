@@ -18,6 +18,10 @@ public final class DeploymentInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DeploymentProperties innerProperties;
 
+    /** Creates an instance of DeploymentInner class. */
+    public DeploymentInner() {
+    }
+
     /**
      * Get the innerProperties property: Deployment resource specific properties.
      *

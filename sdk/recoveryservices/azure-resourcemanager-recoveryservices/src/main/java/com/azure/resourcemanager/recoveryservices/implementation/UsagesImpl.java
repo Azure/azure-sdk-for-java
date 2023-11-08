@@ -7,40 +7,39 @@ package com.azure.resourcemanager.recoveryservices.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.UsagesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultUsageInner;
 import com.azure.resourcemanager.recoveryservices.models.Usages;
 import com.azure.resourcemanager.recoveryservices.models.VaultUsage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UsagesImpl implements Usages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UsagesImpl.class);
 
     private final UsagesClient innerClient;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public UsagesImpl(UsagesClient innerClient, RecoveryServicesManager serviceManager) {
+    public UsagesImpl(
+        UsagesClient innerClient, com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<VaultUsage> listByVaults(String resourceGroupName, String vaultName) {
         PagedIterable<VaultUsageInner> inner = this.serviceClient().listByVaults(resourceGroupName, vaultName);
-        return inner.mapPage(inner1 -> new VaultUsageImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VaultUsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VaultUsage> listByVaults(String resourceGroupName, String vaultName, Context context) {
         PagedIterable<VaultUsageInner> inner = this.serviceClient().listByVaults(resourceGroupName, vaultName, context);
-        return inner.mapPage(inner1 -> new VaultUsageImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VaultUsageImpl(inner1, this.manager()));
     }
 
     private UsagesClient serviceClient() {
         return this.innerClient;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }

@@ -20,18 +20,15 @@ public final class MetricsResponse {
     private Integer cost;
 
     /*
-     * The timespan for which the data was retrieved. Its value consists of two
-     * datetimes concatenated, separated by '/'.  This may be adjusted in the
-     * future and returned back from what was originally requested.
+     * The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
+     * '/'.  This may be adjusted in the future and returned back from what was originally requested.
      */
     @JsonProperty(value = "timespan", required = true)
     private String timespan;
 
     /*
-     * The interval (window size) for which the metric data was returned in.
-     * This may be adjusted in the future and returned back from what was
-     * originally requested.  This is not present if a metadata request was
-     * made.
+     * The interval (window size) for which the metric data was returned in.  This may be adjusted in the future and
+     * returned back from what was originally requested.  This is not present if a metadata request was made.
      */
     @JsonProperty(value = "interval")
     private Duration interval;

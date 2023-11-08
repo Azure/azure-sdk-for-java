@@ -59,7 +59,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.12.0</version>
+  <version>12.21.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -220,6 +220,23 @@ ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
     .connectionString(CONNECTION_STRING).shareName(shareName).buildClient();
 ```
 
+#### Share with `TokenCredential`
+Once you have the TokenCredential, you can construct the share client with `${accountName}`, `${shareName}` and `ShareTokenIntent`. 
+`ShareTokenIntent.BACKUP` specifies requests that are intended for backup/admin type operations, meaning that all
+file/directory ACLs are bypassed and full permissions are granted. User must have required RBAC permission in order to 
+use `ShareTokenIntent.BACKUP`.
+
+```java readme-sample-createShareClientWithTokenCredential
+String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
+
+ShareClient serviceClient = new ShareClientBuilder()
+    .endpoint(shareURL)
+    .credential(tokenCredential)
+    .shareTokenIntent(ShareTokenIntent.BACKUP)
+    .shareName(shareName)
+    .buildClient();
+```
+
 ### Directory
  The directory resource includes the properties for that directory. It allows the operations of creating, listing, deleting directories or subdirectories or files, getting properties, setting metadata, listing and force closing the handles.
  Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${directoryPath}`, `${sasToken}`
@@ -291,7 +308,7 @@ shareClient.createSnapshot();
 ```
 
 ### Create a directory
-Taking the [`${shareClient}`](#create-a-snapshot-on-share) initialized above, [`${shareClient}`](#share-with-sastoken).
+Taking the shareClient initialized above, [`${shareClient}`](#share).
 
 ```java readme-sample-createDirectory
 String dirName = "testdir";
@@ -373,7 +390,7 @@ Taking the fileClient in KeyConcept, [`${fileClient}`](#file) with string of sou
 ```java readme-sample-copyFile
 String sourceURL = "https://myaccount.file.core.windows.net/myshare/myfile";
 Duration pollInterval = Duration.ofSeconds(2);
-SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(sourceURL, null, pollInterval);
+SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(sourceURL, (Map<String, String>) null, pollInterval);
 ```
 
 ### Abort copy a file
@@ -398,7 +415,7 @@ Taking the fileClient in KeyConcept, [`${fileClient}`](#file) with data of "defa
 ```java readme-sample-uploadDataToStorageBiggerThan4MB
 byte[] data = "Hello, data sample!".getBytes(StandardCharsets.UTF_8);
 
-long chunkSize = ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE;
+long chunkSize = 4 * 1024 * 1024L;
 if (data.length > chunkSize) {
     for (int offset = 0; offset < data.length; offset += chunkSize) {
         try {

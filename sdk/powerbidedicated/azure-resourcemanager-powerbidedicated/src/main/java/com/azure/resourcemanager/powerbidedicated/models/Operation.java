@@ -23,6 +23,20 @@ public interface Operation {
     OperationDisplay display();
 
     /**
+     * Gets the origin property: Origin of the operation.
+     *
+     * @return the origin value.
+     */
+    String origin();
+
+    /**
+     * Gets the properties property: Additional properties to expose performance metrics to shoebox.
+     *
+     * @return the properties value.
+     */
+    OperationProperties properties();
+
+    /**
      * Gets the inner com.azure.resourcemanager.powerbidedicated.fluent.models.OperationInner object.
      *
      * @return the inner object.

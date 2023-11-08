@@ -58,6 +58,10 @@ public class GenericResourceInner extends Resource {
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
+    /** Creates an instance of GenericResourceInner class. */
+    public GenericResourceInner() {
+    }
+
     /**
      * Get the plan property: The plan of the resource.
      *

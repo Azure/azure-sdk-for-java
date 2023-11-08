@@ -6,19 +6,20 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB Gremlin database resource object. */
 @Fluent
 public class GremlinDatabaseResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinDatabaseResource.class);
-
     /*
      * Name of the Cosmos DB Gremlin database
      */
     @JsonProperty(value = "id", required = true)
     private String id;
+
+    /** Creates an instance of GremlinDatabaseResource class. */
+    public GremlinDatabaseResource() {
+    }
 
     /**
      * Get the id property: Name of the Cosmos DB Gremlin database.
@@ -47,9 +48,11 @@ public class GremlinDatabaseResource {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model GremlinDatabaseResource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GremlinDatabaseResource.class);
 }

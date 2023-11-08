@@ -22,6 +22,10 @@ public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
+    /** Creates an instance of ManagedClusterPoolUpgradeProfileUpgradesItem class. */
+    public ManagedClusterPoolUpgradeProfileUpgradesItem() {
+    }
+
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *

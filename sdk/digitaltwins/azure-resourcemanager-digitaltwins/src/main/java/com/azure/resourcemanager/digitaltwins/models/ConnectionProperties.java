@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a private endpoint connection. */
 @Fluent
 public final class ConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionProperties.class);
-
     /*
      * The provisioning state.
      */
@@ -38,6 +34,10 @@ public final class ConnectionProperties {
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private ConnectionPropertiesPrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+
+    /** Creates an instance of ConnectionProperties class. */
+    public ConnectionProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state.

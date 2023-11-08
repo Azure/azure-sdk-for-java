@@ -13,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapHanaLinkedServiceProperties {
     /*
-     * SAP HANA ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * SAP HANA ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
-     * Host name of the SAP HANA server. Type: string (or Expression with
-     * resultType string).
+     * Host name of the SAP HANA server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "server")
     private Object server;
@@ -33,8 +31,7 @@ public final class SapHanaLinkedServiceProperties {
     private SapHanaAuthenticationType authenticationType;
 
     /*
-     * Username to access the SAP HANA server. Type: string (or Expression with
-     * resultType string).
+     * Username to access the SAP HANA server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -46,12 +43,15 @@ public final class SapHanaLinkedServiceProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
+
+    /** Creates an instance of SapHanaLinkedServiceProperties class. */
+    public SapHanaLinkedServiceProperties() {
+    }
 
     /**
      * Get the connectionString property: SAP HANA ODBC connection string. Type: string, SecureString or
@@ -159,22 +159,22 @@ public final class SapHanaLinkedServiceProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapHanaLinkedServiceProperties object itself.
      */
-    public SapHanaLinkedServiceProperties withEncryptedCredential(Object encryptedCredential) {
+    public SapHanaLinkedServiceProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

@@ -26,6 +26,15 @@ public final class Category extends ExpandableStringEnum<Category> {
     public static final Category OPERATIONAL_EXCELLENCE = fromString("OperationalExcellence");
 
     /**
+     * Creates a new instance of Category value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Category() {
+    }
+
+    /**
      * Creates or finds a Category from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class Category extends ExpandableStringEnum<Category> {
         return fromString(name, Category.class);
     }
 
-    /** @return known Category values. */
+    /**
+     * Gets known Category values.
+     *
+     * @return known Category values.
+     */
     public static Collection<Category> values() {
         return values(Category.class);
     }

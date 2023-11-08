@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.changeanalysis.fluent.models.ResourceProviderOperationDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The resource provider operation list. */
 @Fluent
 public final class ResourceProviderOperationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProviderOperationList.class);
-
     /*
      * Resource provider operations list.
      */
@@ -23,11 +19,14 @@ public final class ResourceProviderOperationList {
     private List<ResourceProviderOperationDefinitionInner> value;
 
     /*
-     * The URI that can be used to request the next page for list of Azure
-     * operations.
+     * The URI that can be used to request the next page for list of Azure operations.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ResourceProviderOperationList class. */
+    public ResourceProviderOperationList() {
+    }
 
     /**
      * Get the value property: Resource provider operations list.

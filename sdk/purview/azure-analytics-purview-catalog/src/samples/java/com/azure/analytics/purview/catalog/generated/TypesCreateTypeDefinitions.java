@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesCreateTypeDefinitions {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.typescreatetypedefinitions.typescreatetypedefinitions
         TypesClient typesClient =
                 new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.typescreatetypedefinitions.typescreatetypedefinitions
         BinaryData typesDef =
                 BinaryData.fromString(
                         "{\"classificationDefs\":[],\"entityDefs\":[{\"name\":\"azure_sql_server_example\",\"attributeDefs\":[{\"name\":\"databases\",\"cardinality\":\"SET\",\"isIndexable\":false,\"isOptional\":true,\"isUnique\":false,\"typeName\":\"array<azure_sql_db>\"}],\"superTypes\":[\"azure_resource\"],\"typeVersion\":\"1.0\"}],\"enumDefs\":[],\"relationshipDefs\":[],\"structDefs\":[]}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = typesClient.createTypeDefinitionsWithResponse(typesDef, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.typescreatetypedefinitions.typescreatetypedefinitions
+        // END:com.azure.analytics.purview.catalog.generated.typescreatetypedefinitions.typescreatetypedefinitions
     }
 }

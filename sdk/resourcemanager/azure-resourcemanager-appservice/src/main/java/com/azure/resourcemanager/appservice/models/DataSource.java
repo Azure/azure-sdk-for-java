@@ -23,6 +23,10 @@ public final class DataSource {
     @JsonProperty(value = "dataSourceUri")
     private List<NameValuePair> dataSourceUri;
 
+    /** Creates an instance of DataSource class. */
+    public DataSource() {
+    }
+
     /**
      * Get the instructions property: Instructions if any for the data source.
      *

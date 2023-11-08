@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** fileSystemInfo. */
 @Fluent
 public final class MicrosoftGraphFileSystemInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphFileSystemInfo.class);
-
     /*
      * The UTC date and time the file was created on a client.
      */
@@ -26,8 +23,7 @@ public final class MicrosoftGraphFileSystemInfo {
     private OffsetDateTime createdDateTime;
 
     /*
-     * The UTC date and time the file was last accessed. Available for the
-     * recent file list only.
+     * The UTC date and time the file was last accessed. Available for the recent file list only.
      */
     @JsonProperty(value = "lastAccessedDateTime")
     private OffsetDateTime lastAccessedDateTime;
@@ -42,6 +38,10 @@ public final class MicrosoftGraphFileSystemInfo {
      * fileSystemInfo
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphFileSystemInfo class. */
+    public MicrosoftGraphFileSystemInfo() {
+    }
 
     /**
      * Get the createdDateTime property: The UTC date and time the file was created on a client.

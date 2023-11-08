@@ -5,13 +5,15 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** TriggerContext Trigger context. */
+/**
+ * TriggerContext
+ *
+ * <p>Trigger context.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -24,7 +26,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class TriggerContext {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerContext.class);
+    /** Creates an instance of TriggerContext class. */
+    public TriggerContext() {
+    }
 
     /**
      * Validates the instance.

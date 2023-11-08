@@ -20,20 +20,6 @@ public interface ResourceGuardProxyOperationsClient {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceGuardProxyBaseResourceInner get(String vaultName, String resourceGroupName, String resourceGuardProxyName);
-
-    /**
-     * Returns ResourceGuardProxy under vault and with the name referenced in request.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +31,7 @@ public interface ResourceGuardProxyOperationsClient {
         String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context);
 
     /**
-     * Add or Update ResourceGuardProxy under vault Secures vault critical operations.
+     * Returns ResourceGuardProxy under vault and with the name referenced in request.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
@@ -56,7 +42,7 @@ public interface ResourceGuardProxyOperationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceGuardProxyBaseResourceInner put(String vaultName, String resourceGroupName, String resourceGuardProxyName);
+    ResourceGuardProxyBaseResourceInner get(String vaultName, String resourceGroupName, String resourceGuardProxyName);
 
     /**
      * Add or Update ResourceGuardProxy under vault Secures vault critical operations.
@@ -64,6 +50,7 @@ public interface ResourceGuardProxyOperationsClient {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,20 +59,30 @@ public interface ResourceGuardProxyOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceGuardProxyBaseResourceInner> putWithResponse(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context);
+        String vaultName,
+        String resourceGroupName,
+        String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters,
+        Context context);
 
     /**
-     * Delete ResourceGuardProxy under vault.
+     * Add or Update ResourceGuardProxy under vault Secures vault critical operations.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String vaultName, String resourceGroupName, String resourceGuardProxyName);
+    ResourceGuardProxyBaseResourceInner put(
+        String vaultName,
+        String resourceGroupName,
+        String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters);
 
     /**
      * Delete ResourceGuardProxy under vault.
@@ -104,20 +101,17 @@ public interface ResourceGuardProxyOperationsClient {
         String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context);
 
     /**
-     * Secures delete ResourceGuardProxy operations.
+     * Delete ResourceGuardProxy under vault.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UnlockDeleteResponseInner unlockDelete(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, UnlockDeleteRequest parameters);
+    void delete(String vaultName, String resourceGroupName, String resourceGuardProxyName);
 
     /**
      * Secures delete ResourceGuardProxy operations.
@@ -139,4 +133,20 @@ public interface ResourceGuardProxyOperationsClient {
         String resourceGuardProxyName,
         UnlockDeleteRequest parameters,
         Context context);
+
+    /**
+     * Secures delete ResourceGuardProxy operations.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of Unlock Delete API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    UnlockDeleteResponseInner unlockDelete(
+        String vaultName, String resourceGroupName, String resourceGuardProxyName, UnlockDeleteRequest parameters);
 }

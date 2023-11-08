@@ -27,6 +27,10 @@ public final class ServiceEndpointPolicyDefinitionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ServiceEndpointPolicyDefinitionListResult class. */
+    public ServiceEndpointPolicyDefinitionListResult() {
+    }
+
     /**
      * Get the value property: The service endpoint policy definition in a service endpoint policy.
      *

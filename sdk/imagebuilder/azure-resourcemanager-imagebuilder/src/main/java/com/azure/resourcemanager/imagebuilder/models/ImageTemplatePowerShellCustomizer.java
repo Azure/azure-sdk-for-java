@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,18 +18,14 @@ import java.util.List;
 @JsonTypeName("PowerShell")
 @Fluent
 public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustomizer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplatePowerShellCustomizer.class);
-
     /*
-     * URI of the PowerShell script to be run for customizing. It can be a
-     * github link, SAS URI for Azure Storage, etc
+     * URI of the PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
      */
     @JsonProperty(value = "scriptUri")
     private String scriptUri;
 
     /*
-     * SHA256 checksum of the power shell script provided in the scriptUri
-     * field above
+     * SHA256 checksum of the power shell script provided in the scriptUri field above
      */
     @JsonProperty(value = "sha256Checksum")
     private String sha256Checksum;
@@ -49,9 +43,8 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
     private Boolean runElevated;
 
     /*
-     * If specified, the PowerShell script will be run with elevated privileges
-     * using the Local System user. Can only be true when the runElevated field
-     * above is set to true.
+     * If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only
+     * be true when the runElevated field above is set to true.
      */
     @JsonProperty(value = "runAsSystem")
     private Boolean runAsSystem;
@@ -61,6 +54,10 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
      */
     @JsonProperty(value = "validExitCodes")
     private List<Integer> validExitCodes;
+
+    /** Creates an instance of ImageTemplatePowerShellCustomizer class. */
+    public ImageTemplatePowerShellCustomizer() {
+    }
 
     /**
      * Get the scriptUri property: URI of the PowerShell script to be run for customizing. It can be a github link, SAS
